@@ -25,13 +25,15 @@ public struct TestableNotificationService {
 
     private let decryptRemoteNotification: DecryptRemoteNotification
     private let keychain = KeychainSDKWrapper()
+    private let userDefaults: UserDefaults
 
     public init() {
-        self.init(decryptRemoteNotification: decryptPushNotification)
+        self.init(userDefaults: .appGroup, decryptRemoteNotification: decryptPushNotification)
     }
 
-    init(decryptRemoteNotification: @escaping DecryptRemoteNotification) {
+    init(userDefaults: UserDefaults, decryptRemoteNotification: @escaping DecryptRemoteNotification) {
         self.decryptRemoteNotification = decryptRemoteNotification
+        self.userDefaults = userDefaults
     }
 
     public func transform(originalContent: UNNotificationContent) async -> UNNotificationContent {
@@ -46,6 +48,8 @@ public struct TestableNotificationService {
         if let encryptedPushNotification = parseDecryptablePayload(from: originalContent.userInfo) {
             await replaceTitleAndBody(of: mutableContent, byDecrypting: encryptedPushNotification)
         }
+
+        unsetBadgeIfRecipientIsNotPrimaryAccount(mutableContent: mutableContent)
 
         return mutableContent
     }
@@ -79,6 +83,16 @@ public struct TestableNotificationService {
             }
         case .error(let error):
             AppLogger.log(error: error, category: .notifications)
+        }
+    }
+
+    private func unsetBadgeIfRecipientIsNotPrimaryAccount(mutableContent: UNMutableNotificationContent) {
+        guard let sessionId = mutableContent.userInfo["UID"] as? String else {
+            return
+        }
+
+        if sessionId != userDefaults[.primaryAccountSessionId] {
+            mutableContent.badge = nil
         }
     }
 }

@@ -27,11 +27,13 @@ final class MessageBodyStateStoreTests {
         messageID: stubbedMessageID,
         mailbox: .dummy,
         wrapper: wrapperSpy.testingInstance,
-        toastStateStore: toastStateStore
+        toastStateStore: toastStateStore,
+        backOnlineActionExecutor: backOnlineActionExecutorSpy
     )
     let stubbedMessageID = ID(value: 42)
     let toastStateStore = ToastStateStore(initialState: .initial)
     private let wrapperSpy = RustWrappersSpy()
+    private let backOnlineActionExecutorSpy = BackOnlineActionExecutorSpy()
 
     // MARK: - `onLoad` action
 
@@ -50,21 +52,39 @@ final class MessageBodyStateStoreTests {
 
         #expect(wrapperSpy.messageBodyCalls == [stubbedMessageID])
         #expect(decryptedMessageSpy.bodyWithOptionsCalls.count == 1)
-        #expect(sut.state == .noBannersAlert(
-            rawBody: "<html>dummy_with_custom_options</html>",
-            options: initialOptions,
-            embeddedImageProvider: decryptedMessageSpy
-        ))
+        #expect(
+            sut.state
+                == .noBannersAlert(
+                    rawBody: "<html>dummy_with_custom_options</html>",
+                    options: initialOptions,
+                    embeddedImageProvider: decryptedMessageSpy
+                ))
     }
 
     @Test
-    func testState_WhenOnLoadAndFailedDueToNetworkError_ItReturnsNoConnectionError() async {
+    func testState_WhenOnLoadAndFailedDueToNetworkError_ItReturnsNoConnectionErrorAndThenReloads() async {
         wrapperSpy.stubbedMessageBodyResult = .error(.other(.network))
 
         await sut.handle(action: .onLoad)
 
         #expect(wrapperSpy.messageBodyCalls == [stubbedMessageID])
         #expect(sut.state == .init(body: .noConnection, alert: .none))
+
+        let initialOptions = TransformOpts()
+        let decryptedMessageSpy = DecryptedMessageSpy(stubbedOptions: TransformOpts())
+        wrapperSpy.stubbedMessageBodyResult = .ok(decryptedMessageSpy)
+
+        #expect(backOnlineActionExecutorSpy.executeCalled.count == 1)
+        await backOnlineActionExecutorSpy.executeCalled.first?()
+
+        #expect(decryptedMessageSpy.bodyWithOptionsCalls.count == 1)
+        #expect(
+            sut.state
+                == .noBannersAlert(
+                    rawBody: "<html>dummy_with_custom_options</html>",
+                    options: initialOptions,
+                    embeddedImageProvider: decryptedMessageSpy
+                ))
     }
 
     @Test
@@ -92,12 +112,14 @@ final class MessageBodyStateStoreTests {
 
         #expect(wrapperSpy.messageBodyCalls == [stubbedMessageID])
         #expect(decryptedMessageSpy.bodyWithOptionsCalls == [initialOptions])
-        #expect(sut.state == .noBannersAlert(
-            rawBody: "<html>dummy_with_custom_options</html>",
-            options: initialOptions,
-            embeddedImageProvider: decryptedMessageSpy
-        ))
-        
+        #expect(
+            sut.state
+                == .noBannersAlert(
+                    rawBody: "<html>dummy_with_custom_options</html>",
+                    options: initialOptions,
+                    embeddedImageProvider: decryptedMessageSpy
+                ))
+
         await sut.handle(action: .displayEmbeddedImages)
 
         let updatedOptions = initialOptions.copy(\.hideEmbeddedImages, to: false)
@@ -124,12 +146,14 @@ final class MessageBodyStateStoreTests {
         await sut.handle(action: .onLoad)
 
         #expect(decryptedMessageSpy.bodyWithOptionsCalls == [initialOptions])
-        #expect(sut.state == .noBannersAlert(
-            rawBody: "<html>dummy_with_custom_options</html>",
-            options: initialOptions,
-            embeddedImageProvider: decryptedMessageSpy
-        ))
-        
+        #expect(
+            sut.state
+                == .noBannersAlert(
+                    rawBody: "<html>dummy_with_custom_options</html>",
+                    options: initialOptions,
+                    embeddedImageProvider: decryptedMessageSpy
+                ))
+
         await sut.handle(action: .downloadRemoteContent)
 
         let updatedOptions = initialOptions.copy(\.hideRemoteImages, to: false)
@@ -250,11 +274,13 @@ final class MessageBodyStateStoreTests {
         #expect(wrapperSpy.markMessageHamCalls == [])
         #expect(decryptedMessageSpy.bodyWithOptionsCalls.count == 1)
         #expect(decryptedMessageSpy.bodyWithOptionsCalls == [initialOptions])
-        #expect(sut.state == .noBannersAlert(
-            rawBody: "<html>dummy_with_custom_options</html>",
-            options: initialOptions,
-            embeddedImageProvider: decryptedMessageSpy
-        ))
+        #expect(
+            sut.state
+                == .noBannersAlert(
+                    rawBody: "<html>dummy_with_custom_options</html>",
+                    options: initialOptions,
+                    embeddedImageProvider: decryptedMessageSpy
+                ))
     }
 
     // MARK: - `unblockSender` action
@@ -450,6 +476,16 @@ private extension MessageBodyStateStore.State {
                 )),
             alert: .none
         )
+    }
+
+}
+
+private class BackOnlineActionExecutorSpy: BackOnlineActionExecuting {
+
+    private(set) var executeCalled: [() async -> Void] = []
+
+    func execute(action: @escaping @MainActor @Sendable () async -> Void) {
+        executeCalled.append(action)
     }
 
 }

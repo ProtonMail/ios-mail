@@ -27,13 +27,13 @@ extension EnvironmentValues {
 struct MessageBodyReaderView: UIViewRepresentable {
     @Binding var bodyContentHeight: CGFloat
     let body: MessageBody.HTML
-    let urlOpener: URLOpenerProtocol
-    let htmlLoaded: () -> Void
+    let viewWidth: CGFloat
 
     func makeUIView(context: Context) -> WKWebView {
         let backgroundColor = UIColor(DS.Color.Background.norm)
         let config = WKWebViewConfiguration()
         config.dataDetectorTypes = [.link]
+        config.defaultWebpagePreferences.allowsContentJavaScript = false
         config.setURLSchemeHandler(
             CIDSchemeHandler(embeddedImageProvider: body.embeddedImageProvider),
             forURLScheme: CIDSchemeHandler.handlerScheme
@@ -44,48 +44,88 @@ struct MessageBodyReaderView: UIViewRepresentable {
         webView.scrollView.isScrollEnabled = false
         webView.scrollView.bounces = false
 
-        webView.loadHTMLString(body.rawBody)
-
         webView.isOpaque = false
         webView.backgroundColor = backgroundColor
         webView.scrollView.backgroundColor = backgroundColor
         webView.scrollView.contentInsetAdjustmentBehavior = .never
 
-#if targetEnvironment(simulator)
-        webView.isInspectable = true
-#endif
+        webView.isInspectable = WKWebView.inspectabilityEnabled
 
+        config.userContentController.add(context.coordinator, name: Constants.heightChangedHandlerName)
+        config.userContentController.addUserScript(.observeHeight(viewWidth: viewWidth))
+
+        context.coordinator.setupRecovery(for: webView)
         return webView
     }
 
-    func updateUIView(_ uiView: WKWebView, context: Context) {
-        updateUIView(uiView)
-        uiView.overrideUserInterfaceStyle = context.environment.forceLightModeInMessageBody ? .light : .unspecified
+    func updateUIView(_ webView: WKWebView, context: Context) {
+        if context.coordinator.receivedBodyDifferentFromBefore(latest: body) {
+            loadHTML(in: webView)
+        }
+        webView.overrideUserInterfaceStyle = context.environment.forceLightModeInMessageBody ? .light : .unspecified
+        context.coordinator.urlOpener = context.environment.openURL
     }
 
-    func updateUIView(_ view: WKWebView) {
-        view.loadHTMLString(body.rawBody)
+    func loadHTML(in webView: WKWebView) {
+        let style = """
+            <style>
+                body {
+                    height: auto !important;
+                }
+
+                table {
+                    height: auto !important;
+                    min-height: auto !important;
+                }
+
+                @supports (height: fit-content) {
+                    html {
+                        height: fit-content !important;
+                    }
+                }
+            </style>
+            """
+        let fixedBody = body.rawBody.replacingOccurrences(of: "</head>", with: "\(style)</head>")
+        webView.loadHTMLString(fixedBody, baseURL: nil)
     }
 
     func makeCoordinator() -> Coordinator {
-        Coordinator(self)
+        Coordinator(parent: self)
     }
 }
 
 extension MessageBodyReaderView {
-    class Coordinator: NSObject, WKNavigationDelegate, @unchecked Sendable {
-        let parent: MessageBodyReaderView
 
-        init(_ parent: MessageBodyReaderView) {
+    class Coordinator: NSObject, WKNavigationDelegate, WKScriptMessageHandler, @unchecked Sendable {
+        let parent: MessageBodyReaderView
+        var urlOpener: URLOpenerProtocol?
+        private var previouslyReceivedBody: MessageBody.HTML?
+        private weak var webView: WKWebView?
+        private var memoryPressureHandler: WebViewMemoryPressureProtocol
+
+        init(
+            parent: MessageBodyReaderView,
+            memoryPressureHandler: WebViewMemoryPressureProtocol = WebViewMemoryPressureHandler(loggerCategory: .conversationDetail)
+        ) {
             self.parent = parent
+            self.memoryPressureHandler = memoryPressureHandler
         }
 
-        func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
+        func setupRecovery(for webView: WKWebView) {
+            self.webView = webView
+            memoryPressureHandler.contentReload { [weak self] in
+                guard let self, let webView = self.webView else { return }
+                parent.loadHTML(in: webView)
+            }
+        }
+
+        func userContentController(
+            _ userContentController: WKUserContentController,
+            didReceive scriptMessage: WKScriptMessage
+        ) {
             Task { @MainActor in
-                try await webView.evaluateJavaScript("document.readyState")
-                let scrollHeight = try await webView.evaluateJavaScript("document.documentElement.scrollHeight")
-                parent.bodyContentHeight = scrollHeight as! CGFloat
-                parent.htmlLoaded()
+                let scriptOutput = scriptMessage.body as! CGFloat
+                parent.bodyContentHeight = scriptOutput
             }
         }
 
@@ -97,16 +137,57 @@ extension MessageBodyReaderView {
                 return .allow
             }
 
-            parent.urlOpener(url)
+            urlOpener?(url)
             return .cancel
+        }
+
+        func webViewWebContentProcessDidTerminate(_ webView: WKWebView) {
+            memoryPressureHandler.markWebContentProcessTerminated()
+        }
+
+        func receivedBodyDifferentFromBefore(latest body: MessageBody.HTML) -> Bool {
+            if previouslyReceivedBody?.rawBody == body.rawBody && previouslyReceivedBody?.options == body.options {
+                return false
+            } else {
+                previouslyReceivedBody = body
+                return true
+            }
         }
     }
 }
 
-private extension WKWebView {
+extension WKUserScript {
+    fileprivate static func observeHeight(viewWidth: CGFloat) -> WKUserScript {
+        let source = """
+            function notify() {
+                measureHeightOnceContentIsLaidOut();
+            }
 
-    func loadHTMLString(_ string: String) {
-        loadHTMLString(string, baseURL: nil)
+            function measureHeightOnceContentIsLaidOut(retryCount = 0) {
+                // Prevent infinite loops (180 frames = ~3 seconds at 60fps)
+                const maxRetries = 180;
+
+                // If content is not laid out, its width is typically 32 or 80 - this is a good enough heuristic without hard coding magic numbers
+                const contentIsLaidOut = document.body.scrollWidth > \(viewWidth / 2)
+
+                if (!contentIsLaidOut && retryCount < maxRetries) {
+                    // try again next frame
+                    requestAnimationFrame(() => {
+                        measureHeightOnceContentIsLaidOut(retryCount + 1);
+                    });
+                } else {
+                    window.webkit.messageHandlers.\(Constants.heightChangedHandlerName).postMessage(document.body.scrollHeight);
+                }
+            }
+
+            const observer = new ResizeObserver(notify);
+            observer.observe(document.body);
+            """
+
+        return .init(source: source, injectionTime: .atDocumentEnd, forMainFrameOnly: true)
     }
+}
 
+private enum Constants {
+    static let heightChangedHandlerName = "heightChanged"
 }

@@ -25,19 +25,25 @@ struct OnboardingScreen: View {
         let pages: [OnboardingPage] = [
             .init(
                 image: DS.Images.onboardingFirstPage,
-                title: "Transformed from the ground up".notLocalized.stringResource,
-                subtitle: "Completely reengineered on Rust architecture, the new Proton Mail is rebuilt for performance, user experience, and scalability.".notLocalized.stringResource
+                title: "Welcome to the new Proton Mail app!".notLocalized.stringResource,
+                subtitle: "Transformed from the ground up".notLocalized.stringResource,
+                text: "Thank you for joining this limited group of early beta testers. Your feedback is critical for helping us build an even better Proton Mail ready for public release.".notLocalized
+                    .stringResource
             ),
             .init(
                 image: DS.Images.onboardingSecondPage,
-                title: "New inbox unboxed".notLocalized.stringResource,
-                subtitle: "We’re excited to unveil the vibrant new design and improved user experience.".notLocalized.stringResource
+                title: "Rebuilt to be better and faster".notLocalized.stringResource,
+                subtitle: "New inbox unboxed".notLocalized.stringResource,
+                text: "The new Proton Mail is faster with a vibrant design and highly-requested features, like offline mode.".notLocalized
+                    .stringResource
             ),
             .init(
                 image: DS.Images.onboardingThirdPage,
-                title: "Your feedback is key".notLocalized.stringResource,
-                subtitle: "We’re rolling out all the features in the next months. Please continue to test the app and let us know how we can make it better!".notLocalized.stringResource
-            )
+                title: "Thank you for your participation! ".notLocalized.stringResource,
+                subtitle: "Your feedback is key".notLocalized.stringResource,
+                text: "We'll be rolling out new features in the coming months. Please test the app and tap \"Report a problem\" to let us know how we can keep improving. Your input is invaluable!"
+                    .notLocalized.stringResource
+            ),
         ]
         var selectedPageIndex: Int
 
@@ -51,6 +57,7 @@ struct OnboardingScreen: View {
     }
 
     @Environment(\.dismissTestable) var dismiss: Dismissable
+    @Environment(\.mainWindowSize) var size
     @State var state: ViewState
     @State private var totalHeight: CGFloat = 1
 
@@ -67,7 +74,6 @@ struct OnboardingScreen: View {
             DS.Color.Background.secondary.ignoresSafeArea()
             VStack(spacing: DS.Spacing.extraLarge) {
                 spacing(height: DS.Spacing.small)
-                header
                 pages
                 dotsIndexIndicator
                 actionButton
@@ -92,23 +98,35 @@ struct OnboardingScreen: View {
 
     // MARK: - Private
 
-    private var header: some View {
-        Text("Introducing our next-gen app!".notLocalized)
-            .font(.system(size: 22, weight: .bold))
-            .foregroundStyle(DS.Color.Text.norm)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .fixedSize(horizontal: false, vertical: true)
-            .padding(.horizontal, DS.Spacing.large)
+    private var pages: some View {
+        ScrollViewReader { proxy in
+            ScrollView(.horizontal) {
+                HStack(spacing: .zero) {
+                    ForEachEnumerated(state.pages, id: \.element) { model, index in
+                        OnboardingPageView(model: model).tag(index)
+                            .id(index)
+                            .frame(width: size.width)
+                    }
+                }
+                .scrollTargetLayout()
+            }
+            .scrollIndicators(.hidden)
+            .scrollTargetBehavior(.paging)
+            .scrollPosition(id: selectedPageIndex)
+            .animation(.easeIn, value: state.selectedPageIndex)
+            .onLoad { proxy.scrollTo(state.selectedPageIndex) }
+        }
     }
 
-    private var pages: some View {
-        HeightPreservingTabView(selection: $state.selectedPageIndex) {
-            ForEachEnumerated(state.pages, id: \.element) { model, index in
-                OnboardingPageView(model: model).tag(index)
+    private var selectedPageIndex: Binding<Int?> {
+        .init(
+            get: { state.selectedPageIndex },
+            set: { newPageIndex in
+                if let pageIndex = newPageIndex {
+                    state.selectedPageIndex = pageIndex
+                }
             }
-        }
-        .animation(.easeIn, value: state.selectedPageIndex)
-        .tabViewStyle(.page(indexDisplayMode: .never))
+        )
     }
 
     private var dotsIndexIndicator: some View {
@@ -124,8 +142,9 @@ struct OnboardingScreen: View {
             if !state.hasNextPage {
                 dismiss()
             }
-            
-            state = state
+
+            state =
+                state
                 .copy(\.selectedPageIndex, to: min(state.selectedPageIndex + 1, state.maxPageIndex))
         }
         .buttonStyle(BigButtonStyle())
@@ -135,41 +154,6 @@ struct OnboardingScreen: View {
 
     private func spacing(height: CGFloat) -> some View {
         Spacer().frame(height: height)
-    }
-}
-
-/// A variant of `TabView` that sets an appropriate `height` on its frame based on content.
-private struct HeightPreservingTabView<SelectionValue: Hashable, Content: View>: View {
-    let selection: Binding<SelectionValue>?
-    @ViewBuilder let content: () -> Content
-
-    @State private var height: CGFloat = .zero
-    /// `minHeight` needs to start as something non-zero or we won't measure the interior content height
-    private let minHeight: CGFloat = 1
-
-    var body: some View {
-        TabView(selection: selection) {
-            content()
-                .background {
-                    GeometryReader { reader in
-                        Color.clear
-                            .preference(key: TabViewHeightPreference.self, value: reader.frame(in: .local).height)
-                    }
-                }
-        }
-        .frame(minHeight: minHeight)
-        .frame(height: height)
-        .onPreferenceChange(TabViewHeightPreference.self) { height in
-            self.height = height
-        }
-    }
-}
-
-private struct TabViewHeightPreference: PreferenceKey {
-    static let defaultValue: CGFloat = 0
-
-    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
-        value = nextValue()
     }
 }
 

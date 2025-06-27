@@ -29,6 +29,7 @@ struct MessageBodyView: View {
     let editScheduledMessage: () -> Void
     let htmlLoaded: () -> Void
     @Binding var attachmentIDToOpen: ID?
+    @State var bodyContentHeight: CGFloat = .zero
 
     init(
         messageID: ID,
@@ -54,7 +55,8 @@ struct MessageBodyView: View {
                 messageID: messageID,
                 mailbox: mailbox,
                 wrapper: .productionInstance(),
-                toastStateStore: toastStateStore
+                toastStateStore: toastStateStore,
+                backOnlineActionExecutor: BackOnlineActionExecutor(mailUserSession: { AppContext.shared.userSession })
             )
         ) { state, store in
             VStack(spacing: .zero) {
@@ -81,10 +83,15 @@ struct MessageBodyView: View {
                 if !attachments.isEmpty {
                     MessageBodyAttachmentsView(attachments: attachments, attachmentIDToOpen: $attachmentIDToOpen)
                 }
-                MessageBodyHTMLView(messageBody: state.body, htmlLoaded: htmlLoaded)
+                MessageBodyHTMLView(bodyContentHeight: $bodyContentHeight, messageBody: state.body)
             }
             .alert(model: store.binding(\.alert))
             .onLoad { store.handle(action: .onLoad) }
+            .onChange(of: bodyContentHeight) { oldValue, newValue in
+                if oldValue.isZero && !newValue.isZero {
+                    htmlLoaded()
+                }
+            }
         }
     }
 }

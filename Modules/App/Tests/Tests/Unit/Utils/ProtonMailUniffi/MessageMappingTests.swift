@@ -108,7 +108,6 @@ private extension Message {
             isRepliedAll: true,
             numAttachments: 1,
             displayOrder: 0,
-            replyTos: [],
             sender: sender,
             size: 1_024,
             snoozeTime: 0,
@@ -119,7 +118,9 @@ private extension Message {
             customLabels: [],
             starred: true,
             avatar: .init(text: .notUsed, color: .notUsed),
-            isDraft: false
+            isDraft: false,
+            isScheduled: false,
+            canReply: true
         )
     }
 

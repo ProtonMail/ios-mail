@@ -72,7 +72,7 @@ final class ReportProblemStateStoreTests {
             (\.summary, "summary"),
             (\.expectedResults, "expected results"),
             (\.actualResults, "actual results"),
-            (\.stepsToReproduce, "steps to reproduce")
+            (\.stepsToReproduce, "steps to reproduce"),
         ]
 
         await fields.asyncForEach { field, text in
@@ -91,28 +91,29 @@ final class ReportProblemStateStoreTests {
 
         await sut.handle(action: .submit)
         #expect(sut.state.isLoading == false)
-        #expect(reportProblemServiceSpy.invokedSendWithReport == [
-            .init(
-                operatingSystem: "iOS - iPhone",
-                operatingSystemVersion: "18.4",
-                client: "iOS_Native",
-                clientVersion: "7.0.0 (127)",
-                clientType: .email,
-                title: "Proton Mail App bug report",
-                summary: "Hello summary!",
-                stepsToReproduce: "Hello steps to reproduce!",
-                expectedResult: "Hello expected results!",
-                actualResult: "Hello actual results!",
-                logs: false
-            )
-        ])
+        #expect(
+            reportProblemServiceSpy.invokedSendWithReport == [
+                .init(
+                    operatingSystem: "iOS - iPhone",
+                    operatingSystemVersion: "18.4",
+                    client: "iOS_Native",
+                    clientVersion: "7.0.0 (127)",
+                    clientType: .email,
+                    title: "Proton Mail App bug report",
+                    summary: "Hello summary!",
+                    stepsToReproduce: "Hello steps to reproduce!",
+                    expectedResult: "Hello expected results!",
+                    actualResult: "Hello actual results!",
+                    logs: false
+                )
+            ])
         #expect(toastStateStore.state.toasts == [.information(message: L10n.ReportProblem.successToast.string)])
         #expect(dismissInvokeCount == 1)
     }
 
     @Test
     func formSubmission_WhenValidationSuccess_ItSendsRequestWithFailureAndPresentsToast() async {
-        reportProblemServiceSpy.error = .other(.sessionExpired)
+        reportProblemServiceSpy.error = .other(.otherReason(.invalidParameter))
 
         sut.state = sut.state.copy(\.summary, to: "Hello world!")
         await sut.handle(action: .textEntered)
@@ -183,7 +184,7 @@ private extension Sequence {
     }
 }
 
-private struct DeviceInfoStub: DeviceInfo {
+private struct DeviceInfoStub: BasicDeviceInfo {
     let model = "iPhone"
     let systemName = "iOS"
     let systemVersion = "18.4"

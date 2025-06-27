@@ -15,9 +15,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import LocalAuthentication
 import SwiftUI
 import InboxCore
+import InboxCoreUI
 
 @MainActor
 class PINStateStore: StateStore {
@@ -25,7 +25,6 @@ class PINStateStore: StateStore {
     private let pinScreenValidator: PINValidator
     private let router: Router<PINRoute>
     private let appProtectionConfigurator: AppProtectionConfigurator
-    private let biometricAuthenticator: BiometricAuthenticator
     private let dismiss: () -> Void
 
     init(
@@ -33,14 +32,12 @@ class PINStateStore: StateStore {
         router: Router<PINRoute>,
         pinVerifier: PINVerifier,
         appProtectionConfigurator: AppProtectionConfigurator,
-        laContext: @Sendable @escaping () -> LAContext = { LAContext() },
         dismiss: @escaping () -> Void
     ) {
         self.state = state
         self.pinScreenValidator = .init(pinScreenType: state.type, pinVerifier: pinVerifier)
         self.router = router
         self.appProtectionConfigurator = appProtectionConfigurator
-        self.biometricAuthenticator = .init(method: .builtIn(laContext))
         self.dismiss = dismiss
     }
 
@@ -55,16 +52,16 @@ class PINStateStore: StateStore {
             } else {
                 router.goBack()
             }
-        case .trailingButtonTapped:
+        case .bottomButtonTapped:
             let pinValidationResult = await pinScreenValidator.validate(pin: state.pin)
             state = state.copy(\.pinValidation, to: pinValidationResult)
             guard pinValidationResult.isSuccess else {
                 return
             }
             switch state.type {
-            case .set:
-                router.go(to: .pin(type: .confirm(pin: state.pin)))
-            case .confirm(let pin):
+            case .set(let reason):
+                router.go(to: .pin(type: .confirm(pin: state.pin, reason: reason)))
+            case .confirm(let pin, _):
                 await confirm(pin: pin)
             case .verify(let reason):
                 await verifyPIN(reason: reason)
@@ -84,7 +81,7 @@ class PINStateStore: StateStore {
     private func verifyPIN(reason: PINVerificationReason) async {
         switch reason {
         case .changePIN:
-            router.go(to: .pin(type: .set))
+            router.go(to: .pin(type: .set(reason: .changePIN)))
         case .disablePIN:
             do {
                 try await appProtectionConfigurator.deletePinCode(pin: state.pin.digits).get()

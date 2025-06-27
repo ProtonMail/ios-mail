@@ -17,29 +17,26 @@
 
 import InboxComposer
 import InboxContacts
-import InboxCoreUI
+import InboxCore
 import PaymentsUI
 import proton_app_uniffi
 import SwiftUI
 
 @MainActor
 struct HomeScreenModalFactory {
-    private let makeContactsScreen: () -> ContactsScreen
-    private let makeComposerScreen: (ComposerParams) -> ComposerScreen
+    private let makeContactsScreen: (ContactsDraftPresenter) -> ContactsScreen
     private let makeSettingsScreen: () -> SettingsScreen
     private let makeReportProblemScreen: () -> ReportProblemScreen
     private let makeSubscriptionsScreen: () -> AvailablePlansView
 
-    init(mailUserSession: MailUserSession, toastStateStore: ToastStateStore) {
-        self.makeContactsScreen = {
+    init(mailUserSession: MailUserSession) {
+        self.makeContactsScreen = { draftPresenter in
             ContactsScreen(
                 mailUserSession: mailUserSession,
                 contactsProvider: .productionInstance(),
                 contactsWatcher: .productionInstance(),
+                draftPresenter: draftPresenter
             )
-        }
-        self.makeComposerScreen = { composerParams in
-            ComposerScreenFactory.makeComposer(userSession: mailUserSession, composerParams: composerParams)
         }
         self.makeSettingsScreen = { SettingsScreen(mailUserSession: mailUserSession) }
         self.makeReportProblemScreen = { ReportProblemScreen(reportProblemService: mailUserSession) }
@@ -47,14 +44,12 @@ struct HomeScreenModalFactory {
     }
 
     @MainActor @ViewBuilder
-    func makeModal(for state: HomeScreen.ModalState) -> some View {
+    func makeModal(for state: HomeScreen.ModalState, draftPresenter: ContactsDraftPresenter) -> some View {
         switch state {
         case .contacts:
-            makeContactsScreen()
+            makeContactsScreen(draftPresenter)
         case .labelOrFolderCreation:
             CreateFolderOrLabelScreen()
-        case .draft(let draftToPresent):
-            makeComposerScreen(draftToPresent)
         case .settings:
             makeSettingsScreen()
         case .reportProblem:

@@ -22,11 +22,9 @@ import SwiftUI
 
 struct MessageBodyHTMLView: View {
     @Environment(\.mainWindowSize) var mainWindowSize
-    @Environment(\.openURL) var urlOpener
-    @State var bodyContentHeight: CGFloat = 0.0
+    @Binding var bodyContentHeight: CGFloat
 
     let messageBody: MessageBodyStateStore.State.Body
-    let htmlLoaded: () -> Void
 
     /// This value is key to the conversation scrolling to the opened message. We don't
     /// know the height of the body before it has finished rendering in the webview, having a
@@ -43,7 +41,7 @@ struct MessageBodyHTMLView: View {
         case .loaded(let body):
             bodyReaderView(with: body.html)
         case .error(let error):
-            Text(String(describing: error))
+            ErrorView(error: error)
         case .noConnection:
             NoConnectionView()
         }
@@ -54,12 +52,15 @@ struct MessageBodyHTMLView: View {
             ProtonSpinner()
                 .frame(height: bodyContentHeight > 0 ? bodyContentHeight : loadingHtmlInitialHeight)
                 .removeViewIf(bodyContentHeight > 0)
-            MessageBodyReaderView(
-                bodyContentHeight: $bodyContentHeight,
-                body: body,
-                urlOpener: urlOpener,
-                htmlLoaded: htmlLoaded
-            )
+            GeometryReader { geometry in
+                if geometry.size.width > 0 {
+                    MessageBodyReaderView(
+                        bodyContentHeight: $bodyContentHeight,
+                        body: body,
+                        viewWidth: geometry.size.width
+                    )
+                }
+            }
             .frame(height: bodyContentHeight)
             .padding([.vertical, .horizontal], DS.Spacing.large)
             .opacity(bodyContentHeight > 0 ? 1 : 0)

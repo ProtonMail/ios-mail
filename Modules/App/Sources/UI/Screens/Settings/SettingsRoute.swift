@@ -16,7 +16,6 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import InboxCore
-import InboxDesignSystem
 import proton_app_uniffi
 import SwiftUI
 import Combine
@@ -32,7 +31,6 @@ enum SettingsRoute: Routable {
         switch self {
         case .webView(let webPage):
             ProtonAuthenticatedWebView(webViewPage: webPage)
-                .background(DS.Color.BackgroundInverted.norm)
                 .edgesIgnoringSafeArea(.bottom)
                 .navigationBarTitleDisplayMode(.inline)
                 .navigationTitle(webPage.title.string)

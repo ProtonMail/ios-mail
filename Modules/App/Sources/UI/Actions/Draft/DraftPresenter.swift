@@ -21,7 +21,7 @@ import InboxCore
 import proton_app_uniffi
 
 @MainActor
-struct DraftPresenter {
+struct DraftPresenter: ContactsDraftPresenter {
     private let draftToPresentSubject = PassthroughSubject<DraftToPresent, Never>()
     private let userSession: MailUserSession
     private let draftProvider: DraftProvider
@@ -46,12 +46,36 @@ struct DraftPresenter {
 
     func openNewDraft(onError: (DraftOpenError) -> Void) async {
         AppLogger.log(message: "open new draft", category: .composer)
-        await publishDraftToPresent(createMode: .empty, onError: onError)
+        await openNewDraft(createMode: .empty, onError: onError)
     }
 
     func openDraft(withId messageId: ID, lastScheduledTime: UInt64? = nil) {
         AppLogger.log(message: "open existing draft", category: .composer)
         draftToPresentSubject.send(.openDraftId(messageId: messageId, lastScheduledTime: lastScheduledTime))
+    }
+
+    func openDraft(with recipient: SingleRecipientEntry) async throws {
+        AppLogger.log(message: "open new draft with contact details", category: .composer)
+
+        try await openNewEmptyDraft { toRecipients in
+            _ = toRecipients.addSingleRecipient(recipient: recipient)
+        }
+    }
+
+    func openDraft(with group: ContactGroupItem) async throws {
+        AppLogger.log(message: "open new draft with contact group details", category: .composer)
+
+        try await openNewEmptyDraft { toRecipients in
+            let recipients = group.contactEmails.map { contact in
+                SingleRecipientEntry(name: contact.name, email: contact.email)
+            }
+
+            _ = toRecipients.addGroupRecipient(
+                groupName: group.name,
+                recipients: recipients,
+                totalContactsInGroup: UInt64(recipients.count)
+            )
+        }
     }
 
     func handleReplyAction(for messageId: ID, action: ReplyAction, onError: (DraftOpenError) -> Void) async {
@@ -83,28 +107,52 @@ extension DraftPresenter {
 
     private func openReplyDraft(for messageId: ID, onError: (DraftOpenError) -> Void) async {
         AppLogger.log(message: "open reply draft", category: .composer)
-        await publishDraftToPresent(createMode: .reply(messageId), onError: onError)
+        await openNewDraft(createMode: .reply(messageId), onError: onError)
     }
 
     private func openReplyAllDraft(for messageId: ID, onError: (DraftOpenError) -> Void) async {
         AppLogger.log(message: "open reply all draft", category: .composer)
-        await publishDraftToPresent(createMode: .replyAll(messageId), onError: onError)
+        await openNewDraft(createMode: .replyAll(messageId), onError: onError)
     }
 
     private func openForwardDraft(for messageId: ID, onError: (DraftOpenError) -> Void) async {
         AppLogger.log(message: "open forward draft", category: .composer)
-        await publishDraftToPresent(createMode: .forward(messageId), onError: onError)
+        await openNewDraft(createMode: .forward(messageId), onError: onError)
     }
 
-    private func publishDraftToPresent(createMode: DraftCreateMode, onError: (DraftOpenError) -> Void) async {
-        switch await draftProvider.makeDraft(userSession, createMode) {
-        case .ok(let draft):
-            draftToPresentSubject.send(.new(draft: draft))
-        case .error(let error):
-            AppLogger.log(error: error, category: .composer)
+    private func openNewDraft(
+        createMode: DraftCreateMode,
+        onError: (DraftOpenError) -> Void
+    ) async {
+        do {
+            try await openNewDraft(createMode: createMode, updateDraft: .none)
+        } catch {
             onError(error)
         }
     }
+
+    private func openNewDraft(
+        createMode: DraftCreateMode,
+        updateDraft: ((Draft) -> Void)?
+    ) async throws(DraftOpenError) {
+        switch await draftProvider.makeDraft(userSession, createMode) {
+        case .ok(let draft):
+            updateDraft?(draft)
+            draftToPresentSubject.send(.new(draft: draft))
+        case .error(let error):
+            AppLogger.log(error: error, category: .composer)
+            throw error
+        }
+    }
+
+    private func openNewEmptyDraft(updateToRecipients: @escaping (ComposerRecipientList) -> Void) async throws {
+        let updateDraft: (Draft) -> Void = { draft in
+            updateToRecipients(draft.toRecipients())
+        }
+
+        try await openNewDraft(createMode: .empty, updateDraft: updateDraft)
+    }
+
 }
 
 extension DraftPresenter {
@@ -120,4 +168,5 @@ extension DraftPresenter {
             undoScheduleSendProvider: undoScheduleSendProvider
         )
     }
+
 }

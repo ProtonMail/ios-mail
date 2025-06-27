@@ -16,8 +16,10 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import InboxContacts
+import InboxCoreUI
 import InboxSnapshotTesting
 import proton_app_uniffi
+import SwiftUICore
 import XCTest
 
 final class ContactGroupDetailsScreenSnapshotTests: XCTestCase {
@@ -28,8 +30,9 @@ final class ContactGroupDetailsScreenSnapshotTests: XCTestCase {
 
     // MARK: - Private
 
-    private func makeSUT() -> ContactGroupDetailsScreen {
-        .init(id: .init(value: 2_928))
+    private func makeSUT() -> some View {
+        ContactGroupDetailsScreen(group: .advisorsGroup, draftPresenter: ContactsDraftPresenterDummy())
+            .environmentObject(ToastStateStore(initialState: .initial))
     }
 
 }

@@ -22,7 +22,7 @@ import SwiftUI
 import Testing
 
 @MainActor
-struct AutLockScreenSnapshotTests {
+struct AutoLockScreenSnapshotTests {
 
     @Test
     func appLockScreenLayoutsCorrectly() {

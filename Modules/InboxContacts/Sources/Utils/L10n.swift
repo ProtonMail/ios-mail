@@ -74,11 +74,17 @@ enum L10n {
 
         enum Error {
             static let unknownContentId = LocalizedStringResource(
-                "No attachment with this content ID",
+                "Attachment not found. Refresh the page or upload it again.",
                 comment: "Error message."
             )
-            static let unknownLabel = LocalizedStringResource("This label does not exist", comment: "Error message.")
-            static let unknownMessage = LocalizedStringResource("This message does not exist", comment: "Error message.")
+            static let unknownLabel = LocalizedStringResource(
+                "Label does not exist. You can create it as a new label.",
+                comment: "Error message."
+            )
+            static let unknownMessage = LocalizedStringResource(
+                "Message was not found",
+                comment: "Error message."
+            )
         }
     }
     enum ContactDetails {
@@ -97,5 +103,176 @@ enum L10n {
             bundle: .atURL(Bundle.module.bundleURL),
             comment: "Contact details’ “Share” button title for sharing the given contact’s information."
         )
+
+        enum Label {
+            static let address = LocalizedStringResource(
+                "Address",
+                bundle: .atURL(Bundle.module.bundleURL),
+                comment: "Address label in contact details."
+            )
+            static let anniversary = LocalizedStringResource(
+                "Anniversary",
+                bundle: .atURL(Bundle.module.bundleURL),
+                comment: "Anniversary label in contact details."
+            )
+            static let birthday = LocalizedStringResource(
+                "Birthday",
+                bundle: .atURL(Bundle.module.bundleURL),
+                comment: "Birthday label in contact details."
+            )
+            static let email = LocalizedStringResource(
+                "Email",
+                bundle: .atURL(Bundle.module.bundleURL),
+                comment: "Email label in contact details."
+            )
+            static let gender = LocalizedStringResource(
+                "Gender",
+                bundle: .atURL(Bundle.module.bundleURL),
+                comment: "Gender label in contact details."
+            )
+            static let language = LocalizedStringResource(
+                "Language",
+                bundle: .atURL(Bundle.module.bundleURL),
+                comment: "Language label in contact details."
+            )
+            static let member = LocalizedStringResource(
+                "Member",
+                bundle: .atURL(Bundle.module.bundleURL),
+                comment: "Member label in contact details."
+            )
+            static let note = LocalizedStringResource(
+                "Note",
+                bundle: .atURL(Bundle.module.bundleURL),
+                comment: "Note label in contact details."
+            )
+            static let organization = LocalizedStringResource(
+                "Organization",
+                bundle: .atURL(Bundle.module.bundleURL),
+                comment: "Organization label in contact details."
+            )
+            static let phone = LocalizedStringResource(
+                "Phone",
+                bundle: .atURL(Bundle.module.bundleURL),
+                comment: "Phone label in contact details."
+            )
+            static let role = LocalizedStringResource(
+                "Role",
+                bundle: .atURL(Bundle.module.bundleURL),
+                comment: "Role label in contact details."
+            )
+            static let timeZone = LocalizedStringResource(
+                "Time zone",
+                bundle: .atURL(Bundle.module.bundleURL),
+                comment: "Time zone label in contact details."
+            )
+            static let title = LocalizedStringResource(
+                "Title",
+                bundle: .atURL(Bundle.module.bundleURL),
+                comment: "Title label in contact details."
+            )
+            static let url = LocalizedStringResource(
+                "URL",
+                bundle: .atURL(Bundle.module.bundleURL),
+                comment: "URL label in contact details."
+            )
+        }
+
+        enum Gender {
+            static let male = LocalizedStringResource(
+                "Male",
+                bundle: .atURL(Bundle.module.bundleURL),
+                comment: "Label representing the male gender in contact details."
+            )
+            static let female = LocalizedStringResource(
+                "Female",
+                bundle: .atURL(Bundle.module.bundleURL),
+                comment: "Label representing the female gender in contact details."
+            )
+            static let other = LocalizedStringResource(
+                "Other",
+                bundle: .atURL(Bundle.module.bundleURL),
+                comment: "Label representing a non-binary or other gender in contact details."
+            )
+            static let notApplicable = LocalizedStringResource(
+                "Not applicable",
+                bundle: .atURL(Bundle.module.bundleURL),
+                comment: "Label used when gender is not applicable in contact details."
+            )
+            static let unknown = LocalizedStringResource(
+                "Unknown",
+                bundle: .atURL(Bundle.module.bundleURL),
+                comment: "Label used when gender is unknown in contact details."
+            )
+            static let none = LocalizedStringResource(
+                "None",
+                bundle: .atURL(Bundle.module.bundleURL),
+                comment: "Label used when no gender is specified in contact details."
+            )
+        }
+
+        enum VcardType {
+            static let home = LocalizedStringResource(
+                "Home",
+                bundle: .atURL(Bundle.module.bundleURL),
+                comment: "Label representing a home contact detail type (e.g., phone, address)."
+            )
+            static let work = LocalizedStringResource(
+                "Work",
+                bundle: .atURL(Bundle.module.bundleURL),
+                comment: "Label representing a work contact detail type (e.g., phone, address)."
+            )
+            static let text = LocalizedStringResource(
+                "Text",
+                bundle: .atURL(Bundle.module.bundleURL),
+                comment: "Label indicating that the contact method supports text messaging."
+            )
+            static let voice = LocalizedStringResource(
+                "Voice",
+                bundle: .atURL(Bundle.module.bundleURL),
+                comment: "Label indicating that the contact method supports voice calls."
+            )
+            static let fax = LocalizedStringResource(
+                "Fax",
+                bundle: .atURL(Bundle.module.bundleURL),
+                comment: "Label indicating that the contact method is a fax number."
+            )
+            static let cell = LocalizedStringResource(
+                "Cell",
+                bundle: .atURL(Bundle.module.bundleURL),
+                comment: "Label indicating a mobile or cellular contact number."
+            )
+            static let video = LocalizedStringResource(
+                "Video",
+                bundle: .atURL(Bundle.module.bundleURL),
+                comment: "Label indicating that the contact method supports video calls."
+            )
+            static let pager = LocalizedStringResource(
+                "Pager",
+                bundle: .atURL(Bundle.module.bundleURL),
+                comment: "Label indicating a pager contact method."
+            )
+            static let textPhone = LocalizedStringResource(
+                "Text phone",
+                bundle: .atURL(Bundle.module.bundleURL),
+                comment: "Label indicating a specialized phone for text communication (e.g., for the hearing impaired)."
+            )
+        }
+    }
+
+    enum ContactGroupDetails {
+        enum NewMessageButton {
+            static let title = LocalizedStringResource(
+                "Send group message",
+                bundle: .atURL(Bundle.module.bundleURL),
+                comment: "Title of the button used to initiate sending a message to a contact group."
+            )
+            static func subtitle(contactsCount: Int) -> LocalizedStringResource {
+                LocalizedStringResource(
+                    "\(contactsCount) contacts",
+                    bundle: .atURL(Bundle.module.bundleURL),
+                    comment: "Subtitle showing the number of contacts in the group. Used under the 'Send group message' button."
+                )
+            }
+        }
     }
 }

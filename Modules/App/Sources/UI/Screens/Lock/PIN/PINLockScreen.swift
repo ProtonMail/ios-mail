@@ -123,7 +123,7 @@ struct PINLockScreen: View {
 
 #Preview {
     PINLockScreen(
-        state: .init(hideLogoutButton: false, pin: .empty),
+        state: .init(pin: .empty),
         error: .readonly(get: { nil }),
         output: { _ in }
     )

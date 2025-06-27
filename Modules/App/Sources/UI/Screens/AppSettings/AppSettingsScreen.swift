@@ -66,7 +66,7 @@ struct AppSettingsScreen: View {
                                 .roundedRectangleStyle()
                                 appearanceButton
                                 FormBigButton(
-                                    title: L10n.Settings.App.protection,
+                                    title: L10n.Settings.App.appLock,
                                     symbol: .chevronRight,
                                     value: store.state.storedAppSettings.protection.humanReadable.string,
                                     action: { router.go(to: .appProtection) }

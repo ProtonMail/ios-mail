@@ -49,21 +49,21 @@ struct PINScreen: View {
                 dismiss: dismiss
             )
         ) { state, store in
-            EnterPINView(
-                title: state.type.configuration.pinInputTitle,
-                text: pin(state: state, store: store),
-                isInputFooterVisible: state.type.isCodeHintVisible,
-                validation: validation(state: state)
-            )
+            ZStack {
+                EnterPINView(
+                    title: state.type.configuration.pinInputTitle,
+                    text: pin(state: state, store: store),
+                    isInputFooterVisible: state.type.isCodeHintVisible,
+                    validation: validation(state: state)
+                ) {
+                    Button(
+                        action: { store.handle(action: .bottomButtonTapped) },
+                        label: { Text(state.type.configuration.bottomButtonTitle) }
+                    )
+                }
+            }
             .toolbar {
                 leadingButton(store: store)
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button(action: { store.handle(action: .trailingButtonTapped) }) {
-                        Text(state.type.configuration.trailingButtonTitle)
-                            .fontWeight(.bold)
-                            .foregroundStyle(DS.Color.Text.accent)
-                    }
-                }
             }
             .navigationTitle(state.type.configuration.screenTitle.string)
             .navigationBarBackButtonHidden()

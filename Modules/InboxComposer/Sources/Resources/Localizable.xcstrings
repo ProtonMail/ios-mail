@@ -4,10 +4,40 @@
     "%lld members" : {
       "comment" : "Contact group row subtitle in contact picker.",
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Удзельнікаў: %lld"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld membres"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld členů"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld medlemmer"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%lld Mitglieder"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld μέλη"
           }
         },
         "en" : {
@@ -16,16 +46,148 @@
             "value" : "%lld members"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld miembros"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld miembros"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld jäsentä"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%lld membres"
           }
         },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld tagok"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld anggota"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld membri"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld人のメンバー"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld წევრი"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld명 구성원"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld medlemmer"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%lld leden"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld członków"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld membros"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld membros"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld membri"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld участников"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld členov"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld članov"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld medlemmar"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld üye"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld учасників"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld 位成员"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld 位成員"
           }
         }
       }
@@ -36,8 +198,23 @@
     "Add attachments" : {
       "comment" : "Attachments action sheet title."
     },
+    "Address cannot be used to send messages" : {
+      "comment" : "Error in the context of changing the sender with a disabled sender address."
+    },
+    "Address is disabled" : {
+      "comment" : "Error in the context of changing the sender with a disabled sender address."
+    },
     "Address not found" : {
+      "comment" : "Error in the context of changing the sender with a wrong sender address."
+    },
+    "Address not found. Add again or reopen the draft." : {
       "comment" : "Error in the context of opening a draft in the composer"
+    },
+    "Address not recognized. Please check the address." : {
+      "comment" : "Error in the context of saving a draft before being sent."
+    },
+    "Attachment is missing. Please upload again." : {
+      "comment" : "Error in the context of managing attachments in a draft."
     },
     "Attachment limit" : {
       "comment" : "Attachment failed because the total size was above the limit"
@@ -45,11 +222,17 @@
     "Attachments too big" : {
       "comment" : "Attachment failed because the total attachment size is over the limit"
     },
+    "Attachments too large. Keep attachment size under 25 MB." : {
+      "comment" : "Error in the context of saving a draft before being sent."
+    },
     "Camera" : {
       "comment" : "Alert title shown if permission to camera is denied when trying to use it for attachments."
     },
     "Custom" : {
       "comment" : "Schedule send custom time option tile"
+    },
+    "Disabled email address. Check that the address is valid and active." : {
+      "comment" : "Error in the context of saving a draft before being sent.\nError in the context of sending a draft before being sent."
     },
     "Discard" : {
       "comment" : "Composer toast action to discard the draft after dismising the screen"
@@ -60,17 +243,20 @@
     "Discarded" : {
       "comment" : "Composer toast message confirming draft discarded"
     },
-    "Draft body is missing" : {
-      "comment" : "Error in the context of opening a draft in the composer"
+    "Draft not found. You may have discarded it." : {
+      "comment" : "Error in the context of sending a draft before being sent."
     },
-    "Draft not found" : {
-      "comment" : "Error in the context of opening a draft in the composer"
+    "Draft not found. You may have sent it already." : {
+      "comment" : "Error in the context of sending a draft before being sent."
     },
     "Draft saved" : {
       "comment" : "Composer toast message when dismissing the screen."
     },
-    "Error trying to reply or forward this message" : {
-      "comment" : "Error in the context of opening a draft in the composer"
+    "Draft wasn't discarded. Try discarding it agian." : {
+      "comment" : "Error shown when the draft fails to delete."
+    },
+    "From" : {
+      "comment" : "Title for the sender picker action sheet."
     },
     "From your photo library" : {
       "comment" : "Attachments action sheet photo library option."
@@ -78,10 +264,40 @@
     "From:" : {
       "comment" : "Composer from field.",
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ад:"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De:"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Od:"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fra:"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Von:"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Από:"
           }
         },
         "en" : {
@@ -90,16 +306,148 @@
             "value" : "From:"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De:"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De:"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lähettäjä:"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "De :"
           }
         },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Feladó:"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dari:"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Da:"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "差出人："
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "გამომგზავნელი:"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "보낸사람:"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fra:"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Van:"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Od:"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De:"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De:"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De la:"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "От:"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Od:"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Od:"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Från:"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kimden:"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Від:"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "发件人："
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "寄件者："
           }
         }
       }
@@ -110,20 +458,35 @@
     "Import from..." : {
       "comment" : "Attachments action sheet import option."
     },
+    "Invalid email address. Check address and try again." : {
+      "comment" : "Error in the context of saving a draft before being sent."
+    },
+    "Invalid email address. Please check the address." : {
+      "comment" : "Error in the context of saving a draft before being sent."
+    },
     "Invalid recipient" : {
       "comment" : "Composer alert telling the user the entered address has not a valid format"
+    },
+    "Issue with this email address. Check the address or try again later." : {
+      "comment" : "Error in the context of saving a draft before being sent.\nError in the context of sending a draft before being sent."
+    },
+    "Message body wasn't retrieved. Close and reopen the draft." : {
+      "comment" : "Error in the context of opening a draft in the composer"
     },
     "Message does not exist" : {
       "comment" : "Error in the context of saving a draft before being sent."
     },
-    "Message does not exist on the server" : {
-      "comment" : "Error in the context of saving a draft before being sent."
+    "Message not found. You may have sent or discarded it." : {
+      "comment" : "Error in the context of opening a draft in the composer"
     },
     "Message sent" : {
       "comment" : "Composer toast message after sent."
     },
-    "Message to be sent has no recipients" : {
-      "comment" : "Error in the context of sending a draft before being sent."
+    "Message was already sent" : {
+      "comment" : "Error in the context of saving a draft before being sent.\nError in the context of sending a draft before being sent."
+    },
+    "Message was not found on the server" : {
+      "comment" : "Error in the context of saving a draft before being sent."
     },
     "Monday" : {
       "comment" : "Schedule send predefined time option"
@@ -131,17 +494,23 @@
     "Pick time and date" : {
       "comment" : "Schedule send custom time option subtitle"
     },
+    "Please add at least one recipient" : {
+      "comment" : "Error in the context of sending a draft before being sent."
+    },
     "Please enter a valid email address" : {
       "comment" : "Composer alert telling the user the entered address has not a valid format"
     },
     "Previously set" : {
       "comment" : "Title of a schedule send option that shows the time when the message was last scheduled"
     },
-    "Recipient address is invalid: %@" : {
+    "Problem encrypting attachment. Please upload it again." : {
       "comment" : "Error in the context of saving a draft before being sent."
     },
-    "Recipient primary key is missing: %@" : {
-      "comment" : "Error in the context of saving a draft before being sent.\nError in the context of sending a draft before being sent."
+    "Problem performing that action. Please try again." : {
+      "comment" : "Error in the context of opening a draft in the composer"
+    },
+    "Problem sending message. Please try again." : {
+      "comment" : "Error in the context of sending a draft before being sent."
     },
     "Remove" : {
       "comment" : "Confirmation for the remove attachment action in a Draft."
@@ -149,10 +518,40 @@
     "Removed duplicate recipient: %@" : {
       "comment" : "Error shown when a duplicated recipient is added to the draft.",
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выдалены дублікат атрымальніка: %@"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "S'ha eliminat el destinatari duplicat: %@"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Odebrán duplicitní příjemce: %@"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fjernet dobbelt modtager: %@"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Doppelten Empfänger entfernt: %@"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Αφαιρέθηκε ο διπλότυπος παραλήπτης: %@"
           }
         },
         "en" : {
@@ -161,10 +560,70 @@
             "value" : "Removed duplicate recipient: %@"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Destinatario duplicado eliminado: %@"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Destinatario duplicado eliminado: %@"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vastaanottajan kaksoiskappale poistettiin: %@"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Le destinataire dupliqué a été retiré : %@"
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kettőzött címzett eltávolítva: %@"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Penerima duplikat dihapus: %@"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Destinatario duplicato rimosso: %@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "重複していた宛先を削除しました: %@"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "წაშლილია %@ გამეორებადი მიმღები"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "중복된 수신자를 삭제했습니다: %@"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fjernet duplisert mottaker: %@"
           }
         },
         "nl" : {
@@ -172,14 +631,89 @@
             "state" : "translated",
             "value" : "Dubbele ontvanger verwijderd: %@"
           }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zduplikowany odbiorca %@ został usunięty"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Destinatário duplicado eliminado: %@"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Destinatário duplicado removido: %@"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Destinatar duplicat eliminat: %@"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Удалено дубликатов получателя: %@"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Odstránený duplicitný príjemca: %@"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Odstranjen podvojen prejemnik: %@"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tog bort duplicerad mottagare: %@"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yinelenen alıcı kaldırıldı: %@"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Видалено дублікат отримувача: %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已删除重复收件人：%@"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已移除重複的收件者：%@"
+          }
         }
       }
     },
-    "Retry failed, please remove the attachment" : {
+    "Retry not possible. Attachment is uploading or already uploaded." : {
       "comment" : "Error in the context of retrying to upload a draft."
     },
     "Schedule send" : {
       "comment" : "Title of the schedule send view"
+    },
+    "Scheduled send time is in the past. Go to Drafts to send or reschedule it." : {
+      "comment" : "Error in the context of setting a schedule time for a message."
     },
     "Scheduling message..." : {
       "comment" : "Composer toast message when schedule a message is tapped."
@@ -187,10 +721,40 @@
     "Send" : {
       "comment" : "Message send button.",
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Адправіць"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enviar"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Odeslat"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Send"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Senden"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Αποστολή"
           }
         },
         "en" : {
@@ -199,16 +763,148 @@
             "value" : "Send"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enviar"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enviar"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lähetä"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Envoyer"
           }
         },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Küldés"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kirim"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Invia"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "送信"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "გაგზავნა"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "보내기"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Send"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Verstuur"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wyślij"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enviar"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enviar"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trimitere"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Отправить"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Odoslať"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pošlji"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skicka"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gönder"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Надіслати"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "发送"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "送出"
           }
         }
       }
@@ -225,10 +921,40 @@
     "Subject:" : {
       "comment" : "Composer subject.",
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Тэма:"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Assumpte:"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Předmět:"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Emne:"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Betreff:"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Θέμα:"
           }
         },
         "en" : {
@@ -237,16 +963,148 @@
             "value" : "Subject:"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Asunto:"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Asunto:"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aihe:"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Objet :"
           }
         },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tárgy:"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Subjek:"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oggetto:"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "件名:"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "საგანი:"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "제목:"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Emne:"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Onderwerp:"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Temat:"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Assunto:"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Assunto:"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Subiect:"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Тема:"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Predmet:"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zadeva:"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ämne:"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Konu:"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Тема:"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "主题："
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "主旨："
           }
         }
       }
@@ -257,41 +1115,14 @@
     "The address does not exist" : {
       "comment" : "Error shown when a non existing address is added as recipient."
     },
-    "The address is disabled: %@" : {
-      "comment" : "Error in the context of saving a draft before being sent.\nError in the context of sending a draft before being sent."
-    },
     "The attachment could not be added, please try again" : {
       "comment" : "Attachment failed because an unexpected error"
     },
-    "The attachment is missing" : {
-      "comment" : "Error in the context of managing attachments in a draft."
-    },
-    "The attachments is too large" : {
+    "The draft was not found" : {
       "comment" : "Error in the context of saving a draft before being sent."
     },
-    "The draft to be sent was not found" : {
-      "comment" : "Error in the context of saving a draft before being sent.\nError in the context of sending a draft before being sent."
-    },
-    "The limit of attachments has been reached" : {
+    "The message is not a draft" : {
       "comment" : "Error in the context of saving a draft before being sent."
-    },
-    "The message has been already sent" : {
-      "comment" : "Error in the context of saving a draft before being sent."
-    },
-    "The message to be sent is not a draft" : {
-      "comment" : "Error in the context of saving a draft before being sent.\nError in the context of sending a draft before being sent."
-    },
-    "The message was already sent" : {
-      "comment" : "Error in the context of saving a draft before being sent.\nError in the context of sending a draft before being sent."
-    },
-    "The Proton address in the recipient does not exist: %@" : {
-      "comment" : "Error in the context of saving a draft before being sent."
-    },
-    "The recipient is unknown: %@" : {
-      "comment" : "Error in the context of saving a draft before being sent.\nError in the context of sending a draft before being sent."
-    },
-    "The scheduled send date has expired" : {
-      "comment" : "Error in the context of setting a schedule time for a message."
     },
     "The size limit for attachments is 25 MB." : {
       "comment" : "Attachment failed because the total size was above the limit"
@@ -302,19 +1133,43 @@
     "There is a 25 MB limit on attachments per email. Send them in separate emails or share them via Proton Drive." : {
       "comment" : "Attachment failed because the total attachment size is over the limit"
     },
-    "There was a problem discarding the draft" : {
-      "comment" : "Error shown when the draft fails to delete."
-    },
-    "There was a problem encrypting attachment" : {
-      "comment" : "Error in the context of saving a draft before being sent."
-    },
     "There was a problem saving the draft" : {
       "comment" : "Error shown when the draft fails to save.",
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Узнікла праблема пры захаванні чарнавіка"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "S'ha produït un problema en desar l'esborrany"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Došlo k problému s ukládáním konceptu"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der opstod et problem med at gemme kladden"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Es gibt ein Problem bei der Datenspeicherung."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Παρουσιάστηκε πρόβλημα κατά την αποθήκευση του προχείρου"
           }
         },
         "en" : {
@@ -323,10 +1178,70 @@
             "value" : "There was a problem saving the draft"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Error al guardar el borrador"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Error al guardar el borrador"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ongelma luonnosta tallennettaessa"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Un problème est survenu lors de l'enregistrement du brouillon."
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Probléma adódott a piszkozat mentésével"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Terdapat masalah dalam menyimpan draf"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Si è verificato un problema durante il salvataggio della bozza"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "下書き保存中に問題が発生しました"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "მონახაზის შენახვისას აღმოჩენილია პრობლემა"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "임시 보관함에 저장 중 오류가 발생했습니다."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Det oppstod et problem med å lagre utkastet"
           }
         },
         "nl" : {
@@ -334,11 +1249,74 @@
             "state" : "translated",
             "value" : "Er is een probleem opgetreden bij het verwijderen van het concept"
           }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wystąpił problem podczas zapisywania szkicu"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ocorreu um problema ao guardar o rascunho."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ocorreu um problema ao salvar o rascunho"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A apărut o problemă la salvarea ciornei."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не удалось сохранить черновик"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vyskytol sa problém s ukladaním konceptu"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pri shranjevanju osnutka je prišlo do težave"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Det var ett problem att spara utkastet"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Taslak kaydedilirken bir sorun çıktı"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Виникла проблема зі збереженням чернетки"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "保存草稿时出错"
+          }
         }
       }
-    },
-    "There was a problem sending the message: %@" : {
-      "comment" : "Error in the context of sending a draft before being sent."
     },
     "This message will be sent on %@" : {
       "comment" : "Composer toast message when message has been scheduled."
@@ -346,10 +1324,40 @@
     "To:" : {
       "comment" : "Composer to recipients.",
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Каму:"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Per a:"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Komu:"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Til:"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "An:"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Προς:"
           }
         },
         "en" : {
@@ -358,16 +1366,148 @@
             "value" : "To:"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Para:"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Para:"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vastaanottaja:"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "À :"
           }
         },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Címzett:"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kepada:"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A:"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "宛先:"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ვის:"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "받는 이:"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Til:"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Aan:"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Do:"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Para:"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Para:"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Către:"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Кому:"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pre:"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Za:"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Till:"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kime:"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Кому:"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "收件人："
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "收件者："
           }
         }
       }
@@ -378,6 +1518,9 @@
     "Too many attachments" : {
       "comment" : "Attachment failed because the total of number of attachments is over the limit"
     },
+    "Too many attachments. Send them in multiple emails." : {
+      "comment" : "Error in the context of saving a draft before being sent."
+    },
     "Undo" : {
       "comment" : "Undo action after message has been sent."
     },
@@ -386,6 +1529,9 @@
     },
     "You have reached the limit of attachments, 1 or more attachments weren't able to be added. Send them in separate emails or share them via Proton Drive." : {
       "comment" : "Attachment failed because the total of number of attachments is over the limit"
+    },
+    "You reached the limit of scheduled messages" : {
+      "comment" : "Error in the context of scheduling a message."
     },
     "You're currently offline. This draft may not be up-to-date." : {
       "comment" : "Draft might not be up-to-date when loaded"

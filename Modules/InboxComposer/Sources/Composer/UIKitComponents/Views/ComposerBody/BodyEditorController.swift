@@ -30,6 +30,7 @@ final class BodyEditorController: UIViewController {
         case onInlineImageRemoved(cid: String)
         case onInlineImageRemovalRequested(cid: String)
         case onInlineImageDispositionChangeRequested(cid: String)
+        case onReloadAfterMemoryPressure
     }
 
     private let htmlInterface: BodyWebViewInterface
@@ -38,11 +39,19 @@ final class BodyEditorController: UIViewController {
     private lazy var initialFocusState = BodyInitialFocusState { [weak self] in
         await self?.htmlInterface.setFocus()
     }
+    private let webViewMemoryPressureHandler: WebViewMemoryPressureProtocol
     var onEvent: ((Event) -> Void)?
 
-    init(embeddedImageProvider: EmbeddedImageProvider) {
+    init(
+        embeddedImageProvider: EmbeddedImageProvider,
+        webViewMemoryPressureHandler: WebViewMemoryPressureProtocol = WebViewMemoryPressureHandler(loggerCategory: .composer)
+    ) {
         self.htmlInterface = BodyWebViewInterface(webView: SubviewFactory.webView(embeddedImageProvider: embeddedImageProvider))
+        self.webViewMemoryPressureHandler = webViewMemoryPressureHandler
         super.init(nibName: nil, bundle: nil)
+        webViewMemoryPressureHandler.contentReload { [weak self] in
+            self?.onEvent?(.onReloadAfterMemoryPressure)
+        }
     }
 
     required init?(coder: NSCoder) { nil }
@@ -120,6 +129,8 @@ final class BodyEditorController: UIViewController {
             Task { await htmlInterface.insertImages(cids) }
         case .removeInlineImage(let cid):
             Task { await htmlInterface.removeImage(containing: cid) }
+        case .reloadBody(let html):
+            updateBody(html: html)
         }
     }
 
@@ -144,6 +155,10 @@ extension BodyEditorController: WKNavigationDelegate {
 
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         Task { await initialFocusState.bodyWasLoaded() }
+    }
+
+    func webViewWebContentProcessDidTerminate(_ webView: WKWebView) {
+        webViewMemoryPressureHandler.markWebContentProcessTerminated()
     }
 }
 

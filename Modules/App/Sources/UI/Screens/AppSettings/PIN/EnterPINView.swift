@@ -15,31 +15,38 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import InboxCoreUI
 import InboxDesignSystem
 import SwiftUI
 
-struct EnterPINView: View {
+struct EnterPINView<Button: View>: View {
     @Binding private var text: String
     @Binding private var validation: FormTextInput.ValidationStatus
     @FocusState private var isFocused: Bool
     private let title: LocalizedStringResource
     private let isInputFooterVisible: Bool
+    private let bottomButton: () -> Button
 
     init(
         title: LocalizedStringResource,
         text: Binding<String>,
         isInputFooterVisible: Bool,
-        validation: Binding<FormTextInput.ValidationStatus>
+        validation: Binding<FormTextInput.ValidationStatus>,
+        bottomButton: @escaping () -> Button
     ) {
         self.title = title
         self._text = text
         self.isInputFooterVisible = isInputFooterVisible
         self._validation = validation
+        self.bottomButton = bottomButton
     }
 
     var body: some View {
         VStack(spacing: DS.Spacing.huge) {
             Image(DS.Images.lock)
+                .resizable()
+                .square(size: 64)
+
             FormTextInput(
                 title: title,
                 placeholder: .init(stringLiteral: .empty),
@@ -51,6 +58,11 @@ struct EnterPINView: View {
             .focused($isFocused)
 
             Spacer()
+
+            bottomButton()
+                .buttonStyle(BigButtonStyle())
+                .padding(.horizontal, DS.Spacing.standard)
+                .padding(.bottom, DS.Spacing.extraLarge)
         }
         .padding(.horizontal, DS.Spacing.large)
         .padding(.top, DS.Spacing.extraLarge)
@@ -70,6 +82,8 @@ struct EnterPINView: View {
             text: .constant(.empty),
             isInputFooterVisible: true,
             validation: .noValidation
-        )
+        ) {
+            Button(action: {}, label: { Text("Confirm".notLocalized) })
+        }
     }
 }

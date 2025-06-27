@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import InboxCore
 import InboxCoreUI
 import InboxDesignSystem
 import proton_app_uniffi
@@ -22,42 +23,55 @@ import SwiftUI
 
 struct ContactDetailsScreen: View {
     let contact: ContactItem
-    let provider: ContactDetailsProvider
-    @State var state: ContactDetails
+    private let provider: ContactDetailsProvider
+    private let draftPresenter: ContactsDraftPresenter
+    private let initialState: ContactDetails?
+    @Environment(\.openURL) private var urlOpener
+    @EnvironmentObject private var toastStateStore: ToastStateStore
 
     /// `state` parameter is exposed only for testing purposes to be able to rely on data source in synchronous manner.
     init(
         contact: ContactItem,
         provider: ContactDetailsProvider,
+        draftPresenter: ContactsDraftPresenter,
         state: ContactDetails? = nil
     ) {
         self.contact = contact
         self.provider = provider
-        _state = .init(initialValue: state ?? .details(with: contact))
+        self.draftPresenter = draftPresenter
+        self.initialState = state
     }
 
     var body: some View {
-        ScrollView {
-            VStack(spacing: DS.Spacing.large) {
-                avatarView
-                contactDetails
-                actionButtons
-                fields
+        StoreView(
+            store: ContactDetailsStateStore(
+                state: initialState ?? .initial(with: contact),
+                item: contact,
+                provider: provider,
+                urlOpener: urlOpener,
+                draftPresenter: draftPresenter,
+                toastStateStore: toastStateStore
+            )
+        ) { state, store in
+            ScrollView {
+                VStack(spacing: DS.Spacing.large) {
+                    avatarView(state: state)
+                    contactDetails(state: state)
+                    actionButtons(state: state, store: store)
+                    fields(state: state, store: store)
+                }
+                .padding([.horizontal, .bottom], DS.Spacing.large)
             }
-            .padding(.horizontal, DS.Spacing.large)
+            .background(DS.Color.Background.secondary)
+            .onLoad { store.handle(action: .onLoad) }
         }
-        .background(DS.Color.Background.secondary)
-        .onLoad { loadDetails(for: contact) }
+
     }
 
     // MARK: - Private
 
-    private var avatarView: some View {
-        ZStack {
-            Rectangle()
-                .fill(Color(hex: state.avatarInformation.color))
-                .square(size: 100)
-                .clipShape(RoundedRectangle(cornerRadius: DS.Radius.giant))
+    private func avatarView(state: ContactDetailsStateStore.State) -> some View {
+        ContactAvatarView(hexColor: state.avatarInformation.color) {
             Text(state.avatarInformation.text)
                 .font(.title)
                 .fontWeight(.regular)
@@ -65,71 +79,132 @@ struct ContactDetailsScreen: View {
         }
     }
 
-    private var contactDetails: some View {
-        VStack(spacing: DS.Spacing.compact) {
-            Text(state.displayName)
-                .font(.body)
-                .fontWeight(.semibold)
-                .foregroundStyle(DS.Color.Text.norm)
-            Text(state.primaryEmail)
-                .font(.subheadline)
-                .fontWeight(.regular)
-                .foregroundStyle(DS.Color.Text.weak)
-        }
+    private func contactDetails(state: ContactDetailsStateStore.State) -> some View {
+        ContactAvatarDetailsView(title: state.displayName, subtitle: state.primaryEmail)
     }
 
-    private var actionButtons: some View {
+    private func actionButtons(
+        state: ContactDetailsStateStore.State,
+        store: ContactDetailsStateStore
+    ) -> some View {
         HStack(spacing: DS.Spacing.standard) {
             ContactDetailsActionButton(
                 image: DS.Icon.icPenSquare,
                 title: L10n.ContactDetails.newMessage,
-                disabled: false,
-                action: {
-                    // FIXME: Implement new message action
-                }
+                disabled: state.primaryEmail == nil,
+                action: { store.handle(action: .newMessageTapped) }
             )
             ContactDetailsActionButton(
                 image: DS.Icon.icPhone,
                 title: L10n.ContactDetails.call,
                 disabled: state.primaryPhone == nil,
-                action: {
-                    // FIXME: Implement call action
-                }
+                action: { store.handle(action: .callTapped) }
             )
             ContactDetailsActionButton(
                 image: DS.Icon.icArrowUpFromSquare,
                 title: L10n.ContactDetails.share,
                 disabled: false,
-                action: {
-                    // FIXME: Implement share action
-                }
+                action: { store.handle(action: .shareTapped) }
             )
         }
     }
 
-    private var fields: some View {
-        ForEach(state.groupItems, id: \.self) { items in
-            FormList(collection: items, separator: .invertedNoPadding) { item in
-                FormBigButton(
-                    title: item.label.stringResource,
-                    symbol: .none,
-                    value: item.value,
-                    action: {
-                        // FIXME: Implement action for specific item
-                    },
-                    hasAccentTextColor: item.isInteractive
-                )
-                .disabled(!item.isInteractive)
-            }
+    private func fields(state: ContactDetailsStateStore.State, store: ContactDetailsStateStore) -> some View {
+        ForEach(state.items, id: \.self) { item in
+            field(for: item, store: store)
         }
     }
 
-    private func loadDetails(for contact: ContactItem) {
-        Task {
-            let details = await provider.contactDetails(for: contact)
-            state = details
+    @ViewBuilder
+    private func field(for type: ContactField, store: ContactDetailsStateStore) -> some View {
+        switch type {
+        case .anniversary(let date):
+            singleButton(
+                item: ContactFormatter.Date.formatted(from: date, with: L10n.ContactDetails.Label.anniversary.string)
+            )
+        case .birthday(let date):
+            singleButton(
+                item: ContactFormatter.Date.formatted(from: date, with: L10n.ContactDetails.Label.birthday.string)
+            )
+        case .gender(let gender):
+            singleButton(item: ContactFormatter.Gender.formatted(from: gender))
+        case .addresses(let addresses):
+            FormList(collection: addresses) { address in
+                button(item: ContactFormatter.Address.formatted(from: address))
+            }
+        case .emails(let emails):
+            FormList(collection: emails) { email in
+                button(item: ContactFormatter.Email.formatted(from: email)) {
+                    store.handle(action: .emailTapped(email))
+                }
+            }
+        case .languages(let languages):
+            nonInteractiveGroup(label: L10n.ContactDetails.Label.language.string, values: languages)
+        case .members(let members):
+            nonInteractiveGroup(label: L10n.ContactDetails.Label.member.string, values: members)
+        case .notes(let notes):
+            nonInteractiveGroup(label: L10n.ContactDetails.Label.note.string, values: notes)
+        case .organizations(let organizations):
+            nonInteractiveGroup(label: L10n.ContactDetails.Label.organization.string, values: organizations)
+        case .telephones(let telephones):
+            FormList(collection: telephones) { telephone in
+                button(item: ContactFormatter.Telephone.formatted(from: telephone)) {
+                    store.handle(action: .phoneNumberTapped(telephone.number))
+                }
+            }
+        case .roles(let roles):
+            nonInteractiveGroup(label: L10n.ContactDetails.Label.role.string, values: roles)
+        case .timeZones(let timeZones):
+            nonInteractiveGroup(label: L10n.ContactDetails.Label.timeZone.string, values: timeZones)
+        case .titles(let titles):
+            nonInteractiveGroup(label: L10n.ContactDetails.Label.title.string, values: titles)
+        case .urls(let urls):
+            FormList(collection: urls) { item in
+                button(item: ContactFormatter.URL.formatted(from: item)) {
+                    store.handle(action: .openURL(urlString: item.url))
+                }
+            }
+        case .logos, .photos:
+            EmptyView()
         }
     }
+
+    private func nonInteractiveGroup(label: String, values: [String]) -> some View {
+        FormList(collection: values) { value in
+            button(item: .init(label: label, value: value, isInteractive: false))
+        }
+    }
+
+    private func button(item: ContactDetailsItem, action: @escaping () -> Void = {}) -> some View {
+        LongPressFormBigButton(
+            title: item.label.stringResource,
+            value: item.value,
+            hasAccentTextColor: item.isInteractive,
+            onTap: action
+        )
+    }
+
+    private func singleButton(item: ContactDetailsItem) -> some View {
+        button(item: item, action: {})
+            .background(DS.Color.BackgroundInverted.secondary)
+            .roundedRectangleStyle()
+    }
+}
+
+private extension ContactDetails {
+
+    static func initial(with contact: ContactItem) -> Self {
+        .init(contact: contact, details: .none)
+    }
+
+}
+
+private extension FormList {
+
+    init(collection: Collection, elementContent: @escaping (Collection.Element) -> ElementContent) {
+        self.init(collection: collection, separator: .invertedNoPadding, elementContent: elementContent)
+    }
+
 }
 
 #Preview {
@@ -140,21 +215,7 @@ struct ContactDetailsScreen: View {
             avatarInformation: .init(text: "BA", color: "#3357FF"),
             emails: []
         ),
-        provider: .previewInstance()
+        provider: .previewInstance(),
+        draftPresenter: ContactsDraftPresenterDummy()
     )
-}
-
-private extension ContactDetails {
-
-    static func details(with contact: ContactItem) -> Self {
-        .init(
-            id: contact.id,
-            avatarInformation: contact.avatarInformation,
-            displayName: contact.name,
-            primaryEmail: contact.emails.first?.email ?? .empty,
-            primaryPhone: .none,
-            groupItems: []
-        )
-    }
-
 }

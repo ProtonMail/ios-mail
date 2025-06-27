@@ -17,8 +17,9 @@
 
 import Combine
 import InboxCore
-import proton_app_uniffi
+import InboxCoreUI
 import LocalAuthentication
+import proton_app_uniffi
 
 class AppProtectionSelectionStore: StateStore {
     @Published var state: AppProtectionSelectionState
@@ -123,10 +124,10 @@ class AppProtectionSelectionStore: StateStore {
     private func setPINProtection() async {
         switch state.currentProtection {
         case .none:
-            state = state.copy(\.presentedPINScreen, to: .set)
+            state = state.copy(\.presentedPINScreen, to: .set(reason: .setNewPIN))
         case .biometrics:
             if await biometricAuthenticator.authenticate().isSuccess {
-                state = state.copy(\.presentedPINScreen, to: .set)
+                state = state.copy(\.presentedPINScreen, to: .set(reason: .setNewPIN))
             }
         case .pin:
             break

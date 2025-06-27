@@ -21,21 +21,8 @@ import proton_app_uniffi
 extension EventError: LocalizedError {
     public var errorDescription: String? {
         switch self {
-        case .reason(let eventErrorReason):
-            eventErrorReason.errorMessage
-        case .other(let protonError):
-            protonError.localizedDescription
-        }
-    }
-}
-
-private extension EventErrorReason {
-    var errorMessage: String {
-        switch self {
-        case .refresh:
-            "Refresh error"
-        case .subscriber:
-            "Subscriber error"
+        case .reason, .other:
+            L10n.EventLoopError.eventSyncingError.string
         }
     }
 }
@@ -81,11 +68,11 @@ extension DraftCancelScheduleSendErrorReason {
     var errorMessage: LocalizedStringResource {
         switch self {
         case .messageDoesNotExist:
-            L10n.Action.UndoSendError.draftNotFound
+            L10n.Action.UndoScheduleSendError.messageDoesNotExist
         case .messageNotScheduled:
-            L10n.Action.UndoScheduleSendError.messageWasNotScheduled
+            L10n.Action.UndoScheduleSendError.messageNotScheduled
         case .messageAlreadySent:
-            L10n.Action.UndoSendError.sendCannotBeUndone
+            L10n.Action.UndoScheduleSendError.messageAlreadySent
         }
     }
 }

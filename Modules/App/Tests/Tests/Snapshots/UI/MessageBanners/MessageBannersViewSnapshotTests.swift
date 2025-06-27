@@ -47,6 +47,7 @@ class MessageBannersViewSnapshotTests: BaseTestCase {
         super.tearDown()
     }
 
+    @MainActor
     func testMessageBannersViewFirstVariantLayoutsCorrectly() {
         let bannersView = MessageBannersView(
             types: [
@@ -66,6 +67,7 @@ class MessageBannersViewSnapshotTests: BaseTestCase {
         assertSnapshotsOnIPhoneX(of: bannersView)
     }
 
+    @MainActor
     func testMessageBannersViewSecondVariantLayoutsCorrectly() {
         let bannersView = MessageBannersView(
             types: [

@@ -23,11 +23,6 @@ import SwiftUI
 
 struct DraftAttachmentUIModel: Hashable {
     let attachment: AttachmentMetadata
-    let status: DraftAttachmentStatus
-}
-
-struct DraftAttachmentStatus: Hashable {
-    let modifiedAt: Int64
     let state: DraftAttachmentState
 }
 
@@ -66,25 +61,26 @@ final class DraftAttachmentsSectionViewController: UIViewController {
     }
 
     private func updateUI() {
-        topConstraint?.constant = uiModels.isEmpty ? 0 : DS.Spacing.mediumLight
-        stack.arrangedSubviews.forEach { $0.removeFromSuperview() }
+        UIView.performWithoutAnimation {
+            topConstraint?.constant = uiModels.isEmpty ? 0 : DS.Spacing.mediumLight
+            stack.arrangedSubviews.forEach { $0.removeFromSuperview() }
 
-        for uiModel in uiModels {
-            let view = DraftAttachmentView(onEvent: { [weak self] event, uiModel in
-                switch event {
-                case .onViewTap:
-                    // FIXME: when we work on inline attachments
-//                    self?.onEvent?(.onTap(uiModel: uiModel))
-                    break
-                case .onButtonTap:
-                    self?.showRemoveConfirmation(uiModel: uiModel)
-                }
-            })
-            stack.addArrangedSubview(view)
-            view.configure(uiModel: uiModel)
+            for uiModel in uiModels {
+                let view = DraftAttachmentView(onEvent: { [weak self] event, uiModel in
+                    switch event {
+                    case .onViewTap:
+                        // FIXME: when we work on inline attachments
+                        // self?.onEvent?(.onTap(uiModel: uiModel))
+                        break
+                    case .onButtonTap:
+                        self?.showRemoveConfirmation(uiModel: uiModel)
+                    }
+                })
+                stack.addArrangedSubview(view)
+                view.configure(uiModel: uiModel)
+            }
+            stack.layoutIfNeeded()
         }
-        // avoid undesired animations caused by re-adding subviews with `addArrangedSubview`
-        stack.layoutIfNeeded()
     }
 
     private func showRemoveConfirmation(uiModel: DraftAttachmentUIModel) {
@@ -127,18 +123,18 @@ extension DraftAttachmentsSectionViewController {
             name: String,
             cat: MimeTypeCategory,
             size: UInt64,
-            status: DraftAttachmentState, timestamp: Int64 = 1740954885
+            state: DraftAttachmentState
         ) -> DraftAttachmentUIModel {
             let mimeType = AttachmentMimeType(mime: "", category: cat)
             let attachment = AttachmentMetadata(id: .init(value: id), disposition: .attachment, mimeType: mimeType, name: name, size: size)
-            return DraftAttachmentUIModel(attachment: attachment, status: .init(modifiedAt: timestamp, state: status))
+            return DraftAttachmentUIModel(attachment: attachment, state: state)
         }
 
         static let uiModels: [DraftAttachmentUIModel] = [
-            Model.makeUIModel(id: 1, name: "meeting_minutes_for_last_friday.pdf", cat: .pdf, size: 36123512, status: .uploading),
-            Model.makeUIModel(id: 2, name: "budget.xls", cat: .excel, size: 263478, status: .uploaded),
-            Model.makeUIModel(id: 3, name: "photo_1.jpg", cat: .image, size: 7824333, status: .offline),
-            Model.makeUIModel(id: 4, name: "photo_2_this_one_a_bit_closer.jpg", cat: .image, size: 6123512, status: .uploaded),
+            Model.makeUIModel(id: 1, name: "meeting_minutes_for_last_friday.pdf", cat: .pdf, size: 36123512, state: .uploading),
+            Model.makeUIModel(id: 2, name: "budget.xls", cat: .excel, size: 263478, state: .uploaded),
+            Model.makeUIModel(id: 3, name: "photo_1.jpg", cat: .image, size: 7824333, state: .offline),
+            Model.makeUIModel(id: 4, name: "photo_2_this_one_a_bit_closer.jpg", cat: .image, size: 6123512, state: .uploaded),
         ]
     }
 

@@ -17,11 +17,30 @@
 
 import proton_app_uniffi
 
-struct ContactDetails {
+struct ContactDetails: Equatable {
     let id: Id
     let avatarInformation: AvatarInformation
     let displayName: String
-    let primaryEmail: String
+    let primaryEmail: String?
     let primaryPhone: String?
-    let groupItems: [[ContactDetailsItem]]
+    let items: [ContactField]
+
+    init(contact: ContactItem, details: ContactDetailCard?) {
+        let primaryPhone = details?.fields
+            .compactMap { field -> String? in
+                guard case .telephones(let phones) = field else {
+                    return nil
+                }
+
+                return phones.first?.number
+            }
+            .first
+
+        self.id = contact.id
+        self.avatarInformation = contact.avatarInformation
+        self.displayName = contact.name
+        self.primaryEmail = contact.displayEmail
+        self.primaryPhone = primaryPhone
+        self.items = details?.fields ?? []
+    }
 }

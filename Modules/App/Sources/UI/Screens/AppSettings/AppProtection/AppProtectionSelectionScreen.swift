@@ -88,7 +88,7 @@ struct AppProtectionSelectionScreen: View {
             }
             .padding(.horizontal, DS.Spacing.large)
             .background(DS.Color.BackgroundInverted.norm)
-            .navigationTitle(L10n.Settings.App.protectionSelectionScreenTitle.string)
+            .navigationTitle(L10n.Settings.App.appLock.string)
             .navigationBarTitleDisplayMode(.inline)
             .onAppear { store.handle(action: .onAppear) }
             .sheet(item: presentPINScreen(state: state, store: store)) { pinScreenType in

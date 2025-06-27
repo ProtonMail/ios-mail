@@ -120,7 +120,7 @@ final class MailboxModel: ObservableObject {
     }
 }
 
-// MARK: Private
+// MARK: Bindings
 
 extension MailboxModel {
 
@@ -176,28 +176,50 @@ extension MailboxModel {
             }
             .store(in: &cancellables)
 
-        selectionMode
-            .selectionState
-            .$selectedItems
-            .removeDuplicates()
-            .sink { [weak self] _ in
-                Task {
-                    await self?.onSelectedItemsChange()
-                }
+        observeSelectionChanges()
+        exitSelectAllModeWhenNewItemsAreFetched()
+    }
+
+    private func observeSelectionChanges() {
+        Publishers.CombineLatest(
+            selectionMode.selectionState.$selectedItems.removeDuplicates(),
+            selectionMode.selectionState.$isSelectAllEnabled.removeDuplicates()
+        )
+        .sink { [weak self] _ in
+            Task {
+                await self?.onSelectedItemsChange()
             }
-            .store(in: &cancellables)
+        }
+        .store(in: &cancellables)
     }
 
     private func onSelectedItemsChange() async {
         state.filterBar.visibilityMode = selectionMode.selectionState.hasItems ? .selectionMode : .regular
+        state.filterBar.selectAll = selectAllState
         updateMailboxTitle()
         await refreshMailboxItems()
     }
 
+    private func exitSelectAllModeWhenNewItemsAreFetched() {
+        paginatedDataSource.$state
+            .map(\.currentPage)
+            .removeDuplicates()
+            .sink { [weak self] _ in
+                self?.selectionMode.selectionModifier.exitSelectAllMode()
+            }
+            .store(in: &cancellables)
+    }
+}
+
+// MARK: Private
+
+extension MailboxModel {
+
     private func updateMailboxTitle() {
-        state.mailboxTitle = selectionMode.selectionState.hasItems
-        ? selectionMode.selectionState.title
-        : selectedMailbox.name
+        state.mailboxTitle =
+            selectionMode.selectionState.hasItems
+            ? selectionMode.selectionState.title
+            : selectedMailbox.name
     }
 
     private func updateMailboxAndScroller(resetUnreadCount: Bool = true) async {
@@ -216,9 +238,10 @@ extension MailboxModel {
 
             await paginatedDataSource.resetToInitialState()
 
-            let mailbox = selectedMailbox.isInbox
-            ? try await newInboxMailbox(ctx: userSession).get()
-            : try await newMailbox(ctx: userSession, labelId: selectedMailbox.localId).get()
+            let mailbox =
+                selectedMailbox.isInbox
+                ? try await newInboxMailbox(ctx: userSession).get()
+                : try await newMailbox(ctx: userSession, labelId: selectedMailbox.localId).get()
             self.mailbox = mailbox
             self.moveToActionPerformer = .init(mailbox: mailbox, moveToActions: .productionInstance)
             self.readActionPerformer = .init(mailbox: mailbox)
@@ -249,8 +272,6 @@ extension MailboxModel {
                 }
             }
             await unreadCountLiveQuery?.setUpLiveQuery()
-        } catch let error as ActionError where error == .other(.sessionExpired) {
-            AppLogger.log(error: error, category: .mailbox)
         } catch {
             AppLogger.log(error: error, category: .mailbox)
             toast = Toast(
@@ -266,11 +287,11 @@ extension MailboxModel {
     private func emptyFolderBanner(mailbox: Mailbox) async -> EmptyFolderBanner? {
         let userSession = dependencies.appContext.userSession
         let labelID: ID = mailbox.labelId()
-        
+
         guard let banner = try? await getAutoDeleteBanner(session: userSession, labelId: labelID).get() else {
             return nil
         }
-        
+
         return .init(folder: .init(labelID: labelID, type: banner.folder), userState: banner.state)
     }
 
@@ -286,21 +307,42 @@ extension MailboxModel {
     }
 
     private func fetchNextPageItems(currentPage: Int) async -> PaginatedListDataSource<MailboxItemCellUIModel>.NextPageResult {
-        guard let mailbox else {
-            AppLogger.log(message: "no mailbox found when requesting a page", isError: true)
+        guard let viewMode = mailbox?.viewMode() else {
+            AppLogger.log(message: "no mailbox found when requesting a page", category: .mailbox, isError: true)
             return .init(newItems: [], isLastPage: true)
         }
         do {
-            let result: PaginatedListDataSource<MailboxItemCellUIModel>.NextPageResult
-            result = mailbox.viewMode() == .messages
-            ? try await fetchNextPageMessages(currentPage: currentPage)
-            : try await fetchNextPageConversations(currentPage: currentPage)
-            AppLogger.logTemporarily(message: "page \(currentPage) returned \(result.newItems.count) items, isLastPage: \(result.isLastPage)", category: .mailbox)
-            return result
+            return try await fetchNextPage(viewMode: viewMode, currentPage: currentPage)
         } catch {
             AppLogger.log(error: error, category: .mailbox)
-            return .init(newItems: paginatedDataSource.state.items, isLastPage: true)
+            if error is MailScrollerError {
+                return await handleMailScrollerError(viewMode: viewMode, currentPage: currentPage)
+            }
+            return nextPageAfterNonRecoverableError(error: error)
         }
+    }
+
+    private func fetchNextPage(viewMode: ViewMode, currentPage: Int) async throws -> PaginatedListDataSource<MailboxItemCellUIModel>.NextPageResult {
+        let result =
+            viewMode == .messages
+            ? try await fetchNextPageMessages(currentPage: currentPage)
+            : try await fetchNextPageConversations(currentPage: currentPage)
+        AppLogger.logTemporarily(message: "page \(currentPage) returned \(result.newItems.count) items, isLastPage: \(result.isLastPage)", category: .mailbox)
+        return result
+    }
+
+    private func handleMailScrollerError(viewMode: ViewMode, currentPage: Int) async -> PaginatedListDataSource<MailboxItemCellUIModel>.NextPageResult {
+        do {
+            await refreshMailboxItems()
+            return try await fetchNextPage(viewMode: viewMode, currentPage: currentPage)
+        } catch {
+            return nextPageAfterNonRecoverableError(error: error)
+        }
+    }
+
+    private func nextPageAfterNonRecoverableError(error: Error) -> PaginatedListDataSource<MailboxItemCellUIModel>.NextPageResult {
+        AppLogger.log(error: error, category: .mailbox)
+        return .init(newItems: paginatedDataSource.state.items, isLastPage: true)
     }
 
     private func fetchNextPageMessages(currentPage: Int) async throws -> PaginatedListDataSource<MailboxItemCellUIModel>.NextPageResult {
@@ -397,8 +439,8 @@ extension MailboxModel {
 
     func onPullToRefresh() async {
         await dependencies.appContext.pollEventsAsync()
-        let twoHundredsMilliseconds: UInt64 = 200_000_000
-        try? await Task.sleep(nanoseconds: twoHundredsMilliseconds)
+        let uxExpectedDuration = Duration.seconds(1.5)
+        try? await Task.sleep(for: uxExpectedDuration)
     }
 }
 
@@ -461,9 +503,15 @@ extension MailboxModel {
     @MainActor
     func onMailboxItemSelectionChange(item: MailboxItemCellUIModel, isSelected: Bool) {
         guard !isOutbox else { return }
-        isSelected
-        ? selectionMode.selectionModifier.addMailboxItem(item.toSelectedItem())
-        : selectionMode.selectionModifier.removeMailboxItem(item.toSelectedItem())
+        if isSelected {
+            let success = selectionMode.selectionModifier.addMailboxItem(item.toSelectedItem())
+
+            if !success {
+                toast = .information(message: L10n.Mailbox.selectionLimitReached.string)
+            }
+        } else {
+            selectionMode.selectionModifier.removeMailboxItem(item.toSelectedItem())
+        }
     }
 
     func onMailboxItemStarChange(item: MailboxItemCellUIModel, isStarred: Bool) {
@@ -541,6 +589,34 @@ extension MailboxModel {
             } catch {
                 toastStateStore.present(toast: .error(message: error.localizedDescription))
             }
+        }
+    }
+}
+
+// MARK: Select All
+
+extension MailboxModel {
+
+    private var unselectedItems: [MailboxSelectedItem] {
+        paginatedDataSource.state.items
+            .map { $0.toSelectedItem() }
+            .filter { !selectionMode.selectionState.selectedItems.contains($0) }
+    }
+
+    private var selectAllState: SelectAllState {
+        guard selectionMode.selectionState.canSelectMoreItems else {
+            return .selectionLimitReached
+        }
+
+        return unselectedItems.isEmpty ? .noMoreItemsToSelect : .canSelectMoreItems
+    }
+
+    func onSelectAllTapped() {
+        switch selectAllState {
+        case .canSelectMoreItems:
+            selectionMode.selectionModifier.enterSelectAllMode(selecting: unselectedItems)
+        case .noMoreItemsToSelect, .selectionLimitReached:
+            selectionMode.selectionModifier.deselectAll(stayingInSelectAllMode: true)
         }
     }
 }

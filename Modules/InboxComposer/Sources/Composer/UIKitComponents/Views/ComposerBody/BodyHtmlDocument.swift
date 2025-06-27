@@ -176,14 +176,9 @@ private extension BodyHtmlDocument {
         });
 
         const resizeObserver = new ResizeObserver(entries => {
-            for (const entry of entries) {
-                window.webkit.messageHandlers.\(JSEvent.bodyResize).postMessage({
-                    "messageHandler": "\(JSEvent.bodyResize)",
-                    "\(EventAttributeKey.height)": entry.contentRect.height
-                });
-            }
+            notifyHeightChange();
         });
-        resizeObserver.observe(document.querySelector('body'));
+        resizeObserver.observe(document.getElementById('\(ID.editor)'));
 
         const removeInlinImageObserver = new MutationObserver(mutations => {
             mutations.forEach(mutation => {
@@ -237,6 +232,13 @@ private extension BodyHtmlDocument {
                     return;
                 }
             }
+
+            // Pasting could push some content above the visible area of the editor, to avoid 
+            // this we reset scrolling attributes. 
+            setTimeout(() => {
+                resetAllScrollPositions();
+                notifyHeightChange();
+            }, 20);
         });
 
         // --------------------
@@ -301,6 +303,19 @@ private extension BodyHtmlDocument {
         // --------------------
         // Private Functions
         // --------------------
+
+        function notifyHeightChange() {
+            const editor = document.getElementById('\(ID.editor)');
+            // editor.scrollHeight: The total height of all content in the editor
+            // editor.offsetHeight: The visible height of the editor component as currently rendered
+            // we want offsetHeight when the content is shorter than the actual component
+            const height = Math.max(editor.scrollHeight, editor.offsetHeight);
+            
+            window.webkit.messageHandlers.\(JSEvent.bodyResize).postMessage({
+                "messageHandler": "\(JSEvent.bodyResize)",
+                "\(EventAttributeKey.height)": height
+            });
+        }
 
         function handleUpdateCursorPosition(event) {
             var isEnterKeyPress = event.inputType === 'insertParagraph';
@@ -404,6 +419,19 @@ private extension BodyHtmlDocument {
                     img.onerror = resolve; // Handle load errors gracefully
                 });
             }));
+        }
+
+        // The composer scrolls by increaing the height of the UIKit container, therefore resetting
+        // scroll positions won't have any visible effect for the user.
+        function resetAllScrollPositions() {
+            const editor = document.getElementById('\(ID.editor)');
+            editor.scrollTop = 0;
+            editor.scrollLeft = 0;
+            document.documentElement.scrollTop = 0;
+            document.documentElement.scrollLeft = 0;
+            document.body.scrollTop = 0;
+            document.body.scrollLeft = 0;
+            window.scrollTo(0, 0);
         }
 
         """

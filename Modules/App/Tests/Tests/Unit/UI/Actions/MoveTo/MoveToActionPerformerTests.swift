@@ -49,17 +49,17 @@ final class MoveToActionPerformerTests: BaseTestCase {
         )
 
         await XCTAssertAsyncThrowsError(try await moveToAction()) { error in
-            XCTAssertEqual(error.localizedDescription, "Folder does not exist")
+            XCTAssertEqual(error.localizedDescription, "Could not move to folder. Folder may have been deleted or moved.")
         }
     }
 
-    func testPropagatesBackendError() async {
+    func testOverridesErrorMessageIfOperationTimedOut() async {
         stubbedResult = .error(
             .other(.serverError(.unprocessableEntity(#"{"Code": 2503, "Error": "Operation timed out"}"#)))
         )
 
         await XCTAssertAsyncThrowsError(try await moveToAction()) { error in
-            XCTAssertEqual(error.localizedDescription, "Operation timed out")
+            XCTAssertEqual(error.localizedDescription, "Something went wrong. Please try again.")
         }
     }
 

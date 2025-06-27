@@ -17,6 +17,7 @@
 
 import proton_app_uniffi
 import InboxCore
+import InboxCoreUI
 import SwiftUI
 
 final class AppSettingsStateStore: StateStore, Sendable {

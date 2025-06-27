@@ -1,6 +1,5 @@
 sources:
     - ../../Modules/InboxComposer/Sources
-    - ../../ProtonPackages/et-protoncore
     - ../../ProtonPackages/proton_app_uniffi
 templates:
     - ../

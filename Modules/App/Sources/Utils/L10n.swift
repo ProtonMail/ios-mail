@@ -81,20 +81,28 @@ enum L10n {
 
         enum UndoSendError {
             static let sendCannotBeUndone = LocalizedStringResource(
-                "Send operation can't be undone",
+                "Too late to undo send. Message was sent.",
                 comment: "Error in the context of undoing a sent message"
             )
 
             static let draftNotFound = LocalizedStringResource(
-                "Undo operation failed because draft was not found",
+                "Cannot undo send. Message was discarded or already sent.",
                 comment: "Error in the context of undoing a sent message"
             )
         }
 
         enum UndoScheduleSendError {
-            static let messageWasNotScheduled = LocalizedStringResource(
-                "Message was not scheduled",
-                comment: "Error in the context of undoing a scheduled message"
+            static let messageDoesNotExist = LocalizedStringResource(
+                "Cannot cancel schedule send. Message was discarded or already sent.",
+                comment: "Error in the context of undoing a scheduled message: the message no longer exists (discarded or already sent)."
+            )
+            static let messageNotScheduled = LocalizedStringResource(
+                "Cannot cancel schedule send. Message was not scheduled.",
+                comment: "Error in the context of undoing a scheduled message: the message was never scheduled."
+            )
+            static let messageAlreadySent = LocalizedStringResource(
+                "Cannot cancel schedule send. Message was already sent.",
+                comment: "Error in the context of undoing a scheduled message: the message has already been sent."
             )
         }
 
@@ -259,6 +267,10 @@ enum L10n {
             "We encountered an issue while syncing your mail with the event loop. Please share the logs with our support team for further investigation. Try logging out and logging back in to resolve the issue.",
             comment: "Event loop failed because an unexpected error."
         )
+        static let eventSyncingError = LocalizedStringResource(
+            "Issue syncing your content. Check your connection or sign in again.",
+            comment: "Event loop failed due to an issue syncing content."
+        )
     }
 
     enum Common {
@@ -272,7 +284,7 @@ enum L10n {
 
     enum LegacyMigration {
         static let migrationFailed = LocalizedStringResource(
-            "Migration failed. Please sign in again and submit a bug report.",
+            "Issue updating your account. Please sign in again.",
             comment: "Error toast of the welcome screen."
         )
     }
@@ -425,6 +437,14 @@ enum L10n {
             "Select all",
             comment: "Button title allowing to select all items in a mailbox."
         )
+        static let unselectAll = LocalizedStringResource(
+            "Unselect all",
+            comment: "Button title allowing to deselect all items in a mailbox."
+        )
+        static let selectionLimitReached = LocalizedStringResource(
+            "Maximum selection reached",
+            comment: "Toast when attempting to select more than the maximum number of items."
+        )
     }
 
     enum NoConnection {
@@ -490,7 +510,7 @@ enum L10n {
             "Download images and other remote content?",
             comment: "Banner asking if the user wants to download remote content such as images from external sources."
         )
-        static let scheduledSendTitle = LocalizedStringResource (
+        static let scheduledSendTitle = LocalizedStringResource(
             "This message will be sent",
             comment: "Banner showing the scheduled send time for an email."
         )
@@ -583,11 +603,19 @@ enum L10n {
         static func attachments(count: Int) -> LocalizedStringResource {
             .init("\(count) attachments", comment: "The number of a message attachments.")
         }
+        static let draft = LocalizedStringResource(
+            "(Draft)",
+            comment: "Draft suffix displayed in covnersation view."
+        )
+        static let draftNoRecipientsPlaceholder = LocalizedStringResource(
+            "To: ...",
+            comment: "Placeholder for a draft in the conversation view when the draft has no recipients."
+        )
     }
 
     enum Folders {
         static let doesNotExist = LocalizedStringResource(
-            "Folder does not exist",
+            "Could not move to folder. Folder may have been deleted or moved.",
             comment: "Error when trying to move a message to a folder that no longer exists."
         )
     }
@@ -624,17 +652,17 @@ enum L10n {
     enum PINLock {
         enum Error {
             static let tooLong = LocalizedStringResource(
-                "PIN is too long",
+                "PIN cannot exceed 21 digits",
                 comment: "Error message when setting up PIN"
             )
 
             static let tooShort = LocalizedStringResource(
-                "PIN is too short",
+                "PIN must be at least 4 digits",
                 comment: "Error message when setting up PIN"
             )
 
             static let malformed = LocalizedStringResource(
-                "Provided value is not a valid PIN",
+                "PIN must be 4–21 digits long and consist only of numbers",
                 comment: "Error message when setting up PIN"
             )
         }
@@ -656,12 +684,24 @@ enum L10n {
             comment: "Title of the sign out button."
         )
         static let signOutConfirmationTitle = LocalizedStringResource(
-            "Are you sure you want to sign out?",
+            "Sign Out of All Accounts",
             comment: "Title of the sign out confirmation alert."
         )
+        static let signOutConfirmationMessage = LocalizedStringResource(
+            "You're about to be signed out of all your accounts on this device. Do you want to continue?",
+            comment: "Message of the sign out confirmation alert."
+        )
         static let invalidPIN = LocalizedStringResource(
-            "Incorrect PIN. Try again.",
-            comment: "Error message when the user enters an invalid PIN"
+            "Incorrect PIN. Please try agian.",
+            comment: "Error message when a user enters an invalid PIN"
+        )
+        static let tooManyAttempts = LocalizedStringResource(
+            "Too many incorrect attempts. Please wait before trying again.",
+            comment: "Error message when a user enters invalid PIN too many times."
+        )
+        static let tooFrequentAttempts = LocalizedStringResource(
+            "Too many attempts too quickly. Please wait before trying again.",
+            comment: "Displayed when the user tries to validate their PIN too frequently."
         )
         static func remainingAttemptsWarning(_ number: Int) -> LocalizedStringResource {
             LocalizedStringResource(
@@ -819,9 +859,9 @@ enum L10n {
                 "Light",
                 comment: "One of the appearance option to set in app settings."
             )
-            static let protection = LocalizedStringResource(
-                "Protection",
-                comment: "Protection setting title in app settings."
+            static let appLock = LocalizedStringResource(
+                "App lock",
+                comment: "App lock setting title in app settings."
             )
             static let combinedContacts = LocalizedStringResource(
                 "Combined contacts",
@@ -852,39 +892,35 @@ enum L10n {
                 comment: "Alternative routing setting title in app settings."
             )
             static let alternativeRoutingInfo = LocalizedStringResource(
-                "Bypass firewalls or network issues in case Proton sites are blocked.",
+                "If Proton sites are blocked, this lets the app try other network paths to reach them. It can help bypass firewalls or connection issues. We recommend keeping it on for better reliability.",
                 comment: "Alternative routing additional info in app settings."
             )
             static let none = LocalizedStringResource(
-                "None",
+                "Don't lock",
                 comment: "App lock option."
             )
             static let faceID = LocalizedStringResource(
-                "Face ID",
+                "Secure with Face ID",
                 comment: "App lock option."
             )
             static let touchID = LocalizedStringResource(
-                "Touch ID",
+                "Secure with Touch ID",
                 comment: "App lock option."
             )
             static let pinCode = LocalizedStringResource(
-                "PIN code",
+                "Secure with PIN",
                 comment: "App lock option."
             )
-            static let protectionSelectionScreenTitle = LocalizedStringResource(
-                "Protection",
-                comment: "App protection selection screen title."
-            )
             static let protectionSelectionListFooterInformation = LocalizedStringResource(
-                "All protection settings will be reset and wiped upon signing out of the app",
+                "All app lock settings, including the PIN, will reset when you sign out of the app",
                 comment: "Protection selection list footer information."
             )
             static let changePINcode = LocalizedStringResource(
-                "Change PIN code",
+                "Change PIN",
                 comment: "Change PIN code title."
             )
             static let repeatPIN = LocalizedStringResource(
-                "Repeat PIN code",
+                "Repeat PIN",
                 comment: "Repeat PIN code title."
             )
             static let repeatedPINValidationError = LocalizedStringResource(
@@ -892,11 +928,11 @@ enum L10n {
                 comment: "Not matching PIN validation error message."
             )
             static let setPINScreenTitle = LocalizedStringResource(
-                "Set PIN code",
+                "Set PIN",
                 comment: "Set PIN code screen title."
             )
             static let setPINInputTitle = LocalizedStringResource(
-                "New PIN code",
+                "New PIN",
                 comment: "Set PIN code screen PIN input title."
             )
             static let setPINInformation = LocalizedStringResource(
@@ -904,19 +940,19 @@ enum L10n {
                 comment: "Information displayed under the PIN input."
             )
             static let verifyPINInputTitle = LocalizedStringResource(
-                "Old PIN code",
+                "Current PIN",
                 comment: "Verify PIN code screen PIN input title."
             )
-            static let disablePINScreenTitle = LocalizedStringResource(
-                "Disable PIN code",
-                comment: "Disable PIN code screen title."
+            static let verifyPINScreenTitle = LocalizedStringResource(
+                "Confirm PIN",
+                comment: "Verify PIN code screen title."
             )
             static let autoLock = LocalizedStringResource(
-                "Auto-Lock",
+                "Auto-lock",
                 comment: "Auto lock button and screen title."
             )
-            static let autoLockAlways = LocalizedStringResource(
-                "Always",
+            static let immediately = LocalizedStringResource(
+                "Immediately",
                 comment: "Auto option."
             )
             static let autoLockNever = LocalizedStringResource(
@@ -924,7 +960,7 @@ enum L10n {
                 comment: "Auto option."
             )
             static func autoLock(minutes: UInt8) -> LocalizedStringResource {
-                .init("\(minutes) minutes", comment: "NumberAuto lock option.")
+                .init("After \(minutes) minutes", comment: "Auto lock option.")
             }
         }
 

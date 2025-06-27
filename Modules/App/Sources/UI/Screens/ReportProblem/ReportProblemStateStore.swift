@@ -34,7 +34,7 @@ final class ReportProblemStateStore: StateStore {
         reportProblemService: ReportProblemService,
         toastStateStore: ToastStateStore,
         mainBundle: Bundle = Bundle.main,
-        deviceInfo: DeviceInfo = UIDevice.current,
+        deviceInfo: BasicDeviceInfo = UIDevice.current,
         dismiss: @escaping () -> Void
     ) {
 

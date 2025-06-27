@@ -52,6 +52,7 @@ struct ConversationToolbar<TrailingButton: View>: ViewModifier {
                         .lineLimit(1)
                         .transition(.opacity)
                         .animation(.default, value: title)
+                        .textSelection(.enabled)
                 }
 
                 ToolbarItem(placement: .navigationBarTrailing) {

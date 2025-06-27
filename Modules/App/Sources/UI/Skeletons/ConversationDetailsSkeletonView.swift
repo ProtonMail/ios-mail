@@ -26,12 +26,11 @@ struct ConversationDetailsSkeletonView: View {
     // MARK: - View
 
     var body: some View {
-        List {
+        SkeletonContainer {
             MailboxSkeletonRowView(colorScheme: colorScheme)
             MailboxSkeletonRowView(colorScheme: colorScheme)
             skeletonBody(for: colorScheme)
         }
-        .styledSkeleton()
     }
 
     // MARK: - Private
@@ -42,7 +41,6 @@ struct ConversationDetailsSkeletonView: View {
             .frame(maxWidth: .infinity)
             .frame(height: 180)
             .padding(.top, DS.Spacing.standard)
-            .styledSkeletonRow()
     }
 
     private func animation(for colorScheme: ColorScheme) -> LottieAnimation {

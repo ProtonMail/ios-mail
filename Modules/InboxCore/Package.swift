@@ -13,11 +13,16 @@ let package = Package(
     dependencies: [
         .package(path: "../../ProtonPackages/proton_app_uniffi"),
         .package(path: "../TryCatch"),
+        .package(url: "https://github.com/getsentry/sentry-cocoa", from: "8.8.0"),
     ],
     targets: [
         .target(
             name: "InboxCore",
-            dependencies: ["proton_app_uniffi", "TryCatch"],
+            dependencies: [
+                "proton_app_uniffi",
+                "TryCatch",
+                .product(name: "Sentry", package: "sentry-cocoa"),
+            ],
             resources: [
                 .process("Resources")
             ]

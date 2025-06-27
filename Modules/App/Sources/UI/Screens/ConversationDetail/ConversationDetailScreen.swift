@@ -29,7 +29,11 @@ struct ConversationDetailScreen: View {
     private let draftPresenter: DraftPresenter
 
     init(seed: ConversationDetailSeed, draftPresenter: DraftPresenter, navigationPath: Binding<NavigationPath>) {
-        self._model = StateObject(wrappedValue: .init(seed: seed, draftPresenter: draftPresenter))
+        self._model = StateObject(wrappedValue: .init(
+            seed: seed,
+            draftPresenter: draftPresenter,
+            backOnlineActionExecutor: .init(mailUserSession: { AppContext.shared.userSession })
+        ))
         self._navigationPath = .init(projectedValue: navigationPath)
         self.draftPresenter = draftPresenter
     }
@@ -124,6 +128,7 @@ struct ConversationDetailScreen: View {
             .fontWeight(.semibold)
             .foregroundStyle(DS.Color.Text.norm)
             .multilineTextAlignment(.center)
+            .textSelection(.enabled)
             .frame(maxWidth: .infinity, alignment: .center)
             .accessibilityIdentifier(ConversationDetailScreenIdentifiers.subjectText)
     }
@@ -180,8 +185,8 @@ private extension ConversationDetailModel.State {
         switch self {
         case .initial, .fetchingMessages, .noConnection:
             0
-        case .messagesReady(let previous, let last):
-            (previous + [last]).count
+        case .messagesReady(let messages):
+            messages.count
         }
     }
 

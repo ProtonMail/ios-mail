@@ -30,7 +30,6 @@ struct MailboxSkeletonRowView: View {
             .frame(maxWidth: .infinity)
             .frame(height: 40, alignment: .leading)
             .padding(.trailing, 60)
-            .styledSkeletonRow()
     }
 
     // MARK: - Private

@@ -77,7 +77,7 @@ extension AlertModel {
 
         return .init(
             title: L10n.PINLock.signOutConfirmationTitle,
-            message: nil,
+            message: L10n.PINLock.signOutConfirmationMessage,
             actions: actions
         )
     }

@@ -17,29 +17,14 @@
 
 import proton_app_uniffi
 
-typealias SignOutAllAccounts = @Sendable @MainActor (_ mailUserSession: MailUserSession) async throws -> VoidSessionResult
-
-struct SignOutAllAccountsWrapper {
-    let signOutAllAccounts: SignOutAllAccounts
-}
-
-extension SignOutAllAccountsWrapper {
-    static var productionInstance: SignOutAllAccountsWrapper {
-        .init(signOutAllAccounts: { mailUserSession in await signOutAll(session: mailUserSession) })
-    }
-}
-
 struct SignOutService: Sendable {
-    private let mailUserSession: @Sendable () -> MailUserSession
-    private let signOutAllAccountsWrapper: SignOutAllAccountsWrapper
+    private let mailSession: @Sendable () -> MailSessionProtocol
 
-    init(mailUserSession: @escaping @Sendable () -> MailUserSession, signOutAllAccountsWrapper: SignOutAllAccountsWrapper) {
-        self.mailUserSession = mailUserSession
-        self.signOutAllAccountsWrapper = signOutAllAccountsWrapper
+    init(mailSession: @escaping @Sendable () -> MailSessionProtocol) {
+        self.mailSession = mailSession
     }
 
     func signOutAllAccounts() async throws {
-        let session = mailUserSession()
-        _ = try await signOutAllAccountsWrapper.signOutAllAccounts(session)
+        _ = try await mailSession().signOutAll().get()
     }
 }

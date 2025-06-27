@@ -813,17 +813,62 @@ extension GroupedContactsProvider {
 
 }
 
-extension Id: ExpressibleByIntegerLiteral {
+extension Id: @retroactive ExpressibleByIntegerLiteral {
     public init(integerLiteral value: UInt64) {
         self.init(value: value)
     }
-
 }
 
 extension ContactEmailItem {
 
-    init(id: UInt64, email: String) {
-        self.init(id: Id(value: id), email: email, isProton: false, lastUsedTime: 0, name: "", avatarInformation: .init(text: "", color: ""))
+    public init(id: UInt64, email: String, name: String = "") {
+        self.init(
+            id: Id(value: id),
+            email: email,
+            isProton: false,
+            lastUsedTime: 0,
+            name: name,
+            avatarInformation: .init(text: initials(from: name), color: color(for: name))
+        )
     }
 
+}
+
+private func initials(from name: String) -> String {
+    name.split(separator: " ")
+        .map { word in String(word.first!) }
+        .joined()
+}
+
+private func color(for name: String) -> String {
+    guard !name.isEmpty else {
+        return "#A7AAB0"
+    }
+
+    let protonColors: [String] = [
+        "#2E8378",
+        "#34A48A",
+        "#52CD96",
+        "#51BE50",
+        "#3F8B8E",
+        "#764AC4",
+        "#9E66FC",
+        "#9C89FF",
+        "#A1439F",
+        "#7B3185",
+        "#495EA9",
+        "#4E7ABB",
+        "#4989FF",
+        "#3FB0D9",
+        "#4F66DF",
+    ]
+
+    var hash: UInt32 = 0
+
+    for scalar in name.unicodeScalars {
+        hash = (UInt32(scalar.value) + ((hash << 5) &- hash)) % 65537
+    }
+
+    let index = Int(hash) % protonColors.count
+    return protonColors[index]
 }

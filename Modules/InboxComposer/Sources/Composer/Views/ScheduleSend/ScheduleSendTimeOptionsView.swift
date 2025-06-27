@@ -20,8 +20,6 @@ import InboxDesignSystem
 import SwiftUI
 
 struct ScheduleSendTimeOptionsView: View {
-    @Environment(\.dismiss) var dismiss
-    @EnvironmentObject private var toastStateStore: ToastStateStore
     private let dateFormatter: ScheduleSendDateFormatter
     private let predefinedTimeOptions: ScheduleSendTimeOptions
     private let isCustomOptionAvailable: Bool
@@ -181,7 +179,6 @@ private extension View {
 }
 
 #Preview {
-    var toastStateStore: ToastStateStore = .init(initialState: .initial)
     var options: (Bool, UInt64?) -> ScheduleSendTimeOptions = { isCustomAvailable, lastScheduledTime in
         try! ScheduleSendOptionsProvider.dummy(isCustomAvailable: isCustomAvailable)
             .scheduleSendOptions()
@@ -206,5 +203,4 @@ private extension View {
             onOpenDatePicker: {}
         )
     }
-    .environmentObject(toastStateStore)
 }

@@ -30,10 +30,9 @@ struct MailboxScreen: View {
     @State private var isOnboardingPresented = false
     @State private var isNotificationPromptPresented = false
     @State private var isAccountManagerPresented = false
-    private let sendResultPresenter: SendResultPresenter
     private let userSession: MailUserSession
     private let notificationAuthorizationStore: NotificationAuthorizationStore
-    private let onboardingStore: OnboardingStore
+    private let userDefaults: UserDefaults
 
     init(
         mailSettingsLiveQuery: MailSettingLiveQuerying,
@@ -41,8 +40,7 @@ struct MailboxScreen: View {
         notificationAuthorizationStore: NotificationAuthorizationStore,
         userSession: MailUserSession,
         userDefaults: UserDefaults,
-        draftPresenter: DraftPresenter,
-        sendResultPresenter: SendResultPresenter
+        draftPresenter: DraftPresenter
     ) {
         self._mailboxModel = StateObject(
             wrappedValue: MailboxModel(
@@ -52,9 +50,8 @@ struct MailboxScreen: View {
             )
         )
         self.notificationAuthorizationStore = notificationAuthorizationStore
-        self.onboardingStore = .init(userDefaults: userDefaults)
         self.userSession = userSession
-        self.sendResultPresenter = sendResultPresenter
+        self.userDefaults = userDefaults
     }
 
     var didAppear: ((Self) -> Void)?
@@ -87,7 +84,7 @@ struct MailboxScreen: View {
                     input: $mailboxModel.state.moveToSheetPresented
                 )
                 .fullScreenCover(isPresented: $mailboxModel.state.isSearchPresented) {
-                    SearchScreen(userSession: userSession, sendResultPresenter: sendResultPresenter)
+                    SearchScreen(userSession: userSession)
                 }
                 .fullScreenCover(item: $mailboxModel.state.attachmentPresented) { config in
                     AttachmentView(config: config)
@@ -115,7 +112,7 @@ struct MailboxScreen: View {
     }
 
     private func onboardingScreenDismissed() {
-        onboardingStore.shouldShowOnboarding = false
+        userDefaults[.hasSeenAlphaOnboarding] = true
 
         Task {
             await presentAppropriateIntroductoryView()
@@ -136,7 +133,7 @@ struct MailboxScreen: View {
     }
 
     private func calculateIntroductionProgress() async -> IntroductionProgress {
-        if onboardingStore.shouldShowOnboarding {
+        if !userDefaults[.hasSeenAlphaOnboarding] {
             return .onboarding
         } else if await notificationAuthorizationStore.shouldRequestAuthorization(trigger: .onboardingFinished) {
             return .notifications
@@ -246,8 +243,7 @@ extension MailboxScreen {
         notificationAuthorizationStore: .init(userDefaults: userDefaults),
         userSession: .init(noPointer: .init()),
         userDefaults: userDefaults,
-        draftPresenter: .dummy(),
-        sendResultPresenter: .init(draftPresenter: .dummy())
+        draftPresenter: .dummy()
     )
     .environmentObject(appUIStateStore)
     .environmentObject(toastStateStore)

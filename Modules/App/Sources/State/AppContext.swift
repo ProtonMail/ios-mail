@@ -46,8 +46,13 @@ final class AppContext: Sendable, ObservableObject {
         return mailContext
     }
 
+    var errors: AnyPublisher<Error, Never> {
+        errorSubject.eraseToAnyPublisher()
+    }
+
     private var _mailSession: MailSession!
     private let dependencies: AppContext.Dependencies
+    private let errorSubject = PassthroughSubject<Error, Never>()
     private var cancellables = Set<AnyCancellable>()
 
     private(set) var userDefaults: UserDefaults!
@@ -74,7 +79,13 @@ final class AppContext: Sendable, ObservableObject {
         let params = MailSessionParamsFactory.make(apiConfig: apiConfig)
         accountChallengeCoordinator = .init(apiConfigProvider: { apiConfig })
 
-        _mailSession = try createMailSession(params: params, keyChain: dependencies.keychain, hvNotifier: accountChallengeCoordinator).get()
+        _mailSession = try createMailSession(
+            params: params,
+            keyChain: dependencies.keychain,
+            hvNotifier: accountChallengeCoordinator,
+            deviceInfoProvider: ChallengePayloadProvider()
+        ).get()
+
         _mailSession.pauseWork()
         AppLogger.log(message: "MailSession init | \(AppVersionProvider().fullVersion) | \(apiConfig.envId.domain)", category: .rustLibrary)
 
@@ -82,6 +93,7 @@ final class AppContext: Sendable, ObservableObject {
         setupAccountBindings()
 
         if let currentSession = accountAuthCoordinator.primaryAccountSignedInSession() {
+            sessionState = .restoring
             setupActiveUserSession(session: currentSession)
         }
     }
@@ -94,6 +106,9 @@ extension AppContext {
             .receive(on: DispatchQueue.main)
             .sink { [weak self] newSession in
                 guard let self else { return }
+
+                userDefaults[.primaryAccountSessionId] = newSession?.sessionId()
+
                 guard let primaryAccountSession = newSession else {
                     userDefaultsCleaner.cleanUp()
                     withAnimation { self.sessionState = .noSession }
@@ -110,16 +125,22 @@ extension AppContext {
 
     @MainActor
     private func setupActiveUserSession(session: StoredSession) {
-        animateTransition(into: .activeSessionTransition)
-
         Task {
             do {
+                if let existingSession = try await mailSession.initializedUserContextFromSession(session: session).get() {
+                    animateTransition(into: .activeSession(session: existingSession))
+                    return
+                }
+
+                sessionState = .initializing
+
                 if let newUserSession = try await self.initializeUserSession(session: session) {
-                     self.animateTransition(into: .activeSession(session: newUserSession))
+                    animateTransition(into: .activeSession(session: newUserSession))
                 }
                 AppLogger.log(message: "initializeUserSession finished", category: .userSessions)
             } catch {
                 AppLogger.log(error: error, category: .userSessions)
+                errorSubject.send(error)
             }
         }
     }
@@ -142,6 +163,7 @@ extension AppContext {
                 let earliestNextAttemptTime = start + minimumTimeBetweenRetries
                 try await Task.sleep(until: earliestNextAttemptTime)
             case .error(let error):
+                try await mailSession.deleteAccount(userId: session.userId()).get()
                 throw error
             }
         }
@@ -151,7 +173,7 @@ extension AppContext {
 
     @MainActor
     private func animateTransition(into newSessionState: SessionState) {
-        withAnimation { sessionState = newSessionState }
+        withAnimation(.easeInOut) { sessionState = newSessionState }
     }
 }
 

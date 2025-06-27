@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Proton Technologies AG
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -20,13 +20,13 @@ import InboxCoreUI
 import UIKit
 
 enum ContactItemCellPresenter {
-    static func present(item: ContactItem, in cell: ContactCell) {
+    static func present(item: ContactItemUIRepresentable, in cell: ContactCell) {
         cell.avatarLabel.text = item.avatarInformation.text
         cell.avatarLabel.backgroundColor = UIColor(hex: item.avatarInformation.color)
 
         cell.labelsView.titleLabel.text = item.name
 
-        cell.labelsView.subtitleLabel.text = item.emails.first?.email
-        cell.labelsView.subtitleLabel.isHidden = item.emails.isEmpty
+        cell.labelsView.subtitleLabel.text = item.displayEmail
+        cell.labelsView.subtitleLabel.isHidden = item.displayEmail == nil
     }
 }

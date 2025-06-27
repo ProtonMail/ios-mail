@@ -22,18 +22,23 @@ struct OnboardingPageView: View {
     let model: OnboardingPage
 
     var body: some View {
-        VStack(spacing: DS.Spacing.extraLarge) {
-            Color.clear
-                .aspectRatio(1.5, contentMode: .fill)
-                .frame(maxWidth: .infinity)
-                .overlay(alignment: .center) {
-                    Image(model.image)
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                }
-            texts(title: model.title, subtitle: model.subtitle)
+        VStack(alignment: .center, spacing: DS.Spacing.extraLarge) {
+            ZStack {
+                Text(verbatim: " ")
+                    .lineLimit(2, reservesSpace: true)
+
+                Text(model.title)
+            }
+            .font(.system(size: 22, weight: .bold))
+            .foregroundStyle(DS.Color.Text.norm)
+            .fixedSize(horizontal: false, vertical: true)
+
+            Image(model.image)
+
+            texts(title: model.subtitle, subtitle: model.text)
         }
-        .padding(.horizontal, DS.Spacing.large)
+        .multilineTextAlignment(.center)
+        .padding(.horizontal, DS.Spacing.huge)
     }
 
     private func texts(title: LocalizedStringResource, subtitle: LocalizedStringResource) -> some View {
@@ -47,7 +52,6 @@ struct OnboardingPageView: View {
                 .font(.subheadline)
                 .fontWeight(.regular)
                 .foregroundStyle(DS.Color.Text.weak)
-                .multilineTextAlignment(.center)
                 .fixedSize(horizontal: false, vertical: true)
         }
     }

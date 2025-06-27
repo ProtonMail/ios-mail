@@ -41,8 +41,15 @@ final class SelectionMode {
  This class is agnostic of Messages and Conversations and so it works for both.
  */
 final class SelectionModeState: ObservableObject {
-    var hasItems: Bool { !selectedItems.isEmpty }
+    var hasItems: Bool { !selectedItems.isEmpty || isSelectAllEnabled }
+    var canSelectMoreItems: Bool { remainingSelectionLimit > 0 }
+
     @Published fileprivate(set) var selectedItems: Set<MailboxSelectedItem>
+    @Published fileprivate(set) var isSelectAllEnabled: Bool = false
+
+    private let selectionLimit = 100
+
+    fileprivate var remainingSelectionLimit: Int { selectionLimit - selectedItems.count }
 
     init(selectedItems: Set<MailboxSelectedItem> = .init()) {
         self.selectedItems = selectedItems
@@ -59,16 +66,38 @@ final class SelectionModeStateModifier: @unchecked Sendable {
         self.state = state
     }
 
-    func addMailboxItem(_ item: MailboxSelectedItem) {
+    @discardableResult
+    func addMailboxItem(_ item: MailboxSelectedItem) -> Bool {
+        guard state.canSelectMoreItems else { return false }
         state.selectedItems.insert(item)
+        return true
     }
 
     func removeMailboxItem(_ item: MailboxSelectedItem) {
         state.selectedItems.remove(item)
+        state.isSelectAllEnabled = false
     }
 
     func exitSelectionMode() {
+        deselectAll(stayingInSelectAllMode: false)
+    }
+
+    func enterSelectAllMode(selecting items: [MailboxSelectedItem]) {
+        let numberOfItemsToSelect = min(items.count, state.remainingSelectionLimit)
+        state.selectedItems.formUnion(items[..<numberOfItemsToSelect])
+        state.isSelectAllEnabled = true
+    }
+
+    func exitSelectAllMode() {
+        state.isSelectAllEnabled = false
+    }
+
+    func deselectAll(stayingInSelectAllMode: Bool) {
         state.selectedItems.removeAll()
+
+        if !stayingInSelectAllMode {
+            state.isSelectAllEnabled = false
+        }
     }
 
     /**
@@ -78,7 +107,8 @@ final class SelectionModeStateModifier: @unchecked Sendable {
     @MainActor
     func refreshSelectedItemsStatus(newMailboxItems: [MailboxItemCellUIModel]) {
         let currentSelectedIds = state.selectedItems.map(\.id)
-        let matchingItems = newMailboxItems
+        let matchingItems =
+            newMailboxItems
             .filter { currentSelectedIds.contains($0.id) }
             .map { $0.toSelectedItem() }
 

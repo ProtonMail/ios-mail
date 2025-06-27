@@ -278,8 +278,8 @@ final class MailboxItemCellUIModel: Identifiable, Sendable {
 
 extension MailboxItemCellUIModel: Hashable {
     static func == (lhs: MailboxItemCellUIModel, rhs: MailboxItemCellUIModel) -> Bool {
-        lhs.type == rhs.type 
-        && lhs.id == rhs.id
+        lhs.type == rhs.type
+            && lhs.id == rhs.id
     }
 
     func hash(into hasher: inout Hasher) {
@@ -376,7 +376,7 @@ enum MailboxItemCellEvent {
                 attachmentsUIModel: [
                     .init(id: .init(value: 1), icon: DS.Icon.icFileTypeIconPdf, name: "today_meeting_minutes.doc"),
                     .init(id: .init(value: 2), icon: DS.Icon.icFileTypeIconPdf, name: "appendix1.pdf"),
-                    .init(id: .init(value: 3), icon: DS.Icon.icFileTypeIconPdf, name: "appendix2.pdf")
+                    .init(id: .init(value: 3), icon: DS.Icon.icFileTypeIconPdf, name: "appendix2.pdf"),
                 ],
                 replyIcons: .init(shouldShowRepliedAllIcon: true),
                 expirationDate: .now + 500,

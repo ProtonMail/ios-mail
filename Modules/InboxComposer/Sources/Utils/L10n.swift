@@ -114,6 +114,12 @@ enum L10n {
             bundle: .atURL(Bundle.module.bundleURL),
             comment: "Undo action after message has been sent."
         )
+
+        static let senderPickerSheetTitle = LocalizedStringResource(
+            "From",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Title for the sender picker action sheet."
+        )
     }
 
     enum Attachments {
@@ -267,7 +273,7 @@ enum L10n {
         )
 
         static let draftDiscardFailed = LocalizedStringResource(
-            "There was a problem discarding the draft",
+            "Draft wasn't discarded. Try discarding it agian.",
             bundle: .atURL(Bundle.module.bundleURL),
             comment: "Error shown when the draft fails to delete."
         )
@@ -286,147 +292,128 @@ enum L10n {
     }
 
     enum DraftSaveError {
-
         static func addressDisabled(address: String) -> LocalizedStringResource {
             LocalizedStringResource(
-                "The address is disabled: \(address)",
+                "Disabled email address. Check that the address is valid and active.",
                 comment: "Error in the context of saving a draft before being sent."
             )
         }
 
-        static func addressDoesNotHavePrimaryKey(address: String) -> LocalizedStringResource {
-            LocalizedStringResource(
-                "Recipient primary key is missing: \(address)",
-                comment: "Error in the context of saving a draft before being sent."
-            )
-        }
+        static let addressDoesNotHavePrimaryKey = LocalizedStringResource(
+            "Issue with this email address. Check the address or try again later.",
+            comment: "Error in the context of saving a draft before being sent."
+        )
 
         static let messageAlreadySent = LocalizedStringResource(
-            "The message was already sent",
+            "Message was already sent",
             comment: "Error in the context of saving a draft before being sent."
         )
 
         static let messageDoesNotExist = LocalizedStringResource(
-            "The draft to be sent was not found",
+            "The draft was not found",
             comment: "Error in the context of saving a draft before being sent."
         )
 
         static let messageIsNotADraft = LocalizedStringResource(
-            "The message to be sent is not a draft",
+            "The message is not a draft",
             comment: "Error in the context of saving a draft before being sent."
         )
 
-        static func protonRecipientNotFound(address: String) -> LocalizedStringResource {
-            LocalizedStringResource(
-                "The Proton address in the recipient does not exist: \(address)",
-                comment: "Error in the context of saving a draft before being sent."
-            )
-        }
+        static let protonRecipientNotFound = LocalizedStringResource(
+            "Address not recognized. Please check the address.",
+            comment: "Error in the context of saving a draft before being sent."
+        )
 
-        static func recipientInvalidAddress(address: String) -> LocalizedStringResource {
-            LocalizedStringResource(
-                "Recipient address is invalid: \(address)",
-                comment: "Error in the context of saving a draft before being sent."
-            )
-        }
-
-        static func unknownRecipientValidation(address: String) -> LocalizedStringResource {
-            LocalizedStringResource(
-                "The recipient is unknown: \(address)",
-                comment: "Error in the context of saving a draft before being sent."
-            )
-        }
+        static let recipientInvalidAddress = LocalizedStringResource(
+            "Invalid email address. Check address and try again.",
+            comment: "Error in the context of saving a draft before being sent."
+        )
     }
-
 
     enum DraftSendError {
 
         static func addressDisabled(address: String) -> LocalizedStringResource {
             LocalizedStringResource(
-                "The address is disabled: \(address)",
+                "Disabled email address. Check that the address is valid and active.",
                 comment: "Error in the context of sending a draft before being sent."
             )
         }
 
         static func addressDoesNotHavePrimaryKey(address: String) -> LocalizedStringResource {
             LocalizedStringResource(
-                "Recipient primary key is missing: \(address)",
+                "Issue with this email address. Check the address or try again later.",
                 comment: "Error in the context of sending a draft before being sent."
             )
         }
 
         static let messageAlreadySent = LocalizedStringResource(
-            "The message was already sent",
+            "Message was already sent",
             comment: "Error in the context of sending a draft before being sent."
         )
 
         static let messageDoesNotExist = LocalizedStringResource(
-            "The draft to be sent was not found",
+            "Draft not found. You may have discarded it.",
             comment: "Error in the context of sending a draft before being sent."
         )
 
         static let messageIsNotADraft = LocalizedStringResource(
-            "The message to be sent is not a draft",
+            "Draft not found. You may have sent it already.",
             comment: "Error in the context of sending a draft before being sent."
         )
 
         static let missingAttachmentUploads = LocalizedStringResource(
-            "The attachment is missing",
+            "Attachment is missing. Please upload again.",
             comment: "Error in the context of managing attachments in a draft."
         )
 
         static let noRecipients = LocalizedStringResource(
-            "Message to be sent has no recipients",
+            "Please add at least one recipient",
             comment: "Error in the context of sending a draft before being sent."
         )
 
-        static func packageError(error: String) -> LocalizedStringResource {
-            LocalizedStringResource(
-                "There was a problem sending the message: \(error)",
-                comment: "Error in the context of sending a draft before being sent."
-            )
-        }
+        static let packageError = LocalizedStringResource(
+            "Problem sending message. Please try again.",
+            comment: "Error in the context of sending a draft before being sent."
+        )
 
         static func protonRecipientNotFound(address: String) -> LocalizedStringResource {
             LocalizedStringResource(
-                "The Proton address in the recipient does not exist: \(address)",
+                "Address not recognized. Please check the address.",
                 comment: "Error in the context of saving a draft before being sent."
             )
         }
 
         static func recipientInvalidAddress(address: String) -> LocalizedStringResource {
             LocalizedStringResource(
-                "Recipient address is invalid: \(address)",
+                "Invalid email address. Please check the address.",
                 comment: "Error in the context of saving a draft before being sent."
             )
         }
 
         static let scheduleSendExpired = LocalizedStringResource(
-            "The scheduled send date has expired",
+            "Scheduled send time is in the past. Go to Drafts to send or reschedule it.",
             comment: "Error in the context of setting a schedule time for a message."
         )
 
-        static func unknownRecipientValidation(address: String) -> LocalizedStringResource {
-            LocalizedStringResource(
-                "The recipient is unknown: \(address)",
-                comment: "Error in the context of sending a draft before being sent."
-            )
-        }
+        static let scheduleSendMessageLimitExceeded = LocalizedStringResource(
+            "You reached the limit of scheduled messages",
+            comment: "Error in the context of scheduling a message."
+        )
     }
 
     enum DraftAttachmentUploadError {
         static let attachmentTooLarge = LocalizedStringResource(
-            "The attachments is too large",
+            "Attachments too large. Keep attachment size under 25 MB.",
             comment: "Error in the context of saving a draft before being sent."
         )
 
         static let crypto = LocalizedStringResource(
-            "There was a problem encrypting attachment",
+            "Problem encrypting attachment. Please upload it again.",
             comment: "Error in the context of saving a draft before being sent."
         )
 
         static let messageAlreadySent = LocalizedStringResource(
-            "The message has been already sent",
+            "Message was already sent",
             comment: "Error in the context of saving a draft before being sent."
         )
 
@@ -436,42 +423,59 @@ enum L10n {
         )
 
         static let messageDoesNotExistOnServer = LocalizedStringResource(
-            "Message does not exist on the server",
+            "Message was not found on the server",
             comment: "Error in the context of saving a draft before being sent."
         )
 
         static let retryInvalidState = LocalizedStringResource(
-            "Retry failed, please remove the attachment",
+            "Retry not possible. Attachment is uploading or already uploaded.",
             comment: "Error in the context of retrying to upload a draft."
         )
 
         static let tooManyAttachments = LocalizedStringResource(
-            "The limit of attachments has been reached",
+            "Too many attachments. Send them in multiple emails.",
             comment: "Error in the context of saving a draft before being sent."
+        )
+    }
+
+    enum DraftSenderAddressChangeError {
+        static let addressEmailNotFound = LocalizedStringResource(
+            "Address not found",  // FIXME: Check
+            comment: "Error in the context of changing the sender with a wrong sender address."
+        )
+
+        static let addressNotSendEnabled = LocalizedStringResource(
+            "Address cannot be used to send messages",
+            comment: "Error in the context of changing the sender with a disabled sender address."
+        )
+
+        static let addressDisabled = LocalizedStringResource(
+            "Address is disabled",
+            comment: "Error in the context of changing the sender with a disabled sender address."
         )
     }
 
     enum OpenDraftError {
         static let addressNotFound = LocalizedStringResource(
-            "Address not found",
+            "Address not found. Add again or reopen the draft.",
             bundle: .atURL(Bundle.module.bundleURL),
             comment: "Error in the context of opening a draft in the composer"
         )
 
         static let draftDoesNotExist = LocalizedStringResource(
-            "Draft not found",
+            "Message not found. You may have sent or discarded it.",
             bundle: .atURL(Bundle.module.bundleURL),
             comment: "Error in the context of opening a draft in the composer"
         )
 
         static let missingMessageBody = LocalizedStringResource(
-            "Draft body is missing",
+            "Message body wasn't retrieved. Close and reopen the draft.",
             bundle: .atURL(Bundle.module.bundleURL),
             comment: "Error in the context of opening a draft in the composer"
         )
 
         static let cantReplyOrForward = LocalizedStringResource(
-            "Error trying to reply or forward this message",
+            "Problem performing that action. Please try again.",
             bundle: .atURL(Bundle.module.bundleURL),
             comment: "Error in the context of opening a draft in the composer"
         )

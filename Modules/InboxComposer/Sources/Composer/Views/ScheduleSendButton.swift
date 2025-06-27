@@ -31,8 +31,11 @@ struct ScheduleSendButton: View {
             action: onTap,
             label: {
                 Image(DS.Icon.icClockPaperPlane)
+                    .resizable()
+                    .square(size: 24)
                     .foregroundStyle(iconColor)
             }
         )
+        .square(size: 40)
     }
 }

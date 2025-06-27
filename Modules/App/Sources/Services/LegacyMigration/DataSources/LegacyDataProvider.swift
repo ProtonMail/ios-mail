@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import InboxCore
 
 struct LegacyDataProvider {
     enum Key: String, CaseIterable {
@@ -42,14 +43,5 @@ struct LegacyDataProvider {
 
     func removeAll() {
         userDefaults.removePersistentDomain(forName: userDefaults.suiteName)
-    }
-}
-
-final class TestableUserDefaults: UserDefaults {
-    let suiteName: String
-
-    init(suiteName: String) {
-        self.suiteName = suiteName
-        super.init(suiteName: suiteName)!
     }
 }

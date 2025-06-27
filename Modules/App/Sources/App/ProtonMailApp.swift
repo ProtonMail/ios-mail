@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Combine
+import InboxCore
 import InboxCoreUI
 import InboxDesignSystem
 import proton_app_uniffi
@@ -25,6 +26,7 @@ struct ProtonMailApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
 
     // declaration of state objects
+    private let analytics = Analytics()
     private let appUIStateStore = AppUIStateStore()
     private let legacyMigrationStateStore: LegacyMigrationStateStore
     private let toastStateStore = ToastStateStore(initialState: .initial)
@@ -49,6 +51,13 @@ struct ProtonMailApp: App {
 
     init() {
         legacyMigrationStateStore = .init(toastStateStore: toastStateStore)
+        configureAnalyticsIfNeeded(analytics: analytics)
+    }
+
+    func configureAnalyticsIfNeeded(analytics: Analytics) {
+        if AnalyticsState.shouldConfigureAnalytics {
+            analytics.configure()
+        }
     }
 }
 
@@ -59,21 +68,13 @@ private struct RootView: View {
 
     // The route determines the screen that will be rendered
     @ObservedObject private var appContext: AppContext
-    @StateObject private var emailsPrefetchingTrigger: EmailsPrefetchingTrigger
 
     private let recurringBackgroundTaskScheduler: RecurringBackgroundTaskScheduler
 
     init(
-        appContext: AppContext,
-        emailsPrefetchingNotifier: EmailsPrefetchingNotifier = EmailsPrefetchingNotifier.shared
+        appContext: AppContext
     ) {
         self.appContext = appContext
-        self._emailsPrefetchingTrigger = .init(
-            wrappedValue: .init(
-                emailsPrefetchingNotifier: emailsPrefetchingNotifier,
-                sessionProvider: appContext,
-                prefetch: prefetch
-            ))
         self.recurringBackgroundTaskScheduler = .init(
             backgroundTaskExecutorProvider: { appContext.mailSession }
         )
@@ -83,18 +84,15 @@ private struct RootView: View {
         mainView()
             .onAppear {
                 sceneDelegate.toastStateStore = toastStateStore
+                observeAndDisplayAppContextErrors()
             }
             .onChange(of: appContext.sessionState) { old, new in
                 if new.isAuthorized {
-                    EmailsPrefetchingNotifier.shared.notify()
                     submitBackgroundTask()
                 }
                 if new == .noSession {
                     recurringBackgroundTaskScheduler.cancel()
                 }
-            }
-            .onLoad {
-                emailsPrefetchingTrigger.setUpSubscription()
             }
     }
 
@@ -116,13 +114,17 @@ private struct RootView: View {
                     )
                     .id(activeUserSession.userId())  // Forces the child view to be recreated when the user account changes
 
-                case .activeSessionTransition:
+                case .initializing:
                     SessionTransitionScreen()
+
+                case .restoring:
+                    // This is needed to cover the delay between app launch and SDK returning an existing session
+                    // otherwise we would be flashing the welcome screen
+                    EmptyView()
                 }
             }
             .transition(.opacity)
         }
-        .animation(.easeInOut, value: appContext.sessionState)
     }
 
     @ViewBuilder
@@ -140,7 +142,7 @@ private struct RootView: View {
             )
         case .pinRequired(let errorFromLatestAttempt):
             PINLockScreen(
-                state: .init(hideLogoutButton: false, pin: .empty),
+                state: .init(pin: .empty),
                 error: .constant(errorFromLatestAttempt.map(PINAuthenticationError.custom))
             ) { output in
                 switch output {
@@ -155,6 +157,14 @@ private struct RootView: View {
         }
     }
 
+    private func observeAndDisplayAppContextErrors() {
+        Task { @MainActor in
+            for await error in AppContext.shared.errors.values {
+                toastStateStore.present(toast: .error(message: error.localizedDescription))
+            }
+        }
+    }
+
     private func submitBackgroundTask() {
         Task {
             await recurringBackgroundTaskScheduler.submit()
@@ -163,30 +173,18 @@ private struct RootView: View {
 }
 
 private struct SessionTransitionScreen: View {
-    @State private var showLoadingScreen = false
-
     private let userDefaultsWithPromptsDisabled: UserDefaults = {
         let userDefaults = UserDefaults(suiteName: "transition")!
-        userDefaults.set(false, forKey: UserDefaultsKey.showAlphaV1Onboarding.rawValue)
-        userDefaults[.notificationAuthorizationRequestDates] = [Date.now]
+        userDefaults[.hasSeenAlphaOnboarding] = true
+        userDefaults[.notificationAuthorizationRequestDates] = [.now]
         return userDefaults
     }()
 
     var body: some View {
-        if showLoadingScreen {
-            ZStack {
-                fakeMailboxScreen
+        ZStack {
+            fakeMailboxScreen
 
-                progressView
-            }
-        } else {
-            Color.clear
-                .onLoad {
-                    Task {
-                        try await Task.sleep(for: .seconds(1))
-                        showLoadingScreen = true
-                    }
-                }
+            progressView
         }
     }
 
@@ -197,8 +195,7 @@ private struct SessionTransitionScreen: View {
             notificationAuthorizationStore: .init(userDefaults: userDefaultsWithPromptsDisabled),
             userSession: .init(noPointer: .init()),
             userDefaults: userDefaultsWithPromptsDisabled,
-            draftPresenter: .dummy(),
-            sendResultPresenter: .init(draftPresenter: .dummy())
+            draftPresenter: .dummy()
         )
         .blur(radius: 5)
         .allowsHitTesting(false)

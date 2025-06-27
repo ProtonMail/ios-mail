@@ -23,7 +23,15 @@ final class SelectionModeTests: XCTestCase {
     private var sut: SelectionMode!
 
     override func setUp() {
+        super.setUp()
+
         sut = .init()
+    }
+
+    override func tearDown() {
+        sut = nil
+
+        super.tearDown()
     }
 
     func testInit() {
@@ -42,7 +50,7 @@ final class SelectionModeTests: XCTestCase {
             .testData(id: 1),
             .testData(id: 2),
         ]
-        items.forEach(sut.selectionModifier.addMailboxItem(_:))
+        items.forEach { sut.selectionModifier.addMailboxItem($0) }
 
         XCTAssertEqual(sut.selectionState.hasItems, true)
         XCTAssertEqual(sut.selectionState.selectedItems, Set(items))
@@ -83,14 +91,14 @@ final class SelectionModeTests: XCTestCase {
             .testData(id: 1, isRead: false, isStarred: false),
             .testData(id: 2, isRead: false, isStarred: false),
         ]
-        items.forEach(sut.selectionModifier.addMailboxItem(_:))
+        items.forEach { sut.selectionModifier.addMailboxItem($0) }
         XCTAssertEqual(sut.selectionState.hasItems, true)
         XCTAssertEqual(sut.selectionState.selectedItems, Set(items))
 
         sut.selectionModifier.refreshSelectedItemsStatus(
             newMailboxItems: [
                 makeMailboxItemCellUIModel(id: 1, isRead: true, isStarred: true),
-                makeMailboxItemCellUIModel(id: 2, isRead: true, isStarred: true)
+                makeMailboxItemCellUIModel(id: 2, isRead: true, isStarred: true),
             ]
         )
         XCTAssertEqual(sut.selectionState.hasItems, true)
@@ -108,13 +116,13 @@ final class SelectionModeTests: XCTestCase {
             .testData(id: 1, isRead: true, isStarred: true),
             .testData(id: 2, isRead: true, isStarred: true),
         ]
-        items.forEach(sut.selectionModifier.addMailboxItem(_:))
+        items.forEach { sut.selectionModifier.addMailboxItem($0) }
         XCTAssertEqual(sut.selectionState.hasItems, true)
         XCTAssertEqual(sut.selectionState.selectedItems, Set(items))
 
         sut.selectionModifier.refreshSelectedItemsStatus(newMailboxItems: [
             makeMailboxItemCellUIModel(id: 1, isRead: true, isStarred: true),
-            makeMailboxItemCellUIModel(id: 2, isRead: true, isStarred: true)
+            makeMailboxItemCellUIModel(id: 2, isRead: true, isStarred: true),
         ])
 
         XCTAssertEqual(sut.selectionState.hasItems, true)
@@ -125,7 +133,7 @@ final class SelectionModeTests: XCTestCase {
     func testRefreshSelectedItemsStatus_whenLessItemsAreReturned_itRemovesTheNotReturnedItemsFromSelection() {
         let item1 = MailboxSelectedItem.testData(id: 1, isRead: true, isStarred: true)
         let item2 = MailboxSelectedItem.testData(id: 2, isRead: true, isStarred: true)
-        [item1, item2].forEach(sut.selectionModifier.addMailboxItem(_:))
+        [item1, item2].forEach { sut.selectionModifier.addMailboxItem($0) }
         XCTAssertEqual(sut.selectionState.hasItems, true)
         XCTAssertEqual(sut.selectionState.selectedItems, [item1, item2])
 
@@ -150,12 +158,99 @@ final class SelectionModeTests: XCTestCase {
             .testData(id: 1, isStarred: false),
             .testData(id: 2, isStarred: false),
         ]
-        items.forEach(sut.selectionModifier.addMailboxItem(_:))
+        items.forEach { sut.selectionModifier.addMailboxItem($0) }
         XCTAssertEqual(sut.selectionState.hasItems, true)
 
         sut.selectionModifier.exitSelectionMode()
         XCTAssertEqual(sut.selectionState.hasItems, false)
         XCTAssertEqual(sut.selectionState.selectedItems, [])
+    }
+
+    // MARK: Selection limit
+
+    func testWhenSelectionLimitIsReached_cannotSelectMoreItemsUntilRoomIsGiven() {
+        let items: [MailboxSelectedItem] = (0...101).map { .testData(id: $0) }
+
+        for item in items {
+            sut.selectionModifier.addMailboxItem(item)
+        }
+
+        XCTAssertEqual(sut.selectionState.selectedItems, Set(items[0..<100]))
+
+        sut.selectionModifier.removeMailboxItem(items[0])
+        sut.selectionModifier.addMailboxItem(items[100])
+
+        XCTAssertEqual(sut.selectionState.selectedItems, Set(items[1..<101]))
+    }
+
+    func testAddMailboxItem_reportsSuccess() {
+        let items: [MailboxSelectedItem] = (0...101).map { .testData(id: $0) }
+
+        let results: [Bool] = items.map(sut.selectionModifier.addMailboxItem)
+
+        XCTAssertEqual(results[0..<100], .init(repeating: true, count: 100))
+        XCTAssertEqual(results[100], false)
+    }
+
+    // MARK: Select All
+
+    func testInSelectAllMode_whenDeselectingAllAtOnce_HasItemsRemainsTrue() {
+        let items: [MailboxSelectedItem] = [
+            .testData(id: 1),
+            .testData(id: 2),
+        ]
+
+        sut.selectionModifier.enterSelectAllMode(selecting: items)
+        sut.selectionModifier.deselectAll(stayingInSelectAllMode: true)
+
+        XCTAssertEqual(sut.selectionState.hasItems, true)
+        XCTAssertEqual(sut.selectionState.selectedItems, [])
+    }
+
+    func testInSelectAllMode_whenRemovingSingleItem_selectAllModeIsEnded() {
+        let items: [MailboxSelectedItem] = [
+            .testData(id: 1),
+            .testData(id: 2),
+        ]
+
+        sut.selectionModifier.enterSelectAllMode(selecting: items)
+        sut.selectionModifier.removeMailboxItem(items[0])
+
+        XCTAssertEqual(sut.selectionState.isSelectAllEnabled, false)
+    }
+
+    func testInSelectAllMode_whenExitingSelectAllMode_selectionIsPreserved() {
+        let items: [MailboxSelectedItem] = [
+            .testData(id: 1),
+            .testData(id: 2),
+        ]
+
+        sut.selectionModifier.enterSelectAllMode(selecting: items)
+        sut.selectionModifier.exitSelectAllMode()
+
+        XCTAssertEqual(sut.selectionState.selectedItems, Set(items))
+        XCTAssertEqual(sut.selectionState.isSelectAllEnabled, false)
+    }
+
+    func testInSelectAllMode_whenExitingSelectionMode_everythingIsCleared() {
+        let items: [MailboxSelectedItem] = [
+            .testData(id: 1),
+            .testData(id: 2),
+        ]
+
+        sut.selectionModifier.enterSelectAllMode(selecting: items)
+        sut.selectionModifier.exitSelectionMode()
+
+        XCTAssertEqual(sut.selectionState.selectedItems, [])
+        XCTAssertEqual(sut.selectionState.isSelectAllEnabled, false)
+    }
+
+    func testEnteringSelectAllModeRespectsSelectionLimit() {
+        let items: [MailboxSelectedItem] = (0...101).map { .testData(id: $0) }
+
+        sut.selectionModifier.enterSelectAllMode(selecting: items)
+
+        XCTAssertEqual(sut.selectionState.selectedItems, Set(items[0..<100]))
     }
 }
 

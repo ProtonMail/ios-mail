@@ -15,29 +15,29 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import InboxCore
 import Combine
+import InboxCore
+import InboxCoreUI
 import proton_app_uniffi
 
 class LockScreenStore: StateStore {
     @Published var state: LockScreenState
     private let pinVerifier: PINVerifier
+    private let biometricAuthorizationNotifier: () -> BiometricAuthorizationNotifier
     private let signOutService: SignOutService
     private let dismissLock: () -> Void
 
     init(
         state: LockScreenState,
         pinVerifier: PINVerifier,
-        mailUserSession: @escaping @Sendable () -> MailUserSession = { AppContext.shared.userSession },
-        signOutAllAccountsWrapper: SignOutAllAccountsWrapper = .productionInstance,
+        mailSession: @escaping @Sendable () -> MailSessionProtocol = { AppContext.shared.mailSession },
+        biometricAuthorizationNotifier: @escaping @Sendable () -> BiometricAuthorizationNotifier = { AppContext.shared.mailSession },
         dismissLock: @escaping () -> Void
     ) {
         self.state = state
         self.pinVerifier = pinVerifier
-        self.signOutService = .init(
-            mailUserSession: mailUserSession,
-            signOutAllAccountsWrapper: signOutAllAccountsWrapper
-        )
+        self.signOutService = .init(mailSession: mailSession)
+        self.biometricAuthorizationNotifier = biometricAuthorizationNotifier
         self.dismissLock = dismissLock
     }
 
@@ -47,6 +47,7 @@ class LockScreenStore: StateStore {
         case .biometric(let output):
             switch output {
             case .authenticated:
+                biometricAuthorizationNotifier().biometricsCheckPassed()
                 dismissLock()
             case .logOut:
                 await signOutAllAccounts()

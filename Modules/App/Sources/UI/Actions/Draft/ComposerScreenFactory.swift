@@ -42,6 +42,32 @@ struct ComposerScreenFactory {
             )
         }
     }
+
+    @MainActor
+    static func makeComposer(
+        userSession: MailUserSession,
+        draftToPresent: DraftToPresent,
+        onDismiss: @escaping (ComposerDismissReason) -> Void
+    ) -> ComposerScreen {
+        let contactProvider: ComposerContactProvider = .productionInstance(session: userSession)
+        let dependencies = ComposerScreen.Dependencies(contactProvider: contactProvider, userSession: userSession)
+        return switch draftToPresent {
+        case .new(let draft):
+            ComposerScreen(
+                draft: draft,
+                draftOrigin: .new,
+                dependencies: dependencies,
+                onDismiss: onDismiss
+            )
+        case .openDraftId(let messageId, let lastScheduledTime):
+            ComposerScreen(
+                messageId: messageId,
+                messageLastScheduledTime: lastScheduledTime,
+                dependencies: dependencies,
+                onDismiss: onDismiss
+            )
+        }
+    }
 }
 
 struct ComposerParams {

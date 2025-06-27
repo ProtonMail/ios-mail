@@ -17,6 +17,7 @@
 
 @testable import ProtonMail
 import AccountLogin
+import InboxCore
 import InboxCoreUI
 import InboxKeychain
 import InboxTesting
@@ -79,14 +80,14 @@ class HomeScreenTests: BaseTestCase {
 
     // MARK: - Private
 
-    private let key = UserDefaultsKey.showAlphaV1Onboarding.rawValue
+    private let key = UserDefaultsKey.hasSeenAlphaOnboarding
 
     private func store(value: Bool) {
-        userDefaults.setValue(value, forKey: key)
+        userDefaults[key] = value
     }
 
     private func storedValue() -> Any? {
-        userDefaults.value(forKey: key)
+        userDefaults[key]
     }
 
     private func arrange(
@@ -216,7 +217,8 @@ private extension MailUserSession {
         let mailSession = try createMailSession(
             params: params,
             keyChain: KeychainSDKWrapper(),
-            hvNotifier: nil
+            hvNotifier: nil,
+            deviceInfoProvider: nil
         ).get()
 
         let authCoordinator = AccountAuthCoordinator(productName: "mail", appContext: mailSession)

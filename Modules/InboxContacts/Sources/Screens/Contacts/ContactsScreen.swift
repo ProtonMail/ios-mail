@@ -24,6 +24,7 @@ import SwiftUI
 public struct ContactsScreen: View {
     @Environment(\.dismissTestable) var dismiss: Dismissable
     @StateObject private var store: ContactsStateStore
+    private let contactViewFactory: ContactViewFactory
 
     var onLoad: ((Self) -> Void)?
 
@@ -33,6 +34,7 @@ public struct ContactsScreen: View {
         mailUserSession: MailUserSession,
         contactsProvider: GroupedContactsProvider,
         contactsWatcher: ContactsWatcher,
+        draftPresenter: ContactsDraftPresenter
     ) {
         UISearchBar.appearance().tintColor = UIColor(DS.Color.Text.accent)
         _store = .init(
@@ -45,6 +47,7 @@ public struct ContactsScreen: View {
                 )
             )
         )
+        self.contactViewFactory = .init(mailUserSession: mailUserSession, draftPresenter: draftPresenter)
     }
 
     public var body: some View {
@@ -57,8 +60,8 @@ public struct ContactsScreen: View {
             .ignoresSafeArea()
             .navigationTitle(L10n.Contacts.title.string)
             .navigationDestination(for: ContactsRoute.self) { route in
-                route
-                    .view()
+                contactViewFactory
+                    .makeView(for: route)
                     .navigationBarBackButtonHidden()
                     .toolbar {
                         ToolbarItemFactory.back { store.router.goBack() }
@@ -108,5 +111,6 @@ public struct ContactsScreen: View {
         mailUserSession: .init(noPointer: .init()),
         contactsProvider: .previewInstance(),
         contactsWatcher: .previewInstance(),
+        draftPresenter: ContactsDraftPresenterDummy()
     )
 }

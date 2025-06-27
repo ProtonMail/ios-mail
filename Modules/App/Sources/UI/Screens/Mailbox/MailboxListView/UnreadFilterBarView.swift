@@ -20,10 +20,11 @@ import InboxCoreUI
 import SwiftUI
 
 struct UnreadFilterBarView: View {
-    @EnvironmentObject var toastStateStore: ToastStateStore
     @ScaledMetric var scale: CGFloat = 1
 
     @Binding var state: FilterBarState
+
+    let onSelectAllTapped: () -> Void
 
     var body: some View {
         HStack {
@@ -48,14 +49,12 @@ struct UnreadFilterBarView: View {
         } label: {
             HStack(spacing: DS.Spacing.small) {
                 Text(L10n.Mailbox.unread)
-                    .font(.footnote)
-                    .foregroundStyle(DS.Color.Text.weak)
                     .accessibilityIdentifier(UnreadFilterIdentifiers.countLabel)
                 Text(state.unreadCount.string)
-                    .font(.footnote)
-                    .foregroundStyle(DS.Color.Text.weak)
                     .accessibilityIdentifier(UnreadFilterIdentifiers.countValue)
             }
+            .font(.footnote)
+            .foregroundStyle(DS.Color.Text.norm)
         }
         .accessibilityAddTraits(state.isUnreadButtonSelected ? .isSelected : [])
         .padding(.vertical, DS.Spacing.standard)
@@ -72,17 +71,15 @@ struct UnreadFilterBarView: View {
 
     private func selectAllButton() -> some View {
         Button {
-            toastStateStore.present(toast: .comingSoon)
+            onSelectAllTapped()
         } label: {
-            HStack(spacing: DS.Spacing.small) {
-                Image(DS.Icon.icCheckmarkCircle)
-                    .resizable()
-                    .square(size: 16)
-                    .tint(DS.Color.Icon.norm)
-
-                Text(L10n.Mailbox.selectAll)
+            HStack(spacing: DS.Spacing.compact) {
+                Image(symbol: state.selectAll.button.icon)
                     .font(.footnote)
-                    .foregroundStyle(DS.Color.Text.weak)
+                    .tint(state.selectAll.button.iconColor)
+                Text(state.selectAll.button.text)
+                    .font(.footnote)
+                    .foregroundStyle(state.selectAll.button.textColor)
             }
         }
         .padding(.vertical, DS.Spacing.standard)
@@ -113,9 +110,39 @@ enum UnreadCounterState {
     }
 }
 
+enum SelectAllState {
+    struct ButtonStyle {
+        let icon: DS.SFSymbol
+        let iconColor: Color
+        let text: LocalizedStringResource
+        let textColor: Color
+    }
+
+    case canSelectMoreItems
+    case noMoreItemsToSelect
+    case selectionLimitReached
+
+    var button: ButtonStyle {
+        let symbol: DS.SFSymbol
+        let text: LocalizedStringResource
+
+        switch self {
+        case .canSelectMoreItems:
+            symbol = .square
+            text = L10n.Mailbox.selectAll
+        case .noMoreItemsToSelect, .selectionLimitReached:
+            symbol = .checkmarkSquare
+            text = L10n.Mailbox.unselectAll
+        }
+
+        return .init(icon: symbol, iconColor: DS.Color.Icon.norm, text: text, textColor: DS.Color.Text.norm)
+    }
+}
+
 struct FilterBarState {
     var visibilityMode: FilterBarVivibilityMode = .regular
     var isUnreadButtonSelected: Bool = false
+    var selectAll: SelectAllState = .canSelectMoreItems
     var unreadCount: UnreadCounterState = .unknown
 }
 
@@ -129,12 +156,16 @@ private struct UnreadFilterIdentifiers {
     struct Preview: View {
         @State var stateRegular: FilterBarState = .init(visibilityMode: .regular, unreadCount: .known(unreadCount: 3))
         @State var stateRegularUnknownCount: FilterBarState = .init(visibilityMode: .regular, unreadCount: .unknown)
-        @State var stateSelectionMode: FilterBarState = .init(visibilityMode: .selectionMode)
+        @State var stateSelectAllAvailable: FilterBarState = .init(visibilityMode: .selectionMode, selectAll: .canSelectMoreItems)
+        @State var stateSelectAllAllSelected: FilterBarState = .init(visibilityMode: .selectionMode, selectAll: .noMoreItemsToSelect)
+        @State var stateSelectAllDisabled: FilterBarState = .init(visibilityMode: .selectionMode, selectAll: .selectionLimitReached)
         var body: some View {
             VStack {
-                UnreadFilterBarView(state: $stateRegular)
-                UnreadFilterBarView(state: $stateRegularUnknownCount)
-                UnreadFilterBarView(state: $stateSelectionMode)
+                UnreadFilterBarView(state: $stateRegular) { fatalError("button should be hidden") }
+                UnreadFilterBarView(state: $stateRegularUnknownCount) { fatalError("button should be hidden") }
+                UnreadFilterBarView(state: $stateSelectAllAvailable) { print("select all tapped") }
+                UnreadFilterBarView(state: $stateSelectAllAllSelected) { print("select all tapped") }
+                UnreadFilterBarView(state: $stateSelectAllDisabled) { fatalError("button should be disabled") }
             }
             .border(.red)
         }

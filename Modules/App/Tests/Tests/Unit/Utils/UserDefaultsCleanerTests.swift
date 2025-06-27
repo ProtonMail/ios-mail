@@ -16,34 +16,25 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import ProtonMail
-import XCTest
-import Nimble
+import InboxCore
+import Testing
 
-class UserDefaultsCleanerTests: XCTestCase {
+final class UserDefaultsCleanerTests {
+    private let userDefaults = TestableUserDefaults.randomInstance()
+    private lazy var sut = UserDefaultsCleaner(userDefaults: userDefaults)
 
-    private var sut: UserDefaultsCleaner!
-    private var userDefaults: UserDefaults!
-
-    override func setUp() {
-        super.setUp()
-        userDefaults = .clearedTestInstance()
-        sut = .init(userDefaults: userDefaults)
+    deinit {
+        userDefaults.removePersistentDomain(forName: userDefaults.suiteName)
     }
 
-    override func tearDown() {
-        userDefaults = nil
-        sut = nil
-        super.tearDown()
-    }
-
+    @Test
     func testCleanUp_WhenThereIsDataInUserDefaults_ItCleansUpStorage() {
-        let key = UserDefaultsKey.showAlphaV1Onboarding.rawValue
+        let key = UserDefaultsKey.notificationAuthorizationRequestDates
 
-        userDefaults.setValue(true, forKey: key)
+        userDefaults[key] = [.now]
 
         sut.cleanUp()
 
-        XCTAssertNil(userDefaults.value(forKey: key))
+        #expect(userDefaults.object(forKey: key.name) == nil)
     }
-
 }

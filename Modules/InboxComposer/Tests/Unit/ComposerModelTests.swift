@@ -36,9 +36,10 @@ final class ComposerModelTests: BaseTestCase {
     private var testFilesItemsHandler: FilePickerItemHandler!
     private var filePickerTestsHelper: FilePickerItemHandlerTestsHelper!
     private var dismissReasonObserver: [ComposerDismissReason]!
-    let dummyMessageId: Id = 12345
     let dummyName1 = "dummy name"
     let dummyAddress1 = "test1@example.com"
+    let dummyValidAddress = "valid_address_format@example.com"
+    let dummyInvalidAddress = "invalid_address_format@example"
     let singleRecipient1 = ComposerRecipient.single(.init(displayName: "", address: "inbox1@pm.me", validState: .valid))
     let singleRecipient2 = ComposerRecipient.single(.init(displayName: "", address: "inbox2@pm.me", validState: .valid))
     var cancellables: Set<AnyCancellable>!
@@ -57,8 +58,7 @@ final class ComposerModelTests: BaseTestCase {
         self.testFilesItemsHandler = .init()
         self.filePickerTestsHelper = try .init()
         self.dismissReasonObserver = []
-        self.mockDraft = .init()
-        self.mockDraft.mockDraftMessageIdResult = .ok(dummyMessageId)
+        self.mockDraft = .defaultMockDraft
         self.mockDraft.mockAttachmentList.attachmentUploadDirectoryURL = photosPickerTestsHelper.destinationFolder
         self.cancellables = []
         try super.setUpWithError()
@@ -126,7 +126,7 @@ final class ComposerModelTests: BaseTestCase {
     }
 
     func testOnLoad_whenAttachmentWithoutErrorState_itDoesNotPresentsAlert() async throws {
-        let mockDraft: MockDraft = .makeWithAttachments([.makeMockDraftAttachment(withState: .uploaded)])
+        let mockDraft: MockDraft = .makeWithAttachments([.makeMockDraftAttachment(state: .uploaded)])
         let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: testContactProvider)
 
         await sut.onLoad()
@@ -136,7 +136,7 @@ final class ComposerModelTests: BaseTestCase {
 
     func testOnLoad_whenAttachmentInErrorState_itPresentsAlert() async throws {
         let draftError = DraftAttachmentUploadError.reason(.attachmentTooLarge)
-        let mockDraft: MockDraft = .makeWithAttachments([.makeMockDraftAttachment(withState: .error(draftError))])
+        let mockDraft: MockDraft = .makeWithAttachments([.makeMockDraftAttachment(state: .error(draftError))])
         let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: testContactProvider)
 
         await sut.onLoad()
@@ -145,8 +145,8 @@ final class ComposerModelTests: BaseTestCase {
     }
 
     func testOnLoad_whenThereAreInlineAttachments_itShouldNotMapThemToUIModels() async throws {
-        let dummy1 = DraftAttachment.makeMockDraftAttachment(withState: .uploaded, disposition: .inline)
-        let dummy2 = DraftAttachment.makeMockDraftAttachment(withState: .uploaded, disposition: .attachment)
+        let dummy1 = DraftAttachment.makeMockDraftAttachment(state: .uploaded, disposition: .inline)
+        let dummy2 = DraftAttachment.makeMockDraftAttachment(state: .uploaded, disposition: .attachment)
         mockDraft.mockAttachmentList.mockAttachments = [dummy1, dummy2]
         let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: .mockInstance)
 
@@ -158,7 +158,6 @@ final class ComposerModelTests: BaseTestCase {
     // MARK: startEditingRecipients
 
     func testStartEditingRecipients_itShouldSetEditingForTargetGroupAndExpandedForOthers() {
-        let mockDraft = MockDraft()
         mockDraft.mockToRecipientList = .init(addedRecipients: [singleRecipient1])
         mockDraft.mockCcRecipientList = .init(addedRecipients: [singleRecipient2])
         let sut = makeSut(draft: mockDraft, draftOrigin: .cache, contactProvider: testContactProvider)
@@ -178,7 +177,7 @@ final class ComposerModelTests: BaseTestCase {
         let sut = makeSut(draft: .emptyMock, draftOrigin: .cache, contactProvider: testContactProvider)
 
         sut.startEditingRecipients(for: .to)
-        await prepareInput(sut: sut, input: "invalid_address@example", for: .to)
+        await prepareInput(sut: sut, input: dummyInvalidAddress, for: .to)
 
         sut.startEditingRecipients(for: .bcc)
 
@@ -189,7 +188,7 @@ final class ComposerModelTests: BaseTestCase {
         let sut = makeSut(draft: .emptyMock, draftOrigin: .cache, contactProvider: testContactProvider)
 
         sut.startEditingRecipients(for: .to)
-        await prepareInput(sut: sut, input: "valid_address@example.com", for: .to)
+        await prepareInput(sut: sut, input: dummyValidAddress, for: .to)
 
         sut.startEditingRecipients(for: .bcc)
 
@@ -382,7 +381,7 @@ final class ComposerModelTests: BaseTestCase {
     // MARK: endEditingRecipients
 
     func testEndEditingRecipients_whenThereIsHangingRecipientInput_itShouldAddTheInputAsRecipient() async {
-        let hangingInput = "becky@example.com"
+        let hangingInput = dummyValidAddress
         let sut = makeSut(draft: .emptyMock, draftOrigin: .new, contactProvider: .mockInstance)
         sut.startEditingRecipients(for: .to)
 
@@ -429,6 +428,60 @@ final class ComposerModelTests: BaseTestCase {
         let newSubject = "new subject"
         sut.updateSubject(value: newSubject)
         XCTAssertEqual(sut.state.subject, newSubject)
+    }
+
+    // MARK: listSenderAddresses
+
+    func testListSenderAddresses_whenSuccess_itReturnsTheDraftSenderAddressesAvailable() async throws {
+        mockDraft.mockSenderList = .ok(.init(available: ["1@example.com, 2@example.com"], active: "2@example.com"))
+        let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: .mockInstance)
+
+        let result = try await sut.listSenderAddresses()
+        XCTAssertEqual(result.available, ["1@example.com, 2@example.com"])
+        XCTAssertEqual(result.active, "2@example.com")
+    }
+
+    // MARK: changeSenderAddress
+
+    func testChangeSenderAddress_whenSuccess_itSetsBodyActionToReloadBody() async throws {
+        let newAddress = "my_new_address@example.com"
+        let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: .mockInstance)
+
+        try await sut.changeSenderAddress(email: newAddress)
+        let html = mockDraft.body()
+        XCTAssertEqual(sut.bodyAction, ComposerBodyAction.reloadBody(html: html))
+    }
+
+    func testChangeSenderAddress_whenFailure_itDoesNotSetBodyActionToReloadBody() async {
+        mockDraft.mockDraftChangeSenderAddressResult = .error(.reason(.addressDisabled))
+        let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: .mockInstance)
+
+        do {
+            try await sut.changeSenderAddress(email: "my_new_address@example.com")
+            XCTFail()
+        } catch {}
+        XCTAssertEqual(sut.bodyAction, nil)
+    }
+
+    func testChangeSenderAddress_whenSuccess_newStateIsCreatedFromExistingDraft() async throws {
+        let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: .mockInstance)
+
+        let newBody = "new body"
+        let newAttachments: [DraftAttachment] = [
+            .makeMockDraftAttachment(state: .uploaded),
+            .makeMockDraftAttachment(state: .uploading),
+        ]
+        let newSender = "new_sender@example.com"
+
+        mockDraft.mockBody = newBody
+        mockDraft.mockAttachmentList.mockAttachments = newAttachments
+        try await sut.changeSenderAddress(email: newSender)
+
+        XCTAssertEqual(sut.state.senderEmail, newSender)
+        XCTAssertEqual(sut.state.subject, mockDraft.subject())
+        XCTAssertEqual(sut.state.initialBody, newBody)
+        XCTAssertEqual(sut.state.toRecipients.recipients, [RecipientUIModel(composerRecipient: singleRecipient1)])
+        XCTAssertEqual(sut.state.attachments, newAttachments.map { $0.toDraftAttachmentUIModel() })
     }
 
     // MARK: recipients callback
@@ -559,6 +612,15 @@ final class ComposerModelTests: BaseTestCase {
         XCTAssertNil(sut.bodyAction)
     }
 
+    // MARK: reloadBodyAfterMemoryPressure
+
+    func testReloadBodyAfterMemoryPressure_itShouldSetBodyAction() async {
+        mockDraft.mockBody = "<html>test body</html>"
+        let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: .mockInstance)
+        await sut.reloadBodyAfterMemoryPressure()
+        XCTAssertEqual(sut.bodyAction, ComposerBodyAction.reloadBody(html: "<html>test body</html>"))
+    }
+
     // MARK: sendMessage
 
     func testSendMessage_whenSuccess_itDismissesWithTheCorrectDismissReason() async throws {
@@ -568,7 +630,7 @@ final class ComposerModelTests: BaseTestCase {
         await sut.sendMessage(dismissAction: dismissSpy)
 
         XCTAssertTrue(mockDraft.sendWasCalled)
-        XCTAssertEqual(dismissReasonObserver, [.messageSent(messageId: dummyMessageId)])
+        XCTAssertEqual(dismissReasonObserver, [.messageSent(messageId: MockDraft.defaultMessageId)])
         XCTAssertEqual(dismissSpy.callsCount, 1)
         XCTAssertEqual(sut.toast, nil)
     }
@@ -596,7 +658,7 @@ final class ComposerModelTests: BaseTestCase {
 
         XCTAssertTrue(mockDraft.scheduleSendWasCalled)
         XCTAssertEqual(mockDraft.scheduleSendWasCalledWithTime, scheduleTime)
-        XCTAssertEqual(dismissReasonObserver, [.messageScheduled(messageId: dummyMessageId)])
+        XCTAssertEqual(dismissReasonObserver, [.messageScheduled(messageId: MockDraft.defaultMessageId)])
         XCTAssertEqual(dismissSpy.callsCount, 1)
         XCTAssertEqual(sut.toast, nil)
     }
@@ -615,6 +677,33 @@ final class ComposerModelTests: BaseTestCase {
         XCTAssertEqual(dismissReasonObserver, [])
         XCTAssertEqual(dismissSpy.callsCount, 0)
         XCTAssertEqual(sut.toast, Toast.error(message: sendError.localizedDescription))
+    }
+
+    func testSendMessage_whenThereIsHangingRecipientInput_itShouldAddTheInputAsRecipient() async {
+        let validHangingInput = dummyValidAddress
+        let dismissSpy = DismissSpy()
+        let draft: MockDraft = .emptyMockDraft
+        let sut = makeSut(draft: draft, draftOrigin: .new, contactProvider: .mockInstance)
+        sut.startEditingRecipients(for: .to)
+        await prepareInput(sut: sut, input: validHangingInput, for: .to)
+
+        await sut.sendMessage(dismissAction: dismissSpy)
+
+        let expectedRecipient = ComposerRecipient.single(.init(displayName: nil, address: validHangingInput, validState: .valid))
+        XCTAssertEqual(draft.mockToRecipientList.addedRecipients, [expectedRecipient])
+    }
+
+    func testSendMessage_whenThereIsInvalidHangingRecipientInput_itShouldShowAlertAndNotSendTheMessage() async {
+        let invalidHangingInput = dummyInvalidAddress
+        let dismissSpy = DismissSpy()
+        let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: .mockInstance)
+        sut.startEditingRecipients(for: .to)
+        await prepareInput(sut: sut, input: invalidHangingInput, for: .to)
+
+        await sut.sendMessage(dismissAction: dismissSpy)
+
+        XCTAssertNotNil(sut.state.alert)
+        XCTAssertEqual(mockDraft.sendWasCalled, false)
     }
 }
 
@@ -717,14 +806,15 @@ private extension ComposerContact {
     }
 }
 
-private extension DraftAttachment {
+extension DraftAttachment {
 
     static func makeMockDraftAttachment(
-        withState state: DraftAttachmentState,
+        name: String = "attachment",
+        state: DraftAttachmentState,
         disposition: Disposition = .attachment
     ) -> DraftAttachment {
         let mockMimeType = AttachmentMimeType(mime: "pdf", category: .pdf)
-        let mockAttachment = AttachmentMetadata(id: .random(), disposition: disposition, mimeType: mockMimeType, name: "attachment_1", size: 123456)
+        let mockAttachment = AttachmentMetadata(id: .random(), disposition: disposition, mimeType: mockMimeType, name: name, size: 123456)
         return DraftAttachment(state: state, attachment: mockAttachment, stateModifiedTimestamp: 1742829536)
     }
 }

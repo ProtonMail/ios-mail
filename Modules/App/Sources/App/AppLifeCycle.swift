@@ -76,7 +76,6 @@ extension AppLifeCycle {
         let testService = TestService()
         let appContext = AppContext.shared
         let appIconBadgeService = AppIconBadgeService(appContext: appContext)
-        let emailsPrefetchingNotifier = EmailsPrefetchingNotifier.shared
         let legacyMigrationService = LegacyMigrationService.shared
         let recurringBackgroundTaskService = RecurringBackgroundTaskService()
         let notificationAuthorizationService = NotificationAuthorizationService(
@@ -98,6 +97,8 @@ extension AppLifeCycle {
             urlOpener: UIApplication.shared
         )
 
+        let startAutoLockCountdownService = StartAutoLockCountdownService(mailSession: { appContext.mailSession })
+
         applicationServices = .init(
             setUpServices: [
                 testService,
@@ -111,7 +112,6 @@ extension AppLifeCycle {
             willEnterForegroundServices: [
                 foregroundWorkService,
                 backgroundTransitionActionsExecutor,
-                emailsPrefetchingNotifier,
             ],
             willResignActiveServices: [
                 appIconBadgeService
@@ -119,6 +119,7 @@ extension AppLifeCycle {
             didEnterBackgroundServices: [
                 foregroundWorkService,
                 backgroundTransitionActionsExecutor,
+                startAutoLockCountdownService,
             ],
             terminateServices: []
         )

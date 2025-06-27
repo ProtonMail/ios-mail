@@ -16,7 +16,6 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import InboxComposer
-@testable import InboxTesting
 import XCTest
 
 final class DebouncedTaskTests: XCTestCase {
@@ -60,6 +59,20 @@ final class DebouncedTaskTests: XCTestCase {
 
         try! await Task.sleep(for: duration + duration)
         XCTAssertEqual(result, [1])
+    }
+
+    func testExecuteImmediately_itShouldCallOnBlockCompletion() async {
+        var result = [Int]()
+        var completionCalled = false
+        let duration = Duration.milliseconds(10)
+        sut = .init(
+            duration: duration, block: { result.append(1) },
+            onBlockCompletion: {
+                completionCalled = true
+            })
+
+        await sut.executeImmediately()
+        XCTAssertTrue(completionCalled)
     }
 
     // MARK: Cancel

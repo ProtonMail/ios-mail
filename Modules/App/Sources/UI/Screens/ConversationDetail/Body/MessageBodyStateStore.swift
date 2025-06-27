@@ -29,7 +29,7 @@ final class MessageBodyStateStore: StateStore {
         case markAsLegitimateConfirmed(LegitMessageConfirmationAlertAction)
         case unblockSender(emailAddress: String)
     }
-    
+
     struct State: Copying {
         enum Body {
             case fetching
@@ -37,7 +37,7 @@ final class MessageBodyStateStore: StateStore {
             case error(Error)
             case noConnection
         }
-        
+
         var body: Body
         var alert: AlertModel?
     }
@@ -48,13 +48,21 @@ final class MessageBodyStateStore: StateStore {
     private let legitMessageMarker: LegitMessageMarker
     private let senderUnblocker: SenderUnblocker
     private let toastStateStore: ToastStateStore
+    private let backOnlineActionExecutor: BackOnlineActionExecuting
 
-    init(messageID: ID, mailbox: Mailbox, wrapper: RustMessageBodyWrapper, toastStateStore: ToastStateStore) {
+    init(
+        messageID: ID,
+        mailbox: Mailbox,
+        wrapper: RustMessageBodyWrapper,
+        toastStateStore: ToastStateStore,
+        backOnlineActionExecutor: BackOnlineActionExecuting
+    ) {
         self.messageID = messageID
         self.provider = .init(mailbox: mailbox, wrapper: wrapper)
         self.legitMessageMarker = .init(mailbox: mailbox, wrapper: wrapper)
         self.senderUnblocker = .init(mailbox: mailbox, wrapper: wrapper)
         self.toastStateStore = toastStateStore
+        self.backOnlineActionExecutor = backOnlineActionExecutor
     }
 
     @MainActor
@@ -83,7 +91,7 @@ final class MessageBodyStateStore: StateStore {
             state = state.copy(\.alert, to: alertModel)
         case .markAsLegitimateConfirmed(let action):
             state = state.copy(\.alert, to: nil)
-            
+
             if case let .loaded(body) = state.body, case .markAsLegitimate = action {
                 await markAsLegitimate(with: body.html.options)
             }
@@ -103,8 +111,18 @@ final class MessageBodyStateStore: StateStore {
             state = state.copy(\.body, to: .loaded(body))
         case .noConnectionError:
             state = state.copy(\.body, to: .noConnection)
+            reloadContentWhenBackOnline(options: options)
         case .error(let error):
             state = state.copy(\.body, to: .error(error))
+        }
+    }
+
+    @MainActor
+    private func reloadContentWhenBackOnline(options: TransformOpts) {
+        backOnlineActionExecutor.execute { [weak self] in
+            guard let self else { return }
+            self.state = self.state.copy(\.body, to: .fetching)
+            await self.loadMessageBody(with: options)
         }
     }
 

@@ -26,23 +26,88 @@ extension SingleRecipientEntry {
 }
 
 final class MockDraft: AppDraftProtocol, @unchecked Sendable {
-    var mockDraftMessageIdResult: DraftMessageIdResult = .ok(nil)
-    var mockSender: String = .empty
-    var mockSubject: String = .empty
-    var mockToRecipientList = MockComposerRecipientList()
-    var mockCcRecipientList = MockComposerRecipientList()
-    var mockBccRecipientList = MockComposerRecipientList()
-    var mockAttachmentList = MockAttachmentList()
+    static let defaultMessageId: Id = 12345
+    static private var defaultSender: String { "old_sender@example.com" }
+    static private var defaultSubject: String { "Test Subject" }
+    static private var defaultBody: String { "Test Body" }
+    static private var defaultRecipients: [ComposerRecipient] {
+        [ComposerRecipient.single(.init(displayName: "", address: "inbox1@pm.me", validState: .valid))]
+    }
+    static private var defaultAttachments: [DraftAttachment] {
+        let mockMimeType = AttachmentMimeType(mime: "pdf", category: .pdf)
+        let mockAttachment = AttachmentMetadata(
+            id: .random(),
+            disposition: .attachment,
+            mimeType: mockMimeType,
+            name: "attachment_1",
+            size: 123456
+        )
+        return [DraftAttachment(state: .uploaded, attachment: mockAttachment, stateModifiedTimestamp: 1742829536)]
+    }
+
+    var mockBody: String
+    var mockSender: String
+    var mockSubject: String
+    var mockToRecipientList: MockComposerRecipientList
+    var mockCcRecipientList: MockComposerRecipientList
+    var mockBccRecipientList: MockComposerRecipientList
+    var mockAttachmentList: MockAttachmentList
+
+    var mockDraftMessageIdResult: DraftMessageIdResult = .ok(defaultMessageId)
+    var mockSenderList: DraftListSenderAddressesResult = .ok(.init(available: [], active: .empty))
+    var mockDraftChangeSenderAddressResult: DraftChangeSenderAddressResult = .ok
     var mockSendResult: VoidDraftSendResult = .ok
 
     private(set) var sendWasCalled: Bool = false
     private(set) var scheduleSendWasCalled: Bool = false
     private(set) var scheduleSendWasCalledWithTime: UInt64 = 0
 
-    private var mockBody: String = .empty
+    init(
+        mockBody: String,
+        mockSender: String,
+        mockSubject: String,
+        mockToRecipientList: MockComposerRecipientList,
+        mockCcRecipientList: MockComposerRecipientList,
+        mockBccRecipientList: MockComposerRecipientList,
+        mockAttachmentList: MockAttachmentList,
+    ) {
+        self.mockBody = mockBody
+        self.mockSender = mockSender
+        self.mockSubject = mockSubject
+        self.mockToRecipientList = mockToRecipientList
+        self.mockCcRecipientList = mockCcRecipientList
+        self.mockBccRecipientList = mockBccRecipientList
+        self.mockAttachmentList = mockAttachmentList
+    }
+
+    static var emptyMockDraft: MockDraft {
+        .init(
+            mockBody: .empty,
+            mockSender: .empty,
+            mockSubject: .empty,
+            mockToRecipientList: MockComposerRecipientList(),
+            mockCcRecipientList: MockComposerRecipientList(),
+            mockBccRecipientList: MockComposerRecipientList(),
+            mockAttachmentList: MockAttachmentList()
+        )
+    }
+
+    static var defaultMockDraft: MockDraft {
+        let attachmentList = MockAttachmentList()
+        attachmentList.mockAttachments = defaultAttachments
+        return MockDraft(
+            mockBody: defaultBody,
+            mockSender: defaultSender,
+            mockSubject: defaultSubject,
+            mockToRecipientList: .init(addedRecipients: defaultRecipients),
+            mockCcRecipientList: .init(),
+            mockBccRecipientList: .init(),
+            mockAttachmentList: attachmentList
+        )
+    }
 
     static func makeWithRecipients(_ recipients: [ComposerRecipient], group: RecipientGroupType) -> MockDraft {
-        let draft = MockDraft()
+        let draft: MockDraft = .emptyMockDraft
         switch group {
         case .to: draft.mockToRecipientList = .init(addedRecipients: recipients)
         case .cc: draft.mockCcRecipientList = .init(addedRecipients: recipients)
@@ -52,7 +117,7 @@ final class MockDraft: AppDraftProtocol, @unchecked Sendable {
     }
 
     static func makeWithAttachments(_ attachments: [DraftAttachment]) -> MockDraft {
-        let draft = MockDraft()
+        let draft: MockDraft = .emptyMockDraft
         let mockAttachmentList = MockAttachmentList()
         mockAttachmentList.mockAttachments = attachments
         draft.mockAttachmentList = mockAttachmentList
@@ -60,6 +125,17 @@ final class MockDraft: AppDraftProtocol, @unchecked Sendable {
     }
 
     func messageId() async -> DraftMessageIdResult { mockDraftMessageIdResult }
+
+    func listSenderAddresses() async -> DraftListSenderAddressesResult {
+        mockSenderList
+    }
+
+    func changeSenderAddress(email: String) async -> DraftChangeSenderAddressResult {
+        if case .ok = mockDraftChangeSenderAddressResult {
+            mockSender = email
+        }
+        return mockDraftChangeSenderAddressResult
+    }
 
     func attachmentList() -> AttachmentListProtocol {
         mockAttachmentList
@@ -80,12 +156,6 @@ final class MockDraft: AppDraftProtocol, @unchecked Sendable {
     func body() -> String {
         mockBody
     }
-
-    func mimeType() -> MimeType {
-        .textHtml
-    }
-
-    func save() async -> VoidDraftSaveResult { .ok }
 
     func scheduleSendOptions() -> DraftScheduleSendOptionsResult {
         let options = try! ScheduleSendOptionsProvider.dummy(isCustomAvailable: false).scheduleSendOptions().get()
@@ -144,7 +214,7 @@ extension MockDraft {
 }
 
 extension AppDraftProtocol where Self == MockDraft {
-    static var emptyMock: MockDraft { .init() }
+    static var emptyMock: MockDraft { .emptyMockDraft }
 }
 
 /**

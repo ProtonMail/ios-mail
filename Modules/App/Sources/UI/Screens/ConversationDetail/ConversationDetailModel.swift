@@ -22,8 +22,6 @@ import proton_app_uniffi
 
 @MainActor
 final class ConversationDetailModel: Sendable, ObservableObject {
-    static let lastCellId = "last"
-
     @Published private(set) var state: State = .initial
     @Published private(set) var seed: ConversationDetailSeed
     @Published private(set) var scrollToMessage: String? = nil
@@ -46,6 +44,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
     private var expandedMessages: Set<ID>
     private let draftPresenter: DraftPresenter
     private let dependencies: Dependencies
+    private let backOnlineActionExecutor: BackOnlineActionExecutor
 
     private lazy var messageListCallback = LiveQueryCallbackWrapper { [weak self] in
         guard let self else { return }
@@ -65,14 +64,21 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         dependencies.appContext.userSession
     }
 
-    init(seed: ConversationDetailSeed, draftPresenter: DraftPresenter, dependencies: Dependencies = .init()) {
+    init(
+        seed: ConversationDetailSeed,
+        draftPresenter: DraftPresenter,
+        dependencies: Dependencies = .init(),
+        backOnlineActionExecutor: BackOnlineActionExecutor
+    ) {
         self.seed = seed
         self.isStarred = seed.isStarred
         self.expandedMessages = .init()
         self.draftPresenter = draftPresenter
         self.dependencies = dependencies
+        self.backOnlineActionExecutor = backOnlineActionExecutor
     }
 
+    @MainActor
     func fetchInitialData() async {
         updateState(.fetchingMessages)
         do {
@@ -91,13 +97,18 @@ final class ConversationDetailModel: Sendable, ObservableObject {
             try await scrollToRelevantMessage(messages: liveQueryValues.messages)
         } catch ActionError.other(.network) {
             updateState(.noConnection)
+            reloadContentWhenBackOnline()
         } catch {
             let msg = "Failed fetching initial data. Error: \(String(describing: error))"
             AppLogger.log(message: msg, category: .conversationDetail, isError: true)
         }
     }
 
-    func onMessageTap(messageId: ID) {
+    func onMessageTap(messageId: ID, isDraft: Bool) {
+        guard !isDraft else {
+            openDraft(with: messageId)
+            return
+        }
         Task {
             if expandedMessages.contains(messageId) {
                 expandedMessages.remove(messageId)
@@ -140,7 +151,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         isStarred ? unstarConversation() : starConversation()
     }
 
-    func handleConversation(action: BottomBarAction, toastStateStore: ToastStateStore, goBack: @escaping () -> Void) {
+    func handleConversation(action: BottomBarActions, toastStateStore: ToastStateStore, goBack: @escaping () -> Void) {
         let conversationID = conversationID.unsafelyUnwrapped
         switch action {
         case .labelAs:
@@ -200,6 +211,16 @@ final class ConversationDetailModel: Sendable, ObservableObject {
 
 extension ConversationDetailModel {
 
+    private func reloadContentWhenBackOnline() {
+        backOnlineActionExecutor.execute { [weak self] in
+            await self?.fetchInitialData()
+        }
+    }
+
+    private func openDraft(with id: ID) {
+        draftPresenter.openDraft(withId: id)
+    }
+
     private func starConversation() {
         starActionPerformer.star(itemsWithIDs: [conversationID.unsafelyUnwrapped], itemType: .conversation)
     }
@@ -209,7 +230,7 @@ extension ConversationDetailModel {
     }
 
     private func moveConversation(
-        destination: MoveToSystemFolderLocation,
+        destination: MovableSystemFolderAction,
         toastStateStore: ToastStateStore,
         goBack: @escaping () -> Void
     ) {
@@ -334,18 +355,16 @@ extension ConversationDetailModel {
     }
 
     private func updateStateToMessagesReady(with messages: [MessageCellUIModel]) {
-        if let lastMessage = messages.last, case .expanded(let last) = lastMessage.type {
-            updateState(.messagesReady(previous: messages.dropLast(), last: last))
-        }
+        updateState(.messagesReady(messages: messages))
     }
 
     private func scrollToRelevantMessage(messages: [MessageCellUIModel]) async throws {
-        let messageIDToScrollTo = await messageIDToScrollTo()
-        if messages.last?.id == messageIDToScrollTo {
-            scrollToMessage = Self.lastCellId
-        } else {
-            let cell = messages.first(where: { $0.id == messageIDToScrollTo })
-            scrollToMessage = cell?.cellId ?? Self.lastCellId
+        if let messageIDToScrollTo = await messageIDToScrollTo(),
+            let messageToScroll = messages.first(where: { $0.id == messageIDToScrollTo })
+        {
+            self.scrollToMessage = messageToScroll.cellId
+        } else if let lastNonDraftMessage = messages.last(where: { !$0.isDraft }) {
+            self.scrollToMessage = lastNonDraftMessage.cellId
         }
     }
 
@@ -389,34 +408,29 @@ extension ConversationDetailModel {
 
     private func readLiveQueryValues() async -> LiveQueryValues {
         do {
-            guard let conversationID, let mailbox, let messagesLiveQuery else {
-                let msg = "no mailbox object (labelId=\(String(describing: mailbox?.labelId().value))), conversationID (\(String(describing: conversationID)) or message live query"
+            guard let conversationID, let mailbox else {
+                let msg = "no mailbox object (labelId=\(String(describing: mailbox?.labelId().value))) or conversationID (\(String(describing: conversationID))"
                 AppLogger.log(message: msg, category: .conversationDetail, isError: true)
                 return .init(messages: [], isStarred: false)
             }
             let conversationAndMessages = try await conversation(mailbox: mailbox, id: conversationID).get()
             let isStarred = conversationAndMessages?.conversation.isStarred ?? false
             let messages = conversationAndMessages?.messages ?? []
-            guard let lastMessage = messages.last else { return .init(messages: [], isStarred: isStarred) }
 
-            // list of messages except the last one
-            var result = [MessageCellUIModel]()
-            for i in messages.indices.dropLast() {
-                let message = messages[i]
+            let lastNonDraftMessageIndex = messages.lastIndex(where: { message in !message.isDraft })
 
-                let messageCellUIModel: MessageCellUIModelType
-                if expandedMessages.contains(message.id) {
-                    messageCellUIModel = .expanded(message.toExpandedMessageCellUIModel())
-                } else {
-                    messageCellUIModel = .collapsed(message.toCollapsedMessageCellUIModel())
+            let result: [MessageCellUIModel] =
+                messages
+                .enumerated()
+                .map { index, message in
+                    let messageCellUIModelType: MessageCellUIModelType
+                    if expandedMessages.contains(message.id) || index == lastNonDraftMessageIndex {
+                        messageCellUIModelType = .expanded(message.toExpandedMessageCellUIModel())
+                    } else {
+                        messageCellUIModelType = .collapsed(message.toCollapsedMessageCellUIModel())
+                    }
+                    return .init(id: message.id, type: messageCellUIModelType)
                 }
-
-                result.append(.init(id: message.id, type: messageCellUIModel))
-            }
-
-            // last message
-            let expandedMessage = lastMessage.toExpandedMessageCellUIModel()
-            result.append(.init(id: lastMessage.id, type: .expanded(expandedMessage)))
 
             return .init(messages: result, isStarred: isStarred)
         } catch {
@@ -482,11 +496,11 @@ extension ConversationDetailModel {
         case initial
         case fetchingMessages
         case noConnection
-        case messagesReady(previous: [MessageCellUIModel], last: ExpandedMessageCellUIModel)
+        case messagesReady(messages: [MessageCellUIModel])
 
         var debugDescription: String {
-            if case .messagesReady(let array, _) = self {
-                return "messagesReady: \(array.count + 1) messages"
+            if case .messagesReady(let messages) = self {
+                return "messagesReady: \(messages.count) messages"
             }
             return "\(self)"
         }
@@ -545,4 +559,17 @@ private extension MailboxActionSheetsState {
     static func initial() -> Self {
         .init(mailbox: nil, labelAs: nil, moveTo: nil)
     }
+}
+
+private extension MessageCellUIModel {
+
+    var isDraft: Bool {
+        switch type {
+        case .collapsed(let model):
+            model.isDraft
+        case .expanded:
+            false
+        }
+    }
+
 }

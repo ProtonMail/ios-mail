@@ -17,29 +17,30 @@
 
 @testable import ProtonMail
 import InboxSnapshotTesting
-import InboxTesting
+import SnapshotTesting
 import SwiftUI
-import XCTest
+import Testing
 
-class OnboardingScreenSnapshotTests: BaseTestCase {
+@MainActor
+struct OnboardingScreenSnapshotTests {
+    @Test(arguments: [0, 1, 2])
+    func testInitialStateLayoutsCorrectly(selectedPageIndex: Int) {
+        let allPhones: [(String, ViewImageConfig)] = .allPhones
 
-    func testInitialStateLayoutsCorrecttly() {
-        assertSnapshots(matching: makeSUT(selectedPageIndex: 0), on: .allPhones)
-    }
-
-    func test2ndPageSelectedLayoutsCorrecttly() {
-        assertSnapshots(matching: makeSUT(selectedPageIndex: 1), on: .allPhones)
-    }
-
-    func test3rdPageSelectedLayoutsCorrecttly() {
-        assertSnapshots(matching: makeSUT(selectedPageIndex: 2), on: .allPhones)
+        allPhones.forEach { name, config in
+            assertSnapshots(
+                matching: makeSUT(selectedPageIndex: selectedPageIndex, size: config.size!),
+                on: [(name, config)],
+                named: "page_\(selectedPageIndex)"
+            )
+        }
     }
 
     // MARK: - Private
 
-    private func makeSUT(selectedPageIndex: Int) -> UIHostingController<OnboardingScreen> {
+    private func makeSUT(selectedPageIndex: Int, size: CGSize) -> UIHostingController<some View> {
         let sut = OnboardingScreen(selectedPageIndex: selectedPageIndex)
+            .environment(\.mainWindowSize, size)
         return UIHostingController(rootView: sut)
     }
-
 }

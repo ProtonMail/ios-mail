@@ -111,6 +111,8 @@ GEM
       xcodeproj (>= 1.13.0, < 2.0.0)
       xcpretty (~> 0.4.0)
       xcpretty-travis-formatter (>= 0.0.3, < 2.0.0)
+    fastlane-plugin-sentry (1.30.0)
+      os (~> 1.1, >= 1.1.4)
     fastlane-sirp (1.0.0)
       sysrandom (~> 1.0)
     gh_inspector (1.1.3)
@@ -221,6 +223,7 @@ PLATFORMS
 DEPENDENCIES
   abbrev
   fastlane
+  fastlane-plugin-sentry
   mutex_m
   ostruct
 

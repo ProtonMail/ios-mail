@@ -63,32 +63,36 @@ class LabelAsSheetModel: ObservableObject {
 
     private func loadLabels() {
         Task {
-            let labels = await actionsProvider.actions(for: input.type, ids: input.ids)
-            Dispatcher.dispatchOnMain(.init(block: { [weak self] in
-                self?.update(labels: labels)
-            }))
+            do {
+                let labels = try await actionsProvider.actions(for: input.type, ids: input.ids)
+                Dispatcher.dispatchOnMain(.init(block: { [weak self] in
+                    self?.update(labels: labels)
+                }))
+            } catch {
+                showError(error)
+            }
         }
     }
 
     private func executeLabelAsAction() {
         Task {
             do {
-                try await labelAsActionPerformer.labelAs(input: .init(
-                    itemType: input.type,
-                    itemsIDs: input.ids,
-                    selectedLabelsIDs: state.labels.filter { $0.isSelected == .selected }.map(\.id),
-                    partiallySelectedLabelsIDs: state.labels.filter { $0.isSelected == .partial }.map(\.id),
-                    archive: state.shouldArchive
-                ))
+                try await labelAsActionPerformer.labelAs(
+                    input: .init(
+                        itemType: input.type,
+                        itemsIDs: input.ids,
+                        selectedLabelsIDs: state.labels.filter { $0.isSelected == .selected }.map(\.id),
+                        partiallySelectedLabelsIDs: state.labels.filter { $0.isSelected == .partial }.map(\.id),
+                        archive: state.shouldArchive
+                    ))
             } catch {
-                Dispatcher.dispatchOnMain(.init { [weak self] in
-                    self?.toastStateStore.present(toast: .error(message: error.localizedDescription))
-                })
+                showError(error)
             }
 
-            Dispatcher.dispatchOnMain(.init(block: { [weak self] in
-                self?.dismiss()
-            }))
+            Dispatcher.dispatchOnMain(
+                .init(block: { [weak self] in
+                    self?.dismiss()
+                }))
         }
     }
 
@@ -107,6 +111,12 @@ class LabelAsSheetModel: ObservableObject {
     private func updateSelectionIfNeeded(selectedLabel: LabelDisplayModel, label: LabelDisplayModel) -> IsSelected {
         guard selectedLabel.id == label.id else { return label.isSelected }
         return [IsSelected.partial, .selected].contains(selectedLabel.isSelected) ? .unselected : .selected
+    }
+
+    private func showError(_ error: Error) {
+        Dispatcher.dispatchOnMain(.init { [weak self] in
+            self?.toastStateStore.present(toast: .error(message: error.localizedDescription))
+        })
     }
 }
 

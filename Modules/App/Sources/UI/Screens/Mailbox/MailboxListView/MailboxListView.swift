@@ -108,7 +108,7 @@ extension MailboxListView {
 
     @ViewBuilder
     private func unreadFilter() -> some View {
-        UnreadFilterBarView(state: $model.state.filterBar)
+        UnreadFilterBarView(state: $model.state.filterBar, onSelectAllTapped: model.onSelectAllTapped)
             .background(
                 DS.Color.Background.norm
                     .shadow(DS.Shadows.raisedBottom, isVisible: !isListAtTop)

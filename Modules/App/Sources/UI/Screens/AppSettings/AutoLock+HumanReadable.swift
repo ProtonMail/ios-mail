@@ -23,7 +23,7 @@ extension AutoLock {
     var humanReadable: LocalizedStringResource {
         switch self {
         case .always:
-            L10n.Settings.App.autoLockAlways
+            L10n.Settings.App.immediately
         case .minutes(let value):
             L10n.Settings.App.autoLock(minutes: value)
         case .never:

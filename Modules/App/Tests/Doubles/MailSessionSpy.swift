@@ -39,6 +39,7 @@ final class MailSessionSpy: MailSessionProtocol {
     private(set) var registerDeviceCallCount = 0
     private(set) var setPinCodeInvocations: [[UInt32]] = []
     private(set) var setPrimaryAccountInvocations: [String] = []
+    private(set) var signOutAllCallCount = 0
 
     private var stubbedAppSettings = AppSettings(
         appearance: .system,
@@ -51,6 +52,10 @@ final class MailSessionSpy: MailSessionProtocol {
     private var watchSessionsAsyncCallback: AsyncLiveQueryCallback?
 
     // MARK: - MailSessionProtocol
+
+    func biometricsCheckPassed() {
+        fatalError(#function)
+    }
 
     func allMessagesWereSent() async -> MailSessionAllMessagesWereSentResult {
         fatalError(#function)
@@ -80,6 +85,10 @@ final class MailSessionSpy: MailSessionProtocol {
         }
 
         return .ok
+    }
+
+    func startAutoLockCountdown() {
+        fatalError(#function)
     }
 
     func deleteAccount(userId: String) async -> VoidSessionResult {
@@ -216,6 +225,11 @@ final class MailSessionSpy: MailSessionProtocol {
 
     func shouldAutoLock() async -> MailSessionShouldAutoLockResult {
         fatalError(#function)
+    }
+
+    func signOutAll() async -> MailSessionSignOutAllResult {
+        signOutAllCallCount += 1
+        return .ok
     }
 
     func startBackgroundExecution(callback: any BackgroundExecutionCallback) -> MailSessionStartBackgroundExecutionResult {

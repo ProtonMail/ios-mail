@@ -26,7 +26,7 @@ import UniformTypeIdentifiers
 
 final class DraftPrecomposerTests {
     private let sut = DraftPrecomposer.self
-    private let draft = MockDraft()
+    private let draft = MockDraft.emptyMockDraft
     private let fileManager = FileManager.default
     private let testDir: URL
     private let attachmentSourceDir: URL
