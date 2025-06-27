@@ -524,8 +524,18 @@ public extension MailSessionInitializedUserContextFromSessionResult {
         }
     }
 }
+public extension MailSessionNewLoginFlowResult {
+    func get() throws(ProtonError) -> LoginFlow {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension MailSessionNewSignupFlowResult {
-    func get() throws(UserContextError) -> SignupFlow {
+    func get() throws(ProtonError) -> SignupFlow {
         switch self {
         case .ok(let value):
             value
@@ -546,6 +556,16 @@ public extension MailSessionRegisterDeviceTaskResult {
 }
 public extension MailSessionRemainingPinAttemptsResult {
     func get() throws(UserContextError) -> UInt32? {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension MailSessionResumeLoginFlowResult {
+    func get() throws(ProtonError) -> LoginFlow {
         switch self {
         case .ok(let value):
             value
@@ -596,6 +616,16 @@ public extension MailSessionStartBackgroundExecutionResult {
 }
 public extension MailSessionStartBackgroundExecutionWithDurationResult {
     func get() throws(UserContextError) -> BackgroundExecutionHandle {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension MailSessionToUserContextResult {
+    func get() throws(ProtonError) -> MailUserSession {
         switch self {
         case .ok(let value):
             value
