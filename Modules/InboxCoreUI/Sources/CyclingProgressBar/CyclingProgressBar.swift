@@ -23,6 +23,8 @@ import SwiftUI
 public struct CyclingProgressBar: View {
     @State private var animationPhase: CGFloat = 0
 
+    public init() {}
+
     private let animationDurationInSeconds: TimeInterval = 1.2
     private let barHeight: CGFloat = 2
     private let primaryColor = DS.Color.Loader.success
