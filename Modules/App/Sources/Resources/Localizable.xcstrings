@@ -6896,6 +6896,7 @@
     },
     "Date" : {
       "comment" : "`Date` in the message details.",
+      "extractionState" : "stale",
       "localizations" : {
         "be" : {
           "stringUnit" : {

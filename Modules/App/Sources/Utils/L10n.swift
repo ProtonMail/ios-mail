@@ -591,7 +591,6 @@ enum L10n {
     enum MessageDetails {
         static let bcc = LocalizedStringResource("Bcc", comment: "`BCC` in the messsage details.")
         static let cc = LocalizedStringResource("Cc", comment: "`CC` in the messsage details.")
-        static let date = LocalizedStringResource("Date", comment: "`Date` in the message details.")
         static let from = LocalizedStringResource("From", comment: "`From` in the message details.")
         static let label = LocalizedStringResource("Label", comment: "`Label` in the message details.")
         static let location = LocalizedStringResource("Location", comment: "`Location` in the message details.")
