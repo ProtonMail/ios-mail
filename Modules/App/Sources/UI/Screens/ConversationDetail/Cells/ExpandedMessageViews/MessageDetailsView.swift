@@ -30,73 +30,122 @@ struct MessageDetailsView: View {
     private let messageDetailsLeftColumnWidth: CGFloat = 80
 
     var body: some View {
-        VStack(spacing: DS.Spacing.large) {
+        VStack(alignment: .leading, spacing: .zero) {
             headerView
+                .contentShape(Rectangle())
+                .onTapGesture { onEvent(.onTap) }
+                .background(DS.Color.Background.norm)
+                .zIndex(1)
+
+            if !isHeaderCollapsed {
+                expandedHeaderView
+            }
         }
-        .animation(.easeInOut, value: isHeaderCollapsed)
+        .clipped()
         .padding([.horizontal, .bottom], DS.Spacing.large)
     }
 
     // MARK: - Private
 
     private var headerView: some View {
-        HStack(alignment: .top, spacing: 0) {
-            AvatarCheckboxView(isSelected: false, avatar: uiModel.avatar, onDidChangeSelection: { _ in })
-                .square(size: 40)
+        HStack(alignment: .top, spacing: DS.Spacing.large) {
+            AvatarCheckboxView(
+                isSelected: false,
+                avatar: uiModel.avatar,
+                onDidChangeSelection: { _ in }
+            )
+            .square(size: 40)
+            .zIndex(1)
 
-            VStack(alignment: .leading, spacing: .zero) {
-                HStack(alignment: .top, spacing: 0) {
-                    VStack(alignment: .leading, spacing: DS.Spacing.compact) {
-                        Button(action: {}) {
-                            VStack(alignment: .leading, spacing: DS.Spacing.compact) {
-                                senderNameView
-                                senderAddressView
-                            }
-                        }
-                        .disabled(!isHeaderCollapsed)
-                        if !isHeaderCollapsed {
-                            recipientsView
-                                .transition(.opacity)
-                        } else if let firstRecipient = uiModel.recipientsTo.first {
-                            recipientButton(
-                                recipient: firstRecipient,
-                                group: .to,
-                                prefixed: true,
-                                index: 0
-                            )
-                        }
+            HStack(alignment: .top, spacing: .zero) {
+                VStack(alignment: .leading, spacing: DS.Spacing.compact) {
+                    senderNameView
+                    Button(action: { onEvent(.onSenderTap) }) {
+                        senderAddressView
                     }
-                    .zIndex(-1)
-                    .padding(.leading, DS.Spacing.large)
+                    .disabled(isHeaderCollapsed)
 
-                    Spacer(minLength: DS.Spacing.moderatelyLarge)
-                    VStack(alignment: .trailing, spacing: DS.Spacing.compact) {
-                        Text(uiModel.date.mailboxFormat())
-                            .font(.caption)
-                            .foregroundColor(DS.Color.Text.weak)
-                            .accessibilityIdentifier(MessageDetailsViewIdentifiers.messageDate)
-                        if !areActionsDisabled {
-                            headerActionsView
-                        }
+                    if isHeaderCollapsed {
+                        recipientsView
+                            .transition(.opacity)
+                    } else if let firstRecipient = uiModel.recipientsTo.first {
+                        recipientButton(
+                            recipient: firstRecipient,
+                            group: .to,
+                            prefixed: true,
+                            index: 0
+                        )
                     }
                 }
 
-                // here goes the content
+                Spacer(minLength: DS.Spacing.moderatelyLarge)
+                VStack(alignment: .trailing, spacing: DS.Spacing.compact) {
+                    Text(uiModel.date.mailboxFormat())
+                        .font(.caption)
+                        .foregroundColor(DS.Color.Text.weak)
+                        .accessibilityIdentifier(MessageDetailsViewIdentifiers.messageDate)
+                        .padding(.top, DS.Spacing.tiny)
+                    if !areActionsDisabled {
+                        headerActionsView
+                    }
+                }
             }
         }
-        .contentShape(Rectangle())
-        .onTapGesture {
-            onEvent(.onTap)
+    }
+
+    private var expandedHeaderView: some View {
+        VStack(alignment: .leading, spacing: DS.Spacing.large) {
+            recipientRow(.to, recipients: Array(uiModel.recipientsTo.dropFirst()))
+                .removeViewIf(Array(uiModel.recipientsTo.dropFirst()).isEmpty)
+            recipientRow(.cc, recipients: uiModel.recipientsCc)
+                .removeViewIf(uiModel.recipientsCc.isEmpty)
+            recipientRow(.bcc, recipients: uiModel.recipientsBcc)
+                .removeViewIf(uiModel.recipientsBcc.isEmpty)
+
+            VStack(alignment: .leading, spacing: DS.Spacing.standard) {
+                dateRow
+                locationRow
+                labelRow
+                    .removeViewIf(uiModel.labels.isEmpty)
+            }
+
+            hideDetailsButton
+                .padding(.top, DS.Spacing.compact)
+        }
+        .padding(
+            .top,
+            Array(uiModel.recipientsTo.dropFirst()).isEmpty ? DS.Spacing.large : DS.Spacing.compact
+        )
+        .padding(.leading, DS.Spacing.jumbo + DS.Spacing.large)
+        .transition(.move(edge: .top).combined(with: .opacity))
+    }
+
+    private var hideDetailsButton: some View {
+        Button(action: {
+            withAnimation {
+                isHeaderCollapsed.toggle()
+            }
+        }) {
+            HStack(alignment: .center, spacing: DS.Spacing.compact) {
+                Text("Hide details")
+                    .foregroundStyle(DS.Color.Text.accent)
+                    .font(.footnote)
+
+                Image(DS.Icon.icChevronUpFilled)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .square(size: 16)
+                    .foregroundColor(DS.Color.Text.accent)
+            }
         }
     }
 
     var senderNameText: some View {
         HStack(spacing: .zero) {
-            if isHeaderCollapsed {
-                (Text("From:") + Text(" "))
+            if !isHeaderCollapsed {
+                Text("From: ")
                     .font(.subheadline)
                     .fontWeight(.semibold)
-                    .lineLimit(1)
                     .foregroundColor(DS.Color.Text.norm)
                     .transition(
                         .move(edge: .leading)
@@ -126,13 +175,15 @@ struct MessageDetailsView: View {
         Text(uiModel.sender.address)
             .font(.caption)
             .lineLimit(1)
-            .foregroundColor(isHeaderCollapsed ? DS.Color.Text.accent : DS.Color.Text.weak)
+            .foregroundColor(isHeaderCollapsed ? DS.Color.Text.weak : DS.Color.Text.accent)
             .accessibilityIdentifier(MessageDetailsViewIdentifiers.senderAddress)
     }
 
     private var recipientsView: some View {
         Button {
-            isHeaderCollapsed.toggle()
+            withAnimation {
+                isHeaderCollapsed.toggle()
+            }
         } label: {
             HStack(spacing: DS.Spacing.small) {
                 Text(uiModel.recipients.recipientsUIRepresentation)
@@ -140,7 +191,7 @@ struct MessageDetailsView: View {
                     .font(.caption)
                     .lineLimit(1)
                     .accessibilityIdentifier(MessageDetailsViewIdentifiers.recipientsSummary)
-                if !isHeaderCollapsed {
+                if isHeaderCollapsed {
                     Image(DS.Icon.icChevronDownFilled)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
@@ -190,8 +241,6 @@ struct MessageDetailsView: View {
             locationRow
             labelRow
                 .removeViewIf(uiModel.labels.isEmpty)
-            otherRow
-                .removeViewIf(uiModel.other.isEmpty)
         }
         .padding(DS.Spacing.medium)
         .overlay {
@@ -228,23 +277,15 @@ struct MessageDetailsView: View {
     }
 
     private func recipientRow(_ group: RecipientGroup, recipients: [MessageDetail.Recipient]) -> some View {
-        HStack(alignment: .top, spacing: DS.Spacing.small) {
-            Text(group.humanReadable)
-                .font(.caption)
-                .foregroundStyle(DS.Color.Text.weak)
-                .frame(width: messageDetailsLeftColumnWidth, alignment: .leading)
-                .accessibilityIdentifier(MessageDetailsViewIdentifiers.expandedHeaderRecipientLabel(group: group))
-            VStack(alignment: .leading, spacing: DS.Spacing.compact) {
-                ForEachEnumerated(recipients, id: \.element) { recipient, index in
-                    recipientButton(
-                        recipient: recipient,
-                        group: group,
-                        prefixed: group != .to && index == 0,
-                        index: index
-                    )
-                }
+        VStack(alignment: .leading, spacing: DS.Spacing.compact) {
+            ForEachEnumerated(recipients, id: \.element) { recipient, index in
+                recipientButton(
+                    recipient: recipient,
+                    group: group,
+                    prefixed: group != .to && index == 0,
+                    index: index
+                )
             }
-            Spacer()
         }
     }
 
@@ -289,12 +330,11 @@ struct MessageDetailsView: View {
     }
 
     private var dateRow: some View {
-        HStack(alignment: .top, spacing: DS.Spacing.small) {
-            Text(L10n.MessageDetails.date)
-                .font(.caption)
-                .foregroundStyle(DS.Color.Text.weak)
-                .frame(width: messageDetailsLeftColumnWidth, alignment: .leading)
-                .accessibilityIdentifier(MessageDetailsViewIdentifiers.expandedHeaderDateLabel)
+        HStack(alignment: .center, spacing: DS.Spacing.small) {
+            Image(DS.Images.calendarToday)
+                .resizable()
+                .square(size: 14)
+
             Text(MessageDetailsDateFormatter.string(from: uiModel.date))
                 .font(.caption)
                 .foregroundStyle(DS.Color.Text.norm)
@@ -307,17 +347,13 @@ struct MessageDetailsView: View {
     private var locationRow: some View {
         if let model = uiModel.location {
             HStack(alignment: .center, spacing: DS.Spacing.small) {
-                Text(L10n.MessageDetails.location)
+                model.icon
+                    .resizable()
+                    .square(size: 14)
+
+                Text(model.name)
                     .font(.caption)
-                    .foregroundStyle(DS.Color.Text.weak)
-                    .frame(width: messageDetailsLeftColumnWidth, alignment: .leading)
-                CapsuleView(
-                    text: model.name,
-                    color: DS.Color.Background.secondary,
-                    icon: model.icon,
-                    iconColor: model.iconColor,
-                    style: .attachment
-                )
+                    .foregroundStyle(DS.Color.Text.norm)
                 Spacer()
             }
         }
@@ -325,38 +361,20 @@ struct MessageDetailsView: View {
 
     private var labelRow: some View {
         let capsules = uiModel.labels.map { label in
-            CapsuleView(text: label.text.stringResource, color: label.color, style: .label)
+            CapsuleView(
+                text: label.text.stringResource,
+                color: label.color,
+                style: .label
+            )
         }
 
         return HStack(alignment: .center, spacing: DS.Spacing.small) {
-            Text(L10n.MessageDetails.label)
-                .font(.caption)
-                .foregroundStyle(DS.Color.Text.weak)
-                .frame(width: messageDetailsLeftColumnWidth, alignment: .leading)
-            CapsuleCloudView(subviews: capsules, innerPadding: DS.Spacing.tiny)
+            CapsuleCloudView(
+                subviews: capsules,
+                innerPadding: DS.Spacing.tiny
+            )
             Spacer()
         }
-    }
-
-    private var otherRow: some View {
-        HStack(alignment: .center, spacing: DS.Spacing.small) {
-            Text(L10n.MessageDetails.other)
-                .font(.caption)
-                .foregroundStyle(DS.Color.Text.weak)
-                .frame(width: messageDetailsLeftColumnWidth, alignment: .leading)
-            starCapsule
-            Spacer()
-        }
-    }
-
-    private var starCapsule: some View {
-        CapsuleView(
-            text: L10n.Mailbox.SystemFolder.starred,
-            color: DS.Color.Background.secondary,
-            icon: Image(symbol: .starFilled),
-            iconColor: DS.Color.Star.selected,
-            style: .attachment
-        )
     }
 }
 
@@ -485,6 +503,10 @@ enum MessageDetailsPreviewProvider {
                 .init(
                     name: "Me", address: "eric.norbert@protonmail.ch",
                     avatarInfo: .init(initials: "E", color: .red)
+                ),
+                .init(
+                    name: "James Hayes", address: "james@proton.me",
+                    avatarInfo: .init(initials: "J", color: .red)
                 )
             ],
             recipientsCc: [
