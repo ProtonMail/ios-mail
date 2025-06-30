@@ -58,7 +58,7 @@ struct CapsuleView: View {
         }
         .padding(EdgeInsets(top: DS.Spacing.small, leading: DS.Spacing.standard, bottom: DS.Spacing.small, trailing: DS.Spacing.standard))
         .background(
-            Capsule()
+            RoundedRectangle(cornerRadius: DS.Radius.medium)
                 .foregroundColor(color)
         )
     }
