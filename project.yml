@@ -265,7 +265,7 @@ targets:
       bundle_identifier: ch.protonmail.protonmail.Share
       principal_class: ShareViewController
       point_identifier: com.apple.share-services
-      release_provisioning_profile: "Mail - Share Extension Distribution"
+      release_provisioning_profile: "Protonmail share release"
     dependencies:
       - package: TestableShareExtension
     info:
