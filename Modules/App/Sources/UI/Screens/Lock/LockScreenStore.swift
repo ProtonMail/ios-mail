@@ -107,7 +107,7 @@ class LockScreenStore: StateStore {
     @MainActor
     private func readNumberOfAttempts() async -> Int {
         do {
-            let attempts = try await pinVerifier.remainingPinAttempts().get().unsafelyUnwrapped
+            let attempts = try await pinVerifier.remainingPinAttempts().get() ?? 0
             return Int(attempts)
         } catch {
             AppLogger.log(error: error, category: .appSettings)
