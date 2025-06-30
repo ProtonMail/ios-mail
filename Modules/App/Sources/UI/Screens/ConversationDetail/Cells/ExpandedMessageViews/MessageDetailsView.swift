@@ -49,11 +49,10 @@ struct MessageDetailsView: View {
 
     private var headerView: some View {
         HStack(alignment: .top, spacing: DS.Spacing.large) {
-            AvatarCheckboxView(
-                isSelected: false,
-                avatar: uiModel.avatar,
-                onDidChangeSelection: { _ in }
-            )
+            Button(action: { onEvent(.onSenderTap) }) {
+                AvatarView(avatar: uiModel.avatar)
+                    .clipShape(RoundedRectangle(cornerRadius: DS.Radius.large, style: .continuous))
+            }
             .square(size: 40)
             .zIndex(1)
 
