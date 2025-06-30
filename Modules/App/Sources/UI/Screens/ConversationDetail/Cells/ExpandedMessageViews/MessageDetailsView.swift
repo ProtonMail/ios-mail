@@ -127,7 +127,7 @@ struct MessageDetailsView: View {
             }
         }) {
             HStack(alignment: .center, spacing: DS.Spacing.compact) {
-                Text("Hide details")
+                Text(L10n.MessageDetails.hideDetails)
                     .foregroundStyle(DS.Color.Text.accent)
                     .font(.footnote)
 
@@ -143,7 +143,7 @@ struct MessageDetailsView: View {
     var senderNameText: some View {
         HStack(spacing: .zero) {
             if !isHeaderCollapsed {
-                Text("From: ")
+                Text("\(L10n.MessageDetails.from): ")
                     .font(.subheadline)
                     .fontWeight(.semibold)
                     .foregroundColor(DS.Color.Text.norm)

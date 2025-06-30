@@ -9297,6 +9297,9 @@
         }
       }
     },
+    "Hide details" : {
+      "comment" : "Title of the button that hide details of a message."
+    },
     "If Proton sites are blocked, this lets the app try other network paths to reach them. It can help bypass firewalls or connection issues. We recommend keeping it on for better reliability." : {
       "comment" : "Alternative routing additional info in app settings."
     },

@@ -610,6 +610,10 @@ enum L10n {
             "To: ...",
             comment: "Placeholder for a draft in the conversation view when the draft has no recipients."
         )
+        static let hideDetails = LocalizedStringResource(
+            "Hide details",
+            comment: "Title of the button that hide details of a message."
+        )
     }
 
     enum Folders {
