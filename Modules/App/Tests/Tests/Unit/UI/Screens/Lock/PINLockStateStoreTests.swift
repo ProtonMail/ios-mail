@@ -82,6 +82,15 @@ class PINLockStateStoreTests {
         #expect(sut.state.error == nil)
     }
 
+    @Test
+    func tooFrequentAttemptsErrorIsThrown_ItDoesNotCleanPINField() async {
+        await sut.handle(action: .pinEntered(.init(digits: [1, 2])))
+        await sut.handle(action: .error(.tooFrequentAttempts))
+
+        #expect(sut.state.error == .tooFrequentAttempts)
+        #expect(sut.state.pin == .init(digits: [1, 2]))
+    }
+
 }
 
 private extension PINLockState {

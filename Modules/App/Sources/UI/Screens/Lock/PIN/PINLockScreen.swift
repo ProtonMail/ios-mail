@@ -94,12 +94,13 @@ struct PINLockScreen: View {
                 Text(error)
                     .font(.callout)
                     .foregroundStyle(DS.Color.Notification.error)
-                    .transition(.opacity)
+                    .multilineTextAlignment(.center)
+                    .transition(.identity)
             } else {
                 Text(L10n.PINLock.subtitle)
                     .font(.callout)
                     .foregroundStyle(DS.Color.Text.weak)
-                    .transition(.opacity)
+                    .transition(.identity)
             }
         }.animation(.easeInOut(duration: 0.2), value: store.state.error)
     }

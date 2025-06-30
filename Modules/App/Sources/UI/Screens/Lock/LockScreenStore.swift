@@ -98,6 +98,8 @@ class LockScreenStore: StateStore {
         switch await pinVerifier.verifyPinCode(pin: pin.digits) {
         case .ok:
             dismissLock()
+        case .error(let error) where error == .reason(.tooFrequentAttempts):
+            state = state.copy(\.pinAuthenticationError, to: .tooFrequentAttempts)
         case .error:
             let pinAttemptsRemaining = await readNumberOfAttempts()
             handlePinAuthenticationError(attemptsLeft: pinAttemptsRemaining)

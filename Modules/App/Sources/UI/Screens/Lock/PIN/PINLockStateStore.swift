@@ -49,10 +49,13 @@ class PINLockStateStore: StateStore {
             state = state.copy(\.alert, to: nil)
             handleAlert(action: action)
         case .error(let error):
-            state =
+            var newState =
                 state
                 .copy(\.error, to: error)
-                .copy(\.pin, to: .empty)
+            if error != .tooFrequentAttempts {
+                newState = newState.copy(\.pin, to: .empty)
+            }
+            state = newState
         }
     }
 
@@ -90,7 +93,7 @@ private extension PINAuthenticationError {
         switch self {
         case .custom:
             true
-        case .attemptsRemaining:
+        case .attemptsRemaining, .tooFrequentAttempts:
             false
         }
     }
