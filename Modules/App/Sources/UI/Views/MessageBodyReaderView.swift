@@ -52,7 +52,13 @@ struct MessageBodyReaderView: UIViewRepresentable {
         webView.isInspectable = WKWebView.inspectabilityEnabled
 
         config.userContentController.add(context.coordinator, name: Constants.heightChangedHandlerName)
-        config.userContentController.addUserScript(.observeHeight(viewWidth: viewWidth))
+
+        let userScripts: [WKUserScript] = [
+            .adjustLayout(viewWidth: viewWidth),
+            .handleEmptyBody,
+        ]
+
+        userScripts.forEach(config.userContentController.addUserScript(_:))
 
         context.coordinator.setupRecovery(for: webView)
         return webView
@@ -157,8 +163,14 @@ extension MessageBodyReaderView {
 }
 
 extension WKUserScript {
-    fileprivate static func observeHeight(viewWidth: CGFloat) -> WKUserScript {
+    fileprivate static func adjustLayout(viewWidth: CGFloat) -> WKUserScript {
         let source = """
+            var metaWidth = document.querySelector('meta[name="viewport"]');
+            var ratio = document.body.offsetWidth / document.body.scrollWidth;
+            if (ratio < 1) {
+                metaWidth.content = metaWidth.content + ", initial-scale=" + ratio + ", maximum-scale=3.0, user-scalable=yes";
+            }
+
             function notify() {
                 measureHeightOnceContentIsLaidOut();
             }
@@ -176,7 +188,8 @@ extension WKUserScript {
                         measureHeightOnceContentIsLaidOut(retryCount + 1);
                     });
                 } else {
-                    window.webkit.messageHandlers.\(Constants.heightChangedHandlerName).postMessage(document.body.scrollHeight);
+                    var height = document.body.scrollHeight * ratio;
+                    window.webkit.messageHandlers.\(Constants.heightChangedHandlerName).postMessage(height);
                 }
             }
 
@@ -186,6 +199,18 @@ extension WKUserScript {
 
         return .init(source: source, injectionTime: .atDocumentEnd, forMainFrameOnly: true)
     }
+
+    /// A message can theoretically have an empty <body>. In such case the observed body height will be 0, and the loading spinner would be shown indefinitely.
+    fileprivate static let handleEmptyBody = WKUserScript(
+        source: """
+            if (document.body.childNodes.length == 0) {
+                var spacer = document.createElement('br');
+                document.body.appendChild(spacer);
+            }
+            """,
+        injectionTime: .atDocumentEnd,
+        forMainFrameOnly: true
+    )
 }
 
 private enum Constants {
