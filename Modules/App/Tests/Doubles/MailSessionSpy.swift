@@ -99,6 +99,10 @@ final class MailSessionSpy: MailSessionProtocol {
         fatalError(#function)
     }
 
+    func exportLogs(filePath: String) -> proton_app_uniffi.MailSessionExportLogsResult {
+        fatalError(#function)
+    }
+
     func getAccount(userId: String) async -> MailSessionGetAccountResult {
         fatalError(#function)
     }

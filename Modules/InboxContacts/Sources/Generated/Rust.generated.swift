@@ -414,6 +414,16 @@ public extension MailSessionChangeAppSettingsResult {
         }
     }
 }
+public extension MailSessionExportLogsResult {
+    func get() throws(ProtonError) -> UInt64 {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension MailSessionGetAccountResult {
     func get() throws(UserContextError) -> StoredAccount? {
         switch self {
