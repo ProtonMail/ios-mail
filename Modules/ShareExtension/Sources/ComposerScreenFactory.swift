@@ -22,13 +22,14 @@ import TestableShareExtension
 import proton_app_uniffi
 
 enum ComposerScreenFactory {
-    private static let mailUserSessionFactory = MailUserSessionFactory(apiConfig: .init(envId: .current))
-
     @MainActor
-    static func makeComposer(extensionContext: NSExtensionContext) async throws -> ComposerScreen {
+    static func makeComposer(
+        extensionContext: NSExtensionContext,
+        userSession: MailUserSession,
+        onDismiss: @escaping (ComposerDismissReason) -> Void
+    ) async throws -> ComposerScreen {
         let inputItems = extensionContext.inputItems.map { $0 as! NSExtensionItem }
         let sharedContent = try await SharedItemsParser.parse(extensionItems: inputItems)
-        let userSession = try await Self.mailUserSessionFactory.make()
         let draft = try await newDraft(session: userSession, createMode: .empty).get()
         try await DraftPrecomposer.populate(draft: draft, with: sharedContent)
 
@@ -37,44 +38,6 @@ enum ComposerScreenFactory {
             userSession: userSession
         )
 
-        return ComposerScreen(draft: draft, draftOrigin: .new, dependencies: dependencies) { dismissReason in
-            switch dismissReason {
-            case .dismissedManually, .draftDiscarded:
-                extensionContext.cancel()
-            case .messageScheduled, .messageSent:
-                extensionContext.complete()
-            }
-        }
-    }
-}
-
-private extension NSExtensionContext {
-    func complete() {
-        completeRequest(returningItems: nil) { expired in
-            if expired {
-                AppLogger.log(message: "Sharing interrupted", category: .shareExtension, isError: true)
-            } else {
-                AppLogger.log(message: "Sharing completed", category: .shareExtension)
-            }
-        }
-    }
-
-    func cancel() {
-        AppLogger.log(message: "Sharing cancelled", category: .shareExtension)
-
-        let cancelledError = NSError(domain: Bundle.main.bundleIdentifier!, code: NSUserCancelledError)
-        cancelRequest(withError: cancelledError)
-    }
-}
-
-extension ApiEnvId {
-    static var current: Self {
-        #if QA
-            if let dynamicDomain = UserDefaults.appGroup.string(forKey: "DYNAMIC_DOMAIN") {
-                return .custom(dynamicDomain)
-            }
-        #endif
-
-        return .prod
+        return ComposerScreen(draft: draft, draftOrigin: .new, dependencies: dependencies, onDismiss: onDismiss)
     }
 }
