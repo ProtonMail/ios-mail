@@ -75,8 +75,8 @@ struct MessageBodyReaderView: UIViewRepresentable {
     func loadHTML(in webView: WKWebView) {
         let style = """
             <style>
-                body {
-                    height: auto !important;
+                p,pre {
+                    margin: 1em 0;
                 }
 
                 table {
@@ -92,6 +92,7 @@ struct MessageBodyReaderView: UIViewRepresentable {
             </style>
             """
         let fixedBody = body.rawBody.replacingOccurrences(of: "</head>", with: "\(style)</head>")
+
         webView.loadHTMLString(fixedBody, baseURL: nil)
     }
 
@@ -188,7 +189,7 @@ extension WKUserScript {
                         measureHeightOnceContentIsLaidOut(retryCount + 1);
                     });
                 } else {
-                    var height = document.body.scrollHeight * ratio;
+                    var height = document.documentElement.scrollHeight * ratio;
                     window.webkit.messageHandlers.\(Constants.heightChangedHandlerName).postMessage(height);
                 }
             }
