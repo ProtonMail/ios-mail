@@ -168,9 +168,7 @@ extension WKUserScript {
         let source = """
             var metaWidth = document.querySelector('meta[name="viewport"]');
             var ratio = document.body.offsetWidth / document.body.scrollWidth;
-            if (ratio < 1) {
-                metaWidth.content = "width=device-width, initial-scale=" + ratio + ", maximum-scale=3.0, user-scalable=yes";
-            }
+            metaWidth.content = "width=device-width, initial-scale=" + ratio + ", maximum-scale=3.0, user-scalable=yes";
 
             function notify() {
                 measureHeightOnceContentIsLaidOut();
