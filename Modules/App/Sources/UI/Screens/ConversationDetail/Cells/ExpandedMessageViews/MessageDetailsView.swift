@@ -148,7 +148,7 @@ struct MessageDetailsView: View {
     var senderNameText: some View {
         HStack(spacing: .zero) {
             if !isHeaderCollapsed {
-                Text("\(L10n.MessageDetails.from): ")
+                Text("\(L10n.MessageDetails.from): ".notLocalized)
                     .font(.subheadline)
                     .fontWeight(.semibold)
                     .foregroundColor(DS.Color.Text.norm)
@@ -324,7 +324,7 @@ struct MessageDetailsView: View {
             .foregroundStyle(DS.Color.Text.weak)
 
         if prefixed {
-            let prefix = Text("\(group.humanReadable): ")
+            let prefix = Text("\(group.humanReadable): ".notLocalized)
                 .font(.footnote)
                 .fontWeight(.semibold)
                 .foregroundStyle(DS.Color.Text.norm)
