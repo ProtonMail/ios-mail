@@ -124,6 +124,16 @@ public extension ChallengeLoaderGetResult {
         }
     }
 }
+public extension ContactGroupByIdResult {
+    func get() throws(ActionError) -> ContactGroupItem {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension ContactListResult {
     func get() throws(ActionError) -> [GroupedContacts] {
         switch self {
@@ -304,8 +314,28 @@ public extension LoadConversationResult {
         }
     }
 }
+public extension LoginFlowCheckHostDeviceConfirmationResult {
+    func get() throws(LoginError) -> QrPollingResult {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension LoginFlowDelinquentStateResult {
     func get() throws(LoginError) -> DelinquentState {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension LoginFlowGenerateSignInQrCodeResult {
+    func get() throws(LoginError) -> String {
         switch self {
         case .ok(let value):
             value
