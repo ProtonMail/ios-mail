@@ -54,7 +54,7 @@ struct MessageBodyReaderView: UIViewRepresentable {
         config.userContentController.add(context.coordinator, name: Constants.heightChangedHandlerName)
 
         let userScripts: [WKUserScript] = [
-            .adjustLayout(viewWidth: viewWidth),
+            .adjustLayoutAndObserveHeight(viewWidth: viewWidth),
             .handleEmptyBody,
         ]
 
@@ -163,12 +163,12 @@ extension MessageBodyReaderView {
 }
 
 extension WKUserScript {
-    fileprivate static func adjustLayout(viewWidth: CGFloat) -> WKUserScript {
+    fileprivate static func adjustLayoutAndObserveHeight(viewWidth: CGFloat) -> WKUserScript {
         let source = """
             var metaWidth = document.querySelector('meta[name="viewport"]');
             var ratio = document.body.offsetWidth / document.body.scrollWidth;
             if (ratio < 1) {
-                metaWidth.content = metaWidth.content + ", initial-scale=" + ratio + ", maximum-scale=3.0, user-scalable=yes";
+                metaWidth.content = "width=device-width, initial-scale=" + ratio + ", maximum-scale=3.0, user-scalable=yes";
             }
 
             function notify() {
