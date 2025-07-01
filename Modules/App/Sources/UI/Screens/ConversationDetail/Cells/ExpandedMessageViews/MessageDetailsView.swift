@@ -115,8 +115,8 @@ struct MessageDetailsView: View {
 
     private var expandedHeaderView: some View {
         VStack(alignment: .leading, spacing: DS.Spacing.large) {
-            recipientRow(.to, recipients: Array(uiModel.recipientsTo.dropFirst()))
-                .removeViewIf(Array(uiModel.recipientsTo.dropFirst()).isEmpty)
+            recipientRow(.to, recipients: uiModel.recipientsToExcludingFirst)
+                .removeViewIf(uiModel.recipientsToExcludingFirst.isEmpty)
             recipientRow(.cc, recipients: uiModel.recipientsCc)
                 .removeViewIf(uiModel.recipientsCc.isEmpty)
             recipientRow(.bcc, recipients: uiModel.recipientsBcc)
@@ -127,10 +127,7 @@ struct MessageDetailsView: View {
                 locationRow
             }
         }
-        .padding(
-            .top,
-            Array(uiModel.recipientsTo.dropFirst()).isEmpty ? DS.Spacing.large : DS.Spacing.compact
-        )
+        .padding(.top, uiModel.recipientsToExcludingFirst.isEmpty ? DS.Spacing.large : DS.Spacing.compact)
         .transition(.move(edge: .top).combined(with: .opacity))
     }
 
@@ -392,6 +389,12 @@ struct MessageDetailsUIModel {
     let location: MessageDetail.Location?
     let labels: [LabelUIModel]
     let attachments: [AttachmentDisplayModel]
+}
+
+extension MessageDetailsUIModel {
+    var recipientsToExcludingFirst: [MessageDetail.Recipient] {
+        Array(recipientsTo.dropFirst())
+    }
 }
 
 enum MessageDetail {
