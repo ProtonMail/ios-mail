@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Combine
+import InboxTesting
 import proton_app_uniffi
 import Testing
 import UIKit
@@ -38,7 +39,7 @@ final class UserNotificationCenterDelegateTests {
 
         mailSession.storedSessions = [
             .init(id: "session-1", userId: "user-1", state: .authenticated),
-            .init(id: "session-2", userId: "user-2", state: .authenticated)
+            .init(id: "session-2", userId: "user-2", state: .authenticated),
         ]
 
         mailSession.userSessions = [

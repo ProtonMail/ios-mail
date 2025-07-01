@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import InboxCoreUI
 import InboxDesignSystem
 import SwiftUI
 
@@ -34,7 +35,7 @@ struct FormSecureTextInput: View {
     var body: some View {
         VStack(alignment: .leading, spacing: DS.Spacing.compact) {
             HStack(spacing: DS.Spacing.mediumLight) {
-                PINSecureInput(configuration: .default, text: $text, isSecure: $secureEntry)
+                PINSecureInput(text: $text, isSecure: $secureEntry)
                     .frame(height: 22)
                 Button(action: { secureEntry.toggle() }) {
                     Image(symbol: secureEntry ? .eye : .eyeSlash)

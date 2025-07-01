@@ -1,0 +1,7 @@
+sources:
+    - ../../Modules/InboxCoreUI/Sources
+    - ../../ProtonPackages/et-protoncore
+    - ../../ProtonPackages/proton_app_uniffi
+templates:
+    - ../
+output: ../../Modules/InboxCoreUI/Sources/Generated

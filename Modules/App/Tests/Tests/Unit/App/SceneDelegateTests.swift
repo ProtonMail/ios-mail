@@ -22,18 +22,20 @@ import Nimble
 import SwiftUI
 import XCTest
 
+@MainActor
 final class SceneDelegateTests: BaseTestCase {
 
     private var sut: SceneDelegate!
     var mailSessionSpy: MailSessionSpy!
     var shouldAutoLockStub: Bool = true
 
-    @MainActor
     override func setUp() async throws {
+        try await super.setUp()
+
         sut = .init()
         mailSessionSpy = .init()
         sut.appProtectionStore = .init(mailSession: { self.mailSessionSpy })
-        sut.pinVerifierFactory = { PINVerifierSpy() }
+        sut.mailSessionFactory = { .init(noPointer: .init()) }
         sut.checkAutoLockSetting = { completion in completion(self.shouldAutoLockStub) }
         sut.transitionAnimation = { _, _, _, animation, completion in
             animation?()
@@ -41,11 +43,11 @@ final class SceneDelegateTests: BaseTestCase {
         }
     }
 
-    override func tearDown() {
+    override func tearDown() async throws {
         sut = nil
         mailSessionSpy = nil
 
-        super.tearDown()
+        try await super.tearDown()
     }
 
     func testWindowScene_WhenConnectingToSceneSession_ConfiguresWindowSceneCorrectly() throws {
@@ -65,9 +67,10 @@ final class SceneDelegateTests: BaseTestCase {
         let overlayWindow = try XCTUnwrap(sut.overlayWindow)
 
         expect(overlayWindow).to(beAKindOf(PassThroughWindow.self))
-        expect(overlayWindow.rootViewController).to(beAKindOf(
-            UIHostingController<ModifiedContent<ToastSceneView, _EnvironmentKeyWritingModifier<Optional<ToastStateStore>>>>.self
-        ))
+        expect(overlayWindow.rootViewController).to(
+            beAKindOf(
+                UIHostingController<ModifiedContent<ToastSceneView, _EnvironmentKeyWritingModifier<Optional<ToastStateStore>>>>.self
+            ))
         expect(overlayWindow.rootViewController?.view.backgroundColor) == .clear
         expect(overlayWindow.isHidden) == false
     }
@@ -111,18 +114,21 @@ final class SceneDelegateTests: BaseTestCase {
         expect(appProtectionWindow).toNot(beNil())
         expect(appProtectionWindow.isHidden).to(beFalse())
         expect(appProtectionWindow.rootViewController).toNot(beNil())
-        expect(appProtectionWindow.rootViewController).to(beAKindOf(
-            UIHostingController<BlurredCoverView>.self
-        ))
+        expect(appProtectionWindow.rootViewController).to(
+            beAKindOf(
+                UIHostingController<BlurredCoverView>.self
+            ))
     }
 
     // MARK: - Private
 
     private func scene() throws -> UIWindowScene {
         let session = try InstanceHelper.create(UISceneSession.self)
-        let scene = try InstanceHelper.create(UIWindowScene.self, properties: [
-            "session": session
-        ])
+        let scene = try InstanceHelper.create(
+            UIWindowScene.self,
+            properties: [
+                "session": session
+            ])
         return scene
     }
 

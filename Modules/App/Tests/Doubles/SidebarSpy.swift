@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import ProtonMail
+import InboxTesting
 import proton_app_uniffi
 
 class SidebarSpy: SidebarProtocol {
