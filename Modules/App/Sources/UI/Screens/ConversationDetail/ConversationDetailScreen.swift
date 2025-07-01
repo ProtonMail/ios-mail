@@ -29,11 +29,12 @@ struct ConversationDetailScreen: View {
     private let draftPresenter: DraftPresenter
 
     init(seed: ConversationDetailSeed, draftPresenter: DraftPresenter, navigationPath: Binding<NavigationPath>) {
-        self._model = StateObject(wrappedValue: .init(
-            seed: seed,
-            draftPresenter: draftPresenter,
-            backOnlineActionExecutor: .init(mailUserSession: { AppContext.shared.userSession })
-        ))
+        self._model = StateObject(
+            wrappedValue: .init(
+                seed: seed,
+                draftPresenter: draftPresenter,
+                backOnlineActionExecutor: .init(mailUserSession: { AppContext.shared.userSession })
+            ))
         self._navigationPath = .init(projectedValue: navigationPath)
         self.draftPresenter = draftPresenter
     }
@@ -41,7 +42,7 @@ struct ConversationDetailScreen: View {
     var body: some View {
         ZStack {
             conversationView
-            if !model.areActionsDisabled {
+            if !model.areActionsHidden {
                 BottomActionBarView(
                     actions: model.bottomBarActions,
                     tapAction: { action in
@@ -93,7 +94,7 @@ struct ConversationDetailScreen: View {
             .opacity(animateViewIn ? 1.0 : 0.0)
             .smoothScreenTransition()
             .ignoresSafeArea(.all, edges: .bottom)
-            .padding(.bottom, model.areActionsDisabled ? 0 : proxy.safeAreaInsets.bottom + 45)
+            .padding(.bottom, model.areActionsHidden ? 0 : proxy.safeAreaInsets.bottom + 45)
             .task {
                 withAnimation(.easeIn) {
                     animateViewIn = true
@@ -135,7 +136,7 @@ struct ConversationDetailScreen: View {
 
     @ViewBuilder
     private var navigationTrailingButton: some View {
-        if !model.areActionsDisabled {
+        if !model.areActionsHidden {
             Button(
                 action: {
                     model.toggleStarState()

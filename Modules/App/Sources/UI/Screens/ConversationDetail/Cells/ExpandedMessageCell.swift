@@ -25,20 +25,26 @@ struct ExpandedMessageCell: View {
     private let uiModel: ExpandedMessageCellUIModel
     private let onEvent: (ExpandedMessageCellEvent) -> Void
     private let htmlLoaded: () -> Void
-    private let areActionsDisabled: Bool
+    private let areActionsHidden: Bool
     @Binding var attachmentIDToOpen: ID?
+    @State private var isBodyLoaded: Bool = false
+
+    private var actionButtonsState: MessageDetailsView.ActionButtonsState {
+        guard !areActionsHidden else { return .hidden }
+        return isBodyLoaded ? .enabled : .disabled
+    }
 
     init(
         mailbox: Mailbox,
         uiModel: ExpandedMessageCellUIModel,
-        areActionsDisabled: Bool,
+        areActionsHidden: Bool,
         attachmentIDToOpen: Binding<ID?>,
         onEvent: @escaping (ExpandedMessageCellEvent) -> Void,
         htmlLoaded: @escaping () -> Void
     ) {
         self.mailbox = mailbox
         self.uiModel = uiModel
-        self.areActionsDisabled = areActionsDisabled
+        self.areActionsHidden = areActionsHidden
         self._attachmentIDToOpen = attachmentIDToOpen
         self.onEvent = onEvent
         self.htmlLoaded = htmlLoaded
@@ -48,7 +54,7 @@ struct ExpandedMessageCell: View {
         VStack(spacing: .zero) {
             MessageDetailsView(
                 uiModel: uiModel.messageDetails,
-                areActionsDisabled: areActionsDisabled,
+                actionButtonsState: actionButtonsState,
                 onEvent: { event in
                     switch event {
                     case .onTap:
@@ -71,13 +77,14 @@ struct ExpandedMessageCell: View {
                 emailAddress: uiModel.messageDetails.sender.address,
                 attachments: uiModel.messageDetails.attachments,
                 mailbox: mailbox,
+                isBodyLoaded: $isBodyLoaded,
                 attachmentIDToOpen: $attachmentIDToOpen,
-                editScheduledMessage: { onEvent(.onEditScheduledMessage) },
-                htmlLoaded: htmlLoaded
+                editScheduledMessage: { onEvent(.onEditScheduledMessage) }
             )
-            if !areActionsDisabled {
+            if !areActionsHidden {
                 MessageActionButtonsView(
                     isSingleRecipient: uiModel.messageDetails.isSingleRecipient,
+                    isDisabled: !isBodyLoaded,
                     onEvent: { event in
                         switch event {
                         case .reply:
@@ -92,7 +99,13 @@ struct ExpandedMessageCell: View {
                 .padding(.top, DS.Spacing.moderatelyLarge)
                 .padding(.bottom, DS.Spacing.huge)
             }
-        }.padding(.top, DS.Spacing.large)
+        }
+        .padding(.top, DS.Spacing.large)
+        .onChange(of: isBodyLoaded) { oldIsLoaded, newIsLoaded in
+            if newIsLoaded {
+                htmlLoaded()
+            }
+        }
     }
 }
 
@@ -132,7 +145,7 @@ enum ExpandedMessageCellEvent {
                 unread: false,
                 messageDetails: messageDetails
             ),
-            areActionsDisabled: false,
+            areActionsHidden: false,
             attachmentIDToOpen: .constant(nil),
             onEvent: { _ in },
             htmlLoaded: {}
@@ -144,7 +157,7 @@ enum ExpandedMessageCellEvent {
                 unread: false,
                 messageDetails: messageDetails
             ),
-            areActionsDisabled: false,
+            areActionsHidden: false,
             attachmentIDToOpen: .constant(nil),
             onEvent: { _ in },
             htmlLoaded: {}

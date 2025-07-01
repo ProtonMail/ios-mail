@@ -53,7 +53,7 @@ class MessageDetailsViewSnapshotTests: BaseTestCase {
                 .init(labelId: .init(value: 1), text: "Friends and Family", color: .init(hex: "#1795D4")),
                 .init(labelId: .init(value: 2), text: "Work", color: .init(hex: "#F67900")),
                 .init(labelId: .init(value: 3), text: "Personal", color: .init(hex: "#E93671")),
-                .init(labelId: .init(value: 4), text: "Shopping", color: .init(hex: "#1B9B78"))
+                .init(labelId: .init(value: 4), text: "Shopping", color: .init(hex: "#1B9B78")),
             ]
         )
 
@@ -63,15 +63,19 @@ class MessageDetailsViewSnapshotTests: BaseTestCase {
 
     func testMessageDetailsWithOutboxLocationLayoutsCorrectly() {
         let model = MessageDetailsPreviewProvider.testData(location: .system(.outbox), labels: [])
-        assertSnapshotsOnIPhoneX(of: sut(collapsed: false, model: model, areActionsDisabled: true))
+        assertSnapshotsOnIPhoneX(of: sut(collapsed: false, model: model, actionButtonsState: .hidden))
+    }
+
+    func testMessageDetailsWithActionButtonsDisabled() {
+        let model = MessageDetailsPreviewProvider.testData(location: .system(.inbox), labels: [])
+        assertSnapshotsOnIPhoneX(of: sut(collapsed: true, model: model, actionButtonsState: .disabled))
     }
 
     private func sut(
         collapsed: Bool,
         model: MessageDetailsUIModel,
-        areActionsDisabled: Bool = false
+        actionButtonsState: MessageDetailsView.ActionButtonsState = .enabled
     ) -> MessageDetailsView {
-        .init(isHeaderCollapsed: collapsed, uiModel: model, areActionsDisabled: areActionsDisabled, onEvent: { _ in })
+        .init(isHeaderCollapsed: collapsed, uiModel: model, actionButtonsState: actionButtonsState, onEvent: { _ in })
     }
-
 }
