@@ -589,16 +589,10 @@ enum L10n {
     }
 
     enum MessageDetails {
-        static let bcc = LocalizedStringResource("Bcc", comment: "`BCC` in the messsage details.")
-        static let cc = LocalizedStringResource("Cc", comment: "`CC` in the messsage details.")
-        static let from = LocalizedStringResource("From", comment: "`From` in the message details.")
-        static let label = LocalizedStringResource("Label", comment: "`Label` in the message details.")
-        static let location = LocalizedStringResource("Location", comment: "`Location` in the message details.")
-        static let other = LocalizedStringResource(
-            "Other",
-            comment: "`Other` in the message details (e.g. starred, pinned messages)."
-        )
-        static let to = LocalizedStringResource("To", comment: "`To` in the message details.")
+        static let bcc = LocalizedStringResource("Bcc: ", comment: "`BCC` in the messsage details.")
+        static let cc = LocalizedStringResource("Cc: ", comment: "`CC` in the messsage details.")
+        static let from = LocalizedStringResource("From: ", comment: "`From` in the message details.")
+        static let to = LocalizedStringResource("To: ", comment: "`To` in the message details.")
         static func attachments(count: Int) -> LocalizedStringResource {
             .init("\(count) attachments", comment: "The number of a message attachments.")
         }

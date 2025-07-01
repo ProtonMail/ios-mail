@@ -4759,6 +4759,7 @@
     },
     "Bcc" : {
       "comment" : "`BCC` in the messsage details.",
+      "extractionState" : "stale",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -4947,6 +4948,9 @@
           }
         }
       }
+    },
+    "Bcc: " : {
+      "comment" : "`BCC` in the messsage details."
     },
     "Block this contact" : {
       "comment" : "Action title for blocking email address in the address action sheet.",
@@ -5344,6 +5348,7 @@
     },
     "Cc" : {
       "comment" : "`CC` in the messsage details.",
+      "extractionState" : "stale",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -5532,6 +5537,9 @@
           }
         }
       }
+    },
+    "Cc: " : {
+      "comment" : "`CC` in the messsage details."
     },
     "Change PIN" : {
       "comment" : "Change PIN code title."
@@ -9108,6 +9116,7 @@
     },
     "From" : {
       "comment" : "`From` in the message details.",
+      "extractionState" : "stale",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -9296,6 +9305,9 @@
           }
         }
       }
+    },
+    "From: " : {
+      "comment" : "`From` in the message details."
     },
     "Hide details" : {
       "comment" : "Title of the button that hide details of a message."
@@ -9508,6 +9520,7 @@
     },
     "Label" : {
       "comment" : "`Label` in the message details.",
+      "extractionState" : "stale",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -9899,6 +9912,7 @@
     },
     "Location" : {
       "comment" : "`Location` in the message details.",
+      "extractionState" : "stale",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -13433,6 +13447,7 @@
     },
     "Other" : {
       "comment" : "`Other` in the message details (e.g. starred, pinned messages).",
+      "extractionState" : "stale",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -17958,6 +17973,7 @@
     },
     "To" : {
       "comment" : "`To` in the message details.",
+      "extractionState" : "stale",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -18146,6 +18162,9 @@
           }
         }
       }
+    },
+    "To: " : {
+      "comment" : "`To` in the message details."
     },
     "To: ..." : {
       "comment" : "Placeholder for a draft in the conversation view when the draft has no recipients."
