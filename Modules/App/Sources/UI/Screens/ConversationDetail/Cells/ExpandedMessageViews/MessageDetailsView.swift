@@ -30,17 +30,16 @@ struct MessageDetailsView: View {
     private let messageDetailsLeftColumnWidth: CGFloat = 80
 
     var body: some View {
-        VStack(alignment: .leading, spacing: .zero) {
+        VStack(alignment: .leading, spacing: isHeaderCollapsed ? DS.Spacing.standard : 0) {
             headerView
+                .background(DS.Color.Background.norm)
                 .contentShape(Rectangle())
                 .onTapGesture { onEvent(.onTap) }
-                .background(DS.Color.Background.norm)
                 .zIndex(1)
 
-            if !isHeaderCollapsed {
-                expandedHeaderView
-            }
+            detailedContent
         }
+        .background(DS.Color.Background.norm)
         .clipped()
         .padding([.horizontal, .bottom], DS.Spacing.large)
     }
@@ -68,17 +67,13 @@ struct MessageDetailsView: View {
                         recipientsView
                             .transition(.opacity)
                     } else if let firstRecipient = uiModel.recipientsTo.first {
-                        recipientButton(
-                            recipient: firstRecipient,
-                            group: .to,
-                            prefixed: true,
-                            index: 0
-                        )
+                        recipientButton(recipient: firstRecipient, group: .to, prefixed: true, index: 0)
+                            .transition(.opacity)
                     }
                 }
 
                 Spacer(minLength: DS.Spacing.moderatelyLarge)
-                VStack(alignment: .trailing, spacing: DS.Spacing.compact) {
+                VStack(alignment: .trailing, spacing: DS.Spacing.standard) {
                     Text(uiModel.date.mailboxFormat())
                         .font(.caption)
                         .foregroundColor(DS.Color.Text.weak)
@@ -90,6 +85,23 @@ struct MessageDetailsView: View {
                 }
             }
         }
+    }
+
+    private var detailedContent: some View {
+        VStack(alignment: .leading, spacing: DS.Spacing.standard) {
+            if !isHeaderCollapsed {
+                expandedHeaderView
+            }
+
+            labelRow
+                .removeViewIf(uiModel.labels.isEmpty)
+
+            if !isHeaderCollapsed {
+                hideDetailsButton
+                    .padding(.top, DS.Spacing.large)
+            }
+        }
+        .padding(.leading, DS.Spacing.jumbo + DS.Spacing.large)
     }
 
     private var expandedHeaderView: some View {
@@ -104,18 +116,12 @@ struct MessageDetailsView: View {
             VStack(alignment: .leading, spacing: DS.Spacing.standard) {
                 dateRow
                 locationRow
-                labelRow
-                    .removeViewIf(uiModel.labels.isEmpty)
             }
-
-            hideDetailsButton
-                .padding(.top, DS.Spacing.compact)
         }
         .padding(
             .top,
             Array(uiModel.recipientsTo.dropFirst()).isEmpty ? DS.Spacing.large : DS.Spacing.compact
         )
-        .padding(.leading, DS.Spacing.jumbo + DS.Spacing.large)
         .transition(.move(edge: .top).combined(with: .opacity))
     }
 
@@ -276,7 +282,7 @@ struct MessageDetailsView: View {
     }
 
     private func recipientRow(_ group: RecipientGroup, recipients: [MessageDetail.Recipient]) -> some View {
-        VStack(alignment: .leading, spacing: DS.Spacing.compact) {
+        VStack(alignment: .leading, spacing: DS.Spacing.standard) {
             ForEachEnumerated(recipients, id: \.element) { recipient, index in
                 recipientButton(
                     recipient: recipient,
@@ -297,7 +303,7 @@ struct MessageDetailsView: View {
         Button {
             onEvent(.onRecipientTap(recipient))
         } label: {
-            VStack(alignment: .leading, spacing: DS.Spacing.tiny) {
+            VStack(alignment: .leading, spacing: DS.Spacing.compact) {
                 recipientName(recipient: recipient, group: group, prefixed: prefixed)
                     .accessibilityIdentifier(MessageDetailsViewIdentifiers.expandedHeaderRecipientName(group: group, index: index))
                 Text(recipient.address)
@@ -486,7 +492,40 @@ extension Array where Element == MessageDetail.Recipient {
 
 enum MessageDetailsPreviewProvider {
 
-    static func testData(location: ExclusiveLocation?, labels: [LabelUIModel]) -> MessageDetailsUIModel {
+    static var recipientsTo: [MessageDetail.Recipient] {
+        [
+            .init(
+                name: "Me", address: "eric.norbert@protonmail.ch",
+                avatarInfo: .init(initials: "E", color: .red)
+            ),
+            .init(
+                name: "James Hayes", address: "james@proton.me",
+                avatarInfo: .init(initials: "J", color: .red)
+            ),
+        ]
+    }
+
+    static var recipientsCc: [MessageDetail.Recipient] {
+        [
+            .init(name: "James Hayes", address: "james@proton.me", avatarInfo: .init(initials: "J", color: .red)),
+            .init(name: "Riley Scott", address: "scott375@gmail.com", avatarInfo: .init(initials: "R", color: .red)),
+            .init(name: "Layla Robinson", address: "layla.rob@protonmail.ch", avatarInfo: .init(initials: "L", color: .red)),
+        ]
+    }
+
+    static var recipientsBcc: [MessageDetail.Recipient] {
+        [
+            .init(name: "Isabella Coleman", address: "isa_coleman@protonmail.com", avatarInfo: .init(initials: "I", color: .red))
+        ]
+    }
+
+    static func testData(
+        location: ExclusiveLocation?,
+        labels: [LabelUIModel],
+        recipientsTo: [MessageDetail.Recipient] = recipientsTo,
+        recipientsCc: [MessageDetail.Recipient] = recipientsCc,
+        recipientsBcc: [MessageDetail.Recipient] = recipientsBcc
+    ) -> MessageDetailsUIModel {
         .init(
             avatar: .init(
                 info: .init(initials: "", color: DS.Color.Background.secondary),
@@ -498,24 +537,9 @@ enum MessageDetailsPreviewProvider {
                 encryptionInfo: "End to end encrypted and signed"
             ),
             isSenderProtonOfficial: true,
-            recipientsTo: [
-                .init(
-                    name: "Me", address: "eric.norbert@protonmail.ch",
-                    avatarInfo: .init(initials: "E", color: .red)
-                ),
-                .init(
-                    name: "James Hayes", address: "james@proton.me",
-                    avatarInfo: .init(initials: "J", color: .red)
-                )
-            ],
-            recipientsCc: [
-                .init(name: "James Hayes", address: "james@proton.me", avatarInfo: .init(initials: "J", color: .red)),
-                .init(name: "Riley Scott", address: "scott375@gmail.com", avatarInfo: .init(initials: "R", color: .red)),
-                .init(name: "Layla Robinson", address: "layla.rob@protonmail.ch", avatarInfo: .init(initials: "L", color: .red)),
-            ],
-            recipientsBcc: [
-                .init(name: "Isabella Coleman", address: "isa_coleman@protonmail.com", avatarInfo: .init(initials: "I", color: .red))
-            ],
+            recipientsTo: recipientsTo,
+            recipientsCc: recipientsCc,
+            recipientsBcc: recipientsBcc,
             date: Date(timeIntervalSince1970: 1724347300),
             location: location?.model,
             labels: labels,
