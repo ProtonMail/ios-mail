@@ -124,6 +124,16 @@ public extension ChallengeLoaderGetResult {
         }
     }
 }
+public extension ContactGroupByIdResult {
+    func get() throws(ActionError) -> ContactGroupItem {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension ContactListResult {
     func get() throws(ActionError) -> [GroupedContacts] {
         switch self {
@@ -304,8 +314,28 @@ public extension LoadConversationResult {
         }
     }
 }
+public extension LoginFlowCheckHostDeviceConfirmationResult {
+    func get() throws(LoginError) -> QrPollingResult {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension LoginFlowDelinquentStateResult {
     func get() throws(LoginError) -> DelinquentState {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension LoginFlowGenerateSignInQrCodeResult {
+    func get() throws(LoginError) -> String {
         switch self {
         case .ok(let value):
             value
@@ -524,8 +554,18 @@ public extension MailSessionInitializedUserContextFromSessionResult {
         }
     }
 }
+public extension MailSessionNewLoginFlowResult {
+    func get() throws(ProtonError) -> LoginFlow {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension MailSessionNewSignupFlowResult {
-    func get() throws(UserContextError) -> SignupFlow {
+    func get() throws(ProtonError) -> SignupFlow {
         switch self {
         case .ok(let value):
             value
@@ -546,6 +586,16 @@ public extension MailSessionRegisterDeviceTaskResult {
 }
 public extension MailSessionRemainingPinAttemptsResult {
     func get() throws(UserContextError) -> UInt32? {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension MailSessionResumeLoginFlowResult {
+    func get() throws(ProtonError) -> LoginFlow {
         switch self {
         case .ok(let value):
             value
@@ -596,6 +646,16 @@ public extension MailSessionStartBackgroundExecutionResult {
 }
 public extension MailSessionStartBackgroundExecutionWithDurationResult {
     func get() throws(UserContextError) -> BackgroundExecutionHandle {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension MailSessionToUserContextResult {
+    func get() throws(ProtonError) -> MailUserSession {
         switch self {
         case .ok(let value):
             value

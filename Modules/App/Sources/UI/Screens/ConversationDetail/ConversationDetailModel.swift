@@ -36,7 +36,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
 
     let messageAppearanceOverrideStore = MessageAppearanceOverrideStore()
 
-    var areActionsDisabled: Bool {
+    var areActionsHidden: Bool {
         seed.isOutbox
     }
 

@@ -63,7 +63,12 @@ class MessageDetailsViewSnapshotTests: BaseTestCase {
 
     func testMessageDetailsWithOutboxLocationLayoutsCorrectly() {
         let model = MessageDetailsPreviewProvider.testData(location: .system(.outbox), labels: [])
-        assertSnapshotsOnIPhoneX(of: sut(collapsed: false, model: model, areActionsDisabled: true))
+        assertSnapshotsOnIPhoneX(of: sut(collapsed: false, model: model, actionButtonsState: .hidden))
+    }
+
+    func testMessageDetailsWithActionButtonsDisabled() {
+        let model = MessageDetailsPreviewProvider.testData(location: .system(.inbox), labels: [])
+        assertSnapshotsOnIPhoneX(of: sut(collapsed: true, model: model, actionButtonsState: .disabled))
     }
 
     func testMessageDetailsWithOneToRecipientLayoutsCorrectly() {
@@ -82,9 +87,8 @@ class MessageDetailsViewSnapshotTests: BaseTestCase {
     private func sut(
         collapsed: Bool,
         model: MessageDetailsUIModel,
-        areActionsDisabled: Bool = false
+        actionButtonsState: MessageDetailsView.ActionButtonsState = .enabled
     ) -> MessageDetailsView {
-        .init(isHeaderCollapsed: collapsed, uiModel: model, areActionsDisabled: areActionsDisabled, onEvent: { _ in })
+        .init(isHeaderCollapsed: collapsed, uiModel: model, actionButtonsState: actionButtonsState, onEvent: { _ in })
     }
-
 }

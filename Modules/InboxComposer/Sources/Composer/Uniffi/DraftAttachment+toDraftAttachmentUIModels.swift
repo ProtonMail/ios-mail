@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Proton Technologies AG
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -17,9 +17,9 @@
 
 import proton_app_uniffi
 
-extension DraftAttachment {
+extension Array where Element == DraftAttachment {
 
-    func toDraftAttachmentUIModel() -> DraftAttachmentUIModel {
-        .init(attachment: attachment, state: state)
+    func toDraftAttachmentUIModels() -> [DraftAttachmentUIModel] {
+        self.filter { $0.attachment.disposition == .attachment }.map { $0.toDraftAttachmentUIModel() }
     }
 }

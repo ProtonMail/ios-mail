@@ -52,6 +52,7 @@ struct ProtonMailApp: App {
     init() {
         legacyMigrationStateStore = .init(toastStateStore: toastStateStore)
         configureAnalyticsIfNeeded(analytics: analytics)
+        DynamicFontSize.capSupportedSizeCategories()
     }
 
     func configureAnalyticsIfNeeded(analytics: Analytics) {

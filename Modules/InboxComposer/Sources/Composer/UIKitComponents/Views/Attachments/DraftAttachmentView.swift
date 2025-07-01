@@ -105,11 +105,11 @@ final class DraftAttachmentView: TapHighlightView {
         name.text = uiModel.attachment.name
         size.text = Formatter.bytesFormatter.string(fromByteCount: Int64(uiModel.attachment.size))
 
-        let isError = uiModel.status.state.isError
+        let isError = uiModel.state.isError
         layer.borderColor = isError ? DS.Color.Notification.error.toDynamicUIColor.cgColor : UIColor.clear.cgColor
         layer.borderWidth = isError ? 1.0 : 0.0
 
-        let isUploaded = uiModel.status.state == .uploaded
+        let isUploaded = uiModel.state == .uploaded
         removeButton.configure(isSpinning: !isUploaded && !isError)
         isTappable = isUploaded
     }

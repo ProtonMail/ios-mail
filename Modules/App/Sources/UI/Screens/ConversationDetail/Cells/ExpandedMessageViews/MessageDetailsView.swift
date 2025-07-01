@@ -22,9 +22,18 @@ import enum proton_app_uniffi.MessageBanner
 import SwiftUI
 
 struct MessageDetailsView: View {
+    enum ActionButtonsState {
+        case enabled
+        case disabled
+        case hidden
+
+        var isDisabled: Bool { self == .disabled }
+        var isHidden: Bool { self == .hidden }
+    }
+
     @State private(set) var isHeaderCollapsed: Bool = true
     let uiModel: MessageDetailsUIModel
-    let areActionsDisabled: Bool
+    let actionButtonsState: ActionButtonsState
     let onEvent: (MessageDetailsEvent) -> Void
 
     private let messageDetailsLeftColumnWidth: CGFloat = 80
@@ -79,7 +88,7 @@ struct MessageDetailsView: View {
                         .foregroundColor(DS.Color.Text.weak)
                         .accessibilityIdentifier(MessageDetailsViewIdentifiers.messageDate)
                         .padding(.top, DS.Spacing.tiny)
-                    if !areActionsDisabled {
+                    if !actionButtonsState.isHidden {
                         headerActionsView
                     }
                 }
@@ -226,8 +235,10 @@ struct MessageDetailsView: View {
         Button(action: action) {
             image
                 .square(size: 20)
+                .foregroundStyle(actionButtonsState.isDisabled ? DS.Color.Text.disabled : DS.Color.Text.weak)
         }
         .square(size: 36)
+        .disabled(actionButtonsState.isDisabled)
         .overlay(
             RoundedRectangle(cornerRadius: DS.Radius.mediumLarge)
                 .stroke(DS.Color.Border.norm, lineWidth: 1)
@@ -484,10 +495,12 @@ extension Array where Element == MessageDetail.Recipient {
             .init(labelId: .init(value: 3), text: "Summer trip", color: .pink),
         ])
 
-    return VStack {
-        MessageDetailsView(isHeaderCollapsed: false, uiModel: model, areActionsDisabled: false, onEvent: { _ in })
-        Spacer()
-    }
+    return MessageDetailsView(
+        isHeaderCollapsed: false,
+        uiModel: model,
+        actionButtonsState: .enabled,
+        onEvent: { _ in }
+    )
 }
 
 enum MessageDetailsPreviewProvider {
