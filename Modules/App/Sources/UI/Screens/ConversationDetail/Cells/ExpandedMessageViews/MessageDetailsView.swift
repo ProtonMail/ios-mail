@@ -37,6 +37,7 @@ struct MessageDetailsView: View {
     let onEvent: (MessageDetailsEvent) -> Void
 
     private let messageDetailsLeftColumnWidth: CGFloat = 80
+    private let detailedContentLeadingSpacing: CGFloat = DS.Spacing.jumbo + DS.Spacing.large
 
     var body: some View {
         VStack(alignment: .leading, spacing: isHeaderCollapsed ? DS.Spacing.standard : 0) {
@@ -110,7 +111,7 @@ struct MessageDetailsView: View {
                     .padding(.top, DS.Spacing.large)
             }
         }
-        .padding(.leading, DS.Spacing.jumbo + DS.Spacing.large)
+        .padding(.leading, detailedContentLeadingSpacing)
     }
 
     private var expandedHeaderView: some View {
