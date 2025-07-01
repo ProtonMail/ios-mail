@@ -20,13 +20,13 @@ import proton_app_uniffi
 extension MessageSender {
 
     var senderAvatar: AvatarUIModel {
-        let type: AvatarViewType = .sender(params: .init(
-            address: address,
-            bimiSelector: bimiSelector,
-            displaySenderImage: displaySenderImage
-        ))
+        let type: AvatarViewType = .sender(
+            params: .init(
+                address: address,
+                bimiSelector: bimiSelector,
+                displaySenderImage: displaySenderImage
+            ))
 
         return .init(info: avatarInfo, type: type)
     }
-
 }

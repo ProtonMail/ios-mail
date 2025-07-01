@@ -23,13 +23,12 @@ import class SwiftUI.UIImage
 extension Conversation {
 
     func toMailboxItemCellUIModel(selectedIds: Set<Id>, showLocation: Bool) -> MailboxItemCellUIModel {
-        let firstSender = senders.first.unsafelyUnwrapped
 
         return MailboxItemCellUIModel(
             id: id,
             conversationID: id,
             type: .conversation,
-            avatar: firstSender.senderAvatar,
+            avatar: avatarUIModelFor(senders: senders),
             emails: senders.addressUIRepresentation,
             subject: subject,
             date: Date(timeIntervalSince1970: TimeInterval(time)),
@@ -37,7 +36,7 @@ extension Conversation {
             isRead: numUnread == 0,
             isStarred: isStarred,
             isSelected: selectedIds.contains(id),
-            isSenderProtonOfficial: firstSender.isProton,
+            isSenderProtonOfficial: senders.contains(where: \.isProton),
             messagesCount: totalMessages > 1 ? totalMessages : 0,
             labelUIModel: customLabels.toMailboxLabelUIModel(),
             attachmentsUIModel: attachmentsMetadata.toAttachmentCapsuleUIModels(),
@@ -47,4 +46,14 @@ extension Conversation {
         )
     }
 
+    private func avatarUIModelFor(senders: [MessageSender]) -> AvatarUIModel {
+        let first = senders.first
+        let viewType: AvatarViewType = .sender(
+            params: .init(
+                address: first?.address ?? .empty,
+                bimiSelector: first?.bimiSelector ?? nil,
+                displaySenderImage: true
+            ))
+        return .init(info: avatarInformationFromMessageSenders(addressList: senders).info, type: viewType)
+    }
 }
