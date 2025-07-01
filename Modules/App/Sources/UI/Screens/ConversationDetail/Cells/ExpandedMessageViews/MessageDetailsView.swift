@@ -66,7 +66,7 @@ struct MessageDetailsView: View {
 
             HStack(alignment: .top, spacing: .zero) {
                 VStack(alignment: .leading, spacing: DS.Spacing.compact) {
-                    senderNameView
+                    senderView
                     Button(action: { onEvent(.onSenderTap) }) {
                         senderAddressView
                     }
@@ -175,7 +175,7 @@ struct MessageDetailsView: View {
         }
     }
 
-    private var senderNameView: some View {
+    private var senderView: some View {
         HStack(spacing: DS.Spacing.compact) {
             senderNameText
             ProtonOfficialBadgeView()
@@ -243,53 +243,6 @@ struct MessageDetailsView: View {
             RoundedRectangle(cornerRadius: DS.Radius.mediumLarge)
                 .stroke(DS.Color.Border.norm, lineWidth: 1)
         )
-    }
-
-    private var extendedDetailsView: some View {
-        VStack(alignment: .leading, spacing: DS.Spacing.moderatelyLarge) {
-            fromRow
-            recipientRow(.to, recipients: uiModel.recipientsTo)
-            recipientRow(.cc, recipients: uiModel.recipientsCc)
-                .removeViewIf(uiModel.recipientsCc.isEmpty)
-            recipientRow(.bcc, recipients: uiModel.recipientsBcc)
-                .removeViewIf(uiModel.recipientsBcc.isEmpty)
-            dateRow
-            locationRow
-            labelRow
-                .removeViewIf(uiModel.labels.isEmpty)
-        }
-        .padding(DS.Spacing.medium)
-        .overlay {
-            RoundedRectangle(cornerSize: CGSize(width: DS.Radius.extraLarge, height: DS.Radius.extraLarge))
-                .stroke(DS.Color.Border.strong)
-        }
-        .accessibilityElement(children: .contain)
-        .accessibilityIdentifier(MessageDetailsViewIdentifiers.expandedHeaderRootItem)
-    }
-
-    private var fromRow: some View {
-        HStack(alignment: .top, spacing: DS.Spacing.small) {
-            Text(L10n.MessageDetails.from)
-                .font(.caption)
-                .foregroundStyle(DS.Color.Text.weak)
-                .frame(width: messageDetailsLeftColumnWidth, alignment: .leading)
-                .accessibilityIdentifier(MessageDetailsViewIdentifiers.expandedHeaderSenderLabel)
-            Button {
-                onEvent(.onSenderTap)
-            } label: {
-                VStack(alignment: .leading, spacing: DS.Spacing.tiny) {
-                    Text(uiModel.sender.name)
-                        .font(.caption)
-                        .foregroundStyle(DS.Color.Text.norm)
-                        .accessibilityIdentifier(MessageDetailsViewIdentifiers.expandedHeaderSenderName)
-                    Text(uiModel.sender.address)
-                        .font(.caption)
-                        .foregroundStyle(DS.Color.Text.accent)
-                        .accessibilityIdentifier(MessageDetailsViewIdentifiers.expandedHeaderSenderAddress)
-                }
-            }
-            Spacer()
-        }
     }
 
     private func recipientRow(_ group: RecipientGroup, recipients: [MessageDetail.Recipient]) -> some View {
@@ -438,12 +391,10 @@ struct MessageDetailsUIModel {
     let date: Date
     let location: MessageDetail.Location?
     let labels: [LabelUIModel]
-    let other: [MessageDetail.Other]
     let attachments: [AttachmentDisplayModel]
 }
 
 enum MessageDetail {
-
     struct Sender {
         let name: String
         let address: String
@@ -461,11 +412,6 @@ enum MessageDetail {
         let name: LocalizedStringResource
         let icon: Image
         let iconColor: Color?
-    }
-
-    enum Other {
-        case starred
-        case pinned
     }
 }
 
@@ -556,7 +502,6 @@ enum MessageDetailsPreviewProvider {
             date: Date(timeIntervalSince1970: 1724347300),
             location: location?.model,
             labels: labels,
-            other: [.starred, .pinned],
             attachments: .previewData
         )
     }

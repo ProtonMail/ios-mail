@@ -78,7 +78,6 @@ extension Message {
                 date: Date(timeIntervalSince1970: TimeInterval(time)),
                 location: exclusiveLocation?.model,
                 labels: labels,
-                other: other,
                 attachments: attachmentsMetadata.map(\.displayModel)
             )
         )
@@ -103,16 +102,6 @@ extension Message {
         customLabels.map { label in
             LabelUIModel(labelId: label.id, text: label.name, color: .init(hex: label.color.value))
         }
-    }
-
-    private var other: [MessageDetail.Other] {
-        var result: [MessageDetail.Other] = []
-
-        if starred {
-            result.append(.starred)
-        }
-
-        return result
     }
 
     private var allRecipientsAvatar: AvatarUIModel {
