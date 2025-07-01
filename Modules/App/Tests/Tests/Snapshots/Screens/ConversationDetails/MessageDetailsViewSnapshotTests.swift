@@ -81,7 +81,7 @@ class MessageDetailsViewSnapshotTests: BaseTestCase {
             recipientsCc: [],
             recipientsBcc: []
         )
-        assertSnapshotsOnIPhoneX(of: sut(collapsed: false, model: model, areActionsDisabled: false))
+        assertSnapshotsOnIPhoneX(of: sut(collapsed: false, model: model))
     }
 
     private func sut(
