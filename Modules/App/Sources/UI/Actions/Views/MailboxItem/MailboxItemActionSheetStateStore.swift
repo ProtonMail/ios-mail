@@ -79,28 +79,28 @@ class MailboxItemActionSheetStateStore: StateStore {
                 performAction(
                     action: starActionPerformer.star,
                     ids: [input.id],
-                    itemType: input.type,
+                    itemType: input.type.inboxItemType,
                     navigation: .dismiss
                 )
             case .unstar:
                 performAction(
                     action: starActionPerformer.unstar,
                     ids: [input.id],
-                    itemType: input.type,
+                    itemType: input.type.inboxItemType,
                     navigation: .dismiss
                 )
             case .markRead:
                 performAction(
                     action: readActionPerformer.markAsRead,
                     ids: [input.id],
-                    itemType: input.type,
+                    itemType: input.type.inboxItemType,
                     navigation: .dismiss
                 )
             case .markUnread:
                 performAction(
                     action: readActionPerformer.markAsUnread,
                     ids: [input.id],
-                    itemType: input.type,
+                    itemType: input.type.inboxItemType,
                     navigation: .dismissAndGoBack
                 )
             case .delete:
@@ -152,14 +152,14 @@ class MailboxItemActionSheetStateStore: StateStore {
     private func performMoveToAction(
         destination: MoveToSystemFolderLocation,
         ids: [ID],
-        itemType: MailboxItemType
+        itemType: ActionSheetItemType
     ) {
         Task {
             do {
                 try await moveToActionPerformer.moveTo(
                     destinationID: destination.localId,
                     itemsIDs: ids,
-                    itemType: itemType
+                    itemType: itemType.inboxItemType
                 )
                 presentMoveToToast(destination: destination)
             } catch {
@@ -173,9 +173,9 @@ class MailboxItemActionSheetStateStore: StateStore {
         }
     }
 
-    private func performDeleteAction(itemsIDs: [ID], itemType: MailboxItemType) {
+    private func performDeleteAction(itemsIDs: [ID], itemType: ActionSheetItemType) {
         Task {
-            await deleteActionPerformer.delete(itemsWithIDs: itemsIDs, itemType: itemType)
+            await deleteActionPerformer.delete(itemsWithIDs: itemsIDs, itemType: itemType.inboxItemType)
             Dispatcher.dispatchOnMain(
                 .init(block: { [weak self] in
                     self?.presentDeletedToast()
@@ -184,7 +184,7 @@ class MailboxItemActionSheetStateStore: StateStore {
         }
     }
 
-    private func performMarkPhishing(itemType: MailboxItemType) {
+    private func performMarkPhishing(itemType: ActionSheetItemType) {
         Task {
             if case .ok = await generalActionsPerformer.markMessagePhishing(messageID: input.id) {
                 Dispatcher.dispatchOnMain(
@@ -228,7 +228,11 @@ class MailboxItemActionSheetStateStore: StateStore {
         Task {
             let isForcingLightMode = messageAppearanceOverrideStore.isForcingLightMode(forMessageWithId: input.id)
             let themeOpts = ThemeOpts(colorScheme: colorScheme, isForcingLightMode: isForcingLightMode)
-            let actions = await availableActionsProvider.actions(for: input.type, id: input.id, themeOpts: themeOpts)
+            let actions = await availableActionsProvider.actions(
+                for: input.type.inboxItemType,
+                id: input.id,
+                themeOpts: themeOpts
+            )
 
             Dispatcher.dispatchOnMain(
                 .init(block: { [weak self] in
@@ -271,6 +275,19 @@ private extension MailboxItemType {
             return .dismissAndGoBack
         case .message:
             return .dismiss
+        }
+    }
+
+}
+
+private extension ActionSheetItemType {
+
+    var dismissNavigation: MailboxItemActionSheetNavigation {
+        switch self {
+        case .conversation:
+            .dismissAndGoBack
+        case .message(let isStandaloneMessage):
+            isStandaloneMessage ? .dismissAndGoBack : .dismiss
         }
     }
 

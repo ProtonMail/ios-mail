@@ -33,7 +33,12 @@ extension View {
         replyActions: @escaping ReplyActionsHandler,
         goBackNavigation: (() -> Void)? = nil
     ) -> some View {
-        modifier(MailboxActionSheets(mailbox: mailbox, state: state, replyActions: replyActions, goBackNavigation: goBackNavigation))
+        modifier(MailboxActionSheets(
+            mailbox: mailbox,
+            state: state,
+            replyActions: replyActions,
+            goBackNavigation: goBackNavigation
+        ))
     }
 }
 
@@ -59,7 +64,15 @@ private struct MailboxActionSheets: ViewModifier {
         content
             .sheet(item: mailboxBinding, content: mailboxItemActionPicker)
             .labelAsSheet(mailbox: mailbox, input: $state.labelAs)
-            .moveToSheet(mailbox: mailbox, input: $state.moveTo)
+            .moveToSheet(mailbox: mailbox, input: $state.moveTo, navigation: { navigation in
+                state.moveTo = nil
+                switch navigation {
+                case .dismiss:
+                    break
+                case .dismissAndGoBack:
+                    goBackNavigation?()
+                }
+            })
     }
 
     @MainActor

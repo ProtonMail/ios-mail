@@ -425,7 +425,7 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
 
     private func sut(id: UInt64, type: MailboxItemType, title: String) -> MailboxItemActionSheetStateStore {
         MailboxItemActionSheetStateStore(
-            input: .init(id: .init(value: id), type: type, title: title),
+            input: .init(id: .init(value: id), type: type.actionSheetItemType, title: title),
             mailbox: .init(noPointer: .init()),
             actionsProvider: .init(
                 message: { _, _, messageID in

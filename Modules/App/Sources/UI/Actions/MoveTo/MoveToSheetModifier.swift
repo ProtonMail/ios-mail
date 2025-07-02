@@ -21,10 +21,12 @@ import SwiftUI
 private struct MoveToSheetModifier: ViewModifier {
     private let mailbox: () -> Mailbox
     @Binding var input: ActionSheetInput?
+    private let navigation: (MoveToSheetNavigation) -> Void
 
-    init(mailbox: @escaping () -> Mailbox, input: Binding<ActionSheetInput?>) {
+    init(mailbox: @escaping () -> Mailbox, input: Binding<ActionSheetInput?>, navigation: @escaping (MoveToSheetNavigation) -> Void) {
         self.mailbox = mailbox
         self._input = .init(projectedValue: input)
+        self.navigation = navigation
     }
 
     func body(content: Content) -> some View {
@@ -39,15 +41,18 @@ private struct MoveToSheetModifier: ViewModifier {
             input: input,
             mailbox: mailbox(),
             availableMoveToActions: .productionInstance,
-            moveToActions: .productionInstance
-        ) { _ in
-            self.input = nil
-        }
+            moveToActions: .productionInstance,
+            navigation: navigation
+        )
     }
 }
 
 extension View {
-    func moveToSheet(mailbox: @escaping () -> Mailbox, input: Binding<ActionSheetInput?>) -> some View {
-        modifier(MoveToSheetModifier(mailbox: mailbox, input: input))
+    func moveToSheet(
+        mailbox: @escaping () -> Mailbox,
+        input: Binding<ActionSheetInput?>,
+        navigation: @escaping (MoveToSheetNavigation) -> Void
+    ) -> some View {
+        modifier(MoveToSheetModifier(mailbox: mailbox, input: input, navigation: navigation))
     }
 }

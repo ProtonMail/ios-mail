@@ -81,7 +81,8 @@ struct MailboxScreen: View {
                 )
                 .moveToSheet(
                     mailbox: { mailboxModel.mailbox.unsafelyUnwrapped },
-                    input: $mailboxModel.state.moveToSheetPresented
+                    input: $mailboxModel.state.moveToSheetPresented,
+                    navigation: { _ in }
                 )
                 .fullScreenCover(isPresented: $mailboxModel.state.isSearchPresented) {
                     SearchScreen(userSession: userSession)

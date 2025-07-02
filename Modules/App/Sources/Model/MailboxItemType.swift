@@ -21,3 +21,16 @@ enum MailboxItemType {
     case conversation
     case message
 }
+
+extension MailboxItemType {
+
+    var actionSheetItemType: ActionSheetItemType {
+        switch self {
+        case .conversation:
+            .conversation
+        case .message:
+            .message(isStandaloneMessage: false)
+        }
+    }
+
+}

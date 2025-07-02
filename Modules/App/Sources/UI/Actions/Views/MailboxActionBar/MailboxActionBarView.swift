@@ -79,7 +79,7 @@ struct MailboxActionBarView: View {
                 store.handle(action: .mailboxItemsSelectionUpdated(ids: selectedItemsIDs))
             }
             .labelAsSheet(mailbox: { mailbox }, input: store.binding(\.labelAsSheetPresented))
-            .moveToSheet(mailbox: { mailbox }, input: store.binding(\.moveToSheetPresented))
+            .moveToSheet(mailbox: { mailbox }, input: store.binding(\.moveToSheetPresented), navigation: { _ in })
             .sheet(item: store.binding(\.moreActionSheetPresented)) { state in
                 MailboxActionBarMoreSheet(state: state) { action in
                     store.handle(action: .moreSheetAction(action, ids: selectedItemsIDs))

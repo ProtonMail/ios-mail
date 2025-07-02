@@ -20,7 +20,7 @@ import proton_app_uniffi
 enum LabelAsSheetPreviewProvider {
     static func testData() -> LabelAsSheetModel {
         .init(
-            input: .init(sheetType: .labelAs, ids: [], type: .message),
+            input: .init(sheetType: .labelAs, ids: [], type: .message(isStandaloneMessage: false)),
             mailbox: .init(noPointer: .init()),
             availableLabelAsActions: .init(
                 message: { _, _ in .ok(testLabels()) },

@@ -157,7 +157,7 @@ class LabelAsSheetModelTests: BaseTestCase {
 
     private func sut(ids: [ID], type: MailboxItemType) -> LabelAsSheetModel {
         LabelAsSheetModel(
-            input: .init(sheetType: .labelAs, ids: ids, type: type),
+            input: .init(sheetType: .labelAs, ids: ids, type: type.actionSheetItemType),
             mailbox: .init(noPointer: .init()),
             availableLabelAsActions: .init(
                 message: { _, ids in

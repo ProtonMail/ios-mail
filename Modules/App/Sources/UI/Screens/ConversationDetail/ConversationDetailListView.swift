@@ -145,7 +145,11 @@ struct ConversationDetailListView: View {
             model.onForwardMessage(withId: uiModel.id, toastStateStore: toastStateStore)
         case .onMoreActions:
             model.actionSheets = model.actionSheets.copy(
-                \.mailbox, to: .init(id: uiModel.id, type: .message, title: model.seed.subject)
+                \.mailbox, to: .init(
+                    id: uiModel.id,
+                    type: .message(isStandaloneMessage: model.state.isSingleMessageInConversation),
+                    title: model.seed.subject
+                )
             )
         case .onSenderTap:
             senderActionTarget = uiModel
@@ -173,6 +177,19 @@ private extension ExpandedMessageCellUIModel {
 
     func toActionMetadata() -> MarkMessageAsReadMetadata {
         .init(messageID: id, unread: unread)
+    }
+
+}
+
+private extension ConversationDetailModel.State {
+
+    var isSingleMessageInConversation: Bool {
+        switch self {
+        case .initial, .fetchingMessages, .noConnection:
+            false
+        case .messagesReady(let messages):
+            messages.count <= 1
+        }
     }
 
 }
