@@ -29,16 +29,12 @@ public struct CyclingProgressBar: View {
     private let primaryColor = DS.Color.Loader.success
     private let edgeColor = DS.Color.Loader.success.opacity(0)
 
-    /// The default initializer for use in your application.
-    /// It automatically handles the animation.
     public init() {
         _animationPhase = State(initialValue: 0)
         isAnimationEnabled = true
     }
 
-    /// An internal initializer for testing purposes.
-    /// It allows setting a specific animation phase and disables the live animation.
-    internal init(animationPhase: CGFloat) {
+    init(animationPhase: CGFloat) {
         _animationPhase = State(initialValue: animationPhase)
         isAnimationEnabled = false
     }
