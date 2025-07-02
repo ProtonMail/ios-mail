@@ -147,7 +147,7 @@ struct ConversationDetailListView: View {
             model.actionSheets = model.actionSheets.copy(
                 \.mailbox, to: .init(
                     id: uiModel.id,
-                    type: .message(isStandaloneMessage: model.state.isSingleMessageInConversation),
+                    type: .message(isStandaloneMessage: model.state.hasAtMostOneMessage),
                     title: model.seed.subject
                 )
             )
@@ -183,7 +183,7 @@ private extension ExpandedMessageCellUIModel {
 
 private extension ConversationDetailModel.State {
 
-    var isSingleMessageInConversation: Bool {
+    var hasAtMostOneMessage: Bool {
         switch self {
         case .initial, .fetchingMessages, .noConnection:
             false
