@@ -24,25 +24,30 @@ import proton_app_uniffi
  `SendResultPublisher` observes any send result published from the SDK and republishes
  the result mapped to `SendResultInfo`.
 */
-final class SendResultPublisher: Sendable, ObservableObject {
+@MainActor
+public final class SendResultPublisher: Sendable, ObservableObject {
     private let subject = PassthroughSubject<SendResultInfo, Never>()
-    var results: AnyPublisher<SendResultInfo, Never> {
+    public var results: AnyPublisher<SendResultInfo, Never> {
         subject.eraseToAnyPublisher()
     }
 
     private let userSession: MailUserSession
     private var watcher: DraftSendResultWatcher!
-    private let sendCallback: DraftSendResultCallbackWrapper = .init()
 
-    init(userSession: MailUserSession) {
+    public init(userSession: MailUserSession) {
         self.userSession = userSession
         Task {
             await initialise()
-            sendCallback.delegate = { [weak self] results in self?.publish(results: results) }
         }
     }
 
     private func initialise() async {
+        let sendCallback = DraftSendResultCallbackWrapper { [weak self] results in
+            Task { @MainActor in
+                self?.publish(results: results)
+            }
+        }
+
         switch await newDraftSendWatcher(session: userSession, callback: sendCallback) {
         case .ok(let watcher):
             self.watcher = watcher
@@ -84,9 +89,16 @@ final class SendResultPublisher: Sendable, ObservableObject {
     }
 }
 
-final class DraftSendResultCallbackWrapper: @unchecked Sendable, DraftSendResultCallback {
-    var delegate: (([DraftSendResult]) -> Void)?
+final class DraftSendResultCallbackWrapper: Sendable, DraftSendResultCallback {
+    typealias Delegate = @Sendable ([DraftSendResult]) -> Void
+
+    private let delegate: Delegate
+
+    init(delegate: @escaping Delegate) {
+        self.delegate = delegate
+    }
+
     func onNewSendResult(details: [DraftSendResult]) {
-        delegate?(details)
+        delegate(details)
     }
 }

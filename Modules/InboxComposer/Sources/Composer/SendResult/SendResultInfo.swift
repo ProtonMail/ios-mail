@@ -18,8 +18,8 @@
 import Foundation
 import proton_app_uniffi
 
-struct SendResultInfo {
-    enum ToastType {
+public struct SendResultInfo: Sendable {
+    public enum ToastType: Sendable {
         case scheduling
         case scheduled(deliveryTime: Date)
         case sending
@@ -27,6 +27,11 @@ struct SendResultInfo {
         case error(DraftSendFailure)
     }
 
-    let messageId: ID
-    let type: ToastType
+    public let messageId: Id
+    public let type: ToastType
+
+    public init(messageId: Id, type: ToastType) {
+        self.messageId = messageId
+        self.type = type
+    }
 }
