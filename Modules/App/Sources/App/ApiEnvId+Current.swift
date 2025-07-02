@@ -28,33 +28,4 @@ extension ApiEnvId {
 
         return .prod
     }()
-
-    init(dynamicDomain: String) {
-        let scientistSuffix = Self.scientist(.empty).domain
-
-        switch dynamicDomain {
-        case Self.prod.domain:
-            self = .prod
-        case Self.atlas.domain:
-            self = .atlas
-        case _ where dynamicDomain.hasSuffix(scientistSuffix):
-            let scientistName = dynamicDomain.dropLast(scientistSuffix.count)
-            self = .scientist(String(scientistName))
-        default:
-            self = .custom(dynamicDomain)
-        }
-    }
-
-    var domain: String {
-        switch self {
-        case .prod:
-            "proton.me"
-        case .atlas:
-            "proton.black"
-        case .scientist(let name):
-            "\(name).proton.black"
-        case .custom(let fullURL):
-            URL(string: fullURL)!.host()!
-        }
-    }
 }
