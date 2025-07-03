@@ -33,31 +33,31 @@ final class ExclusiveLocation_ModelTests: BaseTestCase {
         let id = ID.random()
         let testCases: [TestCase] = [
             .init(
-                given: .system(.inbox),
+                given: .system(name: .inbox, id: id),
                 expected: .init(id: id, name: L10n.Mailbox.SystemFolder.inbox, icon: DS.Icon.icInbox.image, iconColor: nil)
             ),
             .init(
-                given: .system(.trash),
+                given: .system(name: .trash, id: id),
                 expected: .init(id: id, name: L10n.Mailbox.SystemFolder.trash, icon: DS.Icon.icTrash.image, iconColor: nil)
             ),
             .init(
-                given: .system(.archive),
+                given: .system(name: .archive, id: id),
                 expected: .init(id: id, name: L10n.Mailbox.SystemFolder.archive, icon: DS.Icon.icArchiveBox.image, iconColor: nil)
             ),
             .init(
-                given: .system(.spam),
+                given: .system(name: .spam, id: id),
                 expected: .init(id: id, name: L10n.Mailbox.SystemFolder.spam, icon: DS.Icon.icFire.image, iconColor: nil)
             ),
             .init(
-                given: .system(.snoozed),
+                given: .system(name: .snoozed, id: id),
                 expected: .init(id: id, name: L10n.Mailbox.SystemFolder.snoozed, icon: DS.Icon.icClock.image, iconColor: nil)
             ),
             .init(
-                given: .system(.scheduled),
+                given: .system(name: .scheduled, id: id),
                 expected: .init(id: id, name: L10n.Mailbox.SystemFolder.scheduled, icon: DS.Icon.icClockPaperPlane.image, iconColor: nil)
             ),
             .init(
-                given: .system(.outbox),
+                given: .system(name: .outbox, id: id),
                 expected: .init(id: id, name: L10n.Mailbox.SystemFolder.outbox, icon: DS.Icon.icOutbox.image, iconColor: nil)
             ),
             .init(
