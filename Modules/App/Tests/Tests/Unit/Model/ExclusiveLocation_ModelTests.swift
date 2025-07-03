@@ -53,7 +53,7 @@ final class ExclusiveLocation_ModelTests: BaseTestCase {
             ),
             .init(
                 given: .system(.scheduled),
-                expected: .init(name: L10n.Mailbox.SystemFolder.allScheduled, icon: DS.Icon.icClockPaperPlane.image, iconColor: nil)
+                expected: .init(name: L10n.Mailbox.SystemFolder.scheduled, icon: DS.Icon.icClockPaperPlane.image, iconColor: nil)
             ),
             .init(
                 given: .system(.outbox),
@@ -66,7 +66,7 @@ final class ExclusiveLocation_ModelTests: BaseTestCase {
                     icon: DS.Icon.icFolderOpenFilled.image,
                     iconColor: Color(hex: "FFA500")
                 )
-            )
+            ),
         ]
 
         testCases.forEach { testCase in
