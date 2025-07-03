@@ -34,7 +34,7 @@ class MailboxItemActionSheetSnapshotTests: BaseTestCase {
             }
 
             let sut = MailboxItemActionSheet(
-                input: .init(id: id, type: .message(isStandaloneMessage: false), title: "Hello".notLocalized),
+                input: .init(id: id, type: .message(isLastMessageInCurrentLocation: false), title: "Hello".notLocalized),
                 mailbox: .dummy,
                 actionsProvider: MailboxItemActionSheetPreviewProvider.actionsProvider(),
                 starActionPerformerActions: .dummy,

@@ -26,7 +26,7 @@ class MoveToSheetSnapshotTests: BaseTestCase {
 
     func testActionSheetLayoutsCorrectly() {
         let sut = MoveToSheet(
-            input: .init(sheetType: .moveTo, ids: [], type: .message(isStandaloneMessage: false)),
+            input: .init(sheetType: .moveTo, ids: [], type: .message(isLastMessageInCurrentLocation: false)),
             mailbox: .dummy,
             availableMoveToActions: MoveToSheetPreviewProvider.availableMoveToActions,
             moveToActions: .dummy,
