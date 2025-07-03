@@ -29,7 +29,7 @@ extension MailboxItemType {
         case .conversation:
             .conversation
         case .message:
-            .message(isStandaloneMessage: false)
+            .message(isLastMessageInCurrentLocation: false)
         }
     }
 
