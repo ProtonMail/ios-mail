@@ -16010,6 +16010,25 @@
         }
       }
     },
+    "Sign in again" : {
+      "comment" : "Alert action title. The alert is dispalyed when biometric is set as lock protection method, but it's not configured on the device."
+    },
+    "Sign in on another device" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sign in on another device"
+          }
+        }
+      }
+    },
+    "Sign out" : {
+      "comment" : "Title of the sign out button."
+    },
+    "Sign Out of All Accounts" : {
+      "comment" : "Title of the sign out confirmation alert."
+    },
     "Snooze" : {
       "comment" : "Action title for marking message as snoozed in the action sheet.",
       "localizations" : {

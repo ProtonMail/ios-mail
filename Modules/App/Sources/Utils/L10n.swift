@@ -920,6 +920,8 @@ enum L10n {
             "Privacy and security",
             comment: "Title of the Privacy and security settings item."
         )
+
+        static let signInOnAnotherDevice = LocalizedStringResource("Sign in on another device")
     }
 
     enum Sidebar {

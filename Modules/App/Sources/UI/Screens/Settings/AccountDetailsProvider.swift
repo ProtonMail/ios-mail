@@ -23,4 +23,8 @@ struct AccountDetailsProvider {
     func accountDetails() async -> AccountDetails? {
         try? await mailUserSession.accountDetails().get()
     }
+
+    func userSettings() async -> UserSettings? {
+        try? await mailUserSession.userSettings().get()
+    }
 }
