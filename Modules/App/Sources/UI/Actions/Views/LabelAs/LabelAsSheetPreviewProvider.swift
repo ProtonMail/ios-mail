@@ -20,7 +20,7 @@ import proton_app_uniffi
 enum LabelAsSheetPreviewProvider {
     static func testData() -> LabelAsSheetModel {
         .init(
-            input: .init(sheetType: .labelAs, ids: [], type: .message(isStandaloneMessage: false)),
+            input: .init(sheetType: .labelAs, ids: [], type: .message(isLastMessageInCurrentLocation: false)),
             mailbox: .init(noPointer: .init()),
             availableLabelAsActions: .init(
                 message: { _, _ in .ok(testLabels()) },
@@ -51,7 +51,7 @@ enum LabelAsSheetPreviewProvider {
                 name: "Summer trip",
                 color: .init(value: "#9E329A"),
                 isSelected: .unselected
-            )
+            ),
         ]
     }
 }

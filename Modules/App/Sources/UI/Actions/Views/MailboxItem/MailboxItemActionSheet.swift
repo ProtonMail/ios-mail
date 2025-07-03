@@ -180,7 +180,7 @@ struct MailboxItemActionSheet: View {
 
 #Preview {
     MailboxItemActionSheet(
-        input: .init(id: .init(value: 42), type: .message(isStandaloneMessage: false), title: "Hello there".notLocalized),
+        input: .init(id: .init(value: 42), type: .message(isLastMessageInCurrentLocation: false), title: "Hello there".notLocalized),
         mailbox: .dummy,
         actionsProvider: MailboxItemActionSheetPreviewProvider.actionsProvider(),
         starActionPerformerActions: .dummy,

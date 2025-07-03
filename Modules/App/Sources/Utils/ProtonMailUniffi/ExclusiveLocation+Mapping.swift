@@ -41,10 +41,15 @@ extension ExclusiveLocation {
 
     var model: MessageDetail.Location {
         switch self {
-        case .system(let systemLabel, _):
-            .init(name: systemLabel.humanReadable, icon: systemLabel.icon, iconColor: nil)
-        case .custom(let name, _, let color):
-            .init(name: name.stringResource, icon: DS.Icon.icFolderOpenFilled.image, iconColor: Color(hex: color.value))
+        case .system(let systemLabel, let id):
+            .init(id: id, name: systemLabel.humanReadable, icon: systemLabel.icon, iconColor: nil)
+        case .custom(let name, let id, let color):
+            .init(
+                id: id,
+                name: name.stringResource,
+                icon: DS.Icon.icFolderOpenFilled.image,
+                iconColor: Color(hex: color.value)
+            )
         }
     }
 

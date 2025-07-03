@@ -355,6 +355,7 @@ enum MessageDetail {
     }
 
     struct Location: Equatable {
+        let id: ID
         let name: LocalizedStringResource
         let icon: Image
         let iconColor: Color?

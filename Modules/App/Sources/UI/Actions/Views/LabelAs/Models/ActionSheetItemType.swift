@@ -17,7 +17,7 @@
 
 enum ActionSheetItemType: Hashable {
     case conversation
-    case message(isStandaloneMessage: Bool)
+    case message(isLastMessageInCurrentLocation: Bool)
 }
 
 extension ActionSheetItemType {

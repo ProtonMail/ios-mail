@@ -144,10 +144,15 @@ struct ConversationDetailListView: View {
         case .onForward:
             model.onForwardMessage(withId: uiModel.id, toastStateStore: toastStateStore)
         case .onMoreActions:
+            let currentLocationID = model.mailbox?.labelId()
+            let hasAtMostOneMessageWithCurrentLocation = model.state.hasAtMostOneMessage(
+                withLocationID: currentLocationID
+            )
             model.actionSheets = model.actionSheets.copy(
-                \.mailbox, to: .init(
+                \.mailbox,
+                to: .init(
                     id: uiModel.id,
-                    type: .message(isStandaloneMessage: model.state.hasAtMostOneMessage),
+                    type: .message(isLastMessageInCurrentLocation: hasAtMostOneMessageWithCurrentLocation),
                     title: model.seed.subject
                 )
             )
@@ -183,12 +188,14 @@ private extension ExpandedMessageCellUIModel {
 
 private extension ConversationDetailModel.State {
 
-    var hasAtMostOneMessage: Bool {
+    func hasAtMostOneMessage(withLocationID locationID: ID?) -> Bool {
         switch self {
         case .initial, .fetchingMessages, .noConnection:
             false
         case .messagesReady(let messages):
-            messages.count <= 1
+            messages
+                .filter { message in message.locationID == locationID }
+                .count == 1
         }
     }
 
