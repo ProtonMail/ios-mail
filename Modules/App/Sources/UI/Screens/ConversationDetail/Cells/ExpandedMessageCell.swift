@@ -96,7 +96,7 @@ struct ExpandedMessageCell: View {
     }
 }
 
-struct ExpandedMessageCellUIModel: Identifiable {
+struct ExpandedMessageCellUIModel: Identifiable, Equatable {
     let id: ID
     let unread: Bool
     let messageDetails: MessageDetailsUIModel

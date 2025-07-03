@@ -319,7 +319,7 @@ private enum RecipientGroup {
     }
 }
 
-struct MessageDetailsUIModel {
+struct MessageDetailsUIModel: Equatable {
     let avatar: AvatarUIModel
     let sender: MessageDetail.Sender
     let isSenderProtonOfficial: Bool
@@ -341,13 +341,13 @@ struct MessageDetailsUIModel {
 
 enum MessageDetail {
 
-    struct Sender {
+    struct Sender: Equatable {
         let name: String
         let address: String
         let encryptionInfo: String
     }
 
-    struct Recipient: Identifiable {
+    struct Recipient: Identifiable, Equatable {
         var id: String { address }  // Identifiable needed to present the action sheet
         let name: String
         let address: String
@@ -360,7 +360,7 @@ enum MessageDetail {
         let iconColor: Color?
     }
 
-    enum Other {
+    enum Other: Equatable {
         case starred
         case pinned
     }

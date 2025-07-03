@@ -119,7 +119,7 @@ struct CollapsedMessageCell: View {
     }
 }
 
-struct CollapsedMessageCellUIModel {
+struct CollapsedMessageCellUIModel: Equatable {
     let sender: String
     let date: Date
     let recipients: [MessageDetail.Recipient]

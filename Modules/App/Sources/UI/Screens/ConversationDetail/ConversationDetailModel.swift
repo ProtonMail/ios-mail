@@ -492,7 +492,7 @@ extension ConversationDetailModel {
 }
 
 extension ConversationDetailModel {
-    enum State {
+    enum State: Equatable {
         case initial
         case fetchingMessages
         case noConnection
@@ -523,7 +523,7 @@ extension ConversationDetailModel {
     }
 }
 
-struct MessageCellUIModel {
+struct MessageCellUIModel: Equatable {
     let id: ID
     let type: MessageCellUIModelType
 
@@ -536,7 +536,7 @@ struct MessageCellUIModel {
     }
 }
 
-enum MessageCellUIModelType {
+enum MessageCellUIModelType: Equatable {
     case collapsed(CollapsedMessageCellUIModel)
     case expanded(ExpandedMessageCellUIModel)
 

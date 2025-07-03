@@ -29,11 +29,12 @@ struct ConversationDetailScreen: View {
     private let draftPresenter: DraftPresenter
 
     init(seed: ConversationDetailSeed, draftPresenter: DraftPresenter, navigationPath: Binding<NavigationPath>) {
-        self._model = StateObject(wrappedValue: .init(
-            seed: seed,
-            draftPresenter: draftPresenter,
-            backOnlineActionExecutor: .init(mailUserSession: { AppContext.shared.userSession })
-        ))
+        self._model = StateObject(
+            wrappedValue: .init(
+                seed: seed,
+                draftPresenter: draftPresenter,
+                backOnlineActionExecutor: .init(mailUserSession: { AppContext.shared.userSession })
+            ))
         self._navigationPath = .init(projectedValue: navigationPath)
         self.draftPresenter = draftPresenter
     }
@@ -48,7 +49,7 @@ struct ConversationDetailScreen: View {
                         model.handleConversation(
                             action: action,
                             toastStateStore: toastStateStore,
-                            goBack: { navigationPath.removeLast() }
+                            goBack: { goBackToMailbox() }
                         )
                     }
                 )
@@ -58,13 +59,21 @@ struct ConversationDetailScreen: View {
             mailbox: { model.mailbox.unsafelyUnwrapped },
             state: $model.actionSheets,
             replyActions: handleReplyAction,
-            goBackNavigation: { navigationPath.removeLast() }
+            goBackNavigation: { goBackToMailbox() }
         )
         .alert(model: $model.deleteConfirmationAlert)
         .fullScreenCover(item: $model.attachmentIDToOpen) { id in
             AttachmentView(config: .init(id: id, mailbox: model.mailbox.unsafelyUnwrapped))
                 .edgesIgnoringSafeArea([.top, .bottom])
         }
+        .onChange(
+            of: model.state,
+            { _, newValue in
+                if case .messagesReady(let messages) = newValue, messages.isEmpty {
+                    goBackToMailbox()
+                }
+            }
+        )
         .environment(\.messageAppearanceOverrideStore, model.messageAppearanceOverrideStore)
     }
 
@@ -77,7 +86,7 @@ struct ConversationDetailScreen: View {
                             .padding(.top, DS.Spacing.medium)
                             .padding(.horizontal, DS.Spacing.large)
                     }
-                    ConversationDetailListView(model: model, goBack: { navigationPath.removeLast() })
+                    ConversationDetailListView(model: model, goBack: { goBackToMailbox() })
                 }
                 .accessibilityElement(children: .contain)
                 .accessibilityIdentifier(ConversationDetailScreenIdentifiers.rootItem)
@@ -155,6 +164,12 @@ struct ConversationDetailScreen: View {
                 toastStateStore.present(toast: .error(message: error.localizedDescription))
             }
         }
+    }
+
+    @MainActor
+    private func goBackToMailbox() {
+        guard !navigationPath.isEmpty else { return }
+        navigationPath.removeLast()
     }
 }
 
