@@ -73,17 +73,36 @@ struct MessageBodyReaderView: UIViewRepresentable {
     }
 
     func loadHTML(in webView: WKWebView) {
+        let viewport = """
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=3.0, user-scalable=yes">
+            """
+        var fixedBody = body.rawBody
+
+        if !fixedBody.contains("name=\"viewport\"") {
+            fixedBody = fixedBody.replacingOccurrences(of: "<head>", with: "<head>\(viewport)")
+        }
+
         let style = """
             <style>
-                p,pre {
+                html, body {
+                    width: 100vw !important;
+                    max-width: 100vw !important;
+                    overflow-x: hidden !important;
+                    box-sizing: border-box;
+                }
+                img, table, td, th {
+                    max-width: 100% !important;
+                    height: auto !important;
+                    box-sizing: border-box;
+                    word-break: break-word;
+                }
+                p, pre {
                     margin: 1em 0;
                 }
-
                 table {
                     height: auto !important;
                     min-height: auto !important;
                 }
-
                 @supports (height: fit-content) {
                     html {
                         height: fit-content !important;
@@ -91,7 +110,7 @@ struct MessageBodyReaderView: UIViewRepresentable {
                 }
             </style>
             """
-        let fixedBody = body.rawBody.replacingOccurrences(of: "</head>", with: "\(style)</head>")
+        fixedBody = fixedBody.replacingOccurrences(of: "</head>", with: "\(style)</head>")
 
         webView.loadHTMLString(fixedBody, baseURL: nil)
     }
@@ -166,34 +185,43 @@ extension MessageBodyReaderView {
 extension WKUserScript {
     fileprivate static func adjustLayoutAndObserveHeight(viewWidth: CGFloat) -> WKUserScript {
         let source = """
-            var metaWidth = document.querySelector('meta[name="viewport"]');
-            var ratio = document.body.offsetWidth / document.body.scrollWidth;
-            metaWidth.content = "width=device-width, initial-scale=" + ratio + ", maximum-scale=3.0, user-scalable=yes";
+            (function() {
+                const handlerName = "heightChanged";
+                let lastHeight = 0;
+                let timeoutId = null;
 
-            function notify() {
-                measureHeightOnceContentIsLaidOut();
-            }
-
-            function measureHeightOnceContentIsLaidOut(retryCount = 0) {
-                // Prevent infinite loops (180 frames = ~3 seconds at 60fps)
-                const maxRetries = 180;
-
-                // If content is not laid out, its width is typically 32 or 80 - this is a good enough heuristic without hard coding magic numbers
-                const contentIsLaidOut = document.body.scrollWidth > \(viewWidth / 2)
-
-                if (!contentIsLaidOut && retryCount < maxRetries) {
-                    // try again next frame
-                    requestAnimationFrame(() => {
-                        measureHeightOnceContentIsLaidOut(retryCount + 1);
-                    });
-                } else {
-                    var height = document.documentElement.scrollHeight * ratio;
-                    window.webkit.messageHandlers.\(Constants.heightChangedHandlerName).postMessage(height);
+                function sendHeight() {
+                    const height = document.documentElement.scrollHeight;
+                    if (height !== lastHeight) {
+                        lastHeight = height;
+                        window.webkit.messageHandlers[handlerName].postMessage(height);
+                    }
                 }
-            }
 
-            const observer = new ResizeObserver(notify);
-            observer.observe(document.body);
+                // Debounce to avoid spamming
+                function debounceSendHeight() {
+                    if (timeoutId) clearTimeout(timeoutId);
+                    timeoutId = setTimeout(sendHeight, 100);
+                }
+
+                // Observe size changes
+                const resizeObserver = new ResizeObserver(debounceSendHeight);
+                resizeObserver.observe(document.body);
+
+                // Observe DOM mutations (e.g., images loading, content injected)
+                const mutationObserver = new MutationObserver(debounceSendHeight);
+                mutationObserver.observe(document.body, { childList: true, subtree: true, attributes: true, characterData: true });
+
+                // Send height on DOMContentLoaded and window load
+                document.addEventListener("DOMContentLoaded", debounceSendHeight);
+                window.addEventListener("load", debounceSendHeight);
+
+                // Fallback: send height after 2 seconds in case nothing else triggers
+                setTimeout(sendHeight, 2000);
+
+                // Initial call
+                sendHeight();
+            })();
             """
 
         return .init(source: source, injectionTime: .atDocumentEnd, forMainFrameOnly: true)
