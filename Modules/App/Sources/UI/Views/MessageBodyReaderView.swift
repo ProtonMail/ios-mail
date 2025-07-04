@@ -166,27 +166,30 @@ extension MessageBodyReaderView {
 extension WKUserScript {
     fileprivate static func adjustLayoutAndObserveHeight(viewWidth: CGFloat) -> WKUserScript {
         let source = """
-            var metaWidth = document.querySelector('meta[name="viewport"]');
-            var ratio = document.body.offsetWidth / document.body.scrollWidth;
-            metaWidth.content = "width=device-width, initial-scale=" + ratio + ", maximum-scale=3.0, user-scalable=yes";
+            // Prevent infinite loops (180 frames = ~3 seconds at 60fps)
+            const maxRetries = 180;
 
             function notify() {
                 measureHeightOnceContentIsLaidOut();
             }
 
             function measureHeightOnceContentIsLaidOut(retryCount = 0) {
-                // Prevent infinite loops (180 frames = ~3 seconds at 60fps)
-                const maxRetries = 180;
+                var metaWidth = document.querySelector('meta[name="viewport"]');
+                var computedRatio = document.body.offsetWidth / document.body.scrollWidth;
+                var ratio = computedRatio > 0 ? computedRatio : 1;
 
-                // If content is not laid out, its width is typically 32 or 80 - this is a good enough heuristic without hard coding magic numbers
-                const contentIsLaidOut = document.body.scrollWidth > \(viewWidth / 2)
+                // If content is not laid out, its width is typically 32 or 80 
+                // this is a good enough heuristic without hard coding magic numbers
+                const isContentLaidOut = document.body.scrollWidth > \(viewWidth / 2)
 
-                if (!contentIsLaidOut && retryCount < maxRetries) {
+                if (!isContentLaidOut && retryCount < maxRetries) {
                     // try again next frame
                     requestAnimationFrame(() => {
                         measureHeightOnceContentIsLaidOut(retryCount + 1);
                     });
                 } else {
+                    metaWidth.content = "width=device-width, initial-scale=" + ratio + ", maximum-scale=3.0, user-scalable=yes";
+
                     var height = document.documentElement.scrollHeight * ratio;
                     window.webkit.messageHandlers.\(Constants.heightChangedHandlerName).postMessage(height);
                 }
