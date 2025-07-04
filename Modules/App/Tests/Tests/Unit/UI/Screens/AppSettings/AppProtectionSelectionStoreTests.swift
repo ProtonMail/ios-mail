@@ -17,6 +17,7 @@
 
 @testable import ProtonMail
 import InboxCore
+import InboxTesting
 import Testing
 
 @MainActor

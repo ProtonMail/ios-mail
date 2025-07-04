@@ -36,7 +36,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate, ObservableObject 
     var appProtectionWindow: UIWindow?
     var appProtectionCancellable: AnyCancellable?
     var appProtectionStore = AppProtectionStore(mailSession: { AppContext.shared.mailSession })
-    var pinVerifierFactory: () -> PINVerifier = { AppContext.shared.mailSession }
+    var mailSessionFactory: () -> MailSession = { AppContext.shared.mailSession }
     var transitionAnimation: TransitionAnimation = UIView.transition
 
     var checkAutoLockSetting: (_ completion: @MainActor @escaping @Sendable (Bool) -> Void) -> Void = { completion in
@@ -155,7 +155,7 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate, ObservableObject 
             rootView:
                 LockScreen(
                     state: .init(type: lockScreenType),
-                    pinVerifier: pinVerifierFactory(),
+                    mailSession: mailSessionFactory(),
                     dismissLock: { [weak self] in
                         self?.appProtectionStore.dismissLock()
                     }

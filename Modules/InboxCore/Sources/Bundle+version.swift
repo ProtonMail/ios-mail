@@ -27,13 +27,13 @@ extension Bundle {
     /**
      The effectiveAppVersion property returns the public-facing version of the app,
      used for features such as human verification and bug reporting. It ensures that
-     the version is never reported as lower than "7.0.0" (the official initial release version).
-    
+     the version is never reported as lower than "7.0.1" (the official initial release version).
+
      Examples:
-     - If the version is "0.2.0", effectiveAppVersion returns "7.0.0" (minimum enforced version).
-     - If the version is "7.0.1" or "11.0.0", effectiveAppVersion returns the actual version ("7.0.1" or "11.0.0").
-    
-     Once the app's internal version naturally reaches or exceeds "7.0.0", this property
+     - If the version is "0.2.0", effectiveAppVersion returns "7.0.1" (minimum enforced version).
+     - If the version is "7.1.1" or "11.0.0", effectiveAppVersion returns the actual version ("7.1.1" or "11.0.0").
+
+     Once the app's internal version naturally reaches or exceeds "7.0.1", this property
      will reflect the real app version, so we can get rid of it and start using bundleShortVersion.
      */
     public var effectiveAppVersion: String {
@@ -46,7 +46,7 @@ extension Bundle {
     // MARK: - Private
 
     private var targetReleaseVersion: String {
-        "7.0.0"
+        "7.0.1"
     }
 
 }

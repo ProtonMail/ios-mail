@@ -97,7 +97,7 @@ final class ReportProblemStateStoreTests {
                     operatingSystem: "iOS - iPhone",
                     operatingSystemVersion: "18.4",
                     client: "iOS_Native",
-                    clientVersion: "7.0.0 (127)",
+                    clientVersion: "7.0.1 (127)",
                     clientType: .email,
                     title: "Proton Mail App bug report",
                     summary: "Hello summary!",

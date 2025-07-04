@@ -818,557 +818,6 @@
         }
       }
     },
-    "%lld attempts remaining before sign-out." : {
-      "comment" : "Remaining attempts after a user has entered a wrong PIN a few times.",
-      "localizations" : {
-        "be" : {
-          "variations" : {
-            "plural" : {
-              "few" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Засталося %lld спробы перад выхадам з сістэмы."
-                }
-              },
-              "many" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Засталося %lld спроб перад выхадам з сістэмы."
-                }
-              },
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Засталася %lld спроба перад выхадам з сістэмы."
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Засталося %lld спроб перад выхадам з сістэмы."
-                }
-              }
-            }
-          }
-        },
-        "ca" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld intent restant abans de tancar la sessió."
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld intents restants abans de tancar la sessió."
-                }
-              }
-            }
-          }
-        },
-        "cs" : {
-          "variations" : {
-            "plural" : {
-              "few" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld zbývající pokusy před odhlášením."
-                }
-              },
-              "many" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld zbývajících pokusů před odhlášením."
-                }
-              },
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld zbývající pokus před odhlášením."
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld zbývajících pokusů před odhlášením."
-                }
-              }
-            }
-          }
-        },
-        "da" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld forsøg tilbage før du logges ud."
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld forsøg tilbage før du logges ud."
-                }
-              }
-            }
-          }
-        },
-        "de" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld verbleibender Versuch vor der Abmeldung."
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld verbleibende Versuche vor der Abmeldung."
-                }
-              }
-            }
-          }
-        },
-        "el" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Απομένει %lld προσπάθεια πριν την αποσύνδεση."
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Απομένουν %lld προσπάθειες πριν την αποσύνδεση."
-                }
-              }
-            }
-          }
-        },
-        "en" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld attempt remaining before sign-out."
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "new",
-                  "value" : "%lld attempts remaining before sign-out."
-                }
-              }
-            }
-          }
-        },
-        "es" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Queda %lld intento antes de cerrar la sesión."
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Quedan %lld intentos antes de cerrar la sesión."
-                }
-              }
-            }
-          }
-        },
-        "es-419" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld intento restante antes de cerrar sesión"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld intentos restantes antes de cerrar sesión"
-                }
-              }
-            }
-          }
-        },
-        "fi" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld yritys jäljellä ennen uloskirjautumista."
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld yritystä jäljellä ennen uloskirjautumista."
-                }
-              }
-            }
-          }
-        },
-        "fr" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Il vous reste %lld tentative avant la déconnexion."
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Il vous reste %lld tentatives avant la déconnexion."
-                }
-              }
-            }
-          }
-        },
-        "hu" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld kísérlet maradt a kijelentkezésig."
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld kísérlet maradt a kijelentkezésig."
-                }
-              }
-            }
-          }
-        },
-        "id" : {
-          "variations" : {
-            "plural" : {
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld upaya tersisa sebelum Anda dikeluarkan dari akun."
-                }
-              }
-            }
-          }
-        },
-        "it" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld tentativo rimanente prima della disconnessione."
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld tentativi rimanenti prima della disconnessione."
-                }
-              }
-            }
-          }
-        },
-        "ko" : {
-          "variations" : {
-            "plural" : {
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "로그아웃 되기까지 %lld 번의 기회가 남았습니다."
-                }
-              }
-            }
-          }
-        },
-        "nb" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld forsøk gjenstår før du logges ut."
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld forsøk gjenstår før du logges ut."
-                }
-              }
-            }
-          }
-        },
-        "nl" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld poging resterend voordat u wordt afgemeld."
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld pogingen over voordat u wordt afgemeld."
-                }
-              }
-            }
-          }
-        },
-        "pl" : {
-          "variations" : {
-            "plural" : {
-              "few" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Pozostały %lld próby do wylogowania."
-                }
-              },
-              "many" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Pozostało %lld prób do wylogowania."
-                }
-              },
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Pozostała %lld próba do wylogowania."
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Pozostało %lld prób do wylogowania."
-                }
-              }
-            }
-          }
-        },
-        "pt" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Resta %lld tentativa antes de terminar a sessão."
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Restam %lld tentativas antes de terminar a sessão."
-                }
-              }
-            }
-          }
-        },
-        "pt-BR" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld tentativa restante antes de encerrar a sessão."
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld tentativas restantes antes de encerrar a sessão."
-                }
-              }
-            }
-          }
-        },
-        "ro" : {
-          "variations" : {
-            "plural" : {
-              "few" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Încercări rămase înainte de deconectare: %lld"
-                }
-              },
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Încercări rămase înainte de deconectare: %lld"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Încercări rămase înainte de deconectare: %lld"
-                }
-              }
-            }
-          }
-        },
-        "ru" : {
-          "variations" : {
-            "plural" : {
-              "few" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld попытки осталось до выхода."
-                }
-              },
-              "many" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld попыток осталось до выхода."
-                }
-              },
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld попытка осталось до выхода."
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld попыток осталось до выхода."
-                }
-              }
-            }
-          }
-        },
-        "sk" : {
-          "variations" : {
-            "plural" : {
-              "few" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Zostávajú %lld pokusy pred odhlásením."
-                }
-              },
-              "many" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Zostáva %lld pokusov pred odhlásením."
-                }
-              },
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Zostáva %lld pokus pred odhlásením."
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Zostáva %lld pokusov pred odhlásením."
-                }
-              }
-            }
-          }
-        },
-        "sv" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld försök kvar innan utloggning."
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld försök kvar innan utloggning."
-                }
-              }
-            }
-          }
-        },
-        "tr" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Oturum kapatılmadan önce %lld deneme hakkınız kaldı."
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Oturum kapatılmadan önce %lld deneme hakkınız kaldı."
-                }
-              }
-            }
-          }
-        },
-        "uk" : {
-          "variations" : {
-            "plural" : {
-              "few" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Залишилося %lld спроби до виходу із системи."
-                }
-              },
-              "many" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Залишилося %lld спроб до виходу із системи."
-                }
-              },
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Залишилася %lld спроба до виходу із системи."
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Залишилося %lld спроб до виходу із системи."
-                }
-              }
-            }
-          }
-        },
-        "zh-Hans" : {
-          "variations" : {
-            "plural" : {
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "还剩 %lld 次尝试机会，即将自动退出。"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "%lld messages" : {
       "comment" : "Number of messages in a conversation.",
       "localizations" : {
@@ -2853,6 +2302,18 @@
             }
           }
         },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%u分後"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -3046,6 +2507,36 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "Po %u minútach"
+                }
+              }
+            }
+          }
+        },
+        "sl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Po %u minutah"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Po %u minuti"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Po %u minutah"
+                }
+              },
+              "two" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Po %u minutah"
                 }
               }
             }
@@ -5738,9 +5229,6 @@
         }
       }
     },
-    "Confirm it's you to continue." : {
-      "comment" : "Subtitle of PIN lock screen."
-    },
     "Confirm phishing report" : {
       "comment" : "Title of alert displayed after report phishing action tap."
     },
@@ -8335,12 +7823,6 @@
     "Empty %@ now" : {
       "comment" : "Empty Spam/Trash Banner: Action button for deleting all items in the specified location (e.g., Spam or Trash)."
     },
-    "Enable access" : {
-      "comment" : "Alert title. The alert is dispalyed when biometric is set as lock protection method, but it's not configured on the device."
-    },
-    "Enter PIN" : {
-      "comment" : "Title of the pin lock screen."
-    },
     "Error logs help us to get to the bottom of your issue. If you don't include them, we might not be able to investigate fully." : {
       "comment" : "Information displayed in the bottom of the screen when send error logs switch is dislabed."
     },
@@ -9509,7 +8991,7 @@
         }
       }
     },
-    "Incorrect PIN. Please try agian." : {
+    "Incorrect PIN. Please try again." : {
       "comment" : "Error message when a user enters an invalid PIN"
     },
     "Issue syncing your content. Check your connection or sign in again." : {
@@ -13439,9 +12921,6 @@
         }
       }
     },
-    "Ok" : {
-      "comment" : "`Ok` action title."
-    },
     "Opening the email should show the message content and the attachments." : {
       "comment" : "Placeholder of expected results text field."
     },
@@ -14022,29 +13501,14 @@
         }
       }
     },
-    "PIN and Biometry are disabled on your device. Enable them in Settings or sign in to unlock this app." : {
-      "comment" : "Default version alert message. The alert is dispalyed when biometric is set as lock protection method, but it's not configured on the device."
-    },
-    "PIN and Face ID are disabled on your device. Enable them in Settings or sign in to unlock this app." : {
-      "comment" : "Face ID version alert message. The alert is dispalyed when biometric is set as lock protection method, but it's not configured on the device."
-    },
-    "PIN and Touch ID are disabled on your device. Enable them in Settings or sign in to unlock this app." : {
-      "comment" : "Touch ID version alert message. The alert is dispalyed when biometric is set as lock protection method, but it's not configured on the device."
-    },
     "PIN cannot exceed 21 digits" : {
       "comment" : "Error message when setting up PIN"
-    },
-    "PIN Code" : {
-      "comment" : "PIN input placeholder."
     },
     "PIN must be 4–21 digits long and consist only of numbers" : {
       "comment" : "Error message when setting up PIN"
     },
     "PIN must be at least 4 digits" : {
       "comment" : "Error message when setting up PIN"
-    },
-    "Please authenticate to unlock your screen." : {
-      "comment" : "Displayed in the system PIN pop-up when FaceID for this app is disabled."
     },
     "Preferences" : {
       "comment" : "Title of a section in Settings.",
@@ -16568,6 +16032,16 @@
     "Sign in again" : {
       "comment" : "Alert action title. The alert is dispalyed when biometric is set as lock protection method, but it's not configured on the device."
     },
+    "Sign in on another device" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sign in on another device"
+          }
+        }
+      }
+    },
     "Sign out" : {
       "comment" : "Title of the sign out button."
     },
@@ -18375,9 +17849,6 @@
     "Unblock" : {
       "comment" : "Action to unblock the sender."
     },
-    "Unlock Proton Mail" : {
-      "comment" : "Title of a button that triggers biometric authorization on the lock screen."
-    },
     "Unpin" : {
       "comment" : "Message unpin action title.",
       "localizations" : {
@@ -19941,9 +19412,6 @@
     },
     "You need to be online to edit scheduled messages" : {
       "comment" : "Toast message when editing fails because there is no internet connection."
-    },
-    "You're about to be signed out of all your accounts on this device. Do you want to continue?" : {
-      "comment" : "Message of the sign out confirmation alert."
     },
     "Your device is offline" : {
       "comment" : "Title of the offline mode placeholder."

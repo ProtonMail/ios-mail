@@ -27,11 +27,13 @@ struct SettingsScreen: View {
     @StateObject var router: Router<SettingsRoute>
     @State private var state: SettingsState
     private let provider: AccountDetailsProvider
+    private let viewFactory: SettingsViewFactory
 
     init(state: SettingsState = .initial, mailUserSession: MailUserSession) {
         _state = .init(initialValue: state)
         _router = .init(wrappedValue: .init())
         self.provider = .init(mailUserSession: mailUserSession)
+        self.viewFactory = .init(mailUserSession: mailUserSession)
     }
 
     var body: some View {
@@ -41,7 +43,7 @@ struct SettingsScreen: View {
                     .ignoresSafeArea()
                 ScrollView {
                     VStack(alignment: .leading, spacing: .zero) {
-                        accountDetails()
+                        accountSection()
                         preferencesSection()
                     }
                 }
@@ -52,8 +54,8 @@ struct SettingsScreen: View {
                 .toolbar { doneToolbarItem() }
             }
             .navigationDestination(for: SettingsRoute.self) { route in
-                route
-                    .view()
+                viewFactory
+                    .makeView(for: route)
                     .environmentObject(router)
                     .navigationBarBackButtonHidden()
                     .toolbar {
@@ -64,8 +66,16 @@ struct SettingsScreen: View {
             }
         }
         .task {
-            if let details = await provider.accountDetails() {
+            async let accountDetails = provider.accountDetails()
+            async let userSettings = provider.userSettings()
+
+            if let details = await accountDetails {
                 state = state.copy(\.accountSettings, to: details.settings)
+            }
+
+            if let isEasyDeviceMigrationDisabled = await userSettings?.flags.edmOptOut {
+                state = state
+                    .copy(\.showSignInToAnotherDevice, to: isEasyDeviceMigrationDisabled)
             }
         }
         .preferredColorScheme(appAppearanceStore.colorScheme)
@@ -111,6 +121,49 @@ struct SettingsScreen: View {
     }
 
     @ViewBuilder
+    private func accountSection() -> some View {
+        VStack(alignment: .center, spacing: DS.Spacing.compact) {
+            accountDetails()
+            if state.showSignInToAnotherDevice {
+                signInToAnotherDevice()
+            }
+        }
+        .padding(.bottom, DS.Spacing.large)
+        .padding(.top, DS.Spacing.large)
+    }
+
+    @ViewBuilder
+    private func signInToAnotherDevice() -> some View {
+        Button(action: {
+            Task { @MainActor in
+                router.go(to: .scanQRCode)
+            }
+        }) {
+            HStack(spacing: DS.Spacing.large) {
+                Image(DS.Icon.icQrCode)
+                    .resizable()
+                    .square(size: 20)
+                    .foregroundStyle(DS.Color.Icon.norm)
+                    .padding(.horizontal, 14)
+
+                Text(L10n.Settings.signInOnAnotherDevice)
+                    .foregroundStyle(DS.Color.Text.norm)
+
+                Spacer()
+
+                Image(symbol: .chevronRight)
+                    .font(.system(size: 17))
+                    .foregroundStyle(DS.Color.Text.hint)
+            }
+            .padding(.all, DS.Spacing.large)
+            .contentShape(Rectangle())
+        }
+        .buttonStyle(DefaultPressedButtonStyle())
+        .background(DS.Color.BackgroundInverted.secondary)
+        .roundedRectangleStyle()
+    }
+
+    @ViewBuilder
     private func accountDetails() -> some View {
         if let details = state.accountSettings {
             Button(action: {
@@ -150,8 +203,6 @@ struct SettingsScreen: View {
             .buttonStyle(DefaultPressedButtonStyle())
             .background(DS.Color.BackgroundInverted.secondary)
             .roundedRectangleStyle()
-            .padding(.bottom, DS.Spacing.large)
-            .padding(.top, DS.Spacing.large)
         }
     }
 

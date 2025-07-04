@@ -139,11 +139,10 @@ private struct RootView: View {
             BiometricLockScreen(
                 authenticationMethod: .external {
                     try await legacyMigrationStateStore.resumeByRequestABiometryCheck()
-                }, output: { _ in }
+                }
             )
         case .pinRequired(let errorFromLatestAttempt):
             PINLockScreen(
-                state: .init(pin: .empty),
                 error: .constant(errorFromLatestAttempt.map(PINAuthenticationError.custom))
             ) { output in
                 switch output {

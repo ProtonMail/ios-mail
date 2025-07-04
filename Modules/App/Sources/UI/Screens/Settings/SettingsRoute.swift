@@ -19,16 +19,22 @@ import InboxCore
 import proton_app_uniffi
 import SwiftUI
 import Combine
+import AccountLogin
 
 enum SettingsRoute: Routable {
     case webView(ProtonAuthenticatedWebPage)
     case appSettings
     case appProtection
     case autoLock
+    case scanQRCode
+}
+
+struct SettingsViewFactory {
+    let mailUserSession: MailUserSession
 
     @MainActor @ViewBuilder
-    func view() -> some View {
-        switch self {
+    func makeView(for route: SettingsRoute) -> some View {
+        switch route {
         case .webView(let webPage):
             ProtonAuthenticatedWebView(webViewPage: webPage)
                 .edgesIgnoringSafeArea(.bottom)
@@ -41,6 +47,11 @@ enum SettingsRoute: Routable {
             AppProtectionSelectionScreen()
         case .autoLock:
             AutoLockScreen()
+        case .scanQRCode:
+            ScanQRCodeInstructionsView(
+                viewModel: .init(dependencies: .init(mailUserSession: mailUserSession, productName: "mail"))
+            )
+            .navigationBarTitleDisplayMode(.inline)
         }
     }
 }

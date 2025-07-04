@@ -102,6 +102,10 @@ public extension DS.Color {
         public static let pressed = Color(.interactionFabPressed)
     }
 
+    enum Loader {
+        public static let success = Color(.loaderSuccess)
+    }
+
     enum Notification {
         public static let error = Color(.notificationError)
         public static let norm = Color(.notificationNorm)

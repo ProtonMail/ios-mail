@@ -26,6 +26,7 @@ public enum CommonL10n {
     public static let `default` = LocalizedStringResource("Default", bundle: .module)
     public static let delete = LocalizedStringResource("Delete", bundle: .module)
     public static let done = LocalizedStringResource("Done", bundle: .module)
+    public static let ok = LocalizedStringResource("Ok", bundle: .module)
     public static let on = LocalizedStringResource("On", bundle: .module, comment: "Indicates that a feature is enabled and actively functioning.")
     public static let off = LocalizedStringResource("Off", bundle: .module, comment: "Indicates that a feature is disabled and not functioning.")
     public static let time = LocalizedStringResource("Time", bundle: .module)

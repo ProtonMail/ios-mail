@@ -22,6 +22,7 @@ import SwiftUI
 struct SettingsState: Copying {
     var accountSettings: AccountSettings?
     let preferences: [SettingsPreference]
+    var showSignInToAnotherDevice: Bool
 }
 
 extension SettingsState {
@@ -29,7 +30,8 @@ extension SettingsState {
     static var initial: Self {
         .init(
             accountSettings: nil,
-            preferences: .stale
+            preferences: .stale,
+            showSignInToAnotherDevice: false
         )
     }
 
