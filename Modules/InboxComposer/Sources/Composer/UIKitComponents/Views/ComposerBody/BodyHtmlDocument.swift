@@ -18,7 +18,7 @@
 import Foundation
 import InboxCoreUI
 import InboxDesignSystem
-import SwiftUICore
+import SwiftUI
 
 struct BodyHtmlDocument {
     private typealias ColorBundle = (background: String, text: String, brand: String)
