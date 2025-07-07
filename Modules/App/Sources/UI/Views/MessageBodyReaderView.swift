@@ -168,7 +168,7 @@ extension WKUserScript {
         let source = """
             function executeOnceContentIsLaidOut(callback) {
                 // This is a good enough heuristic without hard coding magic numbers
-                const isContentLaidOut = document.documentElement.offsetWidth > \(viewWidth / 2);
+                const isContentLaidOut = document.body.offsetWidth > \(viewWidth / 2);
 
                 if (isContentLaidOut) {
                     callback();
@@ -195,7 +195,7 @@ extension WKUserScript {
             }
 
             executeOnceContentIsLaidOut(() => {
-                const ratio = document.documentElement.offsetWidth / document.documentElement.scrollWidth;
+                const ratio = document.body.offsetWidth / document.body.scrollWidth;
                 setViewportInitialScale(ratio);
                 startSendingHeightToSwiftUI(ratio);
             });
