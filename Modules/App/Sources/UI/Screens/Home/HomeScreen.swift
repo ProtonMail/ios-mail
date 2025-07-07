@@ -77,7 +77,7 @@ struct HomeScreen: View {
         )
         _upsellCoordinator = .init(wrappedValue: .init(mailUserSession: userSession, configuration: .mail))
         self.userDefaults = appContext.userDefaults
-        self.modalFactory = HomeScreenModalFactory(mailUserSession: userSession)
+        self.modalFactory = HomeScreenModalFactory(mailUserSession: userSession, accountAuthCoordinator: appContext.accountAuthCoordinator)
         notificationAuthorizationStore = .init(userDefaults: userDefaults)
     }
 

@@ -29,6 +29,7 @@ enum SettingsRoute: Routable {
     case autoLock
     case scanQRCode
     case changePassword(PasswordChange.State)
+    case securityKeys(UserSettings)
 
     var isChangePassword: Bool {
         switch self {
@@ -42,6 +43,7 @@ enum SettingsRoute: Routable {
 
 struct SettingsViewFactory {
     let mailUserSession: MailUserSession
+    let accountAuthCoordinator: AccountAuthCoordinator
 
     @MainActor @ViewBuilder
     func makeView(for route: SettingsRoute) -> some View {
@@ -65,6 +67,8 @@ struct SettingsViewFactory {
             .navigationBarTitleDisplayMode(.inline)
         case .changePassword(let state):
             PasswordChange.view(from: state)
+        case .securityKeys(let userSettings):
+            accountAuthCoordinator.securityKeyListView(userSettings: userSettings)
         }
     }
 }

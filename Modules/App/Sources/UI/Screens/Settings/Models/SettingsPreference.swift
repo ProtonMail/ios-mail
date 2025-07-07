@@ -44,5 +44,4 @@ enum SettingsPreference: CaseIterable, Hashable {
             .init(title: L10n.Settings.App.title, icon: DS.Icon.icMobile)
         }
     }
-
 }

@@ -30,7 +30,8 @@ class SettingsScreenSnapshotTests: BaseTestCase {
         let store = AppAppearanceStore(mailSession: { MailSession(noPointer: .init()) })
         let sut = SettingsScreen(
             state: .initial.copy(\.accountInfo, to: AccountDetails.testData.settings),
-            mailUserSession: MailUserSessionStub(id: "")
+            mailUserSession: MailUserSessionStub(id: ""),
+            accountAuthCoordinator: .mock()
         )
         assertSnapshotsOnIPhoneX(of: sut.environmentObject(store), precision: 0.98)
     }
