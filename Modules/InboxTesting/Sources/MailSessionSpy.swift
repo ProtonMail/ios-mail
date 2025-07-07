@@ -59,10 +59,6 @@ public final class MailSessionSpy: MailSessionProtocol {
         fatalError(#function)
     }
 
-    public func allMessagesWereSent() async -> MailSessionAllMessagesWereSentResult {
-        fatalError(#function)
-    }
-
     public func appProtection() async -> MailSessionAppProtectionResult {
         .ok(appProtectionStub)
     }
@@ -98,6 +94,10 @@ public final class MailSessionSpy: MailSessionProtocol {
     }
 
     public func deletePinCode(pin: [UInt32]) async -> proton_app_uniffi.MailSessionDeletePinCodeResult {
+        fatalError(#function)
+    }
+
+    public func exportLogs(filePath: String) -> proton_app_uniffi.MailSessionExportLogsResult {
         fatalError(#function)
     }
 
@@ -162,10 +162,6 @@ public final class MailSessionSpy: MailSessionProtocol {
     }
 
     public func getSessionsBlocking(account: StoredAccount) -> MailSessionGetAccountSessionsResult {
-        fatalError(#function)
-    }
-
-    public func getUnsentMessagesIdsInQueue(userId: String) async -> MailSessionGetUnsentMessagesIdsInQueueResult {
         fatalError(#function)
     }
 

@@ -218,8 +218,7 @@ private extension MailUserSession {
             params: params,
             keyChain: KeychainSDKWrapper(),
             hvNotifier: nil,
-            deviceInfoProvider: nil,
-            productName: "ios-mail"
+            deviceInfoProvider: nil
         ).get()
 
         let authCoordinator = AccountAuthCoordinator(productName: "mail", appContext: mailSession)

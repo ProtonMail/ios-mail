@@ -19,7 +19,6 @@ import proton_app_uniffi
 
 protocol BackgroundTaskExecutor {
     func startBackgroundExecution(callback: BackgroundExecutionCallback) -> MailSessionStartBackgroundExecutionResult
-    func allMessagesWereSent() async -> MailSessionAllMessagesWereSentResult
 }
 
 extension MailSession: BackgroundTaskExecutor {}

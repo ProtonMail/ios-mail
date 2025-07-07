@@ -214,16 +214,6 @@ public extension LoginFlowUserIdResult {
         }
     }
 }
-public extension MailSessionAllMessagesWereSentResult {
-    func get() throws(UserContextError) -> Bool {
-        switch self {
-        case .ok(let value):
-            value
-        case .error(let error):
-            throw error
-        }
-    }
-}
 public extension MailSessionAppProtectionResult {
     func get() throws(UserContextError) -> AppProtection {
         switch self {
@@ -239,6 +229,16 @@ public extension MailSessionChangeAppSettingsResult {
         switch self {
         case .ok:
             break
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension MailSessionExportLogsResult {
+    func get() throws(ProtonError) -> UInt64 {
+        switch self {
+        case .ok(let value):
+            value
         case .error(let error):
             throw error
         }
@@ -326,16 +326,6 @@ public extension MailSessionGetSessionStateResult {
 }
 public extension MailSessionGetSessionsResult {
     func get() throws(UserContextError) -> [StoredSession] {
-        switch self {
-        case .ok(let value):
-            value
-        case .error(let error):
-            throw error
-        }
-    }
-}
-public extension MailSessionGetUnsentMessagesIdsInQueueResult {
-    func get() throws(UserContextError) -> [Id] {
         switch self {
         case .ok(let value):
             value
