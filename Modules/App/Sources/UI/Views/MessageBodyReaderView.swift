@@ -166,34 +166,39 @@ extension MessageBodyReaderView {
 extension WKUserScript {
     fileprivate static func adjustLayoutAndObserveHeight(viewWidth: CGFloat) -> WKUserScript {
         let source = """
-            var metaWidth = document.querySelector('meta[name="viewport"]');
-            var ratio = document.body.offsetWidth / document.body.scrollWidth;
-            metaWidth.content = "width=device-width, initial-scale=" + ratio + ", maximum-scale=3.0, user-scalable=yes";
+            function executeOnceContentIsLaidOut(callback) {
+                // This is a good enough heuristic without hard coding magic numbers
+                const isContentLaidOut = document.documentElement.offsetWidth > \(viewWidth / 2);
 
-            function notify() {
-                measureHeightOnceContentIsLaidOut();
-            }
-
-            function measureHeightOnceContentIsLaidOut(retryCount = 0) {
-                // Prevent infinite loops (180 frames = ~3 seconds at 60fps)
-                const maxRetries = 180;
-
-                // If content is not laid out, its width is typically 32 or 80 - this is a good enough heuristic without hard coding magic numbers
-                const contentIsLaidOut = document.body.scrollWidth > \(viewWidth / 2)
-
-                if (!contentIsLaidOut && retryCount < maxRetries) {
+                if (isContentLaidOut) {
+                    callback();
+                } else {
                     // try again next frame
                     requestAnimationFrame(() => {
-                        measureHeightOnceContentIsLaidOut(retryCount + 1);
+                        executeOnceContentIsLaidOut(callback);
                     });
-                } else {
-                    var height = document.documentElement.scrollHeight * ratio;
-                    window.webkit.messageHandlers.\(Constants.heightChangedHandlerName).postMessage(height);
                 }
             }
 
-            const observer = new ResizeObserver(notify);
-            observer.observe(document.body);
+            function setViewportInitialScale(ratio) {
+                var metaWidth = document.querySelector('meta[name="viewport"]');
+                metaWidth.content = "width=device-width, initial-scale=" + ratio + ", maximum-scale=3.0, user-scalable=yes";
+            }
+
+            function startSendingHeightToSwiftUI(ratio) {
+                const observer = new ResizeObserver(() => {
+                    var height = document.documentElement.scrollHeight * ratio;
+                    window.webkit.messageHandlers.\(Constants.heightChangedHandlerName).postMessage(height);
+                });
+
+                observer.observe(document.body);
+            }
+
+            executeOnceContentIsLaidOut(() => {
+                const ratio = document.documentElement.offsetWidth / document.documentElement.scrollWidth;
+                setViewportInitialScale(ratio);
+                startSendingHeightToSwiftUI(ratio);
+            });
             """
 
         return .init(source: source, injectionTime: .atDocumentEnd, forMainFrameOnly: true)
