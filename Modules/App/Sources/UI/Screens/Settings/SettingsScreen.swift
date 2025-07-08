@@ -75,7 +75,7 @@ struct SettingsScreen: View {
 
             if let isEasyDeviceMigrationDisabled = await userSettings?.flags.edmOptOut {
                 state = state
-                    .copy(\.showSignInToAnotherDevice, to: isEasyDeviceMigrationDisabled)
+                    .copy(\.showSignInToAnotherDevice, to: !isEasyDeviceMigrationDisabled)
             }
         }
         .preferredColorScheme(appAppearanceStore.colorScheme)
