@@ -27,12 +27,13 @@ extension View {
         itemTypeForActionBar: MailboxItemType,
         selectedItems: Binding<Set<MailboxSelectedItem>>
     ) -> some View {
-        modifier(MailboxActionBarViewModifier(
-            state: state,
-            availableActions: availableActions,
-            itemTypeForActionBar: itemTypeForActionBar,
-            selectedItems: selectedItems
-        ))
+        modifier(
+            MailboxActionBarViewModifier(
+                state: state,
+                availableActions: availableActions,
+                itemTypeForActionBar: itemTypeForActionBar,
+                selectedItems: selectedItems
+            ))
     }
 }
 
@@ -72,24 +73,28 @@ private struct MailboxActionBarViewModifier: ViewModifier {
     }
 
     func body(content: Content) -> some View {
-        StoreView(store: MailboxActionBarStateStore(
-            state: state,
-            availableActions: availableActions,
-            starActionPerformerActions: starActionPerformerActions,
-            readActionPerformerActions: readActionPerformerActions,
-            deleteActions: deleteActions,
-            moveToActions: moveToActions,
-            itemTypeForActionBar: itemTypeForActionBar,
-            mailUserSession: mailUserSession,
-            mailbox: mailbox,
-            toastStateStore: toastStateStore
-        )) { state, store in
+        StoreView(
+            store: MailboxActionBarStateStore(
+                state: state,
+                availableActions: availableActions,
+                starActionPerformerActions: starActionPerformerActions,
+                readActionPerformerActions: readActionPerformerActions,
+                deleteActions: deleteActions,
+                moveToActions: moveToActions,
+                itemTypeForActionBar: itemTypeForActionBar,
+                mailUserSession: mailUserSession,
+                mailbox: mailbox,
+                toastStateStore: toastStateStore
+            )
+        ) { state, store in
             content
-                .bottomToolbar {
+                .toolbar {
                     ToolbarItemGroup(placement: .bottomBar) {
                         HStack {
-                            Spacer()
-                            ForEachEnumerated(state.bottomBarActions, id: \.offset) { action, index in
+                            ForEachEnumerated(state.bottomBarActions, id: \.element) { action, index in
+                                if index == 0 {
+                                    Spacer()
+                                }
                                 Button(action: { store.handle(action: .actionSelected(action, ids: selectedItemsIDs)) }) {
                                     action.displayData.icon
                                         .foregroundStyle(DS.Color.Icon.weak)
@@ -100,6 +105,7 @@ private struct MailboxActionBarViewModifier: ViewModifier {
                         }
                     }
                 }
+                .bottomToolbarStyle()
                 .onChange(of: selectedItems) { oldValue, newValue in
                     if oldValue != newValue {
                         store.handle(action: .mailboxItemsSelectionUpdated(ids: selectedItemsIDs))
@@ -117,7 +123,7 @@ private struct MailboxActionBarViewModifier: ViewModifier {
                     .alert(model: store.binding(\.moreDeleteConfirmationAlert))
                 }
                 .alert(model: store.binding(\.deleteConfirmationAlert))
-            }
+        }
     }
 
     // MARK: - Private
@@ -142,22 +148,16 @@ private struct MailboxActionBarViewIdentifiers {
 // FIXME: - Move to separate file
 extension View {
 
-    func bottomToolbar<Toolbar: ToolbarContent>(toolbarContent: @escaping () -> Toolbar) -> some View {
-        modifier(BottomToolbar(toolbarContent: toolbarContent))
+    func bottomToolbarStyle() -> some View {
+        modifier(BottomToolbarStyle())
     }
 
 }
 
-struct BottomToolbar<Toolbar: ToolbarContent>: ViewModifier {
-    private let toolbarContent: () -> Toolbar
-
-    init(toolbarContent: @escaping () -> Toolbar) {
-        self.toolbarContent = toolbarContent
-    }
+struct BottomToolbarStyle: ViewModifier {
 
     func body(content: Content) -> some View {
         content
-            .toolbar(content: toolbarContent)
             .toolbarBackground(.visible, for: .bottomBar)
             .toolbarBackground(DS.Color.BackgroundInverted.secondary, for: .bottomBar)
     }

@@ -41,11 +41,13 @@ struct ConversationDetailScreen: View {
 
     var body: some View {
         conversationView
-            .bottomToolbar {
+            .toolbar {
                 ToolbarItemGroup(placement: .bottomBar) {
                     HStack(alignment: .center) {
-                        Spacer()
                         ForEachEnumerated(model.bottomBarActions, id: \.offset) { action, index in
+                            if index == 0 {
+                                Spacer()
+                            }
                             Button(action: {
                                 model.handleConversation(
                                     action: action,
@@ -63,6 +65,7 @@ struct ConversationDetailScreen: View {
                 }
             }
             .toolbar(model.isBottomBarHidden ? .hidden : .visible, for: .bottomBar)
+            .bottomToolbarStyle()
             .animation(.default, value: model.isBottomBarHidden)
             .actionSheetsFlow(
                 mailbox: { model.mailbox.unsafelyUnwrapped },
