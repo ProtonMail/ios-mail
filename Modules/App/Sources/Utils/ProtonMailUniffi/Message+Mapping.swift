@@ -91,6 +91,7 @@ extension Message {
             recipients: recipients,
             isRead: !unread,
             isDraft: isDraft,
+            isStarred: starred,
             avatar: sender.senderAvatar
         )
     }
