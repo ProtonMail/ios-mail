@@ -22,18 +22,18 @@ import SwiftUI
 
 struct LabelAsSheet: View {
     @StateObject var model: LabelAsSheetModel
+    @Environment(\.dismiss) var dismiss
 
     init(model: LabelAsSheetModel) {
         self._model = StateObject(wrappedValue: model)
     }
 
     var body: some View {
-        ClosableScreen {
+        NavigationStack {
             ScrollView {
                 VStack(spacing: DS.Spacing.large) {
                     archiveSection()
                     labelsSection()
-                    doneButton()
                 }
                 .padding(.all, DS.Spacing.large)
             }
@@ -41,6 +41,22 @@ struct LabelAsSheet: View {
             .navigationTitle(L10n.Action.labelAs.string)
             .navigationBarTitleDisplayMode(.inline)
             .onAppear { model.handle(action: .viewAppear) }
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button(action: { model.handle(action: .doneButtonTapped) }) {
+                        Text(CommonL10n.done)
+                            .fontWeight(.semibold)
+                            .foregroundStyle(DS.Color.InteractionBrand.pressed)
+                    }
+                }
+
+                ToolbarItem(placement: .topBarLeading) {
+                    Button(action: { dismiss.callAsFunction() }) {
+                        Text(CommonL10n.cancel)
+                            .foregroundStyle(DS.Color.Text.accent)
+                    }
+                }
+            }
             .sheet(isPresented: $model.state.createFolderLabelPresented) {
                 CreateFolderOrLabelScreen()
             }
@@ -103,14 +119,6 @@ struct LabelAsSheet: View {
                 }
             }
         }
-    }
-
-    private func doneButton() -> some View {
-        Button(
-            action: { model.handle(action: .doneButtonTapped) },
-            label: { Text(CommonL10n.done) }
-        )
-        .buttonStyle(BigButtonStyle())
     }
 }
 
