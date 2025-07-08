@@ -16,10 +16,27 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import InboxCoreUI
+import InboxDesignSystem
 import proton_app_uniffi
 import SwiftUI
 
-struct MailboxActionBarView: View {
+extension View {
+    func mailboxActionBar(
+        state: MailboxActionBarState,
+        availableActions: AvailableMailboxActionBarActions,
+        itemTypeForActionBar: MailboxItemType,
+        selectedItems: Binding<Set<MailboxSelectedItem>>
+    ) -> some View {
+        modifier(MailboxActionBarViewModifier(
+            state: state,
+            availableActions: availableActions,
+            itemTypeForActionBar: itemTypeForActionBar,
+            selectedItems: selectedItems
+        ))
+    }
+}
+
+private struct MailboxActionBarViewModifier: ViewModifier {
     @Binding var selectedItems: Set<MailboxSelectedItem>
     @EnvironmentObject var mailbox: Mailbox
     @EnvironmentObject var toastStateStore: ToastStateStore
@@ -54,40 +71,57 @@ struct MailboxActionBarView: View {
         self.readActionPerformerActions = readActionPerformerActions
     }
 
-    var body: some View {
+    func body(content: Content) -> some View {
         StoreView(store: MailboxActionBarStateStore(
             state: state,
             availableActions: availableActions,
-            starActionPerformerActions: starActionPerformerActions, 
+            starActionPerformerActions: starActionPerformerActions,
             readActionPerformerActions: readActionPerformerActions,
-            deleteActions: deleteActions, 
+            deleteActions: deleteActions,
             moveToActions: moveToActions,
             itemTypeForActionBar: itemTypeForActionBar,
             mailUserSession: mailUserSession,
             mailbox: mailbox,
             toastStateStore: toastStateStore
         )) { state, store in
-            BottomActionBarView(actions: state.bottomBarActions) { action in
-                store.handle(action: .actionSelected(action, ids: selectedItemsIDs))
-            }
-            .onChange(of: selectedItems) { oldValue, newValue in
-                if oldValue != newValue {
+            content
+                .toolbar {
+                    ToolbarItemGroup(placement: .bottomBar) {
+                        HStack {
+                            ForEachEnumerated(state.bottomBarActions, id: \.offset) { action, index in
+                                if index == 0 {
+                                    Spacer()
+                                }
+                                Button(action: { store.handle(action: .actionSelected(action, ids: selectedItemsIDs)) }) {
+                                    action.displayData.icon
+                                        .foregroundStyle(DS.Color.Icon.weak)
+                                }
+                                Spacer()
+                                    .accessibilityIdentifier(MailboxActionBarViewIdentifiers.button(index: index))
+                            }
+                        }
+                    }
+                }
+                .toolbarBackground(.visible, for: .bottomBar)
+                .toolbarBackground(DS.Color.BackgroundInverted.secondary, for: .bottomBar)
+                .onChange(of: selectedItems) { oldValue, newValue in
+                    if oldValue != newValue {
+                        store.handle(action: .mailboxItemsSelectionUpdated(ids: selectedItemsIDs))
+                    }
+                }
+                .onLoad {
                     store.handle(action: .mailboxItemsSelectionUpdated(ids: selectedItemsIDs))
                 }
-            }
-            .onLoad {
-                store.handle(action: .mailboxItemsSelectionUpdated(ids: selectedItemsIDs))
-            }
-            .labelAsSheet(mailbox: { mailbox }, input: store.binding(\.labelAsSheetPresented))
-            .moveToSheet(mailbox: { mailbox }, input: store.binding(\.moveToSheetPresented))
-            .sheet(item: store.binding(\.moreActionSheetPresented)) { state in
-                MailboxActionBarMoreSheet(state: state) { action in
-                    store.handle(action: .moreSheetAction(action, ids: selectedItemsIDs))
+                .labelAsSheet(mailbox: { mailbox }, input: store.binding(\.labelAsSheetPresented))
+                .moveToSheet(mailbox: { mailbox }, input: store.binding(\.moveToSheetPresented))
+                .sheet(item: store.binding(\.moreActionSheetPresented)) { state in
+                    MailboxActionBarMoreSheet(state: state) { action in
+                        store.handle(action: .moreSheetAction(action, ids: selectedItemsIDs))
+                    }
+                    .alert(model: store.binding(\.moreDeleteConfirmationAlert))
                 }
-                .alert(model: store.binding(\.moreDeleteConfirmationAlert))
+                .alert(model: store.binding(\.deleteConfirmationAlert))
             }
-            .alert(model: store.binding(\.deleteConfirmationAlert))
-        }
     }
 
     // MARK: - Private
@@ -95,13 +129,16 @@ struct MailboxActionBarView: View {
     private var selectedItemsIDs: [ID] {
         selectedItems.map(\.id)
     }
+
 }
 
-#Preview {
-    MailboxActionBarView(
-        state: MailboxActionBarPreviewProvider.state(),
-        availableActions: MailboxActionBarPreviewProvider.availableActions(),
-        itemTypeForActionBar: .conversation,
-        selectedItems: .constant([])
-    )
+// MARK: Accessibility
+
+private struct MailboxActionBarViewIdentifiers {
+    static let rootItem = "mailbox.actionBar.rootItem"
+
+    static func button(index: Int) -> String {
+        let number = index + 1
+        return "mailbox.actionBar.button\(number)"
+    }
 }

@@ -91,9 +91,9 @@ extension MailboxListView {
                 ))
             },
             emptyFolderBanner: $model.emptyFolderBanner,
-            mailUserSession: mailUserSession
+            mailUserSession: mailUserSession,
+            mailbox: model.mailbox
         )
-        .injectIfNotNil(model.mailbox)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .onChange(of: model.selectedMailbox) { _, _ in
             self.isListAtTop = true

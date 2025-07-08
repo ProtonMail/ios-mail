@@ -26,6 +26,7 @@ struct MailboxItemsListView<EmptyView: View>: View {
     @ObservedObject private(set) var selectionState: SelectionModeState
     private let mailUserSession: MailUserSession
     @Binding var emptyFolderBanner: EmptyFolderBanner?
+    let mailbox: Mailbox?
 
     // pull to refresh
     @State private var listPullOffset: CurrentValueSubject<CGFloat, Never> = .init(0.0)
@@ -37,21 +38,32 @@ struct MailboxItemsListView<EmptyView: View>: View {
         config: MailboxItemsListViewConfiguration,
         @ViewBuilder emptyView: () -> EmptyView,
         emptyFolderBanner: Binding<EmptyFolderBanner?>,
-        mailUserSession: MailUserSession
+        mailUserSession: MailUserSession,
+        mailbox: Mailbox?
     ) {
         self.config = config
         self.emptyView = emptyView()
         self.selectionState = config.selectionState
         self.mailUserSession = mailUserSession
         _emptyFolderBanner = emptyFolderBanner
+        self.mailbox = mailbox
     }
 
     var body: some View {
-        ZStack {
+        if let mailbox {
             listView
-            if selectionState.hasItems {
-                mailboxActionBarView
-            }
+                .animation(.none, value: selectionState.hasItems)
+                .toolbar(selectionState.hasItems ? .visible : .hidden, for: .bottomBar)
+                .animation(.default, value: selectionState.hasItems)
+                .mailboxActionBar(
+                    state: .initial,
+                    availableActions: .productionInstance,
+                    itemTypeForActionBar: config.itemTypeForActionBar,
+                    selectedItems: config.selectionState.selectedItemIDsReadOnlyBinding
+                )
+                .environmentObject(mailbox)
+        } else {
+            listView
         }
     }
 
@@ -154,18 +166,6 @@ struct MailboxItemsListView<EmptyView: View>: View {
         """
         return value
     }
-
-    private var mailboxActionBarView: some View {
-        MailboxActionBarView(
-            state: .initial,
-            availableActions: .productionInstance,
-            itemTypeForActionBar: config.itemTypeForActionBar,
-            selectedItems: config.selectionState.selectedItemIDsReadOnlyBinding
-        )
-        .opacity(selectionState.hasItems ? 1 : 0)
-        .offset(y: selectionState.hasItems ? 0 : 45 + 100)
-        .animation(.selectModeAnimation, value: selectionState.hasItems)
-    }
 }
 
 private struct MailboxListViewIdentifiers {
@@ -218,7 +218,8 @@ private extension SelectionModeState {
                 config: makeConfiguration(),
                 emptyView: { Text("MAILBOX IS EMPTY".notLocalized) },
                 emptyFolderBanner: .constant(nil),
-                mailUserSession: .dummy
+                mailUserSession: .dummy,
+                mailbox: .dummy
             )
             .task {
                 model.dataSource.fetchInitialPage()

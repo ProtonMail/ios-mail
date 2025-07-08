@@ -30,6 +30,7 @@ struct MailboxScreen: View {
     @State private var isOnboardingPresented = false
     @State private var isNotificationPromptPresented = false
     @State private var isAccountManagerPresented = false
+    @State private var animateComposeButtonSafeAreaChanges = false
     private let userSession: MailUserSession
     private let notificationAuthorizationStore: NotificationAuthorizationStore
     private let userDefaults: UserDefaults
@@ -145,15 +146,30 @@ struct MailboxScreen: View {
 
 extension MailboxScreen {
 
+    private func skipAnimationWhenViewRenders() async {
+        try? await Task.sleep(for: .seconds(0.5))
+        animateComposeButtonSafeAreaChanges = true
+    }
+
     private var mailboxScreen: some View {
-        ZStack(alignment: .bottomTrailing) {
-            MailboxListView(
-                isListAtTop: $isComposeButtonExpanded,
-                model: mailboxModel,
-                mailUserSession: userSession
-            )
-            composeButtonView
-                .accessibilitySortPriority(1)
+        GeometryReader { geometry in
+            ZStack(alignment: .bottomTrailing) {
+                MailboxListView(
+                    isListAtTop: $isComposeButtonExpanded,
+                    model: mailboxModel,
+                    mailUserSession: userSession
+                )
+                composeButtonView
+                    .accessibilitySortPriority(1)
+                    .animation(
+                        animateComposeButtonSafeAreaChanges ? .default : .none, value: geometry.safeAreaInsets.bottom
+                    )
+                    .onLoad {
+                        Task {
+                            await skipAnimationWhenViewRenders()
+                        }
+                    }
+            }
         }
         .background(DS.Color.Background.norm)  // sets also the color for the navigation bar
         .toolbarBackground(.hidden, for: .navigationBar)  // the purpose of this is to hide the toolbar shadow
