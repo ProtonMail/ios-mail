@@ -85,25 +85,21 @@ private struct MailboxActionBarViewModifier: ViewModifier {
             toastStateStore: toastStateStore
         )) { state, store in
             content
-                .toolbar {
+                .bottomToolbar {
                     ToolbarItemGroup(placement: .bottomBar) {
                         HStack {
+                            Spacer()
                             ForEachEnumerated(state.bottomBarActions, id: \.offset) { action, index in
-                                if index == 0 {
-                                    Spacer()
-                                }
                                 Button(action: { store.handle(action: .actionSelected(action, ids: selectedItemsIDs)) }) {
                                     action.displayData.icon
                                         .foregroundStyle(DS.Color.Icon.weak)
                                 }
+                                .accessibilityIdentifier(MailboxActionBarViewIdentifiers.button(index: index))
                                 Spacer()
-                                    .accessibilityIdentifier(MailboxActionBarViewIdentifiers.button(index: index))
                             }
                         }
                     }
                 }
-                .toolbarBackground(.visible, for: .bottomBar)
-                .toolbarBackground(DS.Color.BackgroundInverted.secondary, for: .bottomBar)
                 .onChange(of: selectedItems) { oldValue, newValue in
                     if oldValue != newValue {
                         store.handle(action: .mailboxItemsSelectionUpdated(ids: selectedItemsIDs))
@@ -141,4 +137,29 @@ private struct MailboxActionBarViewIdentifiers {
         let number = index + 1
         return "mailbox.actionBar.button\(number)"
     }
+}
+
+// FIXME: - Move to separate file
+extension View {
+
+    func bottomToolbar<Toolbar: ToolbarContent>(toolbarContent: @escaping () -> Toolbar) -> some View {
+        modifier(BottomToolbar(toolbarContent: toolbarContent))
+    }
+
+}
+
+struct BottomToolbar<Toolbar: ToolbarContent>: ViewModifier {
+    private let toolbarContent: () -> Toolbar
+
+    init(toolbarContent: @escaping () -> Toolbar) {
+        self.toolbarContent = toolbarContent
+    }
+
+    func body(content: Content) -> some View {
+        content
+            .toolbar(content: toolbarContent)
+            .toolbarBackground(.visible, for: .bottomBar)
+            .toolbarBackground(DS.Color.BackgroundInverted.secondary, for: .bottomBar)
+    }
+
 }

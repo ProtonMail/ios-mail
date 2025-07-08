@@ -40,33 +40,42 @@ struct ConversationDetailScreen: View {
     }
 
     var body: some View {
-        ZStack {
-            conversationView
-            if !model.areActionsHidden {
-                BottomActionBarView(
-                    actions: model.bottomBarActions,
-                    tapAction: { action in
-                        model.handleConversation(
-                            action: action,
-                            toastStateStore: toastStateStore,
-                            goBack: { navigationPath.removeLast() }
-                        )
+        conversationView
+            .bottomToolbar {
+                ToolbarItemGroup(placement: .bottomBar) {
+                    HStack(alignment: .center) {
+                        Spacer()
+                        ForEachEnumerated(model.bottomBarActions, id: \.offset) { action, index in
+                            Button(action: {
+                                model.handleConversation(
+                                    action: action,
+                                    toastStateStore: toastStateStore,
+                                    goBack: { navigationPath.removeLast() }
+                                )
+                            }) {
+                                action.displayData.icon
+                                    .foregroundStyle(DS.Color.Icon.weak)
+                            }
+                            .accessibilityIdentifier(MailboxActionBarViewIdentifiers.button(index: index))
+                            Spacer()
+                        }
                     }
-                )
+                }
             }
-        }
-        .actionSheetsFlow(
-            mailbox: { model.mailbox.unsafelyUnwrapped },
-            state: $model.actionSheets,
-            replyActions: handleReplyAction,
-            goBackNavigation: { navigationPath.removeLast() }
-        )
-        .alert(model: $model.deleteConfirmationAlert)
-        .fullScreenCover(item: $model.attachmentIDToOpen) { id in
-            AttachmentView(config: .init(id: id, mailbox: model.mailbox.unsafelyUnwrapped))
-                .edgesIgnoringSafeArea([.top, .bottom])
-        }
-        .environment(\.messageAppearanceOverrideStore, model.messageAppearanceOverrideStore)
+            .toolbar(model.isBottomBarHidden ? .hidden : .visible, for: .bottomBar)
+            .animation(.default, value: model.isBottomBarHidden)
+            .actionSheetsFlow(
+                mailbox: { model.mailbox.unsafelyUnwrapped },
+                state: $model.actionSheets,
+                replyActions: handleReplyAction,
+                goBackNavigation: { navigationPath.removeLast() }
+            )
+            .alert(model: $model.deleteConfirmationAlert)
+            .fullScreenCover(item: $model.attachmentIDToOpen) { id in
+                AttachmentView(config: .init(id: id, mailbox: model.mailbox.unsafelyUnwrapped))
+                    .edgesIgnoringSafeArea([.top, .bottom])
+            }
+            .environment(\.messageAppearanceOverrideStore, model.messageAppearanceOverrideStore)
     }
 
     private var conversationView: some View {
@@ -93,8 +102,6 @@ struct ConversationDetailScreen: View {
             )
             .opacity(animateViewIn ? 1.0 : 0.0)
             .smoothScreenTransition()
-            .ignoresSafeArea(.all, edges: .bottom)
-            .padding(.bottom, model.areActionsHidden ? 0 : proxy.safeAreaInsets.bottom + 45)
             .task {
                 withAnimation(.easeIn) {
                     animateViewIn = true
@@ -259,4 +266,15 @@ extension ConversationDetailSeed {
         }
     }
 
+}
+
+// MARK: Accessibility
+
+private struct MailboxActionBarViewIdentifiers {
+    static let rootItem = "mailbox.actionBar.rootItem"
+
+    static func button(index: Int) -> String {
+        let number = index + 1
+        return "mailbox.actionBar.button\(number)"
+    }
 }
