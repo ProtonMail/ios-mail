@@ -19,14 +19,19 @@ import InboxCoreUI
 import InboxDesignSystem
 import SwiftUI
 
-extension Image {
+struct StarImage: View {
+    private let isStarred: Bool
+    private let size: CGFloat
 
-    @MainActor
-    static func star(isStarred: Bool, size: CGFloat) -> some View {
+    init(isStarred: Bool, size: CGFloat) {
+        self.isStarred = isStarred
+        self.size = size
+    }
+
+    var body: some View {
         Image(isStarred ? DS.Icon.icStarFilledStrong : DS.Icon.icStarStrong)
             .resizable()
             .square(size: size)
             .foregroundColor(isStarred ? DS.Color.Star.selected : DS.Color.Star.default)
     }
-
 }

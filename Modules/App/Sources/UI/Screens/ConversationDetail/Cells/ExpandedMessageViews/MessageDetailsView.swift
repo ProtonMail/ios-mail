@@ -78,8 +78,7 @@ struct MessageDetailsView: View {
                 .accessibilityIdentifier(MessageDetailsViewIdentifiers.officialBadge)
             Spacer()
             if uiModel.isStarred {
-                Image
-                    .star(isStarred: uiModel.isStarred, size: 14)
+                StarImage(isStarred: uiModel.isStarred, size: 14)
             }
             Text(uiModel.date.mailboxFormat())
                 .font(.caption)
