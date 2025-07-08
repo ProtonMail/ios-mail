@@ -77,6 +77,10 @@ struct MessageDetailsView: View {
                 .removeViewIf(!uiModel.isSenderProtonOfficial)
                 .accessibilityIdentifier(MessageDetailsViewIdentifiers.officialBadge)
             Spacer()
+            if uiModel.isStarred {
+                Image
+                    .star(isStarred: uiModel.isStarred, size: 14)
+            }
             Text(uiModel.date.mailboxFormat())
                 .font(.caption)
                 .foregroundColor(DS.Color.Text.weak)
@@ -461,4 +465,12 @@ private struct MessageDetailsViewIdentifiers {
 
     static let expandedHeaderDateLabel = "detail.header.expanded.date.label"
     static let expandedHeaderDateValue = "detail.header.expanded.date.value"
+}
+
+private extension MessageDetailsUIModel {
+
+    var isStarred: Bool {
+        other.contains(.starred)
+    }
+
 }
