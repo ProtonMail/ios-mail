@@ -144,22 +144,3 @@ private struct MailboxActionBarViewIdentifiers {
         return "mailbox.actionBar.button\(number)"
     }
 }
-
-// FIXME: - Move to separate file
-extension View {
-
-    func bottomToolbarStyle() -> some View {
-        modifier(BottomToolbarStyle())
-    }
-
-}
-
-struct BottomToolbarStyle: ViewModifier {
-
-    func body(content: Content) -> some View {
-        content
-            .toolbarBackground(.visible, for: .bottomBar)
-            .toolbarBackground(DS.Color.BackgroundInverted.secondary, for: .bottomBar)
-    }
-
-}
