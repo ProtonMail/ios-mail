@@ -89,21 +89,7 @@ private struct MailboxActionBarViewModifier: ViewModifier {
         ) { state, store in
             content
                 .toolbar {
-                    ToolbarItemGroup(placement: .bottomBar) {
-                        HStack {
-                            ForEachEnumerated(state.bottomBarActions, id: \.element) { action, index in
-                                if index == 0 {
-                                    Spacer()
-                                }
-                                Button(action: { store.handle(action: .actionSelected(action, ids: selectedItemsIDs)) }) {
-                                    action.displayData.icon
-                                        .foregroundStyle(DS.Color.Icon.weak)
-                                }
-                                .accessibilityIdentifier(MailboxActionBarViewIdentifiers.button(index: index))
-                                Spacer()
-                            }
-                        }
-                    }
+                    toolbarContent(state: state, store: store)
                 }
                 .bottomToolbarStyle()
                 .onChange(of: selectedItems) { oldValue, newValue in
@@ -130,6 +116,27 @@ private struct MailboxActionBarViewModifier: ViewModifier {
 
     private var selectedItemsIDs: [ID] {
         selectedItems.map(\.id)
+    }
+
+    private func toolbarContent(
+        state: MailboxActionBarState,
+        store: MailboxActionBarStateStore
+    ) -> some ToolbarContent {
+        ToolbarItemGroup(placement: .bottomBar) {
+            HStack {
+                ForEachEnumerated(state.bottomBarActions, id: \.element) { action, index in
+                    if index == 0 {
+                        Spacer()
+                    }
+                    Button(action: { store.handle(action: .actionSelected(action, ids: selectedItemsIDs)) }) {
+                        action.displayData.icon
+                            .foregroundStyle(DS.Color.Icon.weak)
+                    }
+                    .accessibilityIdentifier(MailboxActionBarViewIdentifiers.button(index: index))
+                    Spacer()
+                }
+            }
+        }
     }
 
 }

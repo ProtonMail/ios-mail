@@ -42,27 +42,7 @@ struct ConversationDetailScreen: View {
     var body: some View {
         conversationView
             .toolbar {
-                ToolbarItemGroup(placement: .bottomBar) {
-                    HStack(alignment: .center) {
-                        ForEachEnumerated(model.bottomBarActions, id: \.offset) { action, index in
-                            if index == 0 {
-                                Spacer()
-                            }
-                            Button(action: {
-                                model.handleConversation(
-                                    action: action,
-                                    toastStateStore: toastStateStore,
-                                    goBack: { navigationPath.removeLast() }
-                                )
-                            }) {
-                                action.displayData.icon
-                                    .foregroundStyle(DS.Color.Icon.weak)
-                            }
-                            .accessibilityIdentifier(MailboxActionBarViewIdentifiers.button(index: index))
-                            Spacer()
-                        }
-                    }
-                }
+                bottomToolbarContent
             }
             .toolbar(model.isBottomBarHidden ? .hidden : .visible, for: .bottomBar)
             .bottomToolbarStyle()
@@ -110,6 +90,30 @@ struct ConversationDetailScreen: View {
                     animateViewIn = true
                 }
                 await model.fetchInitialData()
+            }
+        }
+    }
+
+    private var bottomToolbarContent: some ToolbarContent {
+        ToolbarItemGroup(placement: .bottomBar) {
+            HStack(alignment: .center) {
+                ForEachEnumerated(model.bottomBarActions, id: \.offset) { action, index in
+                    if index == 0 {
+                        Spacer()
+                    }
+                    Button(action: {
+                        model.handleConversation(
+                            action: action,
+                            toastStateStore: toastStateStore,
+                            goBack: { navigationPath.removeLast() }
+                        )
+                    }) {
+                        action.displayData.icon
+                            .foregroundStyle(DS.Color.Icon.weak)
+                    }
+                    .accessibilityIdentifier(MailboxActionBarViewIdentifiers.button(index: index))
+                    Spacer()
+                }
             }
         }
     }
