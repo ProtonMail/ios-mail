@@ -764,6 +764,16 @@ public extension MailUserSessionForkResult {
         }
     }
 }
+public extension MailUserSessionForkWithVersionResult {
+    func get() throws(UserContextError) -> String {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension MailUserSessionGetAttachmentResult {
     func get() throws(ActionError) -> DecryptedAttachment {
         switch self {
