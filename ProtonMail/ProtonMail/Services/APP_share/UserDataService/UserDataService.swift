@@ -46,7 +46,7 @@ class UserDataService {
         let userInfoRequest = GetUserInfoRequest()
         async let userInfoResponse = await self.apiService.perform(request: userInfoRequest, response: GetUserInfoResponse()).1
 
-        let userSettingsRequest = GetUserSettings()
+        let userSettingsRequest = SettingsEndpoint()
         async let userSettingsResponse = await self.apiService.perform(request: userSettingsRequest, response: SettingsResponse()).1
 
         let mailSettingsRequest = GetMailSettings()
@@ -72,7 +72,7 @@ class UserDataService {
     ) -> Promise<(UserInfo, MailSettings)> {
         return async {
 
-            let userSettingsApi = GetUserSettings()
+            let userSettingsApi = SettingsEndpoint()
             let mailSettingsApi = GetMailSettings()
 
             let userSettingsRes: SettingsResponse = try AwaitKit.await(self.apiService.run(route: userSettingsApi))

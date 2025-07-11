@@ -124,22 +124,6 @@
 		</dict>
 		<dict>
 			<key>File</key>
-			<string>Acknowledgements/SDWebImage</string>
-			<key>Title</key>
-			<string>SDWebImage</string>
-			<key>Type</key>
-			<string>PSChildPaneSpecifier</string>
-		</dict>
-		<dict>
-			<key>File</key>
-			<string>Acknowledgements/sentry-cocoa</string>
-			<key>Title</key>
-			<string>Sentry</string>
-			<key>Type</key>
-			<string>PSChildPaneSpecifier</string>
-		</dict>
-		<dict>
-			<key>File</key>
 			<string>Acknowledgements/SideMenuSwift</string>
 			<key>Title</key>
 			<string>SideMenuSwift</string>
@@ -156,46 +140,6 @@
 		</dict>
 		<dict>
 			<key>File</key>
-			<string>Acknowledgements/swift-css-parser</string>
-			<key>Title</key>
-			<string>swift-css-parser</string>
-			<key>Type</key>
-			<string>PSChildPaneSpecifier</string>
-		</dict>
-		<dict>
-			<key>File</key>
-			<string>Acknowledgements/swift-custom-dump</string>
-			<key>Title</key>
-			<string>swift-custom-dump</string>
-			<key>Type</key>
-			<string>PSChildPaneSpecifier</string>
-		</dict>
-		<dict>
-			<key>File</key>
-			<string>Acknowledgements/swift-snapshot-testing</string>
-			<key>Title</key>
-			<string>swift-snapshot-testing</string>
-			<key>Type</key>
-			<string>PSChildPaneSpecifier</string>
-		</dict>
-		<dict>
-			<key>File</key>
-			<string>Acknowledgements/swift-syntax</string>
-			<key>Title</key>
-			<string>swift-syntax</string>
-			<key>Type</key>
-			<string>PSChildPaneSpecifier</string>
-		</dict>
-		<dict>
-			<key>File</key>
-			<string>Acknowledgements/SwiftOTP</string>
-			<key>Title</key>
-			<string>SwiftOTP</string>
-			<key>Type</key>
-			<string>PSChildPaneSpecifier</string>
-		</dict>
-		<dict>
-			<key>File</key>
 			<string>Acknowledgements/SwiftSoup</string>
 			<key>Title</key>
 			<string>SwiftSoup</string>
@@ -207,30 +151,6 @@
 			<string>Acknowledgements/SwipyCell</string>
 			<key>Title</key>
 			<string>SwipyCell</string>
-			<key>Type</key>
-			<string>PSChildPaneSpecifier</string>
-		</dict>
-		<dict>
-			<key>File</key>
-			<string>Acknowledgements/TrustKit</string>
-			<key>Title</key>
-			<string>TrustKit</string>
-			<key>Type</key>
-			<string>PSChildPaneSpecifier</string>
-		</dict>
-		<dict>
-			<key>File</key>
-			<string>Acknowledgements/xctest-dynamic-overlay</string>
-			<key>Title</key>
-			<string>xctest-dynamic-overlay</string>
-			<key>Type</key>
-			<string>PSChildPaneSpecifier</string>
-		</dict>
-		<dict>
-			<key>File</key>
-			<string>Acknowledgements/Yams</string>
-			<key>Title</key>
-			<string>Yams</string>
 			<key>Type</key>
 			<string>PSChildPaneSpecifier</string>
 		</dict>

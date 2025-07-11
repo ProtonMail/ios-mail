@@ -78,8 +78,8 @@
         "repositoryURL": "https://github.com/ProtonMail/protoncore_ios.git",
         "state": {
           "branch": null,
-          "revision": "8567a19408b93a4343511cceba901e2863bf7a9f",
-          "version": "32.6.0"
+          "revision": "d72ee3f8ec940f15374f4d98e3e2ece5340ac419",
+          "version": "32.7.1"
         }
       },
       {
