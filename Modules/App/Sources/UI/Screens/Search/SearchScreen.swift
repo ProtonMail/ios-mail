@@ -121,7 +121,6 @@ struct SearchScreen: View {
             mailUserSession: userSession,
             mailbox: model.mailbox
         )
-        .injectIfNotNil(model.mailbox)
         .navigationBarTitleDisplayMode(.inline)
     }
 
