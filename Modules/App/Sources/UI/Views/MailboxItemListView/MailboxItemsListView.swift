@@ -181,13 +181,36 @@ private extension SelectionModeState {
 }
 
 #Preview {
-    struct Container: View {
-        let dataSource = PaginatedListDataSource<MailboxItemCellUIModel>(pageSize: 20) { currentPage, pageSize in
-            try? await Task.sleep(nanoseconds: 1_000_000_000)
+
+    @MainActor
+    final class Model: ObservableObject {
+        let pageSize = 20
+        let subject: PassthroughSubject<PaginatedListUpdate<MailboxItemCellUIModel>, Never> = .init()
+
+        lazy var dataSource = PaginatedListDataSource<MailboxItemCellUIModel>(
+            paginatedListProvider: .init(
+                updatePublisher: subject.eraseToAnyPublisher(),
+                fetchMore: { [weak self] currentPage in
+                    Task { await self?.nextPage(page: currentPage) }
+                }
+            )
+        )
+
+        private func nextPage(page: Int) async {
+            try? await Task.sleep(for: .seconds(2))
             let items = MailboxItemCellUIModel.testData()
-            let isLastPage = (currentPage + 1) * pageSize > items.count
-            let range = currentPage * pageSize..<min(items.count, (currentPage + 1) * pageSize)
-            return .init(newItems: Array(items[range]), isLastPage: isLastPage)
+            let isLastPage = (page + 1) * pageSize > items.count
+            let range = page * pageSize..<min(items.count, (page + 1) * pageSize)
+            let itemsToAppend = Array(items[range])
+            subject.send(.init(value: .append(items: itemsToAppend, isLastPage: isLastPage)))
+        }
+    }
+
+    struct Container: View {
+        @StateObject var model: Model
+
+        init() {
+            self._model = StateObject(wrappedValue: Model())
         }
 
         var body: some View {
@@ -198,15 +221,14 @@ private extension SelectionModeState {
                 mailUserSession: .dummy
             )
             .task {
-                await dataSource.fetchInitialPage()
+                model.dataSource.fetchInitialPage()
             }
         }
 
         func makeConfiguration() -> MailboxItemsListViewConfiguration {
             let selectionState = SelectionModeState()
-
             return .init(
-                dataSource: dataSource,
+                dataSource: model.dataSource,
                 selectionState: selectionState,
                 itemTypeForActionBar: .conversation,
                 isOutboxLocation: false,

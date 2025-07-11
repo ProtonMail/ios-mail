@@ -15,11 +15,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import Combine
 import InboxCoreUI
 import SwiftUI
 
 struct PaginatedListView<
-    Item: Equatable & Identifiable & Sendable,
+    Item: Hashable & Identifiable & Sendable,
     HeaderView: View,
     EmptyListView: View,
     CellView: View
@@ -81,7 +82,7 @@ struct PaginatedListView<
                         .frame(maxWidth: .infinity, alignment: .center)
                         .background(.clear)
                         .onAppear {
-                            Task { await dataSource.fetchNextPageIfNeeded() }
+                            dataSource.fetchNextPageIfNeeded()
                         }
                 }
                 .listRowSeparator(.hidden)
@@ -120,32 +121,56 @@ enum PaginatedListViewState: Equatable {
 }
 
 #Preview {
-
-    struct PreviewListItem: Identifiable, Equatable {
+    struct PreviewListItem: Hashable, Identifiable {
         var id: Int
     }
 
-    func fetchMockItems(page: Int, pageSize: Int) async -> PaginatedListDataSource<PreviewListItem>.NextPageResult {
-        try? await Task.sleep(nanoseconds: 2_000_000_000)
-        let newItems = Array(page * pageSize..<(page + 1) * pageSize)
-        return .init(newItems: newItems.map { PreviewListItem(id: $0) }, isLastPage: page == 3)
+    @MainActor
+    final class Model: Sendable {
+        let pageSize = 20
+        let subject: PassthroughSubject<PaginatedListUpdate<PreviewListItem>, Never> = .init()
+        lazy var dataSource = PaginatedListDataSource<PreviewListItem>(
+            paginatedListProvider: .init(
+                updatePublisher: subject.eraseToAnyPublisher(),
+                fetchMore: { [weak self] page in Task { await self?.nextPage(page: page) }}
+            )
+        )
+
+        private func nextPage(page: Int) async {
+            try? await Task.sleep(for: .seconds(2))
+            let newItems = Array(page * pageSize..<(page + 1) * pageSize)
+            subject.send(
+                .init(
+                    value: .append(
+                        items: newItems.map { PreviewListItem(id: $0) },
+                        isLastPage: page == 3
+                    )
+                )
+            )
+        }
     }
 
-    let dataSource = PaginatedListDataSource<PreviewListItem>(pageSize: 20, fetchPage: fetchMockItems)
+    struct WrapperView: View {
+        let model = Model()
 
-    return PaginatedListView(
-        dataSource: dataSource,
-        headerView: {
-            Text("Numbered cells".notLocalized)
-                .bold()
-        },
-        emptyListView: {
-            Text("List is Empty".notLocalized)
-        },
-        cellView: { index, item in
-            Text("cell \(item.id)".notLocalized)
+        var body: some View {
+            PaginatedListView(
+                dataSource: model.dataSource,
+                headerView: {
+                    Text("Numbered cells".notLocalized)
+                        .bold()
+                },
+                emptyListView: {
+                    Text("List is Empty".notLocalized)
+                },
+                cellView: { index, item in
+                    Text("cell \(item.id)".notLocalized)
+                }
+            )
+            .listStyle(.plain)
+            .task { model.dataSource.fetchInitialPage() }
         }
-    )
-    .listStyle(.plain)
-    .task { await dataSource.fetchInitialPage() }
+    }
+
+    return WrapperView()
 }

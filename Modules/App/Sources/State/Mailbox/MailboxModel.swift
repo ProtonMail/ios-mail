@@ -28,6 +28,7 @@ import class UIKit.UIImage
 /**
  Source of truth for the Mailbox view showing mailbox items (conversations or messages).
  */
+@MainActor
 final class MailboxModel: ObservableObject {
     @Published var state: State = .init()
     @Published var toast: Toast?
@@ -42,19 +43,14 @@ final class MailboxModel: ObservableObject {
 
     private var messageScroller: MessageScroller?
     private var conversationScroller: ConversationScroller?
+    private let listUpdateSubject: PassthroughSubject<PaginatedListUpdate<MailboxItemCellUIModel>, Never> = .init()
     lazy var paginatedDataSource = PaginatedListDataSource<MailboxItemCellUIModel>(
-        fetchPage: { [unowned self] currentPage, pageSize in
-            let result = await fetchNextPageItems(currentPage: currentPage)
-            return result
-        })
+        paginatedListProvider: .init(
+            updatePublisher: listUpdateSubject.eraseToAnyPublisher(),
+            fetchMore: { [weak self] currentPage in self?.fetchNextPage(currentPage: currentPage) }
+        )
+    )
     private var unreadCountLiveQuery: UnreadItemsCountLiveQuery?
-
-    private lazy var scrollerCallback = LiveQueryCallbackWrapper { [weak self] in
-        Task {
-            AppLogger.log(message: "items scroller callback", category: .mailbox)
-            await self?.refreshMailboxItems()
-        }
-    }
 
     let dependencies: Dependencies
     private lazy var starActionPerformer = StarActionPerformer(mailUserSession: dependencies.appContext.userSession)
@@ -185,19 +181,32 @@ extension MailboxModel {
             selectionMode.selectionState.$selectedItems.removeDuplicates(),
             selectionMode.selectionState.$isSelectAllEnabled.removeDuplicates()
         )
+        .receive(on: DispatchQueue.main)
         .sink { [weak self] _ in
-            Task {
-                await self?.onSelectedItemsChange()
-            }
+            self?.onSelectedItemsChange()
         }
         .store(in: &cancellables)
     }
 
-    private func onSelectedItemsChange() async {
+    private func onSelectedItemsChange() {
         state.filterBar.visibilityMode = selectionMode.selectionState.hasItems ? .selectionMode : .regular
         state.filterBar.selectAll = selectAllState
         updateMailboxTitle()
-        await refreshMailboxItems()
+        updateSelectionStateInDataSource()
+    }
+
+    private func updateSelectionStateInDataSource() {
+        let selectedIds = Set(selectionMode.selectionState.selectedItems.map(\.id))
+        let items = paginatedDataSource.state.items
+
+        for index in items.indices {
+            let isCurrentlySelected = items[index].isSelected
+            let shouldBeSelected = selectedIds.contains(items[index].id)
+
+            if isCurrentlySelected != shouldBeSelected {
+                items[index].isSelected = shouldBeSelected
+            }
+        }
     }
 
     private func exitSelectAllModeWhenNewItemsAreFetched() {
@@ -222,14 +231,12 @@ extension MailboxModel {
             : selectedMailbox.name
     }
 
-    private func updateMailboxAndScroller(resetUnreadCount: Bool = true) async {
+    private func updateMailboxAndScroller() async {
         guard let userSession = dependencies.appContext.sessionState.userSession else { return }
         do {
             updateMailboxTitle()
-            if resetUnreadCount {
-                state.filterBar.unreadCount = .unknown
-                unreadCountLiveQuery = nil
-            }
+            state.filterBar.unreadCount = .unknown
+            unreadCountLiveQuery = nil
 
             // These disconnects will prevent unrequested scroller callbacks
             // for the previous state. Call them before the Mailbox constructor.
@@ -240,12 +247,11 @@ extension MailboxModel {
 
             let mailbox =
                 selectedMailbox.isInbox
-                ? try await newInboxMailbox(ctx: userSession).get()
-                : try await newMailbox(ctx: userSession, labelId: selectedMailbox.localId).get()
+                ? try newInboxMailbox(ctx: userSession).get()
+                : try newMailbox(ctx: userSession, labelId: selectedMailbox.localId).get()
             self.mailbox = mailbox
             self.moveToActionPerformer = .init(mailbox: mailbox, moveToActions: .productionInstance)
             self.readActionPerformer = .init(mailbox: mailbox)
-            AppLogger.log(message: "mailbox view mode: \(mailbox.viewMode().description)", category: .mailbox)
             emptyFolderBanner = await emptyFolderBanner(mailbox: mailbox)
 
             if mailbox.viewMode() == .messages {
@@ -253,14 +259,22 @@ extension MailboxModel {
                     session: userSession,
                     labelId: mailbox.labelId(),
                     filter: unreadFilter,
-                    callback: scrollerCallback
+                    callback: MessageScrollerLiveQueryCallbackkWrapper { [weak self] update in
+                        Task {
+                            await self?.handleMessagesUpdate(update)
+                        }
+                    }
                 ).get()
             } else {
                 conversationScroller = try await scrollConversationsForLabel(
                     session: userSession,
                     labelId: mailbox.labelId(),
                     filter: unreadFilter,
-                    callback: scrollerCallback
+                    callback: ConversationScrollerLiveQueryCallbackkWrapper { [weak self] update in
+                        Task {
+                            await self?.handleConversationsUpdate(update)
+                        }
+                    }
                 ).get()
             }
             await paginatedDataSource.fetchInitialPage()
@@ -282,6 +296,80 @@ extension MailboxModel {
                 duration: 8.0
             )
         }
+    }
+
+    private func conversationScrollerHasMore() async -> Bool {
+        guard let conversationScroller else { return false }
+        switch await conversationScroller.hasMore() {
+        case .ok(let value):
+            return value
+        case .error(let error):
+            AppLogger.log(message: "Error calling hasMore: \(error)", category: .mailbox, isError: true)
+            return false
+        }
+    }
+
+    private func messageScrollerHasMore() async -> Bool {
+        guard let messageScroller else { return false }
+        switch await messageScroller.hasMore() {
+        case .ok(let value):
+            return value
+        case .error(let error):
+            AppLogger.log(message: "Error calling hasMore: \(error)", category: .mailbox, isError: true)
+            return false
+        }
+    }
+
+    private func handleConversationsUpdate(_ update: ConversationScrollerUpdate) async {
+        let updateType: PaginatedListUpdateType<MailboxItemCellUIModel>
+        var completion: (() -> Void)? = nil
+        switch update {
+        case .none:
+            updateType = .none
+        case .append(let conversations):
+            let items = await mailboxItems(conversations: conversations)
+            updateType = .append(items: items, isLastPage: await !conversationScrollerHasMore())
+        case .replaceFrom(let index, let conversations):
+            let items = await mailboxItems(conversations: conversations)
+            updateType = .replaceFrom(index: Int(index), items: items)
+            completion = { [weak self] in self?.updateSelectedItemsAfterDestructiveUpdate() }
+        case .replaceBefore(let index, let conversations):
+            let items = await mailboxItems(conversations: conversations)
+            updateType = .replaceBefore(index: Int(index), items: items)
+            completion = { [weak self] in self?.updateSelectedItemsAfterDestructiveUpdate() }
+        case .error(let error):
+            AppLogger.log(error: error, category: .mailbox)
+            updateType = .error(error)
+        }
+        listUpdateSubject.send(.init(value: updateType, completion: completion))
+    }
+
+    private func handleMessagesUpdate(_ update: MessageScrollerUpdate) async {
+        let updateType: PaginatedListUpdateType<MailboxItemCellUIModel>
+        var completion: (() -> Void)? = nil
+        switch update {
+        case .none:
+            updateType = .none
+        case .append(let messages):
+            let items = await mailboxItems(messages: messages)
+            updateType = .append(items: items, isLastPage: await !messageScrollerHasMore())
+        case .replaceFrom(let index, let messages):
+            let items = await mailboxItems(messages: messages)
+            updateType = .replaceFrom(index: Int(index), items: items)
+            completion = { [weak self] in self?.updateSelectedItemsAfterDestructiveUpdate() }
+        case .replaceBefore(let index, let messages):
+            let items = await mailboxItems(messages: messages)
+            updateType = .replaceBefore(index: Int(index), items: items)
+            completion = { [weak self] in self?.updateSelectedItemsAfterDestructiveUpdate() }
+        case .error(let error):
+            AppLogger.log(error: error, category: .mailbox)
+            updateType = .error(error)
+        }
+        listUpdateSubject.send(.init(value: updateType, completion: completion))
+    }
+
+    private func updateSelectedItemsAfterDestructiveUpdate() {
+        selectionMode.selectionModifier.refreshSelectedItemsStatus(newMailboxItems: paginatedDataSource.state.items)
     }
 
     private func emptyFolderBanner(mailbox: Mailbox) async -> EmptyFolderBanner? {
@@ -306,130 +394,45 @@ extension MailboxModel {
         }
     }
 
-    private func fetchNextPageItems(currentPage: Int) async -> PaginatedListDataSource<MailboxItemCellUIModel>.NextPageResult {
-        guard let viewMode = mailbox?.viewMode() else {
-            AppLogger.log(message: "no mailbox found when requesting a page", category: .mailbox, isError: true)
-            return .init(newItems: [], isLastPage: true)
+    private func fetchNextPage(currentPage: Int) {
+        AppLogger.log(message: "\(viewMode) fetchNextPage: page \(currentPage)", category: .mailbox)
+        let logError: (MailScrollerError) -> Void = { error in
+            AppLogger.log(message: "Error calling fetchMore: \(error)", category: .mailbox, isError: true)
         }
-        do {
-            return try await fetchNextPage(viewMode: viewMode, currentPage: currentPage)
-        } catch {
-            AppLogger.log(error: error, category: .mailbox)
-            if error is MailScrollerError {
-                return await handleMailScrollerError(viewMode: viewMode, currentPage: currentPage)
-            }
-            return nextPageAfterNonRecoverableError(error: error)
-        }
-    }
-
-    private func fetchNextPage(viewMode: ViewMode, currentPage: Int) async throws -> PaginatedListDataSource<MailboxItemCellUIModel>.NextPageResult {
-        let result =
-            viewMode == .messages
-            ? try await fetchNextPageMessages(currentPage: currentPage)
-            : try await fetchNextPageConversations(currentPage: currentPage)
-        AppLogger.logTemporarily(message: "page \(currentPage) returned \(result.newItems.count) items, isLastPage: \(result.isLastPage)", category: .mailbox)
-        return result
-    }
-
-    private func handleMailScrollerError(viewMode: ViewMode, currentPage: Int) async -> PaginatedListDataSource<MailboxItemCellUIModel>.NextPageResult {
-        do {
-            await refreshMailboxItems()
-            return try await fetchNextPage(viewMode: viewMode, currentPage: currentPage)
-        } catch {
-            return nextPageAfterNonRecoverableError(error: error)
-        }
-    }
-
-    private func nextPageAfterNonRecoverableError(error: Error) -> PaginatedListDataSource<MailboxItemCellUIModel>.NextPageResult {
-        AppLogger.log(error: error, category: .mailbox)
-        return .init(newItems: paginatedDataSource.state.items, isLastPage: true)
-    }
-
-    private func fetchNextPageMessages(currentPage: Int) async throws -> PaginatedListDataSource<MailboxItemCellUIModel>.NextPageResult {
-        guard let messageScroller else {
-            AppLogger.log(message: "no scroller found when fetching messages", category: .mailbox, isError: true)
-            return .init(newItems: [], isLastPage: true)
-        }
-        AppLogger.logTemporarily(message: "fetching messages page \(currentPage)", category: .mailbox)
-
-        switch await messageScroller.fetchMore() {
-        case .ok(let messages):
-            let items = mailboxItems(messages: messages)
-            return .init(newItems: items, isLastPage: !messageScroller.hasMore())
-        case .error(let error):
-            throw error
-        }
-    }
-
-    private func fetchNextPageConversations(currentPage: Int) async throws -> PaginatedListDataSource<MailboxItemCellUIModel>.NextPageResult {
-        guard let conversationScroller else {
-            AppLogger.log(message: "no scroller found when fetching conversations", category: .mailbox, isError: true)
-            return .init(newItems: [], isLastPage: true)
-        }
-        AppLogger.logTemporarily(message: "fetching conversations page \(currentPage)", category: .mailbox)
-
-        switch await conversationScroller.fetchMore() {
-        case .ok(let conversations):
-            let items = mailboxItems(conversations: conversations)
-            return .init(newItems: items, isLastPage: !conversationScroller.hasMore())
-        case .error(let error):
-            throw error
-        }
-    }
-
-    private func refreshMailboxItems() async {
-        if viewMode == .messages {
-            await refreshMessage()
+        if viewMode == .conversations {
+            let result = conversationScroller?.fetchMore()
+            if case .error(let mailScrollerError) = result { logError(mailScrollerError) }
         } else {
-            await refreshConversations()
-        }
-
-        selectionMode.selectionModifier.refreshSelectedItemsStatus(newMailboxItems: paginatedDataSource.state.items)
-    }
-
-    private func refreshMessage() async {
-        guard let messageScroller else { return }
-        switch await messageScroller.allItems() {
-        case .ok(let messages):
-            let items = mailboxItems(messages: messages)
-            AppLogger.logTemporarily(message: "refreshed messages before: \(paginatedDataSource.state.items.count) after: \(items.count)", category: .mailbox)
-            await paginatedDataSource.updateItems(items)
-        case .error(let error):
-            AppLogger.log(error: error, category: .mailbox)
+            let result = messageScroller?.fetchMore()
+            if case .error(let mailScrollerError) = result { logError(mailScrollerError) }
         }
     }
 
-    private func refreshConversations() async {
-        guard let conversationScroller else { return }
-        switch await conversationScroller.allItems() {
-        case .ok(let conversations):
-            let items = mailboxItems(conversations: conversations)
-            AppLogger.logTemporarily(message: "refreshed conversations before: \(paginatedDataSource.state.items.count) after: \(items.count)", category: .mailbox)
-            await paginatedDataSource.updateItems(items)
-        case .error(let error):
-            AppLogger.log(error: error, category: .mailbox)
-        }
-    }
-
-    private func mailboxItems(messages: [Message]) -> [MailboxItemCellUIModel] {
+    private func mailboxItems(messages: [Message]) async -> [MailboxItemCellUIModel] {
         let selectedIds = Set(selectionMode.selectionState.selectedItems.map(\.id))
         let displaySenderEmail = messagesShouldDisplaySenderEmail
         let showLocation = itemsShouldShowLocation
-        return messages.map { message in
-            message.toMailboxItemCellUIModel(
-                selectedIds: selectedIds,
-                displaySenderEmail: displaySenderEmail,
-                showLocation: showLocation
-            )
-        }
+
+        return await Task(priority: .userInitiated) {
+            messages.map { message in
+                message.toMailboxItemCellUIModel(
+                    selectedIds: selectedIds,
+                    displaySenderEmail: displaySenderEmail,
+                    showLocation: showLocation
+                )
+            }
+        }.value
     }
 
-    private func mailboxItems(conversations: [Conversation]) -> [MailboxItemCellUIModel] {
+    private func mailboxItems(conversations: [Conversation]) async -> [MailboxItemCellUIModel] {
         let selectedIds = Set(selectionMode.selectionState.selectedItems.map(\.id))
         let showLocation = itemsShouldShowLocation
-        return conversations.map { conversation in
-            conversation.toMailboxItemCellUIModel(selectedIds: selectedIds, showLocation: showLocation)
-        }
+
+        return await Task(priority: .userInitiated) {
+            conversations.map { conversation in
+                conversation.toMailboxItemCellUIModel(selectedIds: selectedIds, showLocation: showLocation)
+            }
+        }.value
     }
 }
 
@@ -450,8 +453,12 @@ extension MailboxModel {
 
     func onUnreadFilterChange() {
         Task {
-            AppLogger.log(message: "unread filter has changed to \(state.filterBar.isUnreadButtonSelected)", category: .mailbox)
-            await self.updateMailboxAndScroller(resetUnreadCount: false)
+            AppLogger.log(message: "unread filter has changed to \(unreadFilter)", category: .mailbox)
+            if viewMode == .conversations {
+                _ = conversationScroller?.changeFilter(filter: unreadFilter)
+            } else {
+                _ = messageScroller?.changeFilter(filter: unreadFilter)
+            }
         }
     }
 }
