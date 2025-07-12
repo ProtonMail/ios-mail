@@ -40,6 +40,10 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         seed.isOutbox
     }
 
+    var isBottomBarHidden: Bool {
+        areActionsDisabled || bottomBarActions.isEmpty
+    }
+
     private var messagesLiveQuery: WatchedConversation?
     private var expandedMessages: Set<ID>
     private let draftPresenter: DraftPresenter
@@ -496,7 +500,7 @@ extension ConversationDetailModel {
     }
 
     private func reloadBottomBarActions() async {
-        guard let mailbox, let conversationID else {
+        guard let mailbox, let conversationID, mailbox.viewMode() == .conversations else {
             return
         }
 

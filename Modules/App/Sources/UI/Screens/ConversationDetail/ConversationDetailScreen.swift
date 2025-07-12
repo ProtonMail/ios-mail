@@ -42,7 +42,7 @@ struct ConversationDetailScreen: View {
     var body: some View {
         ZStack {
             conversationView
-            if !model.areActionsDisabled {
+            if !model.isBottomBarHidden {
                 BottomActionBarView(
                     actions: model.bottomBarActions,
                     tapAction: { action in
@@ -102,7 +102,7 @@ struct ConversationDetailScreen: View {
             .opacity(animateViewIn ? 1.0 : 0.0)
             .smoothScreenTransition()
             .ignoresSafeArea(.all, edges: .bottom)
-            .padding(.bottom, model.areActionsDisabled ? 0 : proxy.safeAreaInsets.bottom + 45)
+            .padding(.bottom, model.isBottomBarHidden ? 0 : proxy.safeAreaInsets.bottom + 45)
             .task {
                 withAnimation(.easeIn) {
                     animateViewIn = true
