@@ -417,6 +417,19 @@ extension ConversationDetailModel {
             let isStarred = conversationAndMessages?.conversation.isStarred ?? false
             let messages = conversationAndMessages?.messages ?? []
 
+            if mailbox.viewMode() == .messages {
+                if let message = messages.first(where: { expandedMessages.contains($0.id) }) {
+                    let messageCellUIModel = MessageCellUIModel(
+                        id: message.id,
+                        locationID: message.exclusiveLocation?.model.id,
+                        type: .expanded(message.toExpandedMessageCellUIModel())
+                    )
+                    return .init(messages: [messageCellUIModel], isStarred: message.starred)
+                } else {
+                    return .init(messages: [], isStarred: false)
+                }
+            }
+
             let lastNonDraftMessageIndex = messages.lastIndex(where: { message in !message.isDraft })
 
             let result: [MessageCellUIModel] =
