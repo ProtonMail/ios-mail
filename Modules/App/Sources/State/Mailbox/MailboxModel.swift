@@ -88,6 +88,12 @@ final class MailboxModel: ObservableObject {
         return mailboxOfSpecificSystemFolder || selectedMailbox.isCustomLabel
     }
 
+    private var mailboxUpdatingTask: Task<Void, Error>? {
+        didSet {
+            oldValue?.cancel()
+        }
+    }
+
     init(
         mailSettingsLiveQuery: MailSettingLiveQuerying,
         appRoute: AppRouteState,
@@ -114,7 +120,7 @@ final class MailboxModel: ObservableObject {
 
     func onLoad() {
         Task {
-            await updateMailboxAndScroller()
+            updateMailboxAndScroller()
             await prepareSwipeActions()
         }
     }
@@ -131,7 +137,7 @@ extension MailboxModel {
                 Task {
                     guard let self else { return }
                     self.selectedMailbox = newSelectedMailbox
-                    await self.updateMailboxAndScroller()
+                    self.updateMailboxAndScroller()
                     await self.prepareSwipeActions()
                 }
             }
@@ -161,11 +167,9 @@ extension MailboxModel {
         mailSettingsLiveQuery
             .viewModeHasChanged
             .sink { [weak self] _ in
-                Task {
-                    guard let self else { return }
-                    AppLogger.log(message: "viewMode has changed", category: .mailbox)
-                    await self.updateMailboxAndScroller()
-                }
+                guard let self else { return }
+                AppLogger.log(message: "viewMode has changed", category: .mailbox)
+                self.updateMailboxAndScroller()
             }
             .store(in: &cancellables)
 
@@ -226,65 +230,77 @@ extension MailboxModel {
             : selectedMailbox.name
     }
 
-    private func updateMailboxAndScroller(resetUnreadCount: Bool = true) async {
-        guard let userSession = dependencies.appContext.sessionState.userSession else { return }
-        do {
-            updateMailboxTitle()
-            if resetUnreadCount {
-                state.filterBar.unreadCount = .unknown
-                unreadCountLiveQuery = nil
-            }
-
-            // These disconnects will prevent unrequested scroller callbacks
-            // for the previous state. Call them before the Mailbox constructor.
-            messageScroller?.handle().disconnect()
-            conversationScroller?.handle().disconnect()
-
-            await paginatedDataSource.resetToInitialState()
-
-            let mailbox =
-                selectedMailbox.isInbox
-                ? try await newInboxMailbox(ctx: userSession).get()
-                : try await newMailbox(ctx: userSession, labelId: selectedMailbox.localId).get()
-            self.mailbox = mailbox
-            self.moveToActionPerformer = .init(mailbox: mailbox, moveToActions: .productionInstance)
-            self.readActionPerformer = .init(mailbox: mailbox)
-            AppLogger.log(message: "mailbox view mode: \(mailbox.viewMode().description)", category: .mailbox)
-            emptyFolderBanner = await emptyFolderBanner(mailbox: mailbox)
-
-            if mailbox.viewMode() == .messages {
-                messageScroller = try await scrollMessagesForLabel(
-                    session: userSession,
-                    labelId: mailbox.labelId(),
-                    filter: unreadFilter,
-                    callback: scrollerCallback
-                ).get()
-            } else {
-                conversationScroller = try await scrollConversationsForLabel(
-                    session: userSession,
-                    labelId: mailbox.labelId(),
-                    filter: unreadFilter,
-                    callback: scrollerCallback
-                ).get()
-            }
-            await paginatedDataSource.fetchInitialPage()
-
-            unreadCountLiveQuery = UnreadItemsCountLiveQuery(mailbox: mailbox) { [weak self] unreadCount in
-                AppLogger.log(message: "unread count callback: \(unreadCount)", category: .mailbox)
-                await MainActor.run {
-                    self?.state.filterBar.unreadCount = .known(unreadCount: unreadCount)
+    private func updateMailboxAndScroller(resetUnreadCount: Bool = true, caller: StaticString = #function) {
+        mailboxUpdatingTask = Task {
+            guard let userSession = dependencies.appContext.sessionState.userSession else { return }
+            do {
+                updateMailboxTitle()
+                if resetUnreadCount {
+                    state.filterBar.unreadCount = .unknown
+                    unreadCountLiveQuery = nil
                 }
+
+                // These disconnects will prevent unrequested scroller callbacks
+                // for the previous state. Call them before the Mailbox constructor.
+                messageScroller?.handle().disconnect()
+                messageScroller = nil
+                conversationScroller?.handle().disconnect()
+                conversationScroller = nil
+
+                await paginatedDataSource.resetToInitialState()
+
+                let mailbox =
+                    selectedMailbox.isInbox
+                    ? try await newInboxMailbox(ctx: userSession).get()
+                    : try await newMailbox(ctx: userSession, labelId: selectedMailbox.localId).get()
+                self.mailbox = mailbox
+                self.moveToActionPerformer = .init(mailbox: mailbox, moveToActions: .productionInstance)
+                self.readActionPerformer = .init(mailbox: mailbox)
+                AppLogger.log(message: "mailbox view mode: \(mailbox.viewMode().description)", category: .mailbox)
+                emptyFolderBanner = await emptyFolderBanner(mailbox: mailbox)
+
+                try Task.checkCancellation()
+
+                if mailbox.viewMode() == .messages {
+                    let messageScroller = try await scrollMessagesForLabel(
+                        session: userSession,
+                        labelId: mailbox.labelId(),
+                        filter: unreadFilter,
+                        callback: scrollerCallback
+                    ).get()
+                    try Task.checkCancellation()
+                    self.messageScroller = messageScroller
+                } else {
+                    let conversationScroller = try await scrollConversationsForLabel(
+                        session: userSession,
+                        labelId: mailbox.labelId(),
+                        filter: unreadFilter,
+                        callback: scrollerCallback
+                    ).get()
+                    try Task.checkCancellation()
+                    self.conversationScroller = conversationScroller
+                }
+                await paginatedDataSource.fetchInitialPage()
+
+                unreadCountLiveQuery = UnreadItemsCountLiveQuery(mailbox: mailbox) { [weak self] unreadCount in
+                    AppLogger.log(message: "unread count callback: \(unreadCount)", category: .mailbox)
+                    await MainActor.run {
+                        self?.state.filterBar.unreadCount = .known(unreadCount: unreadCount)
+                    }
+                }
+                await unreadCountLiveQuery?.setUpLiveQuery()
+            } catch is CancellationError {
+                ()
+            } catch {
+                AppLogger.log(error: error, category: .mailbox)
+                toast = Toast(
+                    title: nil,
+                    message: L10n.Mailbox.Error.mailboxErrorMessage.string,
+                    button: nil,
+                    style: .error,
+                    duration: 8.0
+                )
             }
-            await unreadCountLiveQuery?.setUpLiveQuery()
-        } catch {
-            AppLogger.log(error: error, category: .mailbox)
-            toast = Toast(
-                title: nil,
-                message: L10n.Mailbox.Error.mailboxErrorMessage.string,
-                button: nil,
-                style: .error,
-                duration: 8.0
-            )
         }
     }
 
@@ -453,10 +469,8 @@ extension MailboxModel {
 extension MailboxModel {
 
     func onUnreadFilterChange() {
-        Task {
-            AppLogger.log(message: "unread filter has changed to \(state.filterBar.isUnreadButtonSelected)", category: .mailbox)
-            await self.updateMailboxAndScroller(resetUnreadCount: false)
-        }
+        AppLogger.log(message: "unread filter has changed to \(state.filterBar.isUnreadButtonSelected)", category: .mailbox)
+        updateMailboxAndScroller(resetUnreadCount: false)
     }
 }
 
