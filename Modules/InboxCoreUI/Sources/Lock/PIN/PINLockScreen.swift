@@ -75,12 +75,6 @@ public struct PINLockScreen: View {
                         .padding([.horizontal, .bottom], DS.Spacing.extraLarge)
                 }
             }
-            .onGeometryChange(for: CGSize.self, of: \.size) { newValue in
-                print("HAHA all size \(newValue)")
-            }
-            .onGeometryChange(for: EdgeInsets.self, of: \.safeAreaInsets) { newValue in
-                print("HAHA all safe \(newValue)")
-            }
             .alert(model: $store.state.alert)
             .onAppear {
                 isFocused = true
