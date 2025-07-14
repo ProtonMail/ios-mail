@@ -17,8 +17,10 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 public struct InlineImageHTML {
-    public static func html(for cids: [String]) -> String {
-        cids.map { cid in
+    public let content: String
+
+    public init(cids: [String]) {
+        content = cids.map { cid in
             #"<img src="cid:\#(cid)" style="max-width: 100%;"><br>"#
         }.joined()
     }

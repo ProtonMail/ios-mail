@@ -82,7 +82,7 @@ final class BodyWebViewInterface: NSObject {
 
     @MainActor
     func insertImages(_ contentIds: [String]) async {
-        let inlineImageHTML = InlineImageHTML.html(for: contentIds)
+        let inlineImageHTML = InlineImageHTML(cids: contentIds).content
         let function = "\(BodyHtmlDocument.JSFunction.insertImages.rawValue)('\(inlineImageHTML)');"
 
         await withCheckedContinuation { continuation in
