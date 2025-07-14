@@ -35,6 +35,7 @@ extension DS {
         case starSlash = "star.slash"
         case suitcase = "suitcase"
         case sunMax = "sun.max"
+        case sunLeftHalfFilled = "sun.lefthalf.filled"
         case xmark = "xmark"
         case eye = "eye"
         case eyeSlash = "eye.slash"

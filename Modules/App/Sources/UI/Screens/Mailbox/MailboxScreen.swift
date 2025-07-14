@@ -59,6 +59,8 @@ struct MailboxScreen: View {
 
     // MARK: - View
 
+    @State var presentSnooze: Bool = false
+
     var body: some View {
         NavigationStack(path: $mailboxModel.state.navigationPath) {
             mailboxScreen
@@ -98,6 +100,19 @@ struct MailboxScreen: View {
                     messageSeedDestination(seed: seed)
                 }
         }
+        .sheet(isPresented: $presentSnooze) {
+            SnoozeView(snoozeActions: .init(
+                predefined: [
+                    .init(type: .tomorrow, date: Date()),
+                    .init(type: .laterThisWeek, date: Date()),
+                    .init(type: .thisWeekend, date: Date()),
+                    .init(type: .nextWeek, date: Date())
+                ],
+                isUnsnoozeVisible: true,
+                customButtonType: .regular
+            ))
+            .presentationDetents([.medium, .large]) // FIXME:
+        }
         .onChange(of: mailboxModel.toast) { showToast($1) }
         .accessibilityIdentifier(MailboxScreenIdentifiers.rootItem)
         .accessibilityElement(children: .contain)
@@ -107,6 +122,7 @@ struct MailboxScreen: View {
                     await presentAppropriateIntroductoryView()
                 }
             }
+            presentSnooze = true
             Dispatcher.dispatchOnMainAfter(.now() + .milliseconds(500), workItem)
             didAppear?(self)
         }
