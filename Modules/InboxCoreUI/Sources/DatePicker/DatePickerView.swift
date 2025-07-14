@@ -92,10 +92,9 @@ public struct DatePickerView: View {
                 .padding(.top, DS.Spacing.standard)
                 .padding(.bottom, DS.Spacing.tiny)
 
-                Divider()
+                DS.Color.BackgroundInverted.border
                     .frame(height: 1)
                     .padding(.horizontal, DS.Spacing.large)
-                    .background(DS.Color.BackgroundInverted.border)
 
                 DatePicker(
                     CommonL10n.date.string,
