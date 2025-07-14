@@ -57,7 +57,13 @@ final class PaginatedListDataSource<Item: Equatable & Sendable>: ObservableObjec
     private func fetchNextPageItems() async {
         await updateStateMarkIsFetchingNextPage()
         let result = await fetchPage(state.currentPage, pageSize)
-        await updateState(with: result)
+
+        do {
+            try Task.checkCancellation()
+            await updateState(with: result)
+        } catch {
+            ()
+        }
     }
 
     // MARK: Modifiers

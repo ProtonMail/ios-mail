@@ -249,17 +249,21 @@ extension MailboxModel {
 
                 await paginatedDataSource.resetToInitialState()
 
+                try Task.checkCancellation()
+
                 let mailbox =
                     selectedMailbox.isInbox
                     ? try await newInboxMailbox(ctx: userSession).get()
                     : try await newMailbox(ctx: userSession, labelId: selectedMailbox.localId).get()
+                try Task.checkCancellation()
                 self.mailbox = mailbox
                 self.moveToActionPerformer = .init(mailbox: mailbox, moveToActions: .productionInstance)
                 self.readActionPerformer = .init(mailbox: mailbox)
                 AppLogger.log(message: "mailbox view mode: \(mailbox.viewMode().description)", category: .mailbox)
-                emptyFolderBanner = await emptyFolderBanner(mailbox: mailbox)
 
+                let emptyFolderBanner = await emptyFolderBanner(mailbox: mailbox)
                 try Task.checkCancellation()
+                self.emptyFolderBanner = emptyFolderBanner
 
                 if mailbox.viewMode() == .messages {
                     let messageScroller = try await scrollMessagesForLabel(
@@ -281,6 +285,8 @@ extension MailboxModel {
                     self.conversationScroller = conversationScroller
                 }
                 await paginatedDataSource.fetchInitialPage()
+
+                try Task.checkCancellation()
 
                 unreadCountLiveQuery = UnreadItemsCountLiveQuery(mailbox: mailbox) { [weak self] unreadCount in
                     AppLogger.log(message: "unread count callback: \(unreadCount)", category: .mailbox)
