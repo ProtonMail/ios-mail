@@ -68,6 +68,7 @@ struct ScheduleSendTimeOptionsView: View {
             }
             .frame(maxHeight: .infinity)
             .padding(.horizontal, DS.Spacing.large)
+            .padding(.top, DS.Spacing.medium)
             .background(DS.Color.BackgroundInverted.norm)
             .navigationTitle(L10n.ScheduleSend.title.string)
             .navigationBarTitleDisplayMode(.inline)
