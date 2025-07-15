@@ -64,7 +64,7 @@ public struct ContactsScreen: View {
                     .makeView(for: route)
                     .navigationBarBackButtonHidden()
                     .toolbar {
-                        ToolbarItemFactory.back { store.router.goBack() }
+                        ToolbarItemFactory.back { store.handle(action: .goBack) }
                     }
             }
             .toolbar {
