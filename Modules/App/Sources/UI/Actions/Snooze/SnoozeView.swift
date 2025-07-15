@@ -15,22 +15,26 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import InboxCore
 import InboxCoreUI
 import SwiftUI
 
 enum SnoozeViewAction {
-    case customButtonTapped
+    case transtion(to: SnoozeView.Screen)
 }
 
-struct SnoozeState {
+struct SnoozeState: Copying {
+    var screen: SnoozeView.Screen
     let actions: SnoozeActions
-    var customOptionsPresented: Bool
+    var currentDetent: PresentationDetent
+    var allowedDetents: Set<PresentationDetent>
 }
 
 extension SnoozeState {
 
     static func initial(actions: SnoozeActions) -> Self {
-        .init(actions: actions, customOptionsPresented: false)
+        let screen = SnoozeView.Screen.main
+        return .init(screen: screen, actions: actions, currentDetent: screen.detent, allowedDetents: [screen.detent])
     }
 
 }
@@ -42,68 +46,147 @@ class SnoozeStore: StateStore {
         self.state = state
     }
 
+    @MainActor
     func handle(action: SnoozeViewAction) async {
-
+        switch action {
+        case .transtion(let screen):
+            withAnimation {
+                state = state
+                    .copy(\.screen, to: screen)
+                    .copy(\.allowedDetents, to: screen.allowedDetents)
+                    .copy(\.currentDetent, to: screen.detent)
+            } completion: { [weak self] in
+                guard let self else { return }
+                self.state = self.state
+                    .copy(\.allowedDetents, to: [screen.detent])
+            }
+        }
     }
 }
 
 import InboxDesignSystem
 
+import struct InboxComposer.ScheduleSendDateFormatter
+
+struct SnoozeDatePickerConfiguration: DatePickerViewConfiguration {
+    let title: LocalizedStringResource = "Snooze message"
+    let selectTitle: LocalizedStringResource = "Save"
+    var minuteInterval: TimeInterval = 30
+
+    var range: ClosedRange<Date> {
+        let start = Date()
+        let end = Date.distantFuture
+        return start...end
+    }
+
+    let formatter = ScheduleSendDateFormatter()
+
+    func formatDate(_ date: Date) -> String {
+        formatter.string(from: date, format: .medium)
+    }
+}
+
 struct SnoozeView: View {
     @StateObject var store: SnoozeStore
+
+    private static let gridSpacing = DS.Spacing.medium
+
+    enum Screen: CaseIterable {
+        case custom
+        case main
+
+        var detent: PresentationDetent {
+            switch self {
+            case .custom:
+                .large
+            case .main:
+                .medium
+            }
+        }
+
+        var allowedDetents: Set<PresentationDetent> {
+            Set(Self.allCases.map(\.detent))
+        }
+    }
 
     init(snoozeActions: SnoozeActions) {
         _store = .init(wrappedValue: .init(state: .initial(actions: snoozeActions)))
     }
 
-    var body: some View {
-        ClosableScreen {
-            ScrollView {
-                VStack(alignment: .leading, spacing: DS.Spacing.medium) {
-                    ForEach(store.state.actions.predefined, id: \.self) { predefinedSnooze in
-                        buttonWithIcon(for: predefinedSnooze)
+    private let columns = [
+        GridItem(.flexible(), spacing: gridSpacing),
+        GridItem(.flexible(), spacing: gridSpacing),
+    ]
+
+    @ViewBuilder
+    var sheetContent: some View {
+        Group {
+            switch store.state.screen {
+            case .custom:
+                DatePickerView(
+                    configuration: SnoozeDatePickerConfiguration(),
+                    onCancel: { store.handle(action: .transtion(to: .main)) },
+                    onSelect: { _ in }
+                )
+            case .main:
+                ClosableScreen {
+                    ScrollView {
+                        VStack(alignment: .leading, spacing: DS.Spacing.medium) {
+                            LazyVGrid(columns: columns, alignment: .center, spacing: Self.gridSpacing) {
+                                ForEach(store.state.actions.predefined, id: \.self) { predefinedSnooze in
+                                    buttonWithIcon(for: predefinedSnooze)
+                                }
+                            }
+                            switch store.state.actions.customButtonType {
+                            case .regular:
+                                customButton()
+                            case .upgrade:
+                                EmptyView()
+                            }
+                            if store.state.actions.isUnsnoozeVisible {
+                                unsnoozeButton()
+                                    .padding(.top, DS.Spacing.medium)
+                            }
+                        }
+                        .padding(.horizontal, DS.Spacing.large)
+                        .padding(.top, DS.Spacing.medium)
+                        .padding(.bottom, DS.Spacing.extraLarge)
                     }
-                    switch store.state.actions.customButtonType {
-                    case .regular:
-                        customButton()
-                    case .upgrade:
-                        EmptyView()
-                    }
-                    if store.state.actions.isUnsnoozeVisible {
-                        unsnoozeButton()
-                            .padding(.top, DS.Spacing.medium)
-                    }
+                    .navigationTitle("Snooze until")
+                    .navigationBarTitleDisplayMode(.inline)
+                    .background(DS.Color.BackgroundInverted.norm)
                 }
-                .padding(.horizontal, DS.Spacing.large)
-                .padding(.bottom, DS.Spacing.extraLarge)
             }
-            .sheet(isPresented: $store.state.customOptionsPresented) {
-                SnoozeCustomOptionsView()
-                    .presentationDetents([.medium, .large])
-            }
-            .background(DS.Color.BackgroundInverted.norm)
-            .navigationTitle("Snooze until")
-            .navigationBarTitleDisplayMode(.inline)
         }
+    }
+
+    var body: some View {
+        sheetContent
+            .animation(.easeInOut, value: store.state.screen)
+            .transition(.identity)
+            .presentationDetents(store.state.allowedDetents, selection: $store.state.currentDetent)
+            .presentationDragIndicator(.hidden)
+            .interactiveDismissDisabled()
     }
 
     private func buttonWithIcon(for model: PredefinedSnooze) -> some View {
         Button(action: {}) {
-            HStack(alignment: .center, spacing: DS.Spacing.moderatelyLarge) {
+            VStack(alignment: .center, spacing: DS.Spacing.standard) {
                 Image(symbol: model.icon)
                     .font(.title2)
                     .foregroundStyle(DS.Color.Text.norm)
-                VStack(alignment: .leading, spacing: DS.Spacing.small) {
+                VStack(alignment: .center, spacing: DS.Spacing.small) {
                     Text(model.title)
                         .font(.callout)
                         .foregroundStyle(DS.Color.Text.norm)
                     Text(model.time)
+                        .font(.footnote)
                         .foregroundStyle(DS.Color.Text.weak)
                 }
             }
             .padding(.vertical, DS.Spacing.moderatelyLarge)
             .padding(.horizontal, DS.Spacing.large)
-            .frame(maxWidth: .infinity, alignment: .leading)
+            .frame(maxWidth: .infinity, alignment: .center)
             .contentShape(Rectangle())
         }
         .background(DS.Color.BackgroundInverted.secondary)
@@ -124,12 +207,10 @@ struct SnoozeView: View {
             symbol: .chevronRight,
             value: "Pick time and date"
         ) {
-            store.state.customOptionsPresented.toggle()
-            print("Custom button")
+            store.handle(action: .transtion(to: .custom))
         }
-        .roundedRectangleStyle()
+            .roundedRectangleStyle()
     }
-
 }
 
 extension PredefinedSnooze {
@@ -154,19 +235,20 @@ extension PredefinedSnooze {
         case .laterThisWeek:
             .sunLeftHalfFilled
         case .thisWeekend:
-            .suitcase // FIXME: - To update
+            .sofa
         case .nextWeek:
             .suitcase
         }
     }
 
     var time: String {
-        let formatter = switch type {
-        case .tomorrow:
-            SnoozeFormatter.timeOnlyFormatter
-        case .laterThisWeek, .thisWeekend, .nextWeek:
-            SnoozeFormatter.weekDayWithTimeFormatter
-        }
+        let formatter =
+            switch type {
+            case .tomorrow:
+                SnoozeFormatter.timeOnlyFormatter
+            case .laterThisWeek, .thisWeekend, .nextWeek:
+                SnoozeFormatter.weekDayWithTimeFormatter
+            }
         return formatter.string(from: date)
     }
 
@@ -225,57 +307,3 @@ struct PredefinedSnooze: Hashable {
 //        customButtonType: .regular
 //    ))
 //}
-
-struct SnoozeCustomOptionsView: View {
-    @State var date: Date = Date.now
-
-    var body: some View {
-        NavigationStack {
-            ScrollView {
-                VStack(spacing: DS.Spacing.large) {
-                    DatePicker(selection: $date, displayedComponents: .hourAndMinute) {
-                        Text("Time")
-                    }
-                    .padding(.horizontal, DS.Spacing.large)
-                    .padding(.vertical, DS.Spacing.moderatelyLarge)
-                    .background(DS.Color.BackgroundInverted.secondary)
-                    .roundedRectangleStyle()
-
-                    DatePicker(selection: $date, displayedComponents: .date) {
-                        Text("Date")
-                    }
-                    .padding(.horizontal, DS.Spacing.large)
-                    .padding(.vertical, DS.Spacing.moderatelyLarge)
-                    .background(DS.Color.BackgroundInverted.secondary)
-                    .roundedRectangleStyle()
-                }
-                .frame(maxWidth: .infinity)
-                .padding(.horizontal, DS.Spacing.large)
-                .padding(.vertical, DS.Spacing.standard)
-            }
-            .background(DS.Color.BackgroundInverted.norm)
-            .navigationTitle("Snooze message")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button(action: {}) {
-                        Text("Save") // FIXME: - Reuse it
-                            .fontWeight(.semibold)
-                            .foregroundStyle(DS.Color.InteractionBrand.norm)
-                    }
-                }
-                ToolbarItem(placement: .topBarLeading) {
-                    Button(action: {}) {
-                        Text("Cancel")
-                            .foregroundStyle(DS.Color.InteractionBrand.norm)
-                    }
-                }
-            }
-        }
-    }
-
-}
-
-#Preview {
-    SnoozeCustomOptionsView()
-}

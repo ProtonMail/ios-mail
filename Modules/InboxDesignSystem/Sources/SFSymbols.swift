@@ -29,6 +29,7 @@ extension DS {
         case lock = "lock"
         case magnifier = "magnifyingglass"
         case rectanglePortraitAndArrowRight = "rectangle.portrait.and.arrow.right"
+        case sofa = "sofa"
         case square = "square"
         case star = "star"
         case starFilled = "star.fill"
