@@ -84,11 +84,16 @@ struct MessageDetailsView: View {
 
                 Spacer(minLength: DS.Spacing.moderatelyLarge)
                 VStack(alignment: .trailing, spacing: DS.Spacing.standard) {
-                    Text(uiModel.date.mailboxFormat())
-                        .font(.caption)
-                        .foregroundColor(DS.Color.Text.weak)
-                        .accessibilityIdentifier(MessageDetailsViewIdentifiers.messageDate)
-                        .padding(.top, DS.Spacing.tiny)
+                    HStack(alignment: .center, spacing: DS.Spacing.compact) {
+                        if uiModel.isStarred {
+                            StarImage(isStarred: uiModel.isStarred, size: 14)
+                        }
+                        Text(uiModel.date.mailboxFormat())
+                            .font(.caption)
+                            .foregroundColor(DS.Color.Text.weak)
+                            .accessibilityIdentifier(MessageDetailsViewIdentifiers.messageDate)
+                            .padding(.top, DS.Spacing.tiny)
+                    }
                     if !actionButtonsState.isHidden {
                         headerActionsView
                     }
@@ -179,14 +184,6 @@ struct MessageDetailsView: View {
             ProtonOfficialBadgeView()
                 .removeViewIf(!uiModel.isSenderProtonOfficial)
                 .accessibilityIdentifier(MessageDetailsViewIdentifiers.officialBadge)
-            Spacer()
-            if uiModel.isStarred { // FIXME: -
-                StarImage(isStarred: uiModel.isStarred, size: 14)
-            }
-            Text(uiModel.date.mailboxFormat()) // FIXME: - 
-                .font(.caption)
-                .foregroundColor(DS.Color.Text.weak)
-                .accessibilityIdentifier(MessageDetailsViewIdentifiers.messageDate)
         }
     }
 
@@ -397,6 +394,7 @@ struct MessageDetailsUIModel: Equatable {
     let location: MessageDetail.Location?
     let labels: [LabelUIModel]
     let attachments: [AttachmentDisplayModel]
+    let isStarred: Bool
 }
 
 extension MessageDetailsUIModel {
@@ -515,7 +513,8 @@ enum MessageDetailsPreviewProvider {
             date: Date(timeIntervalSince1970: 1724347300),
             location: location?.model,
             labels: labels,
-            attachments: .previewData
+            attachments: .previewData,
+            isStarred: false
         )
     }
 
@@ -548,12 +547,4 @@ private struct MessageDetailsViewIdentifiers {
 
     static let expandedHeaderDateLabel = "detail.header.expanded.date.label"
     static let expandedHeaderDateValue = "detail.header.expanded.date.value"
-}
-
-private extension MessageDetailsUIModel {
-
-    var isStarred: Bool {
-        other.contains(.starred)
-    }
-
 }

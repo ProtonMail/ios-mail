@@ -40,43 +40,6 @@ struct ConversationDetailScreen: View {
     }
 
     var body: some View {
-<<<<<<< HEAD
-        ZStack {
-            conversationView
-            if !model.areActionsDisabled {
-                BottomActionBarView(
-                    actions: model.bottomBarActions,
-                    tapAction: { action in
-                        model.handleConversation(
-                            action: action,
-                            toastStateStore: toastStateStore,
-                            goBack: { goBackToMailbox() }
-                        )
-                    }
-                )
-            }
-        }
-        .actionSheetsFlow(
-            mailbox: { model.mailbox.unsafelyUnwrapped },
-            state: $model.actionSheets,
-            replyActions: handleReplyAction,
-            goBackNavigation: { goBackToMailbox() }
-        )
-        .alert(model: $model.deleteConfirmationAlert)
-        .fullScreenCover(item: $model.attachmentIDToOpen) { id in
-            AttachmentView(config: .init(id: id, mailbox: model.mailbox.unsafelyUnwrapped))
-                .edgesIgnoringSafeArea([.top, .bottom])
-        }
-        .onChange(
-            of: model.state,
-            { _, newValue in
-                if case .messagesReady(let messages) = newValue, messages.isEmpty {
-                    goBackToMailbox()
-                }
-            }
-        )
-        .environment(\.messageAppearanceOverrideStore, model.messageAppearanceOverrideStore)
-=======
         conversationView
             .toolbar {
                 bottomToolbarContent
@@ -95,8 +58,15 @@ struct ConversationDetailScreen: View {
                 AttachmentView(config: .init(id: id, mailbox: model.mailbox.unsafelyUnwrapped))
                     .edgesIgnoringSafeArea([.top, .bottom])
             }
+            .onChange(
+                of: model.state,
+                { _, newValue in
+                    if case .messagesReady(let messages) = newValue, messages.isEmpty {
+                        goBackToMailbox()
+                    }
+                }
+            )
             .environment(\.messageAppearanceOverrideStore, model.messageAppearanceOverrideStore)
->>>>>>> main
     }
 
     private var conversationView: some View {

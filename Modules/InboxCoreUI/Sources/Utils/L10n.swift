@@ -69,6 +69,10 @@ enum L10n {
             "Incorrect PIN. Please try again.",
             comment: "Error message when a user enters an invalid PIN"
         )
+        static let tooFrequentAttempts = LocalizedStringResource(
+            "Too many attempts too quickly. Please wait before trying again.",
+            comment: "Displayed when the user tries to validate their PIN too frequently."
+        )
         static let signOut = LocalizedStringResource(
             "Sign out",
             comment: "Title of the sign out button."
