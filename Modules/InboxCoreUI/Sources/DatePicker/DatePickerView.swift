@@ -85,7 +85,8 @@ public struct DatePickerView: View {
                         .font(.body)
                         .fontWeight(.regular)
                         .foregroundStyle(datePickerDefaultLabelColor)
-                        .padding(DS.Spacing.medium)
+                        .padding(.horizontal, DS.Spacing.medium)
+                        .padding(.vertical, DS.Spacing.standard)
                         .background(RoundedRectangle(cornerRadius: DS.Radius.medium).fill(datePickerDefaultLabelBackgroundColor))
                 }
                 .padding(.horizontal, DS.Spacing.large)

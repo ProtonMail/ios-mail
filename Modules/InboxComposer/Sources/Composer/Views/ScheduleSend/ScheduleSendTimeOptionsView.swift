@@ -43,13 +43,6 @@ struct ScheduleSendTimeOptionsView: View {
     var body: some View {
         ClosableScreen {
             VStack(spacing: DS.Spacing.medium) {
-                Text(L10n.ScheduleSend.title)
-                    .lineLimit(1)
-                    .foregroundStyle(DS.Color.Text.norm)
-                    .font(.body)
-                    .fontWeight(.semibold)
-                    .padding(.bottom, DS.Spacing.small)
-
                 if let lastScheduleSendTime = predefinedTimeOptions.lastScheduleSendTime {
                     previouslySet(time: lastScheduleSendTime)
                 }
@@ -76,6 +69,8 @@ struct ScheduleSendTimeOptionsView: View {
             .frame(maxHeight: .infinity)
             .padding(.horizontal, DS.Spacing.large)
             .background(DS.Color.BackgroundInverted.norm)
+            .navigationTitle(L10n.ScheduleSend.title.string)
+            .navigationBarTitleDisplayMode(.inline)
         }
         .presentationDetents([.medium])
     }

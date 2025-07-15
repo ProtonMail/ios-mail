@@ -20,15 +20,28 @@ import proton_app_uniffi
 import SwiftUI
 
 struct ScheduleSendPickerSheet: View {
-    enum SheetScreen {
+    enum SheetScreen: CaseIterable {
         case main
         case datePicker
+
+        var detent: PresentationDetent {
+            switch self {
+            case .main:
+                .medium
+            case .datePicker:
+                .large
+            }
+        }
+
+        var allowedDetents: Set<PresentationDetent> {
+            Set(Self.allCases.map(\.detent))
+        }
     }
 
     @EnvironmentObject private var toastStateStore: ToastStateStore
     @State private var currentScreen: SheetScreen = .main
     @State private var detent: PresentationDetent = .medium
-    @State private var allowedDetents: Set<PresentationDetent> = [.medium, .large]
+    @State private var allowedDetents: Set<PresentationDetent> = [.medium]
 
     private let dateFormatter: ScheduleSendDateFormatter
     private let predefinedTimeOptions: ScheduleSendTimeOptions
@@ -61,25 +74,13 @@ struct ScheduleSendPickerSheet: View {
                         toastStateStore.present(toast: .comingSoon)
                         return
                     }
-                    withAnimation(.easeInOut) {
-                        currentScreen = .datePicker
-                        detent = .large
-                    }
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-                        allowedDetents = [.large]
-                    }
+                    transition(to: .datePicker)
                 }
 
             case .datePicker:
                 DatePickerView(
                     configuration: ScheduleDatePickerConfiguration(dateFormatter: dateFormatter),
-                    onCancel: {
-                        withAnimation(.easeInOut) {
-                            currentScreen = .main
-                            detent = .medium
-                            allowedDetents = [.medium, .large]
-                        }
-                    },
+                    onCancel: { transition(to: .main) },
                     onSelect: { date in
                         Task {
                             await onTimeSelected(date)
@@ -91,6 +92,16 @@ struct ScheduleSendPickerSheet: View {
         .animation(.easeInOut, value: currentScreen)
         .transition(.identity)
         .presentationDetents(allowedDetents, selection: $detent)
-        .interactiveDismissDisabled(currentScreen == .datePicker)
+        .presentationDragIndicator(.hidden)
+    }
+
+    private func transition(to screen: SheetScreen) {
+        withAnimation {
+            currentScreen = screen
+            detent = screen.detent
+            allowedDetents = screen.allowedDetents
+        } completion: {
+            allowedDetents = [screen.detent]
+        }
     }
 }
