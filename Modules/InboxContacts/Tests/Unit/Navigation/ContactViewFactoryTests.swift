@@ -31,7 +31,7 @@ final class ContactViewFactoryTests {
     @Test
     func testView_ForContactDetailsRoute_ItReturnsContactDetailsScreen() throws {
         let id = Id(value: 1)
-        let view = try makeView(for: .contactDetails(.testData(id: id)))
+        let view = try makeView(for: .contactDetails(.init(ContactItem.testData(id: id))))
 
         let inspectableScreen = try view.find(ContactDetailsScreen.self)
         let screen = try inspectableScreen.actualView()

@@ -62,6 +62,7 @@ public struct ContactsScreen: View {
             .navigationDestination(for: ContactsRoute.self) { route in
                 contactViewFactory
                     .makeView(for: route)
+                    .environmentObject(store.router)
                     .navigationBarBackButtonHidden()
                     .toolbar {
                         ToolbarItemFactory.back { store.handle(action: .goBack) }

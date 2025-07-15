@@ -22,26 +22,32 @@ import SwiftUI
 
 final class ContactGroupDetailsStateStore: StateStore {
     enum Action {
+        case contactItemTapped(ContactEmailItem)
         case sendGroupMessageTapped
     }
 
     @Published var state: ContactGroupItem
     private let draftPresenter: ContactsDraftPresenter
     private let toastStateStore: ToastStateStore
+    private let router: Router<ContactsRoute>
 
     init(
         state: ContactGroupItem,
         draftPresenter: ContactsDraftPresenter,
-        toastStateStore: ToastStateStore
+        toastStateStore: ToastStateStore,
+        router: Router<ContactsRoute>
     ) {
         self.state = state
         self.draftPresenter = draftPresenter
         self.toastStateStore = toastStateStore
+        self.router = router
     }
 
     @MainActor
     func handle(action: Action) {
         switch action {
+        case .contactItemTapped(let item):
+            router.go(to: .contactDetails(.init(item)))
         case .sendGroupMessageTapped:
             openComposer(with: state)
         }

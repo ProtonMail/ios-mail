@@ -25,7 +25,7 @@ import XCTest
 final class ContactDetailsStateStoreTests: BaseTestCase {
     private var sut: ContactDetailsStateStore!
     private var initialState: ContactDetails!
-    private var contactItem: ContactItem!
+    private var contactItem: ContactsRoute.ContactContext!
     private var providerSpy: ContactDetailsProviderSpy!
     private var urlOpener: EnvironmentURLOpenerSpy!
     private var draftPresenterSpy: ContactsDraftPresenterSpy!
@@ -33,7 +33,7 @@ final class ContactDetailsStateStoreTests: BaseTestCase {
 
     override func setUp() {
         super.setUp()
-        contactItem = .elenaErickson
+        contactItem = .init(ContactItem.elenaErickson)
         initialState = .init(contact: contactItem, details: .none)
         providerSpy = .init()
         urlOpener = .init()
@@ -44,8 +44,8 @@ final class ContactDetailsStateStoreTests: BaseTestCase {
             state: initialState,
             item: contactItem,
             provider: .init(contactDetails: { [unowned self] contact in
-                providerSpy.contactDetailsCalls.append(contact)
-                return providerSpy.stubbedContactDetails[contact]!
+                providerSpy.contactDetailsCalls.append(.init(contact))
+                return providerSpy.stubbedContactDetails[.init(contact)]!
             }),
             urlOpener: urlOpener,
             draftPresenter: draftPresenterSpy,
@@ -219,9 +219,9 @@ final class ContactDetailsStateStoreTests: BaseTestCase {
 }
 
 private class ContactDetailsProviderSpy {
-    var stubbedContactDetails: [ContactItem: ContactDetails] = [:]
+    var stubbedContactDetails: [ContactsRoute.ContactContext: ContactDetails] = [:]
 
-    var contactDetailsCalls: [ContactItem] = []
+    var contactDetailsCalls: [ContactsRoute.ContactContext] = []
 }
 
 private extension Array where Element == ContactField {

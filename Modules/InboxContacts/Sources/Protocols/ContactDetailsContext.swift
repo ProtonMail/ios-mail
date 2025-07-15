@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Proton Technologies AG
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -15,25 +15,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import InboxCore
 import proton_app_uniffi
-import SwiftUI
 
-enum ContactsRoute: Routable {
-    case contactDetails(ContactContext)
-    case contactGroupDetails(ContactGroupItem)
-
-    struct ContactContext: ContactDetailsContext, Hashable {
-        let id: Id
-        let name: String
-        let displayEmail: String?
-        let avatarInformation: AvatarInformation
-
-        init(_ contactItem: any ContactDetailsContext) {
-            self.id = contactItem.id
-            self.name = contactItem.name
-            self.displayEmail = contactItem.displayEmail
-            self.avatarInformation = contactItem.avatarInformation
-        }
-    }
+protocol ContactDetailsContext: ContactItemUIRepresentable {
+    var id: Id { get }
 }
+
+extension ContactItem: ContactDetailsContext {}
+// FIXME: Once new RustSDK is released, add default implementation for `id` property (return `contactID`)
+extension ContactEmailItem: ContactDetailsContext {}

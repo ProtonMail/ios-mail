@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import InboxContacts
+import InboxCore
 import InboxCoreUI
 import InboxTesting
 import proton_app_uniffi
@@ -26,17 +27,20 @@ final class ContactGroupDetailsStateStoreTests: BaseTestCase {
     private var initialState: ContactGroupItem!
     private var draftPresenterSpy: ContactsDraftPresenterSpy!
     private var toastStateStore: ToastStateStore!
+    private var router: Router<ContactsRoute>!
 
     override func setUp() {
         super.setUp()
         initialState = .advisorsGroup
         draftPresenterSpy = .init()
         toastStateStore = .init(initialState: .initial)
+        router = .init()
 
         sut = ContactGroupDetailsStateStore(
             state: initialState,
             draftPresenter: draftPresenterSpy,
-            toastStateStore: toastStateStore
+            toastStateStore: toastStateStore,
+            router: router
         )
     }
 
@@ -45,11 +49,20 @@ final class ContactGroupDetailsStateStoreTests: BaseTestCase {
         initialState = nil
         draftPresenterSpy = nil
         toastStateStore = nil
+        router = nil
         super.tearDown()
     }
 
     func testInitialState_isSetCorrectly() {
         XCTAssertEqual(sut.state, initialState)
+    }
+
+    func testContactItemTappedAction_ItNavigatesToContactDetails() async throws {
+        let emailItem: ContactEmailItem = try XCTUnwrap(ContactGroupItem.advisorsGroup.contactEmails.first)
+
+        await sut.handle(action: .contactItemTapped(emailItem))
+
+        XCTAssertEqual(router.stack, [.contactDetails(.init(emailItem))])
     }
 
     func testSendGroupMessageTappedAction_ItPresentsDraftWithContactGroup() async {

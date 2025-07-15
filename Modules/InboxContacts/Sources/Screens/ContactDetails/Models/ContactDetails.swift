@@ -25,7 +25,7 @@ struct ContactDetails: Equatable {
     let primaryPhone: String?
     let items: [ContactField]
 
-    init(contact: ContactItem, details: ContactDetailCard?) {
+    init(contact: ContactDetailsContext, details: ContactDetailCard?) {
         let primaryPhone = details?.fields
             .compactMap { field -> String? in
                 guard case .telephones(let phones) = field else {

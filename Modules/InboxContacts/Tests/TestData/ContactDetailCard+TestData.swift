@@ -15,11 +15,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+@testable import InboxContacts
 import proton_app_uniffi
 
 extension ContactDetailCard {
 
-    static func testData(contact: ContactItem, fields: [ContactField]) -> Self {
+    static func testData(contact: ContactDetailsContext, fields: [ContactField]) -> Self {
         .init(
             id: contact.id,
             avatarInformation: contact.avatarInformation,

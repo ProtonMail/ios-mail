@@ -108,7 +108,7 @@ final class ContactDetailsScreenSnapshotTests {
     private func makeSUT(items: [ContactField]) -> some View {
         let contact: ContactItem = .benjaminAlexander
         let sut = ContactDetailsScreen(
-            contact: .benjaminAlexander,
+            contact: contact,
             provider: .previewInstance(),
             draftPresenter: ContactsDraftPresenterDummy(),
             state: .init(contact: contact, details: .testData(contact: contact, fields: items))

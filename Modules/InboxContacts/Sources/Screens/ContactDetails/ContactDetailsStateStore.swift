@@ -33,7 +33,7 @@ final class ContactDetailsStateStore: StateStore {
     }
 
     @Published var state: ContactDetails
-    private let item: ContactItem
+    private let item: ContactDetailsContext
     private let provider: ContactDetailsProvider
     private let urlOpener: URLOpenerProtocol
     private let draftPresenter: ContactsDraftPresenter
@@ -41,7 +41,7 @@ final class ContactDetailsStateStore: StateStore {
 
     init(
         state: ContactDetails,
-        item: ContactItem,
+        item: ContactDetailsContext,
         provider: ContactDetailsProvider,
         urlOpener: URLOpenerProtocol,
         draftPresenter: ContactsDraftPresenter,
@@ -85,7 +85,7 @@ final class ContactDetailsStateStore: StateStore {
 
     // MARK: - Private
 
-    private func loadDetails(for contact: ContactItem) {
+    private func loadDetails(for contact: ContactDetailsContext) {
         Task {
             let details = await provider.contactDetails(for: contact)
             let updateStateWorkItem = DispatchWorkItem { [weak self] in
