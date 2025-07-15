@@ -199,18 +199,3 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate, ObservableObject 
     }
 
 }
-
-private extension AppProtection {
-
-    var lockScreenType: LockScreenState.LockScreenType? {
-        switch self {
-        case .none:
-            return nil
-        case .biometrics:
-            return .biometric
-        case .pin:
-            return .pin
-        }
-    }
-
-}

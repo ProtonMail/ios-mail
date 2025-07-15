@@ -1,3 +1,4 @@
+//
 // Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
@@ -17,8 +18,15 @@
 
 import proton_app_uniffi
 
-public protocol BiometricAuthorizationNotifier {
-    func biometricsCheckPassed()
+extension AppProtection {
+    public var lockScreenType: LockScreenState.LockScreenType? {
+        switch self {
+        case .none:
+            return nil
+        case .biometrics:
+            return .biometric
+        case .pin:
+            return .pin
+        }
+    }
 }
-
-extension MailSession: BiometricAuthorizationNotifier {}
