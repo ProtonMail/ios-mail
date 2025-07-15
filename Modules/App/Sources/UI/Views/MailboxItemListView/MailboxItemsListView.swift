@@ -26,6 +26,7 @@ struct MailboxItemsListView<EmptyView: View>: View {
     @ObservedObject private(set) var selectionState: SelectionModeState
     private let mailUserSession: MailUserSession
     @Binding var emptyFolderBanner: EmptyFolderBanner?
+    let mailbox: Mailbox?
 
     // pull to refresh
     @State private var listPullOffset: CurrentValueSubject<CGFloat, Never> = .init(0.0)
@@ -37,21 +38,32 @@ struct MailboxItemsListView<EmptyView: View>: View {
         config: MailboxItemsListViewConfiguration,
         @ViewBuilder emptyView: () -> EmptyView,
         emptyFolderBanner: Binding<EmptyFolderBanner?>,
-        mailUserSession: MailUserSession
+        mailUserSession: MailUserSession,
+        mailbox: Mailbox?
     ) {
         self.config = config
         self.emptyView = emptyView()
         self.selectionState = config.selectionState
         self.mailUserSession = mailUserSession
         _emptyFolderBanner = emptyFolderBanner
+        self.mailbox = mailbox
     }
 
     var body: some View {
-        ZStack {
+        if let mailbox {
             listView
-            if selectionState.hasItems {
-                mailboxActionBarView
-            }
+                .animation(.none, value: selectionState.hasItems)
+                .toolbar(selectionState.hasItems ? .visible : .hidden, for: .bottomBar)
+                .animation(.default, value: selectionState.hasItems)
+                .mailboxActionBar(
+                    state: .initial,
+                    availableActions: .productionInstance,
+                    itemTypeForActionBar: config.itemTypeForActionBar,
+                    selectedItems: config.selectionState.selectedItemIDsReadOnlyBinding
+                )
+                .environmentObject(mailbox)
+        } else {
+            listView
         }
     }
 
@@ -154,18 +166,6 @@ struct MailboxItemsListView<EmptyView: View>: View {
         """
         return value
     }
-
-    private var mailboxActionBarView: some View {
-        MailboxActionBarView(
-            state: .initial,
-            availableActions: .productionInstance,
-            itemTypeForActionBar: config.itemTypeForActionBar,
-            selectedItems: config.selectionState.selectedItemIDsReadOnlyBinding
-        )
-        .opacity(selectionState.hasItems ? 1 : 0)
-        .offset(y: selectionState.hasItems ? 0 : 45 + 100)
-        .animation(.selectModeAnimation, value: selectionState.hasItems)
-    }
 }
 
 private struct MailboxListViewIdentifiers {
@@ -181,13 +181,36 @@ private extension SelectionModeState {
 }
 
 #Preview {
-    struct Container: View {
-        let dataSource = PaginatedListDataSource<MailboxItemCellUIModel>(pageSize: 20) { currentPage, pageSize in
-            try? await Task.sleep(nanoseconds: 1_000_000_000)
+
+    @MainActor
+    final class Model: ObservableObject {
+        let pageSize = 20
+        let subject: PassthroughSubject<PaginatedListUpdate<MailboxItemCellUIModel>, Never> = .init()
+
+        lazy var dataSource = PaginatedListDataSource<MailboxItemCellUIModel>(
+            paginatedListProvider: .init(
+                updatePublisher: subject.eraseToAnyPublisher(),
+                fetchMore: { [weak self] currentPage in
+                    Task { await self?.nextPage(page: currentPage) }
+                }
+            )
+        )
+
+        private func nextPage(page: Int) async {
+            try? await Task.sleep(for: .seconds(2))
             let items = MailboxItemCellUIModel.testData()
-            let isLastPage = (currentPage + 1) * pageSize > items.count
-            let range = currentPage * pageSize..<min(items.count, (currentPage + 1) * pageSize)
-            return .init(newItems: Array(items[range]), isLastPage: isLastPage)
+            let isLastPage = (page + 1) * pageSize > items.count
+            let range = page * pageSize..<min(items.count, (page + 1) * pageSize)
+            let itemsToAppend = Array(items[range])
+            subject.send(.init(value: .append(items: itemsToAppend, isLastPage: isLastPage)))
+        }
+    }
+
+    struct Container: View {
+        @StateObject var model: Model
+
+        init() {
+            self._model = StateObject(wrappedValue: Model())
         }
 
         var body: some View {
@@ -195,18 +218,18 @@ private extension SelectionModeState {
                 config: makeConfiguration(),
                 emptyView: { Text("MAILBOX IS EMPTY".notLocalized) },
                 emptyFolderBanner: .constant(nil),
-                mailUserSession: .dummy
+                mailUserSession: .dummy,
+                mailbox: .dummy
             )
             .task {
-                await dataSource.fetchInitialPage()
+                model.dataSource.fetchInitialPage()
             }
         }
 
         func makeConfiguration() -> MailboxItemsListViewConfiguration {
             let selectionState = SelectionModeState()
-
             return .init(
-                dataSource: dataSource,
+                dataSource: model.dataSource,
                 selectionState: selectionState,
                 itemTypeForActionBar: .conversation,
                 isOutboxLocation: false,

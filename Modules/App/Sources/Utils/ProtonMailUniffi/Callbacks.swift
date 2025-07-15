@@ -37,3 +37,27 @@ final class LiveQueryCallbackWrapper: Sendable, LiveQueryCallback {
     }
 
 }
+
+final class MessageScrollerLiveQueryCallbackkWrapper: Sendable, MessageScrollerLiveQueryCallback {
+    let callback: @Sendable (MessageScrollerUpdate) -> Void
+
+    init(callback: @escaping @Sendable (MessageScrollerUpdate) -> Void) {
+        self.callback = callback
+    }
+
+    func onUpdate(update: MessageScrollerUpdate) {
+        callback(update)
+    }
+}
+
+final class ConversationScrollerLiveQueryCallbackkWrapper: Sendable, ConversationScrollerLiveQueryCallback {
+    let callback: @Sendable (ConversationScrollerUpdate) -> Void
+
+    init(callback: @escaping @Sendable (ConversationScrollerUpdate) -> Void) {
+        self.callback = callback
+    }
+
+    func onUpdate(update: ConversationScrollerUpdate) {
+        callback(update)
+    }
+}

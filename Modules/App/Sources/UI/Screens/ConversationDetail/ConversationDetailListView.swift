@@ -125,7 +125,7 @@ struct ConversationDetailListView: View {
         ExpandedMessageCell(
             mailbox: model.mailbox.unsafelyUnwrapped,
             uiModel: uiModel,
-            areActionsDisabled: model.areActionsDisabled,
+            areActionsHidden: model.areActionsHidden,
             attachmentIDToOpen: $model.attachmentIDToOpen,
             onEvent: { onExpandedMessageCellEvent($0, uiModel: uiModel) },
             htmlLoaded: { model.markMessageAsReadIfNeeded(metadata: uiModel.toActionMetadata()) }

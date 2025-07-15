@@ -118,9 +118,9 @@ struct SearchScreen: View {
                 NoResultsView(variant: .search)
             },
             emptyFolderBanner: .constant(nil),
-            mailUserSession: userSession
+            mailUserSession: userSession,
+            mailbox: model.mailbox
         )
-        .injectIfNotNil(model.mailbox)
         .navigationBarTitleDisplayMode(.inline)
     }
 

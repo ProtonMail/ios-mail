@@ -30,11 +30,11 @@ class BackgroundTransitionActionsExecutor: ApplicationServiceDidEnterBackground,
     private let notificationScheduller: NotificationScheduler
     private let actionQueueStatusProvider: ActionQueueStatusProvider
 
-    private lazy var callback = BackgroundExecutionCallbackWrapper { [weak self] completionStatus in
+    private lazy var callback = BackgroundExecutionCallbackWrapper { [weak self] result in
         Task {
-            Self.log("All actions executed, with result: \(completionStatus)")
-            if completionStatus.shouldCheckSendingStatus {
-                await self?.displayNotificationIfSendingIsUnfinished()
+            Self.log("All actions executed, with result: \(result.status)")
+            if result.status.shouldCheckSendingStatus && result.hasUnsentMessages {
+                await self?.displayUnsentMessagesNotificationIfOnline()
             }
             self?.endBackgroundTask()
         }
@@ -114,7 +114,7 @@ class BackgroundTransitionActionsExecutor: ApplicationServiceDidEnterBackground,
         Self.log("Abort called, handle present: \(backgroundExecutionHandle != nil)")
     }
 
-    private func displayNotificationIfSendingIsUnfinished() async {
+    private func displayUnsentMessagesNotificationIfOnline() async {
         guard let backgroundTaskIdentifier else {
             Self.log("Missing backgroundTaskIdentifier? - \(backgroundTaskIdentifier == nil)")
             Self.log("Handle present: \(self.backgroundExecutionHandle != nil)?")
@@ -123,13 +123,10 @@ class BackgroundTransitionActionsExecutor: ApplicationServiceDidEnterBackground,
         Self.log("Handle present: \(backgroundExecutionHandle != nil)?")
         let hasAccessToInternetOnEnd = await isConnected()
 
-        let allMessagesWereSent = await allMessagesWereSent()
-        Self.log("All messages were sent - \(allMessagesWereSent)")
-
         let offline = !hasAccessToInternetOnEnd && hasAccessToInternetOnStart == false
         Self.log("Background task executed in offline mode? - \(offline)")
 
-        if !allMessagesWereSent && !offline {
+        if !offline {
             await scheduleLocalNotification()
         }
     }
@@ -167,17 +164,6 @@ class BackgroundTransitionActionsExecutor: ApplicationServiceDidEnterBackground,
             return status == .online
         case .error(let error):
             Self.log("[Broken] func isConnected error: \(error)")
-            return false
-        }
-    }
-
-    private func allMessagesWereSent() async -> Bool {
-        switch await backgroundTaskExecutorProvider().allMessagesWereSent() {
-        case .ok(let result):
-            Self.log("func allMessagesWereSent result: \(result)")
-            return result
-        case .error(let error):
-            Self.log("[Broken] func areAnyMessagesUnsent error result: \(error)")
             return false
         }
     }

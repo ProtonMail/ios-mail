@@ -18,13 +18,13 @@
 import proton_app_uniffi
 
 final class BackgroundExecutionCallbackWrapper: BackgroundExecutionCallback, Sendable {
-    let callback: @Sendable (BackgroundExecutionStatus) -> Void
+    let callback: @Sendable (BackgroundExecutionResult) -> Void
 
-    init(callback: @escaping @Sendable (BackgroundExecutionStatus) -> Void) {
+    init(callback: @escaping @Sendable (BackgroundExecutionResult) -> Void) {
         self.callback = callback
     }
 
-    func onExecutionCompleted(status: BackgroundExecutionStatus) async {
-        callback(status)
+    func onExecutionCompleted(result: BackgroundExecutionResult) async {
+        callback(result)
     }
 }

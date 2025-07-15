@@ -20,9 +20,9 @@ import Testing
 struct BundleTests {
 
     @Test(arguments: [
-        (version: "0.2.0", expectedEffectiveAppVersion: "7.0.0"),
-        ("6.2.0", "7.0.0"),
-        ("7.0.1", "7.0.1"),
+        (version: "0.2.0", expectedEffectiveAppVersion: "7.0.1"),
+        ("6.2.0", "7.0.1"),
+        ("7.1.1", "7.1.1"),
         ("11.0.1", "11.0.1"),
     ])
     func effectiveAppVersion_ReturnsCorrectVersion(version: String, expectedEffectiveAppVersion: String) async throws {

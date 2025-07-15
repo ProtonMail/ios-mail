@@ -68,7 +68,7 @@ class RecurringBackgroundTaskSchedulerTests: BaseTestCase {
     func test_WhenTaskIsRegisteredAndExecuted_WhenActionsFinishWithSuccess_ItCompletesWithSuccess() async throws {
         sut.register()
         backgroundTaskExecutorSpy.backgroundExecutionFinishedWithSuccess = true
-        backgroundTaskExecutorSpy.executionCompletedWithStatus = .executed
+        backgroundTaskExecutorSpy.executionCompletedWithResult = BackgroundExecutionResult(status: .executed, hasUnsentMessages: false)
 
         let taskRegistration = try XCTUnwrap(invokedRegister.first)
         XCTAssertEqual(invokedRegister.count, 1)
@@ -94,7 +94,7 @@ class RecurringBackgroundTaskSchedulerTests: BaseTestCase {
     func test_WhenTaskIsRegisteredAndExecuted_WhenAbortIsCalled_ItCompletesWithSuccess() async throws {
         sut.register()
         backgroundTaskExecutorSpy.backgroundExecutionFinishedWithSuccess = false
-        backgroundTaskExecutorSpy.executionCompletedWithStatus = .abortedInBackground
+        backgroundTaskExecutorSpy.executionCompletedWithResult = BackgroundExecutionResult(status: .abortedInBackground, hasUnsentMessages: false)
 
         await submitTask()
 
@@ -111,7 +111,7 @@ class RecurringBackgroundTaskSchedulerTests: BaseTestCase {
         sessionStateSubject.value = .noSession
         sut.register()
         backgroundTaskExecutorSpy.backgroundExecutionFinishedWithSuccess = false
-        backgroundTaskExecutorSpy.executionCompletedWithStatus = .skippedNoActiveContexts
+        backgroundTaskExecutorSpy.executionCompletedWithResult = BackgroundExecutionResult(status: .skippedNoActiveContexts, hasUnsentMessages: false)
 
         await submitTask()
 
@@ -134,7 +134,7 @@ class RecurringBackgroundTaskSchedulerTests: BaseTestCase {
         sut.register()
         sessionStateSubject.value = .noSession
         backgroundTaskExecutorSpy.backgroundExecutionFinishedWithSuccess = false
-        backgroundTaskExecutorSpy.executionCompletedWithStatus = .skippedNoActiveContexts
+        backgroundTaskExecutorSpy.executionCompletedWithResult = BackgroundExecutionResult(status: .skippedNoActiveContexts, hasUnsentMessages: false)
 
         await submitTask()
 
@@ -153,7 +153,7 @@ class RecurringBackgroundTaskSchedulerTests: BaseTestCase {
         sessionStateSubject.value = .noSession
         sut.register()
         backgroundTaskExecutorSpy.backgroundExecutionFinishedWithSuccess = true
-        backgroundTaskExecutorSpy.executionCompletedWithStatus = .skippedNoActiveContexts
+        backgroundTaskExecutorSpy.executionCompletedWithResult = BackgroundExecutionResult(status: .skippedNoActiveContexts, hasUnsentMessages: false)
 
         await submitTask()
 

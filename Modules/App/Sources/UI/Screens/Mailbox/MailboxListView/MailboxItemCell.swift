@@ -215,7 +215,7 @@ final class MailboxItemCellUIModel: Identifiable, Sendable {
     let locationIcon: Image?
     let isRead: Bool
     let isStarred: Bool
-    let isSelected: Bool
+    var isSelected: Bool
     let isSenderProtonOfficial: Bool
     let messagesCount: UInt64
     let labelUIModel: MailboxLabelUIModel

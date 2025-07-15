@@ -18,7 +18,7 @@
 import Foundation
 import InboxCoreUI
 import InboxDesignSystem
-import SwiftUICore
+import SwiftUI
 
 struct BodyHtmlDocument {
     private typealias ColorBundle = (background: String, text: String, brand: String)
@@ -253,7 +253,7 @@ private extension BodyHtmlDocument {
             return document.getElementById('\(ID.editor)').innerHTML;
         };
 
-        \(JSFunction.insertImages.rawValue) = function (images) {
+        \(JSFunction.insertImages.rawValue) = function (inlineImageHTML) {
             const editor = document.getElementById('\(ID.editor)');
             const selection = window.getSelection();
 
@@ -266,12 +266,8 @@ private extension BodyHtmlDocument {
                 selection.removeAllRanges();
                 selection.addRange(range);
             }
-            
-            const html = images.map(function(cid) {
-                return `<img src="cid:${cid}" style="max-width: 100%;"><br>`;
-            }).join('');
 
-            document.execCommand('insertHTML', false, html);
+            document.execCommand('insertHTML', false, inlineImageHTML);
             editor.dispatchEvent(new Event('input'));
 
             const allImages = editor.getElementsByTagName('img');

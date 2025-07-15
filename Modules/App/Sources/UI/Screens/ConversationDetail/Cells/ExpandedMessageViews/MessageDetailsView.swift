@@ -22,65 +22,168 @@ import enum proton_app_uniffi.MessageBanner
 import SwiftUI
 
 struct MessageDetailsView: View {
+    enum ActionButtonsState {
+        case enabled
+        case disabled
+        case hidden
+
+        var isDisabled: Bool { self == .disabled }
+        var isHidden: Bool { self == .hidden }
+    }
+
     @State private(set) var isHeaderCollapsed: Bool = true
     let uiModel: MessageDetailsUIModel
-    let areActionsDisabled: Bool
+    let actionButtonsState: ActionButtonsState
     let onEvent: (MessageDetailsEvent) -> Void
 
     private let messageDetailsLeftColumnWidth: CGFloat = 80
+    private let detailedContentLeadingSpacing: CGFloat = DS.Spacing.jumbo + DS.Spacing.large
 
     var body: some View {
-        VStack(spacing: DS.Spacing.large) {
+        VStack(alignment: .leading, spacing: isHeaderCollapsed ? DS.Spacing.standard : 0) {
             headerView
-            extendedDetailsView
-                .removeViewIf(isHeaderCollapsed)
+                .background(DS.Color.Background.norm)
+                .contentShape(Rectangle())
+                .onTapGesture { onEvent(.onTap) }
+                .zIndex(1)
+
+            detailedContent
         }
+        .background(DS.Color.Background.norm)
+        .clipped()
         .padding([.horizontal, .bottom], DS.Spacing.large)
     }
 
     // MARK: - Private
 
     private var headerView: some View {
-        HStack(alignment: .top, spacing: 0) {
-            AvatarCheckboxView(isSelected: false, avatar: uiModel.avatar, onDidChangeSelection: { _ in })
-                .square(size: 40)
-            VStack(alignment: .leading, spacing: DS.Spacing.compact) {
-                senderNameView
-                HStack(spacing: .zero) {
-                    VStack(alignment: .leading, spacing: DS.Spacing.compact) {
+        HStack(alignment: .top, spacing: DS.Spacing.large) {
+            Button(action: { onEvent(.onSenderTap) }) {
+                AvatarView(avatar: uiModel.avatar)
+                    .clipShape(RoundedRectangle(cornerRadius: DS.Radius.large, style: .continuous))
+            }
+            .square(size: 40)
+            .zIndex(1)
+
+            HStack(alignment: .top, spacing: .zero) {
+                VStack(alignment: .leading, spacing: DS.Spacing.compact) {
+                    senderView
+                    Button(action: { onEvent(.onSenderTap) }) {
                         senderAddressView
-                        recipientsView
                     }
-                    Spacer(minLength: DS.Spacing.moderatelyLarge)
-                    if !areActionsDisabled {
+                    .disabled(isHeaderCollapsed)
+
+                    if isHeaderCollapsed {
+                        recipientsView
+                            .transition(.opacity)
+                    } else if let firstRecipient = uiModel.recipientsTo.first {
+                        recipientButton(recipient: firstRecipient, group: .to, prefixed: true, index: 0)
+                            .transition(.opacity)
+                    }
+                }
+
+                Spacer(minLength: DS.Spacing.moderatelyLarge)
+                VStack(alignment: .trailing, spacing: DS.Spacing.standard) {
+                    Text(uiModel.date.mailboxFormat())
+                        .font(.caption)
+                        .foregroundColor(DS.Color.Text.weak)
+                        .accessibilityIdentifier(MessageDetailsViewIdentifiers.messageDate)
+                        .padding(.top, DS.Spacing.tiny)
+                    if !actionButtonsState.isHidden {
                         headerActionsView
                     }
                 }
             }
-            .padding(.leading, DS.Spacing.large)
-        }
-        .contentShape(Rectangle())
-        .onTapGesture {
-            onEvent(.onTap)
         }
     }
 
-    private var senderNameView: some View {
-        HStack(spacing: DS.Spacing.compact) {
+    private var detailedContent: some View {
+        VStack(alignment: .leading, spacing: DS.Spacing.standard) {
+            if !isHeaderCollapsed {
+                expandedHeaderView
+            }
+
+            labelRow
+                .removeViewIf(uiModel.labels.isEmpty)
+
+            if !isHeaderCollapsed {
+                hideDetailsButton
+                    .padding(.top, DS.Spacing.large)
+            }
+        }
+        .padding(.leading, detailedContentLeadingSpacing)
+    }
+
+    private var expandedHeaderView: some View {
+        VStack(alignment: .leading, spacing: DS.Spacing.large) {
+            recipientRow(.to, recipients: uiModel.recipientsToExcludingFirst)
+                .removeViewIf(uiModel.recipientsToExcludingFirst.isEmpty)
+            recipientRow(.cc, recipients: uiModel.recipientsCc)
+                .removeViewIf(uiModel.recipientsCc.isEmpty)
+            recipientRow(.bcc, recipients: uiModel.recipientsBcc)
+                .removeViewIf(uiModel.recipientsBcc.isEmpty)
+
+            VStack(alignment: .leading, spacing: DS.Spacing.standard) {
+                dateRow
+                locationRow
+            }
+        }
+        .padding(.top, uiModel.recipientsToExcludingFirst.isEmpty ? DS.Spacing.large : DS.Spacing.compact)
+        .transition(.move(edge: .top).combined(with: .opacity))
+    }
+
+    private var hideDetailsButton: some View {
+        Button(action: {
+            withAnimation {
+                isHeaderCollapsed.toggle()
+            }
+        }) {
+            HStack(alignment: .center, spacing: DS.Spacing.compact) {
+                Text(L10n.MessageDetails.hideDetails)
+                    .foregroundStyle(DS.Color.Text.accent)
+                    .font(.footnote)
+
+                Image(DS.Icon.icChevronUpFilled)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .square(size: 16)
+                    .foregroundColor(DS.Color.Text.accent)
+            }
+        }
+    }
+
+    var senderNameText: some View {
+        HStack(spacing: .zero) {
+            if !isHeaderCollapsed {
+                Text(L10n.MessageDetails.from)
+                    .font(.subheadline)
+                    .fontWeight(.semibold)
+                    .foregroundColor(DS.Color.Text.norm)
+                    .transition(
+                        .move(edge: .leading)
+                            .combined(with: .opacity)
+                    )
+            }
             Text(uiModel.sender.name)
                 .font(.subheadline)
                 .fontWeight(.semibold)
                 .lineLimit(1)
                 .foregroundColor(DS.Color.Text.norm)
                 .accessibilityIdentifier(MessageDetailsViewIdentifiers.senderName)
+        }
+    }
+
+    private var senderView: some View {
+        HStack(spacing: DS.Spacing.compact) {
+            senderNameText
             ProtonOfficialBadgeView()
                 .removeViewIf(!uiModel.isSenderProtonOfficial)
                 .accessibilityIdentifier(MessageDetailsViewIdentifiers.officialBadge)
             Spacer()
-            if uiModel.isStarred {
+            if uiModel.isStarred { // FIXME: -
                 StarImage(isStarred: uiModel.isStarred, size: 14)
             }
-            Text(uiModel.date.mailboxFormat())
+            Text(uiModel.date.mailboxFormat()) // FIXME: - 
                 .font(.caption)
                 .foregroundColor(DS.Color.Text.weak)
                 .accessibilityIdentifier(MessageDetailsViewIdentifiers.messageDate)
@@ -91,27 +194,29 @@ struct MessageDetailsView: View {
         Text(uiModel.sender.address)
             .font(.caption)
             .lineLimit(1)
-            .foregroundColor(DS.Color.Text.weak)
+            .foregroundColor(isHeaderCollapsed ? DS.Color.Text.weak : DS.Color.Text.accent)
             .accessibilityIdentifier(MessageDetailsViewIdentifiers.senderAddress)
     }
 
     private var recipientsView: some View {
         Button {
-            withAnimation(.linear(duration: 0.0)) {
+            withAnimation {
                 isHeaderCollapsed.toggle()
             }
         } label: {
             HStack(spacing: DS.Spacing.small) {
                 Text(uiModel.recipients.recipientsUIRepresentation)
+                    .foregroundColor(DS.Color.Text.weak)
                     .font(.caption)
                     .lineLimit(1)
-                    .foregroundColor(DS.Color.Text.weak)
                     .accessibilityIdentifier(MessageDetailsViewIdentifiers.recipientsSummary)
-                Image(isHeaderCollapsed ? DS.Icon.icChevronDownFilled : DS.Icon.icChevronUpFilled)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .square(size: 16)
-                    .foregroundColor(DS.Color.Icon.weak)
+                if isHeaderCollapsed {
+                    Image(DS.Icon.icChevronDownFilled)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .square(size: 16)
+                        .foregroundColor(DS.Color.Icon.weak)
+                }
             }
         }
     }
@@ -135,100 +240,75 @@ struct MessageDetailsView: View {
         Button(action: action) {
             image
                 .square(size: 20)
+                .foregroundStyle(actionButtonsState.isDisabled ? DS.Color.Text.disabled : DS.Color.Text.weak)
         }
         .square(size: 36)
+        .disabled(actionButtonsState.isDisabled)
         .overlay(
             RoundedRectangle(cornerRadius: DS.Radius.mediumLarge)
                 .stroke(DS.Color.Border.norm, lineWidth: 1)
         )
     }
 
-    private var extendedDetailsView: some View {
-        VStack(alignment: .leading, spacing: DS.Spacing.moderatelyLarge) {
-            fromRow
-            recipientRow(.to, recipients: uiModel.recipientsTo)
-            recipientRow(.cc, recipients: uiModel.recipientsCc)
-                .removeViewIf(uiModel.recipientsCc.isEmpty)
-            recipientRow(.bcc, recipients: uiModel.recipientsBcc)
-                .removeViewIf(uiModel.recipientsBcc.isEmpty)
-            dateRow
-            locationRow
-            labelRow
-                .removeViewIf(uiModel.labels.isEmpty)
-            otherRow
-                .removeViewIf(uiModel.other.isEmpty)
-        }
-        .padding(DS.Spacing.medium)
-        .overlay {
-            RoundedRectangle(cornerSize: CGSize(width: DS.Radius.extraLarge, height: DS.Radius.extraLarge))
-                .stroke(DS.Color.Border.strong)
-        }
-        .accessibilityElement(children: .contain)
-        .accessibilityIdentifier(MessageDetailsViewIdentifiers.expandedHeaderRootItem)
-    }
-
-    private var fromRow: some View {
-        HStack(alignment: .top, spacing: DS.Spacing.small) {
-            Text(L10n.MessageDetails.from)
-                .font(.caption)
-                .foregroundStyle(DS.Color.Text.weak)
-                .frame(width: messageDetailsLeftColumnWidth, alignment: .leading)
-                .accessibilityIdentifier(MessageDetailsViewIdentifiers.expandedHeaderSenderLabel)
-            Button {
-                onEvent(.onSenderTap)
-            } label: {
-                VStack(alignment: .leading, spacing: DS.Spacing.tiny) {
-                    Text(uiModel.sender.name)
-                        .font(.caption)
-                        .foregroundStyle(DS.Color.Text.norm)
-                        .accessibilityIdentifier(MessageDetailsViewIdentifiers.expandedHeaderSenderName)
-                    Text(uiModel.sender.address)
-                        .font(.caption)
-                        .foregroundStyle(DS.Color.Text.accent)
-                        .accessibilityIdentifier(MessageDetailsViewIdentifiers.expandedHeaderSenderAddress)
-                }
-            }
-            Spacer()
-        }
-    }
-
     private func recipientRow(_ group: RecipientGroup, recipients: [MessageDetail.Recipient]) -> some View {
-        HStack(alignment: .top, spacing: DS.Spacing.small) {
-            Text(group.humanReadable)
-                .font(.caption)
-                .foregroundStyle(DS.Color.Text.weak)
-                .frame(width: messageDetailsLeftColumnWidth, alignment: .leading)
-                .accessibilityIdentifier(MessageDetailsViewIdentifiers.expandedHeaderRecipientLabel(group: group))
-            VStack(alignment: .leading, spacing: DS.Spacing.compact) {
-                ForEach(recipients.indices, id: \.self) { index in
-                    let recipient = recipients[index]
-                    Button {
-                        onEvent(.onRecipientTap(recipient))
-                    } label: {
-                        VStack(alignment: .leading, spacing: DS.Spacing.tiny) {
-                            Text(recipient.name)
-                                .font(.caption)
-                                .foregroundStyle(DS.Color.Text.norm)
-                                .accessibilityIdentifier(MessageDetailsViewIdentifiers.expandedHeaderRecipientName(group: group, index: index))
-                            Text(recipient.address)
-                                .font(.caption)
-                                .foregroundStyle(DS.Color.Text.accent)
-                                .accessibilityIdentifier(MessageDetailsViewIdentifiers.expandedHeaderRecipientValue(group: group, index: index))
-                        }
-                    }
-                }
+        VStack(alignment: .leading, spacing: DS.Spacing.standard) {
+            ForEachEnumerated(recipients, id: \.element) { recipient, index in
+                recipientButton(
+                    recipient: recipient,
+                    group: group,
+                    prefixed: group != .to && index == 0,
+                    index: index
+                )
             }
-            Spacer()
+        }
+    }
+
+    private func recipientButton(
+        recipient: MessageDetail.Recipient,
+        group: RecipientGroup,
+        prefixed: Bool,
+        index: Int
+    ) -> some View {
+        Button {
+            onEvent(.onRecipientTap(recipient))
+        } label: {
+            VStack(alignment: .leading, spacing: DS.Spacing.compact) {
+                recipientName(recipient: recipient, group: group, prefixed: prefixed)
+                    .accessibilityIdentifier(MessageDetailsViewIdentifiers.expandedHeaderRecipientName(group: group, index: index))
+                Text(recipient.address)
+                    .font(.caption)
+                    .foregroundStyle(DS.Color.Text.accent)
+                    .accessibilityIdentifier(MessageDetailsViewIdentifiers.expandedHeaderRecipientValue(group: group, index: index))
+            }
+        }
+    }
+
+    private func recipientName(
+        recipient: MessageDetail.Recipient,
+        group: RecipientGroup,
+        prefixed: Bool,
+    ) -> some View {
+        let name: Text = Text(recipient.name)
+            .font(.caption)
+            .foregroundStyle(DS.Color.Text.weak)
+
+        if prefixed {
+            let prefix = Text(group.humanReadable)
+                .font(.footnote)
+                .fontWeight(.semibold)
+                .foregroundStyle(DS.Color.Text.norm)
+            return prefix + name
+        } else {
+            return name
         }
     }
 
     private var dateRow: some View {
-        HStack(alignment: .top, spacing: DS.Spacing.small) {
-            Text(L10n.MessageDetails.date)
-                .font(.caption)
-                .foregroundStyle(DS.Color.Text.weak)
-                .frame(width: messageDetailsLeftColumnWidth, alignment: .leading)
-                .accessibilityIdentifier(MessageDetailsViewIdentifiers.expandedHeaderDateLabel)
+        HStack(alignment: .center, spacing: DS.Spacing.small) {
+            Image(DS.Images.calendarToday)
+                .resizable()
+                .square(size: 14)
+
             Text(MessageDetailsDateFormatter.string(from: uiModel.date))
                 .font(.caption)
                 .foregroundStyle(DS.Color.Text.norm)
@@ -241,17 +321,13 @@ struct MessageDetailsView: View {
     private var locationRow: some View {
         if let model = uiModel.location {
             HStack(alignment: .center, spacing: DS.Spacing.small) {
-                Text(L10n.MessageDetails.location)
+                model.icon
+                    .resizable()
+                    .square(size: 14)
+
+                Text(model.name)
                     .font(.caption)
-                    .foregroundStyle(DS.Color.Text.weak)
-                    .frame(width: messageDetailsLeftColumnWidth, alignment: .leading)
-                CapsuleView(
-                    text: model.name,
-                    color: DS.Color.Background.secondary,
-                    icon: model.icon,
-                    iconColor: model.iconColor,
-                    style: .attachment
-                )
+                    .foregroundStyle(DS.Color.Text.norm)
                 Spacer()
             }
         }
@@ -259,38 +335,20 @@ struct MessageDetailsView: View {
 
     private var labelRow: some View {
         let capsules = uiModel.labels.map { label in
-            CapsuleView(text: label.text.stringResource, color: label.color, style: .label)
+            CapsuleView(
+                text: label.text.stringResource,
+                color: label.color,
+                style: .label
+            )
         }
 
         return HStack(alignment: .center, spacing: DS.Spacing.small) {
-            Text(L10n.MessageDetails.label)
-                .font(.caption)
-                .foregroundStyle(DS.Color.Text.weak)
-                .frame(width: messageDetailsLeftColumnWidth, alignment: .leading)
-            CapsuleCloudView(subviews: capsules, innerPadding: DS.Spacing.tiny)
+            CapsuleCloudView(
+                subviews: capsules,
+                innerPadding: DS.Spacing.tiny
+            )
             Spacer()
         }
-    }
-
-    private var otherRow: some View {
-        HStack(alignment: .center, spacing: DS.Spacing.small) {
-            Text(L10n.MessageDetails.other)
-                .font(.caption)
-                .foregroundStyle(DS.Color.Text.weak)
-                .frame(width: messageDetailsLeftColumnWidth, alignment: .leading)
-            starCapsule
-            Spacer()
-        }
-    }
-
-    private var starCapsule: some View {
-        CapsuleView(
-            text: L10n.Mailbox.SystemFolder.starred,
-            color: DS.Color.Background.secondary,
-            icon: Image(symbol: .starFilled),
-            iconColor: DS.Color.Star.selected,
-            style: .attachment
-        )
     }
 }
 
@@ -338,8 +396,13 @@ struct MessageDetailsUIModel: Equatable {
     let date: Date
     let location: MessageDetail.Location?
     let labels: [LabelUIModel]
-    let other: [MessageDetail.Other]
     let attachments: [AttachmentDisplayModel]
+}
+
+extension MessageDetailsUIModel {
+    var recipientsToExcludingFirst: [MessageDetail.Recipient] {
+        Array(recipientsTo.dropFirst())
+    }
 }
 
 enum MessageDetail {
@@ -350,7 +413,7 @@ enum MessageDetail {
         let encryptionInfo: String
     }
 
-    struct Recipient: Identifiable, Equatable {
+    struct Recipient: Identifiable, Hashable {
         var id: String { address }  // Identifiable needed to present the action sheet
         let name: String
         let address: String
@@ -362,11 +425,6 @@ enum MessageDetail {
         let name: LocalizedStringResource
         let icon: Image
         let iconColor: Color?
-    }
-
-    enum Other: Equatable {
-        case starred
-        case pinned
     }
 }
 
@@ -383,7 +441,7 @@ extension Array where Element == MessageDetail.Recipient {
 
     var recipientsUIRepresentation: String {
         let recipients = map(\.name).joined(separator: ", ")
-        return "\(L10n.MessageDetails.to.string): \(recipients)"
+        return L10n.MessageDetails.to.string + recipients
     }
 }
 
@@ -393,15 +451,53 @@ extension Array where Element == MessageDetail.Recipient {
         labels: [
             .init(labelId: .init(value: 1), text: "Friends and Holidays", color: .blue),
             .init(labelId: .init(value: 2), text: "Work", color: .green),
-            .init(labelId: .init(value: 3), text: "Summer trip", color: .pink)
+            .init(labelId: .init(value: 3), text: "Summer trip", color: .pink),
         ])
 
-    return MessageDetailsView(isHeaderCollapsed: false, uiModel: model, areActionsDisabled: false, onEvent: { _ in })
+    return MessageDetailsView(
+        isHeaderCollapsed: false,
+        uiModel: model,
+        actionButtonsState: .enabled,
+        onEvent: { _ in }
+    )
 }
 
 enum MessageDetailsPreviewProvider {
 
-    static func testData(location: ExclusiveLocation?, labels: [LabelUIModel]) -> MessageDetailsUIModel {
+    static var recipientsTo: [MessageDetail.Recipient] {
+        [
+            .init(
+                name: "Me", address: "eric.norbert@protonmail.ch",
+                avatarInfo: .init(initials: "E", color: .red)
+            ),
+            .init(
+                name: "James Hayes", address: "james@proton.me",
+                avatarInfo: .init(initials: "J", color: .red)
+            ),
+        ]
+    }
+
+    static var recipientsCc: [MessageDetail.Recipient] {
+        [
+            .init(name: "James Hayes", address: "james@proton.me", avatarInfo: .init(initials: "J", color: .red)),
+            .init(name: "Riley Scott", address: "scott375@gmail.com", avatarInfo: .init(initials: "R", color: .red)),
+            .init(name: "Layla Robinson", address: "layla.rob@protonmail.ch", avatarInfo: .init(initials: "L", color: .red)),
+        ]
+    }
+
+    static var recipientsBcc: [MessageDetail.Recipient] {
+        [
+            .init(name: "Isabella Coleman", address: "isa_coleman@protonmail.com", avatarInfo: .init(initials: "I", color: .red))
+        ]
+    }
+
+    static func testData(
+        location: ExclusiveLocation?,
+        labels: [LabelUIModel],
+        recipientsTo: [MessageDetail.Recipient] = recipientsTo,
+        recipientsCc: [MessageDetail.Recipient] = recipientsCc,
+        recipientsBcc: [MessageDetail.Recipient] = recipientsBcc
+    ) -> MessageDetailsUIModel {
         .init(
             avatar: .init(
                 info: .init(initials: "", color: DS.Color.Background.secondary),
@@ -413,24 +509,12 @@ enum MessageDetailsPreviewProvider {
                 encryptionInfo: "End to end encrypted and signed"
             ),
             isSenderProtonOfficial: true,
-            recipientsTo: [
-                .init(
-                    name: "Me", address: "eric.norbert@protonmail.ch",
-                    avatarInfo: .init(initials: "E", color: .red)
-                )
-            ],
-            recipientsCc: [
-                .init(name: "James Hayes", address: "james@proton.me", avatarInfo: .init(initials: "J", color: .red)),
-                .init(name: "Riley Scott", address: "scott375@gmail.com", avatarInfo: .init(initials: "R", color: .red)),
-                .init(name: "Layla Robinson", address: "layla.rob@protonmail.ch", avatarInfo: .init(initials: "L", color: .red)),
-            ],
-            recipientsBcc: [
-                .init(name: "Isabella Coleman", address: "isa_coleman@protonmail.com", avatarInfo: .init(initials: "I", color: .red)),
-            ],
+            recipientsTo: recipientsTo,
+            recipientsCc: recipientsCc,
+            recipientsBcc: recipientsBcc,
             date: Date(timeIntervalSince1970: 1724347300),
             location: location?.model,
             labels: labels,
-            other: [.starred, .pinned],
             attachments: .previewData
         )
     }

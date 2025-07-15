@@ -22,14 +22,21 @@ import enum proton_app_uniffi.ReplyAction
 
 struct MessageActionButtonsView: View {
     let isSingleRecipient: Bool
+    let isDisabled: Bool
     var onEvent: (ReplyAction) -> Void
 
     var body: some View {
         HStack() {
-            MessageActionButtonView(symbol: .reply, text: L10n.Action.Send.reply) { onEvent(.reply) }
-            MessageActionButtonView(symbol: .replyAll, text: L10n.Action.Send.replyAll) { onEvent(.replyAll) }
-                .removeViewIf(isSingleRecipient)
-            MessageActionButtonView(symbol: .forward, text: L10n.Action.Send.forward) { onEvent(.forward) }
+            MessageActionButtonView(symbol: .reply, text: L10n.Action.Send.reply, isDisabled: isDisabled) {
+                onEvent(.reply)
+            }
+            MessageActionButtonView(symbol: .replyAll, text: L10n.Action.Send.replyAll, isDisabled: isDisabled) {
+                onEvent(.replyAll)
+            }
+            .removeViewIf(isSingleRecipient)
+            MessageActionButtonView(symbol: .forward, text: L10n.Action.Send.forward, isDisabled: isDisabled) {
+                onEvent(.forward)
+            }
         }
         .padding(.horizontal, DS.Spacing.large)
     }
@@ -38,19 +45,20 @@ struct MessageActionButtonsView: View {
 private struct MessageActionButtonView: View {
     let symbol: DS.SFSymbol
     let text: LocalizedStringResource
+    let isDisabled: Bool
     var onButtonTap: () -> Void
 
     var body: some View {
         Button(action: onButtonTap) {
             HStack(spacing: DS.Spacing.medium) {
                 Image(symbol: symbol)
-                    .foregroundColor(DS.Color.Icon.norm)
+                    .foregroundColor(isDisabled ? DS.Color.Icon.disabled : DS.Color.Icon.norm)
                     .aspectRatio(contentMode: .fill)
                     .square(size: 20)
                 Text(text)
                     .font(.subheadline)
                     .fontWeight(.regular)
-                    .tint(DS.Color.Text.norm)
+                    .tint(isDisabled ? DS.Color.Text.disabled : DS.Color.Text.norm)
                     .lineLimit(1)
                     .truncationMode(.middle)
             }
@@ -63,9 +71,10 @@ private struct MessageActionButtonView: View {
                 }
             )
         }
+        .disabled(isDisabled)
     }
 }
 
 #Preview {
-    MessageActionButtonsView(isSingleRecipient: false, onEvent: { _ in })
+    MessageActionButtonsView(isSingleRecipient: false, isDisabled: false, onEvent: { _ in })
 }

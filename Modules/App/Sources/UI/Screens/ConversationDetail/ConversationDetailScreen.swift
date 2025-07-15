@@ -40,6 +40,7 @@ struct ConversationDetailScreen: View {
     }
 
     var body: some View {
+<<<<<<< HEAD
         ZStack {
             conversationView
             if !model.areActionsDisabled {
@@ -75,6 +76,27 @@ struct ConversationDetailScreen: View {
             }
         )
         .environment(\.messageAppearanceOverrideStore, model.messageAppearanceOverrideStore)
+=======
+        conversationView
+            .toolbar {
+                bottomToolbarContent
+            }
+            .toolbar(model.isBottomBarHidden ? .hidden : .visible, for: .bottomBar)
+            .bottomToolbarStyle()
+            .animation(.default, value: model.isBottomBarHidden)
+            .actionSheetsFlow(
+                mailbox: { model.mailbox.unsafelyUnwrapped },
+                state: $model.actionSheets,
+                replyActions: handleReplyAction,
+                goBackNavigation: { navigationPath.removeLast() }
+            )
+            .alert(model: $model.deleteConfirmationAlert)
+            .fullScreenCover(item: $model.attachmentIDToOpen) { id in
+                AttachmentView(config: .init(id: id, mailbox: model.mailbox.unsafelyUnwrapped))
+                    .edgesIgnoringSafeArea([.top, .bottom])
+            }
+            .environment(\.messageAppearanceOverrideStore, model.messageAppearanceOverrideStore)
+>>>>>>> main
     }
 
     private var conversationView: some View {
@@ -101,13 +123,35 @@ struct ConversationDetailScreen: View {
             )
             .opacity(animateViewIn ? 1.0 : 0.0)
             .smoothScreenTransition()
-            .ignoresSafeArea(.all, edges: .bottom)
-            .padding(.bottom, model.areActionsDisabled ? 0 : proxy.safeAreaInsets.bottom + 45)
             .task {
                 withAnimation(.easeIn) {
                     animateViewIn = true
                 }
                 await model.fetchInitialData()
+            }
+        }
+    }
+
+    private var bottomToolbarContent: some ToolbarContent {
+        ToolbarItemGroup(placement: .bottomBar) {
+            HStack(alignment: .center) {
+                ForEachEnumerated(model.bottomBarActions, id: \.offset) { action, index in
+                    if index == 0 {
+                        Spacer()
+                    }
+                    Button(action: {
+                        model.handleConversation(
+                            action: action,
+                            toastStateStore: toastStateStore,
+                            goBack: { navigationPath.removeLast() }
+                        )
+                    }) {
+                        action.displayData.icon
+                            .foregroundStyle(DS.Color.Icon.weak)
+                    }
+                    .accessibilityIdentifier(MailboxActionBarViewIdentifiers.button(index: index))
+                    Spacer()
+                }
             }
         }
     }
@@ -144,7 +188,7 @@ struct ConversationDetailScreen: View {
 
     @ViewBuilder
     private var navigationTrailingButton: some View {
-        if !model.areActionsDisabled {
+        if !model.areActionsHidden {
             Button(
                 action: {
                     model.toggleStarState()
@@ -273,4 +317,15 @@ extension ConversationDetailSeed {
         }
     }
 
+}
+
+// MARK: Accessibility
+
+private struct MailboxActionBarViewIdentifiers {
+    static let rootItem = "mailbox.actionBar.rootItem"
+
+    static func button(index: Int) -> String {
+        let number = index + 1
+        return "mailbox.actionBar.button\(number)"
+    }
 }

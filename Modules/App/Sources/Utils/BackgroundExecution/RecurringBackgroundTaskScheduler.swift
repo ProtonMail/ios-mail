@@ -100,8 +100,8 @@ class RecurringBackgroundTaskScheduler: @unchecked Sendable {
             await submit()
         }
 
-        callback = .init { [weak self] completionStatus in
-            self?.backgroundExecutionHasCompleted(completionStatus: completionStatus, task: task)
+        callback = .init { [weak self] result in
+            self?.backgroundExecutionHasCompleted(completionStatus: result.status, task: task)
         }
 
         do {

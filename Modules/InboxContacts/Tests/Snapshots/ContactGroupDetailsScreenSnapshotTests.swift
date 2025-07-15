@@ -19,7 +19,7 @@
 import InboxCoreUI
 import InboxSnapshotTesting
 import proton_app_uniffi
-import SwiftUICore
+import SwiftUI
 import XCTest
 
 final class ContactGroupDetailsScreenSnapshotTests: XCTestCase {

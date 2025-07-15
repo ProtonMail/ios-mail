@@ -17,6 +17,7 @@
 
 import CommonCrypto
 import Foundation
+import InboxCore
 import Scrypt
 
 actor MainKeyUnlocker {

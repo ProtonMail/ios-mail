@@ -27,7 +27,7 @@ struct MessageBodyView: View {
     let attachments: [AttachmentDisplayModel]
     let mailbox: Mailbox
     let editScheduledMessage: () -> Void
-    let htmlLoaded: () -> Void
+    @Binding var isBodyLoaded: Bool
     @Binding var attachmentIDToOpen: ID?
     @State var bodyContentHeight: CGFloat = .zero
 
@@ -36,17 +36,17 @@ struct MessageBodyView: View {
         emailAddress: String,
         attachments: [AttachmentDisplayModel],
         mailbox: Mailbox,
+        isBodyLoaded: Binding<Bool>,
         attachmentIDToOpen: Binding<ID?>,
-        editScheduledMessage: @escaping () -> Void,
-        htmlLoaded: @escaping () -> Void
+        editScheduledMessage: @escaping () -> Void
     ) {
         self.messageID = messageID
         self.emailAddress = emailAddress
         self.attachments = attachments
         self.mailbox = mailbox
+        self._isBodyLoaded = isBodyLoaded
         self._attachmentIDToOpen = attachmentIDToOpen
         self.editScheduledMessage = editScheduledMessage
-        self.htmlLoaded = htmlLoaded
     }
 
     var body: some View {
@@ -89,7 +89,7 @@ struct MessageBodyView: View {
             .onLoad { store.handle(action: .onLoad) }
             .onChange(of: bodyContentHeight) { oldValue, newValue in
                 if oldValue.isZero && !newValue.isZero {
-                    htmlLoaded()
+                    isBodyLoaded = true
                 }
             }
         }

@@ -65,7 +65,7 @@ extension KeychainSDKWrapper {
 
     private func osKeyChainError(error: Error, function: String = #function) -> OsKeyChainError {
         AppLogger.log(message: "KeychainSDKWrapper \(function): \(String(describing: error))", isError: true)
-        return OsKeyChainError.Os(message: String(describing: error))
+        return OsKeyChainError.Os(String(describing: error))
     }
 }
 

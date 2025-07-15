@@ -229,39 +229,6 @@ enum L10n {
         }
     }
 
-    enum BiometricLock {
-        static let biometricUnlockRationale = LocalizedStringResource(
-            "Please authenticate to unlock your screen.",
-            comment: "Displayed in the system PIN pop-up when FaceID for this app is disabled."
-        )
-        static let unlockButtonTitle = LocalizedStringResource(
-            "Unlock Proton Mail",
-            comment: "Title of a button that triggers biometric authorization on the lock screen."
-        )
-        enum BiometricsNotAvailableAlert {
-            static let signInAgainAction = LocalizedStringResource(
-                "Sign in again",
-                comment: "Alert action title. The alert is dispalyed when biometric is set as lock protection method, but it's not configured on the device."
-            )
-            static let title = LocalizedStringResource(
-                "Enable access",
-                comment: "Alert title. The alert is dispalyed when biometric is set as lock protection method, but it's not configured on the device."
-            )
-            static let messageFaceID = LocalizedStringResource(
-                "PIN and Face ID are disabled on your device. Enable them in Settings or sign in to unlock this app.",
-                comment: "Face ID version alert message. The alert is dispalyed when biometric is set as lock protection method, but it's not configured on the device."
-            )
-            static let messageTouchID = LocalizedStringResource(
-                "PIN and Touch ID are disabled on your device. Enable them in Settings or sign in to unlock this app.",
-                comment: "Touch ID version alert message. The alert is dispalyed when biometric is set as lock protection method, but it's not configured on the device."
-            )
-            static let defaultMessage = LocalizedStringResource(
-                "PIN and Biometry are disabled on your device. Enable them in Settings or sign in to unlock this app.",
-                comment: "Default version alert message. The alert is dispalyed when biometric is set as lock protection method, but it's not configured on the device."
-            )
-        }
-    }
-
     enum EventLoopError {
         static let eventLoopErrorMessage = LocalizedStringResource(
             "We encountered an issue while syncing your mail with the event loop. Please share the logs with our support team for further investigation. Try logging out and logging back in to resolve the issue.",
@@ -279,7 +246,6 @@ enum L10n {
             comment: "Used when the user marks an email as legitimate, including confirming legitimacy, overriding phishing detection, or overriding spam detection."
         )
         static let next = LocalizedStringResource("Next", comment: "`Next` action title.")
-        static let ok = LocalizedStringResource("Ok", comment: "`Ok` action title.")
     }
 
     enum LegacyMigration {
@@ -581,17 +547,10 @@ enum L10n {
     }
 
     enum MessageDetails {
-        static let bcc = LocalizedStringResource("Bcc", comment: "`BCC` in the messsage details.")
-        static let cc = LocalizedStringResource("Cc", comment: "`CC` in the messsage details.")
-        static let date = LocalizedStringResource("Date", comment: "`Date` in the message details.")
-        static let from = LocalizedStringResource("From", comment: "`From` in the message details.")
-        static let label = LocalizedStringResource("Label", comment: "`Label` in the message details.")
-        static let location = LocalizedStringResource("Location", comment: "`Location` in the message details.")
-        static let other = LocalizedStringResource(
-            "Other",
-            comment: "`Other` in the message details (e.g. starred, pinned messages)."
-        )
-        static let to = LocalizedStringResource("To", comment: "`To` in the message details.")
+        static let bcc = LocalizedStringResource("Bcc: ", comment: "`BCC` in the messsage details.")
+        static let cc = LocalizedStringResource("Cc: ", comment: "`CC` in the messsage details.")
+        static let from = LocalizedStringResource("From: ", comment: "`From` in the message details.")
+        static let to = LocalizedStringResource("To: ", comment: "`To` in the message details.")
         static func attachments(count: Int) -> LocalizedStringResource {
             .init("\(count) attachments", comment: "The number of a message attachments.")
         }
@@ -602,6 +561,10 @@ enum L10n {
         static let draftNoRecipientsPlaceholder = LocalizedStringResource(
             "To: ...",
             comment: "Placeholder for a draft in the conversation view when the draft has no recipients."
+        )
+        static let hideDetails = LocalizedStringResource(
+            "Hide details",
+            comment: "Title of the button that hide details of a message."
         )
     }
 
@@ -659,32 +622,8 @@ enum L10n {
             )
         }
 
-        static let subtitle = LocalizedStringResource(
-            "Confirm it's you to continue.",
-            comment: "Subtitle of PIN lock screen."
-        )
-        static let title = LocalizedStringResource(
-            "Enter PIN",
-            comment: "Title of the pin lock screen."
-        )
-        static let pinInputPlaceholder = LocalizedStringResource(
-            "PIN Code",
-            comment: "PIN input placeholder."
-        )
-        static let signOut = LocalizedStringResource(
-            "Sign out",
-            comment: "Title of the sign out button."
-        )
-        static let signOutConfirmationTitle = LocalizedStringResource(
-            "Sign Out of All Accounts",
-            comment: "Title of the sign out confirmation alert."
-        )
-        static let signOutConfirmationMessage = LocalizedStringResource(
-            "You're about to be signed out of all your accounts on this device. Do you want to continue?",
-            comment: "Message of the sign out confirmation alert."
-        )
         static let invalidPIN = LocalizedStringResource(
-            "Incorrect PIN. Please try agian.",
+            "Incorrect PIN. Please try again.",
             comment: "Error message when a user enters an invalid PIN"
         )
         static let tooManyAttempts = LocalizedStringResource(
@@ -695,12 +634,6 @@ enum L10n {
             "Too many attempts too quickly. Please wait before trying again.",
             comment: "Displayed when the user tries to validate their PIN too frequently."
         )
-        static func remainingAttemptsWarning(_ number: Int) -> LocalizedStringResource {
-            LocalizedStringResource(
-                "\(number) attempts remaining before sign-out.",
-                comment: "Remaining attempts after a user has entered a wrong PIN a few times."
-            )
-        }
     }
 
     enum ReportProblem {
@@ -976,6 +909,8 @@ enum L10n {
             "Privacy and security",
             comment: "Title of the Privacy and security settings item."
         )
+
+        static let signInOnAnotherDevice = LocalizedStringResource("Sign in on another device")
     }
 
     enum Sidebar {

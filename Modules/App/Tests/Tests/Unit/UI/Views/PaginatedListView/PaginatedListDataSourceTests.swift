@@ -16,176 +16,251 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Combine
+import InboxTesting
+import proton_app_uniffi
 @testable import ProtonMail
 import XCTest
 
+@MainActor
 final class PaginatedListDataSourceTests: XCTestCase {
     private var sut: PaginatedListDataSource<String>!
     private let dummyItemsForEachPage = ["Item 1", "Item 2"]
-    private var pageResult: PaginatedListDataSource<String>.NextPageResult!
-    private var fetchPage: PaginatedListDataSource<String>.FetchPage!
-    private var cancellables: Set<AnyCancellable>!
+    private var updateSubject: PassthroughSubject<PaginatedListUpdate<String>, Never> = .init()
+    private var cancellables: Set<AnyCancellable> = .init()
+    private var fetchMoreCallCounter: Int = 0
 
+    @MainActor
     override func setUp() {
-        super.setUp()
-        pageResult = PaginatedListDataSource<String>.NextPageResult(newItems: dummyItemsForEachPage, isLastPage: false)
-        fetchPage = createMockFetchPage(result: pageResult)
-        sut = PaginatedListDataSource(fetchPage: fetchPage)
-        cancellables = []
-    }
-
-    override func tearDown() {
-        sut = nil
-        pageResult = nil
-        fetchPage = nil
-        cancellables = nil
-        super.tearDown()
+        let provider = PaginatedListProvider(
+            updatePublisher: updateSubject.eraseToAnyPublisher(),
+            fetchMore: { [unowned self] currentPage in
+                self.fetchMoreCallCounter += 1
+            }
+        )
+        self.sut = PaginatedListDataSource(paginatedListProvider: provider)
     }
 
     // MARK: init
 
     func testInit_whenDefaultStateIsPassed_viewStateIsFetchingInitialPage() async {
-        XCTAssertEqual(sut.state.viewState, .fetchingInitialPage)
+        XCTAssertTrue(sut.state.viewState == .fetchingInitialPage)
     }
 
     // MARK: fetchInitialPage
 
-    func testFetchInitialPage_whenThereIsNoItem_stateBecomesDataWithPlaceholder() async {
-        let pageResult = PaginatedListDataSource<String>.NextPageResult(newItems: [], isLastPage: false)
-        let fetchPage = createMockFetchPage(result: pageResult)
-        sut = PaginatedListDataSource(fetchPage: fetchPage)
+    func testFetchInitialPage_itCallsFetchMore() async {
+        sut.fetchInitialPage()
+        XCTAssertEqual(fetchMoreCallCounter, 1)
+    }
 
-        var capturedStates: [PaginatedListViewState] = []
-        sut.$state.map(\.viewState).removeDuplicates().sink { viewState in
-            capturedStates.append(viewState)
+    func testFetchInitialPage_whenStateIsData_stateShouldGoToInitialStateAgain() async {
+        let capturedStates = await expectViewStateStates(count: 2) {
+            sut.fetchInitialPage()
+            updateSubject.send(.init(value: .append(items: dummyItemsForEachPage, isLastPage: false)))
         }
-        .store(in: &cancellables)
+        XCTAssertEqual(capturedStates, [.fetchingInitialPage, .data(.items(isLastPage: false))])
 
-        await sut.fetchInitialPage()
+        sut.fetchInitialPage()
+        XCTAssertEqual(sut.state.viewState, .fetchingInitialPage)
+    }
 
-        XCTAssertEqual(sut.state.items, pageResult.newItems)
+    // MARK: fetchNextPageIfNeeded
+
+    func testFetchNextPageIfNeeded_whenNotLastPage_itCallsFetchMore() async {
+        await expectViewStateStates(count: 2) {
+            sut.fetchInitialPage()
+            updateSubject.send(.init(value: .append(items: dummyItemsForEachPage, isLastPage: false)))
+        }
+        XCTAssertEqual(fetchMoreCallCounter, 1)
+        sut.fetchNextPageIfNeeded()
+        XCTAssertEqual(fetchMoreCallCounter, 2)
+    }
+
+    func testFetchNextPageIfNeeded_whenLastPage_itDoesNotCallFetchMore() async {
+        await expectViewStateStates(count: 2) {
+            sut.fetchInitialPage()
+            updateSubject.send(.init(value: .append(items: dummyItemsForEachPage, isLastPage: true)))
+        }
+        XCTAssertEqual(fetchMoreCallCounter, 1)
+        sut.fetchNextPageIfNeeded()
+        XCTAssertEqual(fetchMoreCallCounter, 1)
+    }
+
+    // MARK: updatePublisher
+
+    func testUpdatePublisher_none_itUpdateStateToNotFetchingNextPage() async {
+        await expectViewStateStates(count: 2) {
+            sut.fetchInitialPage()
+            updateSubject.send(.init(value: .none))
+        }
+
+        XCTAssertEqual(sut.state.isFetchingNextPage, false)
+    }
+
+    func testUpdatePublisher_append_whenNoItems_stateBecomesDataWithPlaceholder() async {
+        let capturedStates = await expectViewStateStates(count: 2) {
+            sut.fetchInitialPage()
+            updateSubject.send(.init(value: .append(items: [], isLastPage: false)))
+        }
+
+        XCTAssertEqual(sut.state.items, [])
         XCTAssertEqual(capturedStates, [.fetchingInitialPage, .data(.placeholder)])
     }
 
-    func testFetchInitialPage_whenThereIsAtLeastOneItem_stateBecomesDataWithItems() async {
-        var capturedStates: [PaginatedListViewState] = []
-        sut.$state.map(\.viewState).removeDuplicates().sink { viewState in
-            capturedStates.append(viewState)
+    func testUpdatePublisher_append_whenItems_stateBecomesDataWithItems() async {
+        let capturedStates = await expectViewStateStates(count: 2) {
+            sut.fetchInitialPage()
+            updateSubject.send(.init(value: .append(items: dummyItemsForEachPage, isLastPage: false)))
         }
-        .store(in: &cancellables)
 
-        await sut.fetchInitialPage()
-
-        XCTAssertEqual(sut.state.items, pageResult.newItems)
+        XCTAssertEqual(sut.state.items, dummyItemsForEachPage)
         XCTAssertEqual(capturedStates, [.fetchingInitialPage, .data(.items(isLastPage: false))])
     }
 
-    func testFetchInitialPage_whenPageIsLast_stateShouldBecomeDataAndIsLastPage() async {
-        pageResult = PaginatedListDataSource<String>.NextPageResult(newItems: dummyItemsForEachPage, isLastPage: true)
-        fetchPage = createMockFetchPage(result: pageResult)
-
-        sut = PaginatedListDataSource(pageSize: 4, fetchPage: fetchPage)
-
-        var capturedStates: [PaginatedListViewState] = []
-        sut.$state.map(\.viewState).removeDuplicates().sink { viewState in
-            capturedStates.append(viewState)
+    func testUpdatePublisher_append_whenItems_andLastPage_stateBecomesDataAndIsLastPage() async {
+        let capturedStates = await expectViewStateStates(count: 2) {
+            sut.fetchInitialPage()
+            updateSubject.send(.init(value: .append(items: dummyItemsForEachPage, isLastPage: true)))
         }
-        .store(in: &cancellables)
 
-        await sut.fetchInitialPage()
-
-        XCTAssertEqual(sut.state.items, pageResult.newItems)
+        XCTAssertEqual(sut.state.items, dummyItemsForEachPage)
         XCTAssertEqual(capturedStates, [.fetchingInitialPage, .data(.items(isLastPage: true))])
     }
 
-    func testFetchInitialPage_whenStateIsData_stateShouldGoThorughFetchingInitialStateAgain() async {
-        var capturedStates: [PaginatedListViewState] = []
-        sut.$state.map(\.viewState).removeDuplicates().sink { viewState in
-            capturedStates.append(viewState)
+    func testUpdatePublisher_replaceFrom_whenAddingItems() async {
+        await expectIsLastPage {
+            updateSubject.send(.init(value: .append(items: ["1", "2"], isLastPage: false)))
+            updateSubject.send(.init(value: .replaceFrom(index: 1, items: ["3", "4"])))
+            updateSubject.send(.init(value: .append(items: [], isLastPage: true)))
         }
-        .store(in: &cancellables)
 
-        await sut.fetchInitialPage()
-        await sut.fetchNextPageIfNeeded()
-        XCTAssertEqual(sut.state.items, ["Item 1", "Item 2", "Item 1", "Item 2"])
-        XCTAssertEqual(capturedStates, [.fetchingInitialPage, .data(.items(isLastPage: false))])
-
-        await sut.fetchInitialPage()
-        XCTAssertEqual(sut.state.items, ["Item 1", "Item 2"])
-        XCTAssertEqual(capturedStates, [
-            .fetchingInitialPage,
-            .data(.items(isLastPage: false)),
-            .fetchingInitialPage,
-            .data(.items(isLastPage: false))
-        ])
+        XCTAssertEqual(sut.state.items, ["1", "3", "4"])
     }
 
-    // MARK: fetchNextPage
-
-    func testFetchNextPageIfNeeded_whenMoreThanOnePageAvailable_stateShouldBecomeDataWithItems() async {
-        var capturedStates: [PaginatedListViewState] = []
-        sut.$state.map(\.viewState).removeDuplicates().sink { viewState in
-            capturedStates.append(viewState)
+    func testUpdatePublisher_replaceFrom_whenRemovingItems() async {
+        await expectIsLastPage {
+            updateSubject.send(.init(value: .append(items: ["1", "2"], isLastPage: false)))
+            updateSubject.send(.init(value: .replaceFrom(index: 1, items: [])))
+            updateSubject.send(.init(value: .append(items: [], isLastPage: true)))
         }
-        .store(in: &cancellables)
 
-        await sut.fetchInitialPage()
-        await sut.fetchNextPageIfNeeded()
-
-        XCTAssertEqual(sut.state.items, ["Item 1", "Item 2", "Item 1", "Item 2"])
-        XCTAssertEqual(capturedStates, [.fetchingInitialPage, .data(.items(isLastPage: false))])
+        XCTAssertEqual(sut.state.items, ["1"])
     }
 
-    func testFetchNextPageIfNeeded_whenAllPagesFetched_stateShouldBecomeDataWithIsLastPage() async {
-        sut = PaginatedListDataSource(fetchPage: { currentPage, pageSize in
-            if currentPage == 0 {
-                return .init(newItems: ["Item 1", "Item 2"], isLastPage: false)
-            } else if currentPage == 1 {
-                return .init(newItems: ["Item 3", "Item 4"], isLastPage: false)
-            } else if currentPage == 2 {
-                return .init(newItems: ["Item 5", "Item 6"], isLastPage: true)
-            }
-            XCTFail("unexpected call")
-            return .init(newItems: [], isLastPage: Bool.random())
-        })
-
-        var capturedStates: [PaginatedListViewState] = []
-        sut.$state.map(\.viewState).removeDuplicates().sink { viewState in
-            capturedStates.append(viewState)
+    func testUpdatePublisher_replaceFrom_whenRemovingAllItems() async {
+        await expectIsLastPage {
+            updateSubject.send(.init(value: .append(items: ["1", "2"], isLastPage: false)))
+            updateSubject.send(.init(value: .replaceFrom(index: 0, items: [])))
+            updateSubject.send(.init(value: .append(items: [], isLastPage: true)))
         }
-        .store(in: &cancellables)
 
-        await sut.fetchInitialPage()
-        await sut.fetchNextPageIfNeeded()
-        await sut.fetchNextPageIfNeeded()
-
-        XCTAssertEqual(sut.state.items, ["Item 1", "Item 2", "Item 3", "Item 4", "Item 5", "Item 6"])
-        XCTAssertEqual(capturedStates, [
-            .fetchingInitialPage,
-            .data(.items(isLastPage: false)),
-            .data(.items(isLastPage: true))
-        ])
+        XCTAssertEqual(sut.state.items, [])
     }
 
-    // MARK: updateItems
+    func testUpdatePublisher_replaceFrom_whenhInvalidIndex_itDoesNotCrash() async {
+        await expectIsLastPage {
+            updateSubject.send(.init(value: .append(items: [], isLastPage: false)))
+            updateSubject.send(.init(value: .replaceFrom(index: 1, items: ["1"])))
+            updateSubject.send(.init(value: .replaceFrom(index: -1, items: ["1"])))
+            updateSubject.send(.init(value: .append(items: [], isLastPage: true)))
+        }
 
-    func testUpdateItems_itShouldOverwriteExistingItems() async {
-        sut = PaginatedListDataSource(pageSize: 2, fetchPage: fetchPage)
-        await sut.fetchInitialPage()
-        XCTAssertEqual(sut.state.items, ["Item 1", "Item 2"])
+        XCTAssertEqual(sut.state.items, [])
+    }
 
-        let updatedItems = ["New Item 1", "New Item 2"]
-        await sut.updateItems(updatedItems)
+    func testUpdatePublisher_replaceBefore_whenAddingItems() async {
+        await expectIsLastPage {
+            updateSubject.send(.init(value: .append(items: ["1", "2"], isLastPage: false)))
+            updateSubject.send(.init(value: .replaceBefore(index: 1, items: ["3", "4"])))
+            updateSubject.send(.init(value: .append(items: [], isLastPage: true)))
+        }
 
-        XCTAssertEqual(sut.state.items, updatedItems)
+        XCTAssertEqual(sut.state.items, ["3", "4", "2"])
+    }
+
+    func testUpdatePublisher_replaceBefore_whenRemovingItems() async {
+        await expectIsLastPage {
+            updateSubject.send(.init(value: .append(items: ["1", "2"], isLastPage: false)))
+            updateSubject.send(.init(value: .replaceBefore(index: 1, items: [])))
+            updateSubject.send(.init(value: .append(items: [], isLastPage: true)))
+        }
+
+        XCTAssertEqual(sut.state.items, ["2"])
+    }
+
+    func testUpdatePublisher_replaceBefore_whenRemovingAllItems() async {
+        await expectIsLastPage {
+            updateSubject.send(.init(value: .append(items: ["1", "2"], isLastPage: false)))
+            updateSubject.send(.init(value: .replaceBefore(index: 2, items: [])))
+            updateSubject.send(.init(value: .append(items: [], isLastPage: true)))
+        }
+
+        XCTAssertEqual(sut.state.items, [])
+    }
+
+    func testUpdatePublisher_replaceBefore_whenhInvalidIndex_itDoesNotCrash() async {
+        await expectIsLastPage {
+            updateSubject.send(.init(value: .append(items: [], isLastPage: false)))
+            updateSubject.send(.init(value: .replaceBefore(index: 1, items: ["1"])))
+            updateSubject.send(.init(value: .replaceBefore(index: -1, items: ["1"])))
+            updateSubject.send(.init(value: .append(items: [], isLastPage: true)))
+        }
+
+        XCTAssertEqual(sut.state.items, [])
+    }
+
+    func testUpdatePublisher_error_itUpdateStateToNotFetchingNextPage() async {
+        await expectViewStateStates(count: 2) {
+            sut.fetchInitialPage()
+            updateSubject.send(.init(value: .error(MailScrollerError.other(.network))))
+        }
+
+        XCTAssertEqual(sut.state.isFetchingNextPage, false)
     }
 }
 
-extension PaginatedListDataSourceTests {
+private extension PaginatedListDataSourceTests {
 
-    private func createMockFetchPage(result: PaginatedListDataSource<String>.NextPageResult) -> PaginatedListDataSource<String>.FetchPage {
-        return { _, _ in
-            return result
-        }
+    func expectIsLastPage(timeout: TimeInterval = 1.0, perform: () -> Void) async {
+        let expectation = XCTestExpectation(description: "Wait for isLastPage")
+
+        sut.$state
+            .removeDuplicates()
+            .sink { state in
+                if state.isLastPage {
+                    expectation.fulfill()
+                }
+            }
+            .store(in: &cancellables)
+
+        perform()
+
+        await fulfillment(of: [expectation], timeout: timeout)
+    }
+
+    @discardableResult
+    func expectViewStateStates(
+        count expectedCount: Int,
+        timeout: TimeInterval = 1.0,
+        perform: () -> Void
+    ) async -> [PaginatedListViewState] {
+        let expectation = XCTestExpectation(description: "Wait for \(expectedCount) state updates")
+        var capturedStates: [PaginatedListViewState] = []
+
+        sut.$state
+            .map(\.viewState)
+            .removeDuplicates()
+            .sink { viewState in
+                capturedStates.append(viewState)
+                if capturedStates.count == expectedCount {
+                    expectation.fulfill()
+                }
+            }
+            .store(in: &cancellables)
+
+        perform()
+
+        await fulfillment(of: [expectation], timeout: timeout)
+        return capturedStates
     }
 }

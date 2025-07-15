@@ -8,7 +8,7 @@ let package = Package(
     defaultLocalization: "en",
     platforms: [.iOS(.v17)],
     products: [
-        .library(name: "InboxContacts", targets: ["InboxContacts"]),
+        .library(name: "InboxContacts", targets: ["InboxContacts"])
     ],
     dependencies: [
         .package(path: "../InboxCore"),
@@ -17,8 +17,8 @@ let package = Package(
         .package(path: "../InboxSnapshotTesting"),
         .package(path: "../InboxTesting"),
         .package(path: "../../ProtonPackages/proton_app_uniffi"),
-        .package(path: "../../ProtonPackages/ProtonCoreET"),
-        .package(url: "https://github.com/nalexn/ViewInspector.git", from: "0.9.11")
+        .package(path: "../../ProtonPackages/et-protoncore/platform/apple/ProtonCoreET"),
+        .package(url: "https://github.com/nalexn/ViewInspector.git", from: "0.9.11"),
     ],
     targets: [
         .target(
@@ -28,7 +28,7 @@ let package = Package(
                 "InboxCoreUI",
                 "InboxDesignSystem",
                 "proton_app_uniffi",
-                .product(name: "AccountLogin", package: "ProtonCoreET")
+                .product(name: "AccountLogin", package: "ProtonCoreET"),
             ],
             resources: [
                 .process("Resources")
@@ -40,8 +40,8 @@ let package = Package(
                 .target(name: "InboxContacts"),
                 .product(name: "InboxSnapshotTesting", package: "InboxSnapshotTesting"),
                 .product(name: "InboxTesting", package: "InboxTesting"),
-                .product(name: "ViewInspector", package: "ViewInspector")
+                .product(name: "ViewInspector", package: "ViewInspector"),
             ]
-        )
+        ),
     ]
 )
