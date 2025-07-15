@@ -111,7 +111,6 @@ struct MailboxScreen: View {
                 isUnsnoozeVisible: true,
                 customButtonType: .regular
             ))
-            .presentationDetents([.medium, .large]) // FIXME:
         }
         .onChange(of: mailboxModel.toast) { showToast($1) }
         .accessibilityIdentifier(MailboxScreenIdentifiers.rootItem)
