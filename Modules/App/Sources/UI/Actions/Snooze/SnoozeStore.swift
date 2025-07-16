@@ -19,6 +19,7 @@ import InboxCore
 import InboxCoreUI
 import SwiftUI
 
+@MainActor
 class SnoozeStore: StateStore {
     @Published var state: SnoozeState
 
@@ -26,20 +27,49 @@ class SnoozeStore: StateStore {
         self.state = state
     }
 
-    @MainActor
     func handle(action: SnoozeViewAction) async {
         switch action {
-        case .transtion(let screen):
-            withAnimation {
-                state = state
-                    .copy(\.screen, to: screen)
-                    .copy(\.allowedDetents, to: screen.allowedDetents)
-                    .copy(\.currentDetent, to: screen.detent)
-            } completion: { [weak self] in
-                guard let self else { return }
-                self.state = self.state
-                    .copy(\.allowedDetents, to: [screen.detent])
-            }
+        case .customButtonTapped:
+            transition(to: .custom)
+        case .upgradeTapped:
+            break
+        case .predefinedSnoozeOptionTapped:
+            break
+        case .unsnoozeTapped:
+            break
+        case .customSnoozeCancelTapped:
+            transition(to: .main)
         }
     }
+
+    private func transition(to screen: SnoozeView.Screen) {
+        withAnimation {
+            state = state
+                .copy(\.screen, to: screen)
+                .copy(\.allowedDetents, to: screen.allowedDetents)
+                .copy(\.currentDetent, to: screen.detent)
+        } completion: { [weak self] in
+            guard let self else { return }
+            self.state = self.state
+                .copy(\.allowedDetents, to: [screen.detent])
+        }
+    }
+
+}
+
+extension SnoozeView.Screen {
+
+    var detent: PresentationDetent {
+        switch self {
+        case .custom:
+            .large
+        case .main:
+            .medium
+        }
+    }
+
+    var allowedDetents: Set<PresentationDetent> {
+        Set(Self.allCases.map(\.detent))
+    }
+
 }

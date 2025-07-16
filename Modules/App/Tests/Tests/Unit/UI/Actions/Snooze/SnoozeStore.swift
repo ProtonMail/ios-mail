@@ -15,25 +15,37 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import InboxCore
-import SwiftUI
+@testable import ProtonMail
+import Testing
 
-struct SnoozeState: Copying {
-    var screen: SnoozeView.Screen
-    let actions: SnoozeActions
-    var currentDetent: PresentationDetent
-    var allowedDetents: Set<PresentationDetent>
-}
+@MainActor
+struct SnoozeStoreTests {
 
-extension SnoozeState {
-
-    static func initial(actions: SnoozeActions, screen: SnoozeView.Screen) -> Self {
-        return .init(
-            screen: screen,
-            actions: actions,
-            currentDetent: screen.detent,
-            allowedDetents: [screen.detent]
+    let sut = SnoozeStore(
+        state: .initial(
+            actions: .init(
+                predefined: [],
+                isUnsnoozeVisible: true,
+                customButtonType: .regular
+            ),
+            screen: .main
         )
+    )
+
+    @Test
+    func testCustomButtonTapped_transitionsToCustomView() async {
+        await sut.handle(action: .customButtonTapped)
+
+        #expect(sut.state.screen == .custom)
+    }
+
+    @Test
+    func customSnoozeCancelTapped_transitionsToMainView() async {
+        sut.state = sut.state.copy(\.screen, to: .custom)
+
+        await sut.handle(action: .customSnoozeCancelTapped)
+
+        #expect(sut.state.screen == .main)
     }
 
 }

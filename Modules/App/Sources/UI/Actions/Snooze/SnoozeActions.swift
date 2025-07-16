@@ -17,6 +17,7 @@
 
 // MARK: - Rust API - to remove
 
+import InboxDesignSystem
 import Foundation
 
 struct SnoozeActions {
@@ -81,4 +82,18 @@ extension PredefinedSnooze {
         return formatter.string(from: date)
     }
 
+}
+
+private enum SnoozeFormatter {
+    static let timeOnlyFormatter = {
+        let formatter = DateFormatter()
+        formatter.setLocalizedDateFormatFromTemplate("jm")
+        return formatter
+    }()
+
+    static let weekDayWithTimeFormatter = {
+        let formatter = DateFormatter()
+        formatter.setLocalizedDateFormatFromTemplate("EEEEjm")
+        return formatter
+    }()
 }

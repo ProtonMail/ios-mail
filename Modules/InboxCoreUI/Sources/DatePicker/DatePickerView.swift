@@ -39,7 +39,7 @@ public struct DatePickerView: View {
         VStack(alignment: .leading, spacing: DS.Spacing.large) {
             HStack {
                 Button(CommonL10n.cancel.string, action: onCancel)
-                    .foregroundStyle(DS.Color.Text.weak)
+                    .foregroundStyle(DS.Color.Text.accent)
                     .font(.body)
                     .fontWeight(.regular)
 

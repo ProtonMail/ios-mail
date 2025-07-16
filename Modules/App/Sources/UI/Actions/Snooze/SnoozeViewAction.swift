@@ -16,5 +16,9 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 enum SnoozeViewAction {
-    case transtion(to: SnoozeView.Screen)
+    case customButtonTapped
+    case upgradeTapped
+    case predefinedSnoozeOptionTapped(PredefinedSnooze)
+    case unsnoozeTapped
+    case customSnoozeCancelTapped
 }

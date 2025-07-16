@@ -28,23 +28,14 @@ struct SnoozeView: View {
     enum Screen: CaseIterable {
         case custom
         case main
-
-        var detent: PresentationDetent {
-            switch self {
-            case .custom:
-                .large
-            case .main:
-                .medium
-            }
-        }
-
-        var allowedDetents: Set<PresentationDetent> {
-            Set(Self.allCases.map(\.detent))
-        }
     }
 
-    init(snoozeActions: SnoozeActions) {
-        _store = .init(wrappedValue: .init(state: .initial(actions: snoozeActions)))
+    init(snoozeActions: SnoozeActions, initialScreen: Screen = .main) {
+        _store = .init(
+            wrappedValue: .init(
+                state: .initial(
+                    actions: snoozeActions, screen: initialScreen)
+            ))
     }
 
     private let columns = [
@@ -58,7 +49,7 @@ struct SnoozeView: View {
         case .custom:
             DatePickerView(
                 configuration: SnoozeDatePickerConfiguration(),
-                onCancel: { store.handle(action: .transtion(to: .main)) },
+                onCancel: { store.handle(action: .customSnoozeCancelTapped) },
                 onSelect: { _ in }
             )
         case .main:
@@ -102,7 +93,7 @@ struct SnoozeView: View {
     }
 
     private func buttonWithIcon(for model: PredefinedSnooze) -> some View {
-        Button(action: {}) {
+        Button(action: { store.handle(action: .predefinedSnoozeOptionTapped(model)) }) {
             VStack(alignment: .center, spacing: DS.Spacing.standard) {
                 Image(symbol: model.icon)
                     .font(.title2)
@@ -128,7 +119,7 @@ struct SnoozeView: View {
 
     private func unsnoozeButton() -> some View {
         FormSmallButton(title: L10n.Snooze.unsnoozeButtonTitle, rightSymbol: nil) {
-            // FIXME: - Add unsnooze action
+            store.handle(action: .unsnoozeTapped)
         }
         .roundedRectangleStyle()
     }
@@ -139,22 +130,8 @@ struct SnoozeView: View {
             symbol: .chevronRight,
             value: L10n.Snooze.customButtonSubtitle.string
         ) {
-            store.handle(action: .transtion(to: .custom))
+            store.handle(action: .customButtonTapped)
         }
         .roundedRectangleStyle()
     }
-}
-
-private enum SnoozeFormatter {
-    static let timeOnlyFormatter = {
-        let formatter = DateFormatter()
-        formatter.setLocalizedDateFormatFromTemplate("jm")
-        return formatter
-    }()
-
-    static let weekDayWithTimeFormatter = {
-        let formatter = DateFormatter()
-        formatter.setLocalizedDateFormatFromTemplate("EEEEjm")
-        return formatter
-    }()
 }
