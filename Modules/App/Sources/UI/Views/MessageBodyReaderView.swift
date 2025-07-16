@@ -72,6 +72,10 @@ struct MessageBodyReaderView: UIViewRepresentable {
         context.coordinator.urlOpener = context.environment.openURL
     }
 
+    static func dismantleUIView(_ uiView: WKWebView, coordinator: Coordinator) {
+        uiView.configuration.userContentController.removeAllScriptMessageHandlers()
+    }
+
     func loadHTML(in webView: WKWebView) {
         let style = """
             <style>
