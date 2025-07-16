@@ -18449,6 +18449,9 @@
     "Unsubscribe" : {
       "comment" : "Action to unsubscribe from the mailing list."
     },
+    "Upgrade for full flexibility" : {
+      "comment" : "Custom button subtitle for a free user on snooze sheet."
+    },
     "Upgrade to Auto-delete" : {
       "comment" : "Empty Spam/Trash Banner: Action button to upgrade the account for auto-delete functionality."
     },

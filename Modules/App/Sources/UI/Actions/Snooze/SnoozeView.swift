@@ -141,7 +141,7 @@ struct SnoozeView: View {
                             case .regular:
                                 customButton()
                             case .upgrade:
-                                EmptyView() // FIXME: - Add upgrade button
+                                UpgradeButton()
                             }
                             if store.state.actions.isUnsnoozeVisible {
                                 unsnoozeButton()
@@ -292,5 +292,55 @@ struct PredefinedSnooze: Hashable {
         case laterThisWeek
         case thisWeekend
         case nextWeek
+    }
+}
+
+struct UpgradeButton: View {
+
+    var body: some View {
+        Button(action: {}) {
+            HStack {
+                VStack(alignment: .leading, spacing: DS.Spacing.small) {
+                    Text(L10n.Snooze.customButtonTitle)
+                        .font(.callout)
+                        .foregroundStyle(DS.Color.Text.norm)
+                    Text(L10n.Snooze.customButtonSubtitle)
+                        .font(.footnote)
+                        .foregroundStyle(DS.Color.Text.weak)
+                }
+                Spacer()
+                Image(DS.Icon.icBrandProtonMailUpsell)
+            }
+            .padding(.vertical, DS.Spacing.moderatelyLarge)
+            .padding(.horizontal, DS.Spacing.large)
+        }
+        .buttonStyle(UpgradeButtonStyle())
+        .frame(maxWidth: .infinity)
+    }
+
+    struct UpgradeButtonStyle: ButtonStyle {
+        func makeBody(configuration: Configuration) -> some View {
+            configuration.label
+                .background(
+                    RoundedRectangle(cornerRadius: DS.Radius.extraLarge)
+                        .fill(configuration.isPressed ? DS.Color.InteractionWeak.pressed : DS.Color.BackgroundInverted.secondary)
+                        .stroke(
+                            LinearGradient(
+                                gradient: Gradient(colors: DS.Color.Gradient.crazy),
+                                startPoint: .leading,
+                                endPoint: .trailing
+                            ),
+                            lineWidth: 1
+                        )
+                )
+        }
+    }
+
+}
+
+#Preview {
+    ZStack {
+        UpgradeButton()
+            .padding()
     }
 }

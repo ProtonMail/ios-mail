@@ -978,6 +978,10 @@ enum L10n {
             "This weekend",
             comment: "Predefined snooze option that postpones item until the upcoming weekend."
         )
+        static let upsellButtonSubtitle = LocalizedStringResource(
+            "Upgrade for full flexibility",
+            comment: "Custom button subtitle for a free user on snooze sheet."
+        )
     }
 
     enum Toast {
