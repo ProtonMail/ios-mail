@@ -17,74 +17,8 @@
 
 import InboxCore
 import InboxCoreUI
-import SwiftUI
-
-enum SnoozeViewAction {
-    case transtion(to: SnoozeView.Screen)
-}
-
-struct SnoozeState: Copying {
-    var screen: SnoozeView.Screen
-    let actions: SnoozeActions
-    var currentDetent: PresentationDetent
-    var allowedDetents: Set<PresentationDetent>
-}
-
-extension SnoozeState {
-
-    static func initial(actions: SnoozeActions) -> Self {
-        let screen = SnoozeView.Screen.main
-        return .init(screen: screen, actions: actions, currentDetent: screen.detent, allowedDetents: [screen.detent])
-    }
-
-}
-
-class SnoozeStore: StateStore {
-    @Published var state: SnoozeState
-
-    init(state: SnoozeState) {
-        self.state = state
-    }
-
-    @MainActor
-    func handle(action: SnoozeViewAction) async {
-        switch action {
-        case .transtion(let screen):
-            withAnimation {
-                state = state
-                    .copy(\.screen, to: screen)
-                    .copy(\.allowedDetents, to: screen.allowedDetents)
-                    .copy(\.currentDetent, to: screen.detent)
-            } completion: { [weak self] in
-                guard let self else { return }
-                self.state = self.state
-                    .copy(\.allowedDetents, to: [screen.detent])
-            }
-        }
-    }
-}
-
 import InboxDesignSystem
-
-import struct InboxComposer.ScheduleSendDateFormatter
-
-struct SnoozeDatePickerConfiguration: DatePickerViewConfiguration {
-    let title: LocalizedStringResource = L10n.Snooze.customSnoozeSheetTitle
-    let selectTitle: LocalizedStringResource = L10n.Common.save
-    let minuteInterval: TimeInterval = 30
-
-    var range: ClosedRange<Date> {
-        let start = Date()
-        let end = Date.distantFuture
-        return start...end
-    }
-
-    let formatter = ScheduleSendDateFormatter()
-
-    func formatDate(_ date: Date) -> String {
-        formatter.string(from: date, format: .medium)
-    }
-}
+import SwiftUI
 
 struct SnoozeView: View {
     @StateObject var store: SnoozeStore
@@ -120,42 +54,40 @@ struct SnoozeView: View {
 
     @ViewBuilder
     var sheetContent: some View {
-        Group {
-            switch store.state.screen {
-            case .custom:
-                DatePickerView(
-                    configuration: SnoozeDatePickerConfiguration(),
-                    onCancel: { store.handle(action: .transtion(to: .main)) },
-                    onSelect: { _ in }
-                )
-            case .main:
-                ClosableScreen {
-                    ScrollView {
-                        VStack(alignment: .leading, spacing: DS.Spacing.medium) {
-                            LazyVGrid(columns: columns, alignment: .center, spacing: Self.gridSpacing) {
-                                ForEach(store.state.actions.predefined, id: \.self) { predefinedSnooze in
-                                    buttonWithIcon(for: predefinedSnooze)
-                                }
-                            }
-                            switch store.state.actions.customButtonType {
-                            case .regular:
-                                customButton()
-                            case .upgrade:
-                                UpgradeButton()
-                            }
-                            if store.state.actions.isUnsnoozeVisible {
-                                unsnoozeButton()
-                                    .padding(.top, DS.Spacing.medium)
+        switch store.state.screen {
+        case .custom:
+            DatePickerView(
+                configuration: SnoozeDatePickerConfiguration(),
+                onCancel: { store.handle(action: .transtion(to: .main)) },
+                onSelect: { _ in }
+            )
+        case .main:
+            ClosableScreen {
+                ScrollView {
+                    VStack(alignment: .leading, spacing: DS.Spacing.medium) {
+                        LazyVGrid(columns: columns, alignment: .center, spacing: Self.gridSpacing) {
+                            ForEach(store.state.actions.predefined, id: \.self) { predefinedSnooze in
+                                buttonWithIcon(for: predefinedSnooze)
                             }
                         }
-                        .padding(.horizontal, DS.Spacing.large)
-                        .padding(.top, DS.Spacing.medium)
-                        .padding(.bottom, DS.Spacing.extraLarge)
+                        switch store.state.actions.customButtonType {
+                        case .regular:
+                            customButton()
+                        case .upgrade:
+                            UpgradeButton()
+                        }
+                        if store.state.actions.isUnsnoozeVisible {
+                            unsnoozeButton()
+                                .padding(.top, DS.Spacing.medium)
+                        }
                     }
-                    .navigationTitle(L10n.Snooze.snoozeUntil.string)
-                    .navigationBarTitleDisplayMode(.inline)
-                    .background(DS.Color.BackgroundInverted.norm)
+                    .padding(.horizontal, DS.Spacing.large)
+                    .padding(.top, DS.Spacing.medium)
+                    .padding(.bottom, DS.Spacing.extraLarge)
                 }
+                .navigationTitle(L10n.Snooze.snoozeUntil.string)
+                .navigationBarTitleDisplayMode(.inline)
+                .background(DS.Color.BackgroundInverted.norm)
             }
         }
     }
@@ -209,49 +141,8 @@ struct SnoozeView: View {
         ) {
             store.handle(action: .transtion(to: .custom))
         }
-            .roundedRectangleStyle()
+        .roundedRectangleStyle()
     }
-}
-
-extension PredefinedSnooze {
-
-    var title: LocalizedStringResource {
-        switch type {
-        case .tomorrow:
-            L10n.Snooze.snoozeTomorrow
-        case .laterThisWeek:
-            L10n.Snooze.snoozeLaterThisWeek
-        case .nextWeek:
-            L10n.Snooze.snoozeNextWeek
-        case .thisWeekend:
-            L10n.Snooze.snoozeThisWeekend
-        }
-    }
-
-    var icon: DS.SFSymbol {
-        switch type {
-        case .tomorrow:
-            .sunMax
-        case .laterThisWeek:
-            .sunLeftHalfFilled
-        case .thisWeekend:
-            .sofa
-        case .nextWeek:
-            .suitcase
-        }
-    }
-
-    var time: String {
-        let formatter =
-            switch type {
-            case .tomorrow:
-                SnoozeFormatter.timeOnlyFormatter
-            case .laterThisWeek, .thisWeekend, .nextWeek:
-                SnoozeFormatter.weekDayWithTimeFormatter
-            }
-        return formatter.string(from: date)
-    }
-
 }
 
 private enum SnoozeFormatter {
@@ -266,81 +157,4 @@ private enum SnoozeFormatter {
         formatter.setLocalizedDateFormatFromTemplate("EEEEjm")
         return formatter
     }()
-}
-
-// MARK: - Rust API
-
-import Foundation
-
-struct SnoozeActions {
-    let predefined: [PredefinedSnooze]
-    let isUnsnoozeVisible: Bool
-    let customButtonType: CustomButtonType
-
-    enum CustomButtonType {
-        case regular
-        case upgrade
-    }
-}
-
-struct PredefinedSnooze: Hashable {
-    let type: PredefinedSnoozeType
-    let date: Date
-
-    enum PredefinedSnoozeType: Hashable {
-        case tomorrow
-        case laterThisWeek
-        case thisWeekend
-        case nextWeek
-    }
-}
-
-struct UpgradeButton: View {
-
-    var body: some View {
-        Button(action: {}) {
-            HStack {
-                VStack(alignment: .leading, spacing: DS.Spacing.small) {
-                    Text(L10n.Snooze.customButtonTitle)
-                        .font(.callout)
-                        .foregroundStyle(DS.Color.Text.norm)
-                    Text(L10n.Snooze.customButtonSubtitle)
-                        .font(.footnote)
-                        .foregroundStyle(DS.Color.Text.weak)
-                }
-                Spacer()
-                Image(DS.Icon.icBrandProtonMailUpsell)
-            }
-            .padding(.vertical, DS.Spacing.moderatelyLarge)
-            .padding(.horizontal, DS.Spacing.large)
-        }
-        .buttonStyle(UpgradeButtonStyle())
-        .frame(maxWidth: .infinity)
-    }
-
-    struct UpgradeButtonStyle: ButtonStyle {
-        func makeBody(configuration: Configuration) -> some View {
-            configuration.label
-                .background(
-                    RoundedRectangle(cornerRadius: DS.Radius.extraLarge)
-                        .fill(configuration.isPressed ? DS.Color.InteractionWeak.pressed : DS.Color.BackgroundInverted.secondary)
-                        .stroke(
-                            LinearGradient(
-                                gradient: Gradient(colors: DS.Color.Gradient.crazy),
-                                startPoint: .leading,
-                                endPoint: .trailing
-                            ),
-                            lineWidth: 1
-                        )
-                )
-        }
-    }
-
-}
-
-#Preview {
-    ZStack {
-        UpgradeButton()
-            .padding()
-    }
 }

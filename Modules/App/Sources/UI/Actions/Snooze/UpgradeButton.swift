@@ -1,0 +1,69 @@
+// Copyright (c) 2025 Proton Technologies AG
+//
+// This file is part of Proton Mail.
+//
+// Proton Mail is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Proton Mail is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Proton Mail. If not, see https://www.gnu.org/licenses/.
+
+import InboxDesignSystem
+import SwiftUI
+
+struct UpgradeButton: View {
+
+    var body: some View {
+        Button(action: {}) {
+            HStack {
+                VStack(alignment: .leading, spacing: DS.Spacing.small) {
+                    Text(L10n.Snooze.customButtonTitle)
+                        .font(.callout)
+                        .foregroundStyle(DS.Color.Text.norm)
+                    Text(L10n.Snooze.customButtonSubtitle)
+                        .font(.footnote)
+                        .foregroundStyle(DS.Color.Text.weak)
+                }
+                Spacer()
+                Image(DS.Icon.icBrandProtonMailUpsell)
+            }
+            .padding(.vertical, DS.Spacing.moderatelyLarge)
+            .padding(.horizontal, DS.Spacing.large)
+        }
+        .buttonStyle(UpgradeButtonStyle())
+        .frame(maxWidth: .infinity)
+    }
+
+    struct UpgradeButtonStyle: ButtonStyle {
+        func makeBody(configuration: Configuration) -> some View {
+            configuration.label
+                .background(
+                    RoundedRectangle(cornerRadius: DS.Radius.extraLarge)
+                        .fill(configuration.isPressed ? DS.Color.InteractionWeak.pressed : DS.Color.BackgroundInverted.secondary)
+                        .stroke(
+                            LinearGradient(
+                                gradient: Gradient(colors: DS.Color.Gradient.crazy),
+                                startPoint: .leading,
+                                endPoint: .trailing
+                            ),
+                            lineWidth: 1
+                        )
+                )
+        }
+    }
+
+}
+
+#Preview {
+    ZStack {
+        UpgradeButton()
+            .padding()
+    }
+}
