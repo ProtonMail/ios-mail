@@ -54,6 +54,16 @@ public extension CreateMailSessionResult {
         }
     }
 }
+public extension DraftIsPasswordProtectedResult {
+    func get() throws(ProtonError) -> Bool {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension DraftListSenderAddressesResult {
     func get() throws(ProtonError) -> DraftSenderAddressList {
         switch self {
@@ -555,6 +565,16 @@ public extension MailUserSessionConnectionStatusResult {
     }
 }
 public extension MailUserSessionForkResult {
+    func get() throws(UserContextError) -> String {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension MailUserSessionForkWithVersionResult {
     func get() throws(UserContextError) -> String {
         switch self {
         case .ok(let value):

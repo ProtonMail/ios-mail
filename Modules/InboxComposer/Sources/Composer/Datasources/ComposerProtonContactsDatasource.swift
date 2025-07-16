@@ -47,7 +47,7 @@ private extension ContactSuggestion {
         switch kind {
         case .contactGroup(let contacts):
             return composerContact(type: .group(.init(name: name, totalMembers: contacts.count)))
-        case .contactItem(let emailItem):
+        case .contact(let emailItem):
             return single(email: emailItem.email)
         case .deviceContact(let deviceItem):
             return single(email: deviceItem.email)
