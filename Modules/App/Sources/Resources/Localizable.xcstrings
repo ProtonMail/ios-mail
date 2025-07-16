@@ -15611,6 +15611,18 @@
             "value" : "Logga in på annan enhet"
           }
         },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Başka bir aygıtta oturum açın"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Увійти на іншому пристрої"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
