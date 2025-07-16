@@ -71,6 +71,7 @@ enum ContactFormatter {
 
         private static let formatter: DateFormatter = {
             let formatter = DateFormatter()
+            formatter.locale = DateEnvironment.calendar.locale
             formatter.dateStyle = .short
             formatter.timeStyle = .none
             return formatter

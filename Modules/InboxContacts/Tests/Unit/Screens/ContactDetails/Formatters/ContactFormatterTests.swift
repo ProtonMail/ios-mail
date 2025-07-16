@@ -16,6 +16,8 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import InboxContacts
+import Foundation
+import InboxCore
 import proton_app_uniffi
 import Testing
 
@@ -122,14 +124,17 @@ struct ContactFormatterTests {
                 ],
                 [
                     ContactDetailsItem(label: "Birthday", value: "Feb 25, 2015", isInteractive: false),
-                    ContactDetailsItem(label: "Anniversary", value: "9/22/11", isInteractive: false),
-                    ContactDetailsItem(label: "Anniversary", value: "12/1/20", isInteractive: false),
-                    ContactDetailsItem(label: "Birthday", value: "1/1/04", isInteractive: false),
-                    ContactDetailsItem(label: "Missing date", value: "1/1/01", isInteractive: false),
+                    ContactDetailsItem(label: "Anniversary", value: "22.09.2011", isInteractive: false),
+                    ContactDetailsItem(label: "Anniversary", value: "01.12.2020", isInteractive: false),
+                    ContactDetailsItem(label: "Birthday", value: "01.01.2004", isInteractive: false),
+                    ContactDetailsItem(label: "Missing date", value: "01.01.1", isInteractive: false),
                 ]
             )
     )
     func testDateFormatter(input: (date: ContactDate, label: String), output: ContactDetailsItem) {
+        var calendar = DateEnvironment.calendar
+        calendar.locale = Locale(identifier: "en-CH")
+        DateEnvironment.calendar = calendar
         #expect(ContactFormatter.Date.formatted(from: input.date, with: input.label) == output)
     }
 
