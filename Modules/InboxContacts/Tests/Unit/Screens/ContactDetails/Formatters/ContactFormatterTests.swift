@@ -113,7 +113,7 @@ struct ContactFormatterTests {
 
     @Test(
         "formats contact date",
-        .calendarZurichEnCH,
+        .calendarZurichEnUS,
         arguments:
             zip(
                 [
@@ -125,10 +125,10 @@ struct ContactFormatterTests {
                 ],
                 [
                     ContactDetailsItem(label: "Birthday", value: "Feb 25, 2015", isInteractive: false),
-                    ContactDetailsItem(label: "Anniversary", value: "22.09.2011", isInteractive: false),
-                    ContactDetailsItem(label: "Anniversary", value: "01.12.2020", isInteractive: false),
-                    ContactDetailsItem(label: "Birthday", value: "01.01.2004", isInteractive: false),
-                    ContactDetailsItem(label: "Missing date", value: "01.01.1", isInteractive: false),
+                    ContactDetailsItem(label: "Anniversary", value: "9/22/11", isInteractive: false),
+                    ContactDetailsItem(label: "Anniversary", value: "12/1/20", isInteractive: false),
+                    ContactDetailsItem(label: "Birthday", value: "1/1/04", isInteractive: false),
+                    ContactDetailsItem(label: "Missing date", value: "1/1/01", isInteractive: false),
                 ]
             )
     )

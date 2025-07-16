@@ -20,12 +20,10 @@ import InboxCore
 import Testing
 
 public struct FixedCalendarTrait: TestTrait, TestScoping {
-    public let locale: Locale
-    public let timeZone: TimeZone
+    public let calendar: Calendar
 
-    init(locale: Locale, timeZone: TimeZone) {
-        self.locale = locale
-        self.timeZone = timeZone
+    init(calendar: Calendar) {
+        self.calendar = calendar
     }
 
     public func provideScope(
@@ -33,19 +31,25 @@ public struct FixedCalendarTrait: TestTrait, TestScoping {
         testCase: Test.Case?,
         performing function: () async throws -> Void
     ) async throws {
-        var calendar = DateEnvironment.calendar
-        calendar.locale = locale
-        calendar.timeZone = timeZone
-
         try await DateEnvironment.$calendar.withValue(calendar, operation: function)
     }
 }
 
 extension Trait where Self == FixedCalendarTrait {
-    public static var calendarZurichEnCH: Self {
-        let locale = Locale(identifier: "en_CH")
-        let timeZone = TimeZone(identifier: "Europe/Zurich").unsafelyUnwrapped
+    public static var calendarZurichEnUS: Self {
+        .init(calendar: .zurichEnUS)
+    }
+}
 
-        return .init(locale: locale, timeZone: timeZone)
+public func withCalendarZurichEnUS<Result>(perform function: () async throws -> Result) async throws -> Result {
+    try await DateEnvironment.$calendar.withValue(.zurichEnUS, operation: function)
+}
+
+private extension Calendar {
+    static var zurichEnUS: Self {
+        var calendar = DateEnvironment.calendar
+        calendar.locale = Locale(identifier: "en_US")
+        calendar.timeZone = TimeZone(identifier: "Europe/Zurich").unsafelyUnwrapped
+        return calendar
     }
 }
