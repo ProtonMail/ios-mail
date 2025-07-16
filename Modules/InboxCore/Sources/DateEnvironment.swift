@@ -19,5 +19,5 @@ import Foundation
 
 public enum DateEnvironment {
     public static nonisolated(unsafe) var currentDate: () -> Date = Date.init
-    public static nonisolated(unsafe) var calendar: Calendar = .current
+    @TaskLocal public static var calendar: Calendar = .current
 }

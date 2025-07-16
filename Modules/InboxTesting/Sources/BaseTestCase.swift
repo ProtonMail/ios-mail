@@ -26,7 +26,6 @@ open class BaseTestCase: XCTestCase {
     private var originalGlobalQueue: ((DispatchQoS.QoSClass) -> DispatchQueueScheduler)!
     private var originalTimeInSeconds: ((Int) -> DispatchQueueTimeStride)!
     private var original_swift_task_enqueueGlobal_hook: ConcurrencyEnvironment.Hook!
-    private var originalCalendar: Calendar!
 
     open override func setUp() {
         super.setUp()
@@ -37,7 +36,6 @@ open class BaseTestCase: XCTestCase {
         originalGlobalQueue = Dispatcher.globalQueue
         originalTimeInSeconds = Dispatcher.timeInSeconds
         original_swift_task_enqueueGlobal_hook = ConcurrencyEnvironment.swift_task_enqueueGlobal_hook
-        originalCalendar = DateEnvironment.calendar
 
         Dispatcher.mainScheduler = AnyScheduler(DispatchQueueImmediateScheduler())
         Dispatcher.dispatchOnMain = { task in task.perform() }
@@ -47,7 +45,6 @@ open class BaseTestCase: XCTestCase {
         ConcurrencyEnvironment.swift_task_enqueueGlobal_hook = { job, _ in
             TestExecutor.shared.enqueue(job)
         }
-        DateEnvironment.calendar = .warsawEnUS
     }
 
     open override func tearDown() {
@@ -57,7 +54,6 @@ open class BaseTestCase: XCTestCase {
         Dispatcher.globalQueue = originalGlobalQueue
         Dispatcher.timeInSeconds = originalTimeInSeconds
         ConcurrencyEnvironment.swift_task_enqueueGlobal_hook = original_swift_task_enqueueGlobal_hook
-        DateEnvironment.calendar = originalCalendar
 
         originalMainScheduler = nil
         originalDispatchOnMain = nil
@@ -65,7 +61,6 @@ open class BaseTestCase: XCTestCase {
         originalGlobalQueue = nil
         originalTimeInSeconds = nil
         original_swift_task_enqueueGlobal_hook = nil
-        originalCalendar = nil
 
         super.tearDown()
     }
@@ -81,14 +76,5 @@ private final class TestExecutor: SerialExecutor {
 
     func asUnownedSerialExecutor() -> UnownedSerialExecutor {
         UnownedSerialExecutor(ordinary: self)
-    }
-}
-
-private extension Calendar {
-    static var warsawEnUS: Self {
-        var calendar = Calendar(identifier: .gregorian)
-        calendar.timeZone = TimeZone(identifier: "Europe/Warsaw").unsafelyUnwrapped
-        calendar.locale = Locale(identifier: "en_US")
-        return calendar
     }
 }

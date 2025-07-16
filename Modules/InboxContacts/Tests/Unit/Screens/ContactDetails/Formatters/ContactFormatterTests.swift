@@ -113,6 +113,7 @@ struct ContactFormatterTests {
 
     @Test(
         "formats contact date",
+        .calendarZurichEnCH,
         arguments:
             zip(
                 [
@@ -132,9 +133,6 @@ struct ContactFormatterTests {
             )
     )
     func testDateFormatter(input: (date: ContactDate, label: String), output: ContactDetailsItem) {
-        var calendar = DateEnvironment.calendar
-        calendar.locale = Locale(identifier: "en-CH")
-        DateEnvironment.calendar = calendar
         #expect(ContactFormatter.Date.formatted(from: input.date, with: input.label) == output)
     }
 
