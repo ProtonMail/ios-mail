@@ -6387,6 +6387,9 @@
     "Current PIN" : {
       "comment" : "Verify PIN code screen PIN input title."
     },
+    "Custom" : {
+      "comment" : "Custom button title on snooze sheet."
+    },
     "Dark" : {
       "comment" : "One of the appearance option to set in app settings."
     },
@@ -9386,6 +9389,9 @@
     "Language" : {
       "comment" : "Language setting title in app settings."
     },
+    "Later this week" : {
+      "comment" : "Predefined snooze option that postpones item until later in the current week."
+    },
     "Light" : {
       "comment" : "One of the appearance option to set in app settings."
     },
@@ -11957,6 +11963,9 @@
     "Next" : {
       "comment" : "`Next` action title."
     },
+    "Next week" : {
+      "comment" : "Predefined snooze option that postpones item until the following week."
+    },
     "No matches" : {
       "comment" : "Search result is empty title",
       "localizations" : {
@@ -13309,6 +13318,9 @@
           }
         }
       }
+    },
+    "Pick time and date" : {
+      "comment" : "Custom button subtitle on snooze sheet."
     },
     "Pin" : {
       "comment" : "Message pin action title.",
@@ -16230,6 +16242,12 @@
         }
       }
     },
+    "Snooze message" : {
+      "comment" : "Title of the sheet for configuring custom snooze settings."
+    },
+    "Snooze until" : {
+      "comment" : "Title of the sheet for snooze settings."
+    },
     "Snoozed" : {
       "comment" : "Menu title of all snoozed emails in the sidebar.",
       "localizations" : {
@@ -17436,6 +17454,9 @@
     "This message will expire in %@" : {
       "comment" : "Banner indicating when a message will expire and no longer be accessible."
     },
+    "This weekend" : {
+      "comment" : "Predefined snooze option that postpones item until the upcoming weekend."
+    },
     "To" : {
       "comment" : "`To` in the message details.",
       "extractionState" : "stale",
@@ -17633,6 +17654,9 @@
     },
     "To: ..." : {
       "comment" : "Placeholder for a draft in the conversation view when the draft has no recipients."
+    },
+    "Tomorrow" : {
+      "comment" : "Predefined snooze option that postpones item until tomorrow."
     },
     "Too late to undo send. Message was sent." : {
       "comment" : "Error in the context of undoing a sent message"
@@ -18226,7 +18250,7 @@
       "comment" : "Button title allowing to deselect all items in a mailbox."
     },
     "Unsnooze" : {
-      "comment" : "Action to restore a snoozed email immediately."
+      "comment" : "Action to restore a snoozed email immediately.\nUnsnooze button title on snooze sheet."
     },
     "Unstar" : {
       "comment" : "Action title for removing message/conversation from starred items in the action sheet.",

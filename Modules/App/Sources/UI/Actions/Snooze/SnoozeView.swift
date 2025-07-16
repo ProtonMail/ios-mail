@@ -69,9 +69,9 @@ import InboxDesignSystem
 import struct InboxComposer.ScheduleSendDateFormatter
 
 struct SnoozeDatePickerConfiguration: DatePickerViewConfiguration {
-    let title: LocalizedStringResource = "Snooze message"
-    let selectTitle: LocalizedStringResource = "Save"
-    var minuteInterval: TimeInterval = 30
+    let title: LocalizedStringResource = L10n.Snooze.customSnoozeSheetTitle
+    let selectTitle: LocalizedStringResource = CommonL10n.cancel
+    let minuteInterval: TimeInterval = 30
 
     var range: ClosedRange<Date> {
         let start = Date()
@@ -141,7 +141,7 @@ struct SnoozeView: View {
                             case .regular:
                                 customButton()
                             case .upgrade:
-                                EmptyView()
+                                EmptyView() // FIXME: - Add upgrade button
                             }
                             if store.state.actions.isUnsnoozeVisible {
                                 unsnoozeButton()
@@ -152,7 +152,7 @@ struct SnoozeView: View {
                         .padding(.top, DS.Spacing.medium)
                         .padding(.bottom, DS.Spacing.extraLarge)
                     }
-                    .navigationTitle("Snooze until")
+                    .navigationTitle(L10n.Snooze.snoozeUntil.string)
                     .navigationBarTitleDisplayMode(.inline)
                     .background(DS.Color.BackgroundInverted.norm)
                 }
@@ -195,17 +195,17 @@ struct SnoozeView: View {
     }
 
     private func unsnoozeButton() -> some View {
-        FormSmallButton(title: "Unsnooze", rightSymbol: nil) {
-            print("Unsnooze")
+        FormSmallButton(title: L10n.Snooze.unsnoozeButtonTitle, rightSymbol: nil) {
+            // FIXME: - Add unsnooze action
         }
         .roundedRectangleStyle()
     }
 
     private func customButton() -> some View {
         FormBigButton(
-            title: "Custom",
+            title: L10n.Snooze.customButtonTitle,
             symbol: .chevronRight,
-            value: "Pick time and date"
+            value: L10n.Snooze.customButtonSubtitle.string
         ) {
             store.handle(action: .transtion(to: .custom))
         }
@@ -215,16 +215,16 @@ struct SnoozeView: View {
 
 extension PredefinedSnooze {
 
-    var title: String {
+    var title: LocalizedStringResource {
         switch type {
         case .tomorrow:
-            "Tomorrow"
+            L10n.Snooze.snoozeTomorrow
         case .laterThisWeek:
-            "Later this week"
+            L10n.Snooze.snoozeLaterThisWeek
         case .nextWeek:
-            "Next week"
+            L10n.Snooze.snoozeNextWeek
         case .thisWeekend:
-            "This weekend"
+            L10n.Snooze.snoozeThisWeekend
         }
     }
 
@@ -294,16 +294,3 @@ struct PredefinedSnooze: Hashable {
         case nextWeek
     }
 }
-
-//#Preview {
-//    SnoozeView(snoozeActions: .init(
-//        predefined: [
-//            .init(type: .tomorrow, date: Date()),
-//            .init(type: .laterThisWeek, date: Date()),
-//            .init(type: .thisWeekend, date: Date()),
-//            .init(type: .nextWeek, date: Date())
-//        ],
-//        isUnsnoozeVisible: true,
-//        customButtonType: .regular
-//    ))
-//}

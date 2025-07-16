@@ -940,6 +940,45 @@ enum L10n {
         )
     }
 
+    enum Snooze {
+        static let customSnoozeSheetTitle = LocalizedStringResource(
+            "Snooze message",
+            comment: "Title of the sheet for configuring custom snooze settings."
+        )
+        static let snoozeUntil = LocalizedStringResource(
+            "Snooze until",
+            comment: "Title of the sheet for snooze settings."
+        )
+        static let unsnoozeButtonTitle = LocalizedStringResource(
+            "Unsnooze",
+            comment: "Unsnooze button title on snooze sheet."
+        )
+        static let customButtonTitle = LocalizedStringResource(
+            "Custom",
+            comment: "Custom button title on snooze sheet."
+        )
+        static let customButtonSubtitle = LocalizedStringResource(
+            "Pick time and date",
+            comment: "Custom button subtitle on snooze sheet."
+        )
+        static let snoozeTomorrow = LocalizedStringResource(
+            "Tomorrow",
+            comment: "Predefined snooze option that postpones item until tomorrow."
+        )
+        static let snoozeLaterThisWeek = LocalizedStringResource(
+            "Later this week",
+            comment: "Predefined snooze option that postpones item until later in the current week."
+        )
+        static let snoozeNextWeek = LocalizedStringResource(
+            "Next week",
+            comment: "Predefined snooze option that postpones item until the following week."
+        )
+        static let snoozeThisWeekend = LocalizedStringResource(
+            "This weekend",
+            comment: "Predefined snooze option that postpones item until the upcoming weekend."
+        )
+    }
+
     enum Toast {
         static let deleted = LocalizedStringResource(
             "Deleted.",
