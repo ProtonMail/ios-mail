@@ -246,6 +246,7 @@ enum L10n {
             comment: "Used when the user marks an email as legitimate, including confirming legitimacy, overriding phishing detection, or overriding spam detection."
         )
         static let next = LocalizedStringResource("Next", comment: "`Next` action title.")
+        static let save = LocalizedStringResource("Save", comment: "`Save` action title.")
     }
 
     enum LegacyMigration {

@@ -70,7 +70,7 @@ import struct InboxComposer.ScheduleSendDateFormatter
 
 struct SnoozeDatePickerConfiguration: DatePickerViewConfiguration {
     let title: LocalizedStringResource = L10n.Snooze.customSnoozeSheetTitle
-    let selectTitle: LocalizedStringResource = CommonL10n.cancel
+    let selectTitle: LocalizedStringResource = L10n.Common.save
     let minuteInterval: TimeInterval = 30
 
     var range: ClosedRange<Date> {
