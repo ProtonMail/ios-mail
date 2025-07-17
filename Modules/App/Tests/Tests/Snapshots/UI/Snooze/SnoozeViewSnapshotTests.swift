@@ -49,11 +49,7 @@ struct SnoozeViewSnapshotTests {
                 screen: .main,
                 name: "snooze_button_with_2_options"
             ),
-            .init(
-                actions: .testData(predefined: [.tomorrow, .laterThisWeek], isUnsnoozeVisible: true, customButtonType: .upgrade),
-                screen: .custom,
-                name: "custom_view"
-            ),
+            .init(actions: .testData(), screen: .custom, name: "custom_view"),
         ]
     )
     func snapshotAllVariants(_ testCase: TestCase) {

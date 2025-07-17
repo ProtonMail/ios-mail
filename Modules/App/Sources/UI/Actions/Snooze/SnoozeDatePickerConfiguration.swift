@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import InboxCore
 import InboxCoreUI
 import InboxComposer
 
@@ -25,7 +26,7 @@ struct SnoozeDatePickerConfiguration: DatePickerViewConfiguration {
     let minuteInterval: TimeInterval = 30
 
     var range: ClosedRange<Date> {
-        let start = Date()
+        let start = DateEnvironment.currentDate()
         let end = Date.distantFuture
         return start...end
     }
