@@ -22,6 +22,7 @@ import InboxSnapshotTesting
 import InboxTesting
 import Testing
 
+@MainActor
 @Suite(.currentDate(.fixture("2025-02-07 09:32:00")))
 class MessageBannersViewSnapshotTests {
     var scheduleDateFormatter: ScheduleSendDateFormatter {
@@ -36,7 +37,6 @@ class MessageBannersViewSnapshotTests {
         return UInt64(tomorrow.timeIntervalSince1970)
     }
 
-    @MainActor
     @Test
     func testMessageBannersViewFirstVariantLayoutsCorrectly() {
         let bannersView = MessageBannersView(
@@ -57,7 +57,6 @@ class MessageBannersViewSnapshotTests {
         assertSnapshotsOnIPhoneX(of: bannersView)
     }
 
-    @MainActor
     @Test(.calendarZurichEnUS)
     func testMessageBannersViewSecondVariantLayoutsCorrectly() async throws {
         let bannersView = MessageBannersView(
