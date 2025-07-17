@@ -25,6 +25,7 @@ extension View {
         state: MailboxActionBarState,
         availableActions: AvailableMailboxActionBarActions,
         itemTypeForActionBar: MailboxItemType,
+        mailUserSession: MailUserSession,
         selectedItems: Binding<Set<MailboxSelectedItem>>
     ) -> some View {
         modifier(
@@ -32,6 +33,7 @@ extension View {
                 state: state,
                 availableActions: availableActions,
                 itemTypeForActionBar: itemTypeForActionBar,
+                mailUserSession: mailUserSession,
                 selectedItems: selectedItems
             ))
     }
@@ -58,7 +60,7 @@ private struct MailboxActionBarViewModifier: ViewModifier {
         deleteActions: DeleteActions = .productionInstance,
         moveToActions: MoveToActions = .productionInstance,
         itemTypeForActionBar: MailboxItemType,
-        mailUserSession: MailUserSession = AppContext.shared.userSession,
+        mailUserSession: MailUserSession,
         selectedItems: Binding<Set<MailboxSelectedItem>>
     ) {
         self._selectedItems = selectedItems
