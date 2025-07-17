@@ -78,7 +78,17 @@ class BaseTestCase: ProtonCoreBaseTestCase {
     }
 
     func handleInterruption() {
-        let labels = [LocalString._skip_btn_title, "Allow Access to All Photos", "Select Photos...", "Don’t Allow", "Keep Current Selection",LocalString._send_anyway, LocalString._general_ok_action, LocalString._hide]
+        let labels = [
+            LocalString._skip_btn_title,
+            "Allow Access to All Photos",
+            "Select Photos...",
+            "Don’t Allow",
+            "Keep Current Selection",
+            LocalString._send_anyway,
+            LocalString._general_ok_action,
+            LocalString._hide,
+            "Not Now",
+        ]
         /// Adds UI interruption monitor that queries all buttons and clicks if identifier is in the labels array. It is triggered when system alert interrupts the test execution.
         addUIMonitor(elementQueryToTap: XCUIApplication(bundleIdentifier: "com.apple.springboard").buttons, identifiers: labels)
     }

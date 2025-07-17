@@ -34,8 +34,12 @@ final class MailboxMessageCellHelper {
                 message: message,
                 replacingEmails: emailReplacements,
                 allGroupContacts: groupContacts
-            ).map { emailAddress in
-                SenderRowComponent.string(emailAddress)
+            ).reduce(into: []) { acc, emailAddress in
+                if acc.isEmpty {
+                    acc.append(.string(emailAddress))
+                } else {
+                    acc.append(.string(", \(emailAddress)"))
+                }
             }
         } else {
             return senderRowComponents(for: .message(message), basedOn: emailReplacements)

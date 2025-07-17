@@ -27,6 +27,7 @@ import ProtonCoreLogin
 import ProtonCoreLoginUI
 import ProtonCoreNetworking
 import ProtonCoreServices
+import ProtonCoreUtilities
 import UIKit
 
 struct SignInCoordinatorEnvironment {
@@ -36,7 +37,7 @@ struct SignInCoordinatorEnvironment {
     & HasUsersManager
 
     typealias LoginCreationClosure =
-        (String, AccountType, SignupPasswordRestrictions, Bool) -> LoginAndSignupInterface
+        (String, PasswordRestrictions, Bool) -> LoginAndSignupInterface
 
     let apiService: APIService
     let userDefaults: UserDefaults
@@ -84,7 +85,7 @@ extension SignInCoordinatorEnvironment {
                          .finalizeSignIn(loginData:onError:showSkeleton:tryUnlock:),
                      unlockIfRememberedCredentials: dependencies.unlockManager
                          .unlockIfRememberedCredentials(requestMailboxPassword:unlockFailed:unlocked:),
-                     loginCreationClosure: { appName, minimumAccountType, passwordRestrictions, isCloseButtonAvailable in
+                     loginCreationClosure: { appName, passwordRestrictions, isCloseButtonAvailable in
                          let signup: SignupAvailability = .available(parameters: .init(
                              separateDomainsButton: true,
                              passwordRestrictions: passwordRestrictions,
@@ -108,7 +109,7 @@ extension SignInCoordinatorEnvironment {
                          return LoginAndSignup(appName: appName,
                                                clientApp: .mail,
                                                apiService: apiService,
-                                               minimumAccountType: minimumAccountType,
+                                               minimumAccountTypes: .init(login: .external, signup: .internal),
                                                isCloseButtonAvailable: isCloseButtonAvailable,
                                                paymentsAvailability: payment,
                                                signupAvailability: signup)

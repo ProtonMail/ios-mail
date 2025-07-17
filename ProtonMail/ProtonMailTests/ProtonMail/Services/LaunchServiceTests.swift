@@ -69,7 +69,7 @@ final class LaunchTests: XCTestCase {
 
     func testStart_whenCoreDataSetupFails_itShouldNotLoadUsers() {
         mockSetupCoreData.setupStub.bodyIs { _ in
-            throw NSError()
+            throw NSError(domain: "", code: 0)
         }
         setUpAppAccessGranted_and_userInUserDefaults()
 

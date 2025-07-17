@@ -35,7 +35,7 @@
       },
       "ProtonCore": {
          "url": "https://github.com/ProtonMail/protoncore_ios.git",
-         "from": "31.1.6"
+         "from": "32.6.0"
       },
       "ProtonCoreEventsLoop": {
          "path": "LocalPackages/ProtonCoreEventsLoop"
