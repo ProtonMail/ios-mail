@@ -41,7 +41,18 @@ extension Trait where Self == FixedCalendarTrait {
     }
 }
 
-public func withCalendarZurichEnUS<Result>(perform function: () async throws -> Result) async throws -> Result {
+/// Executes a closure with the calendar environment temporarily fixed to Zurich (`en_US`).
+///
+/// This is useful for deterministic unit/snapshot tests by ensuring consistent date formatting. It serves
+/// as a manual equivalent to a `FixedCalendarTrait` for use in standard XCTest cases.
+///
+/// - Parameter function: An async, throwing closure to execute on the main actor.
+/// - Returns: The result of the `function` parameter.
+/// - Throws: Any error thrown by the `function`.
+@MainActor
+public func withCalendarZurichEnUS<Result>(
+    perform function: @MainActor () async throws -> Result
+) async throws -> Result {
     try await DateEnvironment.$calendar.withValue(.zurichEnUS, operation: function)
 }
 

@@ -22,7 +22,7 @@ import InboxSnapshotTesting
 import InboxTesting
 import XCTest
 
-class MessageBannersViewSnapshotTests: BaseTestCase {
+class MessageBannersViewSnapshotTests: XCTestCase {
     var originalCurrentDate: (() -> Date)!
     var scheduleDateFormatter: ScheduleSendDateFormatter {
         .init(locale: DateEnvironment.calendar.locale!, timeZone: DateEnvironment.calendar.timeZone)
@@ -68,22 +68,24 @@ class MessageBannersViewSnapshotTests: BaseTestCase {
     }
 
     @MainActor
-    func testMessageBannersViewSecondVariantLayoutsCorrectly() {
-        let bannersView = MessageBannersView(
-            types: [
-                .blockedSender,
-                .spam(auto: true),
-                .expiry(timestamp: 1_738_920_762),
-                .scheduledSend(timestamp: 1_905_004_876),
-                .snoozed(timestamp: 1_740_238_200),
-                .remoteContent,
-            ],
-            timer: Timer.self,
-            scheduleSendDateFormatter: scheduleDateFormatter,
-            action: { _ in }
-        )
+    func testMessageBannersViewSecondVariantLayoutsCorrectly() async throws {
+        try await withCalendarZurichEnUS {
+            let bannersView = MessageBannersView(
+                types: [
+                    .blockedSender,
+                    .spam(auto: true),
+                    .expiry(timestamp: 1_738_920_762),
+                    .scheduledSend(timestamp: 1_905_004_876),
+                    .snoozed(timestamp: 1_740_238_200),
+                    .remoteContent,
+                ],
+                timer: Timer.self,
+                scheduleSendDateFormatter: scheduleDateFormatter,
+                action: { _ in }
+            )
 
-        assertSnapshotsOnIPhoneX(of: bannersView)
+            assertSnapshotsOnIPhoneX(of: bannersView)
+        }
     }
 
 }
