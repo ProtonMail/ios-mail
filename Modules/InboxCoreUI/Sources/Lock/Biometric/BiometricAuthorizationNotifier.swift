@@ -17,7 +17,7 @@
 
 import proton_app_uniffi
 
-protocol BiometricAuthorizationNotifier {
+public protocol BiometricAuthorizationNotifier {
     func biometricsCheckPassed()
 }
 

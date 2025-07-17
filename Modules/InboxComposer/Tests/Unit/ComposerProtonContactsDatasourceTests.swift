@@ -111,13 +111,13 @@ private extension Array where Element == ContactSuggestion {
                 key: "2",
                 name: "Betty Brown",
                 avatarInformation: .init(text: "BB", color: "#FF5733"),
-                kind: .contactItem(.init(id: 3, email: "betty.brown.consulting.department.group@example.com"))
+                kind: .contact(.init(id: 3, email: "betty.brown.consulting.department.group@example.com"))
             ),
             .init(
                 key: "3",
                 name: "Betty Brown",
                 avatarInformation: .init(text: "BB", color: "#FF5733"),
-                kind: .contactItem(.init(id: 4, email: "betty.brown@protonmail.com"))
+                kind: .contact(.init(id: 4, email: "betty.brown@protonmail.com"))
             ),
             .init(
                 key: "11",
@@ -133,7 +133,7 @@ private extension Array where Element == ContactSuggestion {
                 key: "15",
                 name: "Carl Cooper",
                 avatarInformation: .init(text: "CC", color: "#FF33A1"),
-                kind: .contactItem(.init(id: 17, email: "carl.cooper@protonmail.com"))
+                kind: .contact(.init(id: 17, email: "carl.cooper@protonmail.com"))
             ),
         ]
     }
@@ -188,6 +188,20 @@ private extension ComposerContactType {
         case .single(let single): single.name
         case .group(let group): group.name
         }
+    }
+
+}
+
+private extension ContactItem {
+
+    init(id: UInt64, email: String) {
+        let item = ContactEmailItem(id: id, email: email)
+        self.init(
+            id: item.id,
+            name: item.name,
+            avatarInformation: item.avatarInformation,
+            emails: [item]
+        )
     }
 
 }

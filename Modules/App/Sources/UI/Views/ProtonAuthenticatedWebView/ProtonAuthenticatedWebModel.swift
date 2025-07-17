@@ -40,7 +40,7 @@ final class ProtonAuthenticatedWebModel: @unchecked Sendable, ObservableObject {
 
         Task {
             await updateState(.forkingSession)
-            switch await userSession.fork() {
+            switch await userSession.forkWithVersion(appVersion: "ios-mail") {
             case .ok(let selectorToken):
                 let theme = colorScheme == .light ? "0" : "1"
                 let url = webPageUrl(domain: domain, appVersion: appVersion, theme: theme, selector: selectorToken)
@@ -62,8 +62,7 @@ final class ProtonAuthenticatedWebModel: @unchecked Sendable, ObservableObject {
     }
 
     private func webPageUrl(domain: String, appVersion: String, theme: String, selector: String) -> URL {
-//        let params = "?action=\(webViewPage.action)&app-version=\(appVersion)&theme=\(theme)#selector=\(selector)"
-        let params = "?action=\(webViewPage.action)&theme=\(theme)#selector=\(selector)"  // TODO: put app-version back
+        let params = "?action=\(webViewPage.action)&app-version=\(appVersion)&theme=\(theme)#selector=\(selector)"
         return URL(string: "https://account.\(domain)/lite\(params)")!
     }
 }

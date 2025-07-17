@@ -22,20 +22,20 @@ import proton_app_uniffi
 class LockScreenStore: StateStore {
     @Published var state: LockScreenState
     private let pinVerifier: PINVerifier
-    private let biometricAuthorizationNotifier: () -> BiometricAuthorizationNotifier
+    private let biometricAuthorizationNotifier: BiometricAuthorizationNotifier
     private let signOutService: SignOutService
     private let dismissLock: () -> Void
 
     init(
         state: LockScreenState,
         pinVerifier: PINVerifier,
-        mailSession: @escaping @Sendable () -> MailSessionProtocol,
-        biometricAuthorizationNotifier: @escaping @Sendable () -> BiometricAuthorizationNotifier,
+        biometricAuthorizationNotifier: BiometricAuthorizationNotifier,
+        signOutService: SignOutService,
         dismissLock: @escaping () -> Void
     ) {
         self.state = state
         self.pinVerifier = pinVerifier
-        self.signOutService = .init(mailSession: mailSession)
+        self.signOutService = signOutService
         self.biometricAuthorizationNotifier = biometricAuthorizationNotifier
         self.dismissLock = dismissLock
     }
@@ -46,7 +46,7 @@ class LockScreenStore: StateStore {
         case .biometric(let output):
             switch output {
             case .authenticated:
-                biometricAuthorizationNotifier().biometricsCheckPassed()
+                biometricAuthorizationNotifier.biometricsCheckPassed()
                 dismissLock()
             case .logOut:
                 await signOutAllAccounts()
@@ -97,6 +97,8 @@ class LockScreenStore: StateStore {
         switch await pinVerifier.verifyPinCode(pin: pin.digits) {
         case .ok:
             dismissLock()
+        case .error(let error) where error == .reason(.tooFrequentAttempts):
+            state = state.copy(\.pinAuthenticationError, to: .tooFrequentAttempts)
         case .error:
             let pinAttemptsRemaining = await readNumberOfAttempts()
             handlePinAuthenticationError(attemptsLeft: pinAttemptsRemaining)
@@ -106,7 +108,7 @@ class LockScreenStore: StateStore {
     @MainActor
     private func readNumberOfAttempts() async -> Int {
         do {
-            let attempts = try await pinVerifier.remainingPinAttempts().get().unsafelyUnwrapped
+            let attempts = try await pinVerifier.remainingPinAttempts().get() ?? 0
             return Int(attempts)
         } catch {
             AppLogger.log(error: error, category: .appSettings)

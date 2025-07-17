@@ -139,14 +139,7 @@ extension MailboxModel {
                 guard let self else { return }
 
                 state.isSearchPresented = false
-
-                if !state.navigationPath.isEmpty {
-                    UIView.performWithoutAnimation {
-                        self.state.navigationPath.removeLast(self.state.navigationPath.count)
-                    }
-                }
-
-                state.navigationPath.append(openedItem)
+                replaceCurrentNavigationPath(with: openedItem)
             }
             .store(in: &cancellables)
 
@@ -174,6 +167,17 @@ extension MailboxModel {
 
         observeSelectionChanges()
         exitSelectAllModeWhenNewItemsAreFetched()
+    }
+
+    private func replaceCurrentNavigationPath(with openedItem: MailboxMessageSeed) {
+        Task {
+            if !state.navigationPath.isEmpty {
+                state.navigationPath.removeLast(state.navigationPath.count)
+                try await Task.sleep(for: .seconds(0.25))
+            }
+
+            state.navigationPath.append(openedItem)
+        }
     }
 
     private func observeSelectionChanges() {
@@ -542,9 +546,9 @@ extension MailboxModel {
 
         switch context.action {
         case .labelAs:
-            state.labelAsSheetPresented = .init(sheetType: .labelAs, ids: ids, type: viewMode.itemType)
+            state.labelAsSheetPresented = .init(sheetType: .labelAs, ids: ids, type: viewMode.itemType.actionSheetItemType)
         case .moveTo(.moveToUnknownLabel):
-            state.moveToSheetPresented = .init(sheetType: .moveTo, ids: ids, type: viewMode.itemType)
+            state.moveToSheetPresented = .init(sheetType: .moveTo, ids: ids, type: viewMode.itemType.actionSheetItemType)
         case .toggleRead:
             if context.isItemRead {
                 markAsUnread(ids: ids)

@@ -30,43 +30,45 @@ final class ExclusiveLocation_ModelTests: BaseTestCase {
     }
 
     func testModel_ForGivenLocation_IsMappedCorrectly() {
+        let id = ID.random()
         let testCases: [TestCase] = [
             .init(
-                given: .system(.inbox),
-                expected: .init(name: L10n.Mailbox.SystemFolder.inbox, icon: DS.Icon.icInbox.image, iconColor: nil)
+                given: .system(name: .inbox, id: id),
+                expected: .init(id: id, name: L10n.Mailbox.SystemFolder.inbox, icon: DS.Icon.icInbox.image, iconColor: nil)
             ),
             .init(
-                given: .system(.trash),
-                expected: .init(name: L10n.Mailbox.SystemFolder.trash, icon: DS.Icon.icTrash.image, iconColor: nil)
+                given: .system(name: .trash, id: id),
+                expected: .init(id: id, name: L10n.Mailbox.SystemFolder.trash, icon: DS.Icon.icTrash.image, iconColor: nil)
             ),
             .init(
-                given: .system(.archive),
-                expected: .init(name: L10n.Mailbox.SystemFolder.archive, icon: DS.Icon.icArchiveBox.image, iconColor: nil)
+                given: .system(name: .archive, id: id),
+                expected: .init(id: id, name: L10n.Mailbox.SystemFolder.archive, icon: DS.Icon.icArchiveBox.image, iconColor: nil)
             ),
             .init(
-                given: .system(.spam),
-                expected: .init(name: L10n.Mailbox.SystemFolder.spam, icon: DS.Icon.icFire.image, iconColor: nil)
+                given: .system(name: .spam, id: id),
+                expected: .init(id: id, name: L10n.Mailbox.SystemFolder.spam, icon: DS.Icon.icFire.image, iconColor: nil)
             ),
             .init(
-                given: .system(.snoozed),
-                expected: .init(name: L10n.Mailbox.SystemFolder.snoozed, icon: DS.Icon.icClock.image, iconColor: nil)
+                given: .system(name: .snoozed, id: id),
+                expected: .init(id: id, name: L10n.Mailbox.SystemFolder.snoozed, icon: DS.Icon.icClock.image, iconColor: nil)
             ),
             .init(
-                given: .system(.scheduled),
-                expected: .init(name: L10n.Mailbox.SystemFolder.allScheduled, icon: DS.Icon.icClockPaperPlane.image, iconColor: nil)
+                given: .system(name: .scheduled, id: id),
+                expected: .init(id: id, name: L10n.Mailbox.SystemFolder.scheduled, icon: DS.Icon.icClockPaperPlane.image, iconColor: nil)
             ),
             .init(
-                given: .system(.outbox),
-                expected: .init(name: L10n.Mailbox.SystemFolder.outbox, icon: DS.Icon.icOutbox.image, iconColor: nil)
+                given: .system(name: .outbox, id: id),
+                expected: .init(id: id, name: L10n.Mailbox.SystemFolder.outbox, icon: DS.Icon.icOutbox.image, iconColor: nil)
             ),
             .init(
-                given: .custom(name: "Online shopping", id: .random(), color: .init(value: "FFA500")),
+                given: .custom(name: "Online shopping", id: id, color: .init(value: "FFA500")),
                 expected: .init(
+                    id: id,
                     name: "Online shopping",
                     icon: DS.Icon.icFolderOpenFilled.image,
                     iconColor: Color(hex: "FFA500")
                 )
-            )
+            ),
         ]
 
         testCases.forEach { testCase in

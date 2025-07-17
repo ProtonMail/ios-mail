@@ -255,6 +255,9 @@
     "Draft wasn't discarded. Try discarding it agian." : {
       "comment" : "Error shown when the draft fails to delete."
     },
+    "Failed to decrypt external encryption password" : {
+      "comment" : "Error in the context of scheduling a message."
+    },
     "From" : {
       "comment" : "Title for the sender picker action sheet."
     },

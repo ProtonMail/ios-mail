@@ -84,11 +84,16 @@ struct MessageDetailsView: View {
 
                 Spacer(minLength: DS.Spacing.moderatelyLarge)
                 VStack(alignment: .trailing, spacing: DS.Spacing.standard) {
-                    Text(uiModel.date.mailboxFormat())
-                        .font(.caption)
-                        .foregroundColor(DS.Color.Text.weak)
-                        .accessibilityIdentifier(MessageDetailsViewIdentifiers.messageDate)
-                        .padding(.top, DS.Spacing.tiny)
+                    HStack(alignment: .center, spacing: DS.Spacing.compact) {
+                        if uiModel.isStarred {
+                            StarImage(isStarred: uiModel.isStarred, size: 14)
+                        }
+                        Text(uiModel.date.mailboxFormat())
+                            .font(.caption)
+                            .foregroundColor(DS.Color.Text.weak)
+                            .accessibilityIdentifier(MessageDetailsViewIdentifiers.messageDate)
+                            .padding(.top, DS.Spacing.tiny)
+                    }
                     if !actionButtonsState.isHidden {
                         headerActionsView
                     }
@@ -179,7 +184,6 @@ struct MessageDetailsView: View {
             ProtonOfficialBadgeView()
                 .removeViewIf(!uiModel.isSenderProtonOfficial)
                 .accessibilityIdentifier(MessageDetailsViewIdentifiers.officialBadge)
-            Spacer()
         }
     }
 
@@ -373,7 +377,7 @@ private enum RecipientGroup {
     }
 }
 
-struct MessageDetailsUIModel {
+struct MessageDetailsUIModel: Equatable {
     let avatar: AvatarUIModel
     let sender: MessageDetail.Sender
     let isSenderProtonOfficial: Bool
@@ -390,6 +394,7 @@ struct MessageDetailsUIModel {
     let location: MessageDetail.Location?
     let labels: [LabelUIModel]
     let attachments: [AttachmentDisplayModel]
+    let isStarred: Bool
 }
 
 extension MessageDetailsUIModel {
@@ -399,7 +404,8 @@ extension MessageDetailsUIModel {
 }
 
 enum MessageDetail {
-    struct Sender {
+
+    struct Sender: Equatable {
         let name: String
         let address: String
         let encryptionInfo: String
@@ -413,6 +419,7 @@ enum MessageDetail {
     }
 
     struct Location: Equatable {
+        let id: ID
         let name: LocalizedStringResource
         let icon: Image
         let iconColor: Color?
@@ -506,7 +513,8 @@ enum MessageDetailsPreviewProvider {
             date: Date(timeIntervalSince1970: 1724347300),
             location: location?.model,
             labels: labels,
-            attachments: .previewData
+            attachments: .previewData,
+            isStarred: false
         )
     }
 

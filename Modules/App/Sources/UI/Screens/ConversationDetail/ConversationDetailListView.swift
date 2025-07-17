@@ -144,8 +144,17 @@ struct ConversationDetailListView: View {
         case .onForward:
             model.onForwardMessage(withId: uiModel.id, toastStateStore: toastStateStore)
         case .onMoreActions:
+            let currentLocationID = model.mailbox?.labelId()
+            let hasAtMostOneMessageWithCurrentLocation = model.state.hasAtMostOneMessage(
+                withLocationID: currentLocationID
+            )
             model.actionSheets = model.actionSheets.copy(
-                \.mailbox, to: .init(id: uiModel.id, type: .message, title: model.seed.subject)
+                \.mailbox,
+                to: .init(
+                    id: uiModel.id,
+                    type: .message(isLastMessageInCurrentLocation: hasAtMostOneMessageWithCurrentLocation),
+                    title: model.seed.subject
+                )
             )
         case .onSenderTap:
             senderActionTarget = uiModel
@@ -173,6 +182,21 @@ private extension ExpandedMessageCellUIModel {
 
     func toActionMetadata() -> MarkMessageAsReadMetadata {
         .init(messageID: id, unread: unread)
+    }
+
+}
+
+private extension ConversationDetailModel.State {
+
+    func hasAtMostOneMessage(withLocationID locationID: ID?) -> Bool {
+        switch self {
+        case .initial, .fetchingMessages, .noConnection:
+            false
+        case .messagesReady(let messages):
+            messages
+                .filter { message in message.locationID == locationID }
+                .count == 1
+        }
     }
 
 }

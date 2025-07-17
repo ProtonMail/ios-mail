@@ -102,7 +102,7 @@ struct CollapsedMessageCell: View {
     }
 
     private var senderRow: some View {
-        HStack(spacing: DS.Spacing.small) {
+        HStack(spacing: DS.Spacing.compact) {
             sender
                 .font(.subheadline)
                 .fontWeight(uiModel.isRead ? .regular : .bold)
@@ -110,6 +110,9 @@ struct CollapsedMessageCell: View {
                 .foregroundColor(uiModel.isRead ? DS.Color.Text.weak : DS.Color.Text.norm)
                 .accessibilityIdentifier(CollapsedMessageCellIdentifiers.senderName)
             Spacer()
+            if uiModel.isStarred {
+                StarImage(isStarred: uiModel.isStarred, size: 14)
+            }
             Text(uiModel.date.mailboxFormat())
                 .font(.caption)
                 .fontWeight(uiModel.isRead ? .regular : .bold)
@@ -119,12 +122,13 @@ struct CollapsedMessageCell: View {
     }
 }
 
-struct CollapsedMessageCellUIModel {
+struct CollapsedMessageCellUIModel: Equatable {
     let sender: String
     let date: Date
     let recipients: [MessageDetail.Recipient]
     let isRead: Bool
     let isDraft: Bool
+    let isStarred: Bool
     let avatar: AvatarUIModel
 }
 
@@ -139,6 +143,7 @@ struct CollapsedMessageCellUIModel {
                 ],
                 isRead: true,
                 isDraft: false,
+                isStarred: false,
                 avatar: .init(info: .init(initials: "Ba", color: .blue), type: .sender(params: .init()))
             ), onTap: {})
         CollapsedMessageCell(
@@ -150,6 +155,7 @@ struct CollapsedMessageCellUIModel {
                 ],
                 isRead: false,
                 isDraft: false,
+                isStarred: false,
                 avatar: .init(info: .init(initials: "De", color: .yellow), type: .sender(params: .init()))
             ), onTap: {})
         CollapsedMessageCell(
@@ -161,6 +167,7 @@ struct CollapsedMessageCellUIModel {
                 ],
                 isRead: true,
                 isDraft: false,
+                isStarred: false,
                 avatar: .init(info: .init(initials: "Pr", color: .green), type: .sender(params: .init()))
             ), onTap: {})
     }

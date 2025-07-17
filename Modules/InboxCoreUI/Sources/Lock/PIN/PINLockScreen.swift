@@ -75,12 +75,6 @@ public struct PINLockScreen: View {
                         .padding([.horizontal, .bottom], DS.Spacing.extraLarge)
                 }
             }
-            .onGeometryChange(for: CGSize.self, of: \.size) { newValue in
-                print("HAHA all size \(newValue)")
-            }
-            .onGeometryChange(for: EdgeInsets.self, of: \.safeAreaInsets) { newValue in
-                print("HAHA all safe \(newValue)")
-            }
             .alert(model: $store.state.alert)
             .onAppear {
                 isFocused = true
@@ -106,12 +100,13 @@ public struct PINLockScreen: View {
                 Text(error)
                     .font(.callout)
                     .foregroundStyle(DS.Color.Notification.error)
-                    .transition(.opacity)
+                    .multilineTextAlignment(.center)
+                    .transition(.identity)
             } else {
                 Text(L10n.PINLock.subtitle)
                     .font(.callout)
                     .foregroundStyle(DS.Color.Text.weak)
-                    .transition(.opacity)
+                    .transition(.identity)
             }
         }.animation(.easeInOut(duration: 0.2), value: store.state.error)
     }

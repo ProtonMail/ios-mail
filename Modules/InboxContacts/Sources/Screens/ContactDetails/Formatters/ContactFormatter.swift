@@ -61,7 +61,7 @@ enum ContactFormatter {
                 dateComponents.month = partialDate.month.map(Int.init)
                 dateComponents.day = partialDate.day.map(Int.init)
 
-                let date = DateEnvironment.calendar.date(from: dateComponents).unsafelyUnwrapped
+                let date = DateEnvironment.calendarUTC.date(from: dateComponents).unsafelyUnwrapped
 
                 formattedDate = formatter.string(from: date)
             }
@@ -71,6 +71,8 @@ enum ContactFormatter {
 
         private static let formatter: DateFormatter = {
             let formatter = DateFormatter()
+            formatter.locale = DateEnvironment.calendar.locale
+            formatter.timeZone = DateEnvironment.calendarUTC.timeZone
             formatter.dateStyle = .short
             formatter.timeStyle = .none
             return formatter

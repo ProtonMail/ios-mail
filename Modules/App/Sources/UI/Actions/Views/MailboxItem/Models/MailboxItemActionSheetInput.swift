@@ -19,6 +19,6 @@ import Foundation
 
 struct MailboxItemActionSheetInput: Hashable, Identifiable {
     let id: ID
-    let type: MailboxItemType
+    let type: ActionSheetItemType
     let title: String
 }

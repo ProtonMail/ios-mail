@@ -19,19 +19,21 @@ import SwiftUI
 import proton_app_uniffi
 
 public struct LockScreen: View {
+    public typealias MailSessionType = BiometricAuthorizationNotifier & PINVerifier & SignOutService
+
     @StateObject var store: LockScreenStore
 
     public init(
         state: LockScreenState,
-        mailSession: MailSession,
+        mailSession: MailSessionType,
         dismissLock: @escaping () -> Void
     ) {
         _store = .init(
             wrappedValue: .init(
                 state: state,
                 pinVerifier: mailSession,
-                mailSession: { mailSession },
-                biometricAuthorizationNotifier: { mailSession },
+                biometricAuthorizationNotifier: mailSession,
+                signOutService: mailSession,
                 dismissLock: dismissLock)
         )
     }

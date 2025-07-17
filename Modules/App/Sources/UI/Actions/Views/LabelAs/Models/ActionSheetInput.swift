@@ -20,7 +20,7 @@ import Foundation
 struct ActionSheetInput: Hashable, Identifiable {
     let sheetType: ActionSheetType
     let ids: [ID]
-    let type: MailboxItemType
+    let type: ActionSheetItemType
 
     enum ActionSheetType: Equatable {
         case moveTo

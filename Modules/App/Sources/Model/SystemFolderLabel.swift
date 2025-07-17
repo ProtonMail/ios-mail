@@ -28,30 +28,24 @@ extension SystemFolderLabel {
         switch self {
         case .inbox:
             L10n.Mailbox.SystemFolder.inbox
-        case .allDrafts:
-            L10n.Mailbox.SystemFolder.allDrafts
-        case .allSent:
-            L10n.Mailbox.SystemFolder.allSent
-        case .sent:
+        case .allDrafts, .drafts:
+            L10n.Mailbox.SystemFolder.drafts
+        case .allSent, .sent:
             L10n.Mailbox.SystemFolder.sent
         case .trash:
             L10n.Mailbox.SystemFolder.trash
         case .spam:
             L10n.Mailbox.SystemFolder.spam
-        case .allMail:
+        case .allMail, .almostAllMail:
             L10n.Mailbox.SystemFolder.allMail
         case .archive:
             L10n.Mailbox.SystemFolder.archive
-        case .drafts:
-            L10n.Mailbox.SystemFolder.draft
         case .outbox:
             L10n.Mailbox.SystemFolder.outbox
         case .starred:
             L10n.Mailbox.SystemFolder.starred
         case .scheduled:
-            L10n.Mailbox.SystemFolder.allScheduled
-        case .almostAllMail:
-            L10n.Mailbox.SystemFolder.allMail
+            L10n.Mailbox.SystemFolder.scheduled
         case .snoozed:
             L10n.Mailbox.SystemFolder.snoozed
         case .categorySocial, .categoryPromotions, .catergoryUpdates, .categoryForums, .categoryDefault, .blocked, .pinned:

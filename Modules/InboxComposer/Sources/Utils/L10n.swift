@@ -331,7 +331,6 @@ enum L10n {
     }
 
     enum DraftSendError {
-
         static func addressDisabled(address: String) -> LocalizedStringResource {
             LocalizedStringResource(
                 "Disabled email address. Check that the address is valid and active.",
@@ -345,6 +344,11 @@ enum L10n {
                 comment: "Error in the context of sending a draft before being sent."
             )
         }
+
+        static let failedToDecryptExternalEncryptionPassword = LocalizedStringResource(
+            "Failed to decrypt external encryption password", // FIXME: - To verify
+            comment: "Error in the context of scheduling a message."
+        )
 
         static let messageAlreadySent = LocalizedStringResource(
             "Message was already sent",

@@ -30,8 +30,8 @@ final class LockScreenStoreTests {
     lazy var sut: LockScreenStore = .init(
         state: .init(type: .pin, pinAuthenticationError: nil),
         pinVerifier: pinVerifierSpy,
-        mailSession: { [unowned self] in mailSession },
-        biometricAuthorizationNotifier: { [unowned self] in biometricAuthorizationNotifierSpy },
+        biometricAuthorizationNotifier: biometricAuthorizationNotifierSpy,
+        signOutService: mailSession,
         dismissLock: { [unowned self] in
             dismissLockInvokeCount += 1
         }
@@ -109,5 +109,11 @@ private class BiometricAuthorizationNotifierSpy: BiometricAuthorizationNotifier,
 
     func biometricsCheckPassed() {
         biometricsCheckPassedInvokeCount += 1
+    }
+}
+
+extension MailSessionSpy: SignOutService {
+    public func signOutAllAccounts() async throws {
+        try await signOutAll().get()
     }
 }

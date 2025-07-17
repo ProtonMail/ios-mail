@@ -18,7 +18,7 @@
 import InboxDesignSystem
 import SwiftUI
 
-enum AvatarViewType {
+enum AvatarViewType: Equatable {
     case sender(params: SenderImageDataParameters)
     case other
 

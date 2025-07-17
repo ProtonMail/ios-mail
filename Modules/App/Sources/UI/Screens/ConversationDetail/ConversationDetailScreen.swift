@@ -58,6 +58,14 @@ struct ConversationDetailScreen: View {
                 AttachmentView(config: .init(id: id, mailbox: model.mailbox.unsafelyUnwrapped))
                     .edgesIgnoringSafeArea([.top, .bottom])
             }
+            .onChange(
+                of: model.state,
+                { _, newValue in
+                    if case .messagesReady(let messages) = newValue, messages.isEmpty {
+                        goBackToMailbox()
+                    }
+                }
+            )
             .environment(\.messageAppearanceOverrideStore, model.messageAppearanceOverrideStore)
     }
 
@@ -70,7 +78,7 @@ struct ConversationDetailScreen: View {
                             .padding(.top, DS.Spacing.medium)
                             .padding(.horizontal, DS.Spacing.large)
                     }
-                    ConversationDetailListView(model: model, goBack: { navigationPath.removeLast() })
+                    ConversationDetailListView(model: model, goBack: { goBackToMailbox() })
                 }
                 .accessibilityElement(children: .contain)
                 .accessibilityIdentifier(ConversationDetailScreenIdentifiers.rootItem)
@@ -170,6 +178,12 @@ struct ConversationDetailScreen: View {
                 toastStateStore.present(toast: .error(message: error.localizedDescription))
             }
         }
+    }
+
+    @MainActor
+    private func goBackToMailbox() {
+        guard !navigationPath.isEmpty else { return }
+        navigationPath.removeLast()
     }
 }
 

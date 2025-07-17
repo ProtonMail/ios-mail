@@ -78,7 +78,8 @@ extension Message {
                 date: Date(timeIntervalSince1970: TimeInterval(time)),
                 location: exclusiveLocation?.model,
                 labels: labels,
-                attachments: attachmentsMetadata.map(\.displayModel)
+                attachments: attachmentsMetadata.map(\.displayModel),
+                isStarred: starred
             )
         )
     }
@@ -90,6 +91,7 @@ extension Message {
             recipients: recipients,
             isRead: !unread,
             isDraft: isDraft,
+            isStarred: starred,
             avatar: sender.senderAvatar
         )
     }

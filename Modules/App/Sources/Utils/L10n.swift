@@ -316,28 +316,20 @@ enum L10n {
         }
 
         enum SystemFolder {
-            static let allDrafts = LocalizedStringResource(
-                "All Drafts",
-                comment: "Menu title of all drafts in the sidebar."
-            )
             static let allMail = LocalizedStringResource(
                 "All Mail",
                 comment: "`Menu title of all emails in the sidebar."
             )
-            static let allScheduled = LocalizedStringResource(
+            static let scheduled = LocalizedStringResource(
                 "Scheduled",
                 comment: "Menu title of all scheduled emails in the sidebar."
-            )
-            static let allSent = LocalizedStringResource(
-                "All Sent",
-                comment: "Menu title of all sent emails in the sidebar."
             )
             static let archive = LocalizedStringResource(
                 "Archive",
                 comment: "Menu title of all archived emails in the sidebar."
             )
-            static let draft = LocalizedStringResource(
-                "Draft",
+            static let drafts = LocalizedStringResource(
+                "Drafts",
                 comment: "Menu title of drafts in the sidebar."
             )
             static let inbox = LocalizedStringResource(

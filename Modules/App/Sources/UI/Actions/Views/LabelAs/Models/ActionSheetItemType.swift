@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Proton Technologies AG
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -15,22 +15,18 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
-
-enum MailboxItemType {
+enum ActionSheetItemType: Hashable {
     case conversation
-    case message
+    case message(isLastMessageInCurrentLocation: Bool)
 }
 
-extension MailboxItemType {
-
-    var actionSheetItemType: ActionSheetItemType {
+extension ActionSheetItemType {
+    var inboxItemType: MailboxItemType {
         switch self {
         case .conversation:
             .conversation
         case .message:
-            .message(isLastMessageInCurrentLocation: false)
+            .message
         }
     }
-
 }

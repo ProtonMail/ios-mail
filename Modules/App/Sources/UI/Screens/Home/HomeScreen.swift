@@ -172,11 +172,15 @@ struct HomeScreen: View {
     }
 
     private func presentShareFileController() {
-        let fileManager = FileManager.default
-        let logFolder = fileManager.sharedCacheDirectory
-        let sourceLogFile = logFolder.appending(path: "proton-mail-uniffi.log")
-        let activityController = UIActivityViewController(activityItems: [sourceLogFile], applicationActivities: nil)
-        UIApplication.shared.keyWindow?.rootViewController?.present(activityController, animated: true)
+        do {
+            let logFolder = FileManager.default.sharedCacheDirectory
+            let sourceLogFile = logFolder.appending(path: "proton-mail-ios.log")
+            _ = try appContext.mailSession.exportLogs(filePath: sourceLogFile.path).get()
+            let activityController = UIActivityViewController(activityItems: [sourceLogFile], applicationActivities: nil)
+            UIApplication.shared.keyWindow?.rootViewController?.present(activityController, animated: true)
+        } catch {
+            toastStateStore.present(toast: .error(message: error.localizedDescription))
+        }
     }
 
     private func handleDeepLink(_ deepLink: URL) {

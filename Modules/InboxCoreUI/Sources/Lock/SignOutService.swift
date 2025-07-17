@@ -18,14 +18,12 @@
 import AccountLogin
 import proton_app_uniffi
 
-struct SignOutService: Sendable {
-    private let mailSession: @Sendable () -> MailSessionProtocol
+public protocol SignOutService: Sendable {
+    func signOutAllAccounts() async throws
+}
 
-    init(mailSession: @escaping @Sendable () -> MailSessionProtocol) {
-        self.mailSession = mailSession
-    }
-
-    func signOutAllAccounts() async throws {
-        _ = try await mailSession().signOutAll().get()
+extension MailSession: SignOutService {
+    public func signOutAllAccounts() async throws {
+        try await signOutAll().get()
     }
 }

@@ -50,7 +50,7 @@ class MoveToSheetStateStoreTests: BaseTestCase {
 
     func testState_WhenMailboxTypeIsMessageAndViewAppear_ItReturnsMoveToActions() {
         let ids: [ID] = [.init(value: 777), .init(value: 111)]
-        let sut = sut(input: .init(sheetType: .moveTo, ids: ids, type: .message))
+        let sut = sut(input: .init(sheetType: .moveTo, ids: ids, type: .message(isLastMessageInCurrentLocation: false)))
 
         sut.handle(action: .viewAppear)
 
@@ -69,7 +69,7 @@ class MoveToSheetStateStoreTests: BaseTestCase {
     }
 
     func testState_WhenCreateFolderActionIsHandled_ItPresentsCreateFolderLabelModal() {
-        let sut = sut(input: .init(sheetType: .moveTo, ids: [], type: .message))
+        let sut = sut(input: .init(sheetType: .moveTo, ids: [], type: .message(isLastMessageInCurrentLocation: false)))
 
         sut.handle(action: .createFolderTapped)
 
@@ -89,7 +89,7 @@ class MoveToSheetStateStoreTests: BaseTestCase {
     }
 
     func testAction_WhenInboxIsTapped_ItMovesMessageToInbox() {
-        let sut = sut(input: .init(sheetType: .moveTo, ids: [.init(value: 1)], type: .message))
+        let sut = sut(input: .init(sheetType: .moveTo, ids: [.init(value: 1)], type: .message(isLastMessageInCurrentLocation: false)))
 
         sut.handle(action: .systemFolderTapped(.init(id: .init(value: 10), label: .inbox)))
 
@@ -98,6 +98,14 @@ class MoveToSheetStateStoreTests: BaseTestCase {
         ])
         XCTAssertEqual(toastStateStore.state.toasts, [.moveTo(destinationName: "Inbox")])
         XCTAssertEqual(invokedNavigation, [.dismiss])
+    }
+
+    func testAction_WhenItsStandaloneMessageInConveration_WhenInboxIsTapped_ItMovesMessageToInbox() {
+        let sut = sut(input: .init(sheetType: .moveTo, ids: [.init(value: 1)], type: .message(isLastMessageInCurrentLocation: true)))
+
+        sut.handle(action: .systemFolderTapped(.init(id: .init(value: 10), label: .inbox)))
+
+        XCTAssertEqual(invokedNavigation, [.dismissAndGoBack])
     }
 
     // MARK: - Private

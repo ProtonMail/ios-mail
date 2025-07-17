@@ -433,7 +433,11 @@ extension ConversationDetailModel {
                     } else {
                         messageCellUIModelType = .collapsed(message.toCollapsedMessageCellUIModel())
                     }
-                    return .init(id: message.id, type: messageCellUIModelType)
+                    return .init(
+                        id: message.id,
+                        locationID: message.exclusiveLocation?.model.id,
+                        type: messageCellUIModelType
+                    )
                 }
 
             return .init(messages: result, isStarred: isStarred)
@@ -496,7 +500,7 @@ extension ConversationDetailModel {
 }
 
 extension ConversationDetailModel {
-    enum State {
+    enum State: Equatable {
         case initial
         case fetchingMessages
         case noConnection
@@ -527,8 +531,9 @@ extension ConversationDetailModel {
     }
 }
 
-struct MessageCellUIModel {
+struct MessageCellUIModel: Equatable {
     let id: ID
+    let locationID: ID?
     let type: MessageCellUIModelType
 
     /// Used to identify Views in a way that allows to scroll to them and allows to refresh
@@ -540,7 +545,7 @@ struct MessageCellUIModel {
     }
 }
 
-enum MessageCellUIModelType {
+enum MessageCellUIModelType: Equatable {
     case collapsed(CollapsedMessageCellUIModel)
     case expanded(ExpandedMessageCellUIModel)
 

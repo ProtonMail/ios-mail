@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import InboxContacts
+import InboxCore
 import proton_app_uniffi
 import Testing
 
@@ -111,6 +112,7 @@ struct ContactFormatterTests {
 
     @Test(
         "formats contact date",
+        .calendarZurichEnUS,
         arguments:
             zip(
                 [

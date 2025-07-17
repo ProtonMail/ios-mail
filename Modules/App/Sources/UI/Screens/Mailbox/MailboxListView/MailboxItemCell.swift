@@ -117,10 +117,7 @@ extension MailboxItemCell {
     @ViewBuilder
     private var starView: some View {
         if !isSending {
-            Image(uiModel.isStarred ? DS.Icon.icStarFilledStrong : DS.Icon.icStarStrong)
-                .resizable()
-                .square(size: 16)
-                .foregroundColor(uiModel.isStarred ? DS.Color.Star.selected : DS.Color.Star.default)
+            StarImage(isStarred: uiModel.isStarred, size: 16)
                 .onTapGesture {
                     onEvent(.onStarredChange(isStarred: !uiModel.isStarred))
                 }

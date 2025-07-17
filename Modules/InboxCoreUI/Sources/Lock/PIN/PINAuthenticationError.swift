@@ -18,6 +18,7 @@
 public enum PINAuthenticationError: Equatable {
     case custom(String)
     case attemptsRemaining(Int)
+    case tooFrequentAttempts
 
     var humanReadable: String {
         switch self {
@@ -25,6 +26,8 @@ public enum PINAuthenticationError: Equatable {
             text
         case .attemptsRemaining(let value):
             L10n.PINLock.remainingAttemptsWarning(value).string
+        case .tooFrequentAttempts:
+            L10n.PINLock.tooFrequentAttempts.string
         }
     }
 }

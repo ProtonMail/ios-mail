@@ -25,6 +25,7 @@ extension View {
         state: MailboxActionBarState,
         availableActions: AvailableMailboxActionBarActions,
         itemTypeForActionBar: MailboxItemType,
+        mailUserSession: MailUserSession,
         selectedItems: Binding<Set<MailboxSelectedItem>>
     ) -> some View {
         modifier(
@@ -32,6 +33,7 @@ extension View {
                 state: state,
                 availableActions: availableActions,
                 itemTypeForActionBar: itemTypeForActionBar,
+                mailUserSession: mailUserSession,
                 selectedItems: selectedItems
             ))
     }
@@ -58,7 +60,7 @@ private struct MailboxActionBarViewModifier: ViewModifier {
         deleteActions: DeleteActions = .productionInstance,
         moveToActions: MoveToActions = .productionInstance,
         itemTypeForActionBar: MailboxItemType,
-        mailUserSession: MailUserSession = AppContext.shared.userSession,
+        mailUserSession: MailUserSession,
         selectedItems: Binding<Set<MailboxSelectedItem>>
     ) {
         self._selectedItems = selectedItems
@@ -101,7 +103,7 @@ private struct MailboxActionBarViewModifier: ViewModifier {
                     store.handle(action: .mailboxItemsSelectionUpdated(ids: selectedItemsIDs))
                 }
                 .labelAsSheet(mailbox: { mailbox }, input: store.binding(\.labelAsSheetPresented))
-                .moveToSheet(mailbox: { mailbox }, input: store.binding(\.moveToSheetPresented))
+                .moveToSheet(mailbox: { mailbox }, input: store.binding(\.moveToSheetPresented), navigation: { _ in })
                 .sheet(item: store.binding(\.moreActionSheetPresented)) { state in
                     MailboxActionBarMoreSheet(state: state) { action in
                         store.handle(action: .moreSheetAction(action, ids: selectedItemsIDs))

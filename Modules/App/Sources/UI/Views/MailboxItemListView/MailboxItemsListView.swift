@@ -59,6 +59,7 @@ struct MailboxItemsListView<EmptyView: View>: View {
                     state: .initial,
                     availableActions: .productionInstance,
                     itemTypeForActionBar: config.itemTypeForActionBar,
+                    mailUserSession: mailUserSession,
                     selectedItems: config.selectionState.selectedItemIDsReadOnlyBinding
                 )
                 .environmentObject(mailbox)

@@ -67,7 +67,7 @@ class MoveToSheetStateStore: StateStore {
                 try await moveToActionPerformer.moveTo(
                     destinationID: destinationID,
                     itemsIDs: input.ids,
-                    itemType: input.type
+                    itemType: input.type.inboxItemType
                 )
 
                 dismissSheet(presentingToast: .moveTo(destinationName: destinationName))
@@ -86,7 +86,7 @@ class MoveToSheetStateStore: StateStore {
 
     private func loadMoveToActions() {
         Task {
-            let actions = await moveToActionsProvider.actions(for: input.type, ids: input.ids)
+            let actions = await moveToActionsProvider.actions(for: input.type.inboxItemType, ids: input.ids)
             Dispatcher.dispatchOnMain(.init(block: { [weak self] in
                 self?.update(moveToActions: actions)
             }))
@@ -98,6 +98,19 @@ class MoveToSheetStateStore: StateStore {
             .copy(\.moveToSystemFolderActions, to: moveToActions.compactMap(\.moveToSystemFolder))
             .copy(\.moveToCustomFolderActions, to: moveToActions.compactMap(\.moveToCustomFolder))
     }
+}
+
+private extension ActionSheetItemType {
+
+    var navigation: MoveToSheetNavigation {
+        switch self {
+        case .conversation:
+            .dismissAndGoBack
+        case .message(let isStandaloneMessage):
+            isStandaloneMessage ? .dismissAndGoBack : .dismiss
+        }
+    }
+
 }
 
 private extension MoveAction {

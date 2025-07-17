@@ -1,4 +1,5 @@
-// Copyright (c) 2024 Proton Technologies AG
+//
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -15,22 +16,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+public struct InlineImageHTML {
+    public let content: String
 
-enum MailboxItemType {
-    case conversation
-    case message
-}
-
-extension MailboxItemType {
-
-    var actionSheetItemType: ActionSheetItemType {
-        switch self {
-        case .conversation:
-            .conversation
-        case .message:
-            .message(isLastMessageInCurrentLocation: false)
-        }
+    public init(cids: [String]) {
+        content = cids.map { cid in
+            #"<img src="cid:\#(cid)" style="max-width: 100%;"><br>"#
+        }.joined()
     }
-
 }

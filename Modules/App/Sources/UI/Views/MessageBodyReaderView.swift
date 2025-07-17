@@ -52,7 +52,13 @@ struct MessageBodyReaderView: UIViewRepresentable {
         webView.isInspectable = WKWebView.inspectabilityEnabled
 
         config.userContentController.add(context.coordinator, name: Constants.heightChangedHandlerName)
-        config.userContentController.addUserScript(.observeHeight(viewWidth: viewWidth))
+
+        let userScripts: [WKUserScript] = [
+            .adjustLayoutAndObserveHeight(viewWidth: viewWidth),
+            .handleEmptyBody,
+        ]
+
+        userScripts.forEach(config.userContentController.addUserScript(_:))
 
         context.coordinator.setupRecovery(for: webView)
         return webView
@@ -66,11 +72,15 @@ struct MessageBodyReaderView: UIViewRepresentable {
         context.coordinator.urlOpener = context.environment.openURL
     }
 
+    static func dismantleUIView(_ uiView: WKWebView, coordinator: Coordinator) {
+        uiView.configuration.userContentController.removeAllScriptMessageHandlers()
+    }
+
     func loadHTML(in webView: WKWebView) {
         let style = """
             <style>
-                body {
-                    height: auto !important;
+                p,pre {
+                    margin: 1em 0;
                 }
 
                 table {
@@ -86,6 +96,7 @@ struct MessageBodyReaderView: UIViewRepresentable {
             </style>
             """
         let fixedBody = body.rawBody.replacingOccurrences(of: "</head>", with: "\(style)</head>")
+
         webView.loadHTMLString(fixedBody, baseURL: nil)
     }
 
@@ -157,35 +168,57 @@ extension MessageBodyReaderView {
 }
 
 extension WKUserScript {
-    fileprivate static func observeHeight(viewWidth: CGFloat) -> WKUserScript {
+    fileprivate static func adjustLayoutAndObserveHeight(viewWidth: CGFloat) -> WKUserScript {
         let source = """
-            function notify() {
-                measureHeightOnceContentIsLaidOut();
-            }
+            function executeOnceContentIsLaidOut(callback) {
+                // This is a good enough heuristic without hard coding magic numbers
+                const isContentLaidOut = document.body.offsetWidth > \(viewWidth / 2);
 
-            function measureHeightOnceContentIsLaidOut(retryCount = 0) {
-                // Prevent infinite loops (180 frames = ~3 seconds at 60fps)
-                const maxRetries = 180;
-
-                // If content is not laid out, its width is typically 32 or 80 - this is a good enough heuristic without hard coding magic numbers
-                const contentIsLaidOut = document.body.scrollWidth > \(viewWidth / 2)
-
-                if (!contentIsLaidOut && retryCount < maxRetries) {
+                if (isContentLaidOut) {
+                    callback();
+                } else {
                     // try again next frame
                     requestAnimationFrame(() => {
-                        measureHeightOnceContentIsLaidOut(retryCount + 1);
+                        executeOnceContentIsLaidOut(callback);
                     });
-                } else {
-                    window.webkit.messageHandlers.\(Constants.heightChangedHandlerName).postMessage(document.body.scrollHeight);
                 }
             }
 
-            const observer = new ResizeObserver(notify);
-            observer.observe(document.body);
+            function setViewportInitialScale(ratio) {
+                var metaWidth = document.querySelector('meta[name="viewport"]');
+                metaWidth.content = "width=device-width, initial-scale=" + ratio + ", maximum-scale=3.0, user-scalable=yes";
+            }
+
+            function startSendingHeightToSwiftUI(ratio) {
+                const observer = new ResizeObserver(() => {
+                    var height = document.documentElement.scrollHeight * ratio;
+                    window.webkit.messageHandlers.\(Constants.heightChangedHandlerName).postMessage(height);
+                });
+
+                observer.observe(document.body);
+            }
+
+            executeOnceContentIsLaidOut(() => {
+                const ratio = document.body.offsetWidth / document.body.scrollWidth;
+                setViewportInitialScale(ratio);
+                startSendingHeightToSwiftUI(ratio);
+            });
             """
 
         return .init(source: source, injectionTime: .atDocumentEnd, forMainFrameOnly: true)
     }
+
+    /// A message can theoretically have an empty <body>. In such case the observed body height will be 0, and the loading spinner would be shown indefinitely.
+    fileprivate static let handleEmptyBody = WKUserScript(
+        source: """
+            if (document.body.childNodes.length == 0) {
+                var spacer = document.createElement('br');
+                document.body.appendChild(spacer);
+            }
+            """,
+        injectionTime: .atDocumentEnd,
+        forMainFrameOnly: true
+    )
 }
 
 private enum Constants {
