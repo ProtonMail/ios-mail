@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import InboxCore
 
 public struct ScheduleSendDateFormatter {
     public enum Format {
@@ -31,7 +32,10 @@ public struct ScheduleSendDateFormatter {
 
     private let dateFormatter: DateFormatter
 
-    public init(locale: Locale = .current, timeZone: TimeZone = .current) {
+    public init(
+        locale: Locale? = DateEnvironment.calendar.locale,
+        timeZone: TimeZone? = DateEnvironment.calendar.timeZone
+    ) {
         let formatter = DateFormatter()
         formatter.locale = locale
         formatter.timeZone = timeZone

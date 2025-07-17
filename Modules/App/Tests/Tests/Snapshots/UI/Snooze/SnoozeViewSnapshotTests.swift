@@ -17,9 +17,11 @@
 
 @testable import ProtonMail
 import InboxSnapshotTesting
+import InboxTesting
 import Testing
 
 @MainActor
+@Suite(.calendarZurichEnUS, .currentDate(.fixture("2025-02-07 09:32:00")))
 struct SnoozeViewSnapshotTests {
 
     struct TestCase {
