@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Proton Technologies AG
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -16,14 +16,24 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import InboxCore
+import Testing
 
-public enum DateEnvironment {
-    @TaskLocal public static var currentDate: () -> Date = Date.init
-    @TaskLocal public static var calendar: Calendar = .current
+public struct FixedCurrentDateTrait: SuiteTrait, TestTrait, TestScoping {
+    public let date: Date
 
-    public static let calendarUTC: Calendar = {
-        var calendar = DateEnvironment.calendar
-        calendar.timeZone = .gmt
-        return calendar
-    }()
+    public func provideScope(
+        for test: Test,
+        testCase: Test.Case?,
+        performing function: () async throws -> Void
+    ) async throws {
+        try await DateEnvironment.$currentDate
+            .withValue({ date }, operation: function)
+    }
+}
+
+extension Trait where Self == FixedCurrentDateTrait {
+    public static func fixedCurrentDate(_ date: Date) -> Self {
+        .init(date: date)
+    }
 }

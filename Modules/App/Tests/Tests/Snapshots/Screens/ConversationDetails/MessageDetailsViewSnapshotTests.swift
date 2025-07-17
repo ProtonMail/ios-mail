@@ -18,10 +18,12 @@
 @testable import ProtonMail
 import InboxSnapshotTesting
 import InboxTesting
-import XCTest
+import Testing
 
-class MessageDetailsViewSnapshotTests: BaseTestCase {
-
+@MainActor
+@Suite(.calendarZurichEnUS)
+class MessageDetailsViewSnapshotTests {
+    @Test
     func testMessageDetailsWithInboxLocationLayoutsCorrectly() {
         let model = MessageDetailsPreviewProvider.testData(
             location: .system(.inbox),
@@ -36,6 +38,7 @@ class MessageDetailsViewSnapshotTests: BaseTestCase {
         assertSnapshotsOnIPhoneX(of: sut(collapsed: false, model: model), named: "expanded")
     }
 
+    @Test
     func testMessageDetailsWithArchiveLocationNoLabelsLayoutsCorrectly() {
         let model = MessageDetailsPreviewProvider.testData(
             location: .system(.archive),
@@ -46,6 +49,7 @@ class MessageDetailsViewSnapshotTests: BaseTestCase {
         assertSnapshotsOnIPhoneX(of: sut(collapsed: false, model: model), named: "expanded")
     }
 
+    @Test
     func testMessageDetailsWithCustomLocationAndLabelsLayoutsCorrectly() {
         let model = MessageDetailsPreviewProvider.testData(
             location: .custom(name: "Online shopping", id: .random(), color: .init(value: "#F67900")),
@@ -61,16 +65,19 @@ class MessageDetailsViewSnapshotTests: BaseTestCase {
         assertSnapshotsOnIPhoneX(of: sut(collapsed: false, model: model), named: "expanded")
     }
 
+    @Test
     func testMessageDetailsWithOutboxLocationLayoutsCorrectly() {
         let model = MessageDetailsPreviewProvider.testData(location: .system(.outbox), labels: [])
         assertSnapshotsOnIPhoneX(of: sut(collapsed: false, model: model, actionButtonsState: .hidden))
     }
 
+    @Test
     func testMessageDetailsWithActionButtonsDisabled() {
         let model = MessageDetailsPreviewProvider.testData(location: .system(.inbox), labels: [])
         assertSnapshotsOnIPhoneX(of: sut(collapsed: true, model: model, actionButtonsState: .disabled))
     }
 
+    @Test
     func testMessageDetailsWithOneToRecipientLayoutsCorrectly() {
         let model = MessageDetailsPreviewProvider.testData(
             location: .system(.outbox),

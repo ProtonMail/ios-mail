@@ -16,14 +16,14 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import ProtonMail
-import InboxCore
 import InboxComposer
+import InboxCore
 import InboxSnapshotTesting
 import InboxTesting
-import XCTest
+import Testing
 
-class MessageBannersViewSnapshotTests: XCTestCase {
-    var originalCurrentDate: (() -> Date)!
+@Suite(.fixedCurrentDate(.fixture("2025-02-07 09:32:00")))
+class MessageBannersViewSnapshotTests {
     var scheduleDateFormatter: ScheduleSendDateFormatter {
         .init(locale: DateEnvironment.calendar.locale!, timeZone: DateEnvironment.calendar.timeZone)
     }
@@ -36,18 +36,8 @@ class MessageBannersViewSnapshotTests: XCTestCase {
         return UInt64(tomorrow.timeIntervalSince1970)
     }
 
-    override func setUp() {
-        super.setUp()
-        originalCurrentDate = DateEnvironment.currentDate
-        DateEnvironment.currentDate = { .fixture("2025-02-07 09:32:00") }
-    }
-
-    override func tearDown() {
-        DateEnvironment.currentDate = originalCurrentDate
-        super.tearDown()
-    }
-
     @MainActor
+    @Test
     func testMessageBannersViewFirstVariantLayoutsCorrectly() {
         let bannersView = MessageBannersView(
             types: [
@@ -68,24 +58,22 @@ class MessageBannersViewSnapshotTests: XCTestCase {
     }
 
     @MainActor
+    @Test(.calendarZurichEnUS)
     func testMessageBannersViewSecondVariantLayoutsCorrectly() async throws {
-        try await withCalendarZurichEnUS {
-            let bannersView = MessageBannersView(
-                types: [
-                    .blockedSender,
-                    .spam(auto: true),
-                    .expiry(timestamp: 1_738_920_762),
-                    .scheduledSend(timestamp: 1_905_004_876),
-                    .snoozed(timestamp: 1_740_238_200),
-                    .remoteContent,
-                ],
-                timer: Timer.self,
-                scheduleSendDateFormatter: scheduleDateFormatter,
-                action: { _ in }
-            )
+        let bannersView = MessageBannersView(
+            types: [
+                .blockedSender,
+                .spam(auto: true),
+                .expiry(timestamp: 1_738_920_762),
+                .scheduledSend(timestamp: 1_905_004_876),
+                .snoozed(timestamp: 1_740_238_200),
+                .remoteContent,
+            ],
+            timer: Timer.self,
+            scheduleSendDateFormatter: scheduleDateFormatter,
+            action: { _ in }
+        )
 
-            assertSnapshotsOnIPhoneX(of: bannersView)
-        }
+        assertSnapshotsOnIPhoneX(of: bannersView)
     }
-
 }

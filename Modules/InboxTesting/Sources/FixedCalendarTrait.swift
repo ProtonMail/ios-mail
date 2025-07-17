@@ -19,12 +19,8 @@ import Foundation
 import InboxCore
 import Testing
 
-public struct FixedCalendarTrait: TestTrait, TestScoping {
+public struct FixedCalendarTrait: SuiteTrait, TestTrait, TestScoping {
     public let calendar: Calendar
-
-    init(calendar: Calendar) {
-        self.calendar = calendar
-    }
 
     public func provideScope(
         for test: Test,
@@ -37,7 +33,7 @@ public struct FixedCalendarTrait: TestTrait, TestScoping {
 
 /// A testing trait that fixes the calendar to Zurich (`en_US`).
 ///
-/// Use this trait in tests to ensure date and time formatting is deterministic,
+/// Use this trait in suite or tests to ensure date and time formatting is deterministic,
 /// which is essential for reliable unit/snapshot testing.
 extension Trait where Self == FixedCalendarTrait {
     public static var calendarZurichEnUS: Self {
@@ -53,9 +49,8 @@ extension Trait where Self == FixedCalendarTrait {
 /// - Parameter function: An async, throwing closure to execute on the main actor.
 /// - Returns: The result of the `function` parameter.
 /// - Throws: Any error thrown by the `function`.
-@MainActor
 public func withCalendarZurichEnUS<Result>(
-    perform function: @MainActor () async throws -> Result
+    perform function: @Sendable () async throws -> Result
 ) async throws -> Result {
     try await DateEnvironment.$calendar.withValue(.zurichEnUS, operation: function)
 }
