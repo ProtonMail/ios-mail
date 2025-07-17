@@ -19,7 +19,7 @@ import Foundation
 import InboxCore
 import Testing
 
-public struct FixedCalendarTrait: SuiteTrait, TestTrait, TestScoping {
+public struct CalendarTrait: SuiteTrait, TestTrait, TestScoping {
     public let calendar: Calendar
 
     public func provideScope(
@@ -31,11 +31,11 @@ public struct FixedCalendarTrait: SuiteTrait, TestTrait, TestScoping {
     }
 }
 
-/// A testing trait that fixes the calendar to Zurich (`en_US`).
-///
-/// Use this trait in suite or tests to ensure date and time formatting is deterministic,
-/// which is essential for reliable unit/snapshot testing.
-extension Trait where Self == FixedCalendarTrait {
+extension Trait where Self == CalendarTrait {
+    /// A testing trait that fixes the calendar to Zurich (`en_US`).
+    ///
+    /// Use this trait in suite or tests to ensure date and time formatting is deterministic,
+    /// which is essential for reliable unit/snapshot testing.
     public static var calendarZurichEnUS: Self {
         .init(calendar: .zurichEnUS)
     }

@@ -19,7 +19,7 @@ import Foundation
 import InboxCore
 import Testing
 
-public struct FixedCurrentDateTrait: SuiteTrait, TestTrait, TestScoping {
+public struct CurrentDateTrait: SuiteTrait, TestTrait, TestScoping {
     public let date: Date
 
     public func provideScope(
@@ -32,8 +32,15 @@ public struct FixedCurrentDateTrait: SuiteTrait, TestTrait, TestScoping {
     }
 }
 
-extension Trait where Self == FixedCurrentDateTrait {
-    public static func fixedCurrentDate(_ date: Date) -> Self {
+extension Trait where Self == CurrentDateTrait {
+    /// A testing trait that fixes the current date to a specific moment in time.
+    ///
+    /// Use this trait in a suite or test to ensure that any code relying on the current
+    /// date (i.e., `Date()`) is deterministic. This is essential for reliable unit and
+    /// snapshot testing, as it prevents failures caused by running tests at different times.
+    ///
+    /// - Parameter date: The specific date to use as the "current" date during the test.
+    public static func currentDate(_ date: Date) -> Self {
         .init(date: date)
     }
 }

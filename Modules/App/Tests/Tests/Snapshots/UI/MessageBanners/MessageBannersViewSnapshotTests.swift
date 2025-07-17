@@ -22,7 +22,7 @@ import InboxSnapshotTesting
 import InboxTesting
 import Testing
 
-@Suite(.fixedCurrentDate(.fixture("2025-02-07 09:32:00")))
+@Suite(.currentDate(.fixture("2025-02-07 09:32:00")))
 class MessageBannersViewSnapshotTests {
     var scheduleDateFormatter: ScheduleSendDateFormatter {
         .init(locale: DateEnvironment.calendar.locale!, timeZone: DateEnvironment.calendar.timeZone)
