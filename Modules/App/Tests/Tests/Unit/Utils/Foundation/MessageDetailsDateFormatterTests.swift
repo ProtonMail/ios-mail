@@ -17,28 +17,28 @@
 
 @testable import ProtonMail
 import InboxTesting
-import XCTest
+import Testing
 
-class MessageDetailsDateFormatterTests: BaseTestCase {
-
-    struct TestCase {
-        let given: Date
-        let expected: String
+class MessageDetailsDateFormatterTests {
+    @Test(
+        .calendarZurichEnUS,
+        arguments:
+            zip(
+                [
+                    Date.fixture("2022-05-09 14:17:22"),
+                    Date.fixture("2024-01-30 08:11:45"),
+                    Date.fixture("2017-10-30 22:49:33"),
+                    Date.fixture("2024-12-31 03:59:59"),
+                ],
+                [
+                    "May 9, 2022 at 4:17:22 PM",
+                    "Jan 30, 2024 at 9:11:45 AM",
+                    "Oct 30, 2017 at 11:49:33 PM",
+                    "Dec 31, 2024 at 4:59:59 AM",
+                ]
+            )
+    )
+    func testDateFormatter(given: Date, expected: String) async throws {
+        #expect(MessageDetailsDateFormatter.string(from: given) == expected)
     }
-
-    func testString_ForGivenDate_ReturnsCorrectlyFormattedDate() async throws {
-        let testCases: [TestCase] = [
-            .init(given: .fixture("2022-05-09 14:17:22"), expected: "May 9, 2022 at 4:17:22 PM"),
-            .init(given: .fixture("2024-01-30 08:11:45"), expected: "Jan 30, 2024 at 9:11:45 AM"),
-            .init(given: .fixture("2017-10-30 22:49:33"), expected: "Oct 30, 2017 at 11:49:33 PM"),
-            .init(given: .fixture("2024-12-31 03:59:59"), expected: "Dec 31, 2024 at 4:59:59 AM"),
-        ]
-
-        try await withCalendarZurichEnUS {
-            testCases.forEach { testCase in
-                XCTAssertEqual(MessageDetailsDateFormatter.string(from: testCase.given), testCase.expected)
-            }
-        }
-    }
-
 }
