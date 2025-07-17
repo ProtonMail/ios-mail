@@ -35,6 +35,10 @@ public struct FixedCalendarTrait: TestTrait, TestScoping {
     }
 }
 
+/// A testing trait that fixes the calendar to Zurich (`en_US`).
+///
+/// Use this trait in tests to ensure date and time formatting is deterministic,
+/// which is essential for reliable unit/snapshot testing.
 extension Trait where Self == FixedCalendarTrait {
     public static var calendarZurichEnUS: Self {
         .init(calendar: .zurichEnUS)
