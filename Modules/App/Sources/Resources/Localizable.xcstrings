@@ -4653,8 +4653,17 @@
     "Cc: " : {
       "comment" : "`CC` in the messsage details."
     },
+    "Change main password" : {
+      "comment" : "Option in the Settings screen (if the user has two passwords)."
+    },
+    "Change password" : {
+      "comment" : "Option in the Settings screen."
+    },
     "Change PIN" : {
       "comment" : "Change PIN code title."
+    },
+    "Change second password" : {
+      "comment" : "Option in the Settings screen (if the user has two passwords)."
     },
     "Combined contacts" : {
       "comment" : "Combined Contacts setting title in app settings."

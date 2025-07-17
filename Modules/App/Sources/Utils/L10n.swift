@@ -907,6 +907,18 @@ enum L10n {
             static func autoLock(minutes: UInt8) -> LocalizedStringResource {
                 .init("After \(minutes) minutes", comment: "Auto lock option.")
             }
+            static let changePassword = LocalizedStringResource(
+                "Change password",
+                comment: "Option in the Settings screen."
+            )
+            static let changeLoginPassword = LocalizedStringResource(
+                "Change main password",
+                comment: "Option in the Settings screen (if the user has two passwords)."
+            )
+            static let changeMailboxPassword = LocalizedStringResource(
+                "Change second password",
+                comment: "Option in the Settings screen (if the user has two passwords)."
+            )
         }
 
         static let subscription = LocalizedStringResource(

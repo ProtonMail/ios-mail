@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import AccountPassword
 import InboxCore
 import InboxCoreUI
 import InboxDesignSystem
@@ -43,6 +44,7 @@ struct SettingsScreen: View {
                     .ignoresSafeArea()
                 ScrollView {
                     VStack(alignment: .leading, spacing: .zero) {
+                        headerSection()
                         accountSection()
                         preferencesSection()
                     }
@@ -68,15 +70,18 @@ struct SettingsScreen: View {
         .task {
             async let accountDetails = provider.accountDetails()
             async let userSettings = provider.userSettings()
+            async let hasMailboxPassword = provider.mailUserSession.hasMailboxPassword()
 
             if let details = await accountDetails {
-                state = state.copy(\.accountSettings, to: details.settings)
+                state = state.copy(\.accountInfo, to: details.settings)
             }
 
             if let isEasyDeviceMigrationDisabled = await userSettings?.flags.edmOptOut {
                 state = state
                     .copy(\.showSignInToAnotherDevice, to: !isEasyDeviceMigrationDisabled)
             }
+
+            state = state.copy(\.hasMailboxPassword, to: await hasMailboxPassword)
         }
         .preferredColorScheme(appAppearanceStore.colorScheme)
     }
@@ -96,6 +101,53 @@ struct SettingsScreen: View {
         .init(
             get: { router.stack },
             set: { router.stack = $0 }
+        )
+    }
+
+    @ViewBuilder
+    private func headerSection() -> some View {
+        VStack(alignment: .center, spacing: DS.Spacing.compact) {
+            accountDetails()
+        }
+        .padding(.top, DS.Spacing.large)
+    }
+
+    private func accountSection() -> some View {
+        FormSection {
+            FormList(collection: state.accountSettings, separator: .normLeftPadding) { preference in
+                settingsRow(
+                    icon: preference.displayData.icon,
+                    title: preference.displayData.title,
+                    action: {
+                        switch preference {
+                        case .qrLogin:
+                            router.go(to: .scanQRCode)
+                        case .changePassword:
+                            router.go(to: passwordChangeRoute(for: .singlePassword))
+                        case .changeLoginPassword:
+                            router.go(to: passwordChangeRoute(for: .loginPassword))
+                        case .changeMailboxPassword:
+                            router.go(to: passwordChangeRoute(for: .mailboxPassword))
+                        }
+                    }
+                )
+            }
+        }
+        .padding(.bottom, DS.Spacing.large)
+    }
+
+    private func passwordChangeRoute(for mode: PasswordChange.Mode) -> SettingsRoute {
+        .changePassword(
+            .init(
+                mode: mode,
+                mailUserSession: self.provider.mailUserSession,
+            ) { [weak router] state in
+                if let state {
+                    router?.go(to: .changePassword(state))
+                } else {
+                    router?.goBack(while: \.isChangePassword)
+                }
+            }
         )
     }
 
@@ -121,51 +173,8 @@ struct SettingsScreen: View {
     }
 
     @ViewBuilder
-    private func accountSection() -> some View {
-        VStack(alignment: .center, spacing: DS.Spacing.compact) {
-            accountDetails()
-            if state.showSignInToAnotherDevice {
-                signInToAnotherDevice()
-            }
-        }
-        .padding(.bottom, DS.Spacing.large)
-        .padding(.top, DS.Spacing.large)
-    }
-
-    @ViewBuilder
-    private func signInToAnotherDevice() -> some View {
-        Button(action: {
-            Task { @MainActor in
-                router.go(to: .scanQRCode)
-            }
-        }) {
-            HStack(spacing: DS.Spacing.large) {
-                Image(DS.Icon.icQrCode)
-                    .resizable()
-                    .square(size: 20)
-                    .foregroundStyle(DS.Color.Icon.norm)
-                    .padding(.horizontal, 14)
-
-                Text(L10n.Settings.signInOnAnotherDevice)
-                    .foregroundStyle(DS.Color.Text.norm)
-
-                Spacer()
-
-                Image(symbol: .chevronRight)
-                    .font(.system(size: 17))
-                    .foregroundStyle(DS.Color.Text.hint)
-            }
-            .padding(.all, DS.Spacing.large)
-            .contentShape(Rectangle())
-        }
-        .buttonStyle(DefaultPressedButtonStyle())
-        .background(DS.Color.BackgroundInverted.secondary)
-        .roundedRectangleStyle()
-    }
-
-    @ViewBuilder
     private func accountDetails() -> some View {
-        if let details = state.accountSettings {
+        if let details = state.accountInfo {
             Button(action: {
                 router.go(to: .webView(.accountSettings))
             }) {

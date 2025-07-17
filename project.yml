@@ -169,6 +169,7 @@ targets:
           - AccountChallenge
           - AccountLogin
           - AccountManager
+          - AccountPassword
       - package: Scrypt
       - package: SwiftUIIntrospect
     preBuildScripts:

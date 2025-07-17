@@ -45,4 +45,16 @@ final class MailUserSessionStub: MailUserSession, @unchecked Sendable {
         executeNotificationQuickActionInvocations.append(action)
         return .ok
     }
+
+    override func passwordValidator() -> PasswordValidatorService? {
+        nil
+    }
+
+    override func userSettings() async -> MailUserSessionUserSettingsResult {
+        .error(.reason(.userContextNotInitialized))
+    }
+
+    override func newPasswordChangeFlow() async -> MailUserSessionNewPasswordChangeFlowResult {
+        .ok(PasswordFlowStub())
+    }
 }

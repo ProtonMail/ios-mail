@@ -15,26 +15,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Combine
+import SwiftUI
 
-public final class Router<Route: Routable>: ObservableObject {
-    @Published public var stack: [Route]
-
-    public init() {
-        self.stack = []
-    }
-
-    public func go(to route: Route) {
-        stack.append(route)
-    }
-
-    public func goBack() {
-        stack.popLast()
-    }
-
-    public func goBack(while shouldGoBack: (Route) throws -> Bool) rethrows {
-        while let last = stack.last, try shouldGoBack(last) {
-            stack.removeLast()
-        }
-    }
+struct AccountInfo: Hashable {
+    let name: String
+    let email: String
+    let avatarInfo: AvatarInfo
 }
