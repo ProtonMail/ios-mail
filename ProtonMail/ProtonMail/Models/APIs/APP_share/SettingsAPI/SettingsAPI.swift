@@ -38,13 +38,6 @@ struct SettingsAPI {
     static let path: String = "/\(Constants.App.API_PREFIXED)/settings"
 }
 
-// Mark : get settings -- SettingsResponse
-struct GetUserSettings: Request {
-    var path: String {
-        return SettingsAPI.path
-    }
-}
-
 final class SettingsResponse: Response {
     var userSettings: [String: Any]?
     override func ParseResponse(_ response: [String: Any]!) -> Bool {
