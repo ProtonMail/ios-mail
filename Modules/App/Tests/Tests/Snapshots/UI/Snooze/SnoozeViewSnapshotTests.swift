@@ -17,6 +17,7 @@
 
 @testable import ProtonMail
 import InboxSnapshotTesting
+import InboxCore
 import InboxTesting
 import Testing
 
@@ -60,6 +61,9 @@ struct SnoozeViewSnapshotTests {
             snoozeActions: testCase.actions,
             initialScreen: testCase.screen
         )
+        .environment(\.calendar, DateEnvironment.calendar)
+        .environment(\.locale, DateEnvironment.calendar.locale.unsafelyUnwrapped)
+        .environment(\.timeZone, DateEnvironment.calendar.timeZone)
         assertSnapshotsOnIPhoneX(of: snoozeView, named: testCase.name)
     }
 }
