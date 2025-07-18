@@ -41,24 +41,24 @@ struct UpgradeButton: View {
         .frame(maxWidth: .infinity)
     }
 
-    struct UpgradeButtonStyle: ButtonStyle {
-        func makeBody(configuration: Configuration) -> some View {
-            configuration.label
-                .background(
-                    RoundedRectangle(cornerRadius: DS.Radius.extraLarge)
-                        .fill(configuration.isPressed ? DS.Color.InteractionWeak.pressed : DS.Color.BackgroundInverted.secondary)
-                        .stroke(
-                            LinearGradient(
-                                gradient: Gradient(colors: DS.Color.Gradient.crazy),
-                                startPoint: .leading,
-                                endPoint: .trailing
-                            ),
-                            lineWidth: 1
-                        )
-                )
-        }
-    }
+}
 
+private struct UpgradeButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .background(
+                RoundedRectangle(cornerRadius: DS.Radius.extraLarge)
+                    .fill(configuration.isPressed ? DS.Color.InteractionWeak.pressed : DS.Color.BackgroundInverted.secondary)
+                    .stroke(
+                        LinearGradient(
+                            gradient: Gradient(colors: DS.Color.Gradient.crazy),
+                            startPoint: .leading,
+                            endPoint: .trailing
+                        ),
+                        lineWidth: 1
+                    )
+            )
+    }
 }
 
 #Preview {

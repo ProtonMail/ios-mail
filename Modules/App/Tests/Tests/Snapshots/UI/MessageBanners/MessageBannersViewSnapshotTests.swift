@@ -25,9 +25,6 @@ import Testing
 @MainActor
 @Suite(.currentDate(.fixture("2025-02-07 09:32:00")))
 class MessageBannersViewSnapshotTests {
-    var scheduleDateFormatter: ScheduleSendDateFormatter {
-        .init(locale: DateEnvironment.calendar.locale!, timeZone: DateEnvironment.calendar.timeZone)
-    }
     var tomorrowAt8AM: UInt64 {
         var components = DateComponents()
         components.hour = 8
@@ -50,7 +47,7 @@ class MessageBannersViewSnapshotTests {
                 .scheduledSend(timestamp: tomorrowAt8AM),
             ],
             timer: Timer.self,
-            scheduleSendDateFormatter: scheduleDateFormatter,
+            scheduleSendDateFormatter: ScheduleSendDateFormatter(),
             action: { _ in }
         )
 
@@ -69,7 +66,7 @@ class MessageBannersViewSnapshotTests {
                 .remoteContent,
             ],
             timer: Timer.self,
-            scheduleSendDateFormatter: scheduleDateFormatter,
+            scheduleSendDateFormatter: ScheduleSendDateFormatter(),
             action: { _ in }
         )
 

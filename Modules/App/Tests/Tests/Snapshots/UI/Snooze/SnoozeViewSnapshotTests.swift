@@ -57,9 +57,8 @@ struct SnoozeViewSnapshotTests {
             snoozeActions: testCase.actions,
             initialScreen: testCase.screen
         )
-        .environment(\.calendar, DateEnvironment.calendar)
-        .environment(\.locale, DateEnvironment.calendar.locale.unsafelyUnwrapped)
-        .environment(\.timeZone, DateEnvironment.calendar.timeZone)
+        .injectDateEnvironments()
+
         assertSnapshotsOnIPhoneX(of: snoozeView, named: testCase.name)
     }
 }

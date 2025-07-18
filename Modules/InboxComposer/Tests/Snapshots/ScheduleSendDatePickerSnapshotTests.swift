@@ -19,6 +19,7 @@
 @testable import InboxComposer
 import InboxCore
 import InboxSnapshotTesting
+import InboxTesting
 import Testing
 import SwiftUI
 
@@ -26,19 +27,19 @@ import SwiftUI
 @Suite(.calendarZurichEnUS)
 final class ScheduleSendDatePickerSnapshotTests {
     let referenceDate = Date(timeIntervalSince1970: 1_700_000_000)
-    let dateFormatter = ScheduleSendDateFormatter(locale: Locale.enUS, timeZone: TimeZone.zurich)
 
     @Test
     func testScheduleSendDatePicker_itLayoutsCorrectOnIphoneX() throws {
         let scheduleSendDatePicker = DatePickerView(
-            configuration: ScheduleDatePickerConfiguration(dateFormatter: dateFormatter, referenceDate: referenceDate),
+            configuration: ScheduleDatePickerConfiguration(
+                dateFormatter: ScheduleSendDateFormatter(),
+                referenceDate: referenceDate
+            ),
             onCancel: {},
             onSelect: { _ in }
         )
         // these environemnts are provided for the native DatePicker component
-        .environment(\.calendar, DateEnvironment.calendar)
-        .environment(\.locale, DateEnvironment.calendar.locale.unsafelyUnwrapped)
-        .environment(\.timeZone, DateEnvironment.calendar.timeZone)
+        .injectDateEnvironments()
 
         assertSnapshotsOnIPhoneX(of: scheduleSendDatePicker)
     }

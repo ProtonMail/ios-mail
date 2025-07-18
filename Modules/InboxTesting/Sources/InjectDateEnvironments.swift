@@ -15,31 +15,22 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
 import InboxCore
-import InboxCoreUI
-import InboxComposer
+import SwiftUI
 
-struct SnoozeDatePickerConfiguration: DatePickerViewConfiguration {
-
-    // MARK: - DatePickerViewConfiguration
-
-    let title: LocalizedStringResource = L10n.Snooze.customSnoozeSheetTitle
-    let selectTitle: LocalizedStringResource = L10n.Common.save
-    let minuteInterval: TimeInterval = 30
-
-    var range: ClosedRange<Date> {
-        let start = DateEnvironment.currentDate()
-        let end = Date.distantFuture
-        return start...end
+extension View {
+    public func injectDateEnvironments() -> some View {
+        modifier(InjectDateEnvironmentsModifier())
     }
+}
 
-    func formatDate(_ date: Date) -> String {
-        formatter.string(from: date, format: .medium)
+private struct InjectDateEnvironmentsModifier: ViewModifier {
+
+    func body(content: Content) -> some View {
+        content
+            .environment(\.calendar, DateEnvironment.calendar)
+            .environment(\.locale, DateEnvironment.calendar.locale.unsafelyUnwrapped)
+            .environment(\.timeZone, DateEnvironment.calendar.timeZone)
     }
-
-    // MARK: - Private
-
-    private let formatter = ScheduleSendDateFormatter()
 
 }

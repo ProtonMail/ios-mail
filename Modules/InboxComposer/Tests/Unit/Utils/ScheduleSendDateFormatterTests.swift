@@ -20,8 +20,9 @@ import Foundation
 import proton_app_uniffi
 import Testing
 
+@Suite(.calendarZurichEnUS)
 final class ScheduleSendDateFormatterTests {
-    private var sut: ScheduleSendDateFormatter! = .init(locale: .enUS, timeZone: .zurich)
+    private var sut: ScheduleSendDateFormatter! = .init()
     private var todayTime: Date {
         let calendar: Calendar = .zurich
         let startOfDay = calendar.startOfDay(for: .now)

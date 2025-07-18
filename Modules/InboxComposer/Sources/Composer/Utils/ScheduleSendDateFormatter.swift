@@ -30,17 +30,9 @@ public struct ScheduleSendDateFormatter {
         case long
     }
 
-    private let dateFormatter: DateFormatter
+    private let dateFormatter: DateFormatter = .fromEnvironmentCalendar()
 
-    public init(
-        locale: Locale? = DateEnvironment.calendar.locale,
-        timeZone: TimeZone? = DateEnvironment.calendar.timeZone
-    ) {
-        let formatter = DateFormatter()
-        formatter.locale = locale
-        formatter.timeZone = timeZone
-        self.dateFormatter = formatter
-    }
+    public init() {}
 
     public func string(from date: Date, format: Format) -> String {
         switch format {

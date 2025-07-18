@@ -43,8 +43,17 @@ struct SnoozeView: View {
         GridItem(.flexible(), spacing: gridSpacing),
     ]
 
+    var body: some View {
+        sheetContent
+            .animation(.easeInOut, value: store.state.screen)
+            .transition(.identity)
+            .presentationDetents(store.state.allowedDetents, selection: $store.state.currentDetent)
+            .presentationDragIndicator(.hidden)
+            .interactiveDismissDisabled()
+    }
+
     @ViewBuilder
-    var sheetContent: some View {
+    private var sheetContent: some View {
         switch store.state.screen {
         case .custom:
             DatePickerView(
@@ -81,15 +90,6 @@ struct SnoozeView: View {
                 .background(DS.Color.BackgroundInverted.norm)
             }
         }
-    }
-
-    var body: some View {
-        sheetContent
-            .animation(.easeInOut, value: store.state.screen)
-            .transition(.identity)
-            .presentationDetents(store.state.allowedDetents, selection: $store.state.currentDetent)
-            .presentationDragIndicator(.hidden)
-            .interactiveDismissDisabled()
     }
 
     private func buttonWithIcon(for model: PredefinedSnooze) -> some View {

@@ -15,8 +15,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-// MARK: - Rust API - to remove
-
 import InboxCore
 import InboxDesignSystem
 import Foundation
@@ -87,17 +85,13 @@ extension PredefinedSnooze {
 
 private enum SnoozeFormatter {
     static let timeOnlyFormatter = {
-        let formatter = DateFormatter()
-        formatter.locale = DateEnvironment.calendar.locale
-        formatter.timeZone = DateEnvironment.calendar.timeZone
+        let formatter = DateFormatter.fromEnvironmentCalendar()
         formatter.setLocalizedDateFormatFromTemplate("jm")
         return formatter
     }()
 
     static let weekDayWithTimeFormatter = {
-        let formatter = DateFormatter()
-        formatter.locale = DateEnvironment.calendar.locale
-        formatter.timeZone = DateEnvironment.calendar.timeZone
+        let formatter = DateFormatter.fromEnvironmentCalendar()
         formatter.setLocalizedDateFormatFromTemplate("EEEEjm")
         return formatter
     }()

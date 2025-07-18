@@ -44,7 +44,8 @@ class SnoozeStore: StateStore {
 
     private func transition(to screen: SnoozeView.Screen) {
         withAnimation {
-            state = state
+            state =
+                state
                 .copy(\.screen, to: screen)
                 .copy(\.allowedDetents, to: screen.allowedDetents)
                 .copy(\.currentDetent, to: screen.detent)
