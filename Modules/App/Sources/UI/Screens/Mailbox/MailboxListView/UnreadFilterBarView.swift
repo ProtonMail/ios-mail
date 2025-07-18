@@ -51,22 +51,34 @@ struct UnreadFilterBarView: View {
                 Text(L10n.Mailbox.unread)
                     .accessibilityIdentifier(UnreadFilterIdentifiers.countLabel)
                 Text(state.unreadCount.string)
+                    .fontWeight(.semibold)
                     .accessibilityIdentifier(UnreadFilterIdentifiers.countValue)
+                if state.isUnreadButtonSelected {
+                    Image(symbol: .xmark)
+                        .foregroundStyle(DS.Color.Brand.plus30)
+                        .transition(
+                            .scale
+                            .combined(with: .opacity)
+                        )
+                        .zIndex(-1)
+                }
             }
+            .animation(.easeIn(duration: 0.1), value: state.isUnreadButtonSelected)
             .font(.footnote)
-            .foregroundStyle(DS.Color.Text.norm)
+            .foregroundStyle(state.isUnreadButtonSelected ? DS.Color.Brand.plus30 : DS.Color.Text.norm)
         }
         .accessibilityAddTraits(state.isUnreadButtonSelected ? .isSelected : [])
         .padding(.vertical, DS.Spacing.standard)
         .padding(.horizontal, DS.Spacing.medium * scale)
         .background(
             RoundedRectangle(cornerRadius: DS.Radius.massive * scale, style: .continuous)
-                .fill(state.isUnreadButtonSelected ? DS.Color.InteractionWeak.pressed : DS.Color.Background.norm)
+                .fill(state.isUnreadButtonSelected ? DS.Color.InteractionBrandWeak.norm : DS.Color.Background.norm)
         )
         .overlay {
             RoundedRectangle(cornerRadius: DS.Radius.massive * scale, style: .continuous)
-                .stroke(DS.Color.Border.norm)
+                .stroke(state.isUnreadButtonSelected ? .clear : DS.Color.Border.norm)
         }
+        .animation(.easeOut(duration: 0.2), value: state.isUnreadButtonSelected)
     }
 
     private func selectAllButton() -> some View {
