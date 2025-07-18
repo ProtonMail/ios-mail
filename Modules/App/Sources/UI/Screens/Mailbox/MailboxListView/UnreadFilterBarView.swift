@@ -60,7 +60,6 @@ struct UnreadFilterBarView: View {
                             .scale
                             .combined(with: .opacity)
                         )
-                        .zIndex(-1)
                 }
             }
             .animation(.easeIn(duration: 0.1), value: state.isUnreadButtonSelected)
