@@ -149,7 +149,10 @@ extension MessageBodyReaderView {
             case .heightChanged:
                 Task { @MainActor in
                     let scriptOutput = scriptMessage.body as! CGFloat
-                    parent.bodyContentHeight = scriptOutput
+
+                    if shouldUpdateContentHeight(proposedNewHeight: scriptOutput) {
+                        parent.bodyContentHeight = scriptOutput
+                    }
                 }
             case .none:
                 fatalError()
@@ -177,6 +180,17 @@ extension MessageBodyReaderView {
                 return false
             } else {
                 previouslyReceivedBody = body
+                return true
+            }
+        }
+
+        private func shouldUpdateContentHeight(proposedNewHeight: CGFloat) -> Bool {
+            let currentHeight = parent.bodyContentHeight
+
+            if currentHeight > 0 {
+                let isAtLeastOnePercentDifference = abs(proposedNewHeight - currentHeight) / currentHeight >= 0.01
+                return isAtLeastOnePercentDifference
+            } else {
                 return true
             }
         }
