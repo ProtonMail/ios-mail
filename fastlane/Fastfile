@@ -192,8 +192,6 @@ platform :ios do
         xcargs: "-skipPackagePluginValidation"
       )
 
-      sentry_debug_files_upload
-
       upload_to_testflight(
         team_name: "Proton Technologies AG",
         skip_waiting_for_build_processing: true
