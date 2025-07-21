@@ -35,6 +35,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
     @Published var attachmentIDToOpen: ID?
 
     let messageAppearanceOverrideStore = MessageAppearanceOverrideStore()
+    let messagePrinter: MessagePrinter
 
     var isBottomBarHidden: Bool {
         seed.isOutbox || bottomBarActions.isEmpty
@@ -80,6 +81,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         self.draftPresenter = draftPresenter
         self.dependencies = dependencies
         self.backOnlineActionExecutor = backOnlineActionExecutor
+        messagePrinter = .init(userSession: { dependencies.appContext.userSession })
     }
 
     @MainActor

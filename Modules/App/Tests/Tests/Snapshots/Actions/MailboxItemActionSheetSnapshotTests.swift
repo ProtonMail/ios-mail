@@ -48,6 +48,7 @@ class MailboxItemActionSheetSnapshotTests: BaseTestCase {
             )
             .environmentObject(ToastStateStore(initialState: .initial))
             .environment(\.messageAppearanceOverrideStore, messageAppearanceOverrideStore)
+            .environment(\.messagePrinter, .init(userSession: { .dummy }))
 
             for style in [UIUserInterfaceStyle.light, .dark] {
                 assertCustomHeightSnapshot(

@@ -48,6 +48,13 @@ enum L10n {
             )
         }
 
+        enum Print {
+            static let error = LocalizedStringResource(
+                "Could not print requested e-mail",
+                comment: "Error message when printing fails."
+            )
+        }
+
         enum Send {
             static let editScheduledAlertTitle = LocalizedStringResource(
                 "Edit and reschedule",
@@ -552,6 +559,7 @@ enum L10n {
         static let cc = LocalizedStringResource("Cc: ", comment: "`CC` in the messsage details.")
         static let from = LocalizedStringResource("From: ", comment: "`From` in the message details.")
         static let to = LocalizedStringResource("To: ", comment: "`To` in the message details.")
+        static let on = LocalizedStringResource("On: ", comment: "`On` as in on a given date.")
         static func attachments(count: Int) -> LocalizedStringResource {
             .init("\(count) attachments", comment: "The number of a message attachments.")
         }

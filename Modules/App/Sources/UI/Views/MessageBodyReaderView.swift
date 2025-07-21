@@ -25,6 +25,7 @@ extension EnvironmentValues {
 }
 
 struct MessageBodyReaderView: UIViewRepresentable {
+    @Environment(\.webViewPrintingRegistrar) var webViewPrintingRegistrar
     @Binding var bodyContentHeight: CGFloat
     let body: MessageBody.HTML
     let viewWidth: CGFloat
@@ -61,6 +62,8 @@ struct MessageBodyReaderView: UIViewRepresentable {
         userScripts.forEach(config.userContentController.addUserScript(_:))
 
         context.coordinator.setupRecovery(for: webView)
+        context.environment.webViewPrintingRegistrar.register(webView: webView)
+
         return webView
     }
 

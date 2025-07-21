@@ -32,6 +32,7 @@ class MailboxItemActionSheetStateStore: StateStore {
     private let generalActionsPerformer: GeneralActionsPerformer
     private let toastStateStore: ToastStateStore
     private let messageAppearanceOverrideStore: MessageAppearanceOverrideStore
+    private let printActionPerformer: PrintActionPerformer
     private let colorScheme: ColorScheme
     private let navigation: (MailboxItemActionSheetNavigation) -> Void
 
@@ -47,6 +48,7 @@ class MailboxItemActionSheetStateStore: StateStore {
         mailUserSession: MailUserSession,
         toastStateStore: ToastStateStore,
         messageAppearanceOverrideStore: MessageAppearanceOverrideStore,
+        printActionPerformer: PrintActionPerformer,
         colorScheme: ColorScheme,
         navigation: @escaping (MailboxItemActionSheetNavigation) -> Void
     ) {
@@ -63,6 +65,7 @@ class MailboxItemActionSheetStateStore: StateStore {
         self.state = .initial(title: input.title)
         self.toastStateStore = toastStateStore
         self.messageAppearanceOverrideStore = messageAppearanceOverrideStore
+        self.printActionPerformer = printActionPerformer
         self.colorScheme = colorScheme
         self.navigation = navigation
     }
@@ -119,8 +122,17 @@ class MailboxItemActionSheetStateStore: StateStore {
             }
         case .generalActionTapped(let generalAction):
             switch generalAction {
-            case .print, .saveAsPdf, .viewHeaders, .viewHtml:
+            case .saveAsPdf, .viewHeaders, .viewHtml:
                 toastStateStore.present(toast: .comingSoon)
+            case .print:
+                Task {
+                    do {
+                        try await printActionPerformer.printMessage(messageID: input.id)
+                    } catch {
+                        AppLogger.log(error: error)
+                        toastStateStore.present(toast: .error(message: error.localizedDescription))
+                    }
+                }
             case .viewMessageInLightMode:
                 messageAppearanceOverrideStore.forceLightMode(forMessageWithId: input.id)
                 navigation(.dismiss)

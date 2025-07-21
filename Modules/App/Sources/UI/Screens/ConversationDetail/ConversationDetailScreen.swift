@@ -67,6 +67,7 @@ struct ConversationDetailScreen: View {
                 }
             )
             .environment(\.messageAppearanceOverrideStore, model.messageAppearanceOverrideStore)
+            .environment(\.messagePrinter, model.messagePrinter)
     }
 
     private var conversationView: some View {

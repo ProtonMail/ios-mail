@@ -26,6 +26,7 @@ typealias ReplyActionsHandler = (_ messageId: ID, _ action: ReplyAction) -> Void
 struct MailboxItemActionSheet: View {
     @EnvironmentObject var toastStateStore: ToastStateStore
     @Environment(\.messageAppearanceOverrideStore) var messageAppearanceOverrideStore
+    @Environment(\.messagePrinter) var messagePrinter: MessagePrinter
     @Environment(\.colorScheme) var colorScheme
     private let input: MailboxItemActionSheetInput
     private let mailbox: Mailbox
@@ -66,21 +67,24 @@ struct MailboxItemActionSheet: View {
     }
 
     var body: some View {
-        StoreView(store: MailboxItemActionSheetStateStore(
-            input: input,
-            mailbox: mailbox,
-            actionsProvider: actionsProvider,
-            starActionPerformerActions: starActionPerformerActions,
-            readActionPerformerActions: readActionPerformerActions,
-            deleteActions: deleteActions,
-            moveToActions: moveToActions,
-            generalActions: generalActions,
-            mailUserSession: mailUserSession,
-            toastStateStore: toastStateStore,
-            messageAppearanceOverrideStore: messageAppearanceOverrideStore!,
-            colorScheme: colorScheme,
-            navigation: navigation
-        )) { state, store in
+        StoreView(
+            store: MailboxItemActionSheetStateStore(
+                input: input,
+                mailbox: mailbox,
+                actionsProvider: actionsProvider,
+                starActionPerformerActions: starActionPerformerActions,
+                readActionPerformerActions: readActionPerformerActions,
+                deleteActions: deleteActions,
+                moveToActions: moveToActions,
+                generalActions: generalActions,
+                mailUserSession: mailUserSession,
+                toastStateStore: toastStateStore,
+                messageAppearanceOverrideStore: messageAppearanceOverrideStore!,
+                printActionPerformer: messagePrinter,
+                colorScheme: colorScheme,
+                navigation: navigation
+            )
+        ) { state, store in
             ClosableScreen {
                 ScrollView {
                     VStack(spacing: DS.Spacing.standard) {

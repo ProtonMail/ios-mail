@@ -37,6 +37,7 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
     var generalActionsSpy: GeneralActionsPerfomerSpy!
     var toastStateStore: ToastStateStore!
     private var messageAppearanceOverrideStore: MessageAppearanceOverrideStore!
+    private var printActionPerformerSpy: PrintActionPerformerSpy!
 
     override func setUp() {
         super.setUp()
@@ -52,6 +53,7 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
         generalActionsSpy = .init()
         toastStateStore = .init(initialState: .initial)
         messageAppearanceOverrideStore = .init()
+        printActionPerformerSpy = .init()
     }
 
     override func tearDown() {
@@ -69,6 +71,7 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
         moveToActionsSpy = nil
         toastStateStore = nil
         messageAppearanceOverrideStore = nil
+        printActionPerformerSpy = nil
     }
 
     func testState_WhenMailboxTypeIsMessage_ItReturnsAvailableMessageActions() {
@@ -259,8 +262,25 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
 
     // MARK: - General actions
 
-    func testAction_WhenPrintMessageActionInvoked_ItShowsComingSoonBanner() {
-        verifyGeneralAction(action: .print)
+    func testAction_WhenPrintIsInvoked_ItPrintsMessage() {
+        let id = ID(value: 55)
+        let sut = sut(id: id.value, type: .message, title: .notUsed)
+
+        sut.handle(action: .generalActionTapped(.print))
+
+        XCTAssertEqual(printActionPerformerSpy.printMessageCalls, [id])
+    }
+
+    func testAction_WhenPrintIsInvokedButFails_ItShowsError() {
+        let stubbedError = PrintError.uiPrintError(UIPrintError(.jobFailed))
+        printActionPerformerSpy.stubbedPrintMessageResult = .failure(stubbedError)
+
+        let id = ID(value: 55)
+        let sut = sut(id: id.value, type: .message, title: .notUsed)
+
+        sut.handle(action: .generalActionTapped(.print))
+
+        XCTAssertEqual(toastStateStore.state.toasts, [.error(message: "Could not print requested e-mail")])
     }
 
     func testAction_WhenReportPhishingActionInvoked_ItPresentsConfirmPhishingAlert() {
@@ -445,6 +465,7 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
             mailUserSession: .dummy,
             toastStateStore: toastStateStore,
             messageAppearanceOverrideStore: messageAppearanceOverrideStore,
+            printActionPerformer: printActionPerformerSpy,
             colorScheme: .light,
             navigation: { navigation in self.spiedNavigation.append(navigation) }
         )
@@ -471,4 +492,15 @@ private extension MailboxItemActionSheetState {
         try XCTUnwrap(alert?.actions.findFirst(for: string, by: \.title))
     }
 
+}
+
+private final class PrintActionPerformerSpy: PrintActionPerformer {
+    var stubbedPrintMessageResult: Result<Void, Error> = .success(())
+
+    private(set) var printMessageCalls: [ID] = []
+
+    func printMessage(messageID: ID) async throws {
+        printMessageCalls.append(messageID)
+        try stubbedPrintMessageResult.get()
+    }
 }

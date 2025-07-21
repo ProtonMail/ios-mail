@@ -84,48 +84,6 @@ private extension Message {
 
 }
 
-private extension Message {
-
-    static func testData(
-        messageId: UInt64 = UInt64.random(in: 0..<100),
-        to: [MessageRecipient] = [],
-        cc: [MessageRecipient] = [],
-        bcc: [MessageRecipient] = [],
-        sender: MessageSender = .testData(name: "", address: "sender@example.com")
-    ) -> Self {
-        .init(
-            id: .init(value: messageId),
-            conversationId: .init(value: 31),
-            addressId: .init(value: 32),
-            attachmentsMetadata: [],
-            bccList: bcc,
-            ccList: cc,
-            exclusiveLocation: .system(name: .inbox, id: .init(value: 33)),
-            expirationTime: 1625140800,
-            flags: .init(value: 2),
-            isForwarded: true,
-            isReplied: true,
-            isRepliedAll: true,
-            numAttachments: 1,
-            displayOrder: 0,
-            sender: sender,
-            size: 1_024,
-            snoozeTime: 0,
-            subject: .notUsed,
-            time: 1622548800,
-            toList: to,
-            unread: true,
-            customLabels: [],
-            starred: true,
-            avatar: .init(text: .notUsed, color: .notUsed),
-            isDraft: false,
-            isScheduled: false,
-            canReply: true
-        )
-    }
-
-}
-
 extension String {
     static let notUsed = "__NOT_USED__"
 }

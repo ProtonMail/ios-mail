@@ -21,6 +21,7 @@ import proton_app_uniffi
 import SwiftUI
 
 struct MessageBodyView: View {
+    @Environment(\.messagePrinter) var messagePrinter: MessagePrinter
     @EnvironmentObject var toastStateStore: ToastStateStore
     let messageID: ID
     let emailAddress: String
@@ -84,6 +85,7 @@ struct MessageBodyView: View {
                     MessageBodyAttachmentsView(attachments: attachments, attachmentIDToOpen: $attachmentIDToOpen)
                 }
                 MessageBodyHTMLView(bodyContentHeight: $bodyContentHeight, messageBody: state.body)
+                    .environment(\.webViewPrintingRegistrar, .init(messagePrinter: messagePrinter, messageID: messageID))
             }
             .alert(model: store.binding(\.alert))
             .onLoad { store.handle(action: .onLoad) }

@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import InboxDesignSystem
+import InboxTesting
 import proton_app_uniffi
 @testable import ProtonMail
 import XCTest
@@ -42,21 +43,6 @@ final class ConversationToMailboxItemCellUIModelTests: XCTestCase {
         let conversation = Conversation.testData()
         let result = conversation.toMailboxItemCellUIModel(selectedIds: [], showLocation: false)
         XCTAssertNil(result.locationIcon)
-    }
-
-}
-
-extension MessageSender {
-
-    static func testData(name: String, address: String) -> Self {
-        .init(
-            address: address,
-            bimiSelector: nil,
-            displaySenderImage: .random(),
-            isProton: .random(),
-            isSimpleLogin: .random(),
-            name: name
-        )
     }
 
 }

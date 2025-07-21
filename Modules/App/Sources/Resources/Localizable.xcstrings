@@ -5429,6 +5429,9 @@
     "Could not move to folder. Folder may have been deleted or moved." : {
       "comment" : "Error when trying to move a message to a folder that no longer exists."
     },
+    "Could not print requested e-mail" : {
+      "comment" : "Error message when printing fails."
+    },
     "Create a folder" : {
       "comment" : "Button in the sidebar menu that redirects a user to the create folder screen.",
       "localizations" : {
@@ -12359,6 +12362,9 @@
           }
         }
       }
+    },
+    "On: " : {
+      "comment" : "`On` as in on a given date."
     },
     "Opening the email should show the message content and the attachments." : {
       "comment" : "Placeholder of expected results text field."
