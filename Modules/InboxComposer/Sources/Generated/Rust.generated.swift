@@ -94,6 +94,86 @@ public extension OpenDraftResult {
         }
     }
 }
+public extension PasswordFlowChangeMboxPassResult {
+    func get() throws(PasswordError) -> SimplePasswordState {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension PasswordFlowChangePassResult {
+    func get() throws(PasswordError) -> SimplePasswordState {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension PasswordFlowHasFidoResult {
+    func get() throws(PasswordError) -> Bool {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension PasswordFlowHasMbpResult {
+    func get() throws(PasswordError) -> Bool {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension PasswordFlowHasTotpResult {
+    func get() throws(PasswordError) -> Bool {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension PasswordFlowStepBackResult {
+    func get() throws(PasswordError) -> SimplePasswordState {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension PasswordFlowSubmitPassResult {
+    func get() throws(PasswordError) -> SimplePasswordState {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension PasswordFlowSubmitTotpResult {
+    func get() throws(PasswordError) -> SimplePasswordState {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension SignupFlowAvailableCountriesResult {
     func get() throws(SignupError) -> Countries {
         switch self {
