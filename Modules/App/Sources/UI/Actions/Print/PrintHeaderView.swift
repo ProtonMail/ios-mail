@@ -46,8 +46,6 @@ struct PrintHeaderView: View {
             }
             .font(.footnote)
 
-            labelRow
-
             Divider()
 
             if !messageDetails.attachments.isEmpty {
@@ -82,18 +80,6 @@ struct PrintHeaderView: View {
                 .foregroundStyle(DS.Color.Text.weak)
                 .fontWeight(.medium)
         }
-    }
-
-    private var labelRow: some View {
-        let capsules = messageDetails.labels.map { label in
-            CapsuleView(
-                text: label.text.stringResource,
-                color: label.color,
-                style: .label
-            )
-        }
-
-        return CapsuleCloudView(subviews: capsules)
     }
 
     private var attachmentRow: some View {
