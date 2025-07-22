@@ -46,6 +46,8 @@ struct PrintHeaderView: View {
             }
             .font(.footnote)
 
+            labelRow
+
             Divider()
         }
     }
@@ -76,6 +78,18 @@ struct PrintHeaderView: View {
                 .foregroundStyle(DS.Color.Text.weak)
                 .fontWeight(.medium)
         }
+    }
+
+    private var labelRow: some View {
+        let capsules = messageDetails.labels.map { label in
+            CapsuleView(
+                text: label.text.stringResource,
+                color: label.color,
+                style: .label
+            )
+        }
+
+        return CapsuleCloudView(subviews: capsules)
     }
 
     private func gridRow<Content: View>(title: LocalizedStringResource, content: () -> Content) -> GridRow<TupleView<(Text, Content)>> {

@@ -342,7 +342,6 @@ struct MessageDetailsView: View {
         return HStack(alignment: .center, spacing: DS.Spacing.small) {
             CapsuleCloudView(
                 subviews: capsules,
-                innerPadding: DS.Spacing.tiny
             )
             Spacer()
         }

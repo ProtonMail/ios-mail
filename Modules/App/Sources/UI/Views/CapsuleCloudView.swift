@@ -16,17 +16,16 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import InboxCoreUI
+import InboxDesignSystem
 import SwiftUI
 
 struct CapsuleCloudView: View {
     @State private var totalHeight: CGFloat = .zero
 
     private let subviews: [CapsuleView]
-    private let innerPadding: CGFloat
 
-    init(subviews: [CapsuleView], innerPadding: CGFloat) {
+    init(subviews: [CapsuleView]) {
         self.subviews = subviews
-        self.innerPadding = innerPadding
     }
 
     var body: some View {
@@ -37,7 +36,7 @@ struct CapsuleCloudView: View {
             ZStack(alignment: .topLeading) {
                 ForEach(subviews.indices, id: \.self) { index in
                     subviews[index]
-                        .padding([.horizontal, .vertical], innerPadding)
+                        .padding([.horizontal, .vertical], DS.Spacing.tiny)
                         .alignmentGuide(.leading) { viewDimensions in
                             if (abs(xPos - viewDimensions.width) > geometry.size.width) {
                                 xPos = 0
@@ -92,9 +91,8 @@ struct CapsuleCloudView: View {
                 CapsuleView(text: "Shopping".notLocalized.stringResource, color: .indigo, style: .label),
                 CapsuleView(text: "Games & Fun".notLocalized.stringResource, color: .mint, icon: Image(systemName: "gamecontroller"), style: .attachment),
                 CapsuleView(text: "Sports".notLocalized.stringResource, color: .orange, icon: Image(systemName: "volleyball.fill"), style: .attachment),
-                CapsuleView(text: "Shopping".notLocalized.stringResource, color: .purple, style: .label)
-            ],
-            innerPadding: 2
+                CapsuleView(text: "Shopping".notLocalized.stringResource, color: .purple, style: .label),
+            ]
         )
         .padding(10)
         .border(.red)
