@@ -1632,6 +1632,9 @@
         }
       }
     },
+    "+%lld more" : {
+      "comment" : "At the end of a list of items, showing how many more are hidden."
+    },
     "1. Find an email with a large attachment (ex: video)\n2. Open the email\n3. Wait for the email to load" : {
       "comment" : "Placeholder of steps to reproduce text field."
     },

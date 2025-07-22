@@ -57,9 +57,13 @@ struct PrintHeaderView: View {
     @ViewBuilder
     private func participantsRow(group: LabeledParticipantGroup) -> some View {
         if !group.participants.isEmpty {
+            let limitOfVisibleParticipants = 3
+            let visibleParticipants = group.participants.prefix(limitOfVisibleParticipants)
+            let numberOfHiddenParticipants = group.participants.count - visibleParticipants.count
+
             gridRow(title: L10n.MessageDetails.self[keyPath: group.label]) {
                 VStack(alignment: .leading) {
-                    ForEach(Array(group.participants.enumerated()), id: \.offset) { index, contact in
+                    ForEach(Array(visibleParticipants.enumerated()), id: \.offset) { index, contact in
                         VStack(alignment: .leading, spacing: 0) {
                             Text(contact.name)
                                 .foregroundStyle(DS.Color.Text.weak)
@@ -68,6 +72,12 @@ struct PrintHeaderView: View {
                             Text(contact.address)
                                 .foregroundStyle(DS.Color.Text.hint)
                         }
+                    }
+
+                    if numberOfHiddenParticipants > 0 {
+                        Text(L10n.Action.Print.plusMore(count: numberOfHiddenParticipants))
+                            .foregroundStyle(DS.Color.Text.weak)
+                            .fontWeight(.medium)
                     }
                 }
             }
