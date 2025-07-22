@@ -112,6 +112,7 @@ private struct MailboxActionBarViewModifier: ViewModifier {
                 }
                 .alert(model: store.binding(\.deleteConfirmationAlert))
         }
+        .id(mailbox.labelId())
     }
 
     // MARK: - Private
