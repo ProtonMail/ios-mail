@@ -37,6 +37,6 @@ struct PrintHeaderViewSnapshotTests {
             messageDetails: messageDetails
         )
 
-        assertSnapshotsOnIPhoneX(of: sut)
+        assertSnapshotsOnIPhoneX(of: sut, styles: [.light])
     }
 }

@@ -17,6 +17,7 @@
 
 import OrderedCollections
 import InboxCoreUI
+import InboxDesignSystem
 import proton_app_uniffi
 import SwiftUI
 
@@ -83,6 +84,8 @@ struct MessageBodyView: View {
                 }
                 if !attachments.isEmpty {
                     MessageBodyAttachmentsView(attachments: attachments, attachmentIDToOpen: $attachmentIDToOpen)
+                        .padding(.top, DS.Spacing.extraLarge)
+                        .padding([.horizontal, .bottom], DS.Spacing.large)
                 }
                 MessageBodyHTMLView(bodyContentHeight: $bodyContentHeight, messageBody: state.body)
                     .environment(\.webViewPrintingRegistrar, .init(messagePrinter: messagePrinter, messageID: messageID))

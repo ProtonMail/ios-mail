@@ -49,6 +49,10 @@ struct PrintHeaderView: View {
             labelRow
 
             Divider()
+
+            if !messageDetails.attachments.isEmpty {
+                attachmentRow
+            }
         }
     }
 
@@ -90,6 +94,13 @@ struct PrintHeaderView: View {
         }
 
         return CapsuleCloudView(subviews: capsules)
+    }
+
+    private var attachmentRow: some View {
+        MessageBodyAttachmentsView(
+            state: .init(attachments: messageDetails.attachments, listState: .long(isAttachmentsListOpen: false)),
+            attachmentIDToOpen: .constant(nil)
+        )
     }
 
     private func gridRow<Content: View>(title: LocalizedStringResource, content: () -> Content) -> GridRow<TupleView<(Text, Content)>> {

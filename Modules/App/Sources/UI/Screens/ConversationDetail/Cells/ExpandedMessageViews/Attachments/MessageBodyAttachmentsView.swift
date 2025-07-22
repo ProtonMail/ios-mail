@@ -34,15 +34,6 @@ struct MessageBodyAttachmentsView: View {
     }
 
     var body: some View {
-        makeBody()
-            .padding(.top, DS.Spacing.extraLarge)
-            .padding([.horizontal, .bottom], DS.Spacing.large)
-    }
-
-    // MARK: - Private
-
-    @ViewBuilder
-    private func makeBody() -> some View {
         switch state.listState {
         case .short:
             attachmentsList()
@@ -50,6 +41,8 @@ struct MessageBodyAttachmentsView: View {
             expandableAttachmentsList(isAttachmentsListOpen: isAttachmentsListOpen)
         }
     }
+
+    // MARK: - Private
 
     private func expandableAttachmentsList(isAttachmentsListOpen: Bool) -> some View {
         VStack(spacing: DS.Spacing.standard) {
