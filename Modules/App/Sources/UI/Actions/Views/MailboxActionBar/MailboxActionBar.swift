@@ -112,7 +112,7 @@ private struct MailboxActionBarViewModifier: ViewModifier {
                 }
                 .alert(model: store.binding(\.deleteConfirmationAlert))
         }
-        .id(mailbox.labelId())
+        .id(MailboxIdentifiaction(viewMode: mailbox.viewMode(), id: mailbox.labelId()))
     }
 
     // MARK: - Private
@@ -153,4 +153,9 @@ private struct MailboxActionBarViewIdentifiers {
         let number = index + 1
         return "mailbox.actionBar.button\(number)"
     }
+}
+
+private struct MailboxIdentifiaction: Hashable {
+    let viewMode: ViewMode
+    let id: ID
 }
