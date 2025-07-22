@@ -324,11 +324,11 @@ private extension BodyHtmlDocument {
 
                 // wait until next render to ensure all layout changes are done
                 requestAnimationFrame(() => {
-                    updateCursorPosition();
+                    debouncedUpdateCursorPosition();
                     isProcessingNewLine = false;
                 });
             } else if (!isProcessingNewLine) {
-                updateCursorPosition();
+                debouncedUpdateCursorPosition();
             }
         }
 
@@ -434,6 +434,15 @@ private extension BodyHtmlDocument {
             window.scrollTo(0, 0);
         }
 
+        function debounce(func, wait) {
+            let timeout;
+            return function(...args) {
+                clearTimeout(timeout);
+                timeout = setTimeout(() => func.apply(this, args), wait);
+            };
+        }
+
+        const debouncedUpdateCursorPosition = debounce(updateCursorPosition, 100);
         """
     }
 }
