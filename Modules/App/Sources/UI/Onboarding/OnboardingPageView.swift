@@ -19,26 +19,59 @@ import InboxDesignSystem
 import SwiftUI
 
 struct OnboardingPageView: View {
+    let isLandscapePhone: Bool
+    let safeAreaPadding: CGFloat
     let model: OnboardingPage
 
     var body: some View {
+        layout
+            .multilineTextAlignment(.center)
+            .padding(.horizontal, DS.Spacing.huge)
+    }
+
+    @ViewBuilder
+    private var layout: some View {
+        if isLandscapePhone {
+            landscapeLayout
+                .padding(.horizontal, safeAreaPadding)
+        } else {
+            portraitLayout
+        }
+    }
+
+    private var portraitLayout: some View {
         VStack(alignment: .center, spacing: DS.Spacing.extraLarge) {
-            ZStack {
-                Text(verbatim: " ")
-                    .lineLimit(2, reservesSpace: true)
-
-                Text(model.title)
-            }
-            .font(.system(size: 22, weight: .bold))
-            .foregroundStyle(DS.Color.Text.norm)
-            .fixedSize(horizontal: false, vertical: true)
-
-            Image(model.image)
-
+            title
+            image
             texts(title: model.subtitle, subtitle: model.text)
         }
-        .multilineTextAlignment(.center)
-        .padding(.horizontal, DS.Spacing.huge)
+    }
+
+    private var landscapeLayout: some View {
+        HStack(alignment: .center, spacing: DS.Spacing.extraLarge) {
+            image
+
+            VStack(alignment: .center, spacing: DS.Spacing.extraLarge) {
+                title
+                texts(title: model.subtitle, subtitle: model.text)
+            }
+        }
+    }
+
+    private var title: some View {
+        ZStack {
+            Text(verbatim: " ")
+                .lineLimit(2, reservesSpace: true)
+
+            Text(model.title)
+        }
+        .font(.system(size: 22, weight: .bold))
+        .foregroundStyle(DS.Color.Text.norm)
+        .fixedSize(horizontal: false, vertical: true)
+    }
+
+    private var image: some View {
+        Image(model.image)
     }
 
     private func texts(title: LocalizedStringResource, subtitle: LocalizedStringResource) -> some View {

@@ -57,9 +57,14 @@ struct OnboardingScreen: View {
     }
 
     @Environment(\.dismissTestable) var dismiss: Dismissable
-    @Environment(\.mainWindowSize) var size
+    @Environment(\.verticalSizeClass) private var verticalSizeClass
+    @Environment(\.userInterfaceIdiom) private var userInterfaceIdiom
     @State var state: ViewState
     @State private var totalHeight: CGFloat = 1
+
+    private var isLandscapePhone: Bool {
+        userInterfaceIdiom == .phone && verticalSizeClass == .compact
+    }
 
     init(selectedPageIndex: Int = 0) {
         _state = .init(initialValue: .init(selectedPageIndex: selectedPageIndex))
@@ -70,51 +75,62 @@ struct OnboardingScreen: View {
     // MARK: - View
 
     var body: some View {
-        ZStack {
-            DS.Color.Background.secondary.ignoresSafeArea()
-            VStack(spacing: DS.Spacing.extraLarge) {
-                spacing(height: DS.Spacing.small)
-                pages
-                dotsIndexIndicator
-                actionButton
-                spacing(height: DS.Spacing.extraLarge)
-            }
-            .background(
-                GeometryReader { geometry in
-                    Color.clear
-                        .edgesIgnoringSafeArea(.all)
-                        .preference(key: HeightPreferenceKey.self, value: geometry.size.height)
-                        .onPreferenceChange(HeightPreferenceKey.self) { value in
-                            totalHeight = value
-                        }
+        GeometryReader { geometry in
+            ZStack {
+                DS.Color.Background.secondary.ignoresSafeArea()
+                VStack(spacing: DS.Spacing.extraLarge) {
+                    spacing(height: DS.Spacing.small)
+                    pages(width: geometry.size.width, safeAreaPadding: geometry.safeAreaInsets.leading)
+                    dotsIndexIndicator
+                    actionButton
+                    spacing(height: DS.Spacing.extraLarge)
                 }
-            )
+                .background(
+                    GeometryReader { geometry in
+                        Color.clear
+                            .edgesIgnoringSafeArea(.all)
+                            .preference(key: HeightPreferenceKey.self, value: geometry.size.height)
+                            .onPreferenceChange(HeightPreferenceKey.self) { value in
+                                totalHeight = value
+                            }
+                    }
+                )
+            }
+            .pickerViewStyle([.height(totalHeight)])
+            .onAppear { didAppear?(self) }
+            .accessibilityElement()
+            .accessibilityIdentifier(OnboardingScreenIdentifiers.rootItem)
         }
-        .pickerViewStyle([.height(totalHeight)])
-        .onAppear { didAppear?(self) }
-        .accessibilityElement()
-        .accessibilityIdentifier(OnboardingScreenIdentifiers.rootItem)
     }
 
     // MARK: - Private
 
-    private var pages: some View {
+    private func pages(width: CGFloat, safeAreaPadding: CGFloat) -> some View {
         ScrollViewReader { proxy in
             ScrollView(.horizontal) {
                 HStack(spacing: .zero) {
                     ForEachEnumerated(state.pages, id: \.element) { model, index in
-                        OnboardingPageView(model: model).tag(index)
-                            .id(index)
-                            .frame(width: size.width)
+                        OnboardingPageView(
+                            isLandscapePhone: isLandscapePhone,
+                            safeAreaPadding: safeAreaPadding,
+                            model: model
+                        )
+                        .tag(index)
+                        .id(index)
+                        .frame(width: width + safeAreaPadding * 2)
                     }
                 }
                 .scrollTargetLayout()
             }
+            .ignoresSafeArea(edges: .horizontal)
             .scrollIndicators(.hidden)
             .scrollTargetBehavior(.paging)
             .scrollPosition(id: selectedPageIndex)
             .animation(.easeIn, value: state.selectedPageIndex)
             .onLoad { proxy.scrollTo(state.selectedPageIndex) }
+            .onChange(of: isLandscapePhone) { _, _ in
+                proxy.scrollTo(state.selectedPageIndex)
+            }
         }
     }
 
@@ -164,4 +180,15 @@ struct OnboardingScreen: View {
 private struct OnboardingScreenIdentifiers {
     static let rootItem = "onboarding.rootItem"
     static let actionButton = "onboarding.actionButton"
+}
+
+private struct IdiomKey: EnvironmentKey {
+    static let defaultValue: UIUserInterfaceIdiom = UIDevice.current.userInterfaceIdiom
+}
+
+private extension EnvironmentValues {
+    var userInterfaceIdiom: UIUserInterfaceIdiom {
+        get { self[IdiomKey.self] }
+        set { self[IdiomKey.self] = newValue }
+    }
 }
