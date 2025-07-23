@@ -141,9 +141,9 @@ enum PaginatedListViewState: Equatable {
             let newItems = Array(page * pageSize..<(page + 1) * pageSize)
             subject.send(
                 .init(
+                    isLastPage: page == 3,
                     value: .append(
-                        items: newItems.map { PreviewListItem(id: $0) },
-                        isLastPage: page == 3
+                        items: newItems.map { PreviewListItem(id: $0) }
                     )
                 )
             )

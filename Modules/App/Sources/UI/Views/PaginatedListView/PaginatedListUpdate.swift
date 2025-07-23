@@ -18,22 +18,24 @@
 import Foundation
 
 struct PaginatedListUpdate<Item: Equatable>: CustomStringConvertible {
+    let isLastPage: Bool
     let value: PaginatedListUpdateType<Item>
     let completion: (() -> Void)?
 
-    init(value: PaginatedListUpdateType<Item>, completion: (() -> Void)? = nil) {
+    init(isLastPage: Bool, value: PaginatedListUpdateType<Item>, completion: (() -> Void)? = nil) {
+        self.isLastPage = isLastPage
         self.value = value
         self.completion = completion
     }
 
     var description: String {
-        "\(value)"
+        "\(value), isLastPage = \(isLastPage)"
     }
 }
 
 enum PaginatedListUpdateType<Item>: CustomStringConvertible {
     case none
-    case append(items: [Item], isLastPage: Bool)
+    case append(items: [Item])
     case replaceFrom(index: Int, items: [Item])
     case replaceBefore(index: Int, items: [Item])
     case error(Error)
@@ -41,7 +43,7 @@ enum PaginatedListUpdateType<Item>: CustomStringConvertible {
     var description: String {
         switch self {
         case .none: "none"
-        case .append(let items, let isLastPage): "append \(items.count) items, isLastPage \(isLastPage)"
+        case .append(let items): "append \(items.count) items"
         case .replaceFrom(let index, let items): "replaceFrom index \(index), \(items.count) items"
         case .replaceBefore(let index, let items): "replaceBefore index \(index), \(items.count) items"
         case .error(let error): "error: \(error)"

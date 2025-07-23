@@ -56,7 +56,7 @@ final class PaginatedListDataSourceTests: XCTestCase {
     func testFetchInitialPage_whenStateIsData_stateShouldGoToInitialStateAgain() async {
         let capturedStates = await expectViewStateStates(count: 2) {
             sut.fetchInitialPage()
-            updateSubject.send(.init(value: .append(items: dummyItemsForEachPage, isLastPage: false)))
+            updateSubject.send(.init(isLastPage: false, value: .append(items: dummyItemsForEachPage)))
         }
         XCTAssertEqual(capturedStates, [.fetchingInitialPage, .data(.items(isLastPage: false))])
 
@@ -69,7 +69,7 @@ final class PaginatedListDataSourceTests: XCTestCase {
     func testFetchNextPageIfNeeded_whenNotLastPage_itCallsFetchMore() async {
         await expectViewStateStates(count: 2) {
             sut.fetchInitialPage()
-            updateSubject.send(.init(value: .append(items: dummyItemsForEachPage, isLastPage: false)))
+            updateSubject.send(.init(isLastPage: false, value: .append(items: dummyItemsForEachPage)))
         }
         XCTAssertEqual(fetchMoreCallCounter, 1)
         sut.fetchNextPageIfNeeded()
@@ -79,7 +79,7 @@ final class PaginatedListDataSourceTests: XCTestCase {
     func testFetchNextPageIfNeeded_whenLastPage_itDoesNotCallFetchMore() async {
         await expectViewStateStates(count: 2) {
             sut.fetchInitialPage()
-            updateSubject.send(.init(value: .append(items: dummyItemsForEachPage, isLastPage: true)))
+            updateSubject.send(.init(isLastPage: true, value: .append(items: dummyItemsForEachPage)))
         }
         XCTAssertEqual(fetchMoreCallCounter, 1)
         sut.fetchNextPageIfNeeded()
@@ -91,7 +91,7 @@ final class PaginatedListDataSourceTests: XCTestCase {
     func testUpdatePublisher_none_itUpdateStateToNotFetchingNextPage() async {
         await expectViewStateStates(count: 2) {
             sut.fetchInitialPage()
-            updateSubject.send(.init(value: .none))
+            updateSubject.send(.init(isLastPage: false, value: .none))
         }
 
         XCTAssertEqual(sut.state.isFetchingNextPage, false)
@@ -100,7 +100,7 @@ final class PaginatedListDataSourceTests: XCTestCase {
     func testUpdatePublisher_append_whenNoItems_stateBecomesDataWithPlaceholder() async {
         let capturedStates = await expectViewStateStates(count: 2) {
             sut.fetchInitialPage()
-            updateSubject.send(.init(value: .append(items: [], isLastPage: false)))
+            updateSubject.send(.init(isLastPage: false, value: .append(items: [])))
         }
 
         XCTAssertEqual(sut.state.items, [])
@@ -110,7 +110,7 @@ final class PaginatedListDataSourceTests: XCTestCase {
     func testUpdatePublisher_append_whenItems_stateBecomesDataWithItems() async {
         let capturedStates = await expectViewStateStates(count: 2) {
             sut.fetchInitialPage()
-            updateSubject.send(.init(value: .append(items: dummyItemsForEachPage, isLastPage: false)))
+            updateSubject.send(.init(isLastPage: false, value: .append(items: dummyItemsForEachPage)))
         }
 
         XCTAssertEqual(sut.state.items, dummyItemsForEachPage)
@@ -120,7 +120,7 @@ final class PaginatedListDataSourceTests: XCTestCase {
     func testUpdatePublisher_append_whenItems_andLastPage_stateBecomesDataAndIsLastPage() async {
         let capturedStates = await expectViewStateStates(count: 2) {
             sut.fetchInitialPage()
-            updateSubject.send(.init(value: .append(items: dummyItemsForEachPage, isLastPage: true)))
+            updateSubject.send(.init(isLastPage: true, value: .append(items: dummyItemsForEachPage)))
         }
 
         XCTAssertEqual(sut.state.items, dummyItemsForEachPage)
@@ -129,9 +129,8 @@ final class PaginatedListDataSourceTests: XCTestCase {
 
     func testUpdatePublisher_replaceFrom_whenAddingItems() async {
         await expectIsLastPage {
-            updateSubject.send(.init(value: .append(items: ["1", "2"], isLastPage: false)))
-            updateSubject.send(.init(value: .replaceFrom(index: 1, items: ["3", "4"])))
-            updateSubject.send(.init(value: .append(items: [], isLastPage: true)))
+            updateSubject.send(.init(isLastPage: false, value: .append(items: ["1", "2"])))
+            updateSubject.send(.init(isLastPage: true, value: .replaceFrom(index: 1, items: ["3", "4"])))
         }
 
         XCTAssertEqual(sut.state.items, ["1", "3", "4"])
@@ -139,9 +138,8 @@ final class PaginatedListDataSourceTests: XCTestCase {
 
     func testUpdatePublisher_replaceFrom_whenRemovingItems() async {
         await expectIsLastPage {
-            updateSubject.send(.init(value: .append(items: ["1", "2"], isLastPage: false)))
-            updateSubject.send(.init(value: .replaceFrom(index: 1, items: [])))
-            updateSubject.send(.init(value: .append(items: [], isLastPage: true)))
+            updateSubject.send(.init(isLastPage: false, value: .append(items: ["1", "2"])))
+            updateSubject.send(.init(isLastPage: true, value: .replaceFrom(index: 1, items: [])))
         }
 
         XCTAssertEqual(sut.state.items, ["1"])
@@ -149,9 +147,8 @@ final class PaginatedListDataSourceTests: XCTestCase {
 
     func testUpdatePublisher_replaceFrom_whenRemovingAllItems() async {
         await expectIsLastPage {
-            updateSubject.send(.init(value: .append(items: ["1", "2"], isLastPage: false)))
-            updateSubject.send(.init(value: .replaceFrom(index: 0, items: [])))
-            updateSubject.send(.init(value: .append(items: [], isLastPage: true)))
+            updateSubject.send(.init(isLastPage: false, value: .append(items: ["1", "2"])))
+            updateSubject.send(.init(isLastPage: true, value: .replaceFrom(index: 0, items: [])))
         }
 
         XCTAssertEqual(sut.state.items, [])
@@ -159,10 +156,9 @@ final class PaginatedListDataSourceTests: XCTestCase {
 
     func testUpdatePublisher_replaceFrom_whenhInvalidIndex_itDoesNotCrash() async {
         await expectIsLastPage {
-            updateSubject.send(.init(value: .append(items: [], isLastPage: false)))
-            updateSubject.send(.init(value: .replaceFrom(index: 1, items: ["1"])))
-            updateSubject.send(.init(value: .replaceFrom(index: -1, items: ["1"])))
-            updateSubject.send(.init(value: .append(items: [], isLastPage: true)))
+            updateSubject.send(.init(isLastPage: false, value: .append(items: [])))
+            updateSubject.send(.init(isLastPage: false, value: .replaceFrom(index: 1, items: ["1"])))
+            updateSubject.send(.init(isLastPage: true, value: .replaceFrom(index: -1, items: ["1"])))
         }
 
         XCTAssertEqual(sut.state.items, [])
@@ -170,9 +166,8 @@ final class PaginatedListDataSourceTests: XCTestCase {
 
     func testUpdatePublisher_replaceBefore_whenAddingItems() async {
         await expectIsLastPage {
-            updateSubject.send(.init(value: .append(items: ["1", "2"], isLastPage: false)))
-            updateSubject.send(.init(value: .replaceBefore(index: 1, items: ["3", "4"])))
-            updateSubject.send(.init(value: .append(items: [], isLastPage: true)))
+            updateSubject.send(.init(isLastPage: false, value: .append(items: ["1", "2"])))
+            updateSubject.send(.init(isLastPage: true, value: .replaceBefore(index: 1, items: ["3", "4"])))
         }
 
         XCTAssertEqual(sut.state.items, ["3", "4", "2"])
@@ -180,9 +175,8 @@ final class PaginatedListDataSourceTests: XCTestCase {
 
     func testUpdatePublisher_replaceBefore_whenRemovingItems() async {
         await expectIsLastPage {
-            updateSubject.send(.init(value: .append(items: ["1", "2"], isLastPage: false)))
-            updateSubject.send(.init(value: .replaceBefore(index: 1, items: [])))
-            updateSubject.send(.init(value: .append(items: [], isLastPage: true)))
+            updateSubject.send(.init(isLastPage: false, value: .append(items: ["1", "2"])))
+            updateSubject.send(.init(isLastPage: true, value: .replaceBefore(index: 1, items: [])))
         }
 
         XCTAssertEqual(sut.state.items, ["2"])
@@ -190,9 +184,8 @@ final class PaginatedListDataSourceTests: XCTestCase {
 
     func testUpdatePublisher_replaceBefore_whenRemovingAllItems() async {
         await expectIsLastPage {
-            updateSubject.send(.init(value: .append(items: ["1", "2"], isLastPage: false)))
-            updateSubject.send(.init(value: .replaceBefore(index: 2, items: [])))
-            updateSubject.send(.init(value: .append(items: [], isLastPage: true)))
+            updateSubject.send(.init(isLastPage: false, value: .append(items: ["1", "2"])))
+            updateSubject.send(.init(isLastPage: true, value: .replaceBefore(index: 2, items: [])))
         }
 
         XCTAssertEqual(sut.state.items, [])
@@ -200,10 +193,9 @@ final class PaginatedListDataSourceTests: XCTestCase {
 
     func testUpdatePublisher_replaceBefore_whenhInvalidIndex_itDoesNotCrash() async {
         await expectIsLastPage {
-            updateSubject.send(.init(value: .append(items: [], isLastPage: false)))
-            updateSubject.send(.init(value: .replaceBefore(index: 1, items: ["1"])))
-            updateSubject.send(.init(value: .replaceBefore(index: -1, items: ["1"])))
-            updateSubject.send(.init(value: .append(items: [], isLastPage: true)))
+            updateSubject.send(.init(isLastPage: false, value: .append(items: [])))
+            updateSubject.send(.init(isLastPage: false, value: .replaceBefore(index: 1, items: ["1"])))
+            updateSubject.send(.init(isLastPage: true, value: .replaceBefore(index: -1, items: ["1"])))
         }
 
         XCTAssertEqual(sut.state.items, [])
@@ -212,7 +204,7 @@ final class PaginatedListDataSourceTests: XCTestCase {
     func testUpdatePublisher_error_itUpdateStateToNotFetchingNextPage() async {
         await expectViewStateStates(count: 2) {
             sut.fetchInitialPage()
-            updateSubject.send(.init(value: .error(MailScrollerError.other(.network))))
+            updateSubject.send(.init(isLastPage: true, value: .error(MailScrollerError.other(.network))))
         }
 
         XCTAssertEqual(sut.state.isFetchingNextPage, false)

@@ -326,13 +326,14 @@ extension MailboxModel {
 
     private func handleConversationsUpdate(_ update: ConversationScrollerUpdate) async {
         let updateType: PaginatedListUpdateType<MailboxItemCellUIModel>
+        let isLastPage = await !conversationScrollerHasMore()
         var completion: (() -> Void)? = nil
         switch update {
         case .none:
             updateType = .none
         case .append(let conversations):
             let items = await mailboxItems(conversations: conversations)
-            updateType = .append(items: items, isLastPage: await !conversationScrollerHasMore())
+            updateType = .append(items: items)
         case .replaceFrom(let index, let conversations):
             let items = await mailboxItems(conversations: conversations)
             updateType = .replaceFrom(index: Int(index), items: items)
@@ -345,18 +346,19 @@ extension MailboxModel {
             AppLogger.log(error: error, category: .mailbox)
             updateType = .error(error)
         }
-        listUpdateSubject.send(.init(value: updateType, completion: completion))
+        listUpdateSubject.send(.init(isLastPage: isLastPage, value: updateType, completion: completion))
     }
 
     private func handleMessagesUpdate(_ update: MessageScrollerUpdate) async {
         let updateType: PaginatedListUpdateType<MailboxItemCellUIModel>
+        let isLastPage = await !messageScrollerHasMore()
         var completion: (() -> Void)? = nil
         switch update {
         case .none:
             updateType = .none
         case .append(let messages):
             let items = await mailboxItems(messages: messages)
-            updateType = .append(items: items, isLastPage: await !messageScrollerHasMore())
+            updateType = .append(items: items)
         case .replaceFrom(let index, let messages):
             let items = await mailboxItems(messages: messages)
             updateType = .replaceFrom(index: Int(index), items: items)
@@ -369,7 +371,7 @@ extension MailboxModel {
             AppLogger.log(error: error, category: .mailbox)
             updateType = .error(error)
         }
-        listUpdateSubject.send(.init(value: updateType, completion: completion))
+        listUpdateSubject.send(.init(isLastPage: isLastPage, value: updateType, completion: completion))
     }
 
     private func updateSelectedItemsAfterDestructiveUpdate() {

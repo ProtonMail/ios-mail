@@ -102,12 +102,12 @@ struct MailboxItemsListView<EmptyView: View>: View {
             oldValue.count != newValue.count ? .selection : nil
         }
     }
-    
+
     private var headerView: EmptyFolderBannerView? {
         guard let emptyFolderBanner, !config.dataSource.state.items.isEmpty else {
             return nil
         }
-        
+
         return EmptyFolderBannerView(
             model: emptyFolderBanner,
             mailUserSession: mailUserSession,
@@ -153,18 +153,19 @@ struct MailboxItemsListView<EmptyView: View>: View {
     private func voiceOverValue(for item: MailboxItemCellUIModel) -> String {
         let unread = item.isRead ? "" : L10n.Mailbox.VoiceOver.unread.string
         let expiration = item.expirationDate?.toExpirationDateUIModel?.text.string ?? ""
-        let attachments = item.attachmentsUIModel.count > 0
-        ? L10n.Mailbox.VoiceOver.attachments(count: item.attachmentsUIModel.count).string
-        : ""
+        let attachments =
+            item.attachmentsUIModel.count > 0
+            ? L10n.Mailbox.VoiceOver.attachments(count: item.attachmentsUIModel.count).string
+            : ""
         let value: String = """
-        \(unread)
-        \(item.emails).
-        \(item.subject).
-        \(item.date.mailboxVoiceOverSupport()).
-        \(expiration).
-        \(item.snoozeDate ?? "").
-        \(attachments)
-        """
+            \(unread)
+            \(item.emails).
+            \(item.subject).
+            \(item.date.mailboxVoiceOverSupport()).
+            \(expiration).
+            \(item.snoozeDate ?? "").
+            \(attachments)
+            """
         return value
     }
 }
@@ -203,7 +204,7 @@ private extension SelectionModeState {
             let isLastPage = (page + 1) * pageSize > items.count
             let range = page * pageSize..<min(items.count, (page + 1) * pageSize)
             let itemsToAppend = Array(items[range])
-            subject.send(.init(value: .append(items: itemsToAppend, isLastPage: isLastPage)))
+            subject.send(.init(isLastPage: isLastPage, value: .append(items: itemsToAppend)))
         }
     }
 

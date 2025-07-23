@@ -139,6 +139,7 @@ final class SearchModel: ObservableObject, @unchecked Sendable {
     }
 
     private func handleMessagesUpdate(_ update: MessageScrollerUpdate) async {
+        let isLastPage = await !searchScrollerHasMore()
         let updateType: PaginatedListUpdateType<MailboxItemCellUIModel>
         var completion: (() -> Void)? = nil
         switch update {
@@ -146,7 +147,7 @@ final class SearchModel: ObservableObject, @unchecked Sendable {
             updateType = .none
         case .append(let messages):
             let items = await mailboxItems(messages: messages)
-            updateType = .append(items: items, isLastPage: await !searchScrollerHasMore())
+            updateType = .append(items: items)
         case .replaceFrom(let index, let messages):
             let items = await mailboxItems(messages: messages)
             updateType = .replaceFrom(index: Int(index), items: items)
@@ -159,7 +160,7 @@ final class SearchModel: ObservableObject, @unchecked Sendable {
             AppLogger.log(error: error, category: .mailbox)
             updateType = .error(error)
         }
-        listUpdateSubject.send(.init(value: updateType, completion: completion))
+        listUpdateSubject.send(.init(isLastPage: isLastPage, value: updateType, completion: completion))
     }
 
     private func updateSelectedItemsAfterDestructiveUpdate() {

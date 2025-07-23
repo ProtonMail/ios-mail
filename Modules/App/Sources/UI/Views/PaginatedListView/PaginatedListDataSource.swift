@@ -65,17 +65,17 @@ final class PaginatedListDataSource<Item: Equatable & Sendable>: ObservableObjec
     private func handle(update: PaginatedListUpdate<Item>) {
         var newState = state
         newState.isFetchingNextPage = false
+        newState.isLastPage = update.isLastPage
 
         switch update.value {
-        case .append(let items, let isLastPage):
+        case .append(let items):
             newState.items.append(contentsOf: items)
             newState.currentPage += 1
-            newState.isLastPage = isLastPage
         case let .replaceFrom(index, items):
-            guard isSafeIndex(index) else { return }
+            guard isSafeIndex(index) else { break }
             newState.items.replaceSubrange(index..<newState.items.endIndex, with: items)
         case let .replaceBefore(index, items):
-            guard isSafeIndex(index) else { return }
+            guard isSafeIndex(index) else { break }
             newState.items.replaceSubrange(newState.items.startIndex..<index, with: items)
         case .none, .error:
             break
