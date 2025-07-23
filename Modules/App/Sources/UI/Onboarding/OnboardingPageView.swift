@@ -25,7 +25,6 @@ struct OnboardingPageView: View {
 
     var body: some View {
         layout
-            .multilineTextAlignment(.center)
             .padding(.horizontal, DS.Spacing.huge)
     }
 
@@ -34,8 +33,10 @@ struct OnboardingPageView: View {
         if isLandscapePhone {
             landscapeLayout
                 .padding(.horizontal, safeAreaPadding)
+                .multilineTextAlignment(.leading)
         } else {
             portraitLayout
+                .multilineTextAlignment(.center)
         }
     }
 
@@ -43,7 +44,7 @@ struct OnboardingPageView: View {
         VStack(alignment: .center, spacing: DS.Spacing.extraLarge) {
             title
             image
-            texts(title: model.subtitle, subtitle: model.text)
+            texts(title: model.subtitle, subtitle: model.text, alignment: .center)
         }
     }
 
@@ -51,9 +52,9 @@ struct OnboardingPageView: View {
         HStack(alignment: .center, spacing: DS.Spacing.extraLarge) {
             image
 
-            VStack(alignment: .center, spacing: DS.Spacing.extraLarge) {
+            VStack(alignment: .leading, spacing: DS.Spacing.extraLarge) {
                 title
-                texts(title: model.subtitle, subtitle: model.text)
+                texts(title: model.subtitle, subtitle: model.text, alignment: .leading)
             }
         }
     }
@@ -74,8 +75,12 @@ struct OnboardingPageView: View {
         Image(model.image)
     }
 
-    private func texts(title: LocalizedStringResource, subtitle: LocalizedStringResource) -> some View {
-        VStack(spacing: DS.Spacing.small) {
+    private func texts(
+        title: LocalizedStringResource,
+        subtitle: LocalizedStringResource,
+        alignment: HorizontalAlignment
+    ) -> some View {
+        VStack(alignment: alignment, spacing: DS.Spacing.small) {
             Text(title)
                 .font(.body)
                 .fontWeight(.semibold)
