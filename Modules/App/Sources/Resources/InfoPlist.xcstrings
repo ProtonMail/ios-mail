@@ -752,7 +752,13 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "在撰写邮件时，系统会基于您的联系人列表智能显示联系人建议。"
+            "value" : "您的联系人将用于在撰写消息时显示联系人建议。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "您的聯絡人將用於在撰寫訊息時顯示聯絡人建議。"
           }
         }
       }

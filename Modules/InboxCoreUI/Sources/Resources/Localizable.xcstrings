@@ -586,7 +586,19 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "还剩 %lld 次尝试机会，即将自动退出。"
+                  "value" : "在注销前还剩 %lld 次尝试机会。"
+                }
+              }
+            }
+          }
+        },
+        "zh-Hant" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld 次嘗試後將登出。"
                 }
               }
             }

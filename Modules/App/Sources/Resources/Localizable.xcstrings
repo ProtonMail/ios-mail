@@ -15652,6 +15652,12 @@
             "state" : "translated",
             "value" : "登录到其他设备"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "登入服務"
+          }
         }
       }
     },
@@ -18567,7 +18573,7 @@
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ver a mensagem no modo escuro"
+            "value" : "Ver mensagem no modo escuro"
           }
         },
         "pt-BR" : {
@@ -18967,7 +18973,7 @@
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pode actualizar a sua consulta ou limpá-la."
+            "value" : "Pode atualizar a sua consulta de pesquisa ou limpá-la."
           }
         },
         "pt-BR" : {

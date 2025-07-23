@@ -1318,6 +1318,12 @@
             "state" : "translated",
             "value" : "保存草稿时出错"
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "儲存草稿失敗"
+          }
         }
       }
     },

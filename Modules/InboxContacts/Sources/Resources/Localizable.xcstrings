@@ -591,6 +591,18 @@
               }
             }
           }
+        },
+        "zh-Hant" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld 個聯絡人"
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -2194,7 +2206,7 @@
         "pt" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Este contato será eliminado da sua lista de contactos."
+            "value" : "Este contacto será eliminado da sua lista de contactos."
           }
         },
         "pt-BR" : {
