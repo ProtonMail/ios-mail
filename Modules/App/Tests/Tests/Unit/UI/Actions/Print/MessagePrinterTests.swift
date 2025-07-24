@@ -78,8 +78,11 @@ final class MessagePrinterTests {
 
         strongRef = nil
 
-        // NSMapTable does not eject immediately
-        try await Task.sleep(for: .milliseconds(100))
+        let timeoutDate = Date(timeIntervalSinceNow: 1.0)
+
+        while Date() < timeoutDate, weakRef != nil {
+            try await Task.sleep(for: .milliseconds(10))
+        }
 
         #expect(weakRef == nil)
     }
