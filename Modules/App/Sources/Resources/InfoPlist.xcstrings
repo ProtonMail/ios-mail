@@ -954,6 +954,18 @@
           }
         }
       }
+    },
+    "NSPhotoLibraryAddUsageDescription" : {
+      "comment" : "Message displayed when requesting system permission to access the Photos app for saving files (e.g. from a received message by long pressing on an image)",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Required to save files in your Photos app."
+          }
+        }
+      }
     }
   },
   "version" : "1.0"

@@ -138,6 +138,7 @@ targets:
         NSCameraUsageDescription: "{{Placeholder}}"
         NSContactsUsageDescription: "{{Placeholder}}"
         NSFaceIDUsageDescription: "{{Placeholder}}"
+        NSPhotoLibraryAddUsageDescription: "{{Placeholder}}"
         UIApplicationSupportsIndirectInputEvents: YES
         UIApplicationSceneManifest:
           UIApplicationSupportsMultipleScenes: YES
