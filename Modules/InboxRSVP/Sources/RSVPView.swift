@@ -106,7 +106,7 @@ struct RSVPView: View {
             HStack(spacing: DS.Spacing.small) {
                 switch answerStatus.answer {
                 case .some(let answerState):
-                    RSVPAnswerButtonBig(state: answerState) { newState in
+                    RSVPAnswerMenuButton(state: answerState) { newState in
                         answerStatus = newState.attendeeStatus
                     }
                 case .none:
@@ -252,26 +252,22 @@ struct RSVPHeaderView: View {
     }
 }
 
-struct RSVPAnswerButtonBig: View {
+struct RSVPAnswerMenuButton: View {
     let state: Answer
     let action: (Answer) -> Void
 
     var body: some View {
-        Menu(
-            content: {
-                ForEach(Answer.allCases.removing { $0 == state }, id: \.self) { answer in
-                    Button(action: { action(answer) }) {
-                        Text(answer.humanReadableLong)
-                            .font(.body)
-                            .fontWeight(.regular)
-                            .foregroundStyle(DS.Color.Text.norm)
-                    }
+        Menu(state.humanReadableLong) {
+            ForEach(Answer.allCases.removing { $0 == state }, id: \.self) { answer in
+                Button(action: { action(answer) }) {
+                    Text(answer.humanReadableLong)
+                        .font(.body)
+                        .fontWeight(.regular)
+                        .foregroundStyle(DS.Color.Text.norm)
                 }
-            },
-            label: {
-                RSVPAnswerButton(text: state.humanReadableLong) {}
             }
-        )
+        }
+        .buttonStyle(RSVPAnswerButtonStyle())
     }
 }
 
@@ -280,21 +276,19 @@ struct RSVPAnswerButton: View {
     let action: () -> Void
 
     var body: some View {
-        Button(action: action) {
-            Text(text)
-                .font(.subheadline)
-                .fontWeight(.regular)
-                .foregroundStyle(DS.Color.Brand.plus30)
-                .frame(maxWidth: .infinity)
-        }
-        .buttonStyle(RSVPAnswerButtonStyle())
+        Button(text, action: action)
+            .buttonStyle(RSVPAnswerButtonStyle())
     }
 }
 
 struct RSVPAnswerButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
+            .font(.subheadline)
+            .fontWeight(.regular)
+            .foregroundStyle(DS.Color.Brand.plus30)
             .padding(.all, 12)
+            .frame(maxWidth: .infinity)
             .background(configuration.isPressed ? DS.Color.InteractionBrandWeak.pressed : DS.Color.InteractionBrandWeak.norm)
             .clipShape(RoundedRectangle(cornerRadius: DS.Radius.massive))
     }
