@@ -27,7 +27,6 @@ public extension DS.Icon {
     static let icCamera = ImageResource.icCamera
     static let icCheckmark = ImageResource.icCheckmark
     static let icCheckmarkBig = ImageResource.icCheckmarkBig
-    static let icCheckmarkCircle = ImageResource.icCheckmarkCircle
     static let icCheckmarkCircleFilled = ImageResource.icCheckmarkCircleFilled
     static let icChevronLeft = ImageResource.icChevronLeft
     static let icChevronDown = ImageResource.icChevronDown
@@ -42,7 +41,6 @@ public extension DS.Icon {
     static let icClockPaperPlane = ImageResource.icClockPaperPlane
     static let icCogWheel = ImageResource.icCogWheel
     static let icCrossBig = ImageResource.icCrossBig
-    static let icCrossCircle = ImageResource.icCrossCircle
     static let icCrossCircleFilled = ImageResource.icCrossCircleFilled
     static let icEnvelopes = ImageResource.icEnvelopes
     static let icExclamationCircle = ImageResource.icExclamationCircle
@@ -157,4 +155,13 @@ public extension DS.Icon {
     static let icFileTypeText = ImageResource.icFileTypeText
     static let icFileTypeVideo = ImageResource.icFileTypeVideo
     static let icFileTypeWord = ImageResource.icFileTypeWord
+}
+
+// MARK: RSVP
+
+public extension DS.Icon {
+    static let icCircleRadioEmpty = ImageResource.icCircleRadioEmpty
+    static let icCheckmarkCircle = ImageResource.icCheckmarkCircle
+    static let icQuestionCircle = ImageResource.icQuestionCircle
+    static let icCrossCircle = ImageResource.icCrossCircle
 }
