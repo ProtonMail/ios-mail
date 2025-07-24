@@ -83,7 +83,7 @@ struct ConversationDetailListView: View {
                             GeometryReader { geometry in
                                 UnevenRoundedRectangle(topLeadingRadius: DS.Radius.extraLarge, topTrailingRadius: DS.Radius.extraLarge)
                                     .stroke(DS.Color.Border.norm, lineWidth: 1)
-                                    .padding(.horizontal, geometry.needsHorizontalBorder ? DS.Spacing.tiny : -DS.Spacing.tiny)
+                                    .padding(.horizontal, geometry.cardNeedsVerticalBorders ? DS.Spacing.tiny : -DS.Spacing.tiny)
                             }
                         )
                         .padding(.bottom, messages.count - 1 == index ? 0 : -DS.Spacing.extraLarge)
@@ -203,9 +203,9 @@ private extension ConversationDetailModel.State {
 
 }
 
-extension GeometryProxy {
+private extension GeometryProxy {
 
-    var needsHorizontalBorder: Bool {
+    var cardNeedsVerticalBorders: Bool {
         safeAreaInsets.trailing != 0 || safeAreaInsets.leading != 0
     }
 
