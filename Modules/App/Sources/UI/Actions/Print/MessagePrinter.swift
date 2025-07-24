@@ -26,7 +26,7 @@ final class MessagePrinter: PrintActionPerformer {
     private let message: FindMessage
     private let presentPrintInteractionController: PresentPrintInteractionController
 
-    private let webViews = NSMapTable<MessageID, WKWebView>.strongToWeakObjects()
+    private let webViews = NSMapTable<NSString, WKWebView>.strongToWeakObjects()
 
     convenience init(userSession: @escaping () -> MailUserSession) {
         self.init(
@@ -44,12 +44,12 @@ final class MessagePrinter: PrintActionPerformer {
     }
 
     func register(webView: WKWebView, for messageID: ID) {
-        let key = MessageID(rawValue: messageID)
+        let key = key(for: messageID)
         webViews.setObject(webView, forKey: key)
     }
 
     func printMessage(messageID: ID) async throws {
-        let key = MessageID(rawValue: messageID)
+        let key = key(for: messageID)
 
         guard let webView = webViews.object(forKey: key) else {
             throw PrintError.webViewNotFound
@@ -62,20 +62,8 @@ final class MessagePrinter: PrintActionPerformer {
         let transaction = WebViewPrintingTransaction(message: message, webView: webView)
         try await presentPrintInteractionController(transaction)
     }
-}
 
-private final class MessageID: Hashable {
-    static func == (lhs: MessageID, rhs: MessageID) -> Bool {
-        lhs.rawValue == rhs.rawValue
-    }
-
-    private let rawValue: ID
-
-    init(rawValue: ID) {
-        self.rawValue = rawValue
-    }
-
-    func hash(into hasher: inout Hasher) {
-        rawValue.hash(into: &hasher)
+    private func key(for messageID: ID) -> NSString {
+        "\(messageID.value)" as NSString
     }
 }
