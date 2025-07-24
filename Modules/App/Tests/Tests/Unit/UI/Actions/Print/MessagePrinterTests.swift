@@ -81,7 +81,7 @@ final class MessagePrinterTests {
         let timeoutDate = Date(timeIntervalSinceNow: 1.0)
 
         while Date() < timeoutDate, weakRef != nil {
-            try await Task.sleep(for: .milliseconds(10))
+            await Task.yield()
         }
 
         #expect(weakRef == nil)
