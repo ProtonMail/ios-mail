@@ -131,7 +131,7 @@ struct ComposerModifier: ViewModifier {
                     coordinator.parentScreen = .home
                 }
             }
-            .sheet(isPresented: bindingForMode()) {
+            .adaptivePresentation(isPresented: bindingForMode()) {
                 if let draftToPresent = coordinator.draftToPresent {
                     ComposerScreenFactory.makeComposer(
                         userSession: coordinator.userSession,

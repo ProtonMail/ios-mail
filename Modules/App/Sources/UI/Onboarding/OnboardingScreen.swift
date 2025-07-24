@@ -176,14 +176,3 @@ private struct OnboardingScreenIdentifiers {
     static let rootItem = "onboarding.rootItem"
     static let actionButton = "onboarding.actionButton"
 }
-
-private struct IdiomKey: EnvironmentKey {
-    static let defaultValue: UIUserInterfaceIdiom = UIDevice.current.userInterfaceIdiom
-}
-
-private extension EnvironmentValues {
-    var userInterfaceIdiom: UIUserInterfaceIdiom {
-        get { self[IdiomKey.self] }
-        set { self[IdiomKey.self] = newValue }
-    }
-}
