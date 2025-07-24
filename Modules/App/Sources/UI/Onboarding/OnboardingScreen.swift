@@ -85,15 +85,10 @@ struct OnboardingScreen: View {
                     actionButton
                     spacing(height: DS.Spacing.extraLarge)
                 }
-                .background(
-                    GeometryReader { geometry in
-                        Color.clear
-                            .edgesIgnoringSafeArea(.all)
-                            .preference(key: HeightPreferenceKey.self, value: geometry.size.height)
-                            .onPreferenceChange(HeightPreferenceKey.self) { value in
-                                totalHeight = value
-                            }
-                    }
+                .onGeometryChange(
+                    for: CGFloat.self,
+                    of: { geometry in geometry.size.height },
+                    action: { height in totalHeight = height }
                 )
             }
             .pickerViewStyle([.height(totalHeight)])
