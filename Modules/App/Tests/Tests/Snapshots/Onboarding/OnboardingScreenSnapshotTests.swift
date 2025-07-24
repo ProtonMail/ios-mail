@@ -40,7 +40,6 @@ struct OnboardingScreenSnapshotTests {
 
     private func makeSUT(selectedPageIndex: Int, size: CGSize) -> UIHostingController<some View> {
         let sut = OnboardingScreen(selectedPageIndex: selectedPageIndex)
-            .environment(\.mainWindowSize, size)
         return UIHostingController(rootView: sut)
     }
 }
