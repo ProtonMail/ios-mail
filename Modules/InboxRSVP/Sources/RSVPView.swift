@@ -41,14 +41,22 @@ struct RSVPView: View {
 
     @ViewBuilder
     private func content() -> some View {
-        VStack(alignment: .leading, spacing: 0) {
+        VStack(alignment: .leading, spacing: .zero) {
             headerBanner
             VStack(alignment: .leading, spacing: DS.Spacing.large) {
                 eventHeader
+                    .background(Color.green.opacity(0.3))
+                    .padding(.horizontal, DS.Spacing.extraLarge)
                 answerSection
+                    .padding(.bottom, DS.Spacing.small)
+                    .background(Color.yellow.opacity(0.3))
+                    .padding(.horizontal, DS.Spacing.extraLarge)
                 eventDetails
+                    .background(Color.blue.opacity(0.3))
+                    .padding(.horizontal, DS.Spacing.large)
             }
-            .padding(.all, DS.Spacing.extraLarge)
+            .padding(.top, DS.Spacing.extraLarge)
+            .padding(.bottom, DS.Spacing.large)
         }
     }
 
@@ -87,7 +95,6 @@ struct RSVPView: View {
             Image(DS.Images.protonCalendar)
                 .square(size: 52)
         }
-        .background(Color.green.opacity(0.3))
     }
 
     private var answerSection: some View {
@@ -115,8 +122,6 @@ struct RSVPView: View {
                 }
             }
         }
-        .padding(.bottom, DS.Spacing.small)
-        .background(Color.yellow.opacity(0.3))
     }
 
     @ViewBuilder
@@ -126,7 +131,7 @@ struct RSVPView: View {
             RSVPDetailsRow(icon: Image(symbol: .occurence), text: "Weekly on Monday")
             RSVPDetailsRow(icon: Image(DS.Icon.icMapPin), text: "Zoom meeting")
             RSVPDetailsRow(icon: Image(symbol: .person), text: "Samantha Peterson (Organizer)")
-            ParticipantsRow(isParticipantsExpanded: $isParticipantsExpanded) {
+            RSVPDetailsRowButton(isParticipantsExpanded: $isParticipantsExpanded) {
                 isParticipantsExpanded.toggle()
             }
             if isParticipantsExpanded {
@@ -151,11 +156,10 @@ struct RSVPView: View {
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
-        .background(Color.blue.opacity(0.3))
     }
 }
 
-struct ParticipantsRow: View {
+struct RSVPDetailsRowButton: View {
     @Binding var isParticipantsExpanded: Bool
     let action: () -> Void
 
@@ -206,8 +210,9 @@ struct RSVPDetailsRow: View {
                 Spacer()
             }
         }
-        .background(Color.cyan)
-        .padding(.vertical, DS.Spacing.standard)
+        .padding(.all, DS.Spacing.standard)
+        .background(Color.cyan.opacity(0.5))
+        .clipShape(RoundedRectangle(cornerRadius: DS.Radius.large))
     }
 }
 
@@ -232,7 +237,7 @@ struct RSVPAnswerButtonBig: View {
     var body: some View {
         Menu(
             content: {
-                ForEach(Answer.allCases, id: \.self) { answer in
+                ForEach(Answer.allCases.removing { $0 == state }, id: \.self) { answer in
                     Button(action: { action(answer) }) {
                         Text(answer.humanReadableLong)
                             .font(.body)
@@ -282,6 +287,14 @@ struct RSVPAnswerButtonStyle: ButtonStyle {
             RSVPView(progress: .cancelled(.fresh))
         }
     }
+}
+
+private extension Array {
+
+    func removing(_ shouldBeExcluded: (Self.Element) throws -> Bool) rethrows -> [Self.Element] {
+        try filter { item in try !shouldBeExcluded(item) }
+    }
+
 }
 
 // FIXME: Temporary Rust interface to remove
