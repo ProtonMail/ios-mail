@@ -87,7 +87,7 @@ struct OnboardingScreen: View {
                 }
                 .onGeometryChange(
                     for: CGFloat.self,
-                    of: { geometry in geometry.size.height },
+                    of: \.size.height,
                     action: { height in totalHeight = height }
                 )
             }
