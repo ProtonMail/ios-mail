@@ -66,11 +66,11 @@ struct RSVPView: View {
         case .pending:
             EmptyView()
         case .ongoing:
-            RSVPHeaderView(regular: "Happening", bold: " now")
+            RSVPHeaderView(style: .now, regular: "Happening", bold: " now")
         case .ended:
-            RSVPHeaderView(regular: "Event", bold: " ended")
+            RSVPHeaderView(style: .ended, regular: "Event", bold: " ended")
         case .cancelled:
-            RSVPHeaderView(regular: "Event", bold: " canceled")
+            RSVPHeaderView(style: .cancelled, regular: "Event", bold: " canceled")
         }
     }
 
@@ -217,16 +217,38 @@ struct RSVPDetailsRow: View {
 }
 
 struct RSVPHeaderView: View {
+    enum Style {
+        case now
+        case ended
+        case cancelled
+        case generic
+
+        var color: (text: Color, background: Color) {
+            switch self {
+            case .now:
+                (DS.Color.Notification.success900, DS.Color.Notification.success100)
+            case .ended:
+                (DS.Color.Notification.warning900, DS.Color.Notification.warning100)
+            case .cancelled:
+                (DS.Color.Notification.error900, DS.Color.Notification.error100)
+            case .generic:
+                (DS.Color.Text.norm, DS.Color.Background.deep)
+            }
+        }
+    }
+
+    let style: Style
     let regular: String
     let bold: String
 
     var body: some View {
         (Text(regular) + Text(bold).fontWeight(.bold))
             .font(.subheadline)
+            .foregroundStyle(style.color.text)
             .padding([.top, .horizontal], DS.Spacing.extraLarge)
             .padding(.bottom, DS.Spacing.large)
             .frame(maxWidth: .infinity, alignment: .leading)
-            .background(DS.Color.Background.secondary)
+            .background(style.color.background)
     }
 }
 
