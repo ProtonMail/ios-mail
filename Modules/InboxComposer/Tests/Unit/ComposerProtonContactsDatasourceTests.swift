@@ -111,13 +111,13 @@ private extension Array where Element == ContactSuggestion {
                 key: "2",
                 name: "Betty Brown",
                 avatarInformation: .init(text: "BB", color: "#FF5733"),
-                kind: .contact(.init(id: 3, email: "betty.brown.consulting.department.group@example.com"))
+                kind: .contactItem(.init(id: 3, email: "betty.brown.consulting.department.group@example.com"))
             ),
             .init(
                 key: "3",
                 name: "Betty Brown",
                 avatarInformation: .init(text: "BB", color: "#FF5733"),
-                kind: .contact(.init(id: 4, email: "betty.brown@protonmail.com"))
+                kind: .contactItem(.init(id: 4, email: "betty.brown@protonmail.com"))
             ),
             .init(
                 key: "11",
@@ -133,7 +133,7 @@ private extension Array where Element == ContactSuggestion {
                 key: "15",
                 name: "Carl Cooper",
                 avatarInformation: .init(text: "CC", color: "#FF33A1"),
-                kind: .contact(.init(id: 17, email: "carl.cooper@protonmail.com"))
+                kind: .contactItem(.init(id: 17, email: "carl.cooper@protonmail.com"))
             ),
         ]
     }

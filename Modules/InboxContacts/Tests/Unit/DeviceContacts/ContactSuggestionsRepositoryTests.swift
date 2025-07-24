@@ -277,20 +277,11 @@ private extension CNContact {
 private extension ContactSuggestion {
 
     static func group(_ groupItem: ContactGroupItem) -> Self {
-        let contactItems: [ContactItem] = groupItem.contactEmails.map { emailItem in
-            ContactItem(
-                id: emailItem.id,
-                name: emailItem.name,
-                avatarInformation: emailItem.avatarInformation,
-                emails: [emailItem]
-            )
-        }
-
-        return .init(
+        .init(
             key: "\(groupItem.id.value)",
             name: groupItem.name,
             avatarInformation: .init(text: "", color: groupItem.avatarColor),
-            kind: .contactGroup(contactItems)
+            kind: .contactGroup(groupItem.contactEmails)
         )
     }
 
@@ -321,7 +312,7 @@ private extension ContactSuggestion {
             key: "\(emailItem.id.value)",
             name: "name_\(emailItem.email)",
             avatarInformation: .init(text: initials, color: "#A1FF33"),
-            kind: .contact(emailItem)
+            kind: .contactItem(emailItem)
         )
     }
 
