@@ -8433,6 +8433,9 @@
     "Incorrect PIN. Please try again." : {
       "comment" : "Error message when a user enters an invalid PIN"
     },
+    "Issue loading your content. Please try refreshing or sign in again." : {
+      "comment" : "Loading items in your mailbox returns an error."
+    },
     "Issue syncing your content. Check your connection or sign in again." : {
       "comment" : "Event loop failed due to an issue syncing content."
     },

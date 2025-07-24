@@ -344,6 +344,7 @@ extension MailboxModel {
             completion = { [weak self] in self?.updateSelectedItemsAfterDestructiveUpdate() }
         case .error(let error):
             AppLogger.log(error: error, category: .mailbox)
+            toast = .error(message: L10n.Mailbox.Error.issuesLoadingMailboxContent.string)
             updateType = .error(error)
         }
         listUpdateSubject.send(.init(isLastPage: isLastPage, value: updateType, completion: completion))
@@ -369,6 +370,7 @@ extension MailboxModel {
             completion = { [weak self] in self?.updateSelectedItemsAfterDestructiveUpdate() }
         case .error(let error):
             AppLogger.log(error: error, category: .mailbox)
+            toast = .error(message: L10n.Mailbox.Error.issuesLoadingMailboxContent.string)
             updateType = .error(error)
         }
         listUpdateSubject.send(.init(isLastPage: isLastPage, value: updateType, completion: completion))
