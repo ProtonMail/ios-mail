@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import AccountManager
 import Combine
 import InboxCore
 import InboxCoreUI
@@ -70,6 +71,8 @@ private struct RootView: View {
     // The route determines the screen that will be rendered
     @ObservedObject private var appContext: AppContext
 
+    @State private var isDuplicateAlertPresented = false
+
     private let recurringBackgroundTaskScheduler: RecurringBackgroundTaskScheduler
 
     init(
@@ -95,6 +98,10 @@ private struct RootView: View {
                     recurringBackgroundTaskScheduler.cancel()
                 }
             }
+            .withDuplicateAccountAlert(
+                isPresented: $isDuplicateAlertPresented,
+                coordinator: appContext.accountAuthCoordinator
+            )
     }
 
     // MARK: - Private
