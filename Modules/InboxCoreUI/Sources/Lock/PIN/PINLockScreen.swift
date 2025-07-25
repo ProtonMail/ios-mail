@@ -53,22 +53,26 @@ public struct PINLockScreen: View {
                     .padding(.trailing, DS.Spacing.large)
                 }
                 VStack(alignment: .center, spacing: .zero) {
-                    Image
-                        .protonLogo(size: 90)
-                        .padding(.top, geometry.size.height * 0.20)
-                    Text(L10n.PINLock.title)
-                        .foregroundStyle(DS.Color.Text.norm)
-                        .font(.title)
-                        .fontWeight(.semibold)
-                        .padding(.top, DS.Spacing.huge)
-                        .padding(.bottom, DS.Spacing.standard)
-
-                    subtitle
-
-                    PINSecureInput(configuration: .pinLock, text: pinBinding, isSecure: .readonly { true })
-                        .focused($isFocused)
-                        .fixedSize(horizontal: false, vertical: true)
-                        .padding(.top, DS.Spacing.huge)
+                    ScrollView {
+                        VStack(alignment: .center, spacing: .zero) {
+                            Image
+                                .protonLogo(size: 90)
+                                .padding(.top, geometry.size.height * 0.20)
+                            Text(L10n.PINLock.title)
+                                .foregroundStyle(DS.Color.Text.norm)
+                                .font(.title)
+                                .fontWeight(.semibold)
+                                .padding(.top, DS.Spacing.huge)
+                                .padding(.bottom, DS.Spacing.standard)
+                            
+                            subtitle
+                            
+                            PINSecureInput(configuration: .pinLock, text: pinBinding, isSecure: .readonly { true })
+                                .focused($isFocused)
+                                .fixedSize(horizontal: false, vertical: true)
+                                .padding(.top, DS.Spacing.huge)
+                        }
+                    }
 
                     Spacer()
                     confirmButton
