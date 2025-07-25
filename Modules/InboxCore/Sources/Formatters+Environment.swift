@@ -33,4 +33,29 @@ extension DateFormatter {
         return formatter
     }
 
+    public static func withUTCCalendar() -> Self {
+        let formatter = Self()
+        formatter.locale = DateEnvironment.calendarUTC.locale
+        formatter.timeZone = DateEnvironment.calendarUTC.timeZone
+        return formatter
+    }
+
+}
+
+extension DateIntervalFormatter {
+
+    public static func withEnvCalendar() -> Self {
+        let formatter = Self()
+        formatter.locale = DateEnvironment.calendar.locale
+        formatter.timeZone = DateEnvironment.calendar.timeZone
+        return formatter
+    }
+
+    public static func withUTCCalendar() -> Self {
+        let formatter = Self()
+        formatter.locale = DateEnvironment.calendarUTC.locale
+        formatter.timeZone = DateEnvironment.calendarUTC.timeZone
+        return formatter
+    }
+
 }
