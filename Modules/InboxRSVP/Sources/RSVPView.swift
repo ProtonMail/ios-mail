@@ -80,7 +80,11 @@ struct RSVPView: View {
                     bold: .empty
                 )
             case .inviteHasUnknownRecency:
-                RSVPHeaderView(style: .generic, regular: "You're offline.", bold: .empty)
+                RSVPHeaderView(
+                    style: .generic,
+                    regular: "You're offline. The displayed information may be out-of-date.",
+                    bold: .empty
+                )
             }
         case .cancelledInvite(let isOutdated):
             if isOutdated {
@@ -105,7 +109,7 @@ struct RSVPView: View {
                     .font(.body)
                     .fontWeight(.semibold)
                     .foregroundStyle(DS.Color.Text.norm)
-                Text("Thu, 15 Jul • 14:30 - 15:30 [FIXME]")
+                Text(RSVPDateFormatter.string(from: event.startsAt, to: event.endsAt, occurrence: event.occurrence))
                     .font(.subheadline)
                     .fontWeight(.regular)
                     .foregroundStyle(DS.Color.Text.norm)
@@ -167,10 +171,7 @@ struct RSVPView: View {
             }
             RSVPDetailsRow(icon: DS.Icon.icUser, text: event.organizer.email)
             if event.attendees.count >= 2 {
-                RSVPDetailsParticipantsButton(
-                    count: event.attendees.count,
-                    isExpanded: $isParticipantsExpanded
-                ) {
+                RSVPDetailsParticipantsButton(count: event.attendees.count, isExpanded: $isParticipantsExpanded) {
                     isParticipantsExpanded.toggle()
                 }
                 if isParticipantsExpanded {
