@@ -19,7 +19,7 @@ import Foundation
 
 extension Date {
 
-    static func fixture(_ stringDate: String) -> Date {
+    public static func fixture(_ stringDate: String) -> Date {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
         formatter.locale = Locale(identifier: "en_US")
