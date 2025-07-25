@@ -26,12 +26,14 @@ import Testing
 @Suite(.currentDate(.fixture("2025-02-07 09:32:00")))
 class MessageBannersViewSnapshotTests {
     var tomorrowAt8AM: UInt64 {
-        var components = DateComponents()
+        var components = DateEnvironment.calendar.dateComponents([.year, .month, .day], from: Date())
+        components.day! += 1
         components.hour = 8
         components.minute = 0
         components.second = 0
-        let tomorrow = DateEnvironment.calendar.nextDate(after: .now, matching: components, matchingPolicy: .nextTime)!
-        return UInt64(tomorrow.timeIntervalSince1970)
+
+        let tomorrowAt8 = DateEnvironment.calendar.date(from: components)!
+        return UInt64(tomorrowAt8.timeIntervalSince1970)
     }
 
     @Test
