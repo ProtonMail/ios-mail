@@ -21,7 +21,7 @@ import proton_app_uniffi
 import SwiftUI
 
 struct RSVPView: View {
-    let progress: RsvpProgress
+    let event: RsvpEventDetails
     @State var isParticipantsExpanded: Bool = false
     @State var answerStatus: RsvpAttendeeStatus = .unanswered
 
@@ -45,14 +45,13 @@ struct RSVPView: View {
             headerBanner
             VStack(alignment: .leading, spacing: DS.Spacing.large) {
                 eventHeader
-                    .background(Color.green.opacity(0.3))
                     .padding(.horizontal, DS.Spacing.extraLarge)
-                answerSection
-                    .padding(.bottom, DS.Spacing.small)
-                    .background(Color.yellow.opacity(0.3))
-                    .padding(.horizontal, DS.Spacing.extraLarge)
+                if case .answerableInvite = event.state {
+                    answerSection
+                        .padding(.bottom, DS.Spacing.small)
+                        .padding(.horizontal, DS.Spacing.extraLarge)
+                }
                 eventDetails
-                    .background(Color.blue.opacity(0.3))
                     .padding(.horizontal, DS.Spacing.large)
             }
             .padding(.top, DS.Spacing.extraLarge)
@@ -62,15 +61,39 @@ struct RSVPView: View {
 
     @ViewBuilder
     private var headerBanner: some View {
-        switch progress {
-        case .pending:
+        switch event.state {
+        case .answerableInvite(let progress, _), .reminder(let progress):
+            switch progress {
+            case .pending:
+                EmptyView()
+            case .ongoing:
+                RSVPHeaderView(style: .now, regular: "Happening", bold: " now")
+            case .ended:
+                RSVPHeaderView(style: .ended, regular: "Event", bold: " ended")
+            }
+        case .unanswerableInvite(let reason):
+            switch reason {
+            case .inviteIsOutdated:
+                RSVPHeaderView(
+                    style: .generic,
+                    regular: "This invitation is out of date. The event has been updated.",
+                    bold: .empty
+                )
+            case .inviteHasUnknownRecency:
+                RSVPHeaderView(style: .generic, regular: "You're offline.", bold: .empty)
+            }
+        case .cancelledInvite(let isOutdated):
+            if isOutdated {
+                RSVPHeaderView(
+                    style: .cancelled,
+                    regular: "Event cancelled. This invitation is out of date.",
+                    bold: .empty
+                )
+            } else {
+                RSVPHeaderView(style: .cancelled, regular: "Event", bold: " canceled")
+            }
+        case .cancelledReminder:
             EmptyView()
-        case .ongoing:
-            RSVPHeaderView(style: .now, regular: "Happening", bold: " now")
-        case .ended:
-            RSVPHeaderView(style: .ended, regular: "Event", bold: " ended")
-        case .cancelled:
-            RSVPHeaderView(style: .cancelled, regular: "Event", bold: " canceled")
         }
     }
 
@@ -78,18 +101,20 @@ struct RSVPView: View {
     private var eventHeader: some View {
         HStack(alignment: .top, spacing: DS.Spacing.medium) {
             VStack(alignment: .leading, spacing: DS.Spacing.standard) {
-                Text("Whispers of Tomorrow: An Evening of Unexpected Wonders")
+                Text(event.summary ?? "(no title)")
                     .font(.body)
                     .fontWeight(.semibold)
                     .foregroundStyle(DS.Color.Text.norm)
-                Text("Thu, 15 Jul • 14:30 - 15:30 ")
+                Text("Thu, 15 Jul • 14:30 - 15:30 [FIXME]")
                     .font(.subheadline)
                     .fontWeight(.regular)
                     .foregroundStyle(DS.Color.Text.norm)
-                Text("(Attendance optional)")
-                    .font(.footnote)
-                    .fontWeight(.regular)
-                    .foregroundStyle(DS.Color.Text.weak)
+                if case let .answerableInvite(_, attendance) = event.state, attendance == .optional {
+                    Text("(Attendance optional)")
+                        .font(.footnote)
+                        .fontWeight(.regular)
+                        .foregroundStyle(DS.Color.Text.weak)
+                }
             }
             Spacer()
             Image(DS.Images.protonCalendar)
@@ -127,50 +152,75 @@ struct RSVPView: View {
     @ViewBuilder
     private var eventDetails: some View {
         VStack(alignment: .leading, spacing: .zero) {
-            RSVPDetailsRow(icon: Image(symbol: .circle), iconColor: .pink, text: "Work")
-            RSVPDetailsRow(icon: Image(symbol: .occurence), text: "Weekly on Monday")
-            RSVPDetailsRow(icon: Image(DS.Icon.icMapPin), text: "Zoom meeting")
-            RSVPDetailsRow(icon: Image(symbol: .person), text: "Samantha Peterson (Organizer)")
-            RSVPDetailsRowButton(isParticipantsExpanded: $isParticipantsExpanded) {
-                isParticipantsExpanded.toggle()
+            if let calendar = event.calendar {
+                RSVPDetailsRow(
+                    icon: Image(symbol: .circle),
+                    iconColor: Color(hex: calendar.color),
+                    text: calendar.name
+                )
             }
-            if isParticipantsExpanded {
-                VStack(alignment: .leading, spacing: .zero) {
-                    RSVPDetailsRow(
-                        icon: Image(symbol: .checkmark),
-                        iconColor: DS.Color.Notification.success,
-                        text: "You • email@protonmail.ch"
-                    )
-                    RSVPDetailsRow(
-                        icon: Image(symbol: .questionmark),
-                        iconColor: DS.Color.Notification.success,
-                        text: "Anthony Rivera • email@protonmail.ch"
-                    )
-                    RSVPDetailsRow(
-                        icon: Image(symbol: .xmark),
-                        iconColor: DS.Color.Notification.error,
-                        text: "nic.butker@protonmail.com"
-                    )
+            if let recurrence = event.recurrence {
+                RSVPDetailsRow(icon: Image(symbol: .occurence), text: recurrence)
+            }
+            if let location = event.location {
+                RSVPDetailsRow(icon: Image(DS.Icon.icMapPin), text: location)
+            }
+            RSVPDetailsRow(icon: Image(symbol: .person), text: event.organizer.email)
+            if event.attendees.count >= 2 {
+                RSVPDetailsParticipantsButton(
+                    count: event.attendees.count,
+                    isExpanded: $isParticipantsExpanded
+                ) {
+                    isParticipantsExpanded.toggle()
                 }
-                .compositingGroup()
+                if isParticipantsExpanded {
+                    VStack(alignment: .leading, spacing: .zero) {
+                        ForEachEnumerated(event.attendees, id: \.element.email) { attendee, index in
+                            RSVPDetailsRow(
+                                icon: Image(attendee.status.icon.image),
+                                iconColor: attendee.status.icon.color,
+                                text: event.userAttendeeIdx == index ? "You • \(attendee.email)" : attendee.email
+                            )
+                        }
+                    }
+                    .compositingGroup()
+                }
+            } else if let attendee = event.attendees.first {
+                RSVPDetailsRow(
+                    icon: Image(attendee.status.icon.image),
+                    iconColor: attendee.status.icon.color,
+                    text: event.userAttendeeIdx == 0 ? "You • \(attendee.email)" : attendee.email
+                )
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }
 }
 
-struct RSVPDetailsRowButton: View {
-    @Binding var isParticipantsExpanded: Bool
+import InboxCore
+
+struct RSVPDetailsParticipantsButton: View {
+    let count: Int
+    @Binding var isExpanded: Bool
     let action: () -> Void
 
     var body: some View {
         Button(action: action) {
             RSVPDetailsRow(
                 icon: Image(symbol: .participants),
-                text: "3 Participants",
-                trailingIcon: isParticipantsExpanded ? DS.Icon.icChevronUpFilled : DS.Icon.icChevronDownFilled
+                text: "\(count) Participants",
+                trailingIcon: isExpanded ? DS.Icon.icChevronUpFilled : DS.Icon.icChevronDownFilled
             )
         }
+        .buttonStyle(RSVPDetailsParticipantsButtonStyle())
+    }
+}
+
+struct RSVPDetailsParticipantsButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label
+            .background(configuration.isPressed ? DS.Color.InteractionWeak.pressed : Color.clear)
+            .clipShape(RoundedRectangle(cornerRadius: DS.Radius.large))
     }
 }
 
@@ -202,17 +252,15 @@ struct RSVPDetailsRow: View {
                     .font(.subheadline)
                     .fontWeight(.regular)
                     .foregroundStyle(DS.Color.Text.weak)
-                    .background(Color.pink)
                 if let trailingIcon {
                     Image(trailingIcon)
+                        .foregroundStyle(iconColor)
                         .square(size: 16)
                 }
                 Spacer()
             }
         }
         .padding(.all, DS.Spacing.standard)
-        .background(Color.cyan.opacity(0.5))
-        .clipShape(RoundedRectangle(cornerRadius: DS.Radius.large))
     }
 }
 
@@ -297,10 +345,26 @@ struct RSVPAnswerButtonStyle: ButtonStyle {
 #Preview {
     ScrollView(.vertical, showsIndicators: false) {
         VStack(spacing: 16) {
-            RSVPView(progress: .pending(.fresh))
-            RSVPView(progress: .ongoing(.fresh))
-            RSVPView(progress: .ended(.fresh))
-            RSVPView(progress: .cancelled(.fresh))
+            RSVPView(
+                event: .init(
+                    summary: "Quick Sync",
+                    location: "Huddle Room",
+                    description: "A brief check-in.",
+                    recurrence: nil,
+                    startsAt: UInt64(0),
+                    endsAt: UInt64(0),
+                    occurrence: .dateTime,
+                    organizer: RsvpOrganizer(email: "organizer1@example.com"),
+                    attendees: [
+                        .init(email: "user1@example.com", status: .yes),
+                        .init(email: "user2@example.com", status: .no),
+                        .init(email: "user3@example.com", status: .maybe),
+                    ],
+                    userAttendeeIdx: 0,
+                    calendar: RsvpCalendar(name: "Personal", color: "#F5A623"),
+                    state: .answerableInvite(progress: .ended, attendance: .optional)
+                )
+            )
         }
     }
 }
@@ -367,19 +431,40 @@ extension RsvpAttendeeStatus {
             .yes
         }
     }
+
+    var icon: (image: ImageResource, color: Color) {
+        switch self {
+        case .unanswered:
+            (DS.Icon.icCircleRadioEmpty, DS.Color.Shade.shade40)
+        case .maybe:
+            (DS.Icon.icQuestionCircle, DS.Color.Notification.error)
+        case .no:
+            (DS.Icon.icCrossCircle, DS.Color.Notification.error)
+        case .yes:
+            (DS.Icon.icCheckmarkCircle, DS.Color.Notification.success)
+        }
+    }
 }
 
-public enum RsvpProgress {
-    case pending(RsvpRecency)
-    case ongoing(RsvpRecency)
-    case ended(RsvpRecency)
-    case cancelled(RsvpRecency)
+public typealias UnixTimestamp = UInt64
+
+public enum RsvpEventProgress {
+    case pending
+    case ongoing
+    case ended
 }
 
-public enum RsvpRecency {
-    case fresh
-    case outdated
-    case unknown
+public enum RsvpUnanswerableReason {
+    case inviteIsOutdated
+    case inviteHasUnknownRecency
+}
+
+public enum RsvpState {
+    case answerableInvite(progress: RsvpEventProgress, attendance: Attendance)
+    case unanswerableInvite(RsvpUnanswerableReason)
+    case cancelledInvite(isOutdated: Bool)
+    case reminder(RsvpEventProgress)
+    case cancelledReminder
 }
 
 public struct RsvpEventDetails {
@@ -393,10 +478,8 @@ public struct RsvpEventDetails {
     public var organizer: RsvpOrganizer
     public var attendees: [RsvpAttendee]
     public var userAttendeeIdx: UInt32
-    public var progress: RsvpProgress
     public var calendar: RsvpCalendar?
-    public var intent: RsvpIntent
-    public var canBeAnswered: Bool
+    public var state: RsvpState
 
     public init(
         summary: String?,
@@ -409,10 +492,8 @@ public struct RsvpEventDetails {
         organizer: RsvpOrganizer,
         attendees: [RsvpAttendee],
         userAttendeeIdx: UInt32,
-        progress: RsvpProgress,
         calendar: RsvpCalendar?,
-        intent: RsvpIntent,
-        canBeAnswered: Bool
+        state: RsvpState
     ) {
         self.summary = summary
         self.location = location
@@ -424,34 +505,25 @@ public struct RsvpEventDetails {
         self.organizer = organizer
         self.attendees = attendees
         self.userAttendeeIdx = userAttendeeIdx
-        self.progress = progress
         self.calendar = calendar
-        self.intent = intent
-        self.canBeAnswered = canBeAnswered
+        self.state = state
     }
+}
+
+public enum RsvpRecency {
+    case fresh
+    case outdated
+    case unknown
+}
+
+public enum Attendance {
+    case optional
+    case required
 }
 
 public enum RsvpOccurrence {
     case date
     case dateTime
-}
-
-public struct RsvpOrganizer {
-    public var email: String
-
-    public init(email: String) {
-        self.email = email
-    }
-}
-
-public struct RsvpAttendee {
-    public var email: String
-    public var status: RsvpAttendeeStatus?
-
-    public init(email: String, status: RsvpAttendeeStatus?) {
-        self.email = email
-        self.status = status
-    }
 }
 
 public enum RsvpAttendeeStatus {
@@ -461,17 +533,16 @@ public enum RsvpAttendeeStatus {
     case yes
 }
 
+public struct RsvpOrganizer {
+    public var email: String
+}
+
+public struct RsvpAttendee {
+    public var email: String
+    public var status: RsvpAttendeeStatus
+}
+
 public struct RsvpCalendar {
     public var name: String
     public var color: String
-
-    public init(name: String, color: String) {
-        self.name = name
-        self.color = color
-    }
-}
-
-public enum RsvpIntent {
-    case invite
-    case reminder
 }

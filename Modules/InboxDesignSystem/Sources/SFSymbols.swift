@@ -36,7 +36,6 @@ extension DS {
         case occurence = "arrow.trianglehead.2.counterclockwise"
         case participants = "person.2"
         case person = "person"
-        case questionmark = "questionmark"
         case rectanglePortraitAndArrowRight = "rectangle.portrait.and.arrow.right"
         case reply = "arrowshape.turn.up.backward"
         case replyAll = "arrowshape.turn.up.backward.2"
