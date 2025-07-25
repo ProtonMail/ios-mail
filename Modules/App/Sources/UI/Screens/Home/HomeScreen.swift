@@ -162,7 +162,7 @@ struct HomeScreen: View {
         .onOpenURL(perform: handleDeepLink)
         .onLoad {
             Task {
-                upsellOffer = await iapContainer.upsellOfferProvider.findOffer(for: "mail2022")
+                upsellOffer = await iapContainer.upsellOfferProvider.findOffer(for: UpsellConfiguration.planName)
             }
         }
         .environment(
