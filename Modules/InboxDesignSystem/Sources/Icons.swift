@@ -160,8 +160,10 @@ public extension DS.Icon {
 // MARK: RSVP
 
 public extension DS.Icon {
+    static let icArrowsRotate = ImageResource.icArrowsRotate
     static let icCircleRadioEmpty = ImageResource.icCircleRadioEmpty
     static let icCheckmarkCircle = ImageResource.icCheckmarkCircle
     static let icQuestionCircle = ImageResource.icQuestionCircle
     static let icCrossCircle = ImageResource.icCrossCircle
+    static let icUser = ImageResource.icUser
 }

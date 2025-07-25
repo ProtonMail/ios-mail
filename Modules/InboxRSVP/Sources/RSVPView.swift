@@ -154,18 +154,18 @@ struct RSVPView: View {
         VStack(alignment: .leading, spacing: .zero) {
             if let calendar = event.calendar {
                 RSVPDetailsRow(
-                    icon: Image(symbol: .circle),
+                    icon: DS.Icon.icCircleFilled,
                     iconColor: Color(hex: calendar.color),
                     text: calendar.name
                 )
             }
             if let recurrence = event.recurrence {
-                RSVPDetailsRow(icon: Image(symbol: .occurence), text: recurrence)
+                RSVPDetailsRow(icon: DS.Icon.icArrowsRotate, text: recurrence)
             }
             if let location = event.location {
-                RSVPDetailsRow(icon: Image(DS.Icon.icMapPin), text: location)
+                RSVPDetailsRow(icon: DS.Icon.icMapPin, text: location)
             }
-            RSVPDetailsRow(icon: Image(symbol: .person), text: event.organizer.email)
+            RSVPDetailsRow(icon: DS.Icon.icUser, text: event.organizer.email)
             if event.attendees.count >= 2 {
                 RSVPDetailsParticipantsButton(
                     count: event.attendees.count,
@@ -177,8 +177,8 @@ struct RSVPView: View {
                     VStack(alignment: .leading, spacing: .zero) {
                         ForEachEnumerated(event.attendees, id: \.element.email) { attendee, index in
                             RSVPDetailsRow(
-                                icon: Image(attendee.status.icon.image),
-                                iconColor: attendee.status.icon.color,
+                                icon: attendee.status.details.icon,
+                                iconColor: attendee.status.details.color,
                                 text: event.userAttendeeIdx == index ? "You • \(attendee.email)" : attendee.email
                             )
                         }
@@ -187,8 +187,8 @@ struct RSVPView: View {
                 }
             } else if let attendee = event.attendees.first {
                 RSVPDetailsRow(
-                    icon: Image(attendee.status.icon.image),
-                    iconColor: attendee.status.icon.color,
+                    icon: attendee.status.details.icon,
+                    iconColor: attendee.status.details.color,
                     text: event.userAttendeeIdx == 0 ? "You • \(attendee.email)" : attendee.email
                 )
             }
@@ -207,7 +207,7 @@ struct RSVPDetailsParticipantsButton: View {
     var body: some View {
         Button(action: action) {
             RSVPDetailsRow(
-                icon: Image(symbol: .participants),
+                icon: DS.Icon.icUsers,
                 text: "\(count) Participants",
                 trailingIcon: isExpanded ? DS.Icon.icChevronUpFilled : DS.Icon.icChevronDownFilled
             )
@@ -225,13 +225,13 @@ struct RSVPDetailsParticipantsButtonStyle: ButtonStyle {
 }
 
 struct RSVPDetailsRow: View {
-    let icon: Image
+    let icon: ImageResource
     let iconColor: Color
     let text: String
     let trailingIcon: ImageResource?
 
     init(
-        icon: Image,
+        icon: ImageResource,
         iconColor: Color = DS.Color.Text.weak,
         text: String,
         trailingIcon: ImageResource? = .none
@@ -244,7 +244,7 @@ struct RSVPDetailsRow: View {
 
     var body: some View {
         HStack(alignment: .center, spacing: DS.Spacing.medium) {
-            icon
+            Image(icon)
                 .foregroundStyle(iconColor)
                 .frame(width: 24, height: 20)
             HStack(alignment: .center, spacing: DS.Spacing.small) {
@@ -293,8 +293,8 @@ struct RSVPHeaderView: View {
         (Text(regular) + Text(bold).fontWeight(.bold))
             .font(.subheadline)
             .foregroundStyle(style.color.text)
-            .padding([.top, .horizontal], DS.Spacing.extraLarge)
-            .padding(.bottom, DS.Spacing.large)
+            .padding(.vertical, DS.Spacing.moderatelyLarge)
+            .padding(.horizontal, DS.Spacing.extraLarge)
             .frame(maxWidth: .infinity, alignment: .leading)
             .background(style.color.background)
     }
@@ -432,7 +432,7 @@ extension RsvpAttendeeStatus {
         }
     }
 
-    var icon: (image: ImageResource, color: Color) {
+    var details: (icon: ImageResource, color: Color) {
         switch self {
         case .unanswered:
             (DS.Icon.icCircleRadioEmpty, DS.Color.Shade.shade40)
