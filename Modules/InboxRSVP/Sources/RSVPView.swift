@@ -22,8 +22,14 @@ import SwiftUI
 
 struct RSVPView: View {
     let event: RsvpEventDetails
-    @State var isParticipantsExpanded: Bool = false
-    @State var answerStatus: RsvpAttendeeStatus = .unanswered
+    @State var areParticipantsExpanded: Bool
+    @State var answerStatus: RsvpAttendeeStatus
+
+    init(event: RsvpEventDetails, areParticipantsExpanded: Bool) {
+        self.event = event
+        self.areParticipantsExpanded = areParticipantsExpanded
+        self.answerStatus = event.attendees[safe: Int(event.userAttendeeIdx)]?.status ?? .unanswered
+    }
 
     var body: some View {
         content()
@@ -171,10 +177,10 @@ struct RSVPView: View {
             }
             RSVPDetailsRow(icon: DS.Icon.icUser, text: event.organizer.email)
             if event.attendees.count >= 2 {
-                RSVPDetailsParticipantsButton(count: event.attendees.count, isExpanded: $isParticipantsExpanded) {
-                    isParticipantsExpanded.toggle()
+                RSVPDetailsParticipantsButton(count: event.attendees.count, isExpanded: $areParticipantsExpanded) {
+                    areParticipantsExpanded.toggle()
                 }
-                if isParticipantsExpanded {
+                if areParticipantsExpanded {
                     VStack(alignment: .leading, spacing: .zero) {
                         ForEachEnumerated(event.attendees, id: \.element.email) { attendee, index in
                             RSVPDetailsRow(
@@ -364,7 +370,8 @@ struct RSVPAnswerButtonStyle: ButtonStyle {
                     userAttendeeIdx: 0,
                     calendar: RsvpCalendar(name: "Personal", color: "#F5A623"),
                     state: .answerableInvite(progress: .ended, attendance: .optional)
-                )
+                ),
+                areParticipantsExpanded: false
             )
         }
     }
@@ -378,8 +385,15 @@ private extension Array {
 
 }
 
-// FIXME: Temporary Rust interface to remove
+private extension Collection {
 
+    subscript(safe index: Index) -> Element? {
+        indices.contains(index) ? self[index] : nil
+    }
+
+}
+
+// FIXME: Temporary Rust interface to remove
 enum Answer: CaseIterable, Equatable {
     case yes
     case maybe

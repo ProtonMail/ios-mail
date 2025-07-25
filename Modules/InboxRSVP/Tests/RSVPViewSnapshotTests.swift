@@ -16,32 +16,42 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import InboxRSVP
+import InboxTesting
 import InboxSnapshotTesting
 import SwiftUI
 import Testing
 
 @MainActor
+@Suite(.calendarZurichEnUS, .currentDate(.fixture("2025-07-25 12:00:00")))
 final class RSVPViewSnapshotTests {
     @Test(arguments: RsvpEventDetails.allCases)
-    func testRSVP(testCase: (event: RsvpEventDetails, testName: String)) {
-        assertSnapshotsOnIPhoneX(of: RSVPView(event: testCase.event), testName: testCase.testName)
+    func testRSVP(testCase: (event: RsvpEventDetails, testName: String, isExpanded: Bool)) {
+        let view = RSVPView(
+            event: testCase.event,
+            areParticipantsExpanded: testCase.isExpanded
+        )
+        assertSnapshotsOnIPhoneX(of: view, testName: testCase.testName)
     }
 }
 
 private extension RsvpEventDetails {
-    static let allCases: [(event: Self, testName: String)] = [
-        (answerablePendingOptional, "answerable_future_optional_attendance"),
-        (answerableOngoing, "answerable_now_required_attendance"),
-        (answerableEnded, "answerable_ended_required_attendance"),
-        (unanswerableOutdated, "unanswerable_outdated"),
-        (unanswerableUnknown, "unanswerable_offline"),
-        (cancelled, "cancelled"),
-        (cancelledOutdated, "cancelled_outdated"),
-        (reminderPending, "reminder_future"),
-        (reminderOngoing, "reminder_now"),
-        (reminderEnded, "reminder_ended"),
-        (reminderInviteCancelled, "reminder_invitation_cancelled"),
-        (veryLongValues, "very_long_values"),
+    static let allCases: [(event: Self, testName: String, isExpanded: Bool)] = [
+        (answerablePendingOptional, "answerable_future_optional_attendance", false),
+        (answerableOngoingUnanswered, "answerable_now_unanswered_required_attendance", false),
+        (answerableOngoingYes, "answerable_now_yes_required_attendance", false),
+        (answerableOngoingMaybe, "answerable_now_maybe_required_attendance", false),
+        (answerableOngoingNo, "answerable_now_no_required_attendance", false),
+        (answerableEnded, "answerable_ended_required_attendance", false),
+        (answerableRecurrentOngoing, "answerable_recurrent_now_required_attendace", true),
+        (unanswerableOutdated, "unanswerable_outdated", false),
+        (unanswerableUnknown, "unanswerable_offline", false),
+        (cancelled, "cancelled", false),
+        (cancelledOutdated, "cancelled_outdated", true),
+        (reminderPending, "reminder_future", false),
+        (reminderOngoing, "reminder_now", false),
+        (reminderEnded, "reminder_ended", false),
+        (reminderInviteCancelled, "reminder_invitation_cancelled", false),
+        (veryLongValues, "very_long_values", false),
     ]
 
     static let answerablePendingOptional = RsvpEventDetails.testData(
@@ -49,14 +59,34 @@ private extension RsvpEventDetails {
         state: .answerableInvite(progress: .pending, attendance: .optional)
     )
 
-    static let answerableOngoing = RsvpEventDetails.testData(
-        data: .partDayWithDuration,
+    static let answerableOngoingUnanswered = RsvpEventDetails.testData(
+        data: .partDayWithDuration(userStatus: .unanswered),
+        state: .answerableInvite(progress: .ongoing, attendance: .required)
+    )
+
+    static let answerableOngoingYes = RsvpEventDetails.testData(
+        data: .partDayWithDuration(userStatus: .yes),
+        state: .answerableInvite(progress: .ongoing, attendance: .required)
+    )
+
+    static let answerableOngoingMaybe = RsvpEventDetails.testData(
+        data: .partDayWithDuration(userStatus: .maybe),
+        state: .answerableInvite(progress: .ongoing, attendance: .required)
+    )
+
+    static let answerableOngoingNo = RsvpEventDetails.testData(
+        data: .partDayWithDuration(userStatus: .no),
         state: .answerableInvite(progress: .ongoing, attendance: .required)
     )
 
     static let answerableEnded = RsvpEventDetails.testData(
         data: .partDayZeroDuration,
         state: .answerableInvite(progress: .ended, attendance: .required)
+    )
+
+    static let answerableRecurrentOngoing = RsvpEventDetails.testData(
+        data: .recurrent,
+        state: .answerableInvite(progress: .ongoing, attendance: .required)
     )
 
     static let unanswerableOutdated = RsvpEventDetails.testData(
@@ -80,17 +110,17 @@ private extension RsvpEventDetails {
     )
 
     static let reminderPending = RsvpEventDetails.testData(
-        data: .partDayWithDuration,
+        data: .partDayWithDuration(),
         state: .reminder(.pending)
     )
 
     static let reminderOngoing = RsvpEventDetails.testData(
-        data: .partDayWithDuration,
+        data: .partDayWithDuration(),
         state: .reminder(.ongoing)
     )
 
     static let reminderEnded = RsvpEventDetails.testData(
-        data: .partDayWithDuration,
+        data: .partDayWithDuration(),
         state: .reminder(.ended)
     )
 
@@ -137,14 +167,9 @@ private struct EventData {
 }
 
 private extension EventData {
-    static func date(year: Int, month: Int, day: Int, hour: Int = 0, minute: Int = 0) -> Date {
-        var components = DateComponents(year: year, month: month, day: day, hour: hour, minute: minute)
-        components.timeZone = TimeZone(identifier: "Europe/Zurich")
-        return Calendar.current.date(from: components)!
-    }
-
     static let partDayZeroDuration: EventData = {
-        let eventTime = date(year: 2025, month: 7, day: 24, hour: 16, minute: 0).timeIntervalSince1970
+        let eventTime = Date.fixture("2025-07-24 14:00:00").timeIntervalSince1970
+
         return EventData(
             summary: "Quick Sync",
             location: "Huddle Room",
@@ -160,9 +185,10 @@ private extension EventData {
         )
     }()
 
-    static let partDayWithDuration: EventData = {
-        let startTime = date(year: 2025, month: 7, day: 24, hour: 10, minute: 0).timeIntervalSince1970
-        let endTime = date(year: 2025, month: 7, day: 24, hour: 11, minute: 30).timeIntervalSince1970
+    static func partDayWithDuration(userStatus: RsvpAttendeeStatus = .unanswered) -> EventData {
+        let startTime = Date.fixture("2025-07-24 08:00:00").timeIntervalSince1970
+        let endTime = Date.fixture("2025-07-24 09:30:00").timeIntervalSince1970
+
         return EventData(
             summary: "Design Review",
             location: "Virtual Meeting",
@@ -173,16 +199,17 @@ private extension EventData {
             occurrence: .dateTime,
             organizer: RsvpOrganizer(email: "organizer2@example.com"),
             attendees: [
-                RsvpAttendee(email: "user@example.com", status: .unanswered),
+                RsvpAttendee(email: "user@example.com", status: userStatus),
                 RsvpAttendee(email: "designer@example.com", status: .yes),
             ],
             userAttendeeIdx: 0,
             calendar: RsvpCalendar(name: "Design Team", color: "#BD10E0")
         )
-    }()
+    }
 
     static let fullDaySingle: EventData = {
-        let eventDate = Calendar.current.startOfDay(for: date(year: 2025, month: 7, day: 25)).timeIntervalSince1970
+        let eventDate = Date.fixture("2025-07-24 00:00:00").timeIntervalSince1970
+
         return EventData(
             summary: "Company Offsite",
             location: "Zürich Lake",
@@ -199,8 +226,9 @@ private extension EventData {
     }()
 
     static let fullDayMulti: EventData = {
-        let startDate = Calendar.current.startOfDay(for: date(year: 2025, month: 7, day: 28)).timeIntervalSince1970
-        let endDate = Calendar.current.startOfDay(for: date(year: 2025, month: 7, day: 30)).timeIntervalSince1970
+        let startDate = Date.fixture("2025-07-27 00:00:00").timeIntervalSince1970
+        let endDate = Date.fixture("2025-07-29 00:00:00").timeIntervalSince1970
+
         return EventData(
             summary: "Developer Conference",
             location: "Berlin, Germany",
@@ -217,15 +245,16 @@ private extension EventData {
     }()
 
     static let recurrent: EventData = {
-        let startTime = date(year: 2025, month: 7, day: 28, hour: 14, minute: 0).timeIntervalSince1970
-        let endTime = date(year: 2025, month: 7, day: 28, hour: 14, minute: 30).timeIntervalSince1970
+        let startDate = Date.fixture("2025-07-28 12:00:00").timeIntervalSince1970
+        let endDate = Date.fixture("2025-07-28 12:30:00").timeIntervalSince1970
+
         return EventData(
             summary: "Weekly Team Sync",
             location: "Conference Room B",
             description: "Weekly sync meeting.",
             recurrence: "Weekly on Monday",
-            startsAt: UInt64(startTime),
-            endsAt: UInt64(endTime),
+            startsAt: UInt64(startDate),
+            endsAt: UInt64(endDate),
             occurrence: .dateTime,
             organizer: RsvpOrganizer(email: "teamlead@example.com"),
             attendees: [
@@ -239,7 +268,8 @@ private extension EventData {
     }()
 
     static let veryLongValues: EventData = {
-        let eventTime = date(year: 2025, month: 8, day: 1, hour: 9, minute: 0).timeIntervalSince1970
+        let eventTime = Date.fixture("2025-08-01 07:00:00").timeIntervalSince1970
+
         return EventData(
             summary:
                 "This is an extremely long summary for an event designed to test the user interface's ability to handle and truncate very long text fields without breaking the layout or causing visual glitches. It just keeps going and going.",
