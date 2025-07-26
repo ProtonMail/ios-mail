@@ -115,11 +115,10 @@ struct RSVPView: View {
                     .font(.body)
                     .fontWeight(.semibold)
                     .foregroundStyle(DS.Color.Text.norm)
-                Text(RSVPDateFormatter.string(from: event.startsAt, to: event.endsAt, occurrence: event.occurrence))
+                Text("FIXME: In next MR")
                     .font(.subheadline)
                     .fontWeight(.regular)
                     .foregroundStyle(DS.Color.Text.norm)
-                    .minimumScaleFactor(0.9)
                 if case let .answerableInvite(_, attendance) = event.state, attendance == .optional {
                     Text("(Attendance optional)")
                         .font(.footnote)
