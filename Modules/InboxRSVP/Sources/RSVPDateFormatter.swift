@@ -26,6 +26,7 @@ enum RSVPDateFormatter {
     ) -> String {
         let fromDate = Date(timeIntervalSince1970: TimeInterval(fromTimestamp))
         let toDate = Date(timeIntervalSince1970: TimeInterval(toTimestamp))
+        let now = DateEnvironment.currentDate()
 
         switch occurrence {
         case .date:
@@ -39,9 +40,7 @@ enum RSVPDateFormatter {
             }
 
             if calendar.isDate(fromDate, inSameDayAs: adjustedToDate) {
-                let now = DateEnvironment.currentDate()
                 let realNow = Date()
-
                 var relativeDate: Date?
 
                 if calendar.isDate(fromDate, inSameDayAs: now) {
@@ -56,7 +55,7 @@ enum RSVPDateFormatter {
                     return relativeFormatter.string(from: relativeDate)
                 }
 
-                let allDayStyle = Date.FormatStyle(
+                var allDayStyle = Date.FormatStyle(
                     date: .abbreviated,
                     time: .omitted,
                     locale: calendar.locale!,
@@ -64,6 +63,13 @@ enum RSVPDateFormatter {
                     timeZone: calendar.timeZone
                 )
                 .weekday()
+
+                if calendar.isDate(fromDate, equalTo: now, toGranularity: .year) {
+                    if #available(iOS 18, *) {
+                        allDayStyle = allDayStyle.year(.omitted)
+                    }
+                }
+
                 return fromDate.formatted(allDayStyle)
             }
 
