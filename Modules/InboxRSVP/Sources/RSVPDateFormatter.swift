@@ -42,51 +42,51 @@ enum RSVPDateFormatter {
                 let now = DateEnvironment.currentDate()
                 let realNow = Date()
 
-                var dateForStringFetching: Date?
+                var relativeDate: Date?
 
                 if calendar.isDate(fromDate, inSameDayAs: now) {
-                    dateForStringFetching = realNow
+                    relativeDate = realNow
                 } else if calendar.isDateInTomorrow(fromDate) {
-                    dateForStringFetching = calendar.nextDay(after: realNow)
+                    relativeDate = calendar.nextDay(after: realNow)
                 } else if calendar.isDateInYesterday(fromDate) {
-                    dateForStringFetching = calendar.previousDay(before: realNow)
+                    relativeDate = calendar.previousDay(before: realNow)
                 }
 
-                if let effectiveDate = dateForStringFetching {
-                    return relativeFormatter.string(from: effectiveDate)
+                if let relativeDate {
+                    return relativeFormatter.string(from: relativeDate)
                 }
 
-                return allDayDateFormatter.string(from: fromDate)
+                let allDayStyle = Date.FormatStyle(
+                    date: .abbreviated,
+                    time: .omitted,
+                    locale: calendar.locale!,
+                    calendar: calendar,
+                    timeZone: calendar.timeZone
+                )
+                return fromDate.formatted(allDayStyle)
             }
 
-            return allDayDateIntervalFormatter.string(from: fromDate, to: adjustedToDate)
+            let allDayIntervalStyle = Date.IntervalFormatStyle.init(
+                date: .abbreviated,
+                time: .omitted,
+                locale: calendar.locale!,
+                calendar: calendar,
+                timeZone: calendar.timeZone
+            )
+
+            return allDayIntervalStyle.format(fromDate..<adjustedToDate)
         case .dateTime:
-            return partDayDateIntervalFormatter.string(from: fromDate, to: toDate)
+            let calendar = DateEnvironment.calendar
+            let dateTimeStyle = Date.IntervalFormatStyle.init(
+                date: .abbreviated,
+                time: .shortened,
+                locale: calendar.locale!,
+                timeZone: calendar.timeZone
+            )
+
+            return dateTimeStyle.format(fromDate..<toDate)
         }
     }
-
-    // MARK: - Private
-
-    private static let partDayDateIntervalFormatter: DateIntervalFormatter = {
-        let formatter = DateIntervalFormatter.withEnvCalendar()
-        formatter.dateStyle = .medium
-        formatter.timeStyle = .short
-        return formatter
-    }()
-
-    private static let allDayDateIntervalFormatter: DateIntervalFormatter = {
-        let formatter = DateIntervalFormatter.withGMTCalendar()
-        formatter.dateStyle = .medium
-        formatter.timeStyle = .none
-        return formatter
-    }()
-
-    private static let allDayDateFormatter: DateFormatter = {
-        let formatter = DateFormatter.withGMTCalendar()
-        formatter.dateStyle = .medium
-        formatter.timeStyle = .none
-        return formatter
-    }()
 
     private static let relativeFormatter: DateFormatter = {
         let formatter = DateFormatter.withGMTCalendar()

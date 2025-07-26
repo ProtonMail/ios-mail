@@ -35,20 +35,3 @@ extension DateFormatter {
 
 }
 
-extension DateIntervalFormatter {
-
-    public static func withEnvCalendar() -> Self {
-        let formatter = Self()
-        formatter.locale = DateEnvironment.calendar.locale
-        formatter.timeZone = DateEnvironment.calendar.timeZone
-        return formatter
-    }
-
-    public static func withGMTCalendar() -> Self {
-        let formatter = Self()
-        formatter.locale = DateEnvironment.calendarGMT.locale
-        formatter.timeZone = DateEnvironment.calendarGMT.timeZone
-        return formatter
-    }
-
-}
