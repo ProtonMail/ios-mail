@@ -22,7 +22,7 @@ import InboxTesting
 import Testing
 
 @Suite(.calendarZurichEnUS, .calendarGMTEnUS)
-final class RSVPFormatterTests {
+final class RSVPDateFormatterTests {
     typealias EventInput = (from: Date, to: Date)
 
     // MARK: - All-Day Events (.date)
