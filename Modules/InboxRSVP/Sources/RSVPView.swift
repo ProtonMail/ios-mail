@@ -121,7 +121,7 @@ struct RSVPView: View {
 
     @ViewBuilder
     private var eventHeader: some View {
-        HStack(alignment: .top, spacing: DS.Spacing.medium) {
+        HStack(alignment: .top, spacing: DS.Spacing.standard) {
             VStack(alignment: .leading, spacing: DS.Spacing.standard) {
                 Text(event.summary ?? L10n.noEventTitlePlacholder.string)
                     .font(.body)
@@ -131,6 +131,7 @@ struct RSVPView: View {
                     .font(.subheadline)
                     .fontWeight(.regular)
                     .foregroundStyle(DS.Color.Text.norm)
+                    .minimumScaleFactor(0.75)
                 if case let .answerableInvite(_, attendance) = event.state, attendance == .optional {
                     Text(L10n.attendanceOptional)
                         .font(.footnote)
@@ -138,7 +139,7 @@ struct RSVPView: View {
                         .foregroundStyle(DS.Color.Text.weak)
                 }
             }
-            Spacer()
+            Spacer(minLength: 0)
             Image(DS.Images.protonCalendar)
                 .square(size: 52)
         }
