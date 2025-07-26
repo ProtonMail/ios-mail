@@ -330,7 +330,7 @@ struct RSVPDetailsRow: View {
                         .foregroundStyle(iconColor)
                         .square(size: 16)
                 }
-                Spacer()
+                Spacer(minLength: 0)
             }
         }
         .padding(.all, DS.Spacing.standard)
