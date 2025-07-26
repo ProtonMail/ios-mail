@@ -175,7 +175,11 @@ struct RSVPView: View {
             if let location = event.location {
                 RSVPDetailsRow(icon: DS.Icon.icMapPin, text: location)
             }
-            RSVPDetailsRow(icon: DS.Icon.icUser, text: event.organizer.email)
+            RSVPDetailsRowMenu<RSVPOrganizerOption>(
+                icon: DS.Icon.icUser,
+                text: event.organizer.email,
+                action: { _ in }
+            )
             if event.attendees.count >= 2 {
                 RSVPDetailsParticipantsButton(count: event.attendees.count, isExpanded: $areParticipantsExpanded) {
                     areParticipantsExpanded.toggle()
@@ -206,6 +210,55 @@ struct RSVPView: View {
 
 import InboxCore
 
+enum RSVPOrganizerOption: RSVPMenuOption {
+    case copyAddress
+    case newMessage
+
+    var displayName: String {
+        switch self {
+        case .copyAddress:
+            "Copy address"
+        case .newMessage:
+            "Message"
+        }
+    }
+
+    var trailingIcon: ImageResource {
+        switch self {
+        case .copyAddress:
+            DS.Icon.icSquares
+        case .newMessage:
+            DS.Icon.icPenSquare
+        }
+    }
+}
+
+protocol RSVPMenuOption: CaseIterable, Hashable {
+    var displayName: String { get }
+    var trailingIcon: ImageResource { get }
+}
+
+struct RSVPDetailsRowMenu<Option: RSVPMenuOption>: View {
+    let icon: ImageResource
+    let text: String
+    let action: (Option) -> Void
+
+    var body: some View {
+        Menu {
+            ForEach(Array(Option.allCases), id: \.self) { option in
+                RSVPMenuOptionButton(
+                    text: option.displayName,
+                    action: { action(option) },
+                    trailingIcon: option.trailingIcon
+                )
+            }
+        } label: {
+            RSVPDetailsRow(icon: icon, text: text, trailingIcon: .none)
+        }
+        .buttonStyle(RSVPDetailsRowButtonStyle())
+    }
+}
+
 struct RSVPDetailsParticipantsButton: View {
     let count: Int
     @Binding var isExpanded: Bool
@@ -219,11 +272,11 @@ struct RSVPDetailsParticipantsButton: View {
                 trailingIcon: isExpanded ? DS.Icon.icChevronUpFilled : DS.Icon.icChevronDownFilled
             )
         }
-        .buttonStyle(RSVPDetailsParticipantsButtonStyle())
+        .buttonStyle(RSVPDetailsRowButtonStyle())
     }
 }
 
-struct RSVPDetailsParticipantsButtonStyle: ButtonStyle {
+struct RSVPDetailsRowButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .background(configuration.isPressed ? DS.Color.InteractionWeak.pressed : Color.clear)
@@ -314,15 +367,38 @@ struct RSVPAnswerMenuButton: View {
     var body: some View {
         Menu(state.humanReadableLong) {
             ForEach(Answer.allCases.removing { $0 == state }, id: \.self) { answer in
-                Button(action: { action(answer) }) {
-                    Text(answer.humanReadableLong)
-                        .font(.body)
-                        .fontWeight(.regular)
-                        .foregroundStyle(DS.Color.Text.norm)
-                }
+                RSVPMenuOptionButton(
+                    text: answer.humanReadableLong,
+                    action: { action(answer) },
+                    trailingIcon: .none
+                )
             }
         }
         .buttonStyle(RSVPAnswerButtonStyle())
+    }
+}
+
+struct RSVPMenuOptionButton: View {
+    let text: String
+    let action: () -> Void
+    let trailingIcon: ImageResource?
+
+    var body: some View {
+        Button(action: action) {
+            HStack(spacing: DS.Spacing.tiny) {
+                Text(text)
+                    .font(.callout)
+                    .fontWeight(.regular)
+                    .foregroundStyle(DS.Color.Text.norm)
+                if let trailingIcon {
+                    Image(trailingIcon)
+                        .foregroundStyle(DS.Color.Icon.norm)
+                        .square(size: 20)
+                }
+            }
+            .padding(.vertical, DS.Spacing.medium)
+            .padding(.horizontal, DS.Spacing.large)
+        }
     }
 }
 
