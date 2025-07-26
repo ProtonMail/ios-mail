@@ -22,7 +22,7 @@ import SwiftUI
 import Testing
 
 @MainActor
-@Suite(.calendarZurichEnUS, .calendarUTCEnUS, .currentDate(.fixture("2025-07-25 12:00:00")))
+@Suite(.calendarZurichEnUS, .calendarGMTEnUS, .currentDate(.fixture("2025-07-25 12:00:00")))
 final class RSVPViewSnapshotTests {
     @Test(arguments: RsvpEventDetails.allCases)
     func testRSVP(testCase: (event: RsvpEventDetails, testName: String, isExpanded: Bool)) {

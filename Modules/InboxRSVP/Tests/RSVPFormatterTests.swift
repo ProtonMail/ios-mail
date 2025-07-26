@@ -21,7 +21,7 @@ import Foundation
 import InboxTesting
 import Testing
 
-@Suite(.calendarZurichEnUS, .calendarUTCEnUS)
+@Suite(.calendarZurichEnUS, .calendarGMTEnUS)
 final class RSVPFormatterTests {
     typealias EventInput = (from: Date, to: Date)
 
@@ -126,7 +126,7 @@ private extension Date {
     }
 
     private static var calendar: Calendar {
-        DateEnvironment.calendarUTC
+        DateEnvironment.calendarGMT
     }
 
 }

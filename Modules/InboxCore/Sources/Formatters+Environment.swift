@@ -26,17 +26,10 @@ extension DateFormatter {
         return formatter
     }
 
-    public static func fromEnvironmentCalendar(timeZone: TimeZone) -> Self {
+    public static func withGMTCalendar() -> Self {
         let formatter = Self()
-        formatter.locale = DateEnvironment.calendar.locale
-        formatter.timeZone = timeZone
-        return formatter
-    }
-
-    public static func withUTCCalendar() -> Self {
-        let formatter = Self()
-        formatter.locale = DateEnvironment.calendarUTC.locale
-        formatter.timeZone = DateEnvironment.calendarUTC.timeZone
+        formatter.locale = DateEnvironment.calendarGMT.locale
+        formatter.timeZone = DateEnvironment.calendarGMT.timeZone
         return formatter
     }
 
@@ -51,10 +44,10 @@ extension DateIntervalFormatter {
         return formatter
     }
 
-    public static func withUTCCalendar() -> Self {
+    public static func withGMTCalendar() -> Self {
         let formatter = Self()
-        formatter.locale = DateEnvironment.calendarUTC.locale
-        formatter.timeZone = DateEnvironment.calendarUTC.timeZone
+        formatter.locale = DateEnvironment.calendarGMT.locale
+        formatter.timeZone = DateEnvironment.calendarGMT.timeZone
         return formatter
     }
 

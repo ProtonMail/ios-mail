@@ -31,7 +31,7 @@ public struct CalendarTrait: SuiteTrait, TestTrait, TestScoping {
     }
 }
 
-public struct CalendarUTCTrait: SuiteTrait, TestTrait, TestScoping {
+public struct CalendarGMTTrait: SuiteTrait, TestTrait, TestScoping {
     public let calendar: Calendar
 
     public func provideScope(
@@ -39,7 +39,7 @@ public struct CalendarUTCTrait: SuiteTrait, TestTrait, TestScoping {
         testCase: Test.Case?,
         performing function: () async throws -> Void
     ) async throws {
-        try await DateEnvironment.$calendarUTC.withValue(calendar, operation: function)
+        try await DateEnvironment.$calendarGMT.withValue(calendar, operation: function)
     }
 }
 
@@ -53,12 +53,12 @@ extension Trait where Self == CalendarTrait {
     }
 }
 
-extension Trait where Self == CalendarUTCTrait {
+extension Trait where Self == CalendarGMTTrait {
     /// A testing trait that fixes the calendar to GMT (`en_US`).
     ///
     /// Use this trait in suite or tests to ensure date and time formatting is deterministic,
     /// which is essential for reliable unit/snapshot testing.
-    public static var calendarUTCEnUS: Self {
+    public static var calendarGMTEnUS: Self {
         .init(calendar: .gmtEnUS)
     }
 }

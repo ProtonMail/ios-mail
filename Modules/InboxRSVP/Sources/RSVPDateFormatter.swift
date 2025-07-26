@@ -29,7 +29,7 @@ enum RSVPDateFormatter {
 
         switch occurrence {
         case .date:
-            let calendar = DateEnvironment.calendarUTC
+            let calendar = DateEnvironment.calendarGMT
             let isMultiDay = !calendar.isDate(fromDate, inSameDayAs: toDate)
 
             var adjustedToDate = toDate
@@ -75,21 +75,21 @@ enum RSVPDateFormatter {
     }()
 
     private static let allDayDateIntervalFormatter: DateIntervalFormatter = {
-        let formatter = DateIntervalFormatter.withUTCCalendar()
+        let formatter = DateIntervalFormatter.withGMTCalendar()
         formatter.dateStyle = .medium
         formatter.timeStyle = .none
         return formatter
     }()
 
     private static let allDayDateFormatter: DateFormatter = {
-        let formatter = DateFormatter.withUTCCalendar()
+        let formatter = DateFormatter.withGMTCalendar()
         formatter.dateStyle = .medium
         formatter.timeStyle = .none
         return formatter
     }()
 
     private static let relativeFormatter: DateFormatter = {
-        let formatter = DateFormatter.withUTCCalendar()
+        let formatter = DateFormatter.withGMTCalendar()
         formatter.dateStyle = .medium
         formatter.timeStyle = .none
         formatter.doesRelativeDateFormatting = true
