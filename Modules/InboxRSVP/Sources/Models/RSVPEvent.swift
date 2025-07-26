@@ -42,12 +42,12 @@ struct RSVPEvent {
 
 enum RsvpEventDetailsMapper {
     static func map(_ details: RsvpEventDetails) -> RSVPEvent {
-        let dateText = RSVPDateFormatter.string(
+        let formattedDate = RSVPDateFormatter.string(
             from: details.startsAt,
             to: details.endsAt,
             occurrence: details.occurrence
         )
-        let initialStatus = details.attendees[safe: Int(details.userAttendeeIdx)]?.status ?? .unanswered
+        let initialStatus = details.attendees[Int(details.userAttendeeIdx)].status
         let participants = details.attendees.enumerated().map { index, attendee in
             let isCurrentUser = index == details.userAttendeeIdx
             let displayName = isCurrentUser ? L10n.Details.you(email: attendee.email).string : attendee.email
@@ -58,7 +58,7 @@ enum RsvpEventDetailsMapper {
         return RSVPEvent(
             title: details.summary ?? L10n.noEventTitlePlacholder.string,
             banner: banner(from: details.state),
-            formattedDate: dateText,
+            formattedDate: formattedDate,
             answerButtons: answerButtonsState(from: details.state),
             initialStatus: initialStatus,
             calendar: details.calendar,
@@ -113,12 +113,4 @@ enum RsvpEventDetailsMapper {
             return nil
         }
     }
-}
-
-private extension Collection {
-
-    subscript(safe index: Index) -> Element? {
-        indices.contains(index) ? self[index] : nil
-    }
-
 }

@@ -228,7 +228,7 @@ private extension EventData {
             endsAt: UInt64(eventDate),
             occurrence: .date,
             organizer: RsvpOrganizer(email: "hr@example.com"),
-            attendees: [],
+            attendees: [RsvpAttendee(email: "user@example.com", status: .unanswered)],
             userAttendeeIdx: 0,
             calendar: RsvpCalendar(name: "Company Events", color: "#D0021B")
         )
@@ -247,7 +247,7 @@ private extension EventData {
             endsAt: UInt64(endDate),
             occurrence: .date,
             organizer: RsvpOrganizer(email: "conference@example.com"),
-            attendees: [],
+            attendees: [RsvpAttendee(email: "user@example.com", status: .unanswered)],
             userAttendeeIdx: 0,
             calendar: RsvpCalendar(name: "Travel", color: "#7ED321")
         )
