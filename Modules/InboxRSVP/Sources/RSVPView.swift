@@ -198,7 +198,7 @@ struct RSVPView: View {
                     areParticipantsExpanded.toggle()
                 }
                 if areParticipantsExpanded {
-                    VStack(alignment: .leading, spacing: .zero) {
+                    LazyVStack(alignment: .leading, spacing: .zero) {
                         ForEachEnumerated(event.attendees, id: \.element.email) { attendee, index in
                             RSVPDetailsRow(
                                 icon: attendee.status.details.icon,
@@ -221,223 +221,6 @@ struct RSVPView: View {
     }
 }
 
-import InboxCore
-
-enum RSVPOrganizerOption: RSVPMenuOption {
-    case copyAddress
-    case newMessage
-
-    var displayName: LocalizedStringResource {
-        switch self {
-        case .copyAddress:
-            L10n.OrganizerMenuOption.copyAction
-        case .newMessage:
-            L10n.OrganizerMenuOption.newMessage
-        }
-    }
-
-    var trailingIcon: ImageResource {
-        switch self {
-        case .copyAddress:
-            DS.Icon.icSquares
-        case .newMessage:
-            DS.Icon.icPenSquare
-        }
-    }
-}
-
-protocol RSVPMenuOption: CaseIterable, Hashable {
-    var displayName: LocalizedStringResource { get }
-    var trailingIcon: ImageResource { get }
-}
-
-struct RSVPDetailsRowMenu<Option: RSVPMenuOption>: View {
-    let icon: ImageResource
-    let text: String
-    let action: (Option) -> Void
-
-    var body: some View {
-        Menu {
-            ForEach(Array(Option.allCases), id: \.self) { option in
-                RSVPMenuOptionButton(
-                    text: option.displayName,
-                    action: { action(option) },
-                    trailingIcon: option.trailingIcon
-                )
-            }
-        } label: {
-            RSVPDetailsRow(icon: icon, text: text, trailingIcon: .none)
-        }
-        .buttonStyle(RSVPDetailsRowButtonStyle())
-    }
-}
-
-struct RSVPDetailsParticipantsButton: View {
-    let count: Int
-    @Binding var isExpanded: Bool
-    let action: () -> Void
-
-    var body: some View {
-        Button(action: action) {
-            RSVPDetailsRow(
-                icon: DS.Icon.icUsers,
-                text: L10n.Details.participantsCount(count: count).string,
-                trailingIcon: isExpanded ? DS.Icon.icChevronUpFilled : DS.Icon.icChevronDownFilled
-            )
-        }
-        .buttonStyle(RSVPDetailsRowButtonStyle())
-    }
-}
-
-struct RSVPDetailsRowButtonStyle: ButtonStyle {
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .background(configuration.isPressed ? DS.Color.InteractionWeak.pressed : Color.clear)
-            .clipShape(RoundedRectangle(cornerRadius: DS.Radius.large))
-    }
-}
-
-struct RSVPDetailsRow: View {
-    let icon: ImageResource
-    let iconColor: Color
-    let text: String
-    let trailingIcon: ImageResource?
-
-    init(
-        icon: ImageResource,
-        iconColor: Color = DS.Color.Text.weak,
-        text: String,
-        trailingIcon: ImageResource? = .none
-    ) {
-        self.icon = icon
-        self.iconColor = iconColor
-        self.text = text
-        self.trailingIcon = trailingIcon
-    }
-
-    var body: some View {
-        HStack(alignment: .center, spacing: DS.Spacing.medium) {
-            Image(icon)
-                .foregroundStyle(iconColor)
-                .frame(width: 24, height: 20)
-            HStack(alignment: .center, spacing: DS.Spacing.small) {
-                Text(text)
-                    .font(.subheadline)
-                    .fontWeight(.regular)
-                    .foregroundStyle(DS.Color.Text.weak)
-                if let trailingIcon {
-                    Image(trailingIcon)
-                        .foregroundStyle(iconColor)
-                        .square(size: 16)
-                }
-                Spacer(minLength: 0)
-            }
-        }
-        .padding(.all, DS.Spacing.standard)
-    }
-}
-
-struct RSVPHeaderView: View {
-    enum Style {
-        case now
-        case ended
-        case cancelled
-        case generic
-
-        var color: (text: Color, background: Color) {
-            switch self {
-            case .now:
-                (DS.Color.Notification.success900, DS.Color.Notification.success100)
-            case .ended:
-                (DS.Color.Notification.warning900, DS.Color.Notification.warning100)
-            case .cancelled:
-                (DS.Color.Notification.error900, DS.Color.Notification.error100)
-            case .generic:
-                (DS.Color.Text.norm, DS.Color.Background.deep)
-            }
-        }
-    }
-
-    let style: Style
-    let regular: LocalizedStringResource
-    let bold: LocalizedStringResource
-
-    var body: some View {
-        (Text(regular) + Text(bold).fontWeight(.bold))
-            .font(.subheadline)
-            .foregroundStyle(style.color.text)
-            .padding(.vertical, DS.Spacing.moderatelyLarge)
-            .padding(.horizontal, DS.Spacing.extraLarge)
-            .frame(maxWidth: .infinity, alignment: .leading)
-            .background(style.color.background)
-    }
-}
-
-struct RSVPAnswerMenuButton: View {
-    let state: Answer
-    let action: (Answer) -> Void
-
-    var body: some View {
-        Menu(state.humanReadableLong.string) {
-            ForEach(Answer.allCases.removing { $0 == state }, id: \.self) { answer in
-                RSVPMenuOptionButton(
-                    text: answer.humanReadableLong,
-                    action: { action(answer) },
-                    trailingIcon: .none
-                )
-            }
-        }
-        .buttonStyle(RSVPAnswerButtonStyle())
-    }
-}
-
-struct RSVPMenuOptionButton: View {
-    let text: LocalizedStringResource
-    let action: () -> Void
-    let trailingIcon: ImageResource?
-
-    var body: some View {
-        Button(action: action) {
-            HStack(spacing: DS.Spacing.tiny) {
-                Text(text)
-                    .font(.callout)
-                    .fontWeight(.regular)
-                    .foregroundStyle(DS.Color.Text.norm)
-                if let trailingIcon {
-                    Image(trailingIcon)
-                        .foregroundStyle(DS.Color.Icon.norm)
-                        .square(size: 20)
-                }
-            }
-            .padding(.vertical, DS.Spacing.medium)
-            .padding(.horizontal, DS.Spacing.large)
-        }
-    }
-}
-
-struct RSVPAnswerButton: View {
-    let text: String
-    let action: () -> Void
-
-    var body: some View {
-        Button(text, action: action)
-            .buttonStyle(RSVPAnswerButtonStyle())
-    }
-}
-
-struct RSVPAnswerButtonStyle: ButtonStyle {
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .font(.subheadline)
-            .fontWeight(.regular)
-            .foregroundStyle(DS.Color.Brand.plus30)
-            .padding(.all, 12)
-            .frame(maxWidth: .infinity)
-            .background(configuration.isPressed ? DS.Color.InteractionBrandWeak.pressed : DS.Color.InteractionBrandWeak.norm)
-            .clipShape(RoundedRectangle(cornerRadius: DS.Radius.massive))
-    }
-}
-
 #Preview {
     ScrollView(.vertical, showsIndicators: false) {
         VStack(spacing: 16) {
@@ -452,9 +235,10 @@ struct RSVPAnswerButtonStyle: ButtonStyle {
                     occurrence: .dateTime,
                     organizer: RsvpOrganizer(email: "organizer1@example.com"),
                     attendees: [
-                        .init(email: "user1@example.com", status: .yes),
-                        .init(email: "user2@example.com", status: .no),
+                        .init(email: "user1@example.com", status: .unanswered),
+                        .init(email: "user2@example.com", status: .yes),
                         .init(email: "user3@example.com", status: .maybe),
+                        .init(email: "user4@example.com", status: .no),
                     ],
                     userAttendeeIdx: 0,
                     calendar: RsvpCalendar(name: "Personal", color: "#F5A623"),
@@ -466,14 +250,6 @@ struct RSVPAnswerButtonStyle: ButtonStyle {
     }
 }
 
-private extension Array {
-
-    func removing(_ shouldBeExcluded: (Self.Element) throws -> Bool) rethrows -> [Self.Element] {
-        try filter { item in try !shouldBeExcluded(item) }
-    }
-
-}
-
 private extension Collection {
 
     subscript(safe index: Index) -> Element? {
@@ -482,12 +258,7 @@ private extension Collection {
 
 }
 
-// FIXME: Temporary Rust interface to remove
-enum Answer: CaseIterable, Equatable {
-    case yes
-    case maybe
-    case no
-
+extension Answer {
     var humanReadable: String {
         switch self {
         case .yes:
@@ -522,7 +293,7 @@ enum Answer: CaseIterable, Equatable {
     }
 }
 
-extension RsvpAttendeeStatus {
+private extension RsvpAttendeeStatus {
     var answer: Answer? {
         switch self {
         case .unanswered:
@@ -548,105 +319,4 @@ extension RsvpAttendeeStatus {
             (DS.Icon.icCheckmarkCircle, DS.Color.Notification.success)
         }
     }
-}
-
-public typealias UnixTimestamp = UInt64
-
-public enum RsvpEventProgress {
-    case pending
-    case ongoing
-    case ended
-}
-
-public enum RsvpUnanswerableReason {
-    case inviteIsOutdated
-    case inviteHasUnknownRecency
-}
-
-public enum RsvpState {
-    case answerableInvite(progress: RsvpEventProgress, attendance: Attendance)
-    case unanswerableInvite(RsvpUnanswerableReason)
-    case cancelledInvite(isOutdated: Bool)
-    case reminder(RsvpEventProgress)
-    case cancelledReminder
-}
-
-public struct RsvpEventDetails {
-    public var summary: String?
-    public var location: String?
-    public var description: String?
-    public var recurrence: String?
-    public var startsAt: UnixTimestamp
-    public var endsAt: UnixTimestamp
-    public var occurrence: RsvpOccurrence
-    public var organizer: RsvpOrganizer
-    public var attendees: [RsvpAttendee]
-    public var userAttendeeIdx: UInt32
-    public var calendar: RsvpCalendar?
-    public var state: RsvpState
-
-    public init(
-        summary: String?,
-        location: String?,
-        description: String?,
-        recurrence: String?,
-        startsAt: UnixTimestamp,
-        endsAt: UnixTimestamp,
-        occurrence: RsvpOccurrence,
-        organizer: RsvpOrganizer,
-        attendees: [RsvpAttendee],
-        userAttendeeIdx: UInt32,
-        calendar: RsvpCalendar?,
-        state: RsvpState
-    ) {
-        self.summary = summary
-        self.location = location
-        self.description = description
-        self.recurrence = recurrence
-        self.startsAt = startsAt
-        self.endsAt = endsAt
-        self.occurrence = occurrence
-        self.organizer = organizer
-        self.attendees = attendees
-        self.userAttendeeIdx = userAttendeeIdx
-        self.calendar = calendar
-        self.state = state
-    }
-}
-
-public enum RsvpRecency {
-    case fresh
-    case outdated
-    case unknown
-}
-
-public enum Attendance {
-    case optional
-    case required
-}
-
-public enum RsvpOccurrence {
-    case date
-    case dateTime
-}
-
-public enum RsvpAttendeeStatus {
-    case unanswered
-    case maybe
-    case no
-    case yes
-}
-
-public struct RsvpOrganizer {
-    public var email: String
-}
-
-public struct RsvpAttendee {
-    public var email: String
-    public var status: RsvpAttendeeStatus
-}
-
-public struct RsvpCalendar {
-    public var name: String
-    public var color: String
 }
