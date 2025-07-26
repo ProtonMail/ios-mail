@@ -16,11 +16,12 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import InboxRSVP
+import InboxCore
 import Foundation
 import InboxTesting
 import Testing
 
-@Suite(.calendarZurichEnUS, .currentDate(.fixture("2025-07-25 12:00:00")))
+@Suite(.calendarZurichEnUS, .calendarUTCEnUS)
 final class RSVPFormatterTests {
     typealias EventInput = (from: Date, to: Date)
 
@@ -29,12 +30,25 @@ final class RSVPFormatterTests {
     @Test(
         arguments: zip(
             [
-                // Yesterday
-                EventInput(from: .fixture("2025-07-24 00:00:00"), to: .fixture("2025-07-25 00:00:00")),
-                // Today
-                EventInput(from: .fixture("2025-07-25 00:00:00"), to: .fixture("2025-07-26 00:00:00")),
-                // Tomorrow
-                EventInput(from: .fixture("2025-07-26 00:00:00"), to: .fixture("2025-07-27 00:00:00")),
+                EventInput(from: .yesterday(), to: .today()),
+                EventInput(from: .today(), to: .tomorrow()),
+                EventInput(from: .tomorrow(), to: .dayAfterTomorrow()),
+            ],
+            [
+                "Yesterday",
+                "Today",
+                "Tomorrow",
+            ]
+        )
+    )
+    func testAllDayRelative(given: EventInput, expected: String) {
+        #expect(formattedString(given, occurrence: .date) == expected)
+    }
+
+    @Test(
+        .currentDate(.fixture("2025-07-25 12:00:00")),
+        arguments: zip(
+            [
                 // Single day in the future
                 EventInput(from: .fixture("2025-08-01 00:00:00"), to: .fixture("2025-08-02 00:00:00")),
                 // Multi-day (2 days)
@@ -45,9 +59,6 @@ final class RSVPFormatterTests {
                 EventInput(from: .fixture("2025-12-30 00:00:00"), to: .fixture("2026-01-02 00:00:00")),
             ],
             [
-                "Yesterday",
-                "Today",
-                "Tomorrow",
                 "Aug 1, 2025",
                 "Sep 15 – 16, 2025",
                 "Sep 30 – Oct 1, 2025",
@@ -62,6 +73,7 @@ final class RSVPFormatterTests {
     // MARK: - Timed Events (.dateTime)
 
     @Test(
+        .currentDate(.fixture("2025-07-25 12:00:00")),
         arguments: zip(
             [
                 // Single day, zero duration event (UTC 08:42 is 10:42 in Zurich)
@@ -93,4 +105,28 @@ final class RSVPFormatterTests {
 
         return RSVPDateFormatter.string(from: from, to: to, occurrence: occurrence)
     }
+}
+
+private extension Date {
+
+    static func yesterday() -> Date {
+        calendar.previousDay(before: today())!
+    }
+
+    static func today() -> Date {
+        calendar.startOfDay(for: Date())
+    }
+
+    static func tomorrow() -> Date {
+        calendar.nextDay(after: today())!
+    }
+
+    static func dayAfterTomorrow() -> Date {
+        calendar.nextDay(after: tomorrow())!
+    }
+
+    private static var calendar: Calendar {
+        DateEnvironment.calendarUTC
+    }
+
 }
