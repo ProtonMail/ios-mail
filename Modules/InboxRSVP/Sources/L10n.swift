@@ -19,53 +19,53 @@ import Foundation
 
 /// Once you define `LocalizedStringResource` below Xcode puts related string in `Localizable.xcstrings` file.
 /// The generation happens automatically when adding/removing string below. All keys are added in alphabetical order.
-/// IMPORTANT: Remember about setting bundle for each key: `bundle: .atURL(Bundle.module.bundleURL)`.
+/// IMPORTANT: Remember about setting bundle for each key: `bundle: .module`.
 enum L10n {
     static let noEventTitlePlacholder = LocalizedStringResource(
         "(no title)",
-        bundle: .atURL(Bundle.module.bundleURL),
+        bundle: .module,
         comment: "Placeholder text for an event that has no title or summary."
     )
     static let attendanceOptional = LocalizedStringResource(
         "(Attendance optional)",
-        bundle: .atURL(Bundle.module.bundleURL),
+        bundle: .module,
         comment: "A note indicating that responding to or attending the event is not mandatory."
     )
 
     enum Answer {
         static let attending = LocalizedStringResource(
             "Attending?",
-            bundle: .atURL(Bundle.module.bundleURL),
+            bundle: .module,
             comment: "A question prompting the user to select their attendance status."
         )
         static let yes = LocalizedStringResource(
             "Yes",
-            bundle: .atURL(Bundle.module.bundleURL),
+            bundle: .module,
             comment: "A short, one-word response indicating the user will attend the event."
         )
         static let maybe = LocalizedStringResource(
             "Maybe",
-            bundle: .atURL(Bundle.module.bundleURL),
+            bundle: .module,
             comment: "A short, one-word response indicating the user might attend the event."
         )
         static let no = LocalizedStringResource(
             "No",
-            bundle: .atURL(Bundle.module.bundleURL),
+            bundle: .module,
             comment: "A short, one-word response indicating the user will not attend the event."
         )
         static let yesLong = LocalizedStringResource(
             "Yes, I'll attend",
-            bundle: .atURL(Bundle.module.bundleURL),
+            bundle: .module,
             comment: "A full-sentence response indicating the user will attend. Used in menus."
         )
         static let maybeLong = LocalizedStringResource(
             "Maybe, I'll attend",
-            bundle: .atURL(Bundle.module.bundleURL),
+            bundle: .module,
             comment: "A full-sentence response indicating the user might attend. Used in menus."
         )
         static let noLong = LocalizedStringResource(
             "No, I won't attend",
-            bundle: .atURL(Bundle.module.bundleURL),
+            bundle: .module,
             comment: "A full-sentence response indicating the user will not attend. Used in menus."
         )
     }
@@ -73,42 +73,42 @@ enum L10n {
     enum Header {
         static let happening = LocalizedStringResource(
             "Happening",
-            bundle: .atURL(Bundle.module.bundleURL),
+            bundle: .module,
             comment: "First part of the 'Happening now' banner, indicating an event is currently in progress."
         )
         static let now = LocalizedStringResource(
             " now",
-            bundle: .atURL(Bundle.module.bundleURL),
+            bundle: .module,
             comment: "Second part of the 'Happening now' banner, meant to be bolded. Note the leading space."
         )
         static let event = LocalizedStringResource(
             "Event",
-            bundle: .atURL(Bundle.module.bundleURL),
+            bundle: .module,
             comment: "The subject of a status update, like 'Event ended' or 'Event canceled'."
         )
         static let ended = LocalizedStringResource(
             " ended",
-            bundle: .atURL(Bundle.module.bundleURL),
+            bundle: .module,
             comment: "The status of an event that has finished. Meant to be bolded. Note the leading space."
         )
         static let canceled = LocalizedStringResource(
             " canceled",
-            bundle: .atURL(Bundle.module.bundleURL),
+            bundle: .module,
             comment: "The status of an event that has been canceled. Meant to be bolded. Note the leading space."
         )
         static let inviteIsOutdated = LocalizedStringResource(
             "This invitation is out of date. The event has been updated.",
-            bundle: .atURL(Bundle.module.bundleURL),
+            bundle: .module,
             comment: "Banner text explaining that the event details have changed since the invitation was sent."
         )
         static let offlineWarning = LocalizedStringResource(
             "You're offline. The displayed information may be out-of-date.",
-            bundle: .atURL(Bundle.module.bundleURL),
+            bundle: .module,
             comment: "Warning banner shown when the user has no internet connection."
         )
         static let cancelledAndOutdated = LocalizedStringResource(
             "Event cancelled. This invitation is out of date.",
-            bundle: .atURL(Bundle.module.bundleURL),
+            bundle: .module,
             comment: "Banner for a cancelled event where the user is also viewing an outdated invitation."
         )
     }
@@ -117,14 +117,14 @@ enum L10n {
         static func participantsCount(count: Int) -> LocalizedStringResource {
             LocalizedStringResource(
                 "\(count) Participants",
-                bundle: .atURL(Bundle.module.bundleURL),
+                bundle: .module,
                 comment: "Label for the participants button, where %d is the number of people. Exist only in plural form."
             )
         }
         static func you(email: String) -> LocalizedStringResource {
             LocalizedStringResource(
                 "You • \(email)",
-                bundle: .atURL(Bundle.module.bundleURL),
+                bundle: .module,
                 comment: "A label to identify the current user in a list of event attendees."
             )
         }
@@ -133,12 +133,12 @@ enum L10n {
     enum OrganizerMenuOption {
         static let copyAction = LocalizedStringResource(
             "Copy address",
-            bundle: .atURL(Bundle.module.bundleURL),
+            bundle: .module,
             comment: "Context menu option to copy the organizer’s email address to the clipboard."
         )
         static let newMessage = LocalizedStringResource(
             "Message",
-            bundle: .atURL(Bundle.module.bundleURL),
+            bundle: .module,
             comment: "Context menu option to start composing a new message to the organizer."
         )
     }
