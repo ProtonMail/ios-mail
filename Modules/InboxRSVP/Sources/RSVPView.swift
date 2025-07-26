@@ -25,7 +25,7 @@ struct RSVPView: View {
     @State var areParticipantsExpanded: Bool
 
     init(event details: RsvpEventDetails, areParticipantsExpanded: Bool) {
-        self.event = RsvpEventDetailsMapper.map(details)
+        self.event = RSVPEventMapper.map(from: details)
         self.areParticipantsExpanded = areParticipantsExpanded
     }
 

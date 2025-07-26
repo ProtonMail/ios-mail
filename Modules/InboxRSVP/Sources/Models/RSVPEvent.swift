@@ -59,8 +59,8 @@ struct RSVPEvent: Copying {
     let userParticipantIndex: Int
 }
 
-enum RsvpEventDetailsMapper {
-    static func map(_ details: RsvpEventDetails) -> RSVPEvent {
+enum RSVPEventMapper {
+    static func map(from details: RsvpEventDetails) -> RSVPEvent {
         let formattedDate = RSVPDateFormatter.string(
             from: details.startsAt,
             to: details.endsAt,
