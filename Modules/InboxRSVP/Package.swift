@@ -28,6 +28,9 @@ let package = Package(
                 "InboxDesignSystem",
                 "proton_app_uniffi",
                 .product(name: "AccountLogin", package: "ProtonCoreET"),
+            ],
+            resources: [
+                .process("Resources")
             ]
         ),
         .testTarget(

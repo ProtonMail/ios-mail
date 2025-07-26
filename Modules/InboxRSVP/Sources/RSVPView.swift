@@ -73,34 +73,46 @@ struct RSVPView: View {
             case .pending:
                 EmptyView()
             case .ongoing:
-                RSVPHeaderView(style: .now, regular: "Happening", bold: " now")
+                RSVPHeaderView(
+                    style: .now,
+                    regular: L10n.Header.happening,
+                    bold: L10n.Header.now
+                )
             case .ended:
-                RSVPHeaderView(style: .ended, regular: "Event", bold: " ended")
+                RSVPHeaderView(
+                    style: .ended,
+                    regular: L10n.Header.event,
+                    bold: L10n.Header.ended
+                )
             }
         case .unanswerableInvite(let reason):
             switch reason {
             case .inviteIsOutdated:
                 RSVPHeaderView(
                     style: .generic,
-                    regular: "This invitation is out of date. The event has been updated.",
-                    bold: .empty
+                    regular: L10n.Header.inviteIsOutdated,
+                    bold: String.empty.stringResource
                 )
             case .inviteHasUnknownRecency:
                 RSVPHeaderView(
                     style: .generic,
-                    regular: "You're offline. The displayed information may be out-of-date.",
-                    bold: .empty
+                    regular: L10n.Header.offlineWarning,
+                    bold: String.empty.stringResource
                 )
             }
         case .cancelledInvite(let isOutdated):
             if isOutdated {
                 RSVPHeaderView(
                     style: .cancelled,
-                    regular: "Event cancelled. This invitation is out of date.",
-                    bold: .empty
+                    regular: L10n.Header.cancelledAndOutdated,
+                    bold: String.empty.stringResource
                 )
             } else {
-                RSVPHeaderView(style: .cancelled, regular: "Event", bold: " canceled")
+                RSVPHeaderView(
+                    style: .cancelled,
+                    regular: L10n.Header.event,
+                    bold: L10n.Header.canceled
+                )
             }
         case .cancelledReminder:
             EmptyView()
@@ -111,7 +123,7 @@ struct RSVPView: View {
     private var eventHeader: some View {
         HStack(alignment: .top, spacing: DS.Spacing.medium) {
             VStack(alignment: .leading, spacing: DS.Spacing.standard) {
-                Text(event.summary ?? "(no title)")
+                Text(event.summary ?? L10n.noEventTitlePlacholder.string)
                     .font(.body)
                     .fontWeight(.semibold)
                     .foregroundStyle(DS.Color.Text.norm)
@@ -120,7 +132,7 @@ struct RSVPView: View {
                     .fontWeight(.regular)
                     .foregroundStyle(DS.Color.Text.norm)
                 if case let .answerableInvite(_, attendance) = event.state, attendance == .optional {
-                    Text("(Attendance optional)")
+                    Text(L10n.attendanceOptional)
                         .font(.footnote)
                         .fontWeight(.regular)
                         .foregroundStyle(DS.Color.Text.weak)
@@ -134,7 +146,7 @@ struct RSVPView: View {
 
     private var answerSection: some View {
         VStack(alignment: .leading, spacing: DS.Spacing.mediumLight) {
-            Text("Attending?")
+            Text(L10n.Answer.attending)
                 .font(.footnote)
                 .fontWeight(.regular)
                 .foregroundStyle(DS.Color.Text.weak)
@@ -190,7 +202,7 @@ struct RSVPView: View {
                             RSVPDetailsRow(
                                 icon: attendee.status.details.icon,
                                 iconColor: attendee.status.details.color,
-                                text: event.userAttendeeIdx == index ? "You • \(attendee.email)" : attendee.email
+                                text: event.userAttendeeIdx == index ? L10n.Details.you(email: attendee.email).string : attendee.email
                             )
                         }
                     }
@@ -200,7 +212,7 @@ struct RSVPView: View {
                 RSVPDetailsRow(
                     icon: attendee.status.details.icon,
                     iconColor: attendee.status.details.color,
-                    text: event.userAttendeeIdx == 0 ? "You • \(attendee.email)" : attendee.email
+                    text: event.userAttendeeIdx == 0 ? L10n.Details.you(email: attendee.email).string : attendee.email
                 )
             }
         }
@@ -214,12 +226,12 @@ enum RSVPOrganizerOption: RSVPMenuOption {
     case copyAddress
     case newMessage
 
-    var displayName: String {
+    var displayName: LocalizedStringResource {
         switch self {
         case .copyAddress:
-            "Copy address"
+            L10n.OrganizerMenuOption.copyAction
         case .newMessage:
-            "Message"
+            L10n.OrganizerMenuOption.newMessage
         }
     }
 
@@ -234,7 +246,7 @@ enum RSVPOrganizerOption: RSVPMenuOption {
 }
 
 protocol RSVPMenuOption: CaseIterable, Hashable {
-    var displayName: String { get }
+    var displayName: LocalizedStringResource { get }
     var trailingIcon: ImageResource { get }
 }
 
@@ -268,7 +280,7 @@ struct RSVPDetailsParticipantsButton: View {
         Button(action: action) {
             RSVPDetailsRow(
                 icon: DS.Icon.icUsers,
-                text: "\(count) Participants",
+                text: L10n.Details.participantsCount(count: count).string,
                 trailingIcon: isExpanded ? DS.Icon.icChevronUpFilled : DS.Icon.icChevronDownFilled
             )
         }
@@ -346,8 +358,8 @@ struct RSVPHeaderView: View {
     }
 
     let style: Style
-    let regular: String
-    let bold: String
+    let regular: LocalizedStringResource
+    let bold: LocalizedStringResource
 
     var body: some View {
         (Text(regular) + Text(bold).fontWeight(.bold))
@@ -365,7 +377,7 @@ struct RSVPAnswerMenuButton: View {
     let action: (Answer) -> Void
 
     var body: some View {
-        Menu(state.humanReadableLong) {
+        Menu(state.humanReadableLong.string) {
             ForEach(Answer.allCases.removing { $0 == state }, id: \.self) { answer in
                 RSVPMenuOptionButton(
                     text: answer.humanReadableLong,
@@ -379,7 +391,7 @@ struct RSVPAnswerMenuButton: View {
 }
 
 struct RSVPMenuOptionButton: View {
-    let text: String
+    let text: LocalizedStringResource
     let action: () -> Void
     let trailingIcon: ImageResource?
 
@@ -478,22 +490,22 @@ enum Answer: CaseIterable, Equatable {
     var humanReadable: String {
         switch self {
         case .yes:
-            "Yes"
+            L10n.Answer.yes.string
         case .maybe:
-            "Maybe"
+            L10n.Answer.maybe.string
         case .no:
-            "No"
+            L10n.Answer.no.string
         }
     }
 
-    var humanReadableLong: String {
+    var humanReadableLong: LocalizedStringResource {
         switch self {
         case .yes:
-            "Yes, I'll attend"
+            L10n.Answer.yesLong
         case .maybe:
-            "Maybe, I'll attend"
+            L10n.Answer.maybeLong
         case .no:
-            "No, I won't attend"
+            L10n.Answer.noLong
         }
     }
 

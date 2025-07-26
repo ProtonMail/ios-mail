@@ -75,7 +75,7 @@ private extension RsvpEventDetails {
     )
 
     static let answerableOngoingNo = RsvpEventDetails.testData(
-        data: .partDayWithDuration(userStatus: .no),
+        data: .partDayWithDuration(title: .none, userStatus: .no),
         state: .answerableInvite(progress: .ongoing, attendance: .required)
     )
 
@@ -185,12 +185,15 @@ private extension EventData {
         )
     }()
 
-    static func partDayWithDuration(userStatus: RsvpAttendeeStatus = .unanswered) -> EventData {
+    static func partDayWithDuration(
+        title: String? = "Design Review",
+        userStatus: RsvpAttendeeStatus = .unanswered
+    ) -> EventData {
         let startTime = Date.fixture("2025-07-24 08:00:00").timeIntervalSince1970
         let endTime = Date.fixture("2025-07-24 09:30:00").timeIntervalSince1970
 
         return EventData(
-            summary: "Design Review",
+            summary: title,
             location: "Virtual Meeting",
             description: "Reviewing the new UI mockups.",
             recurrence: nil,
