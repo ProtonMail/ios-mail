@@ -18,11 +18,11 @@
 import SwiftUI
 
 struct RSVPAnswerButton: View {
-    let text: String
+    let text: LocalizedStringResource
     let action: () -> Void
 
     var body: some View {
-        Button(text, action: action)
+        Button(text.string, action: action)
             .buttonStyle(RSVPAnswerButtonStyle())
     }
 }

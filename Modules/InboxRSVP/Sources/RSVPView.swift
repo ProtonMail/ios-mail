@@ -112,7 +112,7 @@ struct RSVPView: View {
                     }
                 case .none:
                     ForEach(Answer.allCases, id: \.self) { answer in
-                        RSVPAnswerButton(text: answer.humanReadable) {
+                        RSVPAnswerButton(text: answer.humanReadable.short) {
                             answerStatus = answer.attendeeStatus
                         }
                     }
@@ -196,25 +196,14 @@ struct RSVPView: View {
 }
 
 extension Answer {
-    var humanReadable: String {
+    var humanReadable: (short: LocalizedStringResource, long: LocalizedStringResource) {
         switch self {
         case .yes:
-            L10n.Answer.yes.string
+            (L10n.Answer.yes, L10n.Answer.yesLong)
         case .maybe:
-            L10n.Answer.maybe.string
+            (L10n.Answer.maybe, L10n.Answer.maybeLong)
         case .no:
-            L10n.Answer.no.string
-        }
-    }
-
-    var humanReadableLong: LocalizedStringResource {
-        switch self {
-        case .yes:
-            L10n.Answer.yesLong
-        case .maybe:
-            L10n.Answer.maybeLong
-        case .no:
-            L10n.Answer.noLong
+            (L10n.Answer.no, L10n.Answer.noLong)
         }
     }
 

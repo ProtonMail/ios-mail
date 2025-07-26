@@ -22,10 +22,10 @@ struct RSVPAnswerMenuButton: View {
     let action: (Answer) -> Void
 
     var body: some View {
-        Menu(state.humanReadableLong.string) {
+        Menu(state.humanReadable.long.string) {
             ForEach(Answer.allCases.removing { $0 == state }, id: \.self) { answer in
                 RSVPMenuOptionButton(
-                    text: answer.humanReadableLong,
+                    text: answer.humanReadable.long,
                     action: { action(answer) },
                     trailingIcon: .none
                 )
