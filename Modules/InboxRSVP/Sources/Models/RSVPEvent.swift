@@ -1,7 +1,25 @@
+// Copyright (c) 2025 Proton Technologies AG
+//
+// This file is part of Proton Mail.
+//
+// Proton Mail is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Proton Mail is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Proton Mail. If not, see https://www.gnu.org/licenses/.
+
 import Foundation
+import InboxCore
 import InboxCoreUI
 
-struct RSVPEvent {
+struct RSVPEvent: Copying {
     enum AnswerButtonsState {
         case visible(Attendance)
         case hidden
@@ -23,9 +41,9 @@ struct RSVPEvent {
         }
     }
 
-    struct Participant {
+    struct Participant: Copying {
         let displayName: String
-        let status: RsvpAttendeeStatus
+        var status: RsvpAttendeeStatus
     }
 
     let title: String
@@ -37,7 +55,8 @@ struct RSVPEvent {
     let recurrence: String?
     let location: String?
     let organizer: RsvpOrganizer
-    let participants: [Participant]
+    var participants: [Participant]
+    let userParticipantIndex: Int
 }
 
 enum RsvpEventDetailsMapper {
@@ -65,7 +84,8 @@ enum RsvpEventDetailsMapper {
             recurrence: details.recurrence,
             location: details.location,
             organizer: details.organizer,
-            participants: participants
+            participants: participants,
+            userParticipantIndex: Int(details.userAttendeeIdx)
         )
     }
 

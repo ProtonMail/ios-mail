@@ -21,14 +21,12 @@ import proton_app_uniffi
 import SwiftUI
 
 struct RSVPView: View {
-    let event: RSVPEvent
+    @State var event: RSVPEvent
     @State var areParticipantsExpanded: Bool
-    @State var answerStatus: RsvpAttendeeStatus
 
     init(event details: RsvpEventDetails, areParticipantsExpanded: Bool) {
         self.event = RsvpEventDetailsMapper.map(details)
         self.areParticipantsExpanded = areParticipantsExpanded
-        self.answerStatus = event.initialStatus
     }
 
     var body: some View {
@@ -105,16 +103,16 @@ struct RSVPView: View {
                 .fontWeight(.regular)
                 .foregroundStyle(DS.Color.Text.weak)
             HStack(spacing: DS.Spacing.small) {
-                switch answerStatus.answer {
-                case .some(let answerState):
-                    RSVPAnswerMenuButton(state: answerState) { newState in
-                        answerStatus = newState.attendeeStatus
-                    }
+                switch event.participants[event.userParticipantIndex].status.answer {
                 case .none:
                     ForEach(Answer.allCases, id: \.self) { answer in
                         RSVPAnswerButton(text: answer.humanReadable.short) {
-                            answerStatus = answer.attendeeStatus
+                            updateState(with: answer.attendeeStatus)
                         }
+                    }
+                case .some(let answer):
+                    RSVPAnswerMenuButton(state: answer) { newState in
+                        updateState(with: newState.attendeeStatus)
                     }
                 }
             }
@@ -163,6 +161,15 @@ struct RSVPView: View {
             iconColor: participant.status.details.color,
             text: participant.displayName
         )
+    }
+
+    private func updateState(with status: RsvpAttendeeStatus) {
+        let updateIndex = event.userParticipantIndex
+        var updatedParticipants = event.participants
+
+        updatedParticipants[updateIndex] = event.participants[updateIndex].copy(\.status, to: status)
+
+        event = event.copy(\.participants, to: updatedParticipants)
     }
 }
 
