@@ -2,7 +2,7 @@
 
 typealias UnixTimestamp = UInt64
 
-enum Answer: CaseIterable, Equatable {
+enum Answer: CaseIterable, Hashable {
     case yes
     case maybe
     case no

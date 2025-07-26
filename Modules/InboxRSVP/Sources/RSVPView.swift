@@ -21,14 +21,14 @@ import proton_app_uniffi
 import SwiftUI
 
 struct RSVPView: View {
-    let event: RsvpEventDetails
+    let event: RSVPEvent
     @State var areParticipantsExpanded: Bool
     @State var answerStatus: RsvpAttendeeStatus
 
-    init(event: RsvpEventDetails, areParticipantsExpanded: Bool) {
-        self.event = event
+    init(event details: RsvpEventDetails, areParticipantsExpanded: Bool) {
+        self.event = RsvpEventDetailsMapper.map(details)
         self.areParticipantsExpanded = areParticipantsExpanded
-        self.answerStatus = event.attendees[safe: Int(event.userAttendeeIdx)]?.status ?? .unanswered
+        self.answerStatus = event.initialStatus
     }
 
     var body: some View {
@@ -52,7 +52,7 @@ struct RSVPView: View {
             VStack(alignment: .leading, spacing: DS.Spacing.large) {
                 eventHeader
                     .padding(.horizontal, DS.Spacing.extraLarge)
-                if case .answerableInvite = event.state {
+                if case .visible = event.answerButtons {
                     answerSection
                         .padding(.bottom, DS.Spacing.small)
                         .padding(.horizontal, DS.Spacing.extraLarge)
@@ -67,55 +67,8 @@ struct RSVPView: View {
 
     @ViewBuilder
     private var headerBanner: some View {
-        switch event.state {
-        case .answerableInvite(let progress, _), .reminder(let progress):
-            switch progress {
-            case .pending:
-                EmptyView()
-            case .ongoing:
-                RSVPHeaderView(
-                    style: .now,
-                    regular: L10n.Header.happening,
-                    bold: L10n.Header.now
-                )
-            case .ended:
-                RSVPHeaderView(
-                    style: .ended,
-                    regular: L10n.Header.event,
-                    bold: L10n.Header.ended
-                )
-            }
-        case .unanswerableInvite(let reason):
-            switch reason {
-            case .inviteIsOutdated:
-                RSVPHeaderView(
-                    style: .generic,
-                    regular: L10n.Header.inviteIsOutdated,
-                    bold: String.empty.stringResource
-                )
-            case .inviteHasUnknownRecency:
-                RSVPHeaderView(
-                    style: .generic,
-                    regular: L10n.Header.offlineWarning,
-                    bold: String.empty.stringResource
-                )
-            }
-        case .cancelledInvite(let isOutdated):
-            if isOutdated {
-                RSVPHeaderView(
-                    style: .cancelled,
-                    regular: L10n.Header.cancelledAndOutdated,
-                    bold: String.empty.stringResource
-                )
-            } else {
-                RSVPHeaderView(
-                    style: .cancelled,
-                    regular: L10n.Header.event,
-                    bold: L10n.Header.canceled
-                )
-            }
-        case .cancelledReminder:
-            EmptyView()
+        if let banner = event.banner {
+            RSVPHeaderView(style: banner.style, regular: banner.regularText, bold: banner.boldText)
         }
     }
 
@@ -123,16 +76,16 @@ struct RSVPView: View {
     private var eventHeader: some View {
         HStack(alignment: .top, spacing: DS.Spacing.standard) {
             VStack(alignment: .leading, spacing: DS.Spacing.standard) {
-                Text(event.summary ?? L10n.noEventTitlePlacholder.string)
+                Text(event.title)
                     .font(.body)
                     .fontWeight(.semibold)
                     .foregroundStyle(DS.Color.Text.norm)
-                Text(RSVPDateFormatter.string(from: event.startsAt, to: event.endsAt, occurrence: event.occurrence))
+                Text(event.formattedDate)
                     .font(.subheadline)
                     .fontWeight(.regular)
                     .foregroundStyle(DS.Color.Text.norm)
                     .minimumScaleFactor(0.75)
-                if case let .answerableInvite(_, attendance) = event.state, attendance == .optional {
+                if case let .visible(attendance) = event.answerButtons, attendance == .optional {
                     Text(L10n.attendanceOptional)
                         .font(.footnote)
                         .fontWeight(.regular)
@@ -158,14 +111,10 @@ struct RSVPView: View {
                         answerStatus = newState.attendeeStatus
                     }
                 case .none:
-                    RSVPAnswerButton(text: Answer.yes.humanReadable) {
-                        answerStatus = .yes
-                    }
-                    RSVPAnswerButton(text: Answer.maybe.humanReadable) {
-                        answerStatus = .maybe
-                    }
-                    RSVPAnswerButton(text: Answer.no.humanReadable) {
-                        answerStatus = .no
+                    ForEach(Answer.allCases, id: \.self) { answer in
+                        RSVPAnswerButton(text: answer.humanReadable) {
+                            answerStatus = answer.attendeeStatus
+                        }
                     }
                 }
             }
@@ -188,36 +137,32 @@ struct RSVPView: View {
             if let location = event.location {
                 RSVPDetailsRow(icon: DS.Icon.icMapPin, text: location)
             }
-            RSVPDetailsRowMenu<RSVPOrganizerOption>(
-                icon: DS.Icon.icUser,
-                text: event.organizer.email,
-                action: { _ in }
-            )
-            if event.attendees.count >= 2 {
-                RSVPDetailsParticipantsButton(count: event.attendees.count, isExpanded: $areParticipantsExpanded) {
+            RSVPDetailsRowMenu<RSVPOrganizerOption>(icon: DS.Icon.icUser, text: event.organizer.email) { _ in }
+            if event.participants.count >= 2 {
+                RSVPDetailsParticipantsButton(count: event.participants.count, isExpanded: $areParticipantsExpanded) {
                     areParticipantsExpanded.toggle()
                 }
                 if areParticipantsExpanded {
                     LazyVStack(alignment: .leading, spacing: .zero) {
-                        ForEachEnumerated(event.attendees, id: \.element.email) { attendee, index in
-                            RSVPDetailsRow(
-                                icon: attendee.status.details.icon,
-                                iconColor: attendee.status.details.color,
-                                text: event.userAttendeeIdx == index ? L10n.Details.you(email: attendee.email).string : attendee.email
-                            )
+                        ForEachEnumerated(event.participants, id: \.element.displayName) { participant, index in
+                            attendeRow(participant)
                         }
                     }
                     .compositingGroup()
                 }
-            } else if let attendee = event.attendees.first {
-                RSVPDetailsRow(
-                    icon: attendee.status.details.icon,
-                    iconColor: attendee.status.details.color,
-                    text: event.userAttendeeIdx == 0 ? L10n.Details.you(email: attendee.email).string : attendee.email
-                )
+            } else if let participant = event.participants.first {
+                attendeRow(participant)
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
+    private func attendeRow(_ participant: RSVPEvent.Participant) -> some View {
+        RSVPDetailsRow(
+            icon: participant.status.details.icon,
+            iconColor: participant.status.details.color,
+            text: participant.displayName
+        )
     }
 }
 
@@ -248,14 +193,6 @@ struct RSVPView: View {
             )
         }
     }
-}
-
-private extension Collection {
-
-    subscript(safe index: Index) -> Element? {
-        indices.contains(index) ? self[index] : nil
-    }
-
 }
 
 extension Answer {
