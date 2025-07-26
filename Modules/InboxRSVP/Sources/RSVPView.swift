@@ -127,7 +127,7 @@ struct RSVPView: View {
                     .font(.body)
                     .fontWeight(.semibold)
                     .foregroundStyle(DS.Color.Text.norm)
-                Text("FIXME: In next MR")
+                Text(RSVPDateFormatter.string(from: event.startsAt, to: event.endsAt, occurrence: event.occurrence))
                     .font(.subheadline)
                     .fontWeight(.regular)
                     .foregroundStyle(DS.Color.Text.norm)

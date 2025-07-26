@@ -18,6 +18,7 @@
 @testable import InboxRSVP
 import InboxTesting
 import InboxSnapshotTesting
+import SnapshotTesting
 import SwiftUI
 import Testing
 
@@ -30,7 +31,12 @@ final class RSVPViewSnapshotTests {
             event: testCase.event,
             areParticipantsExpanded: testCase.isExpanded
         )
-        assertSnapshotsOnIPhoneX(of: view, testName: testCase.testName)
+
+        assertSnapshots(
+            matching: UIHostingController(rootView: view),
+            on: [("SE", .iPhoneSe), ("13 Pro Max", .iPhone13ProMax)],
+            testName: testCase.testName
+        )
     }
 }
 

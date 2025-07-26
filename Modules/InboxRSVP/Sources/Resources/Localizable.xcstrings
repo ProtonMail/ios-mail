@@ -34,9 +34,6 @@
     "Event cancelled. This invitation is out of date." : {
       "comment" : "Banner for a cancelled event where the user is also viewing an outdated invitation."
     },
-    "FIXME: In next MR" : {
-
-    },
     "Happening" : {
       "comment" : "First part of the 'Happening now' banner, indicating an event is currently in progress."
     },
