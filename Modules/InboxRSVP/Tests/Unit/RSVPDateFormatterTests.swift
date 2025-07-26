@@ -59,10 +59,10 @@ final class RSVPDateFormatterTests {
                 EventInput(from: .fixture("2025-12-30 00:00:00"), to: .fixture("2026-01-02 00:00:00")),
             ],
             [
-                "Aug 1, 2025",
-                "Sep 15 – 16, 2025",
-                "Sep 30 – Oct 1, 2025",
-                "Dec 30, 2025 – Jan 1, 2026",
+                "Fri, Aug 1, 2025",
+                "Mon, Sep 15 – Tue, Sep 16, 2025",
+                "Tue, Sep 30 – Wed, Oct 1, 2025",
+                "Tue, Dec 30, 2025 – Thu, Jan 1, 2026",
             ]
         )
     )
@@ -86,10 +86,10 @@ final class RSVPDateFormatterTests {
                 EventInput(from: .fixture("2025-11-10 14:00:00"), to: .fixture("2025-11-12 10:00:00")),
             ],
             [
-                "Jul 24, 2025 at 10:42 AM",
-                "Aug 20, 2025, 10:00 – 11:30 AM",
-                "Aug 21, 2025 at 11:00 PM – Aug 22, 2025 at 3:00 AM",
-                "Nov 10, 2025 at 3:00 PM – Nov 12, 2025 at 11:00 AM",
+                "Thu, Jul 24, 2025 at 10:42 AM",
+                "Wed, Aug 20, 2025, 10:00 – 11:30 AM",
+                "Thu, Aug 21, 2025 at 11:00 PM – Fri, Aug 22, 2025 at 3:00 AM",
+                "Mon, Nov 10, 2025 at 3:00 PM – Wed, Nov 12, 2025 at 11:00 AM",
             ]
         )
     )

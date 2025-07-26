@@ -63,26 +63,29 @@ enum RSVPDateFormatter {
                     calendar: calendar,
                     timeZone: calendar.timeZone
                 )
+                .weekday()
                 return fromDate.formatted(allDayStyle)
             }
 
-            let allDayIntervalStyle = Date.IntervalFormatStyle.init(
+            let allDayIntervalStyle = Date.IntervalFormatStyle(
                 date: .abbreviated,
                 time: .omitted,
                 locale: calendar.locale!,
                 calendar: calendar,
                 timeZone: calendar.timeZone
             )
+            .weekday()
 
             return allDayIntervalStyle.format(fromDate..<adjustedToDate)
         case .dateTime:
             let calendar = DateEnvironment.calendar
-            let dateTimeStyle = Date.IntervalFormatStyle.init(
+            let dateTimeStyle = Date.IntervalFormatStyle(
                 date: .abbreviated,
                 time: .shortened,
                 locale: calendar.locale!,
                 timeZone: calendar.timeZone
             )
+            .weekday()
 
             return dateTimeStyle.format(fromDate..<toDate)
         }

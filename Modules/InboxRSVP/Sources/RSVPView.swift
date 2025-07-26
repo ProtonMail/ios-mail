@@ -119,6 +119,7 @@ struct RSVPView: View {
                     .font(.subheadline)
                     .fontWeight(.regular)
                     .foregroundStyle(DS.Color.Text.norm)
+                    .minimumScaleFactor(0.9)
                 if case let .answerableInvite(_, attendance) = event.state, attendance == .optional {
                     Text("(Attendance optional)")
                         .font(.footnote)
