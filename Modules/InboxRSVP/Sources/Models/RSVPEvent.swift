@@ -20,7 +20,7 @@ import InboxCore
 
 struct RSVPEvent: Copying {
     enum AnswerButtonsState: Equatable {
-        case visible(Attendance)
+        case visible(RsvpAttendance)
         case hidden
     }
 

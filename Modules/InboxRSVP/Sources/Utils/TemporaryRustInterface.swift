@@ -25,7 +25,7 @@ enum RsvpUnanswerableReason: Hashable {
 }
 
 enum RsvpState: Hashable {
-    case answerableInvite(progress: RsvpEventProgress, attendance: Attendance)
+    case answerableInvite(progress: RsvpEventProgress, attendance: RsvpAttendance)
     case unanswerableInvite(RsvpUnanswerableReason)
     case cancelledInvite(isOutdated: Bool)
     case reminder(RsvpEventProgress)
@@ -53,7 +53,7 @@ enum RsvpRecency {
     case unknown
 }
 
-enum Attendance: Hashable {
+enum RsvpAttendance: Hashable {
     case optional
     case required
 }
