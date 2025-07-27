@@ -19,7 +19,7 @@ import InboxCoreUI
 import InboxDesignSystem
 import SwiftUI
 
-struct RSVPView: View {
+struct RSVPEventView: View {
     @State var event: RSVPEvent
     @State var areParticipantsExpanded: Bool
 
@@ -177,7 +177,7 @@ struct RSVPView: View {
 #Preview {
     ScrollView(.vertical, showsIndicators: false) {
         VStack(spacing: 16) {
-            RSVPView(
+            RSVPEventView(
                 eventDetails: .init(
                     summary: "Quick Sync",
                     location: "Huddle Room",
