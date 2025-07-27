@@ -50,7 +50,6 @@ struct RSVPEvent: Copying {
     let banner: Banner?
     let formattedDate: String
     let answerButtons: AnswerButtonsState
-    let initialStatus: RsvpAttendeeStatus
     let calendar: RsvpCalendar?
     let recurrence: String?
     let location: String?
@@ -61,35 +60,29 @@ struct RSVPEvent: Copying {
 
 enum RSVPEventMapper {
     static func map(from details: RsvpEventDetails) -> RSVPEvent {
-        let formattedDate = RSVPDateFormatter.string(
-            from: details.startsAt,
-            to: details.endsAt,
-            occurrence: details.occurrence
-        )
-        let initialStatus = details.attendees[Int(details.userAttendeeIdx)].status
-        let participants = details.attendees.enumerated().map { index, attendee in
-            let isCurrentUser = index == details.userAttendeeIdx
-            let displayName = isCurrentUser ? L10n.Details.you(email: attendee.email).string : attendee.email
-
-            return RSVPEvent.Participant(displayName: displayName, status: attendee.status)
-        }
-
-        return RSVPEvent(
+        RSVPEvent(
             title: details.summary ?? L10n.noEventTitlePlacholder.string,
             banner: banner(from: details.state),
-            formattedDate: formattedDate,
+            formattedDate: formattedDate(from: details.startsAt, to: details.endsAt, details.occurrence),
             answerButtons: answerButtonsState(from: details.state),
-            initialStatus: initialStatus,
             calendar: details.calendar,
             recurrence: details.recurrence,
             location: details.location,
             organizer: details.organizer,
-            participants: participants,
+            participants: participants(attendees: details.attendees, userIndex: details.userAttendeeIdx),
             userParticipantIndex: Int(details.userAttendeeIdx)
         )
     }
 
     // MARK: - Private
+
+    private static func formattedDate(
+        from startsAt: UnixTimestamp,
+        to endsAt: UnixTimestamp,
+        _ occurrence: RsvpOccurrence
+    ) -> String {
+        RSVPDateFormatter.string(from: startsAt, to: endsAt, occurrence: occurrence)
+    }
 
     private static func answerButtonsState(from state: RsvpState) -> RSVPEvent.AnswerButtonsState {
         let buttonsState: RSVPEvent.AnswerButtonsState
@@ -116,12 +109,14 @@ enum RSVPEventMapper {
             }
         case .unanswerableInvite(let reason):
             let regular: LocalizedStringResource
+
             switch reason {
             case .inviteIsOutdated:
                 regular = L10n.Header.inviteIsOutdated
             case .inviteHasUnknownRecency:
                 regular = L10n.Header.offlineWarning
             }
+
             return .init(style: .generic, regularText: regular)
         case .cancelledInvite(let isOutdated):
             if isOutdated {
@@ -131,6 +126,15 @@ enum RSVPEventMapper {
             }
         case .cancelledReminder:
             return nil
+        }
+    }
+
+    private static func participants(attendees: [RsvpAttendee], userIndex: UInt32) -> [RSVPEvent.Participant] {
+        attendees.enumerated().map { index, attendee in
+            let isCurrentUser = index == userIndex
+            let displayName = isCurrentUser ? L10n.Details.you(email: attendee.email).string : attendee.email
+
+            return RSVPEvent.Participant(displayName: displayName, status: attendee.status)
         }
     }
 }

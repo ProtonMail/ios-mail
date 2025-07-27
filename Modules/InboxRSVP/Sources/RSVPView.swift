@@ -107,12 +107,12 @@ struct RSVPView: View {
                 case .none:
                     ForEach(Answer.allCases, id: \.self) { answer in
                         RSVPAnswerButton(text: answer.humanReadable.short) {
-                            updateState(with: answer.attendeeStatus)
+                            updateStatus(with: answer.attendeeStatus)
                         }
                     }
                 case .some(let answer):
-                    RSVPAnswerMenuButton(state: answer) { newState in
-                        updateState(with: newState.attendeeStatus)
+                    RSVPAnswerMenuButton(state: answer) { selectedAnswer in
+                        updateStatus(with: selectedAnswer.attendeeStatus)
                     }
                 }
             }
@@ -143,19 +143,19 @@ struct RSVPView: View {
                 if areParticipantsExpanded {
                     LazyVStack(alignment: .leading, spacing: .zero) {
                         ForEachEnumerated(event.participants, id: \.element.displayName) { participant, index in
-                            attendeRow(participant)
+                            participantRow(participant)
                         }
                     }
                     .compositingGroup()
                 }
             } else if let participant = event.participants.first {
-                attendeRow(participant)
+                participantRow(participant)
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }
 
-    private func attendeRow(_ participant: RSVPEvent.Participant) -> some View {
+    private func participantRow(_ participant: RSVPEvent.Participant) -> some View {
         RSVPDetailsRow(
             icon: participant.status.details.icon,
             iconColor: participant.status.details.color,
@@ -163,11 +163,14 @@ struct RSVPView: View {
         )
     }
 
-    private func updateState(with status: RsvpAttendeeStatus) {
+    private func updateStatus(with status: RsvpAttendeeStatus) {
         let updateIndex = event.userParticipantIndex
         var updatedParticipants = event.participants
 
-        updatedParticipants[updateIndex] = event.participants[updateIndex].copy(\.status, to: status)
+        updatedParticipants[updateIndex] =
+            event
+            .participants[updateIndex]
+            .copy(\.status, to: status)
 
         event = event.copy(\.participants, to: updatedParticipants)
     }
