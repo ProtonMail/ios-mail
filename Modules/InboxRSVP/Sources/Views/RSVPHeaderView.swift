@@ -19,7 +19,7 @@ import InboxDesignSystem
 import SwiftUI
 
 struct RSVPHeaderView: View {
-    enum Style {
+    enum Style: Equatable {
         case now
         case ended
         case cancelled

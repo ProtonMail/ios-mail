@@ -48,7 +48,7 @@ enum RsvpRecency {
     case unknown
 }
 
-enum Attendance {
+enum Attendance: Equatable {
     case optional
     case required
 }

@@ -22,20 +22,20 @@ import SwiftUI
 import Testing
 
 struct RSVPOrganizerOptionTests {
-    typealias Expected = (displayName: LocalizedStringResource, trailingIcon: ImageResource)
+    typealias Expected = (displayName: String, trailingIcon: ImageResource)
 
     @Test(
         arguments:
             zip(
                 RSVPOrganizerOption.allCases,
                 [
-                    Expected(displayName: L10n.OrganizerMenuOption.copyAction, DS.Icon.icSquares),
-                    Expected(displayName: L10n.OrganizerMenuOption.newMessage, DS.Icon.icPenSquare),
+                    Expected(displayName: L10n.OrganizerMenuOption.copyAction.string, DS.Icon.icSquares),
+                    Expected(displayName: L10n.OrganizerMenuOption.newMessage.string, DS.Icon.icPenSquare),
                 ]
             )
     )
     func testDisplayNameAndTrailingIcon(_ given: RSVPOrganizerOption, expected: Expected) {
-        #expect(given.displayName == expected.displayName)
+        #expect(given.displayName.string == expected.displayName)
         #expect(given.trailingIcon == expected.trailingIcon)
     }
 }

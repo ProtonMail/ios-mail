@@ -1,0 +1,197 @@
+// Copyright (c) 2025 Proton Technologies AG
+//
+// This file is part of Proton Mail.
+//
+// Proton Mail is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Proton Mail is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Proton Mail. If not, see https://www.gnu.org/licenses/.
+
+@testable import InboxRSVP
+import InboxCore
+import Foundation
+import InboxTesting
+import Testing
+
+@Suite
+final class RSVPEventMapperTests {
+    @Test(
+        arguments: [
+            (summary: Optional<String>("Amazing Apple event!"), expected: "Amazing Apple event!"),
+            (summary: Optional<String>(nil), expected: L10n.noEventTitlePlacholder.string),
+        ]
+    )
+    func testTitleMapping(summary: String?, expectedTitle: String) {
+        let details = RsvpEventDetails.testData(
+            summary: summary,
+            attendees: [],
+            userAttendeeIdx: 0,
+            state: .cancelledReminder
+        )
+        let given = RSVPEventMapper.map(from: details)
+
+        #expect(given.title == expectedTitle)
+    }
+
+    @Test(
+        arguments: zip(
+            [
+                RsvpState.answerableInvite(progress: .pending, attendance: .optional),
+                RsvpState.answerableInvite(progress: .pending, attendance: .required),
+                RsvpState.reminder(.ongoing),
+                RsvpState.cancelledInvite(isOutdated: true),
+            ],
+            [
+                RSVPEvent.AnswerButtonsState.visible(.optional),
+                RSVPEvent.AnswerButtonsState.visible(.required),
+                RSVPEvent.AnswerButtonsState.hidden,
+                RSVPEvent.AnswerButtonsState.hidden,
+            ]
+        )
+    )
+    func testAnswerButtonsMapping(given state: RsvpState, expected: RSVPEvent.AnswerButtonsState) {
+        let details = RsvpEventDetails.testData(
+            summary: .none,
+            attendees: [],
+            userAttendeeIdx: 0,
+            state: state
+        )
+        let given = RSVPEventMapper.map(from: details)
+
+        let event = RSVPEventMapper.map(from: details)
+        #expect(event.answerButtons == expected)
+    }
+
+    @Test(
+        arguments: zip(
+            [
+                RsvpState.answerableInvite(progress: .pending, attendance: .required),
+                RsvpState.answerableInvite(progress: .ongoing, attendance: .required),
+                RsvpState.answerableInvite(progress: .ended, attendance: .required),
+                RsvpState.reminder(.pending),
+                RsvpState.reminder(.ongoing),
+                RsvpState.reminder(.ended),
+                RsvpState.unanswerableInvite(.inviteIsOutdated),
+                RsvpState.unanswerableInvite(.inviteHasUnknownRecency),
+                RsvpState.cancelledInvite(isOutdated: true),
+                RsvpState.cancelledInvite(isOutdated: false),
+                RsvpState.cancelledReminder,
+            ],
+            [
+                Optional<RSVPEvent.Banner>(nil),
+                RSVPEvent.Banner(
+                    style: .now,
+                    regularText: L10n.Header.happening,
+                    boldText: L10n.Header.now
+                ),
+                RSVPEvent.Banner(
+                    style: .ended,
+                    regularText: L10n.Header.event,
+                    boldText: L10n.Header.ended
+                ),
+                nil,
+                RSVPEvent.Banner(
+                    style: .now,
+                    regularText: L10n.Header.happening,
+                    boldText: L10n.Header.now
+                ),
+                RSVPEvent.Banner(
+                    style: .ended,
+                    regularText: L10n.Header.event,
+                    boldText: L10n.Header.ended
+                ),
+                RSVPEvent.Banner(
+                    style: .generic,
+                    regularText: L10n.Header.inviteIsOutdated,
+                    boldText: "".notLocalized.stringResource
+                ),
+                RSVPEvent.Banner(
+                    style: .generic,
+                    regularText: L10n.Header.offlineWarning,
+                    boldText: "".notLocalized.stringResource
+                ),
+                RSVPEvent.Banner(
+                    style: .cancelled,
+                    regularText: L10n.Header.cancelledAndOutdated,
+                    boldText: "".notLocalized.stringResource
+                ),
+                RSVPEvent.Banner(
+                    style: .cancelled,
+                    regularText: L10n.Header.event,
+                    boldText: L10n.Header.canceled
+                ),
+                nil,
+            ]
+        )
+    )
+    func testBannerMapping(given state: RsvpState, expectedBanner: RSVPEvent.Banner?) {
+        let details = RsvpEventDetails.testData(
+            summary: .none,
+            attendees: [],
+            userAttendeeIdx: 0,
+            state: state
+        )
+        let given = RSVPEventMapper.map(from: details)
+
+        #expect(given.banner == expectedBanner)
+    }
+
+    @Test
+    func testParticipantsMapping() {
+        let attendees = [
+            RsvpAttendee(email: "alice@proton.me", status: .yes),
+            RsvpAttendee(email: "bob@outlook.com", status: .no),
+            RsvpAttendee(email: "cyril@gmail.com", status: .maybe),
+            RsvpAttendee(email: "donatan@pm.me", status: .unanswered),
+        ]
+        let details = RsvpEventDetails.testData(
+            summary: .none,
+            attendees: attendees,
+            userAttendeeIdx: 1,
+            state: .cancelledReminder
+        )
+        let given = RSVPEventMapper.map(from: details)
+
+        #expect(
+            given.participants == [
+                .init(displayName: "alice@proton.me", status: .yes),
+                .init(displayName: "You • bob@outlook.com", status: .no),
+                .init(displayName: "cyril@gmail.com", status: .maybe),
+                .init(displayName: "donatan@pm.me", status: .unanswered),
+            ])
+    }
+}
+
+private extension RsvpEventDetails {
+
+    static func testData(
+        summary: String?,
+        attendees: [RsvpAttendee],
+        userAttendeeIdx: UInt32,
+        state: RsvpState
+    ) -> Self {
+        RsvpEventDetails(
+            summary: summary,
+            location: .none,
+            description: .none,
+            recurrence: .none,
+            startsAt: 0,
+            endsAt: 0,
+            occurrence: .date,
+            organizer: .init(email: .empty),
+            attendees: attendees,
+            userAttendeeIdx: userAttendeeIdx,
+            calendar: .none,
+            state: state
+        )
+    }
+
+}
