@@ -17,15 +17,14 @@
 
 import InboxCoreUI
 import InboxDesignSystem
-import proton_app_uniffi
 import SwiftUI
 
 struct RSVPView: View {
     @State var event: RSVPEvent
     @State var areParticipantsExpanded: Bool
 
-    init(event details: RsvpEventDetails, areParticipantsExpanded: Bool) {
-        self.event = RSVPEventMapper.map(from: details)
+    init(eventDetails: RsvpEventDetails, areParticipantsExpanded: Bool) {
+        self.event = RSVPEventMapper.map(from: eventDetails)
         self.areParticipantsExpanded = areParticipantsExpanded
     }
 
@@ -179,7 +178,7 @@ struct RSVPView: View {
     ScrollView(.vertical, showsIndicators: false) {
         VStack(spacing: 16) {
             RSVPView(
-                event: .init(
+                eventDetails: .init(
                     summary: "Quick Sync",
                     location: "Huddle Room",
                     description: "A brief check-in.",
