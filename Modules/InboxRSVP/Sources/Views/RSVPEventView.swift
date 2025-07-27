@@ -20,12 +20,14 @@ import InboxDesignSystem
 import SwiftUI
 
 struct RSVPEventView: View {
-    @State var event: RSVPEvent
-    @State var areParticipantsExpanded: Bool
+    @Binding private var eventDetails: RsvpEventDetails
+    @State private var event: RSVPEvent
+    @State private var areParticipantsExpanded: Bool
 
-    init(eventDetails: RsvpEventDetails, areParticipantsExpanded: Bool) {
-        self.event = RSVPEventMapper.map(from: eventDetails)
-        self.areParticipantsExpanded = areParticipantsExpanded
+    init(eventDetails: Binding<RsvpEventDetails>, areParticipantsExpanded: Bool = false) {
+        _eventDetails = eventDetails
+        _event = .init(initialValue: RSVPEventMapper.map(from: eventDetails.wrappedValue))
+        _areParticipantsExpanded = .init(initialValue: areParticipantsExpanded)
     }
 
     var body: some View {
@@ -38,6 +40,7 @@ struct RSVPEventView: View {
             )
             .frame(maxWidth: .infinity)
             .padding(.horizontal, DS.Spacing.large)
+            .onChange(of: eventDetails) { _, newDetails in event = RSVPEventMapper.map(from: newDetails) }
     }
 
     // MARK: - Private
@@ -54,7 +57,7 @@ struct RSVPEventView: View {
                         .padding(.bottom, DS.Spacing.small)
                         .padding(.horizontal, DS.Spacing.extraLarge)
                 }
-                eventDetails
+                eventDetailsSection
                     .padding(.horizontal, DS.Spacing.large)
             }
             .padding(.top, DS.Spacing.extraLarge)
@@ -119,7 +122,7 @@ struct RSVPEventView: View {
     }
 
     @ViewBuilder
-    private var eventDetails: some View {
+    private var eventDetailsSection: some View {
         VStack(alignment: .leading, spacing: .zero) {
             if let calendar = event.calendar {
                 RSVPDetailsRow(
@@ -162,44 +165,44 @@ struct RSVPEventView: View {
     }
 
     private func updateStatus(with status: RsvpAttendeeStatus) {
-        let updateIndex = event.userParticipantIndex
-        var updatedParticipants = event.participants
+        let updateIndex = Int(eventDetails.userAttendeeIdx)
 
-        updatedParticipants[updateIndex] =
-            event
-            .participants[updateIndex]
+        eventDetails.attendees[updateIndex] =
+            eventDetails
+            .attendees[updateIndex]
             .copy(\.status, to: status)
-
-        event = event.copy(\.participants, to: updatedParticipants)
     }
 }
 
 #Preview {
-    ScrollView(.vertical, showsIndicators: false) {
+    @Previewable @State var details = RsvpEventDetails(
+        summary: "Quick Sync",
+        location: "Huddle Room",
+        description: "A brief check-in.",
+        recurrence: nil,
+        startsAt: 1754042400,  // Aug 1, 2025 10:00 AM UTC
+        endsAt: 1754044200,  // Aug 1, 2025 10:30 AM UTC
+        occurrence: .dateTime,
+        organizer: RsvpOrganizer(email: "organizer1@example.com"),
+        attendees: [
+            .init(email: "user1@example.com", status: .unanswered),
+            .init(email: "user2@example.com", status: .yes),
+            .init(email: "user3@example.com", status: .maybe),
+            .init(email: "user4@example.com", status: .no),
+        ],
+        userAttendeeIdx: 0,
+        calendar: RsvpCalendar(name: "Personal", color: "#F5A623"),
+        state: .answerableInvite(progress: .ended, attendance: .optional)
+    )
+
+    return ScrollView(.vertical, showsIndicators: false) {
         VStack(spacing: 16) {
             RSVPEventView(
-                eventDetails: .init(
-                    summary: "Quick Sync",
-                    location: "Huddle Room",
-                    description: "A brief check-in.",
-                    recurrence: nil,
-                    startsAt: UInt64(0),
-                    endsAt: UInt64(0),
-                    occurrence: .dateTime,
-                    organizer: RsvpOrganizer(email: "organizer1@example.com"),
-                    attendees: [
-                        .init(email: "user1@example.com", status: .unanswered),
-                        .init(email: "user2@example.com", status: .yes),
-                        .init(email: "user3@example.com", status: .maybe),
-                        .init(email: "user4@example.com", status: .no),
-                    ],
-                    userAttendeeIdx: 0,
-                    calendar: RsvpCalendar(name: "Personal", color: "#F5A623"),
-                    state: .answerableInvite(progress: .ended, attendance: .optional)
-                ),
+                eventDetails: $details,
                 areParticipantsExpanded: false
             )
         }
+        .padding()
     }
 }
 

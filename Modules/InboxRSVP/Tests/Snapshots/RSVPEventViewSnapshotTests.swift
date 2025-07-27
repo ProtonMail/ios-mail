@@ -28,8 +28,8 @@ final class RSVPEventViewSnapshotTests {
     @Test(arguments: RsvpEventDetails.allCases)
     func testRSVP(testCase: (event: RsvpEventDetails, testName: String, isExpanded: Bool)) {
         let view = RSVPEventView(
-            eventDetails: testCase.event,
-            areParticipantsExpanded: testCase.isExpanded
+            eventDetails: .constant(testCase.event),
+            areParticipantsExpanded: testCase.isExpanded,
         )
 
         assertSnapshots(
