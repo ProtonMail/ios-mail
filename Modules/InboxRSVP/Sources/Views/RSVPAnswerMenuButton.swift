@@ -18,12 +18,12 @@
 import SwiftUI
 
 struct RSVPAnswerMenuButton: View {
-    let state: Answer
-    let action: (Answer) -> Void
+    let state: RsvpAnswer
+    let action: (RsvpAnswer) -> Void
 
     var body: some View {
         Menu(state.humanReadable.long.string) {
-            ForEach(Answer.allCases.removing { $0 == state }, id: \.self) { answer in
+            ForEach(RsvpAnswer.allCases.removing { $0 == state }, id: \.self) { answer in
                 RSVPMenuOptionButton(
                     text: answer.humanReadable.long,
                     action: { action(answer) },

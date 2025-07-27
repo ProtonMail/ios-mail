@@ -169,29 +169,3 @@ final class RSVPEventMapperTests {
             ])
     }
 }
-
-private extension RsvpEventDetails {
-
-    static func testData(
-        summary: String?,
-        attendees: [RsvpAttendee],
-        userAttendeeIdx: UInt32,
-        state: RsvpState
-    ) -> Self {
-        RsvpEventDetails(
-            summary: summary,
-            location: .none,
-            description: .none,
-            recurrence: .none,
-            startsAt: 0,
-            endsAt: 0,
-            occurrence: .date,
-            organizer: .init(email: .empty),
-            attendees: attendees,
-            userAttendeeIdx: userAttendeeIdx,
-            calendar: .none,
-            state: state
-        )
-    }
-
-}

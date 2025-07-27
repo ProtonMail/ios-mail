@@ -104,7 +104,7 @@ struct RSVPEventView: View {
             HStack(spacing: DS.Spacing.small) {
                 switch event.participants[event.userParticipantIndex].status.answer {
                 case .none:
-                    ForEach(Answer.allCases, id: \.self) { answer in
+                    ForEach(RsvpAnswer.allCases, id: \.self) { answer in
                         RSVPAnswerButton(text: answer.humanReadable.short) {
                             updateStatus(with: answer.attendeeStatus)
                         }
@@ -203,7 +203,7 @@ struct RSVPEventView: View {
     }
 }
 
-extension Answer {
+extension RsvpAnswer {
     var humanReadable: (short: LocalizedStringResource, long: LocalizedStringResource) {
         switch self {
         case .yes:
@@ -228,7 +228,7 @@ extension Answer {
 }
 
 private extension RsvpAttendeeStatus {
-    var answer: Answer? {
+    var answer: RsvpAnswer? {
         switch self {
         case .unanswered:
             nil

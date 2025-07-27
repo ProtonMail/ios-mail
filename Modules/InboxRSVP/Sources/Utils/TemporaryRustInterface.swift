@@ -1,25 +1,30 @@
 // FIXME: Temporary Rust interface to remove
 
+import InboxCore
+
+extension RsvpEventDetails: Copying {}
+extension RsvpAttendee: Copying {}
+
 typealias UnixTimestamp = UInt64
 
-enum Answer: CaseIterable, Hashable {
+enum RsvpAnswer: CaseIterable, Hashable {
     case yes
     case maybe
     case no
 }
 
-enum RsvpEventProgress {
+enum RsvpEventProgress: Hashable {
     case pending
     case ongoing
     case ended
 }
 
-enum RsvpUnanswerableReason {
+enum RsvpUnanswerableReason: Hashable {
     case inviteIsOutdated
     case inviteHasUnknownRecency
 }
 
-enum RsvpState {
+enum RsvpState: Hashable {
     case answerableInvite(progress: RsvpEventProgress, attendance: Attendance)
     case unanswerableInvite(RsvpUnanswerableReason)
     case cancelledInvite(isOutdated: Bool)
@@ -27,7 +32,7 @@ enum RsvpState {
     case cancelledReminder
 }
 
-struct RsvpEventDetails {
+struct RsvpEventDetails: Hashable {
     var summary: String?
     var location: String?
     var description: String?
@@ -48,33 +53,68 @@ enum RsvpRecency {
     case unknown
 }
 
-enum Attendance: Equatable {
+enum Attendance: Hashable {
     case optional
     case required
 }
 
-enum RsvpOccurrence {
+enum RsvpOccurrence: Hashable {
     case date
     case dateTime
 }
 
-enum RsvpAttendeeStatus {
+enum RsvpAttendeeStatus: Hashable {
     case unanswered
     case maybe
     case no
     case yes
 }
 
-struct RsvpOrganizer {
+struct RsvpOrganizer: Hashable {
     var email: String
 }
 
-struct RsvpAttendee {
+struct RsvpAttendee: Hashable {
     var email: String
     var status: RsvpAttendeeStatus
 }
 
-struct RsvpCalendar {
+struct RsvpCalendar: Hashable {
     var name: String
     var color: String
+}
+
+enum VoidAnswerRsvpResult {
+    case ok
+    case error
+}
+
+enum RsvpEventDetailsResult {
+    case ok(RsvpEventDetails)
+    case error
+}
+
+protocol RsvpEventIdProtocol {
+    func fetch() async -> RsvpEvent?
+}
+
+class RsvpEventId: RsvpEventIdProtocol, @unchecked Sendable {
+    func fetch() async -> RsvpEvent? {
+        nil
+    }
+}
+
+protocol RsvpEventProtocol: AnyObject, Sendable {
+    func answer(answer: RsvpAnswer) async -> VoidAnswerRsvpResult
+    func details() -> RsvpEventDetailsResult
+}
+
+class RsvpEvent: RsvpEventProtocol, @unchecked Sendable {
+    func answer(answer: RsvpAnswer) async -> VoidAnswerRsvpResult {
+        .ok
+    }
+
+    func details() -> RsvpEventDetailsResult {
+        .error
+    }
 }
