@@ -72,28 +72,33 @@ final class RSVPStateStore: ObservableObject {
     func handle(action: Action) async {
         switch action {
         case .onLoad, .retry:
-            await loadEvent()
-        case .answer(let answer):
+            await loadEventDetails()
+        case .answer(let status):
             if case .loaded = state.mode, let rsvpEvent = state.rsvpEvent {
-                let answerResult = await rsvpEvent.answer(answer: answer)
-
-                switch (answerResult, rsvpEvent.details()) {
-                case (.ok, .ok(let details)), (.error, .ok(let details)):
-                    updateState(mode: .loaded, event: rsvpEvent, details: details)
-                case (.ok, .error), (.error, .error):
-                    updateState(mode: .failed, event: .none, details: .none)
-                }
+                await answer(with: status, for: rsvpEvent)
             }
         }
     }
 
     @MainActor
-    private func loadEvent() async {
+    private func loadEventDetails() async {
         updateState(mode: .loading, event: .none, details: .none)
 
         if let event = await rsvpID.fetch(), case .ok(let details) = event.details() {
             updateState(mode: .loaded, event: event, details: details)
         } else {
+            updateState(mode: .failed, event: .none, details: .none)
+        }
+    }
+
+    @MainActor
+    private func answer(with answer: RsvpAnswer, for event: RsvpEvent) async {
+        let answerResult = await event.answer(answer: answer)
+
+        switch (answerResult, event.details()) {
+        case (.ok, .ok(let details)), (.error, .ok(let details)):
+            updateState(mode: .loaded, event: event, details: details)
+        case (.ok, .error), (.error, .error):
             updateState(mode: .failed, event: .none, details: .none)
         }
     }

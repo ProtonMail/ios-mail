@@ -42,7 +42,7 @@ final class RSVPStateStoreTests {
 
         #expect(sut.state.mode == .loaded)
         #expect(sut.state.rsvpEvent === rsvpEventSpy)
-        #expect(sut.state.eventDetails == rsvpEventSpy.details().event)
+        #expect(sut.state.eventDetails == rsvpEventSpy.stubbedDetails.event)
     }
 
     @Test
@@ -73,7 +73,7 @@ final class RSVPStateStoreTests {
 
         #expect(sut.state.mode == .loaded)
         #expect(sut.state.rsvpEvent === rsvpEventSpy)
-        #expect(sut.state.eventDetails == rsvpEventSpy.details().event)
+        #expect(sut.state.eventDetails == rsvpEventSpy.stubbedDetails.event)
     }
 
     @Test(arguments: RsvpAnswer.allCases)
@@ -95,7 +95,7 @@ final class RSVPStateStoreTests {
 
         #expect(sut.state.mode == .loaded)
         #expect(sut.state.rsvpEvent === rsvpEventSpy)
-        #expect(sut.state.eventDetails == .bestEvent(status: answer.attendeeStatus))
+        #expect(sut.state.eventDetails == rsvpEventSpy.stubbedDetails.event)
     }
 
     @Test
@@ -128,7 +128,7 @@ final class RSVPStateStoreTests {
 
         #expect(sut.state.mode == .loaded)
         #expect(sut.state.rsvpEvent === rsvpEventSpy)
-        #expect(sut.state.eventDetails == rsvpEventSpy.details().event)
+        #expect(sut.state.eventDetails == rsvpEventSpy.stubbedDetails.event)
     }
 }
 
