@@ -156,11 +156,10 @@ struct RSVPView: View {
     }
 
     private func participantRow(_ participant: RSVPEvent.Participant) -> some View {
-        RSVPDetailsRow(
-            icon: participant.status.details.icon,
-            iconColor: participant.status.details.color,
-            text: participant.displayName
-        )
+        let statusDetails = participant.status.details
+        let displayName = participant.displayName
+
+        return RSVPDetailsRow(icon: statusDetails.icon, iconColor: statusDetails.color, text: displayName)
     }
 
     private func updateStatus(with status: RsvpAttendeeStatus) {
