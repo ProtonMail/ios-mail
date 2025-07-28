@@ -145,10 +145,10 @@ final class RSVPEventMapperTests {
     @Test
     func testParticipantsMapping() {
         let attendees = [
-            RsvpAttendee(email: "alice@proton.me", status: .yes),
-            RsvpAttendee(email: "bob@outlook.com", status: .no),
-            RsvpAttendee(email: "cyril@gmail.com", status: .maybe),
-            RsvpAttendee(email: "donatan@pm.me", status: .unanswered),
+            RsvpAttendee(name: "Alice Sherington", email: "alice@proton.me", status: .yes),
+            RsvpAttendee(name: "Bob Charlton", email: "bob@outlook.com", status: .no),
+            RsvpAttendee(name: .none, email: "cyril@gmail.com", status: .maybe),
+            RsvpAttendee(name: "Donatan Chelsea", email: "donatan@pm.me", status: .unanswered),
         ]
         let details = RsvpEventDetails.testData(
             summary: .none,
@@ -160,10 +160,10 @@ final class RSVPEventMapperTests {
 
         #expect(
             given.participants == [
-                .init(displayName: "alice@proton.me", status: .yes),
+                .init(displayName: "Alice Sherington • alice@proton.me", status: .yes),
                 .init(displayName: "You • bob@outlook.com", status: .no),
                 .init(displayName: "cyril@gmail.com", status: .maybe),
-                .init(displayName: "donatan@pm.me", status: .unanswered),
+                .init(displayName: "Donatan Chelsea • donatan@pm.me", status: .unanswered),
             ])
     }
 }
