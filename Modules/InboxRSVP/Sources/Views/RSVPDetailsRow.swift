@@ -21,17 +21,20 @@ import SwiftUI
 struct RSVPDetailsRow: View {
     let icon: ImageResource
     let iconColor: Color
+    let iconSize: CGFloat
     let text: String
     let trailingIcon: ImageResource?
 
     init(
         icon: ImageResource,
         iconColor: Color = DS.Color.Text.weak,
+        iconSize: CGFloat = 18.0,
         text: String,
         trailingIcon: ImageResource? = .none
     ) {
         self.icon = icon
         self.iconColor = iconColor
+        self.iconSize = iconSize
         self.text = text
         self.trailingIcon = trailingIcon
     }
@@ -40,7 +43,7 @@ struct RSVPDetailsRow: View {
         HStack(alignment: .center, spacing: DS.Spacing.medium) {
             Image(icon)
                 .foregroundStyle(iconColor)
-                .frame(width: 24, height: 20)
+                .square(size: iconSize)
             HStack(alignment: .center, spacing: DS.Spacing.small) {
                 Text(text)
                     .font(.subheadline)
