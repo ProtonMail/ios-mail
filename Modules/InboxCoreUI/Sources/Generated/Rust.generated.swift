@@ -54,6 +54,16 @@ public extension CreateMailSessionResult {
         }
     }
 }
+public extension DraftExpirationTimeResult {
+    func get() throws(ProtonError) -> UnixTimestamp? {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension DraftIsPasswordProtectedResult {
     func get() throws(ProtonError) -> Bool {
         switch self {
@@ -174,16 +184,6 @@ public extension LoginFlowMigrateResult {
         }
     }
 }
-public extension LoginFlowPasswordChangeRequiredResult {
-    func get() throws(LoginError) -> Bool {
-        switch self {
-        case .ok(let value):
-            value
-        case .error(let error):
-            throw error
-        }
-    }
-}
 public extension LoginFlowSessionIdResult {
     func get() throws(LoginError) -> String {
         switch self {
@@ -194,7 +194,27 @@ public extension LoginFlowSessionIdResult {
         }
     }
 }
+public extension LoginFlowSubmitFidoResult {
+    func get() throws(LoginError) {
+        switch self {
+        case .ok:
+            break
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension LoginFlowSubmitMailboxPasswordResult {
+    func get() throws(LoginError) {
+        switch self {
+        case .ok:
+            break
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension LoginFlowSubmitNewPasswordResult {
     func get() throws(LoginError) {
         switch self {
         case .ok:
@@ -445,7 +465,7 @@ public extension MailSessionStartBackgroundExecutionWithDurationResult {
     }
 }
 public extension MailSessionToUserContextResult {
-    func get() throws(ProtonError) -> MailUserSession {
+    func get() throws(UserContextError) -> MailUserSession {
         switch self {
         case .ok(let value):
             value
@@ -565,16 +585,6 @@ public extension MailUserSessionConnectionStatusResult {
     }
 }
 public extension MailUserSessionForkResult {
-    func get() throws(UserContextError) -> String {
-        switch self {
-        case .ok(let value):
-            value
-        case .error(let error):
-            throw error
-        }
-    }
-}
-public extension MailUserSessionForkWithVersionResult {
     func get() throws(UserContextError) -> String {
         switch self {
         case .ok(let value):

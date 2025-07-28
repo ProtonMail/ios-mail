@@ -188,6 +188,9 @@ final class ConversationDetailModel: Sendable, ObservableObject {
             deleteConfirmationAlert = alert
         case .moveToSystemFolder(let label), .notSpam(let label):
             moveConversation(destination: label, toastStateStore: toastStateStore, goBack: goBack)
+        case .snooze:
+            // TODO: Snooze
+            break
         }
     }
 

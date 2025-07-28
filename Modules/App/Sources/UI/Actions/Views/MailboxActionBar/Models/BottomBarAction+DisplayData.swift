@@ -51,6 +51,9 @@ extension BottomBarAction {
             return .init(icon: Image(symbol: .star), name: L10n.Action.star)
         case .unstar:
             return .init(icon: Image(symbol: .starSlash), name: L10n.Action.unstar)
+        case .snooze:
+            // TODO: Snooze - Icon has been set just to compile the SDK, change it if needed
+            return .init(imageResource: DS.Icon.icClock, name: L10n.Action.unstar)
         }
     }
 

@@ -59,7 +59,7 @@ struct LabelAsActionPerformer {
 }
 
 private protocol LabelAsResult {
-    func get() throws -> Bool
+    func get() throws -> LabelAsOutput
 }
 
 extension LabelMessagesAsResult: LabelAsResult {}

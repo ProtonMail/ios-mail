@@ -174,8 +174,18 @@ public extension GetMessageBodyResult {
         }
     }
 }
+public extension LabelAsOutputUndoResult {
+    func get() throws(ActionError) {
+        switch self {
+        case .ok:
+            break
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension LabelConversationsAsResult {
-    func get() throws(ActionError) -> Bool {
+    func get() throws(ActionError) -> LabelAsOutput {
         switch self {
         case .ok(let value):
             value
@@ -185,7 +195,7 @@ public extension LabelConversationsAsResult {
     }
 }
 public extension LabelMessagesAsResult {
-    func get() throws(ActionError) -> Bool {
+    func get() throws(ActionError) -> LabelAsOutput {
         switch self {
         case .ok(let value):
             value

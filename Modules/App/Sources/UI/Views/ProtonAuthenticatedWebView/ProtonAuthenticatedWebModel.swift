@@ -40,7 +40,7 @@ final class ProtonAuthenticatedWebModel: @unchecked Sendable, ObservableObject {
 
         Task {
             await updateState(.forkingSession)
-            switch await userSession.forkWithVersion(appVersion: "ios-mail") {
+            switch await userSession.fork(platform: "ios", product: "mail") {
             case .ok(let selectorToken):
                 let theme = colorScheme == .light ? "0" : "1"
                 let url = webPageUrl(domain: domain, appVersion: appVersion, theme: theme, selector: selectorToken)

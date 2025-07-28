@@ -41,8 +41,8 @@ extension LabelAsActions {
 
     static var dummy: Self {
         .init(
-            labelMessagesAs: { _, _, _, _, _ in .ok(false) },
-            labelConversationsAs: { _, _, _, _, _ in .ok(false) }
+            labelMessagesAs: { _, _, _, _, _ in .ok(.init(noPointer: .init())) },
+            labelConversationsAs: { _, _, _, _, _ in .ok(.init(noPointer: .init())) }
         )
     }
 

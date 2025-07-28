@@ -178,7 +178,7 @@ class LabelAsSheetModelTests: BaseTestCase {
                         archive: archive
                     ))
 
-                    return .ok(false)
+                    return .ok(.init(noPointer: .init()))
                 },
                 labelConversationsAs: { mailbox, ids, selectedLabelIDs, partiallySelectedLabelIDs, archive in
                     self.invokedLabelConversation.append(.init(
@@ -188,7 +188,7 @@ class LabelAsSheetModelTests: BaseTestCase {
                         archive: archive
                     ))
 
-                    return .ok(false)
+                    return .ok(.init(noPointer: .init()))
                 }
             ),
             toastStateStore: toastStateStore,
