@@ -36,3 +36,15 @@ public final class AsyncLiveQueryCallbackWrapper: Sendable, AsyncLiveQueryCallba
         await callback()
     }
 }
+
+public final class LiveQueryCallbackWrapper: Sendable, LiveQueryCallback {
+    let callback: @Sendable () -> Void
+
+    public init(callback: @escaping @Sendable () -> Void) {
+        self.callback = callback
+    }
+
+    public func onUpdate() {
+        callback()
+    }
+}

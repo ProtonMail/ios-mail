@@ -29,6 +29,12 @@ public final class Router<Route: Routable>: ObservableObject {
     }
 
     public func goBack() {
-        stack.removeLast()
+        stack.popLast()
+    }
+
+    public func goBack(while shouldGoBack: (Route) throws -> Bool) rethrows {
+        while let last = stack.last, try shouldGoBack(last) {
+            stack.removeLast()
+        }
     }
 }

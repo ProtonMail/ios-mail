@@ -20,19 +20,35 @@ import InboxDesignSystem
 import SwiftUI
 
 public struct BigButtonStyle: ButtonStyle {
-    public init() {}
+    private let invertColorScheme: Bool
+
+    private var foregroundColor: Color {
+        invertColorScheme ? DS.Color.Text.norm : DS.Color.Text.inverted
+    }
+
+    public init(invertColorScheme: Bool = false) {
+        self.invertColorScheme = invertColorScheme
+    }
 
     public func makeBody(configuration: Self.Configuration) -> some View {
         configuration
             .label
             .font(.subheadline)
             .fontWeight(.semibold)
-            .foregroundStyle(DS.Color.Text.inverted)
+            .foregroundStyle(foregroundColor)
             .frame(height: 44)
             .frame(maxWidth: .infinity)
             .background(
-                configuration.isPressed ? DS.Color.InteractionBrand.pressed : DS.Color.InteractionBrand.norm,
+                backgroundColor(isPressed: configuration.isPressed),
                 in: RoundedRectangle(cornerRadius: DS.Radius.massive)
             )
+    }
+
+    private func backgroundColor(isPressed: Bool) -> Color {
+        if invertColorScheme {
+            DS.Color.Background.norm
+        } else {
+            isPressed ? DS.Color.InteractionBrand.pressed : DS.Color.InteractionBrand.norm
+        }
     }
 }

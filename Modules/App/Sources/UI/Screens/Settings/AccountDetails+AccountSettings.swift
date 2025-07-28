@@ -20,7 +20,7 @@ import SwiftUI
 
 extension AccountDetails {
 
-    var settings: AccountSettings {
+    var settings: AccountInfo {
         .init(
             name: name,
             email: email,

@@ -20,19 +20,51 @@ import proton_app_uniffi
 import SwiftUI
 
 struct SettingsState: Copying {
-    var accountSettings: AccountSettings?
+    var accountInfo: AccountInfo?
+    var accountSettings: [AccountSettings]
     let preferences: [SettingsPreference]
-    var showSignInToAnotherDevice: Bool
+    var showSignInToAnotherDevice: Bool {
+        didSet {
+            updateAccountSettings()
+        }
+    }
+    var hasMailboxPassword: Bool {
+        didSet {
+            updateAccountSettings()
+        }
+    }
+
+    mutating func updateAccountSettings() {
+        accountSettings = .stale
+
+        if hasMailboxPassword {
+            accountSettings.replace([.changePassword], with: [.changeLoginPassword, .changeMailboxPassword])
+        }
+
+        if showSignInToAnotherDevice {
+            accountSettings.insert(.qrLogin, at: 0)
+        }
+    }
 }
 
 extension SettingsState {
 
     static var initial: Self {
         .init(
-            accountSettings: nil,
+            accountInfo: nil,
+            accountSettings: .stale,
             preferences: .stale,
-            showSignInToAnotherDevice: false
+            showSignInToAnotherDevice: false,
+            hasMailboxPassword: false
         )
+    }
+
+}
+
+private extension Array where Element == AccountSettings {
+
+    static var stale: [Element] {
+        [.changePassword]
     }
 
 }

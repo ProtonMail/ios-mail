@@ -4653,8 +4653,17 @@
     "Cc: " : {
       "comment" : "`CC` in the messsage details."
     },
+    "Change main password" : {
+      "comment" : "Option in the Settings screen (if the user has two passwords)."
+    },
+    "Change password" : {
+      "comment" : "Option in the Settings screen."
+    },
     "Change PIN" : {
       "comment" : "Change PIN code title."
+    },
+    "Change second password" : {
+      "comment" : "Option in the Settings screen (if the user has two passwords)."
     },
     "Combined contacts" : {
       "comment" : "Combined Contacts setting title in app settings."
@@ -8432,6 +8441,9 @@
     },
     "Incorrect PIN. Please try again." : {
       "comment" : "Error message when a user enters an invalid PIN"
+    },
+    "Issue loading your content. Please try refreshing or sign in again." : {
+      "comment" : "Loading items in your mailbox returns an error."
     },
     "Issue syncing your content. Check your connection or sign in again." : {
       "comment" : "Event loop failed due to an issue syncing content."

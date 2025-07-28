@@ -80,9 +80,11 @@ struct ConversationDetailListView: View {
                         .clipShape(UnevenRoundedRectangle(topLeadingRadius: DS.Radius.extraLarge, topTrailingRadius: DS.Radius.extraLarge))
                         .shadow(DS.Shadows.raisedTop, isVisible: true)
                         .overlay(
-                            UnevenRoundedRectangle(topLeadingRadius: DS.Radius.extraLarge, topTrailingRadius: DS.Radius.extraLarge)
-                                .stroke(DS.Color.Border.norm, lineWidth: 1)
-                                .padding(.horizontal, -DS.Spacing.tiny)
+                            GeometryReader { geometry in
+                                UnevenRoundedRectangle(topLeadingRadius: DS.Radius.extraLarge, topTrailingRadius: DS.Radius.extraLarge)
+                                    .stroke(DS.Color.Border.norm, lineWidth: 1)
+                                    .padding(.horizontal, geometry.cardNeedsVerticalBorders ? DS.Spacing.tiny : -DS.Spacing.tiny)
+                            }
                         )
                         .padding(.bottom, messages.count - 1 == index ? 0 : -DS.Spacing.extraLarge)
                 }
@@ -197,6 +199,14 @@ private extension ConversationDetailModel.State {
                 .filter { message in message.locationID == locationID }
                 .count == 1
         }
+    }
+
+}
+
+private extension GeometryProxy {
+
+    var cardNeedsVerticalBorders: Bool {
+        safeAreaInsets.trailing != 0 || safeAreaInsets.leading != 0
     }
 
 }

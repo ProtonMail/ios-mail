@@ -20,6 +20,7 @@ import Combine
 import InboxCore
 import InboxCoreUI
 import enum InboxComposer.ComposerDismissReason
+import InboxIAP
 import proton_app_uniffi
 import SwiftUI
 
@@ -45,7 +46,9 @@ struct HomeScreen: View {
     @StateObject private var composerCoordinator: ComposerCoordinator
     @State private var modalState: ModalState?
     @State private var isNotificationPromptPresented = false
+    @State private var upsellOffer: UpsellOffer?
     @StateObject private var eventLoopErrorCoordinator: EventLoopErrorCoordinator
+    @StateObject private var iapContainer: IAPContainer
     @ObservedObject private var appContext: AppContext
 
     private let userSession: MailUserSession
@@ -72,6 +75,9 @@ struct HomeScreen: View {
         }
         self._eventLoopErrorCoordinator = .init(
             wrappedValue: EventLoopErrorCoordinator(userSession: userSession, toastStateStore: toastStateStore)
+        )
+        _iapContainer = .init(
+            wrappedValue: .init(mailUserSession: userSession, arePaymentsEnabled: ApiEnvId.current.arePaymentsEnabled)
         )
         self.userDefaults = appContext.userDefaults
         self.modalFactory = HomeScreenModalFactory(mailUserSession: userSession)
@@ -154,6 +160,19 @@ struct HomeScreen: View {
         .withPrimaryAccountSignOutDialog(signOutDialogPresented: $presentSignOutDialog, authCoordinator: appContext.accountAuthCoordinator)
         .onAppear { didAppear?(self) }
         .onOpenURL(perform: handleDeepLink)
+        .onLoad {
+            Task {
+                upsellOffer = await iapContainer.upsellOfferProvider.findOffer(for: UpsellConfiguration.planName)
+            }
+        }
+        .environment(
+            \.makeUpsellScreen,
+            upsellOffer.map { offer in
+                MakeUpsellScreen {
+                    iapContainer.upsellScreenFactory.upsellScreenModel(basedOn: offer)
+                }
+            }
+        )
     }
 
     private func requestNotificationAuthorizationIfApplicable() {

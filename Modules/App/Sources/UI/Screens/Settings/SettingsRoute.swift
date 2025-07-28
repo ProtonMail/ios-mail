@@ -20,6 +20,7 @@ import proton_app_uniffi
 import SwiftUI
 import Combine
 import AccountLogin
+import AccountPassword
 
 enum SettingsRoute: Routable {
     case webView(ProtonAuthenticatedWebPage)
@@ -27,6 +28,16 @@ enum SettingsRoute: Routable {
     case appProtection
     case autoLock
     case scanQRCode
+    case changePassword(PasswordChange.State)
+
+    var isChangePassword: Bool {
+        switch self {
+        case .changePassword:
+            true
+        default:
+            false
+        }
+    }
 }
 
 struct SettingsViewFactory {
@@ -52,6 +63,8 @@ struct SettingsViewFactory {
                 viewModel: .init(dependencies: .init(mailUserSession: mailUserSession, productName: "mail"))
             )
             .navigationBarTitleDisplayMode(.inline)
+        case .changePassword(let state):
+            PasswordChange.view(from: state)
         }
     }
 }

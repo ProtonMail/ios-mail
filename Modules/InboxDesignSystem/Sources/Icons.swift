@@ -28,6 +28,7 @@ public extension DS.Icon {
     static let icCheckmark = ImageResource.icCheckmark
     static let icCheckmarkBig = ImageResource.icCheckmarkBig
     static let icCheckmarkCircle = ImageResource.icCheckmarkCircle
+    static let icCheckmarkCircleFilled = ImageResource.icCheckmarkCircleFilled
     static let icChevronLeft = ImageResource.icChevronLeft
     static let icChevronDown = ImageResource.icChevronDown
     static let icChevronUp = ImageResource.icChevronUp
@@ -84,6 +85,7 @@ public extension DS.Icon {
 
 public extension DS.Icon {
     static let icBrandProtonMailUpsell = ImageResource.icBrandProtonMailUpsell
+    static let icBrandProtonMailUpsellBlackAndWhite = ImageResource.icBrandProtonMailUpsellBw
 }
 
 // MARK: mailbox item actions

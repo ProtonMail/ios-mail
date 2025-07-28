@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Proton Technologies AG
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -15,10 +15,31 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import InboxDesignSystem
 import SwiftUI
+import UIFoundations
 
-struct AccountSettings: Hashable {
-    let name: String
-    let email: String
-    let avatarInfo: AvatarInfo
+enum AccountSettings: CaseIterable, Hashable {
+    case qrLogin
+    case changePassword
+    case changeLoginPassword
+    case changeMailboxPassword
+
+    struct DisplayData {
+        let title: LocalizedStringResource
+        let icon: ImageResource
+    }
+
+    var displayData: DisplayData {
+        switch self {
+        case .qrLogin:
+            .init(title: L10n.Settings.signInOnAnotherDevice, icon: DS.Icon.icQrCode)
+        case .changePassword:
+            .init(title: L10n.Settings.App.changePassword, icon: Theme.icon.lock)
+        case .changeLoginPassword:
+            .init(title: L10n.Settings.App.changeLoginPassword, icon: Theme.icon.lock)
+        case .changeMailboxPassword:
+            .init(title: L10n.Settings.App.changeMailboxPassword, icon: Theme.icon.lockLayers)
+        }
+    }
 }

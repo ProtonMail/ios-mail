@@ -51,6 +51,7 @@ public func assertSelfSizingSnapshot(
 public func assertSnapshots(
     matching controller: @autoclosure () throws -> UIViewController,
     on configurations: [(String, ViewImageConfig)],
+    styles: [UIUserInterfaceStyle] = [.light, .dark],
     named name: String? = nil,
     record recording: Bool = false,
     timeout: TimeInterval = 5,
@@ -60,7 +61,6 @@ public func assertSnapshots(
 ) {
     configurations.forEach { (configurationName, configuration) in
         let name = [name, configurationName].compactMap { $0 }.joined(separator: "_")
-        let styles: [UIUserInterfaceStyle] = [.light, .dark]
 
         try? styles.forEach { style in
             let controller = try controller()

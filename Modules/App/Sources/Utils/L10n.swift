@@ -299,6 +299,10 @@ enum L10n {
                 "We encountered an issue while preparing the mailbox. Please share the logs with our support team for further investigation.",
                 comment: "Mailbox failed because an unexpected error."
             )
+            static let issuesLoadingMailboxContent = LocalizedStringResource(
+                "Issue loading your content. Please try refreshing or sign in again.",
+                comment: "Loading items in your mailbox returns an error."
+            )
         }
 
         enum Item {
@@ -903,6 +907,18 @@ enum L10n {
             static func autoLock(minutes: UInt8) -> LocalizedStringResource {
                 .init("After \(minutes) minutes", comment: "Auto lock option.")
             }
+            static let changePassword = LocalizedStringResource(
+                "Change password",
+                comment: "Option in the Settings screen."
+            )
+            static let changeLoginPassword = LocalizedStringResource(
+                "Change main password",
+                comment: "Option in the Settings screen (if the user has two passwords)."
+            )
+            static let changeMailboxPassword = LocalizedStringResource(
+                "Change second password",
+                comment: "Option in the Settings screen (if the user has two passwords)."
+            )
         }
 
         static let subscription = LocalizedStringResource(
