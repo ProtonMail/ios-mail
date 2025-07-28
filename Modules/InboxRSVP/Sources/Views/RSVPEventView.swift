@@ -134,7 +134,7 @@ struct RSVPEventView: View {
             if let location = event.location {
                 RSVPDetailsRow(icon: DS.Icon.icMapPin, text: location)
             }
-            RSVPDetailsRowMenu<RSVPOrganizerOption>(icon: DS.Icon.icUser, text: event.organizer.email) { _ in }
+            RSVPDetailsRowMenu<RSVPOrganizerOption>(icon: DS.Icon.icUser, text: event.organizer.displayName) { _ in }
             if event.participants.count >= 2 {
                 RSVPDetailsParticipantsButton(count: event.participants.count, isExpanded: $areParticipantsExpanded) {
                     areParticipantsExpanded.toggle()

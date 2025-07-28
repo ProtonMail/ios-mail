@@ -45,6 +45,10 @@ struct RSVPEvent: Copying {
         var status: RsvpAttendeeStatus
     }
 
+    struct Organizer: Equatable {
+        let displayName: String
+    }
+
     let title: String
     let banner: Banner?
     let formattedDate: String
@@ -52,7 +56,7 @@ struct RSVPEvent: Copying {
     let calendar: RsvpCalendar?
     let recurrence: String?
     let location: String?
-    let organizer: RsvpOrganizer
+    let organizer: Organizer
     var participants: [Participant]
     let userParticipantIndex: Int
 }

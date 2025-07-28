@@ -28,7 +28,7 @@ enum RSVPEventMapper {
             calendar: details.calendar,
             recurrence: details.recurrence,
             location: details.location,
-            organizer: details.organizer,
+            organizer: organizer(from: details.organizer),
             participants: participants(attendees: details.attendees, userIndex: details.userAttendeeIdx),
             userParticipantIndex: Int(details.userAttendeeIdx)
         )
@@ -87,6 +87,10 @@ enum RSVPEventMapper {
         case .cancelledReminder:
             return nil
         }
+    }
+
+    private static func organizer(from organizer: RsvpOrganizer) -> RSVPEvent.Organizer {
+        .init(displayName: organizer.email)
     }
 
     private static func participants(attendees: [RsvpAttendee], userIndex: UInt32) -> [RSVPEvent.Participant] {

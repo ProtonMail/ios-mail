@@ -29,12 +29,7 @@ final class RSVPEventMapperTests {
         ]
     )
     func testTitleMapping(summary: String?, expectedTitle: String) {
-        let details = RsvpEventDetails.testData(
-            summary: summary,
-            attendees: [],
-            userAttendeeIdx: 0,
-            state: .cancelledReminder
-        )
+        let details = RsvpEventDetails.testData(summary: summary)
         let given = RSVPEventMapper.map(from: details)
 
         #expect(given.title == expectedTitle)
@@ -57,12 +52,7 @@ final class RSVPEventMapperTests {
         )
     )
     func testAnswerButtonsMapping(given state: RsvpState, expected: RSVPEvent.AnswerButtonsState) {
-        let details = RsvpEventDetails.testData(
-            summary: .none,
-            attendees: [],
-            userAttendeeIdx: 0,
-            state: state
-        )
+        let details = RsvpEventDetails.testData(state: state)
         let given = RSVPEventMapper.map(from: details)
 
         #expect(given.answerButtons == expected)
@@ -131,15 +121,29 @@ final class RSVPEventMapperTests {
         )
     )
     func testBannerMapping(given state: RsvpState, expectedBanner: RSVPEvent.Banner?) {
-        let details = RsvpEventDetails.testData(
-            summary: .none,
-            attendees: [],
-            userAttendeeIdx: 0,
-            state: state
-        )
+        let details = RsvpEventDetails.testData(state: state)
         let given = RSVPEventMapper.map(from: details)
 
         #expect(given.banner == expectedBanner)
+    }
+
+    @Test(
+        arguments: zip(
+            [
+                RsvpOrganizer(name: "Samantha Peterson", email: "samantha.peterson@pm.me"),
+                RsvpOrganizer(name: .none, email: "john.wick@proton.me"),
+            ],
+            [
+                RSVPEvent.Organizer(displayName: "Samantha Peterson (Organizer)"),
+                RSVPEvent.Organizer(displayName: "john.wick@proton.me (Organizer)"),
+            ]
+        )
+    )
+    func testOrganizerMapping(givenOrganizer: RsvpOrganizer, expected: RSVPEvent.Organizer) {
+        let details = RsvpEventDetails.testData(organizer: givenOrganizer)
+        let given = RSVPEventMapper.map(from: details)
+
+        #expect(given.organizer == expected)
     }
 
     @Test
@@ -150,12 +154,7 @@ final class RSVPEventMapperTests {
             RsvpAttendee(name: .none, email: "cyril@gmail.com", status: .maybe),
             RsvpAttendee(name: "Donatan Chelsea", email: "donatan@pm.me", status: .unanswered),
         ]
-        let details = RsvpEventDetails.testData(
-            summary: .none,
-            attendees: attendees,
-            userAttendeeIdx: 1,
-            state: .cancelledReminder
-        )
+        let details = RsvpEventDetails.testData(attendees: attendees, userAttendeeIdx: 1)
         let given = RSVPEventMapper.map(from: details)
 
         #expect(

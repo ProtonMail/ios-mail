@@ -20,10 +20,11 @@
 extension RsvpEventDetails {
 
     static func testData(
-        summary: String?,
-        attendees: [RsvpAttendee],
-        userAttendeeIdx: UInt32,
-        state: RsvpState
+        summary: String? = .none,
+        organizer: RsvpOrganizer = .init(email: .empty),
+        attendees: [RsvpAttendee] = [],
+        userAttendeeIdx: UInt32 = 0,
+        state: RsvpState = .cancelledReminder
     ) -> Self {
         .init(
             summary: summary,
@@ -33,7 +34,7 @@ extension RsvpEventDetails {
             startsAt: 0,
             endsAt: 0,
             occurrence: .date,
-            organizer: .init(email: .empty),
+            organizer: organizer,
             attendees: attendees,
             userAttendeeIdx: userAttendeeIdx,
             calendar: .none,
