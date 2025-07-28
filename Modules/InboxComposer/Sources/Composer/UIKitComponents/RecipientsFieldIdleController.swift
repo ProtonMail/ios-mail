@@ -50,7 +50,7 @@ final class RecipientsFieldIdleController: UIViewController {
             recipientView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -verticalSpacing),
             extraRecipientsCount.leadingAnchor.constraint(equalTo: recipientView.trailingAnchor, constant: DS.Spacing.small),
             extraRecipientsCount.centerYAnchor.constraint(equalTo: recipientView.centerYAnchor),
-            extraRecipientsCount.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor)
+            extraRecipientsCount.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor),
         ])
     }
 

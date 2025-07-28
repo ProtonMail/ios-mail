@@ -110,9 +110,10 @@ final class RecipientsViewController: UIViewController {
 
     @objc
     private func onChevronTap() {
-        visibilityState = visibilityState == .ccAndBccCollapsed 
-        ? .allExpandedByUser
-        : .ccAndBccCollapsed
+        visibilityState =
+            visibilityState == .ccAndBccCollapsed
+            ? .allExpandedByUser
+            : .ccAndBccCollapsed
     }
 
     func updateRecipientFieldStates(to: RecipientFieldState, cc: RecipientFieldState, bcc: RecipientFieldState) {
@@ -123,9 +124,10 @@ final class RecipientsViewController: UIViewController {
         let areThereRecipientsInCcOrBcc = !ccField.state.recipients.isEmpty || !bccField.state.recipients.isEmpty
         let isCcOrBccFocused = ccField.state.controllerState.isFocusedState || bccField.state.controllerState.isFocusedState
 
-        visibilityState = areThereRecipientsInCcOrBcc || isCcOrBccFocused
-        ? .allExpandedByContent
-        : .ccAndBccCollapsed
+        visibilityState =
+            areThereRecipientsInCcOrBcc || isCcOrBccFocused
+            ? .allExpandedByContent
+            : .ccAndBccCollapsed
     }
 }
 

@@ -88,11 +88,18 @@ struct ComposerContactSingle: Equatable {
 }
 
 struct ComposerContactGroup: Equatable {
+    struct Entry: Equatable {
+        let name: String
+        let email: String
+    }
+
     let name: String
+    let entries: [Entry]
     let totalMembers: Int
 
-    init(name: String, totalMembers: Int) {
+    init(name: String, entries: [Entry], totalMembers: Int) {
         self.name = name
+        self.entries = entries
         self.totalMembers = totalMembers
     }
 }

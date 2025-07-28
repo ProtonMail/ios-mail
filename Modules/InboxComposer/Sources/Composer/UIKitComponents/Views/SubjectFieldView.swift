@@ -51,7 +51,7 @@ final class SubjectFieldView: UIView {
             stack.trailingAnchor.constraint(equalTo: trailingAnchor),
 
             textField.topAnchor.constraint(equalTo: stack.topAnchor, constant: DS.Spacing.moderatelyLarge),
-            textField.bottomAnchor.constraint(equalTo: stack.bottomAnchor, constant: -DS.Spacing.moderatelyLarge)
+            textField.bottomAnchor.constraint(equalTo: stack.bottomAnchor, constant: -DS.Spacing.moderatelyLarge),
         ])
 
         textField.addTarget(self, action: #selector(onStartEditing), for: .editingDidBegin)

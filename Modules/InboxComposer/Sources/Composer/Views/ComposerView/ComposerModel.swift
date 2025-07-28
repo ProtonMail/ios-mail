@@ -227,9 +227,13 @@ final class ComposerModel: ObservableObject {
         case .single(let single):
             let entry = SingleRecipientEntry(name: single.name, email: single.email)
             addEntryInRecipients(for: draft, entry: entry, group: group)
-        case .group:
-            // FIXME: We are not ready to add groups because the SDK does not return them yet
-            showToast(.comingSoon)
+        case .group(let contactGroup):
+            addContactGroupInRecipients(
+                contactGroupName: contactGroup.name,
+                recipients: contactGroup.entries.map { entry in SingleRecipientEntry(name: entry.name, email: entry.email) },
+                total: UInt64(contactGroup.totalMembers),
+                group: group
+            )
         }
     }
 
@@ -492,23 +496,52 @@ extension ComposerModel {
         let result = recipientList.addSingleRecipient(recipient: entry)
         switch result {
         case .ok:
-            let lastRecipient = recipientList.recipients().last!
-            state.overrideRecipientState(for: group) { recipientFieldState in
-                recipientFieldState.copy(
-                    \.recipients,
-                    to: recipientFieldState.recipients + [RecipientUIModel(composerRecipient: lastRecipient)]
-                )
-                .copy(\.input, to: .empty)
-                .copy(\.controllerState, to: .editing)
-            }
-            return lastRecipient
-        case .duplicate, .saveFailed:  // FIXME: handle errors
-            state.overrideRecipientState(for: group) { recipientFieldState in
-                recipientFieldState.copy(\.input, to: .empty)
-                    .copy(\.controllerState, to: .editing)
-            }
+            return addLastRecipientToState(for: group, in: recipientList)
+        case .duplicate, .saveFailed:
+            restoreRecipientStateAfterError(for: group)
             showToast(.error(message: result.localizedErrorMessage(entry: entry).string))
             return nil
+        }
+    }
+
+    @discardableResult
+    private func addContactGroupInRecipients(
+        contactGroupName: String,
+        recipients: [SingleRecipientEntry],
+        total: UInt64,
+        group: RecipientGroupType
+    ) -> ComposerRecipient? {
+        let recipientList = recipientList(from: draft, group: group)
+        let result = recipientList.addGroupRecipient(groupName: contactGroupName, recipients: recipients, totalContactsInGroup: total)
+        switch result {
+        case .ok:
+            return addLastRecipientToState(for: group, in: recipientList)
+        case .duplicate, .saveFailed, .emptyGroupName:
+            restoreRecipientStateAfterError(for: group)
+            if let message = result.localizedErrorMessage(groupName: contactGroupName)?.string {
+                showToast(.error(message: message))
+            }
+            return nil
+        }
+    }
+
+    private func addLastRecipientToState(for group: RecipientGroupType, in recipientList: ComposerRecipientListProtocol) -> ComposerRecipient {
+        let lastRecipient = recipientList.recipients().last!
+        state.overrideRecipientState(for: group) { recipientFieldState in
+            recipientFieldState.copy(
+                \.recipients,
+                to: recipientFieldState.recipients + [RecipientUIModel(composerRecipient: lastRecipient)]
+            )
+            .copy(\.input, to: .empty)
+            .copy(\.controllerState, to: .editing)
+        }
+        return lastRecipient
+    }
+
+    private func restoreRecipientStateAfterError(for group: RecipientGroupType) {
+        state.overrideRecipientState(for: group) { recipientFieldState in
+            recipientFieldState.copy(\.input, to: .empty)
+                .copy(\.controllerState, to: .editing)
         }
     }
 

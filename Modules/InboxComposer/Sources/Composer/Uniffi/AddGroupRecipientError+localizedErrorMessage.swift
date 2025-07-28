@@ -18,14 +18,14 @@
 import proton_app_uniffi
 import Foundation
 
-extension AddSingleRecipientError {
+extension AddGroupRecipientError {
 
-    func localizedErrorMessage(entry: SingleRecipientEntry) -> LocalizedStringResource {
+    func localizedErrorMessage(groupName: String) -> LocalizedStringResource? {
         switch self {
-        case .ok:
-            LocalizedStringResource(stringLiteral: .empty)
+        case .ok, .emptyGroupName:
+            nil
         case .duplicate:
-            L10n.ComposerError.duplicateRecipient(address: entry.email)
+            L10n.ComposerError.duplicateRecipient(address: groupName)
         case .saveFailed:
             L10n.ComposerError.draftSaveFailed
         }

@@ -39,11 +39,11 @@ struct ComposerMockContactsDatasource: ComposerContactsDatasource {
             contacts.append(ComposerContact(id: "contact_\(index)", type: contactType, avatarColor: randomColor))
         }
         let groups = [
-            ComposerContactType.group(ComposerContactGroup(name: "Core Team", totalMembers: 4)),
-            ComposerContactType.group(ComposerContactGroup(name: "The Gang", totalMembers: 6)),
-            ComposerContactType.group(ComposerContactGroup(name: "Football on Thursdays", totalMembers: 15)),
-            ComposerContactType.group(ComposerContactGroup(name: "Family", totalMembers: 8)),
-            ComposerContactType.group(ComposerContactGroup(name: "Operations", totalMembers: 10))
+            ComposerContactType.group(ComposerContactGroup(name: "Core Team", entries: [], totalMembers: 4)),
+            ComposerContactType.group(ComposerContactGroup(name: "The Gang", entries: [], totalMembers: 6)),
+            ComposerContactType.group(ComposerContactGroup(name: "Football on Thursdays", entries: [], totalMembers: 15)),
+            ComposerContactType.group(ComposerContactGroup(name: "Family", entries: [], totalMembers: 8)),
+            ComposerContactType.group(ComposerContactGroup(name: "Operations", entries: [], totalMembers: 10)),
         ]
         for (groupIndex, group) in groups.enumerated() {
             contacts.append(ComposerContact(id: "group_\(groupIndex)", type: group, avatarColor: randomColor))
@@ -131,38 +131,38 @@ private extension ComposerMockContactsDatasource {
         "William Harris Young", "William Johnson", "William Johnson Rivera", "William Johnson Young", "William Martinez",
         "William Rodriguez", "William Rodriguez Green", "William Taylor", "William Taylor Evans", "Zoe", "Zoe Brown",
         "Zoe Brown Collins", "Zoe Brown Rivera", "Zoe Davis", "Zoe Davis Evans", "Zoe Harris Parker", "Zoe Harris Rivera",
-        "Zoe Johnson Green", "Zoe Martinez", "Zoe Taylor"
+        "Zoe Johnson Green", "Zoe Martinez", "Zoe Taylor",
     ]
 
     static let emailPrefix = [
         "aaron.brown", "aaron.clark", "aaron.harris", "aaron.hernandez",
-         "aaron.miller", "abel.rodriguez", "abigail.allen", "abigail.hall",
-         "abigail.martin", "abigail.martinez", "abigail.miller", "abigail.taylor",
-         "abigail.young", "alexander.clark", "alexander.davis", "alexander.garcia",
-         "alexander.hall", "alexander.martin", "amelia.davis", "amelia.gonzalez",
-         "amelia.hall", "amelia.hernandez", "amelia.lopez", "amelia.martin",
-         "amelia.rodriguez", "amelia.taylor", "amelia.wilson", "benjamin.clark",
-         "benjamin.garcia", "benjamin.hernandez", "benjamin.martin", "caroline.clark",
-         "caroline.hall", "caroline.rodriguez", "caroline.smith", "caroline.taylor",
-         "charlotte.davis", "charlotte.garcia", "charlotte.gonzalez", "charlotte.harris",
-         "charlotte.hernandez", "charlotte.rodriguez", "daniel.clark", "daniel.hall",
-         "daniel.johnson", "daniel.martin", "daniel.martinez", "elijah.anderson",
-         "elijah.miller", "elijah.smith", "emma.hall", "emma.johnson",
-         "emma.rodriguez", "emma.young", "eve.anderson", "evelyn.gonzalez",
-         "evelyn.hall", "evelyn.hernandez", "evely.martin", "henry.allen",
-         "henry.clark", "henry.davis", "henry.hall", "henry.johnson",
-         "henry.rodriguez", "isabella.garcia", "isabella.harris", "isabella.lopez",
-         "isabella.wilson", "isabella.young", "james.allen", "james.brown",
-         "james.gonzalez", "james.martin", "james.miller", "lucas.allen",
-         "lucas.anderson", "lucas.brown", "lucas.hall", "lucas.harris",
-         "lucas.martin", "lucas.martinez", "lucas.smith", "mia.davis",
-         "mia.garcia", "mia.gonzalez", "olivia.anderson", "olivia.clark",
-         "olivia.lopez", "olivia.wilson", "sophia.allen", "sophia.clark",
-         "sophia.hall", "sophia.johnson", "sophia.smith", "sophia.wilson",
-         "sophia.young", "william.clark", "william.davis", "william.martinez"
+        "aaron.miller", "abel.rodriguez", "abigail.allen", "abigail.hall",
+        "abigail.martin", "abigail.martinez", "abigail.miller", "abigail.taylor",
+        "abigail.young", "alexander.clark", "alexander.davis", "alexander.garcia",
+        "alexander.hall", "alexander.martin", "amelia.davis", "amelia.gonzalez",
+        "amelia.hall", "amelia.hernandez", "amelia.lopez", "amelia.martin",
+        "amelia.rodriguez", "amelia.taylor", "amelia.wilson", "benjamin.clark",
+        "benjamin.garcia", "benjamin.hernandez", "benjamin.martin", "caroline.clark",
+        "caroline.hall", "caroline.rodriguez", "caroline.smith", "caroline.taylor",
+        "charlotte.davis", "charlotte.garcia", "charlotte.gonzalez", "charlotte.harris",
+        "charlotte.hernandez", "charlotte.rodriguez", "daniel.clark", "daniel.hall",
+        "daniel.johnson", "daniel.martin", "daniel.martinez", "elijah.anderson",
+        "elijah.miller", "elijah.smith", "emma.hall", "emma.johnson",
+        "emma.rodriguez", "emma.young", "eve.anderson", "evelyn.gonzalez",
+        "evelyn.hall", "evelyn.hernandez", "evely.martin", "henry.allen",
+        "henry.clark", "henry.davis", "henry.hall", "henry.johnson",
+        "henry.rodriguez", "isabella.garcia", "isabella.harris", "isabella.lopez",
+        "isabella.wilson", "isabella.young", "james.allen", "james.brown",
+        "james.gonzalez", "james.martin", "james.miller", "lucas.allen",
+        "lucas.anderson", "lucas.brown", "lucas.hall", "lucas.harris",
+        "lucas.martin", "lucas.martinez", "lucas.smith", "mia.davis",
+        "mia.garcia", "mia.gonzalez", "olivia.anderson", "olivia.clark",
+        "olivia.lopez", "olivia.wilson", "sophia.allen", "sophia.clark",
+        "sophia.hall", "sophia.johnson", "sophia.smith", "sophia.wilson",
+        "sophia.young", "william.clark", "william.davis", "william.martinez",
     ]
 
     static let emailDomain = [
-        "@gmail.com", "@proton.me", "@yahoo.jp", "@outlook.com", "@hotmail.com", "@proton.me", "@icloud.com", "@zoho.com"
+        "@gmail.com", "@proton.me", "@yahoo.jp", "@outlook.com", "@hotmail.com", "@proton.me", "@icloud.com", "@zoho.com",
     ]
 }
