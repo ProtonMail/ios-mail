@@ -90,7 +90,9 @@ enum RSVPEventMapper {
     }
 
     private static func organizer(from organizer: RsvpOrganizer) -> RSVPEvent.Organizer {
-        .init(displayName: organizer.email)
+        let name: String = organizer.name ?? organizer.email
+
+        return .init(displayName: "\(name) (Organizer)")
     }
 
     private static func participants(attendees: [RsvpAttendee], userIndex: UInt32) -> [RSVPEvent.Participant] {

@@ -227,7 +227,7 @@ private extension EventData {
             startsAt: UInt64(eventDate),
             endsAt: UInt64(eventDate),
             occurrence: .date,
-            organizer: RsvpOrganizer(email: "hr@example.com"),
+            organizer: RsvpOrganizer(name: "HR department", email: "hr@example.com"),
             attendees: [RsvpAttendee(email: "user@example.com", status: .unanswered)],
             userAttendeeIdx: 0,
             calendar: RsvpCalendar(name: "Company Events", color: "#D0021B")
@@ -265,11 +265,11 @@ private extension EventData {
             startsAt: UInt64(startDate),
             endsAt: UInt64(endDate),
             occurrence: .dateTime,
-            organizer: RsvpOrganizer(email: "teamlead@example.com"),
+            organizer: RsvpOrganizer(name: "Team lead", email: "teamlead@example.com"),
             attendees: [
-                RsvpAttendee(email: "user@example.com", status: .yes),
+                RsvpAttendee(name: "Jonathan Notingam", email: "user@example.com", status: .yes),
                 RsvpAttendee(email: "teammate1@example.com", status: .maybe),
-                RsvpAttendee(email: "johny@pm.me", status: .no),
+                RsvpAttendee(name: "Johny Doe", email: "johny@pm.me", status: .no),
             ],
             userAttendeeIdx: 0,
             calendar: RsvpCalendar(name: "Team Calendar", color: "#50E3C2")
