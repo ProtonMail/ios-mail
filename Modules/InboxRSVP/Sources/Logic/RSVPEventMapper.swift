@@ -92,9 +92,17 @@ enum RSVPEventMapper {
     private static func participants(attendees: [RsvpAttendee], userIndex: UInt32) -> [RSVPEvent.Participant] {
         attendees.enumerated().map { index, attendee in
             let isCurrentUser = index == userIndex
-            let displayName = isCurrentUser ? L10n.Details.you(email: attendee.email).string : attendee.email
+            let displayName = isCurrentUser ? userDisplayName(from: attendee) : otherAttendeeDisplayName(from: attendee)
 
             return RSVPEvent.Participant(displayName: displayName, status: attendee.status)
         }
+    }
+
+    private static func userDisplayName(from attendee: RsvpAttendee) -> String {
+        L10n.Details.you(email: attendee.email).string
+    }
+
+    private static func otherAttendeeDisplayName(from attendee: RsvpAttendee) -> String {
+        [attendee.name, attendee.email].compactMap { $0 }.joined(separator: " • ")
     }
 }
