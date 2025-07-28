@@ -69,13 +69,16 @@ struct SnoozeView: View {
                             ForEach(store.state.actions.predefined, id: \.self) { predefinedSnooze in
                                 buttonWithIcon(for: predefinedSnooze)
                             }
+
+                            if displayButtonOnGrid {
+                                lastButton()
+                            }
                         }
-                        switch store.state.actions.customButtonType {
-                        case .regular:
-                            customButton()
-                        case .upgrade:
-                            UpgradeButton()
+
+                        if !displayButtonOnGrid {
+                            lastButton()
                         }
+
                         if store.state.actions.isUnsnoozeVisible {
                             unsnoozeButton()
                                 .padding(.top, DS.Spacing.medium)
@@ -90,6 +93,20 @@ struct SnoozeView: View {
                 .background(DS.Color.BackgroundInverted.norm)
             }
         }
+    }
+
+    @ViewBuilder
+    private func lastButton() -> some View {
+        switch store.state.actions.customButtonType {
+        case .regular:
+            customButton()
+        case .upgrade:
+            UpgradeButton()
+        }
+    }
+
+    private var displayButtonOnGrid: Bool {
+        store.state.actions.predefined.count % 2 == 1
     }
 
     private func buttonWithIcon(for model: PredefinedSnooze) -> some View {
@@ -118,8 +135,12 @@ struct SnoozeView: View {
     }
 
     private func unsnoozeButton() -> some View {
-        FormSmallButton(title: L10n.Snooze.unsnoozeButtonTitle, rightSymbol: nil) {
-            store.handle(action: .unsnoozeTapped)
+        Button(action: { store.handle(action: .unsnoozeTapped) }) {
+            Text(L10n.Snooze.unsnoozeButtonTitle)
+                .foregroundStyle(DS.Color.Text.norm)
+                .font(.callout)
+                .frame(maxWidth: .infinity, minHeight: 49, alignment: .center)
+                .background(DS.Color.BackgroundInverted.secondary)
         }
         .roundedRectangleStyle()
     }

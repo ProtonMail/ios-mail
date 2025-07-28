@@ -49,6 +49,11 @@ struct SnoozeViewSnapshotTests {
                 screen: .main,
                 name: "snooze_button_with_2_options"
             ),
+            .init(
+                actions: .testData(predefined: [.tomorrow], isUnsnoozeVisible: true, customButtonType: .regular),
+                screen: .main,
+                name: "snooze_button_with_1_option"
+            ),
             .init(actions: .testData(), screen: .custom, name: "custom_view"),
         ]
     )
