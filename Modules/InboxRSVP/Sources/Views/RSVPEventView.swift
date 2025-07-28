@@ -237,7 +237,7 @@ private extension RsvpAttendeeStatus {
         case .unanswered:
             (DS.Icon.icCircleRadioEmpty, DS.Color.Shade.shade40)
         case .maybe:
-            (DS.Icon.icQuestionCircle, DS.Color.Notification.error)
+            (DS.Icon.icQuestionCircle, DS.Color.Notification.warning)
         case .no:
             (DS.Icon.icCrossCircle, DS.Color.Notification.error)
         case .yes:
