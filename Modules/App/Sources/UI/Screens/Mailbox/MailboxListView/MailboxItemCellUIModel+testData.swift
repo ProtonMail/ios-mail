@@ -97,7 +97,8 @@ private extension MailboxItemCellUIModel {
             attachmentsUIModel: Attachment.randomAttachment(),
             expirationDate: nil,
             snoozeDate: nil,
-            isDraftMessage: false
+            isDraftMessage: false,
+            shouldUseSnoozedColorForDate: false
         )
     }
 

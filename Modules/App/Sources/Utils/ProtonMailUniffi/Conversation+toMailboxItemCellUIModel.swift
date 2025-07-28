@@ -42,7 +42,8 @@ extension Conversation {
             attachmentsUIModel: attachmentsMetadata.toAttachmentCapsuleUIModels(),
             expirationDate: Date(timeIntervalSince1970: TimeInterval(expirationTime)),
             snoozeDate: nil,
-            isDraftMessage: false
+            isDraftMessage: false,
+            shouldUseSnoozedColorForDate: displaySnoozeReminder
         )
     }
 
