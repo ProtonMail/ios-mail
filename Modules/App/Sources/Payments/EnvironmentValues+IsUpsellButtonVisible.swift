@@ -15,14 +15,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import InboxIAP
-import proton_app_uniffi
+import SwiftUI
 
-extension UpsellConfiguration {
-    /// The upsell screen should always show this particular plan.
-    static let mail: Self = .init(planName: "mail2022", arePaymentsEnabled: ApiEnvId.current.arePaymentsEnabled)
-
-    var humanReadableUpsoldPlanName: String {
-        "Mail Plus"
-    }
+extension EnvironmentValues {
+    @Entry var isUpsellButtonVisible = false
 }

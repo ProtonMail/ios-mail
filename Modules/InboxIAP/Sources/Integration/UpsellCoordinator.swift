@@ -28,11 +28,7 @@ public final class UpsellCoordinator: ObservableObject {
     private let upsellScreenFactory: UpsellScreenFactory
     private let configuration: UpsellConfiguration
 
-    @Published private var cachedUpsellOffer: UpsellOffer?
-
-    public var hasOfferPrepared: Bool {
-        cachedUpsellOffer != nil
-    }
+    private var cachedUpsellOffer: UpsellOffer?
 
     public convenience init(mailUserSession: MailUserSession, configuration: UpsellConfiguration) {
         let plansComposer = PlansComposerRust(rustSession: mailUserSession)
@@ -62,12 +58,7 @@ public final class UpsellCoordinator: ObservableObject {
         await withCheckedContinuation { continuation in
             let callback = LiveQueryCallbackWrapper {
                 Task {
-                    do {
-                        _ = try await self.fetchUpsellOffer()
-                    } catch {
-                        AppLogger.log(error: error, category: .payments)
-                    }
-
+                    _ = try? await self.fetchUpsellOffer()
                     continuation.resume()
                 }
             }

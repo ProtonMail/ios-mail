@@ -17,7 +17,8 @@
 
 import SwiftUI
 
-enum SidebarItem: Equatable, Identifiable {
+enum SidebarItem: Equatable {
+    case upsell
     case system(SystemFolder)
     case label(SidebarLabel)
     case folder(SidebarFolder)
@@ -25,6 +26,8 @@ enum SidebarItem: Equatable, Identifiable {
 
     var isSelected: Bool {
         switch self {
+        case .upsell:
+            false
         case .system(let item):
             item.isSelected
         case .label(let item):
@@ -40,24 +43,8 @@ enum SidebarItem: Equatable, Identifiable {
         switch self {
         case .system, .label, .folder:
             true
-        case .other:
+        case .upsell, .other:
             false
         }
     }
-
-    // MARK: - Identifiable
-
-    var id: String {
-        switch self {
-        case .system(let item):
-            "\(item.id.value)"
-        case .label(let item):
-            "\(item.id.value)"
-        case .folder(let item):
-            "\(item.id.value)"
-        case .other(let item):
-            item.name
-        }
-    }
-
 }

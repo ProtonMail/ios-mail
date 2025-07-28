@@ -17,11 +17,13 @@
 
 import InboxCoreUI
 import InboxDesignSystem
+import InboxIAP
 import proton_app_uniffi
 import SwiftUI
 
 struct SidebarScreen: View {
     @EnvironmentObject private var appUIStateStore: AppUIStateStore
+    @Environment(\.isUpsellButtonVisible) private var isUpsellButtonVisible
     @StateObject private var screenModel: SidebarModel
     @State private var headerHeight: CGFloat = .zero
     private let widthOfDragableSpaceOnTheMailbox: CGFloat = 25
@@ -145,10 +147,17 @@ struct SidebarScreen: View {
             .edgesIgnoringSafeArea(.all)
     }
 
+    @ViewBuilder
     private var sideBarItemsList: some View {
+        let contentID = UUID()
+
         ScrollViewReader { proxy in
             ScrollView {
                 VStack(alignment: .leading, spacing: .zero) {
+                    if isUpsellButtonVisible {
+                        upsellSidebarItem()
+                    }
+
                     systemFoldersList()
                         .padding(.vertical, DS.Spacing.standard)
                     separator
@@ -162,14 +171,34 @@ struct SidebarScreen: View {
                         .padding(.vertical, DS.Spacing.standard)
                     separator
                     appVersionNote
-                }.onChange(of: appUIStateStore.sidebarState.isOpen) { _, isSidebarOpen in
-                    if isSidebarOpen, let first = screenModel.state.system.first {
-                        proxy.scrollTo(first.id, anchor: .zero)
+                }
+                .id(contentID)
+                .onChange(of: appUIStateStore.sidebarState.isOpen) { _, isSidebarOpen in
+                    if isSidebarOpen {
+                        proxy.scrollTo(contentID, anchor: .zero)
                     }
-                }.accessibilityElement(children: .contain)
+                }
+                .accessibilityElement(children: .contain)
             }
             .frame(maxWidth: .infinity)
         }
+    }
+
+    @ViewBuilder
+    private func upsellSidebarItem() -> some View {
+        let planName = UpsellConfiguration.mail.humanReadableUpsoldPlanName
+
+        SidebarItemButton(
+            item: .upsell,
+            action: { select(item: .upsell) },
+            content: {
+                HStack {
+                    sidebarItemImage(icon: DS.Icon.icDiamond.image, isSelected: false, renderingMode: .original)
+                    itemNameLabel(name: L10n.Sidebar.upgrade(to: planName).string, isSelected: false)
+                    Spacer()
+                }
+            }
+        )
     }
 
     private func systemFoldersList() -> some View {
@@ -223,7 +252,7 @@ struct SidebarScreen: View {
                 SidebarItemButton(
                     item: .other(item),
                     action: { select(item: .other(item)) },
-                    content: { otherItemCotent(model: item) }
+                    content: { otherItemContent(model: item) }
                 )
             }
         }
@@ -264,7 +293,7 @@ struct SidebarScreen: View {
         }
     }
 
-    private func otherItemCotent(model: SidebarOtherItem) -> some View {
+    private func otherItemContent(model: SidebarOtherItem) -> some View {
         HStack {
             sidebarItemImage(icon: model.icon.image, isSelected: model.isSelected)
             itemNameLabel(name: model.name, isSelected: model.isSelected)
@@ -272,9 +301,9 @@ struct SidebarScreen: View {
         }
     }
 
-    private func sidebarItemImage(icon: Image, isSelected: Bool) -> some View {
+    private func sidebarItemImage(icon: Image, isSelected: Bool, renderingMode: Image.TemplateRenderingMode = .template) -> some View {
         icon
-            .renderingMode(.template)
+            .renderingMode(renderingMode)
             .square(size: 20)
             .tint(isSelected ? DS.Color.Sidebar.iconSelected : DS.Color.Sidebar.iconNorm)
             .padding(.trailing, DS.Spacing.extraLarge)
@@ -352,7 +381,7 @@ private extension SidebarItem {
 
     var hideSidebar: Bool {
         switch self {
-        case .system, .label, .folder:
+        case .upsell, .system, .label, .folder:
             true
         case .other(let item):
             item.hideSidebar

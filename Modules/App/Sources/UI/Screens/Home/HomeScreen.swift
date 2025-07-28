@@ -32,6 +32,7 @@ struct HomeScreen: View {
         case settings
         case reportProblem
         case subscriptions
+        case upsell(UpsellScreenModel)
 
         // MARK: - Identifiable
 
@@ -44,6 +45,7 @@ struct HomeScreen: View {
     @EnvironmentObject private var toastStateStore: ToastStateStore
     @StateObject private var appRoute: AppRouteState
     @StateObject private var composerCoordinator: ComposerCoordinator
+    @StateObject private var upsellButtonVisibilityPublisher: UpsellButtonVisibilityPublisher
     @State private var modalState: ModalState?
     @State private var isNotificationPromptPresented = false
     @StateObject private var eventLoopErrorCoordinator: EventLoopErrorCoordinator
@@ -76,6 +78,7 @@ struct HomeScreen: View {
             wrappedValue: EventLoopErrorCoordinator(userSession: userSession, toastStateStore: toastStateStore)
         )
         _upsellCoordinator = .init(wrappedValue: .init(mailUserSession: userSession, configuration: .mail))
+        _upsellButtonVisibilityPublisher = .init(wrappedValue: .init(userSession: userSession))
         self.userDefaults = appContext.userDefaults
         self.modalFactory = HomeScreenModalFactory(mailUserSession: userSession, accountAuthCoordinator: appContext.accountAuthCoordinator)
         notificationAuthorizationStore = .init(userDefaults: userDefaults)
@@ -99,6 +102,8 @@ struct HomeScreen: View {
 
             makeSidebarScreen() { selectedItem in
                 switch selectedItem {
+                case .upsell:
+                    presentUpsellScreen()
                 case .system(let systemFolder):
                     appRoute.updateRoute(
                         to: .mailbox(
@@ -158,11 +163,14 @@ struct HomeScreen: View {
         .onAppear { didAppear?(self) }
         .onOpenURL(perform: handleDeepLink)
         .onLoad {
+            upsellButtonVisibilityPublisher.start()
+
             Task {
                 await upsellCoordinator.prewarm()
             }
         }
         .environmentObject(upsellCoordinator)
+        .environment(\.isUpsellButtonVisible, upsellButtonVisibilityPublisher.isUpsellButtonVisible)
     }
 
     private func requestNotificationAuthorizationIfApplicable() {
@@ -177,6 +185,17 @@ struct HomeScreen: View {
         Task {
             await notificationAuthorizationStore.userDidRespondToAuthorizationRequest(accepted: accepted)
             isNotificationPromptPresented = false
+        }
+    }
+
+    private func presentUpsellScreen() {
+        Task {
+            do {
+                let upsellScreenModel = try await upsellCoordinator.presentUpsellScreen(entryPoint: .sidebar)
+                modalState = .upsell(upsellScreenModel)
+            } catch {
+                toastStateStore.present(toast: .error(message: error.localizedDescription))
+            }
         }
     }
 

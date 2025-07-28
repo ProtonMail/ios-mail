@@ -91,6 +91,7 @@ public extension DS.Icon {
 
 public extension DS.Icon {
     static let icCode = ImageResource.icCode
+    static let icDiamond = ImageResource.icDiamond
     static let icEnvelope = ImageResource.icEnvelope
     static let icEnvelopeDot = ImageResource.icEnvelopeDot
     static let icEnvelopeOpen = ImageResource.icEnvelopeOpen

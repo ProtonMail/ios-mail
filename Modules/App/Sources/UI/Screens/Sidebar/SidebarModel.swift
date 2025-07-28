@@ -65,6 +65,8 @@ final class SidebarModel: Sendable, ObservableObject {
         guard item.isSelectable else { return }
         unselectAll()
         switch item {
+        case .upsell:
+            assertionFailure("Not supposed to be selectable")
         case .system(let item):
             state = state.copy(system: selected(item: item, keyPath: \.system))
         case .label(let item):
@@ -82,27 +84,30 @@ final class SidebarModel: Sendable, ObservableObject {
             labelType: .folder,
             updatedData: sidebar.customFolders
         ) { [weak self] newFolders in
-            Dispatcher.dispatchOnMain(.init(block: {
-                self?.updateFolders(with: newFolders)
-            }))
+            Dispatcher.dispatchOnMain(
+                .init(block: {
+                    self?.updateFolders(with: newFolders)
+                }))
         }
         labelsChangesObservation = .init(
             sidebar: sidebar,
             labelType: .label,
             updatedData: sidebar.customLabels
         ) { [weak self] newLabels in
-            Dispatcher.dispatchOnMain(.init(block: {
-                self?.updateLabels(with: newLabels)
-            }))
+            Dispatcher.dispatchOnMain(
+                .init(block: {
+                    self?.updateLabels(with: newLabels)
+                }))
         }
         systemLabelsChangesObservation = .init(
             sidebar: sidebar,
-            labelType: .system, 
+            labelType: .system,
             updatedData: sidebar.systemLabels
         ) { [weak self] newSystemLabels in
-            Dispatcher.dispatchOnMain(.init(block: {
-                self?.updateSystemFolders(with: newSystemLabels)
-            }))
+            Dispatcher.dispatchOnMain(
+                .init(block: {
+                    self?.updateSystemFolders(with: newSystemLabels)
+                }))
         }
     }
 
@@ -144,7 +149,8 @@ final class SidebarModel: Sendable, ObservableObject {
         transformation: (Model) -> Item?
     ) -> [Item] where Item.SelectableItemType == Item {
         let selectedItem = state[keyPath: stateKeyPath].first(where: \.isSelected)
-        let newItems = newItems
+        let newItems =
+            newItems
             .compactMap(transformation)
             .map { item in item.copy(isSelected: item.selectionIdentifier == selectedItem?.selectionIdentifier) }
         return newItems
