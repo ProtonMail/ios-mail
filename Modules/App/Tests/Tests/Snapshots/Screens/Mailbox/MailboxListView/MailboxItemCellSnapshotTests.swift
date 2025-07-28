@@ -95,7 +95,8 @@ private extension MailboxItemCellUIModel {
             attachmentsUIModel: [],
             expirationDate: type == .expirationTime ? expirationTime : nil,
             snoozeDate: type == .snoozed ? snoozeTime : nil,
-            isDraftMessage: false
+            isDraftMessage: false,
+            shouldUseSnoozedColorForDate: false
         )
     }
 
@@ -118,7 +119,8 @@ private extension MailboxItemCellUIModel {
             attachmentsUIModel: [AttachmentCapsuleUIModel(id: .init(value: 1), icon: DS.Icon.icFileTypeIconPdf, name: "#KL877N.pdf")],
             expirationDate: nil,
             snoozeDate: nil,
-            isDraftMessage: false
+            isDraftMessage: false,
+            shouldUseSnoozedColorForDate: false
         )
     }
 
@@ -149,7 +151,8 @@ private extension MailboxItemCellUIModel {
             ],
             expirationDate: nil,
             snoozeDate: nil,
-            isDraftMessage: false
+            isDraftMessage: false,
+            shouldUseSnoozedColorForDate: false
         )
     }
 
