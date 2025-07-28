@@ -26,9 +26,9 @@ enum RsvpUnanswerableReason: Hashable {
 
 enum RsvpState: Hashable {
     case answerableInvite(progress: RsvpEventProgress, attendance: RsvpAttendance)
-    case unanswerableInvite(RsvpUnanswerableReason)
+    case unanswerableInvite(reason: RsvpUnanswerableReason)
     case cancelledInvite(isOutdated: Bool)
-    case reminder(RsvpEventProgress)
+    case reminder(progress: RsvpEventProgress)
     case cancelledReminder
 }
 
@@ -71,10 +71,12 @@ enum RsvpAttendeeStatus: Hashable {
 }
 
 struct RsvpOrganizer: Hashable {
+    var name: String?
     var email: String
 }
 
 struct RsvpAttendee: Hashable {
+    var name: String?
     var email: String
     var status: RsvpAttendeeStatus
 }

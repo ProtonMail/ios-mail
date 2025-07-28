@@ -21,7 +21,6 @@ import Foundation
 import InboxTesting
 import Testing
 
-@Suite
 final class RSVPEventMapperTests {
     @Test(
         arguments: [
@@ -46,7 +45,7 @@ final class RSVPEventMapperTests {
             [
                 RsvpState.answerableInvite(progress: .pending, attendance: .optional),
                 RsvpState.answerableInvite(progress: .pending, attendance: .required),
-                RsvpState.reminder(.ongoing),
+                RsvpState.reminder(progress: .ongoing),
                 RsvpState.cancelledInvite(isOutdated: true),
             ],
             [
@@ -66,8 +65,7 @@ final class RSVPEventMapperTests {
         )
         let given = RSVPEventMapper.map(from: details)
 
-        let event = RSVPEventMapper.map(from: details)
-        #expect(event.answerButtons == expected)
+        #expect(given.answerButtons == expected)
     }
 
     @Test(
@@ -76,17 +74,17 @@ final class RSVPEventMapperTests {
                 RsvpState.answerableInvite(progress: .pending, attendance: .required),
                 RsvpState.answerableInvite(progress: .ongoing, attendance: .required),
                 RsvpState.answerableInvite(progress: .ended, attendance: .required),
-                RsvpState.reminder(.pending),
-                RsvpState.reminder(.ongoing),
-                RsvpState.reminder(.ended),
-                RsvpState.unanswerableInvite(.inviteIsOutdated),
-                RsvpState.unanswerableInvite(.inviteHasUnknownRecency),
+                RsvpState.reminder(progress: .pending),
+                RsvpState.reminder(progress: .ongoing),
+                RsvpState.reminder(progress: .ended),
+                RsvpState.unanswerableInvite(reason: .inviteIsOutdated),
+                RsvpState.unanswerableInvite(reason: .inviteHasUnknownRecency),
                 RsvpState.cancelledInvite(isOutdated: true),
                 RsvpState.cancelledInvite(isOutdated: false),
                 RsvpState.cancelledReminder,
             ],
             [
-                Optional<RSVPEvent.Banner>(nil),
+                nil,
                 RSVPEvent.Banner(
                     style: .now,
                     regularText: L10n.Header.happening,

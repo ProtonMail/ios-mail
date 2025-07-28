@@ -97,12 +97,12 @@ private extension RsvpEventDetails {
 
     static let unanswerableOutdated = RsvpEventDetails.testData(
         data: .recurrent,
-        state: .unanswerableInvite(.inviteIsOutdated)
+        state: .unanswerableInvite(reason: .inviteIsOutdated)
     )
 
     static let unanswerableUnknown = RsvpEventDetails.testData(
         data: .fullDaySingle,
-        state: .unanswerableInvite(.inviteHasUnknownRecency)
+        state: .unanswerableInvite(reason: .inviteHasUnknownRecency)
     )
 
     static let cancelled = RsvpEventDetails.testData(
@@ -117,17 +117,17 @@ private extension RsvpEventDetails {
 
     static let reminderPending = RsvpEventDetails.testData(
         data: .partDayWithDuration(),
-        state: .reminder(.pending)
+        state: .reminder(progress: .pending)
     )
 
     static let reminderOngoing = RsvpEventDetails.testData(
         data: .partDayWithDuration(),
-        state: .reminder(.ongoing)
+        state: .reminder(progress: .ongoing)
     )
 
     static let reminderEnded = RsvpEventDetails.testData(
         data: .partDayWithDuration(),
-        state: .reminder(.ended)
+        state: .reminder(progress: .ended)
     )
 
     static let reminderInviteCancelled = RsvpEventDetails.testData(
