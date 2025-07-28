@@ -18,10 +18,12 @@
 import InboxDesignSystem
 import SwiftUI
 
-struct UpgradeButton: View {
+struct SnoozeUpgradeButton: View {
+
+    let action: () -> Void
 
     var body: some View {
-        Button(action: {}) {
+        Button(action: action) {
             HStack {
                 VStack(alignment: .leading, spacing: DS.Spacing.small) {
                     Text(L10n.Snooze.customButtonTitle)
@@ -63,7 +65,7 @@ private struct UpgradeButtonStyle: ButtonStyle {
 
 #Preview {
     ZStack {
-        UpgradeButton()
+        SnoozeUpgradeButton {}
             .padding()
     }
 }

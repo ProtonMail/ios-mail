@@ -15,6 +15,7 @@ let package = Package(
         .package(path: "../InboxCore"),
         .package(path: "../InboxCoreUI"),
         .package(path: "../InboxDesignSystem"),
+        .package(path: "../InboxIAP"),
         .package(path: "../InboxTesting"),
         .package(path: "../InboxSnapshotTesting"),
         .package(path: "../../ProtonPackages/proton_app_uniffi"),
@@ -22,7 +23,7 @@ let package = Package(
     targets: [
         .target(
             name: "InboxComposer",
-            dependencies: ["InboxContacts", "InboxCore", "InboxCoreUI", "InboxDesignSystem", "proton_app_uniffi"],
+            dependencies: ["InboxContacts", "InboxCore", "InboxCoreUI", "InboxDesignSystem", "InboxIAP", "proton_app_uniffi"],
             resources: [
                 .process("Resources")
             ]

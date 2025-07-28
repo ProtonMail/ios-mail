@@ -32,6 +32,12 @@ public extension DS.Images {
     static let lock = ImageResource.lock
 
     enum Upsell {
+        public static let logoAutoDelete = ImageResource.upsellLogoAutoDelete
+        public static let logoContactGroups = ImageResource.upsellLogoContactGroups
         public static let logoDefault = ImageResource.upsellLogoDefault
+        public static let logoFoldersAndLabels = ImageResource.upsellLogoFoldersAndLabels
+        public static let logoMobileSignature = ImageResource.upsellLogoMobileSignature
+        public static let logoScheduleSend = ImageResource.upsellLogoScheduleSend
+        public static let logoSnooze = ImageResource.upsellLogoSnooze
     }
 }

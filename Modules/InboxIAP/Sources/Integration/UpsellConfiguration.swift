@@ -1,3 +1,4 @@
+//
 // Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
@@ -15,22 +16,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import SwiftUI
+public struct UpsellConfiguration: Sendable {
+    public let planName: String
+    public let arePaymentsEnabled: Bool
 
-public struct MakeUpsellScreen {
-    public typealias Action = () -> UpsellScreenModel
-
-    private let action: Action
-
-    public init(action: @escaping Action) {
-        self.action = action
+    public init(planName: String, arePaymentsEnabled: Bool) {
+        self.planName = planName
+        self.arePaymentsEnabled = arePaymentsEnabled
     }
-
-    public func callAsFunction() -> UpsellScreenModel {
-        action()
-    }
-}
-
-public extension EnvironmentValues {
-    @Entry var makeUpsellScreen: MakeUpsellScreen?
 }

@@ -17,28 +17,31 @@
 
 import InboxCoreUI
 import InboxDesignSystem
+import InboxIAP
 import proton_app_uniffi
 import SwiftUI
 
 struct EmptyFolderBannerView: View {
     @EnvironmentObject var toastStateStore: ToastStateStore
+    @EnvironmentObject var upsellCoordinator: UpsellCoordinator
     private let model: EmptyFolderBanner
     private let mailUserSession: MailUserSession
     private let wrapper: RustEmptyFolderBannerWrapper
-    
+
     init(model: EmptyFolderBanner, mailUserSession: MailUserSession, wrapper: RustEmptyFolderBannerWrapper) {
         self.model = model
         self.mailUserSession = mailUserSession
         self.wrapper = wrapper
     }
-    
+
     var body: some View {
         StoreView(
             store: EmptyFolderBannerStateStore(
                 model: model,
                 toastStateStore: toastStateStore,
                 mailUserSession: mailUserSession,
-                wrapper: wrapper
+                wrapper: wrapper,
+                upsellScreenPresenter: upsellCoordinator
             )
         ) { state, store in
             VStack(alignment: .leading, spacing: DS.Spacing.medium) {
@@ -59,8 +62,8 @@ struct EmptyFolderBannerView: View {
                             style: type.style,
                             maxWidth: .infinity
                         )
-                            .buttonStyle(.plain)
-                            .horizontalPadding()
+                        .buttonStyle(.plain)
+                        .horizontalPadding()
                         if !isLast {
                             DS.Color.Border.light.frame(height: 1).frame(maxWidth: .infinity)
                         }
@@ -76,11 +79,14 @@ struct EmptyFolderBannerView: View {
             }
             .frame(maxWidth: .infinity)
             .alert(model: store.binding(\.alert))
+            .sheet(item: store.binding(\.presentedUpsell)) { upsellScreenModel in
+                UpsellScreen(model: upsellScreenModel)
+            }
         }
     }
-    
+
     // MARK: - Private
-    
+
     private func buttonModel(
         from type: EmptyFolderBanner.ActionButton,
         store: EmptyFolderBannerStateStore
@@ -94,22 +100,22 @@ struct EmptyFolderBannerView: View {
             }
         case .emptyLocation:
             let folder = store.model.folder.type.humanReadable.lowercased()
-            
+
             model = .init(title: L10n.EmptyFolderBanner.emptyNowAction(folderName: folder)) {
                 store.handle(action: .emptyFolder)
             }
         }
-        
+
         return model
     }
 }
 
 private extension View {
-    
+
     func horizontalPadding() -> some View {
         padding([.leading, .trailing], DS.Spacing.large)
     }
-    
+
 }
 
 private extension EmptyFolderBanner.ActionButton {
@@ -131,7 +137,7 @@ private extension EmptyFolderBanner.ActionButton {
             EmptyFolderBannerView.preview(model: .init(folder: .preview(type: .spam), userState: .autoDeleteUpsell))
             EmptyFolderBannerView.preview(model: .init(folder: .preview(type: .spam), userState: .autoDeleteDisabled))
             EmptyFolderBannerView.preview(model: .init(folder: .preview(type: .spam), userState: .autoDeleteEnabled))
-            
+
             EmptyFolderBannerView.preview(model: .init(folder: .preview(type: .trash), userState: .autoDeleteUpsell))
             EmptyFolderBannerView.preview(model: .init(folder: .preview(type: .trash), userState: .autoDeleteDisabled))
             EmptyFolderBannerView.preview(model: .init(folder: .preview(type: .trash), userState: .autoDeleteEnabled))
@@ -142,17 +148,17 @@ private extension EmptyFolderBanner.ActionButton {
 }
 
 private extension EmptyFolderBannerView {
-    
+
     static func preview(model: EmptyFolderBanner) -> Self {
         .init(model: model, mailUserSession: .dummy, wrapper: .previewInstance())
     }
-    
+
 }
 
 private extension EmptyFolderBanner.FolderDetails {
-    
+
     static func preview(type: SpamOrTrash) -> Self {
         .init(labelID: .random(), type: type)
     }
-    
+
 }

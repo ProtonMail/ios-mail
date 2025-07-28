@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import InboxCoreUI
+import InboxIAP
 import proton_app_uniffi
 import SwiftUI
 
@@ -39,9 +40,11 @@ struct ScheduleSendPickerSheet: View {
     }
 
     @EnvironmentObject private var toastStateStore: ToastStateStore
+    @EnvironmentObject private var upsellCoordinator: UpsellCoordinator
     @State private var currentScreen: SheetScreen = .main
     @State private var detent: PresentationDetent = .medium
     @State private var allowedDetents: Set<PresentationDetent> = [.medium]
+    @State private var presentedUpsell: UpsellScreenModel?
 
     private let dateFormatter: ScheduleSendDateFormatter
     private let predefinedTimeOptions: ScheduleSendTimeOptions
@@ -71,10 +74,17 @@ struct ScheduleSendPickerSheet: View {
                     onTimeSelected: onTimeSelected
                 ) {
                     guard isCustomOptionAvailable else {
-                        toastStateStore.present(toast: .comingSoon)
+                        do {
+                            presentedUpsell = try await upsellCoordinator.presentUpsellScreen(entryPoint: .scheduleSend)
+                        } catch {
+                            toastStateStore.present(toast: .error(message: error.localizedDescription))
+                        }
                         return
                     }
                     transition(to: .datePicker)
+                }
+                .sheet(item: $presentedUpsell) { upsellScreenModel in
+                    UpsellScreen(model: upsellScreenModel)
                 }
 
             case .datePicker:

@@ -16,47 +16,36 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import InboxCore
+import Foundation
 @preconcurrency import PaymentsNG
 import proton_app_uniffi
 
-public final class UpsellOfferProvider {
-    private let onlineExecutor: OnlineExecutor
+final class UpsellOfferProvider {
     private let plansComposer: PlansComposerProviding
 
-    init(onlineExecutor: OnlineExecutor, plansComposer: PlansComposerProviding) {
-        self.onlineExecutor = onlineExecutor
+    init(plansComposer: PlansComposerProviding) {
         self.plansComposer = plansComposer
     }
 
-    public func findOffer(for planName: String) async -> UpsellOffer? {
-        await executeWhenOnline { [plansComposer] in
-            do {
-                let availableComposedPlans = try await plansComposer.fetchAvailablePlans()
-                let composedPlanToUpsell = availableComposedPlans.filter { $0.plan.name == planName }
+    func findOffer(for planName: String) async throws -> UpsellOffer {
+        let availableComposedPlans = try await plansComposer.fetchAvailablePlans()
+        let composedPlanToUpsell = availableComposedPlans.filter { $0.plan.name == planName }
 
-                guard !composedPlanToUpsell.isEmpty else {
-                    return nil
-                }
-
-                return .init(composedPlans: composedPlanToUpsell)
-            } catch {
-                AppLogger.log(error: error, category: .payments)
-                return nil
-            }
+        guard !composedPlanToUpsell.isEmpty else {
+            throw UpsellOfferProviderError.planNotFound
         }
+
+        return .init(composedPlans: composedPlanToUpsell)
     }
+}
 
-    private func executeWhenOnline<Output>(block: @escaping @Sendable () async -> Output) async -> Output {
-        await withCheckedContinuation { continuation in
-            let callback = LiveQueryCallbackWrapper {
-                Task {
-                    let output = await block()
-                    continuation.resume(returning: output)
-                }
-            }
+enum UpsellOfferProviderError: LocalizedError {
+    case planNotFound
 
-            onlineExecutor.executeWhenOnline(callback: callback)
+    var errorDescription: String? {
+        switch self {
+        case .planNotFound:
+            L10n.Error.planNotFound.string
         }
     }
 }

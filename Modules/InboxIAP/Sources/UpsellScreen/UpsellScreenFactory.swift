@@ -20,7 +20,7 @@ import Foundation
 import proton_app_uniffi
 import StoreKit
 
-public final class UpsellScreenFactory {
+final class UpsellScreenFactory {
     private let planPurchasing: PlanPurchasing
 
     init(planPurchasing: PlanPurchasing) {
@@ -28,7 +28,7 @@ public final class UpsellScreenFactory {
     }
 
     @MainActor
-    public func upsellScreenModel(basedOn upsellOffer: UpsellOffer) -> UpsellScreenModel {
+    func upsellScreenModel(basedOn upsellOffer: UpsellOffer, entryPoint: UpsellScreenEntryPoint) -> UpsellScreenModel {
         let plansSortedByPriceAscending = upsellOffer.composedPlans.sorted(using: KeyPathComparator(\.storePricePerMonth, order: .forward))
         let mostExpensiveInstance = plansSortedByPriceAscending.last!
 
@@ -44,6 +44,7 @@ public final class UpsellScreenFactory {
         return .init(
             planName: mostExpensiveInstance.plan.title,
             planInstances: displayablePlanInstances,
+            entryPoint: entryPoint,
             planPurchasing: planPurchasing
         )
     }

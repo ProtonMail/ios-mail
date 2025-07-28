@@ -110,7 +110,7 @@ public struct UpsellScreen: View {
 
                 Spacer.exactly(DS.Spacing.standard)
 
-                description
+                subtitle
 
                 Spacer.exactly(DS.Spacing.huge)
 
@@ -130,7 +130,7 @@ public struct UpsellScreen: View {
     }
 
     private var logo: some View {
-        Image(DS.Images.Upsell.logoDefault)
+        Image(model.logo)
             .resizable()
             .aspectRatio(contentMode: .fit)
             .frame(height: model.logoHeight)
@@ -139,13 +139,13 @@ public struct UpsellScreen: View {
     }
 
     private var title: some View {
-        Text(L10n.upgrade(to: model.planName))
+        Text(model.title)
             .font(.title2)
             .fontWeight(.bold)
     }
 
-    private var description: some View {
-        Text(L10n.upsellDescription)
+    private var subtitle: some View {
+        Text(model.subtitle)
             .font(.callout)
             .multilineTextAlignment(.center)
             .fixedSize(horizontal: false, vertical: true)
@@ -214,7 +214,7 @@ public struct UpsellScreen: View {
 #Preview {
     Color.clear
         .sheet(isPresented: .constant(true)) {
-            UpsellScreen(model: .preview)
+            UpsellScreen(model: .preview(entryPoint: .header))
         }
         .environmentObject(ToastStateStore(initialState: .initial))
 }

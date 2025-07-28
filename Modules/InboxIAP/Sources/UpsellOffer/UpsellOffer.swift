@@ -18,7 +18,6 @@
 
 @preconcurrency import PaymentsNG
 
-/// This type represents an offer that can control the visibility of an upsell button, and that can be passed to `UpsellScreenFactory`.
-public struct UpsellOffer: Equatable, Sendable {
+struct UpsellOffer: Equatable, Sendable {
     let composedPlans: [ComposedPlan]
 }

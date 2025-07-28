@@ -15,10 +15,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import Foundation
 import InboxIAP
-import proton_app_uniffi
 
-extension UpsellConfiguration {
-    /// The upsell screen should always show this particular plan.
-    static let mail: Self = .init(planName: "mail2022", arePaymentsEnabled: ApiEnvId.current.arePaymentsEnabled)
+@MainActor
+protocol UpsellScreenPresenter {
+    func presentUpsellScreen(entryPoint: UpsellScreenEntryPoint) async throws -> UpsellScreenModel
 }
+
+extension UpsellCoordinator: UpsellScreenPresenter {}

@@ -74,7 +74,7 @@ struct SnoozeView: View {
                         case .regular:
                             customButton()
                         case .upgrade:
-                            UpgradeButton()
+                            upgradeButton()
                         }
                         if store.state.actions.isUnsnoozeVisible {
                             unsnoozeButton()
@@ -133,5 +133,11 @@ struct SnoozeView: View {
             store.handle(action: .customButtonTapped)
         }
         .roundedRectangleStyle()
+    }
+
+    private func upgradeButton() -> some View {
+        SnoozeUpgradeButton {
+            store.handle(action: .upgradeTapped)
+        }
     }
 }

@@ -17,112 +17,128 @@
 
 @testable import ProtonMail
 @testable import InboxCore
+@testable import InboxIAP
 import InboxCoreUI
 import InboxDesignSystem
 import proton_app_uniffi
 import Testing
 
+@MainActor
 final class EmptyFolderBannerStateStoreTests {
     var sut: EmptyFolderBannerStateStore!
     let toastStateStore = ToastStateStore(initialState: .initial)
     private let wrapperSpy = RustWrappersSpy()
-    
+
     // MARK: - `.upgradeToAutoDelete` action
 
     @Test
-    func testState_WhenUpgradeToAutoDeleteAction_ItDoesNotUpdateTheStateAndPresentsComingSoon() async {
+    func testState_WhenUpgradeToAutoDeleteAction_ItPresentsUpsellScreen() async {
         sut = makeSUT(.spam, .autoDeleteUpsell)
-        
-        #expect(sut.state == .init(
-            icon: DS.Icon.icTrashClock,
-            title: L10n.EmptyFolderBanner.freeUserTitle.string,
-            buttons: [.upgradePlan, .emptyLocation],
-            alert: .none
-        ))
-        #expect(toastStateStore.state.toasts == [])
-        
+
+        #expect(
+            sut.state
+                == .init(
+                    icon: DS.Icon.icTrashClock,
+                    title: L10n.EmptyFolderBanner.freeUserTitle.string,
+                    buttons: [.upgradePlan, .emptyLocation],
+                    presentedUpsell: .none
+                ))
+
         await sut.handle(action: .upgradeToAutoDelete)
-        
-        #expect(sut.state == .init(
-            icon: DS.Icon.icTrashClock,
-            title: L10n.EmptyFolderBanner.freeUserTitle.string,
-            buttons: [.upgradePlan, .emptyLocation],
-            alert: .none
-        ))
-        #expect(toastStateStore.state.toasts == [.comingSoon])
+
+        #expect(
+            sut.state
+                == .init(
+                    icon: DS.Icon.icTrashClock,
+                    title: L10n.EmptyFolderBanner.freeUserTitle.string,
+                    buttons: [.upgradePlan, .emptyLocation],
+                    presentedUpsell: .preview(entryPoint: .autoDelete)
+                ))
     }
-    
+
     // MARK: - `.emptyFolder` action
-    
+
     @Test
     func testState_WhenEmptyTrashFolderAction_ItPresentsEmptyFolderConfirmationAlert() async {
         sut = makeSUT(.trash, .autoDeleteEnabled)
-        
-        #expect(sut.state == .init(
-            icon: DS.Icon.icTrashClock,
-            title: L10n.EmptyFolderBanner.paidUserAutoDeleteOnTitle.string,
-            buttons: [.emptyLocation],
-            alert: .none
-        ))
-        
+
+        #expect(
+            sut.state
+                == .init(
+                    icon: DS.Icon.icTrashClock,
+                    title: L10n.EmptyFolderBanner.paidUserAutoDeleteOnTitle.string,
+                    buttons: [.emptyLocation],
+                    alert: .none
+                ))
+
         await sut.handle(action: .emptyFolder)
-        
-        #expect(sut.state == .init(
-            icon: DS.Icon.icTrashClock,
-            title: L10n.EmptyFolderBanner.paidUserAutoDeleteOnTitle.string,
-            buttons: [.emptyLocation],
-            alert: .emptyFolderConfirmation(folder: .trash, action: { _ in })
-        ))
+
+        #expect(
+            sut.state
+                == .init(
+                    icon: DS.Icon.icTrashClock,
+                    title: L10n.EmptyFolderBanner.paidUserAutoDeleteOnTitle.string,
+                    buttons: [.emptyLocation],
+                    alert: .emptyFolderConfirmation(folder: .trash, action: { _ in })
+                ))
     }
 
     @Test
     func testState_WhenCancelAlertActionTapped_ItDismissesAlert() async throws {
         sut = makeSUT(.trash, .autoDeleteEnabled)
-        
+
         await sut.handle(action: .emptyFolder)
-        
-        #expect(sut.state == .init(
-            icon: DS.Icon.icTrashClock,
-            title: L10n.EmptyFolderBanner.paidUserAutoDeleteOnTitle.string,
-            buttons: [.emptyLocation],
-            alert: .emptyFolderConfirmation(folder: .trash, action: { _ in })
-        ))
-        
+
+        #expect(
+            sut.state
+                == .init(
+                    icon: DS.Icon.icTrashClock,
+                    title: L10n.EmptyFolderBanner.paidUserAutoDeleteOnTitle.string,
+                    buttons: [.emptyLocation],
+                    alert: .emptyFolderConfirmation(folder: .trash, action: { _ in })
+                ))
+
         let cancelAction = try sut.state.alertAction(for: .cancel)
         await cancelAction.action()
-        
-        #expect(sut.state == .init(
-            icon: DS.Icon.icTrashClock,
-            title: L10n.EmptyFolderBanner.paidUserAutoDeleteOnTitle.string,
-            buttons: [.emptyLocation],
-            alert: .none
-        ))
+
+        #expect(
+            sut.state
+                == .init(
+                    icon: DS.Icon.icTrashClock,
+                    title: L10n.EmptyFolderBanner.paidUserAutoDeleteOnTitle.string,
+                    buttons: [.emptyLocation],
+                    alert: .none
+                ))
     }
 
     @Test
     func testState_WhenConfirmAlertActionTapped_ItDismissesAlertAndTriggersDeletionAllMessages() async throws {
         let labelID: ID = .init(value: 99)
         sut = makeSUT(.trash, .autoDeleteEnabled, labelID)
-        
+
         await sut.handle(action: .emptyFolder)
-        
-        #expect(sut.state == .init(
-            icon: DS.Icon.icTrashClock,
-            title: L10n.EmptyFolderBanner.paidUserAutoDeleteOnTitle.string,
-            buttons: [.emptyLocation],
-            alert: .emptyFolderConfirmation(folder: .trash, action: { _ in })
-        ))
+
+        #expect(
+            sut.state
+                == .init(
+                    icon: DS.Icon.icTrashClock,
+                    title: L10n.EmptyFolderBanner.paidUserAutoDeleteOnTitle.string,
+                    buttons: [.emptyLocation],
+                    alert: .emptyFolderConfirmation(folder: .trash, action: { _ in })
+                ))
         #expect(wrapperSpy.deleteAllCalls == [])
-        
+
         let deleteAction = try sut.state.alertAction(for: .delete)
         await deleteAction.action()
-        
-        #expect(sut.state == .init(
-            icon: DS.Icon.icTrashClock,
-            title: L10n.EmptyFolderBanner.paidUserAutoDeleteOnTitle.string,
-            buttons: [.emptyLocation],
-            alert: .none
-        ))
+
+        #expect(
+            sut.state
+                == .init(
+                    icon: DS.Icon.icTrashClock,
+                    title: L10n.EmptyFolderBanner.paidUserAutoDeleteOnTitle.string,
+                    buttons: [.emptyLocation],
+                    alert: .none
+                ))
         #expect(wrapperSpy.deleteAllCalls == [labelID])
     }
 
@@ -135,13 +151,14 @@ final class EmptyFolderBannerStateStoreTests {
             model: .init(folder: .init(labelID: labelID, type: folder), userState: userState),
             toastStateStore: toastStateStore,
             mailUserSession: .dummy,
-            wrapper: wrapperSpy.testingInstance
+            wrapper: wrapperSpy.testingInstance,
+            upsellScreenPresenter: UpsellScreenPresenterStub()
         )
     }
 }
 
 private extension EmptyFolderBannerStateStore.State {
-    
+
     func alertAction(for action: DeleteConfirmationAlertAction) throws -> AlertAction {
         try #require(alert?.actions.findFirst(for: action.info.title, by: \.title))
     }
@@ -151,11 +168,17 @@ private extension EmptyFolderBannerStateStore.State {
 private class RustWrappersSpy {
     var stubbedDeleteAllResult: VoidActionResult = .ok
     private(set) var deleteAllCalls: [ID] = []
-    
+
     private(set) lazy var testingInstance = RustEmptyFolderBannerWrapper(
         deleteAllMessages: { [unowned self] _, labelID in
             deleteAllCalls.append(labelID)
             return stubbedDeleteAllResult
         }
     )
+}
+
+private final class UpsellScreenPresenterStub: UpsellScreenPresenter {
+    func presentUpsellScreen(entryPoint: UpsellScreenEntryPoint) async throws -> UpsellScreenModel {
+        .preview(entryPoint: entryPoint)
+    }
 }

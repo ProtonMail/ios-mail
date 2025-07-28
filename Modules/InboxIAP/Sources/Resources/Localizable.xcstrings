@@ -16,11 +16,26 @@
     "Auto-renews at the same price and terms unless canceled" : {
       "comment" : "Notice at the bottom"
     },
+    "Automated trash removal" : {
+      "comment" : "Title of the upsell page "
+    },
+    "Bad time for this email?" : {
+      "comment" : "Title of the upsell page"
+    },
     "Choose your plan" : {
       "comment" : "Displayed above the plans"
     },
+    "Create all you need to stay organized. Get this and more with %@." : {
+      "comment" : "Subtitle of the upsell page"
+    },
     "Custom email domain" : {
       "comment" : "Description of a feature of a paid subscription"
+    },
+    "Customize when an email will be sent. Enjoy this and more with %@." : {
+      "comment" : "Subtitle of the upsell page"
+    },
+    "Deletes spam and trash after 30 days. Get this and more with %@." : {
+      "comment" : "Subtitle of the upsell page"
     },
     "Email addresses" : {
       "comment" : "Description of a feature of a paid subscription"
@@ -31,17 +46,41 @@
     "Get %@" : {
       "comment" : "CTA button to purchase a plan (e.g. Get Mail Plus)"
     },
+    "Group your contacts" : {
+      "comment" : "Title of the upsell page"
+    },
+    "Make your mobile signature your own. Enjoy this and more with %@." : {
+      "comment" : "Subtitle of the upsell page"
+    },
+    "Need more labels or folders?" : {
+      "comment" : "Title of the upsell page"
+    },
+    "Personalize your signature" : {
+      "comment" : "Title of the upsell page"
+    },
     "Plus" : {
       "comment" : "As in Mail Plus - short name for the plan"
     },
     "Priority customer support" : {
       "comment" : "Description of a feature of a paid subscription"
     },
+    "Schedule now, send later" : {
+      "comment" : "Title of the upsell page"
+    },
+    "Send group emails with ease. Enjoy this and more with %@." : {
+      "comment" : "Subtitle of the upsell page"
+    },
+    "Snooze it — and have it delivered later.  Enjoy this and more with %@." : {
+      "comment" : "Subtitle of the upsell page"
+    },
     "Storage" : {
       "comment" : "Description of a feature of a paid subscription"
     },
+    "The requested plan could not be found." : {
+      "comment" : "Error message when fetching available plans fails"
+    },
     "To unlock more storage and premium features." : {
-      "comment" : "Subtitle of the upsell page."
+      "comment" : "Subtitle of the upsell page"
     },
     "Unlimited folders and labels" : {
       "comment" : "Description of a feature of a paid subscription"

@@ -22,7 +22,48 @@ enum L10n {
     static let autoRenewalNotice = LocalizedStringResource("Auto-renews at the same price and terms unless canceled", comment: "Notice at the bottom")
     static let chooseYourPlan = LocalizedStringResource("Choose your plan", comment: "Displayed above the plans")
     static let perMonth = LocalizedStringResource("/month", comment: "Displayed next to the monthly price")
-    static let upsellDescription = LocalizedStringResource("To unlock more storage and premium features.", comment: "Subtitle of the upsell page.")
+
+    static func screenTitle(planName: String, entryPoint: UpsellScreenEntryPoint) -> LocalizedStringResource {
+        switch entryPoint {
+        case .autoDelete:
+            .init("Automated trash removal", comment: "Title of the upsell page ")
+        case .contactGroups:
+            .init("Group your contacts", comment: "Title of the upsell page")
+        case .folders, .labels:
+            .init("Need more labels or folders?", comment: "Title of the upsell page")
+        case .header:
+            .init("Upgrade to \(planName)", comment: "Title of the upsell page")
+        case .mobileSignature:
+            .init("Personalize your signature", comment: "Title of the upsell page")
+        case .scheduleSend:
+            .init("Schedule now, send later", bundle: .module, comment: "Title of the upsell page")
+        case .snooze:
+            .init("Bad time for this email?", comment: "Title of the upsell page")
+        }
+    }
+
+    static func screenSubtitle(planName: String, entryPoint: UpsellScreenEntryPoint) -> LocalizedStringResource {
+        switch entryPoint {
+        case .autoDelete:
+            .init("Deletes spam and trash after 30 days. Get this and more with \(planName).", comment: "Subtitle of the upsell page")
+        case .contactGroups:
+            .init("Send group emails with ease. Enjoy this and more with \(planName).", comment: "Subtitle of the upsell page")
+        case .folders, .labels:
+            .init("Create all you need to stay organized. Get this and more with \(planName).", comment: "Subtitle of the upsell page")
+        case .header:
+            .init("To unlock more storage and premium features.", comment: "Subtitle of the upsell page")
+        case .mobileSignature:
+            .init("Make your mobile signature your own. Enjoy this and more with \(planName).", comment: "Subtitle of the upsell page")
+        case .scheduleSend:
+            .init("Customize when an email will be sent. Enjoy this and more with \(planName).", comment: "Subtitle of the upsell page")
+        case .snooze:
+            .init("Snooze it — and have it delivered later.  Enjoy this and more with \(planName).", comment: "Subtitle of the upsell page")
+        }
+    }
+
+    enum Error {
+        static let planNotFound = LocalizedStringResource("The requested plan could not be found.", comment: "Error message when fetching available plans fails")
+    }
 
     enum PlanName {
         static let free = LocalizedStringResource("Free", comment: "Name of the free plan")
@@ -40,9 +81,5 @@ enum L10n {
 
     static func getPlan(named planName: String) -> LocalizedStringResource {
         .init("Get \(planName)", comment: "CTA button to purchase a plan (e.g. Get Mail Plus)")
-    }
-
-    static func upgrade(to planName: String) -> LocalizedStringResource {
-        .init("Upgrade to \(planName)", comment: "Title of the upsell page")
     }
 }

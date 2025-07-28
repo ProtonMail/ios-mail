@@ -22,7 +22,8 @@ import InboxIAP
 import SwiftUI
 
 struct MainToolbar<AvatarView: View>: ViewModifier {
-    @Environment(\.makeUpsellScreen) private var makeUpsellScreen
+    @EnvironmentObject private var toastStateStore: ToastStateStore
+    @EnvironmentObject private var upsellCoordinator: UpsellCoordinator
     @ObservedObject private var selectionMode: SelectionModeState
     let onEvent: (MainToolbarEvent) -> Void
     let avatarView: () -> AvatarView
@@ -81,10 +82,14 @@ struct MainToolbar<AvatarView: View>: ViewModifier {
                 ToolbarItemGroup(placement: .topBarTrailing) {
                     if !selectionMode.hasItems {
                         HStack(spacing: DS.Spacing.standard) {
-                            if let makeUpsellScreen {
+                            if upsellCoordinator.hasOfferPrepared {
                                 toolbarButton(icon: DS.Icon.icBrandProtonMailUpsellBlackAndWhite.image.renderingMode(.template)) {
-                                    let upsellScreenModel = makeUpsellScreen()
-                                    onEvent(.onUpsell(upsellScreenModel))
+                                    do {
+                                        let upsellScreenModel = try await upsellCoordinator.presentUpsellScreen(entryPoint: .header)
+                                        onEvent(.onUpsell(upsellScreenModel))
+                                    } catch {
+                                        toastStateStore.present(toast: .error(message: error.localizedDescription))
+                                    }
                                 }
                             }
 
@@ -100,9 +105,13 @@ struct MainToolbar<AvatarView: View>: ViewModifier {
             .tint(DS.Color.Text.norm)
     }
 
-    private func toolbarButton(icon: Image, action: @escaping () -> Void) -> some View {
+    private func toolbarButton(icon: Image, action: @escaping () async -> Void) -> some View {
         Button(
-            action: action,
+            action: {
+                Task {
+                    await action()
+                }
+            },
             label: {
                 icon
                     .square(size: 24)

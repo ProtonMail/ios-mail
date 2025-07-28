@@ -17,11 +17,13 @@
 
 import InboxCore
 import InboxCoreUI
+import InboxIAP
 import SwiftUI
 
 @MainActor
 class SnoozeStore: StateStore {
     @Published var state: SnoozeState
+//    private let upsellCoordinator: UpsellCoordinator
 
     init(state: SnoozeState) {
         self.state = state
@@ -32,6 +34,11 @@ class SnoozeStore: StateStore {
         case .customButtonTapped:
             transition(to: .custom)
         case .upgradeTapped:
+            // TODO: take UpsellCoordinator from SnoozeView's environment, add Screen case .upsell(UpsellScreenModel)
+            /*
+             let upsellScreenModel = upsellCoordinator.presentUpsellScreen(entryPoint: .snooze)
+             transition(to: .upsell(upsellScreenModel)
+             */
             break
         case .predefinedSnoozeOptionTapped:
             break
