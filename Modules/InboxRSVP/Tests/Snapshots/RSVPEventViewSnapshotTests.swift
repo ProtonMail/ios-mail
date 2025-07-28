@@ -26,9 +26,9 @@ import Testing
 @Suite(.calendarZurichEnUS, .calendarGMTEnUS, .currentDate(.fixture("2025-07-25 12:00:00")))
 final class RSVPEventViewSnapshotTests {
     @Test(arguments: RsvpEventDetails.allCases)
-    func testRSVP(testCase: (event: RsvpEventDetails, testName: String, isExpanded: Bool)) {
+    func testRSVP(testCase: (eventDetails: RsvpEventDetails, testName: String, isExpanded: Bool)) {
         let view = RSVPEventView(
-            eventDetails: .constant(testCase.event),
+            eventDetails: testCase.eventDetails,
             areParticipantsExpanded: testCase.isExpanded,
         )
 

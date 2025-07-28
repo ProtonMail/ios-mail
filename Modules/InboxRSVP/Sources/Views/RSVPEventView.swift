@@ -20,13 +20,11 @@ import InboxDesignSystem
 import SwiftUI
 
 struct RSVPEventView: View {
-    @Binding private var eventDetails: RsvpEventDetails
-    @State private var event: RSVPEvent
+    private let event: RSVPEvent
     @State private var areParticipantsExpanded: Bool
 
-    init(eventDetails: Binding<RsvpEventDetails>, areParticipantsExpanded: Bool = false) {
-        _eventDetails = eventDetails
-        _event = .init(initialValue: RSVPEventMapper.map(from: eventDetails.wrappedValue))
+    init(eventDetails: RsvpEventDetails, areParticipantsExpanded: Bool = false) {
+        self.event = RSVPEventMapper.map(from: eventDetails)
         _areParticipantsExpanded = .init(initialValue: areParticipantsExpanded)
     }
 
@@ -40,7 +38,6 @@ struct RSVPEventView: View {
             )
             .frame(maxWidth: .infinity)
             .padding(.horizontal, DS.Spacing.large)
-            .onChange(of: eventDetails) { _, newDetails in event = RSVPEventMapper.map(from: newDetails) }
     }
 
     // MARK: - Private
@@ -109,12 +106,12 @@ struct RSVPEventView: View {
                 case .none:
                     ForEach(RsvpAnswer.allCases, id: \.self) { answer in
                         RSVPAnswerButton(text: answer.humanReadable.short) {
-                            updateStatus(with: answer.attendeeStatus)
+                            // FIXME: Call closure
                         }
                     }
                 case .some(let answer):
                     RSVPAnswerMenuButton(state: answer) { selectedAnswer in
-                        updateStatus(with: selectedAnswer.attendeeStatus)
+                        // FIXME: Call closure
                     }
                 }
             }
@@ -163,19 +160,10 @@ struct RSVPEventView: View {
 
         return RSVPDetailsRow(icon: statusDetails.icon, iconColor: statusDetails.color, text: displayName)
     }
-
-    private func updateStatus(with status: RsvpAttendeeStatus) {
-        let updateIndex = Int(eventDetails.userAttendeeIdx)
-
-        eventDetails.attendees[updateIndex] =
-            eventDetails
-            .attendees[updateIndex]
-            .copy(\.status, to: status)
-    }
 }
 
 #Preview {
-    @Previewable @State var details = RsvpEventDetails(
+    let eventDetails = RsvpEventDetails(
         summary: "Quick Sync",
         location: "Huddle Room",
         description: "A brief check-in.",
@@ -198,7 +186,7 @@ struct RSVPEventView: View {
     return ScrollView(.vertical, showsIndicators: false) {
         VStack(spacing: 16) {
             RSVPEventView(
-                eventDetails: $details,
+                eventDetails: eventDetails,
                 areParticipantsExpanded: false
             )
         }
