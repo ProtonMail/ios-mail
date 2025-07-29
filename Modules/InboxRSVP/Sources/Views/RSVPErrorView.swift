@@ -48,12 +48,12 @@ struct RSVPErrorView: View {
     @ViewBuilder
     private func errorDetails() -> some View {
         VStack(alignment: .center, spacing: DS.Spacing.mediumLight) {
-            Text("Invite details unavailable".notLocalized)
+            Text(L10n.Error.title)
                 .font(.callout)
                 .fontWeight(.semibold)
                 .foregroundStyle(DS.Color.Text.norm)
                 .multilineTextAlignment(.center)
-            Text("We couldn’t load the\ninformation. Please try again.".notLocalized)
+            Text(L10n.Error.subtitle)
                 .font(.subheadline)
                 .fontWeight(.regular)
                 .foregroundStyle(DS.Color.Text.weak)
@@ -63,7 +63,7 @@ struct RSVPErrorView: View {
 
     @ViewBuilder
     private func retryButton() -> some View {
-        Button("Retry".notLocalized, action: action)
+        Button(L10n.Error.retryButtonTitle.string, action: action)
             .buttonStyle(RSVPButtonStyle.retryButtonStyle)
     }
 }

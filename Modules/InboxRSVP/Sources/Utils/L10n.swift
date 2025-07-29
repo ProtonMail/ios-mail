@@ -137,6 +137,26 @@ enum L10n {
         }
     }
 
+    enum Error {
+        static let title = LocalizedStringResource(
+            "Invite details unavailable",
+            bundle: .module,
+            comment: "Title shown when calendar event loading fails, providing additional context to the user."
+        )
+
+        static let subtitle = LocalizedStringResource(
+            "We couldn’t load the\ninformation. Please try again.",
+            bundle: .module,
+            comment: "Subtitle shown when calendar event loading fails, providing additional context to the user."
+        )
+
+        static let retryButtonTitle = LocalizedStringResource(
+            "Retry",
+            bundle: .module,
+            comment: "Title of the button that allows the user to retry loading the event after an error."
+        )
+    }
+
     enum OrganizerMenuOption {
         static let copyAction = LocalizedStringResource(
             "Copy address",
