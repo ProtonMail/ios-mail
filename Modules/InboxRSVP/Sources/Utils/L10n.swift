@@ -121,6 +121,13 @@ enum L10n {
                 comment: "Label for the participants button, where %d is the number of people. Exist only in plural form."
             )
         }
+        static func organizer(name: String) -> LocalizedStringResource {
+            LocalizedStringResource(
+                "\(name) (Organizer)",
+                bundle: .module,
+                comment: "Label showing the organizer's name with a clarifying '(Organizer)' suffix."
+            )
+        }
         static func you(email: String) -> LocalizedStringResource {
             LocalizedStringResource(
                 "You • \(email)",

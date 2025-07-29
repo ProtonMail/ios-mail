@@ -16,6 +16,9 @@
     "(no title)" : {
       "comment" : "Placeholder text for an event that has no title or summary."
     },
+    "%@ (Organizer)" : {
+      "comment" : "Label showing the organizer's name with a clarifying '(Organizer)' suffix."
+    },
     "%d Participants" : {
       "comment" : "Label for the participants button, where %d is the number of people. Requires pluralization rules (e.g., 1 participant vs. 2 participants)."
     },
