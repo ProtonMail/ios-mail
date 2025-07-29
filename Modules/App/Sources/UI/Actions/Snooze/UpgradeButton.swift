@@ -19,9 +19,30 @@ import InboxDesignSystem
 import SwiftUI
 
 struct UpgradeButton: View {
+    private let variant: Variant
+
+    init(variant: Variant) {
+        self.variant = variant
+    }
+
+    enum Variant {
+        case fullLine
+        case compact
+    }
 
     var body: some View {
         Button(action: {}) {
+            content
+                .padding(.horizontal, DS.Spacing.large)
+                .frame(maxWidth: .infinity)
+        }
+        .buttonStyle(UpgradeButtonStyle())
+    }
+
+    @ViewBuilder
+    private var content: some View {
+        switch variant {
+        case .fullLine:
             HStack {
                 VStack(alignment: .leading, spacing: DS.Spacing.small) {
                     Text(L10n.Snooze.customButtonTitle)
@@ -35,10 +56,21 @@ struct UpgradeButton: View {
                 Image(DS.Icon.icBrandProtonMailUpsell)
             }
             .padding(.vertical, DS.Spacing.moderatelyLarge)
-            .padding(.horizontal, DS.Spacing.large)
+        case .compact:
+            VStack(spacing: .zero) {
+                Image(DS.Icon.icBrandProtonMailUpsell)
+
+                VStack(alignment: .center, spacing: DS.Spacing.small) {
+                    Text(L10n.Snooze.customButtonTitle)
+                        .font(.callout)
+                        .foregroundStyle(DS.Color.Text.norm)
+                    Text(L10n.Snooze.customButtonSubtitle)
+                        .font(.footnote)
+                        .foregroundStyle(DS.Color.Text.weak)
+                }
+            }
+            .padding(.bottom, DS.Spacing.moderatelyLarge)
         }
-        .buttonStyle(UpgradeButtonStyle())
-        .frame(maxWidth: .infinity)
     }
 
 }
@@ -63,7 +95,7 @@ private struct UpgradeButtonStyle: ButtonStyle {
 
 #Preview {
     ZStack {
-        UpgradeButton()
+        UpgradeButton(variant: .compact)
             .padding()
     }
 }

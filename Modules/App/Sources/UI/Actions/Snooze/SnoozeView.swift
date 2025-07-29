@@ -71,12 +71,12 @@ struct SnoozeView: View {
                             }
 
                             if displayButtonOnGrid {
-                                lastButton()
+                                lastButton(displayOnGrid: true)
                             }
                         }
 
                         if !displayButtonOnGrid {
-                            lastButton()
+                            lastButton(displayOnGrid: false)
                         }
 
                         if store.state.actions.isUnsnoozeVisible {
@@ -96,12 +96,12 @@ struct SnoozeView: View {
     }
 
     @ViewBuilder
-    private func lastButton() -> some View {
+    private func lastButton(displayOnGrid: Bool) -> some View {
         switch store.state.actions.customButtonType {
         case .regular:
-            customButton()
+            customButton(displayOnGrid: displayOnGrid)
         case .upgrade:
-            UpgradeButton()
+            UpgradeButton(variant: displayOnGrid ? .compact : .fullLine)
         }
     }
 
@@ -109,17 +109,41 @@ struct SnoozeView: View {
         store.state.actions.predefined.count % 2 == 1
     }
 
+    @ViewBuilder
     private func buttonWithIcon(for model: PredefinedSnooze) -> some View {
-        Button(action: { store.handle(action: .predefinedSnoozeOptionTapped(model)) }) {
+        gridButton(title: model.title, subtitle: model.time, icon: Image(symbol: model.icon)) {
+            store.handle(action: .predefinedSnoozeOptionTapped(model))
+        }
+    }
+
+    private func unsnoozeButton() -> some View {
+        Button(action: { store.handle(action: .unsnoozeTapped) }) {
+            Text(L10n.Snooze.unsnoozeButtonTitle)
+                .foregroundStyle(DS.Color.Text.norm)
+                .font(.callout)
+                .frame(maxWidth: .infinity, minHeight: 49, alignment: .center)
+                .background(DS.Color.BackgroundInverted.secondary)
+        }
+        .roundedRectangleStyle()
+    }
+
+    @ViewBuilder
+    private func gridButton(
+        title: LocalizedStringResource,
+        subtitle: String,
+        icon: Image,
+        action: @escaping () -> Void
+    ) -> some View {
+        Button(action: action) {
             VStack(alignment: .center, spacing: DS.Spacing.standard) {
-                Image(symbol: model.icon)
+                icon
                     .font(.title2)
                     .foregroundStyle(DS.Color.Text.norm)
                 VStack(alignment: .center, spacing: DS.Spacing.small) {
-                    Text(model.title)
+                    Text(title)
                         .font(.callout)
                         .foregroundStyle(DS.Color.Text.norm)
-                    Text(model.time)
+                    Text(subtitle)
                         .font(.footnote)
                         .foregroundStyle(DS.Color.Text.weak)
                 }
@@ -134,25 +158,16 @@ struct SnoozeView: View {
         .roundedRectangleStyle()
     }
 
-    private func unsnoozeButton() -> some View {
-        Button(action: { store.handle(action: .unsnoozeTapped) }) {
-            Text(L10n.Snooze.unsnoozeButtonTitle)
-                .foregroundStyle(DS.Color.Text.norm)
-                .font(.callout)
-                .frame(maxWidth: .infinity, minHeight: 49, alignment: .center)
-                .background(DS.Color.BackgroundInverted.secondary)
+    @ViewBuilder
+    private func customButton(displayOnGrid: Bool) -> some View {
+        let action = { store.handle(action: .customButtonTapped) }
+        let title = L10n.Snooze.customButtonTitle
+        let subtitle = L10n.Snooze.customButtonSubtitle.string
+        if displayOnGrid {
+            gridButton(title: title, subtitle: subtitle, icon: Image(DS.Icon.icCalendarToday), action: action)
+        } else {
+            FormBigButton(title: title, symbol: .chevronRight, value: subtitle, action: action)
+                .roundedRectangleStyle()
         }
-        .roundedRectangleStyle()
-    }
-
-    private func customButton() -> some View {
-        FormBigButton(
-            title: L10n.Snooze.customButtonTitle,
-            symbol: .chevronRight,
-            value: L10n.Snooze.customButtonSubtitle.string
-        ) {
-            store.handle(action: .customButtonTapped)
-        }
-        .roundedRectangleStyle()
     }
 }
