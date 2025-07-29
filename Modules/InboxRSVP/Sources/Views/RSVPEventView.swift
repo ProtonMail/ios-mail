@@ -25,7 +25,7 @@ struct RSVPEventView: View {
 
     init(eventDetails: RsvpEventDetails, areParticipantsExpanded: Bool = false) {
         self.event = RSVPEventMapper.map(from: eventDetails)
-        _areParticipantsExpanded = .init(initialValue: areParticipantsExpanded)
+        self.areParticipantsExpanded = areParticipantsExpanded
     }
 
     var body: some View {
@@ -71,28 +71,7 @@ struct RSVPEventView: View {
 
     @ViewBuilder
     private var eventHeader: some View {
-        HStack(alignment: .top, spacing: DS.Spacing.standard) {
-            VStack(alignment: .leading, spacing: DS.Spacing.standard) {
-                Text(event.title)
-                    .font(.body)
-                    .fontWeight(.semibold)
-                    .foregroundStyle(DS.Color.Text.norm)
-                Text(event.formattedDate)
-                    .font(.subheadline)
-                    .fontWeight(.regular)
-                    .foregroundStyle(DS.Color.Text.norm)
-                    .minimumScaleFactor(0.75)
-                if case let .visible(attendance) = event.answerButtons, attendance == .optional {
-                    Text(L10n.attendanceOptional)
-                        .font(.footnote)
-                        .fontWeight(.regular)
-                        .foregroundStyle(DS.Color.Text.weak)
-                }
-            }
-            Spacer(minLength: 0)
-            Image(DS.Images.protonCalendar)
-                .square(size: 52)
-        }
+        RSVPEventHeader(title: event.title, formattedDate: event.formattedDate, answerButtons: event.answerButtons)
     }
 
     private var answerSection: some View {
@@ -122,11 +101,7 @@ struct RSVPEventView: View {
     private var eventDetailsSection: some View {
         VStack(alignment: .leading, spacing: .zero) {
             if let calendar = event.calendar {
-                RSVPDetailsRow(
-                    icon: DS.Icon.icCircleFilled,
-                    iconColor: Color(hex: calendar.color),
-                    text: calendar.name
-                )
+                RSVPDetailsRow(icon: DS.Icon.icCircleFilled, iconColor: Color(hex: calendar.color), text: calendar.name)
             }
             if let recurrence = event.recurrence {
                 RSVPDetailsRow(icon: DS.Icon.icArrowsRotate, text: recurrence)
