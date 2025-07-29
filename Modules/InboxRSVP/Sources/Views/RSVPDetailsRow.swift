@@ -54,6 +54,7 @@ struct RSVPDetailsRow: View {
                 Spacer(minLength: 0)
             }
         }
-        .padding(.all, DS.Spacing.standard)
+        .padding(.horizontal, DS.Spacing.standard)
+        .padding(.vertical, DS.Spacing.compact)
     }
 }
