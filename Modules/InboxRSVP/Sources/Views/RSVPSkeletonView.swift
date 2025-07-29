@@ -33,15 +33,10 @@ struct RSVPSkeletonView: View {
             .padding(.top, DS.Spacing.extraLarge)
             .padding(.bottom, DS.Spacing.large)
         }
-        .background(DS.Color.Background.norm)
-        .clipShape(RoundedRectangle(cornerRadius: DS.Radius.extraLarge))
-        .overlay(
-            RoundedRectangle(cornerRadius: DS.Radius.extraLarge)
-                .stroke(DS.Color.Border.norm, lineWidth: 1)
-        )
-        .frame(maxWidth: .infinity)
-        .padding(.horizontal, DS.Spacing.large)
+        .cardStyle()
     }
+
+    // MARK: - Private
 
     private var eventHeader: some View {
         HStack(alignment: .top, spacing: DS.Spacing.medium) {

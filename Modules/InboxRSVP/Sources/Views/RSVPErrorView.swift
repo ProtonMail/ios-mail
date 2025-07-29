@@ -22,19 +22,6 @@ struct RSVPErrorView: View {
     let action: () -> Void
 
     var body: some View {
-        content()
-            .background(DS.Color.Background.norm)
-            .clipShape(RoundedRectangle(cornerRadius: DS.Radius.extraLarge))
-            .overlay(
-                RoundedRectangle(cornerRadius: DS.Radius.extraLarge)
-                    .stroke(DS.Color.Border.norm, lineWidth: 1)
-            )
-            .frame(maxWidth: .infinity)
-            .padding(.horizontal, DS.Spacing.large)
-    }
-
-    @ViewBuilder
-    private func content() -> some View {
         VStack(alignment: .center, spacing: DS.Spacing.extraLarge) {
             Image(DS.Images.rsvpError)
                 .square(size: 128)
@@ -43,7 +30,10 @@ struct RSVPErrorView: View {
         }
         .padding(.vertical, DS.Spacing.huge)
         .padding(.horizontal, DS.Spacing.extraLarge)
+        .cardStyle()
     }
+
+    // MARK: - Private
 
     @ViewBuilder
     private func errorDetails() -> some View {

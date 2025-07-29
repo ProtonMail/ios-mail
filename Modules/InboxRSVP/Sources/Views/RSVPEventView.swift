@@ -29,21 +29,6 @@ struct RSVPEventView: View {
     }
 
     var body: some View {
-        content()
-            .background(DS.Color.Background.norm)
-            .clipShape(RoundedRectangle(cornerRadius: DS.Radius.extraLarge))
-            .overlay(
-                RoundedRectangle(cornerRadius: DS.Radius.extraLarge)
-                    .stroke(DS.Color.Border.norm, lineWidth: 1)
-            )
-            .frame(maxWidth: .infinity)
-            .padding(.horizontal, DS.Spacing.large)
-    }
-
-    // MARK: - Private
-
-    @ViewBuilder
-    private func content() -> some View {
         VStack(alignment: .leading, spacing: .zero) {
             headerBanner
             VStack(alignment: .leading, spacing: DS.Spacing.large) {
@@ -60,7 +45,10 @@ struct RSVPEventView: View {
             .padding(.top, DS.Spacing.extraLarge)
             .padding(.bottom, DS.Spacing.large)
         }
+        .cardStyle()
     }
+
+    // MARK: - Private
 
     @ViewBuilder
     private var headerBanner: some View {
