@@ -19,39 +19,10 @@ import InboxCore
 import SwiftUI
 
 final class RSVPStateStore: ObservableObject {
-    /// Represents the full UI state for RSVP data, including loading status,
-    /// the fetched event, and its detailed metadata.
-    ///
-    /// - Important: When `mode == .loaded`, both `rsvpEvent` and `eventDetails` are guaranteed to be non-nil.
-    ///
-    /// - Note:
-    /// `rsvpEvent` and `eventDetails` are not stored as associated values in `Mode`
-    /// because SwiftUI cannot create `@Binding` to values inside enum cases.
-    /// By keeping them as separate properties, we can:
-    ///   - Bind directly to `eventDetails` in the UI
-    ///   - Avoid complex unwrapping or custom binding logic
-    ///   - Maintain compatibility with SwiftUI’s reactive updates
-    struct State: Copying {
-        /// The current phase of the view or data loading lifecycle.
-        enum Mode: Equatable {
-            /// Actively loading data
-            case loading
-            /// Successfully loaded data
-            case loaded
-            /// Failed to load
-            case failed
-        }
-
-        /// Current mode (loading, loaded, or failed).
-        var mode: Mode = .loading
-
-        /// The loaded event, if available.
-        /// - Safe to unwrap when `mode == .loaded`.
-        var rsvpEvent: RsvpEvent?
-
-        /// The details associated with the loaded event, if available.
-        /// - Safe to unwrap when `mode == .loaded`.
-        var eventDetails: RsvpEventDetails?
+    enum State: Equatable {
+        case loading
+        case loadFailed
+        case loaded(RsvpEvent, RsvpEventDetails)
     }
 
     private let rsvpID: RsvpEventId
@@ -63,7 +34,7 @@ final class RSVPStateStore: ObservableObject {
         case answer(RsvpAnswer)
     }
 
-    init(rsvpID: RsvpEventId, state: State = .init()) {
+    init(rsvpID: RsvpEventId, state: State = .loading) {
         self.rsvpID = rsvpID
         self.state = state
     }
@@ -74,41 +45,76 @@ final class RSVPStateStore: ObservableObject {
         case .onLoad, .retry:
             await loadEventDetails()
         case .answer(let status):
-            if case .loaded = state.mode, let rsvpEvent = state.rsvpEvent {
-                await answer(with: status, for: rsvpEvent)
+            if case .loaded(let eventService, let rsvpEventDetails) = state {
+                await answer(with: status, for: eventService, with: rsvpEventDetails)
             }
         }
     }
 
     @MainActor
     private func loadEventDetails() async {
-        updateState(mode: .loading, event: .none, details: .none)
+        updateState(with: .loading)
 
-        if let event = await rsvpID.fetch(), case .ok(let details) = event.details() {
-            updateState(mode: .loaded, event: event, details: details)
-        } else {
-            updateState(mode: .failed, event: .none, details: .none)
+        switch await rsvpID.fetch() {
+        case .none:
+            updateState(with: .loadFailed)
+        case .some(let eventService):
+            switch eventService.details() {
+            case .ok(let details):
+                updateState(with: .loaded(eventService, details))
+            case .error:
+                updateState(with: .loadFailed)
+            }
         }
     }
 
     @MainActor
-    private func answer(with answer: RsvpAnswer, for event: RsvpEvent) async {
-        let answerResult = await event.answer(answer: answer)
+    private func answer(
+        with answer: RsvpAnswer,
+        for eventService: RsvpEvent,
+        with existingDetails: RsvpEventDetails
+    ) async {
+        let updatedAttendees = optimisticallyUpdatedAttendees(with: answer, existingDetails: existingDetails)
+        let updatedDetails = existingDetails.copy(\.attendees, to: updatedAttendees)
 
-        switch (answerResult, event.details()) {
-        case (.ok, .ok(let details)), (.error, .ok(let details)):
-            updateState(mode: .loaded, event: event, details: details)
+        updateState(with: .loaded(eventService, updatedDetails))
+
+        let answerResult = await eventService.answer(answer: answer)
+
+        switch (answerResult, eventService.details()) {
+        case (.ok, .ok(let eventDetails)), (.error, .ok(let eventDetails)):
+            updateState(with: .loaded(eventService, eventDetails))
         case (.ok, .error), (.error, .error):
-            updateState(mode: .failed, event: .none, details: .none)
+            updateState(with: .loadFailed)
         }
     }
 
-    @MainActor
-    func updateState(mode: State.Mode, event: RsvpEvent?, details: RsvpEventDetails?) {
-        state =
-            state
-            .copy(\.mode, to: mode)
-            .copy(\.rsvpEvent, to: event)
-            .copy(\.eventDetails, to: details)
+    private func optimisticallyUpdatedAttendees(
+        with newStatus: RsvpAnswer,
+        existingDetails: RsvpEventDetails
+    ) -> [RsvpAttendee] {
+        let updateIndex = Int(existingDetails.userAttendeeIdx)
+        let updatedAttendee =
+            existingDetails
+            .attendees[updateIndex]
+            .copy(\.status, to: newStatus.attendeeStatus)
+
+        var updatedAttendees = existingDetails.attendees
+        updatedAttendees[updateIndex] = updatedAttendee
+        return updatedAttendees
     }
+
+    private func updateState(with newState: State) {
+        if state != newState {
+            state = newState
+        }
+    }
+}
+
+extension RsvpEvent: Equatable {
+
+    static func == (lhs: RsvpEvent, rhs: RsvpEvent) -> Bool {
+        ObjectIdentifier(lhs) == ObjectIdentifier(rhs)
+    }
+
 }
