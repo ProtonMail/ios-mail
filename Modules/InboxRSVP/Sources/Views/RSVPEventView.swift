@@ -133,7 +133,7 @@ struct RSVPEventView: View {
         let statusDetails = participant.status.details
         let displayName = participant.displayName
 
-        return RSVPDetailsRow(icon: statusDetails.icon, iconColor: statusDetails.color, iconSize: 20, text: displayName)
+        return RSVPDetailsRow(icon: statusDetails.icon, iconColor: statusDetails.color, text: displayName)
     }
 }
 
