@@ -15,18 +15,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import DeveloperToolsSupport
 import InboxDesignSystem
-import SwiftUI
 
-struct RSVPAnswerButtonStyle: ButtonStyle {
-    func makeBody(configuration: Configuration) -> some View {
-        configuration.label
-            .font(.subheadline)
-            .fontWeight(.regular)
-            .foregroundStyle(DS.Color.Brand.plus30)
-            .padding(.all, 12)
-            .frame(maxWidth: .infinity)
-            .background(configuration.isPressed ? DS.Color.InteractionBrandWeak.pressed : DS.Color.InteractionBrandWeak.norm)
-            .clipShape(RoundedRectangle(cornerRadius: DS.Radius.massive))
-    }
+extension DS.Images {
+    static let rsvpError = ImageResource.rsvpError
 }

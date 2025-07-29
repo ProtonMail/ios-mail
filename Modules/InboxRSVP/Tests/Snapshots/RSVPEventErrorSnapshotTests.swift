@@ -15,14 +15,22 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+@testable import InboxRSVP
+import InboxTesting
+import InboxSnapshotTesting
+import SnapshotTesting
 import SwiftUI
+import Testing
 
-struct RSVPAnswerButton: View {
-    let text: LocalizedStringResource
-    let action: () -> Void
+@MainActor
+struct RSVPEventErrorSnapshotTests {
+    @Test
+    func testErrorView() {
+        let view = RSVPErrorView(action: {})
 
-    var body: some View {
-        Button(text.string, action: action)
-            .buttonStyle(RSVPButtonStyle.answerButtonStyle)
+        assertSnapshots(
+            matching: UIHostingController(rootView: view),
+            on: [("SE", .iPhoneSe), ("13 Pro Max", .iPhone13ProMax)]
+        )
     }
 }

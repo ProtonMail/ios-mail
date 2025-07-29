@@ -31,7 +31,7 @@ struct RSVPAnswerMenuButton: View {
                 )
             }
         }
-        .buttonStyle(RSVPAnswerButtonStyle())
+        .buttonStyle(RSVPButtonStyle.answerButtonStyle)
     }
 }
 
