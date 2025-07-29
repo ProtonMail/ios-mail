@@ -15,21 +15,20 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import InboxCoreUI
 import InboxDesignSystem
 import SwiftUI
 
-struct FormTextInput: View {
-    enum InputType {
+public struct FormTextInput: View {
+    public enum InputType {
         case secureOneline
         case multiline
     }
 
-    enum ValidationStatus: Equatable {
+    public enum ValidationStatus: Equatable {
         case ok
         case failure(String)
 
-        var isFailure: Bool {
+        public var isFailure: Bool {
             switch self {
             case .ok:
                 false
@@ -38,7 +37,7 @@ struct FormTextInput: View {
             }
         }
 
-        var isSuccess: Bool {
+        public var isSuccess: Bool {
             switch self {
             case .ok:
                 true
@@ -56,7 +55,7 @@ struct FormTextInput: View {
     @Binding private var validation: ValidationStatus
     @FocusState private var isFocused: Bool
 
-    init(
+    public init(
         title: LocalizedStringResource,
         placeholder: LocalizedStringResource,
         footer: LocalizedStringResource? = nil,
@@ -74,7 +73,7 @@ struct FormTextInput: View {
 
     // MARK: - View
 
-    var body: some View {
+    public var body: some View {
         VStack(spacing: DS.Spacing.standard) {
             VStack(alignment: .leading, spacing: DS.Spacing.compact) {
                 Text(title)
@@ -135,7 +134,7 @@ struct FormTextInput: View {
 
 extension Binding where Value == FormTextInput.ValidationStatus {
 
-    static var noValidation: Self {
+    public static var noValidation: Self {
         .readonly { .ok }
     }
 

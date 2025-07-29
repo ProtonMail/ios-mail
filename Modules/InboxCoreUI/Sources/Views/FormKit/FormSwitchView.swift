@@ -15,35 +15,32 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import InboxCoreUI
-import InboxDesignSystem
 import SwiftUI
+import InboxDesignSystem
 
-struct FormSecureTextInput: View {
+public struct FormSwitchView: View {
     private let title: LocalizedStringResource
-    @Binding private var text: String
-    @State var secureEntry: Bool = true
+    @Binding private var isOn: Bool
 
-    init(
-        title: LocalizedStringResource,
-        text: Binding<String>
-    ) {
+    public init(title: LocalizedStringResource, isOn: Binding<Bool>) {
         self.title = title
-        self._text = text
+        self._isOn = isOn
     }
 
-    var body: some View {
+    public var body: some View {
         VStack(alignment: .leading, spacing: DS.Spacing.compact) {
-            HStack(spacing: DS.Spacing.mediumLight) {
-                PINSecureInput(text: $text, isSecure: $secureEntry)
-                    .frame(height: 22)
-                Button(action: { secureEntry.toggle() }) {
-                    Image(symbol: secureEntry ? .eye : .eyeSlash)
-                        .foregroundStyle(DS.Color.Text.hint)
-                }
+            HStack {
+                Text(title)
+                    .foregroundStyle(DS.Color.Text.norm)
+                Spacer(minLength: DS.Spacing.standard)
+                Toggle(String.empty, isOn: $isOn)
+                    .tint(DS.Color.Text.accent)
             }
+            .padding(.horizontal, DS.Spacing.large)
+            .padding(.vertical, DS.Spacing.mediumLight)
+            .frame(maxWidth: .infinity)
+            .background(DS.Color.BackgroundInverted.secondary)
+            .clipShape(RoundedRectangle(cornerRadius: DS.Spacing.mediumLight))
         }
-        .background(DS.Color.BackgroundInverted.secondary)
-        .frame(maxWidth: .infinity)
     }
 }

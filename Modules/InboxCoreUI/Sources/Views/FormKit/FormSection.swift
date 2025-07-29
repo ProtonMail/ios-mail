@@ -18,13 +18,13 @@
 import InboxDesignSystem
 import SwiftUI
 
-struct FormSection<Content: View>: View {
+public struct FormSection<Content: View>: View {
 
     private let header: LocalizedStringResource?
     private let footer: LocalizedStringResource?
     private let content: () -> Content
 
-    init(
+    public init(
         header: LocalizedStringResource? = nil,
         footer: LocalizedStringResource? = nil,
         content: @escaping () -> Content
@@ -34,7 +34,7 @@ struct FormSection<Content: View>: View {
         self.content = content
     }
 
-    var body: some View {
+    public var body: some View {
         VStack(alignment: .leading, spacing: DS.Spacing.compact) {
             if let header {
                 Text(header)

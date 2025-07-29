@@ -19,21 +19,29 @@ import InboxDesignSystem
 import SwiftUI
 import UIKit
 
-public struct PINSecureInput: UIViewRepresentable {
+public struct SecureInput: UIViewRepresentable {
     struct Configuration {
         let font: UIFont?
         let alignment: NSTextAlignment
         let placeholder: LocalizedStringResource?
+        let keyboardType: UIKeyboardType
+        let allowedCharacters: CharacterSet?
 
         static var `default`: Self {
-            .init(font: nil, alignment: .left, placeholder: nil)
+            .init(font: nil, alignment: .left, placeholder: nil, keyboardType: .default, allowedCharacters: nil)
+        }
+
+        static var pinSettingsInput: Self {
+            .init(font: nil, alignment: .left, placeholder: nil, keyboardType: .numberPad, allowedCharacters: CharacterSet.decimalDigits)
         }
 
         static var pinLock: Self {
             .init(
                 font: .font(textStyle: .title3, weight: .semibold),
                 alignment: .center,
-                placeholder: L10n.PINLock.pinInputPlaceholder
+                placeholder: L10n.PINLock.pinInputPlaceholder,
+                keyboardType: .numberPad,
+                allowedCharacters: CharacterSet.decimalDigits
             )
         }
     }
@@ -41,10 +49,6 @@ public struct PINSecureInput: UIViewRepresentable {
     let configuration: Configuration
     @Binding var text: String
     @Binding var isSecure: Bool
-
-    public init(text: Binding<String>, isSecure: Binding<Bool>) {
-        self.init(configuration: .default, text: text, isSecure: isSecure)
-    }
 
     init(configuration: Configuration, text: Binding<String>, isSecure: Binding<Bool>) {
         self.configuration = configuration
@@ -62,7 +66,7 @@ public struct PINSecureInput: UIViewRepresentable {
         textField.autocorrectionType = .no
         textField.autocapitalizationType = .none
         textField.borderStyle = .none
-        textField.keyboardType = .numberPad
+        textField.keyboardType = configuration.keyboardType
         textField.tintColor = UIColor(DS.Color.Text.accent)
 
         textField.setContentHuggingPriority(.defaultLow, for: .horizontal)
@@ -82,9 +86,9 @@ public struct PINSecureInput: UIViewRepresentable {
     }
 
     public class Coordinator: NSObject, UITextFieldDelegate {
-        var parent: PINSecureInput
+        var parent: SecureInput
 
-        init(_ parent: PINSecureInput) {
+        init(_ parent: SecureInput) {
             self.parent = parent
         }
 
@@ -98,9 +102,9 @@ public struct PINSecureInput: UIViewRepresentable {
             replacementString string: String
         ) -> Bool {
             guard !string.isEmpty else { return true }
-            let digits = CharacterSet.decimalDigits
+            guard let allowedCharacters = parent.configuration.allowedCharacters else { return true }
             let characterSet = CharacterSet(charactersIn: string)
-            return digits.isSuperset(of: characterSet)
+            return allowedCharacters.isSuperset(of: characterSet)
         }
     }
 }

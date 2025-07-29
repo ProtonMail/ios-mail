@@ -15,21 +15,20 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import InboxCoreUI
 import InboxDesignSystem
 import SwiftUI
 
-struct FormSmallButton: View {
+public struct FormSmallButton: View {
     private let title: LocalizedStringResource
     private let rightSymbol: Symbol?
     private let action: () -> Void
 
-    struct Symbol {
+    public struct Symbol {
         let name: DS.SFSymbol
         let color: Color
     }
 
-    init(
+    public init(
         title: LocalizedStringResource,
         rightSymbol: Symbol?,
         action: @escaping () -> Void
@@ -39,7 +38,7 @@ struct FormSmallButton: View {
         self.action = action
     }
 
-    var body: some View {
+    public var body: some View {
         VStack(alignment: .leading, spacing: DS.Spacing.compact) {
             Button(action: { action() }) {
                 HStack {
@@ -64,11 +63,11 @@ struct FormSmallButton: View {
 
 extension FormSmallButton.Symbol {
 
-    static var checkmark: Self {
+    public static var checkmark: Self {
         .init(name: .checkmark, color: DS.Color.Icon.accent)
     }
 
-    static var chevronRight: Self {
+    public static var chevronRight: Self {
         .init(name: .chevronRight, color: DS.Color.Text.hint)
     }
 

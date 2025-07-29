@@ -64,10 +64,10 @@ public struct PINLockScreen: View {
                                 .fontWeight(.semibold)
                                 .padding(.top, DS.Spacing.huge)
                                 .padding(.bottom, DS.Spacing.standard)
-                            
+
                             subtitle
-                            
-                            PINSecureInput(configuration: .pinLock, text: pinBinding, isSecure: .readonly { true })
+
+                            SecureInput(configuration: .pinLock, text: pinBinding, isSecure: .readonly { true })
                                 .focused($isFocused)
                                 .fixedSize(horizontal: false, vertical: true)
                                 .padding(.top, DS.Spacing.huge)
