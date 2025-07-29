@@ -24,7 +24,7 @@ import Testing
 
 @MainActor
 @Suite(.calendarZurichEnUS, .calendarGMTEnUS, .currentDate(.fixture("2025-07-25 12:00:00")))
-final class RSVPEventViewSnapshotTests {
+struct RSVPEventViewSnapshotTests {
     @Test(arguments: RsvpEventDetails.allCases)
     func testRSVP(testCase: (eventDetails: RsvpEventDetails, testName: String, isExpanded: Bool)) {
         let view = RSVPEventView(
