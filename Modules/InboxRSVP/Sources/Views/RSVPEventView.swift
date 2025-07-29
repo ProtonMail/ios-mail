@@ -147,12 +147,12 @@ struct RSVPEventView: View {
         startsAt: 1754042400,  // Aug 1, 2025 10:00 AM UTC
         endsAt: 1754044200,  // Aug 1, 2025 10:30 AM UTC
         occurrence: .dateTime,
-        organizer: RsvpOrganizer(email: "organizer1@example.com"),
+        organizer: RsvpOrganizer(name: .none, email: "organizer1@example.com"),
         attendees: [
-            .init(email: "user1@example.com", status: .unanswered),
-            .init(email: "user2@example.com", status: .yes),
-            .init(email: "user3@example.com", status: .maybe),
-            .init(email: "user4@example.com", status: .no),
+            .init(name: .none, email: "user1@example.com", status: .unanswered),
+            .init(name: "User 2", email: "user2@example.com", status: .yes),
+            .init(name: "User 3", email: "user3@example.com", status: .maybe),
+            .init(name: "User 4", email: "user4@example.com", status: .no),
         ],
         userAttendeeIdx: 0,
         calendar: RsvpCalendar(id: "<calendar_id>", name: "Personal", color: "#F5A623"),

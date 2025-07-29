@@ -261,7 +261,7 @@ private extension RsvpEventDetails {
     static func bestEvent(status: RsvpAttendeeStatus = .unanswered) -> Self {
         .testData(
             summary: "Best event",
-            attendees: [.init(email: "john@pm.me", status: status)],
+            attendees: [.init(name: .none, email: "john@pm.me", status: status)],
             userAttendeeIdx: 0,
             state: .answerableInvite(progress: .pending, attendance: .optional)
         )

@@ -21,12 +21,13 @@ extension RsvpEventDetails {
 
     static func testData(
         summary: String? = .none,
-        organizer: RsvpOrganizer = .init(email: .empty),
+        organizer: RsvpOrganizer = .init(name: .empty, email: .empty),
         attendees: [RsvpAttendee] = [],
         userAttendeeIdx: UInt32 = 0,
         state: RsvpState = .cancelledReminder
     ) -> Self {
         .init(
+            id: .none,
             summary: summary,
             location: .none,
             description: .none,

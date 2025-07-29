@@ -185,8 +185,8 @@ private extension EventData {
             startsAt: UInt64(eventTime),
             endsAt: UInt64(eventTime),
             occurrence: .dateTime,
-            organizer: RsvpOrganizer(email: "organizer1@example.com"),
-            attendees: [RsvpAttendee(email: "user@example.com", status: .yes)],
+            organizer: RsvpOrganizer(name: .none, email: "organizer1@example.com"),
+            attendees: [RsvpAttendee(name: .none, email: "user@example.com", status: .yes)],
             userAttendeeIdx: 0,
             calendar: RsvpCalendar(id: "<personal_id>", name: "Personal", color: "#F5A623")
         )
@@ -207,10 +207,10 @@ private extension EventData {
             startsAt: UInt64(startTime),
             endsAt: UInt64(endTime),
             occurrence: .dateTime,
-            organizer: RsvpOrganizer(email: "organizer2@example.com"),
+            organizer: RsvpOrganizer(name: .none, email: "organizer2@example.com"),
             attendees: [
-                RsvpAttendee(email: "user@example.com", status: userStatus),
-                RsvpAttendee(email: "designer@example.com", status: .yes),
+                RsvpAttendee(name: .none, email: "user@example.com", status: userStatus),
+                RsvpAttendee(name: .none, email: "designer@example.com", status: .yes),
             ],
             userAttendeeIdx: 0,
             calendar: RsvpCalendar(id: "<design_team_id>", name: "Design Team", color: "#BD10E0")
@@ -229,7 +229,7 @@ private extension EventData {
             endsAt: UInt64(eventDate),
             occurrence: .date,
             organizer: RsvpOrganizer(name: "HR department", email: "hr@example.com"),
-            attendees: [RsvpAttendee(email: "user@example.com", status: .unanswered)],
+            attendees: [RsvpAttendee(name: .none, email: "user@example.com", status: .unanswered)],
             userAttendeeIdx: 0,
             calendar: RsvpCalendar(id: "<company_id>", name: "Company Events", color: "#D0021B")
         )
@@ -247,8 +247,8 @@ private extension EventData {
             startsAt: UInt64(startDate),
             endsAt: UInt64(endDate),
             occurrence: .date,
-            organizer: RsvpOrganizer(email: "conference@example.com"),
-            attendees: [RsvpAttendee(email: "user@example.com", status: .unanswered)],
+            organizer: RsvpOrganizer(name: .none, email: "conference@example.com"),
+            attendees: [RsvpAttendee(name: .none, email: "user@example.com", status: .unanswered)],
             userAttendeeIdx: 0,
             calendar: RsvpCalendar(id: "<travel_id>", name: "Travel", color: "#7ED321")
         )
@@ -269,7 +269,7 @@ private extension EventData {
             organizer: RsvpOrganizer(name: "Team lead", email: "teamlead@example.com"),
             attendees: [
                 RsvpAttendee(name: "Jonathan Notingam", email: "user@example.com", status: .yes),
-                RsvpAttendee(email: "teammate1@example.com", status: .maybe),
+                RsvpAttendee(name: .none, email: "teammate1@example.com", status: .maybe),
                 RsvpAttendee(name: "Johny Doe", email: "johny@pm.me", status: .no),
             ],
             userAttendeeIdx: 0,
@@ -291,10 +291,13 @@ private extension EventData {
             startsAt: UInt64(eventTime),
             endsAt: UInt64(eventTime + 3600),
             occurrence: .dateTime,
-            organizer: RsvpOrganizer(email: "a.very.long.and.descriptive.email.address.for.the.organizer@international.corporate.events.and.planning.department.com"),
+            organizer: RsvpOrganizer(
+                name: .none,
+                email: "a.very.long.and.descriptive.email.address.for.the.organizer@international.corporate.events.and.planning.department.com"
+            ),
             attendees: [
-                RsvpAttendee(email: "a.very.long.email.address.for.an.attendee.to.test.wrapping@example.com", status: .yes),
-                RsvpAttendee(email: "another.super.long.attendee.email.just.for.good.measure@example.com", status: .maybe),
+                RsvpAttendee(name: .none, email: "a.very.long.email.address.for.an.attendee.to.test.wrapping@example.com", status: .yes),
+                RsvpAttendee(name: .none, email: "another.super.long.attendee.email.just.for.good.measure@example.com", status: .maybe),
             ],
             userAttendeeIdx: 0,
             calendar: RsvpCalendar(
