@@ -44,12 +44,14 @@ struct SnoozeView: View {
     ]
 
     var body: some View {
-        sheetContent
-            .animation(.easeInOut, value: store.state.screen)
-            .transition(.identity)
-            .presentationDetents(store.state.allowedDetents, selection: $store.state.currentDetent)
-            .presentationDragIndicator(.hidden)
-            .interactiveDismissDisabled()
+        ScrollView {
+            sheetContent
+        }
+        .animation(.easeInOut, value: store.state.screen)
+        .transition(.identity)
+        .presentationDetents(store.state.allowedDetents, selection: $store.state.currentDetent)
+        .presentationDragIndicator(.hidden)
+        .interactiveDismissDisabled()
     }
 
     @ViewBuilder
