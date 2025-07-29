@@ -47,7 +47,7 @@ struct RSVPErrorView: View {
 
     @ViewBuilder
     private func errorDetails() -> some View {
-        VStack(alignment: .center, spacing: DS.Spacing.extraLarge) {
+        VStack(alignment: .center, spacing: DS.Spacing.mediumLight) {
             Text("Invite details unavailable".notLocalized)
                 .font(.callout)
                 .fontWeight(.semibold)
