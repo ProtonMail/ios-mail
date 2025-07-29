@@ -18,11 +18,13 @@
 import InboxDesignSystem
 import SwiftUI
 
-struct UpgradeButton: View {
+struct SnoozeUpgradeButton: View {
     private let variant: Variant
+    private let action: () -> Void
 
-    init(variant: Variant) {
+    init(variant: Variant, action: @escaping () -> Void) {
         self.variant = variant
+        self.action = action
     }
 
     enum Variant {
@@ -31,7 +33,7 @@ struct UpgradeButton: View {
     }
 
     var body: some View {
-        Button(action: {}) {
+        Button(action: action) {
             content
                 .padding(.horizontal, DS.Spacing.large)
                 .frame(maxWidth: .infinity)
@@ -95,7 +97,7 @@ private struct UpgradeButtonStyle: ButtonStyle {
 
 #Preview {
     ZStack {
-        UpgradeButton(variant: .compact)
+        SnoozeUpgradeButton(variant: .compact) {}
             .padding()
     }
 }

@@ -101,7 +101,9 @@ struct SnoozeView: View {
         case .regular:
             customButton(displayOnGrid: displayOnGrid)
         case .upgrade:
-            UpgradeButton(variant: displayOnGrid ? .compact : .fullLine)
+            SnoozeUpgradeButton(variant: displayOnGrid ? .compact : .fullLine) {
+                store.handle(action: .upgradeTapped)
+            }
         }
     }
 
