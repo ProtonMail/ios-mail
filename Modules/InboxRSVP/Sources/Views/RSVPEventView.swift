@@ -139,6 +139,7 @@ struct RSVPEventView: View {
 
 #Preview {
     let eventDetails = RsvpEventDetails(
+        id: .none,
         summary: "Quick Sync",
         location: "Huddle Room",
         description: "A brief check-in.",
@@ -154,11 +155,11 @@ struct RSVPEventView: View {
             .init(email: "user4@example.com", status: .no),
         ],
         userAttendeeIdx: 0,
-        calendar: RsvpCalendar(name: "Personal", color: "#F5A623"),
+        calendar: RsvpCalendar(id: "<calendar_id>", name: "Personal", color: "#F5A623"),
         state: .answerableInvite(progress: .ended, attendance: .optional)
     )
 
-    return ScrollView(.vertical, showsIndicators: false) {
+    ScrollView(.vertical, showsIndicators: false) {
         VStack(spacing: 16) {
             RSVPEventView(
                 eventDetails: eventDetails,

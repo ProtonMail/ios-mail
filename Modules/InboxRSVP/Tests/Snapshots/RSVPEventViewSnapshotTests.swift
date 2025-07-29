@@ -142,6 +142,7 @@ private extension RsvpEventDetails {
 
     static func testData(data: EventData, state: RsvpState) -> RsvpEventDetails {
         .init(
+            id: .none,
             summary: data.summary,
             location: data.location,
             description: data.description,
@@ -187,7 +188,7 @@ private extension EventData {
             organizer: RsvpOrganizer(email: "organizer1@example.com"),
             attendees: [RsvpAttendee(email: "user@example.com", status: .yes)],
             userAttendeeIdx: 0,
-            calendar: RsvpCalendar(name: "Personal", color: "#F5A623")
+            calendar: RsvpCalendar(id: "<personal_id>", name: "Personal", color: "#F5A623")
         )
     }()
 
@@ -212,7 +213,7 @@ private extension EventData {
                 RsvpAttendee(email: "designer@example.com", status: .yes),
             ],
             userAttendeeIdx: 0,
-            calendar: RsvpCalendar(name: "Design Team", color: "#BD10E0")
+            calendar: RsvpCalendar(id: "<design_team_id>", name: "Design Team", color: "#BD10E0")
         )
     }
 
@@ -230,7 +231,7 @@ private extension EventData {
             organizer: RsvpOrganizer(name: "HR department", email: "hr@example.com"),
             attendees: [RsvpAttendee(email: "user@example.com", status: .unanswered)],
             userAttendeeIdx: 0,
-            calendar: RsvpCalendar(name: "Company Events", color: "#D0021B")
+            calendar: RsvpCalendar(id: "<company_id>", name: "Company Events", color: "#D0021B")
         )
     }()
 
@@ -249,7 +250,7 @@ private extension EventData {
             organizer: RsvpOrganizer(email: "conference@example.com"),
             attendees: [RsvpAttendee(email: "user@example.com", status: .unanswered)],
             userAttendeeIdx: 0,
-            calendar: RsvpCalendar(name: "Travel", color: "#7ED321")
+            calendar: RsvpCalendar(id: "<travel_id>", name: "Travel", color: "#7ED321")
         )
     }()
 
@@ -272,7 +273,7 @@ private extension EventData {
                 RsvpAttendee(name: "Johny Doe", email: "johny@pm.me", status: .no),
             ],
             userAttendeeIdx: 0,
-            calendar: RsvpCalendar(name: "Team Calendar", color: "#50E3C2")
+            calendar: RsvpCalendar(id: "<team_calendar_id>", name: "Team Calendar", color: "#50E3C2")
         )
     }()
 
@@ -296,7 +297,11 @@ private extension EventData {
                 RsvpAttendee(email: "another.super.long.attendee.email.just.for.good.measure@example.com", status: .maybe),
             ],
             userAttendeeIdx: 0,
-            calendar: RsvpCalendar(name: "Calendar for Extremely Long and Verbose Project Names and Initiatives", color: "#FF00FF")
+            calendar: RsvpCalendar(
+                id: "<long_calendar_id>",
+                name: "Calendar for Extremely Long and Verbose Project Names and Initiatives",
+                color: "#FF00FF"
+            )
         )
     }()
 }

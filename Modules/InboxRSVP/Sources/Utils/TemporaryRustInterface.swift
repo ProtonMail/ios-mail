@@ -33,6 +33,7 @@ enum RsvpState: Hashable {
 }
 
 struct RsvpEventDetails: Hashable {
+    var id: String?
     var summary: String?
     var location: String?
     var description: String?
@@ -82,6 +83,7 @@ struct RsvpAttendee: Hashable {
 }
 
 struct RsvpCalendar: Hashable {
+    var id: String
     var name: String
     var color: String
 }
