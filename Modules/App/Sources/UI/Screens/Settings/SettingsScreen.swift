@@ -130,11 +130,11 @@ struct SettingsScreen: View {
                         case .qrLogin:
                             router.go(to: .scanQRCode)
                         case .changePassword:
-                            router.go(to: passwordChangeRoute(for: .singlePassword))
+                            router.go(to: passwordChangeRoute(for: .singlePassword(provider.mailUserSession)))
                         case .changeLoginPassword:
-                            router.go(to: passwordChangeRoute(for: .loginPassword))
+                            router.go(to: passwordChangeRoute(for: .loginPassword(provider.mailUserSession)))
                         case .changeMailboxPassword:
-                            router.go(to: passwordChangeRoute(for: .mailboxPassword))
+                            router.go(to: passwordChangeRoute(for: .mailboxPassword(provider.mailUserSession)))
                         case .securityKeys:
                             if let userSettings = state.userSettings {
                                 router.go(to: .securityKeys(userSettings))
@@ -149,10 +149,7 @@ struct SettingsScreen: View {
 
     private func passwordChangeRoute(for mode: PasswordChange.Mode) -> SettingsRoute {
         .changePassword(
-            .init(
-                mode: mode,
-                mailUserSession: self.provider.mailUserSession,
-            ) { [weak router] state in
+            .init(mode: mode) { [weak router] state in
                 if let state {
                     router?.go(to: .changePassword(state))
                 } else {

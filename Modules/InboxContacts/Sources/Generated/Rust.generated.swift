@@ -284,6 +284,16 @@ public extension PasswordFlowChangePassResult {
         }
     }
 }
+public extension PasswordFlowGetFidoDetailsResult {
+    func get() throws(PasswordError) -> Fido2ResponseFfi? {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension PasswordFlowHasFidoResult {
     func get() throws(PasswordError) -> Bool {
         switch self {
@@ -315,6 +325,16 @@ public extension PasswordFlowHasTotpResult {
     }
 }
 public extension PasswordFlowStepBackResult {
+    func get() throws(PasswordError) -> SimplePasswordState {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension PasswordFlowSubmitFidoResult {
     func get() throws(PasswordError) -> SimplePasswordState {
         switch self {
         case .ok(let value):
