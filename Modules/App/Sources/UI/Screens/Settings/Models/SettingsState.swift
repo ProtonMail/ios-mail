@@ -23,7 +23,7 @@ struct SettingsState: Copying {
     var accountInfo: AccountInfo?
     var accountSettings: [AccountSettings]
     let preferences: [SettingsPreference]
-    var showSignInToAnotherDevice: Bool {
+    var userSettings: UserSettings? {
         didSet {
             updateAccountSettings()
         }
@@ -32,6 +32,10 @@ struct SettingsState: Copying {
         didSet {
             updateAccountSettings()
         }
+    }
+
+    var showSignInToAnotherDevice: Bool {
+        !(userSettings?.flags.edmOptOut ?? true)
     }
 
     mutating func updateAccountSettings() {
@@ -54,7 +58,7 @@ extension SettingsState {
             accountInfo: nil,
             accountSettings: .stale,
             preferences: .stale,
-            showSignInToAnotherDevice: false,
+            userSettings: nil,
             hasMailboxPassword: false
         )
     }
@@ -64,7 +68,7 @@ extension SettingsState {
 private extension Array where Element == AccountSettings {
 
     static var stale: [Element] {
-        [.changePassword]
+        [.changePassword, .securityKeys]
     }
 
 }

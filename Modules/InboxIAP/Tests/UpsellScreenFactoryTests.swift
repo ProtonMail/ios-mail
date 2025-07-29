@@ -29,7 +29,7 @@ final class UpsellScreenFactoryTests {
     @Test
     func upsellScreenModelGeneration() {
         let upsellOffer = UpsellOffer(composedPlans: AvailablePlan.mailPlus.asComposedPlans)
-        let upsellScreenModel = sut.upsellScreenModel(basedOn: upsellOffer)
+        let upsellScreenModel = sut.upsellScreenModel(basedOn: upsellOffer, entryPoint: .header)
 
         #expect(upsellScreenModel.planName == "Mail Plus")
         #expect(upsellScreenModel.planInstances == DisplayablePlanInstance.previews)

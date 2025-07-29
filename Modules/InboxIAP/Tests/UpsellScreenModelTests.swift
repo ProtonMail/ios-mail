@@ -31,6 +31,7 @@ final class UpsellScreenModelTests {
     private lazy var sut = UpsellScreenModel(
         planName: "foo",
         planInstances: DisplayablePlanInstance.previews,
+        entryPoint: .header,
         planPurchasing: planPurchasing
     )
 

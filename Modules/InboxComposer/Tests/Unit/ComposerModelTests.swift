@@ -279,16 +279,15 @@ final class ComposerModelTests: BaseTestCase {
         XCTAssertTrue(sut.state.bccRecipients.recipients.isEmpty)
     }
 
-    // FIXME: When the SDK returns contact groups
-    ////    func testAddContact_whenIsAGroup_itShouldUpdateTheRecipientss() {
-    //        let sut = ComposerModel(draft: .emptyMock, contactProvider: testContactProvider)
-    //        let contact = ComposerContact(type: .group(.init(name: dummyName1, totalMembers: 3)))
-    //        sut.addContact(group: .to, contact: contact)
-    //
-    //        XCTAssertEqual(sut.state.toRecipients.recipients.first?.displayName, dummyName1)
-    //        XCTAssertTrue(sut.state.ccRecipients.recipients.isEmpty)
-    //        XCTAssertTrue(sut.state.bccRecipients.recipients.isEmpty)
-    //    }
+    func testAddContact_whenIsAGroup_itShouldUpdateTheRecipientss() {
+        let sut = makeSut(draft: .emptyMock, draftOrigin: .new, contactProvider: testContactProvider)
+        let contact = ComposerContact(type: .group(.init(name: dummyName1, entries: [], totalMembers: 3)))
+        sut.addContact(group: .to, contact: contact)
+
+        XCTAssertEqual(sut.state.toRecipients.recipients.first?.displayName, dummyName1)
+        XCTAssertTrue(sut.state.ccRecipients.recipients.isEmpty)
+        XCTAssertTrue(sut.state.bccRecipients.recipients.isEmpty)
+    }
 
     // MARK: matchContacts
 
@@ -296,7 +295,7 @@ final class ComposerModelTests: BaseTestCase {
         let mockProvider = ComposerContactProvider.testInstance(datasourceContacts: [
             .makeComposerContactSingle(name: "Adrian", email: "a@example.com"),
             .makeComposerContactSingle(name: "Su", email: "susan.cohen@example.com"),
-            .init(type: .group(.init(name: "Team", totalMembers: 4))),
+            .init(type: .group(.init(name: "Team", entries: [], totalMembers: 4))),
         ])
 
         let tests: [MatchContactCountTestCase] = [("A", 3), ("susan", 1), ("team", 1)]

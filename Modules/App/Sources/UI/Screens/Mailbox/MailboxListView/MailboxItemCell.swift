@@ -91,7 +91,7 @@ extension MailboxItemCell {
             Text(uiModel.date.mailboxFormat())
                 .font(.caption)
                 .fontWeight(uiModel.isRead ? .regular : .bold)
-                .foregroundColor(uiModel.isRead ? DS.Color.Text.weak : DS.Color.Text.norm)
+                .foregroundColor(dateForegroundColor)
                 .accessibilityIdentifier(MailboxItemCellIdentifiers.dateText)
         }
     }
@@ -201,6 +201,13 @@ extension MailboxItemCell {
         OneLineLabelsListView(labels: uiModel.labelUIModel.labelModels)
             .removeViewIf(uiModel.labelUIModel.labelModels.isEmpty)
     }
+
+    private var dateForegroundColor: Color {
+        if uiModel.shouldUseSnoozedColorForDate {
+            return DS.Color.Notification.warning
+        }
+        return uiModel.isRead ? DS.Color.Text.weak : DS.Color.Text.norm
+    }
 }
 
 @Observable
@@ -224,6 +231,7 @@ final class MailboxItemCellUIModel: Identifiable, Sendable {
     let expirationDate: Date?
     let snoozeDate: String?
     let isDraftMessage: Bool
+    let shouldUseSnoozedColorForDate: Bool
 
     init(
         id: ID,
@@ -244,7 +252,8 @@ final class MailboxItemCellUIModel: Identifiable, Sendable {
         replyIcons: ReplyIconsUIModel = .init(),
         expirationDate: Date?,
         snoozeDate: Date?,
-        isDraftMessage: Bool
+        isDraftMessage: Bool,
+        shouldUseSnoozedColorForDate: Bool
     ) {
         self.id = id
         self.conversationID = conversationID
@@ -270,6 +279,7 @@ final class MailboxItemCellUIModel: Identifiable, Sendable {
         }
         self.snoozeDate = snoozeTime
         self.isDraftMessage = isDraftMessage
+        self.shouldUseSnoozedColorForDate = shouldUseSnoozedColorForDate
     }
 }
 
@@ -346,7 +356,8 @@ enum MailboxItemCellEvent {
                 replyIcons: .init(shouldShowForwardedIcon: true),
                 expirationDate: .now,
                 snoozeDate: .now + 500,
-                isDraftMessage: false
+                isDraftMessage: false,
+                shouldUseSnoozedColorForDate: false
             ),
             isParentListSelectionEmpty: true,
             isSending: false,
@@ -378,7 +389,8 @@ enum MailboxItemCellEvent {
                 replyIcons: .init(shouldShowRepliedAllIcon: true),
                 expirationDate: .now + 500,
                 snoozeDate: .now + 55000,
-                isDraftMessage: false
+                isDraftMessage: false,
+                shouldUseSnoozedColorForDate: false
             ),
             isParentListSelectionEmpty: true,
             isSending: false,

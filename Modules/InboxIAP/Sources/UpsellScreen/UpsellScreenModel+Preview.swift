@@ -17,9 +17,12 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 extension UpsellScreenModel {
-    static let preview = UpsellScreenModel(
-        planName: "Mail Plus",
-        planInstances: DisplayablePlanInstance.previews,
-        planPurchasing: DummyPlanPurchasing()
-    )
+    static func preview(entryPoint: UpsellScreenEntryPoint) -> UpsellScreenModel {
+        .init(
+            planName: "Mail Plus",
+            planInstances: DisplayablePlanInstance.previews,
+            entryPoint: entryPoint,
+            planPurchasing: DummyPlanPurchasing()
+        )
+    }
 }

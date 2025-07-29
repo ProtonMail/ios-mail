@@ -46,9 +46,8 @@ struct HomeScreen: View {
     @StateObject private var composerCoordinator: ComposerCoordinator
     @State private var modalState: ModalState?
     @State private var isNotificationPromptPresented = false
-    @State private var upsellOffer: UpsellOffer?
     @StateObject private var eventLoopErrorCoordinator: EventLoopErrorCoordinator
-    @StateObject private var iapContainer: IAPContainer
+    @StateObject private var upsellCoordinator: UpsellCoordinator
     @ObservedObject private var appContext: AppContext
 
     private let userSession: MailUserSession
@@ -76,11 +75,9 @@ struct HomeScreen: View {
         self._eventLoopErrorCoordinator = .init(
             wrappedValue: EventLoopErrorCoordinator(userSession: userSession, toastStateStore: toastStateStore)
         )
-        _iapContainer = .init(
-            wrappedValue: .init(mailUserSession: userSession, arePaymentsEnabled: ApiEnvId.current.arePaymentsEnabled)
-        )
+        _upsellCoordinator = .init(wrappedValue: .init(mailUserSession: userSession, configuration: .mail))
         self.userDefaults = appContext.userDefaults
-        self.modalFactory = HomeScreenModalFactory(mailUserSession: userSession)
+        self.modalFactory = HomeScreenModalFactory(mailUserSession: userSession, accountAuthCoordinator: appContext.accountAuthCoordinator)
         notificationAuthorizationStore = .init(userDefaults: userDefaults)
     }
 
@@ -162,17 +159,10 @@ struct HomeScreen: View {
         .onOpenURL(perform: handleDeepLink)
         .onLoad {
             Task {
-                upsellOffer = await iapContainer.upsellOfferProvider.findOffer(for: UpsellConfiguration.planName)
+                await upsellCoordinator.prewarm()
             }
         }
-        .environment(
-            \.makeUpsellScreen,
-            upsellOffer.map { offer in
-                MakeUpsellScreen {
-                    iapContainer.upsellScreenFactory.upsellScreenModel(basedOn: offer)
-                }
-            }
-        )
+        .environmentObject(upsellCoordinator)
     }
 
     private func requestNotificationAuthorizationIfApplicable() {

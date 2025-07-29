@@ -18,6 +18,7 @@
 @testable import ProtonMail
 import InboxCoreUI
 import InboxDesignSystem
+import InboxIAP
 import InboxSnapshotTesting
 import Testing
 import proton_app_uniffi
@@ -29,7 +30,7 @@ struct EmptyFolderBannerViewSnapshotTests {
     struct TestCase {
         let folder: SpamOrTrash
         let state: AutoDeleteState
-        
+
         init(_ folder: SpamOrTrash, _ state: AutoDeleteState) {
             self.folder = folder
             self.state = state
@@ -60,7 +61,8 @@ struct EmptyFolderBannerViewSnapshotTests {
             mailUserSession: .dummy,
             wrapper: .previewInstance()
         )
-            .environmentObject(ToastStateStore(initialState: .initial))
-            .padding([.leading, .trailing], DS.Spacing.medium)
+        .environmentObject(ToastStateStore(initialState: .initial))
+        .environmentObject(UpsellCoordinator(mailUserSession: .dummy, configuration: .mail))
+        .padding([.leading, .trailing], DS.Spacing.medium)
     }
 }

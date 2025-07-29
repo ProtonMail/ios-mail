@@ -24,6 +24,7 @@ enum AccountSettings: CaseIterable, Hashable {
     case changePassword
     case changeLoginPassword
     case changeMailboxPassword
+    case securityKeys
 
     struct DisplayData {
         let title: LocalizedStringResource
@@ -40,6 +41,8 @@ enum AccountSettings: CaseIterable, Hashable {
             .init(title: L10n.Settings.App.changeLoginPassword, icon: Theme.icon.lock)
         case .changeMailboxPassword:
             .init(title: L10n.Settings.App.changeMailboxPassword, icon: Theme.icon.lockLayers)
+        case .securityKeys:
+            .init(title: L10n.Settings.App.securityKeys, icon: Theme.icon.securityKey)
         }
     }
 }

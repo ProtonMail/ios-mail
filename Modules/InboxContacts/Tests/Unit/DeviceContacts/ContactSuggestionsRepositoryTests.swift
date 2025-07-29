@@ -309,7 +309,7 @@ private extension ContactSuggestion {
 
     private static func proton(_ emailItem: ContactEmailItem, _ initials: String) -> Self {
         .init(
-            key: "\(emailItem.id.value)",
+            key: "\(emailItem.contactId.value)",
             name: "name_\(emailItem.email)",
             avatarInformation: .init(text: initials, color: "#A1FF33"),
             kind: .contactItem(emailItem)

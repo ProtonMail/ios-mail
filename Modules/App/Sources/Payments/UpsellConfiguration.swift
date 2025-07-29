@@ -15,7 +15,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-enum UpsellConfiguration {
+import InboxIAP
+import proton_app_uniffi
+
+extension UpsellConfiguration {
     /// The upsell screen should always show this particular plan.
-    static let planName = "mail2022"
+    static let mail: Self = .init(planName: "mail2022", arePaymentsEnabled: ApiEnvId.current.arePaymentsEnabled)
 }

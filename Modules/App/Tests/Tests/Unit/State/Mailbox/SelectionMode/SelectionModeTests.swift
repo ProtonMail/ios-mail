@@ -275,7 +275,8 @@ extension SelectionModeTests {
             attachmentsUIModel: .init(),
             expirationDate: nil,
             snoozeDate: nil,
-            isDraftMessage: false
+            isDraftMessage: false,
+            shouldUseSnoozedColorForDate: false
         )
     }
 }

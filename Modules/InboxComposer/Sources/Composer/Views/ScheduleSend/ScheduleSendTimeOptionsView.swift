@@ -24,14 +24,14 @@ struct ScheduleSendTimeOptionsView: View {
     private let predefinedTimeOptions: ScheduleSendTimeOptions
     private let isCustomOptionAvailable: Bool
     private let onTimeSelected: (Date) async -> Void
-    private let onOpenDatePicker: () -> Void
+    private let onOpenDatePicker: () async -> Void
 
     init(
         predefinedTimeOptions: ScheduleSendTimeOptions,
         isCustomOptionAvailable: Bool,
         dateFormatter: ScheduleSendDateFormatter,
         onTimeSelected: @escaping (Date) async -> Void,
-        onOpenDatePicker: @escaping () -> Void
+        onOpenDatePicker: @escaping () async -> Void
     ) {
         self.dateFormatter = dateFormatter
         self.predefinedTimeOptions = predefinedTimeOptions
@@ -110,7 +110,7 @@ struct ScheduleSendTimeOptionsView: View {
                 : L10n.ScheduleSend.customSubtitleFreeUser.string
         }
         Button(action: {
-            onOpenDatePicker()
+            Task { await onOpenDatePicker() }
         }) {
             HStack {
                 VStack(alignment: .leading, spacing: DS.Spacing.small) {

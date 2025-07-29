@@ -34,11 +34,30 @@ public final class UpsellScreenModel: Identifiable {
 
     private let logoScaleFactorRange: ClosedRange<CGFloat> = 0.8...1
     private let logoOpacityRange: ClosedRange<CGFloat> = 0.2...1
+    private let entryPoint: UpsellScreenEntryPoint
     private let planPurchasing: PlanPurchasing
 
-    init(planName: String, planInstances: [DisplayablePlanInstance], planPurchasing: PlanPurchasing) {
+    var logo: ImageResource {
+        entryPoint.logo
+    }
+
+    var title: LocalizedStringResource {
+        L10n.screenTitle(planName: planName, entryPoint: entryPoint)
+    }
+
+    var subtitle: LocalizedStringResource {
+        L10n.screenSubtitle(planName: planName, entryPoint: entryPoint)
+    }
+
+    init(
+        planName: String,
+        planInstances: [DisplayablePlanInstance],
+        entryPoint: UpsellScreenEntryPoint,
+        planPurchasing: PlanPurchasing
+    ) {
         self.planName = planName
         self.planInstances = planInstances
+        self.entryPoint = entryPoint
         self.planPurchasing = planPurchasing
         selectedInstanceId = planInstances[0].storeKitProductId
     }
@@ -84,6 +103,13 @@ public final class UpsellScreenModel: Identifiable {
         default:
             true
         }
+    }
+}
+
+// This implementation of Equatable is only intended to enable testing state structures which UpsellScreenModel is a part of, to verify if the appropriate screen has been presented
+extension UpsellScreenModel: Equatable {
+    nonisolated public static func == (lhs: UpsellScreenModel, rhs: UpsellScreenModel) -> Bool {
+        lhs.planName == rhs.planName
     }
 }
 

@@ -248,7 +248,7 @@ extension MailboxModel {
             messageScroller?.handle().disconnect()
             conversationScroller?.handle().disconnect()
 
-            await paginatedDataSource.resetToInitialState()
+            paginatedDataSource.resetToInitialState()
 
             let mailbox =
                 selectedMailbox.isInbox
@@ -282,7 +282,7 @@ extension MailboxModel {
                     }
                 ).get()
             }
-            await paginatedDataSource.fetchInitialPage()
+            paginatedDataSource.fetchInitialPage()
 
             unreadCountLiveQuery = UnreadItemsCountLiveQuery(mailbox: mailbox) { [weak self] unreadCount in
                 AppLogger.log(message: "unread count callback: \(unreadCount)", category: .mailbox)
@@ -345,7 +345,7 @@ extension MailboxModel {
             completion = { [weak self] in self?.updateSelectedItemsAfterDestructiveUpdate() }
         case .error(let error):
             AppLogger.log(error: error, category: .mailbox)
-            toast = .error(message: L10n.Mailbox.Error.issuesLoadingMailboxContent.string)
+            toast = .error(message: L10n.Mailbox.Error.issuesLoadingMailboxContent.string).duration(.toastMediumDuration)
             updateType = .error(error)
         }
         listUpdateSubject.send(.init(isLastPage: isLastPage, value: updateType, completion: completion))
@@ -371,7 +371,7 @@ extension MailboxModel {
             completion = { [weak self] in self?.updateSelectedItemsAfterDestructiveUpdate() }
         case .error(let error):
             AppLogger.log(error: error, category: .mailbox)
-            toast = .error(message: L10n.Mailbox.Error.issuesLoadingMailboxContent.string)
+            toast = .error(message: L10n.Mailbox.Error.issuesLoadingMailboxContent.string).duration(.toastMediumDuration)
             updateType = .error(error)
         }
         listUpdateSubject.send(.init(isLastPage: isLastPage, value: updateType, completion: completion))

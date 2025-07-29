@@ -117,9 +117,11 @@ targets:
         CODE_SIGN_IDENTITY: "iPhone Distribution: Proton AG (2SB5Z68H26)"
       configs:
         Debug:
+          CODE_SIGN_ENTITLEMENTS: "ProtonMailDebug.entitlements"
           CODE_SIGN_IDENTITY: "Apple Development"
           PROVISIONING_PROFILE_SPECIFIER: "ProtonMail Dev"
         QA:
+          CODE_SIGN_ENTITLEMENTS: "ProtonMailDebug.entitlements"
           ASSETCATALOG_COMPILER_APPICON_NAME: AppIconDev
     info:
       path: Modules/App/Sources/SupportingFiles/Info.plist

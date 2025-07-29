@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import AccountLogin
 import AccountPassword
 import InboxCore
 import InboxCoreUI
@@ -30,11 +31,18 @@ struct SettingsScreen: View {
     private let provider: AccountDetailsProvider
     private let viewFactory: SettingsViewFactory
 
-    init(state: SettingsState = .initial, mailUserSession: MailUserSession) {
+    init(
+        state: SettingsState = .initial,
+        mailUserSession: MailUserSession,
+        accountAuthCoordinator: AccountAuthCoordinator
+    ) {
         _state = .init(initialValue: state)
         _router = .init(wrappedValue: .init())
         self.provider = .init(mailUserSession: mailUserSession)
-        self.viewFactory = .init(mailUserSession: mailUserSession)
+        self.viewFactory = .init(
+            mailUserSession: mailUserSession,
+            accountAuthCoordinator: accountAuthCoordinator
+        )
     }
 
     var body: some View {
@@ -76,9 +84,8 @@ struct SettingsScreen: View {
                 state = state.copy(\.accountInfo, to: details.settings)
             }
 
-            if let isEasyDeviceMigrationDisabled = await userSettings?.flags.edmOptOut {
-                state = state
-                    .copy(\.showSignInToAnotherDevice, to: !isEasyDeviceMigrationDisabled)
+            if let settings = await userSettings {
+                state = state.copy(\.userSettings, to: settings)
             }
 
             state = state.copy(\.hasMailboxPassword, to: await hasMailboxPassword)
@@ -128,6 +135,10 @@ struct SettingsScreen: View {
                             router.go(to: passwordChangeRoute(for: .loginPassword))
                         case .changeMailboxPassword:
                             router.go(to: passwordChangeRoute(for: .mailboxPassword))
+                        case .securityKeys:
+                            if let userSettings = state.userSettings {
+                                router.go(to: .securityKeys(userSettings))
+                            }
                         }
                     }
                 )
@@ -262,8 +273,10 @@ private extension SettingsPreference {
 
 }
 
-#Preview {
-    NavigationStack {
-        SettingsScreen(mailUserSession: MailUserSession(noPointer: .init()))
+#if DEBUG
+    #Preview {
+        NavigationStack {
+            SettingsScreen(mailUserSession: MailUserSession(noPointer: .init()), accountAuthCoordinator: .mock())
+        }
     }
-}
+#endif

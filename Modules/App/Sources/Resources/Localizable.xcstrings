@@ -14722,6 +14722,9 @@
     "Secure with Touch ID" : {
       "comment" : "App lock option."
     },
+    "Security keys" : {
+      "comment" : "Security keys row title"
+    },
     "Seems like you are all caught up for now" : {
       "comment" : "Mailbox empty state message.",
       "localizations" : {

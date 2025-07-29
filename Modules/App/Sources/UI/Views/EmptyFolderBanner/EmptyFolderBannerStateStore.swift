@@ -18,6 +18,7 @@
 import InboxCore
 import InboxCoreUI
 import InboxDesignSystem
+import InboxIAP
 import proton_app_uniffi
 import SwiftUI
 
@@ -33,32 +34,41 @@ final class EmptyFolderBannerStateStore: StateStore {
         let title: String
         let buttons: [EmptyFolderBanner.ActionButton]
         var alert: AlertModel?
+        var presentedUpsell: UpsellScreenModel?
     }
-    
+
     let model: EmptyFolderBanner
     @Published var state: State
     private let toastStateStore: ToastStateStore
     private let messagesDeleter: AllMessagesDeleter
-    
+    private let upsellScreenPresenter: UpsellScreenPresenter
+
     init(
         model: EmptyFolderBanner,
         toastStateStore: ToastStateStore,
         mailUserSession: MailUserSession,
-        wrapper: RustEmptyFolderBannerWrapper
+        wrapper: RustEmptyFolderBannerWrapper,
+        upsellScreenPresenter: UpsellScreenPresenter
     ) {
         self.model = model
         self.state = model.state
         self.toastStateStore = toastStateStore
         self.messagesDeleter = .init(mailUserSession: mailUserSession, wrapper: wrapper)
+        self.upsellScreenPresenter = upsellScreenPresenter
     }
 
     // MARK: - StateStore
-    
+
     @MainActor
     func handle(action: Action) async {
         switch action {
         case .upgradeToAutoDelete:
-            toastStateStore.present(toast: .comingSoon)
+            do {
+                let presentedUpsell = try await upsellScreenPresenter.presentUpsellScreen(entryPoint: .autoDelete)
+                state = state.copy(\.presentedUpsell, to: presentedUpsell)
+            } catch {
+                toastStateStore.present(toast: .error(message: error.localizedDescription))
+            }
         case .emptyFolder:
             let alert: AlertModel = .emptyFolderConfirmation(
                 folder: model.folder.type,
@@ -68,7 +78,7 @@ final class EmptyFolderBannerStateStore: StateStore {
             state = state.copy(\.alert, to: alert)
         case .deleteConfirmed(let action):
             state = state.copy(\.alert, to: nil)
-            
+
             if case .delete = action {
                 await messagesDeleter.deleteAll(labelID: model.folder.labelID)
             }

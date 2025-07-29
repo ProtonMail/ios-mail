@@ -145,8 +145,7 @@ final class CursorTextField: UITextField {
             super.paste(sender)
             return
         }
-        let sanitizedText = pastedText
-            .replacingOccurrences(of: "mailto:", with: "", options: .caseInsensitive, range: nil)
+        let sanitizedText = pastedText.replacingOccurrences(of: "mailto:", with: "", options: .caseInsensitive, range: nil)
             .withoutWhitespace
         insertText(sanitizedText)
     }

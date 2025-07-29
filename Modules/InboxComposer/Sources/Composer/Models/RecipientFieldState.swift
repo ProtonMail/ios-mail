@@ -20,10 +20,10 @@ import Foundation
 import proton_app_uniffi
 
 enum RecipientControllerStateType {
-    case collapsed      /* only first recipient and remaining recipient count are visible */
-    case expanded       /* all recipients are visible */
-    case editing        /* all recipients are visible and also the cursor to add more recipients */
-    case contactPicker  /* only the content of the cursor cell is visible */
+    case collapsed /* only first recipient and remaining recipient count are visible */
+    case expanded /* all recipients are visible */
+    case editing /* all recipients are visible and also the cursor to add more recipients */
+    case contactPicker /* only the content of the cursor cell is visible */
 }
 
 struct RecipientFieldState: Equatable, Copying {

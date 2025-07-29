@@ -21,7 +21,7 @@ extension AlertModel {
 
     static func discardDraft(action: @escaping @MainActor (DiscardDraftAlertAction) async -> Void) -> Self {
         let actions: [AlertAction] = DiscardDraftAlertAction.allCases.map { actionType in
-                .init(details: actionType, action: { await action(actionType) })
+            .init(details: actionType, action: { await action(actionType) })
         }
 
         return .init(

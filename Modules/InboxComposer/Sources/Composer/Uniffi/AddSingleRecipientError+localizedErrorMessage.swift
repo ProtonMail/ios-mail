@@ -22,11 +22,12 @@ extension AddSingleRecipientError {
 
     func localizedErrorMessage(entry: SingleRecipientEntry) -> LocalizedStringResource {
         switch self {
-        case .ok: return LocalizedStringResource(stringLiteral: .empty)
+        case .ok:
+            LocalizedStringResource(stringLiteral: .empty)
         case .duplicate:
-            return L10n.ComposerError.duplicateRecipient(address: entry.email)
+            L10n.ComposerError.duplicateRecipient(address: entry.email)
         case .saveFailed:
-            return L10n.ComposerError.draftSaveFailed
+            L10n.ComposerError.draftSaveFailed
         }
     }
 }

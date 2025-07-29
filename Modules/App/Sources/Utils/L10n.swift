@@ -919,6 +919,10 @@ enum L10n {
                 "Change second password",
                 comment: "Option in the Settings screen (if the user has two passwords)."
             )
+            static let securityKeys = LocalizedStringResource(
+                "Security keys",
+                comment: "Security keys row title"
+            )
         }
 
         static let subscription = LocalizedStringResource(

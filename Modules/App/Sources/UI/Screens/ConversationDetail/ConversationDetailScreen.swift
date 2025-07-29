@@ -248,7 +248,8 @@ private extension ConversationDetailModel.State {
                     ],
                     expirationDate: nil,
                     snoozeDate: nil,
-                    isDraftMessage: false
+                    isDraftMessage: false,
+                    shouldUseSnoozedColorForDate: false
                 ),
                 selectedMailbox: .inbox
             ),

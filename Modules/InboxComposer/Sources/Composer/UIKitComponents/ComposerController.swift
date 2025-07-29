@@ -108,7 +108,7 @@ final class ComposerController: UIViewController {
             guard let self else { return }
             switch event {
             case .onStartEditing, .onBodyChange, .onImagePasted, .onInlineImageRemoved, .onInlineImageRemovalRequested,
-                    .onInlineImageDispositionChangeRequested, .onReloadAfterMemoryPressure:
+                .onInlineImageDispositionChangeRequested, .onReloadAfterMemoryPressure:
                 guard let bodyEvent = event.toBodyEvent else { return }
                 self.onEvent(.bodyEvent(bodyEvent))
             case .onCursorPositionChange(let position):
@@ -136,7 +136,7 @@ final class ComposerController: UIViewController {
             draftActionBarController.view.bottomAnchor.constraint(
                 equalTo: view.keyboardLayoutGuide.topAnchor,
                 constant: closeKeyboardSeparation
-            )
+            ),
         ])
     }
 

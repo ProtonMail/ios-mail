@@ -64,11 +64,14 @@ class LabelAsSheetModelTests: BaseTestCase {
 
         XCTAssertEqual(invokedAvailableActionsWithMessagesIDs, messageIDs)
         XCTAssertEqual(invokedAvailableActionsWithConversationIDs, [])
-        XCTAssertEqual(sut.state, .init(
-            labels: LabelAsSheetPreviewProvider.testLabels().map(\.displayModel),
-            shouldArchive: false, 
-            createFolderLabelPresented: false
-        ))
+        XCTAssertEqual(
+            sut.state,
+            .init(
+                labels: LabelAsSheetPreviewProvider.testLabels().map(\.displayModel),
+                shouldArchive: false,
+                createFolderLabelPresented: false
+            )
+        )
     }
 
     func testNavigation_WhenDoneButtonIsTapped_ItReturnsCorrectValue() {
@@ -87,19 +90,25 @@ class LabelAsSheetModelTests: BaseTestCase {
 
         XCTAssertEqual(invokedAvailableActionsWithMessagesIDs, [])
         XCTAssertEqual(invokedAvailableActionsWithConversationIDs, conversationIDs)
-        XCTAssertEqual(sut.state, .init(
-            labels: LabelAsSheetPreviewProvider.testLabels().map(\.displayModel),
-            shouldArchive: false, 
-            createFolderLabelPresented: false
-        ))
+        XCTAssertEqual(
+            sut.state,
+            .init(
+                labels: LabelAsSheetPreviewProvider.testLabels().map(\.displayModel),
+                shouldArchive: false,
+                createFolderLabelPresented: false
+            )
+        )
 
         sut.handle(action: .toggleSwitch)
 
-        XCTAssertEqual(sut.state, .init(
-            labels: LabelAsSheetPreviewProvider.testLabels().map(\.displayModel),
-            shouldArchive: true, 
-            createFolderLabelPresented: false
-        ))
+        XCTAssertEqual(
+            sut.state,
+            .init(
+                labels: LabelAsSheetPreviewProvider.testLabels().map(\.displayModel),
+                shouldArchive: true,
+                createFolderLabelPresented: false
+            )
+        )
     }
 
     func testState_WhenCreateLabelButtonIsTapped_ItReturnsCorrectState() {
@@ -124,25 +133,31 @@ class LabelAsSheetModelTests: BaseTestCase {
 
         sut.handle(action: .viewAppear)
 
-        XCTAssertEqual(sut.state, .init(
-            labels: [firstLabel, secondLabel, thirdLabel].map(\.displayModel),
-            shouldArchive: false,
-            createFolderLabelPresented: false
-        ))
+        XCTAssertEqual(
+            sut.state,
+            .init(
+                labels: [firstLabel, secondLabel, thirdLabel].map(\.displayModel),
+                shouldArchive: false,
+                createFolderLabelPresented: false
+            )
+        )
 
         sut.handle(action: .selected(firstLabel.displayModel))
         sut.handle(action: .selected(secondLabel.displayModel))
         sut.handle(action: .selected(thirdLabel.displayModel))
 
-        XCTAssertEqual(sut.state, .init(
-            labels: [
-                firstLabel.copy(isSelected: .unselected).displayModel,
-                secondLabel.copy(isSelected: .unselected).displayModel,
-                thirdLabel.copy(isSelected: .selected).displayModel,
-            ],
-            shouldArchive: false, 
-            createFolderLabelPresented: false
-        ))
+        XCTAssertEqual(
+            sut.state,
+            .init(
+                labels: [
+                    firstLabel.copy(isSelected: .unselected).displayModel,
+                    secondLabel.copy(isSelected: .unselected).displayModel,
+                    thirdLabel.copy(isSelected: .selected).displayModel,
+                ],
+                shouldArchive: false,
+                createFolderLabelPresented: false
+            )
+        )
     }
 
     func test_WhenOneLabelIsSelectedAndOtherPartiallySelected_ItLabelsMessage() {
@@ -171,24 +186,26 @@ class LabelAsSheetModelTests: BaseTestCase {
             ),
             labelAsActions: .init(
                 labelMessagesAs: { _, ids, selectedLabelIDs, partiallySelectedLabelIDs, archive in
-                    self.invokedLabelMessage.append(.init(
-                        itemsIDs: ids,
-                        selectedLabelIDs: selectedLabelIDs,
-                        partiallySelectedLabelIDs: partiallySelectedLabelIDs,
-                        archive: archive
-                    ))
+                    self.invokedLabelMessage.append(
+                        .init(
+                            itemsIDs: ids,
+                            selectedLabelIDs: selectedLabelIDs,
+                            partiallySelectedLabelIDs: partiallySelectedLabelIDs,
+                            archive: archive
+                        ))
 
-                    return .ok(.init(noPointer: .init()))
+                    return .ok(.init(inputLabelIsEmpty: false, undo: .dummy))
                 },
                 labelConversationsAs: { mailbox, ids, selectedLabelIDs, partiallySelectedLabelIDs, archive in
-                    self.invokedLabelConversation.append(.init(
-                        itemsIDs: ids,
-                        selectedLabelIDs: selectedLabelIDs,
-                        partiallySelectedLabelIDs: partiallySelectedLabelIDs,
-                        archive: archive
-                    ))
+                    self.invokedLabelConversation.append(
+                        .init(
+                            itemsIDs: ids,
+                            selectedLabelIDs: selectedLabelIDs,
+                            partiallySelectedLabelIDs: partiallySelectedLabelIDs,
+                            archive: archive
+                        ))
 
-                    return .ok(.init(noPointer: .init()))
+                    return .ok(.init(inputLabelIsEmpty: false, undo: .dummy))
                 }
             ),
             toastStateStore: toastStateStore,
@@ -202,7 +219,7 @@ class LabelAsSheetModelTests: BaseTestCase {
         stubbedLabelAsActions = [
             .testData(id: selectedLabelID, isSelected: .selected),
             .testData(id: partiallySelectedLabelID, isSelected: .partial),
-            .testData(id: .random(), isSelected: .unselected)
+            .testData(id: .random(), isSelected: .unselected),
         ]
 
         let itemsIDs: [ID] = [.init(value: 1), .init(value: 3)]
@@ -212,14 +229,17 @@ class LabelAsSheetModelTests: BaseTestCase {
         sut.handle(action: .toggleSwitch)
         sut.handle(action: .doneButtonTapped)
 
-        XCTAssertEqual(spyToVerify(), [
-            .init(
-                itemsIDs: itemsIDs,
-                selectedLabelIDs: [selectedLabelID],
-                partiallySelectedLabelIDs: [partiallySelectedLabelID],
-                archive: true
-            )
-        ])
+        XCTAssertEqual(
+            spyToVerify(),
+            [
+                .init(
+                    itemsIDs: itemsIDs,
+                    selectedLabelIDs: [selectedLabelID],
+                    partiallySelectedLabelIDs: [partiallySelectedLabelID],
+                    archive: true
+                )
+            ]
+        )
         XCTAssertEqual(invokedDismissCount, 1)
     }
 

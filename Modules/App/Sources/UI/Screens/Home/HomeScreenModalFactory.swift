@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import AccountLogin
 import InboxComposer
 import InboxContacts
 import InboxCore
@@ -29,7 +30,7 @@ struct HomeScreenModalFactory {
     private let makeReportProblemScreen: () -> ReportProblemScreen
     private let makeSubscriptionsScreen: () -> AvailablePlansView
 
-    init(mailUserSession: MailUserSession) {
+    init(mailUserSession: MailUserSession, accountAuthCoordinator: AccountAuthCoordinator) {
         self.makeContactsScreen = { draftPresenter in
             ContactsScreen(
                 mailUserSession: mailUserSession,
@@ -38,7 +39,7 @@ struct HomeScreenModalFactory {
                 draftPresenter: draftPresenter
             )
         }
-        self.makeSettingsScreen = { SettingsScreen(mailUserSession: mailUserSession) }
+        self.makeSettingsScreen = { SettingsScreen(mailUserSession: mailUserSession, accountAuthCoordinator: accountAuthCoordinator) }
         self.makeReportProblemScreen = { ReportProblemScreen(reportProblemService: mailUserSession) }
         self.makeSubscriptionsScreen = { AvailablePlansViewFactory.make(mailUserSession: mailUserSession) }
     }
