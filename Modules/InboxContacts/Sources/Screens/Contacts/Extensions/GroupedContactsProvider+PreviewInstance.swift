@@ -823,7 +823,7 @@ extension ContactEmailItem {
 
     public init(id: UInt64, email: String, name: String = "") {
         self.init(
-            id: Id(value: id),
+            contactId: Id(value: id),
             email: email,
             isProton: false,
             lastUsedTime: 0,

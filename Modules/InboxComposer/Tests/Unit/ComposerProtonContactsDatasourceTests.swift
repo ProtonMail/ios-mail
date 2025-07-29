@@ -147,7 +147,7 @@ private extension MailUserSession {
     }
 }
 
-private class ContactSuggestionsStub: ContactSuggestions {
+private class ContactSuggestionsStub: ContactSuggestions, @unchecked Sendable {
 
     private let _all: [ContactSuggestion]
 
@@ -197,7 +197,7 @@ private extension ContactItem {
     init(id: UInt64, email: String) {
         let item = ContactEmailItem(id: id, email: email)
         self.init(
-            id: item.id,
+            id: item.contactId,
             name: item.name,
             avatarInformation: item.avatarInformation,
             emails: [item]

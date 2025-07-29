@@ -41,9 +41,17 @@ extension LabelAsActions {
 
     static var dummy: Self {
         .init(
-            labelMessagesAs: { _, _, _, _, _ in .ok(.init(noPointer: .init())) },
-            labelConversationsAs: { _, _, _, _, _ in .ok(.init(noPointer: .init())) }
+            labelMessagesAs: { _, _, _, _, _ in .ok(.init(inputLabelIsEmpty: false, undo: .dummy)) },
+            labelConversationsAs: { _, _, _, _, _ in .ok(.init(inputLabelIsEmpty: false, undo: .dummy)) }
         )
+    }
+
+}
+
+extension Undo {
+
+    static var dummy: Undo {
+        Undo(noPointer: .init())
     }
 
 }
