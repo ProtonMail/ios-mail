@@ -17,7 +17,6 @@
 
 @testable import InboxCoreUI
 import InboxSnapshotTesting
-import InboxTesting
 import SwiftUI
 import XCTest
 

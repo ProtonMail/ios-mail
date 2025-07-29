@@ -59,7 +59,7 @@ class BackgroundTransitionActionsExecutor: ApplicationServiceDidEnterBackground,
     // MARK: - ApplicationServiceWillEnterForeground
 
     func willEnterForeground() {
-        guard let backgroundTaskIdentifier, let backgroundExecutionHandle else {
+        guard backgroundTaskIdentifier != nil, backgroundExecutionHandle != nil else {
             Self.log("Missing backgroundTaskIdentifier? - \(backgroundTaskIdentifier == nil)")
             Self.log("Handle present: \(self.backgroundExecutionHandle != nil)?")
             return
@@ -115,12 +115,13 @@ class BackgroundTransitionActionsExecutor: ApplicationServiceDidEnterBackground,
     }
 
     private func displayUnsentMessagesNotificationIfOnline() async {
-        guard let backgroundTaskIdentifier else {
+        Self.log("Handle present: \(backgroundExecutionHandle != nil)?")
+
+        guard backgroundTaskIdentifier != nil else {
             Self.log("Missing backgroundTaskIdentifier? - \(backgroundTaskIdentifier == nil)")
-            Self.log("Handle present: \(self.backgroundExecutionHandle != nil)?")
             return
         }
-        Self.log("Handle present: \(backgroundExecutionHandle != nil)?")
+
         let hasAccessToInternetOnEnd = await isConnected()
 
         let offline = !hasAccessToInternetOnEnd && hasAccessToInternetOnStart == false

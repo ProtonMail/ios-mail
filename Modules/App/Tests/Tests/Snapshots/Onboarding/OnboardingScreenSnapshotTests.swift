@@ -29,7 +29,7 @@ struct OnboardingScreenSnapshotTests {
 
         allPhones.forEach { name, config in
             assertSnapshots(
-                matching: makeSUT(selectedPageIndex: selectedPageIndex, size: config.size!),
+                matching: makeSUT(selectedPageIndex: selectedPageIndex),
                 on: [(name, config)],
                 named: "page_\(selectedPageIndex)"
             )
@@ -38,7 +38,7 @@ struct OnboardingScreenSnapshotTests {
 
     // MARK: - Private
 
-    private func makeSUT(selectedPageIndex: Int, size: CGSize) -> UIHostingController<some View> {
+    private func makeSUT(selectedPageIndex: Int) -> UIHostingController<some View> {
         let sut = OnboardingScreen(selectedPageIndex: selectedPageIndex)
         return UIHostingController(rootView: sut)
     }

@@ -16,7 +16,6 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import InboxContacts
-import InboxCore
 import InboxCoreUI
 import InboxTesting
 import proton_app_uniffi

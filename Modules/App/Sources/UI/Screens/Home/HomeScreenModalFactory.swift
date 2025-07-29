@@ -16,7 +16,6 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import AccountLogin
-import InboxComposer
 import InboxContacts
 import InboxCore
 import InboxIAP

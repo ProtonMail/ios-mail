@@ -16,7 +16,6 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import InboxDesignSystem
-import InboxCoreUI
 import SwiftUI
 
 struct UnreadFilterBarView: View {
@@ -56,10 +55,7 @@ struct UnreadFilterBarView: View {
                 if state.isUnreadButtonSelected {
                     Image(symbol: .xmark)
                         .foregroundStyle(DS.Color.Brand.plus30)
-                        .transition(
-                            .scale
-                            .combined(with: .opacity)
-                        )
+                        .transition(.scale.combined(with: .opacity))
                 }
             }
             .animation(.easeIn(duration: 0.1), value: state.isUnreadButtonSelected)

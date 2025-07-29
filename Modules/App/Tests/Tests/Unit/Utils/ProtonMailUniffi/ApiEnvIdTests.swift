@@ -18,8 +18,6 @@
 import proton_app_uniffi
 import Testing
 
-@testable import ProtonMail
-
 struct ApiEnvIdTests {
     @Test(
         arguments: [

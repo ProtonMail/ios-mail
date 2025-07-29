@@ -78,23 +78,26 @@ class MoveToSheetStateStore: StateStore {
     }
 
     private func dismissSheet(presentingToast toast: Toast) {
-        Dispatcher.dispatchOnMain(.init { [weak self, input] in
-            self?.toastStateStore.present(toast: toast)
-            self?.navigation(input.type.navigation)
-        })
+        Dispatcher.dispatchOnMain(
+            .init { [weak self, input] in
+                self?.toastStateStore.present(toast: toast)
+                self?.navigation(input.type.navigation)
+            })
     }
 
     private func loadMoveToActions() {
         Task {
             let actions = await moveToActionsProvider.actions(for: input.type.inboxItemType, ids: input.ids)
-            Dispatcher.dispatchOnMain(.init(block: { [weak self] in
-                self?.update(moveToActions: actions)
-            }))
+            Dispatcher.dispatchOnMain(
+                .init(block: { [weak self] in
+                    self?.update(moveToActions: actions)
+                }))
         }
     }
 
     private func update(moveToActions: [MoveAction]) {
-        state = state
+        state =
+            state
             .copy(\.moveToSystemFolderActions, to: moveToActions.compactMap(\.moveToSystemFolder))
             .copy(\.moveToCustomFolderActions, to: moveToActions.compactMap(\.moveToCustomFolder))
     }
@@ -148,17 +151,4 @@ private extension MoveToState {
     static var initial: Self {
         .init(moveToSystemFolderActions: [], moveToCustomFolderActions: [], createFolderLabelPresented: false)
     }
-}
-
-private extension MailboxItemType {
-
-    var navigation: MoveToSheetNavigation {
-        switch self {
-        case .conversation:
-            return .dismissAndGoBack
-        case .message:
-            return .dismiss
-        }
-    }
-
 }

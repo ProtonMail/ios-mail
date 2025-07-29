@@ -20,34 +20,26 @@ import SwiftUI
 public extension DS.Icon {
     static let icArchiveBox = ImageResource.icArchiveBox
     static let icArrowUpFromSquare = ImageResource.icArrowUpFromSquare
-    static let icArrowOutFromRectangle = ImageResource.icArrowOutFromRectangle
     static let icArrowRotateRight = ImageResource.icArrowRotateRight
-    static let icBookmark = ImageResource.icBookmark
     static let icBug = ImageResource.icBug
     static let icCalendarToday = ImageResource.icCalendarToday
     static let icCamera = ImageResource.icCamera
     static let icCheckmark = ImageResource.icCheckmark
     static let icCheckmarkBig = ImageResource.icCheckmarkBig
     static let icCheckmarkCircleFilled = ImageResource.icCheckmarkCircleFilled
-    static let icChevronLeft = ImageResource.icChevronLeft
-    static let icChevronDown = ImageResource.icChevronDown
-    static let icChevronUp = ImageResource.icChevronUp
     static let icChevronTinyDown = ImageResource.icChevronTinyDown
     static let icChevronTinyUp = ImageResource.icChevronTinyUp
-    static let icChevronTinyRight = ImageResource.icChevronTinyRight
     static let icChevronDownFilled = ImageResource.icChevronDownFilled
     static let icChevronUpFilled = ImageResource.icChevronUpFilled
     static let icCircleFilled = ImageResource.icCircleFilled
     static let icClock = ImageResource.icClock
     static let icClockPaperPlane = ImageResource.icClockPaperPlane
     static let icCogWheel = ImageResource.icCogWheel
-    static let icCrossBig = ImageResource.icCrossBig
     static let icCrossCircleFilled = ImageResource.icCrossCircleFilled
     static let icEnvelopes = ImageResource.icEnvelopes
     static let icExclamationCircle = ImageResource.icExclamationCircle
     static let icFile = ImageResource.icFile
     static let icFire = ImageResource.icFire
-    static let icFilter = ImageResource.icFilter
     static let icFolder = ImageResource.icFolder
     static let icFolderOpenFilled = ImageResource.icFolderOpenFilled
     static let icFolderOpen = ImageResource.icFolderOpen
@@ -66,7 +58,6 @@ public extension DS.Icon {
     static let icPencil = ImageResource.icPencil
     static let icPlus = ImageResource.icPlus
     static let icSliders = ImageResource.icSliders
-    static let icShield2 = ImageResource.icShield2
     static let icShield2Bolt = ImageResource.icShield2Bolt
     static let icSpam = ImageResource.icSpam
     static let icSunLeftHalfFilled = ImageResource.icSunLeftHalfFilled
@@ -95,7 +86,6 @@ public extension DS.Icon {
 public extension DS.Icon {
     static let icCode = ImageResource.icCode
     static let icDiamond = ImageResource.icDiamond
-    static let icEnvelope = ImageResource.icEnvelope
     static let icEnvelopeDot = ImageResource.icEnvelopeDot
     static let icEnvelopeOpen = ImageResource.icEnvelopeOpen
     static let icFileLines = ImageResource.icFileLines
@@ -123,7 +113,6 @@ public extension DS.Icon {
 // MARK: File type icons
 
 public extension DS.Icon {
-    static let icFileTypeAttachment = ImageResource.icFileTypeAttachment
     static let icFileTypeAudio = ImageResource.icFileTypeAudio
     static let icFileTypeCalendar = ImageResource.icFileTypeCalendar
     static let icFileTypeCode = ImageResource.icFileTypeCode
@@ -131,7 +120,6 @@ public extension DS.Icon {
     static let icFileTypeDefault = ImageResource.icFileTypeDefault
     static let icFileTypeExcel = ImageResource.icFileTypeExcel
     static let icFileTypeFont = ImageResource.icFileTypeFont
-    static let icFileTypeIconAttachment = ImageResource.icFileTypeIconAttachment
     static let icFileTypeIconAudio = ImageResource.icFileTypeIconAudio
     static let icFileTypeIconCalendar = ImageResource.icFileTypeIconCalendar
     static let icFileTypeIconCode = ImageResource.icFileTypeIconCode

@@ -19,7 +19,6 @@ import Combine
 import Contacts
 @testable import InboxComposer
 @testable import InboxTesting
-import InboxContacts
 import InboxCoreUI
 import PhotosUI
 import proton_app_uniffi

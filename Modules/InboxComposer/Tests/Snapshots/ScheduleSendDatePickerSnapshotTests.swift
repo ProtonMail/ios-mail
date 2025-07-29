@@ -17,7 +17,6 @@
 
 @testable import InboxCoreUI
 @testable import InboxComposer
-import InboxCore
 import InboxSnapshotTesting
 import InboxTesting
 import Testing

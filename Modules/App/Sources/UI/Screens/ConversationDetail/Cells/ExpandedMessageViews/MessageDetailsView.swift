@@ -36,7 +36,6 @@ struct MessageDetailsView: View {
     let actionButtonsState: ActionButtonsState
     let onEvent: (MessageDetailsEvent) -> Void
 
-    private let messageDetailsLeftColumnWidth: CGFloat = 80
     private let detailedContentLeadingSpacing: CGFloat = DS.Spacing.jumbo + DS.Spacing.large
 
     var body: some View {

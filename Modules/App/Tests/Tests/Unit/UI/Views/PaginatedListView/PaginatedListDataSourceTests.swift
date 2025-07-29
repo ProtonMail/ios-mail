@@ -16,7 +16,6 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Combine
-import InboxTesting
 import proton_app_uniffi
 @testable import ProtonMail
 import XCTest
