@@ -22,5 +22,8 @@ protocol ContactDetailsContext: ContactItemUIRepresentable {
 }
 
 extension ContactItem: ContactDetailsContext {}
-// FIXME: Once new RustSDK is released, add default implementation for `id` property (return `contactID`)
-extension ContactEmailItem: ContactDetailsContext {}
+extension ContactEmailItem: ContactDetailsContext {
+    var id: Id {
+        contactId
+    }
+}
