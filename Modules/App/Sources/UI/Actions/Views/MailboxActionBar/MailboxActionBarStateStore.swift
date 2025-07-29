@@ -124,7 +124,6 @@ final class MailboxActionBarStateStore: StateStore {
             performMoveToAction(destination: model, ids: ids)
             toastStateStore.present(toast: .moveTo(destinationName: model.name.humanReadable.string))
         case .snooze:
-            // TODO: Snooze
             break
         }
     }

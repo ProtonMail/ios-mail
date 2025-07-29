@@ -20,17 +20,19 @@ import SwiftUI
 
 struct SnoozeState: Copying {
     var screen: SnoozeView.Screen
-    let actions: SnoozeActions
+    var options: [SnoozeTime]
+    var showUnsnooze: Bool
     var currentDetent: PresentationDetent
     var allowedDetents: Set<PresentationDetent>
 }
 
 extension SnoozeState {
 
-    static func initial(actions: SnoozeActions, screen: SnoozeView.Screen) -> Self {
+    static func initial(screen: SnoozeView.Screen) -> Self {
         return .init(
             screen: screen,
-            actions: actions,
+            options: [],
+            showUnsnooze: false,
             currentDetent: screen.detent,
             allowedDetents: [screen.detent]
         )

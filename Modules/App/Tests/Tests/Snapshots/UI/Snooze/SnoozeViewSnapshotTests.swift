@@ -35,22 +35,22 @@ struct SnoozeViewSnapshotTests {
         "all snapshot variants",
         arguments: [
             TestCase(
-                actions: .testData(predefined: [.tomorrow, .laterThisWeek, .thisWeekend, .nextWeek]),
+                actions: .testData(options: [.tomorrow, .laterThisWeek, .thisWeekend, .nextWeek]),
                 screen: .main,
                 name: "all_4_predefined_options",
             ),
             .init(
-                actions: .testData(predefined: [.tomorrow, .laterThisWeek, .thisWeekend], customButtonType: .upgrade),
+                actions: .testData(options: [.tomorrow, .laterThisWeek, .thisWeekend]),
                 screen: .main,
                 name: "upgrade_button_with_3_options"
             ),
             .init(
-                actions: .testData(predefined: [.tomorrow, .laterThisWeek], isUnsnoozeVisible: true, customButtonType: .upgrade),
+                actions: .testData(options: [.tomorrow, .laterThisWeek], showUnsnooze: true),
                 screen: .main,
                 name: "snooze_button_with_2_options"
             ),
             .init(
-                actions: .testData(predefined: [.tomorrow], isUnsnoozeVisible: true, customButtonType: .regular),
+                actions: .testData(options: [.tomorrow, .custom], showUnsnooze: true),
                 screen: .main,
                 name: "snooze_button_with_1_option"
             ),
@@ -59,8 +59,13 @@ struct SnoozeViewSnapshotTests {
     )
     func snapshotAllVariants(_ testCase: TestCase) {
         let snoozeView = SnoozeView(
-            snoozeActions: testCase.actions,
-            initialScreen: testCase.screen
+            state: .init(
+                screen: testCase.screen,
+                options: testCase.actions.options,
+                showUnsnooze: testCase.actions.showUnsnooze,
+                currentDetent: testCase.screen.detent,
+                allowedDetents: [testCase.screen.detent]
+            )
         )
         .injectDateEnvironments()
 
@@ -70,34 +75,30 @@ struct SnoozeViewSnapshotTests {
 
 private extension SnoozeActions {
 
-    static func testData(
-        predefined: [PredefinedSnooze] = [],
-        isUnsnoozeVisible: Bool = false,
-        customButtonType: CustomButtonType = .regular
-    ) -> Self {
-        .init(predefined: predefined, isUnsnoozeVisible: isUnsnoozeVisible, customButtonType: customButtonType)
+    static func testData(options: [SnoozeTime] = [], showUnsnooze: Bool = false) -> Self {
+        .init(options: options, showUnsnooze: showUnsnooze)
     }
 
 }
 
-private extension PredefinedSnooze {
+private extension SnoozeTime {
 
-    private static let date = Date(timeIntervalSince1970: 1752697012)
+    private static let timestamp: UInt64 = 1752697012
 
     static var tomorrow: Self {
-        .init(type: .tomorrow, date: date)
+        .tomorrow(timestamp)
     }
 
     static var nextWeek: Self {
-        .init(type: .nextWeek, date: date)
+        .nextWeek(timestamp)
     }
 
     static var thisWeekend: Self {
-        .init(type: .thisWeekend, date: date)
+        .thisWeekend(timestamp)
     }
 
     static var laterThisWeek: Self {
-        .init(type: .laterThisWeek, date: date)
+        .laterThisWeek(timestamp)
     }
 
 }

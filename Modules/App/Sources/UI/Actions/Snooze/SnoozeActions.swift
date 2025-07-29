@@ -15,37 +15,29 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import Foundation
 import InboxCore
 import InboxDesignSystem
-import Foundation
+import proton_app_uniffi
+import SwiftUI
 
-struct SnoozeActions {
-    let predefined: [PredefinedSnooze]
-    let isUnsnoozeVisible: Bool
-    let customButtonType: CustomButtonType
-
-    enum CustomButtonType {
-        case regular
-        case upgrade
-    }
+struct SnoozeActions: Hashable {
+    let options: [SnoozeTime]
+    let showUnsnooze: Bool
 }
 
-struct PredefinedSnooze: Hashable {
-    let type: PredefinedSnoozeType
-    let date: Date
-
-    enum PredefinedSnoozeType: Hashable {
-        case tomorrow
-        case laterThisWeek
-        case thisWeekend
-        case nextWeek
-    }
+enum SnoozeTime: Hashable {
+    case tomorrow(UnixTimestamp)
+    case laterThisWeek(UnixTimestamp)
+    case thisWeekend(UnixTimestamp)
+    case nextWeek(UnixTimestamp)
+    case custom
 }
 
-extension PredefinedSnooze {
+extension SnoozeTime {
 
     var title: LocalizedStringResource {
-        switch type {
+        switch self {
         case .tomorrow:
             L10n.Snooze.snoozeTomorrow
         case .laterThisWeek:
@@ -54,31 +46,35 @@ extension PredefinedSnooze {
             L10n.Snooze.snoozeNextWeek
         case .thisWeekend:
             L10n.Snooze.snoozeThisWeekend
+        case .custom:
+            L10n.Snooze.customButtonTitle
         }
     }
 
-    var icon: DS.SFSymbol {
-        switch type {
+    var icon: Image {
+        switch self {
         case .tomorrow:
-            .sunMax
+            Image(symbol: .sunMax)
         case .laterThisWeek:
-            .sunLeftHalfFilled
+            Image(symbol: .sunLeftHalfFilled)
         case .thisWeekend:
-            .sofa
+            Image(symbol: .sofa)
         case .nextWeek:
-            .suitcase
+            Image(symbol: .suitcase)
+        case .custom:
+            Image(DS.Icon.icCalendarToday)
         }
     }
 
-    var time: String {
-        let formatter =
-            switch type {
-            case .tomorrow:
-                SnoozeFormatter.timeOnlyFormatter
-            case .laterThisWeek, .thisWeekend, .nextWeek:
-                SnoozeFormatter.weekDayWithTimeFormatter
-            }
-        return formatter.string(from: date)
+    var subtitle: String {
+        switch self {
+        case .tomorrow(let timestamp):
+            SnoozeFormatter.timeOnlyFormatter.string(from: timestamp.date)
+        case .laterThisWeek(let timestamp), .thisWeekend(let timestamp), .nextWeek(let timestamp):
+            SnoozeFormatter.weekDayWithTimeFormatter.string(from: timestamp.date)
+        case .custom:
+            L10n.Snooze.customButtonSubtitle.string
+        }
     }
 
 }

@@ -30,12 +30,8 @@ struct SnoozeView: View {
         case main
     }
 
-    init(snoozeActions: SnoozeActions, initialScreen: Screen = .main) {
-        _store = .init(
-            wrappedValue: .init(
-                state: .initial(
-                    actions: snoozeActions, screen: initialScreen)
-            ))
+    init(state: SnoozeState) {
+        _store = .init(wrappedValue: .init(state: state))
     }
 
     private let columns = [
@@ -44,14 +40,12 @@ struct SnoozeView: View {
     ]
 
     var body: some View {
-        ScrollView {
-            sheetContent
-        }
-        .animation(.easeInOut, value: store.state.screen)
-        .transition(.identity)
-        .presentationDetents(store.state.allowedDetents, selection: $store.state.currentDetent)
-        .presentationDragIndicator(.hidden)
-        .interactiveDismissDisabled()
+        sheetContent
+            .animation(.easeInOut, value: store.state.screen)
+            .transition(.identity)
+            .presentationDetents(store.state.allowedDetents, selection: $store.state.currentDetent)
+            .presentationDragIndicator(.hidden)
+            .interactiveDismissDisabled()
     }
 
     @ViewBuilder
@@ -68,8 +62,8 @@ struct SnoozeView: View {
                 ScrollView {
                     VStack(alignment: .leading, spacing: DS.Spacing.medium) {
                         LazyVGrid(columns: columns, alignment: .center, spacing: Self.gridSpacing) {
-                            ForEach(store.state.actions.predefined, id: \.self) { predefinedSnooze in
-                                buttonWithIcon(for: predefinedSnooze)
+                            ForEach(store.state.options, id: \.self) { snoozeOption in
+                                buttonWithIcon(for: snoozeOption)
                             }
 
                             if displayButtonOnGrid {
@@ -81,7 +75,7 @@ struct SnoozeView: View {
                             lastButton(displayOnGrid: false)
                         }
 
-                        if store.state.actions.isUnsnoozeVisible {
+                        if store.state.showUnsnooze {
                             unsnoozeButton()
                                 .padding(.top, DS.Spacing.medium)
                         }
@@ -99,10 +93,10 @@ struct SnoozeView: View {
 
     @ViewBuilder
     private func lastButton(displayOnGrid: Bool) -> some View {
-        switch store.state.actions.customButtonType {
-        case .regular:
+        let displayCustomButton = store.state.options.contains(.custom)
+        if displayCustomButton {
             customButton(displayOnGrid: displayOnGrid)
-        case .upgrade:
+        } else {
             SnoozeUpgradeButton(variant: displayOnGrid ? .compact : .fullLine) {
                 store.handle(action: .upgradeTapped)
             }
@@ -110,12 +104,12 @@ struct SnoozeView: View {
     }
 
     private var displayButtonOnGrid: Bool {
-        store.state.actions.predefined.count % 2 == 1
+        store.state.options.count % 2 == 1
     }
 
     @ViewBuilder
-    private func buttonWithIcon(for model: PredefinedSnooze) -> some View {
-        gridButton(title: model.title, subtitle: model.time, icon: Image(symbol: model.icon)) {
+    private func buttonWithIcon(for model: SnoozeTime) -> some View {
+        gridButton(title: model.title, subtitle: model.subtitle, icon: model.icon) {
             store.handle(action: .predefinedSnoozeOptionTapped(model))
         }
     }

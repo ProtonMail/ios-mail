@@ -82,7 +82,7 @@ struct MainToolbar<AvatarView: View>: ViewModifier {
                 ToolbarItemGroup(placement: .topBarTrailing) {
                     if !selectionMode.hasItems {
                         HStack(spacing: DS.Spacing.standard) {
-                            if upsellCoordinator.hasOfferPrepared {
+//                            if upsellCoordinator.hasOfferPrepared {
                                 toolbarButton(icon: DS.Icon.icBrandProtonMailUpsellBlackAndWhite.image.renderingMode(.template)) {
                                     do {
                                         let upsellScreenModel = try await upsellCoordinator.presentUpsellScreen(entryPoint: .header)
@@ -91,7 +91,7 @@ struct MainToolbar<AvatarView: View>: ViewModifier {
                                         toastStateStore.present(toast: .error(message: error.localizedDescription))
                                     }
                                 }
-                            }
+//                            }
 
                             toolbarButton(icon: .init(symbol: .magnifier)) {
                                 onEvent(.onSearch)

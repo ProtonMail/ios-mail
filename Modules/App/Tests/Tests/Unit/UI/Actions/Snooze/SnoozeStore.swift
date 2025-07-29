@@ -21,16 +21,7 @@ import Testing
 @MainActor
 struct SnoozeStoreTests {
 
-    let sut = SnoozeStore(
-        state: .initial(
-            actions: .init(
-                predefined: [],
-                isUnsnoozeVisible: true,
-                customButtonType: .regular
-            ),
-            screen: .main
-        )
-    )
+    let sut = SnoozeStore(state: .initial(screen: .main))
 
     @Test
     func testCustomButtonTapped_transitionsToCustomView() async {

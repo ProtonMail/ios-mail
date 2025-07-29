@@ -36,83 +36,85 @@ public struct DatePickerView: View {
     }
 
     public var body: some View {
-        VStack(alignment: .leading, spacing: DS.Spacing.large) {
-            HStack {
-                Button(CommonL10n.cancel.string, action: onCancel)
-                    .foregroundStyle(DS.Color.Text.accent)
-                    .font(.body)
-                    .fontWeight(.regular)
-
-                Spacer()
-                Text(configuration.title)
-                    .lineLimit(1)
-                    .foregroundStyle(DS.Color.Text.norm)
-                    .font(.body)
-                    .fontWeight(.semibold)
-
-                Spacer()
-                Button(configuration.selectTitle.string) {
-                    onSelect(selectedDate)
-                }
-                .foregroundStyle(DS.Color.InteractionBrand.norm)
-                .font(.body)
-                .fontWeight(.semibold)
-            }
-            .padding(.bottom, DS.Spacing.standard)
-
-            DatePicker(
-                CommonL10n.time.string,
-                selection: $selectedDate,
-                displayedComponents: .hourAndMinute
-            )
-            .introspect(.datePicker, on: .iOS(.v17, .v18)) {
-                $0.minuteInterval = Int(configuration.minuteInterval)
-            }
-            .tint(DS.Color.Brand.norm)
-            .padding(.horizontal, DS.Spacing.large)
-            .padding(.vertical, DS.Spacing.standard)
-            .background(RoundedRectangle(cornerRadius: DS.Radius.extraLarge).fill(DS.Color.Background.norm))
-
-            VStack {
+        ScrollView {
+            VStack(alignment: .leading, spacing: DS.Spacing.large) {
                 HStack {
-                    Text(CommonL10n.date.string)
+                    Button(CommonL10n.cancel.string, action: onCancel)
+                        .foregroundStyle(DS.Color.Text.accent)
                         .font(.body)
                         .fontWeight(.regular)
-                        .foregroundStyle(datePickerDefaultLabelColor)
 
                     Spacer()
-                    Text(configuration.formatDate(selectedDate))
+                    Text(configuration.title)
+                        .lineLimit(1)
+                        .foregroundStyle(DS.Color.Text.norm)
                         .font(.body)
-                        .fontWeight(.regular)
-                        .foregroundStyle(datePickerDefaultLabelColor)
-                        .padding(.horizontal, DS.Spacing.medium)
-                        .padding(.vertical, DS.Spacing.standard)
-                        .background(RoundedRectangle(cornerRadius: DS.Radius.medium).fill(datePickerDefaultLabelBackgroundColor))
-                }
-                .padding(.horizontal, DS.Spacing.large)
-                .padding(.top, DS.Spacing.standard)
-                .padding(.bottom, DS.Spacing.tiny)
+                        .fontWeight(.semibold)
 
-                DS.Color.BackgroundInverted.border
-                    .frame(height: 1)
-                    .padding(.horizontal, DS.Spacing.large)
+                    Spacer()
+                    Button(configuration.selectTitle.string) {
+                        onSelect(selectedDate)
+                    }
+                    .foregroundStyle(DS.Color.InteractionBrand.norm)
+                    .font(.body)
+                    .fontWeight(.semibold)
+                }
+                .padding(.bottom, DS.Spacing.standard)
 
                 DatePicker(
-                    CommonL10n.date.string,
+                    CommonL10n.time.string,
                     selection: $selectedDate,
-                    in: configuration.range,
-                    displayedComponents: .date
+                    displayedComponents: .hourAndMinute
                 )
-                .datePickerStyle(.graphical)
+                .introspect(.datePicker, on: .iOS(.v17, .v18)) {
+                    $0.minuteInterval = Int(configuration.minuteInterval)
+                }
                 .tint(DS.Color.Brand.norm)
-                .padding(.horizontal, DS.Spacing.small)
-            }
-            .background(RoundedRectangle(cornerRadius: DS.Radius.extraLarge).fill(DS.Color.Background.norm))
+                .padding(.horizontal, DS.Spacing.large)
+                .padding(.vertical, DS.Spacing.standard)
+                .background(RoundedRectangle(cornerRadius: DS.Radius.extraLarge).fill(DS.Color.Background.norm))
 
-            Spacer()
+                VStack {
+                    HStack {
+                        Text(CommonL10n.date.string)
+                            .font(.body)
+                            .fontWeight(.regular)
+                            .foregroundStyle(datePickerDefaultLabelColor)
+
+                        Spacer()
+                        Text(configuration.formatDate(selectedDate))
+                            .font(.body)
+                            .fontWeight(.regular)
+                            .foregroundStyle(datePickerDefaultLabelColor)
+                            .padding(.horizontal, DS.Spacing.medium)
+                            .padding(.vertical, DS.Spacing.standard)
+                            .background(RoundedRectangle(cornerRadius: DS.Radius.medium).fill(datePickerDefaultLabelBackgroundColor))
+                    }
+                    .padding(.horizontal, DS.Spacing.large)
+                    .padding(.top, DS.Spacing.standard)
+                    .padding(.bottom, DS.Spacing.tiny)
+
+                    DS.Color.BackgroundInverted.border
+                        .frame(height: 1)
+                        .padding(.horizontal, DS.Spacing.large)
+
+                    DatePicker(
+                        CommonL10n.date.string,
+                        selection: $selectedDate,
+                        in: configuration.range,
+                        displayedComponents: .date
+                    )
+                    .datePickerStyle(.graphical)
+                    .tint(DS.Color.Brand.norm)
+                    .padding(.horizontal, DS.Spacing.small)
+                }
+                .background(RoundedRectangle(cornerRadius: DS.Radius.extraLarge).fill(DS.Color.Background.norm))
+
+                Spacer()
+            }
+            .padding(DS.Spacing.large)
+            .background(DS.Color.Background.secondary)
         }
-        .padding(DS.Spacing.large)
-        .background(DS.Color.Background.secondary)
     }
 }
 

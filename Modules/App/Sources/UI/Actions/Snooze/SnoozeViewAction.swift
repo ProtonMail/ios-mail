@@ -18,7 +18,7 @@
 enum SnoozeViewAction {
     case customButtonTapped
     case upgradeTapped
-    case predefinedSnoozeOptionTapped(PredefinedSnooze)
+    case predefinedSnoozeOptionTapped(SnoozeTime)
     case unsnoozeTapped
     case customSnoozeCancelTapped
 }
