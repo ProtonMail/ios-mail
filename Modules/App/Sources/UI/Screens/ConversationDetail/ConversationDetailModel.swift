@@ -433,7 +433,9 @@ extension ConversationDetailModel {
                 .enumerated()
                 .map { index, message in
                     let messageCellUIModelType: MessageCellUIModelType
-                    if expandedMessages.contains(message.id) || index == lastNonDraftMessageIndex {
+                    let showExpanded = !message.isDraft && (expandedMessages.contains(message.id) || index == lastNonDraftMessageIndex)
+
+                    if showExpanded {
                         messageCellUIModelType = .expanded(message.toExpandedMessageCellUIModel())
                     } else {
                         messageCellUIModelType = .collapsed(message.toCollapsedMessageCellUIModel())
