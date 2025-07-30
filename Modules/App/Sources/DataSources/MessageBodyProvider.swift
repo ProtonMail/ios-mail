@@ -25,6 +25,7 @@ struct MessageBody: Sendable {
         let embeddedImageProvider: EmbeddedImageProvider
     }
 
+    let rsvpServiceProvider: RsvpEventServiceProvider?
     let banners: [MessageBanner]
     let html: HTML
 }
@@ -45,13 +46,18 @@ struct MessageBodyProvider {
     func messageBody(forMessageID messageID: ID, with options: TransformOpts) async -> Result {
         do {
             let decryptedMessage = try await _messageBody(messageID).get()
+            let rsvpServiceProvider = await decryptedMessage.identifyRsvp()
             let decryptedBody = try await decryptedMessage.body(opts: options).get()
             let html = MessageBody.HTML(
                 rawBody: decryptedBody.body,
                 options: decryptedBody.transformOpts,
                 embeddedImageProvider: decryptedMessage
             )
-            let body = MessageBody(banners: decryptedBody.bodyBanners, html: html)
+            let body = MessageBody(
+                rsvpServiceProvider: rsvpServiceProvider,
+                banners: decryptedBody.bodyBanners,
+                html: html
+            )
             return .success(body)
         } catch ActionError.other(.network) {
             return .noConnectionError

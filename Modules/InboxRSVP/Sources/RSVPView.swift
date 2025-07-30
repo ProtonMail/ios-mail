@@ -18,14 +18,14 @@
 import proton_app_uniffi
 import SwiftUI
 
-struct RSVPView: View {
+public struct RSVPView: View {
     @StateObject private var store: RSVPStateStore
 
-    init(serviceProvider: RsvpEventServiceProvider) {
+    public init(serviceProvider: RsvpEventServiceProvider) {
         _store = StateObject(wrappedValue: .init(serviceProvider: serviceProvider))
     }
 
-    var body: some View {
+    public var body: some View {
         content
             .onLoad { handle(action: .onLoad) }
     }
