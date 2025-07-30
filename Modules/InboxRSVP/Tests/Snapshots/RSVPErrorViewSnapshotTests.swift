@@ -16,14 +16,12 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import InboxRSVP
-import InboxTesting
 import InboxSnapshotTesting
-import SnapshotTesting
 import SwiftUI
 import Testing
 
 @MainActor
-struct RSVPEventErrorSnapshotTests {
+struct RSVPErrorViewSnapshotTests {
     @Test
     func testErrorView() {
         let view = RSVPErrorView(action: {})
