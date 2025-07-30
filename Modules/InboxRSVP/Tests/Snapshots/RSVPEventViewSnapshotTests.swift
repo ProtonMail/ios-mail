@@ -32,11 +32,7 @@ struct RSVPEventViewSnapshotTests {
             areParticipantsExpanded: testCase.isExpanded,
         )
 
-        assertSnapshots(
-            matching: UIHostingController(rootView: view),
-            on: [("SE", .iPhoneSe), ("13 Pro Max", .iPhone13ProMax)],
-            testName: testCase.testName
-        )
+        assertSnapshotsOnEdgeDevices(of: view, testName: testCase.testName)
     }
 }
 

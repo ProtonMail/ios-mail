@@ -26,10 +26,6 @@ struct RSVPSkeletonViewSnapshotTests {
     func testSkeletonView(opacity: CGFloat) {
         let view = RSVPSkeletonView(manualOpacity: opacity)
 
-        assertSnapshots(
-            matching: UIHostingController(rootView: view),
-            on: [("SE", .iPhoneSe), ("13 Pro Max", .iPhone13ProMax)],
-            testName: "opacity_\(opacity)"
-        )
+        assertSnapshotsOnEdgeDevices(of: view, testName: "opacity_\(opacity)")
     }
 }

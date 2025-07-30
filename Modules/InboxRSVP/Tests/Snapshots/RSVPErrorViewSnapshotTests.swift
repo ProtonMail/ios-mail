@@ -26,9 +26,6 @@ struct RSVPErrorViewSnapshotTests {
     func testErrorView() {
         let view = RSVPErrorView(action: {})
 
-        assertSnapshots(
-            matching: UIHostingController(rootView: view),
-            on: [("SE", .iPhoneSe), ("13 Pro Max", .iPhone13ProMax)]
-        )
+        assertSnapshotsOnEdgeDevices(of: view)
     }
 }
