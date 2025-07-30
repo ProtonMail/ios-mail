@@ -94,6 +94,16 @@ public extension AvailableMoveToActionsForMessagesResult {
         }
     }
 }
+public extension AvailableSnoozeActionsForConversationResult {
+    func get() throws(SnoozeError) -> SnoozeActions {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension ContactGroupByIdResult {
     func get() throws(ActionError) -> ContactGroupItem {
         switch self {
@@ -594,6 +604,16 @@ public extension SignupFlowSubmitValidatedPasswordResult {
         }
     }
 }
+public extension SnoozeConversationsResult {
+    func get() throws(SnoozeError) -> Undo? {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension TestStubMessageBodyResult {
     func get() throws(ActionError) -> DecryptedMessage {
         switch self {
@@ -609,6 +629,16 @@ public extension UndoUndoResult {
         switch self {
         case .ok:
             break
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension UnsnoozeConversationsResult {
+    func get() throws(SnoozeError) -> Undo? {
+        switch self {
+        case .ok(let value):
+            value
         case .error(let error):
             throw error
         }
