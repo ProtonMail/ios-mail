@@ -149,6 +149,7 @@ final class RSVPStateStoreTests {
             recordedStates() == [
                 .loading,
                 .loaded(.init(rsvpEventSpy, initialEvent)),
+                .answering(.init(rsvpEventSpy, updatedEvent)),
                 .loaded(.init(rsvpEventSpy, updatedEvent)),
             ]
         )
@@ -173,7 +174,7 @@ final class RSVPStateStoreTests {
             recordedStates() == [
                 .loading,
                 .loaded(.init(rsvpEventSpy, expectedEvent)),
-                .loaded(.init(rsvpEventSpy, .bestEvent(status: .no))),
+                .answering(.init(rsvpEventSpy, .bestEvent(status: .no))),
                 .loadFailed,
             ]
         )
@@ -198,7 +199,7 @@ final class RSVPStateStoreTests {
             recordedStates() == [
                 .loading,
                 .loaded(.init(rsvpEventSpy, initialEvent)),
-                .loaded(.init(rsvpEventSpy, .bestEvent(status: .yes))),
+                .answering(.init(rsvpEventSpy, .bestEvent(status: .yes))),
                 .loaded(.init(rsvpEventSpy, initialEvent)),
             ]
         )

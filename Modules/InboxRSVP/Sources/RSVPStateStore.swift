@@ -33,6 +33,7 @@ final class RSVPStateStore: ObservableObject {
         case loading
         case loadFailed
         case loaded(Data)
+        case answering(Data)
     }
 
     private let rsvpID: RsvpEventId
@@ -87,7 +88,7 @@ final class RSVPStateStore: ObservableObject {
         let updatedAttendees = optimisticallyUpdatedAttendees(with: answer, existingDetails: existingDetails)
         let updatedDetails = existingDetails.copy(\.attendees, to: updatedAttendees)
 
-        updateState(with: .loaded(.init(eventService, updatedDetails)))
+        updateState(with: .answering(.init(eventService, updatedDetails)))
 
         let answerResult = await eventService.answer(answer: answer)
 
