@@ -18,6 +18,7 @@
 @testable import ProtonMail
 import InboxSnapshotTesting
 import InboxCore
+import InboxCoreUI
 import InboxTesting
 import Testing
 
@@ -67,6 +68,8 @@ struct SnoozeViewSnapshotTests {
                 allowedDetents: [testCase.screen.detent]
             )
         )
+        .environmentObject(ToastStateStore(initialState: .initial))
+        .environmentObject(UpsellCoordinator.dummy)
         .injectDateEnvironments()
 
         assertSnapshotsOnIPhoneX(of: snoozeView, named: testCase.name)
@@ -99,6 +102,19 @@ private extension SnoozeTime {
 
     static var laterThisWeek: Self {
         .laterThisWeek(timestamp)
+    }
+
+}
+
+import InboxIAP
+
+extension UpsellCoordinator {
+
+    static var dummy: UpsellCoordinator {
+        UpsellCoordinator(
+            mailUserSession: .dummy,
+            configuration: .mail
+        )
     }
 
 }

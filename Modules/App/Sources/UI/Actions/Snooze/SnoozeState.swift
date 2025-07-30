@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import InboxCore
+import InboxIAP
 import SwiftUI
 
 struct SnoozeState: Copying {
@@ -24,6 +25,7 @@ struct SnoozeState: Copying {
     var showUnsnooze: Bool
     var currentDetent: PresentationDetent
     var allowedDetents: Set<PresentationDetent>
+    var presentUpsellScreen: UpsellScreenModel?
 }
 
 extension SnoozeState {
@@ -34,7 +36,8 @@ extension SnoozeState {
             options: [],
             showUnsnooze: false,
             currentDetent: screen.detent,
-            allowedDetents: [screen.detent]
+            allowedDetents: [screen.detent],
+            presentUpsellScreen: nil
         )
     }
 

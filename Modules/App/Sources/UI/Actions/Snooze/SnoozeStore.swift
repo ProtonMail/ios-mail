@@ -23,10 +23,13 @@ import SwiftUI
 @MainActor
 class SnoozeStore: StateStore {
     @Published var state: SnoozeState
-//    private let upsellCoordinator: UpsellCoordinator
+    private let upsellScreenPresenter: UpsellScreenPresenter
+    private let toastStateStore: ToastStateStore
 
-    init(state: SnoozeState) {
+    init(state: SnoozeState, upsellScreenPresenter: UpsellScreenPresenter, toastStateStore: ToastStateStore) {
         self.state = state
+        self.upsellScreenPresenter = upsellScreenPresenter
+        self.toastStateStore = toastStateStore
     }
 
     func handle(action: SnoozeViewAction) async {
@@ -34,12 +37,12 @@ class SnoozeStore: StateStore {
         case .customButtonTapped:
             transition(to: .custom)
         case .upgradeTapped:
-            // TODO: take UpsellCoordinator from SnoozeView's environment, add Screen case .upsell(UpsellScreenModel)
-            /*
-             let upsellScreenModel = upsellCoordinator.presentUpsellScreen(entryPoint: .snooze)
-             transition(to: .upsell(upsellScreenModel)
-             */
-            break
+            do {
+                let upsellScreenModel = try await upsellScreenPresenter.presentUpsellScreen(entryPoint: .snooze)
+                state = state.copy(\.presentUpsellScreen, to: upsellScreenModel)
+            } catch {
+                toastStateStore.present(toast: .error(message: error.localizedDescription))
+            }
         case .predefinedSnoozeOptionTapped:
             break
         case .unsnoozeTapped:
