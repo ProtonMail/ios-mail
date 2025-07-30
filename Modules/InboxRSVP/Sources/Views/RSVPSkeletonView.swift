@@ -19,7 +19,13 @@ import InboxDesignSystem
 import SwiftUI
 
 struct RSVPSkeletonView: View {
+    /// A fixed opacity value used to simulate animation state in tests.
+    /// - Note: This is intended for snapshot testing only. At runtime, the view uses an animated flashing effect.
     let manualOpacity: CGFloat?
+
+    init(manualOpacity: CGFloat? = .none) {
+        self.manualOpacity = manualOpacity
+    }
 
     var body: some View {
         VStack(alignment: .leading, spacing: .zero) {
