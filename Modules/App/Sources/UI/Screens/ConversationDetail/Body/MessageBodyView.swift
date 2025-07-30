@@ -18,6 +18,7 @@
 import OrderedCollections
 import InboxCoreUI
 import InboxDesignSystem
+import InboxRSVP
 import proton_app_uniffi
 import SwiftUI
 
@@ -62,6 +63,9 @@ struct MessageBodyView: View {
             )
         ) { state, store in
             VStack(spacing: .zero) {
+                if case .loaded(let body) = state.body, let rsvpServiceProvider = body.rsvpServiceProvider {
+                    RSVPView(serviceProvider: rsvpServiceProvider)
+                }
                 if case .loaded(let body) = state.body, !body.banners.isEmpty {
                     MessageBannersView(
                         types: OrderedSet(body.banners),
