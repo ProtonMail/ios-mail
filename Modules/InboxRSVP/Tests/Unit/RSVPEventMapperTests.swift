@@ -19,6 +19,7 @@
 import InboxCore
 import Foundation
 import InboxTesting
+import proton_app_uniffi
 import Testing
 
 final class RSVPEventMapperTests {

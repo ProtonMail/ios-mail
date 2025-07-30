@@ -18,6 +18,7 @@
 @testable import InboxRSVP
 import InboxSnapshotTesting
 import SwiftUI
+import proton_app_uniffi
 import Testing
 
 @MainActor

@@ -17,6 +17,7 @@
 
 import InboxCoreUI
 import InboxDesignSystem
+import proton_app_uniffi
 import SwiftUI
 
 struct RSVPEventView: View {

@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import InboxRSVP
+import proton_app_uniffi
 
 extension RsvpEvent {
 

@@ -19,11 +19,12 @@
 import Combine
 import InboxCore
 import InboxDesignSystem
+import proton_app_uniffi
 import Testing
 
 final class RSVPStateStoreTests {
-    private let serviceSpy = RsvpEventServiceSpy()
-    private var serviceProviderSpy = RsvpEventServiceProviderSpy()
+    private let serviceSpy = RsvpEventServiceSpy(noPointer: .init())
+    private var serviceProviderSpy = RsvpEventServiceProviderSpy(noPointer: .init())
     private(set) lazy var sut = RSVPStateStore(serviceProvider: serviceProviderSpy)
     private var cancellables = Set<AnyCancellable>()
 
@@ -80,7 +81,7 @@ final class RSVPStateStoreTests {
     func onLoadAction_FetchingSuceedsAndRetrievingEventDetailsFails_ItSetsLoadFailedState() async {
         let recordedStates = trackStates(of: sut.$state)
 
-        serviceSpy.stubbedDetailsResult = .error
+        serviceSpy.stubbedDetailsResult = .error(.network)
         serviceProviderSpy.stubbedResult = serviceSpy
 
         await sut.handle(action: .onLoad)
@@ -165,7 +166,7 @@ final class RSVPStateStoreTests {
 
         await sut.handle(action: .onLoad)
 
-        serviceSpy.stubbedDetailsResult = .error
+        serviceSpy.stubbedDetailsResult = .error(.otherReason(.invalidParameter))
 
         await sut.handle(action: .answer(.no))
 
@@ -190,7 +191,7 @@ final class RSVPStateStoreTests {
 
         await sut.handle(action: .onLoad)
 
-        serviceSpy.stubbedAnswerResult = .error
+        serviceSpy.stubbedAnswerResult = .error(.unexpected(.api))
 
         await sut.handle(action: .answer(.yes))
 
@@ -236,7 +237,7 @@ private class RsvpEventServiceSpy: RsvpEventService, @unchecked Sendable {
     private(set) var detailsCallsCount = 0
 
     var stubbedAnswerResult: VoidAnswerRsvpResult = .ok
-    var stubbedDetailsResult: RsvpEventGetResult = .error
+    var stubbedDetailsResult: RsvpEventGetResult = .error(.network)
 
     // MARK: - RsvpEvent
 
