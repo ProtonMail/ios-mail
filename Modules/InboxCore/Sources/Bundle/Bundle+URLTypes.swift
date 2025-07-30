@@ -17,7 +17,7 @@
 
 import Foundation
 
-extension Bundle {
+public extension Bundle {
     enum URLScheme: String {
         case protonmail = "protonmail"
     }
