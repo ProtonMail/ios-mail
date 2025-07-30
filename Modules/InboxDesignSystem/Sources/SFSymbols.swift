@@ -26,6 +26,7 @@ extension DS {
         case chevronLeft = "chevron.backward"
         case chevronRight = "chevron.right"
         case chevronUpChevronDown = "chevron.up.chevron.down"
+        case chevronDown = "chevron.down"
         case deleteLeft = "delete.left"
         case eye = "eye"
         case eyeSlash = "eye.slash"

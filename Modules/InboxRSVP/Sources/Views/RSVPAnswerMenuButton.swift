@@ -34,6 +34,7 @@ struct RSVPAnswerMenuButton: View {
         } label: {
             HStack(spacing: DS.Spacing.compact) {
                 Text(state.humanReadable.long.string)
+                Image(symbol: .chevronDown)
             }
         }
         .buttonStyle(RSVPButtonStyle.answerButtonStyle)
