@@ -20,6 +20,7 @@ import SwiftUI
 
 struct RSVPAnswerMenuButton: View {
     let state: RsvpAnswer
+    let isAnswering: Bool
     let action: (RsvpAnswer) -> Void
 
     var body: some View {
@@ -34,7 +35,7 @@ struct RSVPAnswerMenuButton: View {
         } label: {
             HStack(spacing: DS.Spacing.compact) {
                 Text(state.humanReadable.long.string)
-                Image(symbol: .chevronDown)
+                Image(symbol: isAnswering ? .arrowCirclePath : .chevronDown)
             }
         }
         .buttonStyle(RSVPButtonStyle.answerButtonStyle)

@@ -21,10 +21,16 @@ import SwiftUI
 
 struct RSVPEventView: View {
     private let event: RSVPEvent
+    private let isAnswering: Bool
     @State private var areParticipantsExpanded: Bool
 
-    init(eventDetails: RsvpEventDetails, areParticipantsExpanded: Bool = false) {
+    init(
+        eventDetails: RsvpEventDetails,
+        isAnswering: Bool,
+        areParticipantsExpanded: Bool = false,
+    ) {
         self.event = RSVPEventMapper.map(from: eventDetails)
+        self.isAnswering = isAnswering
         self.areParticipantsExpanded = areParticipantsExpanded
     }
 
@@ -77,7 +83,7 @@ struct RSVPEventView: View {
                         }
                     }
                 case .some(let answer):
-                    RSVPAnswerMenuButton(state: answer) { selectedAnswer in
+                    RSVPAnswerMenuButton(state: answer, isAnswering: isAnswering) { selectedAnswer in
                         // FIXME: Call closure
                     }
                 }
@@ -151,6 +157,7 @@ struct RSVPEventView: View {
         VStack(spacing: 16) {
             RSVPEventView(
                 eventDetails: eventDetails,
+                isAnswering: true,
                 areParticipantsExpanded: false
             )
         }

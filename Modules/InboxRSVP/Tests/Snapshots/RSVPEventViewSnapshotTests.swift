@@ -24,9 +24,10 @@ import Testing
 @Suite(.calendarZurichEnUS, .calendarGMTEnUS, .currentDate(.fixture("2025-07-25 12:00:00")))
 struct RSVPEventViewSnapshotTests {
     @Test(arguments: RsvpEventDetails.allCases)
-    func testRSVP(testCase: (eventDetails: RsvpEventDetails, testName: String, isExpanded: Bool)) {
+    func testRSVP(testCase: (eventDetails: RsvpEventDetails, testName: String, isAnswering: Bool, isExpanded: Bool)) {
         let view = RSVPEventView(
             eventDetails: testCase.eventDetails,
+            isAnswering: testCase.isAnswering,
             areParticipantsExpanded: testCase.isExpanded,
         )
 
@@ -35,23 +36,23 @@ struct RSVPEventViewSnapshotTests {
 }
 
 private extension RsvpEventDetails {
-    static let allCases: [(event: Self, testName: String, isExpanded: Bool)] = [
-        (answerablePendingOptional, "answerable_future_optional_attendance", false),
-        (answerableOngoingUnanswered, "answerable_now_unanswered_required_attendance", false),
-        (answerableOngoingYes, "answerable_now_yes_required_attendance", false),
-        (answerableOngoingMaybe, "answerable_now_maybe_required_attendance", false),
-        (answerableOngoingNo, "answerable_now_no_required_attendance", false),
-        (answerableEnded, "answerable_ended_required_attendance", false),
-        (answerableRecurrentOngoing, "answerable_recurrent_now_required_attendace", true),
-        (unanswerableOutdated, "unanswerable_outdated", false),
-        (unanswerableUnknown, "unanswerable_offline", false),
-        (cancelled, "cancelled", false),
-        (cancelledOutdated, "cancelled_outdated", true),
-        (reminderPending, "reminder_future", false),
-        (reminderOngoing, "reminder_now", false),
-        (reminderEnded, "reminder_ended", false),
-        (reminderInviteCancelled, "reminder_invitation_cancelled", false),
-        (veryLongValues, "very_long_values", false),
+    static let allCases: [(event: Self, testName: String, isAnswering: Bool, isExpanded: Bool)] = [
+        (answerablePendingOptional, "answerable_future_optional_attendance", true, false),
+        (answerableOngoingUnanswered, "answerable_now_unanswered_required_attendance", false, false),
+        (answerableOngoingYes, "answerable_now_yes_required_attendance", false, false),
+        (answerableOngoingMaybe, "answerable_now_maybe_required_attendance", false, false),
+        (answerableOngoingNo, "answerable_now_no_required_attendance", false, false),
+        (answerableEnded, "answerable_ended_required_attendance", false, false),
+        (answerableRecurrentOngoing, "answerable_recurrent_now_required_attendace", false, true),
+        (unanswerableOutdated, "unanswerable_outdated", false, false),
+        (unanswerableUnknown, "unanswerable_offline", false, false),
+        (cancelled, "cancelled", false, false),
+        (cancelledOutdated, "cancelled_outdated", false, true),
+        (reminderPending, "reminder_future", false, false),
+        (reminderOngoing, "reminder_now", false, false),
+        (reminderEnded, "reminder_ended", false, false),
+        (reminderInviteCancelled, "reminder_invitation_cancelled", false, false),
+        (veryLongValues, "very_long_values", false, false),
     ]
 
     static let answerablePendingOptional = RsvpEventDetails.testData(
