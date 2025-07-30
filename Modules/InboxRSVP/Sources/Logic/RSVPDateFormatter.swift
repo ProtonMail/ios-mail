@@ -17,6 +17,7 @@
 
 import Foundation
 import InboxCore
+import proton_app_uniffi
 
 enum RSVPDateFormatter {
     static func string(

@@ -16,134 +16,15 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import InboxCore
+import proton_app_uniffi
 
-extension RsvpAttendee: Copying {}
-extension RsvpEvent: Copying {}
+extension RsvpAttendee: @retroactive Copying {}
+extension RsvpEvent: @retroactive Copying {}
 
-extension RsvpEventService: Equatable {
+extension RsvpEventService: @retroactive Equatable {
 
-    static func == (lhs: RsvpEventService, rhs: RsvpEventService) -> Bool {
+    public static func == (lhs: RsvpEventService, rhs: RsvpEventService) -> Bool {
         ObjectIdentifier(lhs) == ObjectIdentifier(rhs)
     }
 
-}
-
-// FIXME: Temporary Rust interface to remove
-typealias UnixTimestamp = UInt64
-
-enum RsvpAnswer: Hashable {
-    case yes
-    case maybe
-    case no
-}
-
-enum RsvpEventProgress: Hashable {
-    case pending
-    case ongoing
-    case ended
-}
-
-enum RsvpUnanswerableReason: Hashable {
-    case inviteIsOutdated
-    case inviteHasUnknownRecency
-    case addressIsIncorrect
-}
-
-enum RsvpState: Hashable {
-    case answerableInvite(progress: RsvpEventProgress, attendance: RsvpAttendance)
-    case unanswerableInvite(reason: RsvpUnanswerableReason)
-    case cancelledInvite(isOutdated: Bool)
-    case reminder(progress: RsvpEventProgress)
-    case cancelledReminder
-}
-
-struct RsvpEvent: Hashable {
-    var id: String?
-    var summary: String?
-    var location: String?
-    var description: String?
-    var recurrence: String?
-    var startsAt: UnixTimestamp
-    var endsAt: UnixTimestamp
-    var occurrence: RsvpOccurrence
-    var organizer: RsvpOrganizer
-    var attendees: [RsvpAttendee]
-    var userAttendeeIdx: UInt32
-    var calendar: RsvpCalendar?
-    var state: RsvpState
-}
-
-enum RsvpRecency {
-    case fresh
-    case outdated
-    case unknown
-}
-
-enum RsvpAttendance: Hashable {
-    case optional
-    case required
-}
-
-enum RsvpOccurrence: Hashable {
-    case date
-    case dateTime
-}
-
-enum RsvpAttendeeStatus: Hashable {
-    case unanswered
-    case maybe
-    case no
-    case yes
-}
-
-struct RsvpOrganizer: Hashable {
-    var name: String?
-    var email: String
-}
-
-struct RsvpAttendee: Hashable {
-    var name: String?
-    var email: String
-    var status: RsvpAttendeeStatus
-}
-
-struct RsvpCalendar: Hashable {
-    var id: String
-    var name: String
-    var color: String
-}
-
-enum VoidAnswerRsvpResult {
-    case ok
-    case error
-}
-
-enum RsvpEventGetResult {
-    case ok(RsvpEvent)
-    case error
-}
-
-protocol RsvpEventServiceProviderProtocol {
-    func eventService() async -> RsvpEventService?
-}
-
-class RsvpEventServiceProvider: RsvpEventServiceProviderProtocol, @unchecked Sendable {
-    func eventService() async -> RsvpEventService? {
-        nil
-    }
-}
-
-protocol RsvpEventServiceProtocol: AnyObject, Sendable {
-    func answer(answer: RsvpAnswer) async -> VoidAnswerRsvpResult
-    func get() -> RsvpEventGetResult
-}
-
-class RsvpEventService: RsvpEventServiceProtocol, @unchecked Sendable {
-    func answer(answer: RsvpAnswer) async -> VoidAnswerRsvpResult {
-        .ok
-    }
-
-    func get() -> RsvpEventGetResult {
-        .error
-    }
 }

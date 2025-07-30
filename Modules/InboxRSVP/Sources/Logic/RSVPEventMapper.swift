@@ -17,6 +17,7 @@
 
 import Foundation
 import InboxCoreUI
+import proton_app_uniffi
 
 enum RSVPEventMapper {
     static func map(from event: RsvpEvent) -> RSVPEvent {
