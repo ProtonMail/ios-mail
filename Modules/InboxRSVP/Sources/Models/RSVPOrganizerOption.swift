@@ -22,6 +22,8 @@ enum RSVPOrganizerOption: RSVPMenuOption {
     case copyAddress
     case newMessage
 
+    // MARK: - RSVPMenuOption
+
     var displayName: LocalizedStringResource {
         switch self {
         case .copyAddress:
