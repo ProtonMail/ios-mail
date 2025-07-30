@@ -20,8 +20,8 @@ import SwiftUI
 struct RSVPView: View {
     @StateObject private var store: RSVPStateStore
 
-    init(rsvpID: RsvpEventId) {
-        _store = StateObject(wrappedValue: .init(rsvpID: rsvpID))
+    init(serviceProvider: RsvpEventId) {
+        _store = StateObject(wrappedValue: .init(serviceProvider: serviceProvider))
     }
 
     var body: some View {

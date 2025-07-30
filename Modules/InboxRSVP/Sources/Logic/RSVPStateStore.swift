@@ -36,7 +36,7 @@ final class RSVPStateStore: ObservableObject {
         case answering(EventData)
     }
 
-    private let rsvpID: RsvpEventId
+    private let serviceProvider: RsvpEventId
     @Published var state: State
 
     enum Action {
@@ -45,8 +45,8 @@ final class RSVPStateStore: ObservableObject {
         case answer(RsvpAnswer)
     }
 
-    init(rsvpID: RsvpEventId, state: State = .loading) {
-        self.rsvpID = rsvpID
+    init(serviceProvider: RsvpEventId, state: State = .loading) {
+        self.serviceProvider = serviceProvider
         self.state = state
     }
 
@@ -66,7 +66,7 @@ final class RSVPStateStore: ObservableObject {
     private func loadEventDetails() async {
         updateState(with: .loading)
 
-        switch await rsvpID.fetch() {
+        switch await serviceProvider.fetch() {
         case .none:
             updateState(with: .loadFailed)
         case .some(let eventService):
