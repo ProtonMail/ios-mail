@@ -21,11 +21,11 @@ final class PasswordFlowStub: PasswordFlow, @unchecked Sendable {
     init() {
         super.init(noPointer: .init())
     }
-    
+
     required init(unsafeFromRawPointer pointer: UnsafeMutableRawPointer) {
         fatalError("init(unsafeFromRawPointer:) has not been implemented")
     }
-    
+
     override func hasMbp() -> PasswordFlowHasMbpResult {
         .ok(false)
     }

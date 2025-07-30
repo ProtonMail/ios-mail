@@ -17,12 +17,14 @@
 
 import proton_app_uniffi
 
-final class MailUserSessionStub: MailUserSession, @unchecked Sendable {
-    private(set) var executeNotificationQuickActionInvocations: [PushNotificationQuickAction] = []
+public final class MailUserSessionSpy: MailUserSession, @unchecked Sendable {
+    public var stubbedAccountDetails: AccountDetails?
+
+    public private(set) var executeNotificationQuickActionInvocations: [PushNotificationQuickAction] = []
 
     private let id: String
 
-    init(id: String) {
+    public init(id: String) {
         self.id = id
 
         super.init(noPointer: .init())
@@ -33,28 +35,28 @@ final class MailUserSessionStub: MailUserSession, @unchecked Sendable {
         fatalError("init(unsafeFromRawPointer:) has not been implemented")
     }
 
-    override func accountDetails() async -> MailUserSessionAccountDetailsResult {
-        .ok(.testData)
+    public override func accountDetails() async -> MailUserSessionAccountDetailsResult {
+        .ok(stubbedAccountDetails!)
     }
 
-    override func sessionId() -> MailUserSessionSessionIdResult {
-        .ok(id)
-    }
-
-    override func executeNotificationQuickAction(action: PushNotificationQuickAction) async -> VoidActionResult {
+    public override func executeNotificationQuickAction(action: PushNotificationQuickAction) async -> VoidActionResult {
         executeNotificationQuickActionInvocations.append(action)
         return .ok
     }
 
-    override func passwordValidator() -> PasswordValidatorService? {
+    public override func newPasswordChangeFlow() async -> MailUserSessionNewPasswordChangeFlowResult {
+        .ok(PasswordFlowStub())
+    }
+
+    public override func passwordValidator() -> PasswordValidatorService? {
         nil
     }
 
-    override func userSettings() async -> MailUserSessionUserSettingsResult {
-        .error(.reason(.userContextNotInitialized))
+    public override func sessionId() -> MailUserSessionSessionIdResult {
+        .ok(id)
     }
 
-    override func newPasswordChangeFlow() async -> MailUserSessionNewPasswordChangeFlowResult {
-        .ok(PasswordFlowStub())
+    public override func userSettings() async -> MailUserSessionUserSettingsResult {
+        .error(.reason(.userContextNotInitialized))
     }
 }

@@ -28,11 +28,15 @@ class SettingsScreenSnapshotTests: BaseTestCase {
 
     func testSettingsScreenLayoutsCorrectOnIphoneX() {
         let store = AppAppearanceStore(mailSession: { MailSession(noPointer: .init()) })
+        let mailUserSession = MailUserSessionSpy(id: "")
+        mailUserSession.stubbedAccountDetails = .testData
+
         let sut = SettingsScreen(
             state: .initial.copy(\.accountInfo, to: AccountDetails.testData.settings),
-            mailUserSession: MailUserSessionStub(id: ""),
+            mailUserSession: mailUserSession,
             accountAuthCoordinator: .mock()
         )
+
         assertSnapshotsOnIPhoneX(of: sut.environmentObject(store), precision: 0.98)
     }
 
