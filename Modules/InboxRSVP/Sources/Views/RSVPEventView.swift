@@ -72,6 +72,8 @@ struct RSVPEventView: View {
         EventHeader(title: event.title, formattedDate: event.formattedDate, answerButtons: event.answerButtons)
     }
 
+    @Namespace private var answerButtonAnimation
+
     private var answerSection: some View {
         VStack(alignment: .leading, spacing: DS.Spacing.mediumLight) {
             Text(L10n.Answer.attending)
@@ -85,14 +87,17 @@ struct RSVPEventView: View {
                         AnswerButton(text: answer.humanReadable.short) {
                             onAnswerSelected(answer)
                         }
+                        .matchedGeometryEffect(id: answer, in: answerButtonAnimation)
                     }
                 case .some(let answer):
                     AnswerMenuButton(state: answer, isAnswering: isAnswering) { selectedAnswer in
                         onAnswerSelected(selectedAnswer)
                     }
+                    .matchedGeometryEffect(id: answer, in: answerButtonAnimation)
                 }
             }
         }
+        .animation(.default, value: event.participants[event.userParticipantIndex].status)
     }
 
     @ViewBuilder
