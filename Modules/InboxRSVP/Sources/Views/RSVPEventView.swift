@@ -111,26 +111,20 @@ struct RSVPEventView: View {
                 RSVPDetailsParticipantsButton(count: event.participants.count, isExpanded: $areParticipantsExpanded) {
                     areParticipantsExpanded.toggle()
                 }
-                if areParticipantsExpanded {
-                    LazyVStack(alignment: .leading, spacing: .zero) {
-                        ForEachEnumerated(event.participants, id: \.element.displayName) { participant, index in
-                            participantRow(participant)
-                        }
+            }
+            if areParticipantsExpanded || event.participants.count == 1 {
+                LazyVStack(alignment: .leading, spacing: .zero) {
+                    ForEachEnumerated(event.participants, id: \.element.displayName) { participant, index in
+                        RSVPDetailsRow(
+                            icon: participant.status.details.icon,
+                            iconColor: participant.status.details.color,
+                            text: participant.displayName
+                        )
                     }
-                    .compositingGroup()
                 }
-            } else if let participant = event.participants.first {
-                participantRow(participant)
+                .compositingGroup()
             }
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
-    }
-
-    private func participantRow(_ participant: RSVPEvent.Participant) -> some View {
-        let statusDetails = participant.status.details
-        let displayName = participant.displayName
-
-        return RSVPDetailsRow(icon: statusDetails.icon, iconColor: statusDetails.color, text: displayName)
     }
 }
 

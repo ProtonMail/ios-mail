@@ -43,7 +43,6 @@ class MessageBodyAttachmentsViewSnapshotTests: XCTestCase {
 
     // MARK: - Private
 
-    @MainActor
     private func makeSUT(state: MessageBodyAttachmentsState) -> MessageBodyAttachmentsView {
         .init(state: state, attachmentIDToOpen: .constant(nil))
     }
