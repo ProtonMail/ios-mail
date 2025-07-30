@@ -23,6 +23,7 @@ struct MailboxActionSheetsState: Copying {
     var mailbox: MailboxItemActionSheetInput?
     var labelAs: ActionSheetInput?
     var moveTo: ActionSheetInput?
+    var snooze: ID?
 }
 
 extension View {
@@ -33,12 +34,13 @@ extension View {
         replyActions: @escaping ReplyActionsHandler,
         goBackNavigation: (() -> Void)? = nil
     ) -> some View {
-        modifier(MailboxActionSheets(
-            mailbox: mailbox,
-            state: state,
-            replyActions: replyActions,
-            goBackNavigation: goBackNavigation
-        ))
+        modifier(
+            MailboxActionSheets(
+                mailbox: mailbox,
+                state: state,
+                replyActions: replyActions,
+                goBackNavigation: goBackNavigation
+            ))
     }
 }
 
@@ -63,16 +65,21 @@ private struct MailboxActionSheets: ViewModifier {
     func body(content: Content) -> some View {
         content
             .sheet(item: mailboxBinding, content: mailboxItemActionPicker)
+            .sheet(item: snoozeBinding) { conversationID in
+                SnoozeView(state: .initial(screen: .main, conversationIDs: [conversationID]))
+            }
             .labelAsSheet(mailbox: mailbox, input: $state.labelAs)
-            .moveToSheet(mailbox: mailbox, input: $state.moveTo, navigation: { navigation in
-                state.moveTo = nil
-                switch navigation {
-                case .dismiss:
-                    break
-                case .dismissAndGoBack:
-                    goBackNavigation?()
-                }
-            })
+            .moveToSheet(
+                mailbox: mailbox, input: $state.moveTo,
+                navigation: { navigation in
+                    state.moveTo = nil
+                    switch navigation {
+                    case .dismiss:
+                        break
+                    case .dismissAndGoBack:
+                        goBackNavigation?()
+                    }
+                })
     }
 
     @MainActor
@@ -80,11 +87,13 @@ private struct MailboxActionSheets: ViewModifier {
         let navigation: (MailboxItemActionSheetNavigation) -> Void = { navigation in
             switch navigation {
             case .labelAs:
-                state = state
+                state =
+                    state
                     .copy(\.labelAs, to: .init(sheetType: .labelAs, ids: [input.id], type: input.type))
                     .copy(\.mailbox, to: nil)
             case .moveTo:
-                state = state
+                state =
+                    state
                     .copy(\.moveTo, to: .init(sheetType: .moveTo, ids: [input.id], type: input.type))
                     .copy(\.mailbox, to: nil)
             case .dismiss:
@@ -111,6 +120,10 @@ private struct MailboxActionSheets: ViewModifier {
 
     private var mailboxBinding: Binding<MailboxItemActionSheetInput?> {
         .init(get: { state.mailbox }, set: { mailbox in state = state.copy(\.mailbox, to: mailbox) })
+    }
+
+    private var snoozeBinding: Binding<ID?> {
+        .init(get: { state.snooze }, set: { id in state = state.copy(\.snooze, to: id) })
     }
 
 }

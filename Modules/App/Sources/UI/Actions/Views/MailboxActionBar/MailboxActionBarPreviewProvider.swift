@@ -33,7 +33,8 @@ enum MailboxActionBarPreviewProvider {
             ],
             moreActionSheetPresented: nil,
             labelAsSheetPresented: nil,
-            moveToSheetPresented: nil
+            moveToSheetPresented: nil,
+            isSnoozeSheetPresented: false
         )
     }
 

@@ -189,8 +189,10 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         case .moveToSystemFolder(let label), .notSpam(let label):
             moveConversation(destination: label, toastStateStore: toastStateStore, goBack: goBack)
         case .snooze:
-            // TODO: Snooze
-            break
+            actionSheets =
+                actionSheets
+                .copy(\.snooze, to: conversationID)
+                .copy(\.mailbox, to: nil)
         }
     }
 

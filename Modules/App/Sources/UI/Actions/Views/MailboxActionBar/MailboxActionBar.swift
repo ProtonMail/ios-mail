@@ -110,6 +110,9 @@ private struct MailboxActionBarViewModifier: ViewModifier {
                     }
                     .alert(model: store.binding(\.moreDeleteConfirmationAlert))
                 }
+                .sheet(isPresented: store.binding(\.isSnoozeSheetPresented)) {
+                    SnoozeView(state: .initial(screen: .main, conversationIDs: selectedItemsIDs))
+                }
                 .alert(model: store.binding(\.deleteConfirmationAlert))
         }
         .id(MailboxIdentifiaction(viewMode: mailbox.viewMode(), id: mailbox.labelId()))
