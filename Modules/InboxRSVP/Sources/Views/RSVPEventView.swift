@@ -165,30 +165,6 @@ struct RSVPEventView: View {
     }
 }
 
-extension RsvpAnswer {
-    var humanReadable: (short: LocalizedStringResource, long: LocalizedStringResource) {
-        switch self {
-        case .yes:
-            (L10n.Answer.yes, L10n.Answer.yesLong)
-        case .maybe:
-            (L10n.Answer.maybe, L10n.Answer.maybeLong)
-        case .no:
-            (L10n.Answer.no, L10n.Answer.noLong)
-        }
-    }
-
-    var attendeeStatus: RsvpAttendeeStatus {
-        switch self {
-        case .yes:
-            .yes
-        case .maybe:
-            .maybe
-        case .no:
-            .no
-        }
-    }
-}
-
 private extension RsvpAttendeeStatus {
     var answer: RsvpAnswer? {
         switch self {

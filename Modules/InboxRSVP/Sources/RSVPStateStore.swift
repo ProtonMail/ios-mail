@@ -116,11 +116,3 @@ final class RSVPStateStore: ObservableObject {
         }
     }
 }
-
-extension RsvpEvent: Equatable {
-
-    static func == (lhs: RsvpEvent, rhs: RsvpEvent) -> Bool {
-        ObjectIdentifier(lhs) == ObjectIdentifier(rhs)
-    }
-
-}
