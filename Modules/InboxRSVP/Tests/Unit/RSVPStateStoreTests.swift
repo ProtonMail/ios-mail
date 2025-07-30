@@ -48,7 +48,12 @@ final class RSVPStateStoreTests {
         await sut.handle(action: .onLoad)
 
         #expect(rsvpIDSpy.fetchCallsCount == 1)
-        #expect(recordedStates() == [.loading, .loadFailed])
+        #expect(
+            recordedStates() == [
+                .loading,
+                .loadFailed,
+            ]
+        )
     }
 
     @Test
@@ -64,7 +69,12 @@ final class RSVPStateStoreTests {
         await sut.handle(action: .onLoad)
 
         #expect(rsvpIDSpy.fetchCallsCount == 1)
-        #expect(recordedStates() == [.loading, .loaded(expectedService, expectedEvent)])
+        #expect(
+            recordedStates() == [
+                .loading,
+                .loaded(.init(expectedService, expectedEvent)),
+            ]
+        )
     }
 
     @Test
@@ -106,7 +116,7 @@ final class RSVPStateStoreTests {
                 .loading,
                 .loadFailed,
                 .loading,
-                .loaded(rsvpEventSpy, expectedEvent),
+                .loaded(.init(rsvpEventSpy, expectedEvent)),
             ]
         )
     }
@@ -138,8 +148,8 @@ final class RSVPStateStoreTests {
         #expect(
             recordedStates() == [
                 .loading,
-                .loaded(rsvpEventSpy, initialEvent),
-                .loaded(rsvpEventSpy, updatedEvent),
+                .loaded(.init(rsvpEventSpy, initialEvent)),
+                .loaded(.init(rsvpEventSpy, updatedEvent)),
             ]
         )
     }
@@ -162,8 +172,8 @@ final class RSVPStateStoreTests {
         #expect(
             recordedStates() == [
                 .loading,
-                .loaded(rsvpEventSpy, expectedEvent),
-                .loaded(rsvpEventSpy, .bestEvent(status: .no)),
+                .loaded(.init(rsvpEventSpy, expectedEvent)),
+                .loaded(.init(rsvpEventSpy, .bestEvent(status: .no))),
                 .loadFailed,
             ]
         )
@@ -187,9 +197,9 @@ final class RSVPStateStoreTests {
         #expect(
             recordedStates() == [
                 .loading,
-                .loaded(rsvpEventSpy, initialEvent),
-                .loaded(rsvpEventSpy, .bestEvent(status: .yes)),
-                .loaded(rsvpEventSpy, initialEvent),
+                .loaded(.init(rsvpEventSpy, initialEvent)),
+                .loaded(.init(rsvpEventSpy, .bestEvent(status: .yes))),
+                .loaded(.init(rsvpEventSpy, initialEvent)),
             ]
         )
     }

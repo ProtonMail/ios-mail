@@ -19,10 +19,20 @@ import InboxCore
 import SwiftUI
 
 final class RSVPStateStore: ObservableObject {
+    struct Data: Equatable {
+        let eventService: RsvpEvent
+        let eventDetails: RsvpEventDetails
+
+        init(_ eventService: RsvpEvent, _ eventDetails: RsvpEventDetails) {
+            self.eventService = eventService
+            self.eventDetails = eventDetails
+        }
+    }
+
     enum State: Equatable {
         case loading
         case loadFailed
-        case loaded(RsvpEvent, RsvpEventDetails)
+        case loaded(Data)
     }
 
     private let rsvpID: RsvpEventId
@@ -45,8 +55,8 @@ final class RSVPStateStore: ObservableObject {
         case .onLoad, .retry:
             await loadEventDetails()
         case .answer(let status):
-            if case .loaded(let eventService, let rsvpEventDetails) = state {
-                await answer(with: status, for: eventService, with: rsvpEventDetails)
+            if case .loaded(let data) = state {
+                await answer(with: status, for: data.eventService, with: data.eventDetails)
             }
         }
     }
@@ -61,7 +71,7 @@ final class RSVPStateStore: ObservableObject {
         case .some(let eventService):
             switch eventService.details() {
             case .ok(let details):
-                updateState(with: .loaded(eventService, details))
+                updateState(with: .loaded(.init(eventService, details)))
             case .error:
                 updateState(with: .loadFailed)
             }
@@ -77,13 +87,13 @@ final class RSVPStateStore: ObservableObject {
         let updatedAttendees = optimisticallyUpdatedAttendees(with: answer, existingDetails: existingDetails)
         let updatedDetails = existingDetails.copy(\.attendees, to: updatedAttendees)
 
-        updateState(with: .loaded(eventService, updatedDetails))
+        updateState(with: .loaded(.init(eventService, updatedDetails)))
 
         let answerResult = await eventService.answer(answer: answer)
 
         switch (answerResult, eventService.details()) {
         case (.ok, .ok(let eventDetails)), (.error, .ok(let eventDetails)):
-            updateState(with: .loaded(eventService, eventDetails))
+            updateState(with: .loaded(.init(eventService, eventDetails)))
         case (.ok, .error), (.error, .error):
             updateState(with: .loadFailed)
         }
