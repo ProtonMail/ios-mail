@@ -19,21 +19,11 @@ import InboxCore
 import SwiftUI
 
 final class RSVPStateStore: ObservableObject {
-    struct EventData: Equatable {
-        let service: RsvpEventService
-        let event: RsvpEvent
-
-        init(_ service: RsvpEventService, _ event: RsvpEvent) {
-            self.service = service
-            self.event = event
-        }
-    }
-
     enum State: Equatable {
         case loading
         case loadFailed
-        case loaded(EventData)
-        case answering(EventData)
+        case loaded(RsvpEventService, RsvpEvent)
+        case answering(RsvpEventService, RsvpEvent)
     }
 
     private let serviceProvider: RsvpEventServiceProvider
@@ -56,8 +46,8 @@ final class RSVPStateStore: ObservableObject {
         case .onLoad, .retry:
             await loadEventDetails()
         case .answer(let status):
-            if case .loaded(let data) = state {
-                await answer(with: status, data: data)
+            if case let .loaded(service, event) = state {
+                await answer(with: status, event: event, service: service)
             }
         }
     }
@@ -72,7 +62,7 @@ final class RSVPStateStore: ObservableObject {
         case .some(let eventService):
             switch eventService.get() {
             case .ok(let details):
-                updateState(with: .loaded(.init(eventService, details)))
+                updateState(with: .loaded(eventService, details))
             case .error:
                 updateState(with: .loadFailed)
             }
@@ -80,19 +70,19 @@ final class RSVPStateStore: ObservableObject {
     }
 
     @MainActor
-    private func answer(with answer: RsvpAnswer, data: EventData) async {
-        let updatedDetails = data.event.copy(
+    private func answer(with answer: RsvpAnswer, event: RsvpEvent, service: RsvpEventService) async {
+        let updatedDetails = event.copy(
             \.attendees,
-            to: updatedAttendees(in: data.event, with: answer)
+            to: updatedAttendees(in: event, with: answer)
         )
 
-        updateState(with: .answering(.init(data.service, updatedDetails)))
+        updateState(with: .answering(service, updatedDetails))
 
-        let answerResult = await data.service.answer(answer: answer)
+        let answerResult = await service.answer(answer: answer)
 
-        switch (answerResult, data.service.get()) {
+        switch (answerResult, service.get()) {
         case (.ok, .ok(let eventDetails)), (.error, .ok(let eventDetails)):
-            updateState(with: .loaded(.init(data.service, eventDetails)))
+            updateState(with: .loaded(service, eventDetails))
         case (.ok, .error), (.error, .error):
             updateState(with: .loadFailed)
         }

@@ -72,7 +72,7 @@ final class RSVPStateStoreTests {
         #expect(
             recordedStates() == [
                 .loading,
-                .loaded(.init(expectedService, expectedEvent)),
+                .loaded(expectedService, expectedEvent),
             ]
         )
     }
@@ -116,7 +116,7 @@ final class RSVPStateStoreTests {
                 .loading,
                 .loadFailed,
                 .loading,
-                .loaded(.init(serviceSpy, expectedEvent)),
+                .loaded(serviceSpy, expectedEvent),
             ]
         )
     }
@@ -148,9 +148,9 @@ final class RSVPStateStoreTests {
         #expect(
             recordedStates() == [
                 .loading,
-                .loaded(.init(serviceSpy, initialEvent)),
-                .answering(.init(serviceSpy, updatedEvent)),
-                .loaded(.init(serviceSpy, updatedEvent)),
+                .loaded(serviceSpy, initialEvent),
+                .answering(serviceSpy, updatedEvent),
+                .loaded(serviceSpy, updatedEvent),
             ]
         )
     }
@@ -173,8 +173,8 @@ final class RSVPStateStoreTests {
         #expect(
             recordedStates() == [
                 .loading,
-                .loaded(.init(serviceSpy, expectedEvent)),
-                .answering(.init(serviceSpy, .bestEvent(status: .no))),
+                .loaded(serviceSpy, expectedEvent),
+                .answering(serviceSpy, .bestEvent(status: .no)),
                 .loadFailed,
             ]
         )
@@ -198,9 +198,9 @@ final class RSVPStateStoreTests {
         #expect(
             recordedStates() == [
                 .loading,
-                .loaded(.init(serviceSpy, initialEvent)),
-                .answering(.init(serviceSpy, .bestEvent(status: .yes))),
-                .loaded(.init(serviceSpy, initialEvent)),
+                .loaded(serviceSpy, initialEvent),
+                .answering(serviceSpy, .bestEvent(status: .yes)),
+                .loaded(serviceSpy, initialEvent),
             ]
         )
     }
