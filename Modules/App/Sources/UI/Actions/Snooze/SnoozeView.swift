@@ -25,6 +25,7 @@ struct SnoozeView: View {
     private let initialState: SnoozeState
     @EnvironmentObject var upsellCoordinator: UpsellCoordinator
     @EnvironmentObject var toastStateStore: ToastStateStore
+    @Environment(\.dismiss) var dismiss
 
     private static let gridSpacing = DS.Spacing.medium
 
@@ -47,18 +48,29 @@ struct SnoozeView: View {
             store: SnoozeStore(
                 state: initialState,
                 upsellScreenPresenter: upsellCoordinator,
-                toastStateStore: toastStateStore
+                toastStateStore: toastStateStore,
+                dismiss: { dismiss.callAsFunction() }
             )
         ) { state, store in
             sheetContent(state: state, store: store)
-                .sheet(item: store.binding(\.presentUpsellScreen), content: { upsellScreenModel in
-                    UpsellScreen(model: upsellScreenModel)
-                })
+                .sheet(
+                    item: store.binding(\.presentUpsellScreen),
+                    content: { upsellScreenModel in
+                        UpsellScreen(model: upsellScreenModel)
+                    }
+                )
                 .animation(.easeInOut, value: state.screen)
                 .transition(.identity)
                 .presentationDetents(state.allowedDetents, selection: store.binding(\.currentDetent))
                 .presentationDragIndicator(.hidden)
                 .interactiveDismissDisabled()
+                .onLoad { store.handle(action: .loadData) }
+                .onChange(of: state.presentUpsellScreen) { oldValue, newValue in
+                    let upsellDismissed = oldValue != nil && newValue == nil
+                    if upsellDismissed {
+                        store.handle(action: .loadData)
+                    }
+                }
         }
     }
 

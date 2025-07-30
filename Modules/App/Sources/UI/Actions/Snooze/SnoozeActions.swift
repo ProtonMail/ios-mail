@@ -105,7 +105,7 @@ enum SnoozeErrorReason {
     case invalidSnoozeLocation
 }
 
-enum SnoozeError {
+enum SnoozeError: Error {
     case reason(SnoozeErrorReason)
     case other(ProtonError)
 }

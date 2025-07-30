@@ -61,6 +61,7 @@ struct SnoozeViewSnapshotTests {
     func snapshotAllVariants(_ testCase: TestCase) {
         let snoozeView = SnoozeView(
             state: .init(
+                conversationIDs: [],
                 screen: testCase.screen,
                 options: testCase.actions.options,
                 showUnsnooze: testCase.actions.showUnsnooze,

@@ -20,6 +20,7 @@ import InboxIAP
 import SwiftUI
 
 struct SnoozeState: Copying {
+    let conversationIDs: [ID]
     var screen: SnoozeView.Screen
     var options: [SnoozeTime]
     var showUnsnooze: Bool
@@ -30,8 +31,9 @@ struct SnoozeState: Copying {
 
 extension SnoozeState {
 
-    static func initial(screen: SnoozeView.Screen) -> Self {
+    static func initial(screen: SnoozeView.Screen, conversationIDs: [ID]) -> Self {
         return .init(
+            conversationIDs: conversationIDs,
             screen: screen,
             options: [],
             showUnsnooze: false,

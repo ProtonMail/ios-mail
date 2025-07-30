@@ -23,12 +23,43 @@ import Testing
 class SnoozeStoreTests {
     let toastStateStore = ToastStateStore(initialState: .initial)
     let upsellScreenPresenterSpy = UpsellScreenPresenterSpy()
+    let conversationIDs: [ID] = [.init(value: 7), .init(value: 77)]
+    let snoozeServiceSpy = SnoozeServiceSpy()
+    var dismissInvokedCount = 0
 
     lazy var sut = SnoozeStore(
-        state: .initial(screen: .main),
+        state: .initial(screen: .main, conversationIDs: conversationIDs),
         upsellScreenPresenter: upsellScreenPresenterSpy,
-        toastStateStore: toastStateStore
+        toastStateStore: toastStateStore,
+        snoozeService: snoozeServiceSpy,
+        dismiss: { [unowned self] in dismissInvokedCount += 1 }
     )
+
+    @Test
+    func testLoadData_proviesSnoozeActions() async {
+        await sut.handle(action: .loadData)
+
+        #expect(sut.state.options == snoozeServiceSpy.snoozeActionsStub.options)
+        #expect(sut.state.showUnsnooze == snoozeServiceSpy.snoozeActionsStub.showUnsnooze)
+    }
+
+    @Test
+    func testSnoozeAction_snoozesCorrectConversations() async {
+        await sut.handle(action: .predefinedSnoozeOptionTapped(.nextWeek(.timestamp)))
+
+        #expect(snoozeServiceSpy.invokedSnooze.count == 1)
+        #expect(snoozeServiceSpy.invokedSnooze.first?.ids == conversationIDs)
+        #expect(snoozeServiceSpy.invokedSnooze.first?.snoozeTime == .timestamp)
+        #expect(dismissInvokedCount == 1)
+    }
+
+    @Test
+    func testUnsnoozeAction_unsnoozesCorrectConversations() async {
+        await sut.handle(action: .unsnoozeTapped)
+
+        #expect(snoozeServiceSpy.invokedUnsnooze == [conversationIDs])
+        #expect(dismissInvokedCount == 1)
+    }
 
     @Test
     func testCustomButtonTapped_transitionsToCustomView() async {
@@ -85,5 +116,44 @@ class UpsellScreenPresenterSpy: UpsellScreenPresenter {
 private extension NSError {
     static var stubbed: NSError {
         NSError(domain: .notUsed, code: 999, userInfo: nil)
+    }
+}
+
+import proton_app_uniffi
+
+class SnoozeServiceSpy: SnoozeServiceProtocol {
+    lazy var snoozeActionsStub: SnoozeActions = .init(
+        options: [.custom, .tomorrow(.timestamp), .nextWeek(.timestamp), .thisWeekend(.timestamp)],
+        showUnsnooze: true
+    )
+
+    private(set) var invokedAvailableSnoozeActions: [(weekStart: NonDefaultWeekStart, id: ID)] = []
+    private(set) var invokedSnooze: [(ids: [ID], snoozeTime: UnixTimestamp)] = []
+    private(set) var invokedUnsnooze: [[ID]] = []
+
+    // MARK: - SnoozeServiceProtocol
+
+    func availableSnoozeActionsForConversation(weekStart: NonDefaultWeekStart, id: Id) -> AvailableSnoozeActionsForConversationResult {
+        invokedAvailableSnoozeActions.append((weekStart, id))
+
+        return .ok(snoozeActionsStub)
+    }
+
+    func snoozeConversations(ids: [Id], snoozeTime: UnixTimestamp) -> SnoozeConversationsResult {
+        invokedSnooze.append((ids, snoozeTime))
+
+        return .ok
+    }
+
+    func unsnoozeConversations(ids: [Id]) -> UnsnoozeConversationsResult {
+        invokedUnsnooze.append(ids)
+
+        return .ok
+    }
+}
+
+private extension UInt64 {
+    static var timestamp: UInt64 {
+        1753883097
     }
 }
