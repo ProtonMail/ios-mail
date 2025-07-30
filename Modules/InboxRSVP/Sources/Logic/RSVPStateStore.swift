@@ -22,12 +22,15 @@ final class RSVPStateStore: ObservableObject {
     enum State: Equatable {
         case loading
         case loadFailed
-        case loaded(RsvpEventService, RsvpEvent)
-        case answering(RsvpEventService, RsvpEvent)
+        case loaded(RsvpEvent)
+        case answering(RsvpEvent)
     }
 
     private let serviceProvider: RsvpEventServiceProvider
-    @Published var state: State
+    private var internalState: InternalState {
+        didSet { state = internalState.state }
+    }
+    @Published private(set) var state: State
 
     enum Action {
         case onLoad
@@ -35,9 +38,10 @@ final class RSVPStateStore: ObservableObject {
         case answer(RsvpAnswer)
     }
 
-    init(serviceProvider: RsvpEventServiceProvider, state: State = .loading) {
+    init(serviceProvider: RsvpEventServiceProvider) {
         self.serviceProvider = serviceProvider
-        self.state = state
+        self.internalState = .loading
+        self.state = internalState.state
     }
 
     @MainActor
@@ -46,7 +50,7 @@ final class RSVPStateStore: ObservableObject {
         case .onLoad, .retry:
             await loadEventDetails()
         case .answer(let status):
-            if case let .loaded(service, event) = state {
+            if case let .loaded(service, event) = internalState {
                 await answer(with: status, event: event, service: service)
             }
         }
@@ -97,9 +101,31 @@ final class RSVPStateStore: ObservableObject {
         return attendees
     }
 
-    private func updateState(with newState: State) {
-        if state != newState {
-            state = newState
+    private func updateState(with newState: InternalState) {
+        if internalState != newState {
+            internalState = newState
+        }
+    }
+}
+
+private enum InternalState: Equatable {
+    case loading
+    case loadFailed
+    case loaded(RsvpEventService, RsvpEvent)
+    case answering(RsvpEventService, RsvpEvent)
+}
+
+private extension InternalState {
+    var state: RSVPStateStore.State {
+        switch self {
+        case .loading:
+            .loading
+        case .loadFailed:
+            .loadFailed
+        case .loaded(_, let event):
+            .loaded(event)
+        case .answering(_, let event):
+            .answering(event)
         }
     }
 }

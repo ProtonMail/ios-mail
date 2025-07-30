@@ -60,7 +60,6 @@ final class RSVPStateStoreTests {
     func onLoadAction_FetchingAndRetrievingEventDetailsSucceeds_ItSetsLoadedState() async {
         let recordedStates = trackStates(of: sut.$state)
 
-        let expectedService = serviceSpy
         let expectedEvent: RsvpEvent = .bestEvent()
 
         serviceSpy.stubbedDetailsResult = .ok(expectedEvent)
@@ -72,7 +71,7 @@ final class RSVPStateStoreTests {
         #expect(
             recordedStates() == [
                 .loading,
-                .loaded(expectedService, expectedEvent),
+                .loaded(expectedEvent),
             ]
         )
     }
@@ -116,7 +115,7 @@ final class RSVPStateStoreTests {
                 .loading,
                 .loadFailed,
                 .loading,
-                .loaded(serviceSpy, expectedEvent),
+                .loaded(expectedEvent),
             ]
         )
     }
@@ -148,9 +147,9 @@ final class RSVPStateStoreTests {
         #expect(
             recordedStates() == [
                 .loading,
-                .loaded(serviceSpy, initialEvent),
-                .answering(serviceSpy, updatedEvent),
-                .loaded(serviceSpy, updatedEvent),
+                .loaded(initialEvent),
+                .answering(updatedEvent),
+                .loaded(updatedEvent),
             ]
         )
     }
@@ -173,8 +172,8 @@ final class RSVPStateStoreTests {
         #expect(
             recordedStates() == [
                 .loading,
-                .loaded(serviceSpy, expectedEvent),
-                .answering(serviceSpy, .bestEvent(status: .no)),
+                .loaded(expectedEvent),
+                .answering(.bestEvent(status: .no)),
                 .loadFailed,
             ]
         )
@@ -198,9 +197,9 @@ final class RSVPStateStoreTests {
         #expect(
             recordedStates() == [
                 .loading,
-                .loaded(serviceSpy, initialEvent),
-                .answering(serviceSpy, .bestEvent(status: .yes)),
-                .loaded(serviceSpy, initialEvent),
+                .loaded(initialEvent),
+                .answering(.bestEvent(status: .yes)),
+                .loaded(initialEvent),
             ]
         )
     }
