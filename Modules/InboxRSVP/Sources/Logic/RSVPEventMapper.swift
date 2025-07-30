@@ -19,18 +19,18 @@ import Foundation
 import InboxCoreUI
 
 enum RSVPEventMapper {
-    static func map(from details: RsvpEventDetails) -> RSVPEvent {
+    static func map(from event: RsvpEvent) -> RSVPEvent {
         RSVPEvent(
-            title: details.summary ?? L10n.noEventTitlePlacholder.string,
-            banner: banner(from: details.state),
-            formattedDate: formattedDate(from: details.startsAt, to: details.endsAt, details.occurrence),
-            answerButtons: answerButtonsState(from: details.state),
-            calendar: details.calendar,
-            recurrence: details.recurrence,
-            location: details.location,
-            organizer: organizer(from: details.organizer),
-            participants: participants(attendees: details.attendees, userIndex: details.userAttendeeIdx),
-            userParticipantIndex: Int(details.userAttendeeIdx)
+            title: event.summary ?? L10n.noEventTitlePlacholder.string,
+            banner: banner(from: event.state),
+            formattedDate: formattedDate(from: event.startsAt, to: event.endsAt, event.occurrence),
+            answerButtons: answerButtonsState(from: event.state),
+            calendar: event.calendar,
+            recurrence: event.recurrence,
+            location: event.location,
+            organizer: organizer(from: event.organizer),
+            participants: participants(attendees: event.attendees, userIndex: event.userAttendeeIdx),
+            userParticipantIndex: Int(event.userAttendeeIdx)
         )
     }
 
@@ -75,6 +75,8 @@ enum RSVPEventMapper {
                 regular = L10n.Header.inviteIsOutdated
             case .inviteHasUnknownRecency:
                 regular = L10n.Header.offlineWarning
+            case .addressIsIncorrect:
+                regular = L10n.Header.addressIsIncorrect
             }
 
             return .init(style: .generic, regularText: regular)

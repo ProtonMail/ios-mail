@@ -20,12 +20,12 @@ import SwiftUI
 
 final class RSVPStateStore: ObservableObject {
     struct EventData: Equatable {
-        let service: RsvpEvent
-        let details: RsvpEventDetails
+        let service: RsvpEventService
+        let event: RsvpEvent
 
-        init(_ service: RsvpEvent, _ details: RsvpEventDetails) {
+        init(_ service: RsvpEventService, _ event: RsvpEvent) {
             self.service = service
-            self.details = details
+            self.event = event
         }
     }
 
@@ -36,7 +36,7 @@ final class RSVPStateStore: ObservableObject {
         case answering(EventData)
     }
 
-    private let serviceProvider: RsvpEventId
+    private let serviceProvider: RsvpEventServiceProvider
     @Published var state: State
 
     enum Action {
@@ -45,7 +45,7 @@ final class RSVPStateStore: ObservableObject {
         case answer(RsvpAnswer)
     }
 
-    init(serviceProvider: RsvpEventId, state: State = .loading) {
+    init(serviceProvider: RsvpEventServiceProvider, state: State = .loading) {
         self.serviceProvider = serviceProvider
         self.state = state
     }
@@ -57,7 +57,7 @@ final class RSVPStateStore: ObservableObject {
             await loadEventDetails()
         case .answer(let status):
             if case .loaded(let data) = state {
-                await answer(with: status, eventData: data)
+                await answer(with: status, data: data)
             }
         }
     }
@@ -66,11 +66,11 @@ final class RSVPStateStore: ObservableObject {
     private func loadEventDetails() async {
         updateState(with: .loading)
 
-        switch await serviceProvider.fetch() {
+        switch await serviceProvider.eventService() {
         case .none:
             updateState(with: .loadFailed)
         case .some(let eventService):
-            switch eventService.details() {
+            switch eventService.get() {
             case .ok(let details):
                 updateState(with: .loaded(.init(eventService, details)))
             case .error:
@@ -80,25 +80,25 @@ final class RSVPStateStore: ObservableObject {
     }
 
     @MainActor
-    private func answer(with answer: RsvpAnswer, eventData: EventData) async {
-        let updatedDetails = eventData.details.copy(
+    private func answer(with answer: RsvpAnswer, data: EventData) async {
+        let updatedDetails = data.event.copy(
             \.attendees,
-            to: updatedAttendees(in: eventData.details, with: answer)
+            to: updatedAttendees(in: data.event, with: answer)
         )
 
-        updateState(with: .answering(.init(eventData.service, updatedDetails)))
+        updateState(with: .answering(.init(data.service, updatedDetails)))
 
-        let answerResult = await eventData.service.answer(answer: answer)
+        let answerResult = await data.service.answer(answer: answer)
 
-        switch (answerResult, eventData.service.details()) {
+        switch (answerResult, data.service.get()) {
         case (.ok, .ok(let eventDetails)), (.error, .ok(let eventDetails)):
-            updateState(with: .loaded(.init(eventData.service, eventDetails)))
+            updateState(with: .loaded(.init(data.service, eventDetails)))
         case (.ok, .error), (.error, .error):
             updateState(with: .loadFailed)
         }
     }
 
-    private func updatedAttendees(in existingDetails: RsvpEventDetails, with newStatus: RsvpAnswer) -> [RsvpAttendee] {
+    private func updatedAttendees(in existingDetails: RsvpEvent, with newStatus: RsvpAnswer) -> [RsvpAttendee] {
         let updateIndex = Int(existingDetails.userAttendeeIdx)
         var attendees = existingDetails.attendees
 

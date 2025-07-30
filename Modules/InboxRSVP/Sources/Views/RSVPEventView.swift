@@ -26,12 +26,12 @@ struct RSVPEventView: View {
     @State private var areParticipantsExpanded: Bool
 
     init(
-        eventDetails: RsvpEventDetails,
+        event: RsvpEvent,
         isAnswering: Bool,
         onAnswerSelected: @escaping (RsvpAnswer) -> Void,
         areParticipantsExpanded: Bool = false,
     ) {
-        self.event = RSVPEventMapper.map(from: eventDetails)
+        self.event = RSVPEventMapper.map(from: event)
         self.isAnswering = isAnswering
         self.onAnswerSelected = onAnswerSelected
         self.areParticipantsExpanded = areParticipantsExpanded
@@ -129,7 +129,7 @@ struct RSVPEventView: View {
 }
 
 #Preview {
-    let eventDetails = RsvpEventDetails(
+    let event = RsvpEvent(
         id: .none,
         summary: "Quick Sync",
         location: "Huddle Room",
@@ -153,7 +153,7 @@ struct RSVPEventView: View {
     ScrollView(.vertical, showsIndicators: false) {
         VStack(spacing: 16) {
             RSVPEventView(
-                eventDetails: eventDetails,
+                event: event,
                 isAnswering: true,
                 onAnswerSelected: { _ in },
                 areParticipantsExpanded: false

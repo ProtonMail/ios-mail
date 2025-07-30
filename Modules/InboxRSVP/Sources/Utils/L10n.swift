@@ -106,6 +106,11 @@ enum L10n {
             bundle: .module,
             comment: "Warning banner shown when the user has no internet connection."
         )
+        static let addressIsIncorrect = LocalizedStringResource(
+            "Your address can’t be used to reply. Please update your account information.",
+            bundle: .module,
+            comment: "Banner text shown when the user's address is disabled or cannot be used to send a reply."
+        )
         static let cancelledAndOutdated = LocalizedStringResource(
             "Event cancelled. This invitation is out of date.",
             bundle: .module,

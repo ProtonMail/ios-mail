@@ -20,7 +20,7 @@ import SwiftUI
 struct RSVPView: View {
     @StateObject private var store: RSVPStateStore
 
-    init(serviceProvider: RsvpEventId) {
+    init(serviceProvider: RsvpEventServiceProvider) {
         _store = StateObject(wrappedValue: .init(serviceProvider: serviceProvider))
     }
 
@@ -39,16 +39,16 @@ struct RSVPView: View {
         case .loadFailed:
             RSVPErrorView { handle(action: .retry) }
         case .loaded(let data):
-            eventDetailsView(with: data.details, isAnswering: false)
+            eventDetailsView(with: data.event, isAnswering: false)
         case .answering(let data):
-            eventDetailsView(with: data.details, isAnswering: true)
+            eventDetailsView(with: data.event, isAnswering: true)
         }
     }
 
     @ViewBuilder
-    private func eventDetailsView(with eventDetails: RsvpEventDetails, isAnswering: Bool) -> some View {
+    private func eventDetailsView(with event: RsvpEvent, isAnswering: Bool) -> some View {
         RSVPEventView(
-            eventDetails: eventDetails,
+            event: event,
             isAnswering: isAnswering,
             onAnswerSelected: { selectedAnswer in handle(action: .answer(selectedAnswer)) }
         )

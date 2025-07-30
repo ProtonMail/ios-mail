@@ -18,11 +18,11 @@
 import InboxCore
 
 extension RsvpAttendee: Copying {}
-extension RsvpEventDetails: Copying {}
+extension RsvpEvent: Copying {}
 
-extension RsvpEvent: Equatable {
+extension RsvpEventService: Equatable {
 
-    static func == (lhs: RsvpEvent, rhs: RsvpEvent) -> Bool {
+    static func == (lhs: RsvpEventService, rhs: RsvpEventService) -> Bool {
         ObjectIdentifier(lhs) == ObjectIdentifier(rhs)
     }
 
@@ -46,6 +46,7 @@ enum RsvpEventProgress: Hashable {
 enum RsvpUnanswerableReason: Hashable {
     case inviteIsOutdated
     case inviteHasUnknownRecency
+    case addressIsIncorrect
 }
 
 enum RsvpState: Hashable {
@@ -56,7 +57,7 @@ enum RsvpState: Hashable {
     case cancelledReminder
 }
 
-struct RsvpEventDetails: Hashable {
+struct RsvpEvent: Hashable {
     var id: String?
     var summary: String?
     var location: String?
@@ -117,32 +118,32 @@ enum VoidAnswerRsvpResult {
     case error
 }
 
-enum RsvpEventDetailsResult {
-    case ok(RsvpEventDetails)
+enum RsvpEventGetResult {
+    case ok(RsvpEvent)
     case error
 }
 
-protocol RsvpEventIdProtocol {
-    func fetch() async -> RsvpEvent?
+protocol RsvpEventServiceProviderProtocol {
+    func eventService() async -> RsvpEventService?
 }
 
-class RsvpEventId: RsvpEventIdProtocol, @unchecked Sendable {
-    func fetch() async -> RsvpEvent? {
+class RsvpEventServiceProvider: RsvpEventServiceProviderProtocol, @unchecked Sendable {
+    func eventService() async -> RsvpEventService? {
         nil
     }
 }
 
-protocol RsvpEventProtocol: AnyObject, Sendable {
+protocol RsvpEventServiceProtocol: AnyObject, Sendable {
     func answer(answer: RsvpAnswer) async -> VoidAnswerRsvpResult
-    func details() -> RsvpEventDetailsResult
+    func get() -> RsvpEventGetResult
 }
 
-class RsvpEvent: RsvpEventProtocol, @unchecked Sendable {
+class RsvpEventService: RsvpEventServiceProtocol, @unchecked Sendable {
     func answer(answer: RsvpAnswer) async -> VoidAnswerRsvpResult {
         .ok
     }
 
-    func details() -> RsvpEventDetailsResult {
+    func get() -> RsvpEventGetResult {
         .error
     }
 }

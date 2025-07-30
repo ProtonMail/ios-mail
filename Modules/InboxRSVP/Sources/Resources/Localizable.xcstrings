@@ -78,6 +78,9 @@
     },
     "You're offline. The displayed information may be out-of-date." : {
       "comment" : "Warning banner shown when the user has no internet connection."
+    },
+    "Your address can’t be used to reply. Please update your account information." : {
+      "comment" : "Banner text shown when the user's address is disabled or cannot be used to send a reply."
     }
   },
   "version" : "1.0"

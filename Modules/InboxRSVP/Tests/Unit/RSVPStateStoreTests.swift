@@ -22,8 +22,8 @@ import InboxDesignSystem
 import Testing
 
 final class RSVPStateStoreTests {
-    private let serviceSpy = RsvpEventSpy()
-    private var serviceProviderSpy = RsvpEventIdSpy()
+    private let serviceSpy = RsvpEventServiceSpy()
+    private var serviceProviderSpy = RsvpEventServiceProviderSpy()
     private(set) lazy var sut = RSVPStateStore(serviceProvider: serviceProviderSpy)
     private var cancellables = Set<AnyCancellable>()
 
@@ -61,7 +61,7 @@ final class RSVPStateStoreTests {
         let recordedStates = trackStates(of: sut.$state)
 
         let expectedService = serviceSpy
-        let expectedEvent: RsvpEventDetails = .bestEvent()
+        let expectedEvent: RsvpEvent = .bestEvent()
 
         serviceSpy.stubbedDetailsResult = .ok(expectedEvent)
         serviceProviderSpy.stubbedResult = serviceSpy
@@ -103,7 +103,7 @@ final class RSVPStateStoreTests {
         #expect(serviceProviderSpy.fetchCallsCount == 1)
         #expect(recordedStates() == [.loading, .loadFailed])
 
-        let expectedEvent: RsvpEventDetails = .bestEvent()
+        let expectedEvent: RsvpEvent = .bestEvent()
 
         serviceProviderSpy.stubbedResult = serviceSpy
         serviceSpy.stubbedDetailsResult = .ok(.bestEvent())
@@ -127,8 +127,8 @@ final class RSVPStateStoreTests {
     func answerAction_AnsweringSuceeds_ItAnswersRefetchesDetailsAndSetsLoadedState(answer: RsvpAnswer) async {
         let recordedStates = trackStates(of: sut.$state)
 
-        let initialEvent: RsvpEventDetails = .bestEvent(status: .unanswered)
-        let updatedEvent: RsvpEventDetails = .bestEvent(status: answer.attendeeStatus)
+        let initialEvent: RsvpEvent = .bestEvent(status: .unanswered)
+        let updatedEvent: RsvpEvent = .bestEvent(status: answer.attendeeStatus)
 
         serviceSpy.stubbedDetailsResult = .ok(initialEvent)
         serviceProviderSpy.stubbedResult = serviceSpy
@@ -159,7 +159,7 @@ final class RSVPStateStoreTests {
     func answerAction_AnsweringSucceedsAndFetchingDetailsFails_ItMakesOptimisticUpdateAndSetLoadFailedState() async {
         let recordedStates = trackStates(of: sut.$state)
 
-        let expectedEvent: RsvpEventDetails = .bestEvent(status: .unanswered)
+        let expectedEvent: RsvpEvent = .bestEvent(status: .unanswered)
 
         serviceSpy.stubbedDetailsResult = .ok(expectedEvent)
         serviceProviderSpy.stubbedResult = serviceSpy
@@ -184,7 +184,7 @@ final class RSVPStateStoreTests {
     func answerAction_AnsweringFailedAndFetchingDetailsSucceeds_ItMakesOptimisticUpdateAndRevertsEventToPreviousState() async {
         let recordedStates = trackStates(of: sut.$state)
 
-        let initialEvent: RsvpEventDetails = .bestEvent(status: .unanswered)
+        let initialEvent: RsvpEvent = .bestEvent(status: .unanswered)
 
         serviceSpy.stubbedDetailsResult = .ok(initialEvent)
         serviceProviderSpy.stubbedResult = serviceSpy
@@ -218,26 +218,26 @@ final class RSVPStateStoreTests {
     }
 }
 
-private class RsvpEventIdSpy: RsvpEventId, @unchecked Sendable {
+private class RsvpEventServiceProviderSpy: RsvpEventServiceProvider, @unchecked Sendable {
     private(set) var fetchCallsCount = 0
 
-    var stubbedResult: RsvpEvent?
+    var stubbedResult: RsvpEventService?
 
     // MARK: - RsvpEventId
 
-    override func fetch() async -> RsvpEvent? {
+    override func eventService() async -> RsvpEventService? {
         fetchCallsCount += 1
 
         return stubbedResult
     }
 }
 
-private class RsvpEventSpy: RsvpEvent, @unchecked Sendable {
+private class RsvpEventServiceSpy: RsvpEventService, @unchecked Sendable {
     private(set) var answerCalls: [RsvpAnswer] = []
     private(set) var detailsCallsCount = 0
 
     var stubbedAnswerResult: VoidAnswerRsvpResult = .ok
-    var stubbedDetailsResult: RsvpEventDetailsResult = .error
+    var stubbedDetailsResult: RsvpEventGetResult = .error
 
     // MARK: - RsvpEvent
 
@@ -247,16 +247,16 @@ private class RsvpEventSpy: RsvpEvent, @unchecked Sendable {
         return stubbedAnswerResult
     }
 
-    override func details() -> RsvpEventDetailsResult {
+    override func get() -> RsvpEventGetResult {
         detailsCallsCount += 1
 
         return stubbedDetailsResult
     }
 }
 
-private extension RsvpEventDetailsResult {
+private extension RsvpEventGetResult {
 
-    var event: RsvpEventDetails? {
+    var event: RsvpEvent? {
         switch self {
         case .ok(let details):
             details
@@ -267,7 +267,7 @@ private extension RsvpEventDetailsResult {
 
 }
 
-private extension RsvpEventDetails {
+private extension RsvpEvent {
 
     static func bestEvent(status: RsvpAttendeeStatus = .unanswered) -> Self {
         .testData(

@@ -17,7 +17,7 @@
 
 @testable import InboxRSVP
 
-extension RsvpEventDetails {
+extension RsvpEvent {
 
     static func testData(
         summary: String? = .none,
