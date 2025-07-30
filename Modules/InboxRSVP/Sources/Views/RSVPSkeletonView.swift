@@ -19,6 +19,8 @@ import InboxDesignSystem
 import SwiftUI
 
 struct RSVPSkeletonView: View {
+    let manualOpacity: CGFloat?
+
     var body: some View {
         VStack(alignment: .leading, spacing: .zero) {
             VStack(alignment: .leading, spacing: DS.Spacing.large) {
@@ -85,31 +87,38 @@ struct RSVPSkeletonView: View {
             .fill(Color.gray.opacity(0.3))
             .frame(width: width, height: height)
             .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
-            .flashing()
+            .flashing(manualOpacity: manualOpacity)
     }
 }
 
+// MARK: - View Modifiers
+
 private extension View {
-    func flashing() -> some View {
-        modifier(Flashing())
+    func flashing(manualOpacity: CGFloat?) -> some View {
+        modifier(Flashing(manualOpacity: manualOpacity))
     }
 }
 
 private struct Flashing: ViewModifier {
     @State private var isAnimating = false
+    let manualOpacity: CGFloat?
 
     func body(content: Content) -> some View {
-        content
-            .opacity(isAnimating ? 0.4 : 1.0)
-            .onLoad { isAnimating = true }
-            .animation(.linear(duration: 0.8).repeatForever(autoreverses: true), value: isAnimating)
+        if let manualOpacity {
+            content.opacity(manualOpacity)
+        } else {
+            content
+                .opacity(isAnimating ? 0.4 : 1.0)
+                .onLoad { isAnimating = true }
+                .animation(.linear(duration: 0.8).repeatForever(autoreverses: true), value: isAnimating)
+        }
     }
 }
 
 #Preview {
     ScrollView(.vertical, showsIndicators: false) {
         VStack(spacing: 16) {
-            RSVPSkeletonView()
+            RSVPSkeletonView(manualOpacity: .none)
         }
     }
 }
