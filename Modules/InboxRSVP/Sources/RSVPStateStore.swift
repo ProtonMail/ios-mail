@@ -85,8 +85,10 @@ final class RSVPStateStore: ObservableObject {
         for eventService: RsvpEvent,
         with existingDetails: RsvpEventDetails
     ) async {
-        let updatedAttendees = optimisticallyUpdatedAttendees(with: answer, existingDetails: existingDetails)
-        let updatedDetails = existingDetails.copy(\.attendees, to: updatedAttendees)
+        let updatedDetails = existingDetails.copy(
+            \.attendees,
+             to: updatedAttendees(in: existingDetails, with: answer)
+        )
 
         updateState(with: .answering(.init(eventService, updatedDetails)))
 
@@ -100,19 +102,12 @@ final class RSVPStateStore: ObservableObject {
         }
     }
 
-    private func optimisticallyUpdatedAttendees(
-        with newStatus: RsvpAnswer,
-        existingDetails: RsvpEventDetails
-    ) -> [RsvpAttendee] {
+    private func updatedAttendees(in existingDetails: RsvpEventDetails, with newStatus: RsvpAnswer) -> [RsvpAttendee] {
         let updateIndex = Int(existingDetails.userAttendeeIdx)
-        let updatedAttendee =
-            existingDetails
-            .attendees[updateIndex]
-            .copy(\.status, to: newStatus.attendeeStatus)
-
-        var updatedAttendees = existingDetails.attendees
-        updatedAttendees[updateIndex] = updatedAttendee
-        return updatedAttendees
+        var attendees = existingDetails.attendees
+        let updatedAttendee = attendees[updateIndex].copy(\.status, to: newStatus.attendeeStatus)
+        attendees[updateIndex] = updatedAttendee
+        return attendees
     }
 
     private func updateState(with newState: State) {
