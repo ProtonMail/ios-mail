@@ -63,7 +63,8 @@ struct ComposerView: View {
                 dismiss: { modalState = nil }
             ),
             scheduleSendAction: { time in await model.sendMessage(at: time, dismissAction: dismiss) },
-            attachmentPickerState: $attachmentPickerState
+            attachmentPickerState: $attachmentPickerState,
+            setPasswordAction: { password, hint in await model.setPasswordProtection(password: password, hint: hint) }
         )
 
         VStack(spacing: 0) {
@@ -150,6 +151,10 @@ struct ComposerView: View {
                     switch event {
                     case .onPickAttachmentSource:
                         modalState = .attachmentPicker
+                    case .onPasswordProtection:
+                        modalState = model.passwordProtectionState()
+                    case .onRemovePasswordProtection:
+                        Task { @MainActor in await model.removePasswordProtection() }
                     case .onDiscardDraft:
                         Task { @MainActor in await model.discardDraft(dismissAction: dismiss) }
                     }

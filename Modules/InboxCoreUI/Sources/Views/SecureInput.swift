@@ -20,18 +20,18 @@ import SwiftUI
 import UIKit
 
 public struct SecureInput: UIViewRepresentable {
-    struct Configuration {
+    public struct Configuration {
         let font: UIFont?
         let alignment: NSTextAlignment
         let placeholder: LocalizedStringResource?
         let keyboardType: UIKeyboardType
         let allowedCharacters: CharacterSet?
 
-        static var `default`: Self {
+        public static var `default`: Self {
             .init(font: nil, alignment: .left, placeholder: nil, keyboardType: .default, allowedCharacters: nil)
         }
 
-        static var pinSettingsInput: Self {
+        public static var pinSettingsInput: Self {
             .init(font: nil, alignment: .left, placeholder: nil, keyboardType: .numberPad, allowedCharacters: CharacterSet.decimalDigits)
         }
 

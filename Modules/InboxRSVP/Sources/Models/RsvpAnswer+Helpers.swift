@@ -18,7 +18,7 @@
 import proton_app_uniffi
 import Foundation
 
-extension RsvpAnswer: CaseIterable {
+extension RsvpAnswer: @retroactive CaseIterable {
     var attendeeStatus: RsvpAttendeeStatus {
         switch self {
         case .yes:

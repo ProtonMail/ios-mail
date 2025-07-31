@@ -20,33 +20,21 @@ import InboxSnapshotTesting
 import InboxTesting
 import XCTest
 
-class SidebarScreenSnapshotTests: BaseTestCase {
+@MainActor
+final class SidebarScreenSnapshotTests {
 
-    var sidebarSpy: SidebarSpy!
-    var state: SidebarState!
-    private var bundleStub: BundleStub!
+    private let sidebarSpy = SidebarSpy()
+    private let bundleStub = BundleStub(infoDictionary: .infoDictionaryWithAppVersion)
 
-    override func setUp() {
-        super.setUp()
-
-        sidebarSpy = .init()
-        state = SidebarState(
-            system: [],
-            labels: [],
-            folders: [],
-            other: .staleItems,
-            createLabel: .createLabel,
-            createFolder: .createFolder
-        )
-        bundleStub = BundleStub(infoDictionary: .infoDictionaryWithAppVersion)
-    }
-
-    override func tearDown() {
-        sidebarSpy = nil
-        bundleStub = nil
-
-        super.tearDown()
-    }
+    private let state = SidebarState(
+        upsell: .upsell,
+        system: [],
+        labels: [],
+        folders: [],
+        other: .staleItems,
+        createLabel: .createLabel,
+        createFolder: .createFolder
+    )
 
     func testSidebarWithDataLayoutsCorrectOnIphoneX() {
         sidebarSpy.stubbedCustomFolders = [.topSecretFolder]
@@ -56,9 +44,10 @@ class SidebarScreenSnapshotTests: BaseTestCase {
         let sidebarScreen = SidebarScreen(
             state: state,
             userSession: .dummy,
-            sidebarFactory: { _ in self.sidebarSpy! }
+            upsellButtonVisibilityPublisher: .init(constant: true),
+            sidebarFactory: { _ in self.sidebarSpy }
         ) { _ in }
-            .environmentObject(AppUIStateStore(sidebarState: .init(zIndex: .zero, visibleWidth: 320)))
+        .environmentObject(AppUIStateStore(sidebarState: .init(zIndex: .zero, visibleWidth: 320)))
         assertSnapshotsOnIPhoneX(of: sidebarScreen)
     }
 
@@ -68,10 +57,11 @@ class SidebarScreenSnapshotTests: BaseTestCase {
         let sidebarScreen = SidebarScreen(
             state: state,
             userSession: .dummy,
-            appVersionProvider: .init(bundle: bundleStub, sdkVersionProvider: .init(sdkVersion: "0.61.0") ),
-            sidebarFactory: { _ in self.sidebarSpy! }
+            upsellButtonVisibilityPublisher: .init(constant: true),
+            appVersionProvider: .init(bundle: bundleStub, sdkVersionProvider: .init(sdkVersion: "0.61.0")),
+            sidebarFactory: { _ in self.sidebarSpy }
         ) { _ in }
-            .environmentObject(AppUIStateStore(sidebarState: .init(zIndex: .zero, visibleWidth: 320)))
+        .environmentObject(AppUIStateStore(sidebarState: .init(zIndex: .zero, visibleWidth: 320)))
         assertSnapshotsOnIPhoneX(of: sidebarScreen)
     }
 
@@ -82,7 +72,7 @@ private extension Dictionary where Key == String, Value == Any {
     static var infoDictionaryWithAppVersion: Self {
         [
             "CFBundleVersion": "20",
-            "CFBundleShortVersionString": "0.1.0"
+            "CFBundleShortVersionString": "0.1.0",
         ]
     }
 

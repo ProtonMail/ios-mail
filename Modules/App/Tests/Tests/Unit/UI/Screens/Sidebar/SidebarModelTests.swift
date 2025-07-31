@@ -20,27 +20,11 @@ import InboxTesting
 import proton_app_uniffi
 import XCTest
 
-class SidebarModelTests: BaseTestCase {
+@MainActor
+final class SidebarModelTests {
 
-    var sut: SidebarModel!
-    var sidebarSpy: SidebarSpy!
-
-    override func setUp() {
-        super.setUp()
-
-        sidebarSpy = .init()
-        sut = .init(state: .initial, sidebar: sidebarSpy)
-
-        sut.handle(action: .viewAppear)
-        emitData()
-    }
-
-    override func tearDown() {
-        sut = nil
-        sidebarSpy = nil
-
-        super.tearDown()
-    }
+    private lazy var sut = SidebarModel(state: .initial, sidebar: sidebarSpy, upsellButtonVisibilityPublisher: .init(constant: true))
+    private let sidebarSpy = SidebarSpy()
 
     func test_WhenAppear_ItSelectsFirstSystemFolder() throws {
         let firstUnselectedSystemFolder = try XCTUnwrap(sut.state.system.first)
@@ -127,11 +111,11 @@ class SidebarModelTests: BaseTestCase {
         XCTAssertEqual(sidebarSpy.collapseFolderInvoked, [])
 
         sut.handle(action: .toggle(folder: parentFolder, expand: true))
-        XCTAssertEqual(sidebarSpy.expandFolderInvoked, [parentFolder.id])
+        XCTAssertEqual(sidebarSpy.expandFolderInvoked, [parentFolder.folderID])
         XCTAssertEqual(sidebarSpy.collapseFolderInvoked, [])
 
         sut.handle(action: .toggle(folder: parentFolder, expand: false))
-        XCTAssertEqual(sidebarSpy.collapseFolderInvoked, [parentFolder.id])
+        XCTAssertEqual(sidebarSpy.collapseFolderInvoked, [parentFolder.folderID])
     }
 
     // MARK: - Private

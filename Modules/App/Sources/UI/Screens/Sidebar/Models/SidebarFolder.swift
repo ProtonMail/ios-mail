@@ -18,8 +18,8 @@
 import InboxDesignSystem
 import SwiftUI
 
-struct SidebarFolder: Equatable, Identifiable, SelectableItem {
-    let id: ID
+struct SidebarFolder: Equatable, SelectableItem {
+    let folderID: ID
     let parentID: ID?
     let name: String
     let color: Color?
@@ -39,13 +39,13 @@ struct SidebarFolder: Equatable, Identifiable, SelectableItem {
 
     let isSelected: Bool
 
-    var selectionIdentifier: String {
-        "\(id)"
+    var id: String {
+        "\(folderID.value)"
     }
 
     func copy(isSelected: Bool) -> Self {
         .init(
-            id: id,
+            folderID: folderID,
             parentID: parentID,
             name: name,
             color: color,

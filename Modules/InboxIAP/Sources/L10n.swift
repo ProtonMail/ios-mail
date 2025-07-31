@@ -31,7 +31,7 @@ enum L10n {
             .init("Group your contacts", comment: "Title of the upsell page")
         case .folders, .labels:
             .init("Need more labels or folders?", comment: "Title of the upsell page")
-        case .header:
+        case .header, .sidebar:
             .init("Upgrade to \(planName)", comment: "Title of the upsell page")
         case .mobileSignature:
             .init("Personalize your signature", comment: "Title of the upsell page")
@@ -50,7 +50,7 @@ enum L10n {
             .init("Send group emails with ease. Enjoy this and more with \(planName).", comment: "Subtitle of the upsell page")
         case .folders, .labels:
             .init("Create all you need to stay organized. Get this and more with \(planName).", comment: "Subtitle of the upsell page")
-        case .header:
+        case .header, .sidebar:
             .init("To unlock more storage and premium features.", comment: "Subtitle of the upsell page")
         case .mobileSignature:
             .init("Make your mobile signature your own. Enjoy this and more with \(planName).", comment: "Subtitle of the upsell page")

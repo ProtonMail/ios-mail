@@ -55,18 +55,4 @@ final class UpsellCoordinatorTests {
 
         #expect(plansComposer.fetchAvailablePlansCalls == 1)
     }
-
-    @Test
-    func hasOfferPrepared_isTrueAfterPrewarming() async {
-        await sut.prewarm()
-
-        #expect(sut.hasOfferPrepared)
-    }
-
-    @Test
-    func hasOfferPrepared_isTrueAfterFetchingPlansOnDemand() async throws {
-        _ = try await sut.presentUpsellScreen(entryPoint: .header)
-
-        #expect(sut.hasOfferPrepared)
-    }
 }

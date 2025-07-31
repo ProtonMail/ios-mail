@@ -55,6 +55,7 @@ public extension DS.Icon {
     static let icHamburguer = ImageResource.icHamburger
     static let icImage = ImageResource.ic
     static let icInbox = ImageResource.icInbox
+    static let icLock = ImageResource.icLock
     static let icLockFilled = ImageResource.icLockFilled
     static let icMapPin = ImageResource.icMapPin
     static let icMobile = ImageResource.icMobile
@@ -92,6 +93,7 @@ public extension DS.Icon {
 
 public extension DS.Icon {
     static let icCode = ImageResource.icCode
+    static let icDiamond = ImageResource.icDiamond
     static let icEnvelope = ImageResource.icEnvelope
     static let icEnvelopeDot = ImageResource.icEnvelopeDot
     static let icEnvelopeOpen = ImageResource.icEnvelopeOpen

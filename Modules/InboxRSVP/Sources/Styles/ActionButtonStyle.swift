@@ -18,7 +18,7 @@
 import InboxDesignSystem
 import SwiftUI
 
-struct RSVPButtonStyle: ButtonStyle {
+struct ActionButtonStyle: ButtonStyle {
     let textColor: Color
     let backgroundColor: Color
     let pressedBackgroundColor: Color
@@ -35,7 +35,7 @@ struct RSVPButtonStyle: ButtonStyle {
     }
 }
 
-extension RSVPButtonStyle {
+extension ActionButtonStyle {
 
     static var answerButtonStyle: Self {
         .init(

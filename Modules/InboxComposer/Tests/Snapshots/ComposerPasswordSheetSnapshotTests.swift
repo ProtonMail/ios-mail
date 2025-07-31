@@ -15,17 +15,19 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-@testable import InboxRSVP
+@testable import InboxComposer
+import InboxCoreUI
+import InboxTesting
 import InboxSnapshotTesting
-import SwiftUI
-import Testing
 
 @MainActor
-struct RSVPErrorViewSnapshotTests {
-    @Test
-    func testErrorView() {
-        let view = RSVPErrorView(action: {})
+final class ComposerPasswordSheetSnapshotTests: BaseTestCase {
 
-        assertSnapshotsOnEdgeDevices(of: view)
+    func testComposerPasswordSheet_itLayoutsCorrectOnIphoneX() throws {
+        let composerPasswordSheet = ComposerPasswordSheet(
+            state: .init(password: "12345678", hint: "My secret magic number"),
+            onSave: { _, _ in }
+        )
+        assertSnapshotsOnIPhoneX(of: composerPasswordSheet)
     }
 }

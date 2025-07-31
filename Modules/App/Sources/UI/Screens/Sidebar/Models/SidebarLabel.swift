@@ -17,8 +17,8 @@
 
 import Foundation
 
-struct SidebarLabel: Identifiable, Equatable, SelectableItem {
-    let id: ID
+struct SidebarLabel: Equatable, SelectableItem {
+    let labelID: ID
     let color: String
     let name: String
     let unreadCount: String?
@@ -27,13 +27,13 @@ struct SidebarLabel: Identifiable, Equatable, SelectableItem {
 
     let isSelected: Bool
 
-    var selectionIdentifier: String {
-        "\(id.value)"
+    var id: String {
+        "\(labelID.value)"
     }
 
     func copy(isSelected: Bool) -> Self {
         .init(
-            id: id,
+            labelID: labelID,
             color: color,
             name: name,
             unreadCount: unreadCount,

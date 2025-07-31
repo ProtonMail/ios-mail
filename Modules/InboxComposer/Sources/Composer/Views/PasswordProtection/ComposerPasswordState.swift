@@ -15,27 +15,11 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import SwiftUI
+import InboxCore
+import InboxCoreUI
 
-struct SystemFolder: Equatable, SelectableItem {
-    let folderID: ID
-    let type: SystemFolderLabel
-    let unreadCount: String?
-
-    // MARK: - SelectableItem
-
-    let isSelected: Bool
-
-    var id: String {
-        "\(folderID.value)"
-    }
-
-    func copy(isSelected: Bool) -> Self {
-        .init(
-            folderID: folderID,
-            type: type,
-            unreadCount: unreadCount,
-            isSelected: isSelected
-        )
-    }
+struct ComposerPasswordState: Copying {
+    var password: String = ""
+    var hint: String = ""
+    var passwordValidation: FormTextInput.ValidationStatus = .ok
 }

@@ -18,7 +18,7 @@
 import InboxDesignSystem
 import SwiftUI
 
-struct RSVPHeaderView: View {
+struct EventBannerView: View {
     enum Style: Equatable {
         case now
         case ended

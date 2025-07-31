@@ -21,7 +21,7 @@ import proton_app_uniffi
 import SwiftUI
 
 struct RSVPEventView: View {
-    private let event: RSVPEvent
+    private let event: Event
     private let isAnswering: Bool
     private let onAnswerSelected: (RsvpAnswer) -> Void
     @State private var areParticipantsExpanded: Bool
@@ -32,7 +32,7 @@ struct RSVPEventView: View {
         onAnswerSelected: @escaping (RsvpAnswer) -> Void,
         areParticipantsExpanded: Bool = false,
     ) {
-        self.event = RSVPEventMapper.map(from: event)
+        self.event = EventMapper.map(from: event)
         self.isAnswering = isAnswering
         self.onAnswerSelected = onAnswerSelected
         self.areParticipantsExpanded = areParticipantsExpanded
@@ -63,14 +63,16 @@ struct RSVPEventView: View {
     @ViewBuilder
     private var headerBanner: some View {
         if let banner = event.banner {
-            RSVPHeaderView(style: banner.style, regular: banner.regularText, bold: banner.boldText)
+            EventBannerView(style: banner.style, regular: banner.regularText, bold: banner.boldText)
         }
     }
 
     @ViewBuilder
     private var eventHeader: some View {
-        RSVPEventHeader(title: event.title, formattedDate: event.formattedDate, answerButtons: event.answerButtons)
+        EventHeader(title: event.title, formattedDate: event.formattedDate, answerButtons: event.answerButtons)
     }
+
+    @Namespace private var answerButtonAnimation
 
     private var answerSection: some View {
         VStack(alignment: .leading, spacing: DS.Spacing.mediumLight) {
@@ -82,49 +84,61 @@ struct RSVPEventView: View {
                 switch event.participants[event.userParticipantIndex].status.answer {
                 case .none:
                     ForEach(RsvpAnswer.allCases, id: \.self) { answer in
-                        RSVPAnswerButton(text: answer.humanReadable.short) {
+                        AnswerButton(text: answer.humanReadable.short) {
                             onAnswerSelected(answer)
                         }
+                        .matchedGeometryEffect(id: answer, in: answerButtonAnimation)
                     }
                 case .some(let answer):
-                    RSVPAnswerMenuButton(state: answer, isAnswering: isAnswering) { selectedAnswer in
+                    AnswerMenuButton(state: answer, isAnswering: isAnswering) { selectedAnswer in
                         onAnswerSelected(selectedAnswer)
                     }
+                    .matchedGeometryEffect(id: answer, in: answerButtonAnimation)
                 }
             }
         }
+        .animation(.default, value: event.participants[event.userParticipantIndex].status)
     }
 
     @ViewBuilder
     private var eventDetailsSection: some View {
         VStack(alignment: .leading, spacing: .zero) {
             if let calendar = event.calendar {
-                RSVPDetailsRow(icon: DS.Icon.icCircleFilled, iconColor: Color(hex: calendar.color), text: calendar.name)
+                detailsRow(icon: DS.Icon.icCircleFilled, iconColor: Color(hex: calendar.color), text: calendar.name)
             }
             if let recurrence = event.recurrence {
-                RSVPDetailsRow(icon: DS.Icon.icArrowsRotate, text: recurrence)
+                detailsRow(icon: DS.Icon.icArrowsRotate, text: recurrence)
             }
             if let location = event.location {
-                RSVPDetailsRow(icon: DS.Icon.icMapPin, text: location)
+                detailsRow(icon: DS.Icon.icMapPin, text: location)
             }
-            RSVPDetailsRowMenu<RSVPOrganizerOption>(icon: DS.Icon.icUser, text: event.organizer.displayName) { _ in }
-            if event.participants.count >= 2 {
-                RSVPDetailsParticipantsButton(count: event.participants.count, isExpanded: $areParticipantsExpanded) {
-                    areParticipantsExpanded.toggle()
-                }
-            }
-            if areParticipantsExpanded || event.participants.count == 1 {
-                LazyVStack(alignment: .leading, spacing: .zero) {
-                    ForEachEnumerated(event.participants, id: \.element.displayName) { participant, index in
-                        RSVPDetailsRow(
-                            icon: participant.status.details.icon,
-                            iconColor: participant.status.details.color,
-                            text: participant.displayName
-                        )
-                    }
-                }
-                .compositingGroup()
-            }
+            EventDetailsRowMenu<MenuOrganizerOption>(icon: DS.Icon.icUser, text: event.organizer.displayName) { _ in }
+                .zIndex(1)
+            EventParticipantsView(
+                participants: event.participants,
+                areParticipantsExpanded: $areParticipantsExpanded
+            )
+        }
+    }
+
+    private func detailsRow(icon: ImageResource, iconColor: Color = DS.Color.Text.weak, text: String) -> some View {
+        EventDetailsRow(icon: icon, iconColor: iconColor, text: text)
+            .background(DS.Color.Background.norm)
+            .zIndex(1)
+    }
+}
+
+private extension RsvpAttendeeStatus {
+    var answer: RsvpAnswer? {
+        switch self {
+        case .unanswered:
+            nil
+        case .maybe:
+            .maybe
+        case .no:
+            .no
+        case .yes:
+            .yes
         }
     }
 }
@@ -152,42 +166,11 @@ struct RSVPEventView: View {
     )
 
     ScrollView(.vertical, showsIndicators: false) {
-        VStack(spacing: 16) {
-            RSVPEventView(
-                event: event,
-                isAnswering: true,
-                onAnswerSelected: { _ in },
-                areParticipantsExpanded: false
-            )
-        }
-        .padding()
-    }
-}
-
-private extension RsvpAttendeeStatus {
-    var answer: RsvpAnswer? {
-        switch self {
-        case .unanswered:
-            nil
-        case .maybe:
-            .maybe
-        case .no:
-            .no
-        case .yes:
-            .yes
-        }
-    }
-
-    var details: (icon: ImageResource, color: Color) {
-        switch self {
-        case .unanswered:
-            (DS.Icon.icCircleRadioEmpty, DS.Color.Shade.shade40)
-        case .maybe:
-            (DS.Icon.icQuestionCircle, DS.Color.Notification.warning)
-        case .no:
-            (DS.Icon.icCrossCircle, DS.Color.Notification.error)
-        case .yes:
-            (DS.Icon.icCheckmarkCircle, DS.Color.Notification.success)
-        }
+        RSVPEventView(
+            event: event,
+            isAnswering: true,
+            onAnswerSelected: { _ in },
+            areParticipantsExpanded: false
+        )
     }
 }

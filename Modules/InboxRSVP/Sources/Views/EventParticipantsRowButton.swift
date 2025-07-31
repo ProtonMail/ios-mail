@@ -15,9 +15,22 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import InboxDesignSystem
 import SwiftUI
 
-protocol RSVPMenuOption: CaseIterable, Hashable {
-    var displayName: LocalizedStringResource { get }
-    var trailingIcon: ImageResource { get }
+struct EventParticipantsRowButton: View {
+    let count: Int
+    @Binding var isExpanded: Bool
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            EventDetailsRow(
+                icon: DS.Icon.icUsers,
+                text: L10n.Details.participantsCount(count: count).string,
+                trailingIcon: isExpanded ? DS.Icon.icChevronUpFilled : DS.Icon.icChevronDownFilled
+            )
+        }
+        .buttonStyle(EventDetailsRowButtonStyle())
+    }
 }

@@ -39,6 +39,7 @@ struct ComposerState: Equatable, Copying {
     var isSendAvailable: Bool {
         !toRecipients.recipients.isEmpty  // FIXME: Implement final logic
     }
+    var isPasswordProtected: Bool
 
     var alert: AlertModel?
 
@@ -64,7 +65,8 @@ extension ComposerState {
             attachments: [],
             initialBody: .empty,
             isInitialFocusInBody: false,
-            editingRecipientsGroup: nil
+            editingRecipientsGroup: nil,
+            isPasswordProtected: false
         )
     }
 }

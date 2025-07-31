@@ -23,7 +23,7 @@ import proton_app_uniffi
 import Testing
 
 @Suite(.calendarZurichEnUS, .calendarGMTEnUS)
-final class RSVPDateFormatterTests {
+final class EventDateFormatterTests {
     typealias EventInput = (from: Date, to: Date)
 
     // MARK: - All‑Day Events (.date)
@@ -113,7 +113,7 @@ final class RSVPDateFormatterTests {
         let from = UInt64(given.from.timeIntervalSince1970)
         let to = UInt64(given.to.timeIntervalSince1970)
 
-        return RSVPDateFormatter.string(from: from, to: to, occurrence: occurrence)
+        return EventDateFormatter.string(from: from, to: to, occurrence: occurrence)
     }
 }
 

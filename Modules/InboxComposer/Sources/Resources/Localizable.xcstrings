@@ -255,6 +255,9 @@
     "Draft wasn't discarded. Try discarding it agian." : {
       "comment" : "Error shown when the draft fails to delete."
     },
+    "Edit password" : {
+      "comment" : "Context menu option to edit the password of a message in the composer."
+    },
     "Failed to decrypt external encryption password" : {
       "comment" : "Error in the context of scheduling a message."
     },
@@ -482,6 +485,9 @@
     "Message not found. You may have sent or discarded it." : {
       "comment" : "Error in the context of opening a draft in the composer"
     },
+    "Message Password" : {
+      "comment" : "Title of the text box to add a password"
+    },
     "Message sent" : {
       "comment" : "Composer toast message after sent."
     },
@@ -493,6 +499,15 @@
     },
     "Monday" : {
       "comment" : "Schedule send predefined time option"
+    },
+    "Must be between 8 and 21 characters long" : {
+      "comment" : "Conditions the password must meet"
+    },
+    "Password hint (Optional)" : {
+      "comment" : "Title of the text box to add a hint to remember the password"
+    },
+    "Password is too short." : {
+      "comment" : "Error in the context of setting password protection in the composer."
     },
     "Pick time and date" : {
       "comment" : "Schedule send custom time option subtitle"
@@ -517,6 +532,9 @@
     },
     "Remove" : {
       "comment" : "Confirmation for the remove attachment action in a Draft."
+    },
+    "Remove Password" : {
+      "comment" : "Text for button that removes the password"
     },
     "Removed duplicate recipient: %@" : {
       "comment" : "Error shown when a duplicated recipient is added to the draft.",
@@ -708,6 +726,9 @@
           }
         }
       }
+    },
+    "Repeat password" : {
+      "comment" : "Title of the text box to repeat the added password"
     },
     "Retry not possible. Attachment is uploading or already uploaded." : {
       "comment" : "Error in the context of retrying to upload a draft."
@@ -917,6 +938,12 @@
     },
     "Sending message..." : {
       "comment" : "Composer toast message when send is tapped."
+    },
+    "Set a password to encrypt this message for non- Proton Mail users." : {
+      "comment" : "Description of the password protected screen"
+    },
+    "Set Password" : {
+      "comment" : "Title of the password protected screen"
     },
     "Something went wrong" : {
       "comment" : "Attachment failed because an unexpected error"

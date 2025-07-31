@@ -15,80 +15,39 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import InboxCore
 
-struct SidebarState {
-    let system: [SystemFolder]
-    let labels: [SidebarLabel]
-    let folders: [SidebarFolder]
-    let other: [SidebarOtherItem]
-    let createLabel: SidebarOtherItem
-    let createFolder: SidebarOtherItem
+struct SidebarState: Copying {
+    var upsell: SidebarItem?
+    var system: [SystemFolder]
+    var labels: [SidebarLabel]
+    var folders: [SidebarFolder]
+    var other: [SidebarOtherItem]
+    var createLabel: SidebarOtherItem
+    var createFolder: SidebarOtherItem
 }
 
 extension SidebarState {
 
     var items: [SidebarItem] {
+        let upsellItems: [SidebarItem] = [upsell].compactMap(\.self)
         let systemItems = system.map(SidebarItem.system)
         let labelItems = labels.map(SidebarItem.label)
         let folderItems = folders.allFolders.map(SidebarItem.folder)
         let otherItems = (other + [createLabel, createFolder]).map(SidebarItem.other)
 
-        return systemItems + labelItems + folderItems + otherItems
+        return upsellItems + systemItems + labelItems + folderItems + otherItems
     }
 
     static var initial: Self {
         .init(
+            upsell: nil,
             system: [],
             labels: [],
             folders: [],
             other: .staleItems,
             createLabel: .createLabel,
             createFolder: .createFolder
-        )
-    }
-
-    func copy(system: [SystemFolder]) -> Self {
-        .init(
-            system: system,
-            labels: labels,
-            folders: folders,
-            other: other,
-            createLabel: createLabel,
-            createFolder: createFolder
-        )
-    }
-
-    func copy(labels: [SidebarLabel]) -> Self {
-        .init(
-            system: system,
-            labels: labels,
-            folders: folders,
-            other: other,
-            createLabel: createLabel,
-            createFolder: createFolder
-        )
-    }
-
-    func copy(folders: [SidebarFolder]) -> Self {
-        .init(
-            system: system,
-            labels: labels,
-            folders: folders,
-            other: other,
-            createLabel: createLabel,
-            createFolder: createFolder
-        )
-    }
-
-    func copy(other: [SidebarOtherItem]) -> Self {
-        .init(
-            system: system,
-            labels: labels,
-            folders: folders,
-            other: other,
-            createLabel: createLabel,
-            createFolder: createFolder
         )
     }
 

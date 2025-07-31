@@ -17,7 +17,7 @@
 
 import SwiftUI
 
-struct RSVPDetailsRowMenu<Option: RSVPMenuOption>: View {
+struct EventDetailsRowMenu<Option: EventItemMenuOption>: View {
     let icon: ImageResource
     let text: String
     let action: (Option) -> Void
@@ -25,15 +25,15 @@ struct RSVPDetailsRowMenu<Option: RSVPMenuOption>: View {
     var body: some View {
         Menu {
             ForEach(Array(Option.allCases), id: \.self) { option in
-                RSVPMenuOptionButton(
+                MenuOptionButton(
                     text: option.displayName,
                     action: { action(option) },
                     trailingIcon: option.trailingIcon
                 )
             }
         } label: {
-            RSVPDetailsRow(icon: icon, text: text)
+            EventDetailsRow(icon: icon, text: text)
         }
-        .buttonStyle(RSVPDetailsRowButtonStyle())
+        .buttonStyle(EventDetailsRowButtonStyle())
     }
 }

@@ -21,4 +21,8 @@ import proton_app_uniffi
 extension UpsellConfiguration {
     /// The upsell screen should always show this particular plan.
     static let mail: Self = .init(planName: "mail2022", arePaymentsEnabled: ApiEnvId.current.arePaymentsEnabled)
+
+    var humanReadableUpsoldPlanName: String {
+        "Mail Plus"
+    }
 }

@@ -18,15 +18,15 @@
 import InboxDesignSystem
 import SwiftUI
 
-struct RSVPErrorView: View {
+struct RSVPErrorRetryView: View {
     let action: () -> Void
 
     var body: some View {
         VStack(alignment: .center, spacing: DS.Spacing.extraLarge) {
             Image(DS.Images.rsvpError)
                 .square(size: 128)
-            errorDetails()
-            retryButton()
+            errorDetails
+            retryButton
         }
         .padding(.vertical, DS.Spacing.huge)
         .padding(.horizontal, DS.Spacing.extraLarge)
@@ -36,7 +36,7 @@ struct RSVPErrorView: View {
     // MARK: - Private
 
     @ViewBuilder
-    private func errorDetails() -> some View {
+    private var errorDetails: some View {
         VStack(alignment: .center, spacing: DS.Spacing.mediumLight) {
             Text(L10n.Error.title)
                 .font(.callout)
@@ -52,12 +52,12 @@ struct RSVPErrorView: View {
     }
 
     @ViewBuilder
-    private func retryButton() -> some View {
+    private var retryButton: some View {
         Button(L10n.Error.retryButtonTitle.string, action: action)
-            .buttonStyle(RSVPButtonStyle.retryButtonStyle)
+            .buttonStyle(ActionButtonStyle.retryButtonStyle)
     }
 }
 
 #Preview {
-    RSVPErrorView(action: {})
+    RSVPErrorRetryView(action: {})
 }

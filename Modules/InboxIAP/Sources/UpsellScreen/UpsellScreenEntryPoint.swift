@@ -26,6 +26,7 @@ public enum UpsellScreenEntryPoint: Sendable {
     case labels
     case mobileSignature
     case scheduleSend
+    case sidebar
     case snooze
 
     var logo: ImageResource {
@@ -36,7 +37,7 @@ public enum UpsellScreenEntryPoint: Sendable {
             DS.Images.Upsell.logoContactGroups
         case .folders, .labels:
             DS.Images.Upsell.logoFoldersAndLabels
-        case .header:
+        case .header, .sidebar:
             DS.Images.Upsell.logoDefault
         case .mobileSignature:
             DS.Images.Upsell.logoMobileSignature

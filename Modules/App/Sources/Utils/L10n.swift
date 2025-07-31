@@ -966,6 +966,12 @@ enum L10n {
             "Report a problem",
             comment: "Button in the sidebar menu that redirects a user to the bug report screen."
         )
+        static func upgrade(to plan: String) -> LocalizedStringResource {
+            .init(
+                "Upgrade to \(plan)",
+                comment: "Title of the upsell button in the sidebar"
+            )
+        }
     }
 
     enum Snooze {

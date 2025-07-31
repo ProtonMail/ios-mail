@@ -19,14 +19,17 @@ import InboxDesignSystem
 import SwiftUI
 
 struct FormSecureTextInput: View {
+    private let configuration: SecureInput.Configuration
     private let title: LocalizedStringResource
     @Binding private var text: String
     @State var secureEntry: Bool = true
 
     init(
+        configuration: SecureInput.Configuration,
         title: LocalizedStringResource,
         text: Binding<String>
     ) {
+        self.configuration = configuration
         self.title = title
         self._text = text
     }
@@ -34,7 +37,7 @@ struct FormSecureTextInput: View {
     var body: some View {
         VStack(alignment: .leading, spacing: DS.Spacing.compact) {
             HStack(spacing: DS.Spacing.mediumLight) {
-                SecureInput(configuration: .pinSettingsInput, text: $text, isSecure: $secureEntry)
+                SecureInput(configuration: configuration, text: $text, isSecure: $secureEntry)
                     .frame(height: 22)
                 Button(action: { secureEntry.toggle() }) {
                     Image(symbol: secureEntry ? .eye : .eyeSlash)

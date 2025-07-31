@@ -24,6 +24,7 @@ import SwiftUI
 struct MainToolbar<AvatarView: View>: ViewModifier {
     @EnvironmentObject private var toastStateStore: ToastStateStore
     @EnvironmentObject private var upsellCoordinator: UpsellCoordinator
+    @Environment(\.isUpsellButtonVisible) private var isUpsellButtonVisible
     @ObservedObject private var selectionMode: SelectionModeState
     let onEvent: (MainToolbarEvent) -> Void
     let avatarView: () -> AvatarView
@@ -82,7 +83,7 @@ struct MainToolbar<AvatarView: View>: ViewModifier {
                 ToolbarItemGroup(placement: .topBarTrailing) {
                     if !selectionMode.hasItems {
                         HStack(spacing: DS.Spacing.standard) {
-                            if upsellCoordinator.hasOfferPrepared {
+                            if isUpsellButtonVisible {
                                 toolbarButton(icon: DS.Icon.icBrandProtonMailUpsellBlackAndWhite.image.renderingMode(.template)) {
                                     do {
                                         let upsellScreenModel = try await upsellCoordinator.presentUpsellScreen(entryPoint: .header)

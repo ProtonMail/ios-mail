@@ -19,9 +19,9 @@ import Foundation
 import InboxCoreUI
 import proton_app_uniffi
 
-enum RSVPEventMapper {
-    static func map(from uniffiModel: RsvpEvent) -> RSVPEvent {
-        RSVPEvent(
+enum EventMapper {
+    static func map(from uniffiModel: RsvpEvent) -> Event {
+        Event(
             title: uniffiModel.summary ?? L10n.noEventTitlePlacholder.string,
             banner: banner(from: uniffiModel.state),
             formattedDate: formattedDate(from: uniffiModel.startsAt, to: uniffiModel.endsAt, uniffiModel.occurrence),
@@ -42,11 +42,11 @@ enum RSVPEventMapper {
         to endsAt: UnixTimestamp,
         _ occurrence: RsvpOccurrence
     ) -> String {
-        RSVPDateFormatter.string(from: startsAt, to: endsAt, occurrence: occurrence)
+        EventDateFormatter.string(from: startsAt, to: endsAt, occurrence: occurrence)
     }
 
-    private static func answerButtonsState(from state: RsvpState) -> RSVPEvent.AnswerButtonsState {
-        let buttonsState: RSVPEvent.AnswerButtonsState
+    private static func answerButtonsState(from state: RsvpState) -> Event.AnswerButtonsState {
+        let buttonsState: Event.AnswerButtonsState
 
         if case let .answerableInvite(_, attendance) = state {
             buttonsState = .visible(attendance)
@@ -57,7 +57,7 @@ enum RSVPEventMapper {
         return buttonsState
     }
 
-    private static func banner(from state: RsvpState) -> RSVPEvent.Banner? {
+    private static func banner(from state: RsvpState) -> Event.Banner? {
         switch state {
         case let .answerableInvite(progress, _), let .reminder(progress):
             switch progress {
@@ -92,18 +92,18 @@ enum RSVPEventMapper {
         }
     }
 
-    private static func organizer(from organizer: RsvpOrganizer) -> RSVPEvent.Organizer {
+    private static func organizer(from organizer: RsvpOrganizer) -> Event.Organizer {
         let name: String = organizer.name ?? organizer.email
 
         return .init(displayName: L10n.Details.organizer(name: name).string)
     }
 
-    private static func participants(attendees: [RsvpAttendee], userIndex: UInt32) -> [RSVPEvent.Participant] {
+    private static func participants(attendees: [RsvpAttendee], userIndex: UInt32) -> [Event.Participant] {
         attendees.enumerated().map { index, attendee in
             let isCurrentUser = index == userIndex
             let displayName = isCurrentUser ? userDisplayName(from: attendee) : otherAttendeeDisplayName(from: attendee)
 
-            return RSVPEvent.Participant(displayName: displayName, status: attendee.status)
+            return Event.Participant(displayName: displayName, status: attendee.status)
         }
     }
 

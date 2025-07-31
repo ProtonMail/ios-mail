@@ -22,7 +22,7 @@ extension PMCustomLabel {
 
     var sidebarLabel: SidebarLabel {
         .init(
-            id: id,
+            labelID: id,
             color: color.value,
             name: name,
             unreadCount: UnreadCountFormatter.stringIfGreaterThan0(count: unread),
@@ -40,7 +40,7 @@ extension PMSystemLabel {
         }
 
         return .init(
-            id: id,
+            folderID: id,
             type: systemFolder,
             unreadCount: UnreadCountFormatter.stringIfGreaterThan0(count: unread),
             isSelected: false

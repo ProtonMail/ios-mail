@@ -18077,6 +18077,9 @@
     "Upgrade for full flexibility" : {
       "comment" : "Custom button subtitle for a free user on snooze sheet."
     },
+    "Upgrade to %@" : {
+      "comment" : "Title of the upsell button in the sidebar"
+    },
     "Upgrade to Auto-delete" : {
       "comment" : "Empty Spam/Trash Banner: Action button to upgrade the account for auto-delete functionality."
     },

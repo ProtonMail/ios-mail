@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import Combine
 import InboxCore
 import proton_app_uniffi
 import SwiftUI
@@ -25,6 +26,7 @@ enum SidebarAction {
     case toggle(folder: SidebarFolder, expand: Bool)
 }
 
+@MainActor
 final class SidebarModel: Sendable, ObservableObject {
     @Published var state: SidebarState
 
@@ -32,10 +34,13 @@ final class SidebarModel: Sendable, ObservableObject {
     private var labelsChangesObservation: SidebarModelsObservation<PMCustomLabel>?
     private var systemLabelsChangesObservation: SidebarModelsObservation<PMSystemLabel>?
     private let sidebar: SidebarProtocol
+    private let upsellButtonVisibilityPublisher: UpsellButtonVisibilityPublisher
+    private var cancellables: Set<AnyCancellable> = []
 
-    init(state: SidebarState, sidebar: SidebarProtocol) {
+    init(state: SidebarState, sidebar: SidebarProtocol, upsellButtonVisibilityPublisher: UpsellButtonVisibilityPublisher) {
         self.state = state
         self.sidebar = sidebar
+        self.upsellButtonVisibilityPublisher = upsellButtonVisibilityPublisher
     }
 
     func handle(action: SidebarAction) {
@@ -52,9 +57,9 @@ final class SidebarModel: Sendable, ObservableObject {
     private func changeVisibility(of folder: SidebarFolder, expand: Bool) {
         Task {
             if expand {
-                _ = await sidebar.expandFolder(localId: folder.id)
+                _ = await sidebar.expandFolder(localId: folder.folderID)
             } else {
-                _ = await sidebar.collapseFolder(localId: folder.id)
+                _ = await sidebar.collapseFolder(localId: folder.folderID)
             }
         }
     }
@@ -65,14 +70,16 @@ final class SidebarModel: Sendable, ObservableObject {
         guard item.isSelectable else { return }
         unselectAll()
         switch item {
+        case .upsell:
+            assertionFailure("Not supposed to be selectable")
         case .system(let item):
-            state = state.copy(system: selected(item: item, keyPath: \.system))
+            state = state.copy(\.system, to: selected(item: item, keyPath: \.system))
         case .label(let item):
-            state = state.copy(labels: selected(item: item, keyPath: \.labels))
+            state = state.copy(\.labels, to: selected(item: item, keyPath: \.labels))
         case .folder(let item):
-            state = state.copy(folders: folders(selectedFolder: item, in: state.folders))
+            state = state.copy(\.folders, to: folders(selectedFolder: item, in: state.folders))
         case .other(let item):
-            state = state.copy(other: selected(item: item, keyPath: \.other))
+            state = state.copy(\.other, to: selected(item: item, keyPath: \.other))
         }
     }
 
@@ -80,30 +87,31 @@ final class SidebarModel: Sendable, ObservableObject {
         foldersChangesObservation = .init(
             sidebar: sidebar,
             labelType: .folder,
-            updatedData: sidebar.customFolders
+            updatedData: { await self.sidebar.customFolders() }
         ) { [weak self] newFolders in
-            Dispatcher.dispatchOnMain(.init(block: {
-                self?.updateFolders(with: newFolders)
-            }))
+            self?.updateFolders(with: newFolders)
         }
         labelsChangesObservation = .init(
             sidebar: sidebar,
             labelType: .label,
-            updatedData: sidebar.customLabels
+            updatedData: { await self.sidebar.customLabels() }
         ) { [weak self] newLabels in
-            Dispatcher.dispatchOnMain(.init(block: {
-                self?.updateLabels(with: newLabels)
-            }))
+            self?.updateLabels(with: newLabels)
         }
         systemLabelsChangesObservation = .init(
             sidebar: sidebar,
-            labelType: .system, 
-            updatedData: sidebar.systemLabels
+            labelType: .system,
+            updatedData: { await self.sidebar.systemLabels() }
         ) { [weak self] newSystemLabels in
-            Dispatcher.dispatchOnMain(.init(block: {
-                self?.updateSystemFolders(with: newSystemLabels)
-            }))
+            self?.updateSystemFolders(with: newSystemLabels)
         }
+
+        upsellButtonVisibilityPublisher
+            .$isUpsellButtonVisible
+            .sink { [weak self] isVisible in
+                self?.updateUpsellItemVisibility(isVisible: isVisible)
+            }
+            .store(in: &cancellables)
     }
 
     private func updateFolders(with newFolders: [PMCustomFolder]) {
@@ -114,12 +122,13 @@ final class SidebarModel: Sendable, ObservableObject {
         } else {
             sidebarFoldersWithSelection = sidebarFolders
         }
-        state = state.copy(folders: sidebarFoldersWithSelection)
+        state = state.copy(\.folders, to: sidebarFoldersWithSelection)
     }
 
     private func updateLabels(with newLabels: [PMCustomLabel]) {
         state = state.copy(
-            labels: updated(
+            \.labels,
+             to: updated(
                 newItems: newLabels,
                 stateKeyPath: \.labels,
                 transformation: { label in label.sidebarLabel }
@@ -129,7 +138,8 @@ final class SidebarModel: Sendable, ObservableObject {
 
     private func updateSystemFolders(with newSystemLabels: [PMSystemLabel]) {
         state = state.copy(
-            system: updated(
+            \.system,
+             to: updated(
                 newItems: newSystemLabels,
                 stateKeyPath: \.system,
                 transformation: \.sidebarSystemFolder
@@ -144,14 +154,16 @@ final class SidebarModel: Sendable, ObservableObject {
         transformation: (Model) -> Item?
     ) -> [Item] where Item.SelectableItemType == Item {
         let selectedItem = state[keyPath: stateKeyPath].first(where: \.isSelected)
-        let newItems = newItems
+        let newItems =
+            newItems
             .compactMap(transformation)
-            .map { item in item.copy(isSelected: item.selectionIdentifier == selectedItem?.selectionIdentifier) }
+            .map { item in item.copy(isSelected: item.id == selectedItem?.id) }
         return newItems
     }
 
     private func unselectAll() {
         state = .init(
+            upsell: state.upsell,
             system: unselected(keyPath: \.system),
             labels: unselected(keyPath: \.labels),
             folders: unselectedFolders(in: state.folders),
@@ -177,7 +189,7 @@ final class SidebarModel: Sendable, ObservableObject {
 
     func folders(selectedFolder: SidebarFolder, in folders: [SidebarFolder]) -> [SidebarFolder] {
         folders.map { folder in
-            if folder.selectionIdentifier == selectedFolder.selectionIdentifier {
+            if folder.id == selectedFolder.id {
                 return folder.copy(isSelected: true)
             } else {
                 return folder.copy(childFolders: self.folders(selectedFolder: selectedFolder, in: folder.childFolders))
@@ -199,7 +211,7 @@ final class SidebarModel: Sendable, ObservableObject {
     ) -> [Item] where Item.SelectableItemType == Item {
         state[keyPath: keyPath]
             .map { currentItem in
-                currentItem.copy(isSelected: item.selectionIdentifier == currentItem.selectionIdentifier)
+                currentItem.copy(isSelected: item.id == currentItem.id)
             }
     }
 
@@ -209,26 +221,26 @@ final class SidebarModel: Sendable, ObservableObject {
         }
     }
 
+    private func updateUpsellItemVisibility(isVisible: Bool) {
+        state = state.copy(\.upsell, to: isVisible ? .upsell : nil)
+    }
 }
 
-private class SidebarModelsObservation<Model> {
+@MainActor
+private final class SidebarModelsObservation<Model: Sendable>: Sendable {
 
     private let sidebar: SidebarProtocol
     private let labelType: LabelType
-    private let updatedData: () async -> Result<[Model], ActionError>
-    private let dataUpdate: ([Model]) -> Void
-
-    private lazy var updateCallback = LiveQueryCallbackWrapper { [weak self] in
-        self?.onLabelsUpdate()
-    }
+    private let updatedData: @Sendable () async -> Result<[Model], ActionError>
+    private let dataUpdate: @MainActor ([Model]) -> Void
 
     private var watchHandle: WatchHandle?
 
     init(
         sidebar: SidebarProtocol,
         labelType: LabelType,
-        updatedData: @escaping () async -> Result<[Model], ActionError>,
-        dataUpdate: @escaping ([Model]) -> Void
+        updatedData: @escaping @Sendable () async -> Result<[Model], ActionError>,
+        dataUpdate: @escaping @MainActor ([Model]) -> Void
     ) {
         self.sidebar = sidebar
         self.labelType = labelType
@@ -244,6 +256,12 @@ private class SidebarModelsObservation<Model> {
     // MARK: - Private
 
     private func initLiveQuery() {
+        let updateCallback = LiveQueryCallbackWrapper { [weak self] in
+            Task {
+                await self?.onLabelsUpdate()
+            }
+        }
+
         Task {
             switch await sidebar.watchLabels(labelType: labelType, callback: updateCallback) {
             case .ok(let watchHandle):
@@ -255,10 +273,8 @@ private class SidebarModelsObservation<Model> {
         }
     }
 
-    private func onLabelsUpdate() {
-        Task {
-            await emitUpdatedModelsIfAvailable()
-        }
+    private func onLabelsUpdate() async {
+        await emitUpdatedModelsIfAvailable()
     }
 
     private func emitUpdatedModelsIfAvailable() async {
@@ -273,7 +289,7 @@ private extension SidebarFolder {
 
     func copy(childFolders: [SidebarFolder]) -> SidebarFolder {
         .init(
-            id: id,
+            folderID: folderID,
             parentID: parentID,
             name: name,
             color: color,

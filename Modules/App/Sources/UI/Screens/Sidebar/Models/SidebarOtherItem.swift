@@ -17,7 +17,7 @@
 
 import SwiftUI
 
-struct SidebarOtherItem: Identifiable, Equatable, SelectableItem {
+struct SidebarOtherItem: Equatable, SelectableItem {
     enum ItemType: String, Equatable {
         case settings
         case subscriptions
@@ -33,17 +33,11 @@ struct SidebarOtherItem: Identifiable, Equatable, SelectableItem {
     let icon: ImageResource
     let name: String
 
-    // MARK: - Identifiable
-
-    var id: String {
-        selectionIdentifier
-    }
-
     // MARK: - SelectableItem
 
     let isSelected: Bool
 
-    var selectionIdentifier: String {
+    var id: String {
         type.rawValue
     }
 

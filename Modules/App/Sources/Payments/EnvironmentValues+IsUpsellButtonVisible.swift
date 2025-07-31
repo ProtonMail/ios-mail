@@ -15,30 +15,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import InboxDesignSystem
 import SwiftUI
 
-enum RSVPOrganizerOption: RSVPMenuOption {
-    case copyAddress
-    case newMessage
-
-    // MARK: - RSVPMenuOption
-
-    var displayName: LocalizedStringResource {
-        switch self {
-        case .copyAddress:
-            L10n.OrganizerMenuOption.copyAction
-        case .newMessage:
-            L10n.OrganizerMenuOption.newMessage
-        }
-    }
-
-    var trailingIcon: ImageResource {
-        switch self {
-        case .copyAddress:
-            DS.Icon.icSquares
-        case .newMessage:
-            DS.Icon.icPenSquare
-        }
-    }
+extension EnvironmentValues {
+    @Entry var isUpsellButtonVisible = false
 }

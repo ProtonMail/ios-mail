@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Proton Technologies AG
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -15,27 +15,17 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+@testable import InboxRSVP
+import InboxSnapshotTesting
 import SwiftUI
+import Testing
 
-struct SystemFolder: Equatable, SelectableItem {
-    let folderID: ID
-    let type: SystemFolderLabel
-    let unreadCount: String?
+@MainActor
+struct RSVPErrorRetryViewSnapshotTests {
+    @Test
+    func testErrorView() {
+        let view = RSVPErrorRetryView(action: {})
 
-    // MARK: - SelectableItem
-
-    let isSelected: Bool
-
-    var id: String {
-        "\(folderID.value)"
-    }
-
-    func copy(isSelected: Bool) -> Self {
-        .init(
-            folderID: folderID,
-            type: type,
-            unreadCount: unreadCount,
-            isSelected: isSelected
-        )
+        assertSnapshotsOnEdgeDevices(of: view)
     }
 }

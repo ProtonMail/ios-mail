@@ -22,7 +22,7 @@ extension PMCustomFolder {
 
     var sidebarFolder: SidebarFolder {
         .init(
-            id: id,
+            folderID: id,
             parentID: parentId,
             name: name,
             color: color.flatMap { color in Color(hex: color.value) },

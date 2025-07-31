@@ -17,6 +17,7 @@
 
 import InboxCoreUI
 import InboxDesignSystem
+import InboxIAP
 import proton_app_uniffi
 import SwiftUI
 
@@ -35,11 +36,18 @@ struct SidebarScreen: View {
     init(
         state: SidebarState,
         userSession: MailUserSession,
+        upsellButtonVisibilityPublisher: UpsellButtonVisibilityPublisher,
         appVersionProvider: AppVersionProvider = .init(),
         sidebarFactory: @escaping (MailUserSession) -> SidebarProtocol = Sidebar.init,
         selectedItem: @escaping (SidebarItem) -> Void
     ) {
-        _screenModel = .init(wrappedValue: .init(state: state, sidebar: sidebarFactory(userSession)))
+        let screenModel = SidebarModel(
+            state: state,
+            sidebar: sidebarFactory(userSession),
+            upsellButtonVisibilityPublisher: upsellButtonVisibilityPublisher
+        )
+
+        _screenModel = .init(wrappedValue: screenModel)
         self.selectedItem = selectedItem
         self.appVersionProvider = appVersionProvider
     }
@@ -149,6 +157,10 @@ struct SidebarScreen: View {
         ScrollViewReader { proxy in
             ScrollView {
                 VStack(alignment: .leading, spacing: .zero) {
+                    if let upsellItem = screenModel.state.upsell {
+                        upsellSidebarItem(item: upsellItem)
+                    }
+
                     systemFoldersList()
                         .padding(.vertical, DS.Spacing.standard)
                     separator
@@ -163,13 +175,31 @@ struct SidebarScreen: View {
                     separator
                     appVersionNote
                 }.onChange(of: appUIStateStore.sidebarState.isOpen) { _, isSidebarOpen in
-                    if isSidebarOpen, let first = screenModel.state.system.first {
+                    if isSidebarOpen, let first = screenModel.state.items.first {
                         proxy.scrollTo(first.id, anchor: .zero)
                     }
                 }.accessibilityElement(children: .contain)
             }
             .frame(maxWidth: .infinity)
         }
+    }
+
+    @ViewBuilder
+    private func upsellSidebarItem(item: SidebarItem) -> some View {
+        let planName = UpsellConfiguration.mail.humanReadableUpsoldPlanName
+
+        SidebarItemButton(
+            item: item,
+            action: { select(item: item) },
+            content: {
+                HStack {
+                    sidebarItemImage(icon: DS.Icon.icDiamond.image, isSelected: false, renderingMode: .original)
+                    itemNameLabel(name: L10n.Sidebar.upgrade(to: planName).string, isSelected: false)
+                    Spacer()
+                }
+            }
+        )
+        .id(item.id)
     }
 
     private func systemFoldersList() -> some View {
@@ -223,7 +253,7 @@ struct SidebarScreen: View {
                 SidebarItemButton(
                     item: .other(item),
                     action: { select(item: .other(item)) },
-                    content: { otherItemCotent(model: item) }
+                    content: { otherItemContent(model: item) }
                 )
             }
         }
@@ -264,7 +294,7 @@ struct SidebarScreen: View {
         }
     }
 
-    private func otherItemCotent(model: SidebarOtherItem) -> some View {
+    private func otherItemContent(model: SidebarOtherItem) -> some View {
         HStack {
             sidebarItemImage(icon: model.icon.image, isSelected: model.isSelected)
             itemNameLabel(name: model.name, isSelected: model.isSelected)
@@ -272,9 +302,9 @@ struct SidebarScreen: View {
         }
     }
 
-    private func sidebarItemImage(icon: Image, isSelected: Bool) -> some View {
+    private func sidebarItemImage(icon: Image, isSelected: Bool, renderingMode: Image.TemplateRenderingMode = .template) -> some View {
         icon
-            .renderingMode(.template)
+            .renderingMode(renderingMode)
             .square(size: 20)
             .tint(isSelected ? DS.Color.Sidebar.iconSelected : DS.Color.Sidebar.iconNorm)
             .padding(.trailing, DS.Spacing.extraLarge)
@@ -352,7 +382,7 @@ private extension SidebarItem {
 
     var hideSidebar: Bool {
         switch self {
-        case .system, .label, .folder:
+        case .upsell, .system, .label, .folder:
             true
         case .other(let item):
             item.hideSidebar

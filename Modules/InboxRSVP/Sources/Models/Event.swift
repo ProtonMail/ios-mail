@@ -19,19 +19,19 @@ import Foundation
 import InboxCore
 import proton_app_uniffi
 
-struct RSVPEvent: Copying {
+struct Event: Copying {
     enum AnswerButtonsState: Equatable {
         case visible(RsvpAttendance)
         case hidden
     }
 
     struct Banner: Equatable {
-        let style: RSVPHeaderView.Style
+        let style: EventBannerView.Style
         let regularText: LocalizedStringResource
         let boldText: LocalizedStringResource
 
         init(
-            style: RSVPHeaderView.Style,
+            style: EventBannerView.Style,
             regularText: LocalizedStringResource,
             boldText: LocalizedStringResource = "".notLocalized.stringResource
         ) {

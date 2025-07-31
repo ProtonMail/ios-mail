@@ -21,12 +21,14 @@ enum ComposerViewModalState: Identifiable {
     case senderPicker
     case scheduleSend(DraftScheduleSendOptions, lastScheduledTime: UInt64?)
     case attachmentPicker
+    case passwordProtection(password: String, hint: String)
 
     var id: String {
         switch self {
         case .senderPicker: "senderPicker"
         case .scheduleSend: "scheduleSend"
         case .attachmentPicker: "attachmentPicker"
+        case .passwordProtection: "passwordProtection"
         }
     }
 }

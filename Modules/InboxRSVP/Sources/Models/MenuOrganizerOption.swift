@@ -15,14 +15,30 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import InboxDesignSystem
 import SwiftUI
 
-struct RSVPAnswerButton: View {
-    let text: LocalizedStringResource
-    let action: () -> Void
+enum MenuOrganizerOption: EventItemMenuOption {
+    case copyAddress
+    case newMessage
 
-    var body: some View {
-        Button(text.string, action: action)
-            .buttonStyle(RSVPButtonStyle.answerButtonStyle)
+    // MARK: - EventItemMenuOption
+
+    var displayName: LocalizedStringResource {
+        switch self {
+        case .copyAddress:
+            L10n.OrganizerMenuOption.copyAction
+        case .newMessage:
+            L10n.OrganizerMenuOption.newMessage
+        }
+    }
+
+    var trailingIcon: ImageResource {
+        switch self {
+        case .copyAddress:
+            DS.Icon.icSquares
+        case .newMessage:
+            DS.Icon.icPenSquare
+        }
     }
 }

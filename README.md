@@ -3,11 +3,23 @@ Mail iOS App for the Engineering Transformation project
 Copyright (c) 2024 Proton Technologies AG
 
 ## Setup instructions
-1. Install Xcode (>=15.2)
-2. Clone the repository
-3. Add a `.env` file with necessary secrets. The file is stored in a shared Pass vault. Request access to the team.
-4. Run `./scripts/setup.sh` to generate the xcodeproj file.
-5. Open `ProtonMail.xcodeproj`
+1. Make sure you have access to the following repositories, if you don't ask the team:
+  - https://gitlab.protontech.ch/apple/inbox/mail
+  - https://gitlab.protontech.ch/apple/shared/et-protoncore
+  - https://gitlab.protontech.ch/apple/shared/ProtonUIFoundations
+2. Install Xcode (>=16.3)
+3. Clone the repository
+4. Add a `.env` file with necessary secrets. The file is stored in a shared Pass vault. Request access to the team.
+5. Run `./scripts/setup.sh` to generate the xcodeproj file.
+6. Open `ProtonMail.xcodeproj`
+
+## Troubleshooting
+
+1. Once you open Xcode, if dependencies fail to resolve close Xcode and resolve them from the Terminal:
+
+```
+xcodebuild -resolvePackageDependencies -project ProtonMail.xcodeproj
+```
 
 ## UI Tests setup instructions
 1. Clone the mocks repository locally https://gitlab.protontech.ch/android/mail/mail-apps-network-mocks. It's recommended to clone the mocks repository into the same parent directory as this project.
