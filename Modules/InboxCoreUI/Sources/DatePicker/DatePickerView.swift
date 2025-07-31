@@ -113,8 +113,7 @@ public struct DatePickerView: View {
                 Spacer()
             }
             .padding(DS.Spacing.large)
-            .background(DS.Color.Background.secondary)
-        }
+        }.background(DS.Color.Background.secondary)
     }
 }
 
