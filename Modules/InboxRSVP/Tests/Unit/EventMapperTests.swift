@@ -81,6 +81,7 @@ final class EventMapperTests {
                 RsvpState.unanswerableInvite(reason: .inviteIsOutdated),
                 RsvpState.unanswerableInvite(reason: .inviteHasUnknownRecency),
                 RsvpState.unanswerableInvite(reason: .addressIsIncorrect),
+                RsvpState.unanswerableInvite(reason: .userIsOrganizer),
                 RsvpState.cancelledInvite(isOutdated: true),
                 RsvpState.cancelledInvite(isOutdated: false),
                 RsvpState.cancelledReminder,
@@ -111,22 +112,27 @@ final class EventMapperTests {
                 Event.Banner(
                     style: .generic,
                     regularText: L10n.Header.inviteIsOutdated,
-                    boldText: "".notLocalized.stringResource
+                    boldText: .empty
                 ),
                 Event.Banner(
                     style: .generic,
                     regularText: L10n.Header.offlineWarning,
-                    boldText: "".notLocalized.stringResource
+                    boldText: .empty
                 ),
                 Event.Banner(
                     style: .generic,
                     regularText: L10n.Header.addressIsIncorrect,
-                    boldText: "".notLocalized.stringResource
+                    boldText: .empty
+                ),
+                Event.Banner(
+                    style: .generic,
+                    regularText: L10n.Header.userIsOrganizer,
+                    boldText: .empty
                 ),
                 Event.Banner(
                     style: .cancelled,
                     regularText: L10n.Header.cancelledAndOutdated,
-                    boldText: "".notLocalized.stringResource
+                    boldText: .empty
                 ),
                 Event.Banner(
                     style: .cancelled,
@@ -195,4 +201,12 @@ final class EventMapperTests {
 
         #expect(given.participants == expectedParticipants)
     }
+}
+
+private extension LocalizedStringResource {
+
+    static var empty: Self {
+        "".notLocalized.stringResource
+    }
+
 }

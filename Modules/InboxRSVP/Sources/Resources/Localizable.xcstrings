@@ -76,6 +76,9 @@
     "You • %@" : {
       "comment" : "A label to identify the current user in a list of event attendees."
     },
+    "You are the organizer." : {
+      "comment" : "Banner text shown when the current user is the organizer of the event."
+    },
     "You're offline. The displayed information may be out-of-date." : {
       "comment" : "Warning banner shown when the user has no internet connection."
     },

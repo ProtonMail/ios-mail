@@ -111,6 +111,11 @@ enum L10n {
             bundle: .module,
             comment: "Banner text shown when the user's address is disabled or cannot be used to send a reply."
         )
+        static let userIsOrganizer = LocalizedStringResource(
+            "You are the organizer.",
+            bundle: .module,
+            comment: "Banner text shown when the current user is the organizer of the event."
+        )
         static let cancelledAndOutdated = LocalizedStringResource(
             "Event cancelled. This invitation is out of date.",
             bundle: .module,

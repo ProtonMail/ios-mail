@@ -79,7 +79,7 @@ enum EventMapper {
             case .addressIsIncorrect:
                 regular = L10n.Header.addressIsIncorrect
             case .userIsOrganizer:
-                return nil
+                regular = L10n.Header.userIsOrganizer
             }
 
             return .init(style: .generic, regularText: regular)
