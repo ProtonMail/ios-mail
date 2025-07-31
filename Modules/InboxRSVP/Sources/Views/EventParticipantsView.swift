@@ -21,7 +21,7 @@ import SwiftUI
 
 struct EventParticipantsView: View {
     let participants: [Event.Participant]
-    @State var areParticipantsExpanded: Bool
+    @Binding var areParticipantsExpanded: Bool
 
     var body: some View {
         VStack(alignment: .leading, spacing: .zero) {

@@ -116,7 +116,7 @@ struct RSVPEventView: View {
                 .zIndex(1)
             EventParticipantsView(
                 participants: event.participants,
-                areParticipantsExpanded: areParticipantsExpanded
+                areParticipantsExpanded: $areParticipantsExpanded
             )
         }
     }
