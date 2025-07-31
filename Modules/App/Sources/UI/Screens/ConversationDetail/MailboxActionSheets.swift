@@ -66,7 +66,12 @@ private struct MailboxActionSheets: ViewModifier {
         content
             .sheet(item: mailboxBinding, content: mailboxItemActionPicker)
             .sheet(item: snoozeBinding) { conversationID in
-                SnoozeView(state: .initial(screen: .main, conversationIDs: [conversationID]))
+                SnoozeView(
+                    state: .initial(
+                        screen: .main,
+                        labelId: mailbox().labelId(),
+                        conversationIDs: [conversationID]
+                    ))
             }
             .labelAsSheet(mailbox: mailbox, input: $state.labelAs)
             .moveToSheet(

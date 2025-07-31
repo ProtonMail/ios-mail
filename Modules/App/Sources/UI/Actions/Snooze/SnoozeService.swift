@@ -18,9 +18,9 @@
 import proton_app_uniffi
 
 protocol SnoozeServiceProtocol {
-    func availableSnoozeActions(for conversation: Id, systemCalendarWeekStart: NonDefaultWeekStart) -> AvailableSnoozeActionsForConversationResult
-    func snooze(conversation ids: [Id], timestamp: UnixTimestamp) -> SnoozeConversationsResult
-    func unsnooze(conversation ids: [Id]) -> UnsnoozeConversationsResult
+    func availableSnoozeActions(for conversation: [Id], systemCalendarWeekStart: NonDefaultWeekStart) async -> AvailableSnoozeActionsForConversationResult
+    func snooze(conversation ids: [Id], labelId: Id, timestamp: UnixTimestamp) async -> SnoozeConversationsResult
+    func unsnooze(conversation ids: [Id], labelId: Id) async -> UnsnoozeConversationsResult
 }
 
 class SnoozeService: SnoozeServiceProtocol {
@@ -31,21 +31,21 @@ class SnoozeService: SnoozeServiceProtocol {
     }
 
     func availableSnoozeActions(
-        for conversationID: Id,
+        for conversationIDs: [Id],
         systemCalendarWeekStart: NonDefaultWeekStart
-    ) -> AvailableSnoozeActionsForConversationResult {
-        availableSnoozeActionsForConversation(
+    ) async -> AvailableSnoozeActionsForConversationResult {
+        await availableSnoozeActionsForConversation(
             session: mailUserSession(),
             weekStart: systemCalendarWeekStart,
-            id: conversationID
+            ids: conversationIDs
         )
     }
 
-    func snooze(conversation ids: [Id], timestamp: UnixTimestamp) -> SnoozeConversationsResult {
-        snoozeConversations(session: mailUserSession(), ids: ids, snoozeTime: timestamp)
+    func snooze(conversation ids: [Id], labelId: Id, timestamp: UnixTimestamp) async -> SnoozeConversationsResult {
+        await snoozeConversations(session: mailUserSession(), labelId: labelId, ids: ids, snoozeTime: timestamp)
     }
 
-    func unsnooze(conversation ids: [Id]) -> UnsnoozeConversationsResult {
-        unsnoozeConversations(session: mailUserSession(), ids: ids)
+    func unsnooze(conversation ids: [Id], labelId: Id) async -> UnsnoozeConversationsResult {
+        await unsnoozeConversations(session: mailUserSession(), labelId: labelId, ids: ids)
     }
 }

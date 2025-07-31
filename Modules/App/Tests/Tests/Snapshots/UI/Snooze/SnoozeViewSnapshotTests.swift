@@ -63,6 +63,7 @@ struct SnoozeViewSnapshotTests {
         let snoozeView = SnoozeView(
             state: .init(
                 conversationIDs: [.init(value: 7)],
+                labelId: .init(value: 5),
                 screen: testCase.screen,
                 snoozeActions: testCase.actions,
                 currentDetent: testCase.screen.detent,

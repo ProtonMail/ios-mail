@@ -72,6 +72,7 @@ private extension Conversation {
             attachmentsMetadata: [],
             customLabels: [],
             displaySnoozeReminder: false,
+            snoozedUntil: nil,
             exclusiveLocation: .system(name: .inbox, id: .init(value: 41)),
             expirationTime: 1625140800,
             isStarred: true,

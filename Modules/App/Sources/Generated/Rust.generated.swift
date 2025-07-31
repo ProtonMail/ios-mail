@@ -285,20 +285,20 @@ public extension SignupFlowSubmitValidatedPasswordResult {
     }
 }
 public extension SnoozeConversationsResult {
-    func get() throws(SnoozeError) -> Undo? {
+    func get() throws(SnoozeError) {
         switch self {
-        case .ok(let value):
-            value
+        case .ok:
+            break
         case .error(let error):
             throw error
         }
     }
 }
 public extension UnsnoozeConversationsResult {
-    func get() throws(SnoozeError) -> Undo? {
+    func get() throws(SnoozeError) {
         switch self {
-        case .ok(let value):
-            value
+        case .ok:
+            break
         case .error(let error):
             throw error
         }

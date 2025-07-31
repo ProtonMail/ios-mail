@@ -27,10 +27,11 @@ class SnoozeStoreTests {
     private let snoozeServiceSpy = SnoozeServiceSpy()
     let conversationIDs: [ID] = [.init(value: 7), .init(value: 77)]
     let toastStateStore = ToastStateStore(initialState: .initial)
+    let labelId = ID(value: 5)
     var dismissInvokedCount = 0
 
     lazy var sut = SnoozeStore(
-        state: .initial(screen: .main, conversationIDs: conversationIDs),
+        state: .initial(screen: .main, labelId: labelId, conversationIDs: conversationIDs),
         upsellScreenPresenter: upsellScreenPresenterSpy,
         toastStateStore: toastStateStore,
         snoozeService: snoozeServiceSpy,
@@ -55,6 +56,7 @@ class SnoozeStoreTests {
 
         #expect(snoozeServiceSpy.invokedSnooze.count == 1)
         #expect(snoozeServiceSpy.invokedSnooze.first?.ids == conversationIDs)
+        #expect(snoozeServiceSpy.invokedSnooze.first?.labelId == labelId)
         #expect(snoozeServiceSpy.invokedSnooze.first?.timestamp == .timestamp)
         #expect(toastStateStore.state.toasts == [.snooze(snoozeDate: UInt64.timestamp.date)])
         #expect(dismissInvokedCount == 1)
@@ -64,7 +66,9 @@ class SnoozeStoreTests {
     func testUnsnoozeAction_UnsnoozesCorrectConversations() async {
         await sut.handle(action: .unsnoozeTapped)
 
-        #expect(snoozeServiceSpy.invokedUnsnooze == [conversationIDs])
+        #expect(snoozeServiceSpy.invokedUnsnooze.count == 1)
+        #expect(snoozeServiceSpy.invokedUnsnooze.first?.ids == conversationIDs)
+        #expect(snoozeServiceSpy.invokedUnsnooze.first?.labelId == labelId)
         #expect(toastStateStore.state.toasts == [.unsnooze])
         #expect(dismissInvokedCount == 1)
     }

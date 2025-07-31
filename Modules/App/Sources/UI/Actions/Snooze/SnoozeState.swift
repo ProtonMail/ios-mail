@@ -22,6 +22,7 @@ import SwiftUI
 
 struct SnoozeState: Copying {
     let conversationIDs: [ID]
+    let labelId: ID
     var screen: SnoozeView.Screen
     var snoozeActions: SnoozeActions?
     var currentDetent: PresentationDetent
@@ -31,9 +32,14 @@ struct SnoozeState: Copying {
 
 extension SnoozeState {
 
-    static func initial(screen: SnoozeView.Screen, conversationIDs: [ID]) -> Self {
+    static func initial(
+        screen: SnoozeView.Screen,
+        labelId: ID,
+        conversationIDs: [ID]
+    ) -> Self {
         return .init(
             conversationIDs: conversationIDs,
+            labelId: labelId,
             screen: screen,
             snoozeActions: nil,
             currentDetent: screen.detent,

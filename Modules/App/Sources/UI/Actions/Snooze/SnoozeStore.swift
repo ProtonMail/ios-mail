@@ -56,14 +56,14 @@ class SnoozeStore: StateStore {
             }
         case .predefinedSnoozeOptionTapped(let snoozeTime):
             if let timestamp = snoozeTime.timestamp {
-                snoozeConversations(snoozeTime: timestamp)
+                await snoozeConversations(snoozeTime: timestamp)
             }
         case .unsnoozeTapped:
-            unsnoozeConversations()
+            await unsnoozeConversations()
         case .customSnoozeCancelTapped:
             transition(to: .main)
         case .loadData:
-            loadSnoozeData()
+            await loadSnoozeData()
         }
     }
 
@@ -81,10 +81,10 @@ class SnoozeStore: StateStore {
         }
     }
 
-    private func loadSnoozeData() {
+    private func loadSnoozeData() async {
         do {
-            let snoozeActions = try snoozeService.availableSnoozeActions(
-                for: state.conversationIDs.first!, // FIXME: - Will be updated in the next MR when API is available
+            let snoozeActions = try await snoozeService.availableSnoozeActions(
+                for: state.conversationIDs,
                 systemCalendarWeekStart: DateEnvironment.calendar.nonDefaultWeekStart
             ).get()
 
@@ -94,9 +94,13 @@ class SnoozeStore: StateStore {
         }
     }
 
-    private func snoozeConversations(snoozeTime: UnixTimestamp) {
+    private func snoozeConversations(snoozeTime: UnixTimestamp) async {
         do {
-            _ = try snoozeService.snooze(conversation: state.conversationIDs, timestamp: snoozeTime).get()
+            _ = try await snoozeService.snooze(
+                conversation: state.conversationIDs,
+                labelId: state.labelId,
+                timestamp: snoozeTime
+            ).get()
             toastStateStore.present(toast: .snooze(snoozeDate: snoozeTime.date))
             dismiss()
         } catch {
@@ -104,9 +108,12 @@ class SnoozeStore: StateStore {
         }
     }
 
-    private func unsnoozeConversations() {
+    private func unsnoozeConversations() async {
         do {
-            _ = try snoozeService.unsnooze(conversation: state.conversationIDs).get()
+            _ = try await snoozeService.unsnooze(
+                conversation: state.conversationIDs,
+                labelId: state.labelId
+            ).get()
             toastStateStore.present(toast: .unsnooze)
             dismiss()
         } catch {

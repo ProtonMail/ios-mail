@@ -24,30 +24,34 @@ class SnoozeServiceSpy: SnoozeServiceProtocol {
         showUnsnooze: true
     )
 
-    private(set) var invokedAvailableSnoozeActions: [(weekStart: NonDefaultWeekStart, id: ID)] = []
-    private(set) var invokedSnooze: [(ids: [ID], timestamp: UnixTimestamp)] = []
-    private(set) var invokedUnsnooze: [[ID]] = []
+    private(set) var invokedAvailableSnoozeActions: [(weekStart: NonDefaultWeekStart, id: [ID])] = []
+    private(set) var invokedSnooze: [(ids: [ID], labelId: Id, timestamp: UnixTimestamp)] = []
+    private(set) var invokedUnsnooze: [(ids: [ID], labelId: Id)] = []
 
     // MARK: - SnoozeServiceProtocol
 
     func availableSnoozeActions(
-        for conversation: Id,
+        for conversation: [Id],
         systemCalendarWeekStart: NonDefaultWeekStart
-    ) -> AvailableSnoozeActionsForConversationResult {
+    ) async -> AvailableSnoozeActionsForConversationResult {
         invokedAvailableSnoozeActions.append((systemCalendarWeekStart, conversation))
 
         return .ok(snoozeActionsStub)
     }
 
-    func snooze(conversation ids: [Id], timestamp: UnixTimestamp) -> SnoozeConversationsResult {
-        invokedSnooze.append((ids, timestamp))
+    func snooze(
+        conversation ids: [Id],
+        labelId: Id,
+        timestamp: UnixTimestamp
+    ) async -> SnoozeConversationsResult {
+        invokedSnooze.append((ids, labelId, timestamp))
 
-        return .ok(nil)
+        return .ok
     }
 
-    func unsnooze(conversation ids: [Id]) -> UnsnoozeConversationsResult {
-        invokedUnsnooze.append(ids)
+    func unsnooze(conversation ids: [Id], labelId: Id) async -> UnsnoozeConversationsResult {
+        invokedUnsnooze.append((ids, labelId))
 
-        return .ok(nil)
+        return .ok
     }
 }
