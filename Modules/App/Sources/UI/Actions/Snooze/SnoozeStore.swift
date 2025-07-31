@@ -118,7 +118,7 @@ class SnoozeStore: StateStore {
 
 extension Toast {
     static var unsnooze: Toast {
-        .information(message: "Conversation unsnoozed")
+        .information(message: L10n.Snooze.conversationUnsnoozed.string)
     }
 
     static func snooze(snoozeDate: Date) -> Toast {

@@ -5056,6 +5056,9 @@
         }
       }
     },
+    "Conversation unsnoozed" : {
+      "comment" : "Toast message after unsnooze action"
+    },
     "Copy address" : {
       "comment" : "Action title for copying email address to clipboard in the address action sheet.",
       "localizations" : {

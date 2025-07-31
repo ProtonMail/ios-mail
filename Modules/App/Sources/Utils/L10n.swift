@@ -1009,6 +1009,10 @@ enum L10n {
             "Upgrade for full flexibility",
             comment: "Custom button subtitle for a free user on snooze sheet."
         )
+        static let conversationUnsnoozed = LocalizedStringResource(
+            "Conversation unsnoozed",
+            comment: "Toast message after unsnooze action"
+        )
     }
 
     enum Toast {
