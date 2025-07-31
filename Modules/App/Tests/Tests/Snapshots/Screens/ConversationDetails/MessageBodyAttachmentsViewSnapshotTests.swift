@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Proton Technologies AG
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -20,34 +20,31 @@ import InboxSnapshotTesting
 import InboxTesting
 import XCTest
 
-class MessageBodyAttachmentsViewSnapshotTests: BaseTestCase {
-
+@MainActor
+class MessageBodyAttachmentsViewSnapshotTests: XCTestCase {
     func testShortAttachmentsList() {
         let sut = makeSUT(state: .state(attachments: Array([AttachmentDisplayModel].previewData.prefix(3))))
-        assertSnapshotsOnIPhoneX(of: sut, named: "short_attachments_list")
+        assertSelfSizingSnapshot(of: sut, named: "short_attachments_list")
     }
 
     func testLongCollapsedAttachmentsList() {
-        let state = MessageBodyAttachmentsState
-            .state(attachments: .previewData)
+        let sut = makeSUT(state: .state(attachments: .previewData))
 
-        let sut = makeSUT(state: state)
-        assertSnapshotsOnIPhoneX(of: sut, named: "long_attachments_list_collapsed")
+        assertSelfSizingSnapshot(of: sut, named: "long_attachments_list_collapsed")
     }
 
     func testLongExpandedAttachmentsList() {
-        let state = MessageBodyAttachmentsState
-            .state(attachments: .previewData)
-            .copy(\.listState, to: .long(isAttachmentsListOpen: true))
+        let sut = makeSUT(
+            state: .state(attachments: .previewData).copy(\.listState, to: .long(isAttachmentsListOpen: true))
+        )
 
-        let sut = makeSUT(state: state)
-        assertSnapshotsOnIPhoneX(of: sut, named: "long_attachments_list_expanded")
+        assertSelfSizingSnapshot(of: sut, named: "long_attachments_list_expanded")
     }
 
     // MARK: - Private
 
+    @MainActor
     private func makeSUT(state: MessageBodyAttachmentsState) -> MessageBodyAttachmentsView {
         .init(state: state, attachmentIDToOpen: .constant(nil))
     }
-
 }

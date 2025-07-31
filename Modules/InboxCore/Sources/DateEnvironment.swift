@@ -20,10 +20,15 @@ import Foundation
 public enum DateEnvironment {
     @TaskLocal public static var currentDate: () -> Date = Date.init
     @TaskLocal public static var calendar: Calendar = .current
+    @TaskLocal public static var calendarGMT: Calendar = .gmt
+}
 
-    public static let calendarUTC: Calendar = {
+private extension Calendar {
+
+    static var gmt: Calendar {
         var calendar = DateEnvironment.calendar
         calendar.timeZone = .gmt
         return calendar
-    }()
+    }
+
 }

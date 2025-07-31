@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Combine
+import InboxTesting
 import Testing
 
 @testable import PaymentsNG
@@ -28,8 +29,8 @@ final class PaymentsServiceTests {
 
     @Test
     func handlesEverySessionTransitionWithoutSkippingElements() async {
-        let userSession1 = MailUserSessionStub(id: "foo")
-        let userSession2 = MailUserSessionStub(id: "bar")
+        let userSession1 = MailUserSessionSpy(id: "foo")
+        let userSession2 = MailUserSessionSpy(id: "bar")
 
         let task = sut.startListeningToUserSessionChanges()
 

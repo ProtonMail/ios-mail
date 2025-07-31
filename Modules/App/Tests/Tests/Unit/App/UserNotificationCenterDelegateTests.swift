@@ -29,7 +29,7 @@ final class UserNotificationCenterDelegateTests {
     private let sessionStateSubject = CurrentValueSubject<SessionState, Never>(.noSession)
     private let urlOpener = URLOpenerSpy()
     private let userNotificationCenter = UserNotificationCenterSpy()
-    private let userSessionStub = MailUserSessionStub(id: "session-1")
+    private let userSession = MailUserSessionSpy(id: "session-1")
     private let sut: UserNotificationCenterDelegate
 
     private let testURL = URL(string: "https://example.com")!
@@ -43,7 +43,7 @@ final class UserNotificationCenterDelegateTests {
         ]
 
         mailSession.userSessions = [
-            userSessionStub
+            userSession
         ]
 
         self.mailSession = mailSession
@@ -58,7 +58,7 @@ final class UserNotificationCenterDelegateTests {
             let sessionAssociatedWithUserId = mailSession.storedSessions.first { $0.userId() == userId }!
 
             sessionStateSubject.send(
-                .activeSession(session: MailUserSessionStub(id: sessionAssociatedWithUserId.sessionId()))
+                .activeSession(session: MailUserSessionSpy(id: sessionAssociatedWithUserId.sessionId()))
             )
         }
     }
@@ -126,7 +126,7 @@ final class UserNotificationCenterDelegateTests {
 
         await sut.userNotificationCenter(.current(), didReceive: response)
 
-        #expect(userSessionStub.executeNotificationQuickActionInvocations == [.markAsRead(remoteId: remoteId)])
+        #expect(userSession.executeNotificationQuickActionInvocations == [.markAsRead(remoteId: remoteId)])
     }
 
     @Test

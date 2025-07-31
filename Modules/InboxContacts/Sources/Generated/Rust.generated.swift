@@ -94,6 +94,16 @@ public extension AvailableMoveToActionsForMessagesResult {
         }
     }
 }
+public extension AvailableSnoozeActionsForConversationResult {
+    func get() throws(SnoozeError) -> SnoozeActions {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension ContactGroupByIdResult {
     func get() throws(ActionError) -> ContactGroupItem {
         switch self {
@@ -284,6 +294,16 @@ public extension PasswordFlowChangePassResult {
         }
     }
 }
+public extension PasswordFlowGetFidoDetailsResult {
+    func get() throws(PasswordError) -> Fido2ResponseFfi? {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension PasswordFlowHasFidoResult {
     func get() throws(PasswordError) -> Bool {
         switch self {
@@ -315,6 +335,16 @@ public extension PasswordFlowHasTotpResult {
     }
 }
 public extension PasswordFlowStepBackResult {
+    func get() throws(PasswordError) -> SimplePasswordState {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension PasswordFlowSubmitFidoResult {
     func get() throws(PasswordError) -> SimplePasswordState {
         switch self {
         case .ok(let value):
@@ -574,6 +604,16 @@ public extension SignupFlowSubmitValidatedPasswordResult {
         }
     }
 }
+public extension SnoozeConversationsResult {
+    func get() throws(SnoozeError) -> Undo? {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension TestStubMessageBodyResult {
     func get() throws(ActionError) -> DecryptedMessage {
         switch self {
@@ -589,6 +629,16 @@ public extension UndoUndoResult {
         switch self {
         case .ok:
             break
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension UnsnoozeConversationsResult {
+    func get() throws(SnoozeError) -> Undo? {
+        switch self {
+        case .ok(let value):
+            value
         case .error(let error):
             throw error
         }

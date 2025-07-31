@@ -64,6 +64,16 @@ public extension DraftExpirationTimeResult {
         }
     }
 }
+public extension DraftGetPasswordResult {
+    func get() throws(ProtonError) -> DraftPassword? {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension DraftIsPasswordProtectedResult {
     func get() throws(ProtonError) -> Bool {
         switch self {
@@ -789,6 +799,26 @@ public extension NewMailboxResult {
         switch self {
         case .ok(let value):
             value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension RsvpEventGetResult {
+    func get() throws(ProtonError) -> RsvpEvent {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension VoidAnswerRsvpResult {
+    func get() throws(ProtonError) {
+        switch self {
+        case .ok:
+            break
         case .error(let error):
             throw error
         }

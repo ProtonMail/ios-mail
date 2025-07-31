@@ -61,16 +61,16 @@ enum ContactFormatter {
                 dateComponents.month = partialDate.month.map(Int.init)
                 dateComponents.day = partialDate.day.map(Int.init)
 
-                let date = DateEnvironment.calendarUTC.date(from: dateComponents).unsafelyUnwrapped
+                let date = DateEnvironment.calendarGMT.date(from: dateComponents).unsafelyUnwrapped
 
-                formattedDate = formatter.string(from: date)
+                formattedDate = noTimeFormatter.string(from: date)
             }
 
             return .init(label: label, value: formattedDate, isInteractive: false)
         }
 
-        private static let formatter: DateFormatter = {
-            let formatter = DateFormatter.fromEnvironmentCalendar(timeZone: DateEnvironment.calendarUTC.timeZone)
+        private static let noTimeFormatter: DateFormatter = {
+            let formatter = DateFormatter.withGMTCalendar()
             formatter.dateStyle = .short
             formatter.timeStyle = .none
             return formatter

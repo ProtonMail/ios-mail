@@ -108,9 +108,15 @@ public extension DS.Color {
 
     enum Notification {
         public static let error = Color(.notificationError)
+        public static let error100 = Color(.notificationError100)
+        public static let error900 = Color(.notificationError900)
         public static let norm = Color(.notificationNorm)
         public static let success = Color(.notificationSuccess)
+        public static let success100 = Color(.notificationSuccess100)
+        public static let success900 = Color(.notificationSuccess900)
         public static let warning = Color(.notificationWarning)
+        public static let warning100 = Color(.notificationWarning100)
+        public static let warning900 = Color(.notificationWarning900)
     }
 
     enum Shade {

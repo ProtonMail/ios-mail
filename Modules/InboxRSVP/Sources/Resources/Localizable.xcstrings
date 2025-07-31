@@ -1,0 +1,75 @@
+{
+  "sourceLanguage" : "en",
+  "strings" : {
+    " canceled" : {
+      "comment" : "The status of an event that has been canceled. Meant to be bolded. Note the leading space."
+    },
+    " ended" : {
+      "comment" : "The status of an event that has finished. Meant to be bolded. Note the leading space."
+    },
+    " now" : {
+      "comment" : "Second part of the 'Happening now' banner, meant to be bolded. Note the leading space."
+    },
+    "(Attendance optional)" : {
+      "comment" : "A note indicating that responding to or attending the event is not mandatory."
+    },
+    "(no title)" : {
+      "comment" : "Placeholder text for an event that has no title or summary."
+    },
+    "%@ (Organizer)" : {
+      "comment" : "Label showing the organizer's name with a clarifying '(Organizer)' suffix."
+    },
+    "%d Participants" : {
+      "comment" : "Label for the participants button, where %d is the number of people. Requires pluralization rules (e.g., 1 participant vs. 2 participants)."
+    },
+    "%lld Participants" : {
+      "comment" : "Label for the participants button, where %d is the number of people. Exist only in plural form."
+    },
+    "Attending?" : {
+      "comment" : "A question prompting the user to select their attendance status."
+    },
+    "Copy address" : {
+      "comment" : "Context menu option to copy the organizer’s email address to the clipboard."
+    },
+    "Event" : {
+      "comment" : "The subject of a status update, like 'Event ended' or 'Event canceled'."
+    },
+    "Event cancelled. This invitation is out of date." : {
+      "comment" : "Banner for a cancelled event where the user is also viewing an outdated invitation."
+    },
+    "Happening" : {
+      "comment" : "First part of the 'Happening now' banner, indicating an event is currently in progress."
+    },
+    "Maybe" : {
+      "comment" : "A short, one-word response indicating the user might attend the event."
+    },
+    "Maybe, I'll attend" : {
+      "comment" : "A full-sentence response indicating the user might attend. Used in menus."
+    },
+    "Message" : {
+      "comment" : "Context menu option to start composing a new message to the organizer."
+    },
+    "No" : {
+      "comment" : "A short, one-word response indicating the user will not attend the event."
+    },
+    "No, I won't attend" : {
+      "comment" : "A full-sentence response indicating the user will not attend. Used in menus."
+    },
+    "This invitation is out of date. The event has been updated." : {
+      "comment" : "Banner text explaining that the event details have changed since the invitation was sent."
+    },
+    "Yes" : {
+      "comment" : "A short, one-word response indicating the user will attend the event."
+    },
+    "Yes, I'll attend" : {
+      "comment" : "A full-sentence response indicating the user will attend. Used in menus."
+    },
+    "You • %@" : {
+      "comment" : "A label to identify the current user in a list of event attendees."
+    },
+    "You're offline. The displayed information may be out-of-date." : {
+      "comment" : "Warning banner shown when the user has no internet connection."
+    }
+  },
+  "version" : "1.0"
+}

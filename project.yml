@@ -35,6 +35,9 @@ packages:
   InboxKeychain:
     path: Modules/InboxKeychain
     group: Modules
+  InboxRSVP:
+    path: Modules/InboxRSVP
+    group: Modules
   InboxSnapshotTesting:
     path: Modules/InboxSnapshotTesting
     group: Modules
@@ -165,6 +168,7 @@ targets:
       - package: InboxDesignSystem
       - package: InboxIAP
       - package: InboxKeychain
+      - package: InboxRSVP
       - target: NotificationService
       - package: PaymentsUI
       - package: proton_app_uniffi
