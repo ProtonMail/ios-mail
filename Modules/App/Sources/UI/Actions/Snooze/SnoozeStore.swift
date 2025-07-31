@@ -146,7 +146,7 @@ extension SnoozeView.Screen {
 
 }
 
-enum OSWeekStart: Int {
+private enum OSWeekStart: Int {
     case sunday = 1
     case monday = 2
     case tuesday = 3
