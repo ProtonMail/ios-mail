@@ -22,24 +22,53 @@ import SwiftUI
 struct AnswerMenuButton: View {
     let state: RsvpAnswer
     let isAnswering: Bool
-    let action: (RsvpAnswer) -> Void
+    let onAnswerSelected: (RsvpAnswer) -> Void
+
+    @State private var rotation: Double = 0
+    private let rotationRange: ClosedRange<Double> = 0...360
 
     var body: some View {
         Menu {
             ForEach(RsvpAnswer.allCases.removing { $0 == state }, id: \.self) { answer in
                 MenuOptionButton(
                     text: answer.humanReadable.long,
-                    action: { action(answer) },
+                    action: { onAnswerSelected(answer) },
                     trailingIcon: .none
                 )
             }
         } label: {
             HStack(spacing: DS.Spacing.compact) {
                 Text(state.humanReadable.long.string)
-                Image(symbol: isAnswering ? .arrowCirclePath : .chevronDown)
+                if isAnswering {
+                    answeringImage()
+                } else {
+                    nonAnsweringImage()
+                }
             }
         }
         .buttonStyle(ActionButtonStyle.answerButtonStyle)
+        .animation(.easeInOut, value: isAnswering)
+        .disabled(isAnswering)
+    }
+
+    // MARK: - Private
+
+    private func answeringImage() -> some View {
+        Image(symbol: .arrowCirclePath)
+            .rotationEffect(.degrees(rotation))
+            .onAppear {
+                rotation = rotationRange.lowerBound
+                withAnimation(.linear(duration: 1).repeatForever(autoreverses: false)) {
+                    rotation = rotationRange.upperBound
+                }
+            }
+            .onDisappear { rotation = rotationRange.lowerBound }
+            .transition(.opacity.combined(with: .scale))
+    }
+
+    private func nonAnsweringImage() -> some View {
+        Image(symbol: .chevronDown)
+            .transition(.opacity.combined(with: .scale))
     }
 }
 
