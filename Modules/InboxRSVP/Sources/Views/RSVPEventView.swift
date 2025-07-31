@@ -21,7 +21,7 @@ import proton_app_uniffi
 import SwiftUI
 
 struct RSVPEventView: View {
-    private let event: RSVPEvent
+    private let event: Event
     private let isAnswering: Bool
     private let onAnswerSelected: (RsvpAnswer) -> Void
     @State private var areParticipantsExpanded: Bool
@@ -32,7 +32,7 @@ struct RSVPEventView: View {
         onAnswerSelected: @escaping (RsvpAnswer) -> Void,
         areParticipantsExpanded: Bool = false,
     ) {
-        self.event = RSVPEventMapper.map(from: event)
+        self.event = EventMapper.map(from: event)
         self.isAnswering = isAnswering
         self.onAnswerSelected = onAnswerSelected
         self.areParticipantsExpanded = areParticipantsExpanded
@@ -63,13 +63,13 @@ struct RSVPEventView: View {
     @ViewBuilder
     private var headerBanner: some View {
         if let banner = event.banner {
-            RSVPHeaderView(style: banner.style, regular: banner.regularText, bold: banner.boldText)
+            EventBannerView(style: banner.style, regular: banner.regularText, bold: banner.boldText)
         }
     }
 
     @ViewBuilder
     private var eventHeader: some View {
-        RSVPEventHeader(title: event.title, formattedDate: event.formattedDate, answerButtons: event.answerButtons)
+        EventHeader(title: event.title, formattedDate: event.formattedDate, answerButtons: event.answerButtons)
     }
 
     private var answerSection: some View {
@@ -82,12 +82,12 @@ struct RSVPEventView: View {
                 switch event.participants[event.userParticipantIndex].status.answer {
                 case .none:
                     ForEach(RsvpAnswer.allCases, id: \.self) { answer in
-                        RSVPAnswerButton(text: answer.humanReadable.short) {
+                        AnswerButton(text: answer.humanReadable.short) {
                             onAnswerSelected(answer)
                         }
                     }
                 case .some(let answer):
-                    RSVPAnswerMenuButton(state: answer, isAnswering: isAnswering) { selectedAnswer in
+                    AnswerMenuButton(state: answer, isAnswering: isAnswering) { selectedAnswer in
                         onAnswerSelected(selectedAnswer)
                     }
                 }
@@ -99,24 +99,24 @@ struct RSVPEventView: View {
     private var eventDetailsSection: some View {
         VStack(alignment: .leading, spacing: .zero) {
             if let calendar = event.calendar {
-                RSVPDetailsRow(icon: DS.Icon.icCircleFilled, iconColor: Color(hex: calendar.color), text: calendar.name)
+                EventDetailsRow(icon: DS.Icon.icCircleFilled, iconColor: Color(hex: calendar.color), text: calendar.name)
             }
             if let recurrence = event.recurrence {
-                RSVPDetailsRow(icon: DS.Icon.icArrowsRotate, text: recurrence)
+                EventDetailsRow(icon: DS.Icon.icArrowsRotate, text: recurrence)
             }
             if let location = event.location {
-                RSVPDetailsRow(icon: DS.Icon.icMapPin, text: location)
+                EventDetailsRow(icon: DS.Icon.icMapPin, text: location)
             }
-            RSVPDetailsRowMenu<RSVPOrganizerOption>(icon: DS.Icon.icUser, text: event.organizer.displayName) { _ in }
+            EventDetailsRowMenu<MenuOrganizerOption>(icon: DS.Icon.icUser, text: event.organizer.displayName) { _ in }
             if event.participants.count >= 2 {
-                RSVPDetailsParticipantsButton(count: event.participants.count, isExpanded: $areParticipantsExpanded) {
+                EventParticipantsRowButton(count: event.participants.count, isExpanded: $areParticipantsExpanded) {
                     areParticipantsExpanded.toggle()
                 }
             }
             if areParticipantsExpanded || event.participants.count == 1 {
                 LazyVStack(alignment: .leading, spacing: .zero) {
-                    ForEachEnumerated(event.participants, id: \.element.displayName) { participant, index in
-                        RSVPDetailsRow(
+                    ForEach(event.participants, id: \.displayName) { participant in
+                        EventDetailsRow(
                             icon: participant.status.details.icon,
                             iconColor: participant.status.details.color,
                             text: participant.displayName

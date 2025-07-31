@@ -18,24 +18,7 @@
 import InboxDesignSystem
 import SwiftUI
 
-struct RSVPDetailsParticipantsButton: View {
-    let count: Int
-    @Binding var isExpanded: Bool
-    let action: () -> Void
-
-    var body: some View {
-        Button(action: action) {
-            RSVPDetailsRow(
-                icon: DS.Icon.icUsers,
-                text: L10n.Details.participantsCount(count: count).string,
-                trailingIcon: isExpanded ? DS.Icon.icChevronUpFilled : DS.Icon.icChevronDownFilled
-            )
-        }
-        .buttonStyle(RSVPDetailsRowButtonStyle())
-    }
-}
-
-struct RSVPDetailsRowButtonStyle: ButtonStyle {
+struct EventDetailsRowButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .background(configuration.isPressed ? DS.Color.InteractionWeak.pressed : Color.clear)

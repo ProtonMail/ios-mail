@@ -17,7 +17,12 @@
 
 import SwiftUI
 
-protocol RSVPMenuOption: CaseIterable, Hashable {
-    var displayName: LocalizedStringResource { get }
-    var trailingIcon: ImageResource { get }
+struct AnswerButton: View {
+    let text: LocalizedStringResource
+    let action: () -> Void
+
+    var body: some View {
+        Button(text.string, action: action)
+            .buttonStyle(ActionButtonStyle.answerButtonStyle)
+    }
 }

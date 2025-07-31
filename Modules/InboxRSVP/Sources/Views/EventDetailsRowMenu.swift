@@ -17,12 +17,23 @@
 
 import SwiftUI
 
-struct RSVPAnswerButton: View {
-    let text: LocalizedStringResource
-    let action: () -> Void
+struct EventDetailsRowMenu<Option: EventItemMenuOption>: View {
+    let icon: ImageResource
+    let text: String
+    let action: (Option) -> Void
 
     var body: some View {
-        Button(text.string, action: action)
-            .buttonStyle(RSVPButtonStyle.answerButtonStyle)
+        Menu {
+            ForEach(Array(Option.allCases), id: \.self) { option in
+                MenuOptionButton(
+                    text: option.displayName,
+                    action: { action(option) },
+                    trailingIcon: option.trailingIcon
+                )
+            }
+        } label: {
+            EventDetailsRow(icon: icon, text: text)
+        }
+        .buttonStyle(EventDetailsRowButtonStyle())
     }
 }

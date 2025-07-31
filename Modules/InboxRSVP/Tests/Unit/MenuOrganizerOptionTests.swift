@@ -15,29 +15,27 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+@testable import InboxRSVP
+import InboxCore
 import InboxDesignSystem
 import SwiftUI
+import Testing
 
-struct RSVPMenuOptionButton: View {
-    let text: LocalizedStringResource
-    let action: () -> Void
-    let trailingIcon: ImageResource?
+struct MenuOrganizerOptionTests {
+    typealias Expected = (displayName: String, trailingIcon: ImageResource)
 
-    var body: some View {
-        Button(action: action) {
-            HStack(spacing: DS.Spacing.tiny) {
-                Text(text)
-                    .font(.callout)
-                    .fontWeight(.regular)
-                    .foregroundStyle(DS.Color.Text.norm)
-                if let trailingIcon {
-                    Image(trailingIcon)
-                        .foregroundStyle(DS.Color.Icon.norm)
-                        .square(size: 20)
-                }
-            }
-            .padding(.vertical, DS.Spacing.medium)
-            .padding(.horizontal, DS.Spacing.large)
-        }
+    @Test(
+        arguments:
+            zip(
+                MenuOrganizerOption.allCases,
+                [
+                    Expected(displayName: L10n.OrganizerMenuOption.copyAction.string, DS.Icon.icSquares),
+                    Expected(displayName: L10n.OrganizerMenuOption.newMessage.string, DS.Icon.icPenSquare),
+                ]
+            )
+    )
+    func testDisplayNameAndTrailingIcon(_ given: MenuOrganizerOption, expected: Expected) {
+        #expect(given.displayName.string == expected.displayName)
+        #expect(given.trailingIcon == expected.trailingIcon)
     }
 }

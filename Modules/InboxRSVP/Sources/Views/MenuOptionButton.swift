@@ -18,27 +18,26 @@
 import InboxDesignSystem
 import SwiftUI
 
-enum RSVPOrganizerOption: RSVPMenuOption {
-    case copyAddress
-    case newMessage
+struct MenuOptionButton: View {
+    let text: LocalizedStringResource
+    let action: () -> Void
+    let trailingIcon: ImageResource?
 
-    // MARK: - RSVPMenuOption
-
-    var displayName: LocalizedStringResource {
-        switch self {
-        case .copyAddress:
-            L10n.OrganizerMenuOption.copyAction
-        case .newMessage:
-            L10n.OrganizerMenuOption.newMessage
-        }
-    }
-
-    var trailingIcon: ImageResource {
-        switch self {
-        case .copyAddress:
-            DS.Icon.icSquares
-        case .newMessage:
-            DS.Icon.icPenSquare
+    var body: some View {
+        Button(action: action) {
+            HStack(spacing: DS.Spacing.tiny) {
+                Text(text)
+                    .font(.callout)
+                    .fontWeight(.regular)
+                    .foregroundStyle(DS.Color.Text.norm)
+                if let trailingIcon {
+                    Image(trailingIcon)
+                        .foregroundStyle(DS.Color.Icon.norm)
+                        .square(size: 20)
+                }
+            }
+            .padding(.vertical, DS.Spacing.medium)
+            .padding(.horizontal, DS.Spacing.large)
         }
     }
 }

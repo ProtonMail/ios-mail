@@ -18,7 +18,7 @@
 import InboxDesignSystem
 import SwiftUI
 
-struct RSVPDetailsRow: View {
+struct EventDetailsRow: View {
     let icon: ImageResource
     let iconColor: Color
     let text: String

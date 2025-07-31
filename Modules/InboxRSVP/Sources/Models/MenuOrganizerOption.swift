@@ -15,17 +15,30 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-@testable import InboxRSVP
-import InboxSnapshotTesting
+import InboxDesignSystem
 import SwiftUI
-import Testing
 
-@MainActor
-struct RSVPErrorViewSnapshotTests {
-    @Test
-    func testErrorView() {
-        let view = RSVPErrorView(action: {})
+enum MenuOrganizerOption: EventItemMenuOption {
+    case copyAddress
+    case newMessage
 
-        assertSnapshotsOnEdgeDevices(of: view)
+    // MARK: - EventItemMenuOption
+
+    var displayName: LocalizedStringResource {
+        switch self {
+        case .copyAddress:
+            L10n.OrganizerMenuOption.copyAction
+        case .newMessage:
+            L10n.OrganizerMenuOption.newMessage
+        }
+    }
+
+    var trailingIcon: ImageResource {
+        switch self {
+        case .copyAddress:
+            DS.Icon.icSquares
+        case .newMessage:
+            DS.Icon.icPenSquare
+        }
     }
 }

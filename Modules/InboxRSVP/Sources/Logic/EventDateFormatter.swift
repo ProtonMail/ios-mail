@@ -19,7 +19,7 @@ import Foundation
 import InboxCore
 import proton_app_uniffi
 
-enum RSVPDateFormatter {
+enum EventDateFormatter {
     static func string(
         from fromTimestamp: UnixTimestamp,
         to toTimestamp: UnixTimestamp,

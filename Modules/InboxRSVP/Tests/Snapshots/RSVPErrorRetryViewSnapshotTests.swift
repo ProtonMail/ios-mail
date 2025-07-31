@@ -15,25 +15,17 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+@testable import InboxRSVP
+import InboxSnapshotTesting
 import SwiftUI
+import Testing
 
-struct RSVPDetailsRowMenu<Option: RSVPMenuOption>: View {
-    let icon: ImageResource
-    let text: String
-    let action: (Option) -> Void
+@MainActor
+struct RSVPErrorRetryViewSnapshotTests {
+    @Test
+    func testErrorView() {
+        let view = RSVPErrorRetryView(action: {})
 
-    var body: some View {
-        Menu {
-            ForEach(Array(Option.allCases), id: \.self) { option in
-                RSVPMenuOptionButton(
-                    text: option.displayName,
-                    action: { action(option) },
-                    trailingIcon: option.trailingIcon
-                )
-            }
-        } label: {
-            RSVPDetailsRow(icon: icon, text: text)
-        }
-        .buttonStyle(RSVPDetailsRowButtonStyle())
+        assertSnapshotsOnEdgeDevices(of: view)
     }
 }

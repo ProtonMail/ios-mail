@@ -19,7 +19,7 @@ import InboxDesignSystem
 import proton_app_uniffi
 import SwiftUI
 
-struct RSVPAnswerMenuButton: View {
+struct AnswerMenuButton: View {
     let state: RsvpAnswer
     let isAnswering: Bool
     let action: (RsvpAnswer) -> Void
@@ -27,7 +27,7 @@ struct RSVPAnswerMenuButton: View {
     var body: some View {
         Menu {
             ForEach(RsvpAnswer.allCases.removing { $0 == state }, id: \.self) { answer in
-                RSVPMenuOptionButton(
+                MenuOptionButton(
                     text: answer.humanReadable.long,
                     action: { action(answer) },
                     trailingIcon: .none
@@ -39,7 +39,7 @@ struct RSVPAnswerMenuButton: View {
                 Image(symbol: isAnswering ? .arrowCirclePath : .chevronDown)
             }
         }
-        .buttonStyle(RSVPButtonStyle.answerButtonStyle)
+        .buttonStyle(ActionButtonStyle.answerButtonStyle)
     }
 }
 

@@ -38,7 +38,7 @@ public struct RSVPView: View {
         case .loading:
             RSVPSkeletonView()
         case .loadFailed:
-            RSVPErrorView { handle(action: .retry) }
+            RSVPErrorRetryView { handle(action: .retry) }
         case .loaded(let event):
             eventDetailsView(with: event, isAnswering: false)
         case .answering(let event):

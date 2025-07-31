@@ -18,10 +18,10 @@
 import InboxDesignSystem
 import SwiftUI
 
-struct RSVPEventHeader: View {
+struct EventHeader: View {
     let title: String
     let formattedDate: String
-    let answerButtons: RSVPEvent.AnswerButtonsState
+    let answerButtons: Event.AnswerButtonsState
 
     var body: some View {
         HStack(alignment: .top, spacing: DS.Spacing.standard) {
