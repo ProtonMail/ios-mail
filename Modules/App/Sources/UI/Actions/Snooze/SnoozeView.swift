@@ -24,6 +24,7 @@ import SwiftUI
 
 struct SnoozeView: View {
     private let initialState: SnoozeState
+    private let snoozeService: SnoozeServiceProtocol
     @EnvironmentObject var upsellCoordinator: UpsellCoordinator
     @EnvironmentObject var toastStateStore: ToastStateStore
     @Environment(\.dismiss) var dismiss
@@ -35,8 +36,12 @@ struct SnoozeView: View {
         case main
     }
 
-    init(state: SnoozeState) {
+    init(
+        state: SnoozeState,
+        snoozeService: SnoozeServiceProtocol = SnoozeService(mailUserSession: { AppContext.shared.userSession })
+    ) {
         self.initialState = state
+        self.snoozeService = snoozeService
     }
 
     private let columns = [
@@ -50,6 +55,7 @@ struct SnoozeView: View {
                 state: initialState,
                 upsellScreenPresenter: upsellCoordinator,
                 toastStateStore: toastStateStore,
+                snoozeService: snoozeService,
                 dismiss: { dismiss.callAsFunction() }
             )
         ) { state, store in

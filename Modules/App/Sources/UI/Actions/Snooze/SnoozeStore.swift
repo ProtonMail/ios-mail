@@ -33,7 +33,7 @@ class SnoozeStore: StateStore {
         state: SnoozeState,
         upsellScreenPresenter: UpsellScreenPresenter,
         toastStateStore: ToastStateStore,
-        snoozeService: SnoozeServiceProtocol = SnoozeService(mailUserSession: { AppContext.shared.userSession }),
+        snoozeService: SnoozeServiceProtocol,
         dismiss: @escaping () -> Void
     ) {
         self.state = state
@@ -84,7 +84,7 @@ class SnoozeStore: StateStore {
     private func loadSnoozeData() {
         do {
             let snoozeActions = try snoozeService.availableSnoozeActions(
-                for: state.conversationIDs.first!,
+                for: state.conversationIDs.first!, // FIXME: - Will be updated in the next MR when API is available
                 systemCalendarWeekStart: DateEnvironment.calendar.nonDefaultWeekStart
             ).get()
 

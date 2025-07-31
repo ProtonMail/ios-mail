@@ -62,12 +62,13 @@ struct SnoozeViewSnapshotTests {
     func snapshotAllVariants(_ testCase: TestCase) {
         let snoozeView = SnoozeView(
             state: .init(
-                conversationIDs: [],
+                conversationIDs: [.init(value: 7)],
                 screen: testCase.screen,
                 snoozeActions: testCase.actions,
                 currentDetent: testCase.screen.detent,
                 allowedDetents: [testCase.screen.detent]
-            )
+            ),
+            snoozeService: SnoozeServiceSpy()
         )
         .environmentObject(ToastStateStore(initialState: .initial))
         .environmentObject(UpsellCoordinator.dummy)

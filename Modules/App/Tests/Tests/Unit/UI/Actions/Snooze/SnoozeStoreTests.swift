@@ -95,7 +95,7 @@ class SnoozeStoreTests {
 
     @Test
     func testUpgradeButtonTapped_WhenFailedToPresentUpsellScreen_ItShowsErrorToast() async {
-        let error: NSError = .stubbed
+        let error: NSError = .dummy
         upsellScreenPresenterSpy.stubbedError = error
 
         await sut.handle(action: .upgradeTapped)
@@ -116,51 +116,5 @@ private class UpsellScreenPresenterSpy: UpsellScreenPresenter {
         } else {
             return .preview(entryPoint: entryPoint)
         }
-    }
-}
-
-private extension NSError {
-    static var stubbed: NSError {
-        NSError(domain: .notUsed, code: 999, userInfo: nil)
-    }
-}
-
-private class SnoozeServiceSpy: SnoozeServiceProtocol {
-    lazy var snoozeActionsStub: SnoozeActions = .init(
-        options: [.custom, .tomorrow(.timestamp), .nextWeek(.timestamp), .thisWeekend(.timestamp)],
-        showUnsnooze: true
-    )
-
-    private(set) var invokedAvailableSnoozeActions: [(weekStart: NonDefaultWeekStart, id: ID)] = []
-    private(set) var invokedSnooze: [(ids: [ID], timestamp: UnixTimestamp)] = []
-    private(set) var invokedUnsnooze: [[ID]] = []
-
-    // MARK: - SnoozeServiceProtocol
-
-    func availableSnoozeActions(
-        for conversation: Id,
-        systemCalendarWeekStart: NonDefaultWeekStart
-    ) -> AvailableSnoozeActionsForConversationResult {
-        invokedAvailableSnoozeActions.append((systemCalendarWeekStart, conversation))
-
-        return .ok(snoozeActionsStub)
-    }
-
-    func snooze(conversation ids: [Id], timestamp: UnixTimestamp) -> SnoozeConversationsResult {
-        invokedSnooze.append((ids, timestamp))
-
-        return .ok(nil)
-    }
-
-    func unsnooze(conversation ids: [Id]) -> UnsnoozeConversationsResult {
-        invokedUnsnooze.append(ids)
-
-        return .ok(nil)
-    }
-}
-
-private extension UInt64 {
-    static var timestamp: UInt64 {
-        1753883097
     }
 }
