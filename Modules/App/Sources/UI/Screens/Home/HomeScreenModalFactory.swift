@@ -19,6 +19,7 @@ import AccountLogin
 import InboxComposer
 import InboxContacts
 import InboxCore
+import InboxIAP
 import PaymentsUI
 import proton_app_uniffi
 import SwiftUI
@@ -57,6 +58,8 @@ struct HomeScreenModalFactory {
             makeReportProblemScreen()
         case .subscriptions:
             makeSubscriptionsScreen()
+        case .upsell(let model):
+            UpsellScreen(model: model)
         }
     }
 }

@@ -17,10 +17,9 @@
 
 import Foundation
 
-protocol SelectableItem {
+protocol SelectableItem: Identifiable<String> {
     associatedtype SelectableItemType
 
-    var selectionIdentifier: String { get }
     var isSelected: Bool { get }
 
     func copy(isSelected: Bool) -> SelectableItemType

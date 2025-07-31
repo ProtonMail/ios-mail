@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Proton Technologies AG
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -17,25 +17,6 @@
 
 import SwiftUI
 
-struct SystemFolder: Equatable, SelectableItem {
-    let folderID: ID
-    let type: SystemFolderLabel
-    let unreadCount: String?
-
-    // MARK: - SelectableItem
-
-    let isSelected: Bool
-
-    var id: String {
-        "\(folderID.value)"
-    }
-
-    func copy(isSelected: Bool) -> Self {
-        .init(
-            folderID: folderID,
-            type: type,
-            unreadCount: unreadCount,
-            isSelected: isSelected
-        )
-    }
+extension EnvironmentValues {
+    @Entry var isUpsellButtonVisible = false
 }

@@ -32,6 +32,7 @@ struct HomeScreen: View {
         case settings
         case reportProblem
         case subscriptions
+        case upsell(UpsellScreenModel)
 
         // MARK: - Identifiable
 
@@ -44,6 +45,7 @@ struct HomeScreen: View {
     @EnvironmentObject private var toastStateStore: ToastStateStore
     @StateObject private var appRoute: AppRouteState
     @StateObject private var composerCoordinator: ComposerCoordinator
+    @StateObject private var upsellButtonVisibilityPublisher: UpsellButtonVisibilityPublisher
     @State private var modalState: ModalState?
     @State private var isNotificationPromptPresented = false
     @StateObject private var eventLoopErrorCoordinator: EventLoopErrorCoordinator
@@ -62,6 +64,8 @@ struct HomeScreen: View {
     init(appContext: AppContext, userSession: MailUserSession, toastStateStore: ToastStateStore) {
         _appRoute = .init(wrappedValue: .initialState)
         _composerCoordinator = .init(wrappedValue: .init(userSession: userSession, toastStateStore: toastStateStore))
+        let upsellButtonVisibilityPublisher = UpsellButtonVisibilityPublisher(userSession: userSession)
+        _upsellButtonVisibilityPublisher = .init(wrappedValue: upsellButtonVisibilityPublisher)
         self.appContext = appContext
         self.userSession = userSession
         self.mailSettingsLiveQuery = MailSettingsLiveQuery(userSession: userSession)
@@ -69,6 +73,7 @@ struct HomeScreen: View {
             SidebarScreen(
                 state: .initial,
                 userSession: userSession,
+                upsellButtonVisibilityPublisher: upsellButtonVisibilityPublisher,
                 selectedItem: selectedItem
             )
         }
@@ -99,11 +104,13 @@ struct HomeScreen: View {
 
             makeSidebarScreen() { selectedItem in
                 switch selectedItem {
+                case .upsell:
+                    presentUpsellScreen()
                 case .system(let systemFolder):
                     appRoute.updateRoute(
                         to: .mailbox(
                             selectedMailbox: .systemFolder(
-                                labelId: systemFolder.id,
+                                labelId: systemFolder.folderID,
                                 systemFolder: systemFolder.type
                             )))
                 case .other(let otherItem):
@@ -127,14 +134,14 @@ struct HomeScreen: View {
                     appRoute.updateRoute(
                         to: .mailbox(
                             selectedMailbox: .customLabel(
-                                labelId: label.id,
+                                labelId: label.labelID,
                                 name: label.name.stringResource
                             )))
                 case .folder(let folder):
                     appRoute.updateRoute(
                         to: .mailbox(
                             selectedMailbox: .customFolder(
-                                labelId: folder.id,
+                                labelId: folder.folderID,
                                 name: folder.name.stringResource
                             )))
                 }
@@ -163,6 +170,7 @@ struct HomeScreen: View {
             }
         }
         .environmentObject(upsellCoordinator)
+        .environment(\.isUpsellButtonVisible, upsellButtonVisibilityPublisher.isUpsellButtonVisible)
     }
 
     private func requestNotificationAuthorizationIfApplicable() {
@@ -177,6 +185,17 @@ struct HomeScreen: View {
         Task {
             await notificationAuthorizationStore.userDidRespondToAuthorizationRequest(accepted: accepted)
             isNotificationPromptPresented = false
+        }
+    }
+
+    private func presentUpsellScreen() {
+        Task {
+            do {
+                let upsellScreenModel = try await upsellCoordinator.presentUpsellScreen(entryPoint: .sidebar)
+                modalState = .upsell(upsellScreenModel)
+            } catch {
+                toastStateStore.present(toast: .error(message: error.localizedDescription))
+            }
         }
     }
 

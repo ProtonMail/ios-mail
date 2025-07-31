@@ -734,6 +734,46 @@ public extension MailUserSessionUserSettingsResult {
         }
     }
 }
+public extension MailUserSessionWatchAddressesResult {
+    func get() throws(ProtonError) -> WatchHandle {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension MailUserSessionWatchLabelsResult {
+    func get() throws(ProtonError) -> WatchHandle {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension MailUserSessionWatchUserResult {
+    func get() throws(ProtonError) -> WatchHandle {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension MailUserSessionWatchUserSettingsResult {
+    func get() throws(ProtonError) -> WatchHandle {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension MailboxUnreadCountResult {
     func get() throws(UserContextError) -> UInt64 {
         switch self {
