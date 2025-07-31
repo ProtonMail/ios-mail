@@ -41,10 +41,12 @@ class SnoozeStoreTests {
     func testLoadData_proviesSnoozeActions() async {
         await sut.handle(action: .loadData)
 
-        #expect(sut.state.snoozeActions == .init(
-            options: snoozeServiceSpy.snoozeActionsStub.options,
-            showUnsnooze: snoozeServiceSpy.snoozeActionsStub.showUnsnooze
-        ))
+        #expect(
+            sut.state.snoozeActions
+                == .init(
+                    options: snoozeServiceSpy.snoozeActionsStub.options,
+                    showUnsnooze: snoozeServiceSpy.snoozeActionsStub.showUnsnooze
+                ))
     }
 
     @Test
@@ -54,6 +56,7 @@ class SnoozeStoreTests {
         #expect(snoozeServiceSpy.invokedSnooze.count == 1)
         #expect(snoozeServiceSpy.invokedSnooze.first?.ids == conversationIDs)
         #expect(snoozeServiceSpy.invokedSnooze.first?.timestamp == .timestamp)
+        #expect(toastStateStore.state.toasts == [.snooze(snoozeDate: UInt64.timestamp.date)])
         #expect(dismissInvokedCount == 1)
     }
 
@@ -62,6 +65,7 @@ class SnoozeStoreTests {
         await sut.handle(action: .unsnoozeTapped)
 
         #expect(snoozeServiceSpy.invokedUnsnooze == [conversationIDs])
+        #expect(toastStateStore.state.toasts == [.unsnooze])
         #expect(dismissInvokedCount == 1)
     }
 

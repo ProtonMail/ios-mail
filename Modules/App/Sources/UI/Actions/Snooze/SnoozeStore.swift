@@ -96,8 +96,8 @@ class SnoozeStore: StateStore {
 
     private func snoozeConversations(snoozeTime: UnixTimestamp) {
         do {
-            try snoozeService.snooze(conversation: state.conversationIDs, timestamp: snoozeTime).get()
-            // FIXME: - Present toast
+            _ = try snoozeService.snooze(conversation: state.conversationIDs, timestamp: snoozeTime).get()
+            toastStateStore.present(toast: .snooze(snoozeDate: snoozeTime.date))
             dismiss()
         } catch {
             // FIXME: - Add logger
@@ -106,14 +106,27 @@ class SnoozeStore: StateStore {
 
     private func unsnoozeConversations() {
         do {
-            try snoozeService.unsnooze(conversation: state.conversationIDs).get()
-            // FIXME: - Present toast
+            _ = try snoozeService.unsnooze(conversation: state.conversationIDs).get()
+            toastStateStore.present(toast: .unsnooze)
             dismiss()
         } catch {
             // FIXME: - Add logger
         }
     }
 
+}
+
+extension Toast {
+    static var unsnooze: Toast {
+        .information(message: "Conversation unsnoozed")
+    }
+
+    static func snooze(snoozeDate: Date) -> Toast {
+        .information(
+            message:
+                L10n.Mailbox.Item.snoozedTill(value: snoozeDate.mailboxSnoozeFormat()).string
+        )
+    }
 }
 
 extension SnoozeView.Screen {
