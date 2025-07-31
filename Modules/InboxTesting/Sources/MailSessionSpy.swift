@@ -165,7 +165,7 @@ public final class MailSessionSpy: MailSessionProtocol {
         fatalError(#function)
     }
 
-    public func initializedUserContextFromSession(session: StoredSession) -> MailSessionInitializedUserContextFromSessionResult {
+    public func initializedUserSessionFromStoredSession(session: StoredSession) -> MailSessionInitializedUserSessionFromStoredSessionResult {
         fatalError(#function)
     }
 
@@ -241,7 +241,11 @@ public final class MailSessionSpy: MailSessionProtocol {
         fatalError(#function)
     }
 
-    public func toUserContext(ffiFlow: LoginFlow) async -> MailSessionToUserContextResult {
+    public func toPrimaryUserSession() async -> MailSessionToPrimaryUserSessionResult {
+        fatalError(#function)
+    }
+
+    public func toUserSession(ffiFlow: LoginFlow) async -> MailSessionToUserSessionResult {
         fatalError(#function)
     }
 
@@ -249,7 +253,7 @@ public final class MailSessionSpy: MailSessionProtocol {
         fatalError(#function)
     }
 
-    public func userContextFromSession(session: StoredSession) -> MailSessionUserContextFromSessionResult {
+    public func userSessionFromStoredSession(session: StoredSession) -> MailSessionUserSessionFromStoredSessionResult {
         if let userSession = userSessions.first(where: { $0.sessionId == session.sessionId() }) {
             .ok(userSession)
         } else {

@@ -57,6 +57,6 @@ public final class MailUserSessionSpy: MailUserSession, @unchecked Sendable {
     }
 
     public override func userSettings() async -> MailUserSessionUserSettingsResult {
-        .error(.reason(.userContextNotInitialized))
+        .error(.reason(.userSessionNotInitialized))
     }
 }

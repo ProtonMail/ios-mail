@@ -34,13 +34,13 @@ final class ProtonAuthenticatedWebModel: @unchecked Sendable, ObservableObject {
     func generateSubscriptionUrl(colorScheme: ColorScheme) {
         guard let userSession = dependencies.appContext.sessionState.userSession else { return }
 
-        let apiConfig = ApiConfig.current
-        let domain = apiConfig.envId.domain
-        let appVersion = apiConfig.appVersion
+        let domain = ApiConfig.current.envId.domain
+        let appDetails = AppDetails.mail
+        let appVersion = appDetails.backendFacingVersion
 
         Task {
             await updateState(.forkingSession)
-            switch await userSession.fork(platform: "ios", product: "mail") {
+            switch await userSession.fork(platform: appDetails.platform, product: appDetails.product) {
             case .ok(let selectorToken):
                 let theme = colorScheme == .light ? "0" : "1"
                 let url = webPageUrl(domain: domain, appVersion: appVersion, theme: theme, selector: selectorToken)

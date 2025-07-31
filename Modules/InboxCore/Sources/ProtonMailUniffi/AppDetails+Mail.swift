@@ -1,3 +1,4 @@
+//
 // Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
@@ -15,14 +16,17 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import Foundation
 import proton_app_uniffi
 
-protocol ReportProblemService: Sendable {
-    func send(report: IssueReport) async throws(UserSessionError)
-}
+extension AppDetails {
+    public static let mail: Self = .init(
+        platform: "ios",
+        product: "mail",
+        version: Bundle.main.effectiveAppVersion
+    )
 
-extension MailUserSession: ReportProblemService {
-    func send(report: IssueReport) async throws(UserSessionError) {
-        try await reportAnIssue(session: self, issueReport: report).get()
+    public var backendFacingVersion: String {
+        "\(platform)-\(product)@\(version)"
     }
 }

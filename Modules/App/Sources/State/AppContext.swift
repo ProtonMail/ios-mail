@@ -72,12 +72,13 @@ final class AppContext: Sendable, ObservableObject {
         AppLogger.log(message: "AppContext.start", category: .appLifeCycle)
 
         let apiConfig = ApiConfig.current
+        let appDetails = AppDetails.mail
 
         userDefaults = dependencies.userDefaults
         userDefaultsCleaner = .init(userDefaults: userDefaults)
 
-        let params = MailSessionParamsFactory.make(apiConfig: apiConfig)
-        accountChallengeCoordinator = .init(apiConfigProvider: { apiConfig })
+        let params = MailSessionParamsFactory.make(origin: .app, apiConfig: apiConfig)
+        accountChallengeCoordinator = .init(apiConfig: apiConfig, appDetails: appDetails)
 
         _mailSession = try createMailSession(
             params: params,
@@ -89,7 +90,7 @@ final class AppContext: Sendable, ObservableObject {
         _mailSession.pauseWork()
         AppLogger.log(message: "MailSession init | \(AppVersionProvider().fullVersion) | \(apiConfig.envId.domain)", category: .rustLibrary)
 
-        accountAuthCoordinator = AccountAuthCoordinator(productName: "mail", appContext: _mailSession)
+        accountAuthCoordinator = AccountAuthCoordinator(productName: appDetails.product, appContext: _mailSession)
         setupAccountBindings()
 
         if let currentSession = accountAuthCoordinator.primaryAccountSignedInSession() {
@@ -127,7 +128,7 @@ extension AppContext {
     private func setupActiveUserSession(session: StoredSession) {
         Task {
             do {
-                if let existingSession = try await mailSession.initializedUserContextFromSession(session: session).get() {
+                if let existingSession = try await mailSession.initializedUserSessionFromStoredSession(session: session).get() {
                     animateTransition(into: .activeSession(session: existingSession))
                     return
                 }
@@ -149,7 +150,7 @@ extension AppContext {
         while true {
             let start = ContinuousClock.now
 
-            switch await mailSession.userContextFromSession(session: session) {
+            switch await mailSession.userSessionFromStoredSession(session: session) {
             case .ok(let newUserSession):
                 return newUserSession
             case .error(.other(.network)):

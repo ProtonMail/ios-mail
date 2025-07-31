@@ -34,18 +34,8 @@ public extension ChallengeLoaderGetResult {
         }
     }
 }
-public extension CreateMailIosExtensionSessionResult {
-    func get() throws(UserContextError) -> MailSession {
-        switch self {
-        case .ok(let value):
-            value
-        case .error(let error):
-            throw error
-        }
-    }
-}
 public extension CreateMailSessionResult {
-    func get() throws(UserContextError) -> MailSession {
+    func get() throws(UserSessionError) -> MailSession {
         switch self {
         case .ok(let value):
             value
@@ -135,7 +125,7 @@ public extension EmbeddedAttachmentInfoResult {
     }
 }
 public extension GetContactDetailsResult {
-    func get() throws(UserContextError) -> ContactDetailCard {
+    func get() throws(UserSessionError) -> ContactDetailCard {
         switch self {
         case .ok(let value):
             value
@@ -255,7 +245,7 @@ public extension LoginFlowUserIdResult {
     }
 }
 public extension MailSessionAppProtectionResult {
-    func get() throws(UserContextError) -> AppProtection {
+    func get() throws(UserSessionError) -> AppProtection {
         switch self {
         case .ok(let value):
             value
@@ -265,7 +255,7 @@ public extension MailSessionAppProtectionResult {
     }
 }
 public extension MailSessionChangeAppSettingsResult {
-    func get() throws(UserContextError) {
+    func get() throws(UserSessionError) {
         switch self {
         case .ok:
             break
@@ -285,7 +275,7 @@ public extension MailSessionExportLogsResult {
     }
 }
 public extension MailSessionGetAccountResult {
-    func get() throws(UserContextError) -> StoredAccount? {
+    func get() throws(UserSessionError) -> StoredAccount? {
         switch self {
         case .ok(let value):
             value
@@ -295,7 +285,7 @@ public extension MailSessionGetAccountResult {
     }
 }
 public extension MailSessionGetAccountSessionsResult {
-    func get() throws(UserContextError) -> [StoredSession] {
+    func get() throws(UserSessionError) -> [StoredSession] {
         switch self {
         case .ok(let value):
             value
@@ -305,7 +295,7 @@ public extension MailSessionGetAccountSessionsResult {
     }
 }
 public extension MailSessionGetAccountStateResult {
-    func get() throws(UserContextError) -> StoredAccountState? {
+    func get() throws(UserSessionError) -> StoredAccountState? {
         switch self {
         case .ok(let value):
             value
@@ -315,7 +305,7 @@ public extension MailSessionGetAccountStateResult {
     }
 }
 public extension MailSessionGetAccountsResult {
-    func get() throws(UserContextError) -> [StoredAccount] {
+    func get() throws(UserSessionError) -> [StoredAccount] {
         switch self {
         case .ok(let value):
             value
@@ -325,7 +315,7 @@ public extension MailSessionGetAccountsResult {
     }
 }
 public extension MailSessionGetAppSettingsResult {
-    func get() throws(UserContextError) -> AppSettings {
+    func get() throws(UserSessionError) -> AppSettings {
         switch self {
         case .ok(let value):
             value
@@ -335,7 +325,7 @@ public extension MailSessionGetAppSettingsResult {
     }
 }
 public extension MailSessionGetPrimaryAccountResult {
-    func get() throws(UserContextError) -> StoredAccount? {
+    func get() throws(UserSessionError) -> StoredAccount? {
         switch self {
         case .ok(let value):
             value
@@ -345,7 +335,7 @@ public extension MailSessionGetPrimaryAccountResult {
     }
 }
 public extension MailSessionGetSessionResult {
-    func get() throws(UserContextError) -> StoredSession? {
+    func get() throws(UserSessionError) -> StoredSession? {
         switch self {
         case .ok(let value):
             value
@@ -355,7 +345,7 @@ public extension MailSessionGetSessionResult {
     }
 }
 public extension MailSessionGetSessionStateResult {
-    func get() throws(UserContextError) -> StoredSessionState? {
+    func get() throws(UserSessionError) -> StoredSessionState? {
         switch self {
         case .ok(let value):
             value
@@ -365,7 +355,7 @@ public extension MailSessionGetSessionStateResult {
     }
 }
 public extension MailSessionGetSessionsResult {
-    func get() throws(UserContextError) -> [StoredSession] {
+    func get() throws(UserSessionError) -> [StoredSession] {
         switch self {
         case .ok(let value):
             value
@@ -374,8 +364,8 @@ public extension MailSessionGetSessionsResult {
         }
     }
 }
-public extension MailSessionInitializedUserContextFromSessionResult {
-    func get() throws(UserContextError) -> MailUserSession? {
+public extension MailSessionInitializedUserSessionFromStoredSessionResult {
+    func get() throws(UserSessionError) -> MailUserSession? {
         switch self {
         case .ok(let value):
             value
@@ -405,7 +395,7 @@ public extension MailSessionNewSignupFlowResult {
     }
 }
 public extension MailSessionRemainingPinAttemptsResult {
-    func get() throws(UserContextError) -> UInt32? {
+    func get() throws(UserSessionError) -> UInt32? {
         switch self {
         case .ok(let value):
             value
@@ -425,7 +415,7 @@ public extension MailSessionResumeLoginFlowResult {
     }
 }
 public extension MailSessionSetBiometricsAppProtectionResult {
-    func get() throws(UserContextError) {
+    func get() throws(UserSessionError) {
         switch self {
         case .ok:
             break
@@ -435,7 +425,7 @@ public extension MailSessionSetBiometricsAppProtectionResult {
     }
 }
 public extension MailSessionShouldAutoLockResult {
-    func get() throws(UserContextError) -> Bool {
+    func get() throws(UserSessionError) -> Bool {
         switch self {
         case .ok(let value):
             value
@@ -445,7 +435,7 @@ public extension MailSessionShouldAutoLockResult {
     }
 }
 public extension MailSessionSignOutAllResult {
-    func get() throws(UserContextError) {
+    func get() throws(UserSessionError) {
         switch self {
         case .ok:
             break
@@ -455,7 +445,7 @@ public extension MailSessionSignOutAllResult {
     }
 }
 public extension MailSessionStartBackgroundExecutionResult {
-    func get() throws(UserContextError) -> BackgroundExecutionHandle {
+    func get() throws(UserSessionError) -> BackgroundExecutionHandle {
         switch self {
         case .ok(let value):
             value
@@ -465,7 +455,7 @@ public extension MailSessionStartBackgroundExecutionResult {
     }
 }
 public extension MailSessionStartBackgroundExecutionWithDurationResult {
-    func get() throws(UserContextError) -> BackgroundExecutionHandle {
+    func get() throws(UserSessionError) -> BackgroundExecutionHandle {
         switch self {
         case .ok(let value):
             value
@@ -474,8 +464,18 @@ public extension MailSessionStartBackgroundExecutionWithDurationResult {
         }
     }
 }
-public extension MailSessionToUserContextResult {
-    func get() throws(UserContextError) -> MailUserSession {
+public extension MailSessionToPrimaryUserSessionResult {
+    func get() throws(UserSessionError) -> MailUserSession {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension MailSessionToUserSessionResult {
+    func get() throws(UserSessionError) -> MailUserSession {
         switch self {
         case .ok(let value):
             value
@@ -485,7 +485,7 @@ public extension MailSessionToUserContextResult {
     }
 }
 public extension MailSessionUnsetBiometricsAppProtectionResult {
-    func get() throws(UserContextError) {
+    func get() throws(UserSessionError) {
         switch self {
         case .ok:
             break
@@ -494,8 +494,8 @@ public extension MailSessionUnsetBiometricsAppProtectionResult {
         }
     }
 }
-public extension MailSessionUserContextFromSessionResult {
-    func get() throws(UserContextError) -> MailUserSession {
+public extension MailSessionUserSessionFromStoredSessionResult {
+    func get() throws(UserSessionError) -> MailUserSession {
         switch self {
         case .ok(let value):
             value
@@ -505,7 +505,7 @@ public extension MailSessionUserContextFromSessionResult {
     }
 }
 public extension MailSessionWatchAccountSessionsResult {
-    func get() throws(UserContextError) -> WatchedSessions {
+    func get() throws(UserSessionError) -> WatchedSessions {
         switch self {
         case .ok(let value):
             value
@@ -515,7 +515,7 @@ public extension MailSessionWatchAccountSessionsResult {
     }
 }
 public extension MailSessionWatchAccountsAsyncResult {
-    func get() throws(UserContextError) -> WatchedAccounts {
+    func get() throws(UserSessionError) -> WatchedAccounts {
         switch self {
         case .ok(let value):
             value
@@ -525,7 +525,7 @@ public extension MailSessionWatchAccountsAsyncResult {
     }
 }
 public extension MailSessionWatchAccountsResult {
-    func get() throws(UserContextError) -> WatchedAccounts {
+    func get() throws(UserSessionError) -> WatchedAccounts {
         switch self {
         case .ok(let value):
             value
@@ -535,7 +535,7 @@ public extension MailSessionWatchAccountsResult {
     }
 }
 public extension MailSessionWatchSessionsAsyncResult {
-    func get() throws(UserContextError) -> WatchedSessions {
+    func get() throws(UserSessionError) -> WatchedSessions {
         switch self {
         case .ok(let value):
             value
@@ -545,7 +545,7 @@ public extension MailSessionWatchSessionsAsyncResult {
     }
 }
 public extension MailSessionWatchSessionsResult {
-    func get() throws(UserContextError) -> WatchedSessions {
+    func get() throws(UserSessionError) -> WatchedSessions {
         switch self {
         case .ok(let value):
             value
@@ -555,7 +555,7 @@ public extension MailSessionWatchSessionsResult {
     }
 }
 public extension MailSettingsResult {
-    func get() throws(UserContextError) -> MailSettings {
+    func get() throws(UserSessionError) -> MailSettings {
         switch self {
         case .ok(let value):
             value
@@ -565,7 +565,7 @@ public extension MailSettingsResult {
     }
 }
 public extension MailUserSessionAccountDetailsResult {
-    func get() throws(UserContextError) -> AccountDetails {
+    func get() throws(UserSessionError) -> AccountDetails {
         switch self {
         case .ok(let value):
             value
@@ -575,7 +575,7 @@ public extension MailUserSessionAccountDetailsResult {
     }
 }
 public extension MailUserSessionApplicableLabelsResult {
-    func get() throws(UserContextError) -> [SidebarCustomLabel] {
+    func get() throws(UserSessionError) -> [SidebarCustomLabel] {
         switch self {
         case .ok(let value):
             value
@@ -585,7 +585,7 @@ public extension MailUserSessionApplicableLabelsResult {
     }
 }
 public extension MailUserSessionConnectionStatusResult {
-    func get() throws(UserContextError) -> ConnectionStatus {
+    func get() throws(UserSessionError) -> ConnectionStatus {
         switch self {
         case .ok(let value):
             value
@@ -595,7 +595,7 @@ public extension MailUserSessionConnectionStatusResult {
     }
 }
 public extension MailUserSessionForkResult {
-    func get() throws(UserContextError) -> String {
+    func get() throws(UserSessionError) -> String {
         switch self {
         case .ok(let value):
             value
@@ -605,7 +605,7 @@ public extension MailUserSessionForkResult {
     }
 }
 public extension MailUserSessionGetPaymentsPlansResult {
-    func get() throws(UserContextError) -> PaymentsPlans {
+    func get() throws(UserSessionError) -> PaymentsPlans {
         switch self {
         case .ok(let value):
             value
@@ -615,7 +615,7 @@ public extension MailUserSessionGetPaymentsPlansResult {
     }
 }
 public extension MailUserSessionGetPaymentsResourcesIconsResult {
-    func get() throws(UserContextError) -> Data {
+    func get() throws(UserSessionError) -> Data {
         switch self {
         case .ok(let value):
             value
@@ -625,7 +625,7 @@ public extension MailUserSessionGetPaymentsResourcesIconsResult {
     }
 }
 public extension MailUserSessionGetPaymentsSubscriptionResult {
-    func get() throws(UserContextError) -> Subscriptions {
+    func get() throws(UserSessionError) -> Subscriptions {
         switch self {
         case .ok(let value):
             value
@@ -635,7 +635,7 @@ public extension MailUserSessionGetPaymentsSubscriptionResult {
     }
 }
 public extension MailUserSessionImageForSenderResult {
-    func get() throws(UserContextError) -> String? {
+    func get() throws(UserSessionError) -> String? {
         switch self {
         case .ok(let value):
             value
@@ -645,7 +645,7 @@ public extension MailUserSessionImageForSenderResult {
     }
 }
 public extension MailUserSessionMovableFoldersResult {
-    func get() throws(UserContextError) -> [SidebarCustomFolder] {
+    func get() throws(UserSessionError) -> [SidebarCustomFolder] {
         switch self {
         case .ok(let value):
             value
@@ -655,7 +655,7 @@ public extension MailUserSessionMovableFoldersResult {
     }
 }
 public extension MailUserSessionNewPasswordChangeFlowResult {
-    func get() throws(UserContextError) -> PasswordFlow {
+    func get() throws(UserSessionError) -> PasswordFlow {
         switch self {
         case .ok(let value):
             value
@@ -665,7 +665,7 @@ public extension MailUserSessionNewPasswordChangeFlowResult {
     }
 }
 public extension MailUserSessionPostPaymentsSubscriptionResult {
-    func get() throws(UserContextError) {
+    func get() throws(UserSessionError) {
         switch self {
         case .ok:
             break
@@ -675,7 +675,7 @@ public extension MailUserSessionPostPaymentsSubscriptionResult {
     }
 }
 public extension MailUserSessionPostPaymentsTokensResult {
-    func get() throws(UserContextError) -> PaymentToken {
+    func get() throws(UserSessionError) -> PaymentToken {
         switch self {
         case .ok(let value):
             value
@@ -695,7 +695,7 @@ public extension MailUserSessionSessionIdResult {
     }
 }
 public extension MailUserSessionSessionUuidResult {
-    func get() throws(UserContextError) -> String {
+    func get() throws(UserSessionError) -> String {
         switch self {
         case .ok(let value):
             value
@@ -715,7 +715,7 @@ public extension MailUserSessionUserIdResult {
     }
 }
 public extension MailUserSessionUserResult {
-    func get() throws(UserContextError) -> User {
+    func get() throws(UserSessionError) -> User {
         switch self {
         case .ok(let value):
             value
@@ -725,7 +725,7 @@ public extension MailUserSessionUserResult {
     }
 }
 public extension MailUserSessionUserSettingsResult {
-    func get() throws(UserContextError) -> UserSettings {
+    func get() throws(UserSessionError) -> UserSettings {
         switch self {
         case .ok(let value):
             value
@@ -775,7 +775,7 @@ public extension MailUserSessionWatchUserSettingsResult {
     }
 }
 public extension MailboxUnreadCountResult {
-    func get() throws(UserContextError) -> UInt64 {
+    func get() throws(UserSessionError) -> UInt64 {
         switch self {
         case .ok(let value):
             value
@@ -785,7 +785,7 @@ public extension MailboxUnreadCountResult {
     }
 }
 public extension MailboxWatchUnreadCountResult {
-    func get() throws(UserContextError) -> WatchHandle {
+    func get() throws(UserSessionError) -> WatchHandle {
         switch self {
         case .ok(let value):
             value
@@ -795,7 +795,7 @@ public extension MailboxWatchUnreadCountResult {
     }
 }
 public extension NewAllMailMailboxResult {
-    func get() throws(UserContextError) -> Mailbox {
+    func get() throws(UserSessionError) -> Mailbox {
         switch self {
         case .ok(let value):
             value
@@ -825,7 +825,7 @@ public extension NewDraftSendWatcherResult {
     }
 }
 public extension NewInboxMailboxResult {
-    func get() throws(UserContextError) -> Mailbox {
+    func get() throws(UserSessionError) -> Mailbox {
         switch self {
         case .ok(let value):
             value
@@ -835,7 +835,7 @@ public extension NewInboxMailboxResult {
     }
 }
 public extension NewMailboxResult {
-    func get() throws(UserContextError) -> Mailbox {
+    func get() throws(UserSessionError) -> Mailbox {
         switch self {
         case .ok(let value):
             value
@@ -875,7 +875,7 @@ public extension VoidProtonResult {
     }
 }
 public extension VoidSessionResult {
-    func get() throws(UserContextError) {
+    func get() throws(UserSessionError) {
         switch self {
         case .ok:
             break
@@ -885,7 +885,7 @@ public extension VoidSessionResult {
     }
 }
 public extension WatchMailSettingsResult {
-    func get() throws(UserContextError) -> SettingsWatcher {
+    func get() throws(UserSessionError) -> SettingsWatcher {
         switch self {
         case .ok(let value):
             value

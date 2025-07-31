@@ -137,7 +137,7 @@ final class UserNotificationCenterDelegate: NSObject, UNUserNotificationCenterDe
 
     private func execute(action: NotificationQuickAction, onMessageWith remoteId: RemoteId, in session: StoredSession) async throws {
         let mailUserSession = try await getMailSession()
-            .userContextFromSession(session: session)
+            .userSessionFromStoredSession(session: session)
             .get()
 
         let executableAction = action.executableAction(remoteId: remoteId)

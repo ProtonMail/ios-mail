@@ -200,18 +200,21 @@ private extension MailUserSession {
             .unsafelyUnwrapped
         let cacheFolder = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first.unsafelyUnwrapped
         let apiConfig = ApiConfig(envId: .custom("http://localhost:8000"))
+        let appDetails = AppDetails.mail
 
         let applicationSupportPath = applicationSupportFolder.path()
         let cachePath = cacheFolder.path()
 
         let params = MailSessionParams(
+            origin: .app,
             sessionDir: applicationSupportPath,
             userDir: applicationSupportPath,
             mailCacheDir: cachePath,
             mailCacheSize: 1_000_000,
             logDir: cachePath,
             logDebug: true,
-            apiEnvConfig: apiConfig
+            apiEnvConfig: apiConfig,
+            appDetails: appDetails
         )
 
         let mailSession = try createMailSession(
@@ -221,11 +224,11 @@ private extension MailUserSession {
             deviceInfoProvider: nil
         ).get()
 
-        let authCoordinator = AccountAuthCoordinator(productName: "mail", appContext: mailSession)
+        let authCoordinator = AccountAuthCoordinator(productName: appDetails.product, appContext: mailSession)
 
         let storedSession = authCoordinator.primaryAccountSignedInSession().unsafelyUnwrapped
 
-        switch await mailSession.userContextFromSession(session: storedSession) {
+        switch await mailSession.userSessionFromStoredSession(session: storedSession) {
         case .ok(let mailUserSession):
             return mailUserSession
         case .error(let error):

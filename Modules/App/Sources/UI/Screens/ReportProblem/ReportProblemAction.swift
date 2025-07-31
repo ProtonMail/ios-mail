@@ -25,5 +25,5 @@ enum ReportProblemAction: Sendable {
     case closeButtonTapped
     case alertActionTapped(ReportBugDismissConfirmationAlertAction)
 
-    case reportResponse(Result<Void, UserContextError>)
+    case reportResponse(Result<Void, UserSessionError>)
 }

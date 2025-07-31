@@ -24,7 +24,7 @@ enum AvailablePlansViewFactory {
     static func make(mailUserSession: MailUserSession) -> AvailablePlansView {
         AvailablePlansView(
             viewModel: .init(
-                appVersion: ApiConfig.current.appVersion,
+                appVersion: AppDetails.mail.backendFacingVersion,
                 presentationMode: .modal,
                 rustSession: mailUserSession
             )

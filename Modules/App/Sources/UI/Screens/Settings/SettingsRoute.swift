@@ -62,7 +62,7 @@ struct SettingsViewFactory {
             AutoLockScreen()
         case .scanQRCode:
             ScanQRCodeInstructionsView(
-                viewModel: .init(dependencies: .init(mailUserSession: mailUserSession, productName: "mail"))
+                viewModel: .init(dependencies: .init(mailUserSession: mailUserSession, productName: AppDetails.mail.product))
             )
             .navigationBarTitleDisplayMode(.inline)
         case .changePassword(let state):

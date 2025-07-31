@@ -43,10 +43,6 @@ final class AppDelegate: NSObject, UIApplicationDelegate {
         AppLifeCycle.shared.applicationWillTerminate(application)
     }
 
-    func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
-        InterfaceOrientationCoordinator.shared.supportedOrientations
-    }
-
     func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
         Task {
             do {
