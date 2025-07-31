@@ -46,14 +46,7 @@ struct SnoozeUpgradeButton: View {
         switch variant {
         case .fullLine:
             HStack {
-                VStack(alignment: .leading, spacing: DS.Spacing.small) {
-                    Text(L10n.Snooze.customButtonTitle)
-                        .font(.callout)
-                        .foregroundStyle(DS.Color.Text.norm)
-                    Text(L10n.Snooze.customButtonSubtitle)
-                        .font(.footnote)
-                        .foregroundStyle(DS.Color.Text.weak)
-                }
+                textContent(alignment: .leading, subtitle: L10n.Snooze.upsellButtonSubtitle)
                 Spacer()
                 Image(DS.Icon.icBrandProtonMailUpsell)
             }
@@ -62,16 +55,20 @@ struct SnoozeUpgradeButton: View {
             VStack(spacing: .zero) {
                 Image(DS.Icon.icBrandProtonMailUpsell)
 
-                VStack(alignment: .center, spacing: DS.Spacing.small) {
-                    Text(L10n.Snooze.customButtonTitle)
-                        .font(.callout)
-                        .foregroundStyle(DS.Color.Text.norm)
-                    Text(L10n.Snooze.customButtonSubtitle)
-                        .font(.footnote)
-                        .foregroundStyle(DS.Color.Text.weak)
-                }
+                textContent(alignment: .center, subtitle: L10n.Snooze.smallUpsellButtonSubtitle)
             }
             .padding(.bottom, DS.Spacing.moderatelyLarge)
+        }
+    }
+
+    private func textContent(alignment: HorizontalAlignment, subtitle: LocalizedStringResource) -> some View {
+        VStack(alignment: alignment, spacing: DS.Spacing.small) {
+            Text(L10n.Snooze.customButtonTitle)
+                .font(.callout)
+                .foregroundStyle(DS.Color.Text.norm)
+            Text(subtitle)
+                .font(.footnote)
+                .foregroundStyle(DS.Color.Text.weak)
         }
     }
 
