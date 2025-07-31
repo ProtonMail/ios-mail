@@ -94,7 +94,7 @@ final class RSVPStateStore: ObservableObject {
     }
 
     private func updatedAttendees(in existingDetails: RsvpEvent, with newStatus: RsvpAnswer) -> [RsvpAttendee] {
-        let updateIndex = Int(existingDetails.userAttendeeIdx)
+        let updateIndex = Int(existingDetails.userAttendeeIdx!)
         var attendees = existingDetails.attendees
 
         attendees[updateIndex] = attendees[updateIndex].copy(\.status, to: newStatus.attendeeStatus)

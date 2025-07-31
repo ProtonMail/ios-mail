@@ -31,7 +31,7 @@ enum EventMapper {
             location: uniffiModel.location,
             organizer: organizer(from: uniffiModel.organizer),
             participants: participants(attendees: uniffiModel.attendees, userIndex: uniffiModel.userAttendeeIdx),
-            userParticipantIndex: Int(uniffiModel.userAttendeeIdx)
+            userParticipantIndex: uniffiModel.userAttendeeIdx.map(Int.init)
         )
     }
 
@@ -78,6 +78,8 @@ enum EventMapper {
                 regular = L10n.Header.offlineWarning
             case .addressIsIncorrect:
                 regular = L10n.Header.addressIsIncorrect
+            case .userIsOrganizer:
+                return nil
             }
 
             return .init(style: .generic, regularText: regular)
@@ -98,9 +100,9 @@ enum EventMapper {
         return .init(displayName: L10n.Details.organizer(name: name).string)
     }
 
-    private static func participants(attendees: [RsvpAttendee], userIndex: UInt32) -> [Event.Participant] {
+    private static func participants(attendees: [RsvpAttendee], userIndex: UInt32?) -> [Event.Participant] {
         attendees.enumerated().map { index, attendee in
-            let isCurrentUser = index == userIndex
+            let isCurrentUser = UInt32(index) == userIndex
             let displayName = isCurrentUser ? userDisplayName(from: attendee) : otherAttendeeDisplayName(from: attendee)
 
             return Event.Participant(displayName: displayName, status: attendee.status)

@@ -81,7 +81,7 @@ struct RSVPEventView: View {
                 .fontWeight(.regular)
                 .foregroundStyle(DS.Color.Text.weak)
             HStack(spacing: DS.Spacing.small) {
-                switch event.participants[event.userParticipantIndex].status.answer {
+                switch event.participants[event.userParticipantIndex!].status.answer {
                 case .none:
                     ForEach(RsvpAnswer.allCases, id: \.self) { answer in
                         AnswerButton(text: answer.humanReadable.short) {
@@ -97,7 +97,7 @@ struct RSVPEventView: View {
                 }
             }
         }
-        .animation(.default, value: event.participants[event.userParticipantIndex].status)
+        .animation(.default, value: event.participants[event.userParticipantIndex!].status)
     }
 
     @ViewBuilder
