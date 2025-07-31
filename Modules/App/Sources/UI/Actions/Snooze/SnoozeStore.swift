@@ -90,7 +90,7 @@ class SnoozeStore: StateStore {
 
             state = state.copy(\.snoozeActions, to: snoozeActions)
         } catch {
-            // FIXME: - Add logger
+            AppLogger.log(error: error, category: .snooze)
         }
     }
 
@@ -100,7 +100,7 @@ class SnoozeStore: StateStore {
             toastStateStore.present(toast: .snooze(snoozeDate: snoozeTime.date))
             dismiss()
         } catch {
-            // FIXME: - Add logger
+            AppLogger.log(error: error, category: .snooze)
         }
     }
 
@@ -110,7 +110,7 @@ class SnoozeStore: StateStore {
             toastStateStore.present(toast: .unsnooze)
             dismiss()
         } catch {
-            // FIXME: - Add logger
+            AppLogger.log(error: error, category: .snooze)
         }
     }
 
