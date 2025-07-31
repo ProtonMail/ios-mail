@@ -38,7 +38,7 @@ struct RSVPEventViewSnapshotTests {
 
 private extension RsvpEvent {
     static let allCases: [(event: Self, testName: String, isAnswering: Bool, isExpanded: Bool)] = [
-        (answerablePendingOptional, "answerable_future_optional_attendance", true, false),
+        (answerablePendingOptional, "answerable_future_optional_attendance_answering", true, false),
         (answerableOngoingUnanswered, "answerable_now_unanswered_required_attendance", false, false),
         (answerableOngoingYes, "answerable_now_yes_required_attendance", false, false),
         (answerableOngoingMaybe, "answerable_now_maybe_required_attendance", false, false),
