@@ -131,7 +131,7 @@ extension Toast {
     static func snooze(snoozeDate: Date) -> Toast {
         .information(
             message:
-                L10n.Mailbox.Item.snoozedTill(value: snoozeDate.mailboxSnoozeFormat()).string
+                L10n.Mailbox.Item.snoozedTill(value: snoozeDate.snoozeFormat()).string
         )
     }
 }

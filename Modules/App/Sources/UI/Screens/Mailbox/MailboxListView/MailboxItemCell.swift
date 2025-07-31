@@ -275,7 +275,7 @@ final class MailboxItemCellUIModel: Identifiable, Sendable {
 
         var snoozeTime: String? = nil
         if let snoozeDate {
-            snoozeTime = L10n.Mailbox.Item.snoozedTill(value: snoozeDate.mailboxSnoozeFormat()).string
+            snoozeTime = L10n.Mailbox.Item.snoozedTill(value: snoozeDate.snoozeFormat()).string
         }
         self.snoozeDate = snoozeTime
         self.isDraftMessage = isDraftMessage

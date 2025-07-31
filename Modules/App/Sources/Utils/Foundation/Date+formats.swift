@@ -47,16 +47,12 @@ extension Date {
     
      The date will support the current locale which migth bring some differences to the following examples:
      ```
-     Today:           11:24
-     From tomorrow:   Thu, Feb 24, 17:00
+     Format Example
+     Thu, Feb 24, 17:00
      ```
      */
-    func mailboxSnoozeFormat(calendar: Calendar = .current) -> String {
-        if calendar.isDateInToday(self) {
-            return formatted(.dateTime.hour().minute())
-        } else {
-            return formatted(.dateTime.weekday().month().day().hour().minute())
-        }
+    func snoozeFormat() -> String {
+        formatted(.dateTime.weekday().month().day().hour().minute())
     }
 
     /**

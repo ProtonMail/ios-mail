@@ -141,14 +141,14 @@ struct MessageBannersView: View {
                     size: .large(.one(button)),
                     style: .regular
                 )
-            case .snoozed:
+            case .snoozed(let timestamp):
                 let button = Banner.Button(title: L10n.MessageBanner.snoozedAction) {
                     toastStateStore.present(toast: .comingSoon)
                 }
 
                 return oneLine(
                     icon: DS.Icon.icClock,
-                    message: L10n.MessageBanner.snoozedTitle(formattedTime: "tomorrow at 09:00"),
+                    message: L10n.MessageBanner.snoozedTitle(formattedTime: timestamp.date.snoozeFormat()),
                     size: .small(button),
                     style: .regular
                 )
