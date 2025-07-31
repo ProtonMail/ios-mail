@@ -166,7 +166,6 @@ private extension Calendar {
         case .tuesday, .wednesday, .thursday, .friday:
             .sunday
         }
-
     }
 
 }

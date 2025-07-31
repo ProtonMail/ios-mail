@@ -100,13 +100,13 @@ struct SnoozeView: View {
                                     buttonWithIcon(for: snoozeOption, store: store)
                                 }
 
-                                if displayButtonOnGrid(snoozeActions: snoozeActions) {
-                                    lastButton(snoozeActions: snoozeActions, store: store, displayOnGrid: true)
+                                if displayCustomButtonOnGrid(snoozeActions: snoozeActions) {
+                                    customButton(snoozeActions: snoozeActions, store: store, displayOnGrid: true)
                                 }
                             }
 
-                            if !displayButtonOnGrid(snoozeActions: snoozeActions) {
-                                lastButton(snoozeActions: snoozeActions, store: store, displayOnGrid: false)
+                            if !displayCustomButtonOnGrid(snoozeActions: snoozeActions) {
+                                customButton(snoozeActions: snoozeActions, store: store, displayOnGrid: false)
                             }
 
                             if snoozeActions.showUnsnooze {
@@ -127,7 +127,7 @@ struct SnoozeView: View {
     }
 
     @ViewBuilder
-    private func lastButton(snoozeActions: SnoozeActions, store: SnoozeStore, displayOnGrid: Bool) -> some View {
+    private func customButton(snoozeActions: SnoozeActions, store: SnoozeStore, displayOnGrid: Bool) -> some View {
         let displayCustomButton = snoozeActions.options.contains(.custom)
         if displayCustomButton {
             customButton(displayOnGrid: displayOnGrid, store: store)
@@ -138,7 +138,7 @@ struct SnoozeView: View {
         }
     }
 
-    private func displayButtonOnGrid(snoozeActions: SnoozeActions) -> Bool {
+    private func displayCustomButtonOnGrid(snoozeActions: SnoozeActions) -> Bool {
         snoozeActions.options.count % 2 == 1
     }
 

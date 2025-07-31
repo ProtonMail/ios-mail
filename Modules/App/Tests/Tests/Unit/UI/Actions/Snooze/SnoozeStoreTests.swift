@@ -38,7 +38,7 @@ class SnoozeStoreTests {
     )
 
     @Test
-    func testLoadData_proviesSnoozeActions() async {
+    func testLoadData_ProvidesSnoozeActions() async {
         await sut.handle(action: .loadData)
 
         #expect(
@@ -50,7 +50,7 @@ class SnoozeStoreTests {
     }
 
     @Test
-    func testSnoozeAction_snoozesCorrectConversations() async {
+    func testSnoozeAction_SnoozesCorrectConversations() async {
         await sut.handle(action: .predefinedSnoozeOptionTapped(.nextWeek(.timestamp)))
 
         #expect(snoozeServiceSpy.invokedSnooze.count == 1)
@@ -61,7 +61,7 @@ class SnoozeStoreTests {
     }
 
     @Test
-    func testUnsnoozeAction_unsnoozesCorrectConversations() async {
+    func testUnsnoozeAction_UnsnoozesCorrectConversations() async {
         await sut.handle(action: .unsnoozeTapped)
 
         #expect(snoozeServiceSpy.invokedUnsnooze == [conversationIDs])
@@ -70,7 +70,7 @@ class SnoozeStoreTests {
     }
 
     @Test
-    func testCustomButtonTapped_transitionsToCustomView() async {
+    func testCustomButtonTapped_TransitionsToCustomView() async {
         await sut.handle(action: .customButtonTapped)
 
         #expect(sut.state.screen == .custom)
