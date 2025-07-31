@@ -19,6 +19,7 @@
 import InboxCore
 import Foundation
 import InboxTesting
+import proton_app_uniffi
 import Testing
 
 @Suite(.calendarZurichEnUS, .calendarGMTEnUS)
@@ -46,29 +47,29 @@ final class RSVPDateFormatterTests {
     }
 
     @Test(
-        .currentDate(.fixture("2025-07-25 12:00:00")),
+        .currentDate(.fixture("2025-06-25 12:00:00")),
         arguments: zip(
             [
                 // Single day this year → no year
-                EventInput(from: .fixture("2025-08-01 00:00:00"), to: .fixture("2025-08-02 00:00:00")),
+                EventInput(from: .fixture("2025-06-01 00:00:00"), to: .fixture("2025-06-02 00:00:00")),
                 // Multi‑day within this year
-                EventInput(from: .fixture("2025-09-15 00:00:00"), to: .fixture("2025-09-17 00:00:00")),
+                EventInput(from: .fixture("2025-04-15 00:00:00"), to: .fixture("2025-04-17 00:00:00")),
                 // Spanning month in this year
-                EventInput(from: .fixture("2025-09-30 00:00:00"), to: .fixture("2025-10-02 00:00:00")),
+                EventInput(from: .fixture("2025-04-30 00:00:00"), to: .fixture("2025-05-02 00:00:00")),
                 // Spanning into next year → show both years
-                EventInput(from: .fixture("2025-12-30 00:00:00"), to: .fixture("2026-01-02 00:00:00")),
+                EventInput(from: .fixture("2024-12-30 00:00:00"), to: .fixture("2025-01-02 00:00:00")),
                 // Entirely in last year
                 EventInput(from: .fixture("2024-06-05 00:00:00"), to: .fixture("2024-06-06 00:00:00")),
                 // Entirely in future year
-                EventInput(from: .fixture("2026-03-10 00:00:00"), to: .fixture("2026-03-11 00:00:00")),
+                EventInput(from: .fixture("2042-03-10 00:00:00"), to: .fixture("2042-03-11 00:00:00")),
             ],
             [
-                "Fri, Aug 1",
-                "Mon, Sep 15 – Tue, Sep 16, 2025",
-                "Tue, Sep 30 – Wed, Oct 1, 2025",
-                "Tue, Dec 30, 2025 – Thu, Jan 1, 2026",
+                "Sun, Jun 1",
+                "Tue, Apr 15 – Wed, Apr 16, 2025",
+                "Wed, Apr 30 – Thu, May 1, 2025",
+                "Mon, Dec 30, 2024 – Wed, Jan 1, 2025",
                 "Wed, Jun 5, 2024",
-                "Tue, Mar 10, 2026",
+                "Mon, Mar 10, 2042",
             ]
         )
     )

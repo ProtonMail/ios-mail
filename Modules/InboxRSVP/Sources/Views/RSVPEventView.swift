@@ -17,33 +17,28 @@
 
 import InboxCoreUI
 import InboxDesignSystem
+import proton_app_uniffi
 import SwiftUI
 
 struct RSVPEventView: View {
     private let event: RSVPEvent
+    private let isAnswering: Bool
+    private let onAnswerSelected: (RsvpAnswer) -> Void
     @State private var areParticipantsExpanded: Bool
 
-    init(eventDetails: RsvpEventDetails, areParticipantsExpanded: Bool = false) {
-        self.event = RSVPEventMapper.map(from: eventDetails)
+    init(
+        event: RsvpEvent,
+        isAnswering: Bool,
+        onAnswerSelected: @escaping (RsvpAnswer) -> Void,
+        areParticipantsExpanded: Bool = false,
+    ) {
+        self.event = RSVPEventMapper.map(from: event)
+        self.isAnswering = isAnswering
+        self.onAnswerSelected = onAnswerSelected
         self.areParticipantsExpanded = areParticipantsExpanded
     }
 
     var body: some View {
-        content()
-            .background(DS.Color.Background.norm)
-            .clipShape(RoundedRectangle(cornerRadius: DS.Radius.extraLarge))
-            .overlay(
-                RoundedRectangle(cornerRadius: DS.Radius.extraLarge)
-                    .stroke(DS.Color.Border.norm, lineWidth: 1)
-            )
-            .frame(maxWidth: .infinity)
-            .padding(.horizontal, DS.Spacing.large)
-    }
-
-    // MARK: - Private
-
-    @ViewBuilder
-    private func content() -> some View {
         VStack(alignment: .leading, spacing: .zero) {
             headerBanner
             VStack(alignment: .leading, spacing: DS.Spacing.large) {
@@ -60,7 +55,10 @@ struct RSVPEventView: View {
             .padding(.top, DS.Spacing.extraLarge)
             .padding(.bottom, DS.Spacing.large)
         }
+        .cardStyle()
     }
+
+    // MARK: - Private
 
     @ViewBuilder
     private var headerBanner: some View {
@@ -85,12 +83,12 @@ struct RSVPEventView: View {
                 case .none:
                     ForEach(RsvpAnswer.allCases, id: \.self) { answer in
                         RSVPAnswerButton(text: answer.humanReadable.short) {
-                            // FIXME: Call closure
+                            onAnswerSelected(answer)
                         }
                     }
                 case .some(let answer):
-                    RSVPAnswerMenuButton(state: answer) { selectedAnswer in
-                        // FIXME: Call closure
+                    RSVPAnswerMenuButton(state: answer, isAnswering: isAnswering) { selectedAnswer in
+                        onAnswerSelected(selectedAnswer)
                     }
                 }
             }
@@ -114,31 +112,25 @@ struct RSVPEventView: View {
                 RSVPDetailsParticipantsButton(count: event.participants.count, isExpanded: $areParticipantsExpanded) {
                     areParticipantsExpanded.toggle()
                 }
-                if areParticipantsExpanded {
-                    LazyVStack(alignment: .leading, spacing: .zero) {
-                        ForEachEnumerated(event.participants, id: \.element.displayName) { participant, index in
-                            participantRow(participant)
-                        }
+            }
+            if areParticipantsExpanded || event.participants.count == 1 {
+                LazyVStack(alignment: .leading, spacing: .zero) {
+                    ForEachEnumerated(event.participants, id: \.element.displayName) { participant, index in
+                        RSVPDetailsRow(
+                            icon: participant.status.details.icon,
+                            iconColor: participant.status.details.color,
+                            text: participant.displayName
+                        )
                     }
-                    .compositingGroup()
                 }
-            } else if let participant = event.participants.first {
-                participantRow(participant)
+                .compositingGroup()
             }
         }
-        .frame(maxWidth: .infinity, alignment: .leading)
-    }
-
-    private func participantRow(_ participant: RSVPEvent.Participant) -> some View {
-        let statusDetails = participant.status.details
-        let displayName = participant.displayName
-
-        return RSVPDetailsRow(icon: statusDetails.icon, iconColor: statusDetails.color, text: displayName)
     }
 }
 
 #Preview {
-    let eventDetails = RsvpEventDetails(
+    let event = RsvpEvent(
         id: .none,
         summary: "Quick Sync",
         location: "Huddle Room",
@@ -162,35 +154,13 @@ struct RSVPEventView: View {
     ScrollView(.vertical, showsIndicators: false) {
         VStack(spacing: 16) {
             RSVPEventView(
-                eventDetails: eventDetails,
+                event: event,
+                isAnswering: true,
+                onAnswerSelected: { _ in },
                 areParticipantsExpanded: false
             )
         }
         .padding()
-    }
-}
-
-extension RsvpAnswer {
-    var humanReadable: (short: LocalizedStringResource, long: LocalizedStringResource) {
-        switch self {
-        case .yes:
-            (L10n.Answer.yes, L10n.Answer.yesLong)
-        case .maybe:
-            (L10n.Answer.maybe, L10n.Answer.maybeLong)
-        case .no:
-            (L10n.Answer.no, L10n.Answer.noLong)
-        }
-    }
-
-    var attendeeStatus: RsvpAttendeeStatus {
-        switch self {
-        case .yes:
-            .yes
-        case .maybe:
-            .maybe
-        case .no:
-            .no
-        }
     }
 }
 

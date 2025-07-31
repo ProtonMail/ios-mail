@@ -48,6 +48,27 @@ public func assertSelfSizingSnapshot(
     )
 }
 
+public func assertSnapshotsOnEdgeDevices(
+    of view: some View,
+    named name: String? = nil,
+    record recording: Bool = false,
+    timeout: TimeInterval = 5,
+    file: StaticString = #file,
+    testName: String = #function,
+    line: UInt = #line
+) {
+    assertSnapshots(
+        matching: UIHostingController(rootView: view),
+        on: [("SE", .iPhoneSe), ("13 Pro Max", .iPhone13ProMax)],
+        named: name,
+        record: recording,
+        timeout: timeout,
+        file: file,
+        testName: testName,
+        line: line
+    )
+}
+
 public func assertSnapshots(
     matching controller: @autoclosure () throws -> UIViewController,
     on configurations: [(String, ViewImageConfig)],

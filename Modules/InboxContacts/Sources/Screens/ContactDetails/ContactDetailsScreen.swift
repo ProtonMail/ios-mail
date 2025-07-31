@@ -22,7 +22,7 @@ import proton_app_uniffi
 import SwiftUI
 
 struct ContactDetailsScreen: View {
-    let contact: ContactItem
+    let contact: ContactDetailsContext
     private let provider: ContactDetailsProvider
     private let draftPresenter: ContactsDraftPresenter
     private let initialState: ContactDetails?
@@ -31,7 +31,7 @@ struct ContactDetailsScreen: View {
 
     /// `state` parameter is exposed only for testing purposes to be able to rely on data source in synchronous manner.
     init(
-        contact: ContactItem,
+        contact: ContactDetailsContext,
         provider: ContactDetailsProvider,
         draftPresenter: ContactsDraftPresenter,
         state: ContactDetails? = nil
@@ -193,7 +193,7 @@ struct ContactDetailsScreen: View {
 
 private extension ContactDetails {
 
-    static func initial(with contact: ContactItem) -> Self {
+    static func initial(with contact: ContactDetailsContext) -> Self {
         .init(contact: contact, details: .none)
     }
 
@@ -209,7 +209,7 @@ private extension FormList {
 
 #Preview {
     ContactDetailsScreen(
-        contact: .init(
+        contact: ContactItem(
             id: .random(),
             name: .empty,
             avatarInformation: .init(text: "BA", color: "#3357FF"),

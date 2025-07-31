@@ -40,6 +40,9 @@
     "Happening" : {
       "comment" : "First part of the 'Happening now' banner, indicating an event is currently in progress."
     },
+    "Invite details unavailable" : {
+      "comment" : "Title shown when calendar event loading fails, providing additional context to the user."
+    },
     "Maybe" : {
       "comment" : "A short, one-word response indicating the user might attend the event."
     },
@@ -55,8 +58,14 @@
     "No, I won't attend" : {
       "comment" : "A full-sentence response indicating the user will not attend. Used in menus."
     },
+    "Retry" : {
+      "comment" : "Title of the button that allows the user to retry loading the event after an error."
+    },
     "This invitation is out of date. The event has been updated." : {
       "comment" : "Banner text explaining that the event details have changed since the invitation was sent."
+    },
+    "We couldn’t load the\ninformation. Please try again." : {
+      "comment" : "Subtitle shown when calendar event loading fails, providing additional context to the user."
     },
     "Yes" : {
       "comment" : "A short, one-word response indicating the user will attend the event."
@@ -69,6 +78,9 @@
     },
     "You're offline. The displayed information may be out-of-date." : {
       "comment" : "Warning banner shown when the user has no internet connection."
+    },
+    "Your address can’t be used to reply. Please update your account information." : {
+      "comment" : "Banner text shown when the user's address is disabled or cannot be used to send a reply."
     }
   },
   "version" : "1.0"

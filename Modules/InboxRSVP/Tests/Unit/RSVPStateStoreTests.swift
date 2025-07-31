@@ -19,12 +19,13 @@
 import Combine
 import InboxCore
 import InboxDesignSystem
+import proton_app_uniffi
 import Testing
 
 final class RSVPStateStoreTests {
-    private let rsvpEventSpy = RsvpEventSpy()
-    private var rsvpIDSpy = RsvpEventIdSpy()
-    private(set) lazy var sut = RSVPStateStore(rsvpID: rsvpIDSpy)
+    private let serviceSpy = RsvpEventServiceSpy(noPointer: .init())
+    private var serviceProviderSpy = RsvpEventServiceProviderSpy(noPointer: .init())
+    private(set) lazy var sut = RSVPStateStore(serviceProvider: serviceProviderSpy)
     private var cancellables = Set<AnyCancellable>()
 
     // MARK: - Initial
@@ -33,7 +34,7 @@ final class RSVPStateStoreTests {
     func initialState_FetchIsNotCalledAndHasLoadingState() {
         let recordedStates = trackStates(of: sut.$state)
 
-        #expect(rsvpIDSpy.fetchCallsCount == 0)
+        #expect(serviceProviderSpy.fetchCallsCount == 0)
         #expect(recordedStates() == [.loading])
     }
 
@@ -43,40 +44,49 @@ final class RSVPStateStoreTests {
     func onLoadAction_FetchingFailed_ItSetsLoadFailedState() async {
         let recordedStates = trackStates(of: sut.$state)
 
-        rsvpIDSpy.stubbedResult = nil
+        serviceProviderSpy.stubbedResult = nil
 
         await sut.handle(action: .onLoad)
 
-        #expect(rsvpIDSpy.fetchCallsCount == 1)
-        #expect(recordedStates() == [.loading, .loadFailed])
+        #expect(serviceProviderSpy.fetchCallsCount == 1)
+        #expect(
+            recordedStates() == [
+                .loading,
+                .loadFailed,
+            ]
+        )
     }
 
     @Test
     func onLoadAction_FetchingAndRetrievingEventDetailsSucceeds_ItSetsLoadedState() async {
         let recordedStates = trackStates(of: sut.$state)
 
-        let expectedService = rsvpEventSpy
-        let expectedEvent: RsvpEventDetails = .bestEvent()
+        let expectedEvent: RsvpEvent = .bestEvent()
 
-        rsvpEventSpy.stubbedDetailsResult = .ok(expectedEvent)
-        rsvpIDSpy.stubbedResult = rsvpEventSpy
+        serviceSpy.stubbedDetailsResult = .ok(expectedEvent)
+        serviceProviderSpy.stubbedResult = serviceSpy
 
         await sut.handle(action: .onLoad)
 
-        #expect(rsvpIDSpy.fetchCallsCount == 1)
-        #expect(recordedStates() == [.loading, .loaded(expectedService, expectedEvent)])
+        #expect(serviceProviderSpy.fetchCallsCount == 1)
+        #expect(
+            recordedStates() == [
+                .loading,
+                .loaded(expectedEvent),
+            ]
+        )
     }
 
     @Test
     func onLoadAction_FetchingSuceedsAndRetrievingEventDetailsFails_ItSetsLoadFailedState() async {
         let recordedStates = trackStates(of: sut.$state)
 
-        rsvpEventSpy.stubbedDetailsResult = .error
-        rsvpIDSpy.stubbedResult = rsvpEventSpy
+        serviceSpy.stubbedDetailsResult = .error(.network)
+        serviceProviderSpy.stubbedResult = serviceSpy
 
         await sut.handle(action: .onLoad)
 
-        #expect(rsvpIDSpy.fetchCallsCount == 1)
+        #expect(serviceProviderSpy.fetchCallsCount == 1)
         #expect(recordedStates() == [.loading, .loadFailed])
     }
 
@@ -86,27 +96,27 @@ final class RSVPStateStoreTests {
     func retryAction_AfterFailedFetching_ItRetriesFetchingAndSetsLoadedState() async {
         let recordedStates = trackStates(of: sut.$state)
 
-        rsvpIDSpy.stubbedResult = nil
+        serviceProviderSpy.stubbedResult = nil
 
         await sut.handle(action: .onLoad)
 
-        #expect(rsvpIDSpy.fetchCallsCount == 1)
+        #expect(serviceProviderSpy.fetchCallsCount == 1)
         #expect(recordedStates() == [.loading, .loadFailed])
 
-        let expectedEvent: RsvpEventDetails = .bestEvent()
+        let expectedEvent: RsvpEvent = .bestEvent()
 
-        rsvpIDSpy.stubbedResult = rsvpEventSpy
-        rsvpEventSpy.stubbedDetailsResult = .ok(.bestEvent())
+        serviceProviderSpy.stubbedResult = serviceSpy
+        serviceSpy.stubbedDetailsResult = .ok(.bestEvent())
 
         await sut.handle(action: .retry)
 
-        #expect(rsvpIDSpy.fetchCallsCount == 2)
+        #expect(serviceProviderSpy.fetchCallsCount == 2)
         #expect(
             recordedStates() == [
                 .loading,
                 .loadFailed,
                 .loading,
-                .loaded(rsvpEventSpy, expectedEvent),
+                .loaded(expectedEvent),
             ]
         )
     }
@@ -117,29 +127,30 @@ final class RSVPStateStoreTests {
     func answerAction_AnsweringSuceeds_ItAnswersRefetchesDetailsAndSetsLoadedState(answer: RsvpAnswer) async {
         let recordedStates = trackStates(of: sut.$state)
 
-        let initialEvent: RsvpEventDetails = .bestEvent(status: .unanswered)
-        let updatedEvent: RsvpEventDetails = .bestEvent(status: answer.attendeeStatus)
+        let initialEvent: RsvpEvent = .bestEvent(status: .unanswered)
+        let updatedEvent: RsvpEvent = .bestEvent(status: answer.attendeeStatus)
 
-        rsvpEventSpy.stubbedDetailsResult = .ok(initialEvent)
-        rsvpIDSpy.stubbedResult = rsvpEventSpy
+        serviceSpy.stubbedDetailsResult = .ok(initialEvent)
+        serviceProviderSpy.stubbedResult = serviceSpy
 
         await sut.handle(action: .onLoad)
 
-        #expect(rsvpIDSpy.fetchCallsCount == 1)
-        #expect(rsvpEventSpy.detailsCallsCount == 1)
+        #expect(serviceProviderSpy.fetchCallsCount == 1)
+        #expect(serviceSpy.detailsCallsCount == 1)
 
-        rsvpEventSpy.stubbedDetailsResult = .ok(updatedEvent)
+        serviceSpy.stubbedDetailsResult = .ok(updatedEvent)
 
         await sut.handle(action: .answer(answer))
 
-        #expect(rsvpEventSpy.answerCalls == [answer])
-        #expect(rsvpEventSpy.detailsCallsCount == 2)
+        #expect(serviceSpy.answerCalls == [answer])
+        #expect(serviceSpy.detailsCallsCount == 2)
 
         #expect(
             recordedStates() == [
                 .loading,
-                .loaded(rsvpEventSpy, initialEvent),
-                .loaded(rsvpEventSpy, updatedEvent),
+                .loaded(initialEvent),
+                .answering(updatedEvent),
+                .loaded(updatedEvent),
             ]
         )
     }
@@ -148,22 +159,22 @@ final class RSVPStateStoreTests {
     func answerAction_AnsweringSucceedsAndFetchingDetailsFails_ItMakesOptimisticUpdateAndSetLoadFailedState() async {
         let recordedStates = trackStates(of: sut.$state)
 
-        let expectedEvent: RsvpEventDetails = .bestEvent(status: .unanswered)
+        let expectedEvent: RsvpEvent = .bestEvent(status: .unanswered)
 
-        rsvpEventSpy.stubbedDetailsResult = .ok(expectedEvent)
-        rsvpIDSpy.stubbedResult = rsvpEventSpy
+        serviceSpy.stubbedDetailsResult = .ok(expectedEvent)
+        serviceProviderSpy.stubbedResult = serviceSpy
 
         await sut.handle(action: .onLoad)
 
-        rsvpEventSpy.stubbedDetailsResult = .error
+        serviceSpy.stubbedDetailsResult = .error(.otherReason(.invalidParameter))
 
         await sut.handle(action: .answer(.no))
 
         #expect(
             recordedStates() == [
                 .loading,
-                .loaded(rsvpEventSpy, expectedEvent),
-                .loaded(rsvpEventSpy, .bestEvent(status: .no)),
+                .loaded(expectedEvent),
+                .answering(.bestEvent(status: .no)),
                 .loadFailed,
             ]
         )
@@ -173,23 +184,23 @@ final class RSVPStateStoreTests {
     func answerAction_AnsweringFailedAndFetchingDetailsSucceeds_ItMakesOptimisticUpdateAndRevertsEventToPreviousState() async {
         let recordedStates = trackStates(of: sut.$state)
 
-        let initialEvent: RsvpEventDetails = .bestEvent(status: .unanswered)
+        let initialEvent: RsvpEvent = .bestEvent(status: .unanswered)
 
-        rsvpEventSpy.stubbedDetailsResult = .ok(initialEvent)
-        rsvpIDSpy.stubbedResult = rsvpEventSpy
+        serviceSpy.stubbedDetailsResult = .ok(initialEvent)
+        serviceProviderSpy.stubbedResult = serviceSpy
 
         await sut.handle(action: .onLoad)
 
-        rsvpEventSpy.stubbedAnswerResult = .error
+        serviceSpy.stubbedAnswerResult = .error(.unexpected(.api))
 
         await sut.handle(action: .answer(.yes))
 
         #expect(
             recordedStates() == [
                 .loading,
-                .loaded(rsvpEventSpy, initialEvent),
-                .loaded(rsvpEventSpy, .bestEvent(status: .yes)),
-                .loaded(rsvpEventSpy, initialEvent),
+                .loaded(initialEvent),
+                .answering(.bestEvent(status: .yes)),
+                .loaded(initialEvent),
             ]
         )
     }
@@ -207,26 +218,26 @@ final class RSVPStateStoreTests {
     }
 }
 
-private class RsvpEventIdSpy: RsvpEventId, @unchecked Sendable {
+private class RsvpEventServiceProviderSpy: RsvpEventServiceProvider, @unchecked Sendable {
     private(set) var fetchCallsCount = 0
 
-    var stubbedResult: RsvpEvent?
+    var stubbedResult: RsvpEventService?
 
     // MARK: - RsvpEventId
 
-    override func fetch() async -> RsvpEvent? {
+    override func eventService() async -> RsvpEventService? {
         fetchCallsCount += 1
 
         return stubbedResult
     }
 }
 
-private class RsvpEventSpy: RsvpEvent, @unchecked Sendable {
+private class RsvpEventServiceSpy: RsvpEventService, @unchecked Sendable {
     private(set) var answerCalls: [RsvpAnswer] = []
     private(set) var detailsCallsCount = 0
 
     var stubbedAnswerResult: VoidAnswerRsvpResult = .ok
-    var stubbedDetailsResult: RsvpEventDetailsResult = .error
+    var stubbedDetailsResult: RsvpEventGetResult = .error(.network)
 
     // MARK: - RsvpEvent
 
@@ -236,16 +247,16 @@ private class RsvpEventSpy: RsvpEvent, @unchecked Sendable {
         return stubbedAnswerResult
     }
 
-    override func details() -> RsvpEventDetailsResult {
+    override func get() -> RsvpEventGetResult {
         detailsCallsCount += 1
 
         return stubbedDetailsResult
     }
 }
 
-private extension RsvpEventDetailsResult {
+private extension RsvpEventGetResult {
 
-    var event: RsvpEventDetails? {
+    var event: RsvpEvent? {
         switch self {
         case .ok(let details):
             details
@@ -256,7 +267,7 @@ private extension RsvpEventDetailsResult {
 
 }
 
-private extension RsvpEventDetails {
+private extension RsvpEvent {
 
     static func bestEvent(status: RsvpAttendeeStatus = .unanswered) -> Self {
         .testData(

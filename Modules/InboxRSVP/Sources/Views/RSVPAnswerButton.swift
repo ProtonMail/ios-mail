@@ -23,6 +23,6 @@ struct RSVPAnswerButton: View {
 
     var body: some View {
         Button(text.string, action: action)
-            .buttonStyle(RSVPAnswerButtonStyle())
+            .buttonStyle(RSVPButtonStyle.answerButtonStyle)
     }
 }

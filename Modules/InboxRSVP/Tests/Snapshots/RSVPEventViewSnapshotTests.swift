@@ -16,131 +16,128 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import InboxRSVP
-import InboxTesting
 import InboxSnapshotTesting
-import SnapshotTesting
 import SwiftUI
+import proton_app_uniffi
 import Testing
 
 @MainActor
 @Suite(.calendarZurichEnUS, .calendarGMTEnUS, .currentDate(.fixture("2025-07-25 12:00:00")))
-final class RSVPEventViewSnapshotTests {
-    @Test(arguments: RsvpEventDetails.allCases)
-    func testRSVP(testCase: (eventDetails: RsvpEventDetails, testName: String, isExpanded: Bool)) {
+struct RSVPEventViewSnapshotTests {
+    @Test(arguments: RsvpEvent.allCases)
+    func testRSVP(testCase: (event: RsvpEvent, testName: String, isAnswering: Bool, isExpanded: Bool)) {
         let view = RSVPEventView(
-            eventDetails: testCase.eventDetails,
+            event: testCase.event,
+            isAnswering: testCase.isAnswering,
+            onAnswerSelected: { _ in },
             areParticipantsExpanded: testCase.isExpanded,
         )
 
-        assertSnapshots(
-            matching: UIHostingController(rootView: view),
-            on: [("SE", .iPhoneSe), ("13 Pro Max", .iPhone13ProMax)],
-            testName: testCase.testName
-        )
+        assertSnapshotsOnEdgeDevices(of: view, testName: testCase.testName)
     }
 }
 
-private extension RsvpEventDetails {
-    static let allCases: [(event: Self, testName: String, isExpanded: Bool)] = [
-        (answerablePendingOptional, "answerable_future_optional_attendance", false),
-        (answerableOngoingUnanswered, "answerable_now_unanswered_required_attendance", false),
-        (answerableOngoingYes, "answerable_now_yes_required_attendance", false),
-        (answerableOngoingMaybe, "answerable_now_maybe_required_attendance", false),
-        (answerableOngoingNo, "answerable_now_no_required_attendance", false),
-        (answerableEnded, "answerable_ended_required_attendance", false),
-        (answerableRecurrentOngoing, "answerable_recurrent_now_required_attendace", true),
-        (unanswerableOutdated, "unanswerable_outdated", false),
-        (unanswerableUnknown, "unanswerable_offline", false),
-        (cancelled, "cancelled", false),
-        (cancelledOutdated, "cancelled_outdated", true),
-        (reminderPending, "reminder_future", false),
-        (reminderOngoing, "reminder_now", false),
-        (reminderEnded, "reminder_ended", false),
-        (reminderInviteCancelled, "reminder_invitation_cancelled", false),
-        (veryLongValues, "very_long_values", false),
+private extension RsvpEvent {
+    static let allCases: [(event: Self, testName: String, isAnswering: Bool, isExpanded: Bool)] = [
+        (answerablePendingOptional, "answerable_future_optional_attendance_answering", true, false),
+        (answerableOngoingUnanswered, "answerable_now_unanswered_required_attendance", false, false),
+        (answerableOngoingYes, "answerable_now_yes_required_attendance", false, false),
+        (answerableOngoingMaybe, "answerable_now_maybe_required_attendance", false, false),
+        (answerableOngoingNo, "answerable_now_no_required_attendance", false, false),
+        (answerableEnded, "answerable_ended_required_attendance", false, false),
+        (answerableRecurrentOngoing, "answerable_recurrent_now_required_attendace", false, true),
+        (unanswerableOutdated, "unanswerable_outdated", false, false),
+        (unanswerableUnknown, "unanswerable_offline", false, false),
+        (cancelled, "cancelled", false, false),
+        (cancelledOutdated, "cancelled_outdated", false, true),
+        (reminderPending, "reminder_future", false, false),
+        (reminderOngoing, "reminder_now", false, false),
+        (reminderEnded, "reminder_ended", false, false),
+        (reminderInviteCancelled, "reminder_invitation_cancelled", false, false),
+        (veryLongValues, "very_long_values", false, false),
     ]
 
-    static let answerablePendingOptional = RsvpEventDetails.testData(
+    static let answerablePendingOptional = RsvpEvent.testData(
         data: .partDayZeroDuration,
         state: .answerableInvite(progress: .pending, attendance: .optional)
     )
 
-    static let answerableOngoingUnanswered = RsvpEventDetails.testData(
+    static let answerableOngoingUnanswered = RsvpEvent.testData(
         data: .partDayWithDuration(userStatus: .unanswered),
         state: .answerableInvite(progress: .ongoing, attendance: .required)
     )
 
-    static let answerableOngoingYes = RsvpEventDetails.testData(
+    static let answerableOngoingYes = RsvpEvent.testData(
         data: .partDayWithDuration(userStatus: .yes),
         state: .answerableInvite(progress: .ongoing, attendance: .required)
     )
 
-    static let answerableOngoingMaybe = RsvpEventDetails.testData(
+    static let answerableOngoingMaybe = RsvpEvent.testData(
         data: .partDayWithDuration(userStatus: .maybe),
         state: .answerableInvite(progress: .ongoing, attendance: .required)
     )
 
-    static let answerableOngoingNo = RsvpEventDetails.testData(
+    static let answerableOngoingNo = RsvpEvent.testData(
         data: .partDayWithDuration(title: .none, userStatus: .no),
         state: .answerableInvite(progress: .ongoing, attendance: .required)
     )
 
-    static let answerableEnded = RsvpEventDetails.testData(
+    static let answerableEnded = RsvpEvent.testData(
         data: .partDayZeroDuration,
         state: .answerableInvite(progress: .ended, attendance: .required)
     )
 
-    static let answerableRecurrentOngoing = RsvpEventDetails.testData(
+    static let answerableRecurrentOngoing = RsvpEvent.testData(
         data: .recurrent,
         state: .answerableInvite(progress: .ongoing, attendance: .required)
     )
 
-    static let unanswerableOutdated = RsvpEventDetails.testData(
+    static let unanswerableOutdated = RsvpEvent.testData(
         data: .recurrent,
         state: .unanswerableInvite(reason: .inviteIsOutdated)
     )
 
-    static let unanswerableUnknown = RsvpEventDetails.testData(
+    static let unanswerableUnknown = RsvpEvent.testData(
         data: .fullDaySingle,
         state: .unanswerableInvite(reason: .inviteHasUnknownRecency)
     )
 
-    static let cancelled = RsvpEventDetails.testData(
+    static let cancelled = RsvpEvent.testData(
         data: .fullDayMulti,
         state: .cancelledInvite(isOutdated: false)
     )
 
-    static let cancelledOutdated = RsvpEventDetails.testData(
+    static let cancelledOutdated = RsvpEvent.testData(
         data: .recurrent,
         state: .cancelledInvite(isOutdated: true)
     )
 
-    static let reminderPending = RsvpEventDetails.testData(
+    static let reminderPending = RsvpEvent.testData(
         data: .partDayWithDuration(),
         state: .reminder(progress: .pending)
     )
 
-    static let reminderOngoing = RsvpEventDetails.testData(
+    static let reminderOngoing = RsvpEvent.testData(
         data: .partDayWithDuration(),
         state: .reminder(progress: .ongoing)
     )
 
-    static let reminderEnded = RsvpEventDetails.testData(
+    static let reminderEnded = RsvpEvent.testData(
         data: .partDayWithDuration(),
         state: .reminder(progress: .ended)
     )
 
-    static let reminderInviteCancelled = RsvpEventDetails.testData(
+    static let reminderInviteCancelled = RsvpEvent.testData(
         data: .recurrent,
         state: .cancelledReminder
     )
 
-    static let veryLongValues = RsvpEventDetails.testData(
+    static let veryLongValues = RsvpEvent.testData(
         data: .veryLongValues,
         state: .cancelledReminder
     )
 
-    static func testData(data: EventData, state: RsvpState) -> RsvpEventDetails {
+    static func testData(data: EventData, state: RsvpState) -> RsvpEvent {
         .init(
             id: .none,
             summary: data.summary,

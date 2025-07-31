@@ -19,6 +19,7 @@
 import InboxCore
 import Foundation
 import InboxTesting
+import proton_app_uniffi
 import Testing
 
 final class RSVPEventMapperTests {
@@ -29,7 +30,7 @@ final class RSVPEventMapperTests {
         ]
     )
     func testTitleMapping(summary: String?, expectedTitle: String) {
-        let details = RsvpEventDetails.testData(summary: summary)
+        let details = RsvpEvent.testData(summary: summary)
         let given = RSVPEventMapper.map(from: details)
 
         #expect(given.title == expectedTitle)
@@ -52,7 +53,7 @@ final class RSVPEventMapperTests {
         )
     )
     func testAnswerButtonsMapping(given state: RsvpState, expected: RSVPEvent.AnswerButtonsState) {
-        let details = RsvpEventDetails.testData(state: state)
+        let details = RsvpEvent.testData(state: state)
         let given = RSVPEventMapper.map(from: details)
 
         #expect(given.answerButtons == expected)
@@ -69,6 +70,7 @@ final class RSVPEventMapperTests {
                 RsvpState.reminder(progress: .ended),
                 RsvpState.unanswerableInvite(reason: .inviteIsOutdated),
                 RsvpState.unanswerableInvite(reason: .inviteHasUnknownRecency),
+                RsvpState.unanswerableInvite(reason: .addressIsIncorrect),
                 RsvpState.cancelledInvite(isOutdated: true),
                 RsvpState.cancelledInvite(isOutdated: false),
                 RsvpState.cancelledReminder,
@@ -107,6 +109,11 @@ final class RSVPEventMapperTests {
                     boldText: "".notLocalized.stringResource
                 ),
                 RSVPEvent.Banner(
+                    style: .generic,
+                    regularText: L10n.Header.addressIsIncorrect,
+                    boldText: "".notLocalized.stringResource
+                ),
+                RSVPEvent.Banner(
                     style: .cancelled,
                     regularText: L10n.Header.cancelledAndOutdated,
                     boldText: "".notLocalized.stringResource
@@ -121,7 +128,7 @@ final class RSVPEventMapperTests {
         )
     )
     func testBannerMapping(given state: RsvpState, expectedBanner: RSVPEvent.Banner?) {
-        let details = RsvpEventDetails.testData(state: state)
+        let details = RsvpEvent.testData(state: state)
         let given = RSVPEventMapper.map(from: details)
 
         #expect(given.banner == expectedBanner)
@@ -140,7 +147,7 @@ final class RSVPEventMapperTests {
         )
     )
     func testOrganizerMapping(givenOrganizer: RsvpOrganizer, expected: RSVPEvent.Organizer) {
-        let details = RsvpEventDetails.testData(organizer: givenOrganizer)
+        let details = RsvpEvent.testData(organizer: givenOrganizer)
         let given = RSVPEventMapper.map(from: details)
 
         #expect(given.organizer == expected)
@@ -154,7 +161,7 @@ final class RSVPEventMapperTests {
             RsvpAttendee(name: .none, email: "cyril@gmail.com", status: .maybe),
             RsvpAttendee(name: "Donatan Chelsea", email: "donatan@pm.me", status: .unanswered),
         ]
-        let details = RsvpEventDetails.testData(attendees: attendees, userAttendeeIdx: 1)
+        let details = RsvpEvent.testData(attendees: attendees, userAttendeeIdx: 1)
         let given = RSVPEventMapper.map(from: details)
 
         #expect(

@@ -23,6 +23,7 @@ import SwiftUI
 
 struct ContactGroupDetailsScreen: View {
     @EnvironmentObject private var toastStateStore: ToastStateStore
+    @EnvironmentObject private var router: Router<ContactsRoute>
     let group: ContactGroupItem
     private let draftPresenter: ContactsDraftPresenter
 
@@ -36,7 +37,8 @@ struct ContactGroupDetailsScreen: View {
             store: ContactGroupDetailsStateStore(
                 state: group,
                 draftPresenter: draftPresenter,
-                toastStateStore: toastStateStore
+                toastStateStore: toastStateStore,
+                router: router
             )
         ) { state, store in
             ScrollView {
@@ -44,7 +46,7 @@ struct ContactGroupDetailsScreen: View {
                     avatarView(state: state)
                     groupDetails(state: state)
                     newMessageButton(state: state, store: store)
-                    items(state: state)
+                    items(state: state, store: store)
                 }
                 .padding(.horizontal, DS.Spacing.large)
             }
@@ -99,9 +101,10 @@ struct ContactGroupDetailsScreen: View {
         .roundedRectangleStyle()
     }
 
-    private func items(state: ContactGroupItem) -> some View {
-        FormList(collection: state.contactEmails, separator: .invertedNoPadding) { item in
+    private func items(state: ContactGroupItem, store: ContactGroupDetailsStateStore) -> some View {
+        FormList(collection: state.contactEmails, separator: .invertedNoPadding) { (item: ContactEmailItem) in
             ContactCellView(item: item).frame(height: 68)
+                .onTapGesture { store.handle(action: .contactItemTapped(item)) }
         }
     }
 }

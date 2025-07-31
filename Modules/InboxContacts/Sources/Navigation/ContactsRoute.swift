@@ -20,6 +20,20 @@ import proton_app_uniffi
 import SwiftUI
 
 enum ContactsRoute: Routable {
-    case contactDetails(ContactItem)
+    case contactDetails(ContactContext)
     case contactGroupDetails(ContactGroupItem)
+
+    struct ContactContext: ContactDetailsContext, Hashable {
+        let id: Id
+        let name: String
+        let displayEmail: String?
+        let avatarInformation: AvatarInformation
+
+        init(_ contactItem: any ContactDetailsContext) {
+            self.id = contactItem.id
+            self.name = contactItem.name
+            self.displayEmail = contactItem.displayEmail
+            self.avatarInformation = contactItem.avatarInformation
+        }
+    }
 }

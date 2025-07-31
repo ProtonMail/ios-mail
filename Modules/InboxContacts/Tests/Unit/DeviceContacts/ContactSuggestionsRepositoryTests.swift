@@ -332,7 +332,7 @@ private extension ContactSuggestion {
 
 }
 
-private class ContactSuggestionsStub: ContactSuggestions {
+private class ContactSuggestionsStub: ContactSuggestions, @unchecked Sendable {
 
     private let _all: [ContactSuggestion]
 

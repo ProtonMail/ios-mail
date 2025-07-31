@@ -17,20 +17,21 @@
 
 import Foundation
 import InboxCoreUI
+import proton_app_uniffi
 
 enum RSVPEventMapper {
-    static func map(from details: RsvpEventDetails) -> RSVPEvent {
+    static func map(from uniffiModel: RsvpEvent) -> RSVPEvent {
         RSVPEvent(
-            title: details.summary ?? L10n.noEventTitlePlacholder.string,
-            banner: banner(from: details.state),
-            formattedDate: formattedDate(from: details.startsAt, to: details.endsAt, details.occurrence),
-            answerButtons: answerButtonsState(from: details.state),
-            calendar: details.calendar,
-            recurrence: details.recurrence,
-            location: details.location,
-            organizer: organizer(from: details.organizer),
-            participants: participants(attendees: details.attendees, userIndex: details.userAttendeeIdx),
-            userParticipantIndex: Int(details.userAttendeeIdx)
+            title: uniffiModel.summary ?? L10n.noEventTitlePlacholder.string,
+            banner: banner(from: uniffiModel.state),
+            formattedDate: formattedDate(from: uniffiModel.startsAt, to: uniffiModel.endsAt, uniffiModel.occurrence),
+            answerButtons: answerButtonsState(from: uniffiModel.state),
+            calendar: uniffiModel.calendar,
+            recurrence: uniffiModel.recurrence,
+            location: uniffiModel.location,
+            organizer: organizer(from: uniffiModel.organizer),
+            participants: participants(attendees: uniffiModel.attendees, userIndex: uniffiModel.userAttendeeIdx),
+            userParticipantIndex: Int(uniffiModel.userAttendeeIdx)
         )
     }
 
@@ -75,6 +76,8 @@ enum RSVPEventMapper {
                 regular = L10n.Header.inviteIsOutdated
             case .inviteHasUnknownRecency:
                 regular = L10n.Header.offlineWarning
+            case .addressIsIncorrect:
+                regular = L10n.Header.addressIsIncorrect
             }
 
             return .init(style: .generic, regularText: regular)

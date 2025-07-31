@@ -15,14 +15,17 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import InboxDesignSystem
+import proton_app_uniffi
 import SwiftUI
 
 struct RSVPAnswerMenuButton: View {
     let state: RsvpAnswer
+    let isAnswering: Bool
     let action: (RsvpAnswer) -> Void
 
     var body: some View {
-        Menu(state.humanReadable.long.string) {
+        Menu {
             ForEach(RsvpAnswer.allCases.removing { $0 == state }, id: \.self) { answer in
                 RSVPMenuOptionButton(
                     text: answer.humanReadable.long,
@@ -30,8 +33,13 @@ struct RSVPAnswerMenuButton: View {
                     trailingIcon: .none
                 )
             }
+        } label: {
+            HStack(spacing: DS.Spacing.compact) {
+                Text(state.humanReadable.long.string)
+                Image(symbol: isAnswering ? .arrowCirclePath : .chevronDown)
+            }
         }
-        .buttonStyle(RSVPAnswerButtonStyle())
+        .buttonStyle(RSVPButtonStyle.answerButtonStyle)
     }
 }
 

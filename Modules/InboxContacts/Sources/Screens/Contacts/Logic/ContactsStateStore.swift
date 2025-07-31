@@ -134,7 +134,7 @@ final class ContactsStateStore: ObservableObject {
     private func goToDetails(item: ContactItemType) {
         switch item {
         case .contact(let contact):
-            router.go(to: .contactDetails(contact))
+            router.go(to: .contactDetails(.init(contact)))
         case .group(let group):
             router.go(to: .contactGroupDetails(group))
         }

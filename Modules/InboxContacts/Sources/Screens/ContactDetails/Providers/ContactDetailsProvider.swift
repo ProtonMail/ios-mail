@@ -18,13 +18,13 @@
 import proton_app_uniffi
 
 struct ContactDetailsProvider {
-    let _contactDetails: (ContactItem) async -> ContactDetails
+    let _contactDetails: (ContactDetailsContext) async -> ContactDetails
 
-    init(contactDetails: @escaping (ContactItem) async -> ContactDetails) {
+    init(contactDetails: @escaping (ContactDetailsContext) async -> ContactDetails) {
         _contactDetails = contactDetails
     }
 
-    func contactDetails(for contact: ContactItem) async -> ContactDetails {
+    func contactDetails(for contact: ContactDetailsContext) async -> ContactDetails {
         await _contactDetails(contact)
     }
 }

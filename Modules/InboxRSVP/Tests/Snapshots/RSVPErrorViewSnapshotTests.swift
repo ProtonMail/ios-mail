@@ -16,31 +16,16 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import InboxRSVP
+import InboxSnapshotTesting
+import SwiftUI
+import Testing
 
-extension RsvpEventDetails {
+@MainActor
+struct RSVPErrorViewSnapshotTests {
+    @Test
+    func testErrorView() {
+        let view = RSVPErrorView(action: {})
 
-    static func testData(
-        summary: String? = .none,
-        organizer: RsvpOrganizer = .init(name: .empty, email: .empty),
-        attendees: [RsvpAttendee] = [],
-        userAttendeeIdx: UInt32 = 0,
-        state: RsvpState = .cancelledReminder
-    ) -> Self {
-        .init(
-            id: .none,
-            summary: summary,
-            location: .none,
-            description: .none,
-            recurrence: .none,
-            startsAt: 0,
-            endsAt: 0,
-            occurrence: .date,
-            organizer: organizer,
-            attendees: attendees,
-            userAttendeeIdx: userAttendeeIdx,
-            calendar: .none,
-            state: state
-        )
+        assertSnapshotsOnEdgeDevices(of: view)
     }
-
 }

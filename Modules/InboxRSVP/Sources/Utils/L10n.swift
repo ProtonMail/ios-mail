@@ -106,6 +106,11 @@ enum L10n {
             bundle: .module,
             comment: "Warning banner shown when the user has no internet connection."
         )
+        static let addressIsIncorrect = LocalizedStringResource(
+            "Your address can’t be used to reply. Please update your account information.",
+            bundle: .module,
+            comment: "Banner text shown when the user's address is disabled or cannot be used to send a reply."
+        )
         static let cancelledAndOutdated = LocalizedStringResource(
             "Event cancelled. This invitation is out of date.",
             bundle: .module,
@@ -135,6 +140,26 @@ enum L10n {
                 comment: "A label to identify the current user in a list of event attendees."
             )
         }
+    }
+
+    enum Error {
+        static let title = LocalizedStringResource(
+            "Invite details unavailable",
+            bundle: .module,
+            comment: "Title shown when calendar event loading fails, providing additional context to the user."
+        )
+
+        static let subtitle = LocalizedStringResource(
+            "We couldn’t load the\ninformation. Please try again.",
+            bundle: .module,
+            comment: "Subtitle shown when calendar event loading fails, providing additional context to the user."
+        )
+
+        static let retryButtonTitle = LocalizedStringResource(
+            "Retry",
+            bundle: .module,
+            comment: "Title of the button that allows the user to retry loading the event after an error."
+        )
     }
 
     enum OrganizerMenuOption {

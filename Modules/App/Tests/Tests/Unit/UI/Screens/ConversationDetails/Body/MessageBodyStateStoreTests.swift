@@ -201,6 +201,7 @@ final class MessageBodyStateStoreTests {
                 == .init(
                     body: .loaded(
                         .init(
+                            rsvpServiceProvider: .none,
                             banners: [],
                             html: .init(
                                 rawBody: "<html>dummy_with_custom_options</html>",
@@ -421,9 +422,13 @@ private final class DecryptedMessageSpy: DecryptedMessage, @unchecked Sendable {
             ))
     }
 
+    override func identifyRsvp() async -> RsvpEventServiceProvider? {
+        nil
+    }
+
 }
 
-private class RustWrappersSpy {
+private final class RustWrappersSpy: @unchecked Sendable {
     var stubbedMessageBodyResult: GetMessageBodyResult!
     private(set) var messageBodyCalls: [ID] = []
 
@@ -467,6 +472,7 @@ private extension MessageBodyStateStore.State {
         .init(
             body: .loaded(
                 .init(
+                    rsvpServiceProvider: .none,
                     banners: [],
                     html: .init(
                         rawBody: rawBody,
