@@ -64,8 +64,7 @@ struct SnoozeViewSnapshotTests {
             state: .init(
                 conversationIDs: [],
                 screen: testCase.screen,
-                options: testCase.actions.options,
-                showUnsnooze: testCase.actions.showUnsnooze,
+                snoozeActions: testCase.actions,
                 currentDetent: testCase.screen.detent,
                 allowedDetents: [testCase.screen.detent]
             )

@@ -23,8 +23,7 @@ import SwiftUI
 struct SnoozeState: Copying {
     let conversationIDs: [ID]
     var screen: SnoozeView.Screen
-    var options: [SnoozeTime]
-    var showUnsnooze: Bool
+    var snoozeActions: SnoozeActions?
     var currentDetent: PresentationDetent
     var allowedDetents: Set<PresentationDetent>
     var presentUpsellScreen: UpsellScreenModel?
@@ -36,8 +35,7 @@ extension SnoozeState {
         return .init(
             conversationIDs: conversationIDs,
             screen: screen,
-            options: [],
-            showUnsnooze: false,
+            snoozeActions: nil,
             currentDetent: screen.detent,
             allowedDetents: [screen.detent],
             presentUpsellScreen: nil

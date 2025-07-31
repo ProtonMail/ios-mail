@@ -88,10 +88,7 @@ class SnoozeStore: StateStore {
                 systemCalendarWeekStart: DateEnvironment.calendar.nonDefaultWeekStart
             ).get()
 
-            state =
-                state
-                .copy(\.options, to: snoozeActions.options)
-                .copy(\.showUnsnooze, to: snoozeActions.showUnsnooze)
+            state = state.copy(\.snoozeActions, to: snoozeActions)
         } catch {
             // FIXME: - Add logger
         }
@@ -161,15 +158,14 @@ private extension Calendar {
 
 }
 
-extension SnoozeTime {
-
+private extension SnoozeTime {
     var timestamp: UnixTimestamp? {
         switch self {
-        case .tomorrow(let timestamp), .laterThisWeek(let timestamp), .thisWeekend(let timestamp), .nextWeek(let timestamp):
+        case .tomorrow(let timestamp), .laterThisWeek(let timestamp),
+            .thisWeekend(let timestamp), .nextWeek(let timestamp):
             timestamp
         case .custom:
             nil
         }
     }
-
 }

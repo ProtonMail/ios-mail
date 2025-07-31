@@ -41,8 +41,10 @@ class SnoozeStoreTests {
     func testLoadData_proviesSnoozeActions() async {
         await sut.handle(action: .loadData)
 
-        #expect(sut.state.options == snoozeServiceSpy.snoozeActionsStub.options)
-        #expect(sut.state.showUnsnooze == snoozeServiceSpy.snoozeActionsStub.showUnsnooze)
+        #expect(sut.state.snoozeActions == .init(
+            options: snoozeServiceSpy.snoozeActionsStub.options,
+            showUnsnooze: snoozeServiceSpy.snoozeActionsStub.showUnsnooze
+        ))
     }
 
     @Test

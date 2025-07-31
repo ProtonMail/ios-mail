@@ -87,29 +87,31 @@ struct SnoozeView: View {
         case .main:
             ClosableScreen {
                 ScrollView {
-                    VStack(alignment: .leading, spacing: DS.Spacing.medium) {
-                        LazyVGrid(columns: columns, alignment: .center, spacing: Self.gridSpacing) {
-                            ForEach(state.options, id: \.self) { snoozeOption in
-                                buttonWithIcon(for: snoozeOption, store: store)
+                    if let snoozeActions = state.snoozeActions {
+                        VStack(alignment: .leading, spacing: DS.Spacing.medium) {
+                            LazyVGrid(columns: columns, alignment: .center, spacing: Self.gridSpacing) {
+                                ForEach(snoozeActions.options, id: \.self) { snoozeOption in
+                                    buttonWithIcon(for: snoozeOption, store: store)
+                                }
+
+                                if displayButtonOnGrid(snoozeActions: snoozeActions) {
+                                    lastButton(snoozeActions: snoozeActions, store: store, displayOnGrid: true)
+                                }
                             }
 
-                            if displayButtonOnGrid(state: state) {
-                                lastButton(state: state, store: store, displayOnGrid: true)
+                            if !displayButtonOnGrid(snoozeActions: snoozeActions) {
+                                lastButton(snoozeActions: snoozeActions, store: store, displayOnGrid: false)
+                            }
+
+                            if snoozeActions.showUnsnooze {
+                                unsnoozeButton(store: store)
+                                    .padding(.top, DS.Spacing.medium)
                             }
                         }
-
-                        if !displayButtonOnGrid(state: state) {
-                            lastButton(state: state, store: store, displayOnGrid: false)
-                        }
-
-                        if store.state.showUnsnooze {
-                            unsnoozeButton(store: store)
-                                .padding(.top, DS.Spacing.medium)
-                        }
+                        .padding(.horizontal, DS.Spacing.large)
+                        .padding(.top, DS.Spacing.medium)
+                        .padding(.bottom, DS.Spacing.extraLarge)
                     }
-                    .padding(.horizontal, DS.Spacing.large)
-                    .padding(.top, DS.Spacing.medium)
-                    .padding(.bottom, DS.Spacing.extraLarge)
                 }
                 .navigationTitle(L10n.Snooze.snoozeUntil.string)
                 .navigationBarTitleDisplayMode(.inline)
@@ -119,8 +121,8 @@ struct SnoozeView: View {
     }
 
     @ViewBuilder
-    private func lastButton(state: SnoozeState, store: SnoozeStore, displayOnGrid: Bool) -> some View {
-        let displayCustomButton = state.options.contains(.custom)
+    private func lastButton(snoozeActions: SnoozeActions, store: SnoozeStore, displayOnGrid: Bool) -> some View {
+        let displayCustomButton = snoozeActions.options.contains(.custom)
         if displayCustomButton {
             customButton(displayOnGrid: displayOnGrid, store: store)
         } else {
@@ -130,8 +132,8 @@ struct SnoozeView: View {
         }
     }
 
-    private func displayButtonOnGrid(state: SnoozeState) -> Bool {
-        state.options.count % 2 == 1
+    private func displayButtonOnGrid(snoozeActions: SnoozeActions) -> Bool {
+        snoozeActions.options.count % 2 == 1
     }
 
     @ViewBuilder
