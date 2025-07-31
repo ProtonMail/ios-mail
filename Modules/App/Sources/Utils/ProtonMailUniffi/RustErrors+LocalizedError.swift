@@ -119,9 +119,9 @@ private extension SnoozeErrorReason {
     var errorMessage: LocalizedStringResource {
         switch self {
         case .snoozeTimeInThePast:
-            "" // FIXME: - Translate
+            L10n.Common.save // FIXME: - Will be updated later
         case .invalidSnoozeLocation:
-            "" // FIXME: - Translate
+            L10n.Common.save // FIXME: - Will be updated later
         }
     }
 
