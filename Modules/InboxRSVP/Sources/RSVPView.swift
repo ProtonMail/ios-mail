@@ -39,10 +39,8 @@ public struct RSVPView: View {
             RSVPSkeletonView()
         case .loadFailed:
             RSVPErrorRetryView { handle(action: .retry) }
-        case .loaded(let event):
-            eventDetailsView(with: event, isAnswering: false)
-        case .answering(let event):
-            eventDetailsView(with: event, isAnswering: true)
+        case .loaded(let event), .answering(let event):
+            eventDetailsView(with: event, isAnswering: store.state.isAnswering)
         }
     }
 
@@ -59,5 +57,15 @@ public struct RSVPView: View {
         Task {
             await store.handle(action: action)
         }
+    }
+}
+
+private extension RSVPStateStore.State {
+    var isAnswering: Bool {
+        guard case .answering = self else {
+            return false
+        }
+
+        return true
     }
 }
