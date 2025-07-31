@@ -19,18 +19,18 @@ import Foundation
 import InboxCoreUI
 
 enum RSVPEventMapper {
-    static func map(from event: RsvpEvent) -> RSVPEvent {
+    static func map(from uniffiModel: RsvpEvent) -> RSVPEvent {
         RSVPEvent(
-            title: event.summary ?? L10n.noEventTitlePlacholder.string,
-            banner: banner(from: event.state),
-            formattedDate: formattedDate(from: event.startsAt, to: event.endsAt, event.occurrence),
-            answerButtons: answerButtonsState(from: event.state),
-            calendar: event.calendar,
-            recurrence: event.recurrence,
-            location: event.location,
-            organizer: organizer(from: event.organizer),
-            participants: participants(attendees: event.attendees, userIndex: event.userAttendeeIdx),
-            userParticipantIndex: Int(event.userAttendeeIdx)
+            title: uniffiModel.summary ?? L10n.noEventTitlePlacholder.string,
+            banner: banner(from: uniffiModel.state),
+            formattedDate: formattedDate(from: uniffiModel.startsAt, to: uniffiModel.endsAt, uniffiModel.occurrence),
+            answerButtons: answerButtonsState(from: uniffiModel.state),
+            calendar: uniffiModel.calendar,
+            recurrence: uniffiModel.recurrence,
+            location: uniffiModel.location,
+            organizer: organizer(from: uniffiModel.organizer),
+            participants: participants(attendees: uniffiModel.attendees, userIndex: uniffiModel.userAttendeeIdx),
+            userParticipantIndex: Int(uniffiModel.userAttendeeIdx)
         )
     }
 
