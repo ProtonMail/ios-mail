@@ -21,7 +21,7 @@ import SwiftUI
 struct EventDetailsRowButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .background(configuration.isPressed ? DS.Color.InteractionWeak.pressed : Color.clear)
+            .background(configuration.isPressed ? DS.Color.InteractionWeak.pressed : DS.Color.Background.norm)
             .clipShape(RoundedRectangle(cornerRadius: DS.Radius.large))
     }
 }

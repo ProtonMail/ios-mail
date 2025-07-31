@@ -27,8 +27,11 @@ struct EventParticipantsView: View {
         VStack(alignment: .leading, spacing: .zero) {
             if participants.count >= 2 {
                 EventParticipantsRowButton(count: participants.count, isExpanded: $areParticipantsExpanded) {
-                    areParticipantsExpanded.toggle()
+                    withAnimation(.easeInOut) {
+                        areParticipantsExpanded.toggle()
+                    }
                 }
+                .zIndex(1)
             }
             if areParticipantsExpanded || participants.count == 1 {
                 LazyVStack(alignment: .leading, spacing: .zero) {
@@ -38,9 +41,10 @@ struct EventParticipantsView: View {
                             iconColor: participant.status.details.color,
                             text: participant.displayName
                         )
+                        .zIndex(-1)
                     }
                 }
-                .compositingGroup()
+                .transition(.move(edge: .top).combined(with: .opacity))
             }
         }
     }

@@ -104,17 +104,27 @@ struct RSVPEventView: View {
     private var eventDetailsSection: some View {
         VStack(alignment: .leading, spacing: .zero) {
             if let calendar = event.calendar {
-                EventDetailsRow(icon: DS.Icon.icCircleFilled, iconColor: Color(hex: calendar.color), text: calendar.name)
+                detailsRow(icon: DS.Icon.icCircleFilled, iconColor: Color(hex: calendar.color), text: calendar.name)
             }
             if let recurrence = event.recurrence {
-                EventDetailsRow(icon: DS.Icon.icArrowsRotate, text: recurrence)
+                detailsRow(icon: DS.Icon.icArrowsRotate, text: recurrence)
             }
             if let location = event.location {
-                EventDetailsRow(icon: DS.Icon.icMapPin, text: location)
+                detailsRow(icon: DS.Icon.icMapPin, text: location)
             }
             EventDetailsRowMenu<MenuOrganizerOption>(icon: DS.Icon.icUser, text: event.organizer.displayName) { _ in }
-            EventParticipantsView(participants: event.participants, areParticipantsExpanded: areParticipantsExpanded)
+                .zIndex(1)
+            EventParticipantsView(
+                participants: event.participants,
+                areParticipantsExpanded: areParticipantsExpanded
+            )
         }
+    }
+
+    private func detailsRow(icon: ImageResource, iconColor: Color = DS.Color.Text.weak, text: String) -> some View {
+        EventDetailsRow(icon: icon, iconColor: iconColor, text: text)
+            .background(DS.Color.Background.norm)
+            .zIndex(1)
     }
 }
 
