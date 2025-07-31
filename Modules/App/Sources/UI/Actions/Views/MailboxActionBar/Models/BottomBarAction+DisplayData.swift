@@ -23,37 +23,36 @@ extension BottomBarAction {
     var displayData: MailboxActionBarActionDisplayData {
         switch self {
         case .labelAs:
-            return .init(imageResource: DS.Icon.icTag, name: L10n.Action.labelAs)
+            .init(imageResource: DS.Icon.icTag, name: L10n.Action.labelAs)
         case .markRead:
-            return .init(imageResource: DS.Icon.icEnvelopeOpen, name: L10n.Action.markAsRead)
+            .init(imageResource: DS.Icon.icEnvelopeOpen, name: L10n.Action.markAsRead)
         case .markUnread:
-            return .init(imageResource: DS.Icon.icEnvelopeDot, name: L10n.Action.markAsUnread)
+            .init(imageResource: DS.Icon.icEnvelopeDot, name: L10n.Action.markAsUnread)
         case .more:
-            return .init(imageResource: DS.Icon.icThreeDotsHorizontal, name: nil)
+            .init(imageResource: DS.Icon.icThreeDotsHorizontal, name: nil)
         case .moveTo:
-            return .init(imageResource: DS.Icon.icFolderArrowIn, name: L10n.Action.moveTo)
+            .init(imageResource: DS.Icon.icFolderArrowIn, name: L10n.Action.moveTo)
         case .moveToSystemFolder(let systemFolder):
             switch systemFolder.name {
             case .archive:
-                return .init(imageResource: DS.Icon.icArchiveBox, name: L10n.Action.moveToArchive)
+                .init(imageResource: DS.Icon.icArchiveBox, name: L10n.Action.moveToArchive)
             case .inbox:
-                return .init(imageResource: DS.Icon.icInbox, name: L10n.Action.moveToInbox)
+                .init(imageResource: DS.Icon.icInbox, name: L10n.Action.moveToInbox)
             case .spam:
-                return .init(imageResource: DS.Icon.icSpam, name: L10n.Action.moveToSpam)
+                .init(imageResource: DS.Icon.icSpam, name: L10n.Action.moveToSpam)
             case .trash:
-                return .init(imageResource: DS.Icon.icTrash, name: L10n.Action.moveToTrash)
+                .init(imageResource: DS.Icon.icTrash, name: L10n.Action.moveToTrash)
             }
         case .notSpam:
-            return .init(imageResource: DS.Icon.icNotSpam, name: L10n.Action.notSpam)
+            .init(imageResource: DS.Icon.icNotSpam, name: L10n.Action.notSpam)
         case .permanentDelete:
-            return .init(imageResource: DS.Icon.icTrashCross, name: L10n.Action.deletePermanently)
+            .init(imageResource: DS.Icon.icTrashCross, name: L10n.Action.deletePermanently)
         case .star:
-            return .init(icon: Image(symbol: .star), name: L10n.Action.star)
+            .init(icon: Image(symbol: .star), name: L10n.Action.star)
         case .unstar:
-            return .init(icon: Image(symbol: .starSlash), name: L10n.Action.unstar)
+            .init(icon: Image(symbol: .starSlash), name: L10n.Action.unstar)
         case .snooze:
-            // TODO: Snooze - Icon has been set just to compile the SDK, change it if needed
-            return .init(imageResource: DS.Icon.icClock, name: L10n.Action.unstar)
+            .init(imageResource: DS.Icon.icClock, name: L10n.Action.snooze)
         }
     }
 
