@@ -611,6 +611,28 @@ final class ComposerModelTests: BaseTestCase {
         XCTAssertNil(sut.bodyAction)
     }
 
+    // MARK: passwordProtectionState
+
+    func testPasswordProtectionState_whenDraftHasPasswordAndHint_itShouldReturnTheValues() {
+        mockDraft.mockGetPassword = .ok(DraftPassword(password: "12345678", hint: "numbers"))
+        let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: .mockInstance)
+        let result = sut.passwordProtectionState()
+        if case .passwordProtection(let password, let hint) = result {
+            XCTAssertEqual(password, "12345678")
+            XCTAssertEqual(hint, "numbers")
+        } else {
+            XCTFail("wrong password protection state")
+        }
+    }
+
+    func testPasswordProtectionState_whenError_itShouldShowAToast() {
+        let error = ProtonError.otherReason(.invalidParameter)
+        mockDraft.mockGetPassword = DraftGetPasswordResult.error(error)
+        let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: .mockInstance)
+        _ = sut.passwordProtectionState()
+        XCTAssertEqual(sut.toast, Toast.error(message: error.localizedDescription))
+    }
+
     // MARK: reloadBodyAfterMemoryPressure
 
     func testReloadBodyAfterMemoryPressure_itShouldSetBodyAction() async {

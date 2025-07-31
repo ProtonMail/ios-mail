@@ -20,7 +20,7 @@ import SwiftUI
 
 public struct FormTextInput: View {
     public enum InputType {
-        case secureOneline
+        case secureOneline(SecureInput.Configuration)
         case multiline
     }
 
@@ -112,8 +112,8 @@ public struct FormTextInput: View {
     @ViewBuilder
     private func input() -> some View {
         switch inputType {
-        case .secureOneline:
-            FormSecureTextInput(title: title, text: $text)
+        case .secureOneline(let configuration):
+            FormSecureTextInput(configuration: configuration, title: title, text: $text)
         case .multiline:
             ZStack(alignment: .topLeading) {
                 TextEditor(text: $text)

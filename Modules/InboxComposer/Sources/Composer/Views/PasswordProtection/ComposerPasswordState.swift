@@ -15,20 +15,11 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import proton_app_uniffi
+import InboxCore
+import InboxCoreUI
 
-enum ComposerViewModalState: Identifiable {
-    case senderPicker
-    case scheduleSend(DraftScheduleSendOptions, lastScheduledTime: UInt64?)
-    case attachmentPicker
-    case passwordProtection(password: String, hint: String)
-
-    var id: String {
-        switch self {
-        case .senderPicker: "senderPicker"
-        case .scheduleSend: "scheduleSend"
-        case .attachmentPicker: "attachmentPicker"
-        case .passwordProtection: "passwordProtection"
-        }
-    }
+struct ComposerPasswordState: Copying {
+    var password: String = ""
+    var hint: String = ""
+    var passwordValidation: FormTextInput.ValidationStatus = .ok
 }

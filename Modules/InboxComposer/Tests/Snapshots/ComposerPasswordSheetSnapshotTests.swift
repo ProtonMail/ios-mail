@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Proton Technologies AG
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -15,20 +15,19 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import proton_app_uniffi
+@testable import InboxComposer
+import InboxCoreUI
+import InboxTesting
+import InboxSnapshotTesting
 
-enum ComposerViewModalState: Identifiable {
-    case senderPicker
-    case scheduleSend(DraftScheduleSendOptions, lastScheduledTime: UInt64?)
-    case attachmentPicker
-    case passwordProtection(password: String, hint: String)
+@MainActor
+final class ComposerPasswordSheetSnapshotTests: BaseTestCase {
 
-    var id: String {
-        switch self {
-        case .senderPicker: "senderPicker"
-        case .scheduleSend: "scheduleSend"
-        case .attachmentPicker: "attachmentPicker"
-        case .passwordProtection: "passwordProtection"
-        }
+    func testComposerPasswordSheet_itLayoutsCorrectOnIphoneX() throws {
+        let composerPasswordSheet = ComposerPasswordSheet(
+            state: .init(password: "12345678", hint: "My secret magic number"),
+            onSave: { _, _ in }
+        )
+        assertSnapshotsOnIPhoneX(of: composerPasswordSheet)
     }
 }

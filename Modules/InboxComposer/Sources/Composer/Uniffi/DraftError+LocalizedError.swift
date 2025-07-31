@@ -131,6 +131,26 @@ private extension DraftSaveErrorReason {
     }
 }
 
+extension DraftPasswordError: LocalizedError {
+    public var errorDescription: String? {
+        switch self {
+        case .reason(let reason):
+            reason.errorMessage.string
+        case .other(let protonError):
+            protonError.localizedDescription
+        }
+    }
+}
+
+extension DraftPasswordErrorReason {
+    var errorMessage: LocalizedStringResource {
+        switch self {
+        case .passwordTooShort:
+            L10n.DraftPasswordError.passwordTooShort
+        }
+    }
+}
+
 extension DraftSendError: LocalizedError {
     public var errorDescription: String? {
         switch self {

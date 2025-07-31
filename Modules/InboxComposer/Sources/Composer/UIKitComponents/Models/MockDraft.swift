@@ -52,6 +52,7 @@ final class MockDraft: AppDraftProtocol, @unchecked Sendable {
     var mockCcRecipientList: MockComposerRecipientList
     var mockBccRecipientList: MockComposerRecipientList
     var mockAttachmentList: MockAttachmentList
+    var mockGetPassword: DraftGetPasswordResult = .ok(nil)
 
     var mockDraftMessageIdResult: DraftMessageIdResult = .ok(defaultMessageId)
     var mockSenderList: DraftListSenderAddressesResult = .ok(.init(available: [], active: .empty))
@@ -191,6 +192,16 @@ final class MockDraft: AppDraftProtocol, @unchecked Sendable {
     func getEmbeddedAttachment(cid: String) async -> EmbeddedAttachmentInfoResult {
         .error(.network)
     }
+
+    func isPasswordProtected() -> DraftIsPasswordProtectedResult {
+        .ok(false)
+    }
+
+    func setPassword(password: String, hint: String?) async -> VoidDraftPasswordResult { .ok }
+
+    func getPassword() -> DraftGetPasswordResult { mockGetPassword }
+
+    func removePassword() async -> VoidDraftPasswordResult { .ok }
 
     func discard() async -> VoidDraftDiscardResult {
         .ok

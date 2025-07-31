@@ -285,6 +285,18 @@ final class ComposerModel: ObservableObject {
         }
     }
 
+    func passwordProtectionState() -> ComposerViewModalState? {
+        switch draft.getPassword() {
+        case .ok(let draftPassword):
+            let password = draftPassword?.password ?? ""
+            let hint = draftPassword?.hint ?? ""
+            return .passwordProtection(password: password, hint: hint)
+        case .error(let error):
+            toast = .error(message: error.localizedDescription)
+            return nil
+        }
+    }
+
     @MainActor
     func sendMessage(at date: Date? = nil, dismissAction: Dismissable) async {
         addRecipientFromInput()
@@ -352,6 +364,26 @@ final class ComposerModel: ObservableObject {
     }
 
     @MainActor
+    func setPasswordProtection(password: String, hint: String?) async {
+        switch await draft.setPassword(password: password, hint: hint) {
+        case .ok:
+            state = state.copy(\.isPasswordProtected, to: draftIsPasswordProtected(draft: draft))
+        case .error(let error):
+            showToast(.error(message: error.localizedDescription))
+        }
+    }
+
+    @MainActor
+    func removePasswordProtection() async {
+        switch await draft.removePassword() {
+        case .ok:
+            state = state.copy(\.isPasswordProtected, to: draftIsPasswordProtected(draft: draft))
+        case .error(let error):
+            showToast(.error(message: error.localizedDescription))
+        }
+    }
+
+    @MainActor
     func discardDraft(dismissAction: Dismissable) async {
         // execute pending saves before any discard operation
         await updateBodyDebounceTask?.executeImmediately()
@@ -403,6 +435,16 @@ extension ComposerModel {
         try? await draft.messageId().get()
     }
 
+    private func draftIsPasswordProtected(draft: AppDraftProtocol) -> Bool {
+        switch draft.isPasswordProtected() {
+        case .ok(let value):
+            return value
+        case .error(let error):
+            AppLogger.log(error: error, category: .composer)
+            return false
+        }
+    }
+
     private func makeState(from draft: AppDraftProtocol, attachments: [DraftAttachmentUIModel] = []) -> ComposerState {
         .init(
             toRecipients: .initialState(group: .to, recipients: recipientUIModels(from: draft, for: .to)),
@@ -412,7 +454,8 @@ extension ComposerModel {
             subject: draft.subject(),
             attachments: attachments,
             initialBody: draft.body(),
-            isInitialFocusInBody: false
+            isInitialFocusInBody: false,
+            isPasswordProtected: draftIsPasswordProtected(draft: draft)
         )
     }
 

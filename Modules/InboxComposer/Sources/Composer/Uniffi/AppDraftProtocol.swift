@@ -48,7 +48,11 @@ public protocol AppDraftProtocol: EmbeddedImageProvider {
     func setBody(body: String) -> VoidDraftSaveResult
     func setSubject(subject: String) -> VoidDraftSaveResult
     func subject() -> String
-    func discard() async  -> VoidDraftDiscardResult
+    func isPasswordProtected() -> DraftIsPasswordProtectedResult
+    func setPassword(password: String, hint: String?) async  -> VoidDraftPasswordResult
+    func getPassword() -> DraftGetPasswordResult
+    func removePassword() async -> VoidDraftPasswordResult
+    func discard() async -> VoidDraftDiscardResult
 }
 
 /**

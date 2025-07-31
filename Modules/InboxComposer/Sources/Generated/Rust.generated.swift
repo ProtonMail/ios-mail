@@ -324,6 +324,16 @@ public extension VoidDraftDiscardResult {
         }
     }
 }
+public extension VoidDraftPasswordResult {
+    func get() throws(DraftPasswordError) {
+        switch self {
+        case .ok:
+            break
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension VoidDraftSaveResult {
     func get() throws(DraftSaveError) {
         switch self {

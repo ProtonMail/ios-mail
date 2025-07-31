@@ -53,7 +53,7 @@ struct EnterPINView<Button: View>: View {
                 footer: isInputFooterVisible ? L10n.Settings.App.setPINInformation : nil,
                 text: $text,
                 validation: $validation,
-                inputType: .secureOneline
+                inputType: .secureOneline(.pinSettingsInput)
             )
             .focused($isFocused)
 

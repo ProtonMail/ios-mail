@@ -24,11 +24,13 @@ struct ComposerViewModalFactory {
     private let makeSenderAddressPicker: () -> SenderAddressPickerSheet
     private let makeScheduleSend: (DraftScheduleSendOptions, UInt64?) -> ScheduleSendPickerSheet
     private let makeAttachmentPicker: () -> AttachmentSourcePickerSheet
+    private let makePasswordProtection: (_ password: String, _ hint: String) -> ComposerPasswordSheet
 
     init(
         senderAddressPickerSheetModel: SenderAddressPickerSheetModel,
         scheduleSendAction: @escaping (Date) async -> Void,
         attachmentPickerState: Binding<AttachmentPickersState>,
+        setPasswordAction: @escaping (_ password: String, _ hint: String?) async -> Void
     ) {
         self.makeSenderAddressPicker = {
             SenderAddressPickerSheet(model: senderAddressPickerSheetModel)
@@ -43,6 +45,9 @@ struct ComposerViewModalFactory {
         self.makeAttachmentPicker = {
             AttachmentSourcePickerSheet(pickerState: attachmentPickerState)
         }
+        self.makePasswordProtection = { password, hint in
+            ComposerPasswordSheet(state: .init(password: password, hint: hint), onSave: setPasswordAction)
+        }
     }
 
     @ViewBuilder
@@ -54,6 +59,8 @@ struct ComposerViewModalFactory {
             makeScheduleSend(sendTimeOptions, lastScheduledTime)
         case .attachmentPicker:
             makeAttachmentPicker()
+        case .passwordProtection(let password, let hint):
+            makePasswordProtection(password, hint)
         }
     }
 }

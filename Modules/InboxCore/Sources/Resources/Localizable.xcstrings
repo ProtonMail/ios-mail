@@ -97,6 +97,9 @@
         }
       }
     },
+    "Learn more" : {
+
+    },
     "Off" : {
       "comment" : "Indicates that a feature is disabled and not functioning."
     },
@@ -105,6 +108,12 @@
     },
     "On" : {
       "comment" : "Indicates that a feature is enabled and actively functioning."
+    },
+    "Remove" : {
+
+    },
+    "Save" : {
+
     },
     "Time" : {
 

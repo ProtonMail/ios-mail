@@ -291,6 +291,13 @@ enum L10n {
         )
     }
 
+    enum DraftPasswordError {
+        static let passwordTooShort = LocalizedStringResource(
+            "Password is too short.",
+            comment: "Error in the context of setting password protection in the composer."
+        )
+    }
+
     enum DraftSaveError {
         static func addressDisabled(address: String) -> LocalizedStringResource {
             LocalizedStringResource(
@@ -529,5 +536,56 @@ enum L10n {
             comment: "Schedule send predefined time option"
         )
 
+    }
+
+    enum PasswordProtection {
+
+        static let title = LocalizedStringResource(
+            "Set Password",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Title of the password protected screen"
+        )
+
+        static let description = LocalizedStringResource(
+            "Set a password to encrypt this message for non- Proton Mail users.",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Description of the password protected screen"
+        )
+
+        static let editPassword = LocalizedStringResource(
+            "Edit password",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Context menu option to edit the password of a message in the composer."
+        )
+
+        static let messagePassword = LocalizedStringResource(
+            "Message Password",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Title of the text box to add a password"
+        )
+
+        static let passwordConditions = LocalizedStringResource(
+            "Must be between 8 and 21 characters long",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Conditions the password must meet"
+        )
+
+        static let repeatPassword = LocalizedStringResource(
+            "Repeat password",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Title of the text box to repeat the added password"
+        )
+
+        static let passwordHint = LocalizedStringResource(
+            "Password hint (Optional)",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Title of the text box to add a hint to remember the password"
+        )
+
+        static let removePassword = LocalizedStringResource(
+            "Remove Password",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Text for button that removes the password"
+        )
     }
 }

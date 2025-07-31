@@ -157,6 +157,7 @@ final class ComposerController: UIViewController {
         fromField.text = state.senderEmail
         subjectField.text = state.subject
         attachmentsController.uiModels = state.attachments
+        draftActionBarController.passwordState = state.isPasswordProtected ? .hasPassword : .noPassword
         if state.isInitialFocusInBody {
             bodyEditor.setBodyInitialFocus()
         }
