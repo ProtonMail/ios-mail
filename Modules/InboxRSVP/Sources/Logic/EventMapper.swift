@@ -69,18 +69,17 @@ enum EventMapper {
                 return .init(style: .ended, regularText: L10n.Header.event, boldText: L10n.Header.ended)
             }
         case .unanswerableInvite(let reason):
-            let regular: LocalizedStringResource
-
-            switch reason {
-            case .inviteIsOutdated:
-                regular = L10n.Header.inviteIsOutdated
-            case .inviteHasUnknownRecency:
-                regular = L10n.Header.offlineWarning
-            case .addressIsIncorrect:
-                regular = L10n.Header.addressIsIncorrect
-            case .userIsOrganizer:
-                regular = L10n.Header.userIsOrganizer
-            }
+            let regular =
+                switch reason {
+                case .inviteIsOutdated:
+                    L10n.Header.inviteIsOutdated
+                case .inviteHasUnknownRecency:
+                    L10n.Header.offlineWarning
+                case .addressIsIncorrect:
+                    L10n.Header.addressIsIncorrect
+                case .userIsOrganizer:
+                    L10n.Header.userIsOrganizer
+                }
 
             return .init(style: .generic, regularText: regular)
         case .cancelledInvite(let isOutdated):
