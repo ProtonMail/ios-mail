@@ -113,23 +113,22 @@ struct RSVPEventView: View {
                 EventDetailsRow(icon: DS.Icon.icMapPin, text: location)
             }
             EventDetailsRowMenu<MenuOrganizerOption>(icon: DS.Icon.icUser, text: event.organizer.displayName) { _ in }
-            if event.participants.count >= 2 {
-                EventParticipantsRowButton(count: event.participants.count, isExpanded: $areParticipantsExpanded) {
-                    areParticipantsExpanded.toggle()
-                }
-            }
-            if areParticipantsExpanded || event.participants.count == 1 {
-                LazyVStack(alignment: .leading, spacing: .zero) {
-                    ForEach(event.participants, id: \.displayName) { participant in
-                        EventDetailsRow(
-                            icon: participant.status.details.icon,
-                            iconColor: participant.status.details.color,
-                            text: participant.displayName
-                        )
-                    }
-                }
-                .compositingGroup()
-            }
+            EventParticipantsView(participants: event.participants, areParticipantsExpanded: areParticipantsExpanded)
+        }
+    }
+}
+
+private extension RsvpAttendeeStatus {
+    var answer: RsvpAnswer? {
+        switch self {
+        case .unanswered:
+            nil
+        case .maybe:
+            .maybe
+        case .no:
+            .no
+        case .yes:
+            .yes
         }
     }
 }
@@ -157,42 +156,11 @@ struct RSVPEventView: View {
     )
 
     ScrollView(.vertical, showsIndicators: false) {
-        VStack(spacing: 16) {
-            RSVPEventView(
-                event: event,
-                isAnswering: true,
-                onAnswerSelected: { _ in },
-                areParticipantsExpanded: false
-            )
-        }
-        .padding()
-    }
-}
-
-private extension RsvpAttendeeStatus {
-    var answer: RsvpAnswer? {
-        switch self {
-        case .unanswered:
-            nil
-        case .maybe:
-            .maybe
-        case .no:
-            .no
-        case .yes:
-            .yes
-        }
-    }
-
-    var details: (icon: ImageResource, color: Color) {
-        switch self {
-        case .unanswered:
-            (DS.Icon.icCircleRadioEmpty, DS.Color.Shade.shade40)
-        case .maybe:
-            (DS.Icon.icQuestionCircle, DS.Color.Notification.warning)
-        case .no:
-            (DS.Icon.icCrossCircle, DS.Color.Notification.error)
-        case .yes:
-            (DS.Icon.icCheckmarkCircle, DS.Color.Notification.success)
-        }
+        RSVPEventView(
+            event: event,
+            isAnswering: true,
+            onAnswerSelected: { _ in },
+            areParticipantsExpanded: false
+        )
     }
 }
