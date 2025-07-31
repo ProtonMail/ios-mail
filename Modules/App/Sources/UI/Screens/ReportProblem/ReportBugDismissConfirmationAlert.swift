@@ -22,10 +22,10 @@ import SwiftUI
 extension AlertModel {
 
     static func reportBugDismissConfirmationAlert(
-        action: @escaping (ReportBugDismissConfirmationAlertAction) -> Void
+        action: @escaping (ReportBugDismissConfirmationAlertAction) async -> Void
     ) -> Self {
         let actions: [AlertAction] = ReportBugDismissConfirmationAlertAction.allCases.map { actionType in
-            .init(details: actionType, action: { action(actionType) })
+            .init(details: actionType, action: { await action(actionType) })
         }
 
         return .init(

@@ -62,7 +62,8 @@ final class ReportProblemStateStore: StateStore {
             state = state.copy(\.scrollTo, to: element)
         case .submit:
             if state.summary.count <= 10 {
-                state = state
+                state =
+                    state
                     .copy(\.summaryValidation, to: .summaryLessThen10Characters)
                     .copy(\.scrollTo, to: .topInfoText)
             } else {
@@ -92,9 +93,11 @@ final class ReportProblemStateStore: StateStore {
             if isFormEmpty {
                 dismiss()
             } else {
-                state = state.copy(\.alert, to: .reportBugDismissConfirmationAlert(action: { [weak self] action in
-                    self?.handle(action: .alertActionTapped(action))
-                }))
+                state = state.copy(
+                    \.alert,
+                    to: .reportBugDismissConfirmationAlert(action: { [weak self] action in
+                        await self?.handle(action: .alertActionTapped(action))
+                    }))
             }
         case .alertActionTapped(let action):
             state = state.copy(\.alert, to: nil)
