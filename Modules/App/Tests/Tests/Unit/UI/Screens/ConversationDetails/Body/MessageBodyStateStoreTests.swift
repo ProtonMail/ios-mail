@@ -422,6 +422,10 @@ private final class DecryptedMessageSpy: DecryptedMessage, @unchecked Sendable {
             ))
     }
 
+    override func identifyRsvp() async -> RsvpEventServiceProvider? {
+        nil
+    }
+
 }
 
 private final class RustWrappersSpy: @unchecked Sendable {
