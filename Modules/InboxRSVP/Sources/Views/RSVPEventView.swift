@@ -44,8 +44,8 @@ struct RSVPEventView: View {
             VStack(alignment: .leading, spacing: DS.Spacing.large) {
                 eventHeader
                     .padding(.horizontal, DS.Spacing.extraLarge)
-                if case .visible = event.answerButtons {
-                    answerSection
+                if case let .visible(_, userParticipantIndex) = event.answerButtons {
+                    answerSection(userParticipantIndex: userParticipantIndex)
                         .padding(.bottom, DS.Spacing.small)
                         .padding(.horizontal, DS.Spacing.extraLarge)
                 }
@@ -74,14 +74,14 @@ struct RSVPEventView: View {
 
     @Namespace private var answerButtonAnimation
 
-    private var answerSection: some View {
+    private func answerSection(userParticipantIndex: Int) -> some View {
         VStack(alignment: .leading, spacing: DS.Spacing.mediumLight) {
             Text(L10n.Answer.attending)
                 .font(.footnote)
                 .fontWeight(.regular)
                 .foregroundStyle(DS.Color.Text.weak)
             HStack(spacing: DS.Spacing.small) {
-                switch event.participants[event.userParticipantIndex!].status.answer {
+                switch event.participants[userParticipantIndex].status.answer {
                 case .none:
                     ForEach(RsvpAnswer.allCases, id: \.self) { answer in
                         AnswerButton(text: answer.humanReadable.short) {
@@ -97,7 +97,7 @@ struct RSVPEventView: View {
                 }
             }
         }
-        .animation(.default, value: event.participants[event.userParticipantIndex!].status)
+        .animation(.default, value: event.participants[userParticipantIndex].status)
     }
 
     @ViewBuilder

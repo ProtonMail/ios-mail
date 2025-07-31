@@ -25,7 +25,7 @@ enum EventMapper {
             title: uniffiModel.summary ?? L10n.noEventTitlePlacholder.string,
             banner: banner(from: uniffiModel.state),
             formattedDate: formattedDate(from: uniffiModel.startsAt, to: uniffiModel.endsAt, uniffiModel.occurrence),
-            answerButtons: answerButtonsState(from: uniffiModel.state),
+            answerButtons: answerButtonsState(from: uniffiModel.state, attendeeIndex: uniffiModel.userAttendeeIdx),
             calendar: uniffiModel.calendar,
             recurrence: uniffiModel.recurrence,
             location: uniffiModel.location,
@@ -45,11 +45,11 @@ enum EventMapper {
         EventDateFormatter.string(from: startsAt, to: endsAt, occurrence: occurrence)
     }
 
-    private static func answerButtonsState(from state: RsvpState) -> Event.AnswerButtonsState {
+    private static func answerButtonsState(from state: RsvpState, attendeeIndex: UInt32?) -> Event.AnswerButtonsState {
         let buttonsState: Event.AnswerButtonsState
 
-        if case let .answerableInvite(_, attendance) = state {
-            buttonsState = .visible(attendance)
+        if case let .answerableInvite(_, attendance) = state, let attendeeIndex {
+            buttonsState = .visible(attendance: attendance, attendeeIndex: Int(attendeeIndex))
         } else {
             buttonsState = .hidden
         }
@@ -102,11 +102,19 @@ enum EventMapper {
 
     private static func participants(attendees: [RsvpAttendee], userIndex: UInt32?) -> [Event.Participant] {
         attendees.enumerated().map { index, attendee in
-            let isCurrentUser = UInt32(index) == userIndex
+            let isCurrentUser = isCurrentUser(attendeeIndex: index, userAttendeeIndex: userIndex)
             let displayName = isCurrentUser ? userDisplayName(from: attendee) : otherAttendeeDisplayName(from: attendee)
 
             return Event.Participant(displayName: displayName, status: attendee.status)
         }
+    }
+
+    private static func isCurrentUser(attendeeIndex: Int, userAttendeeIndex: UInt32?) -> Bool {
+        guard let userAttendeeIndex else {
+            return false
+        }
+
+        return attendeeIndex == Int(userAttendeeIndex)
     }
 
     private static func userDisplayName(from attendee: RsvpAttendee) -> String {

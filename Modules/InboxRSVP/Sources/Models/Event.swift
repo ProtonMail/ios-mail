@@ -21,7 +21,7 @@ import proton_app_uniffi
 
 struct Event: Copying {
     enum AnswerButtonsState: Equatable {
-        case visible(RsvpAttendance)
+        case visible(attendance: RsvpAttendance, attendeeIndex: Int)
         case hidden
     }
 

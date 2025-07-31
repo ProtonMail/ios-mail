@@ -38,23 +38,33 @@ final class EventMapperTests {
 
     @Test(
         arguments: zip(
+            Array<RsvpEvent>([
+                RsvpEvent.testData(
+                    userAttendeeIdx: 1,
+                    state: .answerableInvite(progress: .pending, attendance: .optional)
+                ),
+                .testData(
+                    userAttendeeIdx: 2,
+                    state: .answerableInvite(progress: .pending, attendance: .required)
+                ),
+                .testData(
+                    userAttendeeIdx: .none,
+                    state: .answerableInvite(progress: .pending, attendance: .required)
+                ),
+                .testData(state: .reminder(progress: .ongoing)),
+                .testData(state: .cancelledInvite(isOutdated: true)),
+            ]),
             [
-                RsvpState.answerableInvite(progress: .pending, attendance: .optional),
-                RsvpState.answerableInvite(progress: .pending, attendance: .required),
-                RsvpState.reminder(progress: .ongoing),
-                RsvpState.cancelledInvite(isOutdated: true),
-            ],
-            [
-                Event.AnswerButtonsState.visible(.optional),
-                Event.AnswerButtonsState.visible(.required),
+                Event.AnswerButtonsState.visible(attendance: .optional, attendeeIndex: 1),
+                Event.AnswerButtonsState.visible(attendance: .required, attendeeIndex: 2),
+                Event.AnswerButtonsState.hidden,
                 Event.AnswerButtonsState.hidden,
                 Event.AnswerButtonsState.hidden,
             ]
         )
     )
-    func testAnswerButtonsMapping(given state: RsvpState, expected: Event.AnswerButtonsState) {
-        let details = RsvpEvent.testData(state: state)
-        let given = EventMapper.map(from: details)
+    func testAnswerButtonsMapping(given event: RsvpEvent, expected: Event.AnswerButtonsState) {
+        let given = EventMapper.map(from: event)
 
         #expect(given.answerButtons == expected)
     }
@@ -153,23 +163,36 @@ final class EventMapperTests {
         #expect(given.organizer == expected)
     }
 
-    @Test
-    func testParticipantsMapping() {
+    @Test(arguments:  [
+        (
+            userAttendeeIndex: Optional<UInt32>(1),
+            expected: Array<Event.Participant>([
+                .init(displayName: "Alice Sherington • alice@proton.me", status: .yes),
+                .init(displayName: "You • bob@outlook.com", status: .no),
+                .init(displayName: "cyril@gmail.com", status: .maybe),
+                .init(displayName: "Donatan Chelsea • donatan@pm.me", status: .unanswered),
+            ])
+        ),
+        (
+            userAttendeeIndex: Optional<UInt32>.none,
+            expected: Array<Event.Participant>([
+                .init(displayName: "Alice Sherington • alice@proton.me", status: .yes),
+                .init(displayName: "Bob Charlton • bob@outlook.com", status: .no),
+                .init(displayName: "cyril@gmail.com", status: .maybe),
+                .init(displayName: "Donatan Chelsea • donatan@pm.me", status: .unanswered),
+            ])
+        ),
+    ])
+    func testParticipantsMapping(userAttendeeIndex: UInt32?, expectedParticipants: [Event.Participant]) {
         let attendees = [
             RsvpAttendee(name: "Alice Sherington", email: "alice@proton.me", status: .yes),
             RsvpAttendee(name: "Bob Charlton", email: "bob@outlook.com", status: .no),
             RsvpAttendee(name: .none, email: "cyril@gmail.com", status: .maybe),
             RsvpAttendee(name: "Donatan Chelsea", email: "donatan@pm.me", status: .unanswered),
         ]
-        let details = RsvpEvent.testData(attendees: attendees, userAttendeeIdx: 1)
+        let details = RsvpEvent.testData(attendees: attendees, userAttendeeIdx: userAttendeeIndex)
         let given = EventMapper.map(from: details)
 
-        #expect(
-            given.participants == [
-                .init(displayName: "Alice Sherington • alice@proton.me", status: .yes),
-                .init(displayName: "You • bob@outlook.com", status: .no),
-                .init(displayName: "cyril@gmail.com", status: .maybe),
-                .init(displayName: "Donatan Chelsea • donatan@pm.me", status: .unanswered),
-            ])
+        #expect(given.participants == expectedParticipants)
     }
 }

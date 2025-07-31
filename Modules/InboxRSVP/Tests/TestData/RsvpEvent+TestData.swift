@@ -24,7 +24,7 @@ extension RsvpEvent {
         summary: String? = .none,
         organizer: RsvpOrganizer = .init(name: .empty, email: .empty),
         attendees: [RsvpAttendee] = [],
-        userAttendeeIdx: UInt32 = 0,
+        userAttendeeIdx: UInt32? = .none,
         state: RsvpState = .cancelledReminder
     ) -> Self {
         .init(
