@@ -48,6 +48,7 @@ private extension RsvpEvent {
         (answerableRecurrentOngoing, "answerable_recurrent_now_required_attendace", false, true),
         (unanswerableOutdated, "unanswerable_outdated", false, false),
         (unanswerableUnknown, "unanswerable_offline", false, false),
+        (unanswerableOrganizer, "unanswerable_organizer", false, false),
         (cancelled, "cancelled", false, false),
         (cancelledOutdated, "cancelled_outdated", false, true),
         (reminderPending, "reminder_future", false, false),
@@ -58,7 +59,7 @@ private extension RsvpEvent {
     ]
 
     static let answerablePendingOptional = RsvpEvent.testData(
-        data: .partDayZeroDuration,
+        data: .partDayZeroDuration(),
         state: .answerableInvite(progress: .pending, attendance: .optional)
     )
 
@@ -83,7 +84,7 @@ private extension RsvpEvent {
     )
 
     static let answerableEnded = RsvpEvent.testData(
-        data: .partDayZeroDuration,
+        data: .partDayZeroDuration(),
         state: .answerableInvite(progress: .ended, attendance: .required)
     )
 
@@ -95,6 +96,11 @@ private extension RsvpEvent {
     static let unanswerableOutdated = RsvpEvent.testData(
         data: .recurrent,
         state: .unanswerableInvite(reason: .inviteIsOutdated)
+    )
+
+    static let unanswerableOrganizer = RsvpEvent.testData(
+        data: .partDayZeroDuration(userAttendeeIdx: .none),
+        state: .unanswerableInvite(reason: .userIsOrganizer)
     )
 
     static let unanswerableUnknown = RsvpEvent.testData(
@@ -166,12 +172,12 @@ private struct EventData {
     public let occurrence: RsvpOccurrence
     public let organizer: RsvpOrganizer
     public let attendees: [RsvpAttendee]
-    public let userAttendeeIdx: UInt32
+    public let userAttendeeIdx: UInt32?
     public let calendar: RsvpCalendar?
 }
 
 private extension EventData {
-    static let partDayZeroDuration: EventData = {
+    static func partDayZeroDuration(userAttendeeIdx: UInt32? = 0) -> EventData {
         let eventTime = Date.fixture("2025-07-24 14:00:00").timeIntervalSince1970
 
         return EventData(
@@ -184,10 +190,10 @@ private extension EventData {
             occurrence: .dateTime,
             organizer: RsvpOrganizer(name: .none, email: "organizer1@example.com"),
             attendees: [RsvpAttendee(name: .none, email: "user@example.com", status: .yes)],
-            userAttendeeIdx: 0,
+            userAttendeeIdx: userAttendeeIdx,
             calendar: RsvpCalendar(id: "<personal_id>", name: "Personal", color: "#F5A623")
         )
-    }()
+    }
 
     static func partDayWithDuration(
         title: String? = "Design Review",
