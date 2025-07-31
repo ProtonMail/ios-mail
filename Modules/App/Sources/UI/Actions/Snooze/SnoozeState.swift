@@ -17,6 +17,7 @@
 
 import InboxCore
 import InboxIAP
+import proton_app_uniffi
 import SwiftUI
 
 struct SnoozeState: Copying {

@@ -83,9 +83,9 @@ class SnoozeStore: StateStore {
 
     private func loadSnoozeData() {
         do {
-            let snoozeActions = try snoozeService.availableSnoozeActionsForConversation(
-                weekStart: DateEnvironment.calendar.nonDefaultWeekStart,
-                id: state.conversationIDs.first!  // FIXME: - Change this
+            let snoozeActions = try snoozeService.availableSnoozeActions(
+                for: state.conversationIDs.first!,
+                systemCalendarWeekStart: DateEnvironment.calendar.nonDefaultWeekStart
             ).get()
 
             state =
@@ -99,7 +99,7 @@ class SnoozeStore: StateStore {
 
     private func snoozeConversations(snoozeTime: UnixTimestamp) {
         do {
-            try snoozeService.snoozeConversations(ids: state.conversationIDs, snoozeTime: snoozeTime).get()
+            try snoozeService.snooze(conversation: state.conversationIDs, timestamp: snoozeTime).get()
             // FIXME: - Present toast
             dismiss()
         } catch {
@@ -109,7 +109,7 @@ class SnoozeStore: StateStore {
 
     private func unsnoozeConversations() {
         do {
-            try snoozeService.unsnoozeConversations(ids: state.conversationIDs).get()
+            try snoozeService.unsnooze(conversation: state.conversationIDs).get()
             // FIXME: - Present toast
             dismiss()
         } catch {
@@ -157,43 +157,6 @@ private extension Calendar {
             .sunday
         }
 
-    }
-
-}
-
-extension AvailableSnoozeActionsForConversationResult {
-    func get() throws(SnoozeError) -> SnoozeActions {
-        switch self {
-        case .ok(let value):
-            return value
-        case .error(let error):
-            throw error
-        }
-    }
-}
-
-extension UnsnoozeConversationsResult {
-
-    func get() throws(SnoozeError) {
-        switch self {
-        case .ok:
-            break
-        case .error(let error):
-            throw error
-        }
-    }
-
-}
-
-extension SnoozeConversationsResult {
-
-    func get() throws(SnoozeError) {
-        switch self {
-        case .ok:
-            break
-        case .error(let error):
-            throw error
-        }
     }
 
 }

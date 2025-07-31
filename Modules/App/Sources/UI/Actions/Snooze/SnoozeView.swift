@@ -19,6 +19,7 @@ import InboxCore
 import InboxCoreUI
 import InboxDesignSystem
 import InboxIAP
+import proton_app_uniffi
 import SwiftUI
 
 struct SnoozeView: View {

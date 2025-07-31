@@ -21,19 +21,6 @@ import InboxDesignSystem
 import proton_app_uniffi
 import SwiftUI
 
-struct SnoozeActions: Hashable {
-    let options: [SnoozeTime]
-    let showUnsnooze: Bool
-}
-
-enum SnoozeTime: Hashable {
-    case tomorrow(UnixTimestamp)
-    case laterThisWeek(UnixTimestamp)
-    case thisWeekend(UnixTimestamp)
-    case nextWeek(UnixTimestamp)
-    case custom
-}
-
 extension SnoozeTime {
 
     var title: LocalizedStringResource {
@@ -91,52 +78,4 @@ private enum SnoozeFormatter {
         formatter.setLocalizedDateFormatFromTemplate("EEEEjm")
         return formatter
     }()
-}
-
-//
-
-enum AvailableSnoozeActionsForConversationResult {
-    case ok(SnoozeActions)
-    case error(SnoozeError)
-}
-
-enum SnoozeErrorReason {
-    case snoozeTimeInThePast
-    case invalidSnoozeLocation
-}
-
-enum SnoozeError: Error {
-    case reason(SnoozeErrorReason)
-    case other(ProtonError)
-}
-
-enum SnoozeConversationsResult {
-    case ok
-    case error(SnoozeError)
-}
-
-enum UnsnoozeConversationsResult {
-    case ok
-    case error(SnoozeError)
-}
-
-func snoozeConversations(session: MailUserSession, ids: [Id], snoozeTime: UnixTimestamp) -> SnoozeConversationsResult {
-    .ok
-}
-
-func unsnoozeConversations(session: MailUserSession, ids: [Id]) -> UnsnoozeConversationsResult {
-    .ok
-}
-
-func availableSnoozeActionsForConversation(session: MailUserSession, weekStart: NonDefaultWeekStart, id: Id) -> AvailableSnoozeActionsForConversationResult {
-    .ok(.init(
-        options: [.custom, .tomorrow(1753869563), .laterThisWeek(1753869563), .thisWeekend(1753869563)],
-        showUnsnooze: true)
-    )
-}
-
-enum NonDefaultWeekStart : UInt8 {
-    case monday = 1
-    case saturday = 6
-    case sunday = 7
 }

@@ -18,9 +18,9 @@
 import proton_app_uniffi
 
 protocol SnoozeServiceProtocol {
-    func availableSnoozeActionsForConversation(weekStart: NonDefaultWeekStart, id: Id) -> AvailableSnoozeActionsForConversationResult
-    func snoozeConversations(ids: [Id], snoozeTime: UnixTimestamp) -> SnoozeConversationsResult
-    func unsnoozeConversations(ids: [Id]) -> UnsnoozeConversationsResult
+    func availableSnoozeActions(for conversation: Id, systemCalendarWeekStart: NonDefaultWeekStart) -> AvailableSnoozeActionsForConversationResult
+    func snooze(conversation ids: [Id], timestamp: UnixTimestamp) -> SnoozeConversationsResult
+    func unsnooze(conversation ids: [Id]) -> UnsnoozeConversationsResult
 }
 
 class SnoozeService: SnoozeServiceProtocol {
@@ -30,22 +30,22 @@ class SnoozeService: SnoozeServiceProtocol {
         self.mailUserSession = mailUserSession
     }
 
-    func availableSnoozeActionsForConversation(
-        weekStart: NonDefaultWeekStart,
-        id: Id
+    func availableSnoozeActions(
+        for conversationID: Id,
+        systemCalendarWeekStart: NonDefaultWeekStart
     ) -> AvailableSnoozeActionsForConversationResult {
-        .ok(
-            .init(
-                options: [.custom, .tomorrow(1753869563), .laterThisWeek(1753869563), .thisWeekend(1753869563)],
-                showUnsnooze: true)
+        availableSnoozeActionsForConversation(
+            session: mailUserSession(),
+            weekStart: systemCalendarWeekStart,
+            id: conversationID
         )
     }
 
-    func snoozeConversations(ids: [Id], snoozeTime: UnixTimestamp) -> SnoozeConversationsResult {
-        ProtonMail.snoozeConversations(session: mailUserSession(), ids: ids, snoozeTime: snoozeTime)
+    func snooze(conversation ids: [Id], timestamp: UnixTimestamp) -> SnoozeConversationsResult {
+        snoozeConversations(session: mailUserSession(), ids: ids, snoozeTime: timestamp)
     }
 
-    func unsnoozeConversations(ids: [Id]) -> UnsnoozeConversationsResult {
-        ProtonMail.unsnoozeConversations(session: mailUserSession(), ids: ids)
+    func unsnooze(conversation ids: [Id]) -> UnsnoozeConversationsResult {
+        unsnoozeConversations(session: mailUserSession(), ids: ids)
     }
 }

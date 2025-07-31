@@ -100,3 +100,29 @@ private extension PinSetErrorReason {
         }
     }
 }
+
+extension SnoozeError {
+
+    public var errorDescription: String? {
+        switch self {
+        case .reason(let snoozeErrorReason):
+            snoozeErrorReason.errorMessage.string
+        case .other(let protonError):
+            protonError.localizedDescription
+        }
+    }
+
+}
+
+private extension SnoozeErrorReason {
+
+    var errorMessage: LocalizedStringResource {
+        switch self {
+        case .snoozeTimeInThePast:
+            "" // FIXME: - Translate
+        case .invalidSnoozeLocation:
+            "" // FIXME: - Translate
+        }
+    }
+
+}

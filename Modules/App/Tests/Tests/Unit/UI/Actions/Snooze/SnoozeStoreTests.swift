@@ -16,15 +16,17 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import ProtonMail
+@testable import InboxIAP
 import InboxCoreUI
+import proton_app_uniffi
 import Testing
 
 @MainActor
 class SnoozeStoreTests {
-    let toastStateStore = ToastStateStore(initialState: .initial)
-    let upsellScreenPresenterSpy = UpsellScreenPresenterSpy()
+    private let upsellScreenPresenterSpy = UpsellScreenPresenterSpy()
+    private let snoozeServiceSpy = SnoozeServiceSpy()
     let conversationIDs: [ID] = [.init(value: 7), .init(value: 77)]
-    let snoozeServiceSpy = SnoozeServiceSpy()
+    let toastStateStore = ToastStateStore(initialState: .initial)
     var dismissInvokedCount = 0
 
     lazy var sut = SnoozeStore(
@@ -49,7 +51,7 @@ class SnoozeStoreTests {
 
         #expect(snoozeServiceSpy.invokedSnooze.count == 1)
         #expect(snoozeServiceSpy.invokedSnooze.first?.ids == conversationIDs)
-        #expect(snoozeServiceSpy.invokedSnooze.first?.snoozeTime == .timestamp)
+        #expect(snoozeServiceSpy.invokedSnooze.first?.timestamp == .timestamp)
         #expect(dismissInvokedCount == 1)
     }
 
@@ -97,9 +99,7 @@ class SnoozeStoreTests {
     }
 }
 
-@testable import InboxIAP
-
-class UpsellScreenPresenterSpy: UpsellScreenPresenter {
+private class UpsellScreenPresenterSpy: UpsellScreenPresenter {
     var stubbedError: NSError?
     private(set) var presentUpsellScreenCalled: [UpsellScreenEntryPoint] = []
 
@@ -119,36 +119,37 @@ private extension NSError {
     }
 }
 
-import proton_app_uniffi
-
-class SnoozeServiceSpy: SnoozeServiceProtocol {
+private class SnoozeServiceSpy: SnoozeServiceProtocol {
     lazy var snoozeActionsStub: SnoozeActions = .init(
         options: [.custom, .tomorrow(.timestamp), .nextWeek(.timestamp), .thisWeekend(.timestamp)],
         showUnsnooze: true
     )
 
     private(set) var invokedAvailableSnoozeActions: [(weekStart: NonDefaultWeekStart, id: ID)] = []
-    private(set) var invokedSnooze: [(ids: [ID], snoozeTime: UnixTimestamp)] = []
+    private(set) var invokedSnooze: [(ids: [ID], timestamp: UnixTimestamp)] = []
     private(set) var invokedUnsnooze: [[ID]] = []
 
     // MARK: - SnoozeServiceProtocol
 
-    func availableSnoozeActionsForConversation(weekStart: NonDefaultWeekStart, id: Id) -> AvailableSnoozeActionsForConversationResult {
-        invokedAvailableSnoozeActions.append((weekStart, id))
+    func availableSnoozeActions(
+        for conversation: Id,
+        systemCalendarWeekStart: NonDefaultWeekStart
+    ) -> AvailableSnoozeActionsForConversationResult {
+        invokedAvailableSnoozeActions.append((systemCalendarWeekStart, conversation))
 
         return .ok(snoozeActionsStub)
     }
 
-    func snoozeConversations(ids: [Id], snoozeTime: UnixTimestamp) -> SnoozeConversationsResult {
-        invokedSnooze.append((ids, snoozeTime))
+    func snooze(conversation ids: [Id], timestamp: UnixTimestamp) -> SnoozeConversationsResult {
+        invokedSnooze.append((ids, timestamp))
 
-        return .ok
+        return .ok(nil)
     }
 
-    func unsnoozeConversations(ids: [Id]) -> UnsnoozeConversationsResult {
+    func unsnooze(conversation ids: [Id]) -> UnsnoozeConversationsResult {
         invokedUnsnooze.append(ids)
 
-        return .ok
+        return .ok(nil)
     }
 }
 

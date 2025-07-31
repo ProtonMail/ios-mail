@@ -20,6 +20,7 @@ import InboxSnapshotTesting
 import InboxCore
 import InboxCoreUI
 import InboxTesting
+import proton_app_uniffi
 import Testing
 
 @MainActor

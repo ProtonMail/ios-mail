@@ -76,7 +76,8 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
         XCTAssertEqual(invokedAvailableMessageActionsWithIDs.first, ids)
         XCTAssertEqual(sut.state, .init(
             bottomBarActions: [.notSpam(.testInbox)],
-            moreSheetOnlyActions: [.labelAs, .markRead]
+            moreSheetOnlyActions: [.labelAs, .markRead],
+            isSnoozeSheetPresented: false
         ))
     }
 
@@ -95,7 +96,8 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
         XCTAssertEqual(invokedAvailableConversationActionsWithIDs.first, ids)
         XCTAssertEqual(sut.state, .init(
             bottomBarActions: [.more],
-            moreSheetOnlyActions: [.notSpam(.testInbox), .permanentDelete]
+            moreSheetOnlyActions: [.notSpam(.testInbox), .permanentDelete],
+            isSnoozeSheetPresented: false
         ))
     }
 
@@ -239,6 +241,14 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
             moveToActionsSpy.invokedMoveToMessage,
             [.init(destinationID: systemFolder.localId, itemsIDs: ids)]
         )
+    }
+
+    func testSnoozeActionIsTapped_ItOpensSnoozeSheet() {
+        let sut = makeSUT(viewMode: .conversations)
+
+        sut.handle(action: .actionSelected(.snooze, ids: [.init(value: 7)]))
+
+        XCTAssertEqual(sut.state.isSnoozeSheetPresented, true)
     }
 
     // MARK: - Private

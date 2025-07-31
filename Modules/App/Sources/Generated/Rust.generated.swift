@@ -4,6 +4,16 @@
 import Foundation
 import proton_app_uniffi
 
+public extension AvailableSnoozeActionsForConversationResult {
+    func get() throws(SnoozeError) -> SnoozeActions {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension DraftCancelScheduleSendResult {
     func get() throws(DraftCancelScheduleSendError) -> DraftCancelScheduledSendInfo {
         switch self {
@@ -266,6 +276,26 @@ public extension SignupFlowSubmitRecoveryPhoneResult {
 }
 public extension SignupFlowSubmitValidatedPasswordResult {
     func get() throws(SignupError) -> SimpleSignupState {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension SnoozeConversationsResult {
+    func get() throws(SnoozeError) -> Undo? {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension UnsnoozeConversationsResult {
+    func get() throws(SnoozeError) -> Undo? {
         switch self {
         case .ok(let value):
             value
