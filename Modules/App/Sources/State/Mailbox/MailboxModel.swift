@@ -345,7 +345,7 @@ extension MailboxModel {
             completion = { [weak self] in self?.updateSelectedItemsAfterDestructiveUpdate() }
         case .error(let error):
             AppLogger.log(error: error, category: .mailbox)
-            toast = .error(message: L10n.Mailbox.Error.issuesLoadingMailboxContent.string).duration(.toastMediumDuration)
+            showScrollerErrorIfNotNetwork(error: error)
             updateType = .error(error)
         }
         listUpdateSubject.send(.init(isLastPage: isLastPage, value: updateType, completion: completion))
@@ -371,10 +371,16 @@ extension MailboxModel {
             completion = { [weak self] in self?.updateSelectedItemsAfterDestructiveUpdate() }
         case .error(let error):
             AppLogger.log(error: error, category: .mailbox)
-            toast = .error(message: L10n.Mailbox.Error.issuesLoadingMailboxContent.string).duration(.toastMediumDuration)
+            showScrollerErrorIfNotNetwork(error: error)
             updateType = .error(error)
         }
         listUpdateSubject.send(.init(isLastPage: isLastPage, value: updateType, completion: completion))
+    }
+
+    // TODO: Remove once the SDK does not return network as a possible MailScrollerError
+    private func showScrollerErrorIfNotNetwork(error: MailScrollerError) {
+        if case .other(.network) = error { return }
+        toast = .error(message: L10n.Mailbox.Error.issuesLoadingMailboxContent.string).duration(.toastMediumDuration)
     }
 
     private func updateSelectedItemsAfterDestructiveUpdate() {
