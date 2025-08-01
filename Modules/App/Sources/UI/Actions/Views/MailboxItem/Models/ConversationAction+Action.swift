@@ -37,8 +37,7 @@ extension ConversationAction {
         case .delete:
             return .delete
         case .snooze:
-            // TODO: Snooze
-            return .markUnread
+            return .snooze
         }
     }
 }

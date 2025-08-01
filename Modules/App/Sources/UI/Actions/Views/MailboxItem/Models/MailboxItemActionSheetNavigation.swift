@@ -22,4 +22,5 @@ enum MailboxItemActionSheetNavigation: Equatable {
     case dismissAndGoBack
     case labelAs
     case moveTo
+    case snooze
 }

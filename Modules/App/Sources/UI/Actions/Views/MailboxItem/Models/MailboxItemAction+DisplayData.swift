@@ -18,7 +18,7 @@
 extension MailboxItemAction {
 
     var displayData: ActionDisplayData {
-        .init(title: correspondingAction.name, image: correspondingAction.icon) 
+        .init(title: correspondingAction.name, image: correspondingAction.icon)
     }
 
     private var correspondingAction: Action {
@@ -31,6 +31,7 @@ extension MailboxItemAction {
         case .markRead: .markAsRead
         case .markUnread: .markAsUnread
         case .delete: .deletePermanently
+        case .snooze: .snooze
         }
     }
 

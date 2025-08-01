@@ -106,6 +106,11 @@ private struct MailboxActionSheets: ViewModifier {
             case .dismissAndGoBack:
                 state = state.copy(\.mailbox, to: nil)
                 goBackNavigation?()
+            case .snooze:
+                state =
+                    state
+                    .copy(\.mailbox, to: nil)
+                    .copy(\.snooze, to: input.id)
             }
         }
         return MailboxItemActionSheet(
