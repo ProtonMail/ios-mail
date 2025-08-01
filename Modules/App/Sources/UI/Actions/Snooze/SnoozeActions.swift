@@ -43,7 +43,7 @@ extension SnoozeTime {
         case .tomorrow:
             Image(symbol: .sunMax)
         case .laterThisWeek:
-            Image(symbol: .sunLeftHalfFilled)
+            Image(DS.Icon.icSunLeftHalfFilled)
         case .thisWeekend:
             Image(symbol: .sofa)
         case .nextWeek:

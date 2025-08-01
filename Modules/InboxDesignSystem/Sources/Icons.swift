@@ -69,6 +69,7 @@ public extension DS.Icon {
     static let icShield2 = ImageResource.icShield2
     static let icShield2Bolt = ImageResource.icShield2Bolt
     static let icSpam = ImageResource.icSpam
+    static let icSunLeftHalfFilled = ImageResource.icSunLeftHalfFilled
     static let icNotSpam = ImageResource.icNoSpam
     static let icOutbox = ImageResource.icOutbox
     static let icStarFilledStrong = ImageResource.icStarFilledStrong
