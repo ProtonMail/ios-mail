@@ -29,9 +29,7 @@ struct SnoozeDatePickerConfiguration: DatePickerViewConfiguration {
     let minuteInterval: TimeInterval = 30
 
     var range: ClosedRange<Date> {
-        let start = DateEnvironment.currentDate()
-        let end = Date.distantFuture
-        return start...end
+        Date.currentDateRoundedUpToNextHalfHour...Date.distantFuture
     }
 
     func formatDate(_ date: Date) -> String {
@@ -41,5 +39,16 @@ struct SnoozeDatePickerConfiguration: DatePickerViewConfiguration {
     // MARK: - Private
 
     private let formatter = ScheduleSendDateFormatter()
+
+}
+
+private extension Date {
+
+    static var currentDateRoundedUpToNextHalfHour: Date {
+        let interval: TimeInterval = 30 * 60
+        let time = DateEnvironment.currentDate().timeIntervalSinceReferenceDate
+        let roundedTime = ceil(time / interval) * interval
+        return Date(timeIntervalSinceReferenceDate: roundedTime)
+    }
 
 }
