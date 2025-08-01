@@ -82,7 +82,7 @@ final class MailboxActionBarStateStore: StateStore {
 
     // MARK: - Private
 
-    private func handle(action: BottomBarAction, ids: [ID]) {
+    private func handle(action: BottomBarActions, ids: [ID]) {
         switch action {
         case .more:
             let moreActionSheetState = MailboxActionBarMoreSheetState(
@@ -90,15 +90,18 @@ final class MailboxActionBarStateStore: StateStore {
                 bottomBarActions: state.bottomBarActions.moreActionFiltered,
                 moreSheetOnlyActions: state.moreSheetOnlyActions
             )
-            state = state
+            state =
+                state
                 .copy(\.moreActionSheetPresented, to: moreActionSheetState)
         case .labelAs:
             dismissMoreActionSheet()
-            state = state
+            state =
+                state
                 .copy(\.labelAsSheetPresented, to: .init(sheetType: .labelAs, ids: ids, type: itemTypeForActionBar.actionSheetItemType))
         case .moveTo:
             dismissMoreActionSheet()
-            state = state
+            state =
+                state
                 .copy(\.moveToSheetPresented, to: .init(sheetType: .moveTo, ids: ids, type: itemTypeForActionBar.actionSheetItemType))
         case .star:
             dismissMoreActionSheet()
@@ -129,7 +132,7 @@ final class MailboxActionBarStateStore: StateStore {
         }
     }
 
-    private func performMoveToAction(destination: MoveToSystemFolderLocation, ids: [ID]) {
+    private func performMoveToAction(destination: MovableSystemFolderAction, ids: [ID]) {
         Task {
             do {
                 try await moveToActionPerformer.moveTo(
@@ -138,28 +141,32 @@ final class MailboxActionBarStateStore: StateStore {
                     itemType: itemTypeForActionBar
                 )
 
-                Dispatcher.dispatchOnMain(.init { [weak self] in
-                    self?.handleMoveAction(result: .success(destination))
-                })
+                Dispatcher.dispatchOnMain(
+                    .init { [weak self] in
+                        self?.handleMoveAction(result: .success(destination))
+                    })
             } catch {
-                Dispatcher.dispatchOnMain(.init { [weak self] in
-                    self?.handleMoveAction(result: .failure(error))
-                })
+                Dispatcher.dispatchOnMain(
+                    .init { [weak self] in
+                        self?.handleMoveAction(result: .failure(error))
+                    })
             }
         }
     }
 
     private func handle(action: DeleteConfirmationAlertAction, ids: [ID], itemType: MailboxItemType) {
-        state = state
+        state =
+            state
             .copy(\.deleteConfirmationAlert, to: nil)
             .copy(\.moreDeleteConfirmationAlert, to: nil)
         switch action {
         case .delete:
             Task {
                 await deleteActionsPerformer.delete(itemsWithIDs: ids, itemType: itemType)
-                Dispatcher.dispatchOnMain(.init(block: { [weak self] in
-                    self?.itemDeleted()
-                }))
+                Dispatcher.dispatchOnMain(
+                    .init(block: { [weak self] in
+                        self?.itemDeleted()
+                    }))
             }
         case .cancel:
             break
@@ -170,14 +177,16 @@ final class MailboxActionBarStateStore: StateStore {
         guard !ids.isEmpty else { return }
         Task {
             let actions = await actionsProvider.actions(forItemsWith: ids)
-            Dispatcher.dispatchOnMain(.init(block: { [weak self] in
-                self?.updateActions(actions: actions)
-            }))
+            Dispatcher.dispatchOnMain(
+                .init(block: { [weak self] in
+                    self?.updateActions(actions: actions)
+                }))
         }
     }
 
     private func updateActions(actions: AllBottomBarMessageActions) {
-        state = state
+        state =
+            state
             .copy(\.bottomBarActions, to: actions.visibleBottomBarActions)
             .copy(\.moreSheetOnlyActions, to: actions.hiddenBottomBarActions)
     }
@@ -191,7 +200,7 @@ final class MailboxActionBarStateStore: StateStore {
         dismissMoreActionSheet()
     }
 
-    private func handleMoveAction(result: Result<MoveToSystemFolderLocation, Error>) {
+    private func handleMoveAction(result: Result<MovableSystemFolderAction, Error>) {
         switch result {
         case .success(let destination):
             toastStateStore.present(toast: .moveTo(destinationName: destination.name.humanReadable.string))
@@ -203,7 +212,7 @@ final class MailboxActionBarStateStore: StateStore {
     }
 }
 
-private extension Array where Element == BottomBarAction {
+private extension Array where Element == BottomBarActions {
 
     var moreActionFiltered: Self {
         filter { $0 != .more }

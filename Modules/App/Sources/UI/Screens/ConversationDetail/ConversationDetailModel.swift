@@ -87,7 +87,6 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         messagePrinter = .init(userSession: { dependencies.appContext.userSession })
     }
 
-    @MainActor
     func fetchInitialData() async {
         updateState(.fetchingMessages)
         do {
@@ -141,7 +140,6 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         onReplyAction(messageId: messageId, action: .forward, toastStateStore: toastStateStore)
     }
 
-    @MainActor
     func onEditScheduledMessage(withId messageId: ID, goBack: @escaping () -> Void, toastStateStore: ToastStateStore) {
         let alert: AlertModel = .editScheduleConfirmation(action: { [weak self] action in
             await self?.handle(action: action, messageId: messageId, toastStateStore: toastStateStore, goBack: goBack)
@@ -309,9 +307,9 @@ extension ConversationDetailModel {
 
         switch selectedMailbox {
         case .inbox:
-            return try await newInboxMailbox(ctx: userSession).get()
+            return try newInboxMailbox(ctx: userSession).get()
         case .systemFolder(let labelId, _), .customLabel(let labelId, _), .customFolder(let labelId, _):
-            return try await newMailbox(ctx: userSession, labelId: labelId).get()
+            return try newMailbox(ctx: userSession, labelId: labelId).get()
         }
     }
 
@@ -474,7 +472,6 @@ extension ConversationDetailModel {
         }
     }
 
-    @MainActor
     private func updateState(_ newState: State) {
         AppLogger.log(message: "conversation detail state \(newState.debugDescription)", category: .conversationDetail)
         state = newState
@@ -490,7 +487,6 @@ extension ConversationDetailModel {
         }
     }
 
-    @MainActor
     private func handle(
         action: EditScheduleAlertAction,
         messageId: ID,

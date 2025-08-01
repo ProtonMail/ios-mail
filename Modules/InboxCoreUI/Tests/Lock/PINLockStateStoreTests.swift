@@ -30,7 +30,7 @@ class PINLockStateStoreTests {
 
     @Test
     func userSignsOut_ItEmitsLogOutOutput() async throws {
-        await sut.handle(action: .signOutTapped)
+        sut.handle(action: .signOutTapped)
 
         #expect(sut.state.alert == .logOutConfirmation(action: { _ in }))
 
@@ -42,7 +42,7 @@ class PINLockStateStoreTests {
 
     @Test
     func userResignsSignOut_ItDoesNotEmitAnyOutput() async throws {
-        await sut.handle(action: .signOutTapped)
+        sut.handle(action: .signOutTapped)
 
         #expect(sut.state.alert == .logOutConfirmation(action: { _ in }))
 
@@ -54,38 +54,38 @@ class PINLockStateStoreTests {
 
     @Test
     func userSubmitsEmptyPIN_ItDoesNotEmitAnyOutput() async {
-        await sut.handle(action: .confirmTapped)
+        sut.handle(action: .confirmTapped)
         #expect(output == [])
     }
 
     @Test
-    func userSubmitsValidPIN_ItEmitsPINInOutput() async {
-        await sut.handle(action: .pinEntered(.init(digits: [1, 2, 3, 4, 5])))
-        await sut.handle(action: .confirmTapped)
+    func userSubmitsValidPIN_ItEmitsPINInOutput() {
+        sut.handle(action: .pinEntered(.init(digits: [1, 2, 3, 4, 5])))
+        sut.handle(action: .confirmTapped)
 
         #expect(output == [.pin(.init(digits: [1, 2, 3, 4, 5]))])
     }
 
     @Test
-    func remainingAttemtsErrorIsPresented_WhenPINIsEntered_ItStillShowsError() async {
-        await sut.handle(action: .error(.attemptsRemaining(3)))
-        await sut.handle(action: .pinEntered(.init(digits: [1, 2, 3, 4, 5])))
+    func remainingAttemtsErrorIsPresented_WhenPINIsEntered_ItStillShowsError() {
+        sut.handle(action: .error(.attemptsRemaining(3)))
+        sut.handle(action: .pinEntered(.init(digits: [1, 2, 3, 4, 5])))
 
         #expect(sut.state.error == .attemptsRemaining(3))
     }
 
     @Test
-    func customErrorIsPresented_WhenPINIsEntered_ItHidesError() async {
-        await sut.handle(action: .error(.custom("Error")))
-        await sut.handle(action: .pinEntered(.init(digits: [1, 2, 3, 4, 5])))
+    func customErrorIsPresented_WhenPINIsEntered_ItHidesError() {
+        sut.handle(action: .error(.custom("Error")))
+        sut.handle(action: .pinEntered(.init(digits: [1, 2, 3, 4, 5])))
 
         #expect(sut.state.error == nil)
     }
 
     @Test
-    func tooFrequentAttemptsErrorIsThrown_ItDoesNotCleanPINField() async {
-        await sut.handle(action: .pinEntered(.init(digits: [1, 2])))
-        await sut.handle(action: .error(.tooFrequentAttempts))
+    func tooFrequentAttemptsErrorIsThrown_ItDoesNotCleanPINField() {
+        sut.handle(action: .pinEntered(.init(digits: [1, 2])))
+        sut.handle(action: .error(.tooFrequentAttempts))
 
         #expect(sut.state.error == .tooFrequentAttempts)
         #expect(sut.state.pin == .init(digits: [1, 2]))
