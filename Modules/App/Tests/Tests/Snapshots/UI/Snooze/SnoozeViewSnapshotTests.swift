@@ -56,6 +56,11 @@ struct SnoozeViewSnapshotTests {
                 screen: .main,
                 name: "snooze_button_with_1_option"
             ),
+            .init(
+                actions: .testData(options: [.tomorrow, .laterThisWeek, .nextWeek, .custom], showUnsnooze: true),
+                screen: .main,
+                name: "snooze_button_with_3_options_and_custom_on_grid"
+            ),
             .init(actions: .testData(), screen: .custom, name: "custom_view"),
         ]
     )
@@ -75,7 +80,7 @@ struct SnoozeViewSnapshotTests {
         .environmentObject(UpsellCoordinator.dummy)
         .injectDateEnvironments()
 
-        assertSnapshotsOnIPhoneX(of: snoozeView, named: testCase.name)
+        assertSnapshotsOnIPhoneX(of: snoozeView, named: testCase.name, record: true)
     }
 }
 

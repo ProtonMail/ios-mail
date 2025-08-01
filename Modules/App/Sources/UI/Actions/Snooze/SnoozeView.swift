@@ -96,7 +96,7 @@ struct SnoozeView: View {
                     if let snoozeActions = state.snoozeActions {
                         VStack(alignment: .leading, spacing: DS.Spacing.medium) {
                             LazyVGrid(columns: columns, alignment: .center, spacing: Self.gridSpacing) {
-                                ForEach(snoozeActions.options, id: \.self) { snoozeOption in
+                                ForEach(snoozeActions.options.predefined, id: \.self) { snoozeOption in
                                     buttonWithIcon(for: snoozeOption, store: store)
                                 }
 
@@ -139,7 +139,7 @@ struct SnoozeView: View {
     }
 
     private func displayCustomButtonOnGrid(snoozeActions: SnoozeActions) -> Bool {
-        snoozeActions.options.count % 2 == 1
+        snoozeActions.options.predefined.count % 2 == 1
     }
 
     @ViewBuilder
@@ -203,4 +203,12 @@ struct SnoozeView: View {
                 .roundedRectangleStyle()
         }
     }
+}
+
+private extension Array where Element == SnoozeTime {
+
+    var predefined: Self {
+        filter { $0 != .custom }
+    }
+
 }
