@@ -50,6 +50,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
     private let draftPresenter: DraftPresenter
     private let dependencies: Dependencies
     private let backOnlineActionExecutor: BackOnlineActionExecutor
+    private let snoozeService: SnoozeServiceProtocol
 
     private lazy var messageListCallback = LiveQueryCallbackWrapper { [weak self] in
         guard let self else { return }
@@ -73,7 +74,8 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         seed: ConversationDetailSeed,
         draftPresenter: DraftPresenter,
         dependencies: Dependencies = .init(),
-        backOnlineActionExecutor: BackOnlineActionExecutor
+        backOnlineActionExecutor: BackOnlineActionExecutor,
+        snoozeService: SnoozeServiceProtocol
     ) {
         self.seed = seed
         self.isStarred = seed.isStarred
@@ -81,6 +83,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         self.draftPresenter = draftPresenter
         self.dependencies = dependencies
         self.backOnlineActionExecutor = backOnlineActionExecutor
+        self.snoozeService = snoozeService
         messagePrinter = .init(userSession: { dependencies.appContext.userSession })
     }
 
@@ -144,6 +147,21 @@ final class ConversationDetailModel: Sendable, ObservableObject {
             await self?.handle(action: action, messageId: messageId, toastStateStore: toastStateStore, goBack: goBack)
         })
         editScheduledMessageConfirmationAlert = alert
+    }
+
+    func unsnoozeConversation(toastStateStore: ToastStateStore) {
+        guard let labelID = mailbox?.labelId(), let conversationID = conversationID else { return }
+        Task { @MainActor in
+            do {
+                try await self.snoozeService.unsnooze(conversation: [conversationID], labelId: labelID).get()
+                toastStateStore.present(toast: .unsnooze)
+            } catch {
+                AppLogger.log(error: error, category: .snooze)
+                if let error = error as? SnoozeError {
+                    SnoozeErrorPresenter.presentIfNeeded(error: error, toastStateStore: toastStateStore)
+                }
+            }
+        }
     }
 
     func markMessageAsReadIfNeeded(metadata: MarkMessageAsReadMetadata) {
@@ -587,6 +605,16 @@ private extension MessageCellUIModel {
             model.isDraft
         case .expanded:
             false
+        }
+    }
+
+}
+
+enum SnoozeErrorPresenter {
+
+    static func presentIfNeeded(error: SnoozeError, toastStateStore: ToastStateStore) {
+        if case .reason(let snoozeErrorReason) = error {
+            toastStateStore.present(toast: .error(message: snoozeErrorReason.errorMessage.string))
         }
     }
 

@@ -164,6 +164,8 @@ struct ConversationDetailListView: View {
             recipientActionTarget = recipient
         case .onEditScheduledMessage:
             model.onEditScheduledMessage(withId: uiModel.id, goBack: goBack, toastStateStore: toastStateStore)
+        case .unsnoozeConversation:
+            model.unsnoozeConversation(toastStateStore: toastStateStore)
         }
     }
 }

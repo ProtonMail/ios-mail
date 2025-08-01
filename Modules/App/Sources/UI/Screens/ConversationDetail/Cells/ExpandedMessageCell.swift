@@ -80,7 +80,8 @@ struct ExpandedMessageCell: View {
                 mailbox: mailbox,
                 isBodyLoaded: $isBodyLoaded,
                 attachmentIDToOpen: $attachmentIDToOpen,
-                editScheduledMessage: { onEvent(.onEditScheduledMessage) }
+                editScheduledMessage: { onEvent(.onEditScheduledMessage) },
+                unsnoozeConversation: { onEvent(.unsnoozeConversation) }
             )
             if !areActionsHidden {
                 MessageActionButtonsView(
@@ -128,6 +129,7 @@ enum ExpandedMessageCellEvent {
     case onRecipientTap(MessageDetail.Recipient)
 
     case onEditScheduledMessage
+    case unsnoozeConversation
 }
 
 #Preview {

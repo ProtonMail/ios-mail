@@ -31,6 +31,7 @@ struct MessageBannersView: View {
         case downloadRemoteContentTapped
         case markAsLegitimateTapped
         case unblockSenderTapped
+        case unsnoozeTapped
     }
 
     @EnvironmentObject var toastStateStore: ToastStateStore
@@ -143,7 +144,7 @@ struct MessageBannersView: View {
                 )
             case .snoozed(let timestamp):
                 let button = Banner.Button(title: L10n.MessageBanner.snoozedAction) {
-                    toastStateStore.present(toast: .comingSoon)
+                    action(.unsnoozeTapped)
                 }
 
                 return oneLine(

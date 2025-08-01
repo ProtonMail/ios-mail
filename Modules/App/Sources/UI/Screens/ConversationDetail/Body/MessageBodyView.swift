@@ -30,6 +30,7 @@ struct MessageBodyView: View {
     let attachments: [AttachmentDisplayModel]
     let mailbox: Mailbox
     let editScheduledMessage: () -> Void
+    let unsnoozeConversation: () -> Void
     @Binding var isBodyLoaded: Bool
     @Binding var attachmentIDToOpen: ID?
     @State var bodyContentHeight: CGFloat = .zero
@@ -41,7 +42,8 @@ struct MessageBodyView: View {
         mailbox: Mailbox,
         isBodyLoaded: Binding<Bool>,
         attachmentIDToOpen: Binding<ID?>,
-        editScheduledMessage: @escaping () -> Void
+        editScheduledMessage: @escaping () -> Void,
+        unsnoozeConversation: @escaping () -> Void
     ) {
         self.messageID = messageID
         self.emailAddress = emailAddress
@@ -50,6 +52,7 @@ struct MessageBodyView: View {
         self._isBodyLoaded = isBodyLoaded
         self._attachmentIDToOpen = attachmentIDToOpen
         self.editScheduledMessage = editScheduledMessage
+        self.unsnoozeConversation = unsnoozeConversation
     }
 
     var body: some View {
@@ -82,6 +85,8 @@ struct MessageBodyView: View {
                                 store.handle(action: .markAsLegitimate)
                             case .unblockSenderTapped:
                                 store.handle(action: .unblockSender(emailAddress: emailAddress))
+                            case .unsnoozeTapped:
+                                unsnoozeConversation()
                             }
                         }
                     )

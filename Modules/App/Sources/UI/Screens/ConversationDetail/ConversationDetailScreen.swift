@@ -28,12 +28,18 @@ struct ConversationDetailScreen: View {
     @Binding private var navigationPath: NavigationPath
     private let draftPresenter: DraftPresenter
 
-    init(seed: ConversationDetailSeed, draftPresenter: DraftPresenter, navigationPath: Binding<NavigationPath>) {
+    init(
+        seed: ConversationDetailSeed,
+        draftPresenter: DraftPresenter,
+        navigationPath: Binding<NavigationPath>,
+        snoozeService: SnoozeServiceProtocol = SnoozeService(mailUserSession: { AppContext.shared.userSession })
+    ) {
         self._model = StateObject(
             wrappedValue: .init(
                 seed: seed,
                 draftPresenter: draftPresenter,
-                backOnlineActionExecutor: .init(mailUserSession: { AppContext.shared.userSession })
+                backOnlineActionExecutor: .init(mailUserSession: { AppContext.shared.userSession }),
+                snoozeService: snoozeService
             ))
         self._navigationPath = .init(projectedValue: navigationPath)
         self.draftPresenter = draftPresenter
