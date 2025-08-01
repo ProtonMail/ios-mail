@@ -15870,8 +15870,14 @@
         }
       }
     },
+    "Snooze cannot be applied to messages in this location." : {
+      "comment" : "Error when snoozing / unsnoozing conversation"
+    },
     "Snooze message" : {
       "comment" : "Title of the sheet for configuring custom snooze settings."
+    },
+    "Snooze time cannot be in the past." : {
+      "comment" : "Error when snooze is in the past."
     },
     "Snooze until" : {
       "comment" : "Title of the sheet for snooze settings."

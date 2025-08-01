@@ -92,6 +92,7 @@ class SnoozeStore: StateStore {
 
             state = state.copy(\.snoozeActions, to: snoozeActions)
         } catch {
+            showToastIfNeeded(snoozeError: error)
             AppLogger.log(error: error, category: .snooze)
         }
     }
@@ -106,6 +107,7 @@ class SnoozeStore: StateStore {
             toastStateStore.present(toast: .snooze(snoozeDate: snoozeTime.date))
             dismiss()
         } catch {
+            showToastIfNeeded(snoozeError: error)
             AppLogger.log(error: error, category: .snooze)
         }
     }
@@ -119,7 +121,14 @@ class SnoozeStore: StateStore {
             toastStateStore.present(toast: .unsnooze)
             dismiss()
         } catch {
+            showToastIfNeeded(snoozeError: error)
             AppLogger.log(error: error, category: .snooze)
+        }
+    }
+
+    private func showToastIfNeeded(snoozeError: SnoozeError) {
+        if case .reason(let snoozeErrorReason) = snoozeError {
+            toastStateStore.present(toast: .error(message: snoozeErrorReason.errorMessage.string))
         }
     }
 

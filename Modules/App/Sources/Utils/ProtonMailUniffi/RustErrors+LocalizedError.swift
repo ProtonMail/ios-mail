@@ -101,7 +101,7 @@ private extension PinSetErrorReason {
     }
 }
 
-extension SnoozeError {
+extension SnoozeError: LocalizedError {
 
     public var errorDescription: String? {
         switch self {
@@ -114,14 +114,14 @@ extension SnoozeError {
 
 }
 
-private extension SnoozeErrorReason {
+extension SnoozeErrorReason {
 
     var errorMessage: LocalizedStringResource {
         switch self {
         case .snoozeTimeInThePast:
-            L10n.Common.save // FIXME: - Will be updated later
+            L10n.Snooze.snoozeTimeInThePast
         case .invalidSnoozeLocation:
-            L10n.Common.save // FIXME: - Will be updated later
+            L10n.Snooze.invalidSnoozeLocation
         }
     }
 

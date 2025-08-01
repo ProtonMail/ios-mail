@@ -42,12 +42,7 @@ class SnoozeStoreTests {
     func testLoadData_ProvidesSnoozeActions() async {
         await sut.handle(action: .loadData)
 
-        #expect(
-            sut.state.snoozeActions
-                == .init(
-                    options: snoozeServiceSpy.snoozeActionsStub.options,
-                    showUnsnooze: snoozeServiceSpy.snoozeActionsStub.showUnsnooze
-                ))
+        #expect(sut.state.snoozeActions == .init(options: snoozeServiceSpy.snoozeOptionsStub, showUnsnooze: true))
     }
 
     @Test
@@ -71,6 +66,38 @@ class SnoozeStoreTests {
         #expect(snoozeServiceSpy.invokedUnsnooze.first?.labelId == labelId)
         #expect(toastStateStore.state.toasts == [.unsnooze])
         #expect(dismissInvokedCount == 1)
+    }
+
+    func testUnsnoozeActionFailure_ItDisplaysToast() async {
+        snoozeServiceSpy.unsnoozeResultStub = .error(.reason(.invalidSnoozeLocation))
+
+        await sut.handle(action: .unsnoozeTapped)
+
+        #expect(
+            toastStateStore.state.toasts == [
+                .error(message: SnoozeErrorReason.invalidSnoozeLocation.errorMessage.string)
+            ]
+        )
+    }
+
+    func testSnoozeActionFailure_ItDisplaysToast() async {
+        snoozeServiceSpy.snoozeResultStub = .error(.reason(.invalidSnoozeLocation))
+
+        await sut.handle(action: .customSnoozeDateSelected(.now))
+
+        #expect(
+            toastStateStore.state.toasts == [
+                .error(message: SnoozeErrorReason.invalidSnoozeLocation.errorMessage.string)
+            ]
+        )
+    }
+
+    func testSnoozeActionOtherFailure_ItDoesNotDisplayToast() async {
+        snoozeServiceSpy.snoozeResultStub = .error(.other(.network))
+
+        await sut.handle(action: .customSnoozeDateSelected(.now))
+
+        #expect(toastStateStore.state.toasts == [])
     }
 
     @Test

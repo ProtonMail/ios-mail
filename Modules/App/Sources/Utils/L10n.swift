@@ -1023,6 +1023,14 @@ enum L10n {
             "Conversation unsnoozed",
             comment: "Toast message after unsnooze action"
         )
+        static let invalidSnoozeLocation = LocalizedStringResource(
+            "Snooze cannot be applied to messages in this location.",
+            comment: "Error when snoozing / unsnoozing conversation"
+        )
+        static let snoozeTimeInThePast = LocalizedStringResource(
+            "Snooze time cannot be in the past.",
+            comment: "Error when snooze is in the past."
+        )
     }
 
     enum Toast {

@@ -19,10 +19,19 @@
 import proton_app_uniffi
 
 class SnoozeServiceSpy: SnoozeServiceProtocol {
-    lazy var snoozeActionsStub: SnoozeActions = .init(
-        options: [.custom, .tomorrow(.timestamp), .nextWeek(.timestamp), .thisWeekend(.timestamp)],
-        showUnsnooze: true
+    var snoozeOptionsStub: [SnoozeTime] {
+        [.custom, .tomorrow(.timestamp), .nextWeek(.timestamp), .thisWeekend(.timestamp)]
+    }
+
+    lazy var snoozeActionsStub: AvailableSnoozeActionsForConversationResult = .ok(
+        .init(
+            options: snoozeOptionsStub,
+            showUnsnooze: true
+        )
     )
+
+    var snoozeResultStub: SnoozeConversationsResult = .ok
+    var unsnoozeResultStub: UnsnoozeConversationsResult = .ok
 
     private(set) var invokedAvailableSnoozeActions: [(weekStart: NonDefaultWeekStart, id: [ID])] = []
     private(set) var invokedSnooze: [(ids: [ID], labelId: Id, timestamp: UnixTimestamp)] = []
@@ -36,7 +45,7 @@ class SnoozeServiceSpy: SnoozeServiceProtocol {
     ) async -> AvailableSnoozeActionsForConversationResult {
         invokedAvailableSnoozeActions.append((systemCalendarWeekStart, conversation))
 
-        return .ok(snoozeActionsStub)
+        return snoozeActionsStub
     }
 
     func snooze(
@@ -46,12 +55,12 @@ class SnoozeServiceSpy: SnoozeServiceProtocol {
     ) async -> SnoozeConversationsResult {
         invokedSnooze.append((ids, labelId, timestamp))
 
-        return .ok
+        return snoozeResultStub
     }
 
     func unsnooze(conversation ids: [Id], labelId: Id) async -> UnsnoozeConversationsResult {
         invokedUnsnooze.append((ids, labelId))
 
-        return .ok
+        return unsnoozeResultStub
     }
 }
