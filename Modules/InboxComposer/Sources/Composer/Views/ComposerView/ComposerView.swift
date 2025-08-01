@@ -36,6 +36,7 @@ struct ComposerView: View {
         draftOrigin: DraftOrigin,
         draftLastScheduledTime: UInt64? = nil,
         contactProvider: ComposerContactProvider,
+        isAddingAttachmentsEnabled: Bool,
         onDismiss: @escaping (ComposerDismissReason) -> Void
     ) {
         self._model = StateObject(
@@ -48,7 +49,8 @@ struct ComposerView: View {
                 contactStore: CNContactStore(),
                 photosItemsHandler: .init(),
                 cameraImageHandler: .init(),
-                fileItemsHandler: .init()
+                fileItemsHandler: .init(),
+                isAddingAttachmentsEnabled: isAddingAttachmentsEnabled
             )
         )
         self.draftLastScheduledTime = draftLastScheduledTime

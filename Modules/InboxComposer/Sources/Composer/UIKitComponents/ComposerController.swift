@@ -40,7 +40,7 @@ final class ComposerController: UIViewController {
     private let subjectField = SubjectFieldView()
     private let attachmentsController = DraftAttachmentsSectionViewController()
     private let bodyEditor: BodyEditorController
-    private let draftActionBarController = DraftActionBarViewController()
+    private let draftActionBarController: DraftActionBarViewController
     private let onEvent: (Event) -> Void
 
     var state: ComposerState {
@@ -59,6 +59,7 @@ final class ComposerController: UIViewController {
         self.bodyEditor = BodyEditorController(embeddedImageProvider: embeddedImageProvider)
         self.recipientsController = RecipientsViewController(invalidAddressAlertStore: invalidAddressAlertStore)
 
+        draftActionBarController = .init(isAddingAttachmentsEnabled: state.isAddingAttachmentsEnabled)
         self.onEvent = onEvent
         super.init(nibName: nil, bundle: nil)
     }

@@ -26,6 +26,7 @@ public struct ComposerScreen: View {
     @EnvironmentObject var toastStateStore: ToastStateStore
     @StateObject private var model: ComposerScreenModel
     private let messageLastScheduledTime: UInt64?
+    private let isAddingAttachmentsEnabled: Bool
     private let onDismiss: (ComposerDismissReason) -> Void
     private let dependencies: Dependencies
 
@@ -37,6 +38,7 @@ public struct ComposerScreen: View {
     ) {
         self.messageLastScheduledTime = messageLastScheduledTime
         self.dependencies = dependencies
+        isAddingAttachmentsEnabled = true
         self.onDismiss = onDismiss
         self._model = StateObject(
             wrappedValue:
@@ -51,10 +53,12 @@ public struct ComposerScreen: View {
         draft: AppDraftProtocol,
         draftOrigin: DraftOrigin,
         dependencies: Dependencies,
+        isAddingAttachmentsEnabled: Bool = true,
         onDismiss: @escaping (ComposerDismissReason) -> Void
     ) {
         self.messageLastScheduledTime = nil
         self.dependencies = dependencies
+        self.isAddingAttachmentsEnabled = isAddingAttachmentsEnabled
         self.onDismiss = onDismiss
         self._model = StateObject(
             wrappedValue: ComposerScreenModel(
@@ -82,6 +86,7 @@ public struct ComposerScreen: View {
                 draftOrigin: draftOrigin,
                 draftLastScheduledTime: messageLastScheduledTime,
                 contactProvider: dependencies.contactProvider,
+                isAddingAttachmentsEnabled: isAddingAttachmentsEnabled,
                 onDismiss: onDismiss
             )
             .interactiveDismissDisabled()

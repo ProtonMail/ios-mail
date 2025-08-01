@@ -88,7 +88,8 @@ final class ComposerModelTests: BaseTestCase {
             contactStore: CNContactStorePartialStub(),
             photosItemsHandler: testPhotosItemsHandler,
             cameraImageHandler: testCameraImageHandler,
-            fileItemsHandler: testFilesItemsHandler
+            fileItemsHandler: testFilesItemsHandler,
+            isAddingAttachmentsEnabled: true
         )
         XCTAssertEqual(sut.state.toRecipients, RecipientFieldState.initialState(group: .to))
         XCTAssertEqual(sut.state.ccRecipients, RecipientFieldState.initialState(group: .cc))
@@ -743,7 +744,8 @@ private extension ComposerModelTests {
             contactStore: CNContactStorePartialStub(),
             photosItemsHandler: testPhotosItemsHandler,
             cameraImageHandler: testCameraImageHandler,
-            fileItemsHandler: testFilesItemsHandler
+            fileItemsHandler: testFilesItemsHandler,
+            isAddingAttachmentsEnabled: true
         )
     }
 

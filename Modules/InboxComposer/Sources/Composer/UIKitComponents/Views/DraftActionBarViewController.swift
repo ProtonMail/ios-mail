@@ -34,6 +34,7 @@ final class DraftActionBarViewController: UIViewController {
     private let discardButton = SubviewFactory.discardButton
     private let spacer = UIView()
     private let buttonSize = 40.0
+    private let isAddingAttachmentsEnabled: Bool
     var onEvent: ((Event) -> Void)?
 
     var passwordState: PasswordButton.State = .noPassword {
@@ -43,9 +44,11 @@ final class DraftActionBarViewController: UIViewController {
         }
     }
 
-    init() {
+    init(isAddingAttachmentsEnabled: Bool) {
+        self.isAddingAttachmentsEnabled = isAddingAttachmentsEnabled
         super.init(nibName: nil, bundle: nil)
     }
+
     required init?(coder: NSCoder) { nil }
 
     override func viewDidLoad() {
@@ -71,7 +74,10 @@ final class DraftActionBarViewController: UIViewController {
             return [removePassword, editPassword]
         }
 
-        stack.addArrangedSubview(attachmentButton)
+        if isAddingAttachmentsEnabled {
+            stack.addArrangedSubview(attachmentButton)
+        }
+
         stack.addArrangedSubview(passwordButton)
         stack.addArrangedSubview(spacer)
         stack.addArrangedSubview(discardButton)

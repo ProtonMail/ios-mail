@@ -20,6 +20,8 @@ import InboxCore
 import InboxCoreUI
 
 struct ComposerState: Equatable, Copying {
+    let isAddingAttachmentsEnabled: Bool
+
     var toRecipients: RecipientFieldState
     var ccRecipients: RecipientFieldState
     var bccRecipients: RecipientFieldState
@@ -55,8 +57,9 @@ struct ComposerState: Equatable, Copying {
 
 extension ComposerState {
 
-    static var initial: ComposerState {
+    static func initial(isAddingAttachmentsEnabled: Bool) -> Self {
         .init(
+            isAddingAttachmentsEnabled: isAddingAttachmentsEnabled,
             toRecipients: .initialState(group: .to),
             ccRecipients: .initialState(group: .cc),
             bccRecipients: .initialState(group: .bcc),

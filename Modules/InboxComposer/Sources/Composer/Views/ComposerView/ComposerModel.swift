@@ -83,14 +83,15 @@ final class ComposerModel: ObservableObject {
         contactStore: CNContactStoring,
         photosItemsHandler: PhotosPickerItemHandler,
         cameraImageHandler: CameraImageHandler,
-        fileItemsHandler: FilePickerItemHandler
+        fileItemsHandler: FilePickerItemHandler,
+        isAddingAttachmentsEnabled: Bool
     ) {
         self.draft = draft
         self.draftOrigin = draftOrigin
         self.contactProvider = contactProvider
         self.onDismiss = onDismiss
         self.permissionsHandler = .init(permissionsHandler: permissionsHandler, contactStore: contactStore)
-        self.state = .initial
+        self.state = .initial(isAddingAttachmentsEnabled: isAddingAttachmentsEnabled)
         self.photosItemsHandler = photosItemsHandler
         self.cameraImageHandler = cameraImageHandler
         self.fileItemsHandler = fileItemsHandler
@@ -447,6 +448,7 @@ extension ComposerModel {
 
     private func makeState(from draft: AppDraftProtocol, attachments: [DraftAttachmentUIModel] = []) -> ComposerState {
         .init(
+            isAddingAttachmentsEnabled: state.isAddingAttachmentsEnabled,
             toRecipients: .initialState(group: .to, recipients: recipientUIModels(from: draft, for: .to)),
             ccRecipients: .initialState(group: .cc, recipients: recipientUIModels(from: draft, for: .cc)),
             bccRecipients: .initialState(group: .bcc, recipients: recipientUIModels(from: draft, for: .bcc)),
