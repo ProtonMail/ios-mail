@@ -318,7 +318,7 @@ enum L10n {
             )
             static func snoozedTill(value: String) -> LocalizedStringResource {
                 .init(
-                    "Snoozed till \(value)",
+                    "Snoozed untill \(value)",
                     comment: "Message indicating till when email is snoozed."
                 )
             }
