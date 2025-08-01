@@ -85,7 +85,7 @@ final class PasswordButton: UIButton {
             checkmarkBackground.bottomAnchor.constraint(equalTo: backgroundIcon.bottomAnchor, constant: checkmarkPositionCorection),
             checkmarkBackground.trailingAnchor.constraint(equalTo: backgroundIcon.trailingAnchor, constant: checkmarkPositionCorection),
         ])
-        checkmarkBackground.backgroundColor = .white
+        checkmarkBackground.backgroundColor = DS.Color.Background.norm.toDynamicUIColor
         checkmarkBackground.layer.cornerRadius = (checkmarkMultiplier / 2) * lockIconSize
         checkmarkBackground.layer.masksToBounds = true
 
