@@ -68,6 +68,7 @@ class SnoozeStoreTests {
         #expect(dismissInvokedCount == 1)
     }
 
+    @Test
     func testUnsnoozeActionFailure_ItDisplaysToast() async {
         snoozeServiceSpy.unsnoozeResultStub = .error(.reason(.invalidSnoozeLocation))
 
@@ -80,6 +81,7 @@ class SnoozeStoreTests {
         )
     }
 
+    @Test
     func testSnoozeActionFailure_ItDisplaysToast() async {
         snoozeServiceSpy.snoozeResultStub = .error(.reason(.invalidSnoozeLocation))
 
@@ -92,6 +94,7 @@ class SnoozeStoreTests {
         )
     }
 
+    @Test
     func testSnoozeActionOtherFailure_ItDoesNotDisplayToast() async {
         snoozeServiceSpy.snoozeResultStub = .error(.other(.network))
 
