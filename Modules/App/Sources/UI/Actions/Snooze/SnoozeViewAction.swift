@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import Foundation
 import proton_app_uniffi
 
 enum SnoozeViewAction {
@@ -23,5 +24,6 @@ enum SnoozeViewAction {
     case predefinedSnoozeOptionTapped(SnoozeTime)
     case unsnoozeTapped
     case customSnoozeCancelTapped
+    case customSnoozeDateSelected(Date)
     case loadData
 }

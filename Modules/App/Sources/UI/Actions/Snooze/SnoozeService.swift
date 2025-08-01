@@ -17,13 +17,13 @@
 
 import proton_app_uniffi
 
-protocol SnoozeServiceProtocol {
+protocol SnoozeServiceProtocol: Sendable {
     func availableSnoozeActions(for conversation: [Id], systemCalendarWeekStart: NonDefaultWeekStart) async -> AvailableSnoozeActionsForConversationResult
     func snooze(conversation ids: [Id], labelId: Id, timestamp: UnixTimestamp) async -> SnoozeConversationsResult
     func unsnooze(conversation ids: [Id], labelId: Id) async -> UnsnoozeConversationsResult
 }
 
-class SnoozeService: SnoozeServiceProtocol {
+final class SnoozeService: SnoozeServiceProtocol {
     private let mailUserSession: () -> MailUserSession
 
     init(mailUserSession: @escaping () -> MailUserSession) {

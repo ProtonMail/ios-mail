@@ -62,6 +62,8 @@ class SnoozeStore: StateStore {
             await unsnoozeConversations()
         case .customSnoozeCancelTapped:
             transition(to: .main)
+        case .customSnoozeDateSelected(let snoozeDate):
+            await snoozeConversations(snoozeTime: UnixTimestamp(snoozeDate.timeIntervalSince1970))
         case .loadData:
             await loadSnoozeData()
         }

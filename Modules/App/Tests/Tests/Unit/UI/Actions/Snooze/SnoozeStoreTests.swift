@@ -81,12 +81,24 @@ class SnoozeStoreTests {
     }
 
     @Test
-    func customSnoozeCancelTapped_transitionsToMainView() async {
+    func customSnoozeCancelTapped_TransitionsToMainView() async {
         sut.state = sut.state.copy(\.screen, to: .custom)
 
         await sut.handle(action: .customSnoozeCancelTapped)
 
         #expect(sut.state.screen == .main)
+    }
+
+    @Test
+    func customSnoozeDateIsSelected_ItSnoozesConversation() async {
+        await sut.handle(action: .customSnoozeDateSelected(UInt64.timestamp.date))
+
+        #expect(snoozeServiceSpy.invokedSnooze.count == 1)
+        #expect(snoozeServiceSpy.invokedSnooze.first?.ids == conversationIDs)
+        #expect(snoozeServiceSpy.invokedSnooze.first?.labelId == labelId)
+        #expect(snoozeServiceSpy.invokedSnooze.first?.timestamp == .timestamp)
+        #expect(toastStateStore.state.toasts == [.snooze(snoozeDate: UInt64.timestamp.date)])
+        #expect(dismissInvokedCount == 1)
     }
 
     @Test

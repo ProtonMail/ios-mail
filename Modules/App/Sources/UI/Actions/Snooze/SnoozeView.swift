@@ -88,7 +88,7 @@ struct SnoozeView: View {
             DatePickerView(
                 configuration: SnoozeDatePickerConfiguration(),
                 onCancel: { store.handle(action: .customSnoozeCancelTapped) },
-                onSelect: { _ in }
+                onSelect: { snoozeDate in store.handle(action: .customSnoozeDateSelected(snoozeDate)) }
             )
         case .main:
             ClosableScreen {
