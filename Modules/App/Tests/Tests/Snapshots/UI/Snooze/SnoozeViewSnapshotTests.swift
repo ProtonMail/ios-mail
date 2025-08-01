@@ -80,7 +80,7 @@ struct SnoozeViewSnapshotTests {
         .environmentObject(UpsellCoordinator.dummy)
         .injectDateEnvironments()
 
-        assertSnapshotsOnIPhoneX(of: snoozeView, named: testCase.name, record: true)
+        assertSnapshotsOnIPhoneX(of: snoozeView, named: testCase.name)
     }
 }
 

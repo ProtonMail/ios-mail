@@ -111,7 +111,6 @@ struct SnoozeView: View {
 
                             if snoozeActions.showUnsnooze {
                                 unsnoozeButton(store: store)
-                                    .padding(.top, DS.Spacing.medium)
                             }
                         }
                         .padding(.horizontal, DS.Spacing.large)
