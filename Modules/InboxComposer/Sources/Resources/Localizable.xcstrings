@@ -727,6 +727,9 @@
         }
       }
     },
+    "Removed duplicate recipients: %@" : {
+      "comment" : "Error shown when multiple duplicated recipients are added to the draft."
+    },
     "Repeat password" : {
       "comment" : "Title of the text box to repeat the added password"
     },

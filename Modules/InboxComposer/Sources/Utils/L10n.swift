@@ -266,6 +266,14 @@ enum L10n {
             )
         }
 
+        static func duplicateRecipients(addresses: String) -> LocalizedStringResource {
+            LocalizedStringResource(
+                "Removed duplicate recipients: \(addresses)",
+                bundle: .atURL(Bundle.module.bundleURL),
+                comment: "Error shown when multiple duplicated recipients are added to the draft."
+            )
+        }
+
         static let draftSaveFailed = LocalizedStringResource(
             "There was a problem saving the draft",
             bundle: .atURL(Bundle.module.bundleURL),

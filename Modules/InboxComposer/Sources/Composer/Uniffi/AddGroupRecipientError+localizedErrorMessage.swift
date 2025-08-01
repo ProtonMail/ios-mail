@@ -20,14 +20,18 @@ import Foundation
 
 extension AddGroupRecipientError {
 
-    func localizedErrorMessage(groupName: String) -> LocalizedStringResource? {
+    func localizedErrorMessage() -> LocalizedStringResource? {
         switch self {
         case .ok, .emptyGroupName:
-            nil
-        case .duplicate:
-            L10n.ComposerError.duplicateRecipient(address: groupName)
+            return nil
+        case .duplicate(let duplicateAddresses):
+            guard !duplicateAddresses.isEmpty else { return nil }
+            let duplicates = duplicateAddresses.joined(separator: ", ")
+            return duplicateAddresses.count > 1
+                ? L10n.ComposerError.duplicateRecipients(addresses: duplicates)
+                : L10n.ComposerError.duplicateRecipient(address: duplicates)
         case .saveFailed:
-            L10n.ComposerError.draftSaveFailed
+            return L10n.ComposerError.draftSaveFailed
         }
     }
 }
