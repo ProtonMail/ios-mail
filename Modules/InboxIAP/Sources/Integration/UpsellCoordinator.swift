@@ -39,7 +39,8 @@ public final class UpsellCoordinator: ObservableObject {
             onlineExecutor: mailUserSession,
             plansComposer: plansComposer,
             planPurchasing: planPurchasing,
-            configuration: configuration)
+            configuration: configuration
+        )
     }
 
     init(

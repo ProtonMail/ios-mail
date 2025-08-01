@@ -16,6 +16,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import Foundation
 import PaymentsNG
 
 protocol PlanPurchasing {
@@ -30,6 +31,13 @@ extension ProtonPlansManager: PlanPurchasing {
 
 struct DummyPlanPurchasing: PlanPurchasing {
     func purchase(storeKitProductId: String) async throws {
-        try await Task.sleep(for: .seconds(2))
+        try? await Task.sleep(for: .seconds(0.25))
+        throw IAPsNotAvailableInTestFlightError()
+    }
+}
+
+private struct IAPsNotAvailableInTestFlightError: LocalizedError {
+    var errorDescription: String? {
+        "In-app purchases are not available in TestFlight builds.".notLocalized
     }
 }
