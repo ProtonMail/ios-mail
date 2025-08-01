@@ -28,7 +28,7 @@ class PINLockStateStore: StateStore {
     }
 
     @MainActor
-    func handle(action: PINLockScreenAction) async {
+    func handle(action: PINLockScreenAction) {
         switch action {
         case .confirmTapped:
             guard !state.pin.digits.isEmpty else { return }

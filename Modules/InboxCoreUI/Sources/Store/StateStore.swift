@@ -24,6 +24,7 @@ public protocol StateStore: ObservableObject where Action: Sendable {
     var state: State { get set }
 
     func handle(action: Action) async
+    @MainActor
     func binding<Value>(_ keyPath: WritableKeyPath<State, Value> & Sendable) -> Binding<Value>
 }
 
