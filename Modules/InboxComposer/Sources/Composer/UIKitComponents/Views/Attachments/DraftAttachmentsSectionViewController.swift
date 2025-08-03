@@ -96,6 +96,11 @@ final class DraftAttachmentsSectionViewController: UIViewController {
         let cancel = UIAlertAction(title: CommonL10n.cancel.string, style: .cancel)
         alertController.addAction(remove)
         alertController.addAction(cancel)
+
+        if let popover = alertController.popoverPresentationController {
+            popover.sourceView = view
+        }
+
         present(alertController, animated: true)
     }
 }
