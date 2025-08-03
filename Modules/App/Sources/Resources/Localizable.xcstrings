@@ -16266,10 +16266,7 @@
       }
     },
     "Snoozed until %@" : {
-      "comment" : "Banner indicating when a snoozed email will reappear in the inbox."
-    },
-    "Snoozed untill %@" : {
-      "comment" : "Message indicating till when email is snoozed."
+      "comment" : "Banner indicating when a snoozed email will reappear in the inbox.\nMessage indicating till when email is snoozed."
     },
     "Some emails couldn't be sent. Open the app to finish sending." : {
       "comment" : "Notification that is displayed when background time is up and at least one message is unsent."
