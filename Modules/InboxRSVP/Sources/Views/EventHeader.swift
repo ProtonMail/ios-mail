@@ -22,6 +22,7 @@ struct EventHeader: View {
     let title: String
     let formattedDate: String
     let answerButtons: Event.AnswerButtonsState
+    let calendarButtonAction: () -> Void
 
     var body: some View {
         HStack(alignment: .top, spacing: DS.Spacing.standard) {
@@ -43,8 +44,12 @@ struct EventHeader: View {
                 }
             }
             Spacer(minLength: 0)
-            Image(DS.Images.protonCalendar)
-                .square(size: 52)
+            Button(
+                action: calendarButtonAction,
+                label: {
+                    Image(DS.Images.protonCalendar)
+                        .square(size: 52)
+                })
         }
     }
 }

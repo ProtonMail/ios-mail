@@ -30,6 +30,7 @@ struct RSVPEventViewSnapshotTests {
             event: testCase.event,
             isAnswering: testCase.isAnswering,
             onAnswerSelected: { _ in },
+            onCalendarIconTapped: {},
             areParticipantsExpanded: testCase.isExpanded,
         )
 

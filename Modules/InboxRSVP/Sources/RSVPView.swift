@@ -20,6 +20,7 @@ import proton_app_uniffi
 import SwiftUI
 
 public struct RSVPView: View {
+    @Environment(\.openURL) var openURL
     private let serviceProvider: RsvpEventServiceProvider
 
     public init(serviceProvider: RsvpEventServiceProvider) {
@@ -27,7 +28,7 @@ public struct RSVPView: View {
     }
 
     public var body: some View {
-        StoreView(store: RSVPStateStore(serviceProvider: serviceProvider)) { state, store in
+        StoreView(store: RSVPStateStore(serviceProvider: serviceProvider, openURL: openURL)) { state, store in
             Group {
                 switch state {
                 case .loading:
@@ -38,7 +39,8 @@ public struct RSVPView: View {
                     RSVPEventView(
                         event: event,
                         isAnswering: state.isAnswering,
-                        onAnswerSelected: { selectedAnswer in store.handle(action: .answer(selectedAnswer)) }
+                        onAnswerSelected: { selectedAnswer in store.handle(action: .answer(selectedAnswer)) },
+                        onCalendarIconTapped: { store.handle(action: .calendarIconTapped) }
                     )
                 }
             }

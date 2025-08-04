@@ -29,6 +29,7 @@ final class RSVPStateStore: StateStore {
     }
 
     private let serviceProvider: RsvpEventServiceProvider
+    private let openURL: URLOpenerProtocol
     private var internalState: InternalState {
         didSet { state = internalState.state }
     }
@@ -38,10 +39,12 @@ final class RSVPStateStore: StateStore {
         case onLoad
         case retry
         case answer(RsvpAnswer)
+        case calendarIconTapped
     }
 
-    init(serviceProvider: RsvpEventServiceProvider) {
+    init(serviceProvider: RsvpEventServiceProvider, openURL: URLOpenerProtocol) {
         self.serviceProvider = serviceProvider
+        self.openURL = openURL
         self.internalState = .loading
         self.state = internalState.state
     }
@@ -54,6 +57,10 @@ final class RSVPStateStore: StateStore {
         case .answer(let status):
             if case let .loaded(service, event) = internalState {
                 await answer(with: status, event: event, service: service)
+            }
+        case .calendarIconTapped:
+            if case let .loaded(_, event) = internalState {
+                tryToOpenCalendarApp(with: event)
             }
         }
     }
@@ -108,6 +115,39 @@ final class RSVPStateStore: StateStore {
         if internalState != newState {
             internalState = newState
         }
+    }
+
+    private func tryToOpenCalendarApp(with event: RsvpEvent) {
+        guard let deeplinkURL = calendarAppDeeplinkURL(from: event) else {
+            openProtonCalendarInAppStore()
+            return
+        }
+
+        openURL(deeplinkURL) { [weak self] accepted in
+            if !accepted {
+                self?.openProtonCalendarInAppStore()
+            }
+        }
+    }
+
+    private func openProtonCalendarInAppStore() {
+        let calendarAppStoreURL = URL(string: "itms-apps://itunes.apple.com/app/id1514709943")!
+        openURL(calendarAppStoreURL)
+    }
+
+    private func calendarAppDeeplinkURL(from event: RsvpEvent) -> URL? {
+        guard let eventID = event.id, let calendar = event.calendar else {
+            return nil
+        }
+
+        let baseURL = URL(string: "ch.protonmail.calendar://eventDetails")!
+        let queryItems: [URLQueryItem] = [
+            URLQueryItem(name: "eventID", value: eventID),
+            URLQueryItem(name: "calendarID", value: calendar.id),
+            URLQueryItem(name: "startTime", value: "\(event.startsAt)"),
+        ]
+
+        return baseURL.appending(queryItems: queryItems)
     }
 }
 

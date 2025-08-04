@@ -24,17 +24,20 @@ struct RSVPEventView: View {
     private let event: Event
     private let isAnswering: Bool
     private let onAnswerSelected: (RsvpAnswer) -> Void
+    private let onCalendarIconTapped: () -> Void
     @State private var areParticipantsExpanded: Bool
 
     init(
         event: RsvpEvent,
         isAnswering: Bool,
         onAnswerSelected: @escaping (RsvpAnswer) -> Void,
+        onCalendarIconTapped: @escaping () -> Void,
         areParticipantsExpanded: Bool = false,
     ) {
         self.event = EventMapper.map(from: event)
         self.isAnswering = isAnswering
         self.onAnswerSelected = onAnswerSelected
+        self.onCalendarIconTapped = onCalendarIconTapped
         self.areParticipantsExpanded = areParticipantsExpanded
     }
 
@@ -69,7 +72,12 @@ struct RSVPEventView: View {
 
     @ViewBuilder
     private var eventHeader: some View {
-        EventHeader(title: event.title, formattedDate: event.formattedDate, answerButtons: event.answerButtons)
+        EventHeader(
+            title: event.title,
+            formattedDate: event.formattedDate,
+            answerButtons: event.answerButtons,
+            calendarButtonAction: onCalendarIconTapped
+        )
     }
 
     @Namespace private var answerButtonAnimation
@@ -170,6 +178,7 @@ private extension RsvpAttendeeStatus {
             event: event,
             isAnswering: true,
             onAnswerSelected: { _ in },
+            onCalendarIconTapped: {},
             areParticipantsExpanded: false
         )
     }
