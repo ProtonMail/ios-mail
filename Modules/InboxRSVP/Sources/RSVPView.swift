@@ -15,42 +15,34 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import InboxCoreUI
 import proton_app_uniffi
 import SwiftUI
 
 public struct RSVPView: View {
-    @StateObject private var store: RSVPStateStore
+    private let serviceProvider: RsvpEventServiceProvider
 
     public init(serviceProvider: RsvpEventServiceProvider) {
-        _store = StateObject(wrappedValue: .init(serviceProvider: serviceProvider))
+        self.serviceProvider = serviceProvider
     }
 
     public var body: some View {
-        content
-            .onLoad { handle(action: .onLoad) }
-    }
-
-    // MARK: - Private
-
-    @ViewBuilder
-    private var content: some View {
-        switch store.state {
-        case .loading:
-            RSVPSkeletonView()
-        case .loadFailed:
-            RSVPErrorRetryView { handle(action: .retry) }
-        case .loaded(let event), .answering(let event):
-            RSVPEventView(
-                event: event,
-                isAnswering: store.state.isAnswering,
-                onAnswerSelected: { selectedAnswer in handle(action: .answer(selectedAnswer)) }
-            )
-        }
-    }
-
-    private func handle(action: RSVPStateStore.Action) {
-        Task {
-            await store.handle(action: action)
+        StoreView(store: RSVPStateStore(serviceProvider: serviceProvider)) { state, store in
+            Group {
+                switch state {
+                case .loading:
+                    RSVPSkeletonView()
+                case .loadFailed:
+                    RSVPErrorRetryView { store.handle(action: .retry) }
+                case .loaded(let event), .answering(let event):
+                    RSVPEventView(
+                        event: event,
+                        isAnswering: state.isAnswering,
+                        onAnswerSelected: { selectedAnswer in store.handle(action: .answer(selectedAnswer)) }
+                    )
+                }
+            }
+            .onLoad { store.handle(action: .onLoad) }
         }
     }
 }

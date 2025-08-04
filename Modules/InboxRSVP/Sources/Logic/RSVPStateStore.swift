@@ -16,10 +16,11 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import InboxCore
+import InboxCoreUI
 import proton_app_uniffi
 import SwiftUI
 
-final class RSVPStateStore: ObservableObject {
+final class RSVPStateStore: StateStore {
     enum State: Equatable {
         case loading
         case loadFailed
@@ -31,7 +32,7 @@ final class RSVPStateStore: ObservableObject {
     private var internalState: InternalState {
         didSet { state = internalState.state }
     }
-    @Published private(set) var state: State
+    @Published var state: State
 
     enum Action {
         case onLoad
