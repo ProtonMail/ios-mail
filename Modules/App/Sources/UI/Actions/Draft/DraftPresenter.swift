@@ -78,6 +78,11 @@ struct DraftPresenter: ContactsDraftPresenter {
         }
     }
 
+    func openDraft(inMode createMode: DraftCreateMode) async throws {
+        AppLogger.log(message: "open draft in mode: \(createMode)", category: .composer)
+        try await openNewDraft(createMode: createMode, updateDraft: .none)
+    }
+
     func handleReplyAction(for messageId: ID, action: ReplyAction, onError: (DraftOpenError) -> Void) async {
         switch action {
         case .reply:

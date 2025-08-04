@@ -18,6 +18,7 @@
 import Combine
 import Foundation
 import InboxCore
+import proton_app_uniffi
 
 @MainActor
 final class AppRouteState: ObservableObject, Sendable {
@@ -30,8 +31,19 @@ final class AppRouteState: ObservableObject, Sendable {
         _route.projectedValue
             .compactMap {
                 switch $0 {
-                case .mailbox: nil
+                case .mailbox, .composerFromShareExtension: nil
                 case .mailboxOpenMessage(let seed): seed
+                }
+            }
+            .eraseToAnyPublisher()
+    }
+
+    var openedDraft: AnyPublisher<DraftCreateMode, Never> {
+        _route.projectedValue
+            .compactMap {
+                switch $0 {
+                case .composerFromShareExtension: .fromIosShareExtension
+                default: nil
                 }
             }
             .eraseToAnyPublisher()
@@ -58,12 +70,13 @@ extension AppRouteState {
 enum Route: Equatable, CustomStringConvertible {
     case mailbox(selectedMailbox: SelectedMailbox)
     case mailboxOpenMessage(seed: MailboxMessageSeed)
+    case composerFromShareExtension
 
     var selectedMailbox: SelectedMailbox {
         switch self {
         case .mailbox(let selectedMailbox):
             selectedMailbox
-        case .mailboxOpenMessage:
+        case .mailboxOpenMessage, .composerFromShareExtension:
             SelectedMailbox.inbox
         }
     }
@@ -74,6 +87,8 @@ enum Route: Equatable, CustomStringConvertible {
             "mailbox \(label.name.string)"
         case .mailboxOpenMessage:
             "mailboxOpenMessage"
+        case .composerFromShareExtension:
+            "composerFromShareExtension"
         }
     }
 }

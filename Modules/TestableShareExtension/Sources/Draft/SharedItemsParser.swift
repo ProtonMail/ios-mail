@@ -20,14 +20,14 @@ import Foundation
 import InboxCore
 import UniformTypeIdentifiers
 
-struct SharedContent {
+public struct SharedContent {
     let subject: String?
     let body: String?
     let attachments: [NSItemProvider]
 }
 
-enum SharedItemsParser {
-    static func parse(extensionItems: [NSExtensionItem]) async throws -> SharedContent {
+public enum SharedItemsParser {
+    public static func parse(extensionItems: [NSExtensionItem]) async throws -> SharedContent {
         guard let extensionItem = extensionItems.first, let attachments = extensionItem.attachments else {
             return .init(subject: nil, body: nil, attachments: [])
         }

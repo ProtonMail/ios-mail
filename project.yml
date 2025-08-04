@@ -274,7 +274,7 @@ targets:
       - Extension
     templateAttributes:
       bundle_identifier: ch.protonmail.protonmail.Share
-      principal_class: ShareViewController
+      principal_class: DeepLinkingShareViewController
       point_identifier: com.apple.share-services
       release_provisioning_profile: "Protonmail share release"
     dependencies:
