@@ -41,9 +41,11 @@ extension Conversation {
             labelUIModel: customLabels.toMailboxLabelUIModel(),
             attachmentsUIModel: attachmentsMetadata.toAttachmentCapsuleUIModels(),
             expirationDate: Date(timeIntervalSince1970: TimeInterval(expirationTime)),
-            snoozeDate: snoozedUntil?.date,
+            snoozeDate: nil, // FIXME: - Hide snooze for release
+//            snoozeDate: snoozedUntil?.date,
             isDraftMessage: false,
-            shouldUseSnoozedColorForDate: displaySnoozeReminder
+            shouldUseSnoozedColorForDate: false // FIXME: - Hide snooze for release
+//            shouldUseSnoozedColorForDate: displaySnoozeReminder
         )
     }
 

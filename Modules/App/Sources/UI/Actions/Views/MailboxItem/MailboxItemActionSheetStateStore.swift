@@ -108,8 +108,9 @@ class MailboxItemActionSheetStateStore: StateStore {
                 )
             case .delete:
                 state = state.copy(\.alert, to: deleteConfirmationAlert)
-            case .snooze:
-                navigation(.snooze)
+//                FIXME: - Hide snooze for release
+//            case .snooze:
+//                navigation(.snooze)
             case .pin, .unpin:
                 break
             }

@@ -42,7 +42,8 @@ enum Action: ActionPickerListElement {
     case reportPhishing
     case saveAsPDF
     case star
-    case snooze
+    // FIXME: - Hide snooze for release
+//    case snooze
     case unpin
     case unstar
     case viewHeaders
@@ -70,7 +71,7 @@ enum Action: ActionPickerListElement {
         case .reportPhishing: \.reportPhishing
         case .saveAsPDF: \.saveAsPDF
         case .star: \.star
-        case .snooze: \.snooze
+//        case .snooze: \.snooze
         case .unpin: \.unpin
         case .unstar: \.unstar
         case .viewHeaders: \.viewHeaders
@@ -110,8 +111,8 @@ enum Action: ActionPickerListElement {
             DS.Icon.icHook.image
         case .saveAsPDF:
             DS.Icon.icFilePDF.image
-        case .snooze:
-            DS.Icon.icClock.image
+//        case .snooze:
+//            DS.Icon.icClock.image
         case .star:
             Image(symbol: .star)
         case .unpin:

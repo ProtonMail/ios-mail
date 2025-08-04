@@ -519,6 +519,7 @@ extension ConversationDetailModel {
             .bottomBarConversationActionsProvider(mailbox, [conversationID])
             .get()
             .visibleBottomBarActions
+            .filter { $0 != .snooze } // FIXME: - Hide snooze for release
     }
 }
 

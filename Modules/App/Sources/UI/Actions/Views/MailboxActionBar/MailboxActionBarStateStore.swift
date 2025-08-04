@@ -187,8 +187,8 @@ final class MailboxActionBarStateStore: StateStore {
     private func updateActions(actions: AllBottomBarMessageActions) {
         state =
             state
-            .copy(\.bottomBarActions, to: actions.visibleBottomBarActions)
-            .copy(\.moreSheetOnlyActions, to: actions.hiddenBottomBarActions)
+            .copy(\.bottomBarActions, to: actions.visibleBottomBarActions.filter { $0 != .snooze }) // FIXME: - Hide snooze for release
+            .copy(\.moreSheetOnlyActions, to: actions.hiddenBottomBarActions.filter { $0 != .snooze }) // FIXME: - Hide snooze for release
     }
 
     private func dismissMoreActionSheet() {

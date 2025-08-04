@@ -31,7 +31,8 @@ extension MailboxItemAction {
         case .markRead: .markAsRead
         case .markUnread: .markAsUnread
         case .delete: .deletePermanently
-        case .snooze: .snooze
+//            FIXME: - Hide snooze for release
+//        case .snooze: .snooze
         }
     }
 

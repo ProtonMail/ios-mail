@@ -18,7 +18,7 @@
 import proton_app_uniffi
 
 extension ConversationAction {
-    var action: MailboxItemAction {
+    var action: MailboxItemAction? {
         switch self {
         case .star:
             return .star
@@ -37,7 +37,8 @@ extension ConversationAction {
         case .delete:
             return .delete
         case .snooze:
-            return .snooze
+            return nil
+//            return .snooze FIXME: - Hide snooze for release
         }
     }
 }
