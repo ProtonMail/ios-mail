@@ -36,7 +36,7 @@ struct DummyPlanPurchasing: PlanPurchasing {
     }
 }
 
-private struct IAPsNotAvailableInTestFlightError: LocalizedError {
+struct IAPsNotAvailableInTestFlightError: LocalizedError {
     var errorDescription: String? {
         "In-app purchases are not available in TestFlight builds.".notLocalized
     }
