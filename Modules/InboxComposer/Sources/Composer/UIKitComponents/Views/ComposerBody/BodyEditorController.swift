@@ -103,8 +103,8 @@ final class BodyEditorController: UIViewController {
                 onEvent?(.onCursorPositionChange(position: position))
             case .onInlineImageRemoved(let cid):
                 onEvent?(.onInlineImageRemoved(cid: cid))
-            case .onInlineImageTapped(let cid):
-                showInlineImageMenu(cid: cid)
+            case .onInlineImageTapped(let cid, let imageRect):
+                showInlineImageMenu(cid: cid, imageRect: imageRect)
             case .onImagePasted(let imageData):
                 guard let image = UIImage(data: imageData) else {
                     AppLogger.log(message: "pasted data is not an image", category: .composer, isError: true)
@@ -134,7 +134,7 @@ final class BodyEditorController: UIViewController {
         }
     }
 
-    private func showInlineImageMenu(cid: String) {
+    private func showInlineImageMenu(cid: String, imageRect: CGRect) {
         let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
 
         let option1 = UIAlertAction(title: L10n.Attachments.sendAsAttachment.string, style: .default) { [weak self] _ in
@@ -144,6 +144,12 @@ final class BodyEditorController: UIViewController {
             self?.onEvent?(.onInlineImageRemovalRequested(cid: cid))
         }
         let cancel = UIAlertAction(title: CommonL10n.cancel.string, style: .cancel)
+
+        if let popover = alertController.popoverPresentationController {
+            popover.sourceView = webView
+            popover.sourceRect = imageRect
+        }
+
         alertController.addAction(option1)
         alertController.addAction(option2)
         alertController.addAction(cancel)

@@ -204,10 +204,22 @@ private extension BodyHtmlDocument {
             if (event.target.nodeName === 'IMG') {
                 const src = event.target.getAttribute('src');
                 if (src && src.startsWith('cid:')) {
+                    const img = event.target;
+                    const rect = img.getBoundingClientRect();
+                    const width  = rect.width;
+                    const height = rect.height;
+                    const x = rect.left + window.scrollX;  
+                    const y = rect.top  + window.scrollY;  
+
                     const cid = src.substring(4);
+
                     window.webkit.messageHandlers.\(JSEvent.inlineImageTapped).postMessage({
                         "messageHandler": "\(JSEvent.inlineImageTapped)",
-                        "cid": cid
+                        "cid": cid,
+                        "x": x,
+                        "y": y,
+                        "width": width,
+                        "height": height
                     });
                 }
             }

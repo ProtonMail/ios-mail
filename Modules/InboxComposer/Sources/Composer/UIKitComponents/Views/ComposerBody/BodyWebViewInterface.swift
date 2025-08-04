@@ -27,7 +27,7 @@ final class BodyWebViewInterface: NSObject {
         case onEditorChange
         case onCursorPositionChange(position: CGPoint)
         case onInlineImageRemoved(cid: String)
-        case onInlineImageTapped(cid: String)
+        case onInlineImageTapped(cid: String, imageRect: CGRect)
         case onImagePasted(image: Data)
     }
 
@@ -127,8 +127,13 @@ final class BodyWebViewInterface: NSObject {
                 onEvent?(.onInlineImageRemoved(cid: cid))
             }
         case .inlineImageTapped:
-            if let cid = userInfo["cid"] as? String {
-                onEvent?(.onInlineImageTapped(cid: cid))
+            if let cid = userInfo["cid"] as? String,
+                let x = userInfo["x"] as? CGFloat,
+                let y = userInfo["y"] as? CGFloat,
+                let width = userInfo["width"] as? CGFloat,
+                let height = userInfo["height"] as? CGFloat
+            {
+                onEvent?(.onInlineImageTapped(cid: cid, imageRect: .init(x: x, y: y, width: width, height: height)))
             }
         case .imagePasted:
             guard let data = readImageData(from: userInfo) else { return }
