@@ -51,6 +51,7 @@ final class RecipientsFieldEditingController: UIViewController {
     }
 
     var onEvent: ((Event) -> Void)?
+    private var sizeClassObserver: UITraitChangeRegistration?
 
     init(state: RecipientFieldState, invalidAddressAlertStore: InvalidAddressAlertStateStore) {
         self.state = state
@@ -62,6 +63,10 @@ final class RecipientsFieldEditingController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        sizeClassObserver = registerForTraitChanges(
+            [UITraitHorizontalSizeClass.self, UITraitVerticalSizeClass.self],
+            action: #selector(handleSizeClassChange)
+        )
         setUpUI()
         setUpConstraints()
     }
@@ -71,6 +76,22 @@ final class RecipientsFieldEditingController: UIViewController {
         heightConstraint.constant = RecipientsFieldExpandedLayout.minCellHeight
         self.becomeFirstResponder()
         view.layoutIfNeeded()
+    }
+
+    @objc
+    private func handleSizeClassChange() {
+        invalidateAndReload()
+    }
+
+    private func invalidateAndReload() {
+        // This code fixes a crash when rotating from landscape to portrait. This is a known issue caused
+        // by the system not calculating properly the items' on rotation. The system decides that even a single item
+        // does not fit in the group's width, even though the group is set to `.fractionalWidth(1.0)`.
+        collectionView.collectionViewLayout.invalidateLayout()
+        collectionView.reloadData()
+        DispatchQueue.main.async { [weak self] in
+            self?.manageFocusAfterReload()
+        }
     }
 
     private func setUpUI() {

@@ -109,7 +109,7 @@ final class RecipientsFieldController: UIViewController {
             stack.leadingAnchor.constraint(equalTo: label.trailingAnchor, constant: DS.Spacing.small),
             stack.topAnchor.constraint(equalTo: view.topAnchor, constant: verticalMargin),
             stack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -DS.Spacing.standard),
-            stack.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -verticalMargin)
+            stack.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -verticalMargin),
         ])
     }
 
