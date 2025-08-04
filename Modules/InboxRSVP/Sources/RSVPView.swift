@@ -40,17 +40,12 @@ public struct RSVPView: View {
         case .loadFailed:
             RSVPErrorRetryView { handle(action: .retry) }
         case .loaded(let event), .answering(let event):
-            eventDetailsView(with: event, isAnswering: store.state.isAnswering)
+            RSVPEventView(
+                event: event,
+                isAnswering: store.state.isAnswering,
+                onAnswerSelected: { selectedAnswer in handle(action: .answer(selectedAnswer)) }
+            )
         }
-    }
-
-    @ViewBuilder
-    private func eventDetailsView(with event: RsvpEvent, isAnswering: Bool) -> some View {
-        RSVPEventView(
-            event: event,
-            isAnswering: isAnswering,
-            onAnswerSelected: { selectedAnswer in handle(action: .answer(selectedAnswer)) }
-        )
     }
 
     private func handle(action: RSVPStateStore.Action) {
