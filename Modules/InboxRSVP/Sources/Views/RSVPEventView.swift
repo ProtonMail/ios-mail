@@ -124,7 +124,7 @@ struct RSVPEventView: View {
             if let location = event.location {
                 EventDetailsRow(icon: DS.Icon.icMapPin, text: location)
             }
-            EventDetailsRowMenu<MenuOrganizerOption>(
+            EventDetailsRowMenu<EventMenuParticipantOption>(
                 icon: DS.Icon.icUser,
                 text: event.organizer.displayName
             ) { _ in }
