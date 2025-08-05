@@ -28,7 +28,7 @@ struct EventParticipantsRowButton: View {
             EventDetailsRow(
                 icon: DS.Icon.icUsers,
                 text: L10n.Details.participantsCount(count: count).string,
-                trailingIcon: isExpanded ? DS.Icon.icChevronUpFilled : DS.Icon.icChevronDownFilled
+                trailingIconSymbol: isExpanded ? .chevronUp : .chevronDown
             )
         }
         .buttonStyle(EventDetailsRowButtonStyle())
