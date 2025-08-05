@@ -54,8 +54,12 @@ final class RecipientCell: UICollectionViewCell {
         ])
     }
 
+    func configure(maxWidth: CGFloat) {
+        widthConstraint?.constant = maxWidth
+    }
+
     func configure(with recipient: RecipientUIModel, maxWidth: CGFloat) {
         self.recipient = recipient
-        widthConstraint?.constant = maxWidth
+        configure(maxWidth: maxWidth)
     }
 }

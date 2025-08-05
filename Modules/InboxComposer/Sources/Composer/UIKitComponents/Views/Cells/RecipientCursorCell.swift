@@ -67,6 +67,8 @@ final class RecipientCursorCell: UICollectionViewCell {
             textField.centerYAnchor.constraint(equalTo: contentView.centerYAnchor, constant: -1),
             textField.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
         ])
+        textField.setContentHuggingPriority(.defaultLow, for: .horizontal)
+        textField.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
     }
 
     func clearText() {
@@ -84,10 +86,15 @@ final class RecipientCursorCell: UICollectionViewCell {
         intentionallyResigningResponder = false
     }
 
-    func configure(maxWidth: CGFloat, input: String) {
-        textField.text = input
+    func configure(maxWidth: CGFloat) {
         widthConstraint?.constant = maxWidth
     }
+
+    func configure(maxWidth: CGFloat, input: String) {
+        textField.text = input
+        configure(maxWidth: maxWidth)
+    }
+
 }
 
 extension RecipientCursorCell: UITextFieldDelegate {
