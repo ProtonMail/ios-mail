@@ -20,13 +20,14 @@ import SwiftUI
 
 struct ActionButtonStyle: ButtonStyle {
     let textColor: Color
+    let fontWeight: Font.Weight
     let backgroundColor: Color
     let pressedBackgroundColor: Color
 
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .font(.subheadline)
-            .fontWeight(.regular)
+            .fontWeight(fontWeight)
             .foregroundStyle(textColor)
             .padding(.all, 12)
             .frame(maxWidth: .infinity)
@@ -39,15 +40,17 @@ extension ActionButtonStyle {
 
     static var answerButtonStyle: Self {
         .init(
-            textColor: DS.Color.Brand.plus30,
-            backgroundColor: DS.Color.InteractionBrandWeak.norm,
-            pressedBackgroundColor: DS.Color.InteractionBrandWeak.pressed
+            textColor: DS.Color.Text.inverted,
+            fontWeight: .semibold,
+            backgroundColor: DS.Color.InteractionBrand.norm,
+            pressedBackgroundColor: DS.Color.InteractionBrand.pressed
         )
     }
 
     static var retryButtonStyle: Self {
         .init(
             textColor: DS.Color.Text.norm,
+            fontWeight: .regular,
             backgroundColor: DS.Color.InteractionWeak.norm,
             pressedBackgroundColor: DS.Color.InteractionWeak.pressed
         )

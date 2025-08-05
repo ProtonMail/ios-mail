@@ -16,10 +16,11 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import InboxCore
+import InboxCoreUI
 import proton_app_uniffi
 import SwiftUI
 
-final class RSVPStateStore: ObservableObject {
+final class RSVPStateStore: StateStore {
     enum State: Equatable {
         case loading
         case loadFailed
@@ -28,19 +29,22 @@ final class RSVPStateStore: ObservableObject {
     }
 
     private let serviceProvider: RsvpEventServiceProvider
+    private let openURL: URLOpenerProtocol
     private var internalState: InternalState {
         didSet { state = internalState.state }
     }
-    @Published private(set) var state: State
+    @Published var state: State
 
     enum Action {
         case onLoad
         case retry
         case answer(RsvpAnswer)
+        case calendarIconTapped
     }
 
-    init(serviceProvider: RsvpEventServiceProvider) {
+    init(serviceProvider: RsvpEventServiceProvider, openURL: URLOpenerProtocol) {
         self.serviceProvider = serviceProvider
+        self.openURL = openURL
         self.internalState = .loading
         self.state = internalState.state
     }
@@ -53,6 +57,10 @@ final class RSVPStateStore: ObservableObject {
         case .answer(let status):
             if case let .loaded(service, event) = internalState {
                 await answer(with: status, event: event, service: service)
+            }
+        case .calendarIconTapped:
+            if case let .loaded(_, event) = internalState {
+                tryToOpenEventInCalendarApp(with: event)
             }
         }
     }
@@ -107,6 +115,37 @@ final class RSVPStateStore: ObservableObject {
         if internalState != newState {
             internalState = newState
         }
+    }
+
+    private func tryToOpenEventInCalendarApp(with event: RsvpEvent) {
+        guard let deeplinkURL = openCalendarEventDeepLinkURL(from: event) else {
+            openProtonCalendarInAppStore()
+            return
+        }
+
+        openURL(deeplinkURL) { [weak self] accepted in
+            if !accepted {
+                self?.openProtonCalendarInAppStore()
+            }
+        }
+    }
+
+    private func openProtonCalendarInAppStore() {
+        openURL(.ProtonCalendar.appStoreURL)
+    }
+
+    private func openCalendarEventDeepLinkURL(from event: RsvpEvent) -> URL? {
+        guard let eventID = event.id, let calendarID = event.calendar?.id else {
+            return nil
+        }
+
+        let calendarEvent = CalendarEvent(
+            eventID: eventID,
+            calendarID: calendarID,
+            startTime: event.startsAt
+        )
+
+        return .ProtonCalendar.openEventDeepLink(from: calendarEvent)
     }
 }
 

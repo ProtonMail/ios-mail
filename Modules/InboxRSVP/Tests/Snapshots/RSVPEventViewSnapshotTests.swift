@@ -30,6 +30,7 @@ struct RSVPEventViewSnapshotTests {
             event: testCase.event,
             isAnswering: testCase.isAnswering,
             onAnswerSelected: { _ in },
+            onCalendarIconTapped: {},
             areParticipantsExpanded: testCase.isExpanded,
         )
 
@@ -49,6 +50,7 @@ private extension RsvpEvent {
         (unanswerableOutdated, "unanswerable_outdated", false, false),
         (unanswerableUnknown, "unanswerable_offline", false, false),
         (unanswerableOrganizer, "unanswerable_organizer", false, false),
+        (unanswerableAddressIsIncorrect, "unanswerable_address_incorrect", false, false),
         (cancelled, "cancelled", false, false),
         (cancelledOutdated, "cancelled_outdated", false, true),
         (reminderPending, "reminder_future", false, false),
@@ -106,6 +108,11 @@ private extension RsvpEvent {
     static let unanswerableUnknown = RsvpEvent.testData(
         data: .fullDaySingle,
         state: .unanswerableInvite(reason: .inviteHasUnknownRecency)
+    )
+
+    static let unanswerableAddressIsIncorrect = RsvpEvent.testData(
+        data: .fullDaySingle,
+        state: .unanswerableInvite(reason: .addressIsIncorrect)
     )
 
     static let cancelled = RsvpEvent.testData(

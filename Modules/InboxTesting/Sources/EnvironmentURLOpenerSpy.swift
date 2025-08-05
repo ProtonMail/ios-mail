@@ -22,10 +22,15 @@ public class EnvironmentURLOpenerSpy: URLOpenerProtocol {
     public init() {}
 
     public private(set) var callAsFunctionInvokedWithURL: [URL] = []
+    public private(set) var callAsFunctionInvoked: [(url: URL, completion: (Bool) -> Void)] = []
 
     // MARK: - URLOpenerProtocol
 
     public func callAsFunction(_ url: URL) {
         callAsFunctionInvokedWithURL.append(url)
+    }
+
+    public func callAsFunction(_ url: URL, completion: @escaping (Bool) -> Void) {
+        callAsFunctionInvoked.append((url, completion: completion))
     }
 }

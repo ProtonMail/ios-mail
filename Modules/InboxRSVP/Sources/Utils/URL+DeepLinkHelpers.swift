@@ -15,22 +15,21 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import InboxDesignSystem
-import SwiftUI
+import Foundation
 
-struct EventParticipantsRowButton: View {
-    let count: Int
-    @Binding var isExpanded: Bool
-    let action: () -> Void
+extension URL {
+    enum ProtonCalendar {
+        static let appStoreURL = URL(string: "itms-apps://itunes.apple.com/app/id1514709943").unsafelyUnwrapped
 
-    var body: some View {
-        Button(action: action) {
-            EventDetailsRow(
-                icon: DS.Icon.icUsers,
-                text: L10n.Details.participantsCount(count: count).string,
-                trailingIconSymbol: isExpanded ? .chevronUp : .chevronDown
-            )
+        static func openEventDeepLink(from model: CalendarEvent) -> URL {
+            let baseURL = URL(string: "ch.protonmail.calendar://eventDetails").unsafelyUnwrapped
+            let queryItems: [URLQueryItem] = [
+                URLQueryItem(name: "eventID", value: model.eventID),
+                URLQueryItem(name: "calendarID", value: model.calendarID),
+                URLQueryItem(name: "startTime", value: "\(model.startTime)"),
+            ]
+
+            return baseURL.appending(queryItems: queryItems)
         }
-        .buttonStyle(EventDetailsRowButtonStyle())
     }
 }

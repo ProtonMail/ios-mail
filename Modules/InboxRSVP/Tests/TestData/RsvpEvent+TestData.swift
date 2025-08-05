@@ -21,25 +21,28 @@ import proton_app_uniffi
 extension RsvpEvent {
 
     static func testData(
+        id: String? = .none, 
         summary: String? = .none,
+        startsAt: UnixTimestamp = .zero,
         organizer: RsvpOrganizer = .init(name: .empty, email: .empty),
         attendees: [RsvpAttendee] = [],
         userAttendeeIdx: UInt32? = .none,
+        calendar: RsvpCalendar? = .none,
         state: RsvpState = .cancelledReminder
     ) -> Self {
         .init(
-            id: .none,
+            id: id,
             summary: summary,
             location: .none,
             description: .none,
             recurrence: .none,
-            startsAt: 0,
+            startsAt: startsAt,
             endsAt: 0,
             occurrence: .date,
             organizer: organizer,
             attendees: attendees,
             userAttendeeIdx: userAttendeeIdx,
-            calendar: .none,
+            calendar: calendar,
             state: state
         )
     }

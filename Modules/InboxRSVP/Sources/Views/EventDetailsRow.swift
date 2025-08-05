@@ -22,23 +22,25 @@ struct EventDetailsRow: View {
     let icon: ImageResource
     let iconColor: Color
     let text: String
-    let trailingIcon: ImageResource?
+    let trailingIconSymbol: DS.SFSymbol?
 
     init(
         icon: ImageResource,
         iconColor: Color = DS.Color.Text.weak,
         text: String,
-        trailingIcon: ImageResource? = .none
+        trailingIconSymbol: DS.SFSymbol? = .none
     ) {
         self.icon = icon
         self.iconColor = iconColor
         self.text = text
-        self.trailingIcon = trailingIcon
+        self.trailingIconSymbol = trailingIconSymbol
     }
 
     var body: some View {
         HStack(alignment: .center, spacing: DS.Spacing.medium) {
             Image(icon)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
                 .foregroundStyle(iconColor)
                 .square(size: 20)
             HStack(alignment: .center, spacing: DS.Spacing.small) {
@@ -46,10 +48,12 @@ struct EventDetailsRow: View {
                     .font(.subheadline)
                     .fontWeight(.regular)
                     .foregroundStyle(DS.Color.Text.weak)
-                if let trailingIcon {
-                    Image(trailingIcon)
+                if let trailingIconSymbol {
+                    Image(symbol: trailingIconSymbol)
+                        .font(.footnote)
+                        .fontWeight(.regular)
                         .foregroundStyle(iconColor)
-                        .square(size: 16)
+                        .contentTransition(.symbolEffect(.replace.downUp.wholeSymbol, options: .nonRepeating))
                 }
                 Spacer(minLength: 0)
             }

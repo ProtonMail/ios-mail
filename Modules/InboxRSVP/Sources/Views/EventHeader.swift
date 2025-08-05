@@ -22,17 +22,18 @@ struct EventHeader: View {
     let title: String
     let formattedDate: String
     let answerButtons: Event.AnswerButtonsState
+    let calendarButtonAction: () -> Void
 
     var body: some View {
         HStack(alignment: .top, spacing: DS.Spacing.standard) {
             VStack(alignment: .leading, spacing: DS.Spacing.standard) {
                 Text(title)
-                    .font(.body)
+                    .font(.title3)
                     .fontWeight(.semibold)
                     .foregroundStyle(DS.Color.Text.norm)
                 Text(formattedDate)
                     .font(.subheadline)
-                    .fontWeight(.regular)
+                    .fontWeight(.medium)
                     .foregroundStyle(DS.Color.Text.norm)
                     .minimumScaleFactor(0.75)
                 if case let .visible(attendance, _) = answerButtons, attendance == .optional {
@@ -43,8 +44,12 @@ struct EventHeader: View {
                 }
             }
             Spacer(minLength: 0)
-            Image(DS.Images.protonCalendar)
-                .square(size: 52)
+            Button(
+                action: calendarButtonAction,
+                label: {
+                    Image(DS.Images.protonCalendar)
+                        .square(size: 52)
+                })
         }
     }
 }

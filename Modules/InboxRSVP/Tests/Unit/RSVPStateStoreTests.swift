@@ -19,13 +19,15 @@
 import Combine
 import InboxCore
 import InboxDesignSystem
+import InboxTesting
 import proton_app_uniffi
 import Testing
 
 final class RSVPStateStoreTests {
     private let serviceSpy = RsvpEventServiceSpy(noPointer: .init())
+    private let openURLSpy = EnvironmentURLOpenerSpy()
     private var serviceProviderSpy = RsvpEventServiceProviderSpy(noPointer: .init())
-    private(set) lazy var sut = RSVPStateStore(serviceProvider: serviceProviderSpy)
+    private(set) lazy var sut = RSVPStateStore(serviceProvider: serviceProviderSpy, openURL: openURLSpy)
     private var cancellables = Set<AnyCancellable>()
 
     // MARK: - Initial
@@ -205,6 +207,75 @@ final class RSVPStateStoreTests {
         )
     }
 
+    // MARK: - `calendarIconTapped` action
+
+    @Test
+    func calendarIconTappedAction_WhenHasEventInformation_ItOpensCalendarAppWithEventDetails() async {
+        let expectedEvent: RsvpEvent = .bestEvent(
+            id: "event_id_9",
+            startsAt: 1672531200,
+            calendar: .init(id: "calendar_id_42", name: "Work", color: .empty)
+        )
+
+        serviceSpy.stubbedDetailsResult = .ok(expectedEvent)
+        serviceProviderSpy.stubbedResult = serviceSpy
+
+        await sut.handle(action: .onLoad)
+        await sut.handle(action: .calendarIconTapped)
+
+        verifyOpenURL(urls: [])
+        let completions = verifyOpenURLWithActions(urls: [
+            "ch.protonmail.calendar://eventDetails?eventID=event_id_9&calendarID=calendar_id_42&startTime=1672531200"
+        ])
+
+        completions.last?(true)
+
+        verifyOpenURL(urls: [])
+    }
+
+    @Test
+    func calendarIconTappedAction_WhenHasEventInformationButAppVersionIsToOld_ItTriesToOpenCalendarAppAndFallbacksToAppStore() async {
+        let expectedEvent: RsvpEvent = .bestEvent(
+            id: "event_id_3",
+            startsAt: 1609459200,
+            calendar: .init(id: "calendar_id_19", name: "Work", color: .empty)
+        )
+
+        serviceSpy.stubbedDetailsResult = .ok(expectedEvent)
+        serviceProviderSpy.stubbedResult = serviceSpy
+
+        await sut.handle(action: .onLoad)
+        await sut.handle(action: .calendarIconTapped)
+
+        verifyOpenURL(urls: [])
+        let completions = verifyOpenURLWithActions(urls: [
+            "ch.protonmail.calendar://eventDetails?eventID=event_id_3&calendarID=calendar_id_19&startTime=1609459200"
+        ])
+
+        completions.last?(false)
+
+        verifyOpenURL(urls: ["itms-apps://itunes.apple.com/app/id1514709943"])
+    }
+
+    @Test
+    func calendarIconTappedAction_WhenDoesNotHaveEventInformation_ItOpenCalendarAppInAppStore() async {
+        let expectedEvent: RsvpEvent = .bestEvent(
+            id: .none,
+            calendar: .init(id: "calendar_id_42", name: "Work", color: .empty)
+        )
+
+        serviceSpy.stubbedDetailsResult = .ok(expectedEvent)
+        serviceProviderSpy.stubbedResult = serviceSpy
+
+        await sut.handle(action: .onLoad)
+        await sut.handle(action: .calendarIconTapped)
+
+        verifyOpenURL(urls: [
+            "itms-apps://itunes.apple.com/app/id1514709943"
+        ])
+        verifyOpenURLWithActions(urls: [])
+    }
+
     // MARK: - Private
 
     private func trackStates(of publisher: Published<RSVPStateStore.State>.Publisher) -> () -> [RSVPStateStore.State] {
@@ -215,6 +286,22 @@ final class RSVPStateStoreTests {
             .store(in: &cancellables)
 
         return { values }
+    }
+
+    private func verifyOpenURL(urls: [String], sourceLocation: SourceLocation = #_sourceLocation) {
+        #expect(openURLSpy.callAsFunctionInvokedWithURL.map(\.absoluteString) == urls, sourceLocation: sourceLocation)
+    }
+
+    @discardableResult
+    private func verifyOpenURLWithActions(
+        urls: [String],
+        sourceLocation: SourceLocation = #_sourceLocation
+    ) -> [(Bool) -> Void] {
+        let calls = openURLSpy.callAsFunctionInvoked
+
+        #expect(calls.map(\.url.absoluteString) == urls, sourceLocation: sourceLocation)
+
+        return calls.map(\.completion)
     }
 }
 
@@ -269,11 +356,19 @@ private extension RsvpEventGetResult {
 
 private extension RsvpEvent {
 
-    static func bestEvent(status: RsvpAttendeeStatus = .unanswered) -> Self {
+    static func bestEvent(
+        id: String? = .none,
+        startsAt: UnixTimestamp = .zero,
+        status: RsvpAttendeeStatus = .unanswered,
+        calendar: RsvpCalendar? = .none
+    ) -> Self {
         .testData(
+            id: id,
             summary: "Best event",
+            startsAt: startsAt,
             attendees: [.init(name: .none, email: "john@pm.me", status: status)],
             userAttendeeIdx: 0,
+            calendar: calendar,
             state: .answerableInvite(progress: .pending, attendance: .optional)
         )
     }

@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Proton Technologies AG
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -15,11 +15,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import SwiftUI
-
-public protocol URLOpenerProtocol {
-    func callAsFunction(_ url: URL)
-    func callAsFunction(_ url: URL, completion: @escaping (_ accepted: Bool) -> Void)
+struct CalendarEvent {
+    let eventID: String
+    let calendarID: String
+    let startTime: UInt64
 }
-
-extension OpenURLAction: URLOpenerProtocol {}
