@@ -660,6 +660,7 @@ extension MailboxModel {
         var moveToSheetPresented: ActionSheetInput?
 
         var upsellPresented: UpsellScreenModel?
+        var onboardingUpsellPresented: OnboardingUpsellScreenModel?
     }
 }
 

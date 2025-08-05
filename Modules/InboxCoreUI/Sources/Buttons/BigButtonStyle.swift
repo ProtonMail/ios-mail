@@ -20,14 +20,38 @@ import InboxDesignSystem
 import SwiftUI
 
 public struct BigButtonStyle: ButtonStyle {
-    private let invertColorScheme: Bool
+    public enum Flavor {
+        case regular
+        case inverted
+        case weak
 
-    private var foregroundColor: Color {
-        invertColorScheme ? DS.Color.Text.norm : DS.Color.Text.inverted
+        func foregroundColor(isPressed: Bool) -> Color {
+            switch self {
+            case .regular:
+                DS.Color.Text.inverted
+            case .inverted:
+                DS.Color.Text.norm
+            case .weak:
+                DS.Color.Brand.plus30
+            }
+        }
+
+        func backgroundColor(isPressed: Bool) -> Color {
+            switch self {
+            case .regular:
+                isPressed ? DS.Color.InteractionBrand.pressed : DS.Color.InteractionBrand.norm
+            case .inverted:
+                DS.Color.Background.norm
+            case .weak:
+                isPressed ? DS.Color.InteractionBrandWeak.pressed : DS.Color.InteractionBrandWeak.norm
+            }
+        }
     }
 
-    public init(invertColorScheme: Bool = false) {
-        self.invertColorScheme = invertColorScheme
+    private let flavor: Flavor
+
+    public init(flavor: Flavor = .regular) {
+        self.flavor = flavor
     }
 
     public func makeBody(configuration: Self.Configuration) -> some View {
@@ -35,20 +59,12 @@ public struct BigButtonStyle: ButtonStyle {
             .label
             .font(.subheadline)
             .fontWeight(.semibold)
-            .foregroundStyle(foregroundColor)
+            .foregroundStyle(flavor.foregroundColor(isPressed: configuration.isPressed))
             .frame(height: 44)
             .frame(maxWidth: .infinity)
             .background(
-                backgroundColor(isPressed: configuration.isPressed),
+                flavor.backgroundColor(isPressed: configuration.isPressed),
                 in: RoundedRectangle(cornerRadius: DS.Radius.massive)
             )
-    }
-
-    private func backgroundColor(isPressed: Bool) -> Color {
-        if invertColorScheme {
-            DS.Color.Background.norm
-        } else {
-            isPressed ? DS.Color.InteractionBrand.pressed : DS.Color.InteractionBrand.norm
-        }
     }
 }

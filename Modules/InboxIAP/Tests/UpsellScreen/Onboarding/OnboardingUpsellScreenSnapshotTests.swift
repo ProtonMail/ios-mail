@@ -16,8 +16,16 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-@preconcurrency import PaymentsNG
+import InboxSnapshotTesting
+import Testing
 
-struct UpsellOffer: Equatable, Sendable {
-    let composedPlans: [ComposedPlan]
+@testable import InboxIAP
+
+@MainActor
+struct OnboardingUpsellScreenSnapshotTests {
+    @Test
+    func upsellScreen() {
+        let sut = OnboardingUpsellScreen(model: .preview)
+        assertSnapshotsOnIPhoneX(of: sut)
+    }
 }

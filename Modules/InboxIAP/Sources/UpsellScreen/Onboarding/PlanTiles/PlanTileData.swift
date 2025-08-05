@@ -1,4 +1,5 @@
-// Copyright (c) 2024 Proton Technologies AG
+//
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -15,14 +16,19 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
-import InboxCore
+import PaymentsNG
 
-extension UserDefaultsKey<Bool> {
-    static let hasSeenAlphaOnboarding = Self(name: "hasSeenAlphaOnboarding")
-    static let hasSeenOnboardingUpsell = Self(name: "hasSeenOnboardingUpsell")
-}
+struct PlanTileData: Hashable {
+    struct Discount: Hashable {
+        let percentageValue: Int
+        let savedAmount: String
+    }
 
-extension UserDefaultsKey<[Date]> {
-    static let notificationAuthorizationRequestDates = Self(name: "notificationAuthorizationRequestDates")
+    let storeKitProductID: String?
+    let planName: String
+    let cycleInMonths: Int
+    let monthlyPrice: String
+    let discount: Discount?
+    let entitlements: [DescriptionEntitlement]
+    let billingPrice: String?
 }

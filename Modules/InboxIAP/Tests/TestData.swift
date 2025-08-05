@@ -54,7 +54,7 @@ extension AvailablePlan: @unchecked @retroactive Sendable {
         type: 1,
         title: "Mail Plus",
         features: 1,
-        entitlements: [],
+        entitlements: [DescriptionEntitlement].mailPlus.map(Entitlement.description),
         decorations: [],
         id: "",
         services: 1
@@ -91,7 +91,7 @@ extension AvailablePlan: @unchecked @retroactive Sendable {
         type: 1,
         title: "Proton Unlimited",
         features: 1,
-        entitlements: [],
+        entitlements: [DescriptionEntitlement].unlimited.map(Entitlement.description),
         decorations: [],
         id: "",
         services: 31

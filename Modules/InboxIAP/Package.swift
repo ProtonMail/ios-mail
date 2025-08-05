@@ -15,7 +15,7 @@ let package = Package(
         .package(path: "../InboxSnapshotTesting"),
         .package(path: "../../ProtonPackages/proton_app_uniffi"),
         .package(path: "../../ProtonPackages/et-protoncore/platform/apple/Payments/PaymentsNG"),
-        .package(path: "../../ProtonPackages/et-protoncore/platform/apple/ProtonCoreET")
+        .package(path: "../../ProtonPackages/et-protoncore/platform/apple/ProtonCoreET"),
     ],
     targets: [
         .target(

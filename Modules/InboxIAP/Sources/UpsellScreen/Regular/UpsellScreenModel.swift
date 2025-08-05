@@ -90,17 +90,9 @@ public final class UpsellScreenModel: Identifiable {
         } catch {
             AppLogger.log(error: error, category: .payments)
 
-            if let toast = toastToShowTheUser(basedOn: error) {
+            if let toast = error.toastToShowTheUser {
                 toastStateStore.present(toast: toast)
             }
-        }
-    }
-
-    private func toastToShowTheUser(basedOn error: Error) -> Toast? {
-        switch error {
-        case ProtonPlansManagerError.transactionCancelledByUser: nil
-        case is IAPsNotAvailableInTestFlightError: .information(message: error.localizedDescription)
-        default: .error(message: error.localizedDescription)
         }
     }
 }

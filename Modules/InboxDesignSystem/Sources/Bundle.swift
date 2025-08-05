@@ -1,4 +1,5 @@
-// Copyright (c) 2024 Proton Technologies AG
+//
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -16,13 +17,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import InboxCore
 
-extension UserDefaultsKey<Bool> {
-    static let hasSeenAlphaOnboarding = Self(name: "hasSeenAlphaOnboarding")
-    static let hasSeenOnboardingUpsell = Self(name: "hasSeenOnboardingUpsell")
-}
-
-extension UserDefaultsKey<[Date]> {
-    static let notificationAuthorizationRequestDates = Self(name: "notificationAuthorizationRequestDates")
+extension Bundle {
+    public static let designSystem = Bundle.module
 }

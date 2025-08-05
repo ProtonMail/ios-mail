@@ -16,7 +16,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import CoreGraphics
 import InboxCoreUI
 import PaymentsNG
 import Testing
@@ -24,36 +23,40 @@ import Testing
 @testable import InboxIAP
 
 @MainActor
-final class UpsellScreenModelTests {
+final class OnboardingUpsellScreenModelTests {
     private let planPurchasing = PlanPurchasingSpy()
     private let toastStateStore = ToastStateStore(initialState: .initial)
 
-    private lazy var sut = UpsellScreenModel(
-        planName: "foo",
-        planInstances: DisplayablePlanInstance.previews,
-        entryPoint: .header,
+    private lazy var sut = OnboardingUpsellScreenModel(
+        planTiles: PlanTileData.previews,
         planPurchasing: planPurchasing
     )
 
-    @Test(
-        arguments: [
-            VerticalScrollingTestCase(verticalOffset: -5, expectedLogoScaleFactor: 1, expectedLogoOpacity: 1),
-            VerticalScrollingTestCase(verticalOffset: 0, expectedLogoScaleFactor: 1, expectedLogoOpacity: 1),
-            VerticalScrollingTestCase(verticalOffset: 59, expectedLogoScaleFactor: 0.9, expectedLogoOpacity: 0.6),
-            VerticalScrollingTestCase(verticalOffset: 118, expectedLogoScaleFactor: 0.8, expectedLogoOpacity: 0.2),
-            VerticalScrollingTestCase(verticalOffset: 300, expectedLogoScaleFactor: 0.8, expectedLogoOpacity: 0.2),
-        ]
-    )
-    func updatesLogoScaleAndOpacityBasedOnScrollingOffset(testCase: VerticalScrollingTestCase) {
-        sut.scrollingOffsetDidChange(newValue: testCase.verticalOffset)
+    @Test
+    func onlyShowsTilesForPlanInstancesMatchingSelectedCycle() {
+        sut.selectedCycle = .monthly
 
-        #expect(sut.logoScaleFactor.isNearlyEqual(to: testCase.expectedLogoScaleFactor))
-        #expect(sut.logoOpacity.isNearlyEqual(to: testCase.expectedLogoOpacity))
+        #expect(Set(sut.visiblePlanTiles.map(\.cycleInMonths)) == [1])
+
+        sut.selectedCycle = .yearly
+
+        #expect(Set(sut.visiblePlanTiles.map(\.cycleInMonths)) == [12])
     }
 
     @Test
-    func whenPurchaseButtonIsTapped_initiatesTransaction() async {
-        await sut.onPurchaseTapped(toastStateStore: toastStateStore) {}
+    func whenGetFreePlanIsTapped_dismissesTheScreen() async {
+        await confirmation(expectedCount: 1) { dismissCalled in
+            await sut.onGetPlanTapped(storeKitProductID: nil, toastStateStore: toastStateStore) {
+                dismissCalled()
+            }
+        }
+
+        #expect(planPurchasing.purchaseInvocations.count == 0)
+    }
+
+    @Test
+    func whenGetPaidPlanIsTapped_initiatesTransaction() async {
+        await sut.onGetPlanTapped(storeKitProductID: "foo", toastStateStore: toastStateStore) {}
 
         #expect(planPurchasing.purchaseInvocations.count == 1)
     }
@@ -61,7 +64,7 @@ final class UpsellScreenModelTests {
     @Test
     func whenTransactionIsSuccessful_dismissesTheScreen() async {
         await confirmation(expectedCount: 1) { dismissCalled in
-            await sut.onPurchaseTapped(toastStateStore: toastStateStore) {
+            await sut.onGetPlanTapped(storeKitProductID: "foo", toastStateStore: toastStateStore) {
                 dismissCalled()
             }
         }
@@ -72,7 +75,7 @@ final class UpsellScreenModelTests {
         planPurchasing.stubbedError = ProtonPlansManagerError.transactionUnknownError
 
         await confirmation(expectedCount: 0) { dismissCalled in
-            await sut.onPurchaseTapped(toastStateStore: toastStateStore) {
+            await sut.onGetPlanTapped(storeKitProductID: "foo", toastStateStore: toastStateStore) {
                 dismissCalled()
             }
         }
@@ -85,23 +88,11 @@ final class UpsellScreenModelTests {
         planPurchasing.stubbedError = ProtonPlansManagerError.transactionCancelledByUser
 
         await confirmation(expectedCount: 0) { dismissCalled in
-            await sut.onPurchaseTapped(toastStateStore: toastStateStore) {
+            await sut.onGetPlanTapped(storeKitProductID: "foo", toastStateStore: toastStateStore) {
                 dismissCalled()
             }
         }
 
         #expect(toastStateStore.state.toasts == [])
-    }
-}
-
-struct VerticalScrollingTestCase {
-    let verticalOffset: CGFloat
-    let expectedLogoScaleFactor: CGFloat
-    let expectedLogoOpacity: CGFloat
-}
-
-private extension FloatingPoint {
-    func isNearlyEqual(to value: Self) -> Bool {
-        abs(self - value) <= .ulpOfOne
     }
 }

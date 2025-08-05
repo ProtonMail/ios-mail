@@ -201,7 +201,7 @@ public struct UpsellScreen: View {
                 await model.onPurchaseTapped(toastStateStore: toastStateStore, dismiss: dismiss.callAsFunction)
             }
         }
-        .buttonStyle(BigButtonStyle(invertColorScheme: true))
+        .buttonStyle(BigButtonStyle(flavor: .inverted))
         .colorScheme(.light)
     }
 

@@ -25,13 +25,33 @@ import Testing
 @MainActor
 final class UpsellScreenFactoryTests {
     private lazy var sut = UpsellScreenFactory(planPurchasing: DummyPlanPurchasing())
+    private let availablePlans = [AvailablePlan.mailPlus, .unlimited].flatMap(\.asComposedPlans)
 
     @Test
-    func upsellScreenModelGeneration() {
-        let upsellOffer = UpsellOffer(composedPlans: AvailablePlan.mailPlus.asComposedPlans)
-        let upsellScreenModel = sut.upsellScreenModel(basedOn: upsellOffer, entryPoint: .header)
+    func upsellScreenModelGeneration() throws {
+        let upsellScreenModel = try sut.upsellScreenModel(
+            showingPlan: "mail2022",
+            basedOn: availablePlans,
+            entryPoint: .header
+        )
 
         #expect(upsellScreenModel.planName == "Mail Plus")
         #expect(upsellScreenModel.planInstances == DisplayablePlanInstance.previews)
+    }
+
+    @Test
+    func onboardingUpsellScreenModelGeneration() throws {
+        let upsellScreenModel = try sut.onboardingUpsellScreenModel(
+            showingPlans: ["bundle2022", "mail2022"],
+            basedOn: availablePlans
+        )
+
+        let expectedPlanTiles: [PlanTileData] = [
+            PlanTileData.previews[0],
+            PlanTileData.previews[2],
+            PlanTileData.previews[4],
+        ]
+
+        #expect(upsellScreenModel.visiblePlanTiles.map(\.planTileData) == expectedPlanTiles)
     }
 }

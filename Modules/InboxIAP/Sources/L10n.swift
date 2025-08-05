@@ -20,8 +20,11 @@ import Foundation
 
 enum L10n {
     static let autoRenewalNotice = LocalizedStringResource("Auto-renews at the same price and terms unless canceled", comment: "Notice at the bottom")
+    static let bestValue = LocalizedStringResource("Best value", comment: "Badge next to the plan name in the upsell screen")
     static let chooseYourPlan = LocalizedStringResource("Choose your plan", comment: "Displayed above the plans")
     static let perMonth = LocalizedStringResource("/month", comment: "Displayed next to the monthly price")
+    static let showLess = LocalizedStringResource("Show less", comment: "Button to collapse a list")
+    static let showMore = LocalizedStringResource("Show more", comment: "Button to expand a list")
 
     static func screenTitle(planName: String, entryPoint: UpsellScreenEntryPoint) -> LocalizedStringResource {
         switch entryPoint {
@@ -61,6 +64,23 @@ enum L10n {
         }
     }
 
+    static func payAnnuallyAndSave(amount: String) -> LocalizedStringResource {
+        .init("Pay annually and save \(amount)", comment: "Shown when selecting the yearly billing cycle")
+    }
+
+    static func billingNotice(billingPrice: String, every billingCycleInMonths: String) -> LocalizedStringResource {
+        .init("Billed at \(billingPrice) every \(billingCycleInMonths)", comment: "Notice at the bottom of the upsell screen")
+    }
+
+    enum BillingCycle {
+        static let monthly = LocalizedStringResource("Monthly", comment: "Refers to billing cycle")
+        static let yearlyNoDiscount = LocalizedStringResource("Yearly", comment: "Refers to billing cycle")
+
+        static func yearly(discount: Int) -> LocalizedStringResource {
+            .init("Yearly (\(discount)% OFF)", comment: "Refers to billing cycle, with discount compared to the monthly cycle")
+        }
+    }
+
     enum Error {
         static let planNotFound = LocalizedStringResource("The requested plan could not be found.", comment: "Error message when fetching available plans fails")
     }
@@ -77,6 +97,15 @@ enum L10n {
         static let accessToDesktopApp = LocalizedStringResource("Access to desktop app", comment: "Description of a feature of a paid subscription")
         static let unlimitedFoldersAndLabels = LocalizedStringResource("Unlimited folders and labels", comment: "Description of a feature of a paid subscription")
         static let priorityCustomerSupport = LocalizedStringResource("Priority customer support", comment: "Description of a feature of a paid subscription")
+
+        static func amountOfStorage(gigabytes: Double) -> LocalizedStringResource {
+            let measurement = Measurement<UnitInformationStorage>(value: gigabytes, unit: .gigabytes)
+            return .init("\(measurement.formatted()) storage", bundle: .module, comment: "Amount of storage space available in a given plan, for example: 1 GB storage")
+        }
+
+        static func numberOfEmailAddresses(_ amount: UInt) -> LocalizedStringResource {
+            .init("\(amount) email addresses", bundle: .module, comment: "Number of email addresses available in a given plan")
+        }
     }
 
     static func getPlan(named planName: String) -> LocalizedStringResource {

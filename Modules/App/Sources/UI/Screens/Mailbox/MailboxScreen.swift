@@ -26,6 +26,8 @@ import SwiftUI
 struct MailboxScreen: View {
     @EnvironmentObject private var appUIStateStore: AppUIStateStore
     @EnvironmentObject private var toastStateStore: ToastStateStore
+    @EnvironmentObject private var upsellCoordinator: UpsellCoordinator
+    @Environment(\.isUpsellButtonVisible) private var isUpsellButtonVisible
     @StateObject private var mailboxModel: MailboxModel
     @State private var isComposeButtonExpanded: Bool = true
     @State private var isOnboardingPresented = false
@@ -35,6 +37,10 @@ struct MailboxScreen: View {
     private let userSession: MailUserSession
     private let notificationAuthorizationStore: NotificationAuthorizationStore
     private let userDefaults: UserDefaults
+
+    private var shouldShowOnboardingUpsell: Bool {
+        ApiEnvId.current.arePaymentsEnabled && isUpsellButtonVisible && !userDefaults[.hasSeenOnboardingUpsell]
+    }
 
     init(
         mailSettingsLiveQuery: MailSettingLiveQuerying,
@@ -96,6 +102,13 @@ struct MailboxScreen: View {
                 .sheet(item: $mailboxModel.state.upsellPresented) { upsellScreenModel in
                     UpsellScreen(model: upsellScreenModel)
                 }
+                .sheet(
+                    item: $mailboxModel.state.onboardingUpsellPresented,
+                    onDismiss: onboardingUpsellDismissed,
+                    content: { upsellScreenModel in
+                        OnboardingUpsellScreen(model: upsellScreenModel)
+                    }
+                )
                 .navigationDestination(for: MailboxItemCellUIModel.self) { uiModel in
                     mailboxItemDestination(uiModel: uiModel)
                 }
@@ -125,6 +138,14 @@ struct MailboxScreen: View {
         }
     }
 
+    private func onboardingUpsellDismissed() {
+        userDefaults[.hasSeenOnboardingUpsell] = true
+
+        Task {
+            await presentAppropriateIntroductoryView()
+        }
+    }
+
     private func userDidRespondToAuthorizationRequest(accepted: Bool) {
         Task {
             await notificationAuthorizationStore.userDidRespondToAuthorizationRequest(accepted: accepted)
@@ -136,6 +157,15 @@ struct MailboxScreen: View {
         let introductionProgress = await calculateIntroductionProgress()
         isOnboardingPresented = introductionProgress == .onboarding
         isNotificationPromptPresented = introductionProgress == .notifications
+
+        if introductionProgress == .upsell {
+            do {
+                mailboxModel.state.onboardingUpsellPresented = try await upsellCoordinator.presentOnboardingUpsellScreen()
+            } catch {
+                AppLogger.log(error: error, category: .payments)
+                onboardingUpsellDismissed()
+            }
+        }
     }
 
     private func calculateIntroductionProgress() async -> IntroductionProgress {
@@ -143,6 +173,8 @@ struct MailboxScreen: View {
             return .onboarding
         } else if await notificationAuthorizationStore.shouldRequestAuthorization(trigger: .onboardingFinished) {
             return .notifications
+        } else if shouldShowOnboardingUpsell {
+            return .upsell
         } else {
             return .finished
         }
@@ -251,6 +283,7 @@ extension MailboxScreen {
     enum IntroductionProgress {
         case onboarding
         case notifications
+        case upsell
         case finished
     }
 }

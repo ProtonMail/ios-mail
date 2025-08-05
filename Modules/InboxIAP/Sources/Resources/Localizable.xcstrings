@@ -7,8 +7,14 @@
     "/month" : {
       "comment" : "Displayed next to the monthly price"
     },
+    "%@ storage" : {
+      "comment" : "Amount of storage space available in a given plan, for example: 1 GB storage"
+    },
     "%lld" : {
 
+    },
+    "%llu email addresses" : {
+      "comment" : "Number of email addresses available in a given plan"
     },
     "Access to desktop app" : {
       "comment" : "Description of a feature of a paid subscription"
@@ -21,6 +27,20 @@
     },
     "Bad time for this email?" : {
       "comment" : "Title of the upsell page"
+    },
+    "Best value" : {
+      "comment" : "Badge next to the plan name in the upsell screen"
+    },
+    "Billed at %@ every %@" : {
+      "comment" : "Notice at the bottom of the upsell screen",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "Billed at %1$@ every %2$@"
+          }
+        }
+      }
     },
     "Choose your plan" : {
       "comment" : "Displayed above the plans"
@@ -52,8 +72,14 @@
     "Make your mobile signature your own. Enjoy this and more with %@." : {
       "comment" : "Subtitle of the upsell page"
     },
+    "Monthly" : {
+      "comment" : "Refers to billing cycle"
+    },
     "Need more labels or folders?" : {
       "comment" : "Title of the upsell page"
+    },
+    "Pay annually and save %@" : {
+      "comment" : "Shown when selecting the yearly billing cycle"
     },
     "Personalize your signature" : {
       "comment" : "Title of the upsell page"
@@ -69,6 +95,12 @@
     },
     "Send group emails with ease. Enjoy this and more with %@." : {
       "comment" : "Subtitle of the upsell page"
+    },
+    "Show less" : {
+      "comment" : "Button to collapse a list"
+    },
+    "Show more" : {
+      "comment" : "Button to expand a list"
     },
     "Snooze it — and have it delivered later.  Enjoy this and more with %@." : {
       "comment" : "Subtitle of the upsell page"
@@ -87,6 +119,12 @@
     },
     "Upgrade to %@" : {
       "comment" : "Title of the upsell page"
+    },
+    "Yearly" : {
+      "comment" : "Refers to billing cycle"
+    },
+    "Yearly (%lld%% OFF)" : {
+      "comment" : "Refers to billing cycle, with discount compared to the monthly cycle"
     }
   },
   "version" : "1.0"

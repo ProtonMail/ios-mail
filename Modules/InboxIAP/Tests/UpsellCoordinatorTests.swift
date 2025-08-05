@@ -33,10 +33,14 @@ final class UpsellCoordinatorTests {
             onlineExecutor: onlineExecutor,
             plansComposer: plansComposer,
             planPurchasing: DummyPlanPurchasing(),
-            configuration: .init(planName: "mail2022", arePaymentsEnabled: false)
+            configuration: .init(
+                regularPlan: "mail2022",
+                onboardingPlans: ["bundle2022", "mail2022"],
+                arePaymentsEnabled: false
+            )
         )
 
-        plansComposer.stubbedAvailablePlans = AvailablePlan.mailPlus.asComposedPlans
+        plansComposer.stubbedAvailablePlans = [AvailablePlan.mailPlus, .unlimited].flatMap(\.asComposedPlans)
     }
 
     @Test(arguments: [true, false])
@@ -49,9 +53,8 @@ final class UpsellCoordinatorTests {
             #expect(plansComposer.fetchAvailablePlansCalls == 1)
         }
 
-        for _ in 1...3 {
-            _ = try await sut.presentUpsellScreen(entryPoint: .header)
-        }
+        _ = try await sut.presentUpsellScreen(entryPoint: .header)
+        _ = try await sut.presentOnboardingUpsellScreen()
 
         #expect(plansComposer.fetchAvailablePlansCalls == 1)
     }

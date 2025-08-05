@@ -17,11 +17,13 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 public struct UpsellConfiguration: Sendable {
-    public let planName: String
+    public let regularPlan: String
+    public let onboardingPlans: [String]
     public let arePaymentsEnabled: Bool
 
-    public init(planName: String, arePaymentsEnabled: Bool) {
-        self.planName = planName
+    public init(regularPlan: String, onboardingPlans: [String], arePaymentsEnabled: Bool) {
+        self.regularPlan = regularPlan
+        self.onboardingPlans = onboardingPlans
         self.arePaymentsEnabled = arePaymentsEnabled
     }
 }

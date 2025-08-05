@@ -184,6 +184,7 @@ private struct SessionTransitionScreen: View {
         let userDefaults = UserDefaults(suiteName: "transition")!
         userDefaults[.hasSeenAlphaOnboarding] = true
         userDefaults[.notificationAuthorizationRequestDates] = [.now]
+        userDefaults[.hasSeenOnboardingUpsell] = true
         return userDefaults
     }()
 

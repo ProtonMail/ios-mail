@@ -24,11 +24,11 @@ import proton_app_uniffi
 @MainActor
 public final class UpsellCoordinator: ObservableObject {
     private let onlineExecutor: OnlineExecutor
-    private let upsellOfferProvider: UpsellOfferProvider
+    private let plansComposer: PlansComposerProviding
     private let upsellScreenFactory: UpsellScreenFactory
     private let configuration: UpsellConfiguration
 
-    private var cachedUpsellOffer: UpsellOffer?
+    private var cachedAvailablePlans: [ComposedPlan]?
 
     public convenience init(mailUserSession: MailUserSession, configuration: UpsellConfiguration) {
         let plansComposer = PlansComposerRust(rustSession: mailUserSession)
@@ -50,7 +50,7 @@ public final class UpsellCoordinator: ObservableObject {
         configuration: UpsellConfiguration
     ) {
         self.onlineExecutor = onlineExecutor
-        self.upsellOfferProvider = .init(plansComposer: plansComposer)
+        self.plansComposer = plansComposer
         self.upsellScreenFactory = .init(planPurchasing: planPurchasing)
         self.configuration = configuration
     }
@@ -59,7 +59,7 @@ public final class UpsellCoordinator: ObservableObject {
         await withCheckedContinuation { continuation in
             let callback = LiveQueryCallbackWrapper {
                 Task {
-                    _ = try? await self.fetchUpsellOffer()
+                    _ = try? await self.fetchAvailablePlans()
                     continuation.resume()
                 }
             }
@@ -69,17 +69,31 @@ public final class UpsellCoordinator: ObservableObject {
     }
 
     public func presentUpsellScreen(entryPoint: UpsellScreenEntryPoint) async throws -> UpsellScreenModel {
-        let upsellOffer = try await fetchUpsellOffer()
-        return upsellScreenFactory.upsellScreenModel(basedOn: upsellOffer, entryPoint: entryPoint)
+        let availablePlans = try await fetchAvailablePlans()
+
+        return try upsellScreenFactory.upsellScreenModel(
+            showingPlan: configuration.regularPlan,
+            basedOn: availablePlans,
+            entryPoint: entryPoint
+        )
     }
 
-    private func fetchUpsellOffer() async throws -> UpsellOffer {
-        if let cachedUpsellOffer {
-            return cachedUpsellOffer
+    public func presentOnboardingUpsellScreen() async throws -> OnboardingUpsellScreenModel {
+        let availablePlans = try await fetchAvailablePlans()
+
+        return try upsellScreenFactory.onboardingUpsellScreenModel(
+            showingPlans: configuration.onboardingPlans,
+            basedOn: availablePlans
+        )
+    }
+
+    private func fetchAvailablePlans() async throws -> [ComposedPlan] {
+        if let cachedAvailablePlans {
+            return cachedAvailablePlans
         } else {
-            let offer = try await upsellOfferProvider.findOffer(for: configuration.planName)
-            cachedUpsellOffer = offer
-            return offer
+            let availablePlans = try await plansComposer.fetchAvailablePlans()
+            cachedAvailablePlans = availablePlans
+            return availablePlans
         }
     }
 }

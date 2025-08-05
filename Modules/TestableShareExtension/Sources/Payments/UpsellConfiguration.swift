@@ -20,8 +20,11 @@ import InboxIAP
 import proton_app_uniffi
 
 extension UpsellConfiguration {
-    /// The upsell screen should always show this particular plan.
     static func mail(apiEnvId: ApiEnvId) -> Self {
-        .init(planName: "mail2022", arePaymentsEnabled: apiEnvId.arePaymentsEnabled)
+        .init(
+            regularPlan: "mail2022",
+            onboardingPlans: ["bundle2022", "mail2022"],
+            arePaymentsEnabled: apiEnvId.arePaymentsEnabled
+        )
     }
 }

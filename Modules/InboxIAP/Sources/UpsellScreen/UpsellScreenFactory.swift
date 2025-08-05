@@ -28,13 +28,19 @@ final class UpsellScreenFactory {
     }
 
     @MainActor
-    func upsellScreenModel(basedOn upsellOffer: UpsellOffer, entryPoint: UpsellScreenEntryPoint) -> UpsellScreenModel {
-        let plansSortedByPriceAscending = upsellOffer.composedPlans.sorted(using: KeyPathComparator(\.storePricePerMonth, order: .forward))
-        let mostExpensiveInstance = plansSortedByPriceAscending.last!
+    func upsellScreenModel(
+        showingPlan planName: String,
+        basedOn availablePlans: [ComposedPlan],
+        entryPoint: UpsellScreenEntryPoint
+    ) throws -> UpsellScreenModel {
+        let (plansSortedByPriceAscending, mostExpensiveInstance) = try sortedInstancesWithMostExpensiveInstance(
+            ofPlanNamed: planName,
+            basedOn: availablePlans
+        )
 
         let displayablePlanInstances: [DisplayablePlanInstance] = plansSortedByPriceAscending.map { composedPlan in
             .init(
-                storeKitProductId: composedPlan.instance.vendors.apple?.productID ?? "<missing vendor>",
+                storeKitProductId: composedPlan.storeKitProductID ?? "<missing vendor>",
                 cycleInMonths: composedPlan.instance.cycle,
                 monthlyPrice: composedPlan.pricePerMonthLabel,
                 discount: composedPlan.discount(comparedTo: mostExpensiveInstance)
@@ -47,5 +53,100 @@ final class UpsellScreenFactory {
             entryPoint: entryPoint,
             planPurchasing: planPurchasing
         )
+    }
+
+    @MainActor
+    func onboardingUpsellScreenModel(
+        showingPlans planNames: [String],
+        basedOn availablePlans: [ComposedPlan]
+    ) throws -> OnboardingUpsellScreenModel {
+        let paidPlanTilesData: [PlanTileData] = try planNames.flatMap { planName in
+            try planTilesData(forPlanNamed: planName, basedOn: availablePlans)
+        }
+
+        let freePlanTilesData = BillingCycle.allCases.map { billingCycle in
+            PlanTileData.free(
+                priceFormatStyle: availablePlans[0].product.priceFormatStyle,
+                cycleInMonths: billingCycle.lengthInMonths
+            )
+        }
+
+        return .init(planTiles: paidPlanTilesData + freePlanTilesData, planPurchasing: planPurchasing)
+    }
+
+    @MainActor
+    private func planTilesData(forPlanNamed planName: String, basedOn availablePlans: [ComposedPlan]) throws -> [PlanTileData] {
+        let (plansSortedByPriceAscending, mostExpensiveInstance) = try sortedInstancesWithMostExpensiveInstance(
+            ofPlanNamed: planName,
+            basedOn: availablePlans
+        )
+
+        return plansSortedByPriceAscending.map { composedPlan in
+            .init(
+                storeKitProductID: composedPlan.storeKitProductID,
+                planName: composedPlan.plan.title,
+                cycleInMonths: composedPlan.instance.cycle,
+                monthlyPrice: composedPlan.pricePerMonthLabel,
+                discount: discount(of: composedPlan, comparedTo: mostExpensiveInstance),
+                entitlements: composedPlan.plan.entitlements.compactMap(\.asDescription),
+                billingPrice: composedPlan.product.displayPrice
+            )
+        }
+    }
+
+    private func discount(of composedPlan: ComposedPlan, comparedTo mostExpensiveInstance: ComposedPlan) -> PlanTileData.Discount? {
+        guard let percentageValue = composedPlan.discount(comparedTo: mostExpensiveInstance) else {
+            return nil
+        }
+
+        let savedAmount = (mostExpensiveInstance.storePricePerMonth - composedPlan.storePricePerMonth) * 12
+        let savedAmountLabel = composedPlan.product.priceFormatStyle.format(savedAmount)
+
+        return .init(
+            percentageValue: percentageValue,
+            savedAmount: savedAmountLabel
+        )
+    }
+
+    private func sortedInstancesWithMostExpensiveInstance(
+        ofPlanNamed planName: String,
+        basedOn availablePlans: [ComposedPlan]
+    ) throws -> ([ComposedPlan], ComposedPlan) {
+        let relevantPlans = availablePlans.filter { $0.plan.name == planName }
+        let plansSortedByPriceAscending = relevantPlans.sorted(using: KeyPathComparator(\.storePricePerMonth, order: .forward))
+
+        guard let mostExpensiveInstance = plansSortedByPriceAscending.last else {
+            throw UpsellScreenFactoryError.planNotFound
+        }
+
+        return (plansSortedByPriceAscending, mostExpensiveInstance)
+    }
+}
+
+enum UpsellScreenFactoryError: LocalizedError {
+    case planNotFound
+
+    var errorDescription: String? {
+        switch self {
+        case .planNotFound:
+            L10n.Error.planNotFound.string
+        }
+    }
+}
+
+private extension ComposedPlan {
+    var storeKitProductID: String? {
+        instance.vendors.apple?.productID
+    }
+}
+
+private extension Entitlement {
+    var asDescription: DescriptionEntitlement? {
+        switch self {
+        case .description(let descriptionEntitlement):
+            descriptionEntitlement
+        default:
+            nil
+        }
     }
 }

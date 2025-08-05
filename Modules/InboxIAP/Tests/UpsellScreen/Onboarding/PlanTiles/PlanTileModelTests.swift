@@ -21,24 +21,32 @@ import Testing
 
 @testable import InboxIAP
 
-final class UpsellOfferProviderTests {
-    private let plansComposer = PlansComposerSpy()
-    private lazy var sut = UpsellOfferProvider(plansComposer: plansComposer)
+@MainActor
+final class PlanTileModelTests {
+    private let planTileData = PlanTileData.previews[0]
+    private lazy var sut = PlanTileModel(planTileData: planTileData)
 
     @Test
-    func offerOnlyContainsComposedPlansForInstancesOfTheRequestedPlan() async throws {
-        plansComposer.stubbedAvailablePlans = [AvailablePlan.mailPlus, .unlimited].flatMap(\.asComposedPlans)
+    func expandingEntitlements() {
+        #expect(sut.entitlements == Array(planTileData.entitlements[..<3]))
 
-        try await #expect(sut.findOffer(for: "mail2022") == .init(composedPlans: AvailablePlan.mailPlus.asComposedPlans))
-        try await #expect(sut.findOffer(for: "bundle2022") == .init(composedPlans: AvailablePlan.unlimited.asComposedPlans))
+        sut.areEntitlementsExpanded.toggle()
+
+        #expect(sut.entitlements == planTileData.entitlements)
+
+        sut.areEntitlementsExpanded.toggle()
+
+        #expect(sut.entitlements == Array(planTileData.entitlements[..<3]))
     }
 
     @Test
-    func doesNotReturnEmptyOffers() async {
-        plansComposer.stubbedAvailablePlans = []
+    func performingActionWhileDisabled() async {
+        #expect(sut.isGetButtonDisabled == false)
 
-        await #expect(throws: UpsellOfferProviderError.self) {
-            try await sut.findOffer(for: "mail2022")
+        await sut.performWhileDisabled { [sut] in
+            #expect(sut.isGetButtonDisabled == true)
         }
+
+        #expect(sut.isGetButtonDisabled == false)
     }
 }
