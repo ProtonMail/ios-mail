@@ -87,7 +87,7 @@ struct RSVPEventView: View {
             Text(L10n.Answer.attending)
                 .font(.footnote)
                 .fontWeight(.regular)
-                .foregroundStyle(DS.Color.Text.weak)
+                .foregroundStyle(DS.Color.Text.norm)
             HStack(spacing: DS.Spacing.small) {
                 switch event.participants[userParticipantIndex].status.answer {
                 case .none:
