@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import InboxCoreUI
 import InboxDesignSystem
 import proton_app_uniffi
 import SwiftUI
@@ -31,22 +32,22 @@ struct EventParticipantsView: View {
                         areParticipantsExpanded.toggle()
                     }
                 }
-                .zIndex(1)
             }
             if areParticipantsExpanded || participants.count == 1 {
-                LazyVStack(alignment: .leading, spacing: .zero) {
+                VStack(alignment: .leading, spacing: .zero) {
                     ForEach(participants, id: \.displayName) { participant in
                         EventDetailsRow(
                             icon: participant.status.details.icon,
                             iconColor: participant.status.details.color,
                             text: participant.displayName
                         )
-                        .zIndex(-1)
                     }
                 }
+                .zIndex(-1)
                 .transition(.move(edge: .top).combined(with: .opacity))
             }
         }
+        .clipped()
     }
 }
 

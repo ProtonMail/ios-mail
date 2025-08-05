@@ -50,8 +50,9 @@ struct EventDetailsRow: View {
                     .foregroundStyle(DS.Color.Text.weak)
                 if let trailingIconSymbol {
                     Image(symbol: trailingIconSymbol)
+                        .font(.footnote)
+                        .fontWeight(.regular)
                         .foregroundStyle(iconColor)
-                        .square(size: 16)
                         .contentTransition(.symbolEffect(.replace.downUp.wholeSymbol, options: .nonRepeating))
                 }
                 Spacer(minLength: 0)

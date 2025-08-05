@@ -112,27 +112,27 @@ struct RSVPEventView: View {
     private var eventDetailsSection: some View {
         VStack(alignment: .leading, spacing: .zero) {
             if let calendar = event.calendar {
-                detailsRow(icon: DS.Icon.icCircleFilled, iconColor: Color(hex: calendar.color), text: calendar.name)
+                EventDetailsRow(
+                    icon: DS.Icon.icCircleFilled,
+                    iconColor: Color(hex: calendar.color),
+                    text: calendar.name
+                )
             }
             if let recurrence = event.recurrence {
-                detailsRow(icon: DS.Icon.icArrowsRotate, text: recurrence)
+                EventDetailsRow(icon: DS.Icon.icArrowsRotate, text: recurrence)
             }
             if let location = event.location {
-                detailsRow(icon: DS.Icon.icMapPin, text: location)
+                EventDetailsRow(icon: DS.Icon.icMapPin, text: location)
             }
-            EventDetailsRowMenu<MenuOrganizerOption>(icon: DS.Icon.icUser, text: event.organizer.displayName) { _ in }
-                .zIndex(1)
+            EventDetailsRowMenu<MenuOrganizerOption>(
+                icon: DS.Icon.icUser,
+                text: event.organizer.displayName
+            ) { _ in }
             EventParticipantsView(
                 participants: event.participants,
                 areParticipantsExpanded: $areParticipantsExpanded
             )
         }
-    }
-
-    private func detailsRow(icon: ImageResource, iconColor: Color = DS.Color.Text.weak, text: String) -> some View {
-        EventDetailsRow(icon: icon, iconColor: iconColor, text: text)
-            .background(DS.Color.Background.norm)
-            .zIndex(1)
     }
 }
 
@@ -167,6 +167,17 @@ private extension RsvpAttendeeStatus {
             .init(name: "User 2", email: "user2@example.com", status: .yes),
             .init(name: "User 3", email: "user3@example.com", status: .maybe),
             .init(name: "User 4", email: "user4@example.com", status: .no),
+            .init(name: "User 5", email: "user5@example.com", status: .no),
+            .init(name: "User 6", email: "user6@example.com", status: .no),
+            .init(name: "User 7", email: "user7@example.com", status: .no),
+            .init(name: "User 8", email: "user8@example.com", status: .no),
+            .init(name: "User 9", email: "user9@example.com", status: .no),
+            .init(name: "User 10", email: "user10@example.com", status: .no),
+            .init(name: "User 11", email: "user11@example.com", status: .no),
+            .init(name: "User 12", email: "user12@example.com", status: .no),
+            .init(name: "User 13", email: "user13@example.com", status: .no),
+            .init(name: "User 14", email: "user14@example.com", status: .no),
+            .init(name: "User 15", email: "user15@example.com", status: .no),
         ],
         userAttendeeIdx: 0,
         calendar: RsvpCalendar(id: "<calendar_id>", name: "Personal", color: "#F5A623"),
