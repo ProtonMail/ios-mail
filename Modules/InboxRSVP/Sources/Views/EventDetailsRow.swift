@@ -39,6 +39,8 @@ struct EventDetailsRow: View {
     var body: some View {
         HStack(alignment: .center, spacing: DS.Spacing.medium) {
             Image(icon)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
                 .foregroundStyle(iconColor)
                 .square(size: 20)
             HStack(alignment: .center, spacing: DS.Spacing.small) {

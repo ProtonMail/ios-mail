@@ -28,12 +28,12 @@ struct EventHeader: View {
         HStack(alignment: .top, spacing: DS.Spacing.standard) {
             VStack(alignment: .leading, spacing: DS.Spacing.standard) {
                 Text(title)
-                    .font(.body)
+                    .font(.title3)
                     .fontWeight(.semibold)
                     .foregroundStyle(DS.Color.Text.norm)
                 Text(formattedDate)
                     .font(.subheadline)
-                    .fontWeight(.regular)
+                    .fontWeight(.medium)
                     .foregroundStyle(DS.Color.Text.norm)
                     .minimumScaleFactor(0.75)
                 if case let .visible(attendance, _) = answerButtons, attendance == .optional {

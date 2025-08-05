@@ -26,7 +26,7 @@ struct ActionButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
             .font(.subheadline)
-            .fontWeight(.regular)
+            .fontWeight(.semibold)
             .foregroundStyle(textColor)
             .padding(.all, 12)
             .frame(maxWidth: .infinity)
@@ -39,9 +39,9 @@ extension ActionButtonStyle {
 
     static var answerButtonStyle: Self {
         .init(
-            textColor: DS.Color.Brand.plus30,
-            backgroundColor: DS.Color.InteractionBrandWeak.norm,
-            pressedBackgroundColor: DS.Color.InteractionBrandWeak.pressed
+            textColor: DS.Color.Text.inverted,
+            backgroundColor: DS.Color.InteractionBrand.norm,
+            pressedBackgroundColor: DS.Color.InteractionBrand.pressed
         )
     }
 
