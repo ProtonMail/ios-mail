@@ -39,12 +39,25 @@ public struct RSVPView: View {
                     RSVPEventView(
                         event: event,
                         isAnswering: state.isAnswering,
-                        onAnswerSelected: { selectedAnswer in store.handle(action: .answer(selectedAnswer)) },
-                        onCalendarIconTapped: { store.handle(action: .calendarIconTapped) }
+                        action: { action in handle(action: action, with: store) }
                     )
                 }
             }
             .onLoad { store.handle(action: .onLoad) }
+        }
+    }
+
+    // MARK: - Private
+
+    private func handle(action: RSVPEventView.Action, with store: RSVPStateStore) {
+        switch action {
+        case .answerSelected(let selectedAnswer):
+            store.handle(action: .answer(selectedAnswer))
+        case .calendarIconTapped:
+            store.handle(action: .calendarIconTapped)
+        case .participantOptionSelected:
+            // FIXME: To implement
+            break
         }
     }
 }

@@ -21,23 +21,26 @@ import proton_app_uniffi
 import SwiftUI
 
 struct RSVPEventView: View {
+    enum Action {
+        case answerSelected(RsvpAnswer)
+        case calendarIconTapped
+        case participantOptionSelected(EventMenuParticipantOption)
+    }
+
     private let event: Event
     private let isAnswering: Bool
-    private let onAnswerSelected: (RsvpAnswer) -> Void
-    private let onCalendarIconTapped: () -> Void
+    private let action: (Action) -> Void
     @State private var areParticipantsExpanded: Bool
 
     init(
         event: RsvpEvent,
         isAnswering: Bool,
-        onAnswerSelected: @escaping (RsvpAnswer) -> Void,
-        onCalendarIconTapped: @escaping () -> Void,
+        action: @escaping (Action) -> Void,
         areParticipantsExpanded: Bool = false,
     ) {
         self.event = EventMapper.map(from: event)
         self.isAnswering = isAnswering
-        self.onAnswerSelected = onAnswerSelected
-        self.onCalendarIconTapped = onCalendarIconTapped
+        self.action = action
         self.areParticipantsExpanded = areParticipantsExpanded
     }
 
@@ -76,7 +79,7 @@ struct RSVPEventView: View {
             title: event.title,
             formattedDate: event.formattedDate,
             answerButtons: event.answerButtons,
-            calendarButtonAction: onCalendarIconTapped
+            calendarButtonAction: { action(.calendarIconTapped) }
         )
     }
 
@@ -93,13 +96,13 @@ struct RSVPEventView: View {
                 case .none:
                     ForEach(RsvpAnswer.allCases, id: \.self) { answer in
                         AnswerButton(text: answer.humanReadable.short) {
-                            onAnswerSelected(answer)
+                            action(.answerSelected(answer))
                         }
                         .matchedGeometryEffect(id: answer, in: answerButtonAnimation)
                     }
                 case .some(let answer):
                     AnswerMenuButton(state: answer, isAnswering: isAnswering) { selectedAnswer in
-                        onAnswerSelected(selectedAnswer)
+                        action(.answerSelected(selectedAnswer))
                     }
                     .matchedGeometryEffect(id: answer, in: answerButtonAnimation)
                 }
@@ -126,8 +129,9 @@ struct RSVPEventView: View {
             }
             EventDetailsRowMenu<EventMenuParticipantOption>(
                 icon: DS.Icon.icUser,
-                text: event.organizer.displayName
-            ) { _ in }
+                text: event.organizer.displayName,
+                action: { option in action(.participantOptionSelected(option)) }
+            )
             EventParticipantsView(
                 participants: event.participants,
                 areParticipantsExpanded: $areParticipantsExpanded
@@ -188,8 +192,7 @@ private extension RsvpAttendeeStatus {
         RSVPEventView(
             event: event,
             isAnswering: true,
-            onAnswerSelected: { _ in },
-            onCalendarIconTapped: {},
+            action: { _ in },
             areParticipantsExpanded: false
         )
     }

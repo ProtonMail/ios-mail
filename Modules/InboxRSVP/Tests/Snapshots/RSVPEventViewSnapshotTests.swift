@@ -29,8 +29,7 @@ struct RSVPEventViewSnapshotTests {
         let view = RSVPEventView(
             event: testCase.event,
             isAnswering: testCase.isAnswering,
-            onAnswerSelected: { _ in },
-            onCalendarIconTapped: {},
+            action: { _ in },
             areParticipantsExpanded: testCase.isExpanded,
         )
 
