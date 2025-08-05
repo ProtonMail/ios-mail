@@ -20,12 +20,13 @@ import Foundation
 extension URL {
     enum ProtonCalendar {
         static let appStoreURL = URL(string: "itms-apps://itunes.apple.com/app/id1514709943").unsafelyUnwrapped
+
         static func openEventDeepLink(from model: CalendarEvent) -> URL {
             let baseURL = URL(string: "ch.protonmail.calendar://eventDetails").unsafelyUnwrapped
             let queryItems: [URLQueryItem] = [
                 URLQueryItem(name: "eventID", value: model.eventID),
                 URLQueryItem(name: "calendarID", value: model.calendarID),
-                URLQueryItem(name: "startTime", value: model.startTime),
+                URLQueryItem(name: "startTime", value: "\(model.startTime)"),
             ]
 
             return baseURL.appending(queryItems: queryItems)

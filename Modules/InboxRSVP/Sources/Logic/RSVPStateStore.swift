@@ -142,7 +142,7 @@ final class RSVPStateStore: StateStore {
         let calendarEvent = CalendarEvent(
             eventID: eventID,
             calendarID: calendarID,
-            startTime: "\(event.startsAt)"
+            startTime: event.startsAt
         )
 
         return .ProtonCalendar.openEventDeepLink(from: calendarEvent)

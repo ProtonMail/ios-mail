@@ -18,5 +18,5 @@
 struct CalendarEvent {
     let eventID: String
     let calendarID: String
-    let startTime: String
+    let startTime: UInt64
 }
