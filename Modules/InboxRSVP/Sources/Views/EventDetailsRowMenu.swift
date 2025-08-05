@@ -15,12 +15,26 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import InboxDesignSystem
 import SwiftUI
 
 struct EventDetailsRowMenu<Option: EventItemMenuOption>: View {
     let icon: ImageResource
+    let iconColor: Color
     let text: String
     let action: (Option) -> Void
+
+    init(
+        icon: ImageResource,
+        iconColor: Color = DS.Color.Text.weak,
+        text: String,
+        action: @escaping (Option) -> Void
+    ) {
+        self.icon = icon
+        self.iconColor = iconColor
+        self.text = text
+        self.action = action
+    }
 
     var body: some View {
         Menu {
@@ -32,7 +46,7 @@ struct EventDetailsRowMenu<Option: EventItemMenuOption>: View {
                 )
             }
         } label: {
-            EventDetailsRow(icon: icon, text: text)
+            EventDetailsRow(icon: icon, iconColor: iconColor, text: text)
         }
         .buttonStyle(EventDetailsRowButtonStyle())
     }

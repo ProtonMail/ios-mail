@@ -22,6 +22,7 @@ import SwiftUI
 
 struct EventParticipantsView: View {
     let participants: [Event.Participant]
+    let action: (EventMenuParticipantOption) -> Void
     @Binding var areParticipantsExpanded: Bool
 
     var body: some View {
@@ -36,10 +37,11 @@ struct EventParticipantsView: View {
             if areParticipantsExpanded || participants.count == 1 {
                 VStack(alignment: .leading, spacing: .zero) {
                     ForEach(participants, id: \.displayName) { participant in
-                        EventDetailsRow(
+                        EventDetailsRowMenu<EventMenuParticipantOption>(
                             icon: participant.status.details.icon,
                             iconColor: participant.status.details.color,
-                            text: participant.displayName
+                            text: participant.displayName,
+                            action: action
                         )
                     }
                 }

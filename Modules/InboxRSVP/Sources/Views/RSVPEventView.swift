@@ -134,6 +134,7 @@ struct RSVPEventView: View {
             )
             EventParticipantsView(
                 participants: event.participants,
+                action: { option in action(.participantOptionSelected(option)) },
                 areParticipantsExpanded: $areParticipantsExpanded
             )
         }
