@@ -60,7 +60,7 @@ final class RSVPStateStore: StateStore {
             }
         case .calendarIconTapped:
             if case let .loaded(_, event) = internalState {
-                tryToOpenCalendarApp(with: event)
+                tryToOpenEventInCalendarApp(with: event)
             }
         }
     }
@@ -117,8 +117,8 @@ final class RSVPStateStore: StateStore {
         }
     }
 
-    private func tryToOpenCalendarApp(with event: RsvpEvent) {
-        guard let deeplinkURL = calendarAppDeeplinkURL(from: event) else {
+    private func tryToOpenEventInCalendarApp(with event: RsvpEvent) {
+        guard let deeplinkURL = openCalendarEventDeepLinkURL(from: event) else {
             openProtonCalendarInAppStore()
             return
         }
@@ -131,23 +131,21 @@ final class RSVPStateStore: StateStore {
     }
 
     private func openProtonCalendarInAppStore() {
-        let calendarAppStoreURL = URL(string: "itms-apps://itunes.apple.com/app/id1514709943")!
-        openURL(calendarAppStoreURL)
+        openURL(.ProtonCalendar.appStoreURL)
     }
 
-    private func calendarAppDeeplinkURL(from event: RsvpEvent) -> URL? {
-        guard let eventID = event.id, let calendar = event.calendar else {
+    private func openCalendarEventDeepLinkURL(from event: RsvpEvent) -> URL? {
+        guard let eventID = event.id, let calendarID = event.calendar?.id else {
             return nil
         }
 
-        let baseURL = URL(string: "ch.protonmail.calendar://eventDetails")!
-        let queryItems: [URLQueryItem] = [
-            URLQueryItem(name: "eventID", value: eventID),
-            URLQueryItem(name: "calendarID", value: calendar.id),
-            URLQueryItem(name: "startTime", value: "\(event.startsAt)"),
-        ]
+        let calendarEvent = CalendarEvent(
+            eventID: eventID,
+            calendarID: calendarID,
+            startTime: "\(event.startsAt)"
+        )
 
-        return baseURL.appending(queryItems: queryItems)
+        return .ProtonCalendar.openEventDeepLink(from: calendarEvent)
     }
 }
 
