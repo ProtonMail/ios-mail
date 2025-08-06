@@ -87,21 +87,21 @@ final class SidebarModel: Sendable, ObservableObject {
         foldersChangesObservation = .init(
             sidebar: sidebar,
             labelType: .folder,
-            updatedData: { await self.sidebar.customFolders() }
+            updatedData: { [sidebar] in await sidebar.customFolders() }
         ) { [weak self] newFolders in
             self?.updateFolders(with: newFolders)
         }
         labelsChangesObservation = .init(
             sidebar: sidebar,
             labelType: .label,
-            updatedData: { await self.sidebar.customLabels() }
+            updatedData: { [sidebar] in await sidebar.customLabels() }
         ) { [weak self] newLabels in
             self?.updateLabels(with: newLabels)
         }
         systemLabelsChangesObservation = .init(
             sidebar: sidebar,
             labelType: .system,
-            updatedData: { await self.sidebar.systemLabels() }
+            updatedData: { [sidebar] in await sidebar.systemLabels() }
         ) { [weak self] newSystemLabels in
             self?.updateSystemFolders(with: newSystemLabels)
         }
