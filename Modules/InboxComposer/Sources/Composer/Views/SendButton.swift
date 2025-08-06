@@ -22,10 +22,6 @@ struct SendButton: View {
     @Environment(\.isEnabled) var isEnabled
     let onTap: () -> Void
 
-    private var textColor: Color {
-        isEnabled ? DS.Color.Text.accent : DS.Color.Brand.minus20
-    }
-
     var body: some View {
         Button(
             action: onTap,
@@ -33,7 +29,7 @@ struct SendButton: View {
                 Text(L10n.Composer.send)
                     .font(.subheadline)
                     .fontWeight(.semibold)
-                    .foregroundStyle(textColor)
+                    .foregroundStyle(DS.Color.Text.inverted)
             }
         )
         .buttonStyle(SendButtonStyle())
@@ -45,9 +41,9 @@ private struct SendButtonStyle: ButtonStyle {
 
     func backgroundColor(configuration: Self.Configuration) -> Color {
         if isEnabled {
-            configuration.isPressed ? DS.Color.InteractionBrandWeak.pressed : DS.Color.InteractionBrandWeak.norm
+            configuration.isPressed ? DS.Color.InteractionBrand.pressed : DS.Color.InteractionBrand.norm
         } else {
-            DS.Color.InteractionBrandWeak.disabled
+            DS.Color.InteractionBrand.disabled
         }
     }
 
