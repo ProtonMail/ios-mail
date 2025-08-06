@@ -55,7 +55,7 @@ struct DraftPresenter: ContactsDraftPresenter {
     }
 
     func openDraft(with recipient: SingleRecipientEntry) async throws {
-        AppLogger.log(message: "open new draft with contact details", category: .composer)
+        AppLogger.log(message: "open new draft with single recipient", category: .composer)
 
         try await openNewEmptyDraft { toRecipients in
             _ = toRecipients.addSingleRecipient(recipient: recipient)
