@@ -42,11 +42,13 @@ struct Event: Copying {
     }
 
     struct Participant: Copying, Equatable {
+        let email: String
         let displayName: String
         var status: RsvpAttendeeStatus
     }
 
     struct Organizer: Equatable {
+        let email: String
         let displayName: String
     }
 

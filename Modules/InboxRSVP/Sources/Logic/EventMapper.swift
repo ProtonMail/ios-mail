@@ -96,7 +96,7 @@ enum EventMapper {
     private static func organizer(from organizer: RsvpOrganizer) -> Event.Organizer {
         let name: String = organizer.name ?? organizer.email
 
-        return .init(displayName: L10n.Details.organizer(name: name).string)
+        return .init(email: organizer.email, displayName: L10n.Details.organizer(name: name).string)
     }
 
     private static func participants(attendees: [RsvpAttendee], userIndex: UInt32?) -> [Event.Participant] {
@@ -104,7 +104,7 @@ enum EventMapper {
             let isCurrentUser = isCurrentUser(attendeeIndex: index, userAttendeeIndex: userIndex)
             let displayName = isCurrentUser ? userDisplayName(from: attendee) : otherAttendeeDisplayName(from: attendee)
 
-            return Event.Participant(displayName: displayName, status: attendee.status)
+            return .init(email: attendee.email, displayName: displayName, status: attendee.status)
         }
     }
 

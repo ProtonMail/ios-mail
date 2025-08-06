@@ -24,7 +24,7 @@ struct RSVPEventView: View {
     enum Action {
         case answerSelected(RsvpAnswer)
         case calendarIconTapped
-        case participantOptionSelected(EventMenuParticipantOption)
+        case participantOptionSelected(option: EventMenuParticipantOption, forEmail: String)
     }
 
     private let event: Event
@@ -130,11 +130,13 @@ struct RSVPEventView: View {
             EventDetailsRowMenu<EventMenuParticipantOption>(
                 icon: DS.Icon.icUser,
                 text: event.organizer.displayName,
-                action: { option in action(.participantOptionSelected(option)) }
+                action: { option in
+                    action(.participantOptionSelected(option: option, forEmail: event.organizer.email))
+                }
             )
             EventParticipantsView(
                 participants: event.participants,
-                action: { option in action(.participantOptionSelected(option)) },
+                action: { option, email in action(.participantOptionSelected(option: option, forEmail: email)) },
                 areParticipantsExpanded: $areParticipantsExpanded
             )
         }

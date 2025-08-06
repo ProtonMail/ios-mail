@@ -157,8 +157,8 @@ final class EventMapperTests {
                 RsvpOrganizer(name: .none, email: "john.wick@proton.me"),
             ],
             [
-                Event.Organizer(displayName: "Samantha Peterson (Organizer)"),
-                Event.Organizer(displayName: "john.wick@proton.me (Organizer)"),
+                Event.Organizer(email: "samantha.peterson@pm.me", displayName: "Samantha Peterson (Organizer)"),
+                Event.Organizer(email: "john.wick@proton.me", displayName: "john.wick@proton.me (Organizer)"),
             ]
         )
     )
@@ -169,23 +169,23 @@ final class EventMapperTests {
         #expect(given.organizer == expected)
     }
 
-    @Test(arguments:  [
+    @Test(arguments: [
         (
             userAttendeeIndex: Optional<UInt32>(1),
             expected: Array<Event.Participant>([
-                .init(displayName: "Alice Sherington • alice@proton.me", status: .yes),
-                .init(displayName: "You • bob@outlook.com", status: .no),
-                .init(displayName: "cyril@gmail.com", status: .maybe),
-                .init(displayName: "Donatan Chelsea • donatan@pm.me", status: .unanswered),
+                .init(email: "alice@proton.me", displayName: "Alice Sherington • alice@proton.me", status: .yes),
+                .init(email: "bob@outlook.com", displayName: "You • bob@outlook.com", status: .no, ),
+                .init(email: "cyril@gmail.com", displayName: "cyril@gmail.com", status: .maybe, ),
+                .init(email: "donatan@pm.me", displayName: "Donatan Chelsea • donatan@pm.me", status: .unanswered),
             ])
         ),
         (
             userAttendeeIndex: Optional<UInt32>.none,
             expected: Array<Event.Participant>([
-                .init(displayName: "Alice Sherington • alice@proton.me", status: .yes),
-                .init(displayName: "Bob Charlton • bob@outlook.com", status: .no),
-                .init(displayName: "cyril@gmail.com", status: .maybe),
-                .init(displayName: "Donatan Chelsea • donatan@pm.me", status: .unanswered),
+                .init(email: "alice@proton.me", displayName: "Alice Sherington • alice@proton.me", status: .yes),
+                .init(email: "bob@outlook.com", displayName: "Bob Charlton • bob@outlook.com", status: .no),
+                .init(email: "cyril@gmail.com", displayName: "cyril@gmail.com", status: .maybe, ),
+                .init(email: "donatan@pm.me", displayName: "Donatan Chelsea • donatan@pm.me", status: .unanswered),
             ])
         ),
     ])

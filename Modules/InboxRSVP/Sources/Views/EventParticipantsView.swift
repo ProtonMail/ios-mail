@@ -22,7 +22,7 @@ import SwiftUI
 
 struct EventParticipantsView: View {
     let participants: [Event.Participant]
-    let action: (EventMenuParticipantOption) -> Void
+    let action: (_ option: EventMenuParticipantOption, _ email: String) -> Void
     @Binding var areParticipantsExpanded: Bool
 
     var body: some View {
@@ -41,7 +41,7 @@ struct EventParticipantsView: View {
                             icon: participant.status.details.icon,
                             iconColor: participant.status.details.color,
                             text: participant.displayName,
-                            action: action
+                            action: { option in action(option, participant.email) }
                         )
                     }
                 }
