@@ -17,6 +17,6 @@
 
 import proton_app_uniffi
 
-public protocol ContactsDraftPresenter: RecipientDraftPresenter {
-    func openDraft(with group: ContactGroupItem) async throws
+public protocol RecipientDraftPresenter {
+    func openDraft(with recipient: SingleRecipientEntry) async throws
 }
