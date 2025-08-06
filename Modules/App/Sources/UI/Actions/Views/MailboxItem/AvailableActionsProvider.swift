@@ -51,8 +51,7 @@ extension ConversationAvailableActions {
     var availableActions: AvailableActions {
         .init(
             replyActions: nil,
-            mailboxItemActions: conversationActions.compactMap(\.action),
-//            mailboxItemActions: conversationActions.map(\.action), FIXME: - Hide snooze for release
+            mailboxItemActions: conversationActions.map(\.action),
             moveActions: moveActions,
             generalActions: generalActions
         )

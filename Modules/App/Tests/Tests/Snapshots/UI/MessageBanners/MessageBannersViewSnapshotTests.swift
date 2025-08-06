@@ -64,7 +64,7 @@ class MessageBannersViewSnapshotTests {
                 .spam(auto: true),
                 .expiry(timestamp: 1_738_920_762),
                 .scheduledSend(timestamp: 1_905_004_876),
-//                .snoozed(timestamp: 1_740_238_200),
+                .snoozed(timestamp: 1_740_238_200),
                 .remoteContent,
             ],
             timer: Timer.self,

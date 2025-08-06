@@ -142,18 +142,17 @@ struct MessageBannersView: View {
                     size: .large(.one(button)),
                     style: .regular
                 )
-            case .snoozed(let timestamp): // FIXME: - Hide snooze for release
-                return nil
-//                let button = Banner.Button(title: L10n.MessageBanner.snoozedAction) {
-//                    action(.unsnoozeTapped)
-//                }
-//
-//                return oneLine(
-//                    icon: DS.Icon.icClock,
-//                    message: L10n.MessageBanner.snoozedTitle(formattedTime: timestamp.date.snoozeFormat()),
-//                    size: .small(button),
-//                    style: .regular
-//                )
+            case .snoozed(let timestamp):
+                let button = Banner.Button(title: L10n.MessageBanner.snoozedAction) {
+                    action(.unsnoozeTapped)
+                }
+
+                return oneLine(
+                    icon: DS.Icon.icClock,
+                    message: L10n.MessageBanner.snoozedTitle(formattedTime: timestamp.date.snoozeFormat()),
+                    size: .small(button),
+                    style: .regular
+                )
             case .embeddedImages:
                 let button = Banner.Button(title: L10n.MessageBanner.embeddedImagesAction) {
                     action(.displayEmbeddedImagesTapped)

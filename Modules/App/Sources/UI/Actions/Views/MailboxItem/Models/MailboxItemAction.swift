@@ -26,5 +26,5 @@ enum MailboxItemAction: Equatable {
     case markRead
     case markUnread
     case delete
-//    case snooze FIXME: - Hide snooze for release
+    case snooze
 }
