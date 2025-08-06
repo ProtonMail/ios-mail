@@ -211,6 +211,7 @@ final class RSVPStateStoreTests {
                 .loaded(initialEvent),
             ]
         )
+        #expect(toastStateStore.state.toasts == [.error(message: "Something went wrong. Please try again.")])
     }
 
     // MARK: - `calendarIconTapped` action

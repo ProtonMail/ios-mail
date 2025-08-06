@@ -104,8 +104,11 @@ final class RSVPStateStore: StateStore {
         let answerResult = await service.answer(answer: answer)
 
         switch (answerResult, service.get()) {
-        case (.ok, .ok(let eventDetails)), (.error, .ok(let eventDetails)):
+        case (.ok, .ok(let eventDetails)):
             updateState(with: .loaded(service, eventDetails))
+        case (.error(let protonError), .ok(let eventDetails)):
+            updateState(with: .loaded(service, eventDetails))
+            toastStateStore.present(toast: .error(message: protonError.localizedDescription))
         case (.ok, .error), (.error, .error):
             updateState(with: .loadFailed)
         }
