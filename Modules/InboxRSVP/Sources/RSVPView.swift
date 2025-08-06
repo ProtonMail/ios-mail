@@ -21,6 +21,7 @@ import SwiftUI
 
 public struct RSVPView: View {
     @Environment(\.openURL) var openURL
+    @EnvironmentObject var toastStateStore: ToastStateStore
     private let serviceProvider: RsvpEventServiceProvider
 
     public init(serviceProvider: RsvpEventServiceProvider) {
@@ -28,7 +29,13 @@ public struct RSVPView: View {
     }
 
     public var body: some View {
-        StoreView(store: RSVPStateStore(serviceProvider: serviceProvider, openURL: openURL)) { state, store in
+        StoreView(
+            store: RSVPStateStore(
+                serviceProvider: serviceProvider,
+                openURL: openURL,
+                toastStateStore: toastStateStore
+            )
+        ) { state, store in
             Group {
                 switch state {
                 case .loading:

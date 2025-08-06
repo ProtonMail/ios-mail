@@ -30,6 +30,7 @@ final class RSVPStateStore: StateStore {
 
     private let serviceProvider: RsvpEventServiceProvider
     private let openURL: URLOpenerProtocol
+    private let toastStateStore: ToastStateStore
     private var internalState: InternalState {
         didSet { state = internalState.state }
     }
@@ -40,11 +41,18 @@ final class RSVPStateStore: StateStore {
         case retry
         case answer(RsvpAnswer)
         case calendarIconTapped
+        case copyAddress
+        case newMessage
     }
 
-    init(serviceProvider: RsvpEventServiceProvider, openURL: URLOpenerProtocol) {
+    init(
+        serviceProvider: RsvpEventServiceProvider,
+        openURL: URLOpenerProtocol,
+        toastStateStore: ToastStateStore
+    ) {
         self.serviceProvider = serviceProvider
         self.openURL = openURL
+        self.toastStateStore = toastStateStore
         self.internalState = .loading
         self.state = internalState.state
     }
@@ -62,6 +70,8 @@ final class RSVPStateStore: StateStore {
             if case let .loaded(_, event) = internalState {
                 tryToOpenEventInCalendarApp(with: event)
             }
+        case .copyAddress, .newMessage:
+            toastStateStore.present(toast: .comingSoon)
         }
     }
 

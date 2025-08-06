@@ -18,6 +18,7 @@
 @testable import InboxRSVP
 import Combine
 import InboxCore
+import InboxCoreUI
 import InboxDesignSystem
 import InboxTesting
 import proton_app_uniffi
@@ -27,7 +28,12 @@ final class RSVPStateStoreTests {
     private let serviceSpy = RsvpEventServiceSpy(noPointer: .init())
     private let openURLSpy = EnvironmentURLOpenerSpy()
     private var serviceProviderSpy = RsvpEventServiceProviderSpy(noPointer: .init())
-    private(set) lazy var sut = RSVPStateStore(serviceProvider: serviceProviderSpy, openURL: openURLSpy)
+    private let toastStateStore = ToastStateStore(initialState: .initial)
+    private(set) lazy var sut = RSVPStateStore(
+        serviceProvider: serviceProviderSpy,
+        openURL: openURLSpy,
+        toastStateStore: toastStateStore
+    )
     private var cancellables = Set<AnyCancellable>()
 
     // MARK: - Initial
@@ -274,6 +280,42 @@ final class RSVPStateStoreTests {
             "itms-apps://itunes.apple.com/app/id1514709943"
         ])
         verifyOpenURLWithActions(urls: [])
+    }
+
+    // MARK: - `copyAddress` action
+
+    @Test
+    func copyAddressAction_ItDisplaysComingSoonToast() async {
+        let expectedEvent: RsvpEvent = .bestEvent(
+            id: .none,
+            calendar: .init(id: "calendar_id_42", name: "Work", color: .empty)
+        )
+
+        serviceSpy.stubbedDetailsResult = .ok(expectedEvent)
+        serviceProviderSpy.stubbedResult = serviceSpy
+
+        await sut.handle(action: .onLoad)
+        await sut.handle(action: .copyAddress)
+
+        #expect(toastStateStore.state.toasts == [.comingSoon])
+    }
+
+    // MARK: - `newMessage` action
+
+    @Test
+    func newMessageAction_ItDisplaysComingSoonToast() async {
+        let expectedEvent: RsvpEvent = .bestEvent(
+            id: .none,
+            calendar: .init(id: "calendar_id_42", name: "Work", color: .empty)
+        )
+
+        serviceSpy.stubbedDetailsResult = .ok(expectedEvent)
+        serviceProviderSpy.stubbedResult = serviceSpy
+
+        await sut.handle(action: .onLoad)
+        await sut.handle(action: .newMessage)
+
+        #expect(toastStateStore.state.toasts == [.comingSoon])
     }
 
     // MARK: - Private
