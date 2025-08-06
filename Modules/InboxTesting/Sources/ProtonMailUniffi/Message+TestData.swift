@@ -44,6 +44,7 @@ extension Message {
             sender: sender,
             size: 1_024,
             snoozeTime: 0,
+            displaySnoozeReminder: false,
             subject: .notUsed,
             time: 1622548800,
             toList: to,
