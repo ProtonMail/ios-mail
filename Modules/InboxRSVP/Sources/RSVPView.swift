@@ -62,9 +62,13 @@ public struct RSVPView: View {
             store.handle(action: .answer(selectedAnswer))
         case .calendarIconTapped:
             store.handle(action: .calendarIconTapped)
-        case .participantOptionSelected:
-            // FIXME: To implement
-            break
+        case .participantOptionSelected(let option, _):
+            switch option {
+            case .copyAddress:
+                store.handle(action: .copyAddress)
+            case .newMessage:
+                store.handle(action: .newMessage)
+            }
         }
     }
 }
