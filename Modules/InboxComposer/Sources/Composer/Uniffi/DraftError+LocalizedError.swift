@@ -33,7 +33,7 @@ private extension DraftAttachmentUploadErrorReason {
 
     var errorMessage: LocalizedStringResource {
         switch self {
-        case .attachmentTooLarge:
+        case .attachmentTooLarge, .totalAttachmentSizeTooLarge:
             L10n.DraftAttachmentUploadError.attachmentTooLarge
         case .crypto:
             L10n.DraftAttachmentUploadError.crypto

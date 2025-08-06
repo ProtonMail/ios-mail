@@ -45,7 +45,7 @@ public extension CreateMailSessionResult {
     }
 }
 public extension DraftExpirationTimeResult {
-    func get() throws(ProtonError) -> UnixTimestamp? {
+    func get() throws(ProtonError) -> DraftExpirationTime {
         switch self {
         case .ok(let value):
             value
@@ -106,6 +106,16 @@ public extension DraftScheduleSendOptionsResult {
 }
 public extension DraftSendResultUnseenResult {
     func get() throws(ProtonError) -> [DraftSendResult] {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension DraftValidateRecipientsExpirationFeatureResult {
+    func get() throws(ProtonError) -> DraftRecipientExpirationFeatureReport {
         switch self {
         case .ok(let value):
             value
