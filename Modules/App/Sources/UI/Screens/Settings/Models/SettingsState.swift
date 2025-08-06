@@ -41,9 +41,9 @@ struct SettingsState: Copying {
     mutating func updateAccountSettings() {
         accountSettings = .stale
 
-//        if hasMailboxPassword {
-//            accountSettings.replace([.changePassword], with: [.changeLoginPassword, .changeMailboxPassword])
-//        }
+        if hasMailboxPassword {
+            accountSettings.replace([.changePassword], with: [.changeLoginPassword, .changeMailboxPassword])
+        }
 
         if showSignInToAnotherDevice {
             accountSettings.insert(.qrLogin, at: 0)
@@ -68,9 +68,7 @@ extension SettingsState {
 private extension Array where Element == AccountSettings {
 
     static var stale: [Element] {
-        // [.changePassword, .securityKeys]
-        // Hidden for release 5.3.0
-        return []
+        [.changePassword, .securityKeys]
     }
 
 }
