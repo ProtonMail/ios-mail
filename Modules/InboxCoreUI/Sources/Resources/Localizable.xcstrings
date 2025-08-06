@@ -490,7 +490,7 @@
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Še %lld poskusov pred odjavo"
+                  "value" : "Še %lld poskusi pred odjavo"
                 }
               },
               "one" : {
