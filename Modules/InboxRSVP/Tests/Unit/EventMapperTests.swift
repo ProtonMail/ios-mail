@@ -79,7 +79,8 @@ final class EventMapperTests {
                 RsvpState.reminder(progress: .ongoing),
                 RsvpState.reminder(progress: .ended),
                 RsvpState.unanswerableInvite(reason: .inviteIsOutdated),
-                RsvpState.unanswerableInvite(reason: .inviteHasUnknownRecency),
+                RsvpState.unanswerableInvite(reason: .networkFailure),
+                RsvpState.unanswerableInvite(reason: .eventDoesNotExist),
                 RsvpState.unanswerableInvite(reason: .addressIsIncorrect),
                 RsvpState.unanswerableInvite(reason: .userIsOrganizer),
                 RsvpState.cancelledInvite(isOutdated: true),
@@ -87,58 +88,19 @@ final class EventMapperTests {
                 RsvpState.cancelledReminder,
             ],
             [
+                Optional<Event.Banner>(nil),
+                Event.Banner(style: .now, regularText: L10n.Header.happening, boldText: L10n.Header.now),
+                .init(style: .ended, regularText: L10n.Header.event, boldText: L10n.Header.ended),
                 nil,
-                Event.Banner(
-                    style: .now,
-                    regularText: L10n.Header.happening,
-                    boldText: L10n.Header.now
-                ),
-                Event.Banner(
-                    style: .ended,
-                    regularText: L10n.Header.event,
-                    boldText: L10n.Header.ended
-                ),
-                nil,
-                Event.Banner(
-                    style: .now,
-                    regularText: L10n.Header.happening,
-                    boldText: L10n.Header.now
-                ),
-                Event.Banner(
-                    style: .ended,
-                    regularText: L10n.Header.event,
-                    boldText: L10n.Header.ended
-                ),
-                Event.Banner(
-                    style: .generic,
-                    regularText: L10n.Header.inviteIsOutdated,
-                    boldText: .empty
-                ),
-                Event.Banner(
-                    style: .generic,
-                    regularText: L10n.Header.offlineWarning,
-                    boldText: .empty
-                ),
-                Event.Banner(
-                    style: .generic,
-                    regularText: L10n.Header.addressIsIncorrect,
-                    boldText: .empty
-                ),
-                Event.Banner(
-                    style: .generic,
-                    regularText: L10n.Header.userIsOrganizer,
-                    boldText: .empty
-                ),
-                Event.Banner(
-                    style: .cancelled,
-                    regularText: L10n.Header.cancelledAndOutdated,
-                    boldText: .empty
-                ),
-                Event.Banner(
-                    style: .cancelled,
-                    regularText: L10n.Header.event,
-                    boldText: L10n.Header.canceled
-                ),
+                .init(style: .now, regularText: L10n.Header.happening, boldText: L10n.Header.now),
+                .init(style: .ended, regularText: L10n.Header.event, boldText: L10n.Header.ended),
+                .init(style: .generic, regularText: L10n.Header.inviteIsOutdated, boldText: .empty),
+                .init(style: .generic, regularText: L10n.Header.offlineWarning, boldText: .empty),
+                .init(style: .generic, regularText: L10n.Header.eventDoesNotExist, boldText: .empty),
+                .init(style: .generic, regularText: L10n.Header.addressIsIncorrect, boldText: .empty),
+                .init(style: .generic, regularText: L10n.Header.userIsOrganizer, boldText: .empty),
+                .init(style: .cancelled, regularText: L10n.Header.cancelledAndOutdated, boldText: .empty),
+                .init(style: .cancelled, regularText: L10n.Header.event, boldText: L10n.Header.canceled),
                 nil,
             ]
         )

@@ -61,6 +61,9 @@
     "Retry" : {
       "comment" : "Title of the button that allows the user to retry loading the event after an error."
     },
+    "This event isn't in your calendar so you can't reply to it." : {
+      "comment" : "Banner text shown when a user tries to respond to an event that isn't present in their calendar."
+    },
     "This invitation is out of date. The event has been updated." : {
       "comment" : "Banner text explaining that the event details have changed since the invitation was sent."
     },

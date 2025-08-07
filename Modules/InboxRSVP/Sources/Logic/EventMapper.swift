@@ -73,12 +73,14 @@ enum EventMapper {
                 switch reason {
                 case .inviteIsOutdated:
                     L10n.Header.inviteIsOutdated
-                case .inviteHasUnknownRecency:
-                    L10n.Header.offlineWarning
+                case .eventDoesNotExist:
+                    L10n.Header.eventDoesNotExist
                 case .addressIsIncorrect:
                     L10n.Header.addressIsIncorrect
                 case .userIsOrganizer:
                     L10n.Header.userIsOrganizer
+                case .networkFailure:
+                    L10n.Header.offlineWarning
                 }
 
             return .init(style: .generic, regularText: regular)

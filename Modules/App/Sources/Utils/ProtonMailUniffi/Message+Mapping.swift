@@ -55,7 +55,7 @@ extension Message {
                 shouldShowForwardedIcon: isForwarded
             ),
             expirationDate: Date(timeIntervalSince1970: TimeInterval(expirationTime)),
-            snoozeDate: snoozeTime.date,
+            snoozeDate: snoozedUntil.map(TimeInterval.init).map(Date.init(timeIntervalSince1970:)),
             isDraftMessage: isDraft,
             shouldUseSnoozedColorForDate: displaySnoozeReminder
         )

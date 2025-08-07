@@ -106,6 +106,11 @@ enum L10n {
             bundle: .module,
             comment: "Warning banner shown when the user has no internet connection."
         )
+        static let eventDoesNotExist = LocalizedStringResource(
+            "This event isn't in your calendar so you can't reply to it.",
+            bundle: .module,
+            comment: "Banner text shown when a user tries to respond to an event that isn't present in their calendar."
+        )
         static let addressIsIncorrect = LocalizedStringResource(
             "Your address can’t be used to reply. Please update your account information.",
             bundle: .module,

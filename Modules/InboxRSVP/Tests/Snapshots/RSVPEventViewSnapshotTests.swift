@@ -47,7 +47,8 @@ private extension RsvpEvent {
         (answerableEnded, "answerable_ended_required_attendance", false, false),
         (answerableRecurrentOngoing, "answerable_recurrent_now_required_attendace", false, true),
         (unanswerableOutdated, "unanswerable_outdated", false, false),
-        (unanswerableUnknown, "unanswerable_offline", false, false),
+        (unanswerableNetworkFailure, "unanswerable_offline", false, false),
+        (unanswerableEventDoesNotExist, "unanswerable_event_does_not_exist", false, false),
         (unanswerableOrganizer, "unanswerable_organizer", false, false),
         (unanswerableAddressIsIncorrect, "unanswerable_address_incorrect", false, false),
         (cancelled, "cancelled", false, false),
@@ -104,9 +105,14 @@ private extension RsvpEvent {
         state: .unanswerableInvite(reason: .userIsOrganizer)
     )
 
-    static let unanswerableUnknown = RsvpEvent.testData(
+    static let unanswerableNetworkFailure = RsvpEvent.testData(
         data: .fullDaySingle,
-        state: .unanswerableInvite(reason: .inviteHasUnknownRecency)
+        state: .unanswerableInvite(reason: .networkFailure)
+    )
+
+    static let unanswerableEventDoesNotExist = RsvpEvent.testData(
+        data: .fullDaySingle,
+        state: .unanswerableInvite(reason: .eventDoesNotExist)
     )
 
     static let unanswerableAddressIsIncorrect = RsvpEvent.testData(

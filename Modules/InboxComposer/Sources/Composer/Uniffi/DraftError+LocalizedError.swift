@@ -207,6 +207,9 @@ private extension DraftSendErrorReason {
             L10n.DraftSendError.scheduleSendMessageLimitExceeded
         case .eoPasswordDecrypt:
             L10n.DraftSendError.failedToDecryptExternalEncryptionPassword
+        case .expirationTimeTooSoon:
+            // FIXME: Add missing string
+            "".notLocalized.stringResource
         }
     }
 }

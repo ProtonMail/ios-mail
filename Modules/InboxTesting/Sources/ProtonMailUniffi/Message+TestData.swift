@@ -43,7 +43,7 @@ extension Message {
             displayOrder: 0,
             sender: sender,
             size: 1_024,
-            snoozeTime: 0,
+            snoozedUntil: .none,
             displaySnoozeReminder: false,
             subject: .notUsed,
             time: 1622548800,
