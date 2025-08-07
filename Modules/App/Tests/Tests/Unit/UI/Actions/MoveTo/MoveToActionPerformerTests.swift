@@ -22,7 +22,7 @@ import XCTest
 
 final class MoveToActionPerformerTests: BaseTestCase {
     private var sut: MoveToActionPerformer!
-    private var stubbedResult: VoidActionResult!
+    private var stubbedResult: MoveActionResult!
 
     override func setUp() {
         super.setUp()

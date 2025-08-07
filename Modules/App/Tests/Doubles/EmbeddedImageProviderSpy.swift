@@ -18,14 +18,14 @@
 @testable import InboxCore
 import proton_app_uniffi
 
-class EmbeddedImageProviderSpy: EmbeddedImageProvider {
+class EmbeddedImageProviderSpy: @unchecked Sendable, EmbeddedImageProvider {
 
-    var stubbedResult: EmbeddedAttachmentInfoResult!
+    var stubbedResult: AttachmentDataResult!
     private(set) var invokedEmbeddedImageWithCID: [String] = []
 
     // MARK: - EmbeddedImageProvider
 
-    func getEmbeddedAttachment(cid: String) -> EmbeddedAttachmentInfoResult {
+    func getEmbeddedAttachment(cid: String) -> AttachmentDataResult {
         invokedEmbeddedImageWithCID.append(cid)
 
         return stubbedResult

@@ -17,11 +17,16 @@
 
 import proton_app_uniffi
 
+enum MoveActionResult {
+    case ok(Undo?)
+    case error(ActionError)
+}
+
 typealias MoveToActionClosure = (
     _ mailbox: Mailbox,
     _ destinationID: ID,
     _ itemsIDs: [ID]
-) async -> VoidActionResult
+) async -> MoveActionResult
 
 struct MoveToActions {
     let moveMessagesTo: MoveToActionClosure
@@ -32,16 +37,46 @@ extension MoveToActions {
 
     static var productionInstance: Self {
         .init(
-            moveMessagesTo: moveMessages,
-            moveConversationsTo: moveConversations
+            moveMessagesTo: { mailbox, destinationID, itemsIDs in
+                await moveMessages(mailbox: mailbox, destinationId: destinationID, messageIds: itemsIDs).actionResult
+            },
+            moveConversationsTo: { mailbox, destinationID, itemsIDs in
+                await moveConversations(mailbox: mailbox, labelId: destinationID, ids: itemsIDs).actionResult
+            }
         )
     }
 
     static var dummy: Self {
         .init(
-            moveMessagesTo: { _, _, _ in .ok },
-            moveConversationsTo: { _, _, _ in .ok }
+            moveMessagesTo: { _, _, _ in .ok(nil) },
+            moveConversationsTo: { _, _, _ in .ok(nil) }
         )
+    }
+
+}
+
+private extension MoveMessagesResult {
+
+    var actionResult: MoveActionResult {
+        switch self {
+        case .ok(let undo):
+            .ok(undo)
+        case .error(let actionError):
+            .error(actionError)
+        }
+    }
+
+}
+
+private extension MoveConversationsResult {
+
+    var actionResult: MoveActionResult {
+        switch self {
+        case .ok(let undo):
+            .ok(undo)
+        case .error(let actionError):
+            .error(actionError)
+        }
     }
 
 }

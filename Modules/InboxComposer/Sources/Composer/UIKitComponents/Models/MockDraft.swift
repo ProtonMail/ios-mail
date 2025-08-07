@@ -189,7 +189,7 @@ final class MockDraft: AppDraftProtocol, @unchecked Sendable {
         mockSubject
     }
 
-    func getEmbeddedAttachment(cid: String) async -> EmbeddedAttachmentInfoResult {
+    func getEmbeddedAttachment(cid: String) async -> AttachmentDataResult {
         .error(.network)
     }
 

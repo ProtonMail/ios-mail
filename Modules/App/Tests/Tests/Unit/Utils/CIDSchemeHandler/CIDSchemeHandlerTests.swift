@@ -72,7 +72,7 @@ class CIDSchemeHandlerTests: BaseTestCase {
     func testFetchingEmbeddedImage_WhenImageIsLoaded_ItReturnsImage() {
         let cidValue = "abcdef"
         let url = URL.cid(cidValue)
-        let image = EmbeddedAttachmentInfo.testData
+        let image = AttachmentData.testData
         urlSchemeTaskSpy = .init(request: .init(url: url))
         embeddedImageProviderSpy.stubbedResult = .ok(image)
         sut.webView(WKWebView(), start: urlSchemeTaskSpy)
@@ -86,7 +86,7 @@ class CIDSchemeHandlerTests: BaseTestCase {
     func testFetchingEmbeddedImage_WhenStopIsCalled_ItDoesNotDoAnything() {
         let cidValue = "abcdef"
         let url = URL.cid(cidValue)
-        let image = EmbeddedAttachmentInfo.testData
+        let image = AttachmentData.testData
         urlSchemeTaskSpy = .init(request: .init(url: url))
         embeddedImageProviderSpy.stubbedResult = .ok(image)
         let webView = WKWebView()
@@ -165,14 +165,12 @@ private extension Error {
 
 }
 
-private extension EmbeddedAttachmentInfo {
+private extension AttachmentData {
 
     static var testData: Self {
         .init(
             data: UIImage(resource: .protonLogo).pngData().unsafelyUnwrapped,
-            mime: "image/png",
-            height: nil,
-            width: nil
+            mime: "image/png"
         )
     }
 

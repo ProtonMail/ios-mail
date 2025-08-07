@@ -264,6 +264,26 @@ public extension MessagesForLabelResult {
         }
     }
 }
+public extension MoveConversationsResult {
+    func get() throws(ActionError) -> Undo? {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension MoveMessagesResult {
+    func get() throws(ActionError) -> Undo? {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension PasswordFlowChangeMboxPassResult {
     func get() throws(PasswordError) -> SimplePasswordState {
         switch self {

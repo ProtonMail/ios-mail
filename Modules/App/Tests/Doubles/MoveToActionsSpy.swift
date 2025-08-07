@@ -29,11 +29,11 @@ class MoveToActionsSpy {
     private(set) lazy var testingInstance = MoveToActions(
         moveMessagesTo: { _, destinationID, itemsIDs in
             self.invokedMoveToMessage.append(.init(destinationID: destinationID, itemsIDs: itemsIDs))
-            return .ok
+            return .ok(nil)
         },
         moveConversationsTo: { _, destinationID, itemsIDs in
             self.invokedMoveToConversation.append(.init(destinationID: destinationID, itemsIDs: itemsIDs))
-            return .ok
+            return .ok(nil)
         }
     )
 }

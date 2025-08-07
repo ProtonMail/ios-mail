@@ -100,7 +100,7 @@ public final class CIDSchemeHandler: NSObject, WKURLSchemeHandler {
             case .ok(let image):
                 let message = "embedded image mime type: \(image.mime), content length: \(image.data.count)"
                 AppLogger.logTemporarily(message: message, category: .conversationDetail)
-                handleImage(image, url: url, urlSchemeTask: urlSchemeTask)
+                handleAttachment(image, url: url, urlSchemeTask: urlSchemeTask)
             case .error(let error):
                 let message = "cid: \(cid), error: \(error)"
                 AppLogger.log(message: message, category: .composer, isError: true)
@@ -111,17 +111,17 @@ public final class CIDSchemeHandler: NSObject, WKURLSchemeHandler {
         }
     }
 
-    private func handleImage(_ image: EmbeddedAttachmentInfo, url: URL, urlSchemeTask: WKURLSchemeTask) {
+    private func handleAttachment(_ attachment: AttachmentData, url: URL, urlSchemeTask: WKURLSchemeTask) {
         let response = URLResponse(
             url: url,
-            mimeType: image.mime,
-            expectedContentLength: image.data.count,
+            mimeType: attachment.mime,
+            expectedContentLength: attachment.data.count,
             textEncodingName: nil
         )
         do {
             try ObjC.catchException {
                 urlSchemeTask.didReceive(response)
-                urlSchemeTask.didReceive(image.data)
+                urlSchemeTask.didReceive(attachment.data)
                 urlSchemeTask.didFinish()
             }
         } catch {

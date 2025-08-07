@@ -4,6 +4,16 @@
 import Foundation
 import proton_app_uniffi
 
+public extension AttachmentDataResult {
+    func get() throws(ProtonError) -> AttachmentData {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension AttachmentListRemoveResult {
     func get() throws(ProtonError) {
         switch self {
@@ -116,16 +126,6 @@ public extension DraftSendResultUnseenResult {
 }
 public extension DraftValidateRecipientsExpirationFeatureResult {
     func get() throws(ProtonError) -> DraftRecipientExpirationFeatureReport {
-        switch self {
-        case .ok(let value):
-            value
-        case .error(let error):
-            throw error
-        }
-    }
-}
-public extension EmbeddedAttachmentInfoResult {
-    func get() throws(ProtonError) -> EmbeddedAttachmentInfo {
         switch self {
         case .ok(let value):
             value
