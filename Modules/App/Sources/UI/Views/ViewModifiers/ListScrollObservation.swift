@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import InboxCoreUI
 import SwiftUI
 import SwiftUIIntrospect
 
@@ -28,7 +29,7 @@ struct ListScrollObservation: ViewModifier {
 
     func body(content: Content) -> some View {
         content
-            .introspect(.list, on: .iOS(.v17, .v18)) { collectionView in
+            .introspect(.list, on: SupportedIntrospectionPlatforms.list) { collectionView in
 
                 model.observation = collectionView.observe(\.contentOffset, options: [.new, .old]) { view, change in
                     guard let newValueY = change.newValue?.y, let oldValueY = change.oldValue?.y else { return }

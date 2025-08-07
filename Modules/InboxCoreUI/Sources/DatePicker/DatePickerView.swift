@@ -66,7 +66,7 @@ public struct DatePickerView: View {
                     selection: $selectedDate,
                     displayedComponents: .hourAndMinute
                 )
-                .introspect(.datePicker, on: .iOS(.v17, .v18)) {
+                .introspect(.datePicker, on: SupportedIntrospectionPlatforms.datePicker) {
                     $0.minuteInterval = Int(configuration.minuteInterval)
                 }
                 .tint(DS.Color.Brand.norm)

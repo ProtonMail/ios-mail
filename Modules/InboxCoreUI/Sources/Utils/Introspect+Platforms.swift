@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Proton Technologies AG
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -15,23 +15,11 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import InboxCoreUI
-import SwiftUI
+import SwiftUIIntrospect
+import UIKit
 
-struct CustomListRemoveTopInset: ViewModifier {
-
-    func body(content: Content) -> some View {
-        content
-            .introspect(.list, on: SupportedIntrospectionPlatforms.list) { collectionView in
-                // fixing the default top content inset
-                collectionView.contentInset.top = -34
-            }
-    }
-}
-
-extension View {
-
-    func customListRemoveTopInset() -> some View {
-        modifier(CustomListRemoveTopInset())
-    }
+@MainActor
+public enum SupportedIntrospectionPlatforms {
+    public static let list: PlatformViewVersionPredicate<ListType, UICollectionView> = .iOS(.v17, .v18, .v26)
+    public static let datePicker: PlatformViewVersionPredicate<DatePickerType, UIDatePicker> = .iOS(.v17, .v18, .v26)
 }

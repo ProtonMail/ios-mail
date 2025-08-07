@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Combine
+import InboxCoreUI
 import InboxDesignSystem
 import proton_app_uniffi
 import SwiftUI
@@ -84,7 +85,7 @@ struct MailboxItemsListView<EmptyView: View>: View {
             }
         )
         .listStyle(.plain)
-        .introspect(.list, on: .iOS(.v17, .v18)) { collectionView in
+        .introspect(.list, on: SupportedIntrospectionPlatforms.list) { collectionView in
             guard
                 config.listEventHandler != nil,
                 (collectionView.refreshControl as? ProtonRefreshControl) == nil
