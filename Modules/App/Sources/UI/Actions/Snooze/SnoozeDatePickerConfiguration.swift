@@ -26,7 +26,7 @@ struct SnoozeDatePickerConfiguration: DatePickerViewConfiguration {
 
     let title: LocalizedStringResource = L10n.Snooze.customSnoozeSheetTitle
     let selectTitle: LocalizedStringResource = L10n.Common.save
-    let minuteInterval: TimeInterval = 30
+    let minuteInterval: TimeInterval = 1
 
     var range: ClosedRange<Date> {
         Date.currentDateRoundedUpToNextHalfHour...Date.distantFuture
