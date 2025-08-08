@@ -1044,6 +1044,18 @@ enum L10n {
                 comment: "Title of a message move information toast"
             )
         }
+        static func messageMovedTo(count: Int) -> LocalizedStringResource {
+            .init(
+                "Message moved to Archive.\(count)",
+                comment: "Title of information toast about moving one or more messages to the Archive"
+            )
+        }
+        static func conversationMovedTo(count: Int) -> LocalizedStringResource {
+            .init(
+                "Conversation moved to Archive.\(count)",
+                comment: "Title of information toast about moving one or more conversations to the Archive"
+            )
+        }
     }
 
     enum Notification {

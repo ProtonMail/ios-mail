@@ -5056,6 +5056,40 @@
         }
       }
     },
+    "Conversation moved to Archive.%lld" : {
+      "comment" : "Title of information toast about moving one or more conversations to the Archive",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%#@arg1@"
+          },
+          "substitutions" : {
+            "arg1" : {
+              "argNum" : 1,
+              "formatSpecifier" : "lld",
+              "variations" : {
+                "plural" : {
+                  "one" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "Conversation moved to Archive."
+                    }
+                  },
+                  "other" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "Conversations moved to Archive."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "Conversation unsnoozed" : {
       "comment" : "Toast message after unsnooze action"
     },
@@ -10440,6 +10474,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "郵件訊息"
+          }
+        }
+      }
+    },
+    "Message moved to Archive.%lld" : {
+      "comment" : "Title of information toast about moving one or more messages to the Archive",
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%#@arg1@"
+          },
+          "substitutions" : {
+            "arg1" : {
+              "argNum" : 1,
+              "formatSpecifier" : "lld",
+              "variations" : {
+                "plural" : {
+                  "one" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "Message moved to Archive."
+                    }
+                  },
+                  "other" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "Messages moved to Archive."
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
