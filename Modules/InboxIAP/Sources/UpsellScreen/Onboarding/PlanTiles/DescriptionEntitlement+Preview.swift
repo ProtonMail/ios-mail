@@ -20,26 +20,33 @@ import PaymentsNG
 
 extension Array where Element == DescriptionEntitlement {
     static let unlimited: [Element] = [
-        .init(type: "", text: "500 GB storage", iconName: "storage", hint: nil),
-        .init(type: "", text: "15 email addresses", iconName: "envelope", hint: nil),
-        .init(type: "", text: "Support for 3 custom email domains", iconName: "globe", hint: nil),
-        .init(type: "", text: "Unlimited folders, labels, and filters", iconName: "tag", hint: nil),
-        .init(type: "", text: "25 personal calendars", iconName: "calendar-checkmark", hint: nil),
-        .init(type: "", text: "High-speed VPN on 10 devices per user", iconName: "shield", hint: nil),
-        .init(type: "", text: "All premium features from Proton Mail, Pass, VPN, Drive, and Calendar", iconName: "checkmark", hint: nil),
+        .testData(text: "500 GB storage", iconName: "storage"),
+        .testData(text: "15 email addresses", iconName: "envelope"),
+        .testData(text: "Support for 3 custom email domains", iconName: "globe"),
+        .testData(text: "Unlimited folders, labels, and filters", iconName: "tag"),
+        .testData(text: "25 personal calendars", iconName: "calendar-checkmark"),
+        .testData(text: "High-speed VPN on 10 devices per user", iconName: "shield"),
+        .testData(text: "All premium features from Proton Mail, Pass, VPN, Drive, and Calendar", iconName: "checkmark"),
     ]
 
     static let mailPlus: [Element] = [
-        .init(type: "", text: "15 GB storage", iconName: "storage", hint: nil),
-        .init(type: "", text: "10 email addresses", iconName: "envelope", hint: nil),
-        .init(type: "", text: "Support for 1 custom email domain", iconName: "globe", hint: nil),
-        .init(type: "", text: "Unlimited folders, labels, and filters", iconName: "tag", hint: nil),
-        .init(type: "", text: "25 personal calendars", iconName: "calendar-checkmark", hint: nil),
-        .init(type: "", text: "And the free features of all other Proton products!", iconName: "checkmark", hint: nil),
+        .testData(text: "15 GB storage", iconName: "storage"),
+        .testData(text: "10 email addresses", iconName: "envelope"),
+        .testData(text: "Support for 1 custom email domain", iconName: "globe"),
+        .testData(text: "Unlimited folders, labels, and filters", iconName: "tag"),
+        .testData(text: "25 personal calendars", iconName: "calendar-checkmark"),
+        .testData(text: "And the free features of all other Proton products!", iconName: "checkmark"),
     ]
 
     static let free: [Element] = [
-        .init(type: "", text: L10n.Perk.amountOfStorage(gigabytes: 1).string, iconName: "storage", hint: nil),
-        .init(type: "", text: L10n.Perk.numberOfEmailAddresses(1).string, iconName: "envelope", hint: nil),
+        .testData(text: L10n.Perk.amountOfStorage(gigabytes: 1).string, iconName: "storage"),
+        .testData(text: L10n.Perk.numberOfEmailAddresses(1).string, iconName: "envelope"),
     ]
 }
+
+private extension DescriptionEntitlement {
+    static func testData(text: String, iconName: String) -> Self {
+        .init(type: .empty, text: text, iconName: iconName, hint: nil)
+    }
+}
+

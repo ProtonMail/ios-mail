@@ -76,7 +76,6 @@ public struct OnboardingUpsellScreen: View {
             ForEach(model.availableCycles, id: \.self) { cycle in
                 Text(model.label(for: cycle))
                     .tag(cycle)
-
             }
         }
         .pickerStyle(.segmented)

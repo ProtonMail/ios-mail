@@ -18,6 +18,7 @@
 
 import InboxCoreUI
 import InboxDesignSystem
+import PaymentsNG
 import SwiftUI
 import UIFoundations
 
@@ -53,7 +54,7 @@ struct PlanTile: View {
 
             getPlanButton
 
-            Spacer.exactly(10)
+            Spacer.exactly(DS.Spacing.mediumLight)
 
             if let billingNotice = model.billingNotice {
                 billingNoticeLabel(billingNotice: billingNotice)
@@ -110,7 +111,7 @@ struct PlanTile: View {
     private var entitlements: some View {
         Grid(alignment: .leading, horizontalSpacing: DS.Spacing.medium, verticalSpacing: DS.Spacing.medium) {
             ForEach(model.entitlements, id: \.self) { entitlement in
-                gridRow(icon: .init(name: "ic-\(entitlement.iconName)", bundle: .designSystem), text: entitlement.text)
+                gridRow(icon: entitlement.icon, text: entitlement.text)
             }
             .animation(.easeInOut, value: model.areEntitlementsExpanded)
 
@@ -173,6 +174,12 @@ struct PlanTile: View {
         Text(billingNotice)
             .font(.caption)
             .foregroundStyle(DS.Color.Brand.plus10)
+    }
+}
+
+private extension DescriptionEntitlement {
+    var icon: ImageResource {
+        .init(name: "ic-\(iconName)", bundle: .designSystem)
     }
 }
 
