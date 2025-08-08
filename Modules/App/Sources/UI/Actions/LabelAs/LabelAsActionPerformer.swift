@@ -35,15 +35,17 @@ struct LabelAsActionPerformer {
         self.labelAsActions = labelAsActions
     }
 
-    func labelAs(input: Input) async throws {
+    func labelAs(input: Input) async throws -> LabelAsOutput {
         let labelAsAction = labelAsAction(itemType: input.itemType)
-        _ = try await labelAsAction(
+        let output = try await labelAsAction(
             mailbox,
             input.itemsIDs,
             input.selectedLabelsIDs,
             input.partiallySelectedLabelsIDs,
             input.archive
         ).get()
+
+        return output
     }
 
     // MARK: - Private
