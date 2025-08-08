@@ -274,16 +274,6 @@ public extension SignupFlowSubmitRecoveryPhoneResult {
         }
     }
 }
-public extension SignupFlowSubmitValidatedPasswordResult {
-    func get() throws(SignupError) -> SimpleSignupState {
-        switch self {
-        case .ok(let value):
-            value
-        case .error(let error):
-            throw error
-        }
-    }
-}
 public extension SnoozeConversationsResult {
     func get() throws(SnoozeError) {
         switch self {

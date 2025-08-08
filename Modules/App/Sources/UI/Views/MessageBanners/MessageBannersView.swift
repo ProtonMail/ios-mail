@@ -175,6 +175,8 @@ struct MessageBannersView: View {
                     size: .small(button),
                     style: .regular
                 )
+            case .unableToDecrypt:
+                return nil
             }
         }
         return OrderedSet(banners)
