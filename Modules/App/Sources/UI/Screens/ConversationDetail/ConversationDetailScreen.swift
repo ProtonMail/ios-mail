@@ -181,6 +181,12 @@ struct ConversationDetailScreen: View {
 
     private func handleReplyAction(messageId: ID, action: ReplyAction) {
         Task {
+            // TEMP: iOS 26.0 only
+            // Adding a brief suspension avoids a crash that surfaces in the stdlib
+            // (Swift/KeyPath.swift:1881 "unwrapped nil optional").
+            if #available(iOS 26, *) {
+                try? await Task.sleep(for: .seconds(0.5))
+            }
             await draftPresenter.handleReplyAction(for: messageId, action: action) { error in
                 toastStateStore.present(toast: .error(message: error.localizedDescription))
             }
