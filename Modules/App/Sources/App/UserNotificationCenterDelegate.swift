@@ -31,15 +31,18 @@ final class UserNotificationCenterDelegate: NSObject, UNUserNotificationCenterDe
     private let urlOpener: URLOpener
     private let userNotificationCenter: UserNotificationCenter
     private let getMailSession: @Sendable () -> MailSessionProtocol
+    private let updateBadgeCount: () async -> Void
 
     init(
         sessionStatePublisher: AnyPublisher<SessionState, Never>,
         urlOpener: URLOpener,
         userNotificationCenter: UserNotificationCenter = UNUserNotificationCenter.current(),
-        getMailSession: @escaping @Sendable () -> MailSessionProtocol = { AppContext.shared.mailSession }
+        getMailSession: @escaping @Sendable () -> MailSessionProtocol = { AppContext.shared.mailSession },
+        updateBadgeCount: @escaping () async -> Void
     ) {
         self.getMailSession = getMailSession
         self.sessionStatePublisher = sessionStatePublisher
+        self.updateBadgeCount = updateBadgeCount
         self.urlOpener = urlOpener
         self.userNotificationCenter = userNotificationCenter
     }
@@ -123,6 +126,7 @@ final class UserNotificationCenterDelegate: NSObject, UNUserNotificationCenterDe
 
             if let action = NotificationQuickAction(rawValue: actionIdentifier) {
                 try await execute(action: action, onMessageWith: remoteId, in: storedSession)
+                await updateBadgeCount()
             } else {
                 try await navigateToMessage(remoteId: remoteId, session: storedSession, subject: subject)
             }
@@ -136,9 +140,11 @@ final class UserNotificationCenterDelegate: NSObject, UNUserNotificationCenterDe
     }
 
     private func execute(action: NotificationQuickAction, onMessageWith remoteId: RemoteId, in session: StoredSession) async throws {
-        let mailUserSession = try await getMailSession()
-            .userSessionFromStoredSession(session: session)
-            .get()
+        guard
+            let mailUserSession = try await getMailSession().initializedUserSessionFromStoredSession(session: session).get()
+        else {
+            return
+        }
 
         let executableAction = action.executableAction(remoteId: remoteId)
         try await mailUserSession.executeNotificationQuickAction(action: executableAction).get()
@@ -162,12 +168,11 @@ final class UserNotificationCenterDelegate: NSObject, UNUserNotificationCenterDe
     }
 
     private func waitUntilSessionBecomesActive(sessionId: String) async {
-        var activeSessionPublisher = sessionStatePublisher
-            .first(where: { (try? $0.userSession?.sessionId().get()) == sessionId })
-            .values
-            .makeAsyncIterator()
-
-        _ = await activeSessionPublisher.next()
+        for await sessionState in sessionStatePublisher.values {
+            if (try? sessionState.userSession?.sessionId().get()) == sessionId {
+                break
+            }
+        }
     }
 
     private func makeDeepLink(basedOn remoteId: RemoteId, subject: String) -> URL? {

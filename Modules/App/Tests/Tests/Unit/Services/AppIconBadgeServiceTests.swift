@@ -22,7 +22,7 @@ import UIKit
 final class AppIconBadgeServiceTests {
     @Test
     func testWhenTheAppResignsActive_setsAppIconBadgeToTheUnreadCount() async {
-        await sut(stubbedUnreadCount: 5).willResignActiveAsync()
+        await sut(stubbedUnreadCount: 5).updateBadgeCount()
         await #expect(UIApplication.shared.applicationIconBadgeNumber == 5)
     }
 

@@ -30,9 +30,18 @@ final class UserNotificationCenterDelegateTests {
     private let urlOpener = URLOpenerSpy()
     private let userNotificationCenter = UserNotificationCenterSpy()
     private let userSession = MailUserSessionSpy(id: "session-1")
-    private let sut: UserNotificationCenterDelegate
+
+    private lazy var sut = UserNotificationCenterDelegate(
+        sessionStatePublisher: sessionStateSubject.eraseToAnyPublisher(),
+        urlOpener: urlOpener,
+        userNotificationCenter: userNotificationCenter,
+        getMailSession: { [unowned self] in mailSession },
+        updateBadgeCount: { [unowned self] in updateBadgeCountCalls += 1 }
+    )
 
     private let testURL = URL(string: "https://example.com")!
+
+    private var updateBadgeCountCalls = 0
 
     init() {
         let mailSession = MailSessionSpy()
@@ -47,12 +56,6 @@ final class UserNotificationCenterDelegateTests {
         ]
 
         self.mailSession = mailSession
-
-        sut = .init(
-            sessionStatePublisher: sessionStateSubject.eraseToAnyPublisher(),
-            urlOpener: urlOpener,
-            userNotificationCenter: userNotificationCenter
-        ) { mailSession }
 
         mailSession.onPrimaryAccountChanged = { [unowned self] userId in
             let sessionAssociatedWithUserId = mailSession.storedSessions.first { $0.userId() == userId }!
@@ -127,6 +130,21 @@ final class UserNotificationCenterDelegateTests {
         await sut.userNotificationCenter(.current(), didReceive: response)
 
         #expect(userSession.executeNotificationQuickActionInvocations == [.markAsRead(remoteId: remoteId)])
+    }
+
+    @Test
+    func givenMessageTypeNotification_whenUserSelectsAnAction_updatesBadgeCount() async throws {
+        let remoteId = RemoteId(value: "foo")
+
+        let response = makeNotificationResponse(
+            type: .newMessage(sessionId: "session-1", remoteId: remoteId),
+            body: "Message subject",
+            action: .markAsRead
+        )
+
+        await sut.userNotificationCenter(.current(), didReceive: response)
+
+        #expect(updateBadgeCountCalls == 1)
     }
 
     @Test

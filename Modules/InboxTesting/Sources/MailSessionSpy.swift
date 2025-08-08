@@ -168,7 +168,11 @@ public final class MailSessionSpy: MailSessionProtocol {
     }
 
     public func initializedUserSessionFromStoredSession(session: StoredSession) -> MailSessionInitializedUserSessionFromStoredSessionResult {
-        fatalError(#function)
+        if let userSession = userSessions.first(where: { $0.sessionId == session.sessionId() }) {
+            .ok(userSession)
+        } else {
+            fatalError("session not configured")
+        }
     }
 
     public func logoutAccount(userId: String) async -> VoidSessionResult {
@@ -256,11 +260,7 @@ public final class MailSessionSpy: MailSessionProtocol {
     }
 
     public func userSessionFromStoredSession(session: StoredSession) -> MailSessionUserSessionFromStoredSessionResult {
-        if let userSession = userSessions.first(where: { $0.sessionId == session.sessionId() }) {
-            .ok(userSession)
-        } else {
-            fatalError("session not configured")
-        }
+        fatalError(#function)
     }
 
     public func verifyPinCode(pin: [UInt32]) async -> MailSessionVerifyPinCodeResult {

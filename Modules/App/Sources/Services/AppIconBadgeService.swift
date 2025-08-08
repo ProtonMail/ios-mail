@@ -34,12 +34,12 @@ struct AppIconBadgeService: Sendable {
                 return 0
             }
 
-            let inbox = try await newInboxMailbox(ctx: userSession).get()
+            let inbox = try newInboxMailbox(ctx: userSession).get()
             return try await inbox.unreadCount().get()
         }
     }
 
-    func willResignActiveAsync() async {
+    func updateBadgeCount() async {
         do {
             let unreadCount = Int(try await inboxUnreadCount())
             AppLogger.log(message: "Will set badge to \(unreadCount)", category: .notifications)
@@ -53,7 +53,7 @@ struct AppIconBadgeService: Sendable {
 extension AppIconBadgeService: ApplicationServiceWillResignActive {
     func willResignActive() {
         Task {
-            await willResignActiveAsync()
+            await updateBadgeCount()
         }
     }
 }

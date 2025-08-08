@@ -94,7 +94,8 @@ extension AppLifeCycle {
 
         let userNotificationCenterDelegate = UserNotificationCenterDelegate(
             sessionStatePublisher: appContext.$sessionState.eraseToAnyPublisher(),
-            urlOpener: UIApplication.shared
+            urlOpener: UIApplication.shared,
+            updateBadgeCount: appIconBadgeService.updateBadgeCount
         )
 
         let startAutoLockCountdownService = StartAutoLockCountdownService(mailSession: { appContext.mailSession })
