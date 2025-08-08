@@ -109,12 +109,6 @@ enum L10n {
             comment: "Composer toast message after sent."
         )
 
-        static let undoSend = LocalizedStringResource(
-            "Undo",
-            bundle: .atURL(Bundle.module.bundleURL),
-            comment: "Undo action after message has been sent."
-        )
-
         static let senderPickerSheetTitle = LocalizedStringResource(
             "From",
             bundle: .atURL(Bundle.module.bundleURL),

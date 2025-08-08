@@ -1560,9 +1560,6 @@
     "Too many attachments. Send them in multiple emails." : {
       "comment" : "Error in the context of saving a draft before being sent."
     },
-    "Undo" : {
-      "comment" : "Undo action after message has been sent."
-    },
     "Upgrade for full flexibility" : {
       "comment" : "Schedule send custom time option subtitle for free user"
     },

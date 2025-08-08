@@ -33,6 +33,7 @@ public enum CommonL10n {
     public static let remove = LocalizedStringResource("Remove", bundle: .module)
     public static let save = LocalizedStringResource("Save", bundle: .module)
     public static let time = LocalizedStringResource("Time", bundle: .module)
+    public static let undo = LocalizedStringResource("Undo", bundle: .module)
 }
 
 public extension LocalizedStringResource.BundleDescription {

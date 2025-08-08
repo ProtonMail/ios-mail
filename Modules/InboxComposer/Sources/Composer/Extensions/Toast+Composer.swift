@@ -58,7 +58,7 @@ public extension Toast {
     static func scheduledMessage(duration: TimeInterval, scheduledTime: String, undoAction: (() -> Void)?) -> Toast {
         var undoButton: Button?
         if let undoAction {
-            undoButton = .init(type: .smallTrailing(content: .title(L10n.Composer.undoSend.string)), action: undoAction)
+            undoButton = .init(type: .smallTrailing(content: .title(CommonL10n.undo.string)), action: undoAction)
         }
         return Toast(
             title: nil,
@@ -82,7 +82,7 @@ public extension Toast {
     static func messageSent(duration: TimeInterval, undoAction: (() -> Void)?) -> Toast {
         var undoButton: Button?
         if let undoAction {
-            undoButton = .init(type: .smallTrailing(content: .title(L10n.Composer.undoSend.string)), action: undoAction)
+            undoButton = .init(type: .smallTrailing(content: .title(CommonL10n.undo.string)), action: undoAction)
         }
         return Toast(
             title: nil,
