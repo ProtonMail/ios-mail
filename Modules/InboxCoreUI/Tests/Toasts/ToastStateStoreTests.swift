@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Proton Technologies AG
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -17,22 +17,13 @@
 
 @testable import InboxCoreUI
 import InboxTesting
-import XCTest
+import Testing
 
-final class ToastStateStoreTests: BaseTestCase {
+@MainActor
+struct ToastStateStoreTests {
+    private var sut: ToastStateStore = .init(initialState: .initial)
 
-    private var sut: ToastStateStore!
-
-    override func setUp() {
-        super.setUp()
-        sut = .init(initialState: .initial)
-    }
-
-    override func tearDown() {
-        sut = nil
-        super.tearDown()
-    }
-
+    @Test
     func testState_WhenPresentingThreeToastsAndOneTwice_HasTwoToastsInCorrectOrder() throws {
         let firstToast = Toast.error(message: "Test #1")
         let secondToast = Toast.error(message: "Test #2")
@@ -41,10 +32,11 @@ final class ToastStateStoreTests: BaseTestCase {
         sut.present(toast: secondToast)
         sut.present(toast: firstToast)
 
-        XCTAssertEqual(sut.state.toasts.count, 2)
-        XCTAssertEqual(sut.state.toasts, [firstToast, secondToast])
+        #expect(sut.state.toasts.count == 2)
+        #expect(sut.state.toasts == [firstToast, secondToast])
     }
 
+    @Test
     func testState_WhenDismissingSameToastTwice_HasOnlyOneToast() throws {
         let firstToast = Toast.error(message: "Test #1")
         let secondToast = Toast.error(message: "Test #2")
@@ -56,8 +48,21 @@ final class ToastStateStoreTests: BaseTestCase {
         sut.dismiss(toast: firstToast)
         sut.dismiss(toast: firstToast)
 
-        XCTAssertEqual(sut.state.toasts.count, 1)
-        XCTAssertEqual(sut.state.toasts, [secondToast])
+        #expect(sut.state.toasts.count == 1)
+        #expect(sut.state.toasts == [secondToast])
     }
 
+    @Test
+    func testState_WhenDismissingByID_DismissesCorrectToast() throws {
+        let firstToast = Toast.error(message: "Test #42")
+        let secondToast = Toast.error(message: "Test #99")
+
+        sut.present(toast: firstToast)
+        sut.present(toast: secondToast)
+
+        sut.dismiss(withID: secondToast.id)
+
+        #expect(sut.state.toasts.count == 1)
+        #expect(sut.state.toasts == [firstToast])
+    }
 }

@@ -19,13 +19,22 @@ import InboxDesignSystem
 import SwiftUI
 
 public struct Toast: Hashable {
+    let id: UUID
     let title: String?
     let message: String
     let button: Button?
     let style: Style
     let duration: TimeInterval
 
-    public init(title: String?, message: String, button: Button?, style: Style, duration: TimeInterval) {
+    public init(
+        id: UUID = UUID(),
+        title: String?,
+        message: String,
+        button: Button?,
+        style: Style,
+        duration: TimeInterval
+    ) {
+        self.id = id
         self.title = title
         self.message = message
         self.button = button

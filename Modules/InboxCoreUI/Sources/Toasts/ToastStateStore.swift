@@ -44,6 +44,11 @@ public final class ToastStateStore: ObservableObject {
         assert(Thread.isMainThread)
         state.toasts.remove(toast)
     }
+
+    public func dismiss(withID id: UUID) {
+        assert(Thread.isMainThread)
+        state.toasts.removeAll { toast in toast.id == id }
+    }
 }
 
 extension ToastStateStore.State {
