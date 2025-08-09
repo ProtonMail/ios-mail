@@ -27,14 +27,14 @@ struct MoveToActionPerformer {
         self.moveToActions = moveToActions
     }
 
-    func moveTo(destinationID: ID, itemsIDs: [ID], itemType: MailboxItemType) async throws {
+    func moveTo(destinationID: ID, itemsIDs: [ID], itemType: MailboxItemType) async throws -> Undo? {
         let moveToAction = moveToAction(itemType: itemType)
 
         switch await moveToAction(mailbox, destinationID, itemsIDs) {
-        case .ok:
-            break
+        case .ok(let undo):
+            return undo
         case .error(.other(.serverError(let userApiServiceError)))
-            where userApiServiceError.errorCode == ProtonErrorCode.doesNotExist:
+        where userApiServiceError.errorCode == ProtonErrorCode.doesNotExist:
             throw LocalError.folderDoesNotExist
         case .error(let error):
             throw error
