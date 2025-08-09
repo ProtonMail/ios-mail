@@ -165,31 +165,3 @@ extension LabelAsAction {
     }
 
 }
-
-extension Toast {
-
-    static func archiveSuccess(
-        id: UUID,
-        for itemType: MailboxItemType,
-        count: Int,
-        undoAction: @escaping @Sendable () -> Void
-    ) -> Toast {
-        let message: LocalizedStringResource =
-            switch itemType {
-            case .conversation:
-                L10n.Toast.conversationMovedTo(count: count)
-            case .message:
-                L10n.Toast.messageMovedTo(count: count)
-            }
-
-        return .init(
-            id: id,
-            title: .none,
-            message: message.string,
-            button: .init(type: .smallTrailing(content: .title(CommonL10n.undo.string)), action: undoAction),
-            style: .information,
-            duration: .toastMediumDuration
-        )
-    }
-
-}
