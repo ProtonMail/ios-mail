@@ -168,7 +168,7 @@ enum MainToolbarEvent {
         mailSettingsLiveQuery: MailSettingsLiveQueryPreviewDummy(),
         appRoute: .initialState,
         notificationAuthorizationStore: .init(userDefaults: userDefaults),
-        userSession: .init(noPointer: .init()),
+        userSession: .dummy,
         userDefaults: userDefaults,
         draftPresenter: .dummy()
     )

@@ -27,7 +27,7 @@ class LabelAsSheetModel: ObservableObject {
     private let actionsProvider: LabelAsActionsProvider
     private let labelAsActionPerformer: LabelAsActionPerformer
     private let toastStateStore: ToastStateStore
-    private let mailUserSession: () -> MailUserSession
+    private let mailUserSession: MailUserSession
     private let dismiss: () -> Void
 
     init(
@@ -36,7 +36,7 @@ class LabelAsSheetModel: ObservableObject {
         availableLabelAsActions: AvailableLabelAsActions,
         labelAsActions: LabelAsActions,
         toastStateStore: ToastStateStore,
-        mailUserSession: @escaping () -> MailUserSession = { AppContext.shared.userSession },
+        mailUserSession: MailUserSession,
         dismiss: @escaping () -> Void
     ) {
         self.input = input
@@ -68,9 +68,10 @@ class LabelAsSheetModel: ObservableObject {
         Task {
             do {
                 let labels = try await actionsProvider.actions(for: input.type.inboxItemType, ids: input.ids)
-                Dispatcher.dispatchOnMain(.init(block: { [weak self] in
-                    self?.update(labels: labels)
-                }))
+                Dispatcher.dispatchOnMain(
+                    .init(block: { [weak self] in
+                        self?.update(labels: labels)
+                    }))
             } catch {
                 showError(error)
             }
@@ -130,7 +131,7 @@ class LabelAsSheetModel: ObservableObject {
     }
 
     private func undo(with undo: Undo, toastID: UUID) async throws {
-        try await undo.undo(ctx: mailUserSession()).get()
+        try await undo.undo(ctx: mailUserSession).get()
         dismissToast(withID: toastID)
     }
 

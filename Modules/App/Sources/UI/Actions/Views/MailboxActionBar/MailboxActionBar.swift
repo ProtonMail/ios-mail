@@ -102,7 +102,11 @@ private struct MailboxActionBarViewModifier: ViewModifier {
                 .onLoad {
                     store.handle(action: .mailboxItemsSelectionUpdated(ids: selectedItemsIDs))
                 }
-                .labelAsSheet(mailbox: { mailbox }, input: store.binding(\.labelAsSheetPresented))
+                .labelAsSheet(
+                    mailbox: { mailbox },
+                    mailUserSession: mailUserSession,
+                    input: store.binding(\.labelAsSheetPresented)
+                )
                 .moveToSheet(mailbox: { mailbox }, input: store.binding(\.moveToSheetPresented), navigation: { _ in })
                 .sheet(item: store.binding(\.moreActionSheetPresented)) { state in
                     MailboxActionBarMoreSheet(state: state) { action in
@@ -111,11 +115,12 @@ private struct MailboxActionBarViewModifier: ViewModifier {
                     .alert(model: store.binding(\.moreDeleteConfirmationAlert))
                 }
                 .sheet(isPresented: store.binding(\.isSnoozeSheetPresented)) {
-                    SnoozeView(state: .initial(
-                        screen: .main,
-                        labelId: mailbox.labelId(),
-                        conversationIDs: selectedItemsIDs
-                    ))
+                    SnoozeView(
+                        state: .initial(
+                            screen: .main,
+                            labelId: mailbox.labelId(),
+                            conversationIDs: selectedItemsIDs
+                        ))
                 }
                 .alert(model: store.binding(\.deleteConfirmationAlert))
         }

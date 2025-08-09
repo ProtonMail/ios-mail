@@ -28,6 +28,7 @@ enum LabelAsSheetPreviewProvider {
             ),
             labelAsActions: .dummy,
             toastStateStore: .init(initialState: .initial),
+            mailUserSession: .dummy,
             dismiss: {}
         )
     }

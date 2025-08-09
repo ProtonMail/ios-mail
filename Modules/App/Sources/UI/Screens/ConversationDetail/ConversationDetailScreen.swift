@@ -27,11 +27,13 @@ struct ConversationDetailScreen: View {
     @EnvironmentObject var toastStateStore: ToastStateStore
     @Binding private var navigationPath: NavigationPath
     private let draftPresenter: DraftPresenter
+    private let mailUserSession: MailUserSession
 
     init(
         seed: ConversationDetailSeed,
         draftPresenter: DraftPresenter,
         navigationPath: Binding<NavigationPath>,
+        mailUserSession: MailUserSession,
         snoozeService: SnoozeServiceProtocol = SnoozeService(mailUserSession: { AppContext.shared.userSession })
     ) {
         self._model = StateObject(
@@ -43,6 +45,7 @@ struct ConversationDetailScreen: View {
             ))
         self._navigationPath = .init(projectedValue: navigationPath)
         self.draftPresenter = draftPresenter
+        self.mailUserSession = mailUserSession
     }
 
     var body: some View {
@@ -55,6 +58,7 @@ struct ConversationDetailScreen: View {
             .animation(.default, value: model.isBottomBarHidden)
             .actionSheetsFlow(
                 mailbox: { model.mailbox.unsafelyUnwrapped },
+                mailUserSession: mailUserSession,
                 state: $model.actionSheets,
                 replyActions: handleReplyAction,
                 goBackNavigation: { navigationPath.removeLast() }
@@ -266,7 +270,8 @@ private extension ConversationDetailModel.State {
                 selectedMailbox: .inbox
             ),
             draftPresenter: .dummy(),
-            navigationPath: .constant(.init())
+            navigationPath: .constant(.init()),
+            mailUserSession: .dummy
         )
     }
 }
@@ -280,7 +285,8 @@ private extension ConversationDetailModel.State {
                     subject: "Embarking on an Epic Adventure: Planning Our Team Expedition to Patagonia"
                 )),
             draftPresenter: .dummy(),
-            navigationPath: .constant(.init())
+            navigationPath: .constant(.init()),
+            mailUserSession: .dummy
         )
     }
 }

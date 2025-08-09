@@ -21,11 +21,17 @@ import SwiftUI
 
 private struct LabelAsSheetModifier: ViewModifier {
     private let mailbox: () -> Mailbox
+    private let mailUserSession: MailUserSession
     @Binding var input: ActionSheetInput?
     @EnvironmentObject var toastStateStore: ToastStateStore
 
-    init(mailbox: @escaping () -> Mailbox, input: Binding<ActionSheetInput?>) {
+    init(
+        mailbox: @escaping () -> Mailbox,
+        mailUserSession: MailUserSession,
+        input: Binding<ActionSheetInput?>
+    ) {
         self.mailbox = mailbox
+        self.mailUserSession = mailUserSession
         self._input = .init(projectedValue: input)
     }
 
@@ -42,7 +48,8 @@ private struct LabelAsSheetModifier: ViewModifier {
             mailbox: mailbox(),
             availableLabelAsActions: .productionInstance,
             labelAsActions: .productionInstance,
-            toastStateStore: toastStateStore
+            toastStateStore: toastStateStore,
+            mailUserSession: mailUserSession
         ) {
             self.input = nil
         }
@@ -52,7 +59,11 @@ private struct LabelAsSheetModifier: ViewModifier {
 }
 
 extension View {
-    func labelAsSheet(mailbox: @escaping () -> Mailbox, input: Binding<ActionSheetInput?>) -> some View {
-        modifier(LabelAsSheetModifier(mailbox: mailbox, input: input))
+    func labelAsSheet(
+        mailbox: @escaping () -> Mailbox,
+        mailUserSession: MailUserSession,
+        input: Binding<ActionSheetInput?>
+    ) -> some View {
+        modifier(LabelAsSheetModifier(mailbox: mailbox, mailUserSession: mailUserSession, input: input))
     }
 }

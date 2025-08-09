@@ -30,6 +30,7 @@ extension View {
     @MainActor
     func actionSheetsFlow(
         mailbox: @escaping () -> Mailbox,
+        mailUserSession: MailUserSession,
         state: Binding<MailboxActionSheetsState>,
         replyActions: @escaping ReplyActionsHandler,
         goBackNavigation: (() -> Void)? = nil
@@ -37,6 +38,7 @@ extension View {
         modifier(
             MailboxActionSheets(
                 mailbox: mailbox,
+                mailUserSession: mailUserSession,
                 state: state,
                 replyActions: replyActions,
                 goBackNavigation: goBackNavigation
@@ -47,16 +49,19 @@ extension View {
 private struct MailboxActionSheets: ViewModifier {
     @Binding var state: MailboxActionSheetsState
     private let mailbox: () -> Mailbox
+    private let mailUserSession: MailUserSession
     private let replyActions: ReplyActionsHandler
     private let goBackNavigation: (() -> Void)?
 
     init(
         mailbox: @escaping () -> Mailbox,
+        mailUserSession: MailUserSession,
         state: Binding<MailboxActionSheetsState>,
         replyActions: @escaping ReplyActionsHandler,
         goBackNavigation: (() -> Void)?
     ) {
         self.mailbox = mailbox
+        self.mailUserSession = mailUserSession
         self._state = state
         self.replyActions = replyActions
         self.goBackNavigation = goBackNavigation
@@ -73,7 +78,7 @@ private struct MailboxActionSheets: ViewModifier {
                         conversationIDs: [conversationID]
                     ))
             }
-            .labelAsSheet(mailbox: mailbox, input: $state.labelAs)
+            .labelAsSheet(mailbox: mailbox, mailUserSession: mailUserSession, input: $state.labelAs)
             .moveToSheet(
                 mailbox: mailbox, input: $state.moveTo,
                 navigation: { navigation in

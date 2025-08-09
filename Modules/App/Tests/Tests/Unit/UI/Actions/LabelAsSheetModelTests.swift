@@ -224,7 +224,7 @@ class LabelAsSheetModelTests: BaseTestCase {
                 }
             ),
             toastStateStore: toastStateStore,
-            mailUserSession: { MailUserSession(noPointer: .init()) },
+            mailUserSession: .dummy,
             dismiss: { self.invokedDismissCount += 1 }
         )
     }

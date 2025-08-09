@@ -201,7 +201,7 @@ private struct SessionTransitionScreen: View {
             mailSettingsLiveQuery: MailSettingsLiveQueryPreviewDummy(),
             appRoute: .initialState,
             notificationAuthorizationStore: .init(userDefaults: userDefaultsWithPromptsDisabled),
-            userSession: .init(noPointer: .init()),
+            userSession: .dummy,
             userDefaults: userDefaultsWithPromptsDisabled,
             draftPresenter: .dummy()
         )

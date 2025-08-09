@@ -85,6 +85,7 @@ struct MailboxScreen: View {
                 )
                 .labelAsSheet(
                     mailbox: { mailboxModel.mailbox.unsafelyUnwrapped },
+                    mailUserSession: userSession,
                     input: $mailboxModel.state.labelAsSheetPresented
                 )
                 .moveToSheet(
@@ -254,7 +255,8 @@ extension MailboxScreen {
             ConversationDetailScreen(
                 seed: .mailboxItem(item: uiModel, selectedMailbox: mailboxModel.selectedMailbox),
                 draftPresenter: mailboxModel.draftPresenter,
-                navigationPath: $mailboxModel.state.navigationPath
+                navigationPath: $mailboxModel.state.navigationPath,
+                mailUserSession: userSession
             )
         }
     }
@@ -265,7 +267,8 @@ extension MailboxScreen {
             ConversationDetailScreen(
                 seed: .pushNotification(seed),
                 draftPresenter: mailboxModel.draftPresenter,
-                navigationPath: $mailboxModel.state.navigationPath
+                navigationPath: $mailboxModel.state.navigationPath,
+                mailUserSession: userSession
             )
         }
     }
@@ -297,7 +300,7 @@ extension MailboxScreen {
         mailSettingsLiveQuery: MailSettingsLiveQueryPreviewDummy(),
         appRoute: .initialState,
         notificationAuthorizationStore: .init(userDefaults: userDefaults),
-        userSession: .init(noPointer: .init()),
+        userSession: .dummy,
         userDefaults: userDefaults,
         draftPresenter: .dummy()
     )

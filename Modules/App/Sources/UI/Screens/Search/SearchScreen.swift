@@ -127,7 +127,8 @@ struct SearchScreen: View {
         ConversationDetailScreen(
             seed: .mailboxItem(item: uiModel, selectedMailbox: model.selectedMailbox),
             draftPresenter: composerCoordinator.draftPresenter,
-            navigationPath: $model.state.navigationPath
+            navigationPath: $model.state.navigationPath,
+            mailUserSession: userSession
         )
     }
 }
