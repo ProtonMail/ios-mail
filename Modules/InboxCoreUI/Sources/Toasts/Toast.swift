@@ -141,6 +141,7 @@ public extension Toast {
     }
 
     static func informationUndo(
+        id: UUID = UUID(),
         message: String,
         duration: Duration,
         undoAction: (() -> Void)?
@@ -157,6 +158,7 @@ public extension Toast {
             }
 
         return .init(
+            id: id,
             title: .none,
             message: message,
             button: button,

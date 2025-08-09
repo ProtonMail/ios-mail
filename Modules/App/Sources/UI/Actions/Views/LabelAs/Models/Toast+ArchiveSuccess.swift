@@ -34,13 +34,11 @@ extension Toast {
                 L10n.Toast.messageMovedTo(count: count)
             }
 
-        return .init(
+        return .informationUndo(
             id: id,
-            title: .none,
             message: message.string,
-            button: .init(type: .smallTrailing(content: .title(CommonL10n.undo.string)), action: undoAction),
-            style: .information,
-            duration: .medium
+            duration: .medium,
+            undoAction: undoAction
         )
     }
 }
