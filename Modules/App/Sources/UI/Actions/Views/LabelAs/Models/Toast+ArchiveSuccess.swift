@@ -40,7 +40,7 @@ extension Toast {
             message: message.string,
             button: .init(type: .smallTrailing(content: .title(CommonL10n.undo.string)), action: undoAction),
             style: .information,
-            duration: 15
+            duration: .medium
         )
     }
 }

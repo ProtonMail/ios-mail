@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import InboxCore
 import InboxDesignSystem
 import SwiftUI
 
@@ -26,7 +27,42 @@ public struct Toast: Hashable {
     let style: Style
     let duration: TimeInterval
 
+    public enum Duration: Hashable {
+        /// duration with custom interval
+        case custom(TimeInterval)
+        /// 1.5s
+        case `default`
+        /// 3.0s
+        case medium
+        /// 8.0 s
+        case long
+
+        var timeInterval: TimeInterval {
+            switch self {
+            case .custom(let interval):
+                interval
+            case .`default`:
+                1.5
+            case .medium:
+                3.0
+            case .long:
+                8.0
+            }
+        }
+    }
+
     public init(
+        id: UUID = UUID(),
+        title: String?,
+        message: String,
+        button: Button?,
+        style: Style,
+        duration: Duration
+    ) {
+        self.init(id: id, title: title, message: message, button: button, style: style, duration: duration.timeInterval)
+    }
+
+    init(
         id: UUID = UUID(),
         title: String?,
         message: String,
@@ -43,11 +79,7 @@ public struct Toast: Hashable {
     }
 
     public static func == (lhs: Toast, rhs: Toast) -> Bool {
-        lhs.title == rhs.title &&
-        lhs.message == rhs.message &&
-        lhs.button == rhs.button &&
-        lhs.style == rhs.style &&
-        lhs.duration == rhs.duration
+        lhs.title == rhs.title && lhs.message == rhs.message && lhs.button == rhs.button && lhs.style == rhs.style && lhs.duration == rhs.duration
     }
 
     public func hash(into hasher: inout Hasher) {
@@ -92,16 +124,6 @@ public struct Toast: Hashable {
             case title(String)
         }
     }
-
-    public func duration(_ newDuration: TimeInterval) -> Self {
-        .init(
-            title: title,
-            message: message,
-            button: button,
-            style: style,
-            duration: newDuration
-        )
-    }
 }
 
 public extension Toast {
@@ -110,12 +132,37 @@ public extension Toast {
         .information(message: "Coming soon")
     }
 
-    static func error(message: String) -> Self {
-        .noButtonDefaultDuration(message: message, style: .error)
+    static func error(message: String, duration: Toast.Duration = .default) -> Self {
+        .noButton(message: message, style: .error, duration: duration)
     }
 
-    static func information(message: String) -> Self {
-        .noButtonDefaultDuration(message: message, style: .information)
+    static func information(message: String, duration: Toast.Duration = .default) -> Self {
+        .noButton(message: message, style: .information, duration: .default)
+    }
+
+    static func informationUndo(
+        message: String,
+        duration: Duration,
+        undoAction: (() -> Void)?
+    ) -> Self {
+        let button: Button? =
+            switch undoAction {
+            case .none:
+                .none
+            case .some(let action):
+                Button(
+                    type: .smallTrailing(content: .title(CommonL10n.undo.string)),
+                    action: action
+                )
+            }
+
+        return .init(
+            title: .none,
+            message: message,
+            button: button,
+            style: .information,
+            duration: duration
+        )
     }
 
     var shadowOpacity: CGFloat {
@@ -137,8 +184,12 @@ public extension Toast {
 
     // MARK: - Private
 
-    private static func noButtonDefaultDuration(message: String, style: Toast.Style) -> Self {
-        .init(title: nil, message: message, button: nil, style: style, duration: .toastDefaultDuration)
+    private static func noButton(
+        message: String,
+        style: Toast.Style,
+        duration: Toast.Duration
+    ) -> Self {
+        .init(title: .none, message: message, button: .none, style: style, duration: duration)
     }
 
 }
@@ -158,9 +209,4 @@ extension Toast.Style {
         }
     }
 
-}
-
-public extension TimeInterval {
-    static let toastDefaultDuration: TimeInterval = 1.5
-    static let toastMediumDuration: TimeInterval = 3.0
 }

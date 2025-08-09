@@ -24,8 +24,8 @@ import proton_app_uniffi
 import XCTest
 
 final class SendResultPresenterTests: BaseTestCase, @unchecked Sendable {
-    private let regularDuration: TimeInterval = .toastDefaultDuration
-    private let mediumDuration: TimeInterval = .toastMediumDuration
+    private let regularDuration: Toast.Duration = .default
+    private let mediumDuration: Toast.Duration = .medium
 
     private var sut: SendResultPresenter!
     private let scheduleDateFormatter = ScheduleSendDateFormatter()
@@ -97,7 +97,7 @@ final class SendResultPresenterTests: BaseTestCase, @unchecked Sendable {
             capturedToastActions.isSame(as: [
                 .present(.sendingMessage(duration: regularDuration)),
                 .dismiss(.sendingMessage(duration: regularDuration)),
-                .present(.messageSent(duration: 2, undoAction: {})),
+                .present(.messageSent(duration: .custom(2.0), undoAction: {})),
             ]))
     }
 
@@ -130,7 +130,7 @@ final class SendResultPresenterTests: BaseTestCase, @unchecked Sendable {
             capturedToastActions.isSame(as: [
                 .present(.sendingMessage(duration: regularDuration)),
                 .dismiss(.sendingMessage(duration: regularDuration)),
-                .present(.error(message: dummyError.localizedDescription).duration(mediumDuration)),
+                .present(.error(message: dummyError.localizedDescription, duration: mediumDuration)),
             ]))
     }
 
@@ -188,7 +188,7 @@ final class SendResultPresenterTests: BaseTestCase, @unchecked Sendable {
             capturedToastActions.isSame(as: [
                 .present(.schedulingMessage(duration: regularDuration)),
                 .dismiss(.schedulingMessage(duration: regularDuration)),
-                .present(.error(message: dummyError.localizedDescription).duration(mediumDuration)),
+                .present(.error(message: dummyError.localizedDescription, duration: mediumDuration)),
             ]))
     }
 
@@ -235,7 +235,7 @@ final class SendResultPresenterTests: BaseTestCase, @unchecked Sendable {
             capturedToastActions.isSame(as: [
                 .present(.messageSent(duration: mediumDuration, undoAction: {})),
                 .dismiss(.messageSent(duration: mediumDuration, undoAction: {})),
-                .present(.error(message: mockDraftUndoSendError.localizedDescription).duration(mediumDuration)),
+                .present(.error(message: mockDraftUndoSendError.localizedDescription, duration: mediumDuration)),
             ]))
     }
 
@@ -291,7 +291,7 @@ final class SendResultPresenterTests: BaseTestCase, @unchecked Sendable {
             capturedToastActions.isSame(as: [
                 .present(expectedToast),
                 .dismiss(expectedToast),
-                .present(.error(message: mockDraftUndoScheduleError.localizedDescription).duration(mediumDuration)),
+                .present(.error(message: mockDraftUndoScheduleError.localizedDescription, duration: mediumDuration)),
             ]))
     }
 }

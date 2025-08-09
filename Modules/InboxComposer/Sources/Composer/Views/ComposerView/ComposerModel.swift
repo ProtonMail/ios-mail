@@ -544,7 +544,7 @@ extension ComposerModel {
             return addLastRecipientToState(for: group, in: recipientList)
         case .duplicate, .saveFailed:
             restoreRecipientStateAfterError(for: group)
-            showToast(.error(message: result.localizedErrorMessage(entry: entry).string).duration(.toastMediumDuration))
+            showToast(.error(message: result.localizedErrorMessage(entry: entry).string, duration: .medium))
             return nil
         }
     }
@@ -564,7 +564,7 @@ extension ComposerModel {
         case .duplicate, .saveFailed, .emptyGroupName:
             restoreRecipientStateAfterError(for: group)
             if let message = result.localizedErrorMessage()?.string {
-                showToast(.error(message: message).duration(.toastMediumDuration))
+                showToast(.error(message: message, duration: .medium))
             }
             return nil
         }

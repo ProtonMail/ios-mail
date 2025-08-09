@@ -31,75 +31,39 @@ public extension Toast {
             message: L10n.Composer.draftSaved.string,
             button: discardButton,
             style: .information,
-            duration: .toastDefaultDuration
+            duration: .default
         )
     }
 
     static func draftDiscarded() -> Toast {
-        return Toast(
-            title: nil,
-            message: L10n.Composer.discarded.string,
-            button: nil,
-            style: .information,
-            duration: .toastDefaultDuration
-        )
+        .information(message: L10n.Composer.discarded.string)
     }
 
-    static func schedulingMessage(duration: TimeInterval) -> Toast {
-        Toast(
-            title: nil,
-            message: L10n.Composer.schedulingMessage.string,
-            button: nil,
-            style: .information,
-            duration: duration
-        )
+    static func schedulingMessage(duration: Toast.Duration) -> Toast {
+        .information(message: L10n.Composer.schedulingMessage.string, duration: duration)
     }
 
-    static func scheduledMessage(duration: TimeInterval, scheduledTime: String, undoAction: (() -> Void)?) -> Toast {
-        var undoButton: Button?
-        if let undoAction {
-            undoButton = .init(type: .smallTrailing(content: .title(CommonL10n.undo.string)), action: undoAction)
-        }
-        return Toast(
-            title: nil,
+    static func scheduledMessage(duration: Toast.Duration, scheduledTime: String, undoAction: (() -> Void)?) -> Toast {
+        .informationUndo(
             message: L10n.Composer.messageWillBeSentOn(time: scheduledTime).string,
-            button: undoButton,
-            style: .information,
-            duration: duration
+            duration: duration,
+            undoAction: undoAction
         )
     }
 
-    static func sendingMessage(duration: TimeInterval) -> Toast {
-        Toast(
-            title: nil,
-            message: L10n.Composer.sendingMessage.string,
-            button: nil,
-            style: .information,
-            duration: duration
-        )
+    static func sendingMessage(duration: Toast.Duration) -> Toast {
+        .information(message: L10n.Composer.sendingMessage.string, duration: duration)
     }
 
-    static func messageSent(duration: TimeInterval, undoAction: (() -> Void)?) -> Toast {
-        var undoButton: Button?
-        if let undoAction {
-            undoButton = .init(type: .smallTrailing(content: .title(CommonL10n.undo.string)), action: undoAction)
-        }
-        return Toast(
-            title: nil,
+    static func messageSent(duration: Toast.Duration, undoAction: (() -> Void)?) -> Toast {
+        .informationUndo(
             message: L10n.Composer.messageSent.string,
-            button: undoButton,
-            style: .information,
-            duration: duration
+            duration: duration,
+            undoAction: undoAction
         )
     }
 
-    static func messageSentWithoutUndo(duration: TimeInterval) -> Toast {
-        return Toast(
-            title: nil,
-            message: L10n.Composer.messageSent.string,
-            button: nil,
-            style: .information,
-            duration: duration
-        )
+    static func messageSentWithoutUndo(duration: Toast.Duration) -> Toast {
+        .information(message: L10n.Composer.messageSent.string, duration: duration)
     }
 }

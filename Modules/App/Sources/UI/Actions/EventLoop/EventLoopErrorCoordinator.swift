@@ -45,12 +45,9 @@ final class EventLoopErrorCoordinator: ObservableObject {
 
     private func onEventLoopError(error: EventError) {
         AppLogger.log(error: error)
-        let toast = Toast(
-            title: nil,
+        let toast = Toast.error(
             message: L10n.EventLoopError.eventLoopErrorMessage.string,
-            button: nil,
-            style: .error,
-            duration: 10
+            duration: .long
         )
         toastStateStore.present(toast: toast)
     }

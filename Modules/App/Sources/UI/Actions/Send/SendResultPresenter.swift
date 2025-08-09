@@ -28,7 +28,7 @@ import enum proton_app_uniffi.DraftSendFailure
 */
 final class SendResultPresenter {
     private typealias MessageID = ID
-    private let regularDuration: TimeInterval = .toastDefaultDuration
+    private let regularDuration: Toast.Duration = .default
     private let extendedDuration: TimeInterval = 3.0
     private var toasts = [MessageID: Toast]()
     private let subject = PassthroughSubject<SendResultToastAction, Never>()
@@ -50,7 +50,7 @@ final class SendResultPresenter {
 
         case .scheduled(let deliveryTime):
             let formattedTime = ScheduleSendDateFormatter().string(from: deliveryTime, format: .long)
-            let toast: Toast = .scheduledMessage(duration: extendedDuration, scheduledTime: formattedTime) { [weak self] in
+            let toast: Toast = .scheduledMessage(duration: .custom(extendedDuration), scheduledTime: formattedTime) { [weak self] in
                 Task { await self?.undoScheduleSendAction(for: info.messageId) }
             }
             handleToast(toast, for: info.messageId)
@@ -62,7 +62,7 @@ final class SendResultPresenter {
             let duration = min(TimeInterval(secondsToUndo), extendedDuration)
             let toast: Toast
             if duration > 0 {
-                toast = .messageSent(duration: duration) { [weak self] in
+                toast = .messageSent(duration: .custom(duration)) { [weak self] in
                     Task { await self?.undoSendAction(for: info.messageId) }
                 }
             } else {
@@ -72,7 +72,7 @@ final class SendResultPresenter {
 
         case .error(let error):
             if error.shouldBeDisplayed {
-                handleToast(.error(message: error.localizedDescription).duration(.toastMediumDuration), for: info.messageId)
+                handleToast(.error(message: error.localizedDescription, duration: .medium), for: info.messageId)
             }
         }
     }
@@ -99,7 +99,7 @@ extension SendResultPresenter {
             removeAndDismissToastReference(for: messageId)
             try await draftPresenter.undoSentMessageAndOpenDraft(for: messageId)
         } catch {
-            present(toast: .error(message: error.localizedDescription).duration(.toastMediumDuration))
+            present(toast: .error(message: error.localizedDescription, duration: .medium))
         }
     }
 
@@ -108,7 +108,7 @@ extension SendResultPresenter {
             removeAndDismissToastReference(for: messageId)
             try await draftPresenter.cancelScheduledMessageAndOpenDraft(for: messageId)
         } catch {
-            present(toast: .error(message: error.localizedDescription).duration(.toastMediumDuration))
+            present(toast: .error(message: error.localizedDescription, duration: .medium))
         }
     }
 

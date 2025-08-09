@@ -293,13 +293,7 @@ extension MailboxModel {
             await unreadCountLiveQuery?.setUpLiveQuery()
         } catch {
             AppLogger.log(error: error, category: .mailbox)
-            toast = Toast(
-                title: nil,
-                message: L10n.Mailbox.Error.mailboxErrorMessage.string,
-                button: nil,
-                style: .error,
-                duration: 8.0
-            )
+            toast = .error(message: L10n.Mailbox.Error.mailboxErrorMessage.string, duration: .long)
         }
     }
 
@@ -380,7 +374,7 @@ extension MailboxModel {
     // TODO: Remove once the SDK does not return network as a possible MailScrollerError
     private func showScrollerErrorIfNotNetwork(error: MailScrollerError) {
         if case .other(.network) = error { return }
-        toast = .error(message: L10n.Mailbox.Error.issuesLoadingMailboxContent.string).duration(.toastMediumDuration)
+        toast = .error(message: L10n.Mailbox.Error.issuesLoadingMailboxContent.string, duration: .medium)
     }
 
     private func updateSelectedItemsAfterDestructiveUpdate() {

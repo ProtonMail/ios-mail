@@ -112,6 +112,6 @@ final class LegacyMigrationStateStore: ObservableObject {
 
 private extension Toast {
     static var migrationError: Toast {
-        .error(message: L10n.LegacyMigration.migrationFailed.string).duration(.toastMediumDuration)
+        .error(message: L10n.LegacyMigration.migrationFailed.string, duration: .medium)
     }
 }
