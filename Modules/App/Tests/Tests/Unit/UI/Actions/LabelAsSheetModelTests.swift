@@ -16,17 +16,18 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import ProtonMail
-import InboxCoreUI
+@testable import InboxCoreUI
+import InboxCore
 import InboxTesting
 import proton_app_uniffi
 import XCTest
 
 class LabelAsSheetModelTests: BaseTestCase {
-
     var invokedAvailableActionsWithMessagesIDs: [ID]!
     var invokedAvailableActionsWithConversationIDs: [ID]!
     var invokedDismissCount: Int!
     var stubbedLabelAsActions: [LabelAsAction]!
+    var stubbedLabelAsOutput: LabelAsOutput!
 
     private var toastStateStore: ToastStateStore!
     private var invokedLabelMessage: [LabelAsExecutedWithData]!
@@ -35,6 +36,7 @@ class LabelAsSheetModelTests: BaseTestCase {
     override func setUp() {
         super.setUp()
 
+        stubbedLabelAsOutput = .init(inputLabelIsEmpty: false, undo: UndoSpy(noPointer: .init()))
         toastStateStore = .init(initialState: .initial)
         invokedAvailableActionsWithMessagesIDs = []
         invokedAvailableActionsWithConversationIDs = []
@@ -51,6 +53,7 @@ class LabelAsSheetModelTests: BaseTestCase {
         invokedLabelConversation = nil
         invokedDismissCount = nil
         stubbedLabelAsActions = nil
+        stubbedLabelAsOutput = nil
 
         super.tearDown()
     }
@@ -160,12 +163,24 @@ class LabelAsSheetModelTests: BaseTestCase {
         )
     }
 
-    func test_WhenOneLabelIsSelectedAndOtherPartiallySelected_ItLabelsMessage() {
-        testLabelAs(itemType: .message) { invokedLabelMessage }
+    func testLabelAsAction_WhenArchiveNotSelected_ItDoesNotShowUndoToast() throws {
+        try testLabelAsWithArchiveDisabled(itemType: .message, spyToVerify: { invokedLabelMessage })
     }
 
-    func test_WhenOneLabelIsSelectedAndOtherPartiallySelected_ItLabelsConversation() {
-        testLabelAs(itemType: .conversation) { invokedLabelConversation }
+    func testLabelAsAction_WhenOneLabelIsSelectedAndOtherPartiallySelected_ItLabelsMessage() throws {
+        try testLabelAsWithArchiveEnabled(
+            itemType: .message,
+            spyToVerify: { invokedLabelMessage },
+            expectToastMessage: L10n.Toast.messageMovedTo(count: 2)
+        )
+    }
+
+    func testLabelAsAction_WhenOneLabelIsSelectedAndOtherPartiallySelected_ItLabelsConversation() throws {
+        try testLabelAsWithArchiveEnabled(
+            itemType: .conversation,
+            spyToVerify: { invokedLabelConversation },
+            expectToastMessage: L10n.Toast.conversationMovedTo(count: 2)
+        )
     }
 
     // MARK: - Private
@@ -194,7 +209,7 @@ class LabelAsSheetModelTests: BaseTestCase {
                             archive: archive
                         ))
 
-                    return .ok(.init(inputLabelIsEmpty: false, undo: .dummy))
+                    return .ok(self.stubbedLabelAsOutput)
                 },
                 labelConversationsAs: { mailbox, ids, selectedLabelIDs, partiallySelectedLabelIDs, archive in
                     self.invokedLabelConversation.append(
@@ -205,15 +220,20 @@ class LabelAsSheetModelTests: BaseTestCase {
                             archive: archive
                         ))
 
-                    return .ok(.init(inputLabelIsEmpty: false, undo: .dummy))
+                    return .ok(self.stubbedLabelAsOutput)
                 }
             ),
             toastStateStore: toastStateStore,
+            mailUserSession: { MailUserSession(noPointer: .init()) },
             dismiss: { self.invokedDismissCount += 1 }
         )
     }
 
-    private func testLabelAs(itemType: MailboxItemType, spyToVerify: () -> [LabelAsExecutedWithData]) {
+    private func testLabelAsWithArchiveDisabled(
+        itemType: MailboxItemType,
+        spyToVerify: () -> [LabelAsExecutedWithData]
+    ) throws {
+        let undoSpy = UndoSpy(noPointer: .init())
         let selectedLabelID: ID = .init(value: 2)
         let partiallySelectedLabelID: ID = .init(value: 4)
         stubbedLabelAsActions = [
@@ -221,6 +241,45 @@ class LabelAsSheetModelTests: BaseTestCase {
             .testData(id: partiallySelectedLabelID, isSelected: .partial),
             .testData(id: .random(), isSelected: .unselected),
         ]
+        stubbedLabelAsOutput = .init(inputLabelIsEmpty: false, undo: undoSpy)
+
+        let itemsIDs: [ID] = [.init(value: 1), .init(value: 3)]
+        let sut = sut(ids: itemsIDs, type: itemType)
+
+        sut.handle(action: .viewAppear)
+        sut.handle(action: .doneButtonTapped)
+
+        XCTAssertEqual(
+            spyToVerify(),
+            [
+                .init(
+                    itemsIDs: itemsIDs,
+                    selectedLabelIDs: [selectedLabelID],
+                    partiallySelectedLabelIDs: [partiallySelectedLabelID],
+                    archive: false
+                )
+            ]
+        )
+        XCTAssertEqual(invokedDismissCount, 1)
+
+        XCTAssertEqual(toastStateStore.state.toasts.count, 0)
+        XCTAssertEqual(undoSpy.undoCallsCount, 0)
+    }
+
+    private func testLabelAsWithArchiveEnabled(
+        itemType: MailboxItemType,
+        spyToVerify: () -> [LabelAsExecutedWithData],
+        expectToastMessage: LocalizedStringResource
+    ) throws {
+        let undoSpy = UndoSpy(noPointer: .init())
+        let selectedLabelID: ID = .init(value: 2)
+        let partiallySelectedLabelID: ID = .init(value: 4)
+        stubbedLabelAsActions = [
+            .testData(id: selectedLabelID, isSelected: .selected),
+            .testData(id: partiallySelectedLabelID, isSelected: .partial),
+            .testData(id: .random(), isSelected: .unselected),
+        ]
+        stubbedLabelAsOutput = .init(inputLabelIsEmpty: false, undo: undoSpy)
 
         let itemsIDs: [ID] = [.init(value: 1), .init(value: 3)]
         let sut = sut(ids: itemsIDs, type: itemType)
@@ -241,6 +300,17 @@ class LabelAsSheetModelTests: BaseTestCase {
             ]
         )
         XCTAssertEqual(invokedDismissCount, 1)
+
+        XCTAssertEqual(toastStateStore.state.toasts.count, 1)
+
+        let toastToVerify: Toast = try XCTUnwrap(toastStateStore.state.toasts.last)
+
+        XCTAssertEqual(toastToVerify.message, expectToastMessage.string)
+
+        toastToVerify.simulateUndoAction()
+
+        XCTAssertEqual(undoSpy.undoCallsCount, 1)
+        XCTAssertEqual(toastStateStore.state.toasts.isEmpty, true)
     }
 
     private struct LabelAsExecutedWithData: Equatable {
@@ -249,7 +319,6 @@ class LabelAsSheetModelTests: BaseTestCase {
         let partiallySelectedLabelIDs: [ID]
         let archive: Bool
     }
-
 }
 
 private extension LabelAsAction {
@@ -259,5 +328,31 @@ private extension LabelAsAction {
 
     static func testData(id: ID, isSelected: IsSelected) -> Self {
         .init(labelId: id, name: .notUsed, color: .init(value: .notUsed), isSelected: isSelected)
+    }
+}
+
+private extension Toast {
+    func simulateUndoAction() {
+        guard
+            let button,
+            case .smallTrailing(let content) = button.type,
+            case .title(let title) = content,
+            title == CommonL10n.undo.string
+        else {
+            return
+        }
+
+        button.action()
+    }
+}
+
+private class UndoSpy: Undo, @unchecked Sendable {
+    private(set) var stubbedResult: UndoUndoResult = .ok
+    private(set) var undoCallsCount: Int = 0
+
+    override func undo(ctx: MailUserSession) async -> UndoUndoResult {
+        undoCallsCount += 1
+
+        return stubbedResult
     }
 }

@@ -27,6 +27,7 @@ class LabelAsSheetModel: ObservableObject {
     private let actionsProvider: LabelAsActionsProvider
     private let labelAsActionPerformer: LabelAsActionPerformer
     private let toastStateStore: ToastStateStore
+    private let mailUserSession: () -> MailUserSession
     private let dismiss: () -> Void
 
     init(
@@ -35,12 +36,14 @@ class LabelAsSheetModel: ObservableObject {
         availableLabelAsActions: AvailableLabelAsActions,
         labelAsActions: LabelAsActions,
         toastStateStore: ToastStateStore,
+        mailUserSession: @escaping () -> MailUserSession = { AppContext.shared.userSession },
         dismiss: @escaping () -> Void
     ) {
         self.input = input
         self.actionsProvider = .init(mailbox: mailbox, availableLabelAsActions: availableLabelAsActions)
         self.labelAsActionPerformer = .init(mailbox: mailbox, labelAsActions: labelAsActions)
         self.toastStateStore = toastStateStore
+        self.mailUserSession = mailUserSession
         self.dismiss = dismiss
     }
 
@@ -75,16 +78,29 @@ class LabelAsSheetModel: ObservableObject {
     }
 
     private func executeLabelAsAction() {
-        Task {
+        let input = LabelAsActionPerformer.Input(
+            itemType: input.type.inboxItemType,
+            itemsIDs: input.ids,
+            selectedLabelsIDs: state.labels.filter { $0.isSelected == .selected }.map(\.id),
+            partiallySelectedLabelsIDs: state.labels.filter { $0.isSelected == .partial }.map(\.id),
+            archive: state.shouldArchive
+        )
+
+        Task { [weak self] in
+            guard let self else { return }
+
             do {
-                try await labelAsActionPerformer.labelAs(
-                    input: .init(
-                        itemType: input.type.inboxItemType,
-                        itemsIDs: input.ids,
-                        selectedLabelsIDs: state.labels.filter { $0.isSelected == .selected }.map(\.id),
-                        partiallySelectedLabelsIDs: state.labels.filter { $0.isSelected == .partial }.map(\.id),
-                        archive: state.shouldArchive
-                    ))
+                let result = try await labelAsActionPerformer.labelAs(input: input)
+                let toastID = UUID()
+                let toast = Toast.archiveSuccess(id: toastID, for: input.itemType, count: input.itemsIDs.count) {
+                    Task {
+                        try await self.undo(with: result.undo, toastID: toastID)
+                    }
+                }
+
+                if input.archive {
+                    showToast(toast)
+                }
             } catch {
                 showError(error)
             }
@@ -113,10 +129,21 @@ class LabelAsSheetModel: ObservableObject {
         return [IsSelected.partial, .selected].contains(selectedLabel.isSelected) ? .unselected : .selected
     }
 
+    private func undo(with undo: Undo, toastID: UUID) async throws {
+        try await undo.undo(ctx: mailUserSession()).get()
+        dismissToast(withID: toastID)
+    }
+
+    private func showToast(_ toast: Toast) {
+        Dispatcher.dispatchOnMain(.init(block: { [weak self] in self?.toastStateStore.present(toast: toast) }))
+    }
+
     private func showError(_ error: Error) {
-        Dispatcher.dispatchOnMain(.init { [weak self] in
-            self?.toastStateStore.present(toast: .error(message: error.localizedDescription))
-        })
+        showToast(.error(message: error.localizedDescription))
+    }
+
+    private func dismissToast(withID toastID: UUID) {
+        Dispatcher.dispatchOnMain(.init(block: { [weak self] in self?.toastStateStore.dismiss(withID: toastID) }))
     }
 }
 
@@ -134,6 +161,34 @@ extension LabelAsAction {
 
     var displayModel: LabelDisplayModel {
         .init(id: labelId, color: Color(hex: color.value), title: name, isSelected: isSelected)
+    }
+
+}
+
+extension Toast {
+
+    static func archiveSuccess(
+        id: UUID,
+        for itemType: MailboxItemType,
+        count: Int,
+        undoAction: @escaping @Sendable () -> Void
+    ) -> Toast {
+        let message: LocalizedStringResource =
+            switch itemType {
+            case .conversation:
+                L10n.Toast.conversationMovedTo(count: count)
+            case .message:
+                L10n.Toast.messageMovedTo(count: count)
+            }
+
+        return .init(
+            id: id,
+            title: .none,
+            message: message.string,
+            button: .init(type: .smallTrailing(content: .title(CommonL10n.undo.string)), action: undoAction),
+            style: .information,
+            duration: .toastMediumDuration
+        )
     }
 
 }
