@@ -42,6 +42,22 @@ public struct Toast: Hashable {
         self.duration = duration
     }
 
+    public static func == (lhs: Toast, rhs: Toast) -> Bool {
+        lhs.title == rhs.title &&
+        lhs.message == rhs.message &&
+        lhs.button == rhs.button &&
+        lhs.style == rhs.style &&
+        lhs.duration == rhs.duration
+    }
+
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(title)
+        hasher.combine(message)
+        hasher.combine(button)
+        hasher.combine(style)
+        hasher.combine(duration)
+    }
+
     public struct Button: Hashable {
         let type: ButtonType
         let action: () -> Void
