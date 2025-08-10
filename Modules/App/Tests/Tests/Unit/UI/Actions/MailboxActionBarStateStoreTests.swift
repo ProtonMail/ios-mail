@@ -74,11 +74,13 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
         XCTAssertEqual(invokedAvailableMessageActionsWithIDs.count, 1)
         XCTAssertEqual(invokedAvailableConversationActionsWithIDs.count, 0)
         XCTAssertEqual(invokedAvailableMessageActionsWithIDs.first, ids)
-        XCTAssertEqual(sut.state, .init(
-            bottomBarActions: [.notSpam(.testInbox)],
-            moreSheetOnlyActions: [.labelAs, .markRead],
-            isSnoozeSheetPresented: false
-        ))
+        XCTAssertEqual(
+            sut.state,
+            .init(
+                bottomBarActions: [.notSpam(.testInbox)],
+                moreSheetOnlyActions: [.labelAs, .markRead],
+                isSnoozeSheetPresented: false
+            ))
     }
 
     func testState_WhenMailboxItemsSelectionIsUpdatedInConversationModel_ItReturnsCorrectState() {
@@ -94,11 +96,13 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
         XCTAssertEqual(invokedAvailableMessageActionsWithIDs.count, 0)
         XCTAssertEqual(invokedAvailableConversationActionsWithIDs.count, 1)
         XCTAssertEqual(invokedAvailableConversationActionsWithIDs.first, ids)
-        XCTAssertEqual(sut.state, .init(
-            bottomBarActions: [.more],
-            moreSheetOnlyActions: [.notSpam(.testInbox), .permanentDelete],
-            isSnoozeSheetPresented: false
-        ))
+        XCTAssertEqual(
+            sut.state,
+            .init(
+                bottomBarActions: [.more],
+                moreSheetOnlyActions: [.notSpam(.testInbox), .permanentDelete],
+                isSnoozeSheetPresented: false
+            ))
     }
 
     func testState_WhenMailboxItemsSelectionIsUpdatedWithNoSelection_ItReturnsCorrectState() {
@@ -150,15 +154,17 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
         sut.handle(action: .mailboxItemsSelectionUpdated(ids: ids))
         sut.handle(action: .actionSelected(.more, ids: ids))
 
-        XCTAssertEqual(sut.state.moreActionSheetPresented, .init(
-            selectedItemsIDs: [.init(value: 9)],
-            bottomBarActions: [.markRead, .star, .moveTo, .labelAs],
-            moreSheetOnlyActions: [
-                .notSpam(.testInbox),
-                .permanentDelete,
-                .moveToSystemFolder(.init(localId: .init(value: 7), name: .archive))
-            ]
-        ))
+        XCTAssertEqual(
+            sut.state.moreActionSheetPresented,
+            .init(
+                selectedItemsIDs: [.init(value: 9)],
+                bottomBarActions: [.markRead, .star, .moveTo, .labelAs],
+                moreSheetOnlyActions: [
+                    .notSpam(.testInbox),
+                    .permanentDelete,
+                    .moveToSystemFolder(.init(localId: .init(value: 7), name: .archive)),
+                ]
+            ))
     }
 
     func testState_WhenLabelAsActionOnMoreSheetIsSelected_ItReturnsCorrectState() {
@@ -235,7 +241,7 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
 
         XCTAssertEqual(
             toastStateStore.state.toasts,
-            [.moveTo(destinationName: systemFolder.name.humanReadable.string)]
+            [.moveTo(id: UUID(), destinationName: systemFolder.name.humanReadable.string, undoAction: .none)]
         )
         XCTAssertEqual(
             moveToActionsSpy.invokedMoveToMessage,

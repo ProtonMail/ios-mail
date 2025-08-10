@@ -107,7 +107,12 @@ private struct MailboxActionBarViewModifier: ViewModifier {
                     mailUserSession: mailUserSession,
                     input: store.binding(\.labelAsSheetPresented)
                 )
-                .moveToSheet(mailbox: { mailbox }, input: store.binding(\.moveToSheetPresented), navigation: { _ in })
+                .moveToSheet(
+                    mailbox: { mailbox },
+                    mailUserSession: mailUserSession,
+                    input: store.binding(\.moveToSheetPresented),
+                    navigation: { _ in }
+                )
                 .sheet(item: store.binding(\.moreActionSheetPresented)) { state in
                     MailboxActionBarMoreSheet(state: state) { action in
                         store.handle(action: .moreSheetAction(action, ids: selectedItemsIDs))

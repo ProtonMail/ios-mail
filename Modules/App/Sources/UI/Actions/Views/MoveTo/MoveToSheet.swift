@@ -27,30 +27,36 @@ struct MoveToSheet: View {
     private let availableMoveToActions: AvailableMoveToActions
     private let moveToActions: MoveToActions
     private let navigation: (MoveToSheetNavigation) -> Void
+    private let mailUserSession: MailUserSession
 
     init(
         input: ActionSheetInput,
         mailbox: Mailbox,
         availableMoveToActions: AvailableMoveToActions,
         moveToActions: MoveToActions,
-        navigation: @escaping (MoveToSheetNavigation) -> Void
+        navigation: @escaping (MoveToSheetNavigation) -> Void,
+        mailUserSession: MailUserSession
     ) {
         self.input = input
         self.mailbox = mailbox
         self.availableMoveToActions = availableMoveToActions
         self.moveToActions = moveToActions
         self.navigation = navigation
+        self.mailUserSession = mailUserSession
     }
 
     var body: some View {
-        StoreView(store: MoveToSheetStateStore(
-            input: input,
-            mailbox: mailbox,
-            availableMoveToActions: availableMoveToActions, 
-            toastStateStore: toastStateStore, 
-            moveToActions: moveToActions,
-            navigation: navigation
-        )) { state, store in
+        StoreView(
+            store: MoveToSheetStateStore(
+                input: input,
+                mailbox: mailbox,
+                availableMoveToActions: availableMoveToActions,
+                toastStateStore: toastStateStore,
+                moveToActions: moveToActions,
+                navigation: navigation,
+                mailUserSession: mailUserSession
+            )
+        ) { state, store in
             ClosableScreen {
                 ScrollView {
                     VStack(spacing: DS.Spacing.large) {
@@ -93,9 +99,11 @@ struct MoveToSheet: View {
                     ActionSheetSelectableButton(
                         displayData: displayModel,
                         displayBottomSeparator: true,
-                        action: { store.handle(
-                            action: .customFolderTapped(.init(id: displayModel.id, name: displayModel.title))
-                        )}
+                        action: {
+                            store.handle(
+                                action: .customFolderTapped(.init(id: displayModel.id, name: displayModel.title))
+                            )
+                        }
                     )
                 }
                 ActionSheetButton(
@@ -156,6 +164,7 @@ private extension Array where Element == MoveToCustomFolder {
         mailbox: .dummy,
         availableMoveToActions: MoveToSheetPreviewProvider.availableMoveToActions,
         moveToActions: .dummy,
-        navigation: { _ in }
+        navigation: { _ in },
+        mailUserSession: .dummy
     )
 }

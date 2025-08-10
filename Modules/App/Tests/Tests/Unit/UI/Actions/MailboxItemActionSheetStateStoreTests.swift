@@ -431,7 +431,7 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
         XCTAssertEqual(
             toastStateStore.state.toasts,
             [
-                .moveTo(destinationName: destination.name.humanReadable.string)
+                .moveTo(id: UUID(), destinationName: destination.name.humanReadable.string, undoAction: .none)
             ])
     }
 

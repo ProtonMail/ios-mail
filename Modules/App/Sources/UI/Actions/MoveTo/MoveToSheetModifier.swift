@@ -20,11 +20,18 @@ import SwiftUI
 
 private struct MoveToSheetModifier: ViewModifier {
     private let mailbox: () -> Mailbox
+    private let mailUserSession: MailUserSession
     @Binding var input: ActionSheetInput?
     private let navigation: (MoveToSheetNavigation) -> Void
 
-    init(mailbox: @escaping () -> Mailbox, input: Binding<ActionSheetInput?>, navigation: @escaping (MoveToSheetNavigation) -> Void) {
+    init(
+        mailbox: @escaping () -> Mailbox,
+        mailUserSession: MailUserSession,
+        input: Binding<ActionSheetInput?>,
+        navigation: @escaping (MoveToSheetNavigation) -> Void
+    ) {
         self.mailbox = mailbox
+        self.mailUserSession = mailUserSession
         self._input = .init(projectedValue: input)
         self.navigation = navigation
     }
@@ -42,7 +49,8 @@ private struct MoveToSheetModifier: ViewModifier {
             mailbox: mailbox(),
             availableMoveToActions: .productionInstance,
             moveToActions: .productionInstance,
-            navigation: navigation
+            navigation: navigation,
+            mailUserSession: mailUserSession
         )
     }
 }
@@ -50,9 +58,17 @@ private struct MoveToSheetModifier: ViewModifier {
 extension View {
     func moveToSheet(
         mailbox: @escaping () -> Mailbox,
+        mailUserSession: MailUserSession,
         input: Binding<ActionSheetInput?>,
         navigation: @escaping (MoveToSheetNavigation) -> Void
     ) -> some View {
-        modifier(MoveToSheetModifier(mailbox: mailbox, input: input, navigation: navigation))
+        modifier(
+            MoveToSheetModifier(
+                mailbox: mailbox,
+                mailUserSession: mailUserSession,
+                input: input,
+                navigation: navigation
+            )
+        )
     }
 }

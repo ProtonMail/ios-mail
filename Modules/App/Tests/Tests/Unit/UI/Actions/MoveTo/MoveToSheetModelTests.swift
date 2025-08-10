@@ -81,10 +81,17 @@ class MoveToSheetStateStoreTests: BaseTestCase {
 
         sut.handle(action: .customFolderTapped(.init(id: .init(value: 1), name: "Private")))
 
-        XCTAssertEqual(moveToActionsSpy.invokedMoveToConversation, [
-            .init(destinationID: .init(value: 1), itemsIDs: [.init(value: 2)])
-        ])
-        XCTAssertEqual(toastStateStore.state.toasts, [.moveTo(destinationName: "Private")])
+        XCTAssertEqual(
+            moveToActionsSpy.invokedMoveToConversation,
+            [
+                .init(destinationID: .init(value: 1), itemsIDs: [.init(value: 2)])
+            ])
+        XCTAssertEqual(
+            toastStateStore.state.toasts,
+            [
+                .moveTo(id: UUID(), destinationName: "Private", undoAction: .none)
+            ]
+        )
         XCTAssertEqual(invokedNavigation, [.dismissAndGoBack])
     }
 
@@ -93,10 +100,17 @@ class MoveToSheetStateStoreTests: BaseTestCase {
 
         sut.handle(action: .systemFolderTapped(.init(id: .init(value: 10), label: .inbox)))
 
-        XCTAssertEqual(moveToActionsSpy.invokedMoveToMessage, [
-            .init(destinationID: .init(value: 10), itemsIDs: [.init(value: 1)])
-        ])
-        XCTAssertEqual(toastStateStore.state.toasts, [.moveTo(destinationName: "Inbox")])
+        XCTAssertEqual(
+            moveToActionsSpy.invokedMoveToMessage,
+            [
+                .init(destinationID: .init(value: 10), itemsIDs: [.init(value: 1)])
+            ])
+        XCTAssertEqual(
+            toastStateStore.state.toasts,
+            [
+                .moveTo(id: UUID(), destinationName: "Inbox", undoAction: .none)
+            ]
+        )
         XCTAssertEqual(invokedNavigation, [.dismiss])
     }
 
@@ -126,7 +140,8 @@ class MoveToSheetStateStoreTests: BaseTestCase {
             ),
             toastStateStore: toastStateStore,
             moveToActions: moveToActionsSpy.testingInstance,
-            navigation: { self.invokedNavigation.append($0) }
+            navigation: { self.invokedNavigation.append($0) },
+            mailUserSession: .dummy
         )
     }
 

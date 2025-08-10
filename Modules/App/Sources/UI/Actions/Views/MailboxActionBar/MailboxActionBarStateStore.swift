@@ -30,6 +30,7 @@ final class MailboxActionBarStateStore: StateStore {
     private let moveToActionPerformer: MoveToActionPerformer
     private let itemTypeForActionBar: MailboxItemType
     private let toastStateStore: ToastStateStore
+    private let mailUserSession: MailUserSession
 
     init(
         state: MailboxActionBarState,
@@ -60,6 +61,7 @@ final class MailboxActionBarStateStore: StateStore {
         )
         self.deleteActionsPerformer = .init(mailbox: mailbox, deleteActions: deleteActions)
         self.moveToActionPerformer = .init(mailbox: mailbox, moveToActions: moveToActions)
+        self.mailUserSession = mailUserSession
         self.toastStateStore = toastStateStore
     }
 
@@ -132,22 +134,27 @@ final class MailboxActionBarStateStore: StateStore {
     }
 
     private func performMoveToAction(destination: MovableSystemFolderAction, ids: [ID]) {
-        Task {
+        Task { [weak self, mailUserSession] in
+            guard let self else { return }
             do {
                 let undo = try await moveToActionPerformer.moveTo(
                     destinationID: destination.localId,
                     itemsIDs: ids,
                     itemType: itemTypeForActionBar
                 )
+                let toastID = UUID()
+                let undoAction = undo.undoAction(userSession: mailUserSession) {
+                    self.dismissToast(withID: toastID)
+                }
 
                 Dispatcher.dispatchOnMain(
-                    .init { [weak self] in
-                        self?.handleMoveAction(result: .success(destination), undoAction: undo.undoAction())
+                    .init {
+                        self.handleMoveActionSuccess(to: destination, toastID: toastID, undoAction: undoAction)
                     })
             } catch {
                 Dispatcher.dispatchOnMain(
-                    .init { [weak self] in
-                        self?.handleMoveAction(result: .failure(error), undoAction: .none)
+                    .init {
+                        self.handleMoveActionFailure(error: error)
                     })
             }
         }
@@ -199,19 +206,27 @@ final class MailboxActionBarStateStore: StateStore {
         dismissMoreActionSheet()
     }
 
-    private func handleMoveAction(
-        result: Result<MovableSystemFolderAction, Error>,
+    private func handleMoveActionSuccess(
+        to destination: MovableSystemFolderAction,
+        toastID: UUID,
         undoAction: (() -> Void)?
     ) {
-        switch result {
-        case .success(let destination):
-            let toast: Toast = .moveTo(destinationName: destination.name.humanReadable.string, undoAction: undoAction)
-            toastStateStore.present(toast: toast)
-        case .failure(let error):
-            toastStateStore.present(toast: .error(message: error.localizedDescription))
-        }
-
+        let destinationName = destination.name.humanReadable.string
+        let toast: Toast = .moveTo(id: toastID, destinationName: destinationName, undoAction: undoAction)
+        toastStateStore.present(toast: toast)
         dismissMoreActionSheet()
+    }
+
+    private func handleMoveActionFailure(error: Error) {
+        toastStateStore.present(toast: .error(message: error.localizedDescription))
+        dismissMoreActionSheet()
+    }
+
+    private func dismissToast(withID toastID: UUID) {
+        Dispatcher.dispatchOnMain(
+            .init(block: { [weak self] in
+                self?.toastStateStore.dismiss(withID: toastID)
+            }))
     }
 }
 

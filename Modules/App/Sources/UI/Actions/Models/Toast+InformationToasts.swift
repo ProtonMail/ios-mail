@@ -21,8 +21,9 @@ import InboxCoreUI
 
 extension Toast {
 
-    static func moveTo(destinationName: String, undoAction: (() -> Void)?) -> Self {
+    static func moveTo(id: UUID, destinationName: String, undoAction: (() -> Void)?) -> Self {
         .informationUndo(
+            id: id,
             message: L10n.Toast.movedTo(destination: destinationName).string,
             duration: .default,
             undoAction: undoAction
@@ -39,11 +40,14 @@ import proton_app_uniffi
 
 extension Optional where Wrapped == Undo {
 
-    func undoAction(userSession: MailUserSession = AppContext.shared.userSession) -> (() -> Void)? {
+    func undoAction(userSession: MailUserSession, onFinish: @escaping () -> Void) -> (() -> Void)? {
         switch self {
         case .some(let undo):
             {
-                Task { await undo.undo(ctx: userSession) }
+                Task {
+                    try await undo.undo(ctx: userSession).get()
+                    onFinish()
+                }
             }
         case .none:
             nil

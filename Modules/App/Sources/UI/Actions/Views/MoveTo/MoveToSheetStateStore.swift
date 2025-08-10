@@ -30,6 +30,7 @@ class MoveToSheetStateStore: StateStore {
     private let toastStateStore: ToastStateStore
     private let moveToActionPerformer: MoveToActionPerformer
     private let navigation: (MoveToSheetNavigation) -> Void
+    private let mailUserSession: MailUserSession
 
     init(
         input: ActionSheetInput,
@@ -37,13 +38,15 @@ class MoveToSheetStateStore: StateStore {
         availableMoveToActions: AvailableMoveToActions,
         toastStateStore: ToastStateStore,
         moveToActions: MoveToActions,
-        navigation: @escaping (MoveToSheetNavigation) -> Void
+        navigation: @escaping (MoveToSheetNavigation) -> Void,
+        mailUserSession: MailUserSession
     ) {
         self.input = input
         self.moveToActionsProvider = .init(mailbox: mailbox, availableMoveToActions: availableMoveToActions)
         self.toastStateStore = toastStateStore
         self.moveToActionPerformer = .init(mailbox: mailbox, moveToActions: moveToActions)
         self.navigation = navigation
+        self.mailUserSession = mailUserSession
     }
 
     func handle(action: MoveToSheetAction) {
@@ -62,19 +65,31 @@ class MoveToSheetStateStore: StateStore {
     // MARK: - Private
 
     private func moveTo(destinationID: ID, destinationName: String) {
-        Task {
+        Task { [weak self, mailUserSession] in
+            guard let self else { return }
             do {
                 let undo = try await moveToActionPerformer.moveTo(
                     destinationID: destinationID,
                     itemsIDs: input.ids,
                     itemType: input.type.inboxItemType
                 )
-                let toast: Toast = .moveTo(destinationName: destinationName, undoAction: undo.undoAction())
+                let toastID = UUID()
+                let undoAction = undo.undoAction(userSession: mailUserSession) {
+                    self.dismissToast(withID: toastID)
+                }
+                let toast: Toast = .moveTo(id: toastID, destinationName: destinationName, undoAction: undoAction)
                 dismissSheet(presentingToast: toast)
             } catch {
                 dismissSheet(presentingToast: .error(message: error.localizedDescription))
             }
         }
+    }
+
+    private func dismissToast(withID toastID: UUID) {
+        Dispatcher.dispatchOnMain(
+            .init(block: { [weak self] in
+                self?.toastStateStore.dismiss(withID: toastID)
+            }))
     }
 
     private func dismissSheet(presentingToast toast: Toast) {

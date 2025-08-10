@@ -90,6 +90,7 @@ struct MailboxScreen: View {
                 )
                 .moveToSheet(
                     mailbox: { mailboxModel.mailbox.unsafelyUnwrapped },
+                    mailUserSession: userSession,
                     input: $mailboxModel.state.moveToSheetPresented,
                     navigation: { _ in }
                 )

@@ -30,6 +30,7 @@ class MailboxItemActionSheetStateStore: StateStore {
     private let deleteActionPerformer: DeleteActionPerformer
     private let moveToActionPerformer: MoveToActionPerformer
     private let generalActionsPerformer: GeneralActionsPerformer
+    private let mailUserSession: MailUserSession
     private let toastStateStore: ToastStateStore
     private let messageAppearanceOverrideStore: MessageAppearanceOverrideStore
     private let printActionPerformer: PrintActionPerformer
@@ -62,6 +63,7 @@ class MailboxItemActionSheetStateStore: StateStore {
         self.deleteActionPerformer = .init(mailbox: mailbox, deleteActions: deleteActions)
         self.moveToActionPerformer = .init(mailbox: mailbox, moveToActions: moveToActions)
         self.generalActionsPerformer = .init(mailbox: mailbox, generalActions: generalActions)
+        self.mailUserSession = mailUserSession
         self.state = .initial(title: input.title)
         self.toastStateStore = toastStateStore
         self.messageAppearanceOverrideStore = messageAppearanceOverrideStore
@@ -168,14 +170,20 @@ class MailboxItemActionSheetStateStore: StateStore {
         ids: [ID],
         itemType: ActionSheetItemType
     ) {
-        Task {
+        Task { [weak self, mailUserSession] in
+            guard let self else { return }
+
             do {
                 let undo = try await moveToActionPerformer.moveTo(
                     destinationID: destination.localId,
                     itemsIDs: ids,
                     itemType: itemType.inboxItemType
                 )
-                presentMoveToToast(destination: destination, undoAction: undo.undoAction())
+                let toastID = UUID()
+                let undoAction = undo.undoAction(userSession: mailUserSession) {
+                    self.dismissToast(withID: toastID)
+                }
+                presentMoveToToast(id: toastID, destination: destination, undoAction: undoAction)
             } catch {
                 presentToast(toast: .error(message: error.localizedDescription))
             }
@@ -223,8 +231,14 @@ class MailboxItemActionSheetStateStore: StateStore {
         }
     }
 
-    private func presentMoveToToast(destination: MoveToSystemFolderLocation, undoAction: (() -> Void)?) {
-        presentToast(toast: .moveTo(destinationName: destination.name.humanReadable.string, undoAction: undoAction))
+    private func presentMoveToToast(
+        id: UUID,
+        destination: MoveToSystemFolderLocation,
+        undoAction: (() -> Void)?
+    ) {
+        let destinationName = destination.name.humanReadable.string
+        let toast: Toast = .moveTo(id: id, destinationName: destinationName, undoAction: undoAction)
+        presentToast(toast: toast)
     }
 
     private func presentDeletedToast() {
@@ -235,6 +249,13 @@ class MailboxItemActionSheetStateStore: StateStore {
         Dispatcher.dispatchOnMain(
             .init(block: { [weak self] in
                 self?.toastStateStore.present(toast: toast)
+            }))
+    }
+
+    private func dismissToast(withID toastID: UUID) {
+        Dispatcher.dispatchOnMain(
+            .init(block: { [weak self] in
+                self?.toastStateStore.dismiss(withID: toastID)
             }))
     }
 

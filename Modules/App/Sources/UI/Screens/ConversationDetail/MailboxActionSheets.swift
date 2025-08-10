@@ -80,7 +80,9 @@ private struct MailboxActionSheets: ViewModifier {
             }
             .labelAsSheet(mailbox: mailbox, mailUserSession: mailUserSession, input: $state.labelAs)
             .moveToSheet(
-                mailbox: mailbox, input: $state.moveTo,
+                mailbox: mailbox,
+                mailUserSession: mailUserSession,
+                input: $state.moveTo,
                 navigation: { navigation in
                     state.moveTo = nil
                     switch navigation {

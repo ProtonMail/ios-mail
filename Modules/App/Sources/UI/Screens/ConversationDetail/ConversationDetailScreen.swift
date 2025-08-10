@@ -41,7 +41,8 @@ struct ConversationDetailScreen: View {
                 seed: seed,
                 draftPresenter: draftPresenter,
                 backOnlineActionExecutor: .init(mailUserSession: { AppContext.shared.userSession }),
-                snoozeService: snoozeService
+                snoozeService: snoozeService,
+                mailUserSession: mailUserSession
             ))
         self._navigationPath = .init(projectedValue: navigationPath)
         self.draftPresenter = draftPresenter

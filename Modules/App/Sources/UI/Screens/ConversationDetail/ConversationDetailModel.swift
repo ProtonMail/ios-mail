@@ -51,6 +51,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
     private let dependencies: Dependencies
     private let backOnlineActionExecutor: BackOnlineActionExecutor
     private let snoozeService: SnoozeServiceProtocol
+    private let mailUserSession: MailUserSession
 
     private lazy var messageListCallback = LiveQueryCallbackWrapper { [weak self] in
         guard let self else { return }
@@ -62,9 +63,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         }
     }
 
-    private lazy var starActionPerformer: StarActionPerformer = {
-        .init(mailUserSession: dependencies.appContext.userSession)
-    }()
+    private lazy var starActionPerformer = StarActionPerformer(mailUserSession: userSession)
 
     private var userSession: MailUserSession {
         dependencies.appContext.userSession
@@ -75,7 +74,8 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         draftPresenter: DraftPresenter,
         dependencies: Dependencies = .init(),
         backOnlineActionExecutor: BackOnlineActionExecutor,
-        snoozeService: SnoozeServiceProtocol
+        snoozeService: SnoozeServiceProtocol,
+        mailUserSession: MailUserSession
     ) {
         self.seed = seed
         self.isStarred = seed.isStarred
@@ -84,6 +84,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         self.dependencies = dependencies
         self.backOnlineActionExecutor = backOnlineActionExecutor
         self.snoozeService = snoozeService
+        self.mailUserSession = dependencies.appContext.userSession
         messagePrinter = .init(userSession: { dependencies.appContext.userSession })
     }
 
@@ -263,7 +264,8 @@ extension ConversationDetailModel {
     ) {
         guard let mailbox else { return }
         let moveToActionPerformer = MoveToActionPerformer(mailbox: mailbox, moveToActions: .productionInstance)
-        Task {
+        Task { [weak self, mailUserSession] in
+            guard let self else { return }
             let toast: Toast
 
             do {
@@ -272,8 +274,19 @@ extension ConversationDetailModel {
                     itemsIDs: [conversationID.unsafelyUnwrapped],
                     itemType: .conversation
                 )
+                let toastID = UUID()
+                let undoAction = undo.undoAction(userSession: mailUserSession) {
+                    Dispatcher.dispatchOnMain(
+                        .init(block: {
+                            toastStateStore.dismiss(withID: toastID)
+                        }))
+                }
 
-                toast = .moveTo(destinationName: destination.name.humanReadable.string, undoAction: undo.undoAction())
+                toast = .moveTo(
+                    id: toastID,
+                    destinationName: destination.name.humanReadable.string,
+                    undoAction: undoAction
+                )
             } catch {
                 toast = .error(message: error.localizedDescription)
             }
