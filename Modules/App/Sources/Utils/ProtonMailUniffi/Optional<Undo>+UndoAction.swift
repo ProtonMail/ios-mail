@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Proton Technologies AG
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -15,23 +15,22 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
-import InboxCore
-import InboxCoreUI
+import proton_app_uniffi
 
-extension Toast {
+extension Optional where Wrapped == Undo {
 
-    static func moveTo(id: UUID, destinationName: String, undoAction: (() -> Void)?) -> Self {
-        .informationUndo(
-            id: id,
-            message: L10n.Toast.movedTo(destination: destinationName).string,
-            duration: .default,
-            undoAction: undoAction
-        )
-    }
-
-    static func deleted() -> Toast {
-        .information(message: L10n.Toast.deleted.string)
+    func undoAction(userSession: MailUserSession, onFinish: @escaping () -> Void) -> (() -> Void)? {
+        switch self {
+        case .some(let undo):
+            {
+                Task {
+                    try await undo.undo(ctx: userSession).get()
+                    onFinish()
+                }
+            }
+        case .none:
+            nil
+        }
     }
 
 }
