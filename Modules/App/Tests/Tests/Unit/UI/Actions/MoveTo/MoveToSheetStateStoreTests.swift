@@ -114,6 +114,41 @@ class MoveToSheetStateStoreTests: BaseTestCase {
         XCTAssertEqual(invokedNavigation, [.dismiss])
     }
 
+    func testAction_WhenInboxIsTappedUndoIsAvailableAndTapped_ItTriggersUndoAndDismissesToast() throws {
+        let undoSpy = UndoSpy(noPointer: .init())
+        moveToActionsSpy.stubbedMoveMessagesToOkResult = undoSpy
+
+        let sut = sut(
+            input: .init(
+                sheetType: .moveTo,
+                ids: [.init(value: 1)],
+                type: .message(isLastMessageInCurrentLocation: false)
+            )
+        )
+
+        sut.handle(action: .systemFolderTapped(.init(id: .init(value: 10), label: .inbox)))
+
+        XCTAssertEqual(
+            moveToActionsSpy.invokedMoveToMessage,
+            [
+                .init(destinationID: .init(value: 10), itemsIDs: [.init(value: 1)])
+            ])
+        XCTAssertEqual(
+            toastStateStore.state.toasts,
+            [
+                .moveTo(id: UUID(), destinationName: "Inbox", undoAction: {})
+            ]
+        )
+        XCTAssertEqual(invokedNavigation, [.dismiss])
+
+        let toastToVeriy: Toast = try XCTUnwrap(toastStateStore.state.toasts.last)
+
+        toastToVeriy.simulateUndoAction()
+
+        XCTAssertEqual(undoSpy.undoCallsCount, 1)
+        XCTAssertEqual(toastStateStore.state.toasts.isEmpty, true)
+    }
+
     func testAction_WhenItsStandaloneMessageInConveration_WhenInboxIsTapped_ItMovesMessageToInbox() {
         let sut = sut(input: .init(sheetType: .moveTo, ids: [.init(value: 1)], type: .message(isLastMessageInCurrentLocation: true)))
 

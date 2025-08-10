@@ -330,29 +330,3 @@ private extension LabelAsAction {
         .init(labelId: id, name: .notUsed, color: .init(value: .notUsed), isSelected: isSelected)
     }
 }
-
-private extension Toast {
-    func simulateUndoAction() {
-        guard
-            let button,
-            case .smallTrailing(let content) = button.type,
-            case .title(let title) = content,
-            title == CommonL10n.undo.string
-        else {
-            return
-        }
-
-        button.action()
-    }
-}
-
-private class UndoSpy: Undo, @unchecked Sendable {
-    private(set) var stubbedResult: UndoUndoResult = .ok
-    private(set) var undoCallsCount: Int = 0
-
-    override func undo(ctx: MailUserSession) async -> UndoUndoResult {
-        undoCallsCount += 1
-
-        return stubbedResult
-    }
-}

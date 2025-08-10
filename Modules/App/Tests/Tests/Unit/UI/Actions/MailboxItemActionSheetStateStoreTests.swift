@@ -248,7 +248,8 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
         try testMoveToAction(
             itemType: .message,
             action: .notSpam(.init(localId: .init(value: 1), name: .inbox)),
-            verifyInvoked: { moveToActionsSpy.invokedMoveToMessage }
+            verifyInvoked: { moveToActionsSpy.invokedMoveToMessage },
+            undoAvailable: false
         )
     }
 
@@ -256,7 +257,17 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
         try testMoveToAction(
             itemType: .conversation,
             action: .moveToSystemFolder(.init(localId: .init(value: 1), name: .inbox)),
-            verifyInvoked: { moveToActionsSpy.invokedMoveToConversation }
+            verifyInvoked: { moveToActionsSpy.invokedMoveToConversation },
+            undoAvailable: false
+        )
+    }
+
+    func testAction_WhenMessageIsMovedOutOfSpamUndoIsAvaiableAndTapped_ItTriggersUndoAndDismissesToast() throws {
+        try testMoveToAction(
+            itemType: .message,
+            action: .notSpam(.init(localId: .init(value: 1), name: .inbox)),
+            verifyInvoked: { moveToActionsSpy.invokedMoveToMessage },
+            undoAvailable: true
         )
     }
 
@@ -417,8 +428,12 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
     private func testMoveToAction(
         itemType: MailboxItemType,
         action: MoveToAction,
-        verifyInvoked: () -> [MoveToActionsSpy.CapturedArguments]
+        verifyInvoked: () -> [MoveToActionsSpy.CapturedArguments],
+        undoAvailable: Bool
     ) throws {
+        let undoSpy = UndoSpy(noPointer: .init())
+        moveToActionsSpy.stubbedMoveMessagesToOkResult = undoAvailable ? undoSpy : .none
+
         let id = ID(value: 1)
         let sut = sut(id: id.value, type: itemType, title: .notUsed)
 
@@ -428,11 +443,25 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
 
         XCTAssertEqual(verifyInvoked(), [.init(destinationID: destination.localId, itemsIDs: [id])])
 
+        let toastToVerify: Toast = try XCTUnwrap(toastStateStore.state.toasts.last)
+
         XCTAssertEqual(
-            toastStateStore.state.toasts,
-            [
-                .moveTo(id: UUID(), destinationName: destination.name.humanReadable.string, undoAction: .none)
-            ])
+            toastToVerify,
+            .moveTo(
+                id: UUID(),
+                destinationName: destination.name.humanReadable.string,
+                undoAction: undoAvailable ? {} : .none
+            )
+        )
+
+        guard undoAvailable else {
+            return
+        }
+
+        toastToVerify.simulateUndoAction()
+
+        XCTAssertEqual(undoSpy.undoCallsCount, 1)
+        XCTAssertEqual(toastStateStore.state.toasts.isEmpty, true)
     }
 
     private func verifyGeneralAction(action: GeneralActions) {

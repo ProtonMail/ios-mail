@@ -249,6 +249,32 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
         )
     }
 
+    func testAction_WhenMoveToInboxIsTappedUndoIsAvailbleAndTapped_ItTriggersUndoAndDismissesToast() throws {
+        let ids: [ID] = [.init(value: 7), .init(value: 77)]
+        let systemFolder = MoveToSystemFolderLocation.testInbox
+        let undoSpy = UndoSpy(noPointer: .init())
+        moveToActionsSpy.stubbedMoveMessagesToOkResult = undoSpy
+        sut = makeSUT(viewMode: .messages)
+
+        sut.handle(action: .actionSelected(.moveToSystemFolder(systemFolder), ids: ids))
+
+        XCTAssertEqual(
+            toastStateStore.state.toasts,
+            [.moveTo(id: UUID(), destinationName: systemFolder.name.humanReadable.string, undoAction: {})]
+        )
+        XCTAssertEqual(
+            moveToActionsSpy.invokedMoveToMessage,
+            [.init(destinationID: systemFolder.localId, itemsIDs: ids)]
+        )
+
+        let toastToVeriy: Toast = try XCTUnwrap(toastStateStore.state.toasts.last)
+
+        toastToVeriy.simulateUndoAction()
+
+        XCTAssertEqual(undoSpy.undoCallsCount, 1)
+        XCTAssertEqual(toastStateStore.state.toasts.isEmpty, true)
+    }
+
     func testSnoozeActionIsTapped_ItOpensSnoozeSheet() {
         let sut = makeSUT(viewMode: .conversations)
 

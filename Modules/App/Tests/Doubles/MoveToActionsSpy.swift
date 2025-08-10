@@ -16,8 +16,11 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import ProtonMail
+import proton_app_uniffi
 
 class MoveToActionsSpy {
+    var stubbedMoveMessagesToOkResult: Undo?
+
     struct CapturedArguments: Equatable {
         let destinationID: ID
         let itemsIDs: [ID]
@@ -27,9 +30,9 @@ class MoveToActionsSpy {
     private(set) var invokedMoveToConversation: [CapturedArguments] = []
 
     private(set) lazy var testingInstance = MoveToActions(
-        moveMessagesTo: { _, destinationID, itemsIDs in
+        moveMessagesTo: { [unowned self] _, destinationID, itemsIDs in
             self.invokedMoveToMessage.append(.init(destinationID: destinationID, itemsIDs: itemsIDs))
-            return .ok(nil)
+            return .ok(self.stubbedMoveMessagesToOkResult)
         },
         moveConversationsTo: { _, destinationID, itemsIDs in
             self.invokedMoveToConversation.append(.init(destinationID: destinationID, itemsIDs: itemsIDs))
