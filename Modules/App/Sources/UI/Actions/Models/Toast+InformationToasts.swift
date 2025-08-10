@@ -25,7 +25,7 @@ extension Toast {
         .informationUndo(
             id: id,
             message: L10n.Toast.movedTo(destination: destinationName).string,
-            duration: .default,
+            duration: .medium,
             undoAction: undoAction
         )
     }
