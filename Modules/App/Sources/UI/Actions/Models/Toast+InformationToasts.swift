@@ -16,16 +16,38 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import InboxCore
 import InboxCoreUI
 
 extension Toast {
 
-    static func moveTo(destinationName: String) -> Toast {
-        .information(message: L10n.Toast.movedTo(destination: destinationName).string)
+    static func moveTo(destinationName: String, undoAction: (() -> Void)?) -> Self {
+        .informationUndo(
+            message: L10n.Toast.movedTo(destination: destinationName).string,
+            duration: .default,
+            undoAction: undoAction
+        )
     }
 
     static func deleted() -> Toast {
         .information(message: L10n.Toast.deleted.string)
+    }
+
+}
+
+import proton_app_uniffi
+
+extension Optional where Wrapped == Undo {
+
+    func undoAction(userSession: MailUserSession = AppContext.shared.userSession) -> (() -> Void)? {
+        switch self {
+        case .some(let undo):
+            {
+                Task { await undo.undo(ctx: userSession) }
+            }
+        case .none:
+            nil
+        }
     }
 
 }

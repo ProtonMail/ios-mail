@@ -267,13 +267,13 @@ extension ConversationDetailModel {
             let toast: Toast
 
             do {
-                try await moveToActionPerformer.moveTo(
+                let undo = try await moveToActionPerformer.moveTo(
                     destinationID: destination.localId,
                     itemsIDs: [conversationID.unsafelyUnwrapped],
                     itemType: .conversation
                 )
 
-                toast = .moveTo(destinationName: destination.name.humanReadable.string)
+                toast = .moveTo(destinationName: destination.name.humanReadable.string, undoAction: undo.undoAction())
             } catch {
                 toast = .error(message: error.localizedDescription)
             }

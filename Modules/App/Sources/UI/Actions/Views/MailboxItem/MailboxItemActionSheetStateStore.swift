@@ -170,12 +170,12 @@ class MailboxItemActionSheetStateStore: StateStore {
     ) {
         Task {
             do {
-                try await moveToActionPerformer.moveTo(
+                let undo = try await moveToActionPerformer.moveTo(
                     destinationID: destination.localId,
                     itemsIDs: ids,
                     itemType: itemType.inboxItemType
                 )
-                presentMoveToToast(destination: destination)
+                presentMoveToToast(destination: destination, undoAction: undo.undoAction())
             } catch {
                 presentToast(toast: .error(message: error.localizedDescription))
             }
@@ -223,8 +223,8 @@ class MailboxItemActionSheetStateStore: StateStore {
         }
     }
 
-    private func presentMoveToToast(destination: MoveToSystemFolderLocation) {
-        presentToast(toast: .moveTo(destinationName: destination.name.humanReadable.string))
+    private func presentMoveToToast(destination: MoveToSystemFolderLocation, undoAction: (() -> Void)?) {
+        presentToast(toast: .moveTo(destinationName: destination.name.humanReadable.string, undoAction: undoAction))
     }
 
     private func presentDeletedToast() {

@@ -64,13 +64,13 @@ class MoveToSheetStateStore: StateStore {
     private func moveTo(destinationID: ID, destinationName: String) {
         Task {
             do {
-                try await moveToActionPerformer.moveTo(
+                let undo = try await moveToActionPerformer.moveTo(
                     destinationID: destinationID,
                     itemsIDs: input.ids,
                     itemType: input.type.inboxItemType
                 )
-
-                dismissSheet(presentingToast: .moveTo(destinationName: destinationName))
+                let toast: Toast = .moveTo(destinationName: destinationName, undoAction: undo.undoAction())
+                dismissSheet(presentingToast: toast)
             } catch {
                 dismissSheet(presentingToast: .error(message: error.localizedDescription))
             }

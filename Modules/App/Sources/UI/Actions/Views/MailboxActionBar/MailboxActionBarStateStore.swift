@@ -125,7 +125,6 @@ final class MailboxActionBarStateStore: StateStore {
             state = state.copy(keyPath, to: alert)
         case .moveToSystemFolder(let model), .notSpam(let model):
             performMoveToAction(destination: model, ids: ids)
-            toastStateStore.present(toast: .moveTo(destinationName: model.name.humanReadable.string))
         case .snooze:
             dismissMoreActionSheet()
             state = state.copy(\.isSnoozeSheetPresented, to: true)
@@ -135,7 +134,7 @@ final class MailboxActionBarStateStore: StateStore {
     private func performMoveToAction(destination: MovableSystemFolderAction, ids: [ID]) {
         Task {
             do {
-                try await moveToActionPerformer.moveTo(
+                let undo = try await moveToActionPerformer.moveTo(
                     destinationID: destination.localId,
                     itemsIDs: ids,
                     itemType: itemTypeForActionBar
@@ -143,12 +142,12 @@ final class MailboxActionBarStateStore: StateStore {
 
                 Dispatcher.dispatchOnMain(
                     .init { [weak self] in
-                        self?.handleMoveAction(result: .success(destination))
+                        self?.handleMoveAction(result: .success(destination), undoAction: undo.undoAction())
                     })
             } catch {
                 Dispatcher.dispatchOnMain(
                     .init { [weak self] in
-                        self?.handleMoveAction(result: .failure(error))
+                        self?.handleMoveAction(result: .failure(error), undoAction: .none)
                     })
             }
         }
@@ -200,10 +199,14 @@ final class MailboxActionBarStateStore: StateStore {
         dismissMoreActionSheet()
     }
 
-    private func handleMoveAction(result: Result<MovableSystemFolderAction, Error>) {
+    private func handleMoveAction(
+        result: Result<MovableSystemFolderAction, Error>,
+        undoAction: (() -> Void)?
+    ) {
         switch result {
         case .success(let destination):
-            toastStateStore.present(toast: .moveTo(destinationName: destination.name.humanReadable.string))
+            let toast: Toast = .moveTo(destinationName: destination.name.humanReadable.string, undoAction: undoAction)
+            toastStateStore.present(toast: toast)
         case .failure(let error):
             toastStateStore.present(toast: .error(message: error.localizedDescription))
         }
