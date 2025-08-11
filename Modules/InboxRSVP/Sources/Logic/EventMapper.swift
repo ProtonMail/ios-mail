@@ -88,7 +88,7 @@ enum EventMapper {
             if isOutdated {
                 return .init(style: .cancelled, regularText: L10n.Header.cancelledAndOutdated)
             } else {
-                return .init(style: .cancelled, regularText: L10n.Header.event, boldText: L10n.Header.canceled)
+                return .init(style: .cancelled, regularText: L10n.Header.event, boldText: L10n.Header.cancelled)
             }
         case .cancelledReminder:
             return nil

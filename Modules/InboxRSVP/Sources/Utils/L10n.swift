@@ -84,17 +84,17 @@ enum L10n {
         static let event = LocalizedStringResource(
             "Event",
             bundle: .module,
-            comment: "The subject of a status update, like 'Event ended' or 'Event canceled'."
+            comment: "The subject of a status update, like 'Event ended' or 'Event cancelled'."
         )
         static let ended = LocalizedStringResource(
             " ended",
             bundle: .module,
             comment: "The status of an event that has finished. Meant to be bolded. Note the leading space."
         )
-        static let canceled = LocalizedStringResource(
-            " canceled",
+        static let cancelled = LocalizedStringResource(
+            " cancelled",
             bundle: .module,
-            comment: "The status of an event that has been canceled. Meant to be bolded. Note the leading space."
+            comment: "The status of an event that has been cancelled. Meant to be bolded. Note the leading space."
         )
         static let inviteIsOutdated = LocalizedStringResource(
             "This invitation is out of date. The event has been updated.",

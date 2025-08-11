@@ -1,8 +1,8 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
-    " canceled" : {
-      "comment" : "The status of an event that has been canceled. Meant to be bolded. Note the leading space."
+    " cancelled" : {
+      "comment" : "The status of an event that has been cancelled. Meant to be bolded. Note the leading space."
     },
     " ended" : {
       "comment" : "The status of an event that has finished. Meant to be bolded. Note the leading space."
@@ -32,7 +32,7 @@
       "comment" : "Context menu option to copy the organizer’s email address to the clipboard."
     },
     "Event" : {
-      "comment" : "The subject of a status update, like 'Event ended' or 'Event canceled'."
+      "comment" : "The subject of a status update, like 'Event ended' or 'Event cancelled'."
     },
     "Event cancelled. This invitation is out of date." : {
       "comment" : "Banner for a cancelled event where the user is also viewing an outdated invitation."

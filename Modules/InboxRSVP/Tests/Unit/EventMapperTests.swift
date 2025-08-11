@@ -100,7 +100,7 @@ final class EventMapperTests {
                 .init(style: .generic, regularText: L10n.Header.addressIsIncorrect, boldText: .empty),
                 .init(style: .generic, regularText: L10n.Header.userIsOrganizer, boldText: .empty),
                 .init(style: .cancelled, regularText: L10n.Header.cancelledAndOutdated, boldText: .empty),
-                .init(style: .cancelled, regularText: L10n.Header.event, boldText: L10n.Header.canceled),
+                .init(style: .cancelled, regularText: L10n.Header.event, boldText: L10n.Header.cancelled),
                 nil,
             ]
         )
