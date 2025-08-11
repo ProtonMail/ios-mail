@@ -28,7 +28,7 @@ import enum proton_app_uniffi.DraftSendFailure
 */
 final class SendResultPresenter {
     private typealias MessageID = ID
-    private let regularDuration: Toast.Duration = .default
+    private let regularDuration: Toast.Duration = .short
     private let extendedDuration: TimeInterval = 3.0
     private var toasts = [MessageID: Toast]()
     private let subject = PassthroughSubject<SendResultToastAction, Never>()

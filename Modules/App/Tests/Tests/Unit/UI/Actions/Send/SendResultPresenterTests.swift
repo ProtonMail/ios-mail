@@ -24,7 +24,7 @@ import proton_app_uniffi
 import XCTest
 
 final class SendResultPresenterTests: BaseTestCase, @unchecked Sendable {
-    private let regularDuration: Toast.Duration = .default
+    private let regularDuration: Toast.Duration = .short
     private let mediumDuration: Toast.Duration = .medium
 
     private var sut: SendResultPresenter!
@@ -44,12 +44,12 @@ final class SendResultPresenterTests: BaseTestCase, @unchecked Sendable {
         self.capturedToastActions = .init()
         self.capturedDraftsToPresent = .init()
         self.cancellables = .init()
-        
+
         MainActor.assumeIsolated {
             sut = makeSut()
         }
     }
- 
+
     override func tearDown() {
         sut = nil
         capturedToastActions = nil

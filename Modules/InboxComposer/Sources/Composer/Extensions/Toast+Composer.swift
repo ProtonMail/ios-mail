@@ -31,7 +31,7 @@ public extension Toast {
             message: L10n.Composer.draftSaved.string,
             button: discardButton,
             style: .information,
-            duration: .default
+            duration: .short
         )
     }
 

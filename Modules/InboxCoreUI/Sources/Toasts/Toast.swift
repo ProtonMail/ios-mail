@@ -31,7 +31,7 @@ public struct Toast: Hashable {
         /// duration with custom interval
         case custom(TimeInterval)
         /// 1.5s
-        case `default`
+        case short
         /// 3.0s
         case medium
         /// 8.0 s
@@ -41,7 +41,7 @@ public struct Toast: Hashable {
             switch self {
             case .custom(let interval):
                 interval
-            case .`default`:
+            case .short:
                 1.5
             case .medium:
                 3.0
@@ -132,12 +132,12 @@ public extension Toast {
         .information(message: "Coming soon")
     }
 
-    static func error(message: String, duration: Toast.Duration = .default) -> Self {
+    static func error(message: String, duration: Toast.Duration = .short) -> Self {
         .noButton(message: message, style: .error, duration: duration)
     }
 
-    static func information(message: String, duration: Toast.Duration = .default) -> Self {
-        .noButton(message: message, style: .information, duration: .default)
+    static func information(message: String, duration: Toast.Duration = .short) -> Self {
+        .noButton(message: message, style: .information, duration: duration)
     }
 
     static func informationUndo(
