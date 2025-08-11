@@ -20,6 +20,10 @@ import proton_app_uniffi
 struct AccountDetailsProvider {
     let mailUserSession: MailUserSession
 
+    func user() async -> User? {
+        try? await mailUserSession.user().get()
+    }
+
     func accountDetails() async -> AccountDetails? {
         try? await mailUserSession.accountDetails().get()
     }

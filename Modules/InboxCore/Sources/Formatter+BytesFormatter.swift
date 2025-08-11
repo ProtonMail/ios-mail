@@ -25,4 +25,12 @@ public enum Formatter {
         formatter.includesUnit = true
         return formatter
     }()
+
+    public static let binaryBytesFormatter: ByteCountFormatter = {
+        let formatter = ByteCountFormatter()
+        formatter.allowedUnits = [.useBytes, .useKB, .useMB, .useGB]
+        formatter.countStyle = .binary
+        formatter.includesUnit = true
+        return formatter
+    }()
 }

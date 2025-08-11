@@ -22,6 +22,7 @@ import SwiftUI
 struct SettingsState: Copying {
     var accountInfo: AccountInfo?
     var accountSettings: [AccountSettings]
+    var storageInfo: StorageInfo?
     let preferences: [SettingsPreference]
     var userSettings: UserSettings? {
         didSet {

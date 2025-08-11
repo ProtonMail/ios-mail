@@ -30,6 +30,7 @@ enum SettingsRoute: Routable {
     case scanQRCode
     case changePassword(PasswordChange.State)
     case securityKeys(UserSettings)
+    case subscription
 
     var isChangePassword: Bool {
         switch self {
@@ -69,6 +70,8 @@ struct SettingsViewFactory {
             PasswordChange.view(from: state)
         case .securityKeys(let userSettings):
             accountAuthCoordinator.securityKeyListView(userSettings: userSettings)
+        case .subscription:
+            AvailablePlansViewFactory.make(mailUserSession: mailUserSession, presentationMode: .push)
         }
     }
 }

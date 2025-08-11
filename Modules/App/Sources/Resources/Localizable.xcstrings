@@ -195,6 +195,17 @@
         }
       }
     },
+    "%@ of %@" : {
+      "comment" : "Row title displaying the storage of the account in the format: 50% of 500 GB",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "new",
+            "value" : "%1$@ of %2$@"
+          }
+        }
+      }
+    },
     "%lld attachments" : {
       "comment" : "The number of a message attachments.",
       "localizations" : {

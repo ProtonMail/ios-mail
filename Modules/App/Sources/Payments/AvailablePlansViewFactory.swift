@@ -21,11 +21,11 @@ import proton_app_uniffi
 
 @MainActor
 enum AvailablePlansViewFactory {
-    static func make(mailUserSession: MailUserSession) -> AvailablePlansView {
+    static func make(mailUserSession: MailUserSession, presentationMode: PresentationMode) -> AvailablePlansView {
         AvailablePlansView(
             viewModel: .init(
                 appVersion: AppDetails.mail.backendFacingVersion,
-                presentationMode: .modal,
+                presentationMode: presentationMode,
                 rustSession: mailUserSession
             )
         )

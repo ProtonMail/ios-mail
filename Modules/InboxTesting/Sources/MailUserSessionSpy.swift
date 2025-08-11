@@ -19,6 +19,7 @@ import proton_app_uniffi
 
 public final class MailUserSessionSpy: MailUserSession, @unchecked Sendable {
     public var stubbedAccountDetails: AccountDetails?
+    public var stubbedUser: User?
 
     public private(set) var executeNotificationQuickActionInvocations: [PushNotificationQuickAction] = []
 
@@ -37,6 +38,10 @@ public final class MailUserSessionSpy: MailUserSession, @unchecked Sendable {
 
     public override func accountDetails() async -> MailUserSessionAccountDetailsResult {
         .ok(stubbedAccountDetails!)
+    }
+
+    public override func user() async -> MailUserSessionUserResult {
+        .ok(stubbedUser!)
     }
 
     public override func executeNotificationQuickAction(action: PushNotificationQuickAction) async -> VoidActionResult {

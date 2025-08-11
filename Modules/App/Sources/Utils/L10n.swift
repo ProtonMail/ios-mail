@@ -947,6 +947,13 @@ enum L10n {
         )
 
         static let signInOnAnotherDevice = LocalizedStringResource("Sign in on another device")
+
+        static func storagePctOutOf(pct: String, total: String) -> LocalizedStringResource {
+            LocalizedStringResource(
+                "\(pct) of \(total)",
+                comment: "Row title displaying the storage of the account in the format: 50% of 500 GB"
+            )
+        }
     }
 
     enum Sidebar {

@@ -30,9 +30,13 @@ class SettingsScreenSnapshotTests: BaseTestCase {
         let store = AppAppearanceStore(mailSession: { MailSession(noPointer: .init()) })
         let mailUserSession = MailUserSessionSpy(id: "")
         mailUserSession.stubbedAccountDetails = .testData
+        mailUserSession.stubbedUser = .testData
 
         let sut = SettingsScreen(
-            state: .initial.copy(\.accountInfo, to: AccountDetails.testData.settings),
+            state: .initial
+                .copy(\.accountInfo, to: AccountDetails.testData.settings)
+                .copy(\.userSettings, to: UserSettings.mock())
+                .copy(\.storageInfo, to: StorageInfo.testData),
             mailUserSession: mailUserSession,
             accountAuthCoordinator: .mock()
         )
@@ -50,6 +54,51 @@ extension AccountDetails {
             email: "mocked.email@pm.me",
             avatarInformation: .init(text: "T", color: DS.Color.Brand.norm.toHex()!)
         )
+    }
+
+}
+
+extension User {
+
+    static var testData: Self {
+        User(
+            createTime: 0,
+            credit: 0,
+            currency: "USD",
+            delinquent: 0,
+            displayName: "Mocked name",
+            email: "mocked.email@pm.me",
+            flags: .init(
+                hasTemporaryPassword: false,
+                noLogin: false,
+                noProtonAddress: false,
+                onboardChecklistStorageGranted: false,
+                protected: false,
+                recoveryAttempt: false,
+                sso: false,
+                testAccount: false
+            ),
+            maxSpace: 1_073_741_824,
+            maxUpload: 0,
+            mnemonicStatus: .disabled,
+            private: true,
+            name: "",
+            productUsedSpace: .init(calendar: 0, contact: 0, drive: 0, mail: 0, pass: 0),
+            role: 1,
+            services: 0,
+            subscribed: 1,
+            toMigrate: false,
+            usedSpace: 107_374_182,
+            userType: .proton
+        )
+    }
+
+}
+
+extension StorageInfo {
+
+    static var testData: Self {
+        StorageInfo(usedSpace: 107_374_182, maxSpace: 1_073_741_824)
     }
 
 }

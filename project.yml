@@ -208,6 +208,7 @@ targets:
           - AccountLogin
           - AccountManager
           - AccountPassword
+          - UIFoundations
       - package: Scrypt
       - target: ShareExtension
       - package: SwiftUIIntrospect

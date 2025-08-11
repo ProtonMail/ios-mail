@@ -22,6 +22,7 @@ import InboxCoreUI
 import InboxDesignSystem
 import proton_app_uniffi
 import SwiftUI
+import UIFoundations
 
 struct SettingsScreen: View {
     @Environment(\.dismiss) private var dismiss
@@ -30,6 +31,10 @@ struct SettingsScreen: View {
     @State private var state: SettingsState
     private let provider: AccountDetailsProvider
     private let viewFactory: SettingsViewFactory
+
+    private enum Constants {
+        static let defaultFont: Font = .system(size: 17)
+    }
 
     init(
         state: SettingsState = .initial,
@@ -54,6 +59,7 @@ struct SettingsScreen: View {
                     VStack(alignment: .leading, spacing: .zero) {
                         headerSection()
                         accountSection()
+                        storageSection()
                         preferencesSection()
                     }
                 }
@@ -79,6 +85,7 @@ struct SettingsScreen: View {
             async let accountDetails = provider.accountDetails()
             async let userSettings = provider.userSettings()
             async let hasMailboxPassword = provider.mailUserSession.hasMailboxPassword()
+            async let user = provider.user()
 
             if let details = await accountDetails {
                 state = state.copy(\.accountInfo, to: details.settings)
@@ -89,6 +96,11 @@ struct SettingsScreen: View {
             }
 
             state = state.copy(\.hasMailboxPassword, to: await hasMailboxPassword)
+
+            if let userInfo = await user {
+                let storageInfo = StorageInfo(usedSpace: userInfo.usedSpace, maxSpace: userInfo.maxSpace)
+                state = state.copy(\.storageInfo, to: storageInfo)
+            }
         }
         .preferredColorScheme(appAppearanceStore.colorScheme)
     }
@@ -159,6 +171,43 @@ struct SettingsScreen: View {
         )
     }
 
+    @ViewBuilder
+    private func storageSection() -> some View {
+        if let storage = state.storageInfo {
+            Button(action: { router.go(to: .subscription) }) {
+                VStack(spacing: .zero) {
+                    HStack(spacing: DS.Spacing.mediumLight) {
+                        ZStack {
+                            Color(storage.isNearingOutOfStorage ? DS.Color.Notification.error : DS.Color.Notification.success)
+                                .opacity(0.1)
+                            Image(Theme.icon.storage)
+                                .resizable()
+                                .square(size: 20)
+                                .foregroundStyle(storage.isNearingOutOfStorage ? DS.Color.Notification.error : DS.Color.Notification.success)
+                        }
+                        .square(size: 32)
+                        .clipShape(RoundedRectangle(cornerRadius: DS.Radius.medium))
+
+                        Text(storage.formattedStorage)
+                            .foregroundStyle(storage.isNearingOutOfStorage ? DS.Color.Notification.error : DS.Color.Text.norm)
+                        Spacer(minLength: DS.Spacing.medium)
+                        Image(symbol: .chevronRight)
+                            .font(Constants.defaultFont)
+                            .foregroundStyle(DS.Color.Text.hint)
+                    }
+                    .padding(.vertical, DS.Spacing.medium)
+                    .padding(.trailing, DS.Spacing.large)
+                    .padding(.leading, DS.Spacing.mediumLight)
+                }
+                .contentShape(Rectangle())
+            }
+            .buttonStyle(DefaultPressedButtonStyle())
+            .background(DS.Color.BackgroundInverted.secondary)
+            .roundedRectangleStyle()
+            .padding(.bottom, DS.Spacing.large)
+        }
+    }
+
     private func preferencesSection() -> some View {
         FormSection(header: L10n.Settings.preferences) {
             FormList(collection: state.preferences, separator: .normLeftPadding) { preference in
@@ -211,7 +260,7 @@ struct SettingsScreen: View {
                     Spacer()
 
                     Image(symbol: .chevronRight)
-                        .font(.system(size: 17))
+                        .font(Constants.defaultFont)
                         .foregroundStyle(DS.Color.Text.hint)
                 }
                 .padding(.all, DS.Spacing.large)
@@ -239,7 +288,7 @@ struct SettingsScreen: View {
                         .foregroundStyle(DS.Color.Text.norm)
                     Spacer(minLength: DS.Spacing.medium)
                     Image(symbol: .chevronRight)
-                        .font(.system(size: 17))
+                        .font(Constants.defaultFont)
                         .foregroundStyle(DS.Color.Text.hint)
                 }
                 .padding(DS.Spacing.large)
