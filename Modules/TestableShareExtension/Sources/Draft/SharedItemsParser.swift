@@ -31,20 +31,46 @@ enum SharedItemsParser {
         for extensionItem in extensionItems {
             guard let attachments = extensionItem.attachments else { continue }
 
-            let registeredTypeIdentifiers = attachments.flatMap(\.registeredTypeIdentifiers)
-            let isSharingSafariPage = registeredTypeIdentifiers == [UTType.url.identifier]
-            let isSharingTextFromSelection = registeredTypeIdentifiers == [UTType.plainText.identifier]
-
-            if isSharingSafariPage {
-                let link = try await attachments[0].loadString()
+            switch sharedContentPattern(recognizedIn: attachments) {
+            case .browserPage:
+                let link = try await attachments.first { $0.registeredContentTypes == [.url] }!.loadString()
                 let body = "<a href=\"\(link)\">\(link)</a>"
                 return .init(subject: extensionItem.attributedContentText?.string, body: body, attachments: [])
-            } else if isSharingTextFromSelection {
+            case .selectedText:
                 return .init(subject: nil, body: extensionItem.attributedContentText?.string, attachments: [])
+            case .none:
+                continue
             }
         }
 
         let allAttachments = extensionItems.compactMap(\.attachments).flatMap(\.self)
         return .init(subject: nil, body: nil, attachments: allAttachments)
+    }
+
+    private static func sharedContentPattern(recognizedIn attachments: [NSItemProvider]) -> SharedContentPattern? {
+        let registeredContentTypes = Set(attachments.flatMap(\.registeredContentTypes))
+
+        return SharedContentPattern.allCases.first { pattern in
+            pattern.knownSetsOfRegisteredTypes.contains(registeredContentTypes)
+        }
+    }
+}
+
+private enum SharedContentPattern: CaseIterable {
+    case browserPage
+    case selectedText
+
+    var knownSetsOfRegisteredTypes: [Set<UTType>] {
+        switch self {
+        case .browserPage:
+            [
+                [.url],
+                [.plainText, .url],
+            ]
+        case .selectedText:
+            [
+                [.plainText]
+            ]
+        }
     }
 }

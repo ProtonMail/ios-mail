@@ -46,11 +46,12 @@ final class SharedItemsParserTests {
         #expect(sharedContent.attachments == extensionItems[0].attachments)
     }
 
-    @Test
-    func testSharingSafariPage() async throws {
-        let extensionItems = emulateSharingSafariPage(
+    @Test(arguments: [false, true])
+    func testSharingBrowserPage(fromWithinPage: Bool) async throws {
+        let extensionItems = emulateSharingBrowserPage(
             url: URL(string: "https://example.com")!,
-            pageTitle: "An example webpage"
+            pageTitle: "An example webpage",
+            fromWithinPage: fromWithinPage
         )
 
         let sharedContent = try await sut.parse(extensionItems: extensionItems)
@@ -88,12 +89,20 @@ final class SharedItemsParserTests {
         return [extensionItem]
     }
 
-    private func emulateSharingSafariPage(url: URL, pageTitle: String) -> [NSExtensionItem] {
+    private func emulateSharingBrowserPage(url: URL, pageTitle: String, fromWithinPage: Bool) -> [NSExtensionItem] {
         let extensionItem = NSExtensionItem()
         extensionItem.attributedContentText = .init(string: pageTitle)
         extensionItem.attachments = [
             .init(item: url as NSSecureCoding, typeIdentifier: UTType.url.identifier)
         ]
+
+        if fromWithinPage {
+            extensionItem.attachments!.insert(
+                .init(item: "irrelevant" as NSSecureCoding, typeIdentifier: UTType.plainText.identifier),
+                at: 0
+            )
+        }
+
         return [extensionItem]
     }
 
