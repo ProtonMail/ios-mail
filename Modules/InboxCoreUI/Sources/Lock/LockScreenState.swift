@@ -25,10 +25,12 @@ public struct LockScreenState: Equatable, Copying {
     }
 
     let type: LockScreenType
+    let isLogoutButtonVisible: Bool
     var pinAuthenticationError: PINAuthenticationError?
 
-    public init(type: LockScreenType, pinAuthenticationError: PINAuthenticationError? = nil) {
+    public init(type: LockScreenType, isLogoutButtonVisible: Bool = true, pinAuthenticationError: PINAuthenticationError? = nil) {
         self.type = type
+        self.isLogoutButtonVisible = isLogoutButtonVisible
         self.pinAuthenticationError = pinAuthenticationError
     }
 }

@@ -38,7 +38,7 @@ public struct ShareScreen: View {
                 }
         case .locked(let lockScreenType, let mailSession):
             LockScreen(
-                state: .init(type: lockScreenType),
+                state: .init(type: lockScreenType, isLogoutButtonVisible: false),
                 mailSession: mailSession as! LockScreen.MailSessionType,
                 dismissLock: {
                     Task {

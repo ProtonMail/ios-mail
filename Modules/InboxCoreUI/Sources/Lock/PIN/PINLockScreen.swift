@@ -35,9 +35,14 @@ public struct PINLockScreen: View {
 
     public init(
         error: Binding<PINAuthenticationError?>,
+        isLogoutButtonVisible: Bool = true,
         output: @escaping (PINLockScreenOutput) -> Void
     ) {
-        self.init(state: .init(pin: .empty), error: error, output: output)
+        self.init(
+            state: .init(isLogoutButtonVisible: isLogoutButtonVisible, pin: .empty),
+            error: error,
+            output: output
+        )
     }
 
     public var body: some View {
@@ -46,11 +51,14 @@ public struct PINLockScreen: View {
                 BlurredCoverView(showLogo: false)
                 HStack {
                     Spacer()
-                    Button(action: { store.handle(action: .signOutTapped) }) {
-                        Text(L10n.PINLock.signOut)
-                            .foregroundStyle(DS.Color.Text.norm)
+
+                    if store.state.isLogoutButtonVisible {
+                        Button(action: { store.handle(action: .signOutTapped) }) {
+                            Text(L10n.PINLock.signOut)
+                                .foregroundStyle(DS.Color.Text.norm)
+                        }
+                        .padding(.trailing, DS.Spacing.large)
                     }
-                    .padding(.trailing, DS.Spacing.large)
                 }
                 VStack(alignment: .center, spacing: .zero) {
                     ScrollView {
@@ -134,7 +142,7 @@ public struct PINLockScreen: View {
 
 #Preview {
     PINLockScreen(
-        state: .init(pin: .empty),
+        state: .init(isLogoutButtonVisible: true, pin: .empty),
         error: .readonly(get: { nil }),
         output: { _ in }
     )

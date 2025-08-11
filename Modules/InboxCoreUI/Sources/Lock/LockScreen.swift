@@ -42,7 +42,7 @@ public struct LockScreen: View {
         switch store.state.type {
         case .pin:
             PINLockScreen(
-                state: .init(pin: .empty),
+                state: .init(isLogoutButtonVisible: store.state.isLogoutButtonVisible, pin: .empty),
                 error: $store.state.pinAuthenticationError
             ) { output in
                 store.handle(action: .pin(output))

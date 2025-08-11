@@ -18,6 +18,7 @@
 import InboxCore
 
 struct PINLockState: Copying, Equatable {
+    let isLogoutButtonVisible: Bool
     var pin: PIN
     var alert: AlertModel?
     var error: PINAuthenticationError?
