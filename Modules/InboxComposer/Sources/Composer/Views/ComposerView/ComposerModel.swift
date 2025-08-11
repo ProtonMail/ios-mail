@@ -402,6 +402,7 @@ final class ComposerModel: ObservableObject {
 
     @MainActor
     func dismissComposerManually(dismissAction: Dismissable) async {
+        await updateBodyDebounceTask?.executeImmediately()
         let messageId = await draftMessageId()
         dismissComposer(dismissAction: dismissAction, reason: .dismissedManually(savedDraftId: messageId))
     }
