@@ -24,20 +24,20 @@ import TestableShareExtension
 final class ShareViewController: UINavigationController {
     private var cancellables = Set<AnyCancellable>()
 
-    override func beginRequest(with context: NSExtensionContext) {
-        super.beginRequest(with: context)
-
-        let model = ShareScreenModel(apiEnvId: .current, extensionContext: context)
-        showMainScreen(basedOn: model)
-        setUpBindings(observing: model)
-    }
-
     override func viewDidLoad() {
         DynamicFontSize.capSupportedSizeCategories()
 
         super.viewDidLoad()
 
         isNavigationBarHidden = true
+
+        guard let extensionContext else {
+            fatalError()
+        }
+
+        let model = ShareScreenModel(apiEnvId: .current, extensionContext: extensionContext)
+        showMainScreen(basedOn: model)
+        setUpBindings(observing: model)
     }
 
     private func showMainScreen(basedOn model: ShareScreenModel) {
