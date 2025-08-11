@@ -51,7 +51,6 @@ final class ConversationDetailModel: Sendable, ObservableObject {
     private let dependencies: Dependencies
     private let backOnlineActionExecutor: BackOnlineActionExecutor
     private let snoozeService: SnoozeServiceProtocol
-    private let mailUserSession: MailUserSession
 
     private lazy var messageListCallback = LiveQueryCallbackWrapper { [weak self] in
         guard let self else { return }
@@ -74,8 +73,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         draftPresenter: DraftPresenter,
         dependencies: Dependencies = .init(),
         backOnlineActionExecutor: BackOnlineActionExecutor,
-        snoozeService: SnoozeServiceProtocol,
-        mailUserSession: MailUserSession
+        snoozeService: SnoozeServiceProtocol
     ) {
         self.seed = seed
         self.isStarred = seed.isStarred
@@ -84,7 +82,6 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         self.dependencies = dependencies
         self.backOnlineActionExecutor = backOnlineActionExecutor
         self.snoozeService = snoozeService
-        self.mailUserSession = dependencies.appContext.userSession
         messagePrinter = .init(userSession: { dependencies.appContext.userSession })
     }
 
@@ -264,7 +261,7 @@ extension ConversationDetailModel {
     ) {
         guard let mailbox else { return }
         let moveToActionPerformer = MoveToActionPerformer(mailbox: mailbox, moveToActions: .productionInstance)
-        Task { [weak self, mailUserSession] in
+        Task { [weak self, userSession] in
             guard let self else { return }
 
             let toast: Toast
@@ -276,7 +273,7 @@ extension ConversationDetailModel {
                     itemType: .conversation
                 )
                 let toastID = UUID()
-                let undoAction = undo.undoAction(userSession: mailUserSession) {
+                let undoAction = undo.undoAction(userSession: userSession) {
                     Dispatcher.dispatchOnMain(
                         .init(block: {
                             toastStateStore.dismiss(withID: toastID)
