@@ -34,7 +34,7 @@ struct MessageAddressActionPickerView: View {
             sections: [
                 MessageAddressActionPickerSection.first.actions(),
                 MessageAddressActionPickerSection.second.actions(),
-                MessageAddressActionPickerSection.third(avatarUIModel).actions()
+                MessageAddressActionPickerSection.third(avatarUIModel).actions(),
             ],
             onElementTap: {
                 toastStateStore.present(toast: .comingSoon)
