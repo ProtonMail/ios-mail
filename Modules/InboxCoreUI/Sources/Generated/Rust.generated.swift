@@ -74,6 +74,16 @@ public extension DraftGetPasswordResult {
         }
     }
 }
+public extension DraftHtmlForComposerResult {
+    func get() throws(ProtonError) -> HtmlForComposer {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension DraftIsPasswordProtectedResult {
     func get() throws(ProtonError) -> Bool {
         switch self {
