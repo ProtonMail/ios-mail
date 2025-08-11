@@ -20,7 +20,7 @@ import InboxCore
 import InboxCoreUI
 
 extension Toast {
-    static func archiveSuccess(
+    static func labelAsArchive(
         id: UUID,
         for itemType: MailboxItemType,
         count: Int,

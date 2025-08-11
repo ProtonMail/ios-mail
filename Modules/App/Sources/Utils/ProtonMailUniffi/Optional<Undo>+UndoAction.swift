@@ -20,16 +20,15 @@ import proton_app_uniffi
 extension Optional where Wrapped == Undo {
 
     func undoAction(userSession: MailUserSession, onFinish: @escaping () -> Void) -> (() -> Void)? {
-        switch self {
-        case .some(let undo):
-            {
-                Task {
-                    try await undo.undo(ctx: userSession).get()
-                    onFinish()
-                }
+        guard case .some(let wrapped) = self else {
+            return nil
+        }
+
+        return {
+            Task {
+                try await wrapped.undo(ctx: userSession).get()
+                onFinish()
             }
-        case .none:
-            nil
         }
     }
 

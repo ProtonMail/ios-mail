@@ -93,7 +93,7 @@ class LabelAsSheetModel: ObservableObject {
             do {
                 let result = try await labelAsActionPerformer.labelAs(input: input)
                 let toastID = UUID()
-                let toast = Toast.archiveSuccess(id: toastID, for: input.itemType, count: input.itemsIDs.count) {
+                let toast = Toast.labelAsArchive(id: toastID, for: input.itemType, count: input.itemsIDs.count) {
                     Task {
                         try await self.undo(with: result.undo, toastID: toastID)
                     }

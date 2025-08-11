@@ -67,6 +67,7 @@ class MoveToSheetStateStore: StateStore {
     private func moveTo(destinationID: ID, destinationName: String) {
         Task { [weak self, mailUserSession] in
             guard let self else { return }
+
             do {
                 let undo = try await moveToActionPerformer.moveTo(
                     destinationID: destinationID,

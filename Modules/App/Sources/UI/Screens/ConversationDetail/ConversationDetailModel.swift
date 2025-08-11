@@ -266,6 +266,7 @@ extension ConversationDetailModel {
         let moveToActionPerformer = MoveToActionPerformer(mailbox: mailbox, moveToActions: .productionInstance)
         Task { [weak self, mailUserSession] in
             guard let self else { return }
+
             let toast: Toast
 
             do {

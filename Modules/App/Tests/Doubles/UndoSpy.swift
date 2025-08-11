@@ -21,6 +21,8 @@ class UndoSpy: Undo, @unchecked Sendable {
     private(set) var stubbedResult: UndoUndoResult = .ok
     private(set) var undoCallsCount: Int = 0
 
+    // MARK: - Undo
+
     override func undo(ctx: MailUserSession) async -> UndoUndoResult {
         undoCallsCount += 1
 
