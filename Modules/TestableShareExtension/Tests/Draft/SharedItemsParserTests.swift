@@ -62,6 +62,20 @@ final class SharedItemsParserTests {
     }
 
     @Test
+    func testSharingBrowserPageThatPointsToFile() async throws {
+        let extensionItems = emulateSharingBrowserPageThatPointsToFile(
+            url: URL(string: "https://example.com")!,
+            pageTitle: "An example webpage"
+        )
+
+        let sharedContent = try await sut.parse(extensionItems: extensionItems)
+
+        #expect(sharedContent.subject == nil)
+        #expect(sharedContent.body == nil)
+        #expect(sharedContent.attachments == extensionItems[0].attachments)
+    }
+
+    @Test
     func testSharingSelectedText() async throws {
         let extensionItems = emulateSharing(selectedText: "Lorem ipsum")
 
@@ -104,6 +118,22 @@ final class SharedItemsParserTests {
         }
 
         return [extensionItem]
+    }
+
+    private func emulateSharingBrowserPageThatPointsToFile(url: URL, pageTitle: String) -> [NSExtensionItem] {
+        let fileExtensionItem = NSExtensionItem()
+        fileExtensionItem.attributedContentText = .init(string: pageTitle)
+        fileExtensionItem.attachments = [
+            TestDataFactory.makeItemProviders(types: [.pdf], count: 1)[0]
+        ]
+
+        let pageExtensionItem = NSExtensionItem()
+        pageExtensionItem.attributedContentText = .init(string: pageTitle)
+        pageExtensionItem.attachments = [
+            .init(item: url as NSSecureCoding, typeIdentifier: UTType.url.identifier)
+        ]
+
+        return [fileExtensionItem, pageExtensionItem]
     }
 
     private func emulateSharing(selectedText: String) -> [NSExtensionItem] {

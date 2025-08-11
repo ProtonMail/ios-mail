@@ -28,23 +28,20 @@ struct SharedContent {
 
 enum SharedItemsParser {
     static func parse(extensionItems: [NSExtensionItem]) async throws -> SharedContent {
-        for extensionItem in extensionItems {
-            guard let attachments = extensionItem.attachments else { continue }
-
-            switch sharedContentPattern(recognizedIn: attachments) {
-            case .browserPage:
-                let link = try await attachments.first { $0.registeredContentTypes == [.url] }!.loadString()
-                let body = "<a href=\"\(link)\">\(link)</a>"
-                return .init(subject: extensionItem.attributedContentText?.string, body: body, attachments: [])
-            case .selectedText:
-                return .init(subject: nil, body: extensionItem.attributedContentText?.string, attachments: [])
-            case .none:
-                continue
-            }
+        guard let extensionItem = extensionItems.first, let attachments = extensionItem.attachments else {
+            return .init(subject: nil, body: nil, attachments: [])
         }
 
-        let allAttachments = extensionItems.compactMap(\.attachments).flatMap(\.self)
-        return .init(subject: nil, body: nil, attachments: allAttachments)
+        switch sharedContentPattern(recognizedIn: attachments) {
+        case .browserPage:
+            let link = try await attachments.first { $0.registeredContentTypes == [.url] }!.loadString()
+            let body = "<a href=\"\(link)\">\(link)</a>"
+            return .init(subject: extensionItem.attributedContentText?.string, body: body, attachments: [])
+        case .selectedText:
+            return .init(subject: nil, body: extensionItem.attributedContentText?.string, attachments: [])
+        case .none:
+            return .init(subject: nil, body: nil, attachments: attachments)
+        }
     }
 
     private static func sharedContentPattern(recognizedIn attachments: [NSItemProvider]) -> SharedContentPattern? {
