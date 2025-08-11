@@ -31,8 +31,8 @@ public struct ShareScreen: View {
 
     public var body: some View {
         switch model.state {
-        case .preparing:
-            Color.clear
+        case .preparingAfterLaunch:
+            ProtonSpinner()
                 .task {
                     await model.prepare()
                 }
@@ -47,6 +47,8 @@ public struct ShareScreen: View {
                 }
             )
             .padding(.top)
+        case .initializingComposer:
+            ProtonSpinner()
         case .composing(let draft, let dependencies, let upsellCoordinator):
             ComposerScreen(
                 draft: draft,

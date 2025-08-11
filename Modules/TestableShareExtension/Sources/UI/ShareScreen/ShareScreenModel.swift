@@ -28,13 +28,14 @@ public final class ShareScreenModel: ObservableObject {
     typealias MakeNewDraft = (MailUserSession, DraftCreateMode) async throws -> AppDraftProtocol
 
     enum ViewState {
-        case preparing
+        case preparingAfterLaunch
+        case initializingComposer
         case composing(AppDraftProtocol, ComposerScreen.Dependencies, UpsellCoordinator)
         case locked(LockScreenState.LockScreenType, MailSessionProtocol)
         case error(Error)
     }
 
-    @Published private(set) var state: ViewState = .preparing
+    @Published private(set) var state: ViewState = .preparingAfterLaunch
     @Published private(set) public var alert: String?
 
     private let extensionContext: NSExtensionContext
@@ -80,6 +81,8 @@ public final class ShareScreenModel: ObservableObject {
     }
 
     func onAppUnlocked() async {
+        state = .initializingComposer
+
         do {
             let userSession = try await sessionHolder.primaryUserSession()
             let draft = try await prepareDraft(userSession: userSession)
