@@ -20,7 +20,7 @@ import InboxCoreUI
 import proton_app_uniffi
 import SwiftUI
 
-struct MessageAddressActionPickerView: View {
+struct MessageAddressActionView: View {
     @EnvironmentObject var toastStateStore: ToastStateStore
     let avatarUIModel: AvatarUIModel
     let name: String
@@ -29,7 +29,7 @@ struct MessageAddressActionPickerView: View {
 
     var body: some View {
         StoreView(
-            store: MessageAddressActionPickerStateStore(
+            store: MessageAddressActionViewStateStore(
                 avatar: avatarUIModel,
                 name: name,
                 email: emailAddress,
@@ -88,8 +88,8 @@ struct MessageAddressActionPickerView: View {
     }
 
     private func blockConfirmationAlert(
-        state: MessageAddressActionPickerStateStore.State,
-        store: MessageAddressActionPickerStateStore
+        state: MessageAddressActionViewStateStore.State,
+        store: MessageAddressActionViewStateStore
     ) -> Binding<AlertModel?> {
         .readonly {
             state.emailToBlock.map { emailToBlock in
@@ -104,7 +104,7 @@ struct MessageAddressActionPickerView: View {
 
 #Preview {
     HStack {
-        MessageAddressActionPickerView(
+        MessageAddressActionView(
             avatarUIModel: .init(
                 info: .init(initials: "Aa", color: .purple),
                 type: .sender(params: .init())

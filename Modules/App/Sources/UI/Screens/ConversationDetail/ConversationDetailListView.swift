@@ -50,13 +50,13 @@ struct ConversationDetailListView: View {
                 NoConnectionView()
             }
         }
-        .sheet(item: $senderActionTarget, content: senderActionPicker)
-        .sheet(item: $recipientActionTarget, content: recipientActionPicker)
+        .sheet(item: $senderActionTarget, content: senderActionSheet)
+        .sheet(item: $recipientActionTarget, content: recipientActionSheet)
         .alert(model: $model.editScheduledMessageConfirmationAlert)
     }
 
-    private func senderActionPicker(target: ExpandedMessageCellUIModel) -> some View {
-        MessageAddressActionPickerView(
+    private func senderActionSheet(target: ExpandedMessageCellUIModel) -> some View {
+        MessageAddressActionView(
             avatarUIModel: target.messageDetails.avatar,
             name: target.messageDetails.sender.name,
             emailAddress: target.messageDetails.sender.address,
@@ -65,8 +65,8 @@ struct ConversationDetailListView: View {
         .pickerViewStyle([.height(450)])
     }
 
-    private func recipientActionPicker(target: MessageDetail.Recipient) -> some View {
-        MessageAddressActionPickerView(
+    private func recipientActionSheet(target: MessageDetail.Recipient) -> some View {
+        MessageAddressActionView(
             avatarUIModel: AvatarUIModel(info: target.avatarInfo, type: .other),
             name: target.name,
             emailAddress: target.address,

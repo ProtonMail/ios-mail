@@ -21,8 +21,8 @@ import InboxTesting
 import proton_app_uniffi
 import XCTest
 
-final class MessageAddressActionPickerStateStoreTests: BaseTestCase {
-    private var sut: MessageAddressActionPickerStateStore!
+final class MessageAddressActionViewStateStoreTests: BaseTestCase {
+    private var sut: MessageAddressActionViewStateStore!
     private var toastStateStore: ToastStateStore!
     private var blockSpy: BlockAddressSpy!
 
@@ -116,7 +116,7 @@ final class MessageAddressActionPickerStateStoreTests: BaseTestCase {
 
     // MARK: - Private
 
-    private func makeSUT() -> MessageAddressActionPickerStateStore {
+    private func makeSUT() -> MessageAddressActionViewStateStore {
         .init(
             avatar: avatar,
             name: displayName,
