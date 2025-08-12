@@ -39,7 +39,7 @@ struct MailboxScreen: View {
     private let userDefaults: UserDefaults
 
     private var shouldShowOnboardingUpsell: Bool {
-        ApiEnvId.current.arePaymentsEnabled && isUpsellButtonVisible && !userDefaults[.hasSeenOnboardingUpsell]
+        isUpsellButtonVisible && !userDefaults[.hasSeenOnboardingUpsell]
     }
 
     init(
