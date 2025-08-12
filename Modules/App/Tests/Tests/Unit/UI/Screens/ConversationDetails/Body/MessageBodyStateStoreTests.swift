@@ -57,7 +57,7 @@ final class MessageBodyStateStoreTests {
                 == .noBannersAlert(
                     rawBody: "<html>dummy_with_custom_options</html>",
                     options: initialOptions,
-                    embeddedImageProvider: decryptedMessageSpy
+                    imageProxy: decryptedMessageSpy
                 ))
     }
 
@@ -83,7 +83,7 @@ final class MessageBodyStateStoreTests {
                 == .noBannersAlert(
                     rawBody: "<html>dummy_with_custom_options</html>",
                     options: initialOptions,
-                    embeddedImageProvider: decryptedMessageSpy
+                    imageProxy: decryptedMessageSpy
                 ))
     }
 
@@ -117,7 +117,7 @@ final class MessageBodyStateStoreTests {
                 == .noBannersAlert(
                     rawBody: "<html>dummy_with_custom_options</html>",
                     options: initialOptions,
-                    embeddedImageProvider: decryptedMessageSpy
+                    imageProxy: decryptedMessageSpy
                 ))
 
         await sut.handle(action: .displayEmbeddedImages)
@@ -130,7 +130,7 @@ final class MessageBodyStateStoreTests {
                 == .noBannersAlert(
                     rawBody: "<html>dummy_with_custom_options</html>",
                     options: updatedOptions,
-                    embeddedImageProvider: decryptedMessageSpy
+                    imageProxy: decryptedMessageSpy
                 ))
     }
 
@@ -151,7 +151,7 @@ final class MessageBodyStateStoreTests {
                 == .noBannersAlert(
                     rawBody: "<html>dummy_with_custom_options</html>",
                     options: initialOptions,
-                    embeddedImageProvider: decryptedMessageSpy
+                    imageProxy: decryptedMessageSpy
                 ))
 
         await sut.handle(action: .downloadRemoteContent)
@@ -164,7 +164,7 @@ final class MessageBodyStateStoreTests {
                 == .noBannersAlert(
                     rawBody: "<html>dummy_with_custom_options</html>",
                     options: updatedOptions,
-                    embeddedImageProvider: decryptedMessageSpy
+                    imageProxy: decryptedMessageSpy
                 ))
     }
 
@@ -189,7 +189,7 @@ final class MessageBodyStateStoreTests {
                 == .noBannersAlert(
                     rawBody: "<html>dummy_with_custom_options</html>",
                     options: updatedOptions,
-                    embeddedImageProvider: decryptedMessageSpy
+                    imageProxy: decryptedMessageSpy
                 ))
 
         await sut.handle(action: .markAsLegitimate)
@@ -206,7 +206,7 @@ final class MessageBodyStateStoreTests {
                             html: .init(
                                 rawBody: "<html>dummy_with_custom_options</html>",
                                 options: updatedOptions,
-                                embeddedImageProvider: decryptedMessageSpy
+                                imageProxy: decryptedMessageSpy
                             )
                         )),
                     alert: .legitMessageConfirmation(action: { _ in })
@@ -234,7 +234,7 @@ final class MessageBodyStateStoreTests {
                 == .noBannersAlert(
                     rawBody: "<html>dummy_with_custom_options</html>",
                     options: initialOptions,
-                    embeddedImageProvider: decryptedMessageSpy
+                    imageProxy: decryptedMessageSpy
                 ))
     }
 
@@ -280,7 +280,7 @@ final class MessageBodyStateStoreTests {
                 == .noBannersAlert(
                     rawBody: "<html>dummy_with_custom_options</html>",
                     options: initialOptions,
-                    embeddedImageProvider: decryptedMessageSpy
+                    imageProxy: decryptedMessageSpy
                 ))
     }
 
@@ -305,7 +305,7 @@ final class MessageBodyStateStoreTests {
                 == .noBannersAlert(
                     rawBody: "<html>dummy_with_custom_options</html>",
                     options: updatedOptions,
-                    embeddedImageProvider: decryptedMessageSpy
+                    imageProxy: decryptedMessageSpy
                 ))
 
         let emailAddress = "john.doe@pm.me"
@@ -318,7 +318,7 @@ final class MessageBodyStateStoreTests {
                 == .noBannersAlert(
                     rawBody: "<html>dummy_with_custom_options</html>",
                     options: updatedOptions,
-                    embeddedImageProvider: decryptedMessageSpy
+                    imageProxy: decryptedMessageSpy
                 ))
     }
 
@@ -342,7 +342,7 @@ final class MessageBodyStateStoreTests {
                 == .noBannersAlert(
                     rawBody: "<html>dummy_with_custom_options</html>",
                     options: updatedOptions,
-                    embeddedImageProvider: decryptedMessageSpy
+                    imageProxy: decryptedMessageSpy
                 ))
 
         let emailAddress = "steven.morcote@pm.me"
@@ -381,7 +381,7 @@ extension MessageBody: @retroactive Equatable {
 
     public static func == (lhs: Self, rhs: Self) -> Bool {
         let areHTMLsEqual =
-            lhs.html.rawBody == rhs.html.rawBody && lhs.html.options == rhs.html.options && lhs.html.embeddedImageProvider === rhs.html.embeddedImageProvider
+            lhs.html.rawBody == rhs.html.rawBody && lhs.html.options == rhs.html.options && lhs.html.imageProxy === rhs.html.imageProxy
         let areBannersEqual = lhs.banners == rhs.banners
 
         return areHTMLsEqual && areBannersEqual
@@ -390,7 +390,6 @@ extension MessageBody: @retroactive Equatable {
 }
 
 private final class DecryptedMessageSpy: DecryptedMessage, @unchecked Sendable {
-
     private let stubbedOptions: TransformOpts
 
     init(stubbedOptions: TransformOpts) {
@@ -425,7 +424,6 @@ private final class DecryptedMessageSpy: DecryptedMessage, @unchecked Sendable {
     override func identifyRsvp() async -> RsvpEventServiceProvider? {
         nil
     }
-
 }
 
 private final class RustWrappersSpy: @unchecked Sendable {
@@ -467,19 +465,16 @@ private extension MessageBodyStateStore.State {
     static func noBannersAlert(
         rawBody: String,
         options: TransformOpts,
-        embeddedImageProvider: EmbeddedImageProvider
+        imageProxy: ImageProxy
     ) -> Self {
         .init(
             body: .loaded(
                 .init(
                     rsvpServiceProvider: .none,
                     banners: [],
-                    html: .init(
-                        rawBody: rawBody,
-                        options: options,
-                        embeddedImageProvider: embeddedImageProvider
-                    )
-                )),
+                    html: .init(rawBody: rawBody, options: options, imageProxy: imageProxy)
+                )
+            ),
             alert: .none
         )
     }
@@ -487,11 +482,9 @@ private extension MessageBodyStateStore.State {
 }
 
 private class BackOnlineActionExecutorSpy: BackOnlineActionExecuting {
-
     private(set) var executeCalled: [() async -> Void] = []
 
     func execute(action: @escaping @MainActor @Sendable () async -> Void) {
         executeCalled.append(action)
     }
-
 }

@@ -22,7 +22,7 @@ struct MessageBody: Sendable {
     struct HTML: Sendable {
         let rawBody: String
         let options: TransformOpts
-        let embeddedImageProvider: EmbeddedImageProvider
+        let imageProxy: ImageProxy
     }
 
     let rsvpServiceProvider: RsvpEventServiceProvider?
@@ -51,7 +51,7 @@ struct MessageBodyProvider {
             let html = MessageBody.HTML(
                 rawBody: decryptedBody.body,
                 options: decryptedBody.transformOpts,
-                embeddedImageProvider: decryptedMessage
+                imageProxy: decryptedMessage
             )
             let body = MessageBody(
                 rsvpServiceProvider: rsvpServiceProvider,

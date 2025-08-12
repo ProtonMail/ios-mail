@@ -18,17 +18,15 @@
 @testable import InboxCore
 import proton_app_uniffi
 
-class EmbeddedImageProviderSpy: @unchecked Sendable, EmbeddedImageProvider {
-
+class ImageProxySpy: @unchecked Sendable, ImageProxy {
     var stubbedResult: AttachmentDataResult!
-    private(set) var invokedEmbeddedImageWithCID: [String] = []
+    private(set) var invokedLoadImageWithURLs: [String] = []
 
-    // MARK: - EmbeddedImageProvider
+    // MARK: - ImageProxy
 
-    func getEmbeddedAttachment(cid: String) -> AttachmentDataResult {
-        invokedEmbeddedImageWithCID.append(cid)
+    func loadImage(url: String) async -> AttachmentDataResult {
+        invokedLoadImageWithURLs.append(url)
 
         return stubbedResult
     }
-
 }

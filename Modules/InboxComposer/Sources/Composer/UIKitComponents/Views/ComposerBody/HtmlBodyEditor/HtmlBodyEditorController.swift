@@ -32,10 +32,10 @@ final class HtmlBodyEditorController: UIViewController, BodyEditor {
     var onEvent: ((BodyEditorEvent) -> Void)?
 
     init(
-        embeddedImageProvider: EmbeddedImageProvider,
+        imageProxy: ImageProxy,
         webViewMemoryPressureHandler: WebViewMemoryPressureProtocol = WebViewMemoryPressureHandler(loggerCategory: .composer)
     ) {
-        self.htmlInterface = HtmlBodyWebViewInterface(webView: SubviewFactory.webView(embeddedImageProvider: embeddedImageProvider))
+        self.htmlInterface = HtmlBodyWebViewInterface(webView: SubviewFactory.webView(imageProxy: imageProxy))
         self.webViewMemoryPressureHandler = webViewMemoryPressureHandler
         super.init(nibName: nil, bundle: nil)
         webViewMemoryPressureHandler.contentReload { [weak self] in
@@ -161,11 +161,11 @@ extension HtmlBodyEditorController {
 
     enum SubviewFactory {
 
-        static func webView(embeddedImageProvider: EmbeddedImageProvider) -> WKWebView {
+        static func webView(imageProxy: ImageProxy) -> WKWebView {
             let config = WKWebViewConfiguration()
             config.dataDetectorTypes = [.link]
             config.setURLSchemeHandler(
-                CIDSchemeHandler(embeddedImageProvider: embeddedImageProvider),
+                CIDSchemeHandler(imageProxy: imageProxy),
                 forURLScheme: CIDSchemeHandler.handlerScheme
             )
 
