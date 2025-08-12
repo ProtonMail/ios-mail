@@ -102,9 +102,9 @@ final class MessageAddressActionViewStateStore: StateStore {
         let result = await blockAddress(session, email)
         switch result {
         case .ok:
-            toastStateStore.present(toast: .information(message: "Sender blocked"))
+            toastStateStore.present(toast: .information(message: L10n.BlockAddress.Toast.success.string))
         case .error:
-            toastStateStore.present(toast: .error(message: "Could not block sender"))
+            toastStateStore.present(toast: .error(message: L10n.BlockAddress.Toast.failure.string))
         }
     }
 }

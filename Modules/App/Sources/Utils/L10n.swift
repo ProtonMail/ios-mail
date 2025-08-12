@@ -243,6 +243,35 @@ enum L10n {
         }
     }
 
+    enum BlockAddress {
+        enum Alert {
+            static let title = LocalizedStringResource(
+                "Block this address",
+                comment: "Title of the alert asking the user to confirm blocking an email address."
+            )
+            static func message(email: String) -> LocalizedStringResource {
+                .init(
+                    "Emails from \(email) will no longer be delivered and will be permanently deleted. You can manage blocked email addresses in the settings.",
+                    comment: "Message shown in the alert explaining the consequences of blocking the specified email address."
+                )
+            }
+            static let confirm = LocalizedStringResource(
+                "Block",
+                comment: "Title of the action button for blocking an email address in the alert."
+            )
+        }
+        enum Toast {
+            static let success = LocalizedStringResource(
+                "Sender blocked",
+                comment: "Toast message shown when an email address (sender) has been successfully blocked."
+            )
+            static let failure = LocalizedStringResource(
+                "Could not block sender",
+                comment: "Toast message shown when blocking an email address (sender) fails."
+            )
+        }
+    }
+
     enum EventLoopError {
         static let eventLoopErrorMessage = LocalizedStringResource(
             "We encountered an issue while syncing your mail with the event loop. Please share the logs with our support team for further investigation. Try logging out and logging back in to resolve the issue.",

@@ -4075,6 +4075,12 @@
     "Bcc: " : {
       "comment" : "`BCC` in the messsage details."
     },
+    "Block" : {
+      "comment" : "Title of the action button for blocking an email address in the alert."
+    },
+    "Block this address" : {
+      "comment" : "Title of the alert asking the user to confirm blocking an email address."
+    },
     "Block this contact" : {
       "comment" : "Action title for blocking email address in the address action sheet.",
       "localizations" : {
@@ -5485,6 +5491,9 @@
           }
         }
       }
+    },
+    "Could not block sender" : {
+      "comment" : "Toast message shown when blocking an email address (sender) fails."
     },
     "Could not move to folder. Folder may have been deleted or moved." : {
       "comment" : "Error when trying to move a message to a folder that no longer exists."
@@ -7312,6 +7321,9 @@
     },
     "Email not sent" : {
       "comment" : "Notification that is displayed when background time is up and at least one message is unsent."
+    },
+    "Emails from %@ will no longer be delivered and will be permanently deleted. You can manage blocked email addresses in the settings." : {
+      "comment" : "Message shown in the alert explaining the consequences of blocking the specified email address."
     },
     "Empty %@ Folder" : {
       "comment" : "Empty Spam/Trash Banner: Title for the confirmation alert when the user \nis about to empty the specified location (e.g., Spam or Trash)."
@@ -15191,6 +15203,9 @@
     },
     "Send error logs" : {
       "comment" : "Title of row with toggle where a user can decide whether to send logs."
+    },
+    "Sender blocked" : {
+      "comment" : "Toast message shown when an email address (sender) has been successfully blocked."
     },
     "Sending.." : {
       "comment" : "Title of a tag displayed for each message that is in the outbox with sending status."

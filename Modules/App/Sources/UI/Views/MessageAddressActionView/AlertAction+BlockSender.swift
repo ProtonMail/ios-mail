@@ -27,8 +27,8 @@ extension AlertModel {
         }
 
         return AlertModel(
-            title: "Block this address".notLocalized.stringResource,
-            message: "Emails from \(email) will no longer be delivered and will be permanently deleted. You can manage blocked email addresses in the settings.".notLocalized.stringResource,
+            title: L10n.BlockAddress.Alert.title,
+            message: L10n.BlockAddress.Alert.message(email: email),
             actions: actions
         )
     }

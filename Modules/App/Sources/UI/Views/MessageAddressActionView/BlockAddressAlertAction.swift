@@ -28,7 +28,7 @@ enum BlockAddressAlertAction: AlertActionInfo, CaseIterable {
         case .cancel:
             (CommonL10n.cancel, .cancel)
         case .confirm:
-            ("Block".stringResource, .destructive)
+            (L10n.BlockAddress.Alert.confirm, .destructive)
         }
     }
 }
