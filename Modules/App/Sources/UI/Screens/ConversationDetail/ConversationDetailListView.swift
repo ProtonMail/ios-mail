@@ -17,19 +17,22 @@
 
 import InboxCoreUI
 import InboxDesignSystem
+import proton_app_uniffi
 import SwiftUI
 
 struct ConversationDetailListView: View {
     @EnvironmentObject var toastStateStore: ToastStateStore
     @ObservedObject private var model: ConversationDetailModel
+    private let mailUserSession: MailUserSession
     private let goBack: () -> Void
 
     /// These attributes trigger the different action sheets
     @State private var senderActionTarget: ExpandedMessageCellUIModel?
     @State private var recipientActionTarget: MessageDetail.Recipient?
 
-    init(model: ConversationDetailModel, goBack: @escaping () -> Void) {
+    init(model: ConversationDetailModel, mailUserSession: MailUserSession, goBack: @escaping () -> Void) {
         self.model = model
+        self.mailUserSession = mailUserSession
         self.goBack = goBack
     }
 
@@ -56,7 +59,8 @@ struct ConversationDetailListView: View {
         MessageAddressActionPickerView(
             avatarUIModel: target.messageDetails.avatar,
             name: target.messageDetails.sender.name,
-            emailAddress: target.messageDetails.sender.address
+            emailAddress: target.messageDetails.sender.address,
+            mailUserSession: mailUserSession
         )
         .pickerViewStyle([.height(450)])
     }
@@ -65,7 +69,8 @@ struct ConversationDetailListView: View {
         MessageAddressActionPickerView(
             avatarUIModel: AvatarUIModel(info: target.avatarInfo, type: .other),
             name: target.name,
-            emailAddress: target.address
+            emailAddress: target.address,
+            mailUserSession: mailUserSession
         )
         .pickerViewStyle([.height(390)])
     }

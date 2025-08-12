@@ -17,6 +17,7 @@
 
 import InboxDesignSystem
 import InboxCoreUI
+import proton_app_uniffi
 import SwiftUI
 
 struct MessageAddressActionPickerView: View {
@@ -24,6 +25,7 @@ struct MessageAddressActionPickerView: View {
     let avatarUIModel: AvatarUIModel
     let name: String
     let emailAddress: String
+    let mailUserSession: MailUserSession
 
     var body: some View {
         StoreView(
@@ -31,7 +33,7 @@ struct MessageAddressActionPickerView: View {
                 avatar: avatarUIModel,
                 name: name,
                 email: emailAddress,
-                session: .dummy,
+                session: mailUserSession,
                 toastStateStore: toastStateStore
             ),
             content: { state, store in
@@ -49,11 +51,9 @@ struct MessageAddressActionPickerView: View {
                         MessageAddressActionPickerSection.second.actions(),
                         MessageAddressActionPickerSection.third(state.avatar).actions(),
                     ],
-                    onElementTap: {
-                        toastStateStore.present(toast: .comingSoon)
-                        print($0)
-                    }
+                    onElementTap: { action in store.handle(action: .onTap(action)) }
                 )
+                .alert(model: blockConfirmationAlert(state: state, store: store))
             }
         )
     }
@@ -82,6 +82,20 @@ struct MessageAddressActionPickerView: View {
         .frame(maxWidth: .infinity)
         .padding(.bottom, DS.Spacing.medium)
     }
+
+    private func blockConfirmationAlert(
+        state: MessageAddressActionPickerStateStore.State,
+        store: MessageAddressActionPickerStateStore
+    ) -> Binding<AlertModel?> {
+        .readonly {
+            state.emailToBlock.map { emailToBlock in
+                AlertModel.blockSender(
+                    for: emailToBlock,
+                    action: { action in await store.handle(action: .onBlockAlertAction(action)) }
+                )
+            }
+        }
+    }
 }
 
 private enum MessageAddressActionPickerSection {
@@ -109,7 +123,8 @@ private enum MessageAddressActionPickerSection {
                 type: .sender(params: .init())
             ),
             name: "Aaron",
-            emailAddress: "aaron@proton.me"
+            emailAddress: "aaron@proton.me",
+            mailUserSession: .dummy
         )
     }
 }
@@ -117,4 +132,21 @@ private enum MessageAddressActionPickerSection {
 struct MessageAddressActionPickerViewIdentifiers {
     static let participantName = "actionPicker.participant.name"
     static let participantAddress = "actionPicker.participant.address"
+}
+
+private extension AlertModel {
+    static func blockSender(
+        for email: String,
+        action: @escaping @MainActor @Sendable (BlockAddressAlertAction) async -> Void
+    ) -> AlertModel {
+        let actions: [AlertAction] = BlockAddressAlertAction.allCases.map { actionType in
+            .init(details: actionType, action: { await action(actionType) })
+        }
+
+        return AlertModel(
+            title: "Block this address".notLocalized.stringResource,
+            message: "Emails from \(email) will no longer be delivered and will be permanently deleted. You can manage blocked email addresses in the settings.".notLocalized.stringResource,
+            actions: actions
+        )
+    }
 }

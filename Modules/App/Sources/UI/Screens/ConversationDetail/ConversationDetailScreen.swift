@@ -89,7 +89,11 @@ struct ConversationDetailScreen: View {
                             .padding(.top, DS.Spacing.medium)
                             .padding(.horizontal, DS.Spacing.large)
                     }
-                    ConversationDetailListView(model: model, goBack: { goBackToMailbox() })
+                    ConversationDetailListView(
+                        model: model,
+                        mailUserSession: mailUserSession,
+                        goBack: { goBackToMailbox() }
+                    )
                 }
                 .accessibilityElement(children: .contain)
                 .accessibilityIdentifier(ConversationDetailScreenIdentifiers.rootItem)
