@@ -15,6 +15,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import InboxCore
+import InboxCoreUI
 import proton_app_uniffi
 import SwiftUI
 
@@ -103,23 +105,6 @@ final class MessageAddressActionViewStateStore: StateStore {
             toastStateStore.present(toast: .information(message: "Sender blocked"))
         case .error:
             toastStateStore.present(toast: .error(message: "Could not block sender"))
-        }
-    }
-}
-
-import InboxCore
-import InboxCoreUI
-
-enum BlockAddressAlertAction: AlertActionInfo, CaseIterable {
-    case cancel
-    case confirm
-
-    var info: (title: LocalizedStringResource, buttonRole: ButtonRole?) {
-        switch self {
-        case .cancel:
-            (CommonL10n.cancel, .cancel)
-        case .confirm:
-            ("Block".stringResource, .destructive)
         }
     }
 }

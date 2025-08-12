@@ -121,19 +121,3 @@ struct MessageAddressActionPickerViewIdentifiers {
     static let participantAddress = "actionPicker.participant.address"
 }
 
-private extension AlertModel {
-    static func blockSender(
-        for email: String,
-        action: @escaping @MainActor @Sendable (BlockAddressAlertAction) async -> Void
-    ) -> AlertModel {
-        let actions: [AlertAction] = BlockAddressAlertAction.allCases.map { actionType in
-            .init(details: actionType, action: { await action(actionType) })
-        }
-
-        return AlertModel(
-            title: "Block this address".notLocalized.stringResource,
-            message: "Emails from \(email) will no longer be delivered and will be permanently deleted. You can manage blocked email addresses in the settings.".notLocalized.stringResource,
-            actions: actions
-        )
-    }
-}

@@ -1,0 +1,35 @@
+// Copyright (c) 2025 Proton Technologies AG
+//
+// This file is part of Proton Mail.
+//
+// Proton Mail is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Proton Mail is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Proton Mail. If not, see https://www.gnu.org/licenses/.
+
+import InboxCoreUI
+
+extension AlertModel {
+    static func blockSender(
+        for email: String,
+        action: @escaping @MainActor @Sendable (BlockAddressAlertAction) async -> Void
+    ) -> Self {
+        let actions: [AlertAction] = BlockAddressAlertAction.allCases.map { actionType in
+            .init(details: actionType, action: { await action(actionType) })
+        }
+
+        return AlertModel(
+            title: "Block this address".notLocalized.stringResource,
+            message: "Emails from \(email) will no longer be delivered and will be permanently deleted. You can manage blocked email addresses in the settings.".notLocalized.stringResource,
+            actions: actions
+        )
+    }
+}
