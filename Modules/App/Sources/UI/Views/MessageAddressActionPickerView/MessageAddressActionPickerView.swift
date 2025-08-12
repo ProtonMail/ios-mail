@@ -26,26 +26,46 @@ struct MessageAddressActionPickerView: View {
     let emailAddress: String
 
     var body: some View {
-        ActionPickerList(
-            headerContent: {
-                headerView
-                    .listRowBackground(Color.clear)
-            },
-            sections: [
-                MessageAddressActionPickerSection.first.actions(),
-                MessageAddressActionPickerSection.second.actions(),
-                MessageAddressActionPickerSection.third(avatarUIModel).actions(),
-            ],
-            onElementTap: {
-                toastStateStore.present(toast: .comingSoon)
-                print($0)
+        StoreView(
+            store: MessageAddressActionPickerStateStore(
+                avatar: avatarUIModel,
+                name: name,
+                email: emailAddress,
+                session: .dummy,
+                toastStateStore: toastStateStore
+            ),
+            content: { state, store in
+                ActionPickerList(
+                    headerContent: {
+                        headerView(
+                            avatar: state.avatar,
+                            name: state.name,
+                            email: state.email
+                        )
+                        .listRowBackground(Color.clear)
+                    },
+                    sections: [
+                        MessageAddressActionPickerSection.first.actions(),
+                        MessageAddressActionPickerSection.second.actions(),
+                        MessageAddressActionPickerSection.third(state.avatar).actions(),
+                    ],
+                    onElementTap: {
+                        toastStateStore.present(toast: .comingSoon)
+                        print($0)
+                    }
+                )
             }
         )
     }
 
-    private var headerView: some View {
+    @ViewBuilder
+    private func headerView(
+        avatar: AvatarUIModel,
+        name: String,
+        email: String
+    ) -> some View {
         VStack(alignment: .center) {
-            AvatarView(avatar: avatarUIModel)
+            AvatarView(avatar: avatar)
                 .clipShape(Circle())
                 .square(size: 70)
             Text(verbatim: name)
@@ -53,8 +73,7 @@ struct MessageAddressActionPickerView: View {
                 .bold()
                 .foregroundStyle(DS.Color.Text.norm)
                 .accessibilityIdentifier(MessageAddressActionPickerViewIdentifiers.participantName)
-
-            Text(verbatim: emailAddress)
+            Text(verbatim: email)
                 .font(.footnote)
                 .fontWeight(.regular)
                 .foregroundStyle(DS.Color.Text.weak)

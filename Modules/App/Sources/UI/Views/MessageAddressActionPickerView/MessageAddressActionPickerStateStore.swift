@@ -17,9 +17,8 @@
 
 import proton_app_uniffi
 import SwiftUI
-import Combine
 
-final class MessageAddressActionPickerStateStore: ObservableObject {
+final class MessageAddressActionPickerStateStore: StateStore {
     enum Action {
         case onTap(MessageAddressAction)
         case onBlockAlertAction(BlockAddressAlertAction)
