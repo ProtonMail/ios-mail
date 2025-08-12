@@ -927,6 +927,10 @@ enum L10n {
                 "Security keys",
                 comment: "Security keys row title"
             )
+            static let customizeToolbars = LocalizedStringResource(
+                "Customize toolbars",
+                comment: "Customize toolbars button title."
+            )
         }
 
         static let subscription = LocalizedStringResource(

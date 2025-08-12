@@ -6071,6 +6071,9 @@
     "Custom" : {
       "comment" : "Custom button title on snooze sheet."
     },
+    "Customize toolbars" : {
+      "comment" : "Customize toolbars button title."
+    },
     "Dark" : {
       "comment" : "One of the appearance option to set in app settings."
     },

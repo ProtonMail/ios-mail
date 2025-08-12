@@ -29,6 +29,7 @@ enum SettingsRoute: Routable {
     case autoLock
     case scanQRCode
     case changePassword(PasswordChange.State)
+    case customizeToolbars
     case securityKeys(UserSettings)
     case subscription
 
@@ -72,6 +73,10 @@ struct SettingsViewFactory {
             accountAuthCoordinator.securityKeyListView(userSettings: userSettings)
         case .subscription:
             AvailablePlansViewFactory.make(mailUserSession: mailUserSession, presentationMode: .push)
+        case .customizeToolbars:
+            ZStack {
+                Text(L10n.Settings.App.customizeToolbars) // FIXME: - Replace
+            }
         }
     }
 }

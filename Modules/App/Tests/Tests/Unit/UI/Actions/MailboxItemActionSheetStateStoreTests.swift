@@ -97,6 +97,7 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
             sut.state,
             .init(
                 title: title,
+                showEditToolbarAction: false,
                 availableActions: .init(
                     replyActions: [.reply],
                     mailboxItemActions: [.delete],
@@ -128,6 +129,7 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
             sut.state,
             .init(
                 title: title,
+                showEditToolbarAction: true,
                 availableActions: .init(
                     replyActions: nil,
                     mailboxItemActions: [.labelAs],

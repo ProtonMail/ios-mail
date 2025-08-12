@@ -90,6 +90,15 @@ struct AppSettingsScreen: View {
                             isOn: comingSoonBinding
                         )
                     }
+                    FormSection(header: nil, footer: nil) {
+                        FormSmallButton(
+                            title: L10n.Settings.App.customizeToolbars,
+                            rightSymbol: .chevronRight
+                        ) {
+                            router.go(to: .customizeToolbars)
+                        }
+                        .roundedRectangleStyle()
+                    }
                     FormSection(
                         header: L10n.Settings.App.advanced,
                         footer: L10n.Settings.App.alternativeRoutingInfo
