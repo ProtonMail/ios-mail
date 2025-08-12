@@ -36,7 +36,7 @@ struct MessageBodyReaderView: UIViewRepresentable {
         config.dataDetectorTypes = [.link]
         config.defaultWebpagePreferences.allowsContentJavaScript = false
         config.setURLSchemeHandler(
-            CIDSchemeHandler(embeddedImageProvider: body.embeddedImageProvider),
+            CIDSchemeHandler(imageProxy: body.imageProxy),
             forURLScheme: CIDSchemeHandler.handlerScheme
         )
 

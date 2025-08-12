@@ -33,23 +33,24 @@ import WebKit
 class CIDSchemeHandlerTests: BaseTestCase {
 
     var sut: CIDSchemeHandler!
-    var embeddedImageProviderSpy: EmbeddedImageProviderSpy!
+    var imageProxySpy: ImageProxySpy!
     private var urlSchemeTaskSpy: WKURLSchemeTaskSpy!
 
     override func setUp() {
         super.setUp()
 
-        embeddedImageProviderSpy = .init()
-        sut = CIDSchemeHandler(embeddedImageProvider: embeddedImageProviderSpy)
+        imageProxySpy = .init()
+        sut = CIDSchemeHandler(imageProxy: imageProxySpy)
     }
 
     override func tearDown() {
         sut = nil
-        embeddedImageProviderSpy = nil
+        imageProxySpy = nil
 
         super.tearDown()
     }
 
+    @MainActor
     func testFetchingEmbeddedImage_WhenCIDIsMissing_ItReturnsError() {
         let request = URLRequest(url: .init(string: "https://proton.me").unsafelyUnwrapped)
         urlSchemeTaskSpy = .init(request: request)
@@ -59,9 +60,10 @@ class CIDSchemeHandlerTests: BaseTestCase {
         XCTAssertEqual(urlSchemeTaskSpy.didInvokeFailWithError.compactMap(\.asHandlerError), [.missingCID])
     }
 
+    @MainActor
     func testFetchingEmbeddedImage_WhenImageIsMissing_ItReturnsError() {
         let cidValue = "abcdef"
-        embeddedImageProviderSpy.stubbedResult = .error(.unexpected(.unknown))
+        imageProxySpy.stubbedResult = .error(.unexpected(.unknown))
         urlSchemeTaskSpy = .init(request: .init(url: .cid(cidValue)))
         sut.webView(WKWebView(), start: urlSchemeTaskSpy)
 
@@ -69,12 +71,13 @@ class CIDSchemeHandlerTests: BaseTestCase {
         XCTAssertEqual(urlSchemeTaskSpy.didInvokeFailWithError.compactMap(\.asProtonError), [.unexpected(.unknown)])
     }
 
+    @MainActor
     func testFetchingEmbeddedImage_WhenImageIsLoaded_ItReturnsImage() {
         let cidValue = "abcdef"
         let url = URL.cid(cidValue)
         let image = AttachmentData.testData
         urlSchemeTaskSpy = .init(request: .init(url: url))
-        embeddedImageProviderSpy.stubbedResult = .ok(image)
+        imageProxySpy.stubbedResult = .ok(image)
         sut.webView(WKWebView(), start: urlSchemeTaskSpy)
 
         expect(self.urlSchemeTaskSpy.didFinishInvokeCount).toEventually(equal(1))
@@ -83,12 +86,13 @@ class CIDSchemeHandlerTests: BaseTestCase {
         XCTAssertEqual(urlSchemeTaskSpy.didInvokeDidReceiveResponse.map(\.expectedContentLength), [Int64(image.data.count)])
     }
 
+    @MainActor
     func testFetchingEmbeddedImage_WhenStopIsCalled_ItDoesNotDoAnything() {
         let cidValue = "abcdef"
         let url = URL.cid(cidValue)
         let image = AttachmentData.testData
         urlSchemeTaskSpy = .init(request: .init(url: url))
-        embeddedImageProviderSpy.stubbedResult = .ok(image)
+        imageProxySpy.stubbedResult = .ok(image)
         let webView = WKWebView()
         sut.webView(webView, start: urlSchemeTaskSpy)
 
@@ -100,6 +104,7 @@ class CIDSchemeHandlerTests: BaseTestCase {
         XCTAssertTrue(urlSchemeTaskSpy.didInvokeFailWithError.isEmpty)
     }
 
+    @MainActor
     func testWebViewStopURLSchemeTask_ItDoesNotDoAnything() {
         urlSchemeTaskSpy = .init(request: .init(url: .cid("abc")))
         sut.webView(WKWebView(), stop: urlSchemeTaskSpy)
@@ -109,7 +114,6 @@ class CIDSchemeHandlerTests: BaseTestCase {
         XCTAssertEqual(urlSchemeTaskSpy.didInvokeDidReceivedData, [])
         XCTAssertTrue(urlSchemeTaskSpy.didInvokeFailWithError.isEmpty)
     }
-
 }
 
 private class WKURLSchemeTaskSpy: NSObject, WKURLSchemeTask {

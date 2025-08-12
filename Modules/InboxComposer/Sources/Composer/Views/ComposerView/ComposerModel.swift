@@ -76,7 +76,7 @@ final class ComposerModel: ObservableObject {
     private var messageHasBeenSentOrScheduled: Bool = false
     private var composerWillDismiss: Bool = false
 
-    var embeddedImageProvider: EmbeddedImageProvider {
+    var imageProxy: ImageProxy {
         draft
     }
 
@@ -721,4 +721,9 @@ extension ComposerModel {
     }
 }
 
-extension Draft: @retroactive EmbeddedImageProvider {}
+extension Draft: @retroactive ImageProxy {
+    // FIXME: Implementation below needs to be removed once new RustSDK is released
+    public func loadImage(url: String) async -> AttachmentDataResult {
+        .ok(.init(data: Data(), mime: ""))
+    }
+}

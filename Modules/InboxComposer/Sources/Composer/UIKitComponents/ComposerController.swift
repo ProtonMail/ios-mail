@@ -51,12 +51,12 @@ final class ComposerController: UIViewController {
 
     init(
         state: ComposerState,
-        embeddedImageProvider: EmbeddedImageProvider,
+        imageProxy: ImageProxy,
         invalidAddressAlertStore: InvalidAddressAlertStateStore,
         onEvent: @escaping (Event) -> Void
     ) {
         self.state = state
-        let factory = BodyEditorFactory(embeddedImageProvider: embeddedImageProvider)
+        let factory = BodyEditorFactory(imageProxy: imageProxy)
         self.bodyEditor = factory.makeEditor(for: state.composerMode)
         self.recipientsController = RecipientsViewController(invalidAddressAlertStore: invalidAddressAlertStore)
 

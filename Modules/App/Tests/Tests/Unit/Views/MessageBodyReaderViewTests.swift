@@ -28,11 +28,7 @@ final class MessageBodyReaderViewTests {
 
     private lazy var sut = MessageBodyReaderView(
         bodyContentHeight: .constant(.zero),
-        body: .init(
-            rawBody: "<html>dummy</html>",
-            options: .init(),
-            embeddedImageProvider: EmbeddedImageProviderSpy()
-        ),
+        body: .init(rawBody: "<html>dummy</html>", options: .init(), imageProxy: ImageProxySpy()),
         viewWidth: .zero
     )
 
@@ -145,7 +141,6 @@ private class NavigationActionStub: WKNavigationAction {
 }
 
 private class WKWebViewSpy: WKWebView {
-
     private(set) var loadHTMLStringCalls: [(html: String, baseURL: URL?)] = []
 
     override func loadHTMLString(_ string: String, baseURL: URL?) -> WKNavigation? {
@@ -153,7 +148,6 @@ private class WKWebViewSpy: WKWebView {
 
         return nil
     }
-
 }
 
 private class MemoryPressureHandlerSpy: WebViewMemoryPressureProtocol {

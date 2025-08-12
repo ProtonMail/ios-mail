@@ -20,12 +20,12 @@ import TryCatch
 import WebKit
 
 public final class CIDSchemeHandler: NSObject, WKURLSchemeHandler {
-    private let embeddedImageProvider: EmbeddedImageProvider
+    private let imageProxy: ImageProxy
     private var urlSchemeActiveTasks = Set<ObjectIdentifier>()
-    private let queue = DispatchQueue(label:  "\(Bundle.defaultIdentifier).\(CIDSchemeHandler.self)")
+    private let queue = DispatchQueue(label: "\(Bundle.defaultIdentifier).\(CIDSchemeHandler.self)")
 
-    public init(embeddedImageProvider: EmbeddedImageProvider) {
-        self.embeddedImageProvider = embeddedImageProvider
+    public init(imageProxy: ImageProxy) {
+        self.imageProxy = imageProxy
     }
 
     public enum HandlerError: Error, Equatable {
@@ -59,10 +59,7 @@ public final class CIDSchemeHandler: NSObject, WKURLSchemeHandler {
             return
         }
 
-        let cid = url.absoluteString
-            .replacingOccurrences(of: "\(Self.handlerScheme):", with: "")
-
-        finishTaskWithImage(url: url, cid: cid, urlSchemeTask: urlSchemeTask)
+        finishTaskWithImage(url: url, urlSchemeTask: urlSchemeTask)
     }
 
     public func webView(_ webView: WKWebView, stop urlSchemeTask: WKURLSchemeTask) {
@@ -72,7 +69,9 @@ public final class CIDSchemeHandler: NSObject, WKURLSchemeHandler {
 
     // MARK: - Private
 
-    private func performOnUrlSchemeActiveTasks<T>(_ block: @escaping (inout Set<ObjectIdentifier>) -> T) async throws -> T {
+    private func performOnUrlSchemeActiveTasks<T>(
+        _ block: @escaping (inout Set<ObjectIdentifier>) -> T
+    ) async throws -> T {
         try await withCheckedThrowingContinuation { continuation in
             queue.async { [weak self] in
                 guard let self else {
@@ -85,11 +84,11 @@ public final class CIDSchemeHandler: NSObject, WKURLSchemeHandler {
         }
     }
 
-    private func finishTaskWithImage(url: URL, cid: String, urlSchemeTask: WKURLSchemeTask) {
+    private func finishTaskWithImage(url: URL, urlSchemeTask: WKURLSchemeTask) {
         let taskId = ObjectIdentifier(urlSchemeTask)
 
         Task {
-            let result = await embeddedImageProvider.getEmbeddedAttachment(cid: cid)
+            let result = await imageProxy.loadImage(url: url.absoluteString)
 
             guard try await performOnUrlSchemeActiveTasks({ activeTasks in activeTasks.contains(taskId) }) else {
                 AppLogger.log(message: "urlSchemeTask not active anymore", category: .conversationDetail)
@@ -102,7 +101,7 @@ public final class CIDSchemeHandler: NSObject, WKURLSchemeHandler {
                 AppLogger.logTemporarily(message: message, category: .conversationDetail)
                 handleAttachment(image, url: url, urlSchemeTask: urlSchemeTask)
             case .error(let error):
-                let message = "cid: \(cid), error: \(error)"
+                let message = "error: \(error)"
                 AppLogger.log(message: message, category: .composer, isError: true)
                 urlSchemeTask.markAsFailedCatchingExceptions(error)
             }
@@ -134,7 +133,7 @@ public final class CIDSchemeHandler: NSObject, WKURLSchemeHandler {
     }
 }
 
-extension ProtonError: Error {}
+extension ProtonError: @retroactive Error {}
 
 private extension WKURLSchemeTask {
     func markAsFailedCatchingExceptions(_ responseError: Error) {
