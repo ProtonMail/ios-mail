@@ -22,18 +22,25 @@ import SwiftUI
 struct MailboxActionBarMoreSheet: View {
     let state: MailboxActionBarMoreSheetState
     let actionTapped: (BottomBarAction) -> Void
+    let editToolbarTapped: () -> Void
 
-    init(state: MailboxActionBarMoreSheetState, actionTapped: @escaping (BottomBarAction) -> Void) {
+    init(
+        state: MailboxActionBarMoreSheetState,
+        actionTapped: @escaping (BottomBarAction) -> Void,
+        editToolbarTapped: @escaping () -> Void
+    ) {
         self.state = state
         self.actionTapped = actionTapped
+        self.editToolbarTapped = editToolbarTapped
     }
-
     var body: some View {
         ClosableScreen {
             ScrollView {
                 VStack(spacing: DS.Spacing.large) {
                     section(content: state.moreSheetOnlyActions)
                     section(content: state.bottomBarActions)
+
+                    editToolbarSection()
                 }
                 .padding(.all, DS.Spacing.large)
             }
@@ -56,6 +63,18 @@ struct MailboxActionBarMoreSheet: View {
             }
         }
     }
+
+    private func editToolbarSection() -> some View {
+        ActionSheetSection {
+            ActionSheetImageButton(
+                displayData: .init(title: L10n.Action.editToolbar, image: DS.Icon.icMagicWand.image),
+                displayBottomSeparator: false
+            ) {
+                editToolbarTapped()
+            }
+        }
+    }
+
 }
 
 private extension BottomBarAction {
@@ -65,5 +84,9 @@ private extension BottomBarAction {
 }
 
 #Preview {
-    MailboxActionBarMoreSheet(state: MailboxActionBarMoreSheetPreviewProvider.state(), actionTapped: { _ in })
+    MailboxActionBarMoreSheet(
+        state: MailboxActionBarMoreSheetPreviewProvider.state(),
+        actionTapped: { _ in },
+        editToolbarTapped: {}
+    )
 }

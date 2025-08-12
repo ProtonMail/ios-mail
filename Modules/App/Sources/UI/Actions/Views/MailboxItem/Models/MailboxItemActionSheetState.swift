@@ -21,6 +21,7 @@ import SwiftUI
 
 struct MailboxItemActionSheetState: Equatable, Copying {
     let title: String
+    let showEditToolbarAction: Bool
     var availableActions: AvailableActions
     var alert: AlertModel?
 }

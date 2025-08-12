@@ -49,6 +49,7 @@ public extension DS.Icon {
     static let icInbox = ImageResource.icInbox
     static let icLock = ImageResource.icLock
     static let icLockFilled = ImageResource.icLockFilled
+    static let icMagicWand = ImageResource.icMagicWand
     static let icMapPin = ImageResource.icMapPin
     static let icMobile = ImageResource.icMobile
     static let icMoon = ImageResource.icMoon

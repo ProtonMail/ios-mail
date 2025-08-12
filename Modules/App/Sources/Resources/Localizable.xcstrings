@@ -7310,6 +7310,9 @@
     "Edit message" : {
       "comment" : "Action to modify a scheduled message."
     },
+    "Edit toolbar" : {
+      "comment" : "Title of edit toolbar action."
+    },
     "Email not sent" : {
       "comment" : "Notification that is displayed when background time is up and at least one message is unsent."
     },

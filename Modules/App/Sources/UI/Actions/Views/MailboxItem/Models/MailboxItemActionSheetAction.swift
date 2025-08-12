@@ -24,4 +24,5 @@ enum MailboxItemActionSheetAction {
     case generalActionTapped(GeneralActions)
     case deleteConfirmed(DeleteConfirmationAlertAction)
     case phishingConfirmed(PhishingConfirmationAlertAction)
+    case editToolbarActionSelected
 }

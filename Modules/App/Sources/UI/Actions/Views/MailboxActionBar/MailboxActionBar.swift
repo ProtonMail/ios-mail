@@ -116,6 +116,8 @@ private struct MailboxActionBarViewModifier: ViewModifier {
                 .sheet(item: store.binding(\.moreActionSheetPresented)) { state in
                     MailboxActionBarMoreSheet(state: state) { action in
                         store.handle(action: .moreSheetAction(action, ids: selectedItemsIDs))
+                    } editToolbarTapped: {
+                        // FIXME: - Edit toolbar action
                     }
                     .alert(model: store.binding(\.moreDeleteConfirmationAlert))
                 }

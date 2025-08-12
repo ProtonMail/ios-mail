@@ -210,6 +210,10 @@ enum L10n {
             "Also archive?",
             comment: "Title of switcher in the label as action sheet."
         )
+        static let editToolbar = LocalizedStringResource(
+            "Edit toolbar",
+            comment: "Title of edit toolbar action."
+        )
 
         enum Delete {
             enum Alert {
