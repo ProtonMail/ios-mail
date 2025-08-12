@@ -26,6 +26,8 @@ final class MessageAddressActionPickerStateStore: ObservableObject {
     }
 
     struct State: Copying, Equatable {
+        let avatar: AvatarUIModel
+        let name: String
         let email: String
         /// Non-nil when the "Block this address" alert should be presented.
         var emailToBlock: String?
@@ -38,12 +40,19 @@ final class MessageAddressActionPickerStateStore: ObservableObject {
     private let blockAddress: (MailUserSession, String) async -> VoidActionResult
 
     init(
+        avatar: AvatarUIModel,
+        name: String,
         email: String,
         session: MailUserSession,
         toastStateStore: ToastStateStore,
         blockAddress: @escaping (MailUserSession, String) async -> VoidActionResult = blockAddress(session:email:)
     ) {
-        self.state = .init(email: email, emailToBlock: nil)
+        self.state = .init(
+            avatar: avatar,
+            name: name,
+            email: email,
+            emailToBlock: nil
+        )
         self.session = session
         self.toastStateStore = toastStateStore
         self.blockAddress = blockAddress

@@ -48,7 +48,6 @@ struct MessageAddressActionPickerView: View {
             AvatarView(avatar: avatarUIModel)
                 .clipShape(Circle())
                 .square(size: 70)
-
             Text(verbatim: name)
                 .font(.subheadline)
                 .bold()
@@ -67,7 +66,6 @@ struct MessageAddressActionPickerView: View {
 }
 
 private enum MessageAddressActionPickerSection {
-
     case first
     case second
     case third(AvatarUIModel)
@@ -87,7 +85,10 @@ private enum MessageAddressActionPickerSection {
 #Preview {
     HStack {
         MessageAddressActionPickerView(
-            avatarUIModel: .init(info: .init(initials: "Aa", color: .purple), type: .sender(params: .init())),
+            avatarUIModel: .init(
+                info: .init(initials: "Aa", color: .purple),
+                type: .sender(params: .init())
+            ),
             name: "Aaron",
             emailAddress: "aaron@proton.me"
         )

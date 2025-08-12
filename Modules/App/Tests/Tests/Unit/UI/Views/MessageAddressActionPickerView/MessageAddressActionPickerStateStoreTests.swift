@@ -25,7 +25,10 @@ final class MessageAddressActionPickerStateStoreTests: BaseTestCase {
     private var sut: MessageAddressActionPickerStateStore!
     private var toastStateStore: ToastStateStore!
     private var blockSpy: BlockAddressSpy!
+
+    private let displayName = "Camila"
     private let email = "camila.hall@gmail.com"
+    private let avatar: AvatarUIModel = .init(info: .init(initials: "Aa", color: .purple), type: .sender(params: .init()))
 
     override func setUp() {
         super.setUp()
@@ -43,14 +46,14 @@ final class MessageAddressActionPickerStateStoreTests: BaseTestCase {
 
     @MainActor
     func testInitialState() {
-        XCTAssertEqual(sut.state, .init(email: email, emailToBlock: nil))
+        XCTAssertEqual(sut.state, .init(avatar: avatar, name: displayName, email: email, emailToBlock: nil))
     }
 
     @MainActor
     func testOnTapBlockContact_ItPresentsAlert() async {
         await sut.handle(action: .onTap(.blockContact))
 
-        XCTAssertEqual(sut.state, .init(email: email, emailToBlock: email))
+        XCTAssertEqual(sut.state, .init(avatar: avatar, name: displayName, email: email, emailToBlock: email))
         XCTAssertEqual(blockSpy.calls, [])
         XCTAssertEqual(toastStateStore.state.toasts, [])
     }
@@ -60,7 +63,7 @@ final class MessageAddressActionPickerStateStoreTests: BaseTestCase {
         await sut.handle(action: .onTap(.blockContact))
         await sut.handle(action: .onBlockAlertAction(.cancel))
 
-        XCTAssertEqual(sut.state, .init(email: email, emailToBlock: .none))
+        XCTAssertEqual(sut.state, .init(avatar: avatar, name: displayName, email: email, emailToBlock: .none))
         XCTAssertEqual(blockSpy.calls, [])
         XCTAssertEqual(toastStateStore.state.toasts, [])
     }
@@ -72,7 +75,7 @@ final class MessageAddressActionPickerStateStoreTests: BaseTestCase {
         await sut.handle(action: .onTap(.blockContact))
         await sut.handle(action: .onBlockAlertAction(.confirm))
 
-        XCTAssertEqual(sut.state, .init(email: email, emailToBlock: .none))
+        XCTAssertEqual(sut.state, .init(avatar: avatar, name: displayName, email: email, emailToBlock: .none))
         XCTAssertEqual(blockSpy.calls, [email])
         XCTAssertEqual(toastStateStore.state.toasts, [.information(message: "Sender blocked")])
     }
@@ -84,7 +87,7 @@ final class MessageAddressActionPickerStateStoreTests: BaseTestCase {
         await sut.handle(action: .onTap(.blockContact))
         await sut.handle(action: .onBlockAlertAction(.confirm))
 
-        XCTAssertEqual(sut.state, .init(email: email, emailToBlock: .none))
+        XCTAssertEqual(sut.state, .init(avatar: avatar, name: displayName, email: email, emailToBlock: .none))
         XCTAssertEqual(blockSpy.calls, [email])
         XCTAssertEqual(toastStateStore.state.toasts, [.error(message: "Could not block sender")])
     }
@@ -112,6 +115,8 @@ final class MessageAddressActionPickerStateStoreTests: BaseTestCase {
 
     private func makeSUT() -> MessageAddressActionPickerStateStore {
         .init(
+            avatar: avatar,
+            name: displayName,
             email: email,
             session: .dummy,
             toastStateStore: toastStateStore,
