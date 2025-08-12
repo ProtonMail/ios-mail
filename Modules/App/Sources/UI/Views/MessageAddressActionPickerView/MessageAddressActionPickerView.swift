@@ -46,11 +46,7 @@ struct MessageAddressActionPickerView: View {
                         )
                         .listRowBackground(Color.clear)
                     },
-                    sections: [
-                        MessageAddressActionPickerSection.first.actions(),
-                        MessageAddressActionPickerSection.second.actions(),
-                        MessageAddressActionPickerSection.third(state.avatar).actions(),
-                    ],
+                    sections: sections(avatar: state.avatar),
                     onElementTap: { action in store.handle(action: .onTap(action)) }
                 )
                 .alert(model: blockConfirmationAlert(state: state, store: store))
@@ -83,6 +79,14 @@ struct MessageAddressActionPickerView: View {
         .padding(.bottom, DS.Spacing.medium)
     }
 
+    private func sections(avatar: AvatarUIModel) -> [[MessageAddressAction]] {
+        [
+            [.newMessage, .addToContacts],
+            [.copyAddress, .copyName],
+            avatar.type.isSender ? [.blockContact] : [],
+        ]
+    }
+
     private func blockConfirmationAlert(
         state: MessageAddressActionPickerStateStore.State,
         store: MessageAddressActionPickerStateStore
@@ -94,23 +98,6 @@ struct MessageAddressActionPickerView: View {
                     action: { action in await store.handle(action: .onBlockAlertAction(action)) }
                 )
             }
-        }
-    }
-}
-
-private enum MessageAddressActionPickerSection {
-    case first
-    case second
-    case third(AvatarUIModel)
-
-    func actions() -> [MessageAddressAction] {
-        switch self {
-        case .first:
-            [.newMessage, .addToContacts]
-        case .second:
-            [.copyAddress, .copyName]
-        case .third(let avatarUIModel):
-            avatarUIModel.type.isSender ? [.blockContact] : []
         }
     }
 }
