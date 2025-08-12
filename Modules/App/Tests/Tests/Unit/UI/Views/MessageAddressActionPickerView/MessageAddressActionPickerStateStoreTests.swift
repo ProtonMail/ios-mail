@@ -28,7 +28,10 @@ final class MessageAddressActionPickerStateStoreTests: BaseTestCase {
 
     private let displayName = "Camila"
     private let email = "camila.hall@gmail.com"
-    private let avatar: AvatarUIModel = .init(info: .init(initials: "Aa", color: .purple), type: .sender(params: .init()))
+    private let avatar = AvatarUIModel(
+        info: .init(initials: "Aa", color: .purple),
+        type: .sender(params: .init())
+    )
 
     override func setUp() {
         super.setUp()
