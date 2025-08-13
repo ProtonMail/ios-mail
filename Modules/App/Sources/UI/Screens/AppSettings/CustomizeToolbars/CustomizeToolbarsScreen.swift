@@ -17,6 +17,7 @@
 
 import SwiftUI
 import InboxCoreUI
+import InboxDesignSystem
 
 struct CustomizeToolbarsScreen: View {
     @StateObject var store: CustomizeToolbarsStore
@@ -93,21 +94,19 @@ struct CustomizeToolbarsScreen: View {
     CustomizeToolbarsScreen(toolbarService: ToolbarService())
 }
 
-import InboxDesignSystem
-
-struct ToolbarActionDisplayData {
+private struct ToolbarActionDisplayData {
     let image: Image
     let title: LocalizedStringResource
 }
 
-extension ToolbarActionDisplayData {
+private extension ToolbarActionDisplayData {
     init(imageResource: ImageResource, title: LocalizedStringResource) {
         self.image = imageResource.image
         self.title = title
     }
 }
 
-extension ToolbarActionType {
+private extension ToolbarActionType {
 
     var displayData: ToolbarActionDisplayData {
         switch self {
