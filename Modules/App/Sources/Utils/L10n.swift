@@ -1054,7 +1054,7 @@ enum L10n {
             comment: "Custom button subtitle for a free user on snooze sheet."
         )
         static let smallUpsellButtonSubtitle = LocalizedStringResource(
-            "Upgrade to Mail Plus",
+            "Upgrade to access",
             comment: "Custom button subtitle for a free user on snooze sheet."
         )
         static let conversationUnsnoozed = LocalizedStringResource(

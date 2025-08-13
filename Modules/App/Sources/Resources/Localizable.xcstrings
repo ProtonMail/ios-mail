@@ -18187,14 +18187,14 @@
     "Upgrade to %@" : {
       "comment" : "Title of the upsell button in the sidebar"
     },
+    "Upgrade to access" : {
+      "comment" : "Custom button subtitle for a free user on snooze sheet."
+    },
     "Upgrade to Auto-delete" : {
       "comment" : "Empty Spam/Trash Banner: Action button to upgrade the account for auto-delete functionality."
     },
     "Upgrade to automatically remove emails that have been in Trash or Spam for over 30 days." : {
       "comment" : "Empty Spam/Trash Banner: Title shown to free users, encouraging them to upgrade to auto-delete."
-    },
-    "Upgrade to Mail Plus" : {
-      "comment" : "Custom button subtitle for a free user on snooze sheet."
     },
     "View headers" : {
       "comment" : "Action title for viewing given message's headers in the action sheet.",
