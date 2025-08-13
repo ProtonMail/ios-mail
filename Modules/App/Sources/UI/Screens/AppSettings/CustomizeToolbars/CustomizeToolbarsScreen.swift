@@ -94,7 +94,7 @@ struct CustomizeToolbarsScreen: View {
     CustomizeToolbarsScreen(toolbarService: ToolbarService())
 }
 
-private struct ToolbarActionDisplayData {
+struct ToolbarActionDisplayData {
     let image: Image
     let title: LocalizedStringResource
 }
@@ -106,7 +106,7 @@ private extension ToolbarActionDisplayData {
     }
 }
 
-private extension ToolbarActionType {
+extension ToolbarActionType {
 
     var displayData: ToolbarActionDisplayData {
         switch self {
