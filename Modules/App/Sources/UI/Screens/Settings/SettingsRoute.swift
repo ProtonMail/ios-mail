@@ -74,9 +74,7 @@ struct SettingsViewFactory {
         case .subscription:
             AvailablePlansViewFactory.make(mailUserSession: mailUserSession, presentationMode: .push)
         case .customizeToolbars:
-            ZStack {
-                Text(L10n.Settings.App.customizeToolbars) // FIXME: - Replace
-            }
+            CustomizeToolbarsScreen(toolbarService: ToolbarService())
         }
     }
 }
