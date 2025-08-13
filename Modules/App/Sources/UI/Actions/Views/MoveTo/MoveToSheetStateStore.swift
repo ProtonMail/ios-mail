@@ -76,7 +76,7 @@ class MoveToSheetStateStore: StateStore {
                 )
                 let toastID = UUID()
                 let undoAction = undo.undoAction(userSession: mailUserSession) {
-                    self.dismissToast(withID: toastID)
+                    self.toastStateStore.dismiss(withID: toastID)
                 }
                 let toast: Toast = .moveTo(id: toastID, destinationName: destinationName, undoAction: undoAction)
                 dismissSheet(presentingToast: toast)
@@ -84,13 +84,6 @@ class MoveToSheetStateStore: StateStore {
                 dismissSheet(presentingToast: .error(message: error.localizedDescription))
             }
         }
-    }
-
-    private func dismissToast(withID toastID: UUID) {
-        Dispatcher.dispatchOnMain(
-            .init(block: { [weak self] in
-                self?.toastStateStore.dismiss(withID: toastID)
-            }))
     }
 
     private func dismissSheet(presentingToast toast: Toast) {
