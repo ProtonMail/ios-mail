@@ -15,6 +15,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+// FIXME: - To remove after Rust provides API
+
 struct CustomizeToolbarActions {
     let list: ToolbarActions
     let conversation: ToolbarActions
@@ -25,7 +27,6 @@ struct ToolbarActions {
     let unselected: [ToolbarActionType]
 }
 
-// Check the actions against AC
 enum ToolbarActionType {
     case markAsUnread
     case moveToTrash
