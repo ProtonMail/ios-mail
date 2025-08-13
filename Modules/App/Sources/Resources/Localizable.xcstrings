@@ -8829,7 +8829,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Etichetare ca…"
+            "value" : "Etichetare cu…"
           }
         },
         "ru" : {
@@ -11359,7 +11359,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Déplacé ver %@."
+            "value" : "Déplacé vers %@."
           }
         },
         "hu" : {
@@ -16682,7 +16682,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Marcare cu stea"
+            "value" : "Favorite"
           }
         },
         "ru" : {
@@ -16873,7 +16873,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Cu stea"
+            "value" : "Favorit"
           }
         },
         "ru" : {
