@@ -22,8 +22,6 @@ public enum MailSessionParamsFactory {
     public static func make(origin: Origin, apiConfig: ApiConfig) -> MailSessionParams {
         let fileManager = FileManager.default
 
-        // TODO: exclude application support from iCloud backup
-
         let applicationSupportPath = fileManager.sharedSupportDirectory.path()
         let cachePath = fileManager.sharedCacheDirectory.path()
         AppLogger.logTemporarily(message: "path: \(cachePath)")
