@@ -16,15 +16,16 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import ProtonMail
-import InboxTesting
 import InboxSnapshotTesting
 import proton_app_uniffi
 import SwiftUI
+import Testing
 
 @MainActor
-class AppSettingsSnapshotTests: BaseTestCase {
+struct AppSettingsSnapshotTests {
 
-    func testAppSettingsLayoutCorrectly() {
+    @Test(arguments: [MobileSignatureStatus.enabled, .disabled, .needsPaidVersion])
+    func testAppSettingsLayoutCorrectly(mobileSignatureStatus: MobileSignatureStatus) {
         CustomizeToolbarsFlag.$isVisible
             .withValue(true) {
                 let sut = AppSettingsScreen(
@@ -38,20 +39,20 @@ class AppSettingsSnapshotTests: BaseTestCase {
                             useCombineContacts: false,
                             useAlternativeRouting: true
                         ),
-                        isAppearanceMenuShown: false
+                        isAppearanceMenuShown: false,
+                        mobileSignatureStatus: mobileSignatureStatus
                     ),
                     appSettingsRepository: AppSettingsRepositorySpy()
                 )
-                assertCustomHeightSnapshot(
-                    matching: UIHostingController(rootView: sut).view,
-                    styles: [.light],
-                    preferredHeight: 900
-                )
-                assertCustomHeightSnapshot(
-                    matching: UIHostingController(rootView: sut).view,
-                    styles: [.dark],
-                    preferredHeight: 900
-                )
+
+                for userInterfaceStyle in [UIUserInterfaceStyle.light, .dark] {
+                    assertCustomHeightSnapshot(
+                        matching: UIHostingController(rootView: sut).view,
+                        styles: [userInterfaceStyle],
+                        preferredHeight: 900,
+                        named: "\(mobileSignatureStatus)"
+                    )
+                }
             }
     }
 

@@ -48,7 +48,7 @@ public struct FormTextInput: View {
     }
 
     private let title: LocalizedStringResource
-    private let placeholder: LocalizedStringResource
+    private let placeholder: LocalizedStringResource?
     private let footer: LocalizedStringResource?
     private let inputType: InputType
     @Binding private var text: String
@@ -57,7 +57,7 @@ public struct FormTextInput: View {
 
     public init(
         title: LocalizedStringResource,
-        placeholder: LocalizedStringResource,
+        placeholder: LocalizedStringResource? = nil,
         footer: LocalizedStringResource? = nil,
         text: Binding<String>,
         validation: Binding<ValidationStatus>,
@@ -122,7 +122,7 @@ public struct FormTextInput: View {
                     .padding(.top, -DS.Spacing.standard)
                     .padding(.leading, -DS.Spacing.small)
                     .accentColor(DS.Color.Text.accent)
-                if text.isEmpty {
+                if text.isEmpty, let placeholder {
                     Text(placeholder)
                         .foregroundStyle(DS.Color.Text.hint)
                         .allowsHitTesting(false)

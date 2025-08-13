@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Proton Technologies AG
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -15,26 +15,33 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Combine
+import InboxCore
+import InboxCoreUI
+import proton_app_uniffi
 
-public final class Router<Route: Routable>: ObservableObject {
-    @Published public var stack: [Route]
+struct MobileSignatureState: Copying, Equatable {
+    var mobileSignature: MobileSignature
+    var toast: Toast?
 
-    public init() {
-        self.stack = []
+    var textBoxOpacity: Double {
+        mobileSignature.status.isEnabled ? 1 : 0
     }
+}
 
-    public func go(to route: Route) {
-        stack.append(route)
-    }
-
-    public func goBack() {
-        _ = stack.popLast()
-    }
-
-    public func goBack(while shouldGoBack: (Route) throws -> Bool) rethrows {
-        while let last = stack.last, try shouldGoBack(last) {
-            stack.removeLast()
+extension MobileSignatureStatus {
+    var isEnabled: Bool {
+        get {
+            self != .disabled
+        }
+        set {
+            self = newValue ? .enabled : .disabled
         }
     }
+}
+
+extension MobileSignatureState {
+    static let initial = Self.init(
+        mobileSignature: .init(body: .empty, status: .needsPaidVersion),
+        toast: nil
+    )
 }

@@ -22,7 +22,7 @@ struct FormBigButtonContent: View {
     let title: LocalizedStringResource
     let value: String
     let hasAccentTextColor: Bool
-    let symbol: DS.SFSymbol?
+    let accessoryType: FormBigButton.AccessoryType?
 
     var body: some View {
         HStack(alignment: .center) {
@@ -36,11 +36,18 @@ struct FormBigButtonContent: View {
                     .fontWeight(.regular)
                     .foregroundStyle(hasAccentTextColor ? DS.Color.Text.accent : DS.Color.Text.norm)
             }
-            if let symbol {
+            if let accessoryType {
                 Spacer(minLength: DS.Spacing.small)
-                Image(symbol: symbol)
-                    .font(.system(size: 20))
-                    .foregroundStyle(DS.Color.Text.hint)
+
+                switch accessoryType {
+                case .symbol(let symbol):
+                    Image(symbol: symbol)
+                        .font(.system(size: 20))
+                        .foregroundStyle(DS.Color.Text.hint)
+                case .upsell:
+                    DS.Icon.icBrandProtonMailUpsell.image
+
+                }
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)

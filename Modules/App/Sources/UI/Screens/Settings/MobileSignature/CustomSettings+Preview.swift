@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Proton Technologies AG
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -15,26 +15,26 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Combine
+import proton_app_uniffi
 
-public final class Router<Route: Routable>: ObservableObject {
-    @Published public var stack: [Route]
+final class CustomSettingsPreviewProvider: CustomSettingsProtocol {
+    private(set) var state: MobileSignature
 
-    public init() {
-        self.stack = []
+    init(status: MobileSignatureStatus) {
+        state = .init(body: "Sent from Proton Mail for iOS", status: status)
     }
 
-    public func go(to route: Route) {
-        stack.append(route)
+    func mobileSignature() async -> CustomSettingsMobileSignatureResult {
+        .ok(state)
     }
 
-    public func goBack() {
-        _ = stack.popLast()
+    func setMobileSignature(signature: String) async -> CustomSettingsSetMobileSignatureResult {
+        state.body = signature
+        return .ok
     }
 
-    public func goBack(while shouldGoBack: (Route) throws -> Bool) rethrows {
-        while let last = stack.last, try shouldGoBack(last) {
-            stack.removeLast()
-        }
+    func setMobileSignatureEnabled(enabled: Bool) async -> CustomSettingsSetMobileSignatureEnabledResult {
+        state.status.isEnabled = enabled
+        return .ok
     }
 }

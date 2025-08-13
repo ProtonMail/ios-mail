@@ -199,7 +199,6 @@ struct SnoozeView: View {
             gridButton(title: title, subtitle: subtitle, icon: Image(DS.Icon.icCalendarToday), action: action)
         } else {
             FormBigButton(title: title, symbol: .chevronRight, value: subtitle, action: action)
-                .roundedRectangleStyle()
         }
     }
 }

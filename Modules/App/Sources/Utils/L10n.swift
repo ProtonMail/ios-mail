@@ -1028,6 +1028,12 @@ enum L10n {
             )
         }
 
+        enum MobileSignature {
+            static let title = LocalizedStringResource("Mobile signature", comment: "Settings menu title.")
+            static let switchLabel = LocalizedStringResource("Enable signature", comment: "Next to a checkbox in the settings.")
+            static let textBoxLabel = LocalizedStringResource("Signature", comment: "Above the text box to populate the signature in settings.")
+        }
+
         static let subscription = LocalizedStringResource(
             "Subscription",
             comment: "Subscription menu title in the settings."

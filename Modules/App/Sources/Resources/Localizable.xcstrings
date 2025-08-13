@@ -20673,6 +20673,9 @@
         }
       }
     },
+    "Enable signature" : {
+      "comment" : "Next to a checkbox in the settings."
+    },
     "Error logs help us to get to the bottom of your issue. If you don't include them, we might not be able to investigate fully." : {
       "comment" : "Information displayed in the bottom of the screen when send error logs switch is dislabed.",
       "localizations" : {
@@ -28815,6 +28818,9 @@
           }
         }
       }
+    },
+    "Mobile signature" : {
+      "comment" : "Settings menu title."
     },
     "Move to inbox" : {
       "comment" : "Action title for moving message/conversation to the `Inbox` folder in the action sheet.",
@@ -39922,6 +39928,9 @@
           }
         }
       }
+    },
+    "Signature" : {
+      "comment" : "Above the text box to populate the signature in settings."
     },
     "Snooze" : {
       "comment" : "Action title for marking message as snoozed in the action sheet.",

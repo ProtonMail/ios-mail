@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Proton Technologies AG
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -15,26 +15,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Combine
-
-public final class Router<Route: Routable>: ObservableObject {
-    @Published public var stack: [Route]
-
-    public init() {
-        self.stack = []
-    }
-
-    public func go(to route: Route) {
-        stack.append(route)
-    }
-
-    public func goBack() {
-        _ = stack.popLast()
-    }
-
-    public func goBack(while shouldGoBack: (Route) throws -> Bool) rethrows {
-        while let last = stack.last, try shouldGoBack(last) {
-            stack.removeLast()
-        }
-    }
+enum MobileSignatureStateStoreAction {
+    case onLoad
+    case setIsEnabled(Bool)
+    case saveContent
 }
