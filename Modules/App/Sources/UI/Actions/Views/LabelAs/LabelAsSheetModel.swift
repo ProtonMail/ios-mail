@@ -94,7 +94,7 @@ class LabelAsSheetModel: ObservableObject {
                 let result = try await labelAsActionPerformer.labelAs(input: input)
                 let toastID = UUID()
                 let undoAction = result.undo.undoAction(userSession: mailUserSession) {
-                    self.toastStateStore.dismiss(withID: toastID)
+                    self.dismissToast(withID: toastID)
                 }
                 let toast = Toast.labelAsArchive(
                     id: toastID,
@@ -140,6 +140,10 @@ class LabelAsSheetModel: ObservableObject {
 
     private func showError(_ error: Error) {
         showToast(.error(message: error.localizedDescription))
+    }
+
+    private func dismissToast(withID toastID: UUID) {
+        Dispatcher.dispatchOnMain(.init(block: { [weak self] in self?.toastStateStore.dismiss(withID: toastID) }))
     }
 }
 

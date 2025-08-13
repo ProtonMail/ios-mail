@@ -144,7 +144,7 @@ final class MailboxActionBarStateStore: StateStore {
                 )
                 let toastID = UUID()
                 let undoAction = undo.undoAction(userSession: mailUserSession) {
-                    self.toastStateStore.dismiss(withID: toastID)
+                    self.dismissToast(withID: toastID)
                 }
 
                 Dispatcher.dispatchOnMain(
@@ -220,6 +220,13 @@ final class MailboxActionBarStateStore: StateStore {
     private func handleMoveActionFailure(error: Error) {
         toastStateStore.present(toast: .error(message: error.localizedDescription))
         dismissMoreActionSheet()
+    }
+
+    private func dismissToast(withID toastID: UUID) {
+        Dispatcher.dispatchOnMain(
+            .init(block: { [weak self] in
+                self?.toastStateStore.dismiss(withID: toastID)
+            }))
     }
 }
 

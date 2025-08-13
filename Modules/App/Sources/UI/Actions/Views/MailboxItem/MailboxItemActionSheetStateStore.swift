@@ -181,7 +181,7 @@ class MailboxItemActionSheetStateStore: StateStore {
                 )
                 let toastID = UUID()
                 let undoAction = undo.undoAction(userSession: mailUserSession) {
-                    self.toastStateStore.dismiss(withID: toastID)
+                    self.dismissToast(withID: toastID)
                 }
                 presentMoveToToast(id: toastID, destination: destination, undoAction: undoAction)
             } catch {
@@ -249,6 +249,13 @@ class MailboxItemActionSheetStateStore: StateStore {
         Dispatcher.dispatchOnMain(
             .init(block: { [weak self] in
                 self?.toastStateStore.present(toast: toast)
+            }))
+    }
+
+    private func dismissToast(withID toastID: UUID) {
+        Dispatcher.dispatchOnMain(
+            .init(block: { [weak self] in
+                self?.toastStateStore.dismiss(withID: toastID)
             }))
     }
 

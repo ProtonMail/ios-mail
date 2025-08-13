@@ -274,7 +274,10 @@ extension ConversationDetailModel {
                 )
                 let toastID = UUID()
                 let undoAction = undo.undoAction(userSession: userSession) {
-                    toastStateStore.dismiss(withID: toastID)
+                    Dispatcher.dispatchOnMain(
+                        .init(block: {
+                            toastStateStore.dismiss(withID: toastID)
+                        }))
                 }
 
                 toast = .moveTo(
