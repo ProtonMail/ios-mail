@@ -5101,6 +5101,9 @@
         }
       }
     },
+    "Conversation toolbar" : {
+      "comment" : "Title of a section displaying selected conversation toolbar actions."
+    },
     "Conversation unsnoozed" : {
       "comment" : "Toast message after unsnooze action"
     },
@@ -7304,6 +7307,9 @@
     "Drafts" : {
       "comment" : "Menu title of drafts in the sidebar."
     },
+    "Edit actions" : {
+      "comment" : "Title of edit actions button."
+    },
     "Edit and reschedule" : {
       "comment" : "Alert title for editing a scheduled message."
     },
@@ -8896,6 +8902,9 @@
     },
     "Light" : {
       "comment" : "One of the appearance option to set in app settings."
+    },
+    "List toolbar" : {
+      "comment" : "Title of a section displaying selected list toolbar actions."
     },
     "Loading your mailbox..." : {
       "comment" : "Text shown when user session is being initialized."
@@ -17173,6 +17182,12 @@
     },
     "This message will expire in %@" : {
       "comment" : "Banner indicating when a message will expire and no longer be accessible."
+    },
+    "This toolbar appears when multiple messages are selected in the message list (e.g., Inbox, Trash, etc.)." : {
+      "comment" : "Footer of a section displaying selected list toolbar actions."
+    },
+    "This toolbar remains consistently visible during message reading." : {
+      "comment" : "Footer of a section displaying selected conversation toolbar actions."
     },
     "This weekend" : {
       "comment" : "Predefined snooze option that postpones item until the upcoming weekend."

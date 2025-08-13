@@ -29,8 +29,8 @@ struct CustomizeToolbarsScreen: View {
         ScrollView {
             VStack(spacing: DS.Spacing.extraLarge) {
                 FormSection(
-                    header: "List toolbar",
-                    footer: "This toolbar appears when multiple messages are selected in the message list (e.g., Inbox, Trash, etc.)."
+                    header: L10n.Settings.CustomizeToolbars.listToolbarSectionTitle,
+                    footer: L10n.Settings.CustomizeToolbars.listToolbarSectionFooter
                 ) {
                     list(for: store.state.list) {
                         store.handle(action: .editListToolbar)
@@ -38,8 +38,8 @@ struct CustomizeToolbarsScreen: View {
                 }
 
                 FormSection(
-                    header: "Conversation toolbar",
-                    footer: "This toolbar remains consistently visible during message reading."
+                    header: L10n.Settings.CustomizeToolbars.conversationToolbarSectionTitle,
+                    footer: L10n.Settings.CustomizeToolbars.conversationToolbarSectionFooter
                 ) {
                     list(for: store.state.conversation) {
                         store.handle(action: .editConversationToolbar)
@@ -76,7 +76,7 @@ struct CustomizeToolbarsScreen: View {
         case .editActions:
             Button(action: editToolbarAction) {
                 HStack {
-                    Text("Edit actions")
+                    Text(L10n.Settings.CustomizeToolbars.editActions)
                     Spacer()
                     Image(symbol: DS.SFSymbol.chevronRight)
                 }

@@ -933,6 +933,29 @@ enum L10n {
             )
         }
 
+        enum CustomizeToolbars {
+            static let listToolbarSectionTitle = LocalizedStringResource(
+                "List toolbar",
+                comment: "Title of a section displaying selected list toolbar actions."
+            )
+            static let listToolbarSectionFooter = LocalizedStringResource(
+                "This toolbar appears when multiple messages are selected in the message list (e.g., Inbox, Trash, etc.).",
+                comment: "Footer of a section displaying selected list toolbar actions."
+            )
+            static let conversationToolbarSectionTitle = LocalizedStringResource(
+                "Conversation toolbar",
+                comment: "Title of a section displaying selected conversation toolbar actions."
+            )
+            static let conversationToolbarSectionFooter = LocalizedStringResource(
+                "This toolbar remains consistently visible during message reading.",
+                comment: "Footer of a section displaying selected conversation toolbar actions."
+            )
+            static let editActions = LocalizedStringResource(
+                "Edit actions",
+                comment: "Title of edit actions button."
+            )
+        }
+
         static let subscription = LocalizedStringResource(
             "Subscription",
             comment: "Subscription menu title in the settings."
