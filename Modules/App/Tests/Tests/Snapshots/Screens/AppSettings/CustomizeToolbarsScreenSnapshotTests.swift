@@ -38,7 +38,7 @@ struct CustomizeToolbarsScreenSnapshotTests {
             toolbarService: ToolbarService()
         )
 
-        assertSnapshotsOnIPhoneX(of: sut, record: true)
+        assertSnapshotsOnIPhoneX(of: sut)
     }
 
 }
