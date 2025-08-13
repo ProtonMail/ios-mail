@@ -586,8 +586,8 @@ extension MailboxModel {
             } else {
                 actionStar(ids: ids)
             }
-        case .moveTo(.moveToSystemLabel(_, let systemLabelID)):
-            moveTo(systemLabel: systemLabelID, ids: ids, toastStateStore: toastStateStore)
+        case .moveTo(.moveToSystemLabel(let label, let labelID)):
+            move(itemIDs: ids, to: labelID, label: label, toastStateStore: toastStateStore)
         case .noAction:
             break
         }
@@ -614,14 +614,32 @@ extension MailboxModel {
         starActionPerformer.unstar(itemsWithIDs: ids, itemType: viewMode.itemType)
     }
 
-    private func moveTo(systemLabel: ID, ids: [ID], toastStateStore: ToastStateStore) {
-        Task {
+    private func move(
+        itemIDs: [ID],
+        to destinationID: ID,
+        label: SystemLabel,
+        toastStateStore: ToastStateStore
+    ) {
+        let userSession = dependencies.appContext.userSession
+
+        Task { [weak self] in
+            guard let self else { return }
             do {
-                try await moveToActionPerformer?.moveTo(
-                    destinationID: systemLabel,
-                    itemsIDs: ids,
+                let undo = try await moveToActionPerformer?.moveTo(
+                    destinationID: destinationID,
+                    itemsIDs: itemIDs,
                     itemType: viewMode.itemType
                 )
+                let toastID = UUID()
+                let undoAction = undo.undoAction(userSession: userSession) {
+                    toastStateStore.dismiss(withID: toastID)
+                }
+                let toast: Toast = .moveTo(
+                    id: toastID,
+                    destinationName: label.humanReadable.string,
+                    undoAction: undoAction
+                )
+                toastStateStore.present(toast: toast)
             } catch {
                 toastStateStore.present(toast: .error(message: error.localizedDescription))
             }

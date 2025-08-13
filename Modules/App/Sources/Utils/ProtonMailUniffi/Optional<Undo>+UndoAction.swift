@@ -18,8 +18,21 @@
 import proton_app_uniffi
 
 extension Optional where Wrapped == Undo {
-
-    func undoAction(userSession: MailUserSession, onFinish: @escaping @Sendable () -> Void) -> (() -> Void)? {
+    /// Creates a fire-and-forget undo action.
+    ///
+    /// - Parameters:
+    ///   - userSession: Context used when performing the undo.
+    ///   - onFinish: A closure invoked **on the main actor** after the undo completes
+    ///               (successfully or after throwing is handled by the caller). Use this to
+    ///               update UI, e.g. hide a toast.
+    /// - Returns: A closure you can call to start the undo operation, or `nil` if `self` is `nil`.
+    ///
+    /// The returned closure launches a `Task` that awaits the undo operation, then hops to the
+    /// main actor to call `onFinish`. UI updates inside `onFinish` are safe.
+    func undoAction(
+        userSession: MailUserSession,
+        onFinish: @MainActor @escaping @Sendable () -> Void
+    ) -> (() -> Void)? {
         guard case .some(let wrapped) = self else {
             return nil
         }
@@ -27,9 +40,8 @@ extension Optional where Wrapped == Undo {
         return {
             Task {
                 try await wrapped.undo(ctx: userSession).get()
-                onFinish()
+                await onFinish()
             }
         }
     }
-
 }
