@@ -32,9 +32,14 @@ final class MobileSignatureStateStore: StateStore {
         }
     }
 
-    init(customSettings: CustomSettingsProtocol, clock: any Clock<Duration> = ContinuousClock()) {
+    init(
+        customSettings: CustomSettingsProtocol,
+        clock: any Clock<Duration> = ContinuousClock(),
+        initialState: MobileSignatureState = .initial
+    ) {
         self.customSettings = customSettings
         self.clock = clock
+        state = initialState
     }
 
     func handle(action: MobileSignatureStateStoreAction) async {

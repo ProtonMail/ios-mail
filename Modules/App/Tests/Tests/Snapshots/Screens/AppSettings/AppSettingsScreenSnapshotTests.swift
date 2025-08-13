@@ -61,7 +61,7 @@ struct AppSettingsScreenSnapshotTests {
             assertCustomHeightSnapshot(
                 matching: UIHostingController(rootView: sut).view,
                 styles: [userInterfaceStyle],
-                preferredHeight: 900,
+                preferredHeight: 1000,
                 named: "\(testCase.signatureStatus)_\(testCase.appIcon)",
             )
         }

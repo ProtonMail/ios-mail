@@ -23,11 +23,17 @@ import SwiftUI
 struct MobileSignatureScreen: View {
     @EnvironmentObject private var toastStateStore: ToastStateStore
 
-    let customSettings: CustomSettingsProtocol
+    private let customSettings: CustomSettingsProtocol
+    private let initialState: MobileSignatureState
+
+    init(customSettings: CustomSettingsProtocol, initialState: MobileSignatureState = .initial) {
+        self.customSettings = customSettings
+        self.initialState = initialState
+    }
 
     var body: some View {
         StoreView(
-            store: MobileSignatureStateStore(customSettings: customSettings)
+            store: MobileSignatureStateStore(customSettings: customSettings, initialState: initialState)
         ) { state, store in
             ZStack {
                 DS.Color.BackgroundInverted.norm
