@@ -40,7 +40,9 @@ struct MailboxActionBarMoreSheet: View {
                     section(content: state.moreSheetOnlyActions)
                     section(content: state.bottomBarActions)
 
-                    editToolbarSection()
+                    if CustomizeToolbarsFlag.isVisible {
+                        editToolbarSection()
+                    }
                 }
                 .padding(.all, DS.Spacing.large)
             }

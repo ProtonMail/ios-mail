@@ -25,31 +25,34 @@ import SwiftUI
 class AppSettingsSnapshotTests: BaseTestCase {
 
     func testAppSettingsLayoutCorrectly() {
-        let sut = AppSettingsScreen(
-            state: .init(
-                areNotificationsEnabled: false,
-                appLanguage: "English",
-                storedAppSettings: .init(
-                    appearance: .system,
-                    protection: .pin,
-                    autoLock: .always,
-                    useCombineContacts: false,
-                    useAlternativeRouting: true
-                ),
-                isAppearanceMenuShown: false
-            ),
-            appSettingsRepository: AppSettingsRepositorySpy()
-        )
-        assertCustomHeightSnapshot(
-            matching: UIHostingController(rootView: sut).view,
-            styles: [.light],
-            preferredHeight: 900
-        )
-        assertCustomHeightSnapshot(
-            matching: UIHostingController(rootView: sut).view,
-            styles: [.dark],
-            preferredHeight: 900
-        )
+        CustomizeToolbarsFlag.$isVisible
+            .withValue(true) {
+                let sut = AppSettingsScreen(
+                    state: .init(
+                        areNotificationsEnabled: false,
+                        appLanguage: "English",
+                        storedAppSettings: .init(
+                            appearance: .system,
+                            protection: .pin,
+                            autoLock: .always,
+                            useCombineContacts: false,
+                            useAlternativeRouting: true
+                        ),
+                        isAppearanceMenuShown: false
+                    ),
+                    appSettingsRepository: AppSettingsRepositorySpy()
+                )
+                assertCustomHeightSnapshot(
+                    matching: UIHostingController(rootView: sut).view,
+                    styles: [.light],
+                    preferredHeight: 900
+                )
+                assertCustomHeightSnapshot(
+                    matching: UIHostingController(rootView: sut).view,
+                    styles: [.dark],
+                    preferredHeight: 900
+                )
+            }
     }
 
 }

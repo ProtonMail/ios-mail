@@ -17,6 +17,10 @@
 
 // FIXME: - To remove after Rust provides API
 
+enum CustomizeToolbarsFlag {
+    @TaskLocal static var isVisible = false
+}
+
 struct CustomizeToolbarActions {
     let list: ToolbarActions
     let conversation: ToolbarActions

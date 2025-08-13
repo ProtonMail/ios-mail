@@ -96,7 +96,7 @@ struct MailboxItemActionSheet: View {
                         moveToActionsSection(state: state, store: store)
                         section(state: state, store: store)
 
-                        if state.showEditToolbarAction {
+                        if state.showEditToolbarAction && CustomizeToolbarsFlag.isVisible {
                             editToolbarSection(store: store)
                         }
                     }.padding(.all, DS.Spacing.large)
