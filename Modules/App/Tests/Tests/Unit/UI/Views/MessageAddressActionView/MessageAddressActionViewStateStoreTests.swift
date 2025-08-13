@@ -19,12 +19,13 @@
 import InboxCoreUI
 import InboxTesting
 import proton_app_uniffi
-import XCTest
+import Testing
 
-final class MessageAddressActionViewStateStoreTests: BaseTestCase {
-    private var sut: MessageAddressActionViewStateStore!
-    private var toastStateStore: ToastStateStore!
-    private var blockSpy: BlockAddressSpy!
+@MainActor
+final class MessageAddressActionViewStateStoreTests {
+    private lazy var sut: MessageAddressActionViewStateStore = makeSUT()
+    private var toastStateStore = ToastStateStore(initialState: .initial)
+    private var blockSpy = BlockAddressSpy()
 
     private let displayName = "Camila"
     private let email = "camila.hall@gmail.com"
@@ -33,32 +34,18 @@ final class MessageAddressActionViewStateStoreTests: BaseTestCase {
         type: .sender(params: .init())
     )
 
-    override func setUp() {
-        super.setUp()
-        toastStateStore = .init(initialState: .initial)
-        blockSpy = .init()
-        sut = makeSUT()
-    }
-
-    override func tearDown() {
-        sut = nil
-        toastStateStore = nil
-        blockSpy = nil
-        super.tearDown()
-    }
-
-    @MainActor
+    @Test
     func testInitialState() {
-        XCTAssertEqual(sut.state, .init(avatar: avatar, name: displayName, email: email, emailToBlock: nil))
+        #expect(sut.state == .init(avatar: avatar, name: displayName, email: email, emailToBlock: nil))
     }
 
-    @MainActor
+    @Test
     func testOnTapBlockContact_ItPresentsAlert() async {
         await sut.handle(action: .onTap(.blockContact))
 
-        XCTAssertEqual(sut.state, .init(avatar: avatar, name: displayName, email: email, emailToBlock: email))
-        XCTAssertEqual(blockSpy.calls, [])
-        XCTAssertEqual(toastStateStore.state.toasts, [])
+        #expect(sut.state == .init(avatar: avatar, name: displayName, email: email, emailToBlock: email))
+        #expect(blockSpy.calls == [])
+        #expect(toastStateStore.state.toasts == [])
     }
 
     @MainActor
@@ -66,36 +53,36 @@ final class MessageAddressActionViewStateStoreTests: BaseTestCase {
         await sut.handle(action: .onTap(.blockContact))
         await sut.handle(action: .onBlockAlertAction(.cancel))
 
-        XCTAssertEqual(sut.state, .init(avatar: avatar, name: displayName, email: email, emailToBlock: .none))
-        XCTAssertEqual(blockSpy.calls, [])
-        XCTAssertEqual(toastStateStore.state.toasts, [])
+        #expect(sut.state == .init(avatar: avatar, name: displayName, email: email, emailToBlock: .none))
+        #expect(blockSpy.calls == [])
+        #expect(toastStateStore.state.toasts == [])
     }
 
-    @MainActor
+    @Test
     func testOnBlockAlertAction_ConfirmActionTappedAndSucceeds_ItShowsInformationToast() async {
         blockSpy.stubbed[email] = .ok
 
         await sut.handle(action: .onTap(.blockContact))
         await sut.handle(action: .onBlockAlertAction(.confirm))
 
-        XCTAssertEqual(sut.state, .init(avatar: avatar, name: displayName, email: email, emailToBlock: .none))
-        XCTAssertEqual(blockSpy.calls, [email])
-        XCTAssertEqual(toastStateStore.state.toasts, [.information(message: "Sender blocked")])
+        #expect(sut.state == .init(avatar: avatar, name: displayName, email: email, emailToBlock: .none))
+        #expect(blockSpy.calls == [email])
+        #expect(toastStateStore.state.toasts == [.information(message: "Sender blocked")])
     }
 
-    @MainActor
+    @Test
     func testOnBlockAlertAction_ConfirmActionTappedAndFailed_ItShowsErrorToast() async {
         blockSpy.stubbed[email] = .error(.other(.network))
 
         await sut.handle(action: .onTap(.blockContact))
         await sut.handle(action: .onBlockAlertAction(.confirm))
 
-        XCTAssertEqual(sut.state, .init(avatar: avatar, name: displayName, email: email, emailToBlock: .none))
-        XCTAssertEqual(blockSpy.calls, [email])
-        XCTAssertEqual(toastStateStore.state.toasts, [.error(message: "Could not block sender")])
+        #expect(sut.state == .init(avatar: avatar, name: displayName, email: email, emailToBlock: .none))
+        #expect(blockSpy.calls == [email])
+        #expect(toastStateStore.state.toasts == [.error(message: "Could not block sender")])
     }
 
-    @MainActor
+    @Test
     func testOnTapOtherActions_ItShowComingSoon() async {
         let actions: [MessageAddressAction] = [
             .newMessage,
@@ -108,9 +95,9 @@ final class MessageAddressActionViewStateStoreTests: BaseTestCase {
         for action in actions {
             await sut.handle(action: .onTap(action))
 
-            XCTAssertEqual(toastStateStore.state.toasts.last, .comingSoon)
-            XCTAssertEqual(blockSpy.calls, [])
-            XCTAssertNil(sut.state.emailToBlock)
+            #expect(toastStateStore.state.toasts == [.comingSoon])
+            #expect(blockSpy.calls == [])
+            #expect(sut.state.emailToBlock == nil)
         }
     }
 
@@ -124,13 +111,13 @@ final class MessageAddressActionViewStateStoreTests: BaseTestCase {
             session: .dummy,
             toastStateStore: toastStateStore,
             blockAddress: { [unowned self] session, address in
-                return await self.blockSpy.result(for: address)
+                await self.blockSpy.result(for: address)
             }
         )
     }
 }
 
-private final class BlockAddressSpy {
+private final class BlockAddressSpy: @unchecked Sendable {
     private(set) var calls: [String] = []
     var stubbed: [String: VoidActionResult] = [:]
 
