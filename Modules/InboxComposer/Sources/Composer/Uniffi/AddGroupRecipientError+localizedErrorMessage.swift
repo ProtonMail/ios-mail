@@ -30,7 +30,7 @@ extension AddGroupRecipientError {
             return duplicateAddresses.count > 1
                 ? L10n.ComposerError.duplicateRecipients(addresses: duplicates)
                 : L10n.ComposerError.duplicateRecipient(address: duplicates)
-        case .saveFailed:
+        case .saveFailed, .other:
             return L10n.ComposerError.draftSaveFailed
         }
     }

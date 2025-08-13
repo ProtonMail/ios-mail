@@ -543,7 +543,7 @@ extension ComposerModel {
         switch result {
         case .ok:
             return addLastRecipientToState(for: group, in: recipientList)
-        case .duplicate, .saveFailed:
+        case .duplicate, .saveFailed, .other:
             restoreRecipientStateAfterError(for: group)
             showToast(.error(message: result.localizedErrorMessage(entry: entry).string, duration: .medium))
             return nil
@@ -562,7 +562,7 @@ extension ComposerModel {
         switch result {
         case .ok:
             return addLastRecipientToState(for: group, in: recipientList)
-        case .duplicate, .saveFailed, .emptyGroupName:
+        case .duplicate, .saveFailed, .emptyGroupName, .other:
             restoreRecipientStateAfterError(for: group)
             if let message = result.localizedErrorMessage()?.string {
                 showToast(.error(message: message, duration: .medium))
@@ -611,7 +611,7 @@ extension ComposerModel {
         switch result {
         case .ok:
             return
-        case .emptyGroupName, .saveFailed:
+        case .emptyGroupName, .saveFailed, .other:
             AppLogger.log(message: "remove recipient error \(result)", category: .composer, isError: true)
             showToast(.error(message: result.localizedErrorMessage().string))
         }
