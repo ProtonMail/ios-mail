@@ -48,12 +48,7 @@ final class MessageAddressActionViewStateStore: StateStore {
         toastStateStore: ToastStateStore,
         blockAddress: @escaping (MailUserSession, String) async -> VoidActionResult = blockAddress(session:email:)
     ) {
-        self.state = .init(
-            avatar: avatar,
-            name: name,
-            email: email,
-            emailToBlock: nil
-        )
+        self.state = .init(avatar: avatar, name: name, email: email, emailToBlock: .none)
         self.session = session
         self.toastStateStore = toastStateStore
         self.blockAddress = blockAddress
@@ -99,8 +94,7 @@ final class MessageAddressActionViewStateStore: StateStore {
 
     @MainActor
     private func block(email: String) async {
-        let result = await blockAddress(session, email)
-        switch result {
+        switch await blockAddress(session, email) {
         case .ok:
             toastStateStore.present(toast: .information(message: L10n.BlockAddress.Toast.success.string))
         case .error:

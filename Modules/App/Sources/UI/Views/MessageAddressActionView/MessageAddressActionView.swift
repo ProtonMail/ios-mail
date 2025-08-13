@@ -39,12 +39,8 @@ struct MessageAddressActionView: View {
             content: { state, store in
                 ActionPickerList(
                     headerContent: {
-                        headerView(
-                            avatar: state.avatar,
-                            name: state.name,
-                            email: state.email
-                        )
-                        .listRowBackground(Color.clear)
+                        headerView(state: state)
+                            .listRowBackground(Color.clear)
                     },
                     sections: sections(avatar: state.avatar),
                     onElementTap: { action in store.handle(action: .onTap(action)) }
@@ -55,21 +51,17 @@ struct MessageAddressActionView: View {
     }
 
     @ViewBuilder
-    private func headerView(
-        avatar: AvatarUIModel,
-        name: String,
-        email: String
-    ) -> some View {
+    private func headerView(state: MessageAddressActionViewStateStore.State) -> some View {
         VStack(alignment: .center) {
-            AvatarView(avatar: avatar)
+            AvatarView(avatar: state.avatar)
                 .clipShape(Circle())
                 .square(size: 70)
-            Text(verbatim: name)
+            Text(verbatim: state.name)
                 .font(.subheadline)
                 .bold()
                 .foregroundStyle(DS.Color.Text.norm)
                 .accessibilityIdentifier(MessageAddressActionPickerViewIdentifiers.participantName)
-            Text(verbatim: email)
+            Text(verbatim: state.email)
                 .font(.footnote)
                 .fontWeight(.regular)
                 .foregroundStyle(DS.Color.Text.weak)
@@ -94,7 +86,7 @@ struct MessageAddressActionView: View {
         .readonly {
             state.emailToBlock.map { emailToBlock in
                 AlertModel.blockSender(
-                    for: emailToBlock,
+                    email: emailToBlock,
                     action: { action in await store.handle(action: .onBlockAlertAction(action)) }
                 )
             }
@@ -120,4 +112,3 @@ struct MessageAddressActionPickerViewIdentifiers {
     static let participantName = "actionPicker.participant.name"
     static let participantAddress = "actionPicker.participant.address"
 }
-

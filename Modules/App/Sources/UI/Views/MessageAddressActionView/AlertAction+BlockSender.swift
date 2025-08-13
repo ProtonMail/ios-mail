@@ -19,8 +19,8 @@ import InboxCoreUI
 
 extension AlertModel {
     static func blockSender(
-        for email: String,
-        action: @escaping @MainActor @Sendable (BlockAddressAlertAction) async -> Void
+        email: String,
+        action: @MainActor @escaping @Sendable (BlockAddressAlertAction) async -> Void
     ) -> Self {
         let actions: [AlertAction] = BlockAddressAlertAction.allCases.map { actionType in
             .init(details: actionType, action: { await action(actionType) })
