@@ -597,7 +597,6 @@ extension MailboxModel {
 // MARK: conversation actions
 
 extension MailboxModel {
-
     private func markAsRead(ids: [ID]) {
         readActionPerformer?.markAsRead(itemsWithIDs: ids, itemType: viewMode.itemType)
     }
@@ -632,7 +631,10 @@ extension MailboxModel {
                 )
                 let toastID = UUID()
                 let undoAction = undo.undoAction(userSession: userSession) {
-                    toastStateStore.dismiss(withID: toastID)
+                    Dispatcher.dispatchOnMain(
+                        .init(block: {
+                            toastStateStore.dismiss(withID: toastID)
+                        }))
                 }
                 let toast: Toast = .moveTo(
                     id: toastID,
