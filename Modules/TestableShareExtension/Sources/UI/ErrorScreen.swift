@@ -21,18 +21,18 @@ import InboxDesignSystem
 import proton_app_uniffi
 import SwiftUI
 
-struct ErrorScreen: View {
+public struct ErrorScreen: View {
     @Environment(\.openURL) private var openURL
 
     let error: Error
     let dismissExtension: () -> Void
 
-    init(error: any Error, dismissExtension: @escaping () -> Void) {
+    public init(error: any Error, dismissExtension: @escaping () -> Void) {
         self.error = error
         self.dismissExtension = dismissExtension
     }
 
-    var body: some View {
+    public var body: some View {
         VStack(spacing: DS.Spacing.extraLarge) {
             Spacer()
 

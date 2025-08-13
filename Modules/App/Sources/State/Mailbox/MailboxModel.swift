@@ -144,6 +144,16 @@ extension MailboxModel {
             }
             .store(in: &cancellables)
 
+        appRoute
+            .openedDraftForShareExtension
+            .sink { [weak self] in
+                guard let self else { return }
+
+                state.isSearchPresented = false
+                openDraftForShareExtension()
+            }
+            .store(in: &cancellables)
+
         Publishers.Merge(
             mailSettingsLiveQuery.settingHasChanged(keyPath: \.swipeLeft),
             mailSettingsLiveQuery.settingHasChanged(keyPath: \.swipeRight)
@@ -486,6 +496,16 @@ extension MailboxModel {
 
     private func openDraftMessage(messageId: ID) {
         draftPresenter.openDraft(withId: messageId)
+    }
+
+    private func openDraftForShareExtension() {
+        Task {
+            do {
+                try await draftPresenter.openDraftForShareExtension()
+            } catch {
+                toast = .error(message: error.localizedDescription)
+            }
+        }
     }
 }
 

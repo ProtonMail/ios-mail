@@ -26,7 +26,7 @@ enum DeepLinkRouteCoder {
         components.scheme = deepLinkScheme.rawValue
 
         switch route {
-        case .mailbox:
+        case .composerFromShareExtension, .mailbox:
             return nil  // no need to support this now
         case .mailboxOpenMessage(let seed):
             components.host = "messages"
@@ -49,6 +49,8 @@ enum DeepLinkRouteCoder {
         }
 
         switch components.host {
+        case "composer":
+            return .composerFromShareExtension
         case "messages":
             let pathRegex = /\/([:ascii:]+)/
 

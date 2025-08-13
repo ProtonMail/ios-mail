@@ -17,6 +17,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import proton_app_uniffi
 import Testing
 import UIKit
 import UniformTypeIdentifiers
@@ -24,24 +25,30 @@ import UniformTypeIdentifiers
 @testable import InboxComposer
 @testable import TestableShareExtension
 
-final class DraftPrecomposerTests {
-    private let sut = DraftPrecomposer.self
-    private let draft = MockDraft.emptyMockDraft
+final class DraftStubWriterTests {
     private let fileManager = FileManager.default
     private let testDir: URL
     private let attachmentSourceDir: URL
-    private let attachmentUploadDir: URL
+    private let attachmentTemporaryDir: URL
+    private var receivedDraftStub: IosShareExtDraft?
+
+    private lazy var sut = DraftStubWriter(
+        initDraft: { [unowned self] in
+            try? fileManager.removeItem(at: attachmentTemporaryDir)
+            try fileManager.createDirectory(at: attachmentTemporaryDir, withIntermediateDirectories: true)
+            return attachmentTemporaryDir.path()
+        },
+        saveDraft: { [unowned self] in
+            receivedDraftStub = $0
+        }
+    )
 
     init() throws {
-        testDir = fileManager.temporaryDirectory.appending(path: UUID().uuidString, directoryHint: .isDirectory)
+        testDir = fileManager.temporaryDirectory.appending(component: UUID().uuidString, directoryHint: .isDirectory)
         attachmentSourceDir = testDir.appending(path: "attachment_source", directoryHint: .isDirectory)
-        attachmentUploadDir = testDir.appending(path: "attachment_upload", directoryHint: .isDirectory)
+        attachmentTemporaryDir = testDir.appending(path: "attachment_upload", directoryHint: .isDirectory)
 
-        for dir in [attachmentSourceDir, attachmentUploadDir] {
-            try fileManager.createDirectory(at: dir, withIntermediateDirectories: true)
-        }
-
-        draft.mockAttachmentList.attachmentUploadDirectoryURL = attachmentUploadDir
+        try fileManager.createDirectory(at: attachmentSourceDir, withIntermediateDirectories: true)
     }
 
     deinit {
@@ -56,15 +63,17 @@ final class DraftPrecomposerTests {
             attachments: []
         )
 
-        try await sut.populate(draft: draft, with: sharedContent)
+        try await sut.createDraftStub(basedOn: sharedContent)
 
-        #expect(draft.subject() == "A subject")
-        #expect(draft.body() == "Some body")
-        #expect(draft.mockAttachmentList.capturedAddCalls.count == 0)
+        let draftStub = try #require(receivedDraftStub)
+        #expect(draftStub.subject == "A subject")
+        #expect(draftStub.body == "Some body")
+        #expect(draftStub.inlineAttachments == [])
+        #expect(draftStub.attachments == [])
     }
 
     @Test
-    func movesNonInlineAttachmentsToUploadDirectoryBeforeAdding() async throws {
+    func movesNonInlineAttachmentsToTemporaryDirectoryBeforeAdding() async throws {
         let sourceURLs = (0..<3).map { index in
             attachmentSourceDir.appending(path: "data-\(index).txt")
         }
@@ -75,13 +84,14 @@ final class DraftPrecomposerTests {
             attachments: try TestDataFactory.stubShortLivedData(in: sourceURLs)
         )
 
-        try await sut.populate(draft: draft, with: sharedContent)
+        try await sut.createDraftStub(basedOn: sharedContent)
 
         let expectedAttachmentPaths = sourceURLs.map {
-            attachmentUploadDir.appending(path: $0.lastPathComponent).path()
+            attachmentTemporaryDir.appending(path: $0.lastPathComponent).path()
         }
 
-        #expect(Set(draft.mockAttachmentList.capturedAddCalls.map(\.path)) == Set(expectedAttachmentPaths))
+        let draftStub = try #require(receivedDraftStub)
+        #expect(Set(draftStub.attachments.map(\.path)) == Set(expectedAttachmentPaths))
 
         for path in expectedAttachmentPaths {
             #expect(FileManager.default.fileExists(atPath: path))
@@ -89,29 +99,29 @@ final class DraftPrecomposerTests {
     }
 
     @Test
-    func insertsInlineAttachmentReferencesInBody() async throws {
+    func movesInlineAttachmentsToTemporaryDirectoryBeforeAdding() async throws {
         let sourceURLs = (0..<3).map { index in
             attachmentSourceDir.appending(path: "image-\(index).png")
         }
 
         let sharedContent = SharedContent(
             subject: nil,
-            body: "Some body",
+            body: nil,
             attachments: try TestDataFactory.stubImages(in: sourceURLs)
         )
 
-        try await sut.populate(draft: draft, with: sharedContent)
-
-        let expectedBody = """
-            Some body<img src="cid:12345" style="max-width: 100%;"><br><img src="cid:12345" style="max-width: 100%;"><br><img src="cid:12345" style="max-width: 100%;"><br>
-            """
-        #expect(draft.body() == expectedBody)
+        try await sut.createDraftStub(basedOn: sharedContent)
 
         let expectedAttachmentPaths = sourceURLs.map {
-            attachmentUploadDir.appending(path: $0.lastPathComponent).path()
+            attachmentTemporaryDir.appending(path: $0.lastPathComponent).path()
         }
 
-        #expect(Set(draft.mockAttachmentList.capturedAddInlineCalls.map(\.path)) == Set(expectedAttachmentPaths))
+        let draftStub = try #require(receivedDraftStub)
+        #expect(Set(draftStub.inlineAttachments.map(\.path)) == Set(expectedAttachmentPaths))
+
+        for path in expectedAttachmentPaths {
+            #expect(FileManager.default.fileExists(atPath: path))
+        }
     }
 
     @Test
@@ -122,19 +132,14 @@ final class DraftPrecomposerTests {
 
         let sharedContent = SharedContent(
             subject: nil,
-            body: "Some body",
+            body: nil,
             attachments: try TestDataFactory.stubScreenshots(in: sourceURLs)
         )
 
-        try await sut.populate(draft: draft, with: sharedContent)
-
-        let expectedBody = """
-            Some body<img src="cid:12345" style="max-width: 100%;"><br><img src="cid:12345" style="max-width: 100%;"><br><img src="cid:12345" style="max-width: 100%;"><br>
-            """
-        #expect(draft.body() == expectedBody)
+        try await sut.createDraftStub(basedOn: sharedContent)
 
         let expectedAttachmentPaths = sourceURLs.map {
-            attachmentUploadDir.appending(path: $0.lastPathComponent)
+            attachmentTemporaryDir.appending(path: $0.lastPathComponent)
         }
 
         #expect(expectedAttachmentPaths.count == 3)
@@ -149,16 +154,14 @@ final class DraftPrecomposerTests {
     func handlesAttachmentLoadingFailures() async throws {
         let sharedContent = SharedContent(
             subject: nil,
-            body: "Some body",
+            body: nil,
             attachments: [TestDataFactory.stubError()]
         )
 
         await #expect(throws: NSError.self) {
-            try await self.sut.populate(draft: self.draft, with: sharedContent)
+            try await self.sut.createDraftStub(basedOn: sharedContent)
         }
 
-        #expect(draft.body() == .empty)
-        #expect(draft.mockAttachmentList.capturedAddCalls.count == 0)
-        #expect(draft.mockAttachmentList.capturedAddInlineCalls.count == 0)
+        #expect(receivedDraftStub == nil)
     }
 }
