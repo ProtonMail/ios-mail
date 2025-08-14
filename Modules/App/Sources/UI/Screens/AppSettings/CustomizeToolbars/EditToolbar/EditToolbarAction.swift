@@ -22,5 +22,7 @@ enum EditToolbarAction {
     case removeFromSelectedTapped(actionToRemove: ToolbarActionType)
     case addToSelectedTapped(actionToAdd: ToolbarActionType)
     case resetToOriginalTapped
+    case saveTapped
+    case cancelTapped
     case onLoad
 }

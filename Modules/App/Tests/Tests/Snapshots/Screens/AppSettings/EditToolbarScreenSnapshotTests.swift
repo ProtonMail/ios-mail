@@ -17,23 +17,27 @@
 
 @testable import ProtonMail
 import InboxSnapshotTesting
+import SwiftUI
 import Testing
 
 @MainActor
-struct EditToolbarsScreenSnapshotTests {
+struct EditToolbarScreenSnapshotTests {
 
     @Test
-    func customizeToolbarsScreenLayoutsCorrectly() {
-        let sut = EditToolbarScreen(
-            state: .init(
-                screenType: .conversation,
-                toolbarActions: .init(
-                    selected: [.markAsUnread, .archive, .labelAs],
-                    unselected: [.moveTo, .moveToSpam, .moveToTrash, .snooze, .star]
-                )
-            ),
-            toolbarService: ToolbarService()
-        )
+    func editToolbarScreenScreenLayoutsCorrectly() {
+        let sut = NavigationStack {
+            EditToolbarScreen(
+                state: .init(
+                    screenType: .conversation,
+                    toolbarActions: .init(
+                        selected: [.markAsUnread, .archive, .labelAs],
+                        unselected: [.moveTo, .moveToSpam, .moveToTrash, .snooze, .star]
+                    )
+                ),
+                toolbarService: ToolbarService()
+            )
+        }
+
         assertSnapshotsOnIPhoneX(of: sut, drawHierarchyInKeyWindow: true)
     }
 

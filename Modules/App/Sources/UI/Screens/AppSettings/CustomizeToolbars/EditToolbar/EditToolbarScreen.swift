@@ -38,8 +38,29 @@ struct EditToolbarScreen: View {
         }
         .listSectionSpacing(DS.Spacing.extraLarge)
         .navigationTitle(store.state.screenType.screenTitle.string)
+        .navigationBarTitleDisplayMode(.inline)
         .environment(\.editMode, .constant(.active))
         .id(store.state.toolbarActions.unselected)
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button(action: {
+                    store.handle(action: .saveTapped)
+                }) {
+                    Text(CommonL10n.save)
+                        .fontWeight(.semibold)
+                        .foregroundStyle(DS.Color.Text.accent)
+                }
+            }
+
+            ToolbarItem(placement: .topBarLeading) {
+                Button(action: {
+                    store.handle(action: .cancelTapped)
+                }) {
+                    Text(CommonL10n.cancel)
+                        .foregroundStyle(DS.Color.Text.accent)
+                }
+            }
+        }
     }
 
     private func chosenActionsSection() -> some View {
@@ -141,19 +162,6 @@ extension ToolbarActionType: Identifiable {
     }
 }
 
-#Preview {
-    EditToolbarScreen(
-        state: .init(
-            screenType: .list,
-            toolbarActions: .init(
-                selected: [.markAsUnread, .archive, .labelAs],
-                unselected: [.moveTo, .moveToSpam, .moveToTrash, .snooze, .star]
-            ),
-        ),
-        toolbarService: ToolbarService()
-    )
-}
-
 private extension EditToolbarState {
 
     var availableActionsListDisabled: Bool {
@@ -179,4 +187,19 @@ private extension EditToolbarState.ScreenType {
         }
     }
 
+}
+
+#Preview {
+    NavigationStack {
+        EditToolbarScreen(
+            state: .init(
+                screenType: .list,
+                toolbarActions: .init(
+                    selected: [.markAsUnread, .archive, .labelAs],
+                    unselected: [.moveTo, .moveToSpam, .moveToTrash, .snooze, .star]
+                ),
+            ),
+            toolbarService: ToolbarService()
+        )
+    }
 }

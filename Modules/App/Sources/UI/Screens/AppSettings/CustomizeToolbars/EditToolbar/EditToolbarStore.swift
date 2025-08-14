@@ -52,8 +52,6 @@ class EditToolbarStore: StateStore {
             state =
                 state
                 .copy(\.toolbarActions, to: .init(selected: selectedList, unselected: unselectedList))
-        case .resetToOriginalTapped:
-            break
         case .onLoad:
             do {
                 let actions = try await toolbarService.customizeToolbarActions()[keyPath: state.screenType.actionsKeyPath]
@@ -61,6 +59,8 @@ class EditToolbarStore: StateStore {
             } catch {
                 AppLogger.log(error: error, category: .customizeToolbar)
             }
+        case .resetToOriginalTapped, .saveTapped, .cancelTapped:
+            break
         }
     }
 }
