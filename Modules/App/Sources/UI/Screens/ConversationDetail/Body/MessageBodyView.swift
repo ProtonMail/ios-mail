@@ -88,8 +88,7 @@ struct MessageBodyView: View {
                             case .unsnoozeTapped:
                                 unsnoozeConversation()
                             case .unsubscribeNewsletterTapped:
-                                // FIXME: Implement action in store
-                                break
+                                store.handle(action: .unsubscribeNewsletter)
                             }
                         }
                     )
