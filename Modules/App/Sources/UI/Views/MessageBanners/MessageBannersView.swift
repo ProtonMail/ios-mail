@@ -132,7 +132,7 @@ struct MessageBannersView: View {
                 )
             case .unsubscribeNewsletter(true):
                 return smallNoButton(
-                    icon: DS.Icon.icEnvelopes,
+                    icon: DS.Icon.icEnvelopesCross,
                     message: L10n.MessageBanner.unsubscribedNewsletterTitle,
                     style: .regular
                 )
