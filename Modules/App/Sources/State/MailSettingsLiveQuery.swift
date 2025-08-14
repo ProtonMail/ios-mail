@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Combine
+import Foundation
 import InboxCore
 import proton_app_uniffi
 
@@ -59,6 +60,7 @@ final class MailSettingsLiveQuery: MailSettingLiveQuerying {
             .map(keyPath)
             .removeDuplicates()
             .dropFirst()
+            .debounce(for: .milliseconds(100), scheduler: DispatchQueue.main)
             .eraseToAnyPublisher()
     }
 
