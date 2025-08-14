@@ -24,6 +24,7 @@ import SwiftUI
 struct MessageAddressActionView: View {
     @EnvironmentObject var toastStateStore: ToastStateStore
     @Environment(\.openURL) var openURL
+    @Environment(\.dismissTestable) var dismiss
     let avatarUIModel: AvatarUIModel
     let name: String
     let emailAddress: String
@@ -42,7 +43,8 @@ struct MessageAddressActionView: View {
                 pasteboard: .general,
                 openURL: openURL,
                 blockAddress: blockAddress(session:email:),
-                draftPresenter: draftPresenter
+                draftPresenter: draftPresenter,
+                dismiss: dismiss
             ),
             content: { state, store in
                 ActionPickerList(

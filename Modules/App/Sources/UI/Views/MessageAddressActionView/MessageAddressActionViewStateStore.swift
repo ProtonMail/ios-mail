@@ -43,6 +43,7 @@ final class MessageAddressActionViewStateStore: StateStore {
     private let openURL: URLOpenerProtocol
     private let blockAddress: (_ userSession: MailUserSession, _ emailAddress: String) async -> VoidActionResult
     private let draftPresenter: RecipientDraftPresenter
+    private let dismiss: Dismissable
 
     init(
         avatar: AvatarUIModel,
@@ -53,8 +54,9 @@ final class MessageAddressActionViewStateStore: StateStore {
         toastStateStore: ToastStateStore,
         pasteboard: UIPasteboard,
         openURL: URLOpenerProtocol,
-        blockAddress: @escaping (MailUserSession, String) async -> VoidActionResult,
-        draftPresenter: RecipientDraftPresenter
+        blockAddress: @escaping (_ userSession: MailUserSession, _ emailAddress: String) async -> VoidActionResult,
+        draftPresenter: RecipientDraftPresenter,
+        dismiss: Dismissable
     ) {
         self.state = .init(avatar: avatar, name: name, email: email, phoneNumber: phoneNumber, emailToBlock: .none)
         self.session = session
@@ -63,6 +65,7 @@ final class MessageAddressActionViewStateStore: StateStore {
         self.openURL = openURL
         self.blockAddress = blockAddress
         self.draftPresenter = draftPresenter
+        self.dismiss = dismiss
     }
 
     // MARK: - Public
@@ -84,6 +87,7 @@ final class MessageAddressActionViewStateStore: StateStore {
         switch action {
         case .newMessage:
             do {
+                dismiss()
                 try await draftPresenter.openDraft(with: .init(name: state.name, email: state.email))
             } catch {
                 toastStateStore.present(toast: .error(message: error.localizedDescription))

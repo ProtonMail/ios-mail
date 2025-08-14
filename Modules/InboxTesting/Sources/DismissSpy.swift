@@ -18,7 +18,6 @@
 import InboxCore
 
 public class DismissSpy: Dismissable {
-
     public init() {}
 
     public private(set) var callsCount: Int = 0
@@ -28,5 +27,4 @@ public class DismissSpy: Dismissable {
     public func callAsFunction() {
         callsCount += 1
     }
-
 }

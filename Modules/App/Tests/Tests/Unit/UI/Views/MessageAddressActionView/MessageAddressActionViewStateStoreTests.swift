@@ -31,6 +31,7 @@ final class MessageAddressActionViewStateStoreTests {
     private let blockSpy = BlockAddressSpy()
     private let draftPresenterSpy = RecipientDraftPresenterSpy()
     private let urlOpener = EnvironmentURLOpenerSpy()
+    private let dismissSpy = DismissSpy()
 
     private let avatar = AvatarUIModel(
         info: .init(initials: "Aa", color: .purple),
@@ -139,6 +140,7 @@ final class MessageAddressActionViewStateStoreTests {
     func testOnTapOtherActions_ItShowComingSoon() async {
         await sut.handle(action: .onTap(.addToContacts))
 
+        #expect(dismissSpy.callsCount == 0)
         #expect(toastStateStore.state.toasts == [.comingSoon])
         #expect(blockSpy.calls == [])
         #expect(sut.state.emailToBlock == nil)
@@ -150,6 +152,7 @@ final class MessageAddressActionViewStateStoreTests {
     func testOnTapNewMessage_WhenSucceeds_ItPresentsDraftWithGivenContact() async {
         await sut.handle(action: .onTap(.newMessage))
 
+        #expect(dismissSpy.callsCount == 1)
         #expect(draftPresenterSpy.openDraftCalls.count == 1)
         #expect(draftPresenterSpy.openDraftCalls == [.init(name: displayName, email: email)])
         #expect(toastStateStore.state.toasts.isEmpty)
@@ -163,6 +166,7 @@ final class MessageAddressActionViewStateStoreTests {
 
         await sut.handle(action: .onTap(.newMessage))
 
+        #expect(dismissSpy.callsCount == 1)
         #expect(draftPresenterSpy.openDraftCalls.count == 1)
         #expect(draftPresenterSpy.openDraftCalls == [.init(name: displayName, email: email)])
         #expect(toastStateStore.state.toasts == [.error(message: stubbedError.localizedDescription)])
@@ -177,6 +181,7 @@ final class MessageAddressActionViewStateStoreTests {
 
         await sut.handle(action: .onTap(.call))
 
+        #expect(dismissSpy.callsCount == 0)
         #expect(urlOpener.callAsFunctionInvokedWithURL == [URL(string: "tel:\(phone)")])
         #expect(toastStateStore.state.toasts.isEmpty)
     }
@@ -216,7 +221,8 @@ final class MessageAddressActionViewStateStoreTests {
             blockAddress: { [unowned self] session, address in
                 await self.blockSpy.result(for: address)
             },
-            draftPresenter: draftPresenterSpy
+            draftPresenter: draftPresenterSpy,
+            dismiss: dismissSpy
         )
     }
 }
