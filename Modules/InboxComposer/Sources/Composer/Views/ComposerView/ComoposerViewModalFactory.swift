@@ -24,12 +24,14 @@ struct ComposerViewModalFactory {
     private let makeScheduleSend: (DraftScheduleSendOptions, UInt64?) -> ScheduleSendPickerSheet
     private let makeAttachmentPicker: () -> AttachmentSourcePickerSheet
     private let makePasswordProtection: (_ password: String, _ hint: String) -> ComposerPasswordSheet
+    private let makeCustomExpirationDatePicker: (Date?) -> CustomExpirationTimePickerSheet
 
     init(
         senderAddressPickerSheetModel: SenderAddressPickerSheetModel,
         scheduleSendAction: @escaping (Date) async -> Void,
         attachmentPickerState: Binding<AttachmentPickersState>,
-        setPasswordAction: @escaping (_ password: String, _ hint: String?) async -> Void
+        setPasswordAction: @escaping (_ password: String, _ hint: String?) async -> Void,
+        setCustomExpirationDate: @escaping (UnixTimestamp) async -> Void
     ) {
         self.makeSenderAddressPicker = {
             SenderAddressPickerSheet(model: senderAddressPickerSheetModel)
@@ -47,6 +49,9 @@ struct ComposerViewModalFactory {
         self.makePasswordProtection = { password, hint in
             ComposerPasswordSheet(state: .init(password: password, hint: hint), onSave: setPasswordAction)
         }
+        self.makeCustomExpirationDatePicker = { date in
+            CustomExpirationTimePickerSheet(selectedDate: date, onSelect: setCustomExpirationDate)
+        }
     }
 
     @ViewBuilder
@@ -60,6 +65,8 @@ struct ComposerViewModalFactory {
             makeAttachmentPicker()
         case .passwordProtection(let password, let hint):
             makePasswordProtection(password, hint)
+        case .customExpirationDatePicker(let date):
+            makeCustomExpirationDatePicker(date)
         }
     }
 }

@@ -103,7 +103,9 @@ final class ContactDetailsStateStore: StateStore {
     }
 
     private func call(phoneNumber: String) {
-        open(urlString: "tel:\(phoneNumber)")
+        if let url = URL(phoneNumber: phoneNumber) {
+            urlOpener(url)
+        }
     }
 
     private func normalizedURLString(from rawString: String) -> String? {

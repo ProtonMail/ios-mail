@@ -24,7 +24,7 @@ extension RemoveRecipientError {
         switch self {
         case .ok:
             return LocalizedStringResource(stringLiteral: .empty)
-        case .emptyGroupName, .saveFailed:
+        case .emptyGroupName, .saveFailed, .other:
             return L10n.ComposerError.draftSaveFailed
         }
     }

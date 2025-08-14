@@ -93,11 +93,15 @@ class LabelAsSheetModel: ObservableObject {
             do {
                 let result = try await labelAsActionPerformer.labelAs(input: input)
                 let toastID = UUID()
-                let toast = Toast.labelAsArchive(id: toastID, for: input.itemType, count: input.itemsIDs.count) {
-                    Task {
-                        try await self.undo(with: result.undo, toastID: toastID)
-                    }
+                let undoAction = result.undo.undoAction(userSession: mailUserSession) {
+                    self.dismissToast(withID: toastID)
                 }
+                let toast = Toast.labelAsArchive(
+                    id: toastID,
+                    for: input.itemType,
+                    count: input.itemsIDs.count,
+                    undoAction: undoAction
+                )
 
                 if input.archive {
                     showToast(toast)
@@ -128,11 +132,6 @@ class LabelAsSheetModel: ObservableObject {
     private func updateSelectionIfNeeded(selectedLabel: LabelDisplayModel, label: LabelDisplayModel) -> IsSelected {
         guard selectedLabel.id == label.id else { return label.isSelected }
         return [IsSelected.partial, .selected].contains(selectedLabel.isSelected) ? .unselected : .selected
-    }
-
-    private func undo(with undo: Undo, toastID: UUID) async throws {
-        try await undo.undo(ctx: mailUserSession).get()
-        dismissToast(withID: toastID)
     }
 
     private func showToast(_ toast: Toast) {

@@ -31,7 +31,7 @@ public struct DatePickerView: View {
     public init(configuration: DatePickerViewConfiguration, onCancel: @escaping () -> Void, onSelect: @escaping (Date) -> Void) {
         self.onCancel = onCancel
         self.onSelect = onSelect
-        self.selectedDate = configuration.range.lowerBound
+        self.selectedDate = configuration.resolvedInitialDate
         self.configuration = configuration
     }
 
@@ -64,6 +64,7 @@ public struct DatePickerView: View {
                 DatePicker(
                     CommonL10n.time.string,
                     selection: $selectedDate,
+                    in: configuration.range,
                     displayedComponents: .hourAndMinute
                 )
                 .introspect(.datePicker, on: SupportedIntrospectionPlatforms.datePicker) {
@@ -113,7 +114,8 @@ public struct DatePickerView: View {
                 Spacer()
             }
             .padding(DS.Spacing.large)
-        }.background(DS.Color.Background.secondary)
+        }
+        .background(DS.Color.Background.secondary)
     }
 }
 
@@ -139,6 +141,10 @@ public struct DatePickerView: View {
             let start = Calendar.current.date(byAdding: .minute, value: 15, to: .now)!
             let end = Calendar.current.date(byAdding: .day, value: 180, to: .now)!
             return start...end
+        }
+
+        var initialSelectedDate: Date? {
+            range.lowerBound
         }
 
         func formatDate(_ date: Date) -> String {

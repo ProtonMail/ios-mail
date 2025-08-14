@@ -25,7 +25,7 @@ import SwiftUI
 
 @MainActor
 public final class ShareScreenModel: ObservableObject {
-    typealias MakeNewDraft = (MailUserSession, DraftCreateMode) async throws -> AppDraftProtocol
+    typealias MakeNewDraft = (MailUserSession, SharedContent) async throws -> AppDraftProtocol
 
     enum ViewState {
         case preparingAfterLaunch
@@ -48,7 +48,11 @@ public final class ShareScreenModel: ObservableObject {
             apiEnvId: apiEnvId,
             extensionContext: extensionContext,
             makeMailSession: { try createMailSession(params: $0, keyChain: $1, hvNotifier: $2, deviceInfoProvider: $3).get() },
-            makeNewDraft: { try await newDraft(session: $0, createMode: $1).get() }
+            makeNewDraft: {
+                try await DraftStubWriter().createDraftStub(basedOn: $1)
+                // TODO: do not create the draft here, open composer faster and load the draft there
+                return try await newDraft(session: $0, createMode: .fromIosShareExtension).get()
+            }
         )
     }
 
@@ -140,13 +144,9 @@ public final class ShareScreenModel: ObservableObject {
     }
 
     private func prepareDraft(userSession: MailUserSession) async throws -> AppDraftProtocol {
-        let draft = try await makeNewDraft(userSession, .empty)
-
         let inputItems = extensionContext.inputItems.map { $0 as! NSExtensionItem }
         let sharedContent = try await SharedItemsParser.parse(extensionItems: inputItems)
-        try await DraftPrecomposer.populate(draft: draft, with: sharedContent)
-
-        return draft
+        return try await makeNewDraft(userSession, sharedContent)
     }
 
     private func waitUntilMessageSendingIsFinished(messageID: ID) async throws {

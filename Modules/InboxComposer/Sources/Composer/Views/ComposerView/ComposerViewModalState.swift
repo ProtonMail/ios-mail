@@ -15,13 +15,15 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import Foundation
 import proton_app_uniffi
 
-enum ComposerViewModalState: Identifiable {
+enum ComposerViewModalState: Identifiable, Equatable {
     case senderPicker
     case scheduleSend(DraftScheduleSendOptions, lastScheduledTime: UInt64?)
     case attachmentPicker
     case passwordProtection(password: String, hint: String)
+    case customExpirationDatePicker(selectedDate: Date?)
 
     var id: String {
         switch self {
@@ -29,6 +31,7 @@ enum ComposerViewModalState: Identifiable {
         case .scheduleSend: "scheduleSend"
         case .attachmentPicker: "attachmentPicker"
         case .passwordProtection: "passwordProtection"
+        case .customExpirationDatePicker: "customExpirationDatePicker"
         }
     }
 }

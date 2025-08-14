@@ -28,5 +28,16 @@ public protocol DatePickerViewConfiguration {
     /// Range of dates allowed in the DatePicker
     var range: ClosedRange<Date> { get }
 
+    /// Has to be in the `range`. If `nil` range.lowerBound is set.
+    var initialSelectedDate: Date? { get }
+
     func formatDate(_ date: Date) -> String
+}
+
+extension DatePickerViewConfiguration {
+
+    public var resolvedInitialDate: Date {
+        guard let initialSelectedDate, range.contains(initialSelectedDate) else { return range.lowerBound }
+        return initialSelectedDate
+    }
 }

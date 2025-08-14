@@ -198,6 +198,12 @@
     "Add attachments" : {
       "comment" : "Attachments action sheet title."
     },
+    "Add password" : {
+      "comment" : "Sending to non-Proton accounts alert option"
+    },
+    "Add Password to Use Expiration" : {
+      "comment" : "Sending to non-Proton accounts alert title"
+    },
     "Address cannot be used to send messages" : {
       "comment" : "Error in the context of changing the sender with a disabled sender address."
     },
@@ -212,6 +218,15 @@
     },
     "Address not recognized. Please check the address." : {
       "comment" : "Error in the context of saving a draft before being sent."
+    },
+    "After 1 day" : {
+      "comment" : "Predefined option for the message expiration menu"
+    },
+    "After 1 hour" : {
+      "comment" : "Predefined option for the message expiration menu"
+    },
+    "After 3 days" : {
+      "comment" : "Predefined option for the message expiration menu"
     },
     "Attachment is missing. Please upload again." : {
       "comment" : "Error in the context of managing attachments in a draft."
@@ -257,6 +272,12 @@
     },
     "Edit password" : {
       "comment" : "Context menu option to edit the password of a message in the composer."
+    },
+    "Expiration time can't be in the past." : {
+      "comment" : "Error in the context of setting a custom message expiration date in the composer."
+    },
+    "Expiration time is too far in the future." : {
+      "comment" : "Error in the context of setting a custom message expiration date in the composer."
     },
     "Failed to decrypt external encryption password" : {
       "comment" : "Error in the context of scheduling a message."
@@ -461,6 +482,9 @@
     "Got it" : {
       "comment" : "Attachment error ok button"
     },
+    "How expiration works?" : {
+      "comment" : "subtitle for the learn more option in the message expiration menu"
+    },
     "Import from..." : {
       "comment" : "Attachments action sheet import option."
     },
@@ -482,6 +506,12 @@
     "Message does not exist" : {
       "comment" : "Error in the context of saving a draft before being sent."
     },
+    "Message expiration time is too soon." : {
+      "comment" : "Error in the context of scheduling a message."
+    },
+    "Message expires" : {
+      "comment" : "Title of the message expiration menu"
+    },
     "Message not found. You may have sent or discarded it." : {
       "comment" : "Error in the context of opening a draft in the composer"
     },
@@ -502,6 +532,12 @@
     },
     "Must be between 8 and 21 characters long" : {
       "comment" : "Conditions the password must meet"
+    },
+    "Never" : {
+      "comment" : "Default option for the message expiration menu"
+    },
+    "On specific date" : {
+      "comment" : "Predefined option for the message expiration menu"
     },
     "Password hint (Optional)" : {
       "comment" : "Title of the text box to add a hint to remember the password"
@@ -936,6 +972,9 @@
         }
       }
     },
+    "Send anyway" : {
+      "comment" : "Sending to non-Proton accounts alert option"
+    },
     "Send as attachment" : {
       "comment" : "Menu option to send inline image as attachment instead."
     },
@@ -945,8 +984,14 @@
     "Set a password to encrypt this message for non- Proton Mail users." : {
       "comment" : "Description of the password protected screen"
     },
+    "Set Message Expiry" : {
+      "comment" : "Title of the message expiration custom date picker"
+    },
     "Set Password" : {
       "comment" : "Title of the password protected screen"
+    },
+    "Some recipients (%@) don’t support expiration by default. Add a password to enable expiration for non-Proton Mail recipients." : {
+      "comment" : "Sending to only non-Proton accounts alert message"
     },
     "Something went wrong" : {
       "comment" : "Attachment failed because an unexpected error"
@@ -1563,10 +1608,13 @@
     "Upgrade for full flexibility" : {
       "comment" : "Schedule send custom time option subtitle for free user"
     },
+    "We could not confirm all recipients use Proton Mail. Only Proton addresses support message expiration. In this case, we suggest adding a password instead." : {
+      "comment" : "Sending to only non-Proton accounts alert message"
+    },
     "You have reached the limit of attachments, 1 or more attachments weren't able to be added. Send them in separate emails or share them via Proton Drive." : {
       "comment" : "Attachment failed because the total of number of attachments is over the limit"
     },
-    "You reached the limit of scheduled messages" : {
+    "You reached the limit of scheduled messages." : {
       "comment" : "Error in the context of scheduling a message."
     },
     "You're currently offline. This draft may not be up-to-date." : {

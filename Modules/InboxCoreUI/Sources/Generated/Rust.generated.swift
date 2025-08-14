@@ -154,6 +154,26 @@ public extension GetContactDetailsResult {
         }
     }
 }
+public extension IosShareExtInitDraftResult {
+    func get() throws(ProtonError) -> String {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension IosShareExtSaveDraftResult {
+    func get() throws(ProtonError) {
+        switch self {
+        case .ok:
+            break
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension LoginFlowCheckHostDeviceConfirmationResult {
     func get() throws(LoginError) -> QrPollingResult {
         switch self {

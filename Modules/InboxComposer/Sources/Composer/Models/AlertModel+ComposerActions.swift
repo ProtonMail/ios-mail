@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import Foundation
 import InboxCoreUI
 
 extension AlertModel {
@@ -27,6 +28,18 @@ extension AlertModel {
         return .init(
             title: L10n.Composer.discardConfirmationTitle,
             message: L10n.Composer.discardConfirmationMessage,
+            actions: actions
+        )
+    }
+
+    static func expiringMessageUnsupported(message: LocalizedStringResource, action: @escaping @MainActor (ExpiringMessageUnsupportedAlertAction) async -> Void) -> Self {
+        let actions: [AlertAction] = ExpiringMessageUnsupportedAlertAction.allCases.map { actionType in
+            .init(details: actionType, action: { await action(actionType) })
+        }
+
+        return .init(
+            title: L10n.MessageExpiration.alertUnsupportedTitle,
+            message: message,
             actions: actions
         )
     }

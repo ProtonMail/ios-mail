@@ -30,6 +30,7 @@ extension DS {
         case chevronUp = "chevron.up"
         case chevronDown = "chevron.down"
         case deleteLeft = "delete.left"
+        case infoCircle = "info.circle"
         case eye = "eye"
         case eyeSlash = "eye.slash"
         case forward = "arrowshape.turn.up.forward"

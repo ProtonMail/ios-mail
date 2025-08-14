@@ -48,6 +48,17 @@ enum L10n {
             )
         }
 
+        enum Clipboard {
+            static let emailAddress = LocalizedStringResource(
+                "email address",
+                comment: "Label for an email address when copying it to the clipboard."
+            )
+            static let name = LocalizedStringResource(
+                "name",
+                comment: "Label for a person's name when copying it to the clipboard."
+            )
+        }
+
         enum Print {
             static let error = LocalizedStringResource(
                 "Could not print requested e-mail",
@@ -244,6 +255,35 @@ enum L10n {
                     comment: "Message of alert displayed after report phishing action tap."
                 )
             }
+        }
+    }
+
+    enum BlockAddress {
+        enum Alert {
+            static let title = LocalizedStringResource(
+                "Block this address",
+                comment: "Title of the alert asking the user to confirm blocking an email address."
+            )
+            static func message(email: String) -> LocalizedStringResource {
+                .init(
+                    "Emails from \(email) will no longer be delivered and will be permanently deleted. You can manage blocked email addresses in the settings.",
+                    comment: "Message shown in the alert explaining the consequences of blocking the specified email address."
+                )
+            }
+            static let confirm = LocalizedStringResource(
+                "Block",
+                comment: "Title of the action button for blocking an email address in the alert."
+            )
+        }
+        enum Toast {
+            static let success = LocalizedStringResource(
+                "Sender blocked",
+                comment: "Toast message shown when an email address (sender) has been successfully blocked."
+            )
+            static let failure = LocalizedStringResource(
+                "Could not block sender",
+                comment: "Toast message shown when blocking an email address (sender) fails."
+            )
         }
     }
 

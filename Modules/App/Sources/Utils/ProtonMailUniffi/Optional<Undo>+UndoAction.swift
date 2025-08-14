@@ -18,8 +18,7 @@
 import proton_app_uniffi
 
 extension Optional where Wrapped == Undo {
-
-    func undoAction(userSession: MailUserSession, onFinish: @escaping () -> Void) -> (() -> Void)? {
+    func undoAction(userSession: MailUserSession, onFinish: @escaping @Sendable () -> Void) -> (() -> Void)? {
         guard case .some(let wrapped) = self else {
             return nil
         }
@@ -31,5 +30,4 @@ extension Optional where Wrapped == Undo {
             }
         }
     }
-
 }

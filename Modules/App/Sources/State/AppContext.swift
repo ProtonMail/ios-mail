@@ -22,6 +22,7 @@ import Foundation
 import InboxCore
 import InboxKeychain
 import proton_app_uniffi
+import Sentry
 import SwiftUI
 
 final class AppContext: Sendable, ObservableObject {
@@ -87,6 +88,8 @@ final class AppContext: Sendable, ObservableObject {
             deviceInfoProvider: ChallengePayloadProvider()
         ).get()
 
+        excludeDirectoriesFromBackup(params: params)
+
         _mailSession.pauseWork()
         AppLogger.log(message: "MailSession init | \(AppVersionProvider().fullVersion) | \(apiConfig.envId.domain)", category: .rustLibrary)
 
@@ -96,6 +99,26 @@ final class AppContext: Sendable, ObservableObject {
         if let currentSession = accountAuthCoordinator.primaryAccountSignedInSession() {
             sessionState = .restoring
             setupActiveUserSession(session: currentSession)
+        }
+    }
+
+    private func excludeDirectoriesFromBackup(params: MailSessionParams) {
+        let pathsToExclude: Set<String> = [
+            params.logDir,
+            params.mailCacheDir,
+            params.sessionDir,
+            params.userDir,
+        ]
+
+        for path in pathsToExclude {
+            var url = URL(filePath: path)
+            do {
+                try url.excludeFromBackup()
+            } catch {
+                assertionFailure("\(error)")
+                AppLogger.log(error: error)
+                SentrySDK.capture(error: error)
+            }
         }
     }
 }
@@ -215,6 +238,17 @@ extension AppContext {
             try await userSession.forceEventLoopPoll().get()
         } catch {
             AppLogger.log(error: error, category: .rustLibrary)
+        }
+    }
+}
+
+private extension URL {
+    mutating func excludeFromBackup() throws {
+        var values = try resourceValues(forKeys: [.isExcludedFromBackupKey])
+
+        if values.isExcludedFromBackup != true {
+            values.isExcludedFromBackup = true
+            try setResourceValues(values)
         }
     }
 }

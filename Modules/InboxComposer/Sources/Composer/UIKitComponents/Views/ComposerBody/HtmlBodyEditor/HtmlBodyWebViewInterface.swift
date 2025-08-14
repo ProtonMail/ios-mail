@@ -19,7 +19,7 @@ import Foundation
 import InboxCore
 import WebKit
 
-final class BodyWebViewInterface: NSObject {
+final class HtmlBodyWebViewInterface: NSObject {
 
     enum Event {
         case onContentHeightChange(height: CGFloat)
@@ -34,20 +34,20 @@ final class BodyWebViewInterface: NSObject {
     let webView: WKWebView
     var onEvent: ((Event) -> Void)?
 
-    private let htmlDocument: BodyHtmlDocument
+    private let htmlDocument: HtmlBodyDocument
     private lazy var weakScriptMessageHandler: WeakScriptMessageHandler = {
         WeakScriptMessageHandler(target: self)
     }()
 
     init(webView: WKWebView) {
         self.webView = webView
-        self.htmlDocument = BodyHtmlDocument()
+        self.htmlDocument = HtmlBodyDocument()
         super.init()
         setUpCallbacks()
     }
 
     private func setUpCallbacks() {
-        BodyHtmlDocument.JSEvent.allCases.forEach { eventHandler in
+        HtmlBodyDocument.JSEvent.allCases.forEach { eventHandler in
             webView.configuration.userContentController.add(weakScriptMessageHandler, name: eventHandler.rawValue)
         }
     }
@@ -60,7 +60,7 @@ final class BodyWebViewInterface: NSObject {
     @MainActor
     func setFocus() async {
         await withCheckedContinuation { continuation in
-            webView.evaluateJavaScript(BodyHtmlDocument.JSFunction.setFocus.callFunction) { _, error in
+            webView.evaluateJavaScript(HtmlBodyDocument.JSFunction.setFocus.callFunction) { _, error in
                 if let error { AppLogger.log(error: error, category: .composer) }
                 continuation.resume()
             }
@@ -70,7 +70,7 @@ final class BodyWebViewInterface: NSObject {
     @MainActor
     func readMesasgeBody() async -> String? {
         await withCheckedContinuation { continuation in
-            webView.evaluateJavaScript(BodyHtmlDocument.JSFunction.getHtmlContent.callFunction) { result, error in
+            webView.evaluateJavaScript(HtmlBodyDocument.JSFunction.getHtmlContent.callFunction) { result, error in
                 if let error { AppLogger.log(error: error, category: .composer) }
                 guard let html = (result as? String)?.withoutWhitespace else {
                     return continuation.resume(returning: nil)
@@ -83,7 +83,7 @@ final class BodyWebViewInterface: NSObject {
     @MainActor
     func insertImages(_ contentIds: [String]) async {
         let inlineImageHTML = InlineImageHTML(cids: contentIds).content
-        let function = "\(BodyHtmlDocument.JSFunction.insertImages.rawValue)('\(inlineImageHTML)');"
+        let function = "\(HtmlBodyDocument.JSFunction.insertImages.rawValue)('\(inlineImageHTML)');"
 
         await withCheckedContinuation { continuation in
             webView.evaluateJavaScript(function) { _, error in
@@ -95,7 +95,7 @@ final class BodyWebViewInterface: NSObject {
 
     @MainActor
     func removeImage(containing cid: String) async {
-        let function = "\(BodyHtmlDocument.JSFunction.removeImageWithCID.rawValue)('\(cid)');"
+        let function = "\(HtmlBodyDocument.JSFunction.removeImageWithCID.rawValue)('\(cid)');"
 
         await withCheckedContinuation { continuation in
             webView.evaluateJavaScript(function) { _, error in
@@ -108,18 +108,18 @@ final class BodyWebViewInterface: NSObject {
     func handleScriptMessage(_ message: WKScriptMessage) {
         let userInfo = message.body as! [String: Any]
         let messageHandler = userInfo["messageHandler"] as! String
-        let jsEvent = BodyHtmlDocument.JSEvent(rawValue: messageHandler)!
+        let jsEvent = HtmlBodyDocument.JSEvent(rawValue: messageHandler)!
 
         switch jsEvent {
         case .bodyResize:
-            let newHeight = userInfo[BodyHtmlDocument.EventAttributeKey.height] as! CGFloat
+            let newHeight = userInfo[HtmlBodyDocument.EventAttributeKey.height] as! CGFloat
             onEvent?(.onContentHeightChange(height: newHeight))
         case .editorChanged:
             onEvent?(.onEditorChange)
         case .focus:
             onEvent?(.onEditorFocus)
         case .cursorPositionChanged:
-            let positionDict = userInfo[BodyHtmlDocument.EventAttributeKey.cursorPosition] as? [String: CGFloat] ?? [:]
+            let positionDict = userInfo[HtmlBodyDocument.EventAttributeKey.cursorPosition] as? [String: CGFloat] ?? [:]
             guard let position = readCursorPosition(from: positionDict) else { return }
             onEvent?(.onCursorPositionChange(position: position))
         case .inlineImageRemoved:
@@ -143,8 +143,8 @@ final class BodyWebViewInterface: NSObject {
 
     private func readCursorPosition(from dict: [String: CGFloat]) -> CGPoint? {
         guard
-            let x = dict[BodyHtmlDocument.EventAttributeKey.cursorPositionX],
-            let y = dict[BodyHtmlDocument.EventAttributeKey.cursorPositionY]
+            let x = dict[HtmlBodyDocument.EventAttributeKey.cursorPositionX],
+            let y = dict[HtmlBodyDocument.EventAttributeKey.cursorPositionY]
         else {
             return nil
         }
@@ -153,7 +153,7 @@ final class BodyWebViewInterface: NSObject {
 
     private func readImageData(from dict: [String: Any]) -> Data? {
         guard
-            let imageBase64 = dict[BodyHtmlDocument.EventAttributeKey.imageData] as? String,
+            let imageBase64 = dict[HtmlBodyDocument.EventAttributeKey.imageData] as? String,
             let data = Data(base64Encoded: imageBase64)
         else {
             AppLogger.log(message: "no image data retrieved", category: .composer, isError: true)
@@ -165,9 +165,9 @@ final class BodyWebViewInterface: NSObject {
 
 /// Weak wrapper to break retain cycle between BodyWebViewInterface and WKUserContentController
 private class WeakScriptMessageHandler: NSObject, WKScriptMessageHandler {
-    weak var target: BodyWebViewInterface?
+    weak var target: HtmlBodyWebViewInterface?
 
-    init(target: BodyWebViewInterface) {
+    init(target: HtmlBodyWebViewInterface) {
         self.target = target
         super.init()
     }

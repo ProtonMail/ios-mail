@@ -34,3 +34,23 @@ enum DiscardDraftAlertAction: AlertActionInfo, CaseIterable {
         }
     }
 }
+
+
+enum ExpiringMessageUnsupportedAlertAction: AlertActionInfo, CaseIterable {
+    case sendAnyway
+    case addPassword
+    case cancel
+
+    // MARK: - AlertActionInfo
+
+    var info: (title: LocalizedStringResource, buttonRole: ButtonRole?) {
+        switch self {
+        case .sendAnyway:
+            (L10n.MessageExpiration.sendAnyway, .none)
+        case .addPassword:
+            (L10n.MessageExpiration.addPassword, .none)
+        case .cancel:
+            (CommonL10n.cancel, .cancel)
+        }
+    }
+}
