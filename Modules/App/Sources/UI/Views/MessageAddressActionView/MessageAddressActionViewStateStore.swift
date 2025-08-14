@@ -97,9 +97,9 @@ final class MessageAddressActionViewStateStore: StateStore {
                 openURL(url)
             }
         case .copyAddress:
-            clipboard.copyToClipboard(value: state.email, forName: "email address")
+            clipboard.copyToClipboard(value: state.email, forName: L10n.Action.Clipboard.emailAddress)
         case .copyName:
-            clipboard.copyToClipboard(value: state.name, forName: "name")
+            clipboard.copyToClipboard(value: state.name, forName: L10n.Action.Clipboard.name)
         case .addToContacts:
             toastStateStore.present(toast: .comingSoon)
         case .blockContact:

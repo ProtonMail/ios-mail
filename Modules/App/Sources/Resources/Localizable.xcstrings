@@ -7319,6 +7319,9 @@
     "Edit message" : {
       "comment" : "Action to modify a scheduled message."
     },
+    "email address" : {
+      "comment" : "Label for an email address when copying it to the clipboard."
+    },
     "Email not sent" : {
       "comment" : "Notification that is displayed when background time is up and at least one message is unsent."
     },
@@ -11495,6 +11498,9 @@
           }
         }
       }
+    },
+    "name" : {
+      "comment" : "Label for a person's name when copying it to the clipboard."
     },
     "Never" : {
       "comment" : "Auto option."

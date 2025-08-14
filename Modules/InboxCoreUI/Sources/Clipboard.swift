@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import InboxCore
 import UIKit
 
 public struct Clipboard {
@@ -27,8 +28,8 @@ public struct Clipboard {
     }
 
     @MainActor
-    public func copyToClipboard(value: String, forName name: String) {
+    public func copyToClipboard(value: String, forName name: LocalizedStringResource) {
         pasteboard.string = value
-        toastStateStore.present(toast: .information(message: "Copied \(name) to clipboard"))
+        toastStateStore.present(toast: .information(message: CommonL10n.copiedToClipboard(name: name.string).string))
     }
 }
