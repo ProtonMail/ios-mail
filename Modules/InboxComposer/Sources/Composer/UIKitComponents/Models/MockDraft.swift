@@ -53,6 +53,10 @@ final class MockDraft: AppDraftProtocol, @unchecked Sendable {
     var mockBccRecipientList: MockComposerRecipientList
     var mockAttachmentList: MockAttachmentList
     var mockGetPassword: DraftGetPasswordResult = .ok(nil)
+    var mockDraftExpirationTimeResult: DraftExpirationTimeResult = .ok(.never)
+    var mockValidateRecipientsExpirationResult: DraftValidateRecipientsExpirationFeatureResult = .ok(
+        .init(supported: [], unsupported: [], unknown: [])
+    )
 
     var mockDraftMessageIdResult: DraftMessageIdResult = .ok(defaultMessageId)
     var mockSenderList: DraftListSenderAddressesResult = .ok(.init(available: [], active: .empty))
@@ -205,6 +209,14 @@ final class MockDraft: AppDraftProtocol, @unchecked Sendable {
     func getPassword() -> DraftGetPasswordResult { mockGetPassword }
 
     func removePassword() async -> VoidDraftPasswordResult { .ok }
+
+    func expirationTime() -> DraftExpirationTimeResult { mockDraftExpirationTimeResult }
+
+    func setExpirationTime(expirationTime: DraftExpirationTime) async -> VoidDraftExpirationResult { .ok }
+
+    func validateRecipientsExpirationFeature() -> DraftValidateRecipientsExpirationFeatureResult {
+        mockValidateRecipientsExpirationResult
+    }
 
     func discard() async -> VoidDraftDiscardResult {
         .ok

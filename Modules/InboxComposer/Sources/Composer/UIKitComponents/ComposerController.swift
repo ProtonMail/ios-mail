@@ -59,7 +59,7 @@ final class ComposerController: UIViewController {
         self.bodyEditor = BodyEditorController(embeddedImageProvider: embeddedImageProvider)
         self.recipientsController = RecipientsViewController(invalidAddressAlertStore: invalidAddressAlertStore)
 
-        draftActionBarController = .init(isAddingAttachmentsEnabled: state.isAddingAttachmentsEnabled)
+        draftActionBarController = .init(state: state.toDraftActionBarState())
         self.onEvent = onEvent
         super.init(nibName: nil, bundle: nil)
     }
@@ -158,7 +158,7 @@ final class ComposerController: UIViewController {
         fromField.text = state.senderEmail
         subjectField.text = state.subject
         attachmentsController.uiModels = state.attachments
-        draftActionBarController.passwordState = state.isPasswordProtected ? .hasPassword : .noPassword
+        draftActionBarController.state = state.toDraftActionBarState()
         if state.isInitialFocusInBody {
             bodyEditor.setBodyInitialFocus()
         }
@@ -246,5 +246,16 @@ private extension ComposerController {
             view.spacing = 0
             return view
         }
+    }
+}
+
+private extension ComposerState {
+
+    func toDraftActionBarState() -> DraftActionBarViewController.State {
+        DraftActionBarViewController.State(
+            isAddingAttachmentsEnabled: isAddingAttachmentsEnabled,
+            isPasswordProtected: isPasswordProtected,
+            expirationTime: expirationTime
+        )
     }
 }

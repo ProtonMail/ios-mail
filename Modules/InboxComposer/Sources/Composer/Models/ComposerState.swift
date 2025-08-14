@@ -18,6 +18,7 @@
 import Foundation
 import InboxCore
 import InboxCoreUI
+import proton_app_uniffi
 
 struct ComposerState: Equatable, Copying {
     let isAddingAttachmentsEnabled: Bool
@@ -42,6 +43,7 @@ struct ComposerState: Equatable, Copying {
         !toRecipients.recipients.isEmpty  // FIXME: Implement final logic
     }
     var isPasswordProtected: Bool
+    var expirationTime: DraftExpirationTime
 
     var alert: AlertModel?
 
@@ -69,7 +71,8 @@ extension ComposerState {
             initialBody: .empty,
             isInitialFocusInBody: false,
             editingRecipientsGroup: nil,
-            isPasswordProtected: false
+            isPasswordProtected: false,
+            expirationTime: .never
         )
     }
 }

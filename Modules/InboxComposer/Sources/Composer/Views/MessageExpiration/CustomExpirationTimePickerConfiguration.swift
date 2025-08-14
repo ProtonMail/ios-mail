@@ -15,41 +15,36 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
 import InboxCore
 import InboxCoreUI
-import InboxComposer
+import SwiftUI
 
-struct SnoozeDatePickerConfiguration: DatePickerViewConfiguration {
+struct CustomExpirationTimePickerConfiguration: DatePickerViewConfiguration {
+    let title: LocalizedStringResource = L10n.MessageExpiration.datePickerTitle
+    let selectTitle: LocalizedStringResource = CommonL10n.save
+    let minuteInterval: TimeInterval = 30
+    let initialSelectedDate: Date?
+    private let minimumTimeBufferInMinutes: TimeInterval = 60
 
-    // MARK: - DatePickerViewConfiguration
+    private var rangeStart: Date {
+        Date.now.roundedUp(by: minuteInterval, withInitialBuffer: minimumTimeBufferInMinutes)
+    }
 
-    let title: LocalizedStringResource = L10n.Snooze.customSnoozeSheetTitle
-    let selectTitle: LocalizedStringResource = L10n.Common.save
-    let minuteInterval: TimeInterval = 1
-    let initialSelectedDate: Date? = nil
+    private var rangeEnd: Date {
+        Calendar.current.date(byAdding: .day, value: 28, to: rangeStart)!
+    }
 
     var range: ClosedRange<Date> {
-        Date.currentDateRoundedUpToNextHalfHour...Date.distantFuture
+        rangeStart...rangeEnd
     }
+
+    let formatter = ScheduleSendDateFormatter()
 
     func formatDate(_ date: Date) -> String {
         formatter.string(from: date, format: .medium)
     }
 
-    // MARK: - Private
-
-    private let formatter = ScheduleSendDateFormatter()
-
-}
-
-private extension Date {
-
-    static var currentDateRoundedUpToNextHalfHour: Date {
-        let interval: TimeInterval = 30 * 60
-        let time = DateEnvironment.currentDate().timeIntervalSinceReferenceDate
-        let roundedTime = ceil(time / interval) * interval
-        return Date(timeIntervalSinceReferenceDate: roundedTime)
+    init(initialSelectedDate: Date?) {
+        self.initialSelectedDate = initialSelectedDate
     }
-
 }

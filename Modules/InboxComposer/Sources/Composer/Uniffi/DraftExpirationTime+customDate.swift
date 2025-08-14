@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Proton Technologies AG
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -18,20 +18,17 @@
 import Foundation
 import proton_app_uniffi
 
-enum ComposerViewModalState: Identifiable, Equatable {
-    case senderPicker
-    case scheduleSend(DraftScheduleSendOptions, lastScheduledTime: UInt64?)
-    case attachmentPicker
-    case passwordProtection(password: String, hint: String)
-    case customExpirationDatePicker(selectedDate: Date?)
+extension DraftExpirationTime {
 
-    var id: String {
-        switch self {
-        case .senderPicker: "senderPicker"
-        case .scheduleSend: "scheduleSend"
-        case .attachmentPicker: "attachmentPicker"
-        case .passwordProtection: "passwordProtection"
-        case .customExpirationDatePicker: "customExpirationDatePicker"
+    var isCustomDate: Bool {
+        if case .custom = self { return true }
+        return false
+    }
+
+    var customDate: Date? {
+        if case .custom(let unixTimestamp) = self {
+            return Date(timeIntervalSince1970: TimeInterval(unixTimestamp))
         }
+        return nil
     }
 }

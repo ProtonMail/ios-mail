@@ -52,6 +52,9 @@ public protocol AppDraftProtocol: EmbeddedImageProvider {
     func setPassword(password: String, hint: String?) async  -> VoidDraftPasswordResult
     func getPassword() -> DraftGetPasswordResult
     func removePassword() async -> VoidDraftPasswordResult
+    func expirationTime() -> DraftExpirationTimeResult
+    func setExpirationTime(expirationTime: DraftExpirationTime) async -> VoidDraftExpirationResult
+    func validateRecipientsExpirationFeature() -> DraftValidateRecipientsExpirationFeatureResult
     func discard() async -> VoidDraftDiscardResult
 }
 
