@@ -93,7 +93,7 @@ final class MessageAddressActionViewStateStore: StateStore {
                 toastStateStore.present(toast: .error(message: error.localizedDescription))
             }
         case .call:
-            if let number = state.phoneNumber, let url = URL(string: "tel:\(number)") {
+            if let number = state.phoneNumber, let url = URL(phoneNumber: number) {
                 openURL(url)
             }
         case .copyAddress:

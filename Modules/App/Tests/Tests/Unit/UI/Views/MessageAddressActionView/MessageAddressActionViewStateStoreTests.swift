@@ -182,7 +182,7 @@ final class MessageAddressActionViewStateStoreTests {
         await sut.handle(action: .onTap(.call))
 
         #expect(dismissSpy.callsCount == 0)
-        #expect(urlOpener.callAsFunctionInvokedWithURL == [URL(string: "tel:\(phone)")])
+        #expect(urlOpener.callAsFunctionInvokedWithURL.map(\.absoluteString) == ["tel:\(phone)"])
         #expect(toastStateStore.state.toasts.isEmpty)
     }
 
