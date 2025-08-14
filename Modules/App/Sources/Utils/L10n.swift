@@ -561,6 +561,10 @@ enum L10n {
             "This message is from a mailing list.",
             comment: "Banner indicating that the email is from a mailing list."
         )
+        static let unsubscribedNewsletterTitle = LocalizedStringResource(
+            "You are unsubscribed from this mailing list.",
+            comment: "Banner indicating that the user is already unsubscribed from a mailing list."
+        )
     }
 
     enum EmptyFolderBanner {

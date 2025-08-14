@@ -52754,6 +52754,9 @@
         }
       }
     },
+    "You are unsubscribed from this mailing list." : {
+      "comment" : "Banner indicating that the user is already unsubscribed from a mailing list."
+    },
     "You blocked this sender" : {
       "comment" : "Banner informing the user that they have blocked this sender.",
       "localizations" : {

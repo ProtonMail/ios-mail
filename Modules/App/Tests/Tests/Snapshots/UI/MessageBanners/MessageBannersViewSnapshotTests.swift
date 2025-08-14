@@ -66,6 +66,7 @@ class MessageBannersViewSnapshotTests {
                 .scheduledSend(timestamp: 1_905_004_876),
                 .snoozed(timestamp: 1_740_238_200),
                 .remoteContent,
+                .unsubscribeNewsletter(alreadyUnsubscribed: true),
             ],
             timer: Timer.self,
             scheduleSendDateFormatter: ScheduleSendDateFormatter(),

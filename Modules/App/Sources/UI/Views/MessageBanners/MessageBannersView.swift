@@ -119,7 +119,7 @@ struct MessageBannersView: View {
                     message: L10n.MessageBanner.autoDeleteTitle(remainingTime: remainingTime),
                     style: .regular
                 )
-            case .unsubscribeNewsletter:
+            case .unsubscribeNewsletter(false):
                 let button = Banner.Button(title: L10n.MessageBanner.unsubscribeNewsletterAction) {
                     action(.unsubscribeNewsletterTapped)
                 }
@@ -128,6 +128,12 @@ struct MessageBannersView: View {
                     icon: DS.Icon.icEnvelopes,
                     message: L10n.MessageBanner.unsubscribeNewsletterTitle,
                     size: .small(button),
+                    style: .regular
+                )
+            case .unsubscribeNewsletter(true):
+                return smallNoButton(
+                    icon: DS.Icon.icEnvelopes,
+                    message: L10n.MessageBanner.unsubscribedNewsletterTitle,
                     style: .regular
                 )
             case .scheduledSend(let scheduledTime):
