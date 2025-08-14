@@ -128,7 +128,7 @@ struct MailboxItemActionSheet: View {
                 ActionSheetImageButton(
                     displayData: action.displayData,
                     displayBottomSeparator: !isLast,
-                    action: { store.handle(action: .mailboxItemActionSelected(action)) }
+                    action: { store.handle(action: .mailboxItemActionTapped(action)) }
                 )
             }
         }
@@ -155,7 +155,7 @@ struct MailboxItemActionSheet: View {
                 displayData: .init(title: L10n.Action.editToolbar, image: DS.Icon.icMagicWand.image),
                 displayBottomSeparator: false
             ) {
-                store.handle(action: .editToolbarActionSelected)
+                store.handle(action: .editToolbarActionTapped)
             }
         }
     }

@@ -142,7 +142,7 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
     func testNavigation_WhenLabelAsMailboxActionIsHandled_ItEmitsCorrectNavigation() {
         let sut = sut(id: 99, type: .message, title: .notUsed)
 
-        sut.handle(action: .mailboxItemActionSelected(.labelAs))
+        sut.handle(action: .mailboxItemActionTapped(.labelAs))
 
         XCTAssertEqual(spiedNavigation, [.labelAs])
     }
@@ -222,7 +222,7 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
     func testDeleteAction_WhenConversationIsDeleted_ItDeletesConversation() {
         testDeletionFlow(
             itemType: .conversation,
-            action: .mailboxItemActionSelected(.delete),
+            action: .mailboxItemActionTapped(.delete),
             expectedNavigation: .dismissAndGoBack,
             verifyInvoked: { deleteActionsSpy.deletedConversationsWithIDs }
         )
@@ -231,7 +231,7 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
     func testDeleteAction_WhenMessageIsDeleted_ItDeletesMessage() {
         testDeletionFlow(
             itemType: .message,
-            action: .mailboxItemActionSelected(.delete),
+            action: .mailboxItemActionTapped(.delete),
             expectedNavigation: .dismiss,
             verifyInvoked: { deleteActionsSpy.deletedMessagesWithIDs }
         )
@@ -400,7 +400,7 @@ class MailboxItemActionSheetStateStoreTests: BaseTestCase {
         let id = ID(value: 55)
         let sut = sut(id: id.value, type: itemType, title: .notUsed)
 
-        sut.handle(action: .mailboxItemActionSelected(action))
+        sut.handle(action: .mailboxItemActionTapped(action))
 
         XCTAssertEqual(verifyInvoked(), [id])
         XCTAssertEqual(spiedNavigation, [expectedNavigation])

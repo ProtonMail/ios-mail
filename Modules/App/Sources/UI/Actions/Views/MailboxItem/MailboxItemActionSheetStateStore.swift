@@ -76,7 +76,7 @@ class MailboxItemActionSheetStateStore: StateStore {
         switch action {
         case .onLoad:
             loadActions()
-        case .mailboxItemActionSelected(let action):
+        case .mailboxItemActionTapped(let action):
             switch action {
             case .labelAs:
                 navigation(.labelAs)
@@ -160,7 +160,7 @@ class MailboxItemActionSheetStateStore: StateStore {
             if case .confirm = action {
                 performMarkPhishing(itemType: input.type)
             }
-        case .editToolbarActionSelected:
+        case .editToolbarActionTapped:
             // FIXME: - Handle action
             break
         }
