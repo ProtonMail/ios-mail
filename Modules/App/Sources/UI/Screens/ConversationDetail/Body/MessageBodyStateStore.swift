@@ -28,6 +28,7 @@ final class MessageBodyStateStore: StateStore {
         case markAsLegitimate
         case markAsLegitimateConfirmed(LegitMessageConfirmationAlertAction)
         case unblockSender(emailAddress: String)
+        case unsubscribeNewsletter
     }
 
     struct State: Copying {
@@ -99,6 +100,10 @@ final class MessageBodyStateStore: StateStore {
             if case let .loaded(body) = state.body {
                 await unblockSender(emailAddress: emailAddress, with: body.html.options)
             }
+        case .unsubscribeNewsletter:
+            if case let .loaded(body) = state.body {
+                await unsubscribeNewsletter(with: body.newsletterService, options: body.html.options)
+            }
         }
     }
 
@@ -139,6 +144,16 @@ final class MessageBodyStateStore: StateStore {
     @MainActor
     private func unblockSender(emailAddress: String, with options: TransformOpts) async {
         switch await senderUnblocker.unblock(emailAddress: emailAddress) {
+        case .ok:
+            await loadMessageBody(with: options)
+        case .error(let error):
+            toastStateStore.present(toast: .error(message: error.localizedDescription))
+        }
+    }
+
+    @MainActor
+    private func unsubscribeNewsletter(with newsletterService: UnsubscribeNewsletter, options: TransformOpts) async {
+        switch await newsletterService.unsubscribeFromNewsletter() {
         case .ok:
             await loadMessageBody(with: options)
         case .error(let error):

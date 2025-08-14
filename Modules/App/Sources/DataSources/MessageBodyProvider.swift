@@ -26,6 +26,7 @@ struct MessageBody: Sendable {
     }
 
     let rsvpServiceProvider: RsvpEventServiceProvider?
+    let newsletterService: UnsubscribeNewsletter
     let banners: [MessageBanner]
     let html: HTML
 }
@@ -55,6 +56,7 @@ struct MessageBodyProvider {
             )
             let body = MessageBody(
                 rsvpServiceProvider: rsvpServiceProvider,
+                newsletterService: decryptedMessage,
                 banners: decryptedBody.bodyBanners,
                 html: html
             )
