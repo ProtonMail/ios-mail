@@ -62,7 +62,7 @@ final class MessageAddressActionViewStateStoreTests: BaseTestCase {
     }
 
     @MainActor
-    func testOnBlockAlertAction_CancelActionTapped_itDismissesAlertAndDoesNotCallBlock() async {
+    func testOnBlockAlertAction_CancelActionTapped_ItDismissesAlertAndDoesNotCallBlock() async {
         await sut.handle(action: .onTap(.blockContact))
         await sut.handle(action: .onBlockAlertAction(.cancel))
 
