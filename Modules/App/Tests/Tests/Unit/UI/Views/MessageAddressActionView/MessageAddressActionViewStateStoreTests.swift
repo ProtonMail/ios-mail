@@ -137,7 +137,7 @@ final class MessageAddressActionViewStateStoreTests {
     // MARK: - `Add to contacts` action
 
     @Test
-    func testOnTapOtherActions_ItShowComingSoon() async {
+    func testOnTapAddToContacts_ItShowsComingSoon() async {
         await sut.handle(action: .onTap(.addToContacts))
 
         #expect(dismissSpy.callsCount == 0)
@@ -159,7 +159,7 @@ final class MessageAddressActionViewStateStoreTests {
     }
 
     @Test
-    func testOnTapNewMessage_WhenFails_ItPresentsErrorToast() async {
+    func testOnTapNewMessage_WhenFails_ItShowsErrorToast() async {
         let stubbedError: ProtonError = .network
 
         draftPresenterSpy.stubbedOpenDraftError = stubbedError
