@@ -590,6 +590,28 @@ final class ComposerModelTests: BaseTestCase {
         XCTAssertTrue(sut.attachmentAlertState.isAlertPresented)
     }
 
+    func testAddAttachments_whenAddingUIImage_inComposerModeHtml_itShouldAddAttachmentAsInlineImage() async throws {
+        let draft = mockDraft!
+        draft.mockMimeType = .textHtml
+        let sut = makeSut(draft: draft, draftOrigin: .new, contactProvider: .mockInstance)
+
+        await sut.addAttachments(image: .init())
+
+        XCTAssertEqual(Set(mockDraft.attachmentPathsFor(dispositon: .inline)).count, 1)
+        XCTAssertEqual(Set(mockDraft.attachmentPathsFor(dispositon: .attachment)).count, 0)
+    }
+
+    func testAddAttachments_whenAddingUIImage_inComposerModePlainText_itShouldAddAttachmentAsRegular() async throws {
+        let draft = mockDraft!
+        draft.mockMimeType = .textPlain
+        let sut = makeSut(draft: draft, draftOrigin: .new, contactProvider: .mockInstance)
+
+        await sut.addAttachments(image: .init())
+
+        XCTAssertEqual(Set(mockDraft.attachmentPathsFor(dispositon: .inline)).count, 0)
+        XCTAssertEqual(Set(mockDraft.attachmentPathsFor(dispositon: .attachment)).count, 1)
+    }
+
     // MARK: removeAttachment(cid:)
 
     func testRemoveAttachment_whenSuccessfullyRemovesAttachment_itShouldSetBodyAction() async throws {

@@ -20,7 +20,7 @@ import InboxCoreUI
 import InboxDesignSystem
 import SwiftUI
 
-struct BodyHtmlDocument {
+struct HtmlBodyDocument {
     private typealias ColorBundle = (background: String, text: String, brand: String)
 
     private static func colorBundle(for colorScheme: ColorScheme) -> ColorBundle {
@@ -59,7 +59,7 @@ struct BodyHtmlDocument {
     }
 }
 
-extension BodyHtmlDocument {
+extension HtmlBodyDocument {
 
     enum EventAttributeKey {
         static let height = "height"
@@ -93,7 +93,7 @@ extension BodyHtmlDocument {
 
 // MARK: Private
 
-private extension BodyHtmlDocument {
+private extension HtmlBodyDocument {
 
     enum HtmlPlaceholder {
         static let body = "<!--INSERT_BODY-->"
@@ -108,7 +108,7 @@ private extension BodyHtmlDocument {
 
 // MARK: HTML
 
-private extension BodyHtmlDocument {
+private extension HtmlBodyDocument {
 
     var htmlTemplate: String {
         """
@@ -152,7 +152,7 @@ private extension BodyHtmlDocument {
 
 // MARK: Scripts
 
-private extension BodyHtmlDocument {
+private extension HtmlBodyDocument {
 
     var script: String {
         """

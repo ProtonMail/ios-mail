@@ -59,6 +59,7 @@ final class MockDraft: AppDraftProtocol, @unchecked Sendable {
     )
 
     var mockDraftMessageIdResult: DraftMessageIdResult = .ok(defaultMessageId)
+    var mockMimeType: MimeType = .textHtml
     var mockSenderList: DraftListSenderAddressesResult = .ok(.init(available: [], active: .empty))
     var mockDraftChangeSenderAddressResult: DraftChangeSenderAddressResult = .ok
     var mockSendResult: VoidDraftSendResult = .ok
@@ -130,6 +131,8 @@ final class MockDraft: AppDraftProtocol, @unchecked Sendable {
     }
 
     func messageId() async -> DraftMessageIdResult { mockDraftMessageIdResult }
+
+    func mimeType() -> MimeType { mockMimeType }
 
     func listSenderAddresses() async -> DraftListSenderAddressesResult {
         mockSenderList

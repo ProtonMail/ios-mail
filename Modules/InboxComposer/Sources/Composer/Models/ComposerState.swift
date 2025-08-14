@@ -21,7 +21,7 @@ import InboxCoreUI
 import proton_app_uniffi
 
 struct ComposerState: Equatable, Copying {
-    let isAddingAttachmentsEnabled: Bool
+    var composerMode: ComposerMode
 
     var toRecipients: RecipientFieldState
     var ccRecipients: RecipientFieldState
@@ -42,6 +42,7 @@ struct ComposerState: Equatable, Copying {
     var isSendAvailable: Bool {
         !toRecipients.recipients.isEmpty  // FIXME: Implement final logic
     }
+    var isAddingAttachmentsEnabled: Bool
     var isPasswordProtected: Bool
     var expirationTime: DraftExpirationTime
 
@@ -57,11 +58,16 @@ struct ComposerState: Equatable, Copying {
     }
 }
 
+public enum ComposerMode {
+    case html
+    case plainText
+}
+
 extension ComposerState {
 
-    static func initial(isAddingAttachmentsEnabled: Bool) -> Self {
+    static func initial(composerMode: ComposerMode, isAddingAttachmentsEnabled: Bool) -> Self {
         .init(
-            isAddingAttachmentsEnabled: isAddingAttachmentsEnabled,
+            composerMode: composerMode,
             toRecipients: .initialState(group: .to),
             ccRecipients: .initialState(group: .cc),
             bccRecipients: .initialState(group: .bcc),
@@ -71,6 +77,7 @@ extension ComposerState {
             initialBody: .empty,
             isInitialFocusInBody: false,
             editingRecipientsGroup: nil,
+            isAddingAttachmentsEnabled: isAddingAttachmentsEnabled,
             isPasswordProtected: false,
             expirationTime: .never
         )

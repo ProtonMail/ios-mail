@@ -39,7 +39,7 @@ final class ComposerController: UIViewController {
     private let fromField = FromFieldView()
     private let subjectField = SubjectFieldView()
     private let attachmentsController = DraftAttachmentsSectionViewController()
-    private let bodyEditor: BodyEditorController
+    private let bodyEditor: BodyEditor
     private let draftActionBarController: DraftActionBarViewController
     private let onEvent: (Event) -> Void
 
@@ -56,7 +56,8 @@ final class ComposerController: UIViewController {
         onEvent: @escaping (Event) -> Void
     ) {
         self.state = state
-        self.bodyEditor = BodyEditorController(embeddedImageProvider: embeddedImageProvider)
+        let factory = BodyEditorFactory(embeddedImageProvider: embeddedImageProvider)
+        self.bodyEditor = factory.makeEditor(for: state.composerMode)
         self.recipientsController = RecipientsViewController(invalidAddressAlertStore: invalidAddressAlertStore)
 
         draftActionBarController = .init(state: state.toDraftActionBarState())
@@ -144,7 +145,7 @@ final class ComposerController: UIViewController {
     private func setInitialStates(with state: ComposerState) {
         // FIXME: have a precached webview strategy
         DispatchQueue.main.async { [weak self] in
-            self?.bodyEditor.updateBody(html: state.initialBody)
+            self?.bodyEditor.updateBody(state.initialBody)
         }
     }
 
@@ -189,7 +190,7 @@ final class ComposerController: UIViewController {
     }
 
     func handleBodyAction(action: ComposerBodyAction) {
-        bodyEditor.handleBodyAction(action: action)
+        bodyEditor.handleBodyAction(action)
     }
 }
 
@@ -203,7 +204,7 @@ enum BodyEvent {
     case onReloadAfterMemoryPressure
 }
 
-private extension BodyEditorController.Event {
+private extension BodyEditorEvent {
 
     var toBodyEvent: BodyEvent? {
         switch self {

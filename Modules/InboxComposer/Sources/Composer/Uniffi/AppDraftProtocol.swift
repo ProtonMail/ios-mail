@@ -37,6 +37,7 @@ public protocol AppDraftProtocol: EmbeddedImageProvider {
     /// These function definitions must replicate whatever the `DraftProtocol` declares except the
     /// ones that return `ComposerRecipientList` objects.
     func messageId() async -> DraftMessageIdResult
+    func mimeType() -> MimeType
     func listSenderAddresses() async -> DraftListSenderAddressesResult
     func changeSenderAddress(email: String) async -> DraftChangeSenderAddressResult
     func attachmentList() -> AttachmentListProtocol
@@ -49,13 +50,20 @@ public protocol AppDraftProtocol: EmbeddedImageProvider {
     func setSubject(subject: String) -> VoidDraftSaveResult
     func subject() -> String
     func isPasswordProtected() -> DraftIsPasswordProtectedResult
-    func setPassword(password: String, hint: String?) async  -> VoidDraftPasswordResult
+    func setPassword(password: String, hint: String?) async -> VoidDraftPasswordResult
     func getPassword() -> DraftGetPasswordResult
     func removePassword() async -> VoidDraftPasswordResult
     func expirationTime() -> DraftExpirationTimeResult
     func setExpirationTime(expirationTime: DraftExpirationTime) async -> VoidDraftExpirationResult
     func validateRecipientsExpirationFeature() -> DraftValidateRecipientsExpirationFeatureResult
     func discard() async -> VoidDraftDiscardResult
+}
+
+extension AppDraftProtocol {
+
+    var composerMode: ComposerMode {
+        mimeType() == .textPlain ? .plainText : .html
+    }
 }
 
 /**

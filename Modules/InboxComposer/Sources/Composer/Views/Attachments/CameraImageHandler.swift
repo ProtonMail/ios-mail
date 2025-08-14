@@ -24,24 +24,43 @@ struct CameraImageHandler {
     let fileManager = FileManager.default
     let unexpectedError = DraftAttachmentUploadError.other(.unexpected(.fileSystem))
 
-    func addInlineImage(to draft: AppDraftProtocol, image: UIImage) async -> Result<String, DraftAttachmentUploadError> {
-        let uploadFolder: URL = URL(fileURLWithPath: draft.attachmentList().attachmentUploadDirectory())
+    func addInlineImage(to draft: AppDraftProtocol, image: UIImage) async throws(DraftAttachmentUploadError) -> String {
         do {
-            try fileManager.createDirectory(at: uploadFolder, withIntermediateDirectories: true)
-            let destinationFile = uploadFolder
-                .appendingPathComponent(UUID().uuidString)
-                .appendingPathExtension(UTType.jpeg.preferredFilenameExtension ?? "jpg")
-            let imageData = image.jpegData(compressionQuality: JPEG.compressionQuality)
-            try imageData?.write(to: destinationFile)
+            let destinationFile = try copyImageInDestinationFile(image, draft: draft)
             switch await draft.attachmentList().addInline(path: destinationFile.path, filenameOverride: nil) {
             case .ok(let cid):
-                return .success(cid)
+                return cid
             case .error(let error):
-                return .failure(error)
+                throw error
             }
         } catch {
             AppLogger.log(error: error, category: .composer)
-            return .failure(unexpectedError)
+            throw unexpectedError
         }
+    }
+
+    func addRegularAttachment(to draft: AppDraftProtocol, image: UIImage) async throws(DraftAttachmentUploadError) {
+        do {
+            let destinationFile = try copyImageInDestinationFile(image, draft: draft)
+            switch await draft.attachmentList().add(path: destinationFile.path) {
+            case .ok:
+                break
+            case .error(let error):
+                throw error
+            }
+        } catch {
+            AppLogger.log(error: error, category: .composer)
+            throw unexpectedError
+        }
+    }
+
+    private func copyImageInDestinationFile(_ image: UIImage, draft: AppDraftProtocol) throws -> URL {
+        let uploadFolder: URL = URL(fileURLWithPath: draft.attachmentList().attachmentUploadDirectory())
+        try fileManager.createDirectory(at: uploadFolder, withIntermediateDirectories: true)
+        let destinationFile = uploadFolder.appendingPathComponent(UUID().uuidString)
+            .appendingPathExtension(UTType.jpeg.preferredFilenameExtension ?? "jpg")
+        let imageData = image.jpegData(compressionQuality: JPEG.compressionQuality)
+        try imageData?.write(to: destinationFile)
+        return destinationFile
     }
 }

@@ -98,7 +98,7 @@ final class ComposerModel: ObservableObject {
         self.contactProvider = contactProvider
         self.onDismiss = onDismiss
         self.permissionsHandler = .init(permissionsHandler: permissionsHandler, contactStore: contactStore)
-        self.state = .initial(isAddingAttachmentsEnabled: isAddingAttachmentsEnabled)
+        self.state = .initial(composerMode: draft.composerMode, isAddingAttachmentsEnabled: isAddingAttachmentsEnabled)
         self.photosItemsHandler = photosItemsHandler
         self.cameraImageHandler = cameraImageHandler
         self.fileItemsHandler = fileItemsHandler
@@ -356,10 +356,16 @@ final class ComposerModel: ObservableObject {
 
     @MainActor
     func addAttachments(image: UIImage) async {
-        switch await cameraImageHandler.addInlineImage(to: draft, image: image) {
-        case .success(let cid):
-            bodyAction = .insertInlineImages(cids: [cid])
-        case .failure(let error):
+        do {
+            switch draft.composerMode {
+            case .html:
+                let cid = try await cameraImageHandler.addInlineImage(to: draft, image: image)
+                bodyAction = .insertInlineImages(cids: [cid])
+
+            case .plainText:
+                try await cameraImageHandler.addRegularAttachment(to: draft, image: image)
+            }
+        } catch {
             attachmentAlertState.enqueueAlertsForFailedAttachmentAdditions(errors: [error])
         }
     }
@@ -492,7 +498,7 @@ extension ComposerModel {
 
     private func makeState(from draft: AppDraftProtocol, attachments: [DraftAttachmentUIModel] = []) -> ComposerState {
         .init(
-            isAddingAttachmentsEnabled: state.isAddingAttachmentsEnabled,
+            composerMode: draft.composerMode,
             toRecipients: .initialState(group: .to, recipients: recipientUIModels(from: draft, for: .to)),
             ccRecipients: .initialState(group: .cc, recipients: recipientUIModels(from: draft, for: .cc)),
             bccRecipients: .initialState(group: .bcc, recipients: recipientUIModels(from: draft, for: .bcc)),
@@ -501,6 +507,7 @@ extension ComposerModel {
             attachments: attachments,
             initialBody: draft.body(),
             isInitialFocusInBody: false,
+            isAddingAttachmentsEnabled: state.isAddingAttachmentsEnabled,
             isPasswordProtected: draftIsPasswordProtected(draft: draft),
             expirationTime: draftExpirationTime(draft: draft)
         )
