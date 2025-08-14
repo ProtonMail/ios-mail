@@ -15,8 +15,20 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import proton_app_uniffi
+import UIKit
 
-public protocol RecipientDraftPresenter: Sendable {
-    func openDraft(with recipient: SingleRecipientEntry) async throws
+public struct Clipboard {
+    private let toastStateStore: ToastStateStore
+    private let pasteboard: UIPasteboard
+
+    public init(toastStateStore: ToastStateStore, pasteboard: UIPasteboard) {
+        self.toastStateStore = toastStateStore
+        self.pasteboard = pasteboard
+    }
+
+    @MainActor
+    public func copyToClipboard(value: String, forName name: String) {
+        pasteboard.string = value
+        toastStateStore.present(toast: .information(message: "Copied \(name) to clipboard"))
+    }
 }

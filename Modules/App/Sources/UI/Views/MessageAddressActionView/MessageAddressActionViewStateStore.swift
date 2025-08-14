@@ -30,6 +30,7 @@ final class MessageAddressActionViewStateStore: StateStore {
         let avatar: AvatarUIModel
         let name: String
         let email: String
+        let phoneNumber: String?
         /// Non-nil when the "Block this address" alert should be presented.
         var emailToBlock: String?
     }
@@ -38,20 +39,30 @@ final class MessageAddressActionViewStateStore: StateStore {
 
     private let session: MailUserSession
     private let toastStateStore: ToastStateStore
-    private let blockAddress: (MailUserSession, String) async -> VoidActionResult
+    private let clipboard: Clipboard
+    private let openURL: URLOpenerProtocol
+    private let blockAddress: (_ userSession: MailUserSession, _ emailAddress: String) async -> VoidActionResult
+    private let draftPresenter: RecipientDraftPresenter
 
     init(
         avatar: AvatarUIModel,
         name: String,
         email: String,
+        phoneNumber: String?,
         session: MailUserSession,
         toastStateStore: ToastStateStore,
-        blockAddress: @escaping (MailUserSession, String) async -> VoidActionResult
+        pasteboard: UIPasteboard,
+        openURL: URLOpenerProtocol,
+        blockAddress: @escaping (MailUserSession, String) async -> VoidActionResult,
+        draftPresenter: RecipientDraftPresenter
     ) {
-        self.state = .init(avatar: avatar, name: name, email: email, emailToBlock: .none)
+        self.state = .init(avatar: avatar, name: name, email: email, phoneNumber: phoneNumber, emailToBlock: .none)
         self.session = session
         self.toastStateStore = toastStateStore
+        self.clipboard = .init(toastStateStore: toastStateStore, pasteboard: pasteboard)
+        self.openURL = openURL
         self.blockAddress = blockAddress
+        self.draftPresenter = draftPresenter
     }
 
     // MARK: - Public
@@ -60,7 +71,7 @@ final class MessageAddressActionViewStateStore: StateStore {
     func handle(action: Action) async {
         switch action {
         case .onTap(let tapAction):
-            handleTap(action: tapAction)
+            await handleTap(action: tapAction)
         case .onBlockAlertAction(let alertAction):
             await handleAlert(action: alertAction)
         }
@@ -69,9 +80,23 @@ final class MessageAddressActionViewStateStore: StateStore {
     // MARK: - Private
 
     @MainActor
-    private func handleTap(action: MessageAddressAction) {
+    private func handleTap(action: MessageAddressAction) async {
         switch action {
-        case .newMessage, .call, .addToContacts, .copyAddress, .copyName:
+        case .newMessage:
+            do {
+                try await draftPresenter.openDraft(with: .init(name: state.name, email: state.email))
+            } catch {
+                toastStateStore.present(toast: .error(message: error.localizedDescription))
+            }
+        case .call:
+            if let number = state.phoneNumber, let url = URL(string: "tel:\(number)") {
+                openURL(url)
+            }
+        case .copyAddress:
+            clipboard.copyToClipboard(value: state.email, forName: "email address")
+        case .copyName:
+            clipboard.copyToClipboard(value: state.name, forName: "name")
+        case .addToContacts:
             toastStateStore.present(toast: .comingSoon)
         case .blockContact:
             state = state.copy(\.emailToBlock, to: state.email)
@@ -87,18 +112,13 @@ final class MessageAddressActionViewStateStore: StateStore {
             if let emailToBlock = state.emailToBlock {
                 state = state.copy(\.emailToBlock, to: nil)
 
-                await block(email: emailToBlock)
+                switch await blockAddress(session, emailToBlock) {
+                case .ok:
+                    toastStateStore.present(toast: .information(message: L10n.BlockAddress.Toast.success.string))
+                case .error:
+                    toastStateStore.present(toast: .error(message: L10n.BlockAddress.Toast.failure.string))
+                }
             }
-        }
-    }
-
-    @MainActor
-    private func block(email: String) async {
-        switch await blockAddress(session, email) {
-        case .ok:
-            toastStateStore.present(toast: .information(message: L10n.BlockAddress.Toast.success.string))
-        case .error:
-            toastStateStore.present(toast: .error(message: L10n.BlockAddress.Toast.failure.string))
         }
     }
 }

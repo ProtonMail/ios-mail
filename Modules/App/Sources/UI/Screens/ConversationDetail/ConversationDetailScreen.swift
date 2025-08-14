@@ -92,6 +92,7 @@ struct ConversationDetailScreen: View {
                     ConversationDetailListView(
                         model: model,
                         mailUserSession: mailUserSession,
+                        draftPresenter: draftPresenter,
                         goBack: { goBackToMailbox() }
                     )
                 }

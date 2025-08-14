@@ -15,17 +15,20 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import InboxDesignSystem
+import InboxCore
 import InboxCoreUI
+import InboxDesignSystem
 import proton_app_uniffi
 import SwiftUI
 
 struct MessageAddressActionView: View {
     @EnvironmentObject var toastStateStore: ToastStateStore
+    @Environment(\.openURL) var openURL
     let avatarUIModel: AvatarUIModel
     let name: String
     let emailAddress: String
     let mailUserSession: MailUserSession
+    let draftPresenter: RecipientDraftPresenter
 
     var body: some View {
         StoreView(
@@ -33,9 +36,13 @@ struct MessageAddressActionView: View {
                 avatar: avatarUIModel,
                 name: name,
                 email: emailAddress,
+                phoneNumber: .none,
                 session: mailUserSession,
                 toastStateStore: toastStateStore,
-                blockAddress: blockAddress(session:email:)
+                pasteboard: .general,
+                openURL: openURL,
+                blockAddress: blockAddress(session:email:),
+                draftPresenter: draftPresenter
             ),
             content: { state, store in
                 ActionPickerList(
@@ -103,7 +110,13 @@ struct MessageAddressActionView: View {
             ),
             name: "Aaron",
             emailAddress: "aaron@proton.me",
-            mailUserSession: .dummy
+            mailUserSession: .dummy,
+            draftPresenter: DraftPresenter(
+                userSession: .dummy,
+                draftProvider: .dummy,
+                undoSendProvider: .mockInstance,
+                undoScheduleSendProvider: .mockInstance
+            )
         )
     }
 }
