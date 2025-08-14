@@ -3880,6 +3880,9 @@
     "Auto-lock" : {
       "comment" : "Auto lock button and screen title."
     },
+    "Available actions" : {
+      "comment" : "Title of a section with available toolbar actions."
+    },
     "Bcc" : {
       "comment" : "`BCC` in the messsage details.",
       "extractionState" : "stale",
@@ -4675,6 +4678,9 @@
     },
     "Change second password" : {
       "comment" : "Option in the Settings screen (if the user has two passwords)."
+    },
+    "Chosen actions" : {
+      "comment" : "Title of a section with choosen toolbar actions."
     },
     "Combined contacts" : {
       "comment" : "Combined Contacts setting title in app settings."
@@ -7313,11 +7319,20 @@
     "Edit and reschedule" : {
       "comment" : "Alert title for editing a scheduled message."
     },
+    "Edit conversation toolbar" : {
+      "comment" : "Conversation toolbar edition screen title."
+    },
     "Edit draft" : {
       "comment" : "Alert confirmation button title for editing a scheduled message."
     },
+    "Edit list toolbar" : {
+      "comment" : "List toolbar edition screen title."
+    },
     "Edit message" : {
       "comment" : "Action to modify a scheduled message."
+    },
+    "Edit message toolbar" : {
+      "comment" : "Message toolbar edition screen title."
     },
     "Edit toolbar" : {
       "comment" : "Title of edit toolbar action."
@@ -14234,6 +14249,12 @@
     "Reports are not end-to-end encrypted, please do not send any sensitive information." : {
       "comment" : "Report a problem screen, top information."
     },
+    "Reset to original" : {
+      "comment" : "Title of a button that reset a set of selected actions to default."
+    },
+    "Restores the toolbar actions for the message view to their original default settings." : {
+      "comment" : "Title of a button that reset a set of selected actions to default."
+    },
     "Save" : {
       "comment" : "`Save` action title."
     },
@@ -17158,6 +17179,9 @@
     },
     "The PIN codes must match!" : {
       "comment" : "Not matching PIN validation error message."
+    },
+    "The toolbar can have 1–5 actions. You can’t remove the last remaining action." : {
+      "comment" : "Subtitle of a section with choosen toolbar actions."
     },
     "There was an error sending the report, please try again." : {
       "comment" : "Toast displayed after the report failed to send"

@@ -17,45 +17,13 @@
 
 import SwiftUI
 import InboxCore
-import InboxCoreUI
-
-struct EditToolbarState: Copying {
-    let toolbarActions: ToolbarActions
-}
-
-extension EditToolbarState {
-
-    static func initial(toolbarActions: ToolbarActions) -> Self {
-        .init(toolbarActions: toolbarActions)
-    }
-
-}
-
-enum EditToolbarAction {
-//    case selectedActionReordered(fromIndex: Int, toIndex: Int)
-//    case removeFromSelectedActions(index: Int)
-}
-
-@MainActor
-class EditToolbarStore: StateStore {
-    @Published var state: EditToolbarState
-
-    init(state: EditToolbarState) {
-        self.state = state
-    }
-
-    func handle(action: EditToolbarAction) async {
-
-    }
-}
-
 import InboxDesignSystem
 
 struct EditToolbarScreen: View {
     @StateObject var store: EditToolbarStore
 
-    init(state: EditToolbarState) {
-        self._store = .init(wrappedValue: .init(state: state))
+    init(state: EditToolbarState, toolbarService: ToolbarServiceProtocol) {
+        self._store = .init(wrappedValue: .init(state: state, toolbarService: toolbarService))
     }
 
     var body: some View {
@@ -65,18 +33,20 @@ struct EditToolbarScreen: View {
                 .moveDisabled(true)
             resetToOriginalSection()
         }
+        .onLoad {
+            store.handle(action: .onLoad)
+        }
         .listSectionSpacing(DS.Spacing.extraLarge)
-        .navigationTitle("Edit list toolbar")
+        .navigationTitle(store.state.screenType.screenTitle.string)
         .environment(\.editMode, .constant(.active))
+        .id(store.state.toolbarActions.unselected)
     }
 
     private func chosenActionsSection() -> some View {
         Section {
             ForEach(store.state.toolbarActions.selected) { action in
                 HStack(spacing: DS.Spacing.medium) {
-                    Button(action: {
-                        print("*** MINUS ACTION")
-                    }) {
+                    Button(action: { store.handle(action: .removeFromSelectedTapped(actionToRemove: action)) }) {
                         Image(symbol: .minusCircleFill)
                             .foregroundStyle(DS.Color.Notification.error)
                             .frame(width: 24, height: 24, alignment: .leading)
@@ -92,17 +62,18 @@ struct EditToolbarScreen: View {
                         .foregroundStyle(DS.Color.Text.norm)
                 }
                 .selectionDisabled()
+                .disabled(store.state.selectedActionsListDisabled)
             }
-            .onMove { position, destination in
-                print("*** FROM: \(position) TO: \(destination)")
+            .onMove { fromOffsets, toOffset in
+                store.handle(action: .actionsReordered(fromOffsets: fromOffsets, toOffset: toOffset))
             }
         } header: {
             VStack(alignment: .leading, spacing: DS.Spacing.mediumLight) {
-                Text("Chosen actions")
+                Text(L10n.Settings.CustomizeToolbars.chosenActionsSectionTitle)
                     .foregroundStyle(DS.Color.Text.norm)
                     .font(.callout)
                     .fontWeight(.semibold)
-                Text("The toolbar can have 1–5 actions. You can’t remove the last remaining action.")
+                Text(L10n.Settings.CustomizeToolbars.chosenActionsSectionSubtitle)
                     .foregroundStyle(DS.Color.Text.weak)
                     .font(.footnote)
             }
@@ -115,9 +86,7 @@ struct EditToolbarScreen: View {
         Section {
             ForEach(store.state.toolbarActions.unselected) { action in
                 HStack(spacing: DS.Spacing.medium) {
-                    Button(action: {
-                        print("*** MINUS ACTION")
-                    }) {
+                    Button(action: { store.handle(action: .addToSelectedTapped(actionToAdd: action)) }) {
                         Image(symbol: .plusCircleFill)
                             .foregroundStyle(DS.Color.Notification.success)
                             .frame(width: 24, height: 24, alignment: .leading)
@@ -133,9 +102,10 @@ struct EditToolbarScreen: View {
                         .foregroundStyle(DS.Color.Text.norm)
                 }
                 .selectionDisabled()
+                .disabled(store.state.availableActionsListDisabled)
             }
         } header: {
-            Text("Available actions")
+            Text(L10n.Settings.CustomizeToolbars.availableActionsSectionTitle)
                 .foregroundStyle(DS.Color.Text.norm)
                 .font(.callout)
                 .fontWeight(.semibold)
@@ -146,16 +116,16 @@ struct EditToolbarScreen: View {
 
     private func resetToOriginalSection() -> some View {
         Section {
-            Button(action: { print("*** RESET TO ORIGINAL TAP") }) {
+            Button(action: { store.handle(action: .resetToOriginalTapped) }) {
                 HStack {
-                    Text("Reset to original")
+                    Text(L10n.Settings.CustomizeToolbars.resetButtonTitle)
                     Spacer()
                     Image(symbol: .arrowClockwise)
                 }
                 .foregroundStyle(DS.Color.Text.accent)
             }
         } footer: {
-            Text("Restores the toolbar actions for the message view to their original default settings.")
+            Text(L10n.Settings.CustomizeToolbars.resetButtonFooter)
                 .foregroundStyle(DS.Color.Text.weak)
                 .font(.footnote)
                 .padding(.top, DS.Spacing.small)
@@ -173,10 +143,40 @@ extension ToolbarActionType: Identifiable {
 
 #Preview {
     EditToolbarScreen(
-        state: .initial(
+        state: .init(
+            screenType: .list,
             toolbarActions: .init(
                 selected: [.markAsUnread, .archive, .labelAs],
                 unselected: [.moveTo, .moveToSpam, .moveToTrash, .snooze, .star]
-            )
-        ))
+            ),
+        ),
+        toolbarService: ToolbarService()
+    )
+}
+
+private extension EditToolbarState {
+
+    var availableActionsListDisabled: Bool {
+        toolbarActions.selected.count >= 5
+    }
+
+    var selectedActionsListDisabled: Bool {
+        toolbarActions.selected.count <= 1
+    }
+
+}
+
+private extension EditToolbarState.ScreenType {
+
+    var screenTitle: LocalizedStringResource {
+        switch self {
+        case .list:
+            L10n.Settings.CustomizeToolbars.listToolbarEditionScreenTitle
+        case .message:
+            L10n.Settings.CustomizeToolbars.messageToolbarEditionScreenTitle
+        case .conversation:
+            L10n.Settings.CustomizeToolbars.conversationToolbarSectionTitle
+        }
+    }
+
 }

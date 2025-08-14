@@ -26,12 +26,12 @@ struct CustomizeToolbarActions {
     let conversation: ToolbarActions
 }
 
-struct ToolbarActions {
-    let selected: [ToolbarActionType]
-    let unselected: [ToolbarActionType]
+struct ToolbarActions: Hashable {
+    var selected: [ToolbarActionType]
+    var unselected: [ToolbarActionType]
 }
 
-enum ToolbarActionType {
+enum ToolbarActionType: Hashable {
     case markAsUnread
     case moveToTrash
     case moveTo

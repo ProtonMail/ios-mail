@@ -954,6 +954,38 @@ enum L10n {
                 "Edit actions",
                 comment: "Title of edit actions button."
             )
+            static let listToolbarEditionScreenTitle = LocalizedStringResource(
+                "Edit list toolbar",
+                comment: "List toolbar edition screen title."
+            )
+            static let messageToolbarEditionScreenTitle = LocalizedStringResource(
+                "Edit message toolbar",
+                comment: "Message toolbar edition screen title."
+            )
+            static let conversationToolbarEditionScreenTitle = LocalizedStringResource(
+                "Edit conversation toolbar",
+                comment: "Conversation toolbar edition screen title."
+            )
+            static let chosenActionsSectionTitle = LocalizedStringResource(
+                "Chosen actions",
+                comment: "Title of a section with choosen toolbar actions."
+            )
+            static let chosenActionsSectionSubtitle = LocalizedStringResource(
+                "The toolbar can have 1–5 actions. You can’t remove the last remaining action.",
+                comment: "Subtitle of a section with choosen toolbar actions."
+            )
+            static let availableActionsSectionTitle = LocalizedStringResource(
+                "Available actions",
+                comment: "Title of a section with available toolbar actions."
+            )
+            static let resetButtonTitle = LocalizedStringResource(
+                "Reset to original",
+                comment: "Title of a button that reset a set of selected actions to default."
+            )
+            static let resetButtonFooter = LocalizedStringResource(
+                "Restores the toolbar actions for the message view to their original default settings.",
+                comment: "Title of a button that reset a set of selected actions to default."
+            )
         }
 
         static let subscription = LocalizedStringResource(
