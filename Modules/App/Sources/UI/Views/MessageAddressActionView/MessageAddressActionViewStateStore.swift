@@ -46,7 +46,7 @@ final class MessageAddressActionViewStateStore: StateStore {
         email: String,
         session: MailUserSession,
         toastStateStore: ToastStateStore,
-        blockAddress: @escaping (MailUserSession, String) async -> VoidActionResult = blockAddress(session:email:)
+        blockAddress: @escaping (MailUserSession, String) async -> VoidActionResult
     ) {
         self.state = .init(avatar: avatar, name: name, email: email, emailToBlock: .none)
         self.session = session

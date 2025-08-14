@@ -34,7 +34,8 @@ struct MessageAddressActionView: View {
                 name: name,
                 email: emailAddress,
                 session: mailUserSession,
-                toastStateStore: toastStateStore
+                toastStateStore: toastStateStore,
+                blockAddress: blockAddress(session:email:)
             ),
             content: { state, store in
                 ActionPickerList(
