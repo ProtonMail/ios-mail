@@ -23,31 +23,6 @@ import proton_app_uniffi
 @MainActor
 final class AppRouteState: ObservableObject, Sendable {
     @Published private(set) var route: Route
-    var onSelectedMailboxChange: AnyPublisher<SelectedMailbox, Never> {
-        _route.projectedValue.map(\.selectedMailbox).dropFirst().eraseToAnyPublisher()
-    }
-
-    var openedMailboxItem: AnyPublisher<MailboxMessageSeed, Never> {
-        _route.projectedValue
-            .compactMap {
-                switch $0 {
-                case .mailbox, .composerFromShareExtension: nil
-                case .mailboxOpenMessage(let seed): seed
-                }
-            }
-            .eraseToAnyPublisher()
-    }
-
-    var openedDraftForShareExtension: AnyPublisher<Void, Never> {
-        _route.projectedValue
-            .compactMap {
-                switch $0 {
-                case .composerFromShareExtension: ()
-                default: nil
-                }
-            }
-            .eraseToAnyPublisher()
-    }
 
     init(route: Route) {
         self.route = route
@@ -67,17 +42,20 @@ extension AppRouteState {
 
 }
 
-enum Route: Equatable, CustomStringConvertible {
+enum Route: Equatable {
     case mailbox(selectedMailbox: SelectedMailbox)
     case mailboxOpenMessage(seed: MailboxMessageSeed)
-    case composerFromShareExtension
+    case composer(fromShareExtension: Bool)
+    case search
 
-    var selectedMailbox: SelectedMailbox {
+    var selectedMailbox: SelectedMailbox? {
         switch self {
         case .mailbox(let selectedMailbox):
             selectedMailbox
-        case .mailboxOpenMessage, .composerFromShareExtension:
+        case .mailboxOpenMessage:
             SelectedMailbox.inbox
+        case .composer, .search:
+            nil
         }
     }
 
@@ -87,8 +65,12 @@ enum Route: Equatable, CustomStringConvertible {
             "mailbox \(label.name.string)"
         case .mailboxOpenMessage:
             "mailboxOpenMessage"
-        case .composerFromShareExtension:
+        case .composer(fromShareExtension: false):
+            "composer"
+        case .composer(fromShareExtension: true):
             "composerFromShareExtension"
+        case .search:
+            "search"
         }
     }
 }

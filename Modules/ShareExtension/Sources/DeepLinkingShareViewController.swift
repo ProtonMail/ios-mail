@@ -73,7 +73,7 @@ private struct MainAppOpener: View {
     var body: some View {
         ProgressView()
             .task {
-                openURL(URL(string: "\(Bundle.URLScheme.protonmail)://composer")!)
+                openURL(URL(string: "\(Bundle.URLScheme.protonmail)://composerFromShareExtension")!)
                 dismissShareExtension()
             }
     }

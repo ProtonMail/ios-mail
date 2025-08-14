@@ -78,6 +78,12 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate, ObservableObject 
             windowScene = scene
             appProtectionWindow = appProtectionWindow(windowScene: scene)
         }
+
+        if let shortcutItem = connectionOptions.shortcutItem {
+            Task {
+                _ = await AppLifeCycle.shared.scene(scene, performActionFor: shortcutItem)
+            }
+        }
     }
 
     func sceneWillEnterForeground(_ scene: UIScene) {
@@ -92,6 +98,10 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate, ObservableObject 
     func sceneDidEnterBackground(_ scene: UIScene) {
         AppLifeCycle.shared.sceneDidEnterBackground()
         coverAppContent()
+    }
+
+    func windowScene(_ windowScene: UIWindowScene, performActionFor shortcutItem: UIApplicationShortcutItem) async -> Bool {
+        await AppLifeCycle.shared.scene(windowScene, performActionFor: shortcutItem)
     }
 
     // MARK: - Private
