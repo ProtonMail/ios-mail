@@ -17,6 +17,6 @@
 
 import proton_app_uniffi
 
-public protocol RecipientDraftPresenter {
+public protocol RecipientDraftPresenter: Sendable {
     func openDraft(with recipient: SingleRecipientEntry) async throws
 }

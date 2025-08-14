@@ -21,20 +21,10 @@ import Foundation
 struct ScheduleDatePickerConfiguration: DatePickerViewConfiguration {
     private let referenceDate: Date
     private let dateFormatter: ScheduleSendDateFormatter
-    private let minimumTimeBufferInSeconds: TimeInterval = 10 * 60
+    private let minimumTimeBufferInMinutes: TimeInterval = 10
 
-    /**
-     Calculates the start date by leaving at least the minimum time buffer. Then it rounds the number
-     up to the next minute block.
-     */
     private var rangeStart: Date {
-        let futureTime = referenceDate.addingTimeInterval(minimumTimeBufferInSeconds)
-        let totalMinutes = futureTime.timeIntervalSince1970 / 60
-
-        let numberOfMinuteBlocksRoundedUp = ceil(totalMinutes / minuteInterval)
-        let finalNumberOfMinutes = numberOfMinuteBlocksRoundedUp * minuteInterval
-
-        return Date(timeIntervalSince1970: finalNumberOfMinutes * 60)
+        referenceDate.roundedUp(by: minuteInterval, withInitialBuffer: minimumTimeBufferInMinutes)
     }
 
     private var rangeEnd: Date {
@@ -54,6 +44,8 @@ struct ScheduleDatePickerConfiguration: DatePickerViewConfiguration {
     var range: ClosedRange<Date> {
         rangeStart...rangeEnd
     }
+
+    let initialSelectedDate: Date? = nil
 
     func formatDate(_ date: Date) -> String {
         dateFormatter.string(from: date, format: .medium)

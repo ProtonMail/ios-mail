@@ -18,29 +18,30 @@
 import InboxDesignSystem
 import UIKit
 
-final class PasswordButton: UIButton {
+final class CheckableIconButton: UIButton {
     enum State {
-        case noPassword
-        case hasPassword
+        case unchecked
+        case checked
     }
 
     private let backgroundIcon = UIImageView()
     private let checkmarkIcon = UIImageView()
     private let checkmarkBackground = UIView()
 
-    private let lockIconSize = 24.0
+    private let backgroundIconSize = 24.0
     private let checkmarkPositionCorection = 4.0
     private let checkmarkMultiplier = 0.6
 
-    var buttonState: State = .noPassword {
+    var buttonState: State = .unchecked {
         didSet { updateAppearance() }
     }
 
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init(icon: ImageResource) {
+        super.init(frame: .zero)
         setUpUI()
         setUpConstraints()
         updateAppearance()
+        backgroundIcon.image = UIImage(resource: icon).withRenderingMode(.alwaysTemplate)
     }
 
     required init?(coder: NSCoder) {
@@ -73,8 +74,8 @@ final class PasswordButton: UIButton {
 
     private func setUpConstraints() {
         NSLayoutConstraint.activate([
-            backgroundIcon.widthAnchor.constraint(equalToConstant: lockIconSize),
-            backgroundIcon.heightAnchor.constraint(equalToConstant: lockIconSize),
+            backgroundIcon.widthAnchor.constraint(equalToConstant: backgroundIconSize),
+            backgroundIcon.heightAnchor.constraint(equalToConstant: backgroundIconSize),
             backgroundIcon.centerXAnchor.constraint(equalTo: centerXAnchor),
             backgroundIcon.centerYAnchor.constraint(equalTo: centerYAnchor),
         ])
@@ -86,7 +87,7 @@ final class PasswordButton: UIButton {
             checkmarkBackground.trailingAnchor.constraint(equalTo: backgroundIcon.trailingAnchor, constant: checkmarkPositionCorection),
         ])
         checkmarkBackground.backgroundColor = DS.Color.Background.norm.toDynamicUIColor
-        checkmarkBackground.layer.cornerRadius = (checkmarkMultiplier / 2) * lockIconSize
+        checkmarkBackground.layer.cornerRadius = (checkmarkMultiplier / 2) * backgroundIconSize
         checkmarkBackground.layer.masksToBounds = true
 
         NSLayoutConstraint.activate([
@@ -99,13 +100,11 @@ final class PasswordButton: UIButton {
 
     private func updateAppearance() {
         switch buttonState {
-        case .noPassword:
+        case .unchecked:
             backgroundIcon.tintColor = DS.Color.Icon.hint.toDynamicUIColor
-            backgroundIcon.image = UIImage(resource: DS.Icon.icLock).withRenderingMode(.alwaysTemplate)
             checkmarkIcon.isHidden = true
             checkmarkBackground.isHidden = true
-        case .hasPassword:
-            backgroundIcon.image = UIImage(resource: DS.Icon.icLock).withRenderingMode(.alwaysTemplate)
+        case .checked:
             backgroundIcon.tintColor = DS.Color.Icon.norm.toDynamicUIColor
             checkmarkIcon.image = UIImage(resource: DS.Icon.icCheckmarkCircleFilled).withRenderingMode(.alwaysTemplate)
             checkmarkIcon.tintColor = DS.Color.Icon.norm.toDynamicUIColor
@@ -122,9 +121,9 @@ final class PasswordButton: UIButton {
             checkmarkIcon.tintColor = DS.Color.Icon.norm.toDynamicUIColor
         } else {
             switch buttonState {
-            case .noPassword:
+            case .unchecked:
                 backgroundIcon.tintColor = DS.Color.Icon.hint.toDynamicUIColor
-            case .hasPassword:
+            case .checked:
                 backgroundIcon.tintColor = DS.Color.Icon.norm.toDynamicUIColor
                 checkmarkIcon.tintColor = DS.Color.Icon.norm.toDynamicUIColor
             }

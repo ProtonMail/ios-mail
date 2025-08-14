@@ -590,6 +590,28 @@ final class ComposerModelTests: BaseTestCase {
         XCTAssertTrue(sut.attachmentAlertState.isAlertPresented)
     }
 
+    func testAddAttachments_whenAddingUIImage_inComposerModeHtml_itShouldAddAttachmentAsInlineImage() async throws {
+        let draft = mockDraft!
+        draft.mockMimeType = .textHtml
+        let sut = makeSut(draft: draft, draftOrigin: .new, contactProvider: .mockInstance)
+
+        await sut.addAttachments(image: .init())
+
+        XCTAssertEqual(Set(mockDraft.attachmentPathsFor(dispositon: .inline)).count, 1)
+        XCTAssertEqual(Set(mockDraft.attachmentPathsFor(dispositon: .attachment)).count, 0)
+    }
+
+    func testAddAttachments_whenAddingUIImage_inComposerModePlainText_itShouldAddAttachmentAsRegular() async throws {
+        let draft = mockDraft!
+        draft.mockMimeType = .textPlain
+        let sut = makeSut(draft: draft, draftOrigin: .new, contactProvider: .mockInstance)
+
+        await sut.addAttachments(image: .init())
+
+        XCTAssertEqual(Set(mockDraft.attachmentPathsFor(dispositon: .inline)).count, 0)
+        XCTAssertEqual(Set(mockDraft.attachmentPathsFor(dispositon: .attachment)).count, 1)
+    }
+
     // MARK: removeAttachment(cid:)
 
     func testRemoveAttachment_whenSuccessfullyRemovesAttachment_itShouldSetBodyAction() async throws {
@@ -726,6 +748,46 @@ final class ComposerModelTests: BaseTestCase {
         XCTAssertNotNil(sut.state.alert)
         XCTAssertEqual(mockDraft.sendWasCalled, false)
     }
+
+    func testSendMessage_whenRecipientsDoNotSupportExpiration_andUserChoosesToProceed_itShouldSend() async {
+        mockDraft.mockDraftExpirationTimeResult = .ok(.threeDays)
+        let validationActions = MessageExpirationValidatorActions.dummy(returning: .proceed)
+
+        let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: .mockInstance, expirationValidationActions: validationActions)
+        let dismissSpy = DismissSpy()
+
+        await sut.sendMessage(dismissAction: dismissSpy)
+
+        XCTAssertTrue(mockDraft.sendWasCalled)
+        XCTAssertEqual(dismissReasonObserver, [.messageSent(messageId: MockDraft.defaultMessageId)])
+        XCTAssertEqual(dismissSpy.callsCount, 1)
+        XCTAssertEqual(sut.toast, nil)
+    }
+
+    func testSendMessage_whenRecipientsDoNotSupportExpiration_andUserChoosesDoNotProceed_itShouldNotSend() async {
+        mockDraft.mockDraftExpirationTimeResult = .ok(.threeDays)
+        let validationActions = MessageExpirationValidatorActions.dummy(returning: .doNotProceed(addPassword: false))
+
+        let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: .mockInstance, expirationValidationActions: validationActions)
+        let dismissSpy = DismissSpy()
+
+        await sut.sendMessage(dismissAction: dismissSpy)
+
+        XCTAssertFalse(mockDraft.sendWasCalled)
+    }
+
+    func testSendMessage_whenRecipientsDoNotSupportExpiration_andUserChoosesAddPassword_itShouldSetPasswordModal() async {
+        mockDraft.mockDraftExpirationTimeResult = .ok(.threeDays)
+        let validationActions = MessageExpirationValidatorActions.dummy(returning: .doNotProceed(addPassword: true))
+
+        let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: .mockInstance, expirationValidationActions: validationActions)
+        let dismissSpy = DismissSpy()
+
+        await sut.sendMessage(dismissAction: dismissSpy)
+
+        XCTAssertFalse(mockDraft.sendWasCalled)
+        XCTAssertEqual(sut.modalAction, .passwordProtection(password: "", hint: ""))
+    }
 }
 
 // MARK: Helpers
@@ -733,7 +795,12 @@ final class ComposerModelTests: BaseTestCase {
 private extension ComposerModelTests {
     typealias MatchContactCountTestCase = (input: String, expectedMatchCount: Int)
 
-    private func makeSut(draft: any AppDraftProtocol, draftOrigin: DraftOrigin, contactProvider: ComposerContactProvider) -> ComposerModel {
+    private func makeSut(
+        draft: any AppDraftProtocol,
+        draftOrigin: DraftOrigin,
+        contactProvider: ComposerContactProvider,
+        expirationValidationActions: MessageExpirationValidatorActions = .productionInstance
+    ) -> ComposerModel {
         ComposerModel(
             draft: draft,
             draftOrigin: draftOrigin,
@@ -744,7 +811,8 @@ private extension ComposerModelTests {
             photosItemsHandler: testPhotosItemsHandler,
             cameraImageHandler: testCameraImageHandler,
             fileItemsHandler: testFilesItemsHandler,
-            isAddingAttachmentsEnabled: true
+            isAddingAttachmentsEnabled: true,
+            expirationValidationActions: expirationValidationActions
         )
     }
 

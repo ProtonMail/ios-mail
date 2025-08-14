@@ -20,33 +20,22 @@ import InboxDesignSystem
 import UIKit
 import WebKit
 
-final class BodyEditorController: UIViewController {
+final class HtmlBodyEditorController: UIViewController, BodyEditor {
 
-    enum Event {
-        case onStartEditing
-        case onBodyChange(body: String)
-        case onCursorPositionChange(position: CGPoint)
-        case onImagePasted(image: UIImage)
-        case onInlineImageRemoved(cid: String)
-        case onInlineImageRemovalRequested(cid: String)
-        case onInlineImageDispositionChangeRequested(cid: String)
-        case onReloadAfterMemoryPressure
-    }
-
-    private let htmlInterface: BodyWebViewInterface
+    private let htmlInterface: HtmlBodyWebViewInterface
     private var webView: WKWebView { htmlInterface.webView }
     private var heightConstraint: NSLayoutConstraint!
     private lazy var initialFocusState = BodyInitialFocusState { [weak self] in
         await self?.htmlInterface.setFocus()
     }
     private let webViewMemoryPressureHandler: WebViewMemoryPressureProtocol
-    var onEvent: ((Event) -> Void)?
+    var onEvent: ((BodyEditorEvent) -> Void)?
 
     init(
         embeddedImageProvider: EmbeddedImageProvider,
         webViewMemoryPressureHandler: WebViewMemoryPressureProtocol = WebViewMemoryPressureHandler(loggerCategory: .composer)
     ) {
-        self.htmlInterface = BodyWebViewInterface(webView: SubviewFactory.webView(embeddedImageProvider: embeddedImageProvider))
+        self.htmlInterface = HtmlBodyWebViewInterface(webView: SubviewFactory.webView(embeddedImageProvider: embeddedImageProvider))
         self.webViewMemoryPressureHandler = webViewMemoryPressureHandler
         super.init(nibName: nil, bundle: nil)
         webViewMemoryPressureHandler.contentReload { [weak self] in
@@ -119,18 +108,18 @@ final class BodyEditorController: UIViewController {
         Task { await initialFocusState.setFocusWhenLoaded() }
     }
 
-    func updateBody(html body: String) {
+    func updateBody(_ body: String) {
         htmlInterface.loadMessageBody(body)
     }
 
-    func handleBodyAction(action: ComposerBodyAction) {
+    func handleBodyAction(_ action: ComposerBodyAction) {
         switch action {
         case .insertInlineImages(let cids):
             Task { await htmlInterface.insertImages(cids) }
         case .removeInlineImage(let cid):
             Task { await htmlInterface.removeImage(containing: cid) }
         case .reloadBody(let html):
-            updateBody(html: html)
+            updateBody(html)
         }
     }
 
@@ -157,7 +146,7 @@ final class BodyEditorController: UIViewController {
     }
 }
 
-extension BodyEditorController: WKNavigationDelegate {
+extension HtmlBodyEditorController: WKNavigationDelegate {
 
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         Task { await initialFocusState.bodyWasLoaded() }
@@ -168,7 +157,7 @@ extension BodyEditorController: WKNavigationDelegate {
     }
 }
 
-extension BodyEditorController {
+extension HtmlBodyEditorController {
 
     enum SubviewFactory {
 

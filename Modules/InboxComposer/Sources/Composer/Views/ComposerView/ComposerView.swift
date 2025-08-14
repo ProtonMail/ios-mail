@@ -66,7 +66,8 @@ struct ComposerView: View {
             ),
             scheduleSendAction: { time in await model.sendMessage(at: time, dismissAction: dismiss) },
             attachmentPickerState: $attachmentPickerState,
-            setPasswordAction: { password, hint in await model.setPasswordProtection(password: password, hint: hint) }
+            setPasswordAction: { password, hint in await model.setPasswordProtection(password: password, hint: hint) },
+            setCustomExpirationDate: { timestamp in await model.setExpirationTime(.custom(timestamp)) }
         )
 
         VStack(spacing: 0) {
@@ -157,6 +158,10 @@ struct ComposerView: View {
                         modalState = model.passwordProtectionState()
                     case .onRemovePasswordProtection:
                         Task { @MainActor in await model.removePasswordProtection() }
+                    case .onExpirationTime(let time):
+                        Task { @MainActor in await model.setExpirationTime(time) }
+                    case .onCustomExpirationTime:
+                        modalState = .customExpirationDatePicker(selectedDate: model.state.expirationTime.customDate)
                     case .onDiscardDraft:
                         Task { @MainActor in await model.discardDraft(dismissAction: dismiss) }
                     }
@@ -180,7 +185,7 @@ struct ComposerView: View {
                     await model.addAttachments(selectedPhotosItems: photos)
                 }
             }
-            .sheet(item: $modalState, content: modalFactory.makeModal(for:))
+            .sheet(item: $modalState, additionallyObserving: $model.modalAction, content: modalFactory)
             .onChange(of: model.toast) { _, newValue in
                 guard let newValue else { return }
                 toastStateStore.present(toast: newValue)

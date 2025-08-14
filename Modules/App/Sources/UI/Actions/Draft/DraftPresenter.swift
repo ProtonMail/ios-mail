@@ -78,6 +78,11 @@ struct DraftPresenter: ContactsDraftPresenter {
         }
     }
 
+    func openDraftForShareExtension() async throws {
+        AppLogger.log(message: "open draft for Share extension", category: .composer)
+        try await openNewDraft(createMode: .fromIosShareExtension, updateDraft: .none)
+    }
+
     func handleReplyAction(for messageId: ID, action: ReplyAction, onError: (DraftOpenError) -> Void) async {
         switch action {
         case .reply:

@@ -21,7 +21,7 @@ import WebKit
 
 @MainActor
 final class BodyWebViewInterfaceTests {
-    private let sut: BodyWebViewInterface
+    private let sut: HtmlBodyWebViewInterface
     private var delegate: WebViewDelegate!
 
     init() {

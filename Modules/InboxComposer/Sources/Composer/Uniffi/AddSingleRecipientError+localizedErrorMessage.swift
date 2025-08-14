@@ -26,7 +26,7 @@ extension AddSingleRecipientError {
             LocalizedStringResource(stringLiteral: .empty)
         case .duplicate:
             L10n.ComposerError.duplicateRecipient(address: entry.email)
-        case .saveFailed:
+        case .saveFailed, .other:
             L10n.ComposerError.draftSaveFailed
         }
     }

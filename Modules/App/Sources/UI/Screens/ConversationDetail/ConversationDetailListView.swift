@@ -15,21 +15,32 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import InboxCore
 import InboxCoreUI
 import InboxDesignSystem
+import proton_app_uniffi
 import SwiftUI
 
 struct ConversationDetailListView: View {
     @EnvironmentObject var toastStateStore: ToastStateStore
     @ObservedObject private var model: ConversationDetailModel
+    private let mailUserSession: MailUserSession
+    private let draftPresenter: RecipientDraftPresenter
     private let goBack: () -> Void
 
     /// These attributes trigger the different action sheets
     @State private var senderActionTarget: ExpandedMessageCellUIModel?
     @State private var recipientActionTarget: MessageDetail.Recipient?
 
-    init(model: ConversationDetailModel, goBack: @escaping () -> Void) {
+    init(
+        model: ConversationDetailModel,
+        mailUserSession: MailUserSession,
+        draftPresenter: RecipientDraftPresenter,
+        goBack: @escaping () -> Void
+    ) {
         self.model = model
+        self.mailUserSession = mailUserSession
+        self.draftPresenter = draftPresenter
         self.goBack = goBack
     }
 
@@ -47,25 +58,29 @@ struct ConversationDetailListView: View {
                 NoConnectionView()
             }
         }
-        .sheet(item: $senderActionTarget, content: senderActionPicker)
-        .sheet(item: $recipientActionTarget, content: recipientActionPicker)
+        .sheet(item: $senderActionTarget, content: senderActionSheet)
+        .sheet(item: $recipientActionTarget, content: recipientActionSheet)
         .alert(model: $model.editScheduledMessageConfirmationAlert)
     }
 
-    private func senderActionPicker(target: ExpandedMessageCellUIModel) -> some View {
-        MessageAddressActionPickerView(
+    private func senderActionSheet(target: ExpandedMessageCellUIModel) -> some View {
+        MessageAddressActionView(
             avatarUIModel: target.messageDetails.avatar,
             name: target.messageDetails.sender.name,
-            emailAddress: target.messageDetails.sender.address
+            emailAddress: target.messageDetails.sender.address,
+            mailUserSession: mailUserSession,
+            draftPresenter: draftPresenter
         )
-        .pickerViewStyle([.height(450)])
+        .pickerViewStyle([.height(390)])
     }
 
-    private func recipientActionPicker(target: MessageDetail.Recipient) -> some View {
-        MessageAddressActionPickerView(
+    private func recipientActionSheet(target: MessageDetail.Recipient) -> some View {
+        MessageAddressActionView(
             avatarUIModel: AvatarUIModel(info: target.avatarInfo, type: .other),
             name: target.name,
-            emailAddress: target.address
+            emailAddress: target.address,
+            mailUserSession: mailUserSession,
+            draftPresenter: draftPresenter
         )
         .pickerViewStyle([.height(390)])
     }

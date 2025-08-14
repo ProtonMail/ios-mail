@@ -17,35 +17,41 @@
 
 import InboxDesignSystem
 import InboxCore
+import proton_app_uniffi
 import UIKit
 
 final class DraftActionBarViewController: UIViewController {
+    struct State {
+        let isAddingAttachmentsEnabled: Bool
+        var isPasswordProtected: Bool
+        var expirationTime: DraftExpirationTime
+    }
 
     enum Event {
         case onPickAttachmentSource
         case onPasswordProtection
         case onRemovePasswordProtection
+        case onExpirationTime(DraftExpirationTime)
+        case onCustomExpirationTime
         case onDiscardDraft
     }
 
     private let stack = SubviewFactory.stack
     private let attachmentButton = SubviewFactory.attachmentButton
     private let passwordButton = SubviewFactory.passwordButton
+    private let expirationButton = SubviewFactory.expirationButton
     private let discardButton = SubviewFactory.discardButton
     private let spacer = UIView()
     private let buttonSize = 40.0
-    private let isAddingAttachmentsEnabled: Bool
+    private let messageExpirationLearnMoreUrl = URL(string: "https://proton.me/support/expiration")!
     var onEvent: ((Event) -> Void)?
 
-    var passwordState: PasswordButton.State = .noPassword {
-        didSet {
-            passwordButton.buttonState = passwordState
-            passwordButton.showsMenuAsPrimaryAction = passwordState == .hasPassword
-        }
+    var state: State {
+        didSet { applyState() }
     }
 
-    init(isAddingAttachmentsEnabled: Bool) {
-        self.isAddingAttachmentsEnabled = isAddingAttachmentsEnabled
+    init(state: State) {
+        self.state = state
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -58,32 +64,17 @@ final class DraftActionBarViewController: UIViewController {
     }
 
     private func setUpUI() {
-        func getPasswordMenuActions() -> [UIAction] {
-            let editPassword = UIAction(
-                title: L10n.PasswordProtection.editPassword.string,
-                image: UIImage(resource: DS.Icon.icPencil)
-            ) { [weak self] _ in
-                self?.onPasswordProtectionTap()
-            }
-            let removePassword = UIAction(
-                title: CommonL10n.remove.string,
-                image: UIImage(resource: DS.Icon.icTrash)
-            ) { [weak self] _ in
-                self?.onEvent?(.onRemovePasswordProtection)
-            }
-            return [removePassword, editPassword]
-        }
-
-        if isAddingAttachmentsEnabled {
+        if state.isAddingAttachmentsEnabled {
             stack.addArrangedSubview(attachmentButton)
         }
 
         stack.addArrangedSubview(passwordButton)
+//        stack.addArrangedSubview(expirationButton) // TODO: Enable when SDK is ready
         stack.addArrangedSubview(spacer)
         stack.addArrangedSubview(discardButton)
         attachmentButton.addTarget(self, action: #selector(onAttachmentTap), for: .touchUpInside)
         passwordButton.addTarget(self, action: #selector(onPasswordProtectionTap), for: .touchUpInside)
-        passwordButton.menu = UIMenu(title: "", children: getPasswordMenuActions())
+        passwordButton.menu = UIMenu(children: getPasswordMenu())
         discardButton.addTarget(self, action: #selector(onDiscardDraftTap), for: .touchUpInside)
         view.addSubview(stack)
 
@@ -92,6 +83,8 @@ final class DraftActionBarViewController: UIViewController {
         view.layer.shadowOffset = .init(width: 0.0, height: -1.0)
         view.layer.shadowColor = DS.Color.Shade.shade10.toDynamicUIColor.cgColor
         view.layer.shadowOpacity = 1.0
+
+        applyState()
     }
 
     private func setUpConstraints() {
@@ -113,6 +106,71 @@ final class DraftActionBarViewController: UIViewController {
                 button.heightAnchor.constraint(equalTo: button.widthAnchor),
             ])
         }
+    }
+
+    private func applyState() {
+        passwordButton.buttonState = state.isPasswordProtected ? .checked : .unchecked
+        passwordButton.showsMenuAsPrimaryAction = state.isPasswordProtected
+
+        expirationButton.buttonState = state.expirationTime != .never ? .checked : .unchecked
+        generateExpirationMenu(with: state.expirationTime)
+    }
+
+    private func getPasswordMenu() -> [UIMenuElement] {
+        let editPassword = UIAction(
+            title: L10n.PasswordProtection.editPassword.string,
+            image: UIImage(resource: DS.Icon.icPencil)
+        ) { [weak self] _ in
+            self?.onPasswordProtectionTap()
+        }
+        let removePassword = UIAction(
+            title: CommonL10n.remove.string,
+            image: UIImage(resource: DS.Icon.icTrash)
+        ) { [weak self] _ in
+            self?.onEvent?(.onRemovePasswordProtection)
+        }
+        return [removePassword, editPassword]
+    }
+
+    private func generateExpirationMenu(with expirationTime: DraftExpirationTime) {
+        func action(_ title: LocalizedStringResource, time: DraftExpirationTime) -> UIAction {
+            UIAction(title: title.string, state: expirationTime == time ? .on : .off) {
+                [weak self] _ in self?.onEvent?(.onExpirationTime(time))
+            }
+        }
+
+        var children: [UIMenuElement] = [
+            specificDateAction(),
+            action(L10n.MessageExpiration.afterThreeDays, time: .threeDays),
+            action(L10n.MessageExpiration.afterOneDay, time: .oneDay),
+            action(L10n.MessageExpiration.afterOneHour, time: .oneHour),
+        ]
+        if expirationTime != .never {
+            children += [action(L10n.MessageExpiration.never, time: .never)]
+        }
+        let mainSection = UIMenu(options: .displayInline, children: children)
+
+        let learnMore = UIAction(
+            title: CommonL10n.learnMore.string,
+            subtitle: L10n.MessageExpiration.howExpirationWorks.string,
+            image: UIImage(symbol: .infoCircle)
+        ) { [weak self] _ in
+            guard let self else { return }
+            UIApplication.shared.open(self.messageExpirationLearnMoreUrl)
+        }
+        let learnMoreSection = UIMenu(options: .displayInline, children: [learnMore])
+
+        expirationButton.menu = UIMenu(title: L10n.MessageExpiration.menuTitle.string, children: [learnMoreSection, mainSection])
+    }
+
+    private func specificDateAction() -> UIAction {
+        UIAction(
+            title: L10n.MessageExpiration.specificDate.string,
+            subtitle: state.expirationTime.customDateString,
+            image: state.expirationTime.isCustomDate ? UIImage(resource: DS.Icon.icPencil) : nil,
+            state: state.expirationTime.isCustomDate ? .on : .off,
+            handler: { [weak self] _ in self?.onEvent?(.onCustomExpirationTime) }
+        )
     }
 
     @objc
@@ -148,13 +206,32 @@ extension DraftActionBarViewController {
             UIButton().configWithImage(image: UIImage(resource: DS.Icon.icPaperClip))
         }
 
-        static var passwordButton: PasswordButton {
-            PasswordButton()
+        static var passwordButton: CheckableIconButton {
+            CheckableIconButton(icon: DS.Icon.icLock)
+        }
+
+        static var expirationButton: CheckableIconButton {
+            let button = CheckableIconButton(icon: DS.Icon.icHourglass)
+            button.showsMenuAsPrimaryAction = true
+            return button
         }
 
         static var discardButton: UIButton {
             UIButton().configWithImage(image: UIImage(resource: DS.Icon.icTrashCross))
         }
+    }
+}
+
+private extension DraftExpirationTime {
+
+    var customDateString: String? {
+        if let customDate {
+            let formatter = DateFormatter()
+            formatter.dateStyle = .medium
+            formatter.timeStyle = .short
+            return formatter.string(from: customDate)
+        }
+        return nil
     }
 }
 

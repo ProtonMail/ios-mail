@@ -24,7 +24,7 @@ extension Toast {
         id: UUID,
         for itemType: MailboxItemType,
         count: Int,
-        undoAction: @escaping @Sendable () -> Void
+        undoAction: (() -> Void)?
     ) -> Toast {
         let message: LocalizedStringResource =
             switch itemType {
