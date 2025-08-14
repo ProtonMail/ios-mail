@@ -62,7 +62,7 @@ struct ConversationDetailListView: View {
             emailAddress: target.messageDetails.sender.address,
             mailUserSession: mailUserSession
         )
-        .pickerViewStyle([.height(450)])
+        .pickerViewStyle([.height(390)])
     }
 
     private func recipientActionSheet(target: MessageDetail.Recipient) -> some View {
