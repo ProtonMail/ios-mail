@@ -32,6 +32,7 @@ struct MessageBannersView: View {
         case markAsLegitimateTapped
         case unblockSenderTapped
         case unsnoozeTapped
+        case unsubscribeNewsletterTapped
     }
 
     @EnvironmentObject var toastStateStore: ToastStateStore
@@ -120,7 +121,7 @@ struct MessageBannersView: View {
                 )
             case .unsubscribeNewsletter:
                 let button = Banner.Button(title: L10n.MessageBanner.unsubscribeNewsletterAction) {
-                    toastStateStore.present(toast: .comingSoon)
+                    action(.unsubscribeNewsletterTapped)
                 }
 
                 return oneLine(
