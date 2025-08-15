@@ -75,6 +75,10 @@ extension MailboxListView {
                 }
             },
             onSwipeAction: { [weak model] context in
+                if case .moveTo = context.action {
+                    config.dataSource.removeLocally(keys: [String(context.itemID.value)])
+                }
+
                 model?.onMailboxItemAction(context, toastStateStore: toastStateStore)
             }
         )

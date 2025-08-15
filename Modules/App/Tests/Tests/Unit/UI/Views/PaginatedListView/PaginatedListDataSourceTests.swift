@@ -23,20 +23,21 @@ import XCTest
 @MainActor
 final class PaginatedListDataSourceTests: XCTestCase {
     private var sut: PaginatedListDataSource<String>!
+    private var provider: PaginatedListProvider<String>!
     private let dummyItemsForEachPage = ["Item 1", "Item 2"]
-    private var updateSubject: PassthroughSubject<PaginatedListUpdate<String>, Never> = .init()
+    private let updateSubject: PassthroughSubject<PaginatedListUpdate<String>, Never> = .init()
     private var cancellables: Set<AnyCancellable> = .init()
     private var fetchMoreCallCounter: Int = 0
 
     @MainActor
     override func setUp() {
-        let provider = PaginatedListProvider(
+        provider = PaginatedListProvider(
             updatePublisher: updateSubject.eraseToAnyPublisher(),
             fetchMore: { [unowned self] currentPage in
                 self.fetchMoreCallCounter += 1
             }
         )
-        self.sut = PaginatedListDataSource(paginatedListProvider: provider)
+        sut = PaginatedListDataSource(paginatedListProvider: provider)
     }
 
     // MARK: init
@@ -207,6 +208,42 @@ final class PaginatedListDataSourceTests: XCTestCase {
         }
 
         XCTAssertEqual(sut.state.isFetchingNextPage, false)
+    }
+
+    // MARK: removeLocally
+
+    func testRemoveLocally_WhenIdKeyIsNil_ItDoesNothing() async {
+        await expectIsLastPage {
+            updateSubject.send(.init(isLastPage: true, value: .append(items: ["1", "2", "3"])))
+        }
+
+        sut.removeLocally(keys: ["1"])
+
+        XCTAssertEqual(sut.state.items, ["1", "2", "3"])
+    }
+
+    func testRemoveLocally_WhenIdKeyProvided_ItRemovesMatchingSingleID() async {
+        sut = PaginatedListDataSource(paginatedListProvider: provider, idKey: { $0 })
+
+        await expectIsLastPage {
+            updateSubject.send(.init(isLastPage: true, value: .append(items: ["1", "2", "3"])))
+        }
+
+        sut.removeLocally(keys: ["2"])
+
+        XCTAssertEqual(sut.state.items, ["1", "3"])
+    }
+
+    func testRemoveLocally_WhenIdKeyProvided_ItRemovesMultipleAndIgnoresUnknown() async {
+        sut = PaginatedListDataSource(paginatedListProvider: provider, idKey: { $0 })
+
+        await expectIsLastPage {
+            updateSubject.send(.init(isLastPage: true, value: .append(items: ["1", "2", "3", "4"])))
+        }
+
+        sut.removeLocally(keys: ["3", "42"])
+
+        XCTAssertEqual(sut.state.items, ["1", "2", "4"])
     }
 }
 

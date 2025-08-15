@@ -28,11 +28,13 @@ struct PaginatedListProvider<Item: Equatable & Sendable> {
 final class PaginatedListDataSource<Item: Equatable & Sendable>: ObservableObject, @unchecked Sendable {
     @Published private(set) var state: State
     private let provider: PaginatedListProvider<Item>
+    private let idKey: ((Item) -> String)?
     private var cancellables = Set<AnyCancellable>()
 
-    init(paginatedListProvider: PaginatedListProvider<Item>) {
+    init(paginatedListProvider: PaginatedListProvider<Item>, idKey: ((Item) -> String)? = nil) {
         self.state = .init()
         self.provider = paginatedListProvider
+        self.idKey = idKey
         provider.updatePublisher.receive(on: DispatchQueue.main).sink { [weak self] update in
             self?.handle(update: update)
         }.store(in: &cancellables)
@@ -53,6 +55,17 @@ final class PaginatedListDataSource<Item: Equatable & Sendable>: ObservableObjec
     func fetchNextPageIfNeeded() {
         guard !state.isFetchingNextPage && !state.isLastPage else { return }
         fetchNextPageItems()
+    }
+
+    /// Optimistically removes items with matching IDs from local state so the row collapse animates smoothly.
+    /// Requires `idKey`; this is a UI-only change (no network/provider call).
+    ///
+    /// - Parameter keys: String IDs produced using the same `idKey`.
+    /// - Complexity: O(n) over `state.items`.
+    func removeLocally(keys: some Sequence<String>) {
+        guard let idKey else { return }
+        let keySet = Set(keys)
+        state.items.removeAll { item in keySet.contains(idKey(item)) }
     }
 
     private func fetchNextPageItems() {
