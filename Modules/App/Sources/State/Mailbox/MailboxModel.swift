@@ -49,7 +49,8 @@ final class MailboxModel: ObservableObject {
         paginatedListProvider: .init(
             updatePublisher: listUpdateSubject.eraseToAnyPublisher(),
             fetchMore: { [weak self] currentPage in self?.fetchNextPage(currentPage: currentPage) }
-        )
+        ),
+        idKey: { item in String(item.id.value) }
     )
     private var unreadCountLiveQuery: UnreadItemsCountLiveQuery?
 
