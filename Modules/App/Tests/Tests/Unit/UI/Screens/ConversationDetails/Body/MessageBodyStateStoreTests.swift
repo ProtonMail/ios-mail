@@ -368,6 +368,7 @@ final class MessageBodyStateStoreTests {
                     decryptedMessage: decryptedMessageSpy,
                     alert: .unsubcribeNewsletter(action: { _ in })
                 ))
+        #expect(toastStateStore.state.toasts == [])
     }
 
     @Test
@@ -393,6 +394,7 @@ final class MessageBodyStateStoreTests {
                     options: initialOptions,
                     decryptedMessage: decryptedMessageSpy,
                 ))
+        #expect(toastStateStore.state.toasts == [.information(message: "Mail list unsubscribed")])
     }
 
     @Test
@@ -445,6 +447,7 @@ final class MessageBodyStateStoreTests {
                     options: initialOptions,
                     decryptedMessage: decryptedMessageSpy,
                 ))
+        #expect(toastStateStore.state.toasts == [])
     }
 }
 

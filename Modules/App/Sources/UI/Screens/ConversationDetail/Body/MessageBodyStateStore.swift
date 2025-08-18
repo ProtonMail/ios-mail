@@ -164,6 +164,7 @@ final class MessageBodyStateStore: StateStore {
         switch await newsletterService.unsubscribeFromNewsletter() {
         case .ok:
             await loadMessageBody(with: options)
+            toastStateStore.present(toast: .information(message: "Mail list unsubscribed"))
         case .error(let error):
             toastStateStore.present(toast: .error(message: error.localizedDescription))
         }
