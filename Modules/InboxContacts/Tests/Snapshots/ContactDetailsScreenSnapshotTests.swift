@@ -99,7 +99,7 @@ final class ContactDetailsScreenSnapshotTests {
             .languages(["french"]),
             .organizations(["CERN", "NASA"]),
             .members(["N/A"]),
-            .urls([.init(url: "https://www.nasa.gov", urlType: [.work])]),
+            .urls([.init(url: .http("https://www.nasa.gov"), urlType: [.work])]),
         ]
 
         assertSnapshotsOnIPhoneX(of: makeSUT(items: items))
