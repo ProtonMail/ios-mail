@@ -20,7 +20,7 @@ import InboxCoreUI
 extension AlertModel {
 
     static func unsubcribeNewsletter(
-        action: @escaping (UnsubscribeNewsletterAlertAction) async -> Void
+        action: @escaping @MainActor @Sendable (UnsubscribeNewsletterAlertAction) async -> Void
     ) -> Self {
         let actions: [AlertAction] = UnsubscribeNewsletterAlertAction.allCases.map { actionType in
             .init(details: actionType, action: { await action(actionType) })

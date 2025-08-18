@@ -20,12 +20,12 @@ import InboxCoreUI
 extension AlertModel {
 
     static func legitMessageConfirmation(
-        action: @escaping (LegitMessageConfirmationAlertAction) async -> Void
+        action: @escaping @MainActor @Sendable (LegitMessageConfirmationAlertAction) async -> Void
     ) -> Self {
         let actions: [AlertAction] = LegitMessageConfirmationAlertAction.allCases.map { actionType in
             .init(details: actionType, action: { await action(actionType) })
         }
-        
+
         return .init(
             title: L10n.MessageBanner.LegitMessageConfirmationAlert.title,
             message: L10n.MessageBanner.LegitMessageConfirmationAlert.message,
