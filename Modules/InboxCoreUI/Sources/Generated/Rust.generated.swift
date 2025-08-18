@@ -74,6 +74,36 @@ public extension CreateMailSessionResult {
         }
     }
 }
+public extension CustomSettingsMobileSignatureResult {
+    func get() throws(ProtonError) -> MobileSignature {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension CustomSettingsSetMobileSignatureEnabledResult {
+    func get() throws(ProtonError) {
+        switch self {
+        case .ok:
+            break
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension CustomSettingsSetMobileSignatureResult {
+    func get() throws(ProtonError) {
+        switch self {
+        case .ok:
+            break
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension DraftExpirationTimeResult {
     func get() throws(ProtonError) -> DraftExpirationTime {
         switch self {

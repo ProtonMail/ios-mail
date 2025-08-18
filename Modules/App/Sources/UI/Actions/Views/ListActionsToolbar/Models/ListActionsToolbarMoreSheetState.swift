@@ -16,26 +16,16 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import proton_app_uniffi
+import Foundation
 
-extension AllBottomBarMessageActions {
+struct ListActionsToolbarMoreSheetState: Identifiable, Equatable {
+    let selectedItemsIDs: [ID]
+    let bottomBarActions: [ListActions]
+    let moreSheetOnlyActions: [ListActions]
 
-    static var testData: Self {
-        .init(
-            hiddenBottomBarActions: [
-                .notSpam(.testInbox),
-                .permanentDelete,
-                .moveToSystemFolder(.init(localId: .init(value: 7), name: .archive))
-            ],
-            visibleBottomBarActions: [.markRead, .star, .moveTo, .labelAs, .more]
-        )
+    // MARK: - Identifiable
+
+    var id: [ID] {
+        selectedItemsIDs
     }
-
-}
-
-extension MovableSystemFolderAction {
-
-    static var testInbox: Self {
-        .init(localId: .init(value: 999), name: .inbox)
-    }
-
 }

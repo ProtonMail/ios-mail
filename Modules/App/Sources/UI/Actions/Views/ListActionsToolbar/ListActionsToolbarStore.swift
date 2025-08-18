@@ -20,10 +20,10 @@ import InboxCoreUI
 import proton_app_uniffi
 import SwiftUI
 
-final class MailboxActionBarStateStore: StateStore {
-    @Published var state: MailboxActionBarState
+final class ListActionsToolbarStore: StateStore {
+    @Published var state: ListActionsToolbarState
 
-    private let actionsProvider: MailboxActionBarActionsProvider
+    private let actionsProvider: ListActionsToolbarActionsProvider
     private let starActionPerformer: StarActionPerformer
     private let readActionPerformer: ReadActionPerformer
     private let deleteActionsPerformer: DeleteActionPerformer
@@ -33,8 +33,8 @@ final class MailboxActionBarStateStore: StateStore {
     private let mailUserSession: MailUserSession
 
     init(
-        state: MailboxActionBarState,
-        availableActions: AvailableMailboxActionBarActions,
+        state: ListActionsToolbarState,
+        availableActions: AvailableListToolbarActions,
         starActionPerformerActions: StarActionPerformerActions,
         readActionPerformerActions: ReadActionPerformerActions,
         deleteActions: DeleteActions,
@@ -65,9 +65,9 @@ final class MailboxActionBarStateStore: StateStore {
         self.toastStateStore = toastStateStore
     }
 
-    func handle(action: MailboxActionBarAction) {
+    func handle(action: ListActionsToolbarAction) {
         switch action {
-        case .mailboxItemsSelectionUpdated(let ids):
+        case .listItemsSelectionUpdated(let ids):
             fetchAvailableBottomBarActions(for: ids)
         case .actionSelected(let action, let ids):
             handle(action: action, ids: ids)
@@ -84,10 +84,10 @@ final class MailboxActionBarStateStore: StateStore {
 
     // MARK: - Private
 
-    private func handle(action: BottomBarActions, ids: [ID]) {
+    private func handle(action: ListActions, ids: [ID]) {
         switch action {
         case .more:
-            let moreActionSheetState = MailboxActionBarMoreSheetState(
+            let moreActionSheetState = ListActionsToolbarMoreSheetState(
                 selectedItemsIDs: ids,
                 bottomBarActions: state.bottomBarActions.moreActionFiltered,
                 moreSheetOnlyActions: state.moreSheetOnlyActions
@@ -118,7 +118,7 @@ final class MailboxActionBarStateStore: StateStore {
             dismissMoreActionSheet()
             readActionPerformer.markAsUnread(itemsWithIDs: ids, itemType: itemTypeForActionBar)
         case .permanentDelete:
-            let keyPath: WritableKeyPath<MailboxActionBarState, AlertModel?> =
+            let keyPath: WritableKeyPath<ListActionsToolbarState, AlertModel?> =
                 state.moreActionSheetPresented != nil ? \.moreDeleteConfirmationAlert : \.deleteConfirmationAlert
             let alert: AlertModel = .deleteConfirmation(
                 itemsCount: ids.count,
@@ -190,11 +190,11 @@ final class MailboxActionBarStateStore: StateStore {
         }
     }
 
-    private func updateActions(actions: AllBottomBarMessageActions) {
+    private func updateActions(actions: AllListActions) {
         state =
             state
-            .copy(\.bottomBarActions, to: actions.visibleBottomBarActions)
-            .copy(\.moreSheetOnlyActions, to: actions.hiddenBottomBarActions)
+            .copy(\.bottomBarActions, to: actions.visibleListActions)
+            .copy(\.moreSheetOnlyActions, to: actions.hiddenListActions)
     }
 
     private func dismissMoreActionSheet() {
@@ -230,7 +230,7 @@ final class MailboxActionBarStateStore: StateStore {
     }
 }
 
-private extension Array where Element == BottomBarActions {
+private extension Array where Element == ListActions {
 
     var moreActionFiltered: Self {
         filter { $0 != .more }

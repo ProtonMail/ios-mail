@@ -15,13 +15,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import proton_app_uniffi
 import InboxCore
 import InboxCoreUI
 
-struct MailboxActionBarState: Copying, Equatable {
-    var bottomBarActions: [BottomBarAction]
-    var moreSheetOnlyActions: [BottomBarAction]
-    var moreActionSheetPresented: MailboxActionBarMoreSheetState?
+struct ListActionsToolbarState: Copying, Equatable {
+    var bottomBarActions: [ListActions]
+    var moreSheetOnlyActions: [ListActions]
+    var moreActionSheetPresented: ListActionsToolbarMoreSheetState?
     var labelAsSheetPresented: ActionSheetInput?
     var moveToSheetPresented: ActionSheetInput?
     var deleteConfirmationAlert: AlertModel?
@@ -29,7 +30,7 @@ struct MailboxActionBarState: Copying, Equatable {
     var isSnoozeSheetPresented: Bool
 }
 
-extension MailboxActionBarState {
+extension ListActionsToolbarState {
     static var initial: Self {
         .init(
             bottomBarActions: [],

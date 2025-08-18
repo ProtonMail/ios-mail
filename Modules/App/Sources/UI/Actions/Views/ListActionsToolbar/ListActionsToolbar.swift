@@ -21,15 +21,15 @@ import proton_app_uniffi
 import SwiftUI
 
 extension View {
-    func mailboxActionBar(
-        state: MailboxActionBarState,
-        availableActions: AvailableMailboxActionBarActions,
+    func listActionsToolbar(
+        state: ListActionsToolbarState,
+        availableActions: AvailableListToolbarActions,
         itemTypeForActionBar: MailboxItemType,
         mailUserSession: MailUserSession,
         selectedItems: Binding<Set<MailboxSelectedItem>>
     ) -> some View {
         modifier(
-            MailboxActionBarViewModifier(
+            ListActionBarViewModifier(
                 state: state,
                 availableActions: availableActions,
                 itemTypeForActionBar: itemTypeForActionBar,
@@ -39,13 +39,13 @@ extension View {
     }
 }
 
-private struct MailboxActionBarViewModifier: ViewModifier {
+private struct ListActionBarViewModifier: ViewModifier {
     @Binding var selectedItems: Set<MailboxSelectedItem>
     @EnvironmentObject var mailbox: Mailbox
     @EnvironmentObject var toastStateStore: ToastStateStore
-    private let state: MailboxActionBarState
+    private let state: ListActionsToolbarState
     private let itemTypeForActionBar: MailboxItemType
-    private let availableActions: AvailableMailboxActionBarActions
+    private let availableActions: AvailableListToolbarActions
     private let deleteActions: DeleteActions
     private let moveToActions: MoveToActions
     private let mailUserSession: MailUserSession
@@ -53,8 +53,8 @@ private struct MailboxActionBarViewModifier: ViewModifier {
     private let readActionPerformerActions: ReadActionPerformerActions
 
     init(
-        state: MailboxActionBarState,
-        availableActions: AvailableMailboxActionBarActions,
+        state: ListActionsToolbarState,
+        availableActions: AvailableListToolbarActions,
         starActionPerformerActions: StarActionPerformerActions = .productionInstance,
         readActionPerformerActions: ReadActionPerformerActions = .productionInstance,
         deleteActions: DeleteActions = .productionInstance,
@@ -76,7 +76,7 @@ private struct MailboxActionBarViewModifier: ViewModifier {
 
     func body(content: Content) -> some View {
         StoreView(
-            store: MailboxActionBarStateStore(
+            store: ListActionsToolbarStore(
                 state: state,
                 availableActions: availableActions,
                 starActionPerformerActions: starActionPerformerActions,
@@ -96,11 +96,11 @@ private struct MailboxActionBarViewModifier: ViewModifier {
                 .bottomToolbarStyle()
                 .onChange(of: selectedItems) { oldValue, newValue in
                     if oldValue != newValue {
-                        store.handle(action: .mailboxItemsSelectionUpdated(ids: selectedItemsIDs))
+                        store.handle(action: .listItemsSelectionUpdated(ids: selectedItemsIDs))
                     }
                 }
                 .onLoad {
-                    store.handle(action: .mailboxItemsSelectionUpdated(ids: selectedItemsIDs))
+                    store.handle(action: .listItemsSelectionUpdated(ids: selectedItemsIDs))
                 }
                 .labelAsSheet(
                     mailbox: { mailbox },
@@ -114,7 +114,7 @@ private struct MailboxActionBarViewModifier: ViewModifier {
                     navigation: { _ in }
                 )
                 .sheet(item: store.binding(\.moreActionSheetPresented)) { state in
-                    MailboxActionBarMoreSheet(state: state) { action in
+                    ListActionsToolbarMoreSheet(state: state) { action in
                         store.handle(action: .moreSheetAction(action, ids: selectedItemsIDs))
                     } editToolbarTapped: {
                         // FIXME: - Edit toolbar action
@@ -141,8 +141,8 @@ private struct MailboxActionBarViewModifier: ViewModifier {
     }
 
     private func toolbarContent(
-        state: MailboxActionBarState,
-        store: MailboxActionBarStateStore
+        state: ListActionsToolbarState,
+        store: ListActionsToolbarStore
     ) -> some ToolbarContent {
         ToolbarItemGroup(placement: .bottomBar) {
             HStack {
@@ -151,7 +151,7 @@ private struct MailboxActionBarViewModifier: ViewModifier {
                         Spacer()
                     }
                     Button(action: { store.handle(action: .actionSelected(action, ids: selectedItemsIDs)) }) {
-                        action.displayData.icon
+                        action.displayData.image
                             .foregroundStyle(DS.Color.Icon.weak)
                     }
                     .accessibilityIdentifier(MailboxActionBarViewIdentifiers.button(index: index))

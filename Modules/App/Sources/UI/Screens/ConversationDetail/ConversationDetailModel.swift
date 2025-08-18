@@ -28,7 +28,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
     @Published private(set) var mailbox: Mailbox?
     @Published private(set) var conversationID: ID?
     @Published private(set) var isStarred: Bool
-    @Published private(set) var bottomBarActions: [BottomBarActions] = []
+    @Published private(set) var bottomBarActions: [ListActions] = []
     @Published var actionSheets: MailboxActionSheetsState = .initial()
     @Published var editScheduledMessageConfirmationAlert: AlertModel?
     @Published var deleteConfirmationAlert: AlertModel?
@@ -171,7 +171,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         isStarred ? unstarConversation() : starConversation()
     }
 
-    func handleConversation(action: BottomBarActions, toastStateStore: ToastStateStore, goBack: @escaping () -> Void) {
+    func handleConversation(action: ListActions, toastStateStore: ToastStateStore, goBack: @escaping () -> Void) {
         let conversationID = conversationID.unsafelyUnwrapped
         switch action {
         case .labelAs:
@@ -527,9 +527,9 @@ extension ConversationDetailModel {
 
         bottomBarActions =
             try! await dependencies
-            .bottomBarConversationActionsProvider(mailbox, [conversationID])
+            .conversationListActionsToolbarActionsProvider(mailbox, [conversationID])
             .get()
-            .visibleBottomBarActions
+            .visibleListActions
     }
 }
 
@@ -553,14 +553,14 @@ extension ConversationDetailModel {
 
     struct Dependencies {
         let appContext: AppContext
-        let bottomBarConversationActionsProvider: ConversationBottomBarActionsProvider
+        let conversationListActionsToolbarActionsProvider: ConversationListActionsToolbarActionsProvider
 
         init(
             appContext: AppContext = .shared,
-            bottomBarConversationActionsProvider: @escaping ConversationBottomBarActionsProvider = allAvailableBottomBarActionsForConversations
+            conversationListActionsToolbarActionsProvider: @escaping ConversationListActionsToolbarActionsProvider = allAvailableListActionsForConversations
         ) {
             self.appContext = appContext
-            self.bottomBarConversationActionsProvider = bottomBarConversationActionsProvider
+            self.conversationListActionsToolbarActionsProvider = conversationListActionsToolbarActionsProvider
         }
     }
 }

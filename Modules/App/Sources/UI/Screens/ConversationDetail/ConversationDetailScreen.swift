@@ -132,7 +132,7 @@ struct ConversationDetailScreen: View {
                             goBack: { navigationPath.removeLast() }
                         )
                     }) {
-                        action.displayData.icon
+                        action.displayData.image
                             .foregroundStyle(DS.Color.Icon.weak)
                     }
                     .accessibilityIdentifier(MailboxActionBarViewIdentifiers.button(index: index))

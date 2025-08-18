@@ -21,13 +21,13 @@ import InboxTesting
 import proton_app_uniffi
 import XCTest
 
-class MailboxActionBarStateStoreTests: BaseTestCase {
+class ListActionsToolbarStoreTests: BaseTestCase {
 
-    var sut: MailboxActionBarStateStore!
+    var sut: ListActionsToolbarStore!
     var invokedAvailableMessageActionsWithIDs: [[ID]]!
-    var stubbedAvailableMessageActions: AllBottomBarMessageActions!
+    var stubbedAvailableMessageActions: AllListActions!
     var invokedAvailableConversationActionsWithIDs: [[ID]]!
-    var stubbedAvailableConversationActions: AllBottomBarMessageActions!
+    var stubbedAvailableConversationActions: AllListActions!
     var starActionPerformerActionsSpy: StarActionPerformerActionsSpy!
     var readActionPerformerActionsSpy: ReadActionPerformerActionsSpy!
     var deleteActionsSpy: DeleteActionsSpy!
@@ -60,16 +60,16 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
         super.tearDown()
     }
 
-    func testState_WhenMailboxItemsSelectionIsUpdatedInMessageMode_ItReturnsCorrectState() {
+    func testState_WhenListItemsSelectionIsUpdatedInMessageMode_ItReturnsCorrectState() {
         sut = makeSUT(viewMode: .messages)
         stubbedAvailableMessageActions = .init(
-            hiddenBottomBarActions: [.labelAs, .markRead],
-            visibleBottomBarActions: [.notSpam(.testInbox)]
+            hiddenListActions: [.labelAs, .markRead],
+            visibleListActions: [.notSpam(.testInbox)]
         )
 
         let ids: [ID] = [.init(value: 11)]
 
-        sut.handle(action: .mailboxItemsSelectionUpdated(ids: ids))
+        sut.handle(action: .listItemsSelectionUpdated(ids: ids))
 
         XCTAssertEqual(invokedAvailableMessageActionsWithIDs.count, 1)
         XCTAssertEqual(invokedAvailableConversationActionsWithIDs.count, 0)
@@ -83,15 +83,15 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
             ))
     }
 
-    func testState_WhenMailboxItemsSelectionIsUpdatedInConversationModel_ItReturnsCorrectState() {
+    func testState_WhenListItemsSelectionIsUpdatedInConversationModel_ItReturnsCorrectState() {
         sut = makeSUT(viewMode: .conversations)
         stubbedAvailableConversationActions = .init(
-            hiddenBottomBarActions: [.notSpam(.testInbox), .permanentDelete],
-            visibleBottomBarActions: [.more]
+            hiddenListActions: [.notSpam(.testInbox), .permanentDelete],
+            visibleListActions: [.more]
         )
         let ids: [ID] = [.init(value: 22)]
 
-        sut.handle(action: .mailboxItemsSelectionUpdated(ids: ids))
+        sut.handle(action: .listItemsSelectionUpdated(ids: ids))
 
         XCTAssertEqual(invokedAvailableMessageActionsWithIDs.count, 0)
         XCTAssertEqual(invokedAvailableConversationActionsWithIDs.count, 1)
@@ -105,10 +105,10 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
             ))
     }
 
-    func testState_WhenMailboxItemsSelectionIsUpdatedWithNoSelection_ItReturnsCorrectState() {
+    func testState_WhenListItemsSelectionIsUpdatedWithNoSelection_ItReturnsCorrectState() {
         sut = makeSUT(viewMode: .messages)
 
-        sut.handle(action: .mailboxItemsSelectionUpdated(ids: []))
+        sut.handle(action: .listItemsSelectionUpdated(ids: []))
 
         XCTAssertEqual(invokedAvailableMessageActionsWithIDs.count, 0)
     }
@@ -151,7 +151,7 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
 
         XCTAssertNil(sut.state.moreActionSheetPresented)
 
-        sut.handle(action: .mailboxItemsSelectionUpdated(ids: ids))
+        sut.handle(action: .listItemsSelectionUpdated(ids: ids))
         sut.handle(action: .actionSelected(.more, ids: ids))
 
         XCTAssertEqual(
@@ -285,8 +285,8 @@ class MailboxActionBarStateStoreTests: BaseTestCase {
 
     // MARK: - Private
 
-    private func makeSUT(viewMode: ViewMode) -> MailboxActionBarStateStore {
-        MailboxActionBarStateStore(
+    private func makeSUT(viewMode: ViewMode) -> ListActionsToolbarStore {
+        ListActionsToolbarStore(
             state: .initial,
             availableActions: .init(
                 message: { _, ids in

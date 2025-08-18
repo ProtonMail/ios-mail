@@ -15,7 +15,22 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import proton_app_uniffi
+@testable import ProtonMail
+import InboxSnapshotTesting
+import InboxTesting
 
-@available(*, deprecated, message: "Use BottomBarActions directly or rename the uniffi enum")
-typealias BottomBarAction = BottomBarActions
+@MainActor
+class ListActionsToolbarMoreSheetSnapshotTests: BaseTestCase {
+
+    func testMailboxActionBarMoreSheetLayoutsCorrectly() {
+        CustomizeToolbarsFlag.$isVisible.withValue(true) {
+            let sut = ListActionsToolbarMoreSheet(
+                state: ListActionsToolbarMoreSheetPreviewProvider.state(),
+                actionTapped: { _ in },
+                editToolbarTapped: {}
+            )
+            assertSnapshotsOnIPhoneX(of: sut, named: "list_actions_toolbar_more_sheet")
+        }
+    }
+
+}

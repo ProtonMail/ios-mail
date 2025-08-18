@@ -15,18 +15,19 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import proton_app_uniffi
 import InboxCoreUI
 import InboxDesignSystem
 import SwiftUI
 
-struct MailboxActionBarMoreSheet: View {
-    let state: MailboxActionBarMoreSheetState
-    let actionTapped: (BottomBarAction) -> Void
+struct ListActionsToolbarMoreSheet: View {
+    let state: ListActionsToolbarMoreSheetState
+    let actionTapped: (ListActions) -> Void
     let editToolbarTapped: () -> Void
 
     init(
-        state: MailboxActionBarMoreSheetState,
-        actionTapped: @escaping (BottomBarAction) -> Void,
+        state: ListActionsToolbarMoreSheetState,
+        actionTapped: @escaping (ListActions) -> Void,
         editToolbarTapped: @escaping () -> Void
     ) {
         self.state = state
@@ -54,11 +55,11 @@ struct MailboxActionBarMoreSheet: View {
 
     // MARK: - Private
 
-    private func section(content: [BottomBarAction]) -> some View {
+    private func section(content: [ListActions]) -> some View {
         ActionSheetSection {
             ForEachLast(collection: content) { action, isLast in
                 ActionSheetImageButton(
-                    displayData: action.actionDisplayData,
+                    displayData: action.displayData,
                     displayBottomSeparator: !isLast,
                     action: { actionTapped(action) }
                 )
@@ -79,15 +80,9 @@ struct MailboxActionBarMoreSheet: View {
 
 }
 
-private extension BottomBarAction {
-    var actionDisplayData: ActionDisplayData {
-        .init(title: displayData.name.unsafelyUnwrapped, image: displayData.icon)
-    }
-}
-
 #Preview {
-    MailboxActionBarMoreSheet(
-        state: MailboxActionBarMoreSheetPreviewProvider.state(),
+    ListActionsToolbarMoreSheet(
+        state: ListActionsToolbarMoreSheetPreviewProvider.state(),
         actionTapped: { _ in },
         editToolbarTapped: {}
     )

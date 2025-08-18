@@ -15,16 +15,13 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import proton_app_uniffi
 
-struct MailboxActionBarMoreSheetState: Identifiable, Equatable {
-    let selectedItemsIDs: [ID]
-    let bottomBarActions: [BottomBarAction]
-    let moreSheetOnlyActions: [BottomBarAction]
-
-    // MARK: - Identifiable
-
-    var id: [ID] {
-        selectedItemsIDs
-    }
+enum ListActionsToolbarAction {
+    case listItemsSelectionUpdated(ids: [ID])
+    case actionSelected(ListActions, ids: [ID])
+    case moreSheetAction(ListActions, ids: [ID])
+    case dismissLabelAsSheet
+    case dismissMoveToSheet
+    case alertActionTapped(DeleteConfirmationAlertAction, ids: [ID])
 }

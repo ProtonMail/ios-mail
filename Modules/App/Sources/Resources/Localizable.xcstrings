@@ -7328,11 +7328,11 @@
     "Edit message" : {
       "comment" : "Action to modify a scheduled message."
     },
-    "email address" : {
-      "comment" : "Label for an email address when copying it to the clipboard."
-    },
     "Edit toolbar" : {
       "comment" : "Title of edit toolbar action."
+    },
+    "email address" : {
+      "comment" : "Label for an email address when copying it to the clipboard."
     },
     "Email not sent" : {
       "comment" : "Notification that is displayed when background time is up and at least one message is unsent."

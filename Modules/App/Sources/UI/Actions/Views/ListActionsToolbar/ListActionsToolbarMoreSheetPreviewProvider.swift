@@ -17,9 +17,9 @@
 
 import Foundation
 
-enum MailboxActionBarMoreSheetPreviewProvider {
+enum ListActionsToolbarMoreSheetPreviewProvider {
 
-    static func state() -> MailboxActionBarMoreSheetState {
+    static func state() -> ListActionsToolbarMoreSheetState {
         .init(
             selectedItemsIDs: [.init(value: 1), .init(value: 2), .init(value: 3)],
             bottomBarActions: [
@@ -27,12 +27,12 @@ enum MailboxActionBarMoreSheetPreviewProvider {
                 .moveToSystemFolder(.init(localId: .init(value: 4), name: .archive)),
                 .moveToSystemFolder(.init(localId: .init(value: 5), name: .inbox)),
                 .moveToSystemFolder(.init(localId: .init(value: 6), name: .trash)),
-                .star
+                .star,
             ],
             moreSheetOnlyActions: [
                 .labelAs,
                 .moveTo,
-                .moveToSystemFolder(.init(localId: .init(value: 7), name: .spam))
+                .moveToSystemFolder(.init(localId: .init(value: 7), name: .spam)),
             ]
         )
     }
