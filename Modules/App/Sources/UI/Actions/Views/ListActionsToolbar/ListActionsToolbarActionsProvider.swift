@@ -17,12 +17,12 @@
 
 import proton_app_uniffi
 
-struct MailboxActionBarActionsProvider {
-    let availableActions: AvailableMailboxActionBarActions
+struct ListActionsToolbarActionsProvider {
+    let availableActions: AvailableListToolbarActions
     let itemTypeForActionBar: MailboxItemType
     let mailbox: Mailbox
 
-    func actions(forItemsWith ids: [ID]) async -> AllBottomBarMessageActions {
+    func actions(forItemsWith ids: [ID]) async -> AllListActions {
         switch itemTypeForActionBar {
         case .message:
             try! await availableActions.message(mailbox, ids).get()
@@ -32,21 +32,21 @@ struct MailboxActionBarActionsProvider {
     }
 }
 
-struct AvailableMailboxActionBarActions {
-    let message: MessageBottomBarActionsProvider
-    let conversation: ConversationBottomBarActionsProvider
+struct AvailableListToolbarActions {
+    let message: MessageListActionsToolbarActionsProvider
+    let conversation: ConversationListActionsToolbarActionsProvider
 }
 
-extension AvailableMailboxActionBarActions {
+extension AvailableListToolbarActions {
 
     static var productionInstance: Self {
         .init(
-            message: allAvailableBottomBarActionsForMessages,
-            conversation: allAvailableBottomBarActionsForConversations
+            message: allAvailableListActionsForMessages,
+            conversation: allAvailableListActionsForConversations
         )
     }
 
 }
 
-typealias MessageBottomBarActionsProvider = (Mailbox, [Id]) async -> AllAvailableBottomBarActionsForMessagesResult
-typealias ConversationBottomBarActionsProvider = (Mailbox, [Id]) async -> AllAvailableBottomBarActionsForConversationsResult
+typealias MessageListActionsToolbarActionsProvider = (Mailbox, [Id]) async -> AllAvailableListActionsForMessagesResult
+typealias ConversationListActionsToolbarActionsProvider = (Mailbox, [Id]) async -> AllAvailableListActionsForConversationsResult

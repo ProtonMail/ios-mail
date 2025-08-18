@@ -161,7 +161,9 @@ struct ContactDetailsScreen: View {
         case .urls(let urls):
             FormList(collection: urls) { item in
                 button(item: ContactFormatter.URL.formatted(from: item)) {
-                    store.handle(action: .openURL(urlString: item.url))
+                    if let urlString = item.url.urlString {
+                        store.handle(action: .openURL(urlString: urlString))
+                    }
                 }
             }
         case .logos, .photos:
@@ -203,6 +205,19 @@ private extension FormList {
 
     init(collection: Collection, elementContent: @escaping (Collection.Element) -> ElementContent) {
         self.init(collection: collection, separator: .invertedNoPadding, elementContent: elementContent)
+    }
+
+}
+
+private extension VCardUrlValue {
+
+    var urlString: String? {
+        switch self {
+        case .http(let string):
+            string
+        case .notHttp, .text:
+            nil
+        }
     }
 
 }

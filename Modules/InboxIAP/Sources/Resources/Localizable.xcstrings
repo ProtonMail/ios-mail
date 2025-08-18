@@ -39,6 +39,24 @@
             "state" : "new",
             "value" : "Billed at %1$@ every %2$@"
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Facturado a %1$@ cada %2$@"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Facturé %1$@ tous les %2$@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "毎%2$@に%1$@の支払い"
+          }
         }
       }
     },

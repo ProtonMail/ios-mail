@@ -4,8 +4,8 @@
 import Foundation
 import proton_app_uniffi
 
-public extension AllAvailableBottomBarActionsForConversationsResult {
-    func get() throws(ActionError) -> AllBottomBarMessageActions {
+public extension AllAvailableListActionsForConversationsResult {
+    func get() throws(ActionError) -> AllListActions {
         switch self {
         case .ok(let value):
             value
@@ -14,8 +14,8 @@ public extension AllAvailableBottomBarActionsForConversationsResult {
         }
     }
 }
-public extension AllAvailableBottomBarActionsForMessagesResult {
-    func get() throws(ActionError) -> AllBottomBarMessageActions {
+public extension AllAvailableListActionsForMessagesResult {
+    func get() throws(ActionError) -> AllListActions {
         switch self {
         case .ok(let value):
             value

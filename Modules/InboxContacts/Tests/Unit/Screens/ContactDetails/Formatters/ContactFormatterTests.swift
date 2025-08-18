@@ -171,11 +171,11 @@ struct ContactFormatterTests {
         arguments:
             zip(
                 [
-                    VCardUrl(url: "https://swissbank.ch", urlType: [.work]),
-                    VCardUrl(url: "https://voice.example", urlType: [.voice]),
-                    VCardUrl(url: "https://personal.blog", urlType: [.home]),
-                    VCardUrl(url: "https://example.org", urlType: []),
-                    VCardUrl(url: "https://custom.link", urlType: [.string("GitHub")]),
+                    VCardUrl(url: .http("https://swissbank.ch"), urlType: [.work]),
+                    VCardUrl(url: .http("https://voice.example"), urlType: [.voice]),
+                    VCardUrl(url: .http("https://personal.blog"), urlType: [.home]),
+                    VCardUrl(url: .http("https://example.org"), urlType: []),
+                    VCardUrl(url: .http("https://custom.link"), urlType: [.string("GitHub")]),
                 ],
                 [
                     ContactDetailsItem(label: "Work", value: "https://swissbank.ch", isInteractive: true),

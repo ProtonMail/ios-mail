@@ -15,11 +15,27 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-enum MailboxActionBarAction {
-    case mailboxItemsSelectionUpdated(ids: [ID])
-    case actionSelected(BottomBarAction, ids: [ID])
-    case moreSheetAction(BottomBarAction, ids: [ID])
-    case dismissLabelAsSheet
-    case dismissMoveToSheet
-    case alertActionTapped(DeleteConfirmationAlertAction, ids: [ID])
+import proton_app_uniffi
+
+extension AllListActions {
+
+    static var testData: Self {
+        .init(
+            hiddenListActions: [
+                .notSpam(.testInbox),
+                .permanentDelete,
+                .moveToSystemFolder(.init(localId: .init(value: 7), name: .archive))
+            ],
+            visibleListActions: [.markRead, .star, .moveTo, .labelAs, .more]
+        )
+    }
+
+}
+
+extension MovableSystemFolderAction {
+
+    static var testInbox: Self {
+        .init(localId: .init(value: 999), name: .inbox)
+    }
+
 }
