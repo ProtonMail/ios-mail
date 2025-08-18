@@ -214,13 +214,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Il vous reste %lld tentative avant la déconnexion."
+                  "value" : "%lld Tentative restante avant la déconnexion"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Il vous reste %lld tentatives avant la déconnexion."
+                  "value" : "%lld tentatives restantes avant la déconnexion"
                 }
               }
             }

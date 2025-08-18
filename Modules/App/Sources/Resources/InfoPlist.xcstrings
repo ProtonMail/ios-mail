@@ -964,6 +964,24 @@
             "state" : "translated",
             "value" : "Required to save files in your Photos app."
           }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Necesario para guardar archivos en tu aplicación Fotos."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nécessaire pour enregistrer des fichiers dans votre application Photos."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "お客様のフォトアプリにファイルを保存するために必要です。"
+          }
         }
       }
     }
