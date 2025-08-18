@@ -198,18 +198,10 @@ final class MessageBodyStateStoreTests {
         #expect(decryptedMessageSpy.bodyWithOptionsCalls == [initialOptions, updatedOptions])
         #expect(
             sut.state
-                == .init(
-                    body: .loaded(
-                        .init(
-                            rsvpServiceProvider: .none,
-                            newsletterService: decryptedMessageSpy,
-                            banners: [],
-                            html: .init(
-                                rawBody: "<html>dummy_with_custom_options</html>",
-                                options: updatedOptions,
-                                imageProxy: decryptedMessageSpy
-                            )
-                        )),
+                == .noBannersAlert(
+                    rawBody: "<html>dummy_with_custom_options</html>",
+                    options: updatedOptions,
+                    decryptedMessage: decryptedMessageSpy,
                     alert: .legitMessageConfirmation(action: { _ in })
                 ))
     }
@@ -225,7 +217,7 @@ final class MessageBodyStateStoreTests {
         await sut.handle(action: .onLoad)
         await sut.handle(action: .markAsLegitimate)
 
-        let markAsLegitimateAction = try sut.state.alertAction(for: .markAsLegitimate)
+        let markAsLegitimateAction = try sut.state.legitAlertAction(for: .markAsLegitimate)
         await markAsLegitimateAction.action()
 
         #expect(wrapperSpy.markMessageHamCalls == [stubbedMessageID])
@@ -251,7 +243,7 @@ final class MessageBodyStateStoreTests {
         await sut.handle(action: .onLoad)
         await sut.handle(action: .markAsLegitimate)
 
-        let markAsLegitimateAction = try sut.state.alertAction(for: .markAsLegitimate)
+        let markAsLegitimateAction = try sut.state.legitAlertAction(for: .markAsLegitimate)
         await markAsLegitimateAction.action()
 
         #expect(wrapperSpy.markMessageHamCalls == [stubbedMessageID])
@@ -270,7 +262,7 @@ final class MessageBodyStateStoreTests {
         await sut.handle(action: .onLoad)
         await sut.handle(action: .markAsLegitimate)
 
-        let cancelAction = try sut.state.alertAction(for: .cancel)
+        let cancelAction = try sut.state.legitAlertAction(for: .cancel)
         await cancelAction.action()
 
         #expect(wrapperSpy.markMessageHamCalls == [])
@@ -357,7 +349,7 @@ final class MessageBodyStateStoreTests {
     // MARK: - `unsubscribeNewsletter` action
 
     @Test
-    func testState_UnsubscribeNewsletterSucceeds_ItUnsubscribesAndFetchesBodyAgain() async {
+    func testState_UnsubscribeNewsletterActionTapped_ItPresentsConfirmationAlert() async {
         let initialOptions = TransformOpts()
         let decryptedMessageSpy = DecryptedMessageSpy(stubbedOptions: initialOptions)
 
@@ -366,6 +358,31 @@ final class MessageBodyStateStoreTests {
 
         await sut.handle(action: .onLoad)
         await sut.handle(action: .unsubscribeNewsletter)
+
+        #expect(decryptedMessageSpy.unsubscribeFromNewsletterCallsCount == 0)
+        #expect(
+            sut.state
+                == .noBannersAlert(
+                    rawBody: "<html>dummy_with_custom_options</html>",
+                    options: initialOptions,
+                    decryptedMessage: decryptedMessageSpy,
+                    alert: .unsubcribeNewsletter(action: { _ in })
+                ))
+    }
+
+    @Test
+    func testState_UnsubscribeNewsletterConfirmedAndSucceeds_ItUnsubscribesAndFetchesBodyAgain() async throws {
+        let initialOptions = TransformOpts()
+        let decryptedMessageSpy = DecryptedMessageSpy(stubbedOptions: initialOptions)
+
+        wrapperSpy.stubbedMessageBodyResult = .ok(decryptedMessageSpy)
+        decryptedMessageSpy.stubbedUnsubscribeFromNewsletterResult = .ok
+
+        await sut.handle(action: .onLoad)
+        await sut.handle(action: .unsubscribeNewsletter)
+
+        let unsubscribeAction = try sut.state.unsubscribeAlertAction(for: .unsubscribe)
+        await unsubscribeAction.action()
 
         #expect(decryptedMessageSpy.unsubscribeFromNewsletterCallsCount == 1)
         #expect(decryptedMessageSpy.bodyWithOptionsCalls == [initialOptions, initialOptions])
@@ -379,7 +396,7 @@ final class MessageBodyStateStoreTests {
     }
 
     @Test
-    func testState_UnsubscribeNewsletterFails_ItPresentsErrorToast() async {
+    func testState_UnsubscribeNewsletterConfirmedAndFails_ItPresentsErrorToast() async throws {
         let initialOptions = TransformOpts()
         let decryptedMessageSpy = DecryptedMessageSpy(stubbedOptions: initialOptions)
         let expectedActionError: ActionError = .reason(.unknownMessage)
@@ -389,6 +406,9 @@ final class MessageBodyStateStoreTests {
 
         await sut.handle(action: .onLoad)
         await sut.handle(action: .unsubscribeNewsletter)
+
+        let unsubscribeAction = try sut.state.unsubscribeAlertAction(for: .unsubscribe)
+        await unsubscribeAction.action()
 
         #expect(decryptedMessageSpy.unsubscribeFromNewsletterCallsCount == 1)
         #expect(decryptedMessageSpy.bodyWithOptionsCalls == [initialOptions])
@@ -400,6 +420,31 @@ final class MessageBodyStateStoreTests {
                     decryptedMessage: decryptedMessageSpy
                 ))
         #expect(toastStateStore.state.toasts == [.error(message: expectedActionError.localizedDescription)])
+    }
+
+    @Test
+    func testState_WhenUnsubscribeNewsletterCancelled_ItDoesNotUnsubscribe() async throws {
+        let initialOptions = TransformOpts()
+        let decryptedMessageSpy = DecryptedMessageSpy(stubbedOptions: initialOptions)
+
+        wrapperSpy.stubbedMessageBodyResult = .ok(decryptedMessageSpy)
+        decryptedMessageSpy.stubbedUnsubscribeFromNewsletterResult = .ok
+
+        await sut.handle(action: .onLoad)
+        await sut.handle(action: .unsubscribeNewsletter)
+
+        let cancelAction = try sut.state.unsubscribeAlertAction(for: .cancel)
+        await cancelAction.action()
+
+        #expect(decryptedMessageSpy.unsubscribeFromNewsletterCallsCount == 0)
+        #expect(decryptedMessageSpy.bodyWithOptionsCalls == [initialOptions])
+        #expect(
+            sut.state
+                == .noBannersAlert(
+                    rawBody: "<html>dummy_with_custom_options</html>",
+                    options: initialOptions,
+                    decryptedMessage: decryptedMessageSpy,
+                ))
     }
 }
 
@@ -513,7 +558,11 @@ private final class RustWrappersSpy: @unchecked Sendable {
 
 private extension MessageBodyStateStore.State {
 
-    func alertAction(for action: LegitMessageConfirmationAlertAction) throws -> AlertAction {
+    func legitAlertAction(for action: LegitMessageConfirmationAlertAction) throws -> AlertAction {
+        try #require(alert?.actions.findFirst(for: action.info.title, by: \.title))
+    }
+
+    func unsubscribeAlertAction(for action: UnsubscribeNewsletterAlertAction) throws -> AlertAction {
         try #require(alert?.actions.findFirst(for: action.info.title, by: \.title))
     }
 
@@ -524,7 +573,8 @@ private extension MessageBodyStateStore.State {
     static func noBannersAlert(
         rawBody: String,
         options: TransformOpts,
-        decryptedMessage: DecryptedMessageSpy
+        decryptedMessage: DecryptedMessageSpy,
+        alert: AlertModel? = .none
     ) -> Self {
         .init(
             body: .loaded(
@@ -535,7 +585,7 @@ private extension MessageBodyStateStore.State {
                     html: .init(rawBody: rawBody, options: options, imageProxy: decryptedMessage)
                 )
             ),
-            alert: .none
+            alert: alert
         )
     }
 
