@@ -182,11 +182,7 @@ private extension VCardUrlValue {
 
     var value: String {
         switch self {
-        case .http(let string):
-            string
-        case .notHttp(let string):
-            string
-        case .text(let string):
+        case .http(let string), .notHttp(let string), .text(let string):
             string
         }
     }
