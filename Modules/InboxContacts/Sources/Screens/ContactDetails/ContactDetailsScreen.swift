@@ -209,6 +209,19 @@ private extension FormList {
 
 }
 
+private extension VCardUrlValue {
+
+    var urlString: String? {
+        switch self {
+        case .http(let string):
+            string
+        case .notHttp, .text:
+            nil
+        }
+    }
+
+}
+
 #Preview {
     ContactDetailsScreen(
         contact: ContactItem(
@@ -220,17 +233,4 @@ private extension FormList {
         provider: .previewInstance(),
         draftPresenter: ContactsDraftPresenterDummy()
     )
-}
-
-extension VCardUrlValue {
-
-    var urlString: String? {
-        switch self {
-        case .http(let string):
-            string
-        case .notHttp, .text:
-            nil
-        }
-    }
-
 }
