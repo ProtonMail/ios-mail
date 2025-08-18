@@ -490,6 +490,28 @@ enum L10n {
                 comment: "Message shown in the alert explaining the reason for the 'Mark as legitimate' action."
             )
         }
+        enum UnsubscribeNewsletter {
+            enum Alert {
+                static let title = LocalizedStringResource(
+                    "Unsubscribe",
+                    comment: "Title of the alert asking the user to confirm unsubscribing from the mailing list."
+                )
+                static let message = LocalizedStringResource(
+                    "This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address.",
+                    comment: "Message shown in the alert explaining the consequence of the 'Unsubscribe' action."
+                )
+                static let confirm = LocalizedStringResource(
+                    "Unsubscribe",
+                    comment: "Label of the confirmation button in the unsubscribe alert."
+                )
+            }
+            enum Toast {
+                static let success = LocalizedStringResource(
+                    "Mail list unsubscribed",
+                    comment: "Toast message shown after the user successfully unsubscribes from a mailing list."
+                )
+            }
+        }
 
         static func autoDeleteTitle(remainingTime: String) -> LocalizedStringResource {
             .init(

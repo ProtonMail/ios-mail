@@ -164,45 +164,10 @@ final class MessageBodyStateStore: StateStore {
         switch await newsletterService.unsubscribeFromNewsletter() {
         case .ok:
             await loadMessageBody(with: options)
-            toastStateStore.present(toast: .information(message: "Mail list unsubscribed"))
+            let message: String = L10n.MessageBanner.UnsubscribeNewsletter.Toast.success.string
+            toastStateStore.present(toast: .information(message: message))
         case .error(let error):
             toastStateStore.present(toast: .error(message: error.localizedDescription))
         }
     }
-}
-
-import SwiftUI
-
-enum UnsubscribeNewsletterAlertAction: AlertActionInfo, CaseIterable {
-    case cancel
-    case unsubscribe
-
-    // MARK: - AlertActionInfo
-
-    var info: (title: LocalizedStringResource, buttonRole: ButtonRole?) {
-        switch self {
-        case .cancel:
-            (CommonL10n.cancel, .cancel)
-        case .unsubscribe:
-            ("Unsubscribe".notLocalized.stringResource, .destructive)
-        }
-    }
-}
-
-extension AlertModel {
-
-    static func unsubcribeNewsletter(
-        action: @escaping (UnsubscribeNewsletterAlertAction) async -> Void
-    ) -> Self {
-        let actions: [AlertAction] = UnsubscribeNewsletterAlertAction.allCases.map { actionType in
-            .init(details: actionType, action: { await action(actionType) })
-        }
-
-        return .init(
-            title: "Unsubscribe".notLocalized.stringResource,
-            message: "This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address.".notLocalized.stringResource,
-            actions: actions
-        )
-    }
-
 }

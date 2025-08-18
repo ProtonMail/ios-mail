@@ -25921,6 +25921,9 @@
         }
       }
     },
+    "Mail list unsubscribed" : {
+      "comment" : "Toast message shown after the user successfully unsubscribes from a mailing list."
+    },
     "Mailbox preferences" : {
       "comment" : "Title of the Email settings item.",
       "localizations" : {
@@ -47322,6 +47325,9 @@
         }
       }
     },
+    "This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." : {
+      "comment" : "Message shown in the alert explaining the consequence of the 'Unsubscribe' action."
+    },
     "To" : {
       "comment" : "`To` in the message details.",
       "extractionState" : "stale",
@@ -50135,7 +50141,7 @@
       }
     },
     "Unsubscribe" : {
-      "comment" : "Action to unsubscribe from the mailing list.",
+      "comment" : "Action to unsubscribe from the mailing list.\nLabel of the confirmation button in the unsubscribe alert.\nTitle of the alert asking the user to confirm unsubscribing from the mailing list.",
       "localizations" : {
         "be" : {
           "stringUnit" : {

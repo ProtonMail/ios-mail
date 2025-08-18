@@ -394,7 +394,11 @@ final class MessageBodyStateStoreTests {
                     options: initialOptions,
                     decryptedMessage: decryptedMessageSpy,
                 ))
-        #expect(toastStateStore.state.toasts == [.information(message: "Mail list unsubscribed")])
+        #expect(
+            toastStateStore.state.toasts == [
+                .information(message: L10n.MessageBanner.UnsubscribeNewsletter.Toast.success.string)
+            ]
+        )
     }
 
     @Test
@@ -478,12 +482,12 @@ extension MessageBody: @retroactive Equatable {
 
     public static func == (lhs: Self, rhs: Self) -> Bool {
         let areRsvpProviderEqual: Bool = lhs.rsvpServiceProvider === rhs.rsvpServiceProvider
-        let areNewsletterServiceEqual = lhs.newsletterService === rhs.newsletterService
+        let areNewsletterServicesEqual = lhs.newsletterService === rhs.newsletterService
         let areHTMLsEqual =
             lhs.html.rawBody == rhs.html.rawBody && lhs.html.options == rhs.html.options && lhs.html.imageProxy === rhs.html.imageProxy
         let areBannersEqual = lhs.banners == rhs.banners
 
-        return areRsvpProviderEqual && areNewsletterServiceEqual && areHTMLsEqual && areBannersEqual
+        return areRsvpProviderEqual && areNewsletterServicesEqual && areHTMLsEqual && areBannersEqual
     }
 
 }
