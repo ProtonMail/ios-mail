@@ -20,7 +20,7 @@ import InboxCore
 import InboxDesignSystem
 
 struct EditToolbarScreen: View {
-    @StateObject var store: EditToolbarStore
+    @StateObject private var store: EditToolbarStore
 
     init(state: EditToolbarState, toolbarService: ToolbarServiceProtocol) {
         self._store = .init(wrappedValue: .init(state: state, toolbarService: toolbarService))

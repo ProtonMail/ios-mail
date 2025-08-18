@@ -123,6 +123,9 @@
     },
     "Undo" : {
 
+    },
+    "Upgrade for full flexibility" : {
+      "comment" : "Upsell button subtitle displayed for a free user."
     }
   },
   "version" : "1.0"

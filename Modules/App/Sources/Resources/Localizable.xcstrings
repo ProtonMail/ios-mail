@@ -4686,7 +4686,7 @@
       "comment" : "Option in the Settings screen (if the user has two passwords)."
     },
     "Chosen actions" : {
-      "comment" : "Title of a section with choosen toolbar actions."
+      "comment" : "Title of a section with chosen toolbar actions."
     },
     "Combined contacts" : {
       "comment" : "Combined Contacts setting title in app settings."
@@ -7340,14 +7340,14 @@
     "Edit message" : {
       "comment" : "Action to modify a scheduled message."
     },
-    "email address" : {
-      "comment" : "Label for an email address when copying it to the clipboard."
-    },
     "Edit message toolbar" : {
       "comment" : "Message toolbar edition screen title."
     },
     "Edit toolbar" : {
       "comment" : "Title of edit toolbar action."
+    },
+    "email address" : {
+      "comment" : "Label for an email address when copying it to the clipboard."
     },
     "Email not sent" : {
       "comment" : "Notification that is displayed when background time is up and at least one message is unsent."
@@ -17202,7 +17202,7 @@
       "comment" : "Not matching PIN validation error message."
     },
     "The toolbar can have 1–5 actions. You can’t remove the last remaining action." : {
-      "comment" : "Subtitle of a section with choosen toolbar actions."
+      "comment" : "Subtitle of a section with chosen toolbar actions."
     },
     "There was an error sending the report, please try again." : {
       "comment" : "Toast displayed after the report failed to send"
@@ -18225,9 +18225,6 @@
     },
     "Unsubscribe" : {
       "comment" : "Action to unsubscribe from the mailing list."
-    },
-    "Upgrade for full flexibility" : {
-      "comment" : "Custom button subtitle for a free user on snooze sheet."
     },
     "Upgrade to %@" : {
       "comment" : "Title of the upsell button in the sidebar"

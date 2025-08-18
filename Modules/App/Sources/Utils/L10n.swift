@@ -1008,11 +1008,11 @@ enum L10n {
             )
             static let chosenActionsSectionTitle = LocalizedStringResource(
                 "Chosen actions",
-                comment: "Title of a section with choosen toolbar actions."
+                comment: "Title of a section with chosen toolbar actions."
             )
             static let chosenActionsSectionSubtitle = LocalizedStringResource(
                 "The toolbar can have 1–5 actions. You can’t remove the last remaining action.",
-                comment: "Subtitle of a section with choosen toolbar actions."
+                comment: "Subtitle of a section with chosen toolbar actions."
             )
             static let availableActionsSectionTitle = LocalizedStringResource(
                 "Available actions",
@@ -1120,10 +1120,6 @@ enum L10n {
         static let snoozeThisWeekend = LocalizedStringResource(
             "This weekend",
             comment: "Predefined snooze option that postpones item until the upcoming weekend."
-        )
-        static let upsellButtonSubtitle = LocalizedStringResource(
-            "Upgrade for full flexibility",
-            comment: "Custom button subtitle for a free user on snooze sheet."
         )
         static let smallUpsellButtonSubtitle = LocalizedStringResource(
             "Upgrade to access",

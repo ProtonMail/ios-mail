@@ -519,12 +519,6 @@ enum L10n {
             comment: "Schedule send custom time option tile"
         )
 
-        static let customSubtitleFreeUser = LocalizedStringResource(
-            "Upgrade for full flexibility",
-            bundle: .atURL(Bundle.module.bundleURL),
-            comment: "Schedule send custom time option subtitle for free user"
-        )
-
         static let customSubtitle = LocalizedStringResource(
             "Pick time and date",
             bundle: .atURL(Bundle.module.bundleURL),

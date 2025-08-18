@@ -65,24 +65,6 @@ class EditToolbarStore: StateStore {
     }
 }
 
-private extension RangeReplaceableCollection where Element: Equatable {
-
-    func removing(_ item: Element) -> Self {
-        var copy = self
-        if let index = copy.firstIndex(of: item) {
-            copy.remove(at: index)
-        }
-        return copy
-    }
-
-    func inserting(_ item: Element, at index: Index) -> Self {
-        var copy = self
-        copy.insert(item, at: index)
-        return copy
-    }
-
-}
-
 extension EditToolbarState.ScreenType {
 
     var actionsKeyPath: KeyPath<CustomizeToolbarActions, ToolbarActions> {

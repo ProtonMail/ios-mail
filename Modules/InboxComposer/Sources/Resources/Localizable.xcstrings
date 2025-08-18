@@ -1605,9 +1605,6 @@
     "Too many attachments. Send them in multiple emails." : {
       "comment" : "Error in the context of saving a draft before being sent."
     },
-    "Upgrade for full flexibility" : {
-      "comment" : "Schedule send custom time option subtitle for free user"
-    },
     "We could not confirm all recipients use Proton Mail. Only Proton addresses support message expiration. In this case, we suggest adding a password instead." : {
       "comment" : "Sending to only non-Proton accounts alert message"
     },
