@@ -50,7 +50,7 @@ final class MailboxModel: ObservableObject {
             updatePublisher: listUpdateSubject.eraseToAnyPublisher(),
             fetchMore: { [weak self] currentPage in self?.fetchNextPage(currentPage: currentPage) }
         ),
-        idKey: { item in String(item.id.value) }
+        id: \.id
     )
     private var unreadCountLiveQuery: UnreadItemsCountLiveQuery?
 
