@@ -56,7 +56,7 @@ final class ShortcutItemsServiceTests {
     }
 
     @Test
-    func ifStarredFolderDoesNotExist_setsRemainingItems() async {
+    func whenStarredFolderDoesNotExist_setsRemainingItems() async {
         stubbedResolveResult = .ok(nil)
 
         let task = sut.startListeningToUserSessionChanges()
@@ -67,7 +67,7 @@ final class ShortcutItemsServiceTests {
     }
 
     @Test
-    func ifStarredFolderLookupFails_setsRemainingItems() async {
+    func whenStarredFolderLookupFails_setsRemainingItems() async {
         stubbedResolveResult = .error(.unexpected(.database))
 
         let task = sut.startListeningToUserSessionChanges()
