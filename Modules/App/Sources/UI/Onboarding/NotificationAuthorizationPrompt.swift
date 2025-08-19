@@ -23,62 +23,20 @@ struct NotificationAuthorizationPrompt: View {
     private let trigger: NotificationAuthorizationRequestTrigger
     private let userDidRespond: (Bool) -> Void
 
-    @State private var bodyHeight: CGFloat = 0
-
     init(trigger: NotificationAuthorizationRequestTrigger, userDidRespond: @escaping (Bool) -> Void) {
         self.trigger = trigger
         self.userDidRespond = userDidRespond
     }
 
     var body: some View {
-        VStack(alignment: .center, spacing: 0) {
-            Image(DS.Images.notificationPrompt)
-
-            Spacer()
-                .frame(height: DS.Spacing.standard)
-
-            Text(trigger.title)
-                .font(.body)
-                .fontWeight(.bold)
-                .foregroundStyle(DS.Color.Text.norm)
-
-            Spacer()
-                .frame(height: DS.Spacing.compact)
-
-            Text(trigger.body)
-                .font(.subheadline)
-                .fontWeight(.regular)
-                .foregroundStyle(DS.Color.Text.weak)
-                .multilineTextAlignment(.center)
-                .fixedSize(horizontal: false, vertical: true)
-
-            Spacer()
-                .frame(height: DS.Spacing.jumbo)
-
-            Button(L10n.Notifications.cta.string) {
-                userDidRespond(true)
-            }
-            .buttonStyle(BigButtonStyle())
-
-            Spacer()
-                .frame(height: DS.Spacing.extraLarge)
-
-            Button(L10n.Notifications.dismiss.string) {
-                userDidRespond(false)
-            }
-            .buttonStyle(SmallButtonStyle())
-        }
-        .presentationDetents([.height(bodyHeight)])
-        .presentationDragIndicator(.visible)
-        .interactiveDismissDisabled()
-        .presentationCornerRadius(DS.Radius.extraLarge)
-        .padding(.horizontal, DS.Spacing.extraLarge)
-        .padding(.top, DS.Spacing.huge + DS.Spacing.extraLarge)
-        .padding(.bottom, DS.Spacing.extraLarge)
-        .background(DS.Color.Background.norm)
-        .onGeometryChange(for: CGFloat.self, of: \.size.height) { newValue in
-            bodyHeight = newValue
-        }
+        PromptSheet(
+            image: DS.Images.notificationPrompt,
+            title: trigger.title,
+            subtitle: trigger.body,
+            actionButtonTitle: L10n.Notifications.cta,
+            onAction: { userDidRespond(true) },
+            onDismiss: { userDidRespond(false) }
+        )
     }
 }
 

@@ -26,6 +26,7 @@ public enum CommonL10n {
     public static let date = LocalizedStringResource("Date", bundle: .module)
     public static let `default` = LocalizedStringResource("Default", bundle: .module)
     public static let delete = LocalizedStringResource("Delete", bundle: .module)
+    public static let dismiss = LocalizedStringResource("Dismiss", bundle: .module)
     public static let done = LocalizedStringResource("Done", bundle: .module)
     public static let learnMore = LocalizedStringResource("Learn more", bundle: .module)
     public static let ok = LocalizedStringResource("Ok", bundle: .module)

@@ -697,8 +697,6 @@ enum L10n {
             "Allow notifications",
             comment: "Button to authorizate notifications"
         )
-
-        static let dismiss = LocalizedStringResource("Dismiss", comment: "Alert dismiss button")
     }
 
     enum PINLock {
