@@ -30,12 +30,14 @@ struct NotificationAuthorizationPrompt: View {
 
     var body: some View {
         PromptSheet(
-            image: DS.Images.notificationPrompt,
-            title: trigger.title,
-            subtitle: trigger.body,
-            actionButtonTitle: L10n.Notifications.cta,
-            onAction: { userDidRespond(true) },
-            onDismiss: { userDidRespond(false) }
+            model: .init(
+                image: DS.Images.notificationPrompt,
+                title: trigger.title,
+                subtitle: trigger.body,
+                actionButtonTitle: L10n.Notifications.cta,
+                onAction: { userDidRespond(true) },
+                onDismiss: { userDidRespond(false) }
+            )
         )
     }
 }

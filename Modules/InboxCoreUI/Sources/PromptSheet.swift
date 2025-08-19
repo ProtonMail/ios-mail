@@ -20,47 +20,55 @@ import InboxDesignSystem
 import SwiftUI
 
 public struct PromptSheet: View {
-    private let image: ImageResource
-    private let title: LocalizedStringResource
-    private let subtitle: LocalizedStringResource
-    private let actionButtonTitle: LocalizedStringResource
-    private let onAction: () -> Void
-    private let onDismiss: () -> Void
+    public struct Model {
+        public let image: ImageResource
+        public let title: LocalizedStringResource
+        public let subtitle: LocalizedStringResource
+        public let actionButtonTitle: LocalizedStringResource
+        public let onAction: () -> Void
+        public let onDismiss: () -> Void
+
+        public init(
+            image: ImageResource,
+            title: LocalizedStringResource,
+            subtitle: LocalizedStringResource,
+            actionButtonTitle: LocalizedStringResource,
+            onAction: @escaping () -> Void,
+            onDismiss: @escaping () -> Void
+        ) {
+            self.image = image
+            self.title = title
+            self.subtitle = subtitle
+            self.actionButtonTitle = actionButtonTitle
+            self.onAction = onAction
+            self.onDismiss = onDismiss
+        }
+    }
+
+    private let model: Model
 
     @State private var bodyHeight: CGFloat = 0
 
-    public init(
-        image: ImageResource,
-        title: LocalizedStringResource,
-        subtitle: LocalizedStringResource,
-        actionButtonTitle: LocalizedStringResource,
-        onAction: @escaping () -> Void,
-        onDismiss: @escaping () -> Void
-    ) {
-        self.image = image
-        self.title = title
-        self.subtitle = subtitle
-        self.actionButtonTitle = actionButtonTitle
-        self.onAction = onAction
-        self.onDismiss = onDismiss
+    public init(model: Model) {
+        self.model = model
     }
 
     // MARK: - View
 
     public var body: some View {
         VStack(alignment: .center, spacing: .zero) {
-            Image(image)
+            Image(model.image)
 
             Spacer().frame(height: DS.Spacing.standard)
 
-            Text(title)
+            Text(model.title)
                 .font(.body)
                 .fontWeight(.bold)
                 .foregroundStyle(DS.Color.Text.norm)
 
             Spacer().frame(height: DS.Spacing.compact)
 
-            Text(subtitle)
+            Text(model.subtitle)
                 .font(.subheadline)
                 .fontWeight(.regular)
                 .foregroundStyle(DS.Color.Text.weak)
@@ -69,17 +77,15 @@ public struct PromptSheet: View {
 
             Spacer().frame(height: DS.Spacing.jumbo)
 
-            Button(action: onAction) {
-                Text(actionButtonTitle)
+            Button(action: model.onAction) {
+                Text(model.actionButtonTitle)
             }
             .buttonStyle(BigButtonStyle())
 
             Spacer().frame(height: DS.Spacing.extraLarge)
 
-            Button(CommonL10n.dismiss.string) {
-                onDismiss()
-            }
-            .buttonStyle(SmallButtonStyle())
+            Button(CommonL10n.dismiss.string, action: model.onDismiss)
+                .buttonStyle(SmallButtonStyle())
         }
         .presentationDetents([.height(bodyHeight)])
         .presentationDragIndicator(.visible)
