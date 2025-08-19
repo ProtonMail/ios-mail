@@ -95,6 +95,12 @@
             "value" : "Proton Mail"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton Mail"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -959,6 +965,42 @@
       "comment" : "Message displayed when requesting system permission to access the Photos app for saving files (e.g. from a received message by long pressing on an image)",
       "extractionState" : "manual",
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Патрабуецца для захавання файлаў у дадатку «Фота»."
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Es requereix per desar fitxers a l'aplicació Fotos."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vyžadováno pro ukládání souborů do vaší aplikace Fotky."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Påkrævet for at gemme filer i din Fotos-app."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erforderlich, um Dateien in Ihrer Fotos-App speichern zu können."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Απαιτείται για αποθήκευση αρχείων στην εφαρμογή Photos σας."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "translated",
@@ -971,16 +1013,124 @@
             "value" : "Necesario para guardar archivos en tu aplicación Fotos."
           }
         },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Necesario para guardar archivos en su aplicación de Fotos."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vaaditaan tiedostojen tallentamiseen Kuvat-sovellukseesi."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nécessaire pour enregistrer des fichiers dans votre application Photos."
           }
         },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Szükséges a fájlok mentéséhez a Fotók alkalmazásba."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diperlukan untuk menyimpan file di aplikasi Foto Anda."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Necessario per salvare i file nella tua app Foto."
+          }
+        },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "お客様のフォトアプリにファイルを保存するために必要です。"
+            "value" : "フォトアプリへファイルを保存するために必要です。"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "საჭიროა ფაილების თქვენს Photos აპში შესანახად."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "사진 앱에 파일을 저장하는 데 필요합니다."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vereist om bestanden op te slaan in uw Foto's-app."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wymagane do zapisywania plików w Twojej aplikacji Zdjęcia."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Necessário para guardar ficheiros na sua aplicação Fotografias."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "É necessário salvar os arquivos no aplicativo Fotos"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Necesar pentru a salva fișiere în aplicația dvs. Fotografii."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Необходимо для сохранения файлов в приложении «Фото»."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vyžaduje sa na uloženie súborov do aplikácie Fotky."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Potrebno za shranjevanje datotek v aplikacijo Fotografije."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Krävs för att spara filer i din Bilder-app."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fotoğraflar uygulamasında dosyaları kaydetmek için gereklidir."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Необхідно, щоб зберігати файли у вашій програмі «Фото»."
           }
         }
       }
