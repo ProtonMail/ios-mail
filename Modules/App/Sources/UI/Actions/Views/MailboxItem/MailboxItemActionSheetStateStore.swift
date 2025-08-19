@@ -21,6 +21,10 @@ import InboxCoreUI
 import SwiftUI
 import proton_app_uniffi
 
+struct MessageActionPerformer {
+
+}
+
 class MailboxItemActionSheetStateStore: StateStore {
     @Published var state: MailboxItemActionSheetState
     private let availableActionsProvider: AvailableActionsProvider
@@ -72,10 +76,11 @@ class MailboxItemActionSheetStateStore: StateStore {
         self.navigation = navigation
     }
 
-    func handle(action: MailboxItemActionSheetAction) {
+    @MainActor
+    func handle(action: MailboxItemActionSheetAction) async {
         switch action {
         case .onLoad:
-            loadActions()
+            await loadActions()
         case .mailboxItemActionTapped(let action):
             switch action {
             case .labelAs:
@@ -122,20 +127,18 @@ class MailboxItemActionSheetStateStore: StateStore {
             case .permanentDelete:
                 state = state.copy(\.alert, to: deleteConfirmationAlert)
             case .notSpam(let model), .moveToSystemFolder(let model):
-                performMoveToAction(destination: model, ids: [input.id], itemType: input.type)
+                await performMoveToAction(destination: model, ids: [input.id], itemType: input.type)
             }
         case .generalActionTapped(let generalAction):
             switch generalAction {
             case .saveAsPdf, .viewHeaders, .viewHtml:
                 toastStateStore.present(toast: .comingSoon)
             case .print:
-                Task {
-                    do {
-                        try await printActionPerformer.printMessage(messageID: input.id)
-                    } catch {
-                        AppLogger.log(error: error)
-                        toastStateStore.present(toast: .error(message: error.localizedDescription))
-                    }
+                do {
+                    try await printActionPerformer.printMessage(messageID: input.id)
+                } catch {
+                    AppLogger.log(error: error)
+                    toastStateStore.present(toast: .error(message: error.localizedDescription))
                 }
             case .viewMessageInLightMode:
                 messageAppearanceOverrideStore.forceLightMode(forMessageWithId: input.id)
@@ -145,7 +148,7 @@ class MailboxItemActionSheetStateStore: StateStore {
                 navigation(.dismiss)
             case .reportPhishing:
                 let alert: AlertModel = .phishingConfirmation(action: { [weak self] action in
-                    self?.handle(action: .phishingConfirmed(action))
+                    await self?.handle(action: .phishingConfirmed(action))
                 })
 
                 state = state.copy(\.alert, to: alert)
@@ -153,12 +156,12 @@ class MailboxItemActionSheetStateStore: StateStore {
         case .deleteConfirmed(let action):
             state = state.copy(\.alert, to: nil)
             if case .delete = action {
-                performDeleteAction(itemsIDs: [input.id], itemType: input.type)
+                await performDeleteAction(itemsIDs: [input.id], itemType: input.type)
             }
         case .phishingConfirmed(let action):
             state = state.copy(\.alert, to: nil)
             if case .confirm = action {
-                performMarkPhishing(itemType: input.type)
+                await performMarkPhishing(itemType: input.type)
             }
         case .editToolbarActionTapped:
             // FIXME: - Handle action
@@ -168,72 +171,57 @@ class MailboxItemActionSheetStateStore: StateStore {
 
     // MARK: - Private
 
+    @MainActor
     private func performMoveToAction(
         destination: MoveToSystemFolderLocation,
         ids: [ID],
         itemType: ActionSheetItemType
-    ) {
-        Task { [weak self, mailUserSession] in
-            guard let self else { return }
-
-            do {
-                let undo = try await moveToActionPerformer.moveTo(
-                    destinationID: destination.localId,
-                    itemsIDs: ids,
-                    itemType: itemType.inboxItemType
-                )
-                let toastID = UUID()
-                let undoAction = undo.undoAction(userSession: mailUserSession) {
-                    self.dismissToast(withID: toastID)
-                }
-                presentMoveToToast(id: toastID, destination: destination, undoAction: undoAction)
-            } catch {
-                presentToast(toast: .error(message: error.localizedDescription))
+    ) async {
+        do {
+            let undo = try await moveToActionPerformer.moveTo(
+                destinationID: destination.localId,
+                itemsIDs: ids,
+                itemType: itemType.inboxItemType
+            )
+            let toastID = UUID()
+            let undoAction = undo.undoAction(userSession: mailUserSession) { [weak self] in
+                self?.dismissToast(withID: toastID)
             }
+            presentMoveToToast(id: toastID, destination: destination, undoAction: undoAction)
+        } catch {
+            presentToast(toast: .error(message: error.localizedDescription))
+        }
 
-            Dispatcher.dispatchOnMain(
-                .init(block: { [weak self] in
-                    self?.navigation(itemType.dismissNavigation)
-                }))
+        navigation(itemType.dismissNavigation)
+    }
+
+    @MainActor
+    private func performDeleteAction(itemsIDs: [ID], itemType: ActionSheetItemType) async {
+        await deleteActionPerformer.delete(itemsWithIDs: itemsIDs, itemType: itemType.inboxItemType)
+        presentDeletedToast()
+        navigation(itemType.dismissNavigation)
+    }
+
+    @MainActor
+    private func performMarkPhishing(itemType: ActionSheetItemType) async {
+        if case .ok = await generalActionsPerformer.markMessagePhishing(messageID: input.id) {
+            navigation(itemType.dismissNavigation)
         }
     }
 
-    private func performDeleteAction(itemsIDs: [ID], itemType: ActionSheetItemType) {
-        Task {
-            await deleteActionPerformer.delete(itemsWithIDs: itemsIDs, itemType: itemType.inboxItemType)
-            Dispatcher.dispatchOnMain(
-                .init(block: { [weak self] in
-                    self?.presentDeletedToast()
-                    self?.navigation(itemType.dismissNavigation)
-                }))
-        }
-    }
-
-    private func performMarkPhishing(itemType: ActionSheetItemType) {
-        Task {
-            if case .ok = await generalActionsPerformer.markMessagePhishing(messageID: input.id) {
-                Dispatcher.dispatchOnMain(
-                    .init(block: { [weak self] in
-                        self?.navigation(itemType.dismissNavigation)
-                    }))
-            }
-        }
-    }
-
+    @MainActor
     private func performAction(
         action: ([ID], MailboxItemType, (() -> Void)?) -> Void,
         ids: [ID],
         itemType: MailboxItemType,
         navigation: MailboxItemActionSheetNavigation
     ) {
-        action(ids, itemType) {
-            Dispatcher.dispatchOnMain(
-                .init(block: { [weak self] in
-                    self?.navigation(navigation)
-                }))
+        action(ids, itemType) { [weak self] in
+            self?.navigation(navigation)
         }
     }
 
+    @MainActor
     private func presentMoveToToast(
         id: UUID,
         destination: MoveToSystemFolderLocation,
@@ -244,39 +232,32 @@ class MailboxItemActionSheetStateStore: StateStore {
         presentToast(toast: toast)
     }
 
+    @MainActor
     private func presentDeletedToast() {
         presentToast(toast: .deleted())
     }
 
+    @MainActor
     private func presentToast(toast: Toast) {
-        Dispatcher.dispatchOnMain(
-            .init(block: { [weak self] in
-                self?.toastStateStore.present(toast: toast)
-            }))
+        toastStateStore.present(toast: toast)
     }
 
+    @MainActor
     private func dismissToast(withID toastID: UUID) {
-        Dispatcher.dispatchOnMain(
-            .init(block: { [weak self] in
-                self?.toastStateStore.dismiss(withID: toastID)
-            }))
+        toastStateStore.dismiss(withID: toastID)
     }
 
-    private func loadActions() {
-        Task {
-            let isForcingLightMode = messageAppearanceOverrideStore.isForcingLightMode(forMessageWithId: input.id)
-            let themeOpts = ThemeOpts(colorScheme: colorScheme, isForcingLightMode: isForcingLightMode)
-            let actions = await availableActionsProvider.actions(
-                for: input.type.inboxItemType,
-                id: input.id,
-                themeOpts: themeOpts
-            )
+    @MainActor
+    private func loadActions() async {
+        let isForcingLightMode = messageAppearanceOverrideStore.isForcingLightMode(forMessageWithId: input.id)
+        let themeOpts = ThemeOpts(colorScheme: colorScheme, isForcingLightMode: isForcingLightMode)
+        let actions = await availableActionsProvider.actions(
+            for: input.type.inboxItemType,
+            id: input.id,
+            themeOpts: themeOpts
+        )
 
-            Dispatcher.dispatchOnMain(
-                .init(block: { [weak self] in
-                    self?.update(actions: actions)
-                }))
-        }
+        update(actions: actions)
     }
 
     private func update(actions: AvailableActions) {
