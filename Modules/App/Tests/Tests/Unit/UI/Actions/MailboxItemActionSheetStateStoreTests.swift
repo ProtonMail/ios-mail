@@ -22,516 +22,516 @@ import InboxTesting
 import proton_app_uniffi
 import XCTest
 
-class MailboxItemActionSheetStateStoreTests: BaseTestCase {
-
-    var invokedWithMessageID: ID?
-    var invokedWithConversationIDs: [ID]!
-    var spiedNavigation: [MailboxItemActionSheetNavigation]!
-    var stubbedMessageActions: MessageAvailableActions!
-    var stubbedConversationActions: ConversationAvailableActions!
-
-    var starActionPerformerActionsSpy: StarActionPerformerActionsSpy!
-    var readActionPerformerActionsSpy: ReadActionPerformerActionsSpy!
-    var deleteActionsSpy: DeleteActionsSpy!
-    var moveToActionsSpy: MoveToActionsSpy!
-    var generalActionsSpy: GeneralActionsPerfomerSpy!
-    var toastStateStore: ToastStateStore!
-    private var messageAppearanceOverrideStore: MessageAppearanceOverrideStore!
-    private var printActionPerformerSpy: PrintActionPerformerSpy!
-
-    override func setUp() {
-        super.setUp()
-
-        invokedWithMessageID = nil
-        invokedWithConversationIDs = []
-        spiedNavigation = []
-
-        starActionPerformerActionsSpy = .init()
-        readActionPerformerActionsSpy = .init()
-        deleteActionsSpy = .init()
-        moveToActionsSpy = .init()
-        generalActionsSpy = .init()
-        toastStateStore = .init(initialState: .initial)
-        messageAppearanceOverrideStore = .init()
-        printActionPerformerSpy = .init()
-    }
-
-    override func tearDown() {
-        super.tearDown()
-
-        invokedWithMessageID = nil
-        invokedWithConversationIDs = nil
-        spiedNavigation = nil
-        stubbedMessageActions = nil
-        stubbedConversationActions = nil
-
-        starActionPerformerActionsSpy = nil
-        readActionPerformerActionsSpy = nil
-        deleteActionsSpy = nil
-        moveToActionsSpy = nil
-        toastStateStore = nil
-        messageAppearanceOverrideStore = nil
-        printActionPerformerSpy = nil
-    }
-
-    func testState_WhenMailboxTypeIsMessage_ItReturnsAvailableMessageActions() {
-        stubbedMessageActions = .init(
-            replyActions: [.reply],
-            messageActions: [.delete],
-            moveActions: [
-                .moveToSystemFolder(.init(localId: .init(value: 1), name: .inbox)),
-                .moveTo,
-            ],
-            generalActions: [.print]
-        )
-
-        let messageID = ID(value: 7)
-        let title = "Message title"
-        let sut = sut(id: messageID.value, type: .message, title: title)
-
-        sut.handle(action: .onLoad)
-
-        XCTAssertEqual(invokedWithMessageID, messageID)
-        XCTAssertEqual(invokedWithConversationIDs, [])
-        XCTAssertEqual(
-            sut.state,
-            .init(
-                title: title,
-                showEditToolbarAction: false,
-                availableActions: .init(
-                    replyActions: [.reply],
-                    mailboxItemActions: [.delete],
-                    moveActions: [.moveToSystemFolder(.init(localId: .init(value: 1), name: .inbox)), .moveTo],
-                    generalActions: [.print]
-                )
-            ))
-    }
-
-    func testState_WhenMailboxTypeIsConversation_ItReturnsAvailableConversationActions() {
-        stubbedConversationActions = .init(
-            conversationActions: [.labelAs],
-            moveActions: [
-                .moveToSystemFolder(.init(localId: .init(value: 1), name: .inbox)),
-                .moveTo,
-            ],
-            generalActions: [.saveAsPdf]
-        )
-
-        let conversationID = ID(value: 8)
-        let title = "Conversation title"
-        let sut = sut(id: conversationID.value, type: .conversation, title: title)
-
-        sut.handle(action: .onLoad)
-
-        XCTAssertNil(invokedWithMessageID)
-        XCTAssertEqual(invokedWithConversationIDs, [conversationID])
-        XCTAssertEqual(
-            sut.state,
-            .init(
-                title: title,
-                showEditToolbarAction: true,
-                availableActions: .init(
-                    replyActions: nil,
-                    mailboxItemActions: [.labelAs],
-                    moveActions: [.moveToSystemFolder(.init(localId: .init(value: 1), name: .inbox)), .moveTo],
-                    generalActions: [.saveAsPdf]
-                )
-            ))
-    }
-
-    func testNavigation_WhenLabelAsMailboxActionIsHandled_ItEmitsCorrectNavigation() {
-        let sut = sut(id: 99, type: .message, title: .notUsed)
-
-        sut.handle(action: .mailboxItemActionTapped(.labelAs))
-
-        XCTAssertEqual(spiedNavigation, [.labelAs])
-    }
-
-    func testStarAction_WhenMessageIsStarred_ItStarsMessage() {
-        test(
-            action: .star,
-            itemType: .message,
-            expectedNavigation: .dismiss,
-            verifyInvoked: { starActionPerformerActionsSpy.invokedStarMessage }
-        )
-    }
-
-    func testUnstarAction_WhenMessageIsUnstarred_ItUnstarsMessage() {
-        test(
-            action: .unstar,
-            itemType: .message,
-            expectedNavigation: .dismiss,
-            verifyInvoked: { starActionPerformerActionsSpy.invokedUnstarMessage }
-        )
-    }
-
-    func testStarAction_WhenConversationIsStarred_ItStarsConversation() {
-        test(
-            action: .star,
-            itemType: .conversation,
-            expectedNavigation: .dismiss,
-            verifyInvoked: { starActionPerformerActionsSpy.invokedStarConversation }
-        )
-    }
-
-    func testUnstarAction_WhenConversationIsUnstarred_ItUnstarsConversation() {
-        test(
-            action: .unstar,
-            itemType: .conversation,
-            expectedNavigation: .dismiss,
-            verifyInvoked: { starActionPerformerActionsSpy.invokedUnstarConversation }
-        )
-    }
-
-    func testMarkAsReadAction_WhenMessageIsMarkedAsRead_ItMarksMessageAsRead() {
-        test(
-            action: .markRead,
-            itemType: .message,
-            expectedNavigation: .dismiss,
-            verifyInvoked: { readActionPerformerActionsSpy.markMessageAsReadInvoked }
-        )
-    }
-
-    func testMarkAsReadAction_WhenConversationIsMarkedAsRead_ItMarksConversationAsRead() {
-        test(
-            action: .markRead,
-            itemType: .conversation,
-            expectedNavigation: .dismiss,
-            verifyInvoked: { readActionPerformerActionsSpy.markConversationAsReadInvoked }
-        )
-    }
-
-    func testMarkAsUnreadAction_WhenMessageIsMarkedAsUnread_ItMarksMessageAsUnread() {
-        test(
-            action: .markUnread,
-            itemType: .message,
-            expectedNavigation: .dismissAndGoBack,
-            verifyInvoked: { readActionPerformerActionsSpy.markMessageAsUnreadInvoked }
-        )
-    }
-
-    func testMarkAsUnreadAction_WhenConversationIsMarkedAsUnread_ItMarksConversationAsUnread() {
-        test(
-            action: .markUnread,
-            itemType: .conversation,
-            expectedNavigation: .dismissAndGoBack,
-            verifyInvoked: { readActionPerformerActionsSpy.markConversationAsUnreadInvoked }
-        )
-    }
-
-    func testDeleteAction_WhenConversationIsDeleted_ItDeletesConversation() {
-        testDeletionFlow(
-            itemType: .conversation,
-            action: .mailboxItemActionTapped(.delete),
-            expectedNavigation: .dismissAndGoBack,
-            verifyInvoked: { deleteActionsSpy.deletedConversationsWithIDs }
-        )
-    }
-
-    func testDeleteAction_WhenMessageIsDeleted_ItDeletesMessage() {
-        testDeletionFlow(
-            itemType: .message,
-            action: .mailboxItemActionTapped(.delete),
-            expectedNavigation: .dismiss,
-            verifyInvoked: { deleteActionsSpy.deletedMessagesWithIDs }
-        )
-    }
-
-    func testMoveToDeleteAction_WhenMeesageIsDeleted_ItDeletesMessage() {
-        testDeletionFlow(
-            itemType: .message,
-            action: .moveTo(.permanentDelete),
-            expectedNavigation: .dismiss,
-            verifyInvoked: { deleteActionsSpy.deletedMessagesWithIDs }
-        )
-    }
-
-    func testAction_WhenMessageIsMovedOutOfSpam_ItMovesMessageOutOfSpam() throws {
-        try testMoveToAction(
-            itemType: .message,
-            action: .notSpam(.init(localId: .init(value: 1), name: .inbox)),
-            verifyInvoked: { moveToActionsSpy.invokedMoveToMessage },
-            undoAvailable: false
-        )
-    }
-
-    func testAction_WhenConversationIsMovedToInbox_ItMovesConversationToInbox() throws {
-        try testMoveToAction(
-            itemType: .conversation,
-            action: .moveToSystemFolder(.init(localId: .init(value: 1), name: .inbox)),
-            verifyInvoked: { moveToActionsSpy.invokedMoveToConversation },
-            undoAvailable: false
-        )
-    }
-
-    func testAction_WhenMessageIsMovedOutOfSpamUndoIsAvaiableAndTapped_ItTriggersUndoAndDismissesToast() throws {
-        try testMoveToAction(
-            itemType: .message,
-            action: .notSpam(.init(localId: .init(value: 1), name: .inbox)),
-            verifyInvoked: { moveToActionsSpy.invokedMoveToMessage },
-            undoAvailable: true
-        )
-    }
-
-    // MARK: - General actions
-
-    func testAction_WhenPrintIsInvoked_ItPrintsMessage() {
-        let id = ID(value: 55)
-        let sut = sut(id: id.value, type: .message, title: .notUsed)
-
-        sut.handle(action: .generalActionTapped(.print))
-
-        XCTAssertEqual(printActionPerformerSpy.printMessageCalls, [id])
-    }
-
-    func testAction_WhenPrintIsInvokedButFails_ItShowsError() {
-        let stubbedError = PrintError.uiPrintError(UIPrintError(.jobFailed))
-        printActionPerformerSpy.stubbedPrintMessageResult = .failure(stubbedError)
-
-        let id = ID(value: 55)
-        let sut = sut(id: id.value, type: .message, title: .notUsed)
-
-        sut.handle(action: .generalActionTapped(.print))
-
-        XCTAssertEqual(toastStateStore.state.toasts, [.error(message: "Could not print requested e-mail")])
-    }
-
-    func testAction_WhenReportPhishingActionInvoked_ItPresentsConfirmPhishingAlert() {
-        let id = ID(value: 55)
-        let sut = sut(id: id.value, type: .message, title: .notUsed)
-
-        sut.handle(action: .generalActionTapped(.reportPhishing))
-
-        XCTAssertEqual(sut.state.alert, .phishingConfirmation(action: { _ in }))
-    }
-
-    func testAction_WhenReportPhishingActionConfirmedAndSucceeds_ItMarksMessageAsPhishingAndDismisses() async throws {
-        generalActionsSpy.stubbedMarkMessagePhishingResult = .ok
-
-        let id = ID(value: 55)
-        let sut = sut(id: id.value, type: .message, title: .notUsed)
-
-        sut.handle(action: .generalActionTapped(.reportPhishing))
-
-        XCTAssertEqual(sut.state.alert, .phishingConfirmation(action: { _ in }))
-
-        let confirmAction = try sut.state.alertAction(for: CommonL10n.confirm)
-        await confirmAction.action()
-
-        XCTAssertEqual(sut.state.alert, nil)
-        XCTAssertEqual(generalActionsSpy.markMessagePhishingWithMessageIDCalls, [id])
-        XCTAssertEqual(spiedNavigation, [.dismiss])
-    }
-
-    func testAction_WhenReportPhishingActionConfirmedAndFails_ItMarksMessageAsPhishingAndDoesNotDismiss() async throws {
-        generalActionsSpy.stubbedMarkMessagePhishingResult = .error(.other(.network))
-
-        let id = ID(value: 55)
-        let sut = sut(id: id.value, type: .message, title: .notUsed)
-
-        sut.handle(action: .generalActionTapped(.reportPhishing))
-
-        XCTAssertEqual(sut.state.alert, .phishingConfirmation(action: { _ in }))
-
-        let confirmAction = try sut.state.alertAction(for: CommonL10n.confirm)
-        await confirmAction.action()
-
-        XCTAssertEqual(sut.state.alert, nil)
-        XCTAssertEqual(generalActionsSpy.markMessagePhishingWithMessageIDCalls, [id])
-        XCTAssertEqual(spiedNavigation, [])
-    }
-
-    func testAction_WhenReportPhishingActionCancelled_ItDoesNotMarkMessageAsPhishingAndDoesNotDismiss() async throws {
-        let id = ID(value: 55)
-        let sut = sut(id: id.value, type: .message, title: .notUsed)
-
-        sut.handle(action: .generalActionTapped(.reportPhishing))
-
-        XCTAssertEqual(sut.state.alert, .phishingConfirmation(action: { _ in }))
-
-        let cancelAction = try sut.state.alertAction(for: CommonL10n.cancel)
-        await cancelAction.action()
-
-        XCTAssertEqual(sut.state.alert, nil)
-        XCTAssertEqual(generalActionsSpy.markMessagePhishingWithMessageIDCalls, [])
-        XCTAssertEqual(spiedNavigation, [])
-    }
-
-    func testAction_WhenSaveAsPdfActionInvoked_ItShowsComingSoonBanner() {
-        verifyGeneralAction(action: .saveAsPdf)
-    }
-
-    func testAction_WhenViewHeadersActionInvoked_ItShowsComingSoonBanner() {
-        verifyGeneralAction(action: .viewHeaders)
-    }
-
-    func testAction_WhenViewHTMLActionInvoked_ItShowsComingSoonBanner() {
-        verifyGeneralAction(action: .viewHtml)
-    }
-
-    func testAction_WhenViewMessageInDarkModeActionInvoked_AllowsDarkModeAndDismisses() {
-        let id = ID(value: 55)
-        let sut = sut(id: id.value, type: .message, title: .notUsed)
-
-        sut.handle(action: .generalActionTapped(.viewMessageInDarkMode))
-
-        XCTAssertEqual(messageAppearanceOverrideStore.isForcingLightMode(forMessageWithId: id), false)
-        XCTAssertEqual(spiedNavigation, [.dismiss])
-    }
-
-    func testAction_WhenViewMessageInLightModeActionInvoked_DisablesDarkModeAndDismisses() {
-        let id = ID(value: 55)
-        let sut = sut(id: id.value, type: .message, title: .notUsed)
-
-        sut.handle(action: .generalActionTapped(.viewMessageInLightMode))
-
-        XCTAssertEqual(messageAppearanceOverrideStore.isForcingLightMode(forMessageWithId: id), true)
-        XCTAssertEqual(spiedNavigation, [.dismiss])
-    }
-
-    // MARK: - Private
-
-    private func test(
-        action: MailboxItemAction,
-        itemType: MailboxItemType,
-        expectedNavigation: MailboxItemActionSheetNavigation,
-        verifyInvoked: () -> [ID]
-    ) {
-        let id = ID(value: 55)
-        let sut = sut(id: id.value, type: itemType, title: .notUsed)
-
-        sut.handle(action: .mailboxItemActionTapped(action))
-
-        XCTAssertEqual(verifyInvoked(), [id])
-        XCTAssertEqual(spiedNavigation, [expectedNavigation])
-    }
-
-    private func testDeletionFlow(
-        itemType: MailboxItemType,
-        action: MailboxItemActionSheetAction,
-        expectedNavigation: MailboxItemActionSheetNavigation,
-        verifyInvoked: () -> [ID]
-    ) {
-        let id = ID(value: 55)
-        let sut = sut(id: id.value, type: itemType, title: .notUsed)
-
-        sut.handle(action: action)
-
-        XCTAssertEqual(sut.state.alert, .deleteConfirmation(itemsCount: 1, action: { _ in }))
-
-        sut.handle(action: .deleteConfirmed(.delete))
-
-        XCTAssertEqual(verifyInvoked(), [id])
-        XCTAssertEqual(spiedNavigation, [expectedNavigation])
-
-        XCTAssertEqual(toastStateStore.state.toasts, [.deleted()])
-    }
-
-    private func testMoveToAction(
-        itemType: MailboxItemType,
-        action: MoveToAction,
-        verifyInvoked: () -> [MoveToActionsSpy.CapturedArguments],
-        undoAvailable: Bool
-    ) throws {
-        let undoSpy = UndoSpy(noPointer: .init())
-        moveToActionsSpy.stubbedMoveMessagesToOkResult = undoAvailable ? undoSpy : .none
-
-        let id = ID(value: 1)
-        let sut = sut(id: id.value, type: itemType, title: .notUsed)
-
-        sut.handle(action: .moveTo(action))
-
-        let destination = try XCTUnwrap(action.destination)
-
-        XCTAssertEqual(verifyInvoked(), [.init(destinationID: destination.localId, itemsIDs: [id])])
-
-        let toastToVerify: Toast = try XCTUnwrap(toastStateStore.state.toasts.last)
-
-        XCTAssertEqual(
-            toastToVerify,
-            .moveTo(
-                id: UUID(),
-                destinationName: destination.name.humanReadable.string,
-                undoAction: undoAvailable ? {} : .none
-            )
-        )
-
-        guard undoAvailable else {
-            return
-        }
-
-        toastToVerify.simulateUndoAction()
-
-        XCTAssertEqual(undoSpy.undoCallsCount, 1)
-        XCTAssertEqual(toastStateStore.state.toasts.isEmpty, true)
-    }
-
-    private func verifyGeneralAction(action: GeneralActions) {
-        let sut = sut(id: 42, type: .message, title: .notUsed)
-
-        sut.handle(action: .generalActionTapped(action))
-
-        XCTAssertEqual(toastStateStore.state.toasts, [.comingSoon])
-    }
-
-    private func sut(id: UInt64, type: MailboxItemType, title: String) -> MailboxItemActionSheetStateStore {
-        MailboxItemActionSheetStateStore(
-            input: .init(id: .init(value: id), type: type.actionSheetItemType, title: title),
-            mailbox: .init(noPointer: .init()),
-            actionsProvider: .init(
-                message: { _, _, messageID in
-                    self.invokedWithMessageID = messageID
-                    return .ok(self.stubbedMessageActions)
-                },
-                conversation: { _, ids in
-                    self.invokedWithConversationIDs = ids
-                    return .ok(self.stubbedConversationActions)
-                }
-            ),
-            starActionPerformerActions: starActionPerformerActionsSpy.testingInstance,
-            readActionPerformerActions: readActionPerformerActionsSpy.testingInstance,
-            deleteActions: deleteActionsSpy.testingInstance,
-            moveToActions: moveToActionsSpy.testingInstance,
-            generalActions: generalActionsSpy.testingInstance,
-            mailUserSession: .dummy,
-            toastStateStore: toastStateStore,
-            messageAppearanceOverrideStore: messageAppearanceOverrideStore,
-            printActionPerformer: printActionPerformerSpy,
-            colorScheme: .light,
-            navigation: { navigation in self.spiedNavigation.append(navigation) }
-        )
-    }
-
-}
-
-private extension MoveToAction {
-
-    var destination: MoveToSystemFolderLocation? {
-        switch self {
-        case .moveToSystemFolder(let label), .notSpam(let label):
-            return label
-        case .moveTo, .permanentDelete:
-            return nil
-        }
-    }
-
-}
-
-private extension MailboxItemActionSheetState {
-
-    func alertAction(for string: LocalizedStringResource) throws -> AlertAction {
-        try XCTUnwrap(alert?.actions.findFirst(for: string, by: \.title))
-    }
-
-}
-
-private final class PrintActionPerformerSpy: PrintActionPerformer {
-    var stubbedPrintMessageResult: Result<Void, Error> = .success(())
-
-    private(set) var printMessageCalls: [ID] = []
-
-    func printMessage(messageID: ID) async throws {
-        printMessageCalls.append(messageID)
-        try stubbedPrintMessageResult.get()
-    }
-}
+//class MailboxItemActionSheetStateStoreTests: BaseTestCase {
+//
+//    var invokedWithMessageID: ID?
+//    var invokedWithConversationIDs: [ID]!
+//    var spiedNavigation: [MailboxItemActionSheetNavigation]!
+//    var stubbedMessageActions: MessageAvailableActions!
+//    var stubbedConversationActions: ConversationAvailableActions!
+//
+//    var starActionPerformerActionsSpy: StarActionPerformerActionsSpy!
+//    var readActionPerformerActionsSpy: ReadActionPerformerActionsSpy!
+//    var deleteActionsSpy: DeleteActionsSpy!
+//    var moveToActionsSpy: MoveToActionsSpy!
+//    var generalActionsSpy: GeneralActionsPerfomerSpy!
+//    var toastStateStore: ToastStateStore!
+//    private var messageAppearanceOverrideStore: MessageAppearanceOverrideStore!
+//    private var printActionPerformerSpy: PrintActionPerformerSpy!
+//
+//    override func setUp() {
+//        super.setUp()
+//
+//        invokedWithMessageID = nil
+//        invokedWithConversationIDs = []
+//        spiedNavigation = []
+//
+//        starActionPerformerActionsSpy = .init()
+//        readActionPerformerActionsSpy = .init()
+//        deleteActionsSpy = .init()
+//        moveToActionsSpy = .init()
+//        generalActionsSpy = .init()
+//        toastStateStore = .init(initialState: .initial)
+//        messageAppearanceOverrideStore = .init()
+//        printActionPerformerSpy = .init()
+//    }
+//
+//    override func tearDown() {
+//        super.tearDown()
+//
+//        invokedWithMessageID = nil
+//        invokedWithConversationIDs = nil
+//        spiedNavigation = nil
+//        stubbedMessageActions = nil
+//        stubbedConversationActions = nil
+//
+//        starActionPerformerActionsSpy = nil
+//        readActionPerformerActionsSpy = nil
+//        deleteActionsSpy = nil
+//        moveToActionsSpy = nil
+//        toastStateStore = nil
+//        messageAppearanceOverrideStore = nil
+//        printActionPerformerSpy = nil
+//    }
+//
+//    func testState_WhenMailboxTypeIsMessage_ItReturnsAvailableMessageActions() {
+//        stubbedMessageActions = .init(
+//            replyActions: [.reply],
+//            messageActions: [.delete],
+//            moveActions: [
+//                .moveToSystemFolder(.init(localId: .init(value: 1), name: .inbox)),
+//                .moveTo,
+//            ],
+//            generalActions: [.print]
+//        )
+//
+//        let messageID = ID(value: 7)
+//        let title = "Message title"
+//        let sut = sut(id: messageID.value, type: .message, title: title)
+//
+//        sut.handle(action: .onLoad)
+//
+//        XCTAssertEqual(invokedWithMessageID, messageID)
+//        XCTAssertEqual(invokedWithConversationIDs, [])
+//        XCTAssertEqual(
+//            sut.state,
+//            .init(
+//                title: title,
+//                showEditToolbarAction: false,
+//                availableActions: .init(
+//                    replyActions: [.reply],
+//                    mailboxItemActions: [.delete],
+//                    moveActions: [.moveToSystemFolder(.init(localId: .init(value: 1), name: .inbox)), .moveTo],
+//                    generalActions: [.print]
+//                )
+//            ))
+//    }
+//
+//    func testState_WhenMailboxTypeIsConversation_ItReturnsAvailableConversationActions() {
+//        stubbedConversationActions = .init(
+//            conversationActions: [.labelAs],
+//            moveActions: [
+//                .moveToSystemFolder(.init(localId: .init(value: 1), name: .inbox)),
+//                .moveTo,
+//            ],
+//            generalActions: [.saveAsPdf]
+//        )
+//
+//        let conversationID = ID(value: 8)
+//        let title = "Conversation title"
+//        let sut = sut(id: conversationID.value, type: .conversation, title: title)
+//
+//        sut.handle(action: .onLoad)
+//
+//        XCTAssertNil(invokedWithMessageID)
+//        XCTAssertEqual(invokedWithConversationIDs, [conversationID])
+//        XCTAssertEqual(
+//            sut.state,
+//            .init(
+//                title: title,
+//                showEditToolbarAction: true,
+//                availableActions: .init(
+//                    replyActions: nil,
+//                    mailboxItemActions: [.labelAs],
+//                    moveActions: [.moveToSystemFolder(.init(localId: .init(value: 1), name: .inbox)), .moveTo],
+//                    generalActions: [.saveAsPdf]
+//                )
+//            ))
+//    }
+//
+//    func testNavigation_WhenLabelAsMailboxActionIsHandled_ItEmitsCorrectNavigation() {
+//        let sut = sut(id: 99, type: .message, title: .notUsed)
+//
+//        sut.handle(action: .mailboxItemActionTapped(.labelAs))
+//
+//        XCTAssertEqual(spiedNavigation, [.labelAs])
+//    }
+//
+//    func testStarAction_WhenMessageIsStarred_ItStarsMessage() {
+//        test(
+//            action: .star,
+//            itemType: .message,
+//            expectedNavigation: .dismiss,
+//            verifyInvoked: { starActionPerformerActionsSpy.invokedStarMessage }
+//        )
+//    }
+//
+//    func testUnstarAction_WhenMessageIsUnstarred_ItUnstarsMessage() {
+//        test(
+//            action: .unstar,
+//            itemType: .message,
+//            expectedNavigation: .dismiss,
+//            verifyInvoked: { starActionPerformerActionsSpy.invokedUnstarMessage }
+//        )
+//    }
+//
+//    func testStarAction_WhenConversationIsStarred_ItStarsConversation() {
+//        test(
+//            action: .star,
+//            itemType: .conversation,
+//            expectedNavigation: .dismiss,
+//            verifyInvoked: { starActionPerformerActionsSpy.invokedStarConversation }
+//        )
+//    }
+//
+//    func testUnstarAction_WhenConversationIsUnstarred_ItUnstarsConversation() {
+//        test(
+//            action: .unstar,
+//            itemType: .conversation,
+//            expectedNavigation: .dismiss,
+//            verifyInvoked: { starActionPerformerActionsSpy.invokedUnstarConversation }
+//        )
+//    }
+//
+//    func testMarkAsReadAction_WhenMessageIsMarkedAsRead_ItMarksMessageAsRead() {
+//        test(
+//            action: .markRead,
+//            itemType: .message,
+//            expectedNavigation: .dismiss,
+//            verifyInvoked: { readActionPerformerActionsSpy.markMessageAsReadInvoked }
+//        )
+//    }
+//
+//    func testMarkAsReadAction_WhenConversationIsMarkedAsRead_ItMarksConversationAsRead() {
+//        test(
+//            action: .markRead,
+//            itemType: .conversation,
+//            expectedNavigation: .dismiss,
+//            verifyInvoked: { readActionPerformerActionsSpy.markConversationAsReadInvoked }
+//        )
+//    }
+//
+//    func testMarkAsUnreadAction_WhenMessageIsMarkedAsUnread_ItMarksMessageAsUnread() {
+//        test(
+//            action: .markUnread,
+//            itemType: .message,
+//            expectedNavigation: .dismissAndGoBack,
+//            verifyInvoked: { readActionPerformerActionsSpy.markMessageAsUnreadInvoked }
+//        )
+//    }
+//
+//    func testMarkAsUnreadAction_WhenConversationIsMarkedAsUnread_ItMarksConversationAsUnread() {
+//        test(
+//            action: .markUnread,
+//            itemType: .conversation,
+//            expectedNavigation: .dismissAndGoBack,
+//            verifyInvoked: { readActionPerformerActionsSpy.markConversationAsUnreadInvoked }
+//        )
+//    }
+//
+//    func testDeleteAction_WhenConversationIsDeleted_ItDeletesConversation() {
+//        testDeletionFlow(
+//            itemType: .conversation,
+//            action: .mailboxItemActionTapped(.delete),
+//            expectedNavigation: .dismissAndGoBack,
+//            verifyInvoked: { deleteActionsSpy.deletedConversationsWithIDs }
+//        )
+//    }
+//
+//    func testDeleteAction_WhenMessageIsDeleted_ItDeletesMessage() {
+//        testDeletionFlow(
+//            itemType: .message,
+//            action: .mailboxItemActionTapped(.delete),
+//            expectedNavigation: .dismiss,
+//            verifyInvoked: { deleteActionsSpy.deletedMessagesWithIDs }
+//        )
+//    }
+//
+//    func testMoveToDeleteAction_WhenMeesageIsDeleted_ItDeletesMessage() {
+//        testDeletionFlow(
+//            itemType: .message,
+//            action: .moveTo(.permanentDelete),
+//            expectedNavigation: .dismiss,
+//            verifyInvoked: { deleteActionsSpy.deletedMessagesWithIDs }
+//        )
+//    }
+//
+//    func testAction_WhenMessageIsMovedOutOfSpam_ItMovesMessageOutOfSpam() throws {
+//        try testMoveToAction(
+//            itemType: .message,
+//            action: .notSpam(.init(localId: .init(value: 1), name: .inbox)),
+//            verifyInvoked: { moveToActionsSpy.invokedMoveToMessage },
+//            undoAvailable: false
+//        )
+//    }
+//
+//    func testAction_WhenConversationIsMovedToInbox_ItMovesConversationToInbox() throws {
+//        try testMoveToAction(
+//            itemType: .conversation,
+//            action: .moveToSystemFolder(.init(localId: .init(value: 1), name: .inbox)),
+//            verifyInvoked: { moveToActionsSpy.invokedMoveToConversation },
+//            undoAvailable: false
+//        )
+//    }
+//
+//    func testAction_WhenMessageIsMovedOutOfSpamUndoIsAvaiableAndTapped_ItTriggersUndoAndDismissesToast() throws {
+//        try testMoveToAction(
+//            itemType: .message,
+//            action: .notSpam(.init(localId: .init(value: 1), name: .inbox)),
+//            verifyInvoked: { moveToActionsSpy.invokedMoveToMessage },
+//            undoAvailable: true
+//        )
+//    }
+//
+//    // MARK: - General actions
+//
+//    func testAction_WhenPrintIsInvoked_ItPrintsMessage() {
+//        let id = ID(value: 55)
+//        let sut = sut(id: id.value, type: .message, title: .notUsed)
+//
+//        sut.handle(action: .generalActionTapped(.print))
+//
+//        XCTAssertEqual(printActionPerformerSpy.printMessageCalls, [id])
+//    }
+//
+//    func testAction_WhenPrintIsInvokedButFails_ItShowsError() {
+//        let stubbedError = PrintError.uiPrintError(UIPrintError(.jobFailed))
+//        printActionPerformerSpy.stubbedPrintMessageResult = .failure(stubbedError)
+//
+//        let id = ID(value: 55)
+//        let sut = sut(id: id.value, type: .message, title: .notUsed)
+//
+//        sut.handle(action: .generalActionTapped(.print))
+//
+//        XCTAssertEqual(toastStateStore.state.toasts, [.error(message: "Could not print requested e-mail")])
+//    }
+//
+//    func testAction_WhenReportPhishingActionInvoked_ItPresentsConfirmPhishingAlert() {
+//        let id = ID(value: 55)
+//        let sut = sut(id: id.value, type: .message, title: .notUsed)
+//
+//        sut.handle(action: .generalActionTapped(.reportPhishing))
+//
+//        XCTAssertEqual(sut.state.alert, .phishingConfirmation(action: { _ in }))
+//    }
+//
+//    func testAction_WhenReportPhishingActionConfirmedAndSucceeds_ItMarksMessageAsPhishingAndDismisses() async throws {
+//        generalActionsSpy.stubbedMarkMessagePhishingResult = .ok
+//
+//        let id = ID(value: 55)
+//        let sut = sut(id: id.value, type: .message, title: .notUsed)
+//
+//        sut.handle(action: .generalActionTapped(.reportPhishing))
+//
+//        XCTAssertEqual(sut.state.alert, .phishingConfirmation(action: { _ in }))
+//
+//        let confirmAction = try sut.state.alertAction(for: CommonL10n.confirm)
+//        await confirmAction.action()
+//
+//        XCTAssertEqual(sut.state.alert, nil)
+//        XCTAssertEqual(generalActionsSpy.markMessagePhishingWithMessageIDCalls, [id])
+//        XCTAssertEqual(spiedNavigation, [.dismiss])
+//    }
+//
+//    func testAction_WhenReportPhishingActionConfirmedAndFails_ItMarksMessageAsPhishingAndDoesNotDismiss() async throws {
+//        generalActionsSpy.stubbedMarkMessagePhishingResult = .error(.other(.network))
+//
+//        let id = ID(value: 55)
+//        let sut = sut(id: id.value, type: .message, title: .notUsed)
+//
+//        sut.handle(action: .generalActionTapped(.reportPhishing))
+//
+//        XCTAssertEqual(sut.state.alert, .phishingConfirmation(action: { _ in }))
+//
+//        let confirmAction = try sut.state.alertAction(for: CommonL10n.confirm)
+//        await confirmAction.action()
+//
+//        XCTAssertEqual(sut.state.alert, nil)
+//        XCTAssertEqual(generalActionsSpy.markMessagePhishingWithMessageIDCalls, [id])
+//        XCTAssertEqual(spiedNavigation, [])
+//    }
+//
+//    func testAction_WhenReportPhishingActionCancelled_ItDoesNotMarkMessageAsPhishingAndDoesNotDismiss() async throws {
+//        let id = ID(value: 55)
+//        let sut = sut(id: id.value, type: .message, title: .notUsed)
+//
+//        sut.handle(action: .generalActionTapped(.reportPhishing))
+//
+//        XCTAssertEqual(sut.state.alert, .phishingConfirmation(action: { _ in }))
+//
+//        let cancelAction = try sut.state.alertAction(for: CommonL10n.cancel)
+//        await cancelAction.action()
+//
+//        XCTAssertEqual(sut.state.alert, nil)
+//        XCTAssertEqual(generalActionsSpy.markMessagePhishingWithMessageIDCalls, [])
+//        XCTAssertEqual(spiedNavigation, [])
+//    }
+//
+//    func testAction_WhenSaveAsPdfActionInvoked_ItShowsComingSoonBanner() {
+//        verifyGeneralAction(action: .saveAsPdf)
+//    }
+//
+//    func testAction_WhenViewHeadersActionInvoked_ItShowsComingSoonBanner() {
+//        verifyGeneralAction(action: .viewHeaders)
+//    }
+//
+//    func testAction_WhenViewHTMLActionInvoked_ItShowsComingSoonBanner() {
+//        verifyGeneralAction(action: .viewHtml)
+//    }
+//
+//    func testAction_WhenViewMessageInDarkModeActionInvoked_AllowsDarkModeAndDismisses() {
+//        let id = ID(value: 55)
+//        let sut = sut(id: id.value, type: .message, title: .notUsed)
+//
+//        sut.handle(action: .generalActionTapped(.viewMessageInDarkMode))
+//
+//        XCTAssertEqual(messageAppearanceOverrideStore.isForcingLightMode(forMessageWithId: id), false)
+//        XCTAssertEqual(spiedNavigation, [.dismiss])
+//    }
+//
+//    func testAction_WhenViewMessageInLightModeActionInvoked_DisablesDarkModeAndDismisses() {
+//        let id = ID(value: 55)
+//        let sut = sut(id: id.value, type: .message, title: .notUsed)
+//
+//        sut.handle(action: .generalActionTapped(.viewMessageInLightMode))
+//
+//        XCTAssertEqual(messageAppearanceOverrideStore.isForcingLightMode(forMessageWithId: id), true)
+//        XCTAssertEqual(spiedNavigation, [.dismiss])
+//    }
+//
+//    // MARK: - Private
+//
+//    private func test(
+//        action: MailboxItemAction,
+//        itemType: MailboxItemType,
+//        expectedNavigation: MailboxItemActionSheetNavigation,
+//        verifyInvoked: () -> [ID]
+//    ) {
+//        let id = ID(value: 55)
+//        let sut = sut(id: id.value, type: itemType, title: .notUsed)
+//
+//        sut.handle(action: .mailboxItemActionTapped(action))
+//
+//        XCTAssertEqual(verifyInvoked(), [id])
+//        XCTAssertEqual(spiedNavigation, [expectedNavigation])
+//    }
+//
+//    private func testDeletionFlow(
+//        itemType: MailboxItemType,
+//        action: MailboxItemActionSheetAction,
+//        expectedNavigation: MailboxItemActionSheetNavigation,
+//        verifyInvoked: () -> [ID]
+//    ) {
+//        let id = ID(value: 55)
+//        let sut = sut(id: id.value, type: itemType, title: .notUsed)
+//
+//        sut.handle(action: action)
+//
+//        XCTAssertEqual(sut.state.alert, .deleteConfirmation(itemsCount: 1, action: { _ in }))
+//
+//        sut.handle(action: .deleteConfirmed(.delete))
+//
+//        XCTAssertEqual(verifyInvoked(), [id])
+//        XCTAssertEqual(spiedNavigation, [expectedNavigation])
+//
+//        XCTAssertEqual(toastStateStore.state.toasts, [.deleted()])
+//    }
+//
+//    private func testMoveToAction(
+//        itemType: MailboxItemType,
+//        action: MoveToAction,
+//        verifyInvoked: () -> [MoveToActionsSpy.CapturedArguments],
+//        undoAvailable: Bool
+//    ) throws {
+//        let undoSpy = UndoSpy(noPointer: .init())
+//        moveToActionsSpy.stubbedMoveMessagesToOkResult = undoAvailable ? undoSpy : .none
+//
+//        let id = ID(value: 1)
+//        let sut = sut(id: id.value, type: itemType, title: .notUsed)
+//
+//        sut.handle(action: .moveTo(action))
+//
+//        let destination = try XCTUnwrap(action.destination)
+//
+//        XCTAssertEqual(verifyInvoked(), [.init(destinationID: destination.localId, itemsIDs: [id])])
+//
+//        let toastToVerify: Toast = try XCTUnwrap(toastStateStore.state.toasts.last)
+//
+//        XCTAssertEqual(
+//            toastToVerify,
+//            .moveTo(
+//                id: UUID(),
+//                destinationName: destination.name.humanReadable.string,
+//                undoAction: undoAvailable ? {} : .none
+//            )
+//        )
+//
+//        guard undoAvailable else {
+//            return
+//        }
+//
+//        toastToVerify.simulateUndoAction()
+//
+//        XCTAssertEqual(undoSpy.undoCallsCount, 1)
+//        XCTAssertEqual(toastStateStore.state.toasts.isEmpty, true)
+//    }
+//
+//    private func verifyGeneralAction(action: GeneralActions) {
+//        let sut = sut(id: 42, type: .message, title: .notUsed)
+//
+//        sut.handle(action: .generalActionTapped(action))
+//
+//        XCTAssertEqual(toastStateStore.state.toasts, [.comingSoon])
+//    }
+//
+//    private func sut(id: UInt64, type: MailboxItemType, title: String) -> MailboxItemActionSheetStateStore {
+//        MailboxItemActionSheetStateStore(
+//            input: .init(id: .init(value: id), type: type.actionSheetItemType, title: title),
+//            mailbox: .init(noPointer: .init()),
+//            actionsProvider: .init(
+//                message: { _, _, messageID in
+//                    self.invokedWithMessageID = messageID
+//                    return .ok(self.stubbedMessageActions)
+//                },
+//                conversation: { _, ids in
+//                    self.invokedWithConversationIDs = ids
+//                    return .ok(self.stubbedConversationActions)
+//                }
+//            ),
+//            starActionPerformerActions: starActionPerformerActionsSpy.testingInstance,
+//            readActionPerformerActions: readActionPerformerActionsSpy.testingInstance,
+//            deleteActions: deleteActionsSpy.testingInstance,
+//            moveToActions: moveToActionsSpy.testingInstance,
+//            generalActions: generalActionsSpy.testingInstance,
+//            mailUserSession: .dummy,
+//            toastStateStore: toastStateStore,
+//            messageAppearanceOverrideStore: messageAppearanceOverrideStore,
+//            printActionPerformer: printActionPerformerSpy,
+//            colorScheme: .light,
+//            navigation: { navigation in self.spiedNavigation.append(navigation) }
+//        )
+//    }
+//
+//}
+//
+//private extension MoveToAction {
+//
+//    var destination: MoveToSystemFolderLocation? {
+//        switch self {
+//        case .moveToSystemFolder(let label), .notSpam(let label):
+//            return label
+//        case .moveTo, .permanentDelete:
+//            return nil
+//        }
+//    }
+//
+//}
+//
+//private extension MailboxItemActionSheetState {
+//
+//    func alertAction(for string: LocalizedStringResource) throws -> AlertAction {
+//        try XCTUnwrap(alert?.actions.findFirst(for: string, by: \.title))
+//    }
+//
+//}
+//
+//private final class PrintActionPerformerSpy: PrintActionPerformer {
+//    var stubbedPrintMessageResult: Result<Void, Error> = .success(())
+//
+//    private(set) var printMessageCalls: [ID] = []
+//
+//    func printMessage(messageID: ID) async throws {
+//        printMessageCalls.append(messageID)
+//        try stubbedPrintMessageResult.get()
+//    }
+//}

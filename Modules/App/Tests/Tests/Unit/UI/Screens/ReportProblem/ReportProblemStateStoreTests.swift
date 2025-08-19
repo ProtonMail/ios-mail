@@ -103,7 +103,8 @@ final class ReportProblemStateStoreTests {
                     stepsToReproduce: "Hello steps to reproduce!",
                     expectedResult: "Hello expected results!",
                     actualResult: "Hello actual results!",
-                    logs: false
+                    logs: false,
+                    additionalFiles: []
                 )
             ])
         #expect(toastStateStore.state.toasts == [.information(message: L10n.ReportProblem.successToast.string)])

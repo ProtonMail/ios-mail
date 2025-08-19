@@ -24,6 +24,16 @@ public extension AllAvailableListActionsForMessagesResult {
         }
     }
 }
+public extension AllAvailableMessageActionsForMessageResult {
+    func get() throws(ActionError) -> AllMessageActions {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension AssignedSwipeActionsResult {
     func get() throws(ActionError) -> AssignedSwipeActions {
         switch self {
@@ -36,16 +46,6 @@ public extension AssignedSwipeActionsResult {
 }
 public extension AvailableActionsForConversationsResult {
     func get() throws(ActionError) -> ConversationAvailableActions {
-        switch self {
-        case .ok(let value):
-            value
-        case .error(let error):
-            throw error
-        }
-    }
-}
-public extension AvailableActionsForMessageResult {
-    func get() throws(ActionError) -> MessageAvailableActions {
         switch self {
         case .ok(let value):
             value

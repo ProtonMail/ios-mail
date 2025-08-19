@@ -934,6 +934,16 @@ public extension NewMailboxResult {
         }
     }
 }
+public extension ResolveSystemLabelIdResult {
+    func get() throws(ProtonError) -> Id? {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension RsvpEventGetResult {
     func get() throws(ProtonError) -> RsvpEvent {
         switch self {

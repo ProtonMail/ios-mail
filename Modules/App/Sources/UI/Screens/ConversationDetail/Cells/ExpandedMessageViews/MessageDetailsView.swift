@@ -227,6 +227,7 @@ struct MessageDetailsView: View {
                 action: { onEvent(.onMoreActions) },
                 image: DS.Icon.icThreeDotsHorizontal.image
             )
+            .disabled(true) // FIXME: - Temporary disable message actions sheet
             .accessibilityIdentifier(MessageDetailsViewIdentifiers.threeDotsButton)
         }
         .foregroundColor(DS.Color.Icon.weak)

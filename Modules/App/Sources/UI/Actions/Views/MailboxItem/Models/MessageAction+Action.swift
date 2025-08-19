@@ -19,23 +19,6 @@ import proton_app_uniffi
 
 extension MessageAction {
     var action: MailboxItemAction {
-        switch self {
-        case .star:
-            return .star
-        case .unstar:
-            return .unstar
-        case .pin:
-            return .pin
-        case .unpin:
-            return .unpin
-        case .labelAs:
-            return .labelAs
-        case .markRead:
-            return .markRead
-        case .markUnread:
-            return .markUnread
-        case .delete:
-            return .delete
-        }
+        .star
     }
 }

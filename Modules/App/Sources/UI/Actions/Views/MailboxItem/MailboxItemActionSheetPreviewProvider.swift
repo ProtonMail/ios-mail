@@ -20,39 +20,39 @@ import proton_app_uniffi
 enum MailboxItemActionSheetPreviewProvider {
     static func actionsProvider() -> ActionsProvider {
         ActionsProvider(
-            message: { _, themeOpts, _ in
-                var generalActions: [GeneralActions] = [
-                    .saveAsPdf,
-                    .print,
-                    .viewHeaders,
-                    .viewHtml,
-                    .reportPhishing,
-                ]
-
-                // this logic attempts to mimic what the SDK does for previewing and testing purposes
-                // if we could use `actionsProvider: .productionInstance` in those cases, we wouldn't need this
-                if themeOpts.currentTheme == .darkMode {
-                    if themeOpts.themeOverride == .lightMode {
-                        generalActions.append(.viewMessageInDarkMode)
-                    } else {
-                        generalActions.append(.viewMessageInLightMode)
-                    }
-                }
-
-                return .ok(
-                    .init(
-                        replyActions: [.reply, .forward, .replyAll],
-                        messageActions: [.markUnread, .star, .pin, .labelAs],
-                        moveActions: [
-                            .moveToSystemFolder(.init(localId: .init(value: 1), name: .inbox)),
-                            .moveToSystemFolder(.init(localId: .init(value: 2), name: .archive)),
-                            .moveToSystemFolder(.init(localId: .init(value: 3), name: .spam)),
-                            .moveToSystemFolder(.init(localId: .init(value: 4), name: .trash)),
-                            .moveTo,
-                        ],
-                        generalActions: generalActions
-                    ))
-            },
+//            message: { _, themeOpts, _ in
+//                var generalActions: [GeneralActions] = [
+//                    .saveAsPdf,
+//                    .print,
+//                    .viewHeaders,
+//                    .viewHtml,
+//                    .reportPhishing,
+//                ]
+//
+//                // this logic attempts to mimic what the SDK does for previewing and testing purposes
+//                // if we could use `actionsProvider: .productionInstance` in those cases, we wouldn't need this
+//                if themeOpts.currentTheme == .darkMode {
+//                    if themeOpts.themeOverride == .lightMode {
+//                        generalActions.append(.viewMessageInDarkMode)
+//                    } else {
+//                        generalActions.append(.viewMessageInLightMode)
+//                    }
+//                }
+//
+//                return .ok(
+//                    .init(
+//                        replyActions: [.reply, .forward, .replyAll],
+//                        messageActions: [.markUnread, .star, .pin, .labelAs],
+//                        moveActions: [
+//                            .moveToSystemFolder(.init(localId: .init(value: 1), name: .inbox)),
+//                            .moveToSystemFolder(.init(localId: .init(value: 2), name: .archive)),
+//                            .moveToSystemFolder(.init(localId: .init(value: 3), name: .spam)),
+//                            .moveToSystemFolder(.init(localId: .init(value: 4), name: .trash)),
+//                            .moveTo,
+//                        ],
+//                        generalActions: generalActions
+//                    ))
+//            },
             conversation: { _, _ in
                 .ok(
                     .init(
