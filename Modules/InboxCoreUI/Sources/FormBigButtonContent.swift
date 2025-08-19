@@ -46,7 +46,6 @@ struct FormBigButtonContent: View {
                         .foregroundStyle(DS.Color.Text.hint)
                 case .upsell:
                     DS.Icon.icBrandProtonMailUpsell.image
-
                 }
             }
         }

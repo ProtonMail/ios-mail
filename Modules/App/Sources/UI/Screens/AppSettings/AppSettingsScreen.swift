@@ -117,9 +117,7 @@ struct AppSettingsScreen: View {
         }
         .navigationTitle(L10n.Settings.App.title.string)
         .navigationBarTitleDisplayMode(.inline)
-        .sheet(item: $store.state.presentedUpsell) { upsellScreenModel in
-            UpsellScreen(model: upsellScreenModel)
-        }
+        .sheet(item: $store.state.presentedUpsell, content: UpsellScreen.init)
         .onAppear { store.handle(action: .onAppear) }
         .onChange(
             of: scenePhase,

@@ -43,7 +43,7 @@ final class MobileSignatureStateStore: StateStore {
             switch action {
             case .onLoad:
                 let mobileSignature = try await customSettings.mobileSignature().get()
-                state = .init(mobileSignature: mobileSignature)
+                state = state.copy(\.mobileSignature, to: mobileSignature)
             case .setIsEnabled(let isEnabled):
                 state = state.copy(\.mobileSignature.status.isEnabled, to: isEnabled)
                 try await customSettings.setMobileSignatureEnabled(enabled: isEnabled).get()
