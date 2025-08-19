@@ -1974,8 +1974,11 @@
         }
       }
     },
+    "Choose subscription" : {
+      "comment" : "Displayed above the plans in the upsell modal"
+    },
     "Choose your plan" : {
-      "comment" : "Displayed above the plans",
+      "comment" : "Displayed above the plans in the upsell modal",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -2146,6 +2149,9 @@
           }
         }
       }
+    },
+    "Continue with Free Plan" : {
+      "comment" : "The option to exit the upsell modal"
     },
     "Create all you need to stay organized. Get this and more with %@." : {
       "comment" : "Subtitle of the upsell page",
