@@ -20,6 +20,7 @@ import InboxCoreUI
 import proton_app_uniffi
 import SwiftUI
 
+@MainActor
 final class ContactGroupDetailsStateStore: StateStore {
     enum Action {
         case contactItemTapped(ContactEmailItem)
@@ -43,23 +44,20 @@ final class ContactGroupDetailsStateStore: StateStore {
         self.router = router
     }
 
-    @MainActor
-    func handle(action: Action) {
+    func handle(action: Action) async {
         switch action {
         case .contactItemTapped(let item):
             router.go(to: .contactDetails(.init(item)))
         case .sendGroupMessageTapped:
-            openComposer(with: state)
+            await openComposer(with: state)
         }
     }
 
-    private func openComposer(with group: ContactGroupItem) {
-        Task {
-            do {
-                try await draftPresenter.openDraft(with: group)
-            } catch {
-                toastStateStore.present(toast: .error(message: error.localizedDescription))
-            }
+    private func openComposer(with group: ContactGroupItem) async {
+        do {
+            try await draftPresenter.openDraft(with: group)
+        } catch {
+            toastStateStore.present(toast: .error(message: error.localizedDescription))
         }
     }
 }
