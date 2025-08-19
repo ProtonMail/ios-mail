@@ -61,7 +61,7 @@ struct ConversationDetailScreen: View {
                 mailUserSession: mailUserSession,
                 state: $model.actionSheets,
                 replyActions: handleReplyAction,
-                goBackNavigation: { navigationPath.removeLast() }
+                goBackNavigation: goBackToMailbox
             )
             .alert(model: $model.deleteConfirmationAlert)
             .fullScreenCover(item: $model.attachmentIDToOpen) { id in
@@ -124,7 +124,7 @@ struct ConversationDetailScreen: View {
                         model.handleConversation(
                             action: action,
                             toastStateStore: toastStateStore,
-                            goBack: { navigationPath.removeLast() }
+                            goBack: goBackToMailbox
                         )
                     }) {
                         action.displayData.icon
