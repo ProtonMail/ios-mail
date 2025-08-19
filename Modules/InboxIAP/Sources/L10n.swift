@@ -19,84 +19,84 @@
 import Foundation
 
 enum L10n {
-    static let autoRenewalNotice = LocalizedStringResource("Auto-renews at the same price and terms unless canceled", comment: "Notice at the bottom")
-    static let bestValue = LocalizedStringResource("Best value", comment: "Badge next to the plan name in the upsell screen")
-    static let chooseYourPlan = LocalizedStringResource("Choose your plan", comment: "Displayed above the plans")
-    static let perMonth = LocalizedStringResource("/month", comment: "Displayed next to the monthly price")
-    static let showLess = LocalizedStringResource("Show less", comment: "Button to collapse a list")
-    static let showMore = LocalizedStringResource("Show more", comment: "Button to expand a list")
+    static let autoRenewalNotice = LocalizedStringResource("Auto-renews at the same price and terms unless canceled", bundle: .module, comment: "Notice at the bottom")
+    static let bestValue = LocalizedStringResource("Best value", bundle: .module, comment: "Badge next to the plan name in the upsell screen")
+    static let chooseYourPlan = LocalizedStringResource("Choose your plan", bundle: .module, comment: "Displayed above the plans")
+    static let perMonth = LocalizedStringResource("/month", bundle: .module, comment: "Displayed next to the monthly price")
+    static let showLess = LocalizedStringResource("Show less", bundle: .module, comment: "Button to collapse a list")
+    static let showMore = LocalizedStringResource("Show more", bundle: .module, comment: "Button to expand a list")
 
     static func screenTitle(planName: String, entryPoint: UpsellScreenEntryPoint) -> LocalizedStringResource {
         switch entryPoint {
         case .autoDelete:
-            .init("Automated trash removal", comment: "Title of the upsell page ")
+            .init("Automated trash removal", bundle: .module, comment: "Title of the upsell page ")
         case .contactGroups:
-            .init("Group your contacts", comment: "Title of the upsell page")
+            .init("Group your contacts", bundle: .module, comment: "Title of the upsell page")
         case .folders, .labels:
-            .init("Need more labels or folders?", comment: "Title of the upsell page")
+            .init("Need more labels or folders?", bundle: .module, comment: "Title of the upsell page")
         case .header, .sidebar:
-            .init("Upgrade to \(planName)", comment: "Title of the upsell page")
+            .init("Upgrade to \(planName)", bundle: .module, comment: "Title of the upsell page")
         case .mobileSignature:
-            .init("Personalize your signature", comment: "Title of the upsell page")
+            .init("Personalize your signature", bundle: .module, comment: "Title of the upsell page")
         case .scheduleSend:
             .init("Schedule now, send later", bundle: .module, comment: "Title of the upsell page")
         case .snooze:
-            .init("Bad time for this email?", comment: "Title of the upsell page")
+            .init("Bad time for this email?", bundle: .module, comment: "Title of the upsell page")
         }
     }
 
     static func screenSubtitle(planName: String, entryPoint: UpsellScreenEntryPoint) -> LocalizedStringResource {
         switch entryPoint {
         case .autoDelete:
-            .init("Deletes spam and trash after 30 days. Get this and more with \(planName).", comment: "Subtitle of the upsell page")
+            .init("Deletes spam and trash after 30 days. Get this and more with \(planName).", bundle: .module, comment: "Subtitle of the upsell page")
         case .contactGroups:
-            .init("Send group emails with ease. Enjoy this and more with \(planName).", comment: "Subtitle of the upsell page")
+            .init("Send group emails with ease. Enjoy this and more with \(planName).", bundle: .module, comment: "Subtitle of the upsell page")
         case .folders, .labels:
-            .init("Create all you need to stay organized. Get this and more with \(planName).", comment: "Subtitle of the upsell page")
+            .init("Create all you need to stay organized. Get this and more with \(planName).", bundle: .module, comment: "Subtitle of the upsell page")
         case .header, .sidebar:
-            .init("To unlock more storage and premium features.", comment: "Subtitle of the upsell page")
+            .init("To unlock more storage and premium features.", bundle: .module, comment: "Subtitle of the upsell page")
         case .mobileSignature:
-            .init("Make your mobile signature your own. Enjoy this and more with \(planName).", comment: "Subtitle of the upsell page")
+            .init("Make your mobile signature your own. Enjoy this and more with \(planName).", bundle: .module, comment: "Subtitle of the upsell page")
         case .scheduleSend:
-            .init("Customize when an email will be sent. Enjoy this and more with \(planName).", comment: "Subtitle of the upsell page")
+            .init("Customize when an email will be sent. Enjoy this and more with \(planName).", bundle: .module, comment: "Subtitle of the upsell page")
         case .snooze:
-            .init("Snooze it — and have it delivered later.  Enjoy this and more with \(planName).", comment: "Subtitle of the upsell page")
+            .init("Snooze it — and have it delivered later.  Enjoy this and more with \(planName).", bundle: .module, comment: "Subtitle of the upsell page")
         }
     }
 
     static func payAnnuallyAndSave(amount: String) -> LocalizedStringResource {
-        .init("Pay annually and save \(amount)", comment: "Shown when selecting the yearly billing cycle")
+        .init("Pay annually and save \(amount)", bundle: .module, comment: "Shown when selecting the yearly billing cycle")
     }
 
     static func billingNotice(billingPrice: String, every billingCycleInMonths: String) -> LocalizedStringResource {
-        .init("Billed at \(billingPrice) every \(billingCycleInMonths)", comment: "Notice at the bottom of the upsell screen")
+        .init("Billed at \(billingPrice) every \(billingCycleInMonths)", bundle: .module, comment: "Notice at the bottom of the upsell screen")
     }
 
     enum BillingCycle {
-        static let monthly = LocalizedStringResource("Monthly", comment: "Refers to billing cycle")
-        static let yearlyNoDiscount = LocalizedStringResource("Yearly", comment: "Refers to billing cycle")
+        static let monthly = LocalizedStringResource("Monthly", bundle: .module, comment: "Refers to billing cycle")
+        static let yearlyNoDiscount = LocalizedStringResource("Yearly", bundle: .module, comment: "Refers to billing cycle")
 
         static func yearly(discount: Int) -> LocalizedStringResource {
-            .init("Yearly (\(discount)% OFF)", comment: "Refers to billing cycle, with discount compared to the monthly cycle")
+            .init("Yearly (\(discount)% OFF)", bundle: .module, comment: "Refers to billing cycle, with discount compared to the monthly cycle")
         }
     }
 
     enum Error {
-        static let planNotFound = LocalizedStringResource("The requested plan could not be found.", comment: "Error message when fetching available plans fails")
+        static let planNotFound = LocalizedStringResource("The requested plan could not be found.", bundle: .module, comment: "Error message when fetching available plans fails")
     }
 
     enum PlanName {
-        static let free = LocalizedStringResource("Free", comment: "Name of the free plan")
-        static let plus = LocalizedStringResource("Plus", comment: "As in Mail Plus - short name for the plan")
+        static let free = LocalizedStringResource("Free", bundle: .module, comment: "Name of the free plan")
+        static let plus = LocalizedStringResource("Plus", bundle: .module, comment: "As in Mail Plus - short name for the plan")
     }
 
     enum Perk {
         static let storage = LocalizedStringResource("Storage", bundle: .module, comment: "Description of a feature of a paid subscription")
-        static let emailAddresses = LocalizedStringResource("Email addresses", comment: "Description of a feature of a paid subscription")
-        static let customEmailDomain = LocalizedStringResource("Custom email domain", comment: "Description of a feature of a paid subscription")
-        static let accessToDesktopApp = LocalizedStringResource("Access to desktop app", comment: "Description of a feature of a paid subscription")
-        static let unlimitedFoldersAndLabels = LocalizedStringResource("Unlimited folders and labels", comment: "Description of a feature of a paid subscription")
-        static let priorityCustomerSupport = LocalizedStringResource("Priority customer support", comment: "Description of a feature of a paid subscription")
+        static let emailAddresses = LocalizedStringResource("Email addresses", bundle: .module, comment: "Description of a feature of a paid subscription")
+        static let customEmailDomain = LocalizedStringResource("Custom email domain", bundle: .module, comment: "Description of a feature of a paid subscription")
+        static let accessToDesktopApp = LocalizedStringResource("Access to desktop app", bundle: .module, comment: "Description of a feature of a paid subscription")
+        static let unlimitedFoldersAndLabels = LocalizedStringResource("Unlimited folders and labels", bundle: .module, comment: "Description of a feature of a paid subscription")
+        static let priorityCustomerSupport = LocalizedStringResource("Priority customer support", bundle: .module, comment: "Description of a feature of a paid subscription")
 
         static func amountOfStorage(gigabytes: Double) -> LocalizedStringResource {
             let measurement = Measurement<UnitInformationStorage>(value: gigabytes, unit: .gigabytes)
@@ -109,6 +109,12 @@ enum L10n {
     }
 
     static func getPlan(named planName: String) -> LocalizedStringResource {
-        .init("Get \(planName)", comment: "CTA button to purchase a plan (e.g. Get Mail Plus)")
+        .init("Get \(planName)", bundle: .module, comment: "CTA button to purchase a plan (e.g. Get Mail Plus)")
+    }
+}
+
+private extension LocalizedStringResource.BundleDescription {
+    static var module: Self {
+        .atURL(Bundle.module.bundleURL)
     }
 }
