@@ -22,7 +22,6 @@ import XCTest
 
 @MainActor
 final class ContactsScreenSnapshotTests: XCTestCase {
-
     func testContactsScreenWithContactsLayoutsCorrectOnIphoneX() async throws {
         let items = await allContacts()
 
@@ -61,5 +60,4 @@ final class ContactsScreenSnapshotTests: XCTestCase {
         let provider = GroupedContactsProvider.previewInstance()
         return try! await provider.allContacts(.testInstance()).get()
     }
-
 }

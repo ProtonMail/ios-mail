@@ -38,6 +38,7 @@ extension DS {
         case lock = "lock"
         case magnifier = "magnifyingglass"
         case minusCircleFill = "minus.circle.fill"
+        case plus = "plus"
         case plusCircleFill = "plus.circle.fill"
         case rectanglePortraitAndArrowRight = "rectangle.portrait.and.arrow.right"
         case reply = "arrowshape.turn.up.backward"

@@ -23,11 +23,24 @@ public enum ToolbarItemFactory {
         leading(Image(symbol: .chevronLeft), action: action)
     }
 
+    public static func trailing(_ image: Image, action: @escaping () -> Void) -> some ToolbarContent {
+        button(.topBarTrailing, image, DS.Color.Icon.accent, action: action)
+    }
+
     public static func leading(_ image: Image, action: @escaping () -> Void) -> some ToolbarContent {
-        ToolbarItem(placement: .topBarLeading) {
+        button(.topBarLeading, image, DS.Color.Icon.weak, action: action)
+    }
+
+    private static func button(
+        _ placement: ToolbarItemPlacement,
+        _ image: Image,
+        _ iconColor: Color,
+        action: @escaping () -> Void
+    ) -> some ToolbarContent {
+        ToolbarItem(placement: placement) {
             Button(action: action) {
                 image
-                    .foregroundStyle(DS.Color.Icon.weak)
+                    .foregroundStyle(iconColor)
             }
         }
     }

@@ -72,6 +72,9 @@ public struct ContactsScreen: View {
                 ToolbarItemFactory.leading(Image(symbol: .xmark)) {
                     dismiss()
                 }
+                ToolbarItemFactory.trailing(Image(symbol: .plus)) {
+                    // FIXME: Implement create contact action
+                }
             }
         }
         .alert(model: deletionAlert)
