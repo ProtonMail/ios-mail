@@ -21,6 +21,7 @@ import SwiftUI
 
 struct MailboxActionSheetsState: Copying {
     var message: MessageActionsSheetInput?
+    var conversation: ConversationActionsSheetInput?
     var labelAs: ActionSheetInput?
     var moveTo: ActionSheetInput?
     var snooze: ID?
@@ -32,7 +33,8 @@ extension View {
         mailbox: @escaping () -> Mailbox,
         mailUserSession: MailUserSession,
         state: Binding<MailboxActionSheetsState>,
-        replyActions: @escaping ReplyActionsHandler,
+        messageActionSelected: @escaping (MessageAction, ID) -> Void,
+        conversationActionSelected: @escaping (ConversationAction) -> Void,
         goBackNavigation: (() -> Void)? = nil
     ) -> some View {
         modifier(
@@ -40,7 +42,8 @@ extension View {
                 mailbox: mailbox,
                 mailUserSession: mailUserSession,
                 state: state,
-                replyActions: replyActions,
+                messageActionSelected: messageActionSelected,
+                conversationActionSelected: conversationActionSelected,
                 goBackNavigation: goBackNavigation
             ))
     }
@@ -50,20 +53,23 @@ private struct MailboxActionSheets: ViewModifier {
     @Binding var state: MailboxActionSheetsState
     private let mailbox: () -> Mailbox
     private let mailUserSession: MailUserSession
-    private let replyActions: ReplyActionsHandler
     private let goBackNavigation: (() -> Void)?
+    private let messageActionSelected: (MessageAction, ID) -> Void
+    private let conversationActionSelected: (ConversationAction) -> Void
 
     init(
         mailbox: @escaping () -> Mailbox,
         mailUserSession: MailUserSession,
         state: Binding<MailboxActionSheetsState>,
-        replyActions: @escaping ReplyActionsHandler,
+        messageActionSelected: @escaping (MessageAction, ID) -> Void,
+        conversationActionSelected: @escaping (ConversationAction) -> Void,
         goBackNavigation: (() -> Void)?
     ) {
         self.mailbox = mailbox
         self.mailUserSession = mailUserSession
         self._state = state
-        self.replyActions = replyActions
+        self.conversationActionSelected = conversationActionSelected
+        self.messageActionSelected = messageActionSelected
         self.goBackNavigation = goBackNavigation
     }
 
@@ -73,10 +79,17 @@ private struct MailboxActionSheets: ViewModifier {
                 MessageActionsSheet(
                     messageID: input.id,
                     title: input.title,
-                    mailbox: mailbox()
-                ) { action in
-                    print("Message sheet action selected: \(action)")
-                }
+                    mailbox: mailbox(),
+                    actionSelected: { messageActionSelected($0, input.id) }
+                )
+            }
+            .sheet(item: $state.conversation) { input in
+                ConversationActionsSheet(
+                    conversationID: input.id,
+                    title: input.title,
+                    mailbox: mailbox(),
+                    actionSelected: { conversationActionSelected($0) }
+                )
             }
             .sheet(item: snoozeBinding) { conversationID in
                 SnoozeView(

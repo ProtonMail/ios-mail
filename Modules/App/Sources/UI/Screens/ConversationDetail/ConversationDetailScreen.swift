@@ -53,8 +53,22 @@ struct ConversationDetailScreen: View {
         conversationView
             .conversationBottomToolbar(
                 actions: model.conversationToolbarActions,
-                messageActionSelected: { print("[Toolbar] message action selected: \($0)") },
-                conversationActionSelected: { print("[Toolbar] conversation action selected: \($0)") }
+                messageActionSelected: { action in
+                    if let messageID = model.state.singleMessageIDInMessageMode {
+                        Task {
+                            await model.handle(action: action, messageID: messageID, toastStateStore: toastStateStore) {
+                                goBackToMailbox()
+                            }
+                        }
+                    }
+                },
+                conversationActionSelected: { action in
+                    Task {
+                        await model.handle(action: action, toastStateStore: toastStateStore) {
+                            goBackToMailbox()
+                        }
+                    }
+                }
             )
             .toolbar(model.isBottomBarHidden ? .hidden : .visible, for: .bottomBar)
             .bottomToolbarStyle()
@@ -63,8 +77,21 @@ struct ConversationDetailScreen: View {
                 mailbox: { model.mailbox.unsafelyUnwrapped },
                 mailUserSession: mailUserSession,
                 state: $model.actionSheets,
-                replyActions: handleReplyAction,
-                goBackNavigation: { navigationPath.removeLast() }
+                messageActionSelected: { action, id in
+                    Task {
+                        await model.handle(action: action, messageID: id, toastStateStore: toastStateStore) {
+                            goBackToMailbox()
+                        }
+                    }
+                },
+                conversationActionSelected: { action in
+                    Task {
+                        await model.handle(action: action, toastStateStore: toastStateStore) {
+                            goBackToMailbox()
+                        }
+                    }
+                },
+                goBackNavigation: { goBackToMailbox() }
             )
             .alert(model: $model.deleteConfirmationAlert)
             .fullScreenCover(item: $model.attachmentIDToOpen) { id in
@@ -176,20 +203,6 @@ struct ConversationDetailScreen: View {
         }
     }
 
-    private func handleReplyAction(messageId: ID, action: ReplyAction) {
-        Task {
-            // TEMP: iOS 26.0 only
-            // Adding a brief suspension avoids a crash that surfaces in the stdlib
-            // (Swift/KeyPath.swift:1881 "unwrapped nil optional").
-            if #available(iOS 26, *) {
-                try? await Task.sleep(for: .seconds(0.5))
-            }
-            await draftPresenter.handleReplyAction(for: messageId, action: action) { error in
-                toastStateStore.present(toast: .error(message: error.localizedDescription))
-            }
-        }
-    }
-
     @MainActor
     private func goBackToMailbox() {
         guard !navigationPath.isEmpty else { return }
@@ -298,6 +311,14 @@ extension ConversationDetailSeed {
         case .pushNotification:
             false
         }
+    }
+
+}
+
+extension MailboxActionSheetsState {
+
+    static var allSheetsDismissed: Self {
+        .init()
     }
 
 }

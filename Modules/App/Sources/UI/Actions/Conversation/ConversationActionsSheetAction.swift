@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Proton Technologies AG
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -17,8 +17,7 @@
 
 import proton_app_uniffi
 
-extension ConversationAction {
-    var action: MailboxItemAction {
-        fatalError()
-    }
+enum ConversationActionsSheetAction {
+    case onLoad
+    case actionSelected(ConversationAction)
 }

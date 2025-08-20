@@ -17,7 +17,7 @@
 
 import proton_app_uniffi
 
-struct StarActionPerformer {
+struct StarActionPerformer: Sendable {
     private let mailUserSession: MailUserSession
     private let starActionPerformerActions: StarActionPerformerActions
 
@@ -43,9 +43,7 @@ struct StarActionPerformer {
         }
     }
 
-    // MARK: - Private
-
-    private func star(itemsWithIDs ids: [ID], itemType: MailboxItemType) async {
+    func star(itemsWithIDs ids: [ID], itemType: MailboxItemType) async {
         switch itemType {
         case .message:
             await execute(action: starActionPerformerActions.starMessage, on: ids)
@@ -54,7 +52,7 @@ struct StarActionPerformer {
         }
     }
 
-    private func unstar(itemsWithIDs ids: [ID], itemType: MailboxItemType) async {
+    func unstar(itemsWithIDs ids: [ID], itemType: MailboxItemType) async {
         switch itemType {
         case .message:
             await execute(action: starActionPerformerActions.unstarMessage, on: ids)

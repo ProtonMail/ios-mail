@@ -21,10 +21,6 @@ import InboxCoreUI
 import SwiftUI
 import proton_app_uniffi
 
-struct MessageActionPerformer {
-
-}
-
 class MailboxItemActionSheetStateStore: StateStore {
     @Published var state: MailboxItemActionSheetState
     private let availableActionsProvider: AvailableActionsProvider

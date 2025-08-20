@@ -26,7 +26,7 @@ typealias ReplyActionsHandler = (_ messageId: ID, _ action: ReplyAction) -> Void
 struct MailboxItemActionSheet: View {
     @EnvironmentObject var toastStateStore: ToastStateStore
     @Environment(\.messageAppearanceOverrideStore) var messageAppearanceOverrideStore
-    @Environment(\.messagePrinter) var messagePrinter: MessagePrinter
+    @Environment(\.messagePrinter) var messagePrinter: MessagePrinter // FIXME: - To Delete
     @Environment(\.colorScheme) var colorScheme
     private let input: MailboxItemActionSheetInput
     private let mailbox: Mailbox

@@ -68,6 +68,8 @@ final class ConversationDetailModel: Sendable, ObservableObject {
     }
 
     private lazy var starActionPerformer = StarActionPerformer(mailUserSession: userSession)
+    private var readActionPerformer: ReadActionPerformer?
+    private var moveToActionPerformer: MoveToActionPerformer?
 
     private var userSession: MailUserSession {
         dependencies.appContext.userSession
@@ -106,6 +108,11 @@ final class ConversationDetailModel: Sendable, ObservableObject {
             updateStateToMessagesReady(with: liveQueryValues.messages)
             await reloadBottomBarActions()
             try await scrollToRelevantMessage(messages: liveQueryValues.messages)
+            //
+
+            readActionPerformer = .init(mailbox: mailbox, readActionPerformerActions: .productionInstance)
+            moveToActionPerformer = .init(mailbox: mailbox, moveToActions: .productionInstance)
+
         } catch ActionError.other(.network) {
             updateState(.noConnection)
             reloadContentWhenBackOnline()
@@ -174,6 +181,120 @@ final class ConversationDetailModel: Sendable, ObservableObject {
 
     func toggleStarState() {
         isStarred ? unstarConversation() : starConversation()
+    }
+
+    @MainActor
+    func handle(
+        action: MessageAction,
+        messageID: ID,
+        toastStateStore: ToastStateStore,
+        goBack: @MainActor @escaping () -> Void
+    ) async {
+        switch action {
+        case .markRead:
+            await readActionPerformer?.markAsRead(itemsWithIDs: [messageID], itemType: .message)
+            actionSheets = .allSheetsDismissed
+        case .markUnread:
+            await readActionPerformer?.markAsUnread(itemsWithIDs: [messageID], itemType: .message)
+            actionSheets = .allSheetsDismissed
+            goBack()
+        case .star:
+            await starActionPerformer.star(itemsWithIDs: [messageID], itemType: .conversation)
+            actionSheets = .allSheetsDismissed
+        case .unstar:
+            await starActionPerformer.unstar(itemsWithIDs: [messageID], itemType: .conversation)
+            actionSheets = .allSheetsDismissed
+        case .labelAs:
+            actionSheets = .allSheetsDismissed.copy(
+                \.labelAs,
+                to: .init(
+                    sheetType: .labelAs,
+                    ids: [messageID],
+                    type: .message(isLastMessageInCurrentLocation: false))  // FIXME: - Check if it's used anywhere - It's used check how to fix it
+            )
+        case .moveTo:
+            actionSheets = .allSheetsDismissed.copy(
+                \.moveTo,
+                to: .init(
+                    sheetType: .moveTo,
+                    ids: [messageID],
+                    type: .message(isLastMessageInCurrentLocation: false))  // FIXME: - Check if it's used anywhere
+            )
+        case .moveToSystemFolder(let systemFolder), .notSpam(let systemFolder):
+            break
+        case .permanentDelete:
+            break
+        case .reply:
+            actionSheets = .allSheetsDismissed
+            onReplyMessage(withId: messageID, toastStateStore: toastStateStore)
+        case .replyAll:
+            actionSheets = .allSheetsDismissed
+            onReplyAllMessage(withId: messageID, toastStateStore: toastStateStore)
+        case .forward:
+            actionSheets = .allSheetsDismissed
+            onForwardMessage(withId: messageID, toastStateStore: toastStateStore)
+        case .savePdf, .viewHeaders, .viewHtml:
+            toastStateStore.present(toast: .comingSoon)
+        case .print:
+            do {
+                try await messagePrinter.printMessage(messageID: messageID)
+            } catch {
+                AppLogger.log(error: error)
+                toastStateStore.present(toast: .error(message: error.localizedDescription))
+            }
+        case .viewInLightMode:
+            messageAppearanceOverrideStore.forceLightMode(forMessageWithId: messageID)
+            actionSheets = .allSheetsDismissed
+        case .viewInDarkMode:
+            messageAppearanceOverrideStore.stopForcingLightMode(forMessageWithId: messageID)
+            actionSheets = .allSheetsDismissed
+        case .reportPhishing:
+            break
+        case .more:
+            actionSheets = .allSheetsDismissed.copy(\.message, to: .init(id: messageID, title: seed.subject))
+        }
+    }
+
+    @MainActor
+    func handle(
+        action: ConversationAction,
+        toastStateStore: ToastStateStore,
+        goBack: @MainActor @escaping () -> Void
+    ) async {
+        guard let conversationID else { return }
+        switch action {
+        case .markRead:
+            await readActionPerformer?.markAsRead(itemsWithIDs: [conversationID], itemType: .conversation)
+            actionSheets = .allSheetsDismissed
+        case .markUnread:
+            await readActionPerformer?.markAsUnread(itemsWithIDs: [conversationID], itemType: .conversation)
+            actionSheets = .allSheetsDismissed
+            goBack()
+        case .labelAs:
+            actionSheets = .allSheetsDismissed
+                .copy(\.labelAs, to: .init(sheetType: .labelAs, ids: [conversationID], type: .conversation))
+        case .more:
+            actionSheets = actionSheets.copy(\.conversation, to: .init(id: conversationID, title: seed.subject))
+        case .moveTo:
+            actionSheets = .allSheetsDismissed
+                .copy(\.moveTo, to: .init(sheetType: .moveTo, ids: [conversationID], type: .conversation))
+        case .moveToSystemFolder(let systemFolder), .notSpam(let systemFolder):
+            moveConversation(
+                destination: systemFolder,
+                toastStateStore: toastStateStore,
+                goBack: goBack
+            )
+        case .permanentDelete:
+            break
+        case .star:
+            await starActionPerformer.star(itemsWithIDs: [conversationID], itemType: .conversation)
+            actionSheets = .allSheetsDismissed
+        case .unstar:
+            await starActionPerformer.unstar(itemsWithIDs: [conversationID], itemType: .conversation)
+            actionSheets = .allSheetsDismissed
+        case .snooze:
+            actionSheets = .allSheetsDismissed.copy(\.snooze, to: conversationID)
+        }
     }
 
     func handleConversation(action: ListActions, toastStateStore: ToastStateStore, goBack: @escaping () -> Void) {
@@ -576,7 +697,7 @@ extension ConversationDetailModel {
     }
 }
 
-private extension ConversationDetailModel.State {
+extension ConversationDetailModel.State {
 
     var singleMessageIDInMessageMode: ID? {
         switch self {
@@ -593,14 +714,12 @@ extension ConversationDetailModel {
 
     struct Dependencies {
         let appContext: AppContext
-        let conversationListActionsToolbarActionsProvider: ConversationListActionsToolbarActionsProvider
+        let readActionPerformerActions: ReadActionPerformerActions = .productionInstance
 
         init(
             appContext: AppContext = .shared,
-            conversationListActionsToolbarActionsProvider: @escaping ConversationListActionsToolbarActionsProvider = allAvailableListActionsForConversations
         ) {
             self.appContext = appContext
-            self.conversationListActionsToolbarActionsProvider = conversationListActionsToolbarActionsProvider
         }
     }
 }

@@ -17,7 +17,7 @@
 
 import proton_app_uniffi
 
-struct ReadActionPerformer {
+struct ReadActionPerformer: Sendable {
     private let mailbox: Mailbox
     private let readActionPerformerActions: ReadActionPerformerActions
 
@@ -43,9 +43,7 @@ struct ReadActionPerformer {
         }
     }
 
-    // MARK: - Private
-
-    private func markAsRead(itemsWithIDs ids: [ID], itemType: MailboxItemType) async {
+    func markAsRead(itemsWithIDs ids: [ID], itemType: MailboxItemType) async {
         switch itemType {
         case .message:
             await execute(action: readActionPerformerActions.markMessageAsRead, on: ids)
@@ -54,7 +52,7 @@ struct ReadActionPerformer {
         }
     }
 
-    private func markAsUnread(itemsWithIDs ids: [ID], itemType: MailboxItemType) async {
+    func markAsUnread(itemsWithIDs ids: [ID], itemType: MailboxItemType) async {
         switch itemType {
         case .message:
             await execute(action: readActionPerformerActions.markMessageAsUnread, on: ids)
@@ -62,6 +60,8 @@ struct ReadActionPerformer {
             await execute(action: readActionPerformerActions.markConversationAsUnread, on: ids)
         }
     }
+
+    // MARK: - Private
 
     private func execute(action: ReadActionClosure, on ids: [ID]) async {
         switch await action(mailbox, ids) {

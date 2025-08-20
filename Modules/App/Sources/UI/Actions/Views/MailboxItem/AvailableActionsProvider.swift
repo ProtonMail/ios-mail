@@ -38,7 +38,7 @@ extension ConversationAvailableActions {
     var availableActions: AvailableActions {
         .init(
             replyActions: nil,
-            mailboxItemActions: conversationActions.map(\.action),
+            mailboxItemActions: [],
             moveActions: moveActions,
             generalActions: generalActions
         )

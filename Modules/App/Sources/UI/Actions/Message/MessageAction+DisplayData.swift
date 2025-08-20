@@ -33,7 +33,7 @@ extension MessageAction: DisplayableAction {
         case .labelAs:
             Action.labelAs.displayData
         case .moveTo:
-            Action.labelAs.displayData
+            Action.moveTo.displayData
         case .moveToSystemFolder(let systemFolder):
             switch systemFolder.name {
             case .archive:
@@ -46,7 +46,7 @@ extension MessageAction: DisplayableAction {
                 Action.moveToTrash.displayData
             }
         case .notSpam:
-            .init(title: L10n.Action.notSpam, imageResource: DS.Icon.icNotSpam)
+            Action.moveToInboxFromSpam.displayData
         case .permanentDelete:
             Action.deletePermanently.displayData
         case .reply:
