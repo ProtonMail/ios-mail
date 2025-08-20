@@ -34,6 +34,18 @@ public enum CommonL10n {
     public static let save = LocalizedStringResource("Save", bundle: .module)
     public static let time = LocalizedStringResource("Time", bundle: .module)
     public static let undo = LocalizedStringResource("Undo", bundle: .module)
+    public static func copiedToClipboard(name: String) -> LocalizedStringResource {
+        .init(
+            "Copied \(name) to clipboard",
+            bundle: .module,
+            comment: "Message shown to the user confirming that the specified item (name) was successfully copied to the clipboard."
+        )
+    }
+    public static let upsellButtonSubtitle = LocalizedStringResource(
+        "Upgrade for full flexibility",
+        bundle: .module,
+        comment: "Upsell button subtitle displayed for a free user."
+    )
 }
 
 public extension LocalizedStringResource.BundleDescription {

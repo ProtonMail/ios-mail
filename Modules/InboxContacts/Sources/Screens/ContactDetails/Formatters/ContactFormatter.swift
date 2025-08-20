@@ -97,7 +97,7 @@ enum ContactFormatter {
         static func formatted(from vcardURL: VCardUrl) -> ContactDetailsItem {
             let label = vcardURL.urlType.humanReadable(fallback: L10n.ContactDetails.Label.url.string)
 
-            return .init(label: label, value: vcardURL.url, isInteractive: true)
+            return .init(label: label, value: vcardURL.url.value, isInteractive: true)
         }
     }
 
@@ -174,6 +174,17 @@ private extension String {
 
     var firstUppercased: String {
         prefix(1).uppercased() + dropFirst()
+    }
+
+}
+
+private extension VCardUrlValue {
+
+    var value: String {
+        switch self {
+        case .http(let string), .notHttp(let string), .text(let string):
+            string
+        }
     }
 
 }

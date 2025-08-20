@@ -300,6 +300,18 @@ enum L10n {
         )
     }
 
+    enum DraftExpirationError {
+        static let expirationTimeInThePast = LocalizedStringResource(
+            "Expiration time can't be in the past.",
+            comment: "Error in the context of setting a custom message expiration date in the composer."
+        )
+
+        static let expirationTimeExceeds30Days = LocalizedStringResource(
+            "Expiration time is too far in the future.",
+            comment: "Error in the context of setting a custom message expiration date in the composer."
+        )
+    }
+
     enum DraftSaveError {
         static func addressDisabled(address: String) -> LocalizedStringResource {
             LocalizedStringResource(
@@ -409,7 +421,12 @@ enum L10n {
         )
 
         static let scheduleSendMessageLimitExceeded = LocalizedStringResource(
-            "You reached the limit of scheduled messages",
+            "You reached the limit of scheduled messages.",
+            comment: "Error in the context of scheduling a message."
+        )
+
+        static let expirationTimeTooSoon = LocalizedStringResource(
+            "Message expiration time is too soon.",
             comment: "Error in the context of scheduling a message."
         )
     }
@@ -502,12 +519,6 @@ enum L10n {
             comment: "Schedule send custom time option tile"
         )
 
-        static let customSubtitleFreeUser = LocalizedStringResource(
-            "Upgrade for full flexibility",
-            bundle: .atURL(Bundle.module.bundleURL),
-            comment: "Schedule send custom time option subtitle for free user"
-        )
-
         static let customSubtitle = LocalizedStringResource(
             "Pick time and date",
             bundle: .atURL(Bundle.module.bundleURL),
@@ -537,7 +548,88 @@ enum L10n {
             bundle: .atURL(Bundle.module.bundleURL),
             comment: "Schedule send predefined time option"
         )
+    }
 
+    enum MessageExpiration {
+        static let menuTitle = LocalizedStringResource(
+            "Message expires",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Title of the message expiration menu"
+        )
+
+        static let never = LocalizedStringResource(
+            "Never",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Default option for the message expiration menu"
+        )
+
+        static let afterOneHour = LocalizedStringResource(
+            "After 1 hour",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Predefined option for the message expiration menu"
+        )
+
+        static let afterOneDay = LocalizedStringResource(
+            "After 1 day",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Predefined option for the message expiration menu"
+        )
+
+        static let afterThreeDays = LocalizedStringResource(
+            "After 3 days",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Predefined option for the message expiration menu"
+        )
+
+        static let specificDate = LocalizedStringResource(
+            "On specific date",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Predefined option for the message expiration menu"
+        )
+
+        static let howExpirationWorks = LocalizedStringResource(
+            "How expiration works?",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "subtitle for the learn more option in the message expiration menu"
+        )
+
+        static let datePickerTitle = LocalizedStringResource(
+            "Set Message Expiry",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Title of the message expiration custom date picker"
+        )
+
+        static let alertUnsupportedTitle = LocalizedStringResource(
+            "Add Password to Use Expiration",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Sending to non-Proton accounts alert title"
+        )
+
+        static func alertUnsupportedForSomeRecipientsMessage(addresses: String) -> LocalizedStringResource {
+            LocalizedStringResource(
+                "Some recipients (\(addresses)) don’t support expiration by default. Add a password to enable expiration for non-Proton Mail recipients.",
+                bundle: .atURL(Bundle.module.bundleURL),
+                comment: "Sending to only non-Proton accounts alert message"
+            )
+        }
+
+        static let alertUnknownSupportForAllRecipientsMessage = LocalizedStringResource(
+            "We could not confirm all recipients use Proton Mail. Only Proton addresses support message expiration. In this case, we suggest adding a password instead.",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Sending to only non-Proton accounts alert message"
+        )
+
+        static let sendAnyway = LocalizedStringResource(
+            "Send anyway",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Sending to non-Proton accounts alert option"
+        )
+
+        static let addPassword = LocalizedStringResource(
+            "Add password",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Sending to non-Proton accounts alert option"
+        )
     }
 
     enum PasswordProtection {

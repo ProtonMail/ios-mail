@@ -1,0 +1,52 @@
+// Copyright (c) 2024 Proton Technologies AG
+//
+// This file is part of Proton Mail.
+//
+// Proton Mail is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Proton Mail is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Proton Mail. If not, see https://www.gnu.org/licenses/.
+
+import proton_app_uniffi
+
+struct ListActionsToolbarActionsProvider {
+    let availableActions: AvailableListToolbarActions
+    let itemTypeForActionBar: MailboxItemType
+    let mailbox: Mailbox
+
+    func actions(forItemsWith ids: [ID]) async -> AllListActions {
+        switch itemTypeForActionBar {
+        case .message:
+            try! await availableActions.message(mailbox, ids).get()
+        case .conversation:
+            try! await availableActions.conversation(mailbox, ids).get()
+        }
+    }
+}
+
+struct AvailableListToolbarActions {
+    let message: MessageListActionsToolbarActionsProvider
+    let conversation: ConversationListActionsToolbarActionsProvider
+}
+
+extension AvailableListToolbarActions {
+
+    static var productionInstance: Self {
+        .init(
+            message: allAvailableListActionsForMessages,
+            conversation: allAvailableListActionsForConversations
+        )
+    }
+
+}
+
+typealias MessageListActionsToolbarActionsProvider = (Mailbox, [Id]) async -> AllAvailableListActionsForMessagesResult
+typealias ConversationListActionsToolbarActionsProvider = (Mailbox, [Id]) async -> AllAvailableListActionsForConversationsResult

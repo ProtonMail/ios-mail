@@ -16,12 +16,14 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import InboxContacts
+import Foundation
 import InboxCoreUI
 import InboxTesting
 import proton_app_uniffi
-import XCTest
+import Testing
 
-final class ContactDetailsStateStoreTests: BaseTestCase {
+@MainActor
+final class ContactDetailsStateStoreTests {
     private var sut: ContactDetailsStateStore!
     private var initialState: ContactDetails!
     private var contactItem: ContactsRoute.ContactContext!
@@ -30,8 +32,7 @@ final class ContactDetailsStateStoreTests: BaseTestCase {
     private var draftPresenterSpy: ContactsDraftPresenterSpy!
     private var toastStateStore: ToastStateStore!
 
-    override func setUp() {
-        super.setUp()
+    init() {
         contactItem = .init(ContactItem.elenaErickson)
         initialState = .init(contact: contactItem, details: .none)
         providerSpy = .init()
@@ -52,21 +53,12 @@ final class ContactDetailsStateStoreTests: BaseTestCase {
         )
     }
 
-    override func tearDown() {
-        sut = nil
-        initialState = nil
-        contactItem = nil
-        providerSpy = nil
-        urlOpener = nil
-        draftPresenterSpy = nil
-        toastStateStore = nil
-        super.tearDown()
-    }
-
+    @Test
     func testInitialState_isSetCorrectly() {
-        XCTAssertEqual(sut.state, initialState)
+        #expect(sut.state == initialState)
     }
 
+    @Test
     func testOnLoadAction_ItFetchesDetailsAndUpdatesState() async {
         let details = ContactDetailCard.testData(contact: contactItem, fields: .testItems)
 
@@ -77,9 +69,10 @@ final class ContactDetailsStateStoreTests: BaseTestCase {
 
         await sut.handle(action: .onLoad)
 
-        XCTAssertEqual(sut.state, .init(contact: contactItem, details: details))
+        #expect(sut.state == .init(contact: contactItem, details: details))
     }
 
+    @Test
     func testCallTappedAction_ItOpensURLWithTelPrefix() async {
         let details = ContactDetailCard.testData(contact: contactItem, fields: .testItems)
 
@@ -93,9 +86,10 @@ final class ContactDetailsStateStoreTests: BaseTestCase {
         await sut.handle(action: .onLoad)
         await sut.handle(action: .callTapped)
 
-        XCTAssertEqual(urlOpener.callAsFunctionInvokedWithURL, [URL(string: "tel:\(phoneNumber)")])
+        #expect(urlOpener.callAsFunctionInvokedWithURL.map(\.absoluteString) == ["tel:\(phoneNumber)"])
     }
 
+    @Test
     func testPhoneNumberTappedAction_ItOpensURLWithTelPrefix() async {
         let details = ContactDetailCard.testData(contact: contactItem, fields: .testItems)
 
@@ -109,9 +103,10 @@ final class ContactDetailsStateStoreTests: BaseTestCase {
         await sut.handle(action: .onLoad)
         await sut.handle(action: .phoneNumberTapped(phoneNumber))
 
-        XCTAssertEqual(urlOpener.callAsFunctionInvokedWithURL, [URL(string: "tel:\(phoneNumber)")])
+        #expect(urlOpener.callAsFunctionInvokedWithURL.map(\.absoluteString) == ["tel:\(phoneNumber)"])
     }
 
+    @Test
     func testOpenURLAction_ItOpensURL() async {
         let details = ContactDetailCard.testData(contact: contactItem, fields: .testItems)
 
@@ -125,9 +120,10 @@ final class ContactDetailsStateStoreTests: BaseTestCase {
         await sut.handle(action: .onLoad)
         await sut.handle(action: .openURL(urlString: url.absoluteString))
 
-        XCTAssertEqual(urlOpener.callAsFunctionInvokedWithURL, [url])
+        #expect(urlOpener.callAsFunctionInvokedWithURL == [url])
     }
 
+    @Test
     func testOpenURLActionWithURLMissingScheme_ItNormalizesAndOpensURL() async {
         let details = ContactDetailCard.testData(contact: contactItem, fields: .testItems)
 
@@ -141,9 +137,10 @@ final class ContactDetailsStateStoreTests: BaseTestCase {
         await sut.handle(action: .onLoad)
         await sut.handle(action: .openURL(urlString: url.absoluteString))
 
-        XCTAssertEqual(urlOpener.callAsFunctionInvokedWithURL, [URL(string: "https://proton.me")!])
+        #expect(urlOpener.callAsFunctionInvokedWithURL == [URL(string: "https://proton.me")!])
     }
 
+    @Test
     func testShareTappedAction_ItPresentsComingSoon() async {
         let details = ContactDetailCard.testData(contact: contactItem, fields: .testItems)
 
@@ -155,10 +152,11 @@ final class ContactDetailsStateStoreTests: BaseTestCase {
         await sut.handle(action: .onLoad)
         await sut.handle(action: .shareTapped)
 
-        XCTAssertEqual(toastStateStore.state.toasts, [.comingSoon])
-        XCTAssertEqual(toastStateStore.state.toastHeights, [:])
+        #expect(toastStateStore.state.toasts == [.comingSoon])
+        #expect(toastStateStore.state.toastHeights == [:])
     }
 
+    @Test
     func testNewMessageTappedAction_ItPresentsDraftWithPrimaryContact() async {
         let details = ContactDetailCard.testData(contact: contactItem, fields: .testItems)
 
@@ -170,14 +168,14 @@ final class ContactDetailsStateStoreTests: BaseTestCase {
         await sut.handle(action: .onLoad)
         await sut.handle(action: .newMessageTapped)
 
-        XCTAssertEqual(draftPresenterSpy.openDraftContactCalls.count, 1)
-        XCTAssertEqual(
-            draftPresenterSpy.openDraftContactCalls,
-            [
+        #expect(draftPresenterSpy.openDraftContactCalls.count == 1)
+        #expect(
+            draftPresenterSpy.openDraftContactCalls == [
                 .init(name: "🌟 Elena Erickson", email: "elena.erickson@protonmail.com")
             ])
     }
 
+    @Test
     func testEmailTappedAction_ItPresentsDraftWithGivenContact() async {
         let details = ContactDetailCard.testData(contact: contactItem, fields: .testItems)
 
@@ -191,10 +189,11 @@ final class ContactDetailsStateStoreTests: BaseTestCase {
         await sut.handle(action: .onLoad)
         await sut.handle(action: .emailTapped(stubbedEmail))
 
-        XCTAssertEqual(draftPresenterSpy.openDraftContactCalls.count, 1)
-        XCTAssertEqual(draftPresenterSpy.openDraftContactCalls, [.init(name: contactItem.name, email: stubbedEmail.email)])
+        #expect(draftPresenterSpy.openDraftContactCalls.count == 1)
+        #expect(draftPresenterSpy.openDraftContactCalls == [.init(name: contactItem.name, email: stubbedEmail.email)])
     }
 
+    @Test
     func testEmailTappedAction_AndOpeningDraftFails_ItPresentsToastWithError() async {
         let expectedError: TestError = .test
         let details = ContactDetailCard.testData(contact: contactItem, fields: .testItems)
@@ -211,9 +210,9 @@ final class ContactDetailsStateStoreTests: BaseTestCase {
         await sut.handle(action: .onLoad)
         await sut.handle(action: .emailTapped(stubbedEmail))
 
-        XCTAssertEqual(draftPresenterSpy.openDraftContactCalls.count, 1)
-        XCTAssertEqual(draftPresenterSpy.openDraftContactCalls, [.init(name: contactItem.name, email: stubbedEmail.email)])
-        XCTAssertEqual(toastStateStore.state.toasts, [.error(message: expectedError.localizedDescription)])
+        #expect(draftPresenterSpy.openDraftContactCalls.count == 1)
+        #expect(draftPresenterSpy.openDraftContactCalls == [.init(name: contactItem.name, email: stubbedEmail.email)])
+        #expect(toastStateStore.state.toasts == [.error(message: expectedError.localizedDescription)])
     }
 }
 

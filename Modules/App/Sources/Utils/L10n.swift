@@ -48,6 +48,17 @@ enum L10n {
             )
         }
 
+        enum Clipboard {
+            static let emailAddress = LocalizedStringResource(
+                "email address",
+                comment: "Label for an email address when copying it to the clipboard."
+            )
+            static let name = LocalizedStringResource(
+                "name",
+                comment: "Label for a person's name when copying it to the clipboard."
+            )
+        }
+
         enum Print {
             static let error = LocalizedStringResource(
                 "Could not print requested e-mail",
@@ -210,6 +221,10 @@ enum L10n {
             "Also archive?",
             comment: "Title of switcher in the label as action sheet."
         )
+        static let editToolbar = LocalizedStringResource(
+            "Edit toolbar",
+            comment: "Title of edit toolbar action."
+        )
 
         enum Delete {
             enum Alert {
@@ -240,6 +255,35 @@ enum L10n {
                     comment: "Message of alert displayed after report phishing action tap."
                 )
             }
+        }
+    }
+
+    enum BlockAddress {
+        enum Alert {
+            static let title = LocalizedStringResource(
+                "Block this address",
+                comment: "Title of the alert asking the user to confirm blocking an email address."
+            )
+            static func message(email: String) -> LocalizedStringResource {
+                .init(
+                    "Emails from \(email) will no longer be delivered and will be permanently deleted. You can manage blocked email addresses in the settings.",
+                    comment: "Message shown in the alert explaining the consequences of blocking the specified email address."
+                )
+            }
+            static let confirm = LocalizedStringResource(
+                "Block",
+                comment: "Title of the action button for blocking an email address in the alert."
+            )
+        }
+        enum Toast {
+            static let success = LocalizedStringResource(
+                "Sender blocked",
+                comment: "Toast message shown when an email address (sender) has been successfully blocked."
+            )
+            static let failure = LocalizedStringResource(
+                "Could not block sender",
+                comment: "Toast message shown when blocking an email address (sender) fails."
+            )
         }
     }
 
@@ -923,6 +967,71 @@ enum L10n {
                 "Security keys",
                 comment: "Security keys row title"
             )
+            static let customizeToolbars = LocalizedStringResource(
+                "Customize toolbars",
+                comment: "Customize toolbars button title."
+            )
+        }
+
+        enum CustomizeToolbars {
+            static let listToolbarSectionTitle = LocalizedStringResource(
+                "List toolbar",
+                comment: "Title of a section displaying selected list toolbar actions."
+            )
+            static let listToolbarSectionFooter = LocalizedStringResource(
+                "This toolbar appears when multiple messages are selected in the message list (e.g., Inbox, Trash, etc.).",
+                comment: "Footer of a section displaying selected list toolbar actions."
+            )
+            static let conversationToolbarSectionTitle = LocalizedStringResource(
+                "Conversation toolbar",
+                comment: "Title of a section displaying selected conversation toolbar actions."
+            )
+            static let conversationToolbarSectionFooter = LocalizedStringResource(
+                "This toolbar remains consistently visible during message reading.",
+                comment: "Footer of a section displaying selected conversation toolbar actions."
+            )
+            static let editActions = LocalizedStringResource(
+                "Edit actions",
+                comment: "Title of edit actions button."
+            )
+            static let listToolbarEditionScreenTitle = LocalizedStringResource(
+                "Edit list toolbar",
+                comment: "List toolbar edition screen title."
+            )
+            static let messageToolbarEditionScreenTitle = LocalizedStringResource(
+                "Edit message toolbar",
+                comment: "Message toolbar edition screen title."
+            )
+            static let conversationToolbarEditionScreenTitle = LocalizedStringResource(
+                "Edit conversation toolbar",
+                comment: "Conversation toolbar edition screen title."
+            )
+            static let chosenActionsSectionTitle = LocalizedStringResource(
+                "Chosen actions",
+                comment: "Title of a section with chosen toolbar actions."
+            )
+            static let chosenActionsSectionSubtitle = LocalizedStringResource(
+                "The toolbar can have 1–5 actions. You can’t remove the last remaining action.",
+                comment: "Subtitle of a section with chosen toolbar actions."
+            )
+            static let availableActionsSectionTitle = LocalizedStringResource(
+                "Available actions",
+                comment: "Title of a section with available toolbar actions."
+            )
+            static let resetButtonTitle = LocalizedStringResource(
+                "Reset to original",
+                comment: "Title of a button that reset a set of selected actions to default."
+            )
+            static let resetButtonFooter = LocalizedStringResource(
+                "Restores the toolbar actions for the message view to their original default settings.",
+                comment: "Title of a button that reset a set of selected actions to default."
+            )
+        }
+
+        enum MobileSignature {
+            static let title = LocalizedStringResource("Mobile signature", comment: "Settings menu title.")
+            static let switchLabel = LocalizedStringResource("Enable signature", comment: "Next to a checkbox in the settings.")
+            static let textBoxLabel = LocalizedStringResource("Signature", comment: "Above the text box to populate the signature in settings.")
         }
 
         static let subscription = LocalizedStringResource(
@@ -1018,12 +1127,8 @@ enum L10n {
             "This weekend",
             comment: "Predefined snooze option that postpones item until the upcoming weekend."
         )
-        static let upsellButtonSubtitle = LocalizedStringResource(
-            "Upgrade for full flexibility",
-            comment: "Custom button subtitle for a free user on snooze sheet."
-        )
         static let smallUpsellButtonSubtitle = LocalizedStringResource(
-            "Upgrade to Mail Plus",
+            "Upgrade to access",
             comment: "Custom button subtitle for a free user on snooze sheet."
         )
         static let conversationUnsnoozed = LocalizedStringResource(

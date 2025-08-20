@@ -64,7 +64,7 @@ class MailboxItemActionSheetStateStore: StateStore {
         self.moveToActionPerformer = .init(mailbox: mailbox, moveToActions: moveToActions)
         self.generalActionsPerformer = .init(mailbox: mailbox, generalActions: generalActions)
         self.mailUserSession = mailUserSession
-        self.state = .initial(title: input.title)
+        self.state = .initial(title: input.title, itemType: input.type)
         self.toastStateStore = toastStateStore
         self.messageAppearanceOverrideStore = messageAppearanceOverrideStore
         self.printActionPerformer = printActionPerformer
@@ -76,7 +76,7 @@ class MailboxItemActionSheetStateStore: StateStore {
         switch action {
         case .onLoad:
             loadActions()
-        case .mailboxItemActionSelected(let action):
+        case .mailboxItemActionTapped(let action):
             switch action {
             case .labelAs:
                 navigation(.labelAs)
@@ -160,6 +160,9 @@ class MailboxItemActionSheetStateStore: StateStore {
             if case .confirm = action {
                 performMarkPhishing(itemType: input.type)
             }
+        case .editToolbarActionTapped:
+            // FIXME: - Handle action
+            break
         }
     }
 
@@ -289,9 +292,10 @@ class MailboxItemActionSheetStateStore: StateStore {
 }
 
 private extension MailboxItemActionSheetState {
-    static func initial(title: String) -> Self {
+    static func initial(title: String, itemType: ActionSheetItemType) -> Self {
         .init(
             title: title,
+            showEditToolbarAction: itemType.showEditToolbarAction,
             availableActions: .init(
                 replyActions: [],
                 mailboxItemActions: [],
@@ -300,6 +304,19 @@ private extension MailboxItemActionSheetState {
             )
         )
     }
+}
+
+private extension ActionSheetItemType {
+
+    var showEditToolbarAction: Bool {
+        switch self {
+        case .conversation:
+            true
+        case .message:
+            false
+        }
+    }
+
 }
 
 private extension MailboxItemType {

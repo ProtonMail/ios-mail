@@ -34,7 +34,7 @@ enum SessionState: Equatable {
         case (.noSession, .noSession), (.initializing, .initializing), (.restoring, .restoring):
             true
         case (.activeSession(let lhsSession), .activeSession(let rhsSession)):
-            lhsSession.sessionId() == rhsSession.sessionId()
+            ObjectIdentifier(lhsSession) == ObjectIdentifier(rhsSession)
         default:
             false
         }

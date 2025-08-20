@@ -131,6 +131,7 @@ extension AppLogger {
         case appRoute
         case conversationDetail
         case composer
+        case customizeToolbar
         case legacyMigration
         case mailbox
         case notifications

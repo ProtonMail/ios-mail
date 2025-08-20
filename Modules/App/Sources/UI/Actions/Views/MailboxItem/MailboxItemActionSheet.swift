@@ -95,6 +95,10 @@ struct MailboxItemActionSheet: View {
                         mailboxItemActionsSection(state: state, store: store)
                         moveToActionsSection(state: state, store: store)
                         section(state: state, store: store)
+
+                        if state.showEditToolbarAction && CustomizeToolbarsFlag.isVisible {
+                            editToolbarSection(store: store)
+                        }
                     }.padding(.all, DS.Spacing.large)
                 }
                 .background(DS.Color.BackgroundInverted.norm)
@@ -124,7 +128,7 @@ struct MailboxItemActionSheet: View {
                 ActionSheetImageButton(
                     displayData: action.displayData,
                     displayBottomSeparator: !isLast,
-                    action: { store.handle(action: .mailboxItemActionSelected(action)) }
+                    action: { store.handle(action: .mailboxItemActionTapped(action)) }
                 )
             }
         }
@@ -141,6 +145,17 @@ struct MailboxItemActionSheet: View {
                     displayBottomSeparator: !isLast,
                     action: { store.handle(action: .moveTo(action)) }
                 )
+            }
+        }
+    }
+
+    private func editToolbarSection(store: MailboxItemActionSheetStateStore) -> some View {
+        ActionSheetSection {
+            ActionSheetImageButton(
+                displayData: .init(title: L10n.Action.editToolbar, image: DS.Icon.icMagicWand.image),
+                displayBottomSeparator: false
+            ) {
+                store.handle(action: .editToolbarActionTapped)
             }
         }
     }

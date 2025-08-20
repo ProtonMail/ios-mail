@@ -44,11 +44,61 @@ public extension ChallengeLoaderGetResult {
         }
     }
 }
+public extension ChallengeLoaderPostResult {
+    func get() throws(ProtonError) -> ChallengeLoaderResponse {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension ChallengeLoaderPutResult {
+    func get() throws(ProtonError) -> ChallengeLoaderResponse {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension CreateMailSessionResult {
     func get() throws(UserSessionError) -> MailSession {
         switch self {
         case .ok(let value):
             value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension CustomSettingsMobileSignatureResult {
+    func get() throws(ProtonError) -> MobileSignature {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension CustomSettingsSetMobileSignatureEnabledResult {
+    func get() throws(ProtonError) {
+        switch self {
+        case .ok:
+            break
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension CustomSettingsSetMobileSignatureResult {
+    func get() throws(ProtonError) {
+        switch self {
+        case .ok:
+            break
         case .error(let error):
             throw error
         }
@@ -876,6 +926,16 @@ public extension NewInboxMailboxResult {
 }
 public extension NewMailboxResult {
     func get() throws(UserSessionError) -> Mailbox {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension ResolveSystemLabelIdResult {
+    func get() throws(ProtonError) -> Id? {
         switch self {
         case .ok(let value):
             value

@@ -47,7 +47,8 @@ struct IssueReportBuilder {
             stepsToReproduce: formInfo.stepsToReproduce,
             expectedResult: formInfo.expectedResults,
             actualResult: formInfo.actualResults,
-            logs: formInfo.includeLogs
+            logs: formInfo.includeLogs,
+            additionalFiles: []
         )
     }
 

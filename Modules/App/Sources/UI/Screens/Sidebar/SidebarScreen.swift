@@ -85,6 +85,7 @@ struct SidebarScreen: View {
             .offset(x: appUIStateStore.sidebarState.visibleWidth - appUIStateStore.sidebarWidth - geometry.safeAreaInsets.leading)
         }
         .onAppear { screenModel.handle(action: .viewAppear) }
+        .onOpenURL(perform: handleDeepLink)
     }
 
     private var header: some View {
@@ -364,6 +365,18 @@ struct SidebarScreen: View {
         screenModel.handle(action: .select(item: item))
         selectedItem(item)
         appUIStateStore.toggleSidebar(isOpen: !item.hideSidebar)
+    }
+
+    private func handleDeepLink(_ deepLink: URL) {
+        switch DeepLinkRouteCoder.decode(deepLink: deepLink) {
+        case .mailbox(.systemFolder(_, let systemFolder)):
+            if let systemFolder = screenModel.state.system.first(where: { $0.type == systemFolder }) {
+                let item = SidebarItem.system(systemFolder)
+                screenModel.handle(action: .select(item: item))
+            }
+        default:
+            break
+        }
     }
 }
 

@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import InboxCore
 import InboxDesignSystem
 import SwiftUI
 
@@ -46,7 +47,7 @@ struct SnoozeUpgradeButton: View {
         switch variant {
         case .fullLine:
             HStack {
-                textContent(alignment: .leading, subtitle: L10n.Snooze.upsellButtonSubtitle)
+                textContent(alignment: .leading, subtitle: CommonL10n.upsellButtonSubtitle)
                 Spacer()
                 Image(DS.Icon.icBrandProtonMailUpsell)
             }

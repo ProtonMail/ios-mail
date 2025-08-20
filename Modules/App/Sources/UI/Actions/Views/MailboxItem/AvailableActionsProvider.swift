@@ -28,22 +28,9 @@ struct AvailableActionsProvider {
         case .conversation:
             try! await actionsProvider.conversation(mailbox, [id]).get().availableActions
         case .message:
-            try! await actionsProvider.message(mailbox, themeOpts, id).get().availableActions
+            .init(replyActions: [], mailboxItemActions: [], moveActions: [], generalActions: [])
         }
     }
-}
-
-extension MessageAvailableActions {
-
-    var availableActions: AvailableActions {
-        .init(
-            replyActions: replyActions,
-            mailboxItemActions: messageActions.map(\.action),
-            moveActions: moveActions,
-            generalActions: generalActions
-        )
-    }
-
 }
 
 extension ConversationAvailableActions {

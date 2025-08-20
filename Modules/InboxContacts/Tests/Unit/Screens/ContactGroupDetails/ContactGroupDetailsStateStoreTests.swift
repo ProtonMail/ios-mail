@@ -20,17 +20,17 @@ import InboxCore
 import InboxCoreUI
 import InboxTesting
 import proton_app_uniffi
-import XCTest
+import Testing
 
-final class ContactGroupDetailsStateStoreTests: BaseTestCase {
+@MainActor
+final class ContactGroupDetailsStateStoreTests {
     private var sut: ContactGroupDetailsStateStore!
     private var initialState: ContactGroupItem!
     private var draftPresenterSpy: ContactsDraftPresenterSpy!
     private var toastStateStore: ToastStateStore!
     private var router: Router<ContactsRoute>!
 
-    override func setUp() {
-        super.setUp()
+    init() {
         initialState = .advisorsGroup
         draftPresenterSpy = .init()
         toastStateStore = .init(initialState: .initial)
@@ -44,34 +44,29 @@ final class ContactGroupDetailsStateStoreTests: BaseTestCase {
         )
     }
 
-    override func tearDown() {
-        sut = nil
-        initialState = nil
-        draftPresenterSpy = nil
-        toastStateStore = nil
-        router = nil
-        super.tearDown()
-    }
-
+    @Test
     func testInitialState_isSetCorrectly() {
-        XCTAssertEqual(sut.state, initialState)
+        #expect(sut.state == initialState)
     }
 
+    @Test
     func testContactItemTappedAction_ItNavigatesToContactDetails() async throws {
-        let emailItem: ContactEmailItem = try XCTUnwrap(ContactGroupItem.advisorsGroup.contactEmails.first)
+        let emailItem: ContactEmailItem = try #require(ContactGroupItem.advisorsGroup.contactEmails.first)
 
         await sut.handle(action: .contactItemTapped(emailItem))
 
-        XCTAssertEqual(router.stack, [.contactDetails(.init(emailItem))])
+        #expect(router.stack == [.contactDetails(.init(emailItem))])
     }
 
+    @Test
     func testSendGroupMessageTappedAction_ItPresentsDraftWithContactGroup() async {
         await sut.handle(action: .sendGroupMessageTapped)
 
-        XCTAssertEqual(draftPresenterSpy.openDraftGroupCalls.count, 1)
-        XCTAssertEqual(draftPresenterSpy.openDraftGroupCalls, [initialState])
+        #expect(draftPresenterSpy.openDraftGroupCalls.count == 1)
+        #expect(draftPresenterSpy.openDraftGroupCalls == [initialState])
     }
 
+    @Test
     func testSendGroupMessageTappedAction_AndOpeningDraftFails_ItPresentsToastWithError() async {
         let expectedError: TestError = .test
 
@@ -79,8 +74,8 @@ final class ContactGroupDetailsStateStoreTests: BaseTestCase {
 
         await sut.handle(action: .sendGroupMessageTapped)
 
-        XCTAssertEqual(draftPresenterSpy.openDraftGroupCalls.count, 1)
-        XCTAssertEqual(draftPresenterSpy.openDraftGroupCalls, [initialState])
-        XCTAssertEqual(toastStateStore.state.toasts, [.error(message: expectedError.localizedDescription)])
+        #expect(draftPresenterSpy.openDraftGroupCalls.count == 1)
+        #expect(draftPresenterSpy.openDraftGroupCalls == [initialState])
+        #expect(toastStateStore.state.toasts == [.error(message: expectedError.localizedDescription)])
     }
 }

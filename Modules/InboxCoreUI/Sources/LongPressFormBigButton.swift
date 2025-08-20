@@ -42,7 +42,7 @@ public struct LongPressFormBigButton: View {
             title: title,
             value: value,
             hasAccentTextColor: hasAccentTextColor,
-            symbol: .none
+            accessoryType: .none
         )
         .textSelection(.enabled)
         .conditionalLongPress(onPressingChanged: { changed in isPressed = changed })

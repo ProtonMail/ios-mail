@@ -45,10 +45,12 @@ public extension DS.Icon {
     static let icFolderOpen = ImageResource.icFolderOpen
     static let icFolders = ImageResource.icFolders
     static let icHamburguer = ImageResource.icHamburger
+    static let icHourglass = ImageResource.icHourglass
     static let icImage = ImageResource.ic
     static let icInbox = ImageResource.icInbox
     static let icLock = ImageResource.icLock
     static let icLockFilled = ImageResource.icLockFilled
+    static let icMagicWand = ImageResource.icMagicWand
     static let icMapPin = ImageResource.icMapPin
     static let icMobile = ImageResource.icMobile
     static let icMoon = ImageResource.icMoon

@@ -27,8 +27,10 @@ enum SettingsRoute: Routable {
     case appSettings
     case appProtection
     case autoLock
+    case mobileSignature
     case scanQRCode
     case changePassword(PasswordChange.State)
+    case customizeToolbars
     case securityKeys(UserSettings)
     case subscription
 
@@ -61,6 +63,8 @@ struct SettingsViewFactory {
             AppProtectionSelectionScreen()
         case .autoLock:
             AutoLockScreen()
+        case .mobileSignature:
+            MobileSignatureScreen(customSettings: customSettings(ctx: mailUserSession))
         case .scanQRCode:
             ScanQRCodeInstructionsView(
                 viewModel: .init(dependencies: .init(mailUserSession: mailUserSession, productName: AppDetails.mail.product))
@@ -72,6 +76,8 @@ struct SettingsViewFactory {
             accountAuthCoordinator.securityKeyListView(userSettings: userSettings)
         case .subscription:
             AvailablePlansViewFactory.make(mailUserSession: mailUserSession, presentationMode: .push)
+        case .customizeToolbars:
+            CustomizeToolbarsScreen(toolbarService: ToolbarService())
         }
     }
 }

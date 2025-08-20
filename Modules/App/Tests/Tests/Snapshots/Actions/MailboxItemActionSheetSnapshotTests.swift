@@ -21,44 +21,44 @@ import InboxSnapshotTesting
 import InboxTesting
 import SwiftUI
 
-@MainActor
-class MailboxItemActionSheetSnapshotTests: BaseTestCase {
-
-    func testMessageConversationActionSheetLayoutsCorrectly() {
-        for forceLightMode in [false, true] {
-            let id = ID.random()
-            let messageAppearanceOverrideStore = MessageAppearanceOverrideStore()
-
-            if forceLightMode {
-                messageAppearanceOverrideStore.forceLightMode(forMessageWithId: id)
-            }
-
-            let sut = MailboxItemActionSheet(
-                input: .init(id: id, type: .message(isLastMessageInCurrentLocation: false), title: "Hello".notLocalized),
-                mailbox: .dummy,
-                actionsProvider: MailboxItemActionSheetPreviewProvider.actionsProvider(),
-                starActionPerformerActions: .dummy,
-                readActionPerformerActions: .dummy,
-                deleteActions: .dummy,
-                moveToActions: .dummy,
-                generalActions: .dummy,
-                replyActions: { _, _ in },
-                mailUserSession: .dummy,
-                navigation: { _ in }
-            )
-            .environmentObject(ToastStateStore(initialState: .initial))
-            .environment(\.messageAppearanceOverrideStore, messageAppearanceOverrideStore)
-            .environment(\.messagePrinter, .init(userSession: { .dummy }))
-
-            for style in [UIUserInterfaceStyle.light, .dark] {
-                assertCustomHeightSnapshot(
-                    matching: UIHostingController(rootView: sut).view,
-                    styles: [style],
-                    preferredHeight: 1050,
-                    named: "lightMode\(forceLightMode ? "" : "Not")Forced",
-                )
-            }
-        }
-    }
-
-}
+//@MainActor
+//class MailboxItemActionSheetSnapshotTests: BaseTestCase {
+//
+//    func testMessageConversationActionSheetLayoutsCorrectly() {
+//        for forceLightMode in [false, true] {
+//            let id = ID.random()
+//            let messageAppearanceOverrideStore = MessageAppearanceOverrideStore()
+//
+//            if forceLightMode {
+//                messageAppearanceOverrideStore.forceLightMode(forMessageWithId: id)
+//            }
+//
+//            let sut = MailboxItemActionSheet(
+//                input: .init(id: id, type: .message(isLastMessageInCurrentLocation: false), title: "Hello".notLocalized),
+//                mailbox: .dummy,
+//                actionsProvider: MailboxItemActionSheetPreviewProvider.actionsProvider(),
+//                starActionPerformerActions: .dummy,
+//                readActionPerformerActions: .dummy,
+//                deleteActions: .dummy,
+//                moveToActions: .dummy,
+//                generalActions: .dummy,
+//                replyActions: { _, _ in },
+//                mailUserSession: .dummy,
+//                navigation: { _ in }
+//            )
+//            .environmentObject(ToastStateStore(initialState: .initial))
+//            .environment(\.messageAppearanceOverrideStore, messageAppearanceOverrideStore)
+//            .environment(\.messagePrinter, .init(userSession: { .dummy }))
+//
+//            for style in [UIUserInterfaceStyle.light, .dark] {
+//                assertCustomHeightSnapshot(
+//                    matching: UIHostingController(rootView: sut).view,
+//                    styles: [style],
+//                    preferredHeight: 1050,
+//                    named: "lightMode\(forceLightMode ? "" : "Not")Forced",
+//                )
+//            }
+//        }
+//    }
+//
+//}

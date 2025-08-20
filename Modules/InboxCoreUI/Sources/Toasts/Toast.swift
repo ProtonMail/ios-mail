@@ -19,7 +19,7 @@ import InboxCore
 import InboxDesignSystem
 import SwiftUI
 
-public struct Toast: Hashable {
+public struct Toast: Hashable, Sendable {
     let id: UUID
     let title: String?
     let message: String
@@ -90,11 +90,11 @@ public struct Toast: Hashable {
         hasher.combine(duration)
     }
 
-    public struct Button: Hashable {
+    public struct Button: Hashable, Sendable {
         let type: ButtonType
-        let action: () -> Void
+        let action: @Sendable () -> Void
 
-        public init(type: ButtonType, action: @escaping () -> Void) {
+        public init(type: ButtonType, action: @escaping @Sendable () -> Void) {
             self.type = type
             self.action = action
         }
@@ -108,18 +108,18 @@ public struct Toast: Hashable {
         }
     }
 
-    public enum Style {
+    public enum Style: Sendable {
         case error
         case information
         case success
         case warning
     }
 
-    public enum ButtonType: Hashable {
+    public enum ButtonType: Hashable, Sendable {
         case largeBottom(buttonTitle: String)
         case smallTrailing(content: ContentType)
 
-        public enum ContentType: Hashable {
+        public enum ContentType: Hashable, Sendable {
             case image(ImageResource)
             case title(String)
         }

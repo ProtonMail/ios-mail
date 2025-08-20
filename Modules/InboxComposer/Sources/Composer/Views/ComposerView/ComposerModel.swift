@@ -29,6 +29,7 @@ typealias Nested = NestedObservableObject
 final class ComposerModel: ObservableObject {
     @Published private(set) var state: ComposerState
     @Published var bodyAction: ComposerBodyAction?
+    @Published var modalAction: ComposerViewModalState?
     @Nested var attachmentAlertState: AttachmentAlertState
     @Published var toast: Toast?
 
@@ -41,7 +42,12 @@ final class ComposerModel: ObservableObject {
     private let cameraImageHandler: CameraImageHandler
     private let fileItemsHandler: FilePickerItemHandler
     private let scheduleSendOptionsProvider: ScheduleSendOptionsProvider
+    private let expirationValidationActions: MessageExpirationValidatorActions
 
+    private lazy var messageExpirationRecipientsValidator = MessageExpirationRecipientsValidator(
+        alertBinding: alertBinding,
+        actions: expirationValidationActions
+    )
     lazy var invalidAddressAlertStore = InvalidAddressAlertStateStore(
         validator: .init(
             readState: { [weak self] in return self?.state },
@@ -84,20 +90,23 @@ final class ComposerModel: ObservableObject {
         photosItemsHandler: PhotosPickerItemHandler,
         cameraImageHandler: CameraImageHandler,
         fileItemsHandler: FilePickerItemHandler,
-        isAddingAttachmentsEnabled: Bool
+        isAddingAttachmentsEnabled: Bool,
+        expirationValidationActions: MessageExpirationValidatorActions = .productionInstance
     ) {
         self.draft = draft
         self.draftOrigin = draftOrigin
         self.contactProvider = contactProvider
         self.onDismiss = onDismiss
         self.permissionsHandler = .init(permissionsHandler: permissionsHandler, contactStore: contactStore)
-        self.state = .initial(isAddingAttachmentsEnabled: isAddingAttachmentsEnabled)
+        self.state = .initial(composerMode: draft.composerMode, isAddingAttachmentsEnabled: isAddingAttachmentsEnabled)
         self.photosItemsHandler = photosItemsHandler
         self.cameraImageHandler = cameraImageHandler
         self.fileItemsHandler = fileItemsHandler
         self.attachmentAlertState = .init()
         self.scheduleSendOptionsProvider = .init(scheduleSendOptions: draft.scheduleSendOptions)
+        self.expirationValidationActions = expirationValidationActions
         self.state = makeState(from: draft)
+
         setUpCallbacks()
     }
 
@@ -299,11 +308,25 @@ final class ComposerModel: ObservableObject {
     }
 
     @MainActor
+    private func proceedAfterMessageExpirationValidation() async -> Bool {
+        switch await messageExpirationRecipientsValidator.validateRecipientsIfMessageHasExpiration(draft: draft) {
+        case .proceed:
+            return true
+        case .doNotProceed(let addPassword):
+            if addPassword {
+                modalAction = passwordProtectionState()
+            }
+            return false
+        }
+    }
+
+    @MainActor
     func sendMessage(at date: Date? = nil, dismissAction: Dismissable) async {
         addRecipientFromInput()
         guard !invalidAddressAlertStore.isAlertShown else { return }
         guard !messageHasBeenSentOrScheduled else { return }
         await updateBodyDebounceTask?.executeImmediately()
+        guard await proceedAfterMessageExpirationValidation() else { return }
 
         switch await performSendOrSchedule(date: date) {
         case .ok:
@@ -333,10 +356,16 @@ final class ComposerModel: ObservableObject {
 
     @MainActor
     func addAttachments(image: UIImage) async {
-        switch await cameraImageHandler.addInlineImage(to: draft, image: image) {
-        case .success(let cid):
-            bodyAction = .insertInlineImages(cids: [cid])
-        case .failure(let error):
+        do {
+            switch draft.composerMode {
+            case .html:
+                let cid = try await cameraImageHandler.addInlineImage(to: draft, image: image)
+                bodyAction = .insertInlineImages(cids: [cid])
+
+            case .plainText:
+                try await cameraImageHandler.addRegularAttachment(to: draft, image: image)
+            }
+        } catch {
             attachmentAlertState.enqueueAlertsForFailedAttachmentAdditions(errors: [error])
         }
     }
@@ -379,6 +408,16 @@ final class ComposerModel: ObservableObject {
         switch await draft.removePassword() {
         case .ok:
             state = state.copy(\.isPasswordProtected, to: draftIsPasswordProtected(draft: draft))
+        case .error(let error):
+            showToast(.error(message: error.localizedDescription))
+        }
+    }
+
+    @MainActor
+    func setExpirationTime(_ time: DraftExpirationTime) async {
+        switch await draft.setExpirationTime(expirationTime: time) {
+        case .ok:
+            state = state.copy(\.expirationTime, to: draftExpirationTime(draft: draft))
         case .error(let error):
             showToast(.error(message: error.localizedDescription))
         }
@@ -447,9 +486,19 @@ extension ComposerModel {
         }
     }
 
+    private func draftExpirationTime(draft: AppDraftProtocol) -> DraftExpirationTime {
+        switch draft.expirationTime() {
+        case .ok(let time):
+            return time
+        case .error(let error):
+            AppLogger.log(error: error, category: .composer)
+            return .never
+        }
+    }
+
     private func makeState(from draft: AppDraftProtocol, attachments: [DraftAttachmentUIModel] = []) -> ComposerState {
         .init(
-            isAddingAttachmentsEnabled: state.isAddingAttachmentsEnabled,
+            composerMode: draft.composerMode,
             toRecipients: .initialState(group: .to, recipients: recipientUIModels(from: draft, for: .to)),
             ccRecipients: .initialState(group: .cc, recipients: recipientUIModels(from: draft, for: .cc)),
             bccRecipients: .initialState(group: .bcc, recipients: recipientUIModels(from: draft, for: .bcc)),
@@ -458,7 +507,9 @@ extension ComposerModel {
             attachments: attachments,
             initialBody: draft.body(),
             isInitialFocusInBody: false,
-            isPasswordProtected: draftIsPasswordProtected(draft: draft)
+            isAddingAttachmentsEnabled: state.isAddingAttachmentsEnabled,
+            isPasswordProtected: draftIsPasswordProtected(draft: draft),
+            expirationTime: draftExpirationTime(draft: draft)
         )
     }
 

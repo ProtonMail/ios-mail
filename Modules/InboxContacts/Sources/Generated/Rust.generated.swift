@@ -4,8 +4,8 @@
 import Foundation
 import proton_app_uniffi
 
-public extension AllAvailableBottomBarActionsForConversationsResult {
-    func get() throws(ActionError) -> AllBottomBarMessageActions {
+public extension AllAvailableListActionsForConversationsResult {
+    func get() throws(ActionError) -> AllListActions {
         switch self {
         case .ok(let value):
             value
@@ -14,8 +14,18 @@ public extension AllAvailableBottomBarActionsForConversationsResult {
         }
     }
 }
-public extension AllAvailableBottomBarActionsForMessagesResult {
-    func get() throws(ActionError) -> AllBottomBarMessageActions {
+public extension AllAvailableListActionsForMessagesResult {
+    func get() throws(ActionError) -> AllListActions {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension AllAvailableMessageActionsForMessageResult {
+    func get() throws(ActionError) -> AllMessageActions {
         switch self {
         case .ok(let value):
             value
@@ -44,16 +54,6 @@ public extension AvailableActionsForConversationsResult {
         }
     }
 }
-public extension AvailableActionsForMessageResult {
-    func get() throws(ActionError) -> MessageAvailableActions {
-        switch self {
-        case .ok(let value):
-            value
-        case .error(let error):
-            throw error
-        }
-    }
-}
 public extension AvailableLabelAsActionsForConversationsResult {
     func get() throws(ActionError) -> [LabelAsAction] {
         switch self {
@@ -66,6 +66,16 @@ public extension AvailableLabelAsActionsForConversationsResult {
 }
 public extension AvailableLabelAsActionsForMessagesResult {
     func get() throws(ActionError) -> [LabelAsAction] {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension AvailableMessageActionSheetResult {
+    func get() throws(ActionError) -> MessageActionSheet {
         switch self {
         case .ok(let value):
             value

@@ -20,6 +20,7 @@ import SwiftUI
 extension DS {
     public enum SFSymbol: String, Sendable {
         case arrowCirclePath = "arrow.2.circlepath"
+        case arrowClockwise = "arrow.clockwise"
         case arrowUpRightSquare = "arrow.up.right.square"
         case checkmark = "checkmark"
         case checkmarkCircleFill = "checkmark.circle.fill"
@@ -30,11 +31,14 @@ extension DS {
         case chevronUp = "chevron.up"
         case chevronDown = "chevron.down"
         case deleteLeft = "delete.left"
+        case infoCircle = "info.circle"
         case eye = "eye"
         case eyeSlash = "eye.slash"
         case forward = "arrowshape.turn.up.forward"
         case lock = "lock"
         case magnifier = "magnifyingglass"
+        case minusCircleFill = "minus.circle.fill"
+        case plusCircleFill = "plus.circle.fill"
         case rectanglePortraitAndArrowRight = "rectangle.portrait.and.arrow.right"
         case reply = "arrowshape.turn.up.backward"
         case replyAll = "arrowshape.turn.up.backward.2"

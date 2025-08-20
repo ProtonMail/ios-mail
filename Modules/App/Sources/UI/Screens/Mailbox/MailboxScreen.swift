@@ -241,7 +241,7 @@ extension MailboxScreen {
 
     private var composeButtonView: some View {
         ComposeButtonView(text: L10n.Mailbox.compose, isExpanded: $isComposeButtonExpanded) {
-            mailboxModel.createDraft(toastStateStore: toastStateStore)
+            mailboxModel.createDraft()
         }
         .padding(.trailing, DS.Spacing.large)
         .padding(.bottom, DS.Spacing.large + toastStateStore.state.maxHeight)

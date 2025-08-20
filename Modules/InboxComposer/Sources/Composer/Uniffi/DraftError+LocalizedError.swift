@@ -151,6 +151,30 @@ extension DraftPasswordErrorReason {
     }
 }
 
+extension DraftExpirationError: LocalizedError {
+    public var errorDescription: String? {
+        switch self {
+        case .reason(let reason):
+            reason.errorMessage.string
+        case .other(let protonError):
+            protonError.localizedDescription
+        }
+    }
+}
+
+extension DraftExpirationErrorReason {
+    var errorMessage: LocalizedStringResource {
+        switch self {
+        case .expirationTimeInThePast:
+            L10n.DraftExpirationError.expirationTimeInThePast
+        case .expirationTimeExceeds30Days:
+            L10n.DraftExpirationError.expirationTimeExceeds30Days
+        case .expirationTimeLessThan15Min:
+            L10n.DraftSendError.expirationTimeTooSoon
+        }
+    }
+}
+
 extension DraftSendError: LocalizedError {
     public var errorDescription: String? {
         switch self {
@@ -208,8 +232,7 @@ private extension DraftSendErrorReason {
         case .eoPasswordDecrypt:
             L10n.DraftSendError.failedToDecryptExternalEncryptionPassword
         case .expirationTimeTooSoon:
-            // FIXME: Add missing string
-            "".notLocalized.stringResource
+            L10n.DraftSendError.expirationTimeTooSoon
         }
     }
 }

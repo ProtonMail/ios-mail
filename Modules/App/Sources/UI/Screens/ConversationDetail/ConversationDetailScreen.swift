@@ -89,7 +89,12 @@ struct ConversationDetailScreen: View {
                             .padding(.top, DS.Spacing.medium)
                             .padding(.horizontal, DS.Spacing.large)
                     }
-                    ConversationDetailListView(model: model, goBack: { goBackToMailbox() })
+                    ConversationDetailListView(
+                        model: model,
+                        mailUserSession: mailUserSession,
+                        draftPresenter: draftPresenter,
+                        goBack: { goBackToMailbox() }
+                    )
                 }
                 .accessibilityElement(children: .contain)
                 .accessibilityIdentifier(ConversationDetailScreenIdentifiers.rootItem)
@@ -127,7 +132,7 @@ struct ConversationDetailScreen: View {
                             goBack: goBackToMailbox
                         )
                     }) {
-                        action.displayData.icon
+                        action.displayData.image
                             .foregroundStyle(DS.Color.Icon.weak)
                     }
                     .accessibilityIdentifier(MailboxActionBarViewIdentifiers.button(index: index))

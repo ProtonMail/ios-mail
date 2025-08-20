@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import InboxCore
 import InboxCoreUI
 import InboxDesignSystem
 import SwiftUI
@@ -105,9 +106,7 @@ struct ScheduleSendTimeOptionsView: View {
     @ViewBuilder
     private func customOption(isCustomOptionAvailable: Bool) -> some View {
         var subtitle: String {
-            isCustomOptionAvailable
-                ? L10n.ScheduleSend.customSubtitle.string
-                : L10n.ScheduleSend.customSubtitleFreeUser.string
+            isCustomOptionAvailable ? L10n.ScheduleSend.customSubtitle.string : CommonL10n.upsellButtonSubtitle.string
         }
         Button(action: {
             Task { await onOpenDatePicker() }

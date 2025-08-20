@@ -68,30 +68,6 @@ private extension Publisher {
     }
 }
 
-private extension Publisher where Output: Sendable, Failure == Never {
-    /// `Publisher.values` does not buffer elements, so if you `await` inside a `for` loop, for example, some elements might be dropped.
-    /// This variant uses `AsyncStream` internally, which buffers by default.
-    var valuesWithBuffering: AsyncStream<Output> {
-        .init { continuation in
-            let cancellable = sink(
-                receiveCompletion: { completion in
-                    switch completion {
-                    case .finished:
-                        continuation.finish()
-                    }
-                },
-                receiveValue: { value in
-                    continuation.yield(value)
-                }
-            )
-
-            continuation.onTermination = { continuation in
-                cancellable.cancel()
-            }
-        }
-    }
-}
-
 private extension MailUserSession {
     var sessionIdentifier: String {
         switch sessionId() {
