@@ -559,6 +559,18 @@
             "state" : "translated",
             "value" : "%1$@ з %2$@"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "共 %2$@，已使用 %1$@"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%2$@ 中的 %1$@"
+          }
         }
       }
     },
@@ -2175,6 +2187,18 @@
             "state" : "translated",
             "value" : "+ ще %lld"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "+还有 %lld 个"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "+另 %lld 人"
+          }
         }
       }
     },
@@ -2411,7 +2435,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Un registro es un tipo de archivo que nos muestra las acciones que has realizado y que te han derivado en un error. Sólo los utilizaremos para ayudar a nuestros ingenieros a resolver problemas"
+            "value" : "Un registro es un tipo de archivo que nos muestra las acciones que has realizado y que te han derivado en un error. Sólo los utilizaremos para ayudar a nuestros ingenieros a resolver problemas."
           }
         },
         "es-419" : {
@@ -2495,7 +2519,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Um registro é uma categoria de arquivo que registra as ações realizadas que resultaram em um erro. Utilizaremos esses registros exclusivamente para auxiliar nossos engenheiros na correção de falhas."
+            "value" : "Um registro é uma categoria de arquivo que mostra as ações que você fez que resultaram em um erro. Utilizaremos os registros exclusivamente para ajudar nossos engenheiros a corrigir falhas."
           }
         },
         "ro" : {
@@ -2680,7 +2704,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Uma resposta ao seu email? Uma mensagem importante? Receba notificações no momento em que elas chegarem."
+            "value" : "Está esperando uma resposta no e-mail? Uma mensagem importante? Receba a notificação na hora."
           }
         },
         "ro" : {
@@ -4538,7 +4562,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Se han enviado todos los mensajes."
+            "value" : "Se han enviado todos los mensajes"
           }
         },
         "es-419" : {
@@ -8125,6 +8149,12 @@
             "state" : "translated",
             "value" : "Прихована копія: "
           }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "密件副本: "
+          }
         }
       }
     },
@@ -9012,7 +9042,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Não foi possível cancelar o envio agendado. A mensagem já foi enviada."
+            "value" : "Não é possível cancelar o envio agendado. A mensagem já foi enviada."
           }
         },
         "ro" : {
@@ -9191,7 +9221,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Não foi possível cancelar envio programado. A mensagem foi descartada ou já enviada."
+            "value" : "Não é possível cancelar o envio agendado. A mensagem foi descartada ou já foi enviada."
           }
         },
         "ro" : {
@@ -9370,7 +9400,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Não foi possível cancelar o envio programado. A mensagem não foi programada."
+            "value" : "Não é possível cancelar o envio agendado. A mensagem não foi agendada."
           }
         },
         "ro" : {
@@ -9549,7 +9579,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Não foi possível desfazer o envio. A mensagem foi descartada ou já enviada."
+            "value" : "Não é possível desfazer o envio. A mensagem foi descartada ou já foi enviada."
           }
         },
         "ro" : {
@@ -10654,7 +10684,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alterar segunda senha"
+            "value" : "Alterar senha secundária"
           }
         },
         "ro" : {
@@ -10697,6 +10727,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Змініть другий пароль"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "修改第二个密码"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "變更第二密碼"
           }
         }
       }
@@ -11941,6 +11983,34 @@
             }
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%#@arg1@"
+          },
+          "substitutions" : {
+            "arg1" : {
+              "argNum" : 1,
+              "formatSpecifier" : "lld",
+              "variations" : {
+                "plural" : {
+                  "one" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "Samtale flyttet til Arkiv."
+                    }
+                  },
+                  "other" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "Samtaler flyttet til Arkiv."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12315,6 +12385,34 @@
             }
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%#@arg1@"
+          },
+          "substitutions" : {
+            "arg1" : {
+              "argNum" : 1,
+              "formatSpecifier" : "lld",
+              "variations" : {
+                "plural" : {
+                  "one" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "Gesprek verplaatst naar archief."
+                    }
+                  },
+                  "other" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "Gesprekken verplaatst naar Archief."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12355,6 +12453,34 @@
             }
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%#@arg1@"
+          },
+          "substitutions" : {
+            "arg1" : {
+              "argNum" : 1,
+              "formatSpecifier" : "lld",
+              "variations" : {
+                "plural" : {
+                  "one" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "Conversa movida para a pasta Arquivo."
+                    }
+                  },
+                  "other" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "Conversas movidas para o Arquivo."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12369,7 +12495,7 @@
                   "one" : {
                     "stringUnit" : {
                       "state" : "translated",
-                      "value" : "Conversa movida para o arquivo."
+                      "value" : "Conversa movida para o Arquivo."
                     }
                   },
                   "other" : {
@@ -12586,6 +12712,46 @@
                     "stringUnit" : {
                       "state" : "translated",
                       "value" : "Yazışmalar arşivlendi."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%#@arg1@"
+          },
+          "substitutions" : {
+            "arg1" : {
+              "argNum" : 1,
+              "formatSpecifier" : "lld",
+              "variations" : {
+                "plural" : {
+                  "few" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "Розмови переміщено до Архіву."
+                    }
+                  },
+                  "many" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "Розмов переміщено до Архіву."
+                    }
+                  },
+                  "one" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "Розмову переміщено до архіву."
+                    }
+                  },
+                  "other" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "Розмови переміщено до Архіву."
                     }
                   }
                 }
@@ -14863,7 +15029,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Symbolleiste anpassen"
+            "value" : "Symbolleisten anpassen"
           }
         },
         "el" : {
@@ -18430,7 +18596,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ações de edição"
+            "value" : "Editar ações"
           }
         },
         "ro" : {
@@ -19170,7 +19336,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Editar barra de ferramentas da lista"
+            "value" : "Editar barra de ferramentas de lista"
           }
         },
         "ro" : {
@@ -19936,6 +20102,18 @@
             "state" : "translated",
             "value" : "адреса е-пошти"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "邮箱地址"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "電郵位址"
+          }
         }
       }
     },
@@ -19987,7 +20165,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "No se ha enviado el correo electrónico."
+            "value" : "No se ha enviado el correo electrónico"
           }
         },
         "es-419" : {
@@ -20160,7 +20338,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "E-Mails von %@ werden nicht mehr zugestellt und dauerhaft gelöscht. Die gesperrte E-Mail-Adressen können in den Einstellungen verwaltet werden."
+            "value" : "E-Mails von %@ werden nicht mehr zugestellt und dauerhaft gelöscht. Gesperrte E-Mail-Adressen können in den Einstellungen verwaltet werden."
           }
         },
         "el" : {
@@ -20223,6 +20401,12 @@
             "value" : "%@ からのメールは配信されなくなり、完全に削除されます。ブロックしたメールアドレスは設定で管理できます。"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ელფოსტები %@-დან აღარ იქნება მიწოდებული და სამუდამოდ წაიშლება. დაბლოკილი ელფოსტის მისამართების მართვა პარამეტრებში შეგიძლიათ."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -20256,7 +20440,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "E-mails de %@ não serão mais entregues e serão excluídos permanentemente. Você pode gerenciar endereços de e-mail bloqueados nas configurações."
+            "value" : "E-mails de %@ não serão mais entregues e serão excluídos permanentemente. Você pode gerenciar os endereços de e-mail bloqueados nas configurações."
           }
         },
         "ro" : {
@@ -20674,7 +20858,195 @@
       }
     },
     "Enable signature" : {
-      "comment" : "Next to a checkbox in the settings."
+      "comment" : "Next to a checkbox in the settings.",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Уключыць подпіс"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Activar signatura"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Povolit podpis"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktivér signatur"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Signatur aktivieren"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ενεργοποίηση υπογραφής"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enable signature"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Activar firma"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Activar firma"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Käytä allekirjoitusta"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Activer la signature"
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aláírás bekapcsolása"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktifkan tanda tangan"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abilita la firma"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "署名の有効化"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ხელმოწერის ჩართვა"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "서명 활성화"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktiver signatur"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Handtekening inschakelen"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Włącz podpis"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ativar a assinatura"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ativar assinatura"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Activare semnătură"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Включить подпись"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Povoliť podpis"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Omogoči podpis"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktivera signatur"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "İmza kullanılsın"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Увiмкнути підпис"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "启用签名"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "啟用簽名檔"
+          }
+        }
+      }
     },
     "Error logs help us to get to the bottom of your issue. If you don't include them, we might not be able to investigate fully." : {
       "comment" : "Information displayed in the bottom of the screen when send error logs switch is dislabed.",
@@ -20802,7 +21174,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Os registros dos erros nos ajudam a resolver o seu problema. Se você não os incluir, talvez não possamos fazer uma investigação completa."
+            "value" : "Os registros de erros nos ajudam a entender o problema a fundo. Sem os registros, talvez não consigamos fazer uma investigação completa."
           }
         },
         "ro" : {
@@ -22369,6 +22741,18 @@
             "state" : "translated",
             "value" : "Від: "
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "发件人：: "
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "寄件者: "
+          }
         }
       }
     },
@@ -22689,7 +23073,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Se os sites da Proton estiverem bloqueados, esta configuração permite que o aplicativo tente outros caminhos de rede para chegar até eles. Isso pode ajudar a contornar firewalls ou problemas de conexão. Recomendamos manter ativada para maior confiabilidade."
+            "value" : "Se os sites da Proton estiverem bloqueados, esta opção permite que o aplicativo tente acessá-los por outros caminhos de rede. Isso pode ajudar a contornar firewalls ou problemas de conexão. Recomendamos manter a opção ativada para maior confiabilidade."
           }
         },
         "ro" : {
@@ -23333,7 +23717,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Problem beim Laden Ihrer Inhalte. Bitte erneut versuchen oder melde dich neu an."
+            "value" : "Problem beim Laden der Inhalte. Bitte aktualisieren oder erneut anmelden."
           }
         },
         "el" : {
@@ -23435,7 +23819,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Erro ao carregar o seu conteúdo. Tente atualizar ou iniciar sessão novamente."
+            "value" : "Erro ao carregar seu conteúdo. Tente atualizar ou iniciar a sessão novamente."
           }
         },
         "ro" : {
@@ -23614,7 +23998,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Erro ao sincronizar seu conteúdo. Verifique sua conexão ou inicie sessão novamente."
+            "value" : "Erro ao sincronizar seu conteúdo. Verifique sua conexão ou inicie a sessão novamente."
           }
         },
         "ro" : {
@@ -23793,7 +24177,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ocorreu um problema ao atualizar sua conta. Inicie sessão novamente."
+            "value" : "Erro ao atualizar sua conta. Inicie a sessão novamente."
           }
         },
         "ro" : {
@@ -24928,7 +25312,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Lista da barra de ferramentas"
+            "value" : "Ferramentas de lista"
           }
         },
         "ro" : {
@@ -27242,7 +27626,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Marcar o e-mail como legítimo"
+            "value" : "Marcar e-mail como legítimo"
           }
         },
         "ro" : {
@@ -27795,6 +28179,34 @@
             }
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%#@arg1@"
+          },
+          "substitutions" : {
+            "arg1" : {
+              "argNum" : 1,
+              "formatSpecifier" : "lld",
+              "variations" : {
+                "plural" : {
+                  "one" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "Besked flyttet til arkiv."
+                    }
+                  },
+                  "other" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "Beskeder flyttet til Arkiv."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -28169,6 +28581,34 @@
             }
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%#@arg1@"
+          },
+          "substitutions" : {
+            "arg1" : {
+              "argNum" : 1,
+              "formatSpecifier" : "lld",
+              "variations" : {
+                "plural" : {
+                  "one" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "Bericht verplaatst naar archief."
+                    }
+                  },
+                  "other" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "Berichten verplaatst naar Archief."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -28209,6 +28649,34 @@
             }
           }
         },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%#@arg1@"
+          },
+          "substitutions" : {
+            "arg1" : {
+              "argNum" : 1,
+              "formatSpecifier" : "lld",
+              "variations" : {
+                "plural" : {
+                  "one" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "Mensagem movida para a pasta Arquivo."
+                    }
+                  },
+                  "other" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "Mensagens movidas para o Arquivo."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -28223,13 +28691,13 @@
                   "one" : {
                     "stringUnit" : {
                       "state" : "translated",
-                      "value" : "Mensagem transferida para o arquivo."
+                      "value" : "Mensagem movida para o Arquivo."
                     }
                   },
                   "other" : {
                     "stringUnit" : {
                       "state" : "translated",
-                      "value" : "Mensagens transferidas para o arquivo."
+                      "value" : "Mensagens movidas para o Arquivo."
                     }
                   }
                 }
@@ -28440,6 +28908,46 @@
                     "stringUnit" : {
                       "state" : "translated",
                       "value" : "İletiler arşivlendi."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%#@arg1@"
+          },
+          "substitutions" : {
+            "arg1" : {
+              "argNum" : 1,
+              "formatSpecifier" : "lld",
+              "variations" : {
+                "plural" : {
+                  "few" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "Повідомлення переміщено до Архіву."
+                    }
+                  },
+                  "many" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "Повідомлень переміщено до Архіву."
+                    }
+                  },
+                  "one" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "Повідомлення переміщено до архіву."
+                    }
+                  },
+                  "other" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "Повідомлення переміщено до Архіву."
                     }
                   }
                 }
@@ -28760,7 +29268,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mínimo 4 caracteres e máximo 21 caracteres."
+            "value" : "Mínimo de 4 caracteres e máximo de 21 caracteres."
           }
         },
         "ro" : {
@@ -28820,7 +29328,93 @@
       }
     },
     "Mobile signature" : {
-      "comment" : "Settings menu title."
+      "comment" : "Settings menu title.",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Мабільны подпіс"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Signatura mòbil"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Signatur auf Mobilgeräten"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Υπογραφή κινητού"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mobile signature"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Firma móvil"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mobiiliallekirjoitus"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Signature mobile"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Firma mobile"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mobilsignatur"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mobiele handtekening"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Assinatura móvel"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mobilsignatur"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mobil imza"
+          }
+        }
+      }
     },
     "Move to inbox" : {
       "comment" : "Action title for moving message/conversation to the `Inbox` folder in the action sheet.",
@@ -29952,6 +30546,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "назва"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "名称"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "名稱"
           }
         }
       }
@@ -31526,7 +32132,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "La bandeja de salida está vacía."
+            "value" : "La bandeja de salida está vacía"
           }
         },
         "es-419" : {
@@ -31610,7 +32216,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "A caixa de saída está vazia"
+            "value" : "Caixa de saída vazia"
           }
         },
         "ro" : {
@@ -31986,7 +32592,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "As notificações ajudam você a se manter a par da sua caixa de entrada, mesmo quando estiver em outro aplicativo."
+            "value" : "As notificações ajudam você a monitorar a sua caixa de entrada mesmo quando está usando outro aplicativo."
           }
         },
         "ro" : {
@@ -32412,6 +33018,18 @@
             "state" : "translated",
             "value" : "В: "
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "于: "
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "於: "
+          }
         }
       }
     },
@@ -32541,7 +33159,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ao abrir o e-mail, o conteúdo da mensagem e os anexos serão exibidos."
+            "value" : "Abrir o e-mail exibirá o conteúdo da mensagem e os anexos."
           }
         },
         "ro" : {
@@ -32924,7 +33542,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nosso sistema sinalizou esta mensagem como uma tentativa de phishing. Verifique se ela é verdadeira."
+            "value" : "Nosso sistema sinalizou esta mensagem como uma tentativa de phishing. Verifique se a mensagem é legítima."
           }
         },
         "ro" : {
@@ -33861,7 +34479,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "O PIN precisa ter entre 4 e 21 dígitos e consistir apenas de números."
+            "value" : "O PIN precisa ter entre 4 e 21 dígitos e conter apenas números"
           }
         },
         "ro" : {
@@ -34083,6 +34701,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "PIN-код повинен мати не менше 4 цифр"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "PIN 必须至少包含 4 位数字"
           }
         }
       }
@@ -34708,7 +35332,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Se ha enviado el informe del problema."
+            "value" : "Se ha enviado el informe del problema"
           }
         },
         "es-419" : {
@@ -34786,7 +35410,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "O relatório sobre o problema foi enviado"
+            "value" : "Relatório de problema enviado"
           }
         },
         "ro" : {
@@ -34971,7 +35595,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mude rapidamente para a mensagem anterior ou seguinte na sua caixa de entrada."
+            "value" : "Acesse a mensagem anterior ou a próxima da caixa de entrada rapidamente."
           }
         },
         "ro" : {
@@ -36302,7 +36926,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Os relatórios não são criptografados de ponta a ponta. Não envie nenhuma informação confidencial."
+            "value" : "Os relatórios não são criptografados de ponta a ponta. Não inclua informações confidenciais."
           }
         },
         "ro" : {
@@ -36391,7 +37015,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Zum Ursprung zurücksetzen"
+            "value" : "Auf Original zurücksetzen"
           }
         },
         "el" : {
@@ -36672,7 +37296,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Restaura a barra de ferramentas de mensagens para as configurações padrão"
+            "value" : "Restaura as ações da barra de ferramentas da visão de mensagens às configurações padrão originais."
           }
         },
         "ro" : {
@@ -39930,7 +40554,195 @@
       }
     },
     "Signature" : {
-      "comment" : "Above the text box to populate the signature in settings."
+      "comment" : "Above the text box to populate the signature in settings.",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Подпіс"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Signatura"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Podpis"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Signatur"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Signatur"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Υπογραφή"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Signature"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Firma"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Firma"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Allekirjoitus"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Signature"
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aláírás"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tanda tangan"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Firma"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "署名"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ხელმოწერა"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "서명"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Signatur"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Handtekening"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Podpis"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Assinatura"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Assinatura"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Semnătura"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Подпись"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Podpis"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Podpis"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Signatur"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "İmza"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Підпис"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "签名"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "簽名"
+          }
+        }
+      }
     },
     "Snooze" : {
       "comment" : "Action title for marking message as snoozed in the action sheet.",
@@ -40153,7 +40965,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Die Funktion „Zurückstellen“ kann auf Nachrichten an diesem Speicherort nicht angewendet werden."
+            "value" : "Die Funktion „Später lesen“ kann auf Nachrichten an diesem Speicherort nicht angewendet werden."
           }
         },
         "el" : {
@@ -40255,7 +41067,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "O adiamento não pode ser usado em mensagens nesta localização."
+            "value" : "Não é possível aplicar o adiamento a mensagens neste local."
           }
         },
         "ro" : {
@@ -40332,7 +41144,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nachricht zurückstellen"
+            "value" : "Nachricht später lesen"
           }
         },
         "el" : {
@@ -40478,6 +41290,18 @@
             "state" : "translated",
             "value" : "Відкласти повідомлення"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "延迟通知"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "訊息延後"
+          }
         }
       }
     },
@@ -40613,7 +41437,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "O horário de adiamento já passou."
+            "value" : "Não é possível adiar para um horário passado."
           }
         },
         "ro" : {
@@ -40835,6 +41659,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Відкласти до"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "待办至"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "緩辦直至"
           }
         }
       }
@@ -43914,7 +44750,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "El mensaje se descargará cuando el dispositivo vuelva a estar conectado."
+            "value" : "El mensaje se descargará cuando el dispositivo vuelva a estar conectado"
           }
         },
         "es-419" : {
@@ -43998,7 +44834,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "A mensagem será baixada quando o dispositivo tiver conexão com a internet"
+            "value" : "A mensagem será baixada quando o dispositivo ficar on-line novamente"
           }
         },
         "ro" : {
@@ -44380,7 +45216,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "A barra de ferramentas pode ter de 1 a 5 ações. Você não pode remover a última ação restante."
+            "value" : "A barra de ferramentas pode ter de 1 a 5 ações. Não é possível remover a última ação restante."
           }
         },
         "ro" : {
@@ -45120,7 +45956,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Esta mensagem provém de uma lista de e-mails."
+            "value" : "Esta mensagem vem de uma lista de e-mails."
           }
         },
         "ro" : {
@@ -45502,7 +46338,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Esta mensagem será movida para Rascunhos para você poder editar. Você precisará reagendar quando ela será enviada."
+            "value" : "Esta mensagem será movida para Rascunhos para poder ser editada. Você precisará reagendar o envio."
           }
         },
         "ro" : {
@@ -45794,7 +46630,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Este mensaje expirará en %@."
+            "value" : "Este mensaje expirará en %@"
           }
         },
         "es-419" : {
@@ -46069,7 +46905,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Esta barra de ferramentas aparece quando várias mensagens são selecionadas na lista de mensagens (por exemplo, Caixa de entrada, Lixeira, etc.)."
+            "value" : "Esta barra de ferramentas aparece quando são selecionadas várias mensagens da lista de mensagens (caixa de entrada, lixeira etc.)."
           }
         },
         "ro" : {
@@ -46146,7 +46982,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Diese Symbolleiste bleibt während dem Lesen von Nachrichten immer eingeblendet."
+            "value" : "Diese Symbolleiste bleibt beim Lesen von Nachrichten immer eingeblendet."
           }
         },
         "el" : {
@@ -47365,7 +48201,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tarde demais para desfazer o envio. A mensagem foi enviada."
+            "value" : "É tarde demais para desfazer o envio. A mensagem foi enviada."
           }
         },
         "ro" : {
@@ -47460,7 +48296,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Demasiados intentos demasiado rápido. Espere antes de volver a intentarlo."
+            "value" : "Demasiados intentos demasiado rápido. Espera antes de volver a intentarlo."
           }
         },
         "es-419" : {
@@ -47639,7 +48475,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Demasiados intentos incorrectos. Espere antes de volver a intentarlo."
+            "value" : "Demasiados intentos incorrectos. Espera antes de volver a intentarlo."
           }
         },
         "es-419" : {
@@ -49430,7 +50266,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Cancelar inscrição"
+            "value" : "Cancelar assinatura"
           }
         },
         "ro" : {
@@ -49594,6 +50430,12 @@
             "value" : "%@로 업그레이드"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oppgrader til %@"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -49658,6 +50500,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Покращити до %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "升级至 %@"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "升級到 %@"
           }
         }
       }
@@ -49889,7 +50743,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mejorar tu plan para aprovechar de la eliminación automática"
+            "value" : "Mejorar tu plan para aprovechar la eliminación automática"
           }
         },
         "es-419" : {
@@ -50152,7 +51006,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Faça upgrade para remover automaticamente os e-mails que estão na Lixeira ou no Spam por mais de 30 dias."
+            "value" : "Faça upgrade para remover automaticamente e-mails que ficarem na Lixeira ou no Spam por mais de 30 dias."
           }
         },
         "ro" : {
@@ -51101,7 +51955,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pedimos desculpas. Pode ter sido um erro nosso. Confirme se deseja marcar este e-mail como legítimo."
+            "value" : "Pedimos desculpas. Pode ter sido um erro nosso. Confirme se quiser marcar este e-mail como legítimo."
           }
         },
         "ro" : {
@@ -51286,7 +52140,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Encontramos um problema ao preparar a caixa de correio. Compartilhe os registros com nossa equipe de suporte para investigarmos."
+            "value" : "Ocorreu um problema ao preparar a caixa de correio. Compartilhe os registros com nossa equipe de suporte para podermos investigar."
           }
         },
         "ro" : {
@@ -51471,7 +52325,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Encontramos um problema ao sincronizar seu e-mail com o loop de eventos. Compartilhe os registros com nossa equipe de suporte para uma investigação mais aprofundada. Tente sair e entrar novamente para resolver o problema."
+            "value" : "Ocorreu um problema ao sincronizar seu e-mail com o loop de eventos. Compartilhe os registros com nossa equipe de suporte para podermos investigar melhor. Tente sair e iniciar a sessão novamente para resolver o problema."
           }
         },
         "ro" : {
@@ -51656,7 +52510,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Já estamos quase lá. Agradecemos a sua paciência!"
+            "value" : "Estamos quase lá. Agradecemos a sua paciência!"
           }
         },
         "ro" : {
@@ -51763,7 +52617,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Estás desconectado. Inténtalo de nuevo con una conexión a internet."
+            "value" : "Estás desconectado. Inténtalo de nuevo con una conexión a Internet."
           }
         },
         "es-419" : {
@@ -51841,7 +52695,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Você está off-line. Conecte-se à internet e tente novamente."
+            "value" : "Você está off-line. Conecte-se à Internet e tente novamente."
           }
         },
         "ro" : {
@@ -51948,7 +52802,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Has bloqueado este remitente."
+            "value" : "Has bloqueado este remitente"
           }
         },
         "es-419" : {
@@ -52330,7 +53184,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Necesitas estar online para editar mensajes programados."
+            "value" : "Necesitas estar online para editar mensajes programados"
           }
         },
         "es-419" : {
@@ -52408,7 +53262,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Você precisa estar conectado para editar mensagens agendadas"
+            "value" : "Você precisa estar on-line para editar mensagens agendadas"
           }
         },
         "ro" : {
@@ -52515,7 +53369,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "El dispositivo está desconectado."
+            "value" : "El dispositivo está desconectado"
           }
         },
         "es-419" : {

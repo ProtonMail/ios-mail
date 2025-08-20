@@ -105,6 +105,12 @@
             "value" : " %@"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : " %@"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -469,6 +475,12 @@
             "value" : "%@ 저장공간"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ lagringsplass"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -533,6 +545,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ сховища"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ 存储空间"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ 雲端儲存"
           }
         }
       }
@@ -636,6 +660,12 @@
           }
         },
         "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld"
+          }
+        },
+        "nb" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%lld"
@@ -814,6 +844,12 @@
             "value" : "이메일 주소 %llu개"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%llu e-postadresser"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -878,6 +914,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%llu адрес електронної пошти"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%llu 个邮箱地址"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%llu 個電子郵件地址"
           }
         }
       }
@@ -1178,6 +1226,12 @@
             "value" : "취소되기 전까지 같은 가격과 규정으로 갱신됩니다"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Automatisk fornyelse til samme pris og vilkår med mindre oppsigelse"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1242,6 +1296,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Автопоновлення за тією ж ціною та умовами доки не буде скасовано"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "除非取消，否则将以相同的价格和条款自动续订"
           }
         }
       }
@@ -1351,6 +1411,12 @@
             "value" : "자동 휴지통 삭제"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Automatisert fjerning av papirkurvinnhold"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1415,6 +1481,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Автовидалення зі смітника"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "自动清除垃圾"
           }
         }
       }
@@ -1906,6 +1978,12 @@
             "value" : "%2$@마다 %1$@씩 청구됨"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Faktureres til %1$@ hver %2$@"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1927,7 +2005,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Faturado em %1$@ a cada %2$@"
+            "value" : "Cobrança em %1$@ a cada %2$@"
           }
         },
         "ro" : {
@@ -1970,6 +2048,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Сплачується %1$@ кожні %2$@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "每次 %1$@ 计费周期 %2$@"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "每 %2$@ 以 %1$@ 計費"
           }
         }
       }
@@ -2082,6 +2172,12 @@
             "value" : "플랜을 선택하세요"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Velg planen din"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2147,6 +2243,12 @@
             "state" : "translated",
             "value" : "Виберіть тарифний план"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "选择您的套餐"
+          }
         }
       }
     },
@@ -2201,7 +2303,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Crea todo lo que necesites para mantenerte organizado. Obtén esto y más con %@."
+            "value" : "Crea todo lo que necesites para organizarte. Obtén esto y más con %@."
           }
         },
         "es-419" : {
@@ -2258,6 +2360,12 @@
             "value" : "체계적인 정리를 위해 필요한 모든 것을 만드세요. %@로 이 모든 기능과 그 이상을 누리세요."
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lag alt du trenger for å holde deg organisert. Få dette og mer med %@."
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2279,7 +2387,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Crie tudo o que você precisa para se manter organizado. Tenha isso e muito mais com o %@."
+            "value" : "Crie tudo o que você precisa para manter a organização. Tenha isso e muito mais com o %@."
           }
         },
         "ro" : {
@@ -2622,6 +2730,12 @@
             "value" : "이메일을 보낼 시간을 맞춤 설정하세요. %@로 이 모든 기능과 그 이상을 누리세요."
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tilpass når en e-post skal sendes. Nyt dette og mer med %@."
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2643,7 +2757,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Personalize quando um e-mail será enviado. Aproveite isso e muito mais com o %@."
+            "value" : "Personalize o horário de envio de um e-mail. Aproveite isso e muito mais com o %@."
           }
         },
         "ro" : {
@@ -2795,6 +2909,12 @@
             "value" : "30일 후 스팸과 휴지통을 삭제합니다. %@로 이 모든 기능과 그 이상을 누리세요."
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sletter søppelpost og innhold i papirkurven etter 30 dager. Få dette og mer med %@."
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2816,7 +2936,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Exclui spam e lixeira após 30 dias. Tenha isso e mais com o %@."
+            "value" : "Exclui o Spam e a Lixeira após 30 dias. Tenha isso e mais com o %@."
           }
         },
         "ro" : {
@@ -3350,6 +3470,12 @@
             "value" : "%@ 받기"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skaff deg %@"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3414,6 +3540,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Отримати %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "开通 %@"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "取得 %@"
           }
         }
       }
@@ -3657,7 +3795,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Usa tu propia firma móvil. Disfruta de esto y más con %@."
+            "value" : "Usa tu propia firma de móvil. Disfruta de esto y más con %@."
           }
         },
         "es-419" : {
@@ -3712,6 +3850,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "모바일 서명을 나만의 것으로 만드세요. %@로 이 모든 기능과 그 이상을 누리세요."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tilpass mobilsignaturen din. Nyt dette og mer med %@."
           }
         },
         "nl" : {
@@ -4269,6 +4413,12 @@
             "value" : "연간 결제로 %@를 절약하세요"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Betal årlig og spar %@"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4442,6 +4592,12 @@
             "value" : "사용자 지정 서명"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tilpass signaturen din"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4506,6 +4662,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Персоналізуйте свій підпис"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "自定义您的签名"
           }
         }
       }
@@ -4615,6 +4777,12 @@
             "value" : "Plus"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plus"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4679,6 +4847,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Plus"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plus"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "進階"
           }
         }
       }
@@ -5170,6 +5350,12 @@
             "value" : "그룹 이메일을 손쉽게 보내세요. %@로 이 모든 기능과 그 이상을 누리세요."
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Send gruppe-e-poster enkelt. Nyt dette og mer med %@."
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5534,6 +5720,12 @@
             "value" : "더 보기"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vis mer"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5599,6 +5791,18 @@
             "state" : "translated",
             "value" : "Розгорнути"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "显示更多"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "顯示更多"
+          }
         }
       }
     },
@@ -5650,7 +5854,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Posponlo — y recíbelo más tarde. Disfruta de esto y más con %@."
+            "value" : "Posponlo y recíbelo más tarde. Disfruta de esto y más con %@."
           }
         },
         "es-419" : {
@@ -5707,6 +5911,12 @@
             "value" : "방해금지 처리하고 — 나중에 다시 받으세요.  %@로 이 모든 기능과 그 이상을 누리세요."
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Slumre den — og få den levert senere. Nyt dette og mer med %@."
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5728,7 +5938,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Adie-o — e receba-o mais tarde. Aproveite isso e muito mais com o %@."
+            "value" : "Adie o envio para mais tarde. Aproveite isso e muito mais com o %@."
           }
         },
         "ro" : {
@@ -6069,6 +6279,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "요청한 요금제를 찾을 수 없습니다."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Den forespurte planen ble ikke funnet."
           }
         },
         "nl" : {
@@ -6626,6 +6842,12 @@
             "value" : "%@로 업그레이드"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oppgrader til %@"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6690,6 +6912,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Покращити до %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "升级至 %@"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "升級到 %@"
           }
         }
       }
@@ -6988,6 +7222,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "연간 (%lld%% 할인)"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Årlig (%lld%% RABATT)"
           }
         },
         "nl" : {

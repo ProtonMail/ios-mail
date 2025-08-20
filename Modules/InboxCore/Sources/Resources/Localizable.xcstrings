@@ -676,6 +676,12 @@
             "value" : "%@이(가) 클립보드에 복사됨."
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopierte %@ til utklippstavlen"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3152,7 +3158,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Faça upgrade para obter flexibilidade total"
+            "value" : "Faça upgrade para ter flexibilidade total"
           }
         },
         "ro" : {
