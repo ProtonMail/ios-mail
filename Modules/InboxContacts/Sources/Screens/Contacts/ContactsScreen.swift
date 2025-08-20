@@ -23,10 +23,12 @@ import SwiftUI
 
 public struct ContactsScreen: View {
     @Environment(\.dismissTestable) var dismiss: Dismissable
-    @StateObject private var store: ContactsStateStore
-    private let contactViewFactory: ContactViewFactory
 
-    var onLoad: ((Self) -> Void)?
+    private let initialState: ContactsScreenState
+    private let mailUserSession: MailUserSession
+    private let contactsProvider: GroupedContactsProvider
+    private let contactsWatcher: ContactsWatcher
+    private let contactViewFactory: ContactViewFactory
 
     /// `state` parameter is exposed only for testing purposes to be able to rely on data source in synchronous manner.
     public init(
@@ -37,70 +39,73 @@ public struct ContactsScreen: View {
         draftPresenter: ContactsDraftPresenter
     ) {
         UISearchBar.appearance().tintColor = UIColor(DS.Color.Text.accent)
-        _store = .init(
-            wrappedValue: .init(
-                state: state,
+        self.initialState = state
+        self.mailUserSession = mailUserSession
+        self.contactsProvider = contactsProvider
+        self.contactsWatcher = contactsWatcher
+        self.contactViewFactory = .init(mailUserSession: mailUserSession, draftPresenter: draftPresenter)
+    }
+
+    public var body: some View {
+        StoreView(
+            store: ContactsStateStore(
+                state: initialState,
                 mailUserSession: mailUserSession,
                 contactsWrappers: .productionInstance(
                     contactsProvider: contactsProvider,
                     contactsWatcher: contactsWatcher
                 )
-            )
-        )
-        self.contactViewFactory = .init(mailUserSession: mailUserSession, draftPresenter: draftPresenter)
-    }
-
-    public var body: some View {
-        NavigationStack(path: navigationPath) {
-            ContactsControllerRepresentable(
-                contacts: store.state.displayItems,
-                onDeleteItem: { item in store.handle(action: .onDeleteItem(item)) },
-                onTapItem: { item in store.handle(action: .onTapItem(item)) }
-            )
-            .ignoresSafeArea()
-            .navigationTitle(L10n.Contacts.title.string)
-            .navigationDestination(for: ContactsRoute.self) { route in
-                contactViewFactory
-                    .makeView(for: route)
-                    .environmentObject(store.router)
-                    .navigationBarBackButtonHidden()
-                    .toolbar {
-                        ToolbarItemFactory.back { store.handle(action: .goBack) }
+            ),
+            content: { state, store in
+                NavigationStack(path: navigationPath(store: store)) {
+                    ContactsControllerRepresentable(
+                        contacts: state.displayItems,
+                        onDeleteItem: { item in store.handle(action: .onDeleteItem(item)) },
+                        onTapItem: { item in store.handle(action: .onTapItem(item)) }
+                    )
+                    .ignoresSafeArea()
+                    .navigationTitle(L10n.Contacts.title.string)
+                    .navigationDestination(for: ContactsRoute.self) { route in
+                        contactViewFactory
+                            .makeView(for: route)
+                            .environmentObject(store.router)
+                            .navigationBarBackButtonHidden()
+                            .toolbar {
+                                ToolbarItemFactory.back { store.handle(action: .goBack) }
+                            }
                     }
-            }
-            .toolbar {
-                ToolbarItemFactory.leading(Image(symbol: .xmark)) {
-                    dismiss()
+                    .toolbar {
+                        ToolbarItemFactory.leading(Image(symbol: .xmark)) {
+                            dismiss()
+                        }
+                        ToolbarItemFactory.trailing(Image(symbol: .plus)) {
+                            // FIXME: Implement create contact action
+                        }
+                    }
                 }
-                ToolbarItemFactory.trailing(Image(symbol: .plus)) {
-                    // FIXME: Implement create contact action
-                }
+                .alert(model: deletionAlert(state: state, store: store))
+                .searchable(
+                    text: store.binding(\.search.query),
+                    isPresented: store.binding(\.search.isActive),
+                    placement: .navigationBarDrawer(displayMode: .always)
+                )
+                .onLoad { store.handle(action: .onLoad) }
             }
-        }
-        .alert(model: deletionAlert)
-        .searchable(
-            text: $store.state.search.query,
-            isPresented: $store.state.search.isActive,
-            placement: .navigationBarDrawer(displayMode: .always)
         )
-        .onLoad {
-            store.handle(action: .onLoad)
-            onLoad?(self)
-        }
     }
 
     // MARK: - Private
 
-    private var navigationPath: Binding<[ContactsRoute]> {
+    private func navigationPath(store: ContactsStateStore) -> Binding<[ContactsRoute]> {
         .init(
             get: { store.router.stack },
             set: { newStack in store.router.stack = newStack }
         )
     }
 
-    private var deletionAlert: Binding<AlertModel?> {
+    private func deletionAlert(state: ContactsScreenState, store: ContactsStateStore) -> Binding<AlertModel?> {
         .readonly {
-            store.state.itemToDelete.map { itemType in
+            state.itemToDelete.map { itemType in
                 DeleteConfirmationAlertFactory.make(
                     for: itemType,
                     action: { action in store.handle(action: .onDeleteItemAlertAction(action)) }

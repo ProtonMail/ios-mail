@@ -17,10 +17,11 @@
 
 import Combine
 import InboxCore
+import InboxCoreUI
 import proton_app_uniffi
 import SwiftUI
 
-final class ContactsStateStore: ObservableObject {
+final class ContactsStateStore: StateStore {
     enum Action {
         case goBack
         case onDeleteItem(ContactItemType)
