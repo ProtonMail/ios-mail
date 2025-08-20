@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Proton Technologies AG
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -15,10 +15,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import DeveloperToolsSupport
-import InboxDesignSystem
+import Foundation
 
-extension DS.Images {
-    static let contactsWebSheet = ImageResource.contactsWebSheet
-    static let noContacts = ImageResource.contactsEmptyState
+struct SafariDetails: Identifiable, Equatable {
+    let url: URL
+
+    // MARK: - Identifiable
+
+    var id: String {
+        url.absoluteString
+    }
 }

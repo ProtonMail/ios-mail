@@ -54,7 +54,9 @@ final class ContactsStateStoreTests: BaseTestCase {
     func testState_ItHasCorrectInitialState() {
         let expectedState = ContactsScreenState(
             search: .init(query: "", isActive: false),
-            allItems: []
+            allItems: [],
+            displayCreateContactSheet: false,
+            createContactURL: .none
         )
 
         XCTAssertEqual(sut.state, expectedState)
@@ -93,7 +95,14 @@ final class ContactsStateStoreTests: BaseTestCase {
 
         sut.handle(action: .onLoad)
 
-        XCTAssertEqual(sut.state, .init(search: .initial, allItems: groupedItems))
+        XCTAssertEqual(
+            sut.state,
+            .init(
+                search: .initial,
+                allItems: groupedItems,
+                displayCreateContactSheet: false,
+                createContactURL: .none
+            ))
         XCTAssertEqual(sut.state.displayItems, sut.state.allItems)
         XCTAssertEqual(deleterSpy.deleteContactCalls, [])
         XCTAssertEqual(deleterSpy.deleteContactGroupCalls, [])
@@ -140,7 +149,15 @@ final class ContactsStateStoreTests: BaseTestCase {
             )
         ]
 
-        XCTAssertEqual(sut.state, .init(search: .init(query: "Andr", isActive: true), allItems: groupedItems))
+        XCTAssertEqual(
+            sut.state,
+            .init(
+                search: .init(query: "Andr", isActive: true),
+                allItems: groupedItems,
+                displayCreateContactSheet: false,
+                createContactURL: .none
+            )
+        )
         XCTAssertEqual(sut.state.displayItems, expectedDisplayItems)
         XCTAssertEqual(deleterSpy.deleteContactCalls, [])
         XCTAssertEqual(deleterSpy.deleteContactGroupCalls, [])
@@ -177,7 +194,15 @@ final class ContactsStateStoreTests: BaseTestCase {
 
         sut.handle(action: .onLoad)
 
-        XCTAssertEqual(sut.state, .init(search: .init(query: "", isActive: true), allItems: groupedItems))
+        XCTAssertEqual(
+            sut.state,
+            .init(
+                search: .init(query: "", isActive: true),
+                allItems: groupedItems,
+                displayCreateContactSheet: false,
+                createContactURL: .none
+            )
+        )
         XCTAssertEqual(sut.state.displayItems, [.init(groupedBy: "", items: sut.state.allItems.flatMap(\.items))])
         XCTAssertEqual(deleterSpy.deleteContactCalls, [])
         XCTAssertEqual(deleterSpy.deleteContactGroupCalls, [])
@@ -209,7 +234,16 @@ final class ContactsStateStoreTests: BaseTestCase {
         sut.handle(action: .onLoad)
         sut.handle(action: .onDeleteItem(itemToDelete))
 
-        XCTAssertEqual(sut.state, .init(search: .initial, allItems: groupedItems, itemToDelete: itemToDelete))
+        XCTAssertEqual(
+            sut.state,
+            .init(
+                search: .initial,
+                allItems: groupedItems,
+                itemToDelete: itemToDelete,
+                displayCreateContactSheet: false,
+                createContactURL: .none
+            )
+        )
         XCTAssertEqual(sut.state.displayItems, sut.state.allItems)
 
         simulateSuccessfulOnDeleteItemAlertAction(.group(.advisorsGroup), from: groupedItems)
@@ -231,7 +265,16 @@ final class ContactsStateStoreTests: BaseTestCase {
             ),
         ]
 
-        XCTAssertEqual(sut.state, .init(search: .initial, allItems: expectedItems, itemToDelete: nil))
+        XCTAssertEqual(
+            sut.state,
+            .init(
+                search: .initial,
+                allItems: expectedItems,
+                itemToDelete: nil,
+                displayCreateContactSheet: false,
+                createContactURL: .none
+            )
+        )
         XCTAssertEqual(sut.state.displayItems, sut.state.allItems)
         XCTAssertEqual(deleterSpy.deleteContactCalls, [])
         XCTAssertEqual(deleterSpy.deleteContactGroupCalls, [ContactGroupItem.advisorsGroup.id])
@@ -262,7 +305,16 @@ final class ContactsStateStoreTests: BaseTestCase {
         sut.handle(action: .onLoad)
         sut.handle(action: .onDeleteItem(.contact(.vip)))
 
-        XCTAssertEqual(sut.state, .init(search: .active(query: ""), allItems: groupedItems, itemToDelete: itemToDelete))
+        XCTAssertEqual(
+            sut.state,
+            .init(
+                search: .active(query: ""),
+                allItems: groupedItems,
+                itemToDelete: itemToDelete,
+                displayCreateContactSheet: false,
+                createContactURL: .none
+            )
+        )
         XCTAssertEqual(sut.state.displayItems, [.init(groupedBy: "", items: groupedItems.flatMap(\.items))])
         XCTAssertEqual(deleterSpy.deleteContactCalls, [])
         XCTAssertEqual(deleterSpy.deleteContactGroupCalls, [])
@@ -280,7 +332,16 @@ final class ContactsStateStoreTests: BaseTestCase {
             )
         ]
 
-        XCTAssertEqual(sut.state, .init(search: .active(query: ""), allItems: expectedItems, itemToDelete: nil))
+        XCTAssertEqual(
+            sut.state,
+            .init(
+                search: .active(query: ""),
+                allItems: expectedItems,
+                itemToDelete: nil,
+                displayCreateContactSheet: false,
+                createContactURL: .none
+            )
+        )
         XCTAssertEqual(sut.state.displayItems, [.init(groupedBy: "", items: expectedItems.flatMap(\.items))])
         XCTAssertEqual(deleterSpy.deleteContactCalls, [ContactItem.vip.id])
         XCTAssertEqual(deleterSpy.deleteContactGroupCalls, [])
@@ -316,7 +377,16 @@ final class ContactsStateStoreTests: BaseTestCase {
 
         createdLiveQueryCallbackWrapper?.onUpdate(contacts: groupedItems)
 
-        XCTAssertEqual(sut.state, .init(search: .initial, allItems: groupedItems, itemToDelete: nil))
+        XCTAssertEqual(
+            sut.state,
+            .init(
+                search: .initial,
+                allItems: groupedItems,
+                itemToDelete: nil,
+                displayCreateContactSheet: false,
+                createContactURL: .none
+            )
+        )
         XCTAssertEqual(sut.state.displayItems, groupedItems)
         XCTAssertEqual(deleterSpy.deleteContactCalls, [ContactItem.vip.id])
         XCTAssertEqual(deleterSpy.deleteContactGroupCalls, [])
@@ -352,7 +422,16 @@ final class ContactsStateStoreTests: BaseTestCase {
 
         createdLiveQueryCallbackWrapper?.onUpdate(contacts: groupedItems)
 
-        XCTAssertEqual(sut.state, .init(search: .initial, allItems: groupedItems, itemToDelete: nil))
+        XCTAssertEqual(
+            sut.state,
+            .init(
+                search: .initial,
+                allItems: groupedItems,
+                itemToDelete: nil,
+                displayCreateContactSheet: false,
+                createContactURL: .none
+            )
+        )
         XCTAssertEqual(sut.state.displayItems, groupedItems)
         XCTAssertEqual(deleterSpy.deleteContactCalls, [])
         XCTAssertEqual(deleterSpy.deleteContactGroupCalls, [ContactGroupItem.advisorsGroup.id])
@@ -384,7 +463,15 @@ final class ContactsStateStoreTests: BaseTestCase {
 
         createdLiveQueryCallbackWrapper?.onUpdate(contacts: groupedItems)
 
-        XCTAssertEqual(sut.state, .init(search: .initial, allItems: groupedItems, itemToDelete: nil))
+        XCTAssertEqual(sut.state,
+            .init(
+                search: .initial,
+                allItems: groupedItems,
+                itemToDelete: nil,
+                displayCreateContactSheet: false,
+                createContactURL: .none
+            )
+        )
         XCTAssertEqual(sut.state.displayItems, groupedItems)
         XCTAssertEqual(deleterSpy.deleteContactCalls, [])
         XCTAssertEqual(deleterSpy.deleteContactGroupCalls, [])
@@ -464,11 +551,48 @@ final class ContactsStateStoreTests: BaseTestCase {
         XCTAssertEqual(sut.router.stack, [])
     }
 
+    // MARK: - `createContact` action
+
+    func testCreateContactAction_ItDisplaysCreateContactSheet() {
+        sut.handle(action: .onLoad)
+        sut.handle(action: .createContact)
+
+        XCTAssertTrue(sut.state.displayCreateContactSheet)
+    }
+
+    // MARK: - `createContactSheetAction` action
+
+    func testCreateContactSheetAction_WhenOpenWebView_ItClosesSheetAndSetsCreateContactState() {
+        sut.handle(action: .onLoad)
+        sut.handle(action: .createContactSheetAction(.openWebView))
+
+        XCTAssertFalse(sut.state.displayCreateContactSheet)
+        XCTAssertEqual(sut.state.createContactURL?.url, URL(string: "https://proton.me"))
+    }
+
+    func testCreateContactSheetAction_WhenDismiss_ItClosesSheetAndDoesNotSetCreateContactState() {
+        sut.handle(action: .onLoad)
+        sut.handle(action: .createContactSheetAction(.dismiss))
+
+        XCTAssertFalse(sut.state.displayCreateContactSheet)
+        XCTAssertNil(sut.state.createContactURL)
+    }
+
+    // MARK: - `dismissCreateContact` action
+
+    func testDismissCreateContactAction_ItResetsCreateContactState() {
+        sut.handle(action: .onLoad)
+        sut.handle(action: .createContactSheetAction(.openWebView))
+        sut.handle(action: .dismissCreateContact)
+
+        XCTAssertNil(sut.state.createContactURL)
+    }
+
     // MARK: - Private
 
     private func makeSUT(search: ContactsScreenState.Search) -> ContactsStateStore {
         .init(
-            state: .init(search: search, allItems: []),
+            state: .init(search: search, allItems: [], displayCreateContactSheet: false, createContactURL: .none),
             mailUserSession: .testInstance(),
             contactsWrappers: .init(
                 contactsProvider: .init(allContacts: { _ in .ok(self.stubbedContacts) }),
@@ -520,7 +644,6 @@ final class ContactsStateStoreTests: BaseTestCase {
             return filteredItems.isEmpty ? nil : groupedContacts.copy(items: filteredItems)
         }
     }
-
 }
 
 private class DeleterSpy {

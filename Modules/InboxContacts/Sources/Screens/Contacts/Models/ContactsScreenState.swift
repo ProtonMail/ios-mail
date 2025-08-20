@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import Foundation
 import InboxCore
 import proton_app_uniffi
 
@@ -27,6 +28,8 @@ public struct ContactsScreenState: Copying, Equatable {
     var search: Search
     var allItems: [GroupedContacts]
     var itemToDelete: ContactItemType?
+    var displayCreateContactSheet: Bool
+    var createContactURL: SafariDetails?
     var displayItems: [GroupedContacts] {
         guard search.isActive else {
             return allItems
@@ -44,7 +47,13 @@ public struct ContactsScreenState: Copying, Equatable {
 extension ContactsScreenState {
 
     public static var initial: Self {
-        .init(search: .initial, allItems: [], itemToDelete: nil)
+        .init(
+            search: .initial,
+            allItems: [],
+            itemToDelete: nil,
+            displayCreateContactSheet: false,
+            createContactURL: .none
+        )
     }
 
 }

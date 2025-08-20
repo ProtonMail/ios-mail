@@ -15,28 +15,15 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-@testable import InboxContacts
-import proton_app_uniffi
+import SafariServices
+import SwiftUI
 
-extension ContactsScreen {
+struct SafariView: UIViewControllerRepresentable {
+    let model: SafariDetails
 
-    static func testInstance(
-        search: ContactsScreenState.Search = .initial,
-        items: [GroupedContacts]
-    ) -> ContactsScreen {
-        ContactsScreen(
-            state: .init(
-                search: search,
-                allItems: items,
-                itemToDelete: nil,
-                displayCreateContactSheet: false,
-                createContactURL: .none
-            ),
-            mailUserSession: .testInstance(),
-            contactsProvider: .previewInstance(),
-            contactsWatcher: .previewInstance(),
-            draftPresenter: ContactsDraftPresenterDummy()
-        )
+    func makeUIViewController(context: Context) -> SFSafariViewController {
+        SFSafariViewController(url: model.url)
     }
 
+    func updateUIViewController(_ uiViewController: SFSafariViewController, context: Context) {}
 }

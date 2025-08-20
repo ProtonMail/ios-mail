@@ -79,10 +79,30 @@ public struct ContactsScreen: View {
                             dismiss()
                         }
                         ToolbarItemFactory.trailing(Image(symbol: .plus)) {
-                            // FIXME: Implement create contact action
+                            store.handle(action: .createContact)
                         }
                     }
                 }
+                .sheet(
+                    isPresented: store.binding(\.displayCreateContactSheet),
+                    content: {
+                        PromptSheet(
+                            model: .init(
+                                image: DS.Images.contactsWebSheet,
+                                title: "Available in web".stringResource,
+                                subtitle: "Creating contacts or groups in the app is not yet ready. For now, you can create them in the web app and they’ll sync to your device.".stringResource,
+                                actionButtonTitle: "Create in web".stringResource,
+                                onAction: { store.handle(action: .createContactSheetAction(.openWebView)) },
+                                onDismiss: { store.handle(action: .createContactSheetAction(.dismiss)) }
+                            )
+                        )
+                    }
+                )
+                .sheet(
+                    item: store.binding(\.createContactURL),
+                    onDismiss: { store.handle(action: .dismissCreateContact) },
+                    content: SafariView.init
+                )
                 .alert(model: deletionAlert(state: state, store: store))
                 .searchable(
                     text: store.binding(\.search.query),

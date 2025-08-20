@@ -22,7 +22,15 @@ import proton_app_uniffi
 import SwiftUI
 
 final class ContactsStateStore: StateStore {
+    enum CreateContactSheetAction {
+        case openWebView
+        case dismiss
+    }
+
     enum Action {
+        case createContact
+        case dismissCreateContact
+        case createContactSheetAction(CreateContactSheetAction)
         case goBack
         case onDeleteItem(ContactItemType)
         case onDeleteItemAlertAction(DeleteItemAlertAction)
@@ -62,6 +70,16 @@ final class ContactsStateStore: StateStore {
 
     func handle(action: Action) {
         switch action {
+        case .createContact:
+            state = state.copy(\.displayCreateContactSheet, to: true)
+        case .createContactSheetAction(let action):
+            state = state.copy(\.displayCreateContactSheet, to: false)
+
+            if case .openWebView = action {
+                state = state.copy(\.createContactURL, to: .init(url: URL(string: "https://proton.me")!))
+            }
+        case .dismissCreateContact:
+            state = state.copy(\.createContactURL, to: nil)
         case .goBack:
             router.goBack()
         case .onDeleteItemAlertAction(let alertAction):
