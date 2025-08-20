@@ -74,6 +74,16 @@ public extension AvailableLabelAsActionsForMessagesResult {
         }
     }
 }
+public extension AvailableMessageActionSheetResult {
+    func get() throws(ActionError) -> MessageActionSheet {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension AvailableMoveToActionsForConversationsResult {
     func get() throws(ActionError) -> [MoveAction] {
         switch self {
