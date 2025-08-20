@@ -18,5 +18,5 @@
 import proton_app_uniffi
 
 extension ApiConfig {
-    static let current = Self.init(envId: .current)
+    public static let current = Self.init(envId: .current)
 }

@@ -68,6 +68,7 @@ final class ContactsStateStore: StateStore {
         setUpNestedObservableObjectUpdates()
     }
 
+    @MainActor
     func handle(action: Action) async {
         switch action {
         case .createTapped:
@@ -76,7 +77,7 @@ final class ContactsStateStore: StateStore {
             state = state.copy(\.displayCreateContactSheet, to: false)
 
             if case .openSafari = action {
-                state = state.copy(\.createContactURL, to: .init(url: URL(string: "https://proton.me")!))
+                state = state.copy(\.createContactURL, to: .init(url: .Contact.create))
             }
         case .dismissCreateSheet:
             state = state.copy(\.createContactURL, to: nil)

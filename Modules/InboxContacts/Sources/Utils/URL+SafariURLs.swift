@@ -15,17 +15,19 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import InboxCore
 import Foundation
 import proton_app_uniffi
 
-extension ApiEnvId {
-    static let current: Self = {
-        #if QA || DEBUG
-            if let dynamicDomain = UserDefaults.appGroup.string(forKey: "DYNAMIC_DOMAIN") {
-                return .init(dynamicDomain: dynamicDomain)
-            }
-        #endif
+extension URL {
+    enum Contact {
+        static let create = baseURL(path: "/inbox#create-contact")
+    }
 
-        return .prod
-    }()
+    // MARK: - Private
+
+    private static func baseURL(path: String) -> URL {
+        URL(string: "\(baseURL)\(path)")!
+    }
+    private static let baseURL = "https://mail.\(ApiConfig.current.envId.domain)"
 }

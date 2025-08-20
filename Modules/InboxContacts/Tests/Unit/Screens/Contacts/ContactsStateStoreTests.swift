@@ -570,7 +570,7 @@ final class ContactsStateStoreTests {
         await sut.handle(action: .createSheetAction(.openSafari))
 
         #expect(sut.state.displayCreateContactSheet == false)
-        #expect(sut.state.createContactURL?.url == URL(string: "https://proton.me")!)
+        #expect(sut.state.createContactURL?.url == URL(string: "https://mail.\(ApiConfig.current.envId.domain)/inbox#create-contact")!)
     }
 
     @Test
