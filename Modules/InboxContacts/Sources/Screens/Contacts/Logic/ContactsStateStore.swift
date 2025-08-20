@@ -22,20 +22,20 @@ import proton_app_uniffi
 import SwiftUI
 
 final class ContactsStateStore: StateStore {
-    enum CreateContactSheetAction {
-        case openWebView
-        case dismiss
-    }
-
     enum Action {
-        case createContact
-        case dismissCreateContact
-        case createContactSheetAction(CreateContactSheetAction)
+        case createTapped
+        case dismissCreateSheet
+        case createSheetAction(CreateContactSheetAction)
         case goBack
         case onDeleteItem(ContactItemType)
         case onDeleteItemAlertAction(DeleteItemAlertAction)
         case onTapItem(ContactItemType)
         case onLoad
+    }
+
+    enum CreateContactSheetAction {
+        case openSafari
+        case dismiss
     }
 
     @Published var state: ContactsScreenState
@@ -70,15 +70,15 @@ final class ContactsStateStore: StateStore {
 
     func handle(action: Action) async {
         switch action {
-        case .createContact:
+        case .createTapped:
             state = state.copy(\.displayCreateContactSheet, to: true)
-        case .createContactSheetAction(let action):
+        case .createSheetAction(let action):
             state = state.copy(\.displayCreateContactSheet, to: false)
 
-            if case .openWebView = action {
+            if case .openSafari = action {
                 state = state.copy(\.createContactURL, to: .init(url: URL(string: "https://proton.me")!))
             }
-        case .dismissCreateContact:
+        case .dismissCreateSheet:
             state = state.copy(\.createContactURL, to: nil)
         case .goBack:
             router.goBack()

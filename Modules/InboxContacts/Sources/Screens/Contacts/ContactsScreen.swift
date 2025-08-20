@@ -79,7 +79,7 @@ public struct ContactsScreen: View {
                             dismiss()
                         }
                         ToolbarItemFactory.trailing(Image(symbol: .plus)) {
-                            store.handle(action: .createContact)
+                            store.handle(action: .createTapped)
                         }
                     }
                 }
@@ -92,15 +92,15 @@ public struct ContactsScreen: View {
                                 title: "Available in web".stringResource,
                                 subtitle: "Creating contacts or groups in the app is not yet ready. For now, you can create them in the web app and they’ll sync to your device.".stringResource,
                                 actionButtonTitle: "Create in web".stringResource,
-                                onAction: { store.handle(action: .createContactSheetAction(.openWebView)) },
-                                onDismiss: { store.handle(action: .createContactSheetAction(.dismiss)) }
+                                onAction: { store.handle(action: .createSheetAction(.openSafari)) },
+                                onDismiss: { store.handle(action: .createSheetAction(.dismiss)) }
                             )
                         )
                     }
                 )
                 .sheet(
                     item: store.binding(\.createContactURL),
-                    onDismiss: { store.handle(action: .dismissCreateContact) },
+                    onDismiss: { store.handle(action: .dismissCreateSheet) },
                     content: SafariView.init
                 )
                 .alert(model: deletionAlert(state: state, store: store))

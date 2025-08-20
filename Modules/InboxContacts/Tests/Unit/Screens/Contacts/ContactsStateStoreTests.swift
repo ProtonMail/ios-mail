@@ -551,46 +551,46 @@ final class ContactsStateStoreTests {
         #expect(sut.router.stack.isEmpty)
     }
 
-    // MARK: - `createContact` action
+    // MARK: - `createTapped` action
 
     @Test
-    func testCreateContactAction_ItDisplaysCreateContactSheet() async {
+    func testCreateTappedAction_ItDisplaysCreateContactSheet() async {
         await sut.handle(action: .onLoad)
-        await sut.handle(action: .createContact)
+        await sut.handle(action: .createTapped)
 
         #expect(sut.state.displayCreateContactSheet)
     }
 
-    // MARK: - `createContactSheetAction` action
+    // MARK: - `createSheetAction` action
 
     @Test
-    func testCreateContactSheetAction_WhenOpenWebView_ItClosesSheetAndSetsCreateContactState() async {
+    func testCreateSheetAction_WhenOpenWebView_ItClosesSheetAndSetsCreateContactState() async {
         await sut.handle(action: .onLoad)
-        await sut.handle(action: .createContact)
-        await sut.handle(action: .createContactSheetAction(.openWebView))
+        await sut.handle(action: .createTapped)
+        await sut.handle(action: .createSheetAction(.openSafari))
 
         #expect(sut.state.displayCreateContactSheet == false)
         #expect(sut.state.createContactURL?.url == URL(string: "https://proton.me")!)
     }
 
     @Test
-    func testCreateContactSheetAction_WhenDismiss_ItClosesSheetAndDoesNotSetCreateContactState() async {
+    func testCreateSheetAction_WhenDismiss_ItClosesSheetAndDoesNotSetCreateContactState() async {
         await sut.handle(action: .onLoad)
-        await sut.handle(action: .createContact)
-        await sut.handle(action: .createContactSheetAction(.dismiss))
+        await sut.handle(action: .createTapped)
+        await sut.handle(action: .createSheetAction(.dismiss))
 
         #expect(sut.state.displayCreateContactSheet == false)
         #expect(sut.state.createContactURL == nil)
     }
 
-    // MARK: - `dismissCreateContact` action
+    // MARK: - `dismissCreateSheet` action
 
     @Test
-    func testDismissCreateContactAction_ItResetsCreateContactState() async {
+    func testDismissCreateSheetAction_ItResetsCreateContactState() async {
         await sut.handle(action: .onLoad)
-        await sut.handle(action: .createContact)
-        await sut.handle(action: .createContactSheetAction(.openWebView))
-        await sut.handle(action: .dismissCreateContact)
+        await sut.handle(action: .createTapped)
+        await sut.handle(action: .createSheetAction(.openSafari))
+        await sut.handle(action: .dismissCreateSheet)
 
         #expect(sut.state.createContactURL == nil)
     }
