@@ -63,7 +63,6 @@ final class RSVPStateStore: StateStore {
         self.state = internalState.state
     }
 
-    @MainActor
     func handle(action: Action) async {
         switch action {
         case .onLoad, .retry:
@@ -83,7 +82,6 @@ final class RSVPStateStore: StateStore {
         }
     }
 
-    @MainActor
     private func loadEventDetails() async {
         updateState(with: .loading)
 
@@ -100,7 +98,6 @@ final class RSVPStateStore: StateStore {
         }
     }
 
-    @MainActor
     private func answer(with answer: RsvpAnswer, event: RsvpEvent, service: RsvpEventService) async {
         let updatedDetails = event.copy(
             \.attendees,
@@ -122,7 +119,6 @@ final class RSVPStateStore: StateStore {
         }
     }
 
-    @MainActor
     private func openNewDraft(withEmail email: String) async {
         do {
             try await draftPresenter.openDraft(with: .init(name: .none, email: email))

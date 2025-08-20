@@ -17,6 +17,7 @@
 
 import SwiftUI
 
+@MainActor
 public protocol StateStore: ObservableObject where Action: Sendable {
     associatedtype State
     associatedtype Action
@@ -24,12 +25,10 @@ public protocol StateStore: ObservableObject where Action: Sendable {
     var state: State { get set }
 
     func handle(action: Action) async
-    @MainActor
     func binding<Value>(_ keyPath: WritableKeyPath<State, Value> & Sendable) -> Binding<Value>
 }
 
 extension StateStore {
-    @MainActor
     public func binding<Value>(_ keyPath: WritableKeyPath<State, Value> & Sendable) -> Binding<Value> {
         Binding(
             get: { self.state[keyPath: keyPath] },
@@ -37,7 +36,6 @@ extension StateStore {
         )
     }
 
-    @MainActor
     public func handle(action: Action) {
         Task {
             await handle(action: action)

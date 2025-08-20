@@ -20,7 +20,6 @@ import InboxCore
 import InboxCoreUI
 import SwiftUI
 
-@MainActor
 class MessageActionsSheetStore: StateStore {
     @Published var state: MessageActionsSheetState
 

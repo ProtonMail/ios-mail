@@ -59,7 +59,6 @@ final class EmptyFolderBannerStateStore: StateStore {
 
     // MARK: - StateStore
 
-    @MainActor
     func handle(action: Action) async {
         switch action {
         case .upgradeToAutoDelete:

@@ -25,6 +25,7 @@ import proton_app_uniffi
 import Testing
 import UIKit
 
+@MainActor
 final class RSVPStateStoreTests {
     private let pasteboard = UIPasteboard.testInstance
     private let serviceSpy = RsvpEventServiceSpy(noPointer: .init())
