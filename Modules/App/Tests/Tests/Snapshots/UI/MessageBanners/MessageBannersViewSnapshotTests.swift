@@ -44,7 +44,7 @@ class MessageBannersViewSnapshotTests {
                 .phishingAttempt(auto: true),
                 .expiry(timestamp: 1_740_238_200),
                 .autoDelete(timestamp: 1_740_670_200),
-                .unsubscribeNewsletter,
+                .unsubscribeNewsletter(alreadyUnsubscribed: false),
                 .embeddedImages,
                 .scheduledSend(timestamp: tomorrowAt8AM),
             ],

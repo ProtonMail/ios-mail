@@ -721,9 +721,4 @@ extension ComposerModel {
     }
 }
 
-extension Draft: @retroactive ImageProxy {
-    // FIXME: Implementation below needs to be removed once new RustSDK is released
-    public func loadImage(url: String) async -> AttachmentDataResult {
-        .ok(.init(data: Data(), mime: ""))
-    }
-}
+extension Draft: @retroactive ImageProxy {}

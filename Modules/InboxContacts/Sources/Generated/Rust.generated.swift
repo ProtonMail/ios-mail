@@ -4,6 +4,26 @@
 import Foundation
 import proton_app_uniffi
 
+public extension AllAvailableConversationActionsForActionSheetResult {
+    func get() throws(ActionError) -> ConversationActionSheet {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension AllAvailableConversationActionsForConversationResult {
+    func get() throws(ActionError) -> AllConversationActions {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension AllAvailableListActionsForConversationsResult {
     func get() throws(ActionError) -> AllListActions {
         switch self {
@@ -16,6 +36,16 @@ public extension AllAvailableListActionsForConversationsResult {
 }
 public extension AllAvailableListActionsForMessagesResult {
     func get() throws(ActionError) -> AllListActions {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension AllAvailableMessageActionsForActionSheetResult {
+    func get() throws(ActionError) -> MessageActionSheet {
         switch self {
         case .ok(let value):
             value
@@ -66,16 +96,6 @@ public extension AvailableLabelAsActionsForConversationsResult {
 }
 public extension AvailableLabelAsActionsForMessagesResult {
     func get() throws(ActionError) -> [LabelAsAction] {
-        switch self {
-        case .ok(let value):
-            value
-        case .error(let error):
-            throw error
-        }
-    }
-}
-public extension AvailableMessageActionSheetResult {
-    func get() throws(ActionError) -> MessageActionSheet {
         switch self {
         case .ok(let value):
             value
@@ -274,6 +294,16 @@ public extension MessagesForLabelResult {
         }
     }
 }
+public extension MobileActionsResult {
+    func get() throws(ActionError) -> [MobileAction] {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension MoveConversationsResult {
     func get() throws(ActionError) -> Undo? {
         switch self {
@@ -314,7 +344,7 @@ public extension PasswordFlowChangePassResult {
         }
     }
 }
-public extension PasswordFlowGetFidoDetailsResult {
+public extension PasswordFlowFidoDetailsResult {
     func get() throws(PasswordError) -> Fido2ResponseFfi? {
         switch self {
         case .ok(let value):
