@@ -380,11 +380,12 @@ extension MessageBodyStateStore.State: @retroactive Equatable {
 extension MessageBody: @retroactive Equatable {
 
     public static func == (lhs: Self, rhs: Self) -> Bool {
+        let areRsvpProviderEqual: Bool = lhs.rsvpServiceProvider === rhs.rsvpServiceProvider
         let areHTMLsEqual =
             lhs.html.rawBody == rhs.html.rawBody && lhs.html.options == rhs.html.options && lhs.html.imageProxy === rhs.html.imageProxy
         let areBannersEqual = lhs.banners == rhs.banners
 
-        return areHTMLsEqual && areBannersEqual
+        return areRsvpProviderEqual && areHTMLsEqual && areBannersEqual
     }
 
 }
