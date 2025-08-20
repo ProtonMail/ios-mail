@@ -17,6 +17,7 @@
 
 import Foundation
 import InboxCore
+import proton_app_uniffi
 import WebKit
 
 final class HtmlBodyWebViewInterface: NSObject {
@@ -53,7 +54,8 @@ final class HtmlBodyWebViewInterface: NSObject {
     }
 
     func loadMessageBody(_ body: String) {
-        let html = htmlDocument.html(withTextEditorContent: body)
+        let nonce = generateCspNonce()
+        let html = htmlDocument.html(nonce: nonce, bodyContent: body)
         webView.loadHTMLString(html, baseURL: nil)
     }
 
