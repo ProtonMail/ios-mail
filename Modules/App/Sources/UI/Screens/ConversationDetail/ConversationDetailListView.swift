@@ -161,18 +161,8 @@ struct ConversationDetailListView: View {
         case .onForward:
             model.onForwardMessage(withId: uiModel.id, toastStateStore: toastStateStore)
         case .onMoreActions:
-            let currentLocationID = model.mailbox?.labelId()
-            let hasAtMostOneMessageWithCurrentLocation = model.state.hasAtMostOneMessage(
-                withLocationID: currentLocationID
-            )
-            model.actionSheets = model.actionSheets.copy(
-                \.mailbox,
-                to: .init(
-                    id: uiModel.id,
-                    type: .message(isLastMessageInCurrentLocation: hasAtMostOneMessageWithCurrentLocation),
-                    title: model.seed.subject
-                )
-            )
+            let input = MessageActionsSheetInput(id: uiModel.id, title: model.seed.subject)
+            model.actionSheets = model.actionSheets.copy(\.message, to: input)
         case .onSenderTap:
             senderActionTarget = uiModel
         case .onRecipientTap(let recipient):

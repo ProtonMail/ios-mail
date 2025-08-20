@@ -177,9 +177,10 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         case .labelAs:
             actionSheets = actionSheets.copy(\.labelAs, to: .init(sheetType: .labelAs, ids: [conversationID], type: .conversation))
         case .more:
-            actionSheets =
-                actionSheets
-                .copy(\.mailbox, to: .init(id: conversationID, type: .conversation, title: seed.subject))
+            break
+//            actionSheets =
+//                actionSheets
+//                .copy(\.mailbox, to: .init(id: conversationID, type: .conversation, title: seed.subject))
         case .moveTo:
             actionSheets =
                 actionSheets
@@ -206,7 +207,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
             actionSheets =
                 actionSheets
                 .copy(\.snooze, to: conversationID)
-                .copy(\.mailbox, to: nil)
+                .copy(\.message, to: nil)
         }
     }
 
@@ -600,7 +601,7 @@ enum ConversationModelError: Error {
 
 private extension MailboxActionSheetsState {
     static func initial() -> Self {
-        .init(mailbox: nil, labelAs: nil, moveTo: nil)
+        .init(message: nil, labelAs: nil, moveTo: nil)
     }
 }
 

@@ -20,7 +20,7 @@ import proton_app_uniffi
 import SwiftUI
 
 struct MailboxActionSheetsState: Copying {
-    var mailbox: MailboxItemActionSheetInput?
+    var message: MessageActionsSheetInput?
     var labelAs: ActionSheetInput?
     var moveTo: ActionSheetInput?
     var snooze: ID?
@@ -69,7 +69,15 @@ private struct MailboxActionSheets: ViewModifier {
 
     func body(content: Content) -> some View {
         content
-            .sheet(item: mailboxBinding, content: mailboxItemActionPicker)
+            .sheet(item: $state.message) { input in
+                MessageActionsSheet(
+                    messageID: input.id,
+                    title: input.title,
+                    mailbox: mailbox()
+                ) { action in
+                    print("Message sheet action selected: \(action)")
+                }
+            }
             .sheet(item: snoozeBinding) { conversationID in
                 SnoozeView(
                     state: .initial(
@@ -94,50 +102,50 @@ private struct MailboxActionSheets: ViewModifier {
                 })
     }
 
-    @MainActor
-    private func mailboxItemActionPicker(input: MailboxItemActionSheetInput) -> some View {
-        let navigation: (MailboxItemActionSheetNavigation) -> Void = { navigation in
-            switch navigation {
-            case .labelAs:
-                state =
-                    state
-                    .copy(\.labelAs, to: .init(sheetType: .labelAs, ids: [input.id], type: input.type))
-                    .copy(\.mailbox, to: nil)
-            case .moveTo:
-                state =
-                    state
-                    .copy(\.moveTo, to: .init(sheetType: .moveTo, ids: [input.id], type: input.type))
-                    .copy(\.mailbox, to: nil)
-            case .dismiss:
-                state = state.copy(\.mailbox, to: nil)
-            case .dismissAndGoBack:
-                state = state.copy(\.mailbox, to: nil)
-                goBackNavigation?()
-            case .snooze:
-                state =
-                    state
-                    .copy(\.mailbox, to: nil)
-                    .copy(\.snooze, to: input.id)
-            }
-        }
-        return MailboxItemActionSheet(
-            input: input,
-            mailbox: mailbox(),
-            actionsProvider: .productionInstance,
-            starActionPerformerActions: .productionInstance,
-            readActionPerformerActions: .productionInstance,
-            deleteActions: .productionInstance,
-            moveToActions: .productionInstance,
-            generalActions: .productionInstance,
-            replyActions: replyActions,
-            mailUserSession: AppContext.shared.userSession,
-            navigation: navigation
-        ).pickerViewStyle([.large])
-    }
-
-    private var mailboxBinding: Binding<MailboxItemActionSheetInput?> {
-        .init(get: { state.mailbox }, set: { mailbox in state = state.copy(\.mailbox, to: mailbox) })
-    }
+//    @MainActor
+//    private func mailboxItemActionPicker(input: MailboxItemActionSheetInput) -> some View {
+//        let navigation: (MailboxItemActionSheetNavigation) -> Void = { navigation in
+//            switch navigation {
+//            case .labelAs:
+//                state =
+//                    state
+//                    .copy(\.labelAs, to: .init(sheetType: .labelAs, ids: [input.id], type: input.type))
+//                    .copy(\.message, to: nil)
+//            case .moveTo:
+//                state =
+//                    state
+//                    .copy(\.moveTo, to: .init(sheetType: .moveTo, ids: [input.id], type: input.type))
+//                    .copy(\.message, to: nil)
+//            case .dismiss:
+//                state = state.copy(\.mailbox, to: nil)
+//            case .dismissAndGoBack:
+//                state = state.copy(\.mailbox, to: nil)
+//                goBackNavigation?()
+//            case .snooze:
+//                state =
+//                    state
+//                    .copy(\.mailbox, to: nil)
+//                    .copy(\.snooze, to: input.id)
+//            }
+//        }
+//        return MailboxItemActionSheet(
+//            input: input,
+//            mailbox: mailbox(),
+//            actionsProvider: .productionInstance,
+//            starActionPerformerActions: .productionInstance,
+//            readActionPerformerActions: .productionInstance,
+//            deleteActions: .productionInstance,
+//            moveToActions: .productionInstance,
+//            generalActions: .productionInstance,
+//            replyActions: replyActions,
+//            mailUserSession: AppContext.shared.userSession,
+//            navigation: navigation
+//        ).pickerViewStyle([.large])
+//    }
+//
+//    private var mailboxBinding: Binding<MailboxItemActionSheetInput?> {
+//        .init(get: { state.mailbox }, set: { mailbox in state = state.copy(\.mailbox, to: mailbox) })
+//    }
 
     private var snoozeBinding: Binding<ID?> {
         .init(get: { state.snooze }, set: { id in state = state.copy(\.snooze, to: id) })

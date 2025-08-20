@@ -25,15 +25,17 @@ struct MessageActionsSheet: View {
     private let messageID: ID
     private let mailbox: Mailbox
     private let title: String
+    private let actionSelected: (MessageAction) -> Void
     @Environment(\.messageAppearanceOverrideStore) var messageAppearanceOverrideStore
     @Environment(\.colorScheme) var colorScheme
 
     @State var actions: MessageActionSheet?
 
-    init(messageID: ID, title: String, mailbox: Mailbox) {
+    init(messageID: ID, title: String, mailbox: Mailbox, actionSelected: @escaping (MessageAction) -> Void) {
         self.messageID = messageID
         self.title = title
         self.mailbox = mailbox
+        self.actionSelected = actionSelected
     }
 
     var body: some View {
@@ -97,7 +99,7 @@ struct MessageActionsSheet: View {
         .clipShape(.rect(cornerRadius: DS.Radius.extraLarge))
     }
 
-    func loadActions() async {
+    private func loadActions() async {
         let isForcingLightMode = messageAppearanceOverrideStore!.isForcingLightMode(forMessageWithId: messageID)
         let themeOpts = ThemeOpts(colorScheme: colorScheme, isForcingLightMode: isForcingLightMode)
         do {
@@ -116,7 +118,7 @@ struct MessageActionsSheet: View {
         case .onLoad:
             await loadActions()
         case .actionSelected(let action):
-            print("Action selected: \(action)")
+            actionSelected(action)
         }
     }
 }
