@@ -68,7 +68,7 @@ final class ContactsStateStore: StateStore {
         setUpNestedObservableObjectUpdates()
     }
 
-    func handle(action: Action) {
+    func handle(action: Action) async {
         switch action {
         case .createContact:
             state = state.copy(\.displayCreateContactSheet, to: true)
@@ -83,24 +83,24 @@ final class ContactsStateStore: StateStore {
         case .goBack:
             router.goBack()
         case .onDeleteItemAlertAction(let alertAction):
-            handle(alertAction: alertAction)
+            await handle(alertAction: alertAction)
         case .onDeleteItem(let item):
             state = state.copy(\.itemToDelete, to: item)
         case .onTapItem(let item):
             goToDetails(item: item)
         case .onLoad:
-            startWatchingUpdates()
-            loadAllContacts()
+            await startWatchingUpdates()
+            await loadAllContacts()
         }
     }
 
     // MARK: - Private
 
-    private func handle(alertAction: DeleteItemAlertAction) {
+    private func handle(alertAction: DeleteItemAlertAction) async {
         switch alertAction {
         case .confirm:
             if let item = state.itemToDelete {
-                delete(item: item)
+                await delete(item: item)
             }
         case .cancel:
             break
@@ -109,45 +109,34 @@ final class ContactsStateStore: StateStore {
         state = state.copy(\.itemToDelete, to: nil)
     }
 
-    private func delete(item: ContactItemType) {
+    private func delete(item: ContactItemType) async {
         switch item {
         case .contact(let contactItem):
-            deleteContact(id: contactItem.id)
+            await deleteContact(id: contactItem.id)
         case .group(let contactGroupItem):
-            deleteContactGroup(id: contactGroupItem.id)
+            await deleteContactGroup(id: contactGroupItem.id)
         }
     }
 
-    private func deleteContact(id: Id) {
-        Task {
-            try await contactDeleter.delete(itemID: id)
-        }
+    private func deleteContact(id: Id) async {
+        try? await contactDeleter.delete(itemID: id)
     }
 
-    private func deleteContactGroup(id: Id) {
-        Task {
-            try await contactGroupDeleter.delete(itemID: id)
-        }
+    private func deleteContactGroup(id: Id) async {
+        try? await contactGroupDeleter.delete(itemID: id)
     }
 
-    private func startWatchingUpdates() {
+    private func startWatchingUpdates() async {
         contactsLiveQueryCallback.delegate = { [weak self] updatedItems in
             self?.updateState(with: updatedItems)
         }
 
-        Task {
-            watchContactsConnection = try await watchContacts(contactsLiveQueryCallback)
-        }
+        watchContactsConnection = try? await watchContacts(contactsLiveQueryCallback)
     }
 
-    private func loadAllContacts() {
-        Task {
-            let contacts = await repository.allContacts()
-            let updateStateWorkItem = DispatchWorkItem { [weak self] in
-                self?.updateState(with: contacts)
-            }
-            Dispatcher.dispatchOnMain(updateStateWorkItem)
-        }
+    private func loadAllContacts() async {
+        let contacts = await repository.allContacts()
+        updateState(with: contacts)
     }
 
     private func goToDetails(item: ContactItemType) {
