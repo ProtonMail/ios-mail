@@ -19,6 +19,7 @@ import InboxCoreUI
 import InboxDesignSystem
 import proton_app_uniffi
 import SwiftUI
+import InboxCore
 
 struct MoveToSheet: View {
     @EnvironmentObject var toastStateStore: ToastStateStore

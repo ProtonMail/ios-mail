@@ -90,18 +90,6 @@ enum L10n {
                 "You need to be online to edit scheduled messages",
                 comment: "Toast message when editing fails because there is no internet connection."
             )
-            static let forward = LocalizedStringResource(
-                "Forward",
-                comment: "Action title for forwarding given message in the action sheet."
-            )
-            static let reply = LocalizedStringResource(
-                "Reply",
-                comment: "Action title for replying to a sender of given message in the action sheet."
-            )
-            static let replyAll = LocalizedStringResource(
-                "Reply all",
-                comment: "Action title for replying to a sender and all receipients of given message in the action sheet."
-            )
         }
 
         enum UndoSendError {
@@ -224,6 +212,18 @@ enum L10n {
         static let editToolbar = LocalizedStringResource(
             "Edit toolbar",
             comment: "Title of edit toolbar action."
+        )
+        static let forward = LocalizedStringResource(
+            "Forward",
+            comment: "Action title for forwarding given message in the action sheet."
+        )
+        static let reply = LocalizedStringResource(
+            "Reply",
+            comment: "Action title for replying to a sender of given message in the action sheet."
+        )
+        static let replyAll = LocalizedStringResource(
+            "Reply all",
+            comment: "Action title for replying to a sender and all receipients of given message in the action sheet."
         )
 
         enum Delete {

@@ -27,6 +27,7 @@ import SwiftUI
  */
 enum Action: ActionPickerListElement {
     case deletePermanently
+    case forward
     case markAsRead
     case markAsUnread
     case labelAs
@@ -38,7 +39,10 @@ enum Action: ActionPickerListElement {
     case moveToTrash
     case pin
     case print
+    case renderInDarkMode
     case renderInLightMode
+    case reply
+    case replyAll
     case reportPhishing
     case saveAsPDF
     case star
@@ -55,6 +59,7 @@ enum Action: ActionPickerListElement {
     private var nameKeyPath: KeyPath<L10n.Action.Type, LocalizedStringResource> {
         switch self {
         case .deletePermanently: \.deletePermanently
+        case .forward: \.forward
         case .markAsRead: \.markAsRead
         case .markAsUnread: \.markAsUnread
         case .labelAs: \.labelAs
@@ -66,7 +71,10 @@ enum Action: ActionPickerListElement {
         case .moveToTrash: \.moveToTrash
         case .pin: \.pin
         case .print: \.print
+        case .renderInDarkMode: \.renderInDarkMode
         case .renderInLightMode: \.renderInLightMode
+        case .reply: \.reply
+        case .replyAll: \.replyAll
         case .reportPhishing: \.reportPhishing
         case .saveAsPDF: \.saveAsPDF
         case .star: \.star
@@ -82,6 +90,8 @@ enum Action: ActionPickerListElement {
         switch self {
         case .deletePermanently:
             DS.Icon.icTrashCross.image
+        case .forward:
+            Image(symbol: .forward)
         case .labelAs:
             DS.Icon.icTag.image
         case .markAsRead:
@@ -104,8 +114,14 @@ enum Action: ActionPickerListElement {
             DS.Icon.icPinAngled.image
         case .print:
             DS.Icon.icPrinter.image
+        case .renderInDarkMode:
+            DS.Icon.icMoon.image
         case .renderInLightMode:
             DS.Icon.icSun.image
+        case .reply:
+            Image(symbol: .reply)
+        case .replyAll:
+            Image(symbol: .replyAll)
         case .reportPhishing:
             DS.Icon.icHook.image
         case .saveAsPDF:

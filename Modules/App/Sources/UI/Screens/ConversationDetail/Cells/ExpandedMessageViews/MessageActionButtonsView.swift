@@ -27,14 +27,14 @@ struct MessageActionButtonsView: View {
 
     var body: some View {
         HStack() {
-            MessageActionButtonView(symbol: .reply, text: L10n.Action.Send.reply, isDisabled: isDisabled) {
+            MessageActionButtonView(symbol: .reply, text: L10n.Action.reply, isDisabled: isDisabled) {
                 onEvent(.reply)
             }
-            MessageActionButtonView(symbol: .replyAll, text: L10n.Action.Send.replyAll, isDisabled: isDisabled) {
+            MessageActionButtonView(symbol: .replyAll, text: L10n.Action.replyAll, isDisabled: isDisabled) {
                 onEvent(.replyAll)
             }
             .removeViewIf(isSingleRecipient)
-            MessageActionButtonView(symbol: .forward, text: L10n.Action.Send.forward, isDisabled: isDisabled) {
+            MessageActionButtonView(symbol: .forward, text: L10n.Action.forward, isDisabled: isDisabled) {
                 onEvent(.forward)
             }
         }
