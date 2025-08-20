@@ -25,6 +25,7 @@ struct ConversationDetailScreen: View {
     @State private var animateViewIn: Bool = false
     @State private var isHeaderVisible: Bool = false
     @EnvironmentObject var toastStateStore: ToastStateStore
+    @Environment(\.colorScheme) var colorScheme
     @Binding private var navigationPath: NavigationPath
     private let draftPresenter: DraftPresenter
     private let mailUserSession: MailUserSession
@@ -50,9 +51,11 @@ struct ConversationDetailScreen: View {
 
     var body: some View {
         conversationView
-            .toolbar {
-                bottomToolbarContent
-            }
+            .conversationBottomToolbar(
+                actions: model.conversationToolbarActions,
+                messageActionSelected: { print("[Toolbar] message action selected: \($0)") },
+                conversationActionSelected: { print("[Toolbar] conversation action selected: \($0)") }
+            )
             .toolbar(model.isBottomBarHidden ? .hidden : .visible, for: .bottomBar)
             .bottomToolbarStyle()
             .animation(.default, value: model.isBottomBarHidden)
@@ -74,6 +77,15 @@ struct ConversationDetailScreen: View {
                     if case .messagesReady(let messages) = newValue, messages.isEmpty {
                         goBackToMailbox()
                     }
+                }
+            )
+            .onLoad {
+                model.configure(colorScheme: colorScheme)
+            }
+            .onChange(
+                of: colorScheme,
+                { _, newValue in
+                    model.configure(colorScheme: newValue)
                 }
             )
             .environment(\.messageAppearanceOverrideStore, model.messageAppearanceOverrideStore)
@@ -114,30 +126,6 @@ struct ConversationDetailScreen: View {
                     animateViewIn = true
                 }
                 await model.fetchInitialData()
-            }
-        }
-    }
-
-    private var bottomToolbarContent: some ToolbarContent {
-        ToolbarItemGroup(placement: .bottomBar) {
-            HStack(alignment: .center) {
-                ForEachEnumerated(model.bottomBarActions, id: \.offset) { action, index in
-                    if index == 0 {
-                        Spacer()
-                    }
-                    Button(action: {
-                        model.handleConversation(
-                            action: action,
-                            toastStateStore: toastStateStore,
-                            goBack: { navigationPath.removeLast() }
-                        )
-                    }) {
-                        action.displayData.image
-                            .foregroundStyle(DS.Color.Icon.weak)
-                    }
-                    .accessibilityIdentifier(MailboxActionBarViewIdentifiers.button(index: index))
-                    Spacer()
-                }
             }
         }
     }

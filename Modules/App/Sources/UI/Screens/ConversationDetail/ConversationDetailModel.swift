@@ -15,10 +15,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import proton_app_uniffi
 import InboxCore
 import InboxCoreUI
-import proton_app_uniffi
+import SwiftUI
 
 @MainActor
 final class ConversationDetailModel: Sendable, ObservableObject {
@@ -28,7 +28,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
     @Published private(set) var mailbox: Mailbox?
     @Published private(set) var conversationID: ID?
     @Published private(set) var isStarred: Bool
-    @Published private(set) var bottomBarActions: [ListActions] = []
+    @Published private(set) var conversationToolbarActions: ConversationToolbarActions?
     @Published var actionSheets: MailboxActionSheetsState = .initial()
     @Published var editScheduledMessageConfirmationAlert: AlertModel?
     @Published var deleteConfirmationAlert: AlertModel?
@@ -36,9 +36,14 @@ final class ConversationDetailModel: Sendable, ObservableObject {
 
     let messageAppearanceOverrideStore = MessageAppearanceOverrideStore()
     let messagePrinter: MessagePrinter
+    private var colorScheme: ColorScheme = .light
+
+    func configure(colorScheme: ColorScheme) {
+        self.colorScheme = colorScheme
+    }
 
     var isBottomBarHidden: Bool {
-        seed.isOutbox || bottomBarActions.isEmpty
+        seed.isOutbox || conversationToolbarActions?.isEmpty == true
     }
 
     var areActionsHidden: Bool {
@@ -178,9 +183,9 @@ final class ConversationDetailModel: Sendable, ObservableObject {
             actionSheets = actionSheets.copy(\.labelAs, to: .init(sheetType: .labelAs, ids: [conversationID], type: .conversation))
         case .more:
             break
-//            actionSheets =
-//                actionSheets
-//                .copy(\.mailbox, to: .init(id: conversationID, type: .conversation, title: seed.subject))
+        //            actionSheets =
+        //                actionSheets
+        //                .copy(\.mailbox, to: .init(id: conversationID, type: .conversation, title: seed.subject))
         case .moveTo:
             actionSheets =
                 actionSheets
@@ -522,15 +527,36 @@ extension ConversationDetailModel {
     }
 
     private func reloadBottomBarActions() async {
-        guard let mailbox, let conversationID else {
-            return
+        guard let mailbox else { return }
+        switch mailbox.viewMode() {
+        case .conversations:
+            guard let conversationID else { return }
+            do {
+                let actions = try await allAvailableConversationActionsForConversation(
+                    mailbox: mailbox,
+                    conversationId: conversationID
+                ).get()
+                self.conversationToolbarActions = .conversation(actions: actions)
+            } catch {
+                AppLogger.log(error: error, category: .conversationDetail)
+            }
+        case .messages:
+            guard let messageID = state.singleMessageIDInMessageMode else { return }
+            let theme = messageAppearanceOverrideStore.themeOpts(
+                messageID: messageID,
+                colorScheme: colorScheme
+            )
+            do {
+                let actions = try await allAvailableMessageActionsForMessage(
+                    mailbox: mailbox,
+                    theme: theme,
+                    messageId: messageID
+                ).get()
+                self.conversationToolbarActions = .message(actions: actions)
+            } catch {
+                AppLogger.log(error: error, category: .conversationDetail)
+            }
         }
-
-        bottomBarActions =
-            try! await dependencies
-            .conversationListActionsToolbarActionsProvider(mailbox, [conversationID])
-            .get()
-            .visibleListActions
     }
 }
 
@@ -548,6 +574,19 @@ extension ConversationDetailModel {
             return "\(self)"
         }
     }
+}
+
+private extension ConversationDetailModel.State {
+
+    var singleMessageIDInMessageMode: ID? {
+        switch self {
+        case .initial, .fetchingMessages, .noConnection:
+            nil
+        case .messagesReady(let messages):
+            messages.first?.id
+        }
+    }
+
 }
 
 extension ConversationDetailModel {

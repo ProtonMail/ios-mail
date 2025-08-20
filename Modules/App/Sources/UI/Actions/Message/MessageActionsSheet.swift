@@ -103,7 +103,7 @@ struct MessageActionsSheet: View {
         let isForcingLightMode = messageAppearanceOverrideStore!.isForcingLightMode(forMessageWithId: messageID)
         let themeOpts = ThemeOpts(colorScheme: colorScheme, isForcingLightMode: isForcingLightMode)
         do {
-            actions = try await availableMessageActionSheet(
+            actions = try await allAvailableMessageActionsForActionSheet(
                 mailbox: mailbox,
                 theme: themeOpts,
                 messageId: messageID

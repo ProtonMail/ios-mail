@@ -249,12 +249,10 @@ class MailboxItemActionSheetStateStore: StateStore {
 
     @MainActor
     private func loadActions() async {
-        let isForcingLightMode = messageAppearanceOverrideStore.isForcingLightMode(forMessageWithId: input.id)
-        let themeOpts = ThemeOpts(colorScheme: colorScheme, isForcingLightMode: isForcingLightMode)
         let actions = await availableActionsProvider.actions(
             for: input.type.inboxItemType,
             id: input.id,
-            themeOpts: themeOpts
+            themeOpts: messageAppearanceOverrideStore.themeOpts(messageID: input.id, colorScheme: colorScheme)
         )
 
         update(actions: actions)
@@ -270,6 +268,15 @@ class MailboxItemActionSheetStateStore: StateStore {
             action: { [weak self] action in self?.handle(action: .deleteConfirmed(action)) }
         )
     }
+}
+
+extension MessageAppearanceOverrideStore {
+
+    func themeOpts(messageID: ID, colorScheme: ColorScheme) -> ThemeOpts {
+        let isForcingLightMode = isForcingLightMode(forMessageWithId: messageID)
+        return .init(colorScheme: colorScheme, isForcingLightMode: isForcingLightMode)
+    }
+
 }
 
 private extension MailboxItemActionSheetState {
@@ -326,7 +333,8 @@ private extension ActionSheetItemType {
 
 }
 
-private extension ThemeOpts {
+
+extension ThemeOpts {
     init(colorScheme: ColorScheme, isForcingLightMode: Bool) {
         self.init(currentTheme: .converted(from: colorScheme), themeOverride: isForcingLightMode ? .lightMode : nil)
     }

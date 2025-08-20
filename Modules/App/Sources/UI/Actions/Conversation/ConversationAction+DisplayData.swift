@@ -15,25 +15,20 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import InboxDesignSystem
 import proton_app_uniffi
+import InboxDesignSystem
 
-extension MessageAction: DisplayableAction {
-
+extension ConversationAction: DisplayableAction {
     var displayData: ActionDisplayData {
         switch self {
+        case .labelAs:
+            Action.labelAs.displayData
         case .markRead:
             Action.markAsRead.displayData
         case .markUnread:
             Action.markAsUnread.displayData
-        case .star:
-            Action.star.displayData
-        case .unstar:
-            Action.unstar.displayData
-        case .labelAs:
-            Action.labelAs.displayData
         case .moveTo:
-            Action.labelAs.displayData
+            Action.moveTo.displayData
         case .moveToSystemFolder(let systemFolder):
             switch systemFolder.name {
             case .archive:
@@ -46,32 +41,17 @@ extension MessageAction: DisplayableAction {
                 Action.moveToTrash.displayData
             }
         case .notSpam:
-            .init(title: L10n.Action.notSpam, imageResource: DS.Icon.icNotSpam)
+            Action.moveToInboxFromSpam.displayData
         case .permanentDelete:
             Action.deletePermanently.displayData
-        case .reply:
-            Action.reply.displayData
-        case .replyAll:
-            Action.replyAll.displayData
-        case .forward:
-            Action.forward.displayData
-        case .savePdf:
-            Action.saveAsPDF.displayData
-        case .print:
-            Action.print.displayData
-        case .viewHeaders:
-            Action.viewHeaders.displayData
-        case .viewHtml:
-            Action.viewHTML.displayData
-        case .viewInLightMode:
-            Action.renderInLightMode.displayData
-        case .viewInDarkMode:
-            Action.renderInDarkMode.displayData
-        case .reportPhishing:
-            Action.reportPhishing.displayData
+        case .star:
+            Action.star.displayData
+        case .unstar:
+            Action.unstar.displayData
+        case .snooze:
+            Action.snooze.displayData
         case .more:
-            .init(title: .empty, imageResource: DS.Icon.icThreeDotsHorizontal)
+            .init(title: .empty, imageResource: DS.Icon.icThreeDotsHorizontal)  // FIXME: - Eliminate copy paste (anti-)pattern
         }
     }
-
 }
