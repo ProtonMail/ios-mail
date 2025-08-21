@@ -51,7 +51,7 @@ extension ConversationAction: DisplayableAction {
         case .snooze:
             Action.snooze.displayData
         case .more:
-            .init(title: .empty, imageResource: DS.Icon.icThreeDotsHorizontal)  // FIXME: - Eliminate copy paste (anti-)pattern
+            InternalAction.more.displayData
         }
     }
 }

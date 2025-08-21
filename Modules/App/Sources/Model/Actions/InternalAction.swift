@@ -15,11 +15,31 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import proton_app_uniffi
 import SwiftUI
+import InboxDesignSystem
 
-enum MessageActionsSheetAction {
-    case onLoad
-    case actionSelected(MessageAction)
-    case colorSchemeChanged(ColorScheme)
+enum InternalAction {
+    case more
+
+    var icon: Image {
+        switch self {
+        case .more:
+            DS.Icon.icThreeDotsHorizontal.image
+        }
+    }
+
+    var name: LocalizedStringResource {
+        switch self {
+        case .more:
+            .empty
+        }
+    }
+}
+
+extension InternalAction: DisplayableAction {
+
+    var displayData: ActionDisplayData {
+        .init(title: name, image: icon)
+    }
+
 }

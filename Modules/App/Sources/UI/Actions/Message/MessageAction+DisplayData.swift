@@ -70,7 +70,7 @@ extension MessageAction: DisplayableAction {
         case .reportPhishing:
             Action.reportPhishing.displayData
         case .more:
-            .init(title: .empty, imageResource: DS.Icon.icThreeDotsHorizontal)
+            InternalAction.more.displayData
         }
     }
 

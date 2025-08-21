@@ -15,11 +15,28 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import proton_app_uniffi
+import InboxCoreUI
 import SwiftUI
 
-enum MessageActionsSheetAction {
-    case onLoad
-    case actionSelected(MessageAction)
-    case colorSchemeChanged(ColorScheme)
+struct ActionSheetVerticalSection<Action: DisplayableAction>: View {
+    private let actions: [Action]
+    private let actionSelected: (Action) -> Void
+
+    init(actions: [Action], actionSelected: @escaping (Action) -> Void) {
+        self.actions = actions
+        self.actionSelected = actionSelected
+    }
+
+    var body: some View {
+        ActionSheetSection {
+            ForEachLast(collection: actions) { action, isLast in
+                ActionSheetImageButton(
+                    displayData: action.displayData,
+                    displayBottomSeparator: !isLast
+                ) {
+                    actionSelected(action)
+                }
+            }
+        }
+    }
 }

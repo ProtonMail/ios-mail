@@ -53,18 +53,10 @@ struct ConversationActionsSheet: View {
         }.onLoad { Task { await handle(action: .onLoad) } }
     }
 
-    private func verticalSection(actions: [ConversationAction]) -> some View { // FIXME: - Get rid of duplication
-        ActionSheetSection {
-            ForEachLast(collection: actions) { action, isLast in
-                ActionSheetImageButton(
-                    displayData: action.displayData,
-                    displayBottomSeparator: !isLast,
-                    action: {
-                        Task {
-                            await handle(action: .actionSelected(action))
-                        }
-                    }
-                )
+    private func verticalSection(actions: [ConversationAction]) -> some View {
+        ActionSheetVerticalSection(actions: actions) { action in
+            Task {
+                await handle(action: .actionSelected(action))
             }
         }
     }

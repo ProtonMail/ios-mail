@@ -22,67 +22,75 @@ import InboxDesignSystem
 import SwiftUI
 
 struct MessageActionsSheet: View {
-    private let messageID: ID
+    private let state: MessageActionsSheetState
     private let mailbox: Mailbox
-    private let title: String
+    private let service: AllAvailableMessageActionsForActionSheetService
     private let actionSelected: (MessageAction) -> Void
+
     @Environment(\.messageAppearanceOverrideStore) var messageAppearanceOverrideStore
     @Environment(\.colorScheme) var colorScheme
 
-    @State var actions: MessageActionSheet?
-
-    init(messageID: ID, title: String, mailbox: Mailbox, actionSelected: @escaping (MessageAction) -> Void) {
-        self.messageID = messageID
-        self.title = title
+    init(
+        state: MessageActionsSheetState,
+        mailbox: Mailbox,
+        service: @escaping AllAvailableMessageActionsForActionSheetService = allAvailableMessageActionsForActionSheet,
+        actionSelected: @escaping (MessageAction) -> Void
+    ) {
+        self.state = state
         self.mailbox = mailbox
+        self.service = service
         self.actionSelected = actionSelected
     }
 
     var body: some View {
-        ClosableScreen {
-            ScrollView {
-                VStack(spacing: DS.Spacing.standard) {
-                    if let actions {
-                        horizontalSection(actions: actions.replyActions)
-                        verticalSection(actions: actions.messageActions)
-                        verticalSection(actions: actions.moveActions)
-                        verticalSection(actions: actions.generalActions)
+        StoreView(
+            store: MessageActionsSheetStore(
+                state: state,
+                mailbox: mailbox,
+                messageAppearanceOverrideStore: messageAppearanceOverrideStore!,
+                service: service,
+                actionSelected: actionSelected
+            )
+        ) { state, store in
+            ClosableScreen {
+                ScrollView {
+                    VStack(spacing: DS.Spacing.standard) {
+                        horizontalSection(actions: store.state.actions.replyActions, store: store)
+                        verticalSection(actions: store.state.actions.messageActions, store: store)
+                        verticalSection(actions: store.state.actions.moveActions, store: store)
+                        verticalSection(actions: store.state.actions.generalActions, store: store)
                     }
+                    .padding(.all, DS.Spacing.large)
                 }
-                .padding(.all, DS.Spacing.large)
+                .background(DS.Color.BackgroundInverted.norm)
+                .navigationTitle(store.state.title)
+                .navigationBarTitleDisplayMode(.inline)
+            }.onLoad {
+                store.handle(action: .colorSchemeChanged(colorScheme))
+                store.handle(action: .onLoad)
             }
-            .background(DS.Color.BackgroundInverted.norm)
-            .navigationTitle(title)
-            .navigationBarTitleDisplayMode(.inline)
-        }.onLoad { Task { await handle(action: .onLoad) } }
+            .onChange(of: colorScheme) { _, newValue in
+                store.handle(action: .colorSchemeChanged(newValue))
+            }
+        }
     }
 
-    private func horizontalSection(actions: [MessageAction]) -> some View {
+    private func horizontalSection(actions: [MessageAction], store: MessageActionsSheetStore) -> some View {
         HStack(spacing: DS.Spacing.standard) {
             ForEach(actions, id: \.self) { action in
-                horizontalButton(action: action)
+                horizontalButton(action: action, store: store)
             }
         }
     }
 
-    private func verticalSection(actions: [MessageAction]) -> some View {
-        ActionSheetSection {
-            ForEachLast(collection: actions) { action, isLast in
-                ActionSheetImageButton(
-                    displayData: action.displayData,
-                    displayBottomSeparator: !isLast,
-                    action: {
-                        Task {
-                            await handle(action: .actionSelected(action))
-                        }
-                    }
-                )
-            }
+    private func verticalSection(actions: [MessageAction], store: MessageActionsSheetStore) -> some View {
+        ActionSheetVerticalSection(actions: actions) { action in
+            store.handle(action: .actionSelected(action))
         }
     }
 
-    private func horizontalButton(action: MessageAction) -> some View {
-        Button(action: { Task { await handle(action: .actionSelected(action)) } }) {
+    private func horizontalButton(action: MessageAction, store: MessageActionsSheetStore) -> some View {
+        Button(action: { store.handle(action: .actionSelected(action)) }) {
             VStack(spacing: DS.Spacing.standard) {
                 action.displayData.image
                     .square(size: 24)
@@ -97,28 +105,5 @@ struct MessageActionsSheet: View {
         .buttonStyle(RegularButtonStyle())
         .background(DS.Color.BackgroundInverted.secondary)
         .clipShape(.rect(cornerRadius: DS.Radius.extraLarge))
-    }
-
-    private func loadActions() async {
-        let isForcingLightMode = messageAppearanceOverrideStore!.isForcingLightMode(forMessageWithId: messageID)
-        let themeOpts = ThemeOpts(colorScheme: colorScheme, isForcingLightMode: isForcingLightMode)
-        do {
-            actions = try await allAvailableMessageActionsForActionSheet(
-                mailbox: mailbox,
-                theme: themeOpts,
-                messageId: messageID
-            ).get()
-        } catch {
-            AppLogger.log(error: error, category: .conversationDetail)
-        }
-    }
-
-    func handle(action: MessageActionsSheetAction) async {
-        switch action {
-        case .onLoad:
-            await loadActions()
-        case .actionSelected(let action):
-            actionSelected(action)
-        }
     }
 }

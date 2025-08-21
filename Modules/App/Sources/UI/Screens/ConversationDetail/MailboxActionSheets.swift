@@ -79,8 +79,7 @@ private struct MailboxActionSheets: ViewModifier {
         content
             .sheet(item: $state.message) { input in
                 MessageActionsSheet(
-                    messageID: input.id,
-                    title: input.title,
+                    state: .initial(messageID: input.id, title: input.title),
                     mailbox: mailbox(),
                     actionSelected: { messageActionSelected($0, input.id) }
                 )

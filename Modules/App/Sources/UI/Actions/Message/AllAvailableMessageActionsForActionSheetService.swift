@@ -16,10 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import proton_app_uniffi
-import SwiftUI
 
-enum MessageActionsSheetAction {
-    case onLoad
-    case actionSelected(MessageAction)
-    case colorSchemeChanged(ColorScheme)
-}
+typealias AllAvailableMessageActionsForActionSheetService = (
+    _ mailbox: Mailbox, _ theme: ThemeOpts, _ messageId: Id
+) async -> AllAvailableMessageActionsForActionSheetResult
