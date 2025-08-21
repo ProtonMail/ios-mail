@@ -94,7 +94,7 @@ public struct PromptSheet: View {
         .padding(.horizontal, DS.Spacing.extraLarge)
         .padding(.top, DS.Spacing.huge + DS.Spacing.extraLarge)
         .padding(.bottom, DS.Spacing.extraLarge)
-        .background(DS.Color.Background.norm)
+        .background(DS.Color.BackgroundInverted.secondary)
         .onGeometryChange(for: CGFloat.self, of: \.size.height) { newValue in
             bodyHeight = newValue
         }
