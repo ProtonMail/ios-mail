@@ -21,7 +21,20 @@ import proton_app_uniffi
 extension Array where Element == SidebarOtherItem {
 
     static var staleItems: [Element] {
-        var items: [Element] = [
+        var items: [Element] = []
+
+        if ApiEnvId.current.arePaymentsEnabled {
+            items.append(
+                .init(
+                    type: .subscriptions,
+                    icon: DS.Icon.icPencil,
+                    name: L10n.Settings.subscription.string,
+                    isSelected: false
+                )
+            )
+        }
+
+        items.append(contentsOf: [
             .init(
                 type: .settings,
                 icon: DS.Icon.icCogWheel,
@@ -40,31 +53,27 @@ extension Array where Element == SidebarOtherItem {
                 name: L10n.Sidebar.bugReport.string,
                 isSelected: false
             ),
-            .init(
-                type: .shareLogs,
-                icon: DS.Icon.icBug,
-                name: "Share logs".notLocalized,
-                isSelected: false
-            ),
+        ])
+
+        #if DEBUG || QA
+            items.append(
+                .init(
+                    type: .shareLogs,
+                    icon: DS.Icon.icBug,
+                    name: "Share logs".notLocalized,
+                    isSelected: false
+                )
+            )
+        #endif
+
+        items.append(
             .init(
                 type: .signOut,
                 icon: DS.Icon.icSignOut,
                 name: "Sign Out".notLocalized,
                 isSelected: false
-            ),
-        ]
-
-        if ApiEnvId.current.arePaymentsEnabled {
-            items.insert(
-                .init(
-                    type: .subscriptions,
-                    icon: DS.Icon.icPencil,
-                    name: L10n.Settings.subscription.string,
-                    isSelected: false
-                ),
-                at: 0
             )
-        }
+        )
 
         return items
     }
