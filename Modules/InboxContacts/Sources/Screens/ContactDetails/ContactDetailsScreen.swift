@@ -23,6 +23,7 @@ import SwiftUI
 
 struct ContactDetailsScreen: View {
     let contact: ContactDetailsContext
+    private let apiConfig: ApiConfig
     private let provider: ContactDetailsProvider
     private let draftPresenter: ContactsDraftPresenter
     private let initialState: ContactDetails?
@@ -31,11 +32,13 @@ struct ContactDetailsScreen: View {
 
     /// `state` parameter is exposed only for testing purposes to be able to rely on data source in synchronous manner.
     init(
+        apiConfig: ApiConfig,
         contact: ContactDetailsContext,
         provider: ContactDetailsProvider,
         draftPresenter: ContactsDraftPresenter,
         state: ContactDetails? = nil
     ) {
+        self.apiConfig = apiConfig
         self.contact = contact
         self.provider = provider
         self.draftPresenter = draftPresenter
@@ -45,6 +48,7 @@ struct ContactDetailsScreen: View {
     var body: some View {
         StoreView(
             store: ContactDetailsStateStore(
+                apiConfig: apiConfig,
                 details: initialState ?? .initial(with: contact),
                 item: contact,
                 provider: provider,
@@ -246,6 +250,7 @@ private extension VCardUrlValue {
 
 #Preview {
     ContactDetailsScreen(
+        apiConfig: .init(envId: .atlas),
         contact: ContactItem(
             id: .random(),
             name: .empty,

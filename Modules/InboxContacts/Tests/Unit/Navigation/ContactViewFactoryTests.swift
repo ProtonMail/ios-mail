@@ -24,6 +24,7 @@ import ViewInspector
 @MainActor
 final class ContactViewFactoryTests {
     let sut = ContactViewFactory(
+        apiConfig: .testData,
         mailUserSession: .init(noPointer: .init()),
         draftPresenter: ContactsDraftPresenterDummy()
     )

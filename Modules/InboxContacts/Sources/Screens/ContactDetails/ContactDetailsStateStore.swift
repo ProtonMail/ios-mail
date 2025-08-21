@@ -30,11 +30,18 @@ final class ContactDetailsStateStore: StateStore {
         case shareTapped
         case phoneNumberTapped(String)
         case editTapped
+        case editSheet(EditContactSheetAction)
         case emailTapped(ContactDetailsEmail)
         case openURL(urlString: String)
     }
 
+    enum EditContactSheetAction {
+        case openSafari
+        case dismiss
+    }
+
     @Published var state: ContactDetailsState
+    private let env: ApiEnvId
     private let item: ContactDetailsContext
     private let provider: ContactDetailsProvider
     private let urlOpener: URLOpenerProtocol
@@ -42,6 +49,7 @@ final class ContactDetailsStateStore: StateStore {
     private let toastStateStore: ToastStateStore
 
     init(
+        apiConfig: ApiConfig,
         details: ContactDetails,
         item: ContactDetailsContext,
         provider: ContactDetailsProvider,
@@ -49,6 +57,7 @@ final class ContactDetailsStateStore: StateStore {
         draftPresenter: ContactsDraftPresenter,
         toastStateStore: ToastStateStore
     ) {
+        self.env = apiConfig.envId
         self.state = .initial(details: details)
         self.item = item
         self.provider = provider
@@ -77,6 +86,13 @@ final class ContactDetailsStateStore: StateStore {
             state = state.copy(\.displayEditPromptSheet, to: true)
         case .emailTapped(let email):
             await openComposer(with: email)
+        case .editSheet(let action):
+            state = state.copy(\.displayEditPromptSheet, to: false)
+
+            if case .openSafari = action {
+                let url: URL = .Contact.edit(domain: env.domain, id: "{{api_contact_id}}")
+                state = state.copy(\.itemToEdit, to: .init(url: url))
+            }
         case .phoneNumberTapped(let phoneNumber):
             call(phoneNumber: phoneNumber)
         case .openURL(let urlString):

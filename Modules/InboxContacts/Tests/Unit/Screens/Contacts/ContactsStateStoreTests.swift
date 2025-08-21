@@ -569,8 +569,10 @@ final class ContactsStateStoreTests {
         await sut.handle(action: .createTapped)
         await sut.handle(action: .createSheetAction(.openSafari))
 
+        let domain: String = ApiConfig.testData.envId.domain
+
         #expect(sut.state.displayCreateContactSheet == false)
-        #expect(sut.state.createContactURL?.url == URL(string: "https://mail.\(ApiConfig(envId: .prod).envId.domain)/inbox#create-contact")!)
+        #expect(sut.state.createContactURL?.url == URL(string: "https://mail.\(domain)/inbox#create-contact")!)
     }
 
     @Test
@@ -599,7 +601,7 @@ final class ContactsStateStoreTests {
 
     private func makeSUT(search: ContactsScreenState.Search) -> ContactsStateStore {
         .init(
-            apiConfig: .init(envId: .prod),
+            apiConfig: .init(envId: .atlas),
             state: .init(search: search, allItems: [], displayCreateContactSheet: false, createContactURL: .none),
             mailUserSession: .testInstance(),
             contactsWrappers: .init(

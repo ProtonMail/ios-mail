@@ -48,7 +48,11 @@ public struct ContactsScreen: View {
                 )
             )
         )
-        self.contactViewFactory = .init(mailUserSession: mailUserSession, draftPresenter: draftPresenter)
+        self.contactViewFactory = .init(
+            apiConfig: apiConfig,
+            mailUserSession: mailUserSession,
+            draftPresenter: draftPresenter
+        )
     }
 
     public var body: some View {
@@ -132,7 +136,7 @@ public struct ContactsScreen: View {
 
 #Preview {
     ContactsScreen(
-        apiConfig: .init(envId: .prod),
+        apiConfig: .init(envId: .atlas),
         mailUserSession: .init(noPointer: .init()),
         contactsProvider: .previewInstance(),
         contactsWatcher: .previewInstance(),

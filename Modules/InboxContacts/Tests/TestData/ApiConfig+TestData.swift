@@ -15,14 +15,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import InboxCore
+import proton_app_uniffi
 
-struct ContactDetailsState: Copying, Equatable {
-    var details: ContactDetails
-    var displayEditPromptSheet: Bool
-    var itemToEdit: SafariDetails?
-
-    static func initial(details: ContactDetails) -> Self {
-        .init(details: details, displayEditPromptSheet: false, itemToEdit: .none)
-    }
+extension ApiConfig {
+    static let testData = ApiConfig(envId: .atlas)
 }

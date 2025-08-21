@@ -25,7 +25,7 @@ extension ContactsScreen {
         items: [GroupedContacts]
     ) -> ContactsScreen {
         ContactsScreen(
-            apiConfig: .init(envId: .atlas),
+            apiConfig: .testData,
             state: .init(
                 search: search,
                 allItems: items,

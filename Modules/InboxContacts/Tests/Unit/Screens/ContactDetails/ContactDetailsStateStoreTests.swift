@@ -41,6 +41,7 @@ final class ContactDetailsStateStoreTests {
         toastStateStore = .init(initialState: .initial)
 
         sut = ContactDetailsStateStore(
+            apiConfig: .testData,
             details: initialState.details,
             item: contactItem,
             provider: .init(contactDetails: { [unowned self] contact in
@@ -73,7 +74,8 @@ final class ContactDetailsStateStoreTests {
             sut.state
                 == .init(
                     details: .init(contact: contactItem, details: details),
-                    displayEditPromptSheet: false
+                    displayEditPromptSheet: false,
+                    itemToEdit: .none
                 )
         )
     }
@@ -239,7 +241,54 @@ final class ContactDetailsStateStoreTests {
             sut.state
                 == .init(
                     details: .init(contact: contactItem, details: details),
-                    displayEditPromptSheet: true
+                    displayEditPromptSheet: true,
+                    itemToEdit: .none
+                ))
+    }
+
+    // MARK: - `editSheet` action
+
+    @Test
+    func testEditTappedAction_WhenDismissTapped_ItDismissesEditPromptSheet() async {
+        let details = ContactDetailCard.testData(contact: contactItem, fields: .testItems)
+
+        providerSpy.stubbedContactDetails[contactItem] = .init(
+            contact: contactItem,
+            details: details
+        )
+
+        await sut.handle(action: .onLoad)
+        await sut.handle(action: .editTapped)
+        await sut.handle(action: .editSheet(.dismiss))
+
+        #expect(
+            sut.state
+                == .init(
+                    details: .init(contact: contactItem, details: details),
+                    displayEditPromptSheet: false,
+                    itemToEdit: .none
+                ))
+    }
+
+    @Test
+    func testEditTappedAction_WhenOpenSafariTapped_ItPresentsSafari() async {
+        let details = ContactDetailCard.testData(contact: contactItem, fields: .testItems)
+
+        providerSpy.stubbedContactDetails[contactItem] = .init(
+            contact: contactItem,
+            details: details
+        )
+
+        await sut.handle(action: .onLoad)
+        await sut.handle(action: .editTapped)
+        await sut.handle(action: .editSheet(.openSafari))
+
+        #expect(
+            sut.state
+                == .init(
+                    details: .init(contact: contactItem, details: details),
+                    displayEditPromptSheet: false,
+                    itemToEdit: .init(url: .Contact.edit(domain: .testDomain, id: "{{api_contact_id}}"))
                 ))
     }
 }
@@ -268,4 +317,10 @@ private extension Array where Element == ContactField {
         ]
     }
 
+}
+
+private extension String {
+    static var testDomain: String {
+        ApiConfig.testData.envId.domain
+    }
 }

@@ -20,6 +20,7 @@ import proton_app_uniffi
 import SwiftUI
 
 struct ContactViewFactory {
+    let apiConfig: ApiConfig
     let mailUserSession: MailUserSession
     let draftPresenter: ContactsDraftPresenter
 
@@ -28,6 +29,7 @@ struct ContactViewFactory {
         switch route {
         case .contactDetails(let contact):
             ContactDetailsScreen(
+                apiConfig: apiConfig,
                 contact: contact,
                 provider: .productionInstance(mailUserSession: mailUserSession),
                 draftPresenter: draftPresenter
