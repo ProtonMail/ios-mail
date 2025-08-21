@@ -19,7 +19,7 @@ import proton_app_uniffi
 import InboxCore
 import SwiftUI
 
-struct MessageActionsSheetState: Copying {
+struct MessageActionsSheetState: Copying, Equatable {
     let messageID: ID
     let title: String
     var actions: MessageActionSheet
