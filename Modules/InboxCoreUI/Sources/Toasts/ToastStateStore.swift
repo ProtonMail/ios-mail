@@ -23,6 +23,7 @@ public final class ToastStateStore: ObservableObject {
     public struct State {
         public var toasts: OrderedSet<Toast>
         public var toastHeights: [Toast: CGFloat]
+        public var bottomBar = BottomBar()
 
         public var maxHeight: CGFloat {
             toastHeights.values.max() ?? .zero
@@ -55,6 +56,15 @@ extension ToastStateStore.State {
 
     public static var initial: Self {
         .init(toasts: [], toastHeights: [:])
+    }
+
+    public struct BottomBar {
+        public var height: CGFloat = 0
+        public var isVisible = false
+
+        public var effectiveHeight: CGFloat {
+            isVisible ? height : .zero
+        }
     }
 
 }

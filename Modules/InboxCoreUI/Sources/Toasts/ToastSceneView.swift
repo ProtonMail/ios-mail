@@ -51,7 +51,9 @@ private struct ToastModifier: ViewModifier {
                         toastView(toast: toast).zIndex(Double(-index))
                     }
                 }
+                .padding(.bottom, state.bottomBar.effectiveHeight)
                 .animation(.toastAnimation, value: state.toasts)
+                .animation(.default, value: state.bottomBar.effectiveHeight)
             )
             .onChange(of: state.toasts, initial: true) { _, new in
                 if new.isEmpty {
@@ -77,14 +79,8 @@ private struct ToastModifier: ViewModifier {
         VStack {
             Spacer()
             ToastView(model: toast, didSwipeDown: { dismissToast(toast: toast) })
-                .background {
-                    GeometryReader { geometry in
-                        Color.clear
-                            .preference(key: HeightPreferenceKey.self, value: geometry.size.height)
-                            .onPreferenceChange(HeightPreferenceKey.self) { value in
-                                state.toastHeights[toast] = value
-                            }
-                    }
+                .onGeometryChange(for: CGFloat.self, of: \.size.height) { value in
+                    state.toastHeights[toast] = value
                 }
         }
         .transition(.move(edge: .bottom))

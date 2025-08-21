@@ -158,6 +158,16 @@ private struct ListActionBarViewModifier: ViewModifier {
                     Spacer()
                 }
             }
+            .onGeometryChange(for: CGFloat.self, of: \.size.height) { toolbarHeight in
+                let bottomSafeAreaToRecreate = DS.Spacing.large
+                toastStateStore.state.bottomBar.height = toolbarHeight + bottomSafeAreaToRecreate
+            }
+            .onAppear {
+                toastStateStore.state.bottomBar.isVisible = true
+            }
+            .onDisappear {
+                toastStateStore.state.bottomBar.isVisible = false
+            }
         }
     }
 
