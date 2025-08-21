@@ -121,6 +121,11 @@ enum L10n {
             bundle: .atURL(Bundle.module.bundleURL),
             comment: "Contact details’ “Share” button title for sharing the given contact’s information."
         )
+        static let edit = LocalizedStringResource(
+            "Edit",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Contact details’ “Edit” button title for editing the given contact."
+        )
 
         enum EditInWebPrompt {
             static let title = LocalizedStringResource(

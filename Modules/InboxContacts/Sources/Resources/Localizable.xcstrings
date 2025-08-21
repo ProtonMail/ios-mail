@@ -2748,6 +2748,9 @@
         }
       }
     },
+    "Edit" : {
+      "comment" : "Contact details’ “Edit” button title for editing the given contact."
+    },
     "Edit in web" : {
       "comment" : "Label for the button that opens the web app to edit a contact."
     },

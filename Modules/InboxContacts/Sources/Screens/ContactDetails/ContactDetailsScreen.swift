@@ -64,7 +64,7 @@ struct ContactDetailsScreen: View {
             }
             .background(DS.Color.Background.secondary)
             .toolbar {
-                ToolbarItemFactory.trailing("Edit") {
+                ToolbarItemFactory.trailing(L10n.ContactDetails.edit.string) {
                     store.handle(action: .editTapped)
                 }
             }
