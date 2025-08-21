@@ -24,7 +24,7 @@ enum MailboxItemType {
 
 extension MailboxItemType {
 
-    var actionSheetItemType: ActionSheetItemType {
+    var mailboxItem: MailboxItem {
         switch self {
         case .conversation:
             .conversation

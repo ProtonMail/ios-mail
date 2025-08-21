@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Proton Technologies AG
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -15,21 +15,27 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+enum MailboxItem: Hashable {
+    case conversation
+    case message(isLastMessageInCurrentLocation: Bool)
+}
 
-struct ActionSheetInput: Hashable, Identifiable {
-    let sheetType: ActionSheetType
-    let ids: [ID]
-    let mailboxItem: MailboxItem
-
-    enum ActionSheetType: Equatable {
-        case moveTo
-        case labelAs
+extension MailboxItem {
+    var itemType: MailboxItemType {
+        switch self {
+        case .conversation:
+            .conversation
+        case .message:
+            .message
+        }
     }
 
-    // MARK: - Identifiable
-
-    var id: ActionSheetType {
-        sheetType
+    var shouldGoBack: Bool {
+        switch self {
+        case .conversation:
+            true
+        case .message(let isStandaloneMessage):
+            isStandaloneMessage
+        }
     }
 }

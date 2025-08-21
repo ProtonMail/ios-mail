@@ -20,11 +20,6 @@ import InboxCore
 import InboxCoreUI
 import SwiftUI
 
-enum ActionOrigin {
-    case sheet
-    case toolbar
-}
-
 @MainActor
 final class ConversationDetailModel: Sendable, ObservableObject {
     @Published private(set) var state: State = .initial
@@ -37,7 +32,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
     @Published var actionSheets: MailboxActionSheetsState = .initial()
     @Published var editScheduledMessageConfirmationAlert: AlertModel?
     @Published var linkConfirmationAlert: AlertModel?
-    @Published var alert: AlertModel?
+    @Published var actionAlert: AlertModel?
     @Published var attachmentIDToOpen: ID?
 
     let messageAppearanceOverrideStore = MessageAppearanceOverrideStore()
@@ -191,7 +186,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         action: MessageAction,
         messageID: ID,
         toastStateStore: ToastStateStore,
-        actionOrigin: ActionOrigin,
+        actionOrigin: ConversationActionOrigin,
         goBack: @MainActor @escaping () -> Void
     ) async {
         switch action {
@@ -214,7 +209,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
                 to: .init(
                     sheetType: .labelAs,
                     ids: [messageID],
-                    type: .message(
+                    mailboxItem: .message(
                         isLastMessageInCurrentLocation: state.hasAtMostOneMessage(withSameLocationAs: messageID)
                     )
                 )
@@ -225,7 +220,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
                 to: .init(
                     sheetType: .moveTo,
                     ids: [messageID],
-                    type: .message(
+                    mailboxItem: .message(
                         isLastMessageInCurrentLocation: state.hasAtMostOneMessage(withSameLocationAs: messageID)
                     )
                 )
@@ -234,7 +229,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
             actionSheets = .allSheetsDismissed
             await move(
                 id: messageID,
-                itemType: .message(
+                mailboxItem: .message(
                     isLastMessageInCurrentLocation: state.hasAtMostOneMessage(withSameLocationAs: messageID)
                 ),
                 destination: systemFolder,
@@ -245,9 +240,12 @@ final class ConversationDetailModel: Sendable, ObservableObject {
             let alert: AlertModel = .deleteConfirmation(
                 itemsCount: 1,
                 action: { [weak self] action in
-                    await self?.handle(
+                    guard let self else { return }
+                    await self.handle(
                         id: messageID,
-                        itemType: .conversation,
+                        mailboxItem: .message(
+                            isLastMessageInCurrentLocation: state.hasAtMostOneMessage(withSameLocationAs: messageID)
+                        ),
                         action: action,
                         toastStateStore: toastStateStore, goBack: goBack
                     )
@@ -284,7 +282,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
                 await self.handle(
                     action: action,
                     messageID: messageID,
-                    itemType: .message(
+                    mailboxItem: .message(
                         isLastMessageInCurrentLocation: state.hasAtMostOneMessage(withSameLocationAs: messageID)
                     ),
                     goBack: goBack
@@ -300,7 +298,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
     func handle(
         action: ConversationAction,
         toastStateStore: ToastStateStore,
-        actionOrigin: ActionOrigin,
+        actionOrigin: ConversationActionOrigin,
         goBack: @MainActor @escaping () -> Void
     ) async {
         guard let conversationID else { return }
@@ -314,17 +312,17 @@ final class ConversationDetailModel: Sendable, ObservableObject {
             goBack()
         case .labelAs:
             actionSheets = .allSheetsDismissed
-                .copy(\.labelAs, to: .init(sheetType: .labelAs, ids: [conversationID], type: .conversation))
+                .copy(\.labelAs, to: .init(sheetType: .labelAs, ids: [conversationID], mailboxItem: .conversation))
         case .more:
             actionSheets = actionSheets.copy(\.conversation, to: .init(id: conversationID, title: seed.subject))
         case .moveTo:
             actionSheets = .allSheetsDismissed
-                .copy(\.moveTo, to: .init(sheetType: .moveTo, ids: [conversationID], type: .conversation))
+                .copy(\.moveTo, to: .init(sheetType: .moveTo, ids: [conversationID], mailboxItem: .conversation))
         case .moveToSystemFolder(let systemFolder), .notSpam(let systemFolder):
             actionSheets = .allSheetsDismissed
             await move(
                 id: conversationID,
-                itemType: .conversation,
+                mailboxItem: .conversation,
                 destination: systemFolder,
                 toastStateStore: toastStateStore,
                 goBack: goBack
@@ -335,7 +333,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
                 action: { [weak self] action in
                     await self?.handle(
                         id: conversationID,
-                        itemType: .conversation,
+                        mailboxItem: .conversation,
                         action: action,
                         toastStateStore: toastStateStore, goBack: goBack
                     )
@@ -357,7 +355,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
     private func handle(
         action: PhishingConfirmationAlertAction,
         messageID: ID,
-        itemType: ActionSheetItemType,
+        mailboxItem: MailboxItem,
         goBack: @escaping () -> Void
     ) async {
         hideAlert()
@@ -368,7 +366,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
 
         if case .ok = await actionPerformer.markMessagePhishing(messageID: messageID) {
             actionSheets = .allSheetsDismissed
-            if itemType.shouldGoBack {
+            if mailboxItem.shouldGoBack {
                 goBack()
             }
         }
@@ -387,25 +385,25 @@ final class ConversationDetailModel: Sendable, ObservableObject {
     }
 
     @MainActor
-    private func present(alert: AlertModel, origin: ActionOrigin) {
+    private func present(alert: AlertModel, origin: ConversationActionOrigin) {
         switch origin {
         case .sheet:
             actionSheets.alert = alert
         case .toolbar:
-            self.alert = alert
+            actionAlert = alert
         }
     }
 
     @MainActor
     private func hideAlert() {
-        alert = nil
+        actionAlert = nil
         actionSheets.alert = nil
     }
 
     @MainActor
     private func handle(
         id: ID,
-        itemType: ActionSheetItemType,
+        mailboxItem: MailboxItem,
         action: DeleteConfirmationAlertAction,
         toastStateStore: ToastStateStore,
         goBack: @escaping () -> Void
@@ -413,12 +411,12 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         hideAlert()
         if action == .delete, let mailbox {
             await DeleteActionPerformer(mailbox: mailbox, deleteActions: .productionInstance)
-                .delete(itemsWithIDs: [id], itemType: itemType.inboxItemType)
+                .delete(itemsWithIDs: [id], itemType: mailboxItem.itemType)
             toastStateStore.present(toast: .deleted())
 
             actionSheets = .allSheetsDismissed
 
-            if itemType.shouldGoBack {
+            if mailboxItem.shouldGoBack {
                 goBack()
             }
         }
@@ -448,7 +446,7 @@ extension ConversationDetailModel {
     @MainActor
     private func move(
         id: ID,
-        itemType: ActionSheetItemType,
+        mailboxItem: MailboxItem,
         destination: MovableSystemFolderAction,
         toastStateStore: ToastStateStore,
         goBack: @escaping () -> Void
@@ -461,7 +459,7 @@ extension ConversationDetailModel {
             let undo = try await moveToActionPerformer.moveTo(
                 destinationID: destination.localId,
                 itemsIDs: [id],
-                itemType: itemType.inboxItemType
+                itemType: mailboxItem.itemType
             )
             let toastID = UUID()
             let undoAction = undo.undoAction(userSession: userSession) {
@@ -482,7 +480,7 @@ extension ConversationDetailModel {
 
         toastStateStore.present(toast: toast)
 
-        if itemType.shouldGoBack {
+        if mailboxItem.shouldGoBack {
             goBack()
         }
     }
@@ -746,19 +744,6 @@ extension ConversationDetailModel {
     }
 }
 
-extension ConversationDetailModel.State {
-
-    var singleMessageIDInMessageMode: ID? {
-        switch self {
-        case .initial, .fetchingMessages, .noConnection:
-            nil
-        case .messagesReady(let messages):
-            messages.first?.id
-        }
-    }
-
-}
-
 extension ConversationDetailModel {
 
     struct Dependencies {
@@ -853,26 +838,6 @@ private extension ConversationDetailModel.State {
 
 }
 
-extension ActionSheetItemType {
-
-    var shouldGoBack: Bool {
-        switch self {
-        case .conversation:
-            true
-        case .message(let isStandaloneMessage):
-            isStandaloneMessage
-        }
-    }
-
-}
-
-// Move to seprate file
-extension ThemeOpts {
-    init(colorScheme: ColorScheme, isForcingLightMode: Bool) {
-        self.init(currentTheme: .converted(from: colorScheme), themeOverride: isForcingLightMode ? .lightMode : nil)
-    }
-}
-
 private extension MessageAppearanceOverrideStore {
 
     func themeOpts(messageID: ID, colorScheme: ColorScheme) -> ThemeOpts {
@@ -880,14 +845,4 @@ private extension MessageAppearanceOverrideStore {
         return .init(colorScheme: colorScheme, isForcingLightMode: isForcingLightMode)
     }
 
-}
-
-private extension MailTheme {
-    static func converted(from colorScheme: ColorScheme) -> Self {
-        switch colorScheme {
-        case .light: .lightMode
-        case .dark: .darkMode
-        @unknown default: .lightMode
-        }
-    }
 }

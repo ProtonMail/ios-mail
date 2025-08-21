@@ -99,12 +99,12 @@ final class ListActionsToolbarStore: StateStore {
             dismissMoreActionSheet()
             state =
                 state
-                .copy(\.labelAsSheetPresented, to: .init(sheetType: .labelAs, ids: ids, type: itemTypeForActionBar.actionSheetItemType))
+                .copy(\.labelAsSheetPresented, to: .init(sheetType: .labelAs, ids: ids, mailboxItem: itemTypeForActionBar.mailboxItem))
         case .moveTo:
             dismissMoreActionSheet()
             state =
                 state
-                .copy(\.moveToSheetPresented, to: .init(sheetType: .moveTo, ids: ids, type: itemTypeForActionBar.actionSheetItemType))
+                .copy(\.moveToSheetPresented, to: .init(sheetType: .moveTo, ids: ids, mailboxItem: itemTypeForActionBar.mailboxItem))
         case .star:
             dismissMoreActionSheet()
             starActionPerformer.star(itemsWithIDs: ids, itemType: itemTypeForActionBar)

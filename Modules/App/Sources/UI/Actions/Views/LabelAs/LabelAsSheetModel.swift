@@ -67,7 +67,7 @@ class LabelAsSheetModel: ObservableObject {
     private func loadLabels() {
         Task {
             do {
-                let labels = try await actionsProvider.actions(for: input.type.inboxItemType, ids: input.ids)
+                let labels = try await actionsProvider.actions(for: input.mailboxItem.itemType, ids: input.ids)
                 Dispatcher.dispatchOnMain(
                     .init(block: { [weak self] in
                         self?.update(labels: labels)
@@ -80,7 +80,7 @@ class LabelAsSheetModel: ObservableObject {
 
     private func executeLabelAsAction() {
         let input = LabelAsActionPerformer.Input(
-            itemType: input.type.inboxItemType,
+            itemType: input.mailboxItem.itemType,
             itemsIDs: input.ids,
             selectedLabelsIDs: state.labels.filter { $0.isSelected == .selected }.map(\.id),
             partiallySelectedLabelsIDs: state.labels.filter { $0.isSelected == .partial }.map(\.id),

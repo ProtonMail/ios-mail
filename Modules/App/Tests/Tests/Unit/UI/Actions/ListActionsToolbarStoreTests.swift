@@ -122,7 +122,7 @@ class ListActionsToolbarStoreTests: BaseTestCase {
 
         XCTAssertEqual(
             sut.state.moveToSheetPresented,
-            .init(sheetType: .moveTo, ids: [.init(value: 7)], type: .message(isLastMessageInCurrentLocation: false))
+            .init(sheetType: .moveTo, ids: [.init(value: 7)], mailboxItem: .message(isLastMessageInCurrentLocation: false))
         )
 
         sut.handle(action: .dismissMoveToSheet)
@@ -138,7 +138,7 @@ class ListActionsToolbarStoreTests: BaseTestCase {
 
         sut.handle(action: .actionSelected(.labelAs, ids: ids))
 
-        XCTAssertEqual(sut.state.labelAsSheetPresented, .init(sheetType: .labelAs, ids: ids, type: .conversation))
+        XCTAssertEqual(sut.state.labelAsSheetPresented, .init(sheetType: .labelAs, ids: ids, mailboxItem: .conversation))
 
         sut.handle(action: .dismissLabelAsSheet)
 
@@ -175,7 +175,7 @@ class ListActionsToolbarStoreTests: BaseTestCase {
 
         XCTAssertEqual(
             sut.state.labelAsSheetPresented,
-            .init(sheetType: .labelAs, ids: ids, type: .message(isLastMessageInCurrentLocation: false))
+            .init(sheetType: .labelAs, ids: ids, mailboxItem: .message(isLastMessageInCurrentLocation: false))
         )
     }
 
@@ -234,14 +234,14 @@ class ListActionsToolbarStoreTests: BaseTestCase {
 
     func testAction_WhenMoveToInboxIsTapped_ItMovesMessage() {
         let ids: [ID] = [.init(value: 7), .init(value: 77)]
-        let systemFolder = MoveToSystemFolderLocation.testInbox
+        let systemFolder = MovableSystemFolderAction.testInbox
         sut = makeSUT(viewMode: .messages)
 
         sut.handle(action: .actionSelected(.moveToSystemFolder(systemFolder), ids: ids))
 
         XCTAssertEqual(
             toastStateStore.state.toasts,
-            [.moveTo(id: UUID(), destinationName: systemFolder.name.humanReadable.string, undoAction: .none)]
+            [.moveTo(id: UUID(), destinationName: systemFolder.name.displayData.title.string, undoAction: .none)]
         )
         XCTAssertEqual(
             moveToActionsSpy.invokedMoveToMessage,
@@ -251,7 +251,7 @@ class ListActionsToolbarStoreTests: BaseTestCase {
 
     func testAction_WhenMoveToInboxIsTappedUndoIsAvailbleAndTapped_ItTriggersUndoAndDismissesToast() throws {
         let ids: [ID] = [.init(value: 7), .init(value: 77)]
-        let systemFolder = MoveToSystemFolderLocation.testInbox
+        let systemFolder = MovableSystemFolderAction.testInbox
         let undoSpy = UndoSpy(noPointer: .init())
         moveToActionsSpy.stubbedMoveMessagesToOkResult = undoSpy
         sut = makeSUT(viewMode: .messages)
@@ -260,7 +260,7 @@ class ListActionsToolbarStoreTests: BaseTestCase {
 
         XCTAssertEqual(
             toastStateStore.state.toasts,
-            [.moveTo(id: UUID(), destinationName: systemFolder.name.humanReadable.string, undoAction: {})]
+            [.moveTo(id: UUID(), destinationName: systemFolder.name.displayData.title.string, undoAction: {})]
         )
         XCTAssertEqual(
             moveToActionsSpy.invokedMoveToMessage,

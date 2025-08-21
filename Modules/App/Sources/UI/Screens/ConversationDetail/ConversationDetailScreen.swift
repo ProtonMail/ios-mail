@@ -107,7 +107,7 @@ struct ConversationDetailScreen: View {
                 },
                 goBackNavigation: { goBackToMailbox() }
             )
-            .alert(model: $model.alert)
+            .alert(model: $model.actionAlert)
             .fullScreenCover(item: $model.attachmentIDToOpen) { id in
                 AttachmentView(config: .init(id: id, mailbox: model.mailbox.unsafelyUnwrapped))
                     .edgesIgnoringSafeArea([.top, .bottom])
@@ -325,14 +325,6 @@ extension ConversationDetailSeed {
         case .pushNotification:
             false
         }
-    }
-
-}
-
-extension MailboxActionSheetsState {
-
-    static var allSheetsDismissed: Self {
-        .init()
     }
 
 }

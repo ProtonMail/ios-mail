@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Proton Technologies AG
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -15,21 +15,21 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import proton_app_uniffi
+import SwiftUI
 
-struct ActionSheetInput: Hashable, Identifiable {
-    let sheetType: ActionSheetType
-    let ids: [ID]
-    let mailboxItem: MailboxItem
-
-    enum ActionSheetType: Equatable {
-        case moveTo
-        case labelAs
+extension ThemeOpts {
+    init(colorScheme: ColorScheme, isForcingLightMode: Bool) {
+        self.init(currentTheme: .converted(from: colorScheme), themeOverride: isForcingLightMode ? .lightMode : nil)
     }
+}
 
-    // MARK: - Identifiable
-
-    var id: ActionSheetType {
-        sheetType
+private extension MailTheme {
+    static func converted(from colorScheme: ColorScheme) -> Self {
+        switch colorScheme {
+        case .light: .lightMode
+        case .dark: .darkMode
+        @unknown default: .lightMode
+        }
     }
 }

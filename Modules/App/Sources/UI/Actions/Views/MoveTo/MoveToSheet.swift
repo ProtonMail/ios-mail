@@ -142,23 +142,6 @@ private extension MoveToSystemFolder {
 
 }
 
-extension MovableSystemFolder {
-    var displayData: ActionDisplayData {
-        let action =
-            switch self {
-            case .inbox:
-                Action.moveToInbox
-            case .trash:
-                Action.moveToTrash
-            case .spam:
-                Action.moveToSpam
-            case .archive:
-                Action.moveToArchive
-            }
-        return action.displayData
-    }
-}
-
 private extension Array where Element == MoveToCustomFolder {
 
     func displayData(spacing: CGFloat) -> [ActionSelectableButtonDisplayData] {
@@ -180,27 +163,11 @@ private extension Array where Element == MoveToCustomFolder {
 
 #Preview {
     MoveToSheet(
-        input: .init(sheetType: .moveTo, ids: [], type: .message(isLastMessageInCurrentLocation: false)),
+        input: .init(sheetType: .moveTo, ids: [], mailboxItem: .message(isLastMessageInCurrentLocation: false)),
         mailbox: .dummy,
         availableMoveToActions: MoveToSheetPreviewProvider.availableMoveToActions,
         moveToActions: .dummy,
         navigation: { _ in },
         mailUserSession: .dummy
     )
-}
-
-extension Mailbox {
-
-    static var dummy: Mailbox {
-        .init(noPointer: .init())
-    }
-
-}
-
-extension MailUserSession {
-
-    static var dummy: MailUserSession {
-        .init(noPointer: .init())
-    }
-
 }

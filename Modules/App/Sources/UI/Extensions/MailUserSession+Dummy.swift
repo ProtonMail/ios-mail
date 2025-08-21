@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Proton Technologies AG
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -15,21 +15,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import proton_app_uniffi
 
-struct ActionSheetInput: Hashable, Identifiable {
-    let sheetType: ActionSheetType
-    let ids: [ID]
-    let mailboxItem: MailboxItem
+extension MailUserSession {
 
-    enum ActionSheetType: Equatable {
-        case moveTo
-        case labelAs
+    static var dummy: MailUserSession {
+        .init(noPointer: .init())
     }
 
-    // MARK: - Identifiable
-
-    var id: ActionSheetType {
-        sheetType
-    }
 }

@@ -571,9 +571,9 @@ extension MailboxModel {
 
         switch context.action {
         case .labelAs:
-            state.labelAsSheetPresented = .init(sheetType: .labelAs, ids: ids, type: viewMode.itemType.actionSheetItemType)
+            state.labelAsSheetPresented = .init(sheetType: .labelAs, ids: ids, mailboxItem: viewMode.itemType.mailboxItem)
         case .moveTo(.moveToUnknownLabel):
-            state.moveToSheetPresented = .init(sheetType: .moveTo, ids: ids, type: viewMode.itemType.actionSheetItemType)
+            state.moveToSheetPresented = .init(sheetType: .moveTo, ids: ids, mailboxItem: viewMode.itemType.mailboxItem)
         case .toggleRead:
             if context.isItemRead {
                 markAsUnread(ids: ids)

@@ -72,7 +72,7 @@ class MoveToSheetStateStore: StateStore {
                 let undo = try await moveToActionPerformer.moveTo(
                     destinationID: destinationID,
                     itemsIDs: input.ids,
-                    itemType: input.type.inboxItemType
+                    itemType: input.mailboxItem.itemType
                 )
                 let toastID = UUID()
                 let undoAction = undo.undoAction(userSession: mailUserSession) {
@@ -97,13 +97,13 @@ class MoveToSheetStateStore: StateStore {
         Dispatcher.dispatchOnMain(
             .init { [weak self, input] in
                 self?.toastStateStore.present(toast: toast)
-                self?.navigation(input.type.navigation)
+                self?.navigation(input.mailboxItem.shouldGoBack ? .dismissAndGoBack : .dismiss)
             })
     }
 
     private func loadMoveToActions() {
         Task {
-            let actions = await moveToActionsProvider.actions(for: input.type.inboxItemType, ids: input.ids)
+            let actions = await moveToActionsProvider.actions(for: input.mailboxItem.itemType, ids: input.ids)
             Dispatcher.dispatchOnMain(
                 .init(block: { [weak self] in
                     self?.update(moveToActions: actions)
@@ -117,19 +117,6 @@ class MoveToSheetStateStore: StateStore {
             .copy(\.moveToSystemFolderActions, to: moveToActions.compactMap(\.moveToSystemFolder))
             .copy(\.moveToCustomFolderActions, to: moveToActions.compactMap(\.moveToCustomFolder))
     }
-}
-
-private extension ActionSheetItemType {
-
-    var navigation: MoveToSheetNavigation {
-        switch self {
-        case .conversation:
-            .dismissAndGoBack
-        case .message(let isStandaloneMessage):
-            isStandaloneMessage ? .dismissAndGoBack : .dismiss
-        }
-    }
-
 }
 
 private extension MoveAction {

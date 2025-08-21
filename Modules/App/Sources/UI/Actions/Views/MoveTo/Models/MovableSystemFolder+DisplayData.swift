@@ -15,18 +15,21 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-enum ActionSheetItemType: Hashable {
-    case conversation
-    case message(isLastMessageInCurrentLocation: Bool)
-}
+import proton_app_uniffi
 
-extension ActionSheetItemType {
-    var inboxItemType: MailboxItemType {
-        switch self {
-        case .conversation:
-            .conversation
-        case .message:
-            .message
-        }
+extension MovableSystemFolder {
+    var displayData: ActionDisplayData {
+        let action =
+            switch self {
+            case .inbox:
+                Action.moveToInbox
+            case .trash:
+                Action.moveToTrash
+            case .spam:
+                Action.moveToSpam
+            case .archive:
+                Action.moveToArchive
+            }
+        return action.displayData
     }
 }

@@ -124,3 +124,11 @@ private struct MailboxActionSheets: ViewModifier {
     }
 
 }
+
+extension MailboxActionSheetsState {
+
+    static var allSheetsDismissed: Self {
+        .init()
+    }
+
+}
