@@ -1790,6 +1790,9 @@
         }
       }
     },
+    "Available in web" : {
+      "comment" : "Title of the prompt informing the user that this action is only available in the web app."
+    },
     "Birthday" : {
       "comment" : "Birthday label in contact details.",
       "localizations" : {
@@ -2547,6 +2550,12 @@
           }
         }
       }
+    },
+    "Create in web" : {
+      "comment" : "Label for the button that opens the web app to create a contact or group."
+    },
+    "Creating contacts or groups in the app is not yet ready. For now, you can create them in the web app and they’ll sync to your device." : {
+      "comment" : "Subtitle explaining that creating contacts or groups is not yet supported in the app and must be done on the web."
     },
     "Delete %@" : {
       "comment" : "Title for the alert shown when deleting a contact or contact group.",

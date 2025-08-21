@@ -80,11 +80,7 @@ public struct ContactsScreen: View {
             isPresented: $store.state.displayCreateContactSheet,
             content: {
                 PromptSheet(
-                    model: .init(
-                        image: DS.Images.contactsWebSheet,
-                        title: "Available in web".stringResource,
-                        subtitle: "Creating contacts or groups in the app is not yet ready. For now, you can create them in the web app and they’ll sync to your device.".stringResource,
-                        actionButtonTitle: "Create in web".stringResource,
+                    model: .createContact(
                         onAction: { handle(action: .createSheetAction(.openSafari)) },
                         onDismiss: { handle(action: .createSheetAction(.dismiss)) }
                     )

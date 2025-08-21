@@ -86,6 +86,24 @@ enum L10n {
                 comment: "Error message."
             )
         }
+
+        enum OpenInWebPrompt {
+            static let title = LocalizedStringResource(
+                "Available in web",
+                bundle: .atURL(Bundle.module.bundleURL),
+                comment: "Title of the prompt informing the user that this action is only available in the web app."
+            )
+            static let subtitle = LocalizedStringResource(
+                "Creating contacts or groups in the app is not yet ready. For now, you can create them in the web app and they’ll sync to your device.",
+                bundle: .atURL(Bundle.module.bundleURL),
+                comment: "Subtitle explaining that creating contacts or groups is not yet supported in the app and must be done on the web."
+            )
+            static let actionButtonTitle = LocalizedStringResource(
+                "Create in web",
+                bundle: .atURL(Bundle.module.bundleURL),
+                comment: "Label for the button that opens the web app to create a contact or group."
+            )
+        }
     }
     enum ContactDetails {
         static let newMessage = LocalizedStringResource(
