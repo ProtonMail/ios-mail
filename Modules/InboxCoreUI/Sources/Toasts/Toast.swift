@@ -92,9 +92,9 @@ public struct Toast: Hashable, Sendable {
 
     public struct Button: Hashable, Sendable {
         let type: ButtonType
-        let action: @Sendable () -> Void
+        let action: () async -> Void
 
-        public init(type: ButtonType, action: @escaping @Sendable () -> Void) {
+        public init(type: ButtonType, action: @escaping () async -> Void) {
             self.type = type
             self.action = action
         }
@@ -144,7 +144,7 @@ public extension Toast {
         id: UUID = UUID(),
         message: String,
         duration: Duration,
-        undoAction: (() -> Void)?
+        undoAction: (() async -> Void)?
     ) -> Self {
         let button: Button? =
             switch undoAction {

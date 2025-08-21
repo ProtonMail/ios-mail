@@ -81,9 +81,13 @@ struct ToastView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
     }
 
-    private func smallImageButton(imageResource: ImageResource, action: @escaping () -> Void) -> some View {
+    private func smallImageButton(imageResource: ImageResource, action: @escaping () async -> Void) -> some View {
         Button(
-            action: action,
+            action: {
+                Task {
+                    await action()
+                }
+            },
             label: {
                 Image(imageResource)
                     .padding(DS.Spacing.standard)
@@ -93,9 +97,13 @@ struct ToastView: View {
         )
     }
 
-    private func smallTitleButton(title: String, action: @escaping () -> Void) -> some View {
+    private func smallTitleButton(title: String, action: @escaping () async -> Void) -> some View {
         Button(
-            action: action,
+            action: {
+                Task {
+                    await action()
+                }
+            },
             label: {
                 Text(title)
                     .font(.footnote)
@@ -107,9 +115,13 @@ struct ToastView: View {
         )
     }
 
-    private func largeTitleButton(title: String, action: @escaping () -> Void) -> some View {
+    private func largeTitleButton(title: String, action: @escaping () async -> Void) -> some View {
         Button(
-            action: action,
+            action: {
+                Task {
+                    await action()
+                }
+            },
             label: {
                 Text(title)
                     .font(.subheadline)

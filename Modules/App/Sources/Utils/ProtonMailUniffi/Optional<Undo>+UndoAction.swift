@@ -15,19 +15,23 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import InboxCore
 import proton_app_uniffi
 
 extension Optional where Wrapped == Undo {
-    func undoAction(userSession: MailUserSession, onFinish: @escaping @Sendable () -> Void) -> (() -> Void)? {
+    func undoAction(userSession: MailUserSession, onFinish: @escaping @isolated(any) () -> Void) -> (() async -> Void)? {
         guard case .some(let wrapped) = self else {
             return nil
         }
 
         return {
-            Task {
+            do {
                 try await wrapped.undo(ctx: userSession).get()
-                onFinish()
+            } catch {
+                AppLogger.log(error: error)
             }
+
+            await onFinish()
         }
     }
 }

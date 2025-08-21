@@ -211,7 +211,7 @@ final class ListActionsToolbarStore: StateStore {
     private func handleMoveActionSuccess(
         to destination: MovableSystemFolderAction,
         toastID: UUID,
-        undoAction: (() -> Void)?
+        undoAction: (() async -> Void)?
     ) {
         let destinationName = destination.name.displayData.title.string
         let toast: Toast = .moveTo(id: toastID, destinationName: destinationName, undoAction: undoAction)

@@ -19,7 +19,14 @@
 import InboxCore
 
 extension Toast {
+    @available(*, deprecated, message: "Prefer the async variant")
     func simulateUndoAction() {
+        Task {
+            await simulateUndoAction()
+        }
+    }
+
+    func simulateUndoAction() async {
         guard
             let button,
             case .smallTrailing(let content) = button.type,
@@ -29,6 +36,6 @@ extension Toast {
             return
         }
 
-        button.action()
+        await button.action()
     }
 }

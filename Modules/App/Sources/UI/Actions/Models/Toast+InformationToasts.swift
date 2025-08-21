@@ -21,7 +21,7 @@ import InboxCoreUI
 
 extension Toast {
 
-    static func moveTo(id: UUID, destinationName: String, undoAction: (() -> Void)?) -> Self {
+    static func moveTo(id: UUID, destinationName: String, undoAction: (() async -> Void)?) -> Self {
         .informationUndo(
             id: id,
             message: L10n.Toast.movedTo(destination: destinationName).string,
