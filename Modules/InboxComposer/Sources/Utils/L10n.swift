@@ -116,6 +116,38 @@ enum L10n {
         )
     }
 
+    enum SenderValidation {
+        static let addressNotAvailableAlertTitle = LocalizedStringResource(
+            "Address not available",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Title for the alert telling the user the address is invalid for sending."
+        )
+
+        static func cannotSend(address: String) -> LocalizedStringResource {
+            LocalizedStringResource(
+                "\(address) cannot be used to send messages",
+                bundle: .atURL(Bundle.module.bundleURL),
+                comment: "Error shown when the sender address can't be used for sending."
+            )
+        }
+
+        static func disabled(address: String) -> LocalizedStringResource {
+            LocalizedStringResource(
+                "\(address) is disabled. It cannot send messages",
+                bundle: .atURL(Bundle.module.bundleURL),
+                comment: "Error shown when the sender address can't be used because it's disabled."
+            )
+        }
+
+        static func subscriptionRequired(address: String) -> LocalizedStringResource {
+            LocalizedStringResource(
+                "A paid plan is required to use \(address)",
+                bundle: .atURL(Bundle.module.bundleURL),
+                comment: "Error shown when the sender address can't be used for subscription-based reasons."
+            )
+        }
+    }
+
     enum Attachments {
         static let addAttachments = LocalizedStringResource(
             "Add attachments",

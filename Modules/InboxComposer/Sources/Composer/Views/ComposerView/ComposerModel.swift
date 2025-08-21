@@ -43,7 +43,12 @@ final class ComposerModel: ObservableObject {
     private let fileItemsHandler: FilePickerItemHandler
     private let scheduleSendOptionsProvider: ScheduleSendOptionsProvider
     private let expirationValidationActions: MessageExpirationValidatorActions
+    private let senderAddressValidatorActions: SenderAddressValidatorActions
 
+    private lazy var senderAddressValidator = SenderAddressValidator(
+        alertBinding: alertBinding,
+        actions: senderAddressValidatorActions
+    )
     private lazy var messageExpirationRecipientsValidator = MessageExpirationRecipientsValidator(
         alertBinding: alertBinding,
         actions: expirationValidationActions
@@ -91,7 +96,8 @@ final class ComposerModel: ObservableObject {
         cameraImageHandler: CameraImageHandler,
         fileItemsHandler: FilePickerItemHandler,
         isAddingAttachmentsEnabled: Bool,
-        expirationValidationActions: MessageExpirationValidatorActions = .productionInstance
+        expirationValidationActions: MessageExpirationValidatorActions = .productionInstance,
+        senderAddressValidatorActions: SenderAddressValidatorActions = .productionInstance
     ) {
         self.draft = draft
         self.draftOrigin = draftOrigin
@@ -105,6 +111,7 @@ final class ComposerModel: ObservableObject {
         self.attachmentAlertState = .init()
         self.scheduleSendOptionsProvider = .init(scheduleSendOptions: draft.scheduleSendOptions)
         self.expirationValidationActions = expirationValidationActions
+        self.senderAddressValidatorActions = senderAddressValidatorActions
         self.state = makeState(from: draft)
 
         setUpCallbacks()
@@ -119,10 +126,11 @@ final class ComposerModel: ObservableObject {
         if draftOrigin == .cache {
             showToast(.information(message: L10n.Composer.draftLoadedOffline.string))
         }
-        setInitialFocus()
-        await updateStateAttachmentUIModels()
         await permissionsHandler.requestAccessIfNeeded()
         await contactProvider.loadContacts()
+        await senderAddressValidator.validate(draft: draft)
+        await updateStateAttachmentUIModels()
+        setInitialFocus()
     }
 
     @MainActor

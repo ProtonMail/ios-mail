@@ -1,6 +1,12 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "%@ cannot be used to send messages" : {
+      "comment" : "Error shown when the sender address can't be used for sending."
+    },
+    "%@ is disabled. It cannot send messages" : {
+      "comment" : "Error shown when the sender address can't be used because it's disabled."
+    },
     "%lld members" : {
       "comment" : "Contact group row subtitle in contact picker.",
       "localizations" : {
@@ -191,6 +197,9 @@
           }
         }
       }
+    },
+    "A paid plan is required to use %@" : {
+      "comment" : "Error shown when the sender address can't be used for subscription-based reasons."
     },
     "Access to the camera was disabled. Please go to Settings and enable the camera permission." : {
       "comment" : "Alert shown if permission to camera is denied when trying to use it for attachments.",
@@ -1307,6 +1316,9 @@
           }
         }
       }
+    },
+    "Address not available" : {
+      "comment" : "Title for the alert telling the user the address is invalid for sending."
     },
     "Address not found" : {
       "comment" : "Error in the context of changing the sender with a wrong sender address.",

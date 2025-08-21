@@ -16,7 +16,9 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import InboxCore
 import InboxCoreUI
+import SwiftUI
 
 extension AlertModel {
 
@@ -41,6 +43,22 @@ extension AlertModel {
             title: L10n.MessageExpiration.alertUnsupportedTitle,
             message: message,
             actions: actions
+        )
+    }
+
+    static func senderAddressCannotSend(message: LocalizedStringResource, onDismiss: @escaping () -> Void) -> Self {
+        struct Action: AlertActionInfo {
+            var info: (title: LocalizedStringResource, buttonRole: ButtonRole?)
+        }
+        return .init(
+            title: L10n.SenderValidation.addressNotAvailableAlertTitle,
+            message: message,
+            actions: [
+                .init(
+                    details: Action(info: (title: CommonL10n.ok, buttonRole: .cancel)),
+                    action: { onDismiss() }
+                )
+            ]
         )
     }
 }

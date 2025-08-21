@@ -54,6 +54,7 @@ final class MockDraft: AppDraftProtocol, @unchecked Sendable {
     var mockAttachmentList: MockAttachmentList
     var mockGetPassword: DraftGetPasswordResult = .ok(nil)
     var mockDraftExpirationTimeResult: DraftExpirationTimeResult = .ok(.never)
+    var mockDraftAddressValidationResult: DraftAddressValidationResult? = nil
     var mockValidateRecipientsExpirationResult: DraftValidateRecipientsExpirationFeatureResult = .ok(
         .init(supported: [], unsupported: [], unknown: [])
     )
@@ -64,6 +65,7 @@ final class MockDraft: AppDraftProtocol, @unchecked Sendable {
     var mockDraftChangeSenderAddressResult: DraftChangeSenderAddressResult = .ok
     var mockSendResult: VoidDraftSendResult = .ok
 
+    private(set) var clearAddressValidationErrorWasCalled: Bool = false
     private(set) var sendWasCalled: Bool = false
     private(set) var scheduleSendWasCalled: Bool = false
     private(set) var scheduleSendWasCalledWithTime: UInt64 = 0
@@ -133,6 +135,12 @@ final class MockDraft: AppDraftProtocol, @unchecked Sendable {
     func messageId() async -> DraftMessageIdResult { mockDraftMessageIdResult }
 
     func mimeType() -> MimeType { mockMimeType }
+
+    func addressValidationResult() -> DraftAddressValidationResult? { mockDraftAddressValidationResult }
+
+    func clearAddressValidationError() {
+        clearAddressValidationErrorWasCalled = true
+    }
 
     func listSenderAddresses() async -> DraftListSenderAddressesResult {
         mockSenderList

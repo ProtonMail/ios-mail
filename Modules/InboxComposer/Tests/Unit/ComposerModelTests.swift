@@ -134,12 +134,28 @@ final class ComposerModelTests: BaseTestCase {
         XCTAssertFalse(sut.attachmentAlertState.isAlertPresented)
     }
 
+    func testOnLoad_itCallsSenderAddressValidator() async throws {
+        var validateCalled = false
+        let testValidatorActions = SenderAddressValidatorActions(validate: { draft, _ in validateCalled = true })
+        let sut = makeSut(
+            draft: mockDraft,
+            draftOrigin: .new,
+            contactProvider: .mockInstance,
+            senderAddressValidatorActions: testValidatorActions
+        )
+
+        await sut.onLoad()
+
+        XCTAssertTrue(validateCalled)
+    }
+
     func testOnLoad_whenAttachmentInErrorState_itPresentsAlert() async throws {
         let draftError = DraftAttachmentUploadError.reason(.attachmentTooLarge)
         let mockDraft: MockDraft = .makeWithAttachments([.makeMockDraftAttachment(state: .error(draftError))])
         let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: testContactProvider)
 
         await sut.onLoad()
+        await Task.yield()
 
         XCTAssertTrue(sut.attachmentAlertState.isAlertPresented)
     }
@@ -799,7 +815,8 @@ private extension ComposerModelTests {
         draft: any AppDraftProtocol,
         draftOrigin: DraftOrigin,
         contactProvider: ComposerContactProvider,
-        expirationValidationActions: MessageExpirationValidatorActions = .productionInstance
+        expirationValidationActions: MessageExpirationValidatorActions = .productionInstance,
+        senderAddressValidatorActions: SenderAddressValidatorActions = .productionInstance
     ) -> ComposerModel {
         ComposerModel(
             draft: draft,
@@ -812,7 +829,8 @@ private extension ComposerModelTests {
             cameraImageHandler: testCameraImageHandler,
             fileItemsHandler: testFilesItemsHandler,
             isAddingAttachmentsEnabled: true,
-            expirationValidationActions: expirationValidationActions
+            expirationValidationActions: expirationValidationActions,
+            senderAddressValidatorActions: senderAddressValidatorActions
         )
     }
 

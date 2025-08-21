@@ -38,6 +38,8 @@ public protocol AppDraftProtocol: ImageProxy {
     /// ones that return `ComposerRecipientList` objects.
     func messageId() async -> DraftMessageIdResult
     func mimeType() -> MimeType
+    func addressValidationResult() -> DraftAddressValidationResult?
+    func clearAddressValidationError()
     func listSenderAddresses() async -> DraftListSenderAddressesResult
     func changeSenderAddress(email: String) async -> DraftChangeSenderAddressResult
     func attachmentList() -> AttachmentListProtocol
