@@ -56,7 +56,7 @@ class MoveToSheetStateStore: StateStore {
         case .customFolderTapped(let customFolder):
             moveTo(destinationID: customFolder.id, destinationName: customFolder.name)
         case .systemFolderTapped(let systemFolder):
-            moveTo(destinationID: systemFolder.id, destinationName: systemFolder.label.humanReadable.string)
+            moveTo(destinationID: systemFolder.id, destinationName: systemFolder.label.displayData.title.string)
         case .createFolderTapped:
             state = state.copy(\.createFolderLabelPresented, to: true)
         }

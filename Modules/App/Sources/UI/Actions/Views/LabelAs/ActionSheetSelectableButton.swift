@@ -55,8 +55,8 @@ struct ActionSheetSelectableButton: View {
                 .square(size: 13)
                 .clipShape(Circle())
                 .square(size: 20)
-        case .image(let imageResource, let color):
-            Image(imageResource)
+        case .image(let image, let color):
+            image
                 .resizable()
                 .square(size: 20)
                 .foregroundStyle(color)

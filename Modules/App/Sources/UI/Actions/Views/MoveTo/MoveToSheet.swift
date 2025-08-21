@@ -133,13 +133,30 @@ private extension MoveToSystemFolder {
     var displayData: ActionSelectableButtonDisplayData {
         .init(
             id: id,
-            visualAsset: .image(label.icon, color: DS.Color.Icon.norm),
-            title: label.humanReadable.string,
+            visualAsset: .image(label.displayData.image, color: DS.Color.Icon.norm),
+            title: label.displayData.title.string,
             isSelected: .unselected,
             leadingSpacing: .zero
         )
     }
 
+}
+
+extension MovableSystemFolder {
+    var displayData: ActionDisplayData {
+        let action =
+            switch self {
+            case .inbox:
+                Action.moveToInbox
+            case .trash:
+                Action.moveToTrash
+            case .spam:
+                Action.moveToSpam
+            case .archive:
+                Action.moveToArchive
+            }
+        return action.displayData
+    }
 }
 
 private extension Array where Element == MoveToCustomFolder {
@@ -148,7 +165,9 @@ private extension Array where Element == MoveToCustomFolder {
         flatMap { item in
             let displayData = ActionSelectableButtonDisplayData(
                 id: item.id,
-                visualAsset: .image(item.children.isEmpty ? DS.Icon.icFolder : DS.Icon.icFolders, color: item.color),
+                visualAsset: .image(
+                    item.children.isEmpty ? DS.Icon.icFolder.image : DS.Icon.icFolders.image, color: item.color
+                ),
                 title: item.name,
                 isSelected: .unselected,
                 leadingSpacing: spacing
@@ -168,4 +187,20 @@ private extension Array where Element == MoveToCustomFolder {
         navigation: { _ in },
         mailUserSession: .dummy
     )
+}
+
+extension Mailbox {
+
+    static var dummy: Mailbox {
+        .init(noPointer: .init())
+    }
+
+}
+
+extension MailUserSession {
+
+    static var dummy: MailUserSession {
+        .init(noPointer: .init())
+    }
+
 }

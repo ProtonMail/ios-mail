@@ -74,8 +74,6 @@ final class ConversationDetailModel: Sendable, ObservableObject {
     }
 
     private lazy var starActionPerformer = StarActionPerformer(mailUserSession: userSession)
-    private var readActionPerformer: ReadActionPerformer?
-    private var moveToActionPerformer: MoveToActionPerformer?
 
     private var userSession: MailUserSession {
         dependencies.appContext.userSession
@@ -114,11 +112,6 @@ final class ConversationDetailModel: Sendable, ObservableObject {
             updateStateToMessagesReady(with: liveQueryValues.messages)
             await reloadBottomBarActions()
             try await scrollToRelevantMessage(messages: liveQueryValues.messages)
-            //
-
-            readActionPerformer = .init(mailbox: mailbox, readActionPerformerActions: .productionInstance)
-            moveToActionPerformer = .init(mailbox: mailbox, moveToActions: .productionInstance)
-
         } catch ActionError.other(.network) {
             updateState(.noConnection)
             reloadContentWhenBackOnline()
@@ -189,6 +182,10 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         isStarred ? unstarConversation() : starConversation()
     }
 
+    func isForcingLightMode(forMessageWithId messageId: ID) -> Bool {
+        messageAppearanceOverrideStore.isForcingLightMode(forMessageWithId: messageId)
+    }
+
     @MainActor
     func handle(
         action: MessageAction,
@@ -199,10 +196,10 @@ final class ConversationDetailModel: Sendable, ObservableObject {
     ) async {
         switch action {
         case .markRead:
-            await readActionPerformer?.markAsRead(itemsWithIDs: [messageID], itemType: .message)
+            await markAsRead(id: messageID, itemType: .message)
             actionSheets = .allSheetsDismissed
         case .markUnread:
-            await readActionPerformer?.markAsUnread(itemsWithIDs: [messageID], itemType: .message)
+            await markAsUnread(id: messageID, itemType: .message)
             actionSheets = .allSheetsDismissed
             goBack()
         case .star:
@@ -301,27 +298,6 @@ final class ConversationDetailModel: Sendable, ObservableObject {
 
     @MainActor
     func handle(
-        action: PhishingConfirmationAlertAction,
-        messageID: ID,
-        itemType: ActionSheetItemType,
-        goBack: @escaping () -> Void
-    ) async {
-        hideAlert()
-        guard action == .confirm, let mailbox else {
-            return
-        }
-        let actionPerformer = GeneralActionsPerformer(mailbox: mailbox, generalActions: .productionInstance)
-
-        if case .ok = await actionPerformer.markMessagePhishing(messageID: messageID) {
-            if itemType.dismissNavigation == .dismissAndGoBack {
-                actionSheets = .allSheetsDismissed
-                goBack()
-            }
-        }
-    }
-
-    @MainActor
-    func handle(
         action: ConversationAction,
         toastStateStore: ToastStateStore,
         actionOrigin: ActionOrigin,
@@ -330,10 +306,10 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         guard let conversationID else { return }
         switch action {
         case .markRead:
-            await readActionPerformer?.markAsRead(itemsWithIDs: [conversationID], itemType: .conversation)
+            await markAsRead(id: conversationID, itemType: .conversation)
             actionSheets = .allSheetsDismissed
         case .markUnread:
-            await readActionPerformer?.markAsUnread(itemsWithIDs: [conversationID], itemType: .conversation)
+            await markAsUnread(id: conversationID, itemType: .conversation)
             actionSheets = .allSheetsDismissed
             goBack()
         case .labelAs:
@@ -378,6 +354,39 @@ final class ConversationDetailModel: Sendable, ObservableObject {
     }
 
     @MainActor
+    private func handle(
+        action: PhishingConfirmationAlertAction,
+        messageID: ID,
+        itemType: ActionSheetItemType,
+        goBack: @escaping () -> Void
+    ) async {
+        hideAlert()
+        guard action == .confirm, let mailbox else {
+            return
+        }
+        let actionPerformer = GeneralActionsPerformer(mailbox: mailbox, generalActions: .productionInstance)
+
+        if case .ok = await actionPerformer.markMessagePhishing(messageID: messageID) {
+            actionSheets = .allSheetsDismissed
+            if itemType.shouldGoBack {
+                goBack()
+            }
+        }
+    }
+
+    private func markAsRead(id: ID, itemType: MailboxItemType) async {
+        guard let mailbox else { return }
+        await ReadActionPerformer(mailbox: mailbox, readActionPerformerActions: .productionInstance)
+            .markAsRead(itemsWithIDs: [id], itemType: itemType)
+    }
+
+    private func markAsUnread(id: ID, itemType: MailboxItemType) async {
+        guard let mailbox else { return }
+        await ReadActionPerformer(mailbox: mailbox, readActionPerformerActions: .productionInstance)
+            .markAsUnread(itemsWithIDs: [id], itemType: itemType)
+    }
+
+    @MainActor
     private func present(alert: AlertModel, origin: ActionOrigin) {
         switch origin {
         case .sheet:
@@ -387,13 +396,14 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         }
     }
 
+    @MainActor
     private func hideAlert() {
         alert = nil
         actionSheets.alert = nil
     }
 
     @MainActor
-    func handle(
+    private func handle(
         id: ID,
         itemType: ActionSheetItemType,
         action: DeleteConfirmationAlertAction,
@@ -406,15 +416,12 @@ final class ConversationDetailModel: Sendable, ObservableObject {
                 .delete(itemsWithIDs: [id], itemType: itemType.inboxItemType)
             toastStateStore.present(toast: .deleted())
 
-            if itemType.dismissNavigation == .dismissAndGoBack {
-                actionSheets = .allSheetsDismissed
+            actionSheets = .allSheetsDismissed
+
+            if itemType.shouldGoBack {
                 goBack()
             }
         }
-    }
-
-    func isForcingLightMode(forMessageWithId messageId: ID) -> Bool {
-        messageAppearanceOverrideStore.isForcingLightMode(forMessageWithId: messageId)
     }
 }
 
@@ -466,7 +473,7 @@ extension ConversationDetailModel {
 
             toast = .moveTo(
                 id: toastID,
-                destinationName: destination.name.humanReadable.string,
+                destinationName: destination.name.displayData.title.string,
                 undoAction: undoAction
             )
         } catch {
@@ -475,23 +482,9 @@ extension ConversationDetailModel {
 
         toastStateStore.present(toast: toast)
 
-        if itemType.dismissNavigation == .dismissAndGoBack {
+        if itemType.shouldGoBack {
             goBack()
         }
-    }
-
-    private func markConversationAsRead(goBack: () -> Void) {
-        guard let mailbox else { return }
-        ReadActionPerformer(mailbox: mailbox)
-            .markAsRead(itemsWithIDs: [conversationID.unsafelyUnwrapped], itemType: .conversation)
-        goBack()
-    }
-
-    private func markConversationAsUnread(goBack: () -> Void) {
-        guard let mailbox else { return }
-        ReadActionPerformer(mailbox: mailbox)
-            .markAsUnread(itemsWithIDs: [conversationID.unsafelyUnwrapped], itemType: .conversation)
-        goBack()
     }
 
     private func initialiseMailbox(basedOn selectedMailbox: SelectedMailbox) async throws -> Mailbox {
@@ -770,7 +763,6 @@ extension ConversationDetailModel {
 
     struct Dependencies {
         let appContext: AppContext
-        let readActionPerformerActions: ReadActionPerformerActions = .productionInstance
 
         init(
             appContext: AppContext = .shared,
@@ -863,13 +855,39 @@ private extension ConversationDetailModel.State {
 
 extension ActionSheetItemType {
 
-    var dismissNavigation: MailboxItemActionSheetNavigation {
+    var shouldGoBack: Bool {
         switch self {
         case .conversation:
-            .dismissAndGoBack
+            true
         case .message(let isStandaloneMessage):
-            isStandaloneMessage ? .dismissAndGoBack : .dismiss
+            isStandaloneMessage
         }
     }
 
+}
+
+// Move to seprate file
+extension ThemeOpts {
+    init(colorScheme: ColorScheme, isForcingLightMode: Bool) {
+        self.init(currentTheme: .converted(from: colorScheme), themeOverride: isForcingLightMode ? .lightMode : nil)
+    }
+}
+
+private extension MessageAppearanceOverrideStore {
+
+    func themeOpts(messageID: ID, colorScheme: ColorScheme) -> ThemeOpts {
+        let isForcingLightMode = isForcingLightMode(forMessageWithId: messageID)
+        return .init(colorScheme: colorScheme, isForcingLightMode: isForcingLightMode)
+    }
+
+}
+
+private extension MailTheme {
+    static func converted(from colorScheme: ColorScheme) -> Self {
+        switch colorScheme {
+        case .light: .lightMode
+        case .dark: .darkMode
+        @unknown default: .lightMode
+        }
+    }
 }

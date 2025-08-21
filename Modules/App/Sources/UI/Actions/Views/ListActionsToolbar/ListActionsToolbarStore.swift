@@ -211,7 +211,7 @@ final class ListActionsToolbarStore: StateStore {
         toastID: UUID,
         undoAction: (() -> Void)?
     ) {
-        let destinationName = destination.name.humanReadable.string
+        let destinationName = destination.name.displayData.title.string
         let toast: Toast = .moveTo(id: toastID, destinationName: destinationName, undoAction: undoAction)
         toastStateStore.present(toast: toast)
         dismissMoreActionSheet()

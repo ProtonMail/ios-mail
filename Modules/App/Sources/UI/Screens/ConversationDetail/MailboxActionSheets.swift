@@ -119,51 +119,6 @@ private struct MailboxActionSheets: ViewModifier {
                 })
     }
 
-//    @MainActor
-//    private func mailboxItemActionPicker(input: MailboxItemActionSheetInput) -> some View {
-//        let navigation: (MailboxItemActionSheetNavigation) -> Void = { navigation in
-//            switch navigation {
-//            case .labelAs:
-//                state =
-//                    state
-//                    .copy(\.labelAs, to: .init(sheetType: .labelAs, ids: [input.id], type: input.type))
-//                    .copy(\.message, to: nil)
-//            case .moveTo:
-//                state =
-//                    state
-//                    .copy(\.moveTo, to: .init(sheetType: .moveTo, ids: [input.id], type: input.type))
-//                    .copy(\.message, to: nil)
-//            case .dismiss:
-//                state = state.copy(\.mailbox, to: nil)
-//            case .dismissAndGoBack:
-//                state = state.copy(\.mailbox, to: nil)
-//                goBackNavigation?()
-//            case .snooze:
-//                state =
-//                    state
-//                    .copy(\.mailbox, to: nil)
-//                    .copy(\.snooze, to: input.id)
-//            }
-//        }
-//        return MailboxItemActionSheet(
-//            input: input,
-//            mailbox: mailbox(),
-//            actionsProvider: .productionInstance,
-//            starActionPerformerActions: .productionInstance,
-//            readActionPerformerActions: .productionInstance,
-//            deleteActions: .productionInstance,
-//            moveToActions: .productionInstance,
-//            generalActions: .productionInstance,
-//            replyActions: replyActions,
-//            mailUserSession: AppContext.shared.userSession,
-//            navigation: navigation
-//        ).pickerViewStyle([.large])
-//    }
-//
-//    private var mailboxBinding: Binding<MailboxItemActionSheetInput?> {
-//        .init(get: { state.mailbox }, set: { mailbox in state = state.copy(\.mailbox, to: mailbox) })
-//    }
-
     private var snoozeBinding: Binding<ID?> {
         .init(get: { state.snooze }, set: { id in state = state.copy(\.snooze, to: id) })
     }

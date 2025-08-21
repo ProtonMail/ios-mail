@@ -21,7 +21,7 @@ import SwiftUI
 struct ActionSelectableButtonDisplayData: Identifiable {
     enum VisualAsset {
         case color(Color)
-        case image(ImageResource, color: Color)
+        case image(Image, color: Color)
     }
 
     let id: ID
