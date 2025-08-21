@@ -246,7 +246,7 @@ final class ContactDetailsStateStoreTests {
                 ))
     }
 
-    // MARK: - `editSheet` action
+    // MARK: - Edit action
 
     @Test
     func testEditTappedAction_WhenDismissTapped_ItDismissesEditPromptSheet() async {
@@ -289,6 +289,29 @@ final class ContactDetailsStateStoreTests {
                     details: .init(contact: contactItem, details: details),
                     displayEditPromptSheet: false,
                     itemToEdit: .init(url: .Contact.edit(domain: .testDomain, id: "{{api_contact_id}}"))
+                ))
+    }
+
+    @Test
+    func testDismissEditSheet_ItDismissesEditSheet() async {
+        let details = ContactDetailCard.testData(contact: contactItem, fields: .testItems)
+
+        providerSpy.stubbedContactDetails[contactItem] = .init(
+            contact: contactItem,
+            details: details
+        )
+
+        await sut.handle(action: .onLoad)
+        await sut.handle(action: .editTapped)
+        await sut.handle(action: .editSheet(.openSafari))
+        await sut.handle(action: .dismissEditSheet)
+
+        #expect(
+            sut.state
+                == .init(
+                    details: .init(contact: contactItem, details: details),
+                    displayEditPromptSheet: false,
+                    itemToEdit: .none
                 ))
     }
 }

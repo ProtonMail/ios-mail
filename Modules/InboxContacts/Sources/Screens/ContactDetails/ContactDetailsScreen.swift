@@ -77,11 +77,16 @@ struct ContactDetailsScreen: View {
                 content: {
                     PromptSheet(
                         model: .editInWeb(
-                            onAction: { /* FIXME: To implement */  },
-                            onDismiss: { /* FIXME: To implement */  }
+                            onAction: { store.handle(action: .editSheet(.openSafari)) },
+                            onDismiss: { store.handle(action: .editSheet(.dismiss)) }
                         )
                     )
                 }
+            )
+            .sheet(
+                item: itemToEdit(store: store, state: state),
+                onDismiss: { store.handle(action: .dismissEditSheet) },
+                content: SafariView.init
             )
             .onLoad { store.handle(action: .onLoad) }
         }
@@ -215,6 +220,13 @@ struct ContactDetailsScreen: View {
         .init(
             get: { state.displayEditPromptSheet },
             set: { newValue in store.state = store.state.copy(\.displayEditPromptSheet, to: newValue) }
+        )
+    }
+
+    private func itemToEdit(store: ContactDetailsStateStore, state: ContactDetailsState) -> Binding<SafariDetails?> {
+        .init(
+            get: { state.itemToEdit },
+            set: { newState in store.state = state.copy(\.itemToEdit, to: newState) }
         )
     }
 }

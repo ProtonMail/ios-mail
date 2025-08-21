@@ -31,6 +31,7 @@ final class ContactDetailsStateStore: StateStore {
         case phoneNumberTapped(String)
         case editTapped
         case editSheet(EditContactSheetAction)
+        case dismissEditSheet
         case emailTapped(ContactDetailsEmail)
         case openURL(urlString: String)
     }
@@ -93,6 +94,8 @@ final class ContactDetailsStateStore: StateStore {
                 let url: URL = .Contact.edit(domain: env.domain, id: "{{api_contact_id}}")
                 state = state.copy(\.itemToEdit, to: .init(url: url))
             }
+        case .dismissEditSheet:
+            state = state.copy(\.itemToEdit, to: .none)
         case .phoneNumberTapped(let phoneNumber):
             call(phoneNumber: phoneNumber)
         case .openURL(let urlString):
