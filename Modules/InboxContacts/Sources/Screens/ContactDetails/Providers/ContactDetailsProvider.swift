@@ -73,6 +73,7 @@ extension ContactDetailsProvider {
                 contact: contact,
                 details: .init(
                     id: contact.id,
+                    remoteId: "remote_\(contact.id.value)",
                     avatarInformation: contact.avatarInformation,
                     extendedName: .init(last: .none, first: .none),
                     fields: items

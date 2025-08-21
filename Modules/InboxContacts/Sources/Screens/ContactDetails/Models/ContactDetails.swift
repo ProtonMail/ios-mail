@@ -19,6 +19,7 @@ import proton_app_uniffi
 
 struct ContactDetails: Equatable {
     let id: Id
+    let remoteID: String?
     let avatarInformation: AvatarInformation
     let displayName: String
     let primaryEmail: String?
@@ -37,6 +38,7 @@ struct ContactDetails: Equatable {
             .first
 
         self.id = contact.id
+        self.remoteID = details?.remoteId
         self.avatarInformation = contact.avatarInformation
         self.displayName = contact.name
         self.primaryEmail = contact.displayEmail

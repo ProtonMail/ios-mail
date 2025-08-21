@@ -90,8 +90,8 @@ final class ContactDetailsStateStore: StateStore {
         case .editSheet(let action):
             state = state.copy(\.displayEditPromptSheet, to: false)
 
-            if case .openSafari = action {
-                let url: URL = .Contact.edit(domain: env.domain, id: "{{api_contact_id}}")
+            if case .openSafari = action, let remoteContactID = state.details.remoteID {
+                let url: URL = .Contact.edit(domain: env.domain, id: remoteContactID)
                 state = state.copy(\.itemToEdit, to: .init(url: url))
             }
         case .dismissEditSheet:

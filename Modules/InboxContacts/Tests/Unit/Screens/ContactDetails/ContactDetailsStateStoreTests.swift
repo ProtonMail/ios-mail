@@ -288,7 +288,7 @@ final class ContactDetailsStateStoreTests {
                 == .init(
                     details: .init(contact: contactItem, details: details),
                     displayEditPromptSheet: false,
-                    itemToEdit: .init(url: .Contact.edit(domain: .testDomain, id: "{{api_contact_id}}"))
+                    itemToEdit: .init(url: .Contact.edit(domain: .testDomain, id: details.remoteId!))
                 ))
     }
 

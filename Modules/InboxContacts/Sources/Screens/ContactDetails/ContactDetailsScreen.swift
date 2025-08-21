@@ -68,8 +68,10 @@ struct ContactDetailsScreen: View {
             }
             .background(DS.Color.Background.secondary)
             .toolbar {
-                ToolbarItemFactory.trailing(L10n.ContactDetails.edit.string) {
-                    store.handle(action: .editTapped)
+                if state.details.remoteID != nil {
+                    ToolbarItemFactory.trailing(L10n.ContactDetails.edit.string) {
+                        store.handle(action: .editTapped)
+                    }
                 }
             }
             .sheet(
