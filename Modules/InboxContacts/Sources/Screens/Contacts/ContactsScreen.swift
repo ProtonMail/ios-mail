@@ -24,10 +24,7 @@ import SwiftUI
 public struct ContactsScreen: View {
     @Environment(\.dismissTestable) var dismiss: Dismissable
 
-    private let initialState: ContactsScreenState
-    private let mailUserSession: MailUserSession
-    private let contactsProvider: GroupedContactsProvider
-    private let contactsWatcher: ContactsWatcher
+    @StateObject private var store: ContactsStateStore
     private let contactViewFactory: ContactViewFactory
 
     /// `state` parameter is exposed only for testing purposes to be able to rely on data source in synchronous manner.
@@ -39,79 +36,73 @@ public struct ContactsScreen: View {
         draftPresenter: ContactsDraftPresenter
     ) {
         UISearchBar.appearance().tintColor = UIColor(DS.Color.Text.accent)
-        self.initialState = state
-        self.mailUserSession = mailUserSession
-        self.contactsProvider = contactsProvider
-        self.contactsWatcher = contactsWatcher
-        self.contactViewFactory = .init(mailUserSession: mailUserSession, draftPresenter: draftPresenter)
-    }
-
-    public var body: some View {
-        StoreView(
-            store: ContactsStateStore(
-                state: initialState,
+        _store = .init(
+            wrappedValue: .init(
+                state: state,
                 mailUserSession: mailUserSession,
                 contactsWrappers: .productionInstance(
                     contactsProvider: contactsProvider,
                     contactsWatcher: contactsWatcher
                 )
-            ),
-            content: { state, store in
-                NavigationStack(path: navigationPath(store: store)) {
-                    ContactsControllerRepresentable(
-                        contacts: state.displayItems,
-                        onDeleteItem: { item in store.handle(action: .onDeleteItem(item)) },
-                        onTapItem: { item in store.handle(action: .onTapItem(item)) }
-                    )
-                    .ignoresSafeArea()
-                    .navigationTitle(L10n.Contacts.title.string)
-                    .navigationDestination(for: ContactsRoute.self) { route in
-                        contactViewFactory
-                            .makeView(for: route)
-                            .environmentObject(store.router)
-                            .navigationBarBackButtonHidden()
-                            .toolbar {
-                                ToolbarItemFactory.back { store.handle(action: .goBack) }
-                            }
-                    }
+            )
+        )
+        self.contactViewFactory = .init(mailUserSession: mailUserSession, draftPresenter: draftPresenter)
+    }
+
+    public var body: some View {
+        NavigationStack(path: navigationPath(store: store)) {
+            ContactsControllerRepresentable(
+                contacts: store.state.displayItems,
+                onDeleteItem: { item in handle(action: .onDeleteItem(item)) },
+                onTapItem: { item in handle(action: .onTapItem(item)) }
+            )
+            .ignoresSafeArea()
+            .navigationTitle(L10n.Contacts.title.string)
+            .navigationDestination(for: ContactsRoute.self) { route in
+                contactViewFactory
+                    .makeView(for: route)
+                    .environmentObject(store.router)
+                    .navigationBarBackButtonHidden()
                     .toolbar {
-                        ToolbarItemFactory.leading(Image(symbol: .xmark)) {
-                            dismiss()
-                        }
-                        ToolbarItemFactory.trailing(Image(symbol: .plus)) {
-                            store.handle(action: .createTapped)
-                        }
+                        ToolbarItemFactory.back { handle(action: .goBack) }
                     }
+            }
+            .toolbar {
+                ToolbarItemFactory.leading(Image(symbol: .xmark)) {
+                    dismiss()
                 }
-                .sheet(
-                    isPresented: store.binding(\.displayCreateContactSheet),
-                    content: {
-                        PromptSheet(
-                            model: .init(
-                                image: DS.Images.contactsWebSheet,
-                                title: "Available in web".stringResource,
-                                subtitle: "Creating contacts or groups in the app is not yet ready. For now, you can create them in the web app and they’ll sync to your device.".stringResource,
-                                actionButtonTitle: "Create in web".stringResource,
-                                onAction: { store.handle(action: .createSheetAction(.openSafari)) },
-                                onDismiss: { store.handle(action: .createSheetAction(.dismiss)) }
-                            )
-                        )
-                    }
+                ToolbarItemFactory.trailing(Image(symbol: .plus)) {
+                    handle(action: .createTapped)
+                }
+            }
+        }
+        .sheet(
+            isPresented: $store.state.displayCreateContactSheet,
+            content: {
+                PromptSheet(
+                    model: .init(
+                        image: DS.Images.contactsWebSheet,
+                        title: "Available in web".stringResource,
+                        subtitle: "Creating contacts or groups in the app is not yet ready. For now, you can create them in the web app and they’ll sync to your device.".stringResource,
+                        actionButtonTitle: "Create in web".stringResource,
+                        onAction: { handle(action: .createSheetAction(.openSafari)) },
+                        onDismiss: { handle(action: .createSheetAction(.dismiss)) }
+                    )
                 )
-                .sheet(
-                    item: store.binding(\.createContactURL),
-                    onDismiss: { store.handle(action: .dismissCreateSheet) },
-                    content: SafariView.init
-                )
-                .alert(model: deletionAlert(state: state, store: store))
-                .searchable(
-                    text: store.binding(\.search.query),
-                    isPresented: store.binding(\.search.isActive),
-                    placement: .navigationBarDrawer(displayMode: .always)
-                )
-                .onLoad { store.handle(action: .onLoad) }
             }
         )
+        .sheet(
+            item: $store.state.createContactURL,
+            onDismiss: { handle(action: .dismissCreateSheet) },
+            content: SafariView.init
+        )
+        .alert(model: deletionAlert)
+        .searchable(
+            text: $store.state.search.query,
+            isPresented: $store.state.search.isActive,
+            placement: .navigationBarDrawer(displayMode: .always)
+        )
+        .onLoad { handle(action: .onLoad) }
     }
 
     // MARK: - Private
@@ -123,14 +114,20 @@ public struct ContactsScreen: View {
         )
     }
 
-    private func deletionAlert(state: ContactsScreenState, store: ContactsStateStore) -> Binding<AlertModel?> {
+    private var deletionAlert: Binding<AlertModel?> {
         .readonly {
-            state.itemToDelete.map { itemType in
+            store.state.itemToDelete.map { itemType in
                 DeleteConfirmationAlertFactory.make(
                     for: itemType,
-                    action: { action in store.handle(action: .onDeleteItemAlertAction(action)) }
+                    action: { action in handle(action: .onDeleteItemAlertAction(action)) }
                 )
             }
+        }
+    }
+
+    private func handle(action: ContactsStateStore.Action) {
+        Task {
+            await store.handle(action: action)
         }
     }
 }

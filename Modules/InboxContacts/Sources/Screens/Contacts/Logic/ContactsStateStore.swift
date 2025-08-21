@@ -21,7 +21,7 @@ import InboxCoreUI
 import proton_app_uniffi
 import SwiftUI
 
-final class ContactsStateStore: StateStore {
+final class ContactsStateStore: ObservableObject {
     enum Action {
         case createTapped
         case dismissCreateSheet
