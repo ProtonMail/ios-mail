@@ -58,9 +58,9 @@ final class GroupedContactsRepositoryTests: BaseTestCase {
                 groupedBy: "B",
                 items: [
                     .contact(.bobAinsworth),
-                    .group(.businessGroup)
+                    .group(.businessGroup),
                 ]
-            )
+            ),
         ]
 
         stubbedContacts = items

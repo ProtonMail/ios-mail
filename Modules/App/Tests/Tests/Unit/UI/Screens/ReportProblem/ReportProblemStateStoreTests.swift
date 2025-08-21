@@ -20,6 +20,7 @@ import InboxCoreUI
 import proton_app_uniffi
 import Testing
 
+@MainActor
 final class ReportProblemStateStoreTests {
     var sut: ReportProblemStateStore!
     var toastStateStore: ToastStateStore!
@@ -30,7 +31,7 @@ final class ReportProblemStateStoreTests {
         reportProblemServiceSpy = .init()
         toastStateStore = .init(initialState: .initial)
         dismissInvokeCount = 0
-        sut = await ReportProblemStateStore(
+        sut = ReportProblemStateStore(
             state: .initial,
             reportProblemService: reportProblemServiceSpy,
             toastStateStore: toastStateStore,
@@ -41,13 +42,6 @@ final class ReportProblemStateStoreTests {
             deviceInfo: DeviceInfoStub(),
             dismiss: { self.dismissInvokeCount += 1 }
         )
-    }
-
-    deinit {
-        reportProblemServiceSpy = nil
-        toastStateStore = nil
-        dismissInvokeCount = nil
-        sut = nil
     }
 
     @Test

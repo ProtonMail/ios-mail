@@ -18,22 +18,26 @@
 @testable import ProtonMail
 import InboxSnapshotTesting
 import InboxTesting
-import XCTest
+import Testing
 
-class OnboardingDotsIndexViewSnapshotTests: BaseTestCase {
+@MainActor
+final class OnboardingDotsIndexViewSnapshotTests {
 
+    @Test
     func testOnboardingDotsIndexView_With5PagesAnd5thSelected_LayoutsCorrectly() {
         let sut = OnboardingDotsIndexView(pagesCount: 5, selectedPageIndex: 4)
 
         assertSelfSizingSnapshot(of: sut)
     }
 
+    @Test
     func testOnboardingDotsIndexView_With3PagesAnd2ndSelected_LayoutsCorrectly() {
         let sut = OnboardingDotsIndexView(pagesCount: 3, selectedPageIndex: 1)
 
         assertSelfSizingSnapshot(of: sut)
     }
 
+    @Test
     func testOnboardingDotsIndexView_With2PagesAnd1stSelected_LayoutsCorrectly() {
         let sut = OnboardingDotsIndexView(pagesCount: 2, selectedPageIndex: 0)
 

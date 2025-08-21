@@ -16,34 +16,32 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import ProtonMail
-import XCTest
+import Testing
+import UIKit
 
-final class PassThroughWindowTests: XCTestCase {
+@MainActor
+final class PassThroughWindowTests {
 
-    var sut: PassThroughWindow!
+    private let sut: PassThroughWindow
 
-    override func setUp() {
-        super.setUp()
+    init() {
         sut = .init(frame: UIScreen.main.bounds)
         sut.rootViewController = UIViewController()
         sut.makeKeyAndVisible()
     }
 
-    override func tearDown() {
-        sut = nil
-        super.tearDown()
-    }
-
+    @Test
     func testHitTest_WhenHitViewIsRootViewControllerView_ReturnsNil() throws {
-        let rootController = try XCTUnwrap(sut.rootViewController)
+        let rootController = try #require(sut.rootViewController)
 
         let hitView = sut.hitTest(rootController.view.center, with: nil)
 
-        XCTAssertNil(hitView)
+        #expect(hitView == nil)
     }
 
+    @Test
     func testHitTest_WhenHitViewIsOutOfBoundsOfRootViewControllerView_ReturnsNil() throws {
-        let rootController = try XCTUnwrap(sut.rootViewController)
+        let rootController = try #require(sut.rootViewController)
 
         let subview = UIView(frame: .init(x: 50, y: 50, width: 100, height: 100))
         rootController.view.addSubview(subview)
@@ -51,11 +49,12 @@ final class PassThroughWindowTests: XCTestCase {
 
         let hitView = sut.hitTest(.init(x: 0, y: 1000), with: nil)
 
-        XCTAssertNil(hitView)
+        #expect(hitView == nil)
     }
 
+    @Test
     func testHitTest_WhenHitViewIsNotRootViewControllerView_ReturnsHitView() throws {
-        let rootController = try XCTUnwrap(sut.rootViewController)
+        let rootController = try #require(sut.rootViewController)
 
         let subview = UIView(frame: .init(x: 50, y: 50, width: 100, height: 100))
         rootController.view.addSubview(subview)
@@ -63,7 +62,7 @@ final class PassThroughWindowTests: XCTestCase {
 
         let hitView = sut.hitTest(CGPoint(x: 100, y: 100), with: nil)
 
-        XCTAssertEqual(hitView, subview)
+        #expect(hitView == subview)
     }
 
 }

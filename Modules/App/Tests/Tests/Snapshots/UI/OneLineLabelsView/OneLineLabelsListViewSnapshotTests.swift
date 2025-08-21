@@ -18,10 +18,12 @@
 @testable import ProtonMail
 import InboxSnapshotTesting
 import SwiftUI
-import XCTest
+import Testing
 
-class OneLineLabelsListViewSnapshotTests: XCTestCase {
+@MainActor
+final class OneLineLabelsListViewSnapshotTests {
 
+    @Test
     func testLabelsLayoutCorrectly() {
         let view = VStack {
             ForEach(OneLineLabelsListViewPreviewDataProvider.labels, id: \.self) { labels in

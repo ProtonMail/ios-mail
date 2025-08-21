@@ -26,6 +26,7 @@ import SwiftUI
 import ViewInspector
 import XCTest
 
+@MainActor
 class HomeScreenTests: BaseTestCase {
 
     private var sut: HomeScreen!
@@ -44,10 +45,10 @@ class HomeScreenTests: BaseTestCase {
         )
     }
 
-    override func tearDown() {
+    override func tearDown() async throws {
         userDefaults = nil
         sut = nil
-        super.tearDown()
+        try await super.tearDown()
     }
 
     // FIXME: Enable and adjust `MailUserSession` creation when Rust fixes following issue: ET-1248

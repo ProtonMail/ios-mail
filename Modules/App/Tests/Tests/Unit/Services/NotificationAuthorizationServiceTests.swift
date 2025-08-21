@@ -32,7 +32,7 @@ struct NotificationAuthorizationServiceTests {
     func onAppLaunch_registersForRemoteNotifications() async {
         await sut.setUpServiceAsync()
 
-        #expect(await remoteNotificationRegistrar.isRegisteredForRemoteNotifications)
+        #expect(remoteNotificationRegistrar.isRegisteredForRemoteNotifications)
     }
 }
 

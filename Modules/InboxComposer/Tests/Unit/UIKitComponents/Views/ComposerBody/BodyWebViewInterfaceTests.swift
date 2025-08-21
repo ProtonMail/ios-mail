@@ -50,9 +50,10 @@ final class BodyWebViewInterfaceTests {
         await sut.insertImages(["12345", "qwerty"])
 
         let html = await sut.readMesasgeBody()
-        #expect(html == """
-        <img src="cid:12345"><br><img src="cid:qwerty"><br><p>initial message</p>
-        """)
+        #expect(
+            html == """
+                <img src="cid:12345"><br><img src="cid:qwerty"><br><p>initial message</p>
+                """)
     }
 
     @Test
@@ -77,9 +78,10 @@ final class BodyWebViewInterfaceTests {
         await sut.removeImage(containing: "12345")
 
         let html = await sut.readMesasgeBody()
-        #expect(html == """
-        <p>hello<br></p>
-        """)
+        #expect(
+            html == """
+                <p>hello<br></p>
+                """)
     }
 
     @Test
@@ -90,9 +92,10 @@ final class BodyWebViewInterfaceTests {
         await sut.removeImage(containing: "12345")
 
         let html = await sut.readMesasgeBody()
-        #expect(html == """
-        <p>hello<img src="cid:123456789"><br></p>
-        """)
+        #expect(
+            html == """
+                <p>hello<img src="cid:123456789"><br></p>
+                """)
     }
 
     @Test
@@ -103,9 +106,10 @@ final class BodyWebViewInterfaceTests {
         await sut.removeImage(containing: "12567")
 
         let html = await sut.readMesasgeBody()
-        #expect(html == """
-        <p>hello<img src="cid:12345"><br></p>
-        """)
+        #expect(
+            html == """
+                <p>hello<img src="cid:12345"><br></p>
+                """)
     }
 }
 
@@ -122,23 +126,23 @@ private extension BodyWebViewInterfaceTests {
 
     private func setCursorAfter(text: String) async throws {
         let script = """
-            (function() {
-                const editor = document.getElementById('editor');
-                const textNode = Array.from(editor.childNodes).find(node => node.textContent.includes('\(text)'));
-                if (!textNode) return false;
-                
-                const range = document.createRange();
-                range.setStartAfter(textNode);
-                range.collapse(true);
-                
-                const selection = window.getSelection();
-                selection.removeAllRanges();
-                selection.addRange(range);
-                
-                editor.focus();
-                return true;
-            })()
-        """
+                (function() {
+                    const editor = document.getElementById('editor');
+                    const textNode = Array.from(editor.childNodes).find(node => node.textContent.includes('\(text)'));
+                    if (!textNode) return false;
+                    
+                    const range = document.createRange();
+                    range.setStartAfter(textNode);
+                    range.collapse(true);
+                    
+                    const selection = window.getSelection();
+                    selection.removeAllRanges();
+                    selection.addRange(range);
+                    
+                    editor.focus();
+                    return true;
+                })()
+            """
         try await sut.webView.evaluateJavaScript(script)
     }
 }
