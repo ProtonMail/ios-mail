@@ -20,6 +20,11 @@ import InboxCore
 import InboxCoreUI
 import SwiftUI
 
+enum ActionOrigin {
+    case sheet
+    case toolbar
+}
+
 @MainActor
 final class ConversationDetailModel: Sendable, ObservableObject {
     @Published private(set) var state: State = .initial
@@ -31,7 +36,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
     @Published private(set) var conversationToolbarActions: ConversationToolbarActions?
     @Published var actionSheets: MailboxActionSheetsState = .initial()
     @Published var editScheduledMessageConfirmationAlert: AlertModel?
-    @Published var deleteConfirmationAlert: AlertModel?
+    @Published var alert: AlertModel?
     @Published var attachmentIDToOpen: ID?
 
     let messageAppearanceOverrideStore = MessageAppearanceOverrideStore()
@@ -188,6 +193,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         action: MessageAction,
         messageID: ID,
         toastStateStore: ToastStateStore,
+        actionOrigin: ActionOrigin,
         goBack: @MainActor @escaping () -> Void
     ) async {
         switch action {
@@ -228,7 +234,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
             )
         case .moveToSystemFolder(let systemFolder), .notSpam(let systemFolder):
             actionSheets = .allSheetsDismissed
-            move(
+            await move(
                 id: messageID,
                 itemType: .message(
                     isLastMessageInCurrentLocation: state.hasAtMostOneMessage(withSameLocationAs: messageID)
@@ -238,7 +244,18 @@ final class ConversationDetailModel: Sendable, ObservableObject {
                 goBack: goBack
             )
         case .permanentDelete:
-            break
+            let alert: AlertModel = .deleteConfirmation(
+                itemsCount: 1,
+                action: { [weak self] action in
+                    await self?.handle(
+                        id: messageID,
+                        itemType: .conversation,
+                        action: action,
+                        toastStateStore: toastStateStore, goBack: goBack
+                    )
+                }
+            )
+            present(alert: alert, origin: actionOrigin)
         case .reply:
             actionSheets = .allSheetsDismissed
             onReplyMessage(withId: messageID, toastStateStore: toastStateStore)
@@ -264,7 +281,18 @@ final class ConversationDetailModel: Sendable, ObservableObject {
             messageAppearanceOverrideStore.stopForcingLightMode(forMessageWithId: messageID)
             actionSheets = .allSheetsDismissed
         case .reportPhishing:
-            break
+            let alert: AlertModel = .phishingConfirmation(action: { [weak self] action in
+                guard let self else { return }
+                await self.handle(
+                    action: action,
+                    messageID: messageID,
+                    itemType: .message(
+                        isLastMessageInCurrentLocation: state.hasAtMostOneMessage(withSameLocationAs: messageID)
+                    ),
+                    goBack: goBack
+                )
+            })
+            present(alert: alert, origin: actionOrigin)
         case .more:
             actionSheets = .allSheetsDismissed.copy(\.message, to: .init(id: messageID, title: seed.subject))
         }
@@ -272,8 +300,30 @@ final class ConversationDetailModel: Sendable, ObservableObject {
 
     @MainActor
     func handle(
+        action: PhishingConfirmationAlertAction,
+        messageID: ID,
+        itemType: ActionSheetItemType,
+        goBack: @escaping () -> Void
+    ) async {
+        hideAlert()
+        guard action == .confirm, let mailbox else {
+            return
+        }
+        let actionPerformer = GeneralActionsPerformer(mailbox: mailbox, generalActions: .productionInstance)
+
+        if case .ok = await actionPerformer.markMessagePhishing(messageID: messageID) {
+            if itemType.dismissNavigation == .dismissAndGoBack {
+                actionSheets = .allSheetsDismissed
+                goBack()
+            }
+        }
+    }
+
+    @MainActor
+    func handle(
         action: ConversationAction,
         toastStateStore: ToastStateStore,
+        actionOrigin: ActionOrigin,
         goBack: @MainActor @escaping () -> Void
     ) async {
         guard let conversationID else { return }
@@ -295,7 +345,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
                 .copy(\.moveTo, to: .init(sheetType: .moveTo, ids: [conversationID], type: .conversation))
         case .moveToSystemFolder(let systemFolder), .notSpam(let systemFolder):
             actionSheets = .allSheetsDismissed
-            move(
+            await move(
                 id: conversationID,
                 itemType: .conversation,
                 destination: systemFolder,
@@ -303,7 +353,18 @@ final class ConversationDetailModel: Sendable, ObservableObject {
                 goBack: goBack
             )
         case .permanentDelete:
-            break
+            let alert: AlertModel = .deleteConfirmation(
+                itemsCount: 1,
+                action: { [weak self] action in
+                    await self?.handle(
+                        id: conversationID,
+                        itemType: .conversation,
+                        action: action,
+                        toastStateStore: toastStateStore, goBack: goBack
+                    )
+                }
+            )
+            present(alert: alert, origin: actionOrigin)
         case .star:
             await starActionPerformer.star(itemsWithIDs: [conversationID], itemType: .conversation)
             actionSheets = .allSheetsDismissed
@@ -315,63 +376,38 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         }
     }
 
-    func handleConversation(action: ListActions, toastStateStore: ToastStateStore, goBack: @escaping () -> Void) {
-        let conversationID = conversationID.unsafelyUnwrapped
-        switch action {
-        case .labelAs:
-            actionSheets = actionSheets.copy(\.labelAs, to: .init(sheetType: .labelAs, ids: [conversationID], type: .conversation))
-        case .more:
-            break
-        //            actionSheets =
-        //                actionSheets
-        //                .copy(\.mailbox, to: .init(id: conversationID, type: .conversation, title: seed.subject))
-        case .moveTo:
-            actionSheets =
-                actionSheets
-                .copy(\.moveTo, to: .init(sheetType: .moveTo, ids: [conversationID], type: .conversation))
-        case .star:
-            starConversation()
-        case .unstar:
-            unstarConversation()
-        case .markRead:
-            markConversationAsRead(goBack: goBack)
-        case .markUnread:
-            markConversationAsUnread(goBack: goBack)
-        case .permanentDelete:
-            let alert: AlertModel = .deleteConfirmation(
-                itemsCount: 1,
-                action: { [weak self] action in
-                    self?.handle(action: action, toastStateStore: toastStateStore, goBack: goBack)
-                }
-            )
-            deleteConfirmationAlert = alert
-        case .moveToSystemFolder(let label), .notSpam(let label):
-            break
-
-//            moveConversation(destination: label, toastStateStore: toastStateStore, goBack: goBack)
-        case .snooze:
-            actionSheets =
-                actionSheets
-                .copy(\.snooze, to: conversationID)
-                .copy(\.message, to: nil)
+    @MainActor
+    private func present(alert: AlertModel, origin: ActionOrigin) {
+        switch origin {
+        case .sheet:
+            actionSheets.alert = alert
+        case .toolbar:
+            self.alert = alert
         }
     }
 
+    private func hideAlert() {
+        alert = nil
+        actionSheets.alert = nil
+    }
+
+    @MainActor
     func handle(
+        id: ID,
+        itemType: ActionSheetItemType,
         action: DeleteConfirmationAlertAction,
         toastStateStore: ToastStateStore,
         goBack: @escaping () -> Void
-    ) {
-        deleteConfirmationAlert = nil
+    ) async {
+        hideAlert()
         if action == .delete, let mailbox {
-            Task {
-                await DeleteActionPerformer(mailbox: mailbox, deleteActions: .productionInstance)
-                    .delete(itemsWithIDs: [conversationID.unsafelyUnwrapped], itemType: .conversation)
-                Dispatcher.dispatchOnMain(
-                    .init(block: {
-                        toastStateStore.present(toast: .deleted())
-                        goBack()
-                    }))
+            await DeleteActionPerformer(mailbox: mailbox, deleteActions: .productionInstance)
+                .delete(itemsWithIDs: [id], itemType: itemType.inboxItemType)
+            toastStateStore.present(toast: .deleted())
+
+            if itemType.dismissNavigation == .dismissAndGoBack {
+                actionSheets = .allSheetsDismissed
+                goBack()
             }
         }
     }
@@ -401,51 +437,45 @@ extension ConversationDetailModel {
         starActionPerformer.unstar(itemsWithIDs: [conversationID.unsafelyUnwrapped], itemType: .conversation)
     }
 
+    @MainActor
     private func move(
         id: ID,
         itemType: ActionSheetItemType,
         destination: MovableSystemFolderAction,
         toastStateStore: ToastStateStore,
         goBack: @escaping () -> Void
-    ) {
+    ) async {
         guard let mailbox else { return }
         let moveToActionPerformer = MoveToActionPerformer(mailbox: mailbox, moveToActions: .productionInstance)
-        Task { [weak self, userSession] in
-            guard let self else { return }
 
-            let toast: Toast
-
-            do {
-                let undo = try await moveToActionPerformer.moveTo(
-                    destinationID: destination.localId,
-                    itemsIDs: [id],
-                    itemType: itemType.inboxItemType
-                )
-                let toastID = UUID()
-                let undoAction = undo.undoAction(userSession: userSession) {
-                    Dispatcher.dispatchOnMain(
-                        .init(block: {
-                            toastStateStore.dismiss(withID: toastID)
-                        }))
-                }
-
-                toast = .moveTo(
-                    id: toastID,
-                    destinationName: destination.name.humanReadable.string,
-                    undoAction: undoAction
-                )
-            } catch {
-                toast = .error(message: error.localizedDescription)
+        let toast: Toast
+        do {
+            let undo = try await moveToActionPerformer.moveTo(
+                destinationID: destination.localId,
+                itemsIDs: [id],
+                itemType: itemType.inboxItemType
+            )
+            let toastID = UUID()
+            let undoAction = undo.undoAction(userSession: userSession) {
+                Dispatcher.dispatchOnMain(
+                    .init(block: {
+                        toastStateStore.dismiss(withID: toastID)
+                    }))
             }
 
-            Dispatcher.dispatchOnMain(
-                .init(block: {
-                    toastStateStore.present(toast: toast)
+            toast = .moveTo(
+                id: toastID,
+                destinationName: destination.name.humanReadable.string,
+                undoAction: undoAction
+            )
+        } catch {
+            toast = .error(message: error.localizedDescription)
+        }
 
-                    if itemType.dismissNavigation == .dismissAndGoBack {
-                        goBack()
-                    }
-                }))
+        toastStateStore.present(toast: toast)
+
+        if itemType.dismissNavigation == .dismissAndGoBack {
+            goBack()
         }
     }
 
@@ -818,9 +848,11 @@ private extension ConversationDetailModel.State {
         case .initial, .fetchingMessages, .noConnection:
             return false
         case .messagesReady(let messages):
-            let targetMessage = messages
+            let targetMessage =
+                messages
                 .first(where: { $0.id == messageID })
-            return messages
+            return
+                messages
                 .filter { message in message.locationID == targetMessage?.locationID }
                 .count == 1
         }

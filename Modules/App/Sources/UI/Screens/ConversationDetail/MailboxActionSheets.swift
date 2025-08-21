@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import InboxCore
+import InboxCoreUI
 import proton_app_uniffi
 import SwiftUI
 
@@ -25,6 +26,7 @@ struct MailboxActionSheetsState: Copying {
     var labelAs: ActionSheetInput?
     var moveTo: ActionSheetInput?
     var snooze: ID?
+    var alert: AlertModel?
 }
 
 extension View {
@@ -82,6 +84,7 @@ private struct MailboxActionSheets: ViewModifier {
                     mailbox: mailbox(),
                     actionSelected: { messageActionSelected($0, input.id) }
                 )
+                .alert(model: $state.alert)
             }
             .sheet(item: $state.conversation) { input in
                 ConversationActionsSheet(
@@ -90,6 +93,7 @@ private struct MailboxActionSheets: ViewModifier {
                     mailbox: mailbox(),
                     actionSelected: { conversationActionSelected($0) }
                 )
+                .alert(model: $state.alert)
             }
             .sheet(item: snoozeBinding) { conversationID in
                 SnoozeView(

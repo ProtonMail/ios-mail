@@ -33,10 +33,10 @@ extension AlertModel {
 
     static func deleteConfirmation(
         itemsCount: Int,
-        action: @escaping @MainActor @Sendable (DeleteConfirmationAlertAction) -> Void
+        action: @escaping @MainActor @Sendable (DeleteConfirmationAlertAction) async -> Void
     ) -> Self {
         let actions: [AlertAction] = DeleteConfirmationAlertAction.allCases.map { actionType in
-            .init(details: actionType, action: { action(actionType) })
+            .init(details: actionType, action: { await action(actionType) })
         }
 
         return .init(

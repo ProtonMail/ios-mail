@@ -56,7 +56,12 @@ struct ConversationDetailScreen: View {
                 messageActionSelected: { action in
                     if let messageID = model.state.singleMessageIDInMessageMode {
                         Task {
-                            await model.handle(action: action, messageID: messageID, toastStateStore: toastStateStore) {
+                            await model.handle(
+                                action: action,
+                                messageID: messageID,
+                                toastStateStore: toastStateStore,
+                                actionOrigin: .toolbar,
+                            ) {
                                 goBackToMailbox()
                             }
                         }
@@ -64,7 +69,7 @@ struct ConversationDetailScreen: View {
                 },
                 conversationActionSelected: { action in
                     Task {
-                        await model.handle(action: action, toastStateStore: toastStateStore) {
+                        await model.handle(action: action, toastStateStore: toastStateStore, actionOrigin: .toolbar) {
                             goBackToMailbox()
                         }
                     }
@@ -79,21 +84,30 @@ struct ConversationDetailScreen: View {
                 state: $model.actionSheets,
                 messageActionSelected: { action, id in
                     Task {
-                        await model.handle(action: action, messageID: id, toastStateStore: toastStateStore) {
+                        await model.handle(
+                            action: action,
+                            messageID: id,
+                            toastStateStore: toastStateStore,
+                            actionOrigin: .sheet
+                        ) {
                             goBackToMailbox()
                         }
                     }
                 },
                 conversationActionSelected: { action in
                     Task {
-                        await model.handle(action: action, toastStateStore: toastStateStore) {
+                        await model.handle(
+                            action: action,
+                            toastStateStore: toastStateStore,
+                            actionOrigin: .sheet
+                        ) {
                             goBackToMailbox()
                         }
                     }
                 },
                 goBackNavigation: { goBackToMailbox() }
             )
-            .alert(model: $model.deleteConfirmationAlert)
+            .alert(model: $model.alert)
             .fullScreenCover(item: $model.attachmentIDToOpen) { id in
                 AttachmentView(config: .init(id: id, mailbox: model.mailbox.unsafelyUnwrapped))
                     .edgesIgnoringSafeArea([.top, .bottom])
