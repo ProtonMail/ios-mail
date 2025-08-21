@@ -35,6 +35,7 @@ public struct UpsellScreen: View {
     public var body: some View {
         sizeClassDependentBody
             .background(LinearGradient.screenBackground)
+            .foregroundStyle(Color.white)
             .mask {
                 VStack(spacing: .zero) {
                     LinearGradient.fading
@@ -49,6 +50,7 @@ public struct UpsellScreen: View {
             .ignoresSafeArea(edges: [.bottom])
             .interactiveDismissDisabled()
             .preferredColorScheme(.dark)
+            .colorScheme(.light)
     }
 
     @ViewBuilder
@@ -126,7 +128,6 @@ public struct UpsellScreen: View {
         }
         .coordinateSpace(name: coordinateSpaceName)
         .padding(.horizontal, DS.Spacing.extraLarge)
-        .foregroundStyle(Color.white)
     }
 
     private var logo: some View {
@@ -176,7 +177,7 @@ public struct UpsellScreen: View {
     }
 
     private var chooseYourPlanPrompt: some View {
-        Text(L10n.chooseYourPlan)
+        Text(L10n.chooseSubscription)
             .font(.footnote)
             .fontWeight(.semibold)
             .fixedSize(horizontal: false, vertical: true)
@@ -202,12 +203,12 @@ public struct UpsellScreen: View {
             }
         }
         .buttonStyle(BigButtonStyle(flavor: .inverted))
-        .colorScheme(.light)
     }
 
     private var autoRenewalNotice: some View {
         Text(L10n.autoRenewalNotice)
             .font(.caption)
+            .foregroundStyle(Color.white.opacity(0.9))
     }
 }
 

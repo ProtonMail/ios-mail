@@ -15,12 +15,11 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-@testable import InboxCore
 @testable import ProtonMail
-import InboxTesting
-import Nimble
+@testable import InboxCore
+@preconcurrency import Nimble
 import proton_app_uniffi
-import XCTest
+import Testing
 import WebKit
 
 /**
@@ -30,86 +29,78 @@ import WebKit
  Specifically, `CIDSchemeHandlerTests` depends on `InboxTesting`, and `InboxTesting` itself relies on classes
  from `InboxCore`. To avoid this circular dependency, the tests remain in the App module.
  */
-class CIDSchemeHandlerTests: BaseTestCase {
-
-    var sut: CIDSchemeHandler!
-    var embeddedImageProviderSpy: EmbeddedImageProviderSpy!
+@MainActor
+@Suite(.serialized)  // reason for serialized: https://github.com/Quick/Nimble/issues/1188
+final class CIDSchemeHandlerTests {
+    private let imageProxySpy = ImageProxySpy()
     private var urlSchemeTaskSpy: WKURLSchemeTaskSpy!
 
-    override func setUp() {
-        super.setUp()
+    private lazy var sut = CIDSchemeHandler(imageProxy: imageProxySpy)
 
-        embeddedImageProviderSpy = .init()
-        sut = CIDSchemeHandler(embeddedImageProvider: embeddedImageProviderSpy)
-    }
-
-    override func tearDown() {
-        sut = nil
-        embeddedImageProviderSpy = nil
-
-        super.tearDown()
-    }
-
-    func testFetchingEmbeddedImage_WhenCIDIsMissing_ItReturnsError() {
+    @Test
+    func testFetchingEmbeddedImage_WhenCIDIsMissing_ItReturnsError() async {
         let request = URLRequest(url: .init(string: "https://proton.me").unsafelyUnwrapped)
         urlSchemeTaskSpy = .init(request: request)
         sut.webView(WKWebView(), start: urlSchemeTaskSpy)
 
-        expect(self.urlSchemeTaskSpy.didInvokeFailWithError.count).toEventually(equal(1))
-        XCTAssertEqual(urlSchemeTaskSpy.didInvokeFailWithError.compactMap(\.asHandlerError), [.missingCID])
+        await expect(self.urlSchemeTaskSpy.didInvokeFailWithError.count).toEventually(equal(1))
+        #expect(urlSchemeTaskSpy.didInvokeFailWithError.compactMap(\.asHandlerError) == [.missingCID])
     }
 
-    func testFetchingEmbeddedImage_WhenImageIsMissing_ItReturnsError() {
+    @Test
+    func testFetchingEmbeddedImage_WhenImageIsMissing_ItReturnsError() async {
         let cidValue = "abcdef"
-        embeddedImageProviderSpy.stubbedResult = .error(.unexpected(.unknown))
+        imageProxySpy.stubbedResult = .error(.unexpected(.unknown))
         urlSchemeTaskSpy = .init(request: .init(url: .cid(cidValue)))
         sut.webView(WKWebView(), start: urlSchemeTaskSpy)
 
-        expect(self.urlSchemeTaskSpy.didInvokeFailWithError.count).toEventually(equal(1))
-        XCTAssertEqual(urlSchemeTaskSpy.didInvokeFailWithError.compactMap(\.asProtonError), [.unexpected(.unknown)])
+        await expect(self.urlSchemeTaskSpy.didInvokeFailWithError.count).toEventually(equal(1))
+        #expect(urlSchemeTaskSpy.didInvokeFailWithError.compactMap(\.asProtonError) == [.unexpected(.unknown)])
     }
 
-    func testFetchingEmbeddedImage_WhenImageIsLoaded_ItReturnsImage() {
+    @Test
+    func testFetchingEmbeddedImage_WhenImageIsLoaded_ItReturnsImage() async {
         let cidValue = "abcdef"
         let url = URL.cid(cidValue)
         let image = AttachmentData.testData
         urlSchemeTaskSpy = .init(request: .init(url: url))
-        embeddedImageProviderSpy.stubbedResult = .ok(image)
+        imageProxySpy.stubbedResult = .ok(image)
         sut.webView(WKWebView(), start: urlSchemeTaskSpy)
 
-        expect(self.urlSchemeTaskSpy.didFinishInvokeCount).toEventually(equal(1))
-        XCTAssertEqual(urlSchemeTaskSpy.didInvokeDidReceiveResponse.map(\.url), [url])
-        XCTAssertEqual(urlSchemeTaskSpy.didInvokeDidReceiveResponse.map(\.mimeType), ["image/png"])
-        XCTAssertEqual(urlSchemeTaskSpy.didInvokeDidReceiveResponse.map(\.expectedContentLength), [Int64(image.data.count)])
+        await expect(self.urlSchemeTaskSpy.didFinishInvokeCount).toEventually(equal(1))
+        #expect(urlSchemeTaskSpy.didInvokeDidReceiveResponse.map(\.url) == [url])
+        #expect(urlSchemeTaskSpy.didInvokeDidReceiveResponse.map(\.mimeType) == ["image/png"])
+        #expect(urlSchemeTaskSpy.didInvokeDidReceiveResponse.map(\.expectedContentLength) == [Int64(image.data.count)])
     }
 
+    @Test
     func testFetchingEmbeddedImage_WhenStopIsCalled_ItDoesNotDoAnything() {
         let cidValue = "abcdef"
         let url = URL.cid(cidValue)
         let image = AttachmentData.testData
         urlSchemeTaskSpy = .init(request: .init(url: url))
-        embeddedImageProviderSpy.stubbedResult = .ok(image)
+        imageProxySpy.stubbedResult = .ok(image)
         let webView = WKWebView()
         sut.webView(webView, start: urlSchemeTaskSpy)
 
         sut.webView(webView, stop: urlSchemeTaskSpy)
 
-        XCTAssertEqual(urlSchemeTaskSpy.didFinishInvokeCount, 0)
-        XCTAssertEqual(urlSchemeTaskSpy.didInvokeDidReceiveResponse, [])
-        XCTAssertEqual(urlSchemeTaskSpy.didInvokeDidReceivedData, [])
-        XCTAssertTrue(urlSchemeTaskSpy.didInvokeFailWithError.isEmpty)
+        #expect(urlSchemeTaskSpy.didFinishInvokeCount == 0)
+        #expect(urlSchemeTaskSpy.didInvokeDidReceiveResponse == [])
+        #expect(urlSchemeTaskSpy.didInvokeDidReceivedData == [])
+        #expect(urlSchemeTaskSpy.didInvokeFailWithError.count == 0)
     }
 
+    @Test
     func testWebViewStopURLSchemeTask_ItDoesNotDoAnything() {
         urlSchemeTaskSpy = .init(request: .init(url: .cid("abc")))
         sut.webView(WKWebView(), stop: urlSchemeTaskSpy)
 
-        XCTAssertEqual(urlSchemeTaskSpy.didFinishInvokeCount, 0)
-        XCTAssertEqual(urlSchemeTaskSpy.didInvokeDidReceiveResponse, [])
-        XCTAssertEqual(urlSchemeTaskSpy.didInvokeDidReceivedData, [])
-        XCTAssertTrue(urlSchemeTaskSpy.didInvokeFailWithError.isEmpty)
+        #expect(urlSchemeTaskSpy.didFinishInvokeCount == 0)
+        #expect(urlSchemeTaskSpy.didInvokeDidReceiveResponse == [])
+        #expect(urlSchemeTaskSpy.didInvokeDidReceivedData == [])
+        #expect(urlSchemeTaskSpy.didInvokeFailWithError.count == 0)
     }
-
 }
 
 private class WKURLSchemeTaskSpy: NSObject, WKURLSchemeTask {

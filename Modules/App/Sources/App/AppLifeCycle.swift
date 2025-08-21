@@ -18,6 +18,7 @@
 import InboxCore
 import SwiftUI
 
+@MainActor
 final class AppLifeCycle: NSObject, @unchecked Sendable {
     static let shared = AppLifeCycle()
 
@@ -65,6 +66,21 @@ extension AppLifeCycle {
         applicationServices.didEnterBackground()
     }
 
+    func scene(_ scene: UIScene, performActionFor shortcutItem: UIApplicationShortcutItem) async -> Bool {
+        AppLogger.log(message: "\(#function) \(shortcutItem.type)", category: .appLifeCycle)
+
+        guard
+            let deepLinkPath = shortcutItem.userInfo?[MailShortcutItem.UserInfoDeepLinkKey] as? String,
+            let deepLink = URL(string: deepLinkPath)
+        else {
+            AppLogger.log(message: "Failed to determine deep link", category: .appLifeCycle, isError: true)
+            return false
+        }
+
+        AppLogger.log(message: "Opening \(deepLink)", category: .appLifeCycle)
+        return await scene.open(deepLink, options: nil)
+    }
+
 }
 
 // MARK: Private
@@ -91,11 +107,11 @@ extension AppLifeCycle {
         )
 
         let foregroundWorkService = ForegroundWorkService(mailSession: { appContext.mailSession })
+        let shortcutItemsService = ShortcutItemsService(sessionState: appContext.$sessionState)
 
         let userNotificationCenterDelegate = UserNotificationCenterDelegate(
             sessionStatePublisher: appContext.$sessionState.eraseToAnyPublisher(),
-            urlOpener: UIApplication.shared,
-            updateBadgeCount: appIconBadgeService.updateBadgeCount
+            urlOpener: UIApplication.shared
         )
 
         let startAutoLockCountdownService = StartAutoLockCountdownService(mailSession: { appContext.mailSession })
@@ -108,6 +124,7 @@ extension AppLifeCycle {
                 notificationAuthorizationService,
                 paymentsService,
                 recurringBackgroundTaskService,
+                shortcutItemsService,
                 userNotificationCenterDelegate,
             ],
             willEnterForegroundServices: [

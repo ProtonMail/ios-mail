@@ -15,10 +15,18 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+@testable import InboxCore
 import proton_app_uniffi
 
-extension ConversationAction {
-    var action: MailboxItemAction {
-        fatalError()
+class ImageProxySpy: @unchecked Sendable, ImageProxy {
+    var stubbedResult: AttachmentDataResult!
+    private(set) var invokedLoadImageWithURLs: [String] = []
+
+    // MARK: - ImageProxy
+
+    func loadImage(url: String) async -> AttachmentDataResult {
+        invokedLoadImageWithURLs.append(url)
+
+        return stubbedResult
     }
 }

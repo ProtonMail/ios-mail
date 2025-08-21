@@ -744,6 +744,18 @@
             "state" : "translated",
             "value" : "Додати пароль"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "添加密码"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "新增密碼"
+          }
         }
       }
     },
@@ -795,7 +807,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Añadir contraseña para usar la caducidad"
+            "value" : "Añadir contraseña para usar la expiración"
           }
         },
         "es-419" : {
@@ -1058,7 +1070,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Endereço não pode ser usado para enviar mensagens"
+            "value" : "O endereço não pode ser usado para enviar mensagens"
           }
         },
         "ro" : {
@@ -1153,7 +1165,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "La dirección está desactivada."
+            "value" : "La dirección está desactivada"
           }
         },
         "es-419" : {
@@ -1280,6 +1292,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Адреса вимкнена"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "地址已禁用"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "電郵位址已停用"
           }
         }
       }
@@ -1523,7 +1547,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Dirección no encontrada. Añádela de nuevo o reabra el borrador."
+            "value" : "Dirección no encontrada. Añádela de nuevo o reabre el borrador."
           }
         },
         "es-419" : {
@@ -1607,7 +1631,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Endereço não encontrado. Adicione-o novamente ou reabra o rascunho"
+            "value" : "Endereço não encontrado. Adicione-o novamente ou reabra o rascunho."
           }
         },
         "ro" : {
@@ -2009,6 +2033,18 @@
             "state" : "translated",
             "value" : "Через 1 день"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1天后"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1 天後"
+          }
         }
       }
     },
@@ -2187,6 +2223,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Через 1 годину"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1 小时后"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1 小時之後"
           }
         }
       }
@@ -2418,7 +2466,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Falta el archivo adjunto. Por favor, vuelve a cargarlo."
+            "value" : "Falta el archivo adjunto. Vuelve a cargarlo."
           }
         },
         "es-419" : {
@@ -2502,7 +2550,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Anexo faltando. Envie novamente."
+            "value" : "Anexo ausente. Carregue-o novamente."
           }
         },
         "ro" : {
@@ -2973,7 +3021,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Archivos adjuntos demasiado grandes. Mantenga el tamaño de los archivos adjuntos por debajo de 25 MB."
+            "value" : "Archivos adjuntos demasiado grandes. Mantén el tamaño de los archivos adjuntos por debajo de 25 MB."
           }
         },
         "es-419" : {
@@ -3057,7 +3105,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Anexos grandes demais. Os anexos devem ter menos de 25 MB."
+            "value" : "Anexos grandes demais. O limite de tamanho do anexo é 25 MB."
           }
         },
         "ro" : {
@@ -3612,7 +3660,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Endereço de e-mail desativado. Verifique se o endereço é válido e ativo."
+            "value" : "Endereço de e-mail desativado. Verifique se o endereço é válido e está ativo."
           }
         },
         "ro" : {
@@ -4358,7 +4406,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rascunho não encontrado. Você pode ter descartado."
+            "value" : "Rascunho não encontrado. Pode ter sido descartado."
           }
         },
         "ro" : {
@@ -4537,7 +4585,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rascunho não encontrado. Você pode já ter enviado."
+            "value" : "Rascunho não encontrado. Pode já ter sido enviado."
           }
         },
         "ro" : {
@@ -4907,7 +4955,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rascunho não foi descartado. Tente descartá-lo novamente."
+            "value" : "Rascunho não descartado. Tente descartar novamente."
           }
         },
         "ro" : {
@@ -5086,7 +5134,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alterar senha"
+            "value" : "Editar senha"
           }
         },
         "ro" : {
@@ -5129,6 +5177,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Редагувати пароль"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "编辑密码"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "編輯密碼"
           }
         }
       }
@@ -5265,7 +5325,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Horário de expiração não pode ser no passado."
+            "value" : "A data de expiração não pode ser no passado."
           }
         },
         "ro" : {
@@ -6539,6 +6599,12 @@
             "value" : "만료 기능은 어떻게 작동하나요?"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hvordan fungerer utløpstid?"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6903,6 +6969,12 @@
             "value" : "잘못된 이메일 주소입니다. 주소를 확인하고 다시 시도해 주세요."
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ugyldig e-postadresse. Sjekk adressen og prøv igjen."
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7019,7 +7091,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Dirección de correo electrónico no válida. Por favor, revisa la dirección."
+            "value" : "Dirección de correo electrónico no válida. Revisa la dirección."
           }
         },
         "es-419" : {
@@ -7074,6 +7146,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "잘못된 이메일 주소입니다. 주소를 확인해 주세요."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ugyldig e-postadresse. Sjekk adressen."
           }
         },
         "nl" : {
@@ -7192,7 +7270,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "El destinatario no es válido."
+            "value" : "El destinatario no es válido"
           }
         },
         "es-419" : {
@@ -7434,6 +7512,12 @@
             "value" : "이 이메일 주소에 문제가 있습니다. 주소를 확인하거나 나중에 다시 시도해 주세요."
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Problem med denne e-postadressen. Sjekk adressen eller prøv igjen senere."
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7455,7 +7539,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Erro com este endereço de e-mail. Verifique o endereço ou tente novamente mais tarde."
+            "value" : "Erro neste endereço de e-mail. Verifique o endereço ou tente novamente mais tarde."
           }
         },
         "ro" : {
@@ -7550,7 +7634,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "No se ha recuperado el cuerpo del mensaje. Cierre y vuelva a abrir el borrador."
+            "value" : "No se ha recuperado el cuerpo del mensaje. Cierra y vuelve a abrir el borrador."
           }
         },
         "es-419" : {
@@ -7607,6 +7691,12 @@
             "value" : "메시지 본문을 가져오지 못했습니다. 임시 저장 메시지를 닫았다가 다시 열어 주세요."
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meldingsteksten ble ikke hentet. Lukk og åpne utkastet på nytt."
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7628,7 +7718,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "A mensagem não foi recuperada. Feche e reabra o rascunho."
+            "value" : "O texto da mensagem não foi recuperado. Feche e reabra o rascunho."
           }
         },
         "ro" : {
@@ -7971,6 +8061,12 @@
             "value" : "메시지 만료 시간이 너무 이릅니다."
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meldingens utløpstid er for tidlig."
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8144,6 +8240,12 @@
             "value" : "메시지 만료"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Melding utløper"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8165,7 +8267,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mensagem expirada"
+            "value" : "A mensagem expirará"
           }
         },
         "ro" : {
@@ -8317,6 +8419,12 @@
             "value" : "메시지를 찾을 수 없습니다. 이미 보냈거나 삭제했을 수 있습니다."
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Melding ikke funnet. Du kan ha sendt eller forkastet den."
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8338,7 +8446,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mensagem não encontrada. Você pode ter enviado ou descartado."
+            "value" : "Mensagem não encontrada. Pode ter sido enviada ou descartada."
           }
         },
         "ro" : {
@@ -8872,6 +8980,12 @@
             "value" : "메시지가 이미 전송되었습니다."
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meldingen er allerede sendt"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8893,7 +9007,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mensagem já foi enviada"
+            "value" : "A mensagem já foi enviada"
           }
         },
         "ro" : {
@@ -9043,6 +9157,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "서버에서 메시지를 찾을 수 없습니다."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Melding finnes ikke på tjeneren"
           }
         },
         "nl" : {
@@ -9409,6 +9529,12 @@
             "value" : "8~21글자 사이여야 합니다"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Må bestå av mellom 8 og 21 tegn"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9430,7 +9556,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Deve ter entre 8 e 21 caracteres"
+            "value" : "Precisa ter entre 8 e 21 caracteres"
           }
         },
         "ro" : {
@@ -9773,6 +9899,12 @@
             "value" : "특정 날짜"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "På en bestemt dato"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9944,6 +10076,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "비밀번호 힌트(선택 사항)"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Passordhint (valgfritt)"
           }
         },
         "nl" : {
@@ -10119,6 +10257,12 @@
             "value" : "비밀번호가 너무 짧습니다."
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Passordet er for kort."
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -10140,7 +10284,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Senha muito curta."
+            "value" : "Senha curta demais."
           }
         },
         "ro" : {
@@ -10420,7 +10564,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Añade al menos un destinatario."
+            "value" : "Añade al menos un destinatario"
           }
         },
         "es-419" : {
@@ -10475,6 +10619,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "최소 한 명의 수신자를 추가해주세요"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Legg til minst én mottaker"
           }
         },
         "nl" : {
@@ -10542,6 +10692,18 @@
             "state" : "translated",
             "value" : "Додайте принаймні одного отримувача"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "请添加至少一位收件人"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "請輸入至少一位收件者"
+          }
         }
       }
     },
@@ -10593,7 +10755,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Introduce una dirección de correo electrónico válida."
+            "value" : "Introduce una dirección de correo electrónico válida"
           }
         },
         "es-419" : {
@@ -10969,7 +11131,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Problema al encriptar el archivo adjunto. Por favor, cárgalo de nuevo."
+            "value" : "Problema al encriptar el archivo adjunto. Cárgalo de nuevo."
           }
         },
         "es-419" : {
@@ -11024,6 +11186,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "첨부파일 암호화에 문제가 발생했습니다. 다시 업로드해 주세요."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Problem med kryptering av vedlegg. Last det opp igjen."
           }
         },
         "nl" : {
@@ -11199,6 +11367,12 @@
             "value" : "작업 수행 중 문제가 발생했습니다. 다시 시도해 주세요."
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Problem med å utføre handlingen. Prøv igjen."
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -11372,6 +11546,12 @@
             "value" : "메시지 전송에 문제가 있습니다. 다시 시도해 주세요."
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Problem med å sende meldingen. Prøv igjen."
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -11393,7 +11573,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Erro ao enviar mensagem. Tente novamente."
+            "value" : "Problema ao enviar mensagem. Tente novamente."
           }
         },
         "ro" : {
@@ -11736,6 +11916,12 @@
             "value" : "비밀번호 제거"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fjern passord"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -11800,6 +11986,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Вилучити пароль"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "删除密码"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "移除密碼"
           }
         }
       }
@@ -12100,6 +12298,12 @@
             "value" : "중복된 수신인을 삭제했습니다: %@"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fjernet dupliserte mottakere: %@"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12121,7 +12325,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Destinatário duplicado removido: %@"
+            "value" : "Destinatários duplicados removidos: %@"
           }
         },
         "ro" : {
@@ -12464,6 +12668,12 @@
             "value" : "재시도할 수 없습니다. 첨부파일이 업로드 중이거나 이미 업로드되었습니다."
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kan ikke prøve på nytt. Vedlegg lastes opp eller er allerede lastet opp."
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12485,7 +12695,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Não foi possível tentar novamente. O anexo está carregando ou já foi enviado."
+            "value" : "Não é possível tentar novamente. O anexo está sendo carregado ou já foi carregado."
           }
         },
         "ro" : {
@@ -12828,6 +13038,12 @@
             "value" : "예약 전송 시간이 과거입니다. 임시보관함으로 이동하여 전송하거나 다시 예약하세요."
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Planlagt sendetid er i fortiden. Gå til Utkast for å sende eller omplanlegge den."
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12849,7 +13065,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "O horário de envio agendado está no passado. Vá para Rascunhos para enviar ou reagende-o."
+            "value" : "O horário de envio agendado já passou. Acesse Rascunhos para enviar ou reagendar o envio."
           }
         },
         "ro" : {
@@ -13893,7 +14109,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Establece una contraseña para encriptar este mensaje para usuarios que no sean de Proton Mail."
+            "value" : "Establece una contraseña para cifrar este mensaje para usuarios que no sean de Proton Mail."
           }
         },
         "es-419" : {
@@ -13948,6 +14164,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Proton Mail 비사용자를 위해 이 메시지를 암호화하려면 비밀번호를 설정하세요."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Angi et passord for å kryptere denne meldingen for ikke-Proton Mail-brukere."
           }
         },
         "nl" : {
@@ -14121,6 +14343,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "메시지 만료 설정"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Angi utløpstid for melding"
           }
         },
         "nl" : {
@@ -14487,6 +14715,12 @@
             "value" : "일부 수신인(%@)은 기본적으로 만료 기능을 지원하지 않습니다. Proton Mail을 사용하지 않는 수신인을 위해 만료 기능을 활성화하려면 비밀번호를 추가하세요."
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Noen mottakere (%@) støtter ikke utløpstid som standard. Legg til et passord for å aktivere utløpstid for mottakere som ikke er Proton Mail."
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -14508,7 +14742,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alguns destinatários (%@) não suportam expiração por padrão. Adicione uma senha para ativar a expiração para destinatários que não usam o Proton Mail."
+            "value" : "A expiração fica desativada para alguns destinatários (%@) por padrão. Adicione uma senha para ativar a expiração para destinatários que não usam o Proton Mail."
           }
         },
         "ro" : {
@@ -15552,7 +15786,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "No se ha encontrado el borrador."
+            "value" : "No se ha encontrado el borrador"
           }
         },
         "es-419" : {
@@ -15630,7 +15864,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Esse rascunho nõ foi encontrado"
+            "value" : "Rascunho não encontrado"
           }
         },
         "ro" : {
@@ -15737,7 +15971,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "El mensaje no es un borrador."
+            "value" : "El mensaje no es un borrador"
           }
         },
         "es-419" : {
@@ -15815,7 +16049,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Essa mensagem não é rascunho"
+            "value" : "A mensagem não é um rascunho"
           }
         },
         "ro" : {
@@ -16674,7 +16908,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Se enviará este mensaje el %@."
+            "value" : "Se enviará este mensaje el %@"
           }
         },
         "es-419" : {
@@ -17489,6 +17723,12 @@
             "value" : "첨부파일이 너무 많습니다. 여러 이메일로 나누어 보내세요."
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "For mange vedlegg. Send dem i flere e-poster."
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -17510,7 +17750,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Muitos anexos. Envie-os em e-mails separados."
+            "value" : "Anexos demais. Envie-os em e-mails separados."
           }
         },
         "ro" : {
@@ -17662,6 +17902,12 @@
             "value" : "모든 수신인이 Proton Mail을 사용하는지 확인할 수 없습니다. Proton 주소만 메시지 만료 기능을 지원합니다. 이 경우 대신 비밀번호를 추가하는 것을 권장합니다."
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vi kunne ikke bekrefte at alle mottakere bruker Proton Mail. Kun Proton-adresser støtter meldingsutløpstid. I dette tilfellet foreslår vi å legge til et passord i stedet."
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -17683,7 +17929,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Não conseguimos confirmar se todos os destinatários usam o Proton Mail. Apenas endereços Proton suportam a expiração de mensagens. Sugerimos adicionar uma senha ao invés."
+            "value" : "Não conseguimos confirmar se todos os destinatários usam o Proton Mail. Somente endereços do Proton são compatíveis com a expiração de mensagens. Em vez disso, sugerimos adicionar uma senha."
           }
         },
         "ro" : {
@@ -18020,6 +18266,12 @@
             "value" : "예약 메시지 한도에 도달했습니다."
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du har nådd grensen for antall planlagte meldinger."
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -18327,7 +18579,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tu borrador no se guardará."
+            "value" : "Tu borrador no se guardará"
           }
         },
         "es-419" : {

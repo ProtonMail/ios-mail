@@ -15,19 +15,17 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import InboxCore
 import InboxCoreUI
+import SwiftUI
 
 extension AlertModel {
 
-    static func editScheduleConfirmation(action: @Sendable @escaping @MainActor (EditScheduleAlertAction) async -> Void) -> Self {
-        let actions: [AlertAction] = EditScheduleAlertAction.allCases.map { actionType in
-            .init(details: actionType, action: { await action(actionType) })
-        }
-
-        return .init(
+    static func editScheduleConfirmation(action: @escaping @MainActor (EditScheduleAlertAction) async -> Void) -> Self {
+        .init(
             title: L10n.Action.Send.editScheduledAlertTitle,
             message: L10n.Action.Send.editScheduledAlertMessage,
-            actions: actions
+            actions: alertActions(action: action)
         )
     }
 
@@ -35,27 +33,35 @@ extension AlertModel {
         itemsCount: Int,
         action: @escaping @MainActor @Sendable (DeleteConfirmationAlertAction) async -> Void
     ) -> Self {
-        let actions: [AlertAction] = DeleteConfirmationAlertAction.allCases.map { actionType in
-            .init(details: actionType, action: { await action(actionType) })
-        }
-
-        return .init(
+        .init(
             title: L10n.Action.Delete.Alert.title(itemsCount: itemsCount),
             message: L10n.Action.Delete.Alert.message(itemsCount: itemsCount),
-            actions: actions
+            actions: alertActions(action: action)
         )
     }
 
-    static func phishingConfirmation(action: @Sendable @escaping (PhishingConfirmationAlertAction) async -> Void) -> Self {
-        let actions: [AlertAction] = PhishingConfirmationAlertAction.allCases.map { actionType in
-            .init(details: actionType, action: { await action(actionType) })
-        }
-
-        return .init(
+    static func phishingConfirmation(action: @escaping (PhishingConfirmationAlertAction) -> Void) -> Self {
+        .init(
             title: L10n.Action.ReportPhishing.Alert.title,
             message: L10n.Action.ReportPhishing.Alert.message,
-            actions: actions
+            actions: alertActions(action: action)
         )
+    }
+
+    static func openURLConfirmation(url: URL, action: @escaping @MainActor (ConfirmLinkAlertAction) -> Void) -> Self {
+        .init(
+            title: L10n.ConfirmLink.title,
+            message: url.absoluteString.stringResource,
+            actions: alertActions(action: action)
+        )
+    }
+
+    private static func alertActions<ActionType: AlertActionInfo & CaseIterable & Sendable>(
+        action: @escaping @MainActor (ActionType) async -> Void
+    ) -> [AlertAction] {
+        ActionType.allCases.map { actionType in
+            .init(details: actionType, action: { await action(actionType) })
+        }
     }
 
 }

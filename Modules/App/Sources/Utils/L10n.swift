@@ -287,6 +287,13 @@ enum L10n {
         }
     }
 
+    enum ConfirmLink {
+        static let title = LocalizedStringResource(
+            "You are about to launch the web browser and navigate to",
+            comment: "Prompts the user to confirm before a link is opened - the sentence is cut on purpose, and the link follows."
+        )
+    }
+
     enum EventLoopError {
         static let eventLoopErrorMessage = LocalizedStringResource(
             "We encountered an issue while syncing your mail with the event loop. Please share the logs with our support team for further investigation. Try logging out and logging back in to resolve the issue.",
@@ -490,6 +497,28 @@ enum L10n {
                 comment: "Message shown in the alert explaining the reason for the 'Mark as legitimate' action."
             )
         }
+        enum UnsubscribeNewsletter {
+            enum Alert {
+                static let title = LocalizedStringResource(
+                    "Unsubscribe",
+                    comment: "Title of the alert asking the user to confirm unsubscribing from the mailing list."
+                )
+                static let message = LocalizedStringResource(
+                    "This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address.",
+                    comment: "Message shown in the alert explaining the consequence of the 'Unsubscribe' action."
+                )
+                static let confirm = LocalizedStringResource(
+                    "Unsubscribe",
+                    comment: "Label of the confirmation button in the unsubscribe alert."
+                )
+            }
+            enum Toast {
+                static let success = LocalizedStringResource(
+                    "Mail list unsubscribed",
+                    comment: "Toast message shown after the user successfully unsubscribes from a mailing list."
+                )
+            }
+        }
 
         static func autoDeleteTitle(remainingTime: String) -> LocalizedStringResource {
             .init(
@@ -560,6 +589,10 @@ enum L10n {
         static let unsubscribeNewsletterTitle = LocalizedStringResource(
             "This message is from a mailing list.",
             comment: "Banner indicating that the email is from a mailing list."
+        )
+        static let unsubscribedNewsletterTitle = LocalizedStringResource(
+            "You are unsubscribed from this mailing list.",
+            comment: "Banner indicating that the user is already unsubscribed from a mailing list."
         )
     }
 
@@ -1026,6 +1059,12 @@ enum L10n {
                 "Restores the toolbar actions for the message view to their original default settings.",
                 comment: "Title of a button that reset a set of selected actions to default."
             )
+        }
+
+        enum MobileSignature {
+            static let title = LocalizedStringResource("Mobile signature", comment: "Settings menu title.")
+            static let switchLabel = LocalizedStringResource("Enable signature", comment: "Next to a checkbox in the settings.")
+            static let textBoxLabel = LocalizedStringResource("Signature", comment: "Above the text box to populate the signature in settings.")
         }
 
         static let subscription = LocalizedStringResource(

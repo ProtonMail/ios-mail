@@ -73,6 +73,10 @@ final class PlainTextBodyEditorController: UIViewController, BodyEditor {
 
 extension PlainTextBodyEditorController: UITextViewDelegate {
 
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        onEvent?(.onStartEditing)
+    }
+
     func textViewDidChange(_ textView: UITextView) {
         onEvent?(.onBodyChange(body: textView.text))
     }
@@ -92,8 +96,10 @@ extension PlainTextBodyEditorController {
         static var textView: PastingTextView {
             let view = PastingTextView()
             view.translatesAutoresizingMaskIntoConstraints = false
+            view.backgroundColor = DS.Color.Background.norm.toDynamicUIColor
             let baseFont = UIFont.monospacedSystemFont(ofSize: UIFont.preferredFont(forTextStyle: .body).pointSize, weight: .regular)
             view.font = UIFontMetrics(forTextStyle: .body).scaledFont(for: baseFont)
+            view.textColor = DS.Color.Text.norm.toDynamicUIColor
             view.adjustsFontForContentSizeCategory = true
             view.isScrollEnabled = false
             view.textContainer.lineFragmentPadding = 0

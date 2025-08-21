@@ -1067,6 +1067,12 @@
             "value" : "사진 앱에 파일을 저장하는 데 필요합니다."
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nødvendig for å lagre filer i Bilder-appen din."
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1088,7 +1094,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "É necessário salvar os arquivos no aplicativo Fotos"
+            "value" : "Exigido para salvar arquivos no aplicativo Fotos."
           }
         },
         "ro" : {

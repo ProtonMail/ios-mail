@@ -87,9 +87,10 @@ struct SubscriptionPeriodRadioButton: View {
         Text((-value).formatted(.percent))
             .font(.caption)
             .fontWeight(.bold)
+            .foregroundStyle(Color.white)
             .padding(.horizontal, DS.Spacing.standard)
             .padding(.vertical, DS.Spacing.small)
-            .background(Color.white.opacity(0.2))
+            .background(Color.white.opacity(0.1))
             .clipShape(RoundedRectangle(cornerRadius: DS.Radius.medium))
     }
 
@@ -100,7 +101,7 @@ struct SubscriptionPeriodRadioButton: View {
             .foregroundColor(.white)
             + Text(" \(L10n.perMonth)")
             .font(.caption)
-            .foregroundColor(DS.Color.Text.norm)
+            .foregroundColor(Color.white.opacity(0.7))
     }
 
     private var selectionIndicator: some View {
@@ -131,5 +132,4 @@ struct SubscriptionPeriodRadioButton: View {
 
     SubscriptionPeriodRadioGroup(planInstances: DisplayablePlanInstance.previews, selectedInstanceID: $selectedInstanceID)
         .background(DS.Color.Brand.norm)
-        .preferredColorScheme(.dark)
 }

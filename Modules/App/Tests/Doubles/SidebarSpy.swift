@@ -19,12 +19,17 @@
 import InboxTesting
 import proton_app_uniffi
 
-class SidebarSpy: SidebarProtocol {
+final class SidebarSpy: SidebarProtocol, @unchecked Sendable {
+    enum CallbackIndex: Int {
+        case folder = 0
+        case label = 1
+        case system = 2
+    }
 
     var stubbedSystemLabels: [PMSystemLabel] = []
     var stubbedCustomFolders: [PMCustomFolder] = []
     var stubbedCustomLabels: [PMCustomLabel] = []
-    private(set) var spiedWatchers: [LabelType: LiveQueryCallback] = [:]
+    private(set) var spiedWatchers: [CallbackIndex: LiveQueryCallback] = [:]
     private(set) var collapseFolderInvoked: [ID] = []
     private(set) var expandFolderInvoked: [ID] = []
 
@@ -56,9 +61,11 @@ class SidebarSpy: SidebarProtocol {
         .ok(stubbedSystemLabels)
     }
 
-    func watchLabels(labelType: LabelType, callback: LiveQueryCallback) async -> SidebarWatchLabelsResult {
-        spiedWatchers[labelType] = callback
+    func watchLabels(callback: LiveQueryCallback) async -> SidebarWatchLabelsResult {
+        let lastIndex = spiedWatchers.count - 1
+        let mappedIndex: CallbackIndex = lastIndex == -1 ? .folder : .init(rawValue: lastIndex + 1)!
+        spiedWatchers[mappedIndex] = callback
+
         return .ok(WatchHandleDummy(noPointer: .init()))
     }
-
 }

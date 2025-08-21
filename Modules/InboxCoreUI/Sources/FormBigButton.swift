@@ -19,19 +19,36 @@ import InboxDesignSystem
 import SwiftUI
 
 public struct FormBigButton: View {
+    public enum AccessoryType {
+        case symbol(DS.SFSymbol)
+        case upsell
+    }
+
     private let title: LocalizedStringResource
     private let value: String
-    private let symbol: DS.SFSymbol?
+    private let accessoryType: AccessoryType
     private let action: () -> Void
 
     public init(
         title: LocalizedStringResource,
-        symbol: DS.SFSymbol?,
+        accessoryType: AccessoryType,
         value: String,
         action: @escaping () -> Void
     ) {
         self.title = title
-        self.symbol = symbol
+        self.accessoryType = accessoryType
+        self.value = value
+        self.action = action
+    }
+
+    public init(
+        title: LocalizedStringResource,
+        symbol: DS.SFSymbol,
+        value: String,
+        action: @escaping () -> Void
+    ) {
+        self.title = title
+        self.accessoryType = .symbol(symbol)
         self.value = value
         self.action = action
     }
@@ -42,10 +59,11 @@ public struct FormBigButton: View {
                 title: title,
                 value: value,
                 hasAccentTextColor: false,
-                symbol: symbol
+                accessoryType: accessoryType
             )
         }
         .background(DS.Color.BackgroundInverted.secondary)
         .buttonStyle(DefaultPressedButtonStyle())
+        .roundedRectangleStyle()
     }
 }

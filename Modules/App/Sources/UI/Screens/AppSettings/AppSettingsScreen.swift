@@ -18,6 +18,7 @@
 import InboxCore
 import InboxCoreUI
 import InboxDesignSystem
+import InboxIAP
 import proton_app_uniffi
 import SwiftUI
 
@@ -26,6 +27,7 @@ struct AppSettingsScreen: View {
     @EnvironmentObject var toastStateStore: ToastStateStore
     @EnvironmentObject var appAppearanceStore: AppAppearanceStore
     @EnvironmentObject var router: Router<SettingsRoute>
+    @EnvironmentObject private var upsellCoordinator: UpsellCoordinator
     @StateObject var store: AppSettingsStateStore
 
     init(
@@ -56,14 +58,12 @@ struct AppSettingsScreen: View {
                                     value: store.state.areNotificationsEnabledHumanReadable.string,
                                     action: { store.handle(action: .notificationButtonTapped) }
                                 )
-                                .roundedRectangleStyle()
                                 FormBigButton(
                                     title: L10n.Settings.App.language,
                                     symbol: .arrowUpRightSquare,
                                     value: store.state.appLanguage,
                                     action: { store.handle(action: .languageButtonTapped) }
                                 )
-                                .roundedRectangleStyle()
                                 appearanceButton
                                 FormBigButton(
                                     title: L10n.Settings.App.appLock,
@@ -71,7 +71,6 @@ struct AppSettingsScreen: View {
                                     value: store.state.storedAppSettings.protection.humanReadable.string,
                                     action: { router.go(to: .appProtection) }
                                 )
-                                .roundedRectangleStyle()
                             }
                             FormSection(footer: L10n.Settings.App.combinedContactsInfo) {
                                 FormSwitchView(
@@ -101,6 +100,7 @@ struct AppSettingsScreen: View {
                             .roundedRectangleStyle()
                         }
                     }
+                    mobileSignatureItem(mobileSignatureStatus: store.state.mobileSignatureStatus)
                     FormSection(
                         header: L10n.Settings.App.advanced,
                         footer: L10n.Settings.App.alternativeRoutingInfo
@@ -117,6 +117,7 @@ struct AppSettingsScreen: View {
         }
         .navigationTitle(L10n.Settings.App.title.string)
         .navigationBarTitleDisplayMode(.inline)
+        .sheet(item: $store.state.presentedUpsell, content: UpsellScreen.init)
         .onAppear { store.handle(action: .onAppear) }
         .onChange(
             of: scenePhase,
@@ -132,7 +133,8 @@ struct AppSettingsScreen: View {
                 Task {
                     await appAppearanceStore.updateColorScheme()
                 }
-            })
+            }
+        )
     }
 
     @ViewBuilder
@@ -159,7 +161,6 @@ struct AppSettingsScreen: View {
                     value: store.state.storedAppSettings.appearance.humanReadable.string,
                     action: { store.handle(action: .appearanceTapped) }
                 )
-                .roundedRectangleStyle()
             }
         )
     }
@@ -187,6 +188,30 @@ struct AppSettingsScreen: View {
 
     private func comingSoon() {
         toastStateStore.present(toast: .comingSoon)
+    }
+
+    @ViewBuilder
+    private func mobileSignatureItem(mobileSignatureStatus: MobileSignatureStatus) -> some View {
+        let needsPaidVersion = mobileSignatureStatus == .needsPaidVersion
+
+        FormBigButton(
+            title: L10n.Settings.MobileSignature.title,
+            accessoryType: needsPaidVersion ? .upsell : .symbol(.chevronRight),
+            value: mobileSignatureStatus.isEnabled ? CommonL10n.on.string : CommonL10n.off.string,
+            action: {
+                if needsPaidVersion {
+                    Task {
+                        do {
+                            try await store.presentUpsellScreen(presenter: upsellCoordinator)
+                        } catch {
+                            toastStateStore.present(toast: .error(message: error.localizedDescription))
+                        }
+                    }
+                } else {
+                    router.go(to: .mobileSignature)
+                }
+            }
+        )
     }
 }
 

@@ -26,8 +26,8 @@ struct DeepLinkRouteCoderTests {
     private let testURL = URL(string: "protonmail://messages/foo123==?subject=foo%20bar%20%F0%9F%98%80")!
 
     @Test
-    func encoding_openMessageRoute() async throws {
-        let deepLink = try #require(sut.encode(route: .mailboxOpenMessage(seed: testSeed)))
+    func encoding_openMessageRoute() async {
+        let deepLink = sut.encode(route: .mailboxOpenMessage(seed: testSeed))
         #expect(deepLink == testURL)
     }
 

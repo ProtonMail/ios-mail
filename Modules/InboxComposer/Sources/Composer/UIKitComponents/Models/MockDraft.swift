@@ -203,6 +203,10 @@ final class MockDraft: AppDraftProtocol, @unchecked Sendable {
         .error(.network)
     }
 
+    func loadImage(url: String) async -> AttachmentDataResult {
+        .error(.network)
+    }
+
     func isPasswordProtected() -> DraftIsPasswordProtectedResult {
         .ok(false)
     }

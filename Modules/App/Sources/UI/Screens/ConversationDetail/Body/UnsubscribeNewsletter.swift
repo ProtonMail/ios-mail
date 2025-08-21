@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Proton Technologies AG
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -17,8 +17,8 @@
 
 import proton_app_uniffi
 
-public protocol EmbeddedImageProvider: AnyObject, Sendable {
-    func getEmbeddedAttachment(cid: String) async -> AttachmentDataResult
+protocol UnsubscribeNewsletter: AnyObject, Sendable {
+    func unsubscribeFromNewsletter() async -> VoidActionResult
 }
 
-extension DecryptedMessage: @unchecked @retroactive Sendable, EmbeddedImageProvider {}
+extension DecryptedMessage: UnsubscribeNewsletter {}

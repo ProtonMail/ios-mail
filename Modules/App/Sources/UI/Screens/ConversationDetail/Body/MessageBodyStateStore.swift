@@ -28,6 +28,8 @@ final class MessageBodyStateStore: StateStore {
         case markAsLegitimate
         case markAsLegitimateConfirmed(LegitMessageConfirmationAlertAction)
         case unblockSender(emailAddress: String)
+        case unsubscribeNewsletter
+        case unsubscribeNewsletterConfirmed(UnsubscribeNewsletterAlertAction)
     }
 
     struct State: Copying {
@@ -99,6 +101,17 @@ final class MessageBodyStateStore: StateStore {
             if case let .loaded(body) = state.body {
                 await unblockSender(emailAddress: emailAddress, with: body.html.options)
             }
+        case .unsubscribeNewsletter:
+            let alertModel: AlertModel = .unsubcribeNewsletter { [weak self] action in
+                await self?.handle(action: .unsubscribeNewsletterConfirmed(action))
+            }
+            state = state.copy(\.alert, to: alertModel)
+        case .unsubscribeNewsletterConfirmed(let action):
+            state = state.copy(\.alert, to: nil)
+
+            if case let .loaded(body) = state.body, case .unsubscribe = action {
+                await unsubscribeNewsletter(with: body.newsletterService, options: body.html.options)
+            }
         }
     }
 
@@ -128,19 +141,41 @@ final class MessageBodyStateStore: StateStore {
 
     @MainActor
     private func markAsLegitimate(with options: TransformOpts) async {
-        switch await legitMessageMarker.markAsLegitimate(forMessageID: messageID) {
-        case .ok:
-            await loadMessageBody(with: options)
-        case .error(let error):
-            toastStateStore.present(toast: .error(message: error.localizedDescription))
-        }
+        await executeAndReloadMessage(
+            operation: { await legitMessageMarker.markAsLegitimate(forMessageID: messageID) },
+            with: options
+        )
     }
 
     @MainActor
     private func unblockSender(emailAddress: String, with options: TransformOpts) async {
-        switch await senderUnblocker.unblock(emailAddress: emailAddress) {
+        await executeAndReloadMessage(
+            operation: { await senderUnblocker.unblock(emailAddress: emailAddress) },
+            with: options
+        )
+    }
+
+    @MainActor
+    private func unsubscribeNewsletter(with newsletterService: UnsubscribeNewsletter, options: TransformOpts) async {
+        await executeAndReloadMessage(
+            operation: { await newsletterService.unsubscribeFromNewsletter() },
+            with: options,
+            successToastMessage: L10n.MessageBanner.UnsubscribeNewsletter.Toast.success.string
+        )
+    }
+
+    @MainActor
+    private func executeAndReloadMessage(
+        operation: () async -> VoidActionResult,
+        with options: TransformOpts,
+        successToastMessage: String? = nil
+    ) async {
+        switch await operation() {
         case .ok:
             await loadMessageBody(with: options)
+            if let successToastMessage {
+                toastStateStore.present(toast: .information(message: successToastMessage))
+            }
         case .error(let error):
             toastStateStore.present(toast: .error(message: error.localizedDescription))
         }

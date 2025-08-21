@@ -106,6 +106,12 @@
             "value" : " 취소됨"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : " avbrutt"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -170,6 +176,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : " скасовано"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : " 已取消"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : " 已取消"
           }
         }
       }
@@ -279,6 +297,12 @@
             "value" : " 종료됨"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : " avsluttet"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -300,7 +324,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : " terminado"
+            "value" : " encerrou"
           }
         },
         "ro" : {
@@ -450,6 +474,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : " 진행 중"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : " nå"
           }
         },
         "nl" : {
@@ -1007,6 +1037,12 @@
             "value" : "%@ (주최자)"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ (Arrangør)"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1028,7 +1064,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ (Organizador)"
+            "value" : "%@ (organizador)"
           }
         },
         "ro" : {
@@ -1180,6 +1216,12 @@
             "value" : "참여자 %d명"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%d deltakere"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1245,6 +1287,18 @@
             "state" : "translated",
             "value" : "%d учасників"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%d 名参与者"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%d 位參與者"
+          }
         }
       }
     },
@@ -1296,7 +1350,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld Participantes"
+            "value" : "%lld participantes"
           }
         },
         "es-419" : {
@@ -1353,6 +1407,12 @@
             "value" : "참여자 %lld명"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld deltakere"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1374,7 +1434,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld Participantes"
+            "value" : "%lld participantes"
           }
         },
         "ro" : {
@@ -1417,6 +1477,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%lld учасників"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld 名参与者"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld 位參與者"
           }
         }
       }
@@ -1908,6 +1980,12 @@
             "value" : "이벤트"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hendelse"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1972,6 +2050,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Подія"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "事件"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "行程"
           }
         }
       }
@@ -2081,6 +2171,12 @@
             "value" : "이벤트가 취소되었습니다. 이 초대는 기한이 만료되었습니다."
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hendelse avbrutt. Denne invitasjonen er utdatert."
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2145,6 +2241,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Подію скасовано. Це запрошення застаріло."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "事件已取消。此邀请已过期。"
           }
         }
       }
@@ -2252,6 +2354,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "현재"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pågår"
           }
         },
         "nl" : {
@@ -2427,6 +2535,12 @@
             "value" : "초대 세부사항을 가져올 수 없습니다."
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Invitasjonsdetaljer utilgjengelige"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2491,6 +2605,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Подробиці запрошення недоступні"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "邀请详情无法获取"
           }
         }
       }
@@ -2734,7 +2854,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tal vez asistiré."
+            "value" : "Tal vez asistiré"
           }
         },
         "es-419" : {
@@ -2791,6 +2911,12 @@
             "value" : "확실하지 않음"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jeg deltar kanskje"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2812,7 +2938,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Talvez, eu vá participar"
+            "value" : "Talvez eu participe"
           }
         },
         "ro" : {
@@ -2855,6 +2981,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Можливо піду"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "可能参加"
           }
         }
       }
@@ -3728,6 +3860,12 @@
             "value" : "사용자의 캘린더에 등록되지 않은 이벤트에 회신할 수 없습니다."
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Denne hendelsen er ikke i kalenderen din, så du kan ikke svare på den."
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3792,6 +3930,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Цієї події немає у вашому календарі, тому ви не можете на неї відповісти."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "此事件不在您的日历中，因此您无法回复它。"
           }
         }
       }
@@ -3901,6 +4045,12 @@
             "value" : "이 초대는 만료되었습니다. 이벤트가 업데이트 되었습니다."
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Denne invitasjonen er utdatert. Hendelsen er oppdatert."
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3965,6 +4115,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Це запрошення застаріло. Подію було оновлено."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "此邀请已过期。活动已更新。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "此邀請已過時。此事件已更新。"
           }
         }
       }
@@ -4072,6 +4234,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "정보를 불러올 수 없습니다.\n다시 시도해 주세요."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vi kunne ikke laste informasjonen. Prøv igjen."
           }
         },
         "nl" : {
@@ -4629,6 +4797,12 @@
             "value" : "나 • %@"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du • %@"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4802,6 +4976,12 @@
             "value" : "주최자입니다."
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du er arrangøren."
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4866,6 +5046,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ви є організатором."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "您是组织者。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "您是召集人."
           }
         }
       }
@@ -4973,6 +5165,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "오프라인 상태입니다. 표시된 정보가 최신이 아닐 수 있습니다."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du er frakoblet. Informasjonen som vises kan være utdatert."
           }
         },
         "nl" : {
@@ -5148,6 +5346,12 @@
             "value" : "귀하의 주소는 답장에 사용할 수 없습니다. 계정 정보를 업데이트해 주세요."
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Din adresse kan ikke brukes til å svare. Oppdater kontoinformasjonen din."
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5169,7 +5373,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Seu endereço não pode ser usado para responder. Por favor, atualize as informações da sua conta."
+            "value" : "Seu endereço não pode ser usado para responder. Atualize as informações da sua conta."
           }
         },
         "ro" : {

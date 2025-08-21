@@ -26,7 +26,7 @@ final class ContactsFilterStrategyTests: XCTestCase {
             .init(
                 groupedBy: "#",
                 items: [
-                    .contact(.vip),
+                    .contact(.vip)
                 ]
             ),
             .init(
@@ -35,15 +35,15 @@ final class ContactsFilterStrategyTests: XCTestCase {
                     .contact(.aliceAdams),
                     .group(.advisorsGroup),
                     .contact(.andrewAllen),
-                    .contact(.amandaArcher)
+                    .contact(.amandaArcher),
                 ]
             ),
             .init(
                 groupedBy: "E",
                 items: [
-                    .contact(.evanAndrage),
+                    .contact(.evanAndrage)
                 ]
-            )
+            ),
         ]
 
         XCTAssertEqual(ContactsFilterStrategy.filter(searchPhrase: "", items: groupedItems), groupedItems)
@@ -54,7 +54,7 @@ final class ContactsFilterStrategyTests: XCTestCase {
             .init(
                 groupedBy: "#",
                 items: [
-                    .contact(.vip),
+                    .contact(.vip)
                 ]
             ),
             .init(
@@ -64,16 +64,16 @@ final class ContactsFilterStrategyTests: XCTestCase {
                     .contact(.aliceAdams),
                     .group(.advisorsGroup),
                     .contact(.andrewAllen),
-                    .contact(.amandaArcher)
+                    .contact(.amandaArcher),
                 ]
             ),
             .init(
                 groupedBy: "E",
                 items: [
                     .contact(.evanAndrage),
-                    .contact(.elenaErickson)
+                    .contact(.elenaErickson),
                 ]
-            )
+            ),
         ]
 
         let expectedItems: [GroupedContacts] = [
@@ -83,15 +83,15 @@ final class ContactsFilterStrategyTests: XCTestCase {
                     .contact(.alexAbrams),
                     .group(.advisorsGroup),
                     .contact(.andrewAllen),
-                    .contact(.amandaArcher)
+                    .contact(.amandaArcher),
                 ]
             ),
             .init(
                 groupedBy: "E",
                 items: [
-                    .contact(.evanAndrage),
+                    .contact(.evanAndrage)
                 ]
-            )
+            ),
         ]
 
         XCTAssertEqual(ContactsFilterStrategy.filter(searchPhrase: "And", items: groupedItems), expectedItems)
@@ -102,7 +102,7 @@ final class ContactsFilterStrategyTests: XCTestCase {
             .init(
                 groupedBy: "#",
                 items: [
-                    .contact(.vip),
+                    .contact(.vip)
                 ]
             ),
             .init(
@@ -112,16 +112,16 @@ final class ContactsFilterStrategyTests: XCTestCase {
                     .contact(.aliceAdams),
                     .group(.advisorsGroup),
                     .contact(.andrewAllen),
-                    .contact(.amandaArcher)
+                    .contact(.amandaArcher),
                 ]
             ),
             .init(
                 groupedBy: "E",
                 items: [
                     .contact(.evanAndrage),
-                    .contact(.elenaErickson)
+                    .contact(.elenaErickson),
                 ]
-            )
+            ),
         ]
 
         let expectedItems: [GroupedContacts] = [
@@ -129,15 +129,15 @@ final class ContactsFilterStrategyTests: XCTestCase {
                 groupedBy: "A",
                 items: [
                     .contact(.alexAbrams),
-                    .contact(.andrewAllen)
+                    .contact(.andrewAllen),
                 ]
             ),
             .init(
                 groupedBy: "E",
                 items: [
-                    .contact(.evanAndrage),
+                    .contact(.evanAndrage)
                 ]
-            )
+            ),
         ]
 
         XCTAssertEqual(ContactsFilterStrategy.filter(searchPhrase: "Andr", items: groupedItems), expectedItems)

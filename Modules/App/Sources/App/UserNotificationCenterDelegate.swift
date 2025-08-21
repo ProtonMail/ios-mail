@@ -18,6 +18,7 @@
 import Combine
 import InboxCore
 import proton_app_uniffi
+import UIKit
 import UserNotifications
 
 enum RemoteNotificationType {
@@ -31,18 +32,15 @@ final class UserNotificationCenterDelegate: NSObject, UNUserNotificationCenterDe
     private let urlOpener: URLOpener
     private let userNotificationCenter: UserNotificationCenter
     private let getMailSession: @Sendable () -> MailSessionProtocol
-    private let updateBadgeCount: () async -> Void
 
     init(
         sessionStatePublisher: AnyPublisher<SessionState, Never>,
         urlOpener: URLOpener,
         userNotificationCenter: UserNotificationCenter = UNUserNotificationCenter.current(),
-        getMailSession: @escaping @Sendable () -> MailSessionProtocol = { AppContext.shared.mailSession },
-        updateBadgeCount: @escaping () async -> Void
+        getMailSession: @escaping @Sendable () -> MailSessionProtocol = { AppContext.shared.mailSession }
     ) {
         self.getMailSession = getMailSession
         self.sessionStatePublisher = sessionStatePublisher
-        self.updateBadgeCount = updateBadgeCount
         self.urlOpener = urlOpener
         self.userNotificationCenter = userNotificationCenter
     }
@@ -126,7 +124,7 @@ final class UserNotificationCenterDelegate: NSObject, UNUserNotificationCenterDe
 
             if let action = NotificationQuickAction(rawValue: actionIdentifier) {
                 try await execute(action: action, onMessageWith: remoteId, in: storedSession)
-                await updateBadgeCount()
+                try await decrementBadgeNumber()
             } else {
                 try await navigateToMessage(remoteId: remoteId, session: storedSession, subject: subject)
             }
@@ -178,5 +176,10 @@ final class UserNotificationCenterDelegate: NSObject, UNUserNotificationCenterDe
     private func makeDeepLink(basedOn remoteId: RemoteId, subject: String) -> URL? {
         let route = Route.mailboxOpenMessage(seed: .init(remoteId: remoteId, subject: subject))
         return DeepLinkRouteCoder.encode(route: route)
+    }
+
+    private func decrementBadgeNumber() async throws {
+        let newValue = max(UIApplication.shared.applicationIconBadgeNumber - 1, 0)
+        try await UNUserNotificationCenter.current().setBadgeCount(newValue)
     }
 }

@@ -571,6 +571,9 @@
         }
       }
     },
+    "Continue" : {
+
+    },
     "Copied %@ to clipboard" : {
       "comment" : "Message shown to the user confirming that the specified item (name) was successfully copied to the clipboard.",
       "localizations" : {
@@ -674,6 +677,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@이(가) 클립보드에 복사됨."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopierte %@ til utklippstavlen"
           }
         },
         "nl" : {
@@ -3152,7 +3161,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Faça upgrade para obter flexibilidade total"
+            "value" : "Faça upgrade para ter flexibilidade total"
           }
         },
         "ro" : {

@@ -21,13 +21,25 @@ import proton_app_uniffi
 enum DeepLinkRouteCoder {
     private static let deepLinkScheme = Bundle.URLScheme.protonmail
 
-    static func encode(route: Route) -> URL? {
+    static func encode(route: Route) -> URL {
         var components = URLComponents()
         components.scheme = deepLinkScheme.rawValue
 
         switch route {
-        case .composerFromShareExtension, .mailbox:
-            return nil  // no need to support this now
+        case .composer(fromShareExtension: false):
+            components.host = "composer"
+        case .composer(fromShareExtension: true):
+            components.host = "composerFromShareExtension"
+        case .mailbox(.systemFolder(let localID, let remoteID)):
+            components.host = "mailbox"
+            components.path = "/system"
+
+            components.queryItems = [
+                .init(name: "localID", value: "\(localID.value)"),
+                .init(name: "remoteID", value: "\(remoteID.rawValue)"),
+            ]
+        case .mailbox:
+            fatalError("Encoding arbitrary mailbox is not supported.")
         case .mailboxOpenMessage(let seed):
             components.host = "messages"
 
@@ -36,9 +48,11 @@ enum DeepLinkRouteCoder {
             components.queryItems = [
                 .init(name: "subject", value: seed.subject)
             ]
+        case .search:
+            components.host = "search"
         }
 
-        return components.url
+        return components.url!
     }
 
     static func decode(deepLink: URL) -> Route? {
@@ -50,22 +64,48 @@ enum DeepLinkRouteCoder {
 
         switch components.host {
         case "composer":
-            return .composerFromShareExtension
+            return .composer(fromShareExtension: false)
+        case "composerFromShareExtension":
+            return .composer(fromShareExtension: true)
+        case "mailbox":
+            guard
+                components.path == "/system",
+                let rawLocalID: UInt64 = components.queryItem(named: "localID"),
+                let rawRemoteID: UInt8 = components.queryItem(named: "remoteID"),
+                let systemFolder = SystemLabel(rawValue: rawRemoteID)
+            else {
+                return nil
+            }
+
+            let localID = ID(value: rawLocalID)
+            return .mailbox(selectedMailbox: .systemFolder(labelId: localID, systemFolder: systemFolder))
         case "messages":
             let pathRegex = /\/([:ascii:]+)/
 
             guard
                 let match = try? pathRegex.wholeMatch(in: components.path),
-                let subject = components.queryItems?.first(where: { $0.name == "subject" })?.value
+                let subject: String = components.queryItem(named: "subject")
             else {
                 return nil
             }
 
             let remoteId = RemoteId(value: .init(match.output.1))
             return .mailboxOpenMessage(seed: .init(remoteId: remoteId, subject: subject))
+        case "search":
+            return .search
         default:
             return nil
         }
 
+    }
+}
+
+private extension URLComponents {
+    func queryItem<ValueType: LosslessStringConvertible>(named name: String) -> ValueType? {
+        guard let rawValue = queryItems?.first(where: { $0.name == name })?.value else {
+            return nil
+        }
+
+        return ValueType(rawValue)
     }
 }

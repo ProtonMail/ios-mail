@@ -24,6 +24,7 @@ import UIKit
 @testable import ProtonMail
 
 @MainActor
+@Suite(.serialized)
 final class UserNotificationCenterDelegateTests {
     private let mailSession: MailSessionSpy
     private let sessionStateSubject = CurrentValueSubject<SessionState, Never>(.noSession)
@@ -35,13 +36,10 @@ final class UserNotificationCenterDelegateTests {
         sessionStatePublisher: sessionStateSubject.eraseToAnyPublisher(),
         urlOpener: urlOpener,
         userNotificationCenter: userNotificationCenter,
-        getMailSession: { [unowned self] in mailSession },
-        updateBadgeCount: { [unowned self] in updateBadgeCountCalls += 1 }
+        getMailSession: { [unowned self] in mailSession }
     )
 
     private let testURL = URL(string: "https://example.com")!
-
-    private var updateBadgeCountCalls = 0
 
     init() {
         let mailSession = MailSessionSpy()
@@ -133,7 +131,9 @@ final class UserNotificationCenterDelegateTests {
     }
 
     @Test
-    func givenMessageTypeNotification_whenUserSelectsAnAction_updatesBadgeCount() async throws {
+    func givenMessageTypeNotification_whenUserSelectsAnAction_decrementsBadgeCount() async throws {
+        try await UNUserNotificationCenter.current().setBadgeCount(5)
+
         let remoteId = RemoteId(value: "foo")
 
         let response = makeNotificationResponse(
@@ -144,7 +144,7 @@ final class UserNotificationCenterDelegateTests {
 
         await sut.userNotificationCenter(.current(), didReceive: response)
 
-        #expect(updateBadgeCountCalls == 1)
+        #expect(UIApplication.shared.applicationIconBadgeNumber == 4)
     }
 
     @Test

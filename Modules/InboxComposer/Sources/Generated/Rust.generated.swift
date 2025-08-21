@@ -114,7 +114,7 @@ public extension PasswordFlowChangePassResult {
         }
     }
 }
-public extension PasswordFlowGetFidoDetailsResult {
+public extension PasswordFlowFidoDetailsResult {
     func get() throws(PasswordError) -> Fido2ResponseFfi? {
         switch self {
         case .ok(let value):

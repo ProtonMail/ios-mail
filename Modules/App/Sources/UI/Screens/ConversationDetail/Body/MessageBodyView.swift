@@ -87,6 +87,8 @@ struct MessageBodyView: View {
                                 store.handle(action: .unblockSender(emailAddress: emailAddress))
                             case .unsnoozeTapped:
                                 unsnoozeConversation()
+                            case .unsubscribeNewsletterTapped:
+                                store.handle(action: .unsubscribeNewsletter)
                             }
                         }
                     )

@@ -22,6 +22,7 @@ public enum CommonL10n {
     public static let cancel = LocalizedStringResource("Cancel", bundle: .module)
     public static let close = LocalizedStringResource("Close", bundle: .module)
     public static let confirm = LocalizedStringResource("Confirm", bundle: .module)
+    public static let `continue` = LocalizedStringResource("Continue", bundle: .module)
     public static let date = LocalizedStringResource("Date", bundle: .module)
     public static let `default` = LocalizedStringResource("Default", bundle: .module)
     public static let delete = LocalizedStringResource("Delete", bundle: .module)

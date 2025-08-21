@@ -294,6 +294,16 @@ public extension MessagesForLabelResult {
         }
     }
 }
+public extension MobileActionsResult {
+    func get() throws(ActionError) -> [MobileAction] {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension MoveConversationsResult {
     func get() throws(ActionError) -> Undo? {
         switch self {
@@ -334,7 +344,7 @@ public extension PasswordFlowChangePassResult {
         }
     }
 }
-public extension PasswordFlowGetFidoDetailsResult {
+public extension PasswordFlowFidoDetailsResult {
     func get() throws(PasswordError) -> Fido2ResponseFfi? {
         switch self {
         case .ok(let value):

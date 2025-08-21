@@ -18,6 +18,7 @@
 import Foundation
 import InboxCore
 
+@Observable
 public class EnvironmentURLOpenerSpy: URLOpenerProtocol {
     public init() {}
 

@@ -732,7 +732,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Confirme que é você para continuar."
+            "value" : "Confirme sua identidade para continuar."
           }
         },
         "ro" : {
@@ -1472,7 +1472,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PIN e Biometria estão desativados no seu dispositivo. Ative-os nas Configurações ou inicie sessão para desbloquear este aplicativo."
+            "value" : "O PIN e a biometria estão desativados no seu dispositivo. Ative-os nas Configurações ou inicie a sessão para desbloquear este aplicativo."
           }
         },
         "ro" : {
@@ -1657,7 +1657,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PIN e Face ID estão desativados no seu dispositivo. Ative-os nas configurações ou inicie sessão para desbloquear este aplicativo."
+            "value" : "O PIN e o Face ID estão desativados no seu dispositivo. Ative-os nas Configurações ou inicie a sessão para desbloquear este aplicativo."
           }
         },
         "ro" : {
@@ -1842,7 +1842,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PIN e Touch ID estão desabilitados no seu dispositivo. Ative-os em Configurações ou inicie sessão para desbloquear este aplicativo."
+            "value" : "O PIN e o Touch ID estão desabilitados no seu dispositivo. Ative-os em Configurações ou inicie a sessão para desbloquear este aplicativo."
           }
         },
         "ro" : {
@@ -2218,7 +2218,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Autentique-se para desbloquear a tela."
+            "value" : "Faça a autenticação para desbloquear a tela."
           }
         },
         "ro" : {

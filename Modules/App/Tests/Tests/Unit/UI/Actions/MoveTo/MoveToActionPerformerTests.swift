@@ -64,6 +64,6 @@ final class MoveToActionPerformerTests: BaseTestCase {
     }
 
     private func moveToAction() async throws {
-        try await sut.moveTo(destinationID: .init(value: 0), itemsIDs: [], itemType: .message)
+        _ = try await sut.moveTo(destinationID: .init(value: 0), itemsIDs: [], itemType: .message)
     }
 }

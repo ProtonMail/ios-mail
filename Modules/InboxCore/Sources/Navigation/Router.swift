@@ -29,7 +29,7 @@ public final class Router<Route: Routable>: ObservableObject {
     }
 
     public func goBack() {
-        stack.popLast()
+        _ = stack.popLast()
     }
 
     public func goBack(while shouldGoBack: (Route) throws -> Bool) rethrows {

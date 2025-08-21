@@ -18,7 +18,7 @@
 import Foundation
 
 public extension Bundle {
-    enum URLScheme: String {
+    enum URLScheme: String, Sendable {
         case protonmail = "protonmail"
     }
 }

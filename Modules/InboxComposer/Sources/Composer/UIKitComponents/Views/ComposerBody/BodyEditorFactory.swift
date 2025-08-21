@@ -18,12 +18,12 @@
 import InboxCore
 
 struct BodyEditorFactory {
-    let embeddedImageProvider: EmbeddedImageProvider
+    let imageProxy: ImageProxy
 
     func makeEditor(for composerMode: ComposerMode) -> BodyEditor {
         switch composerMode {
         case .html:
-            HtmlBodyEditorController(embeddedImageProvider: embeddedImageProvider)
+            HtmlBodyEditorController(imageProxy: imageProxy)
         case .plainText:
             PlainTextBodyEditorController()
         }

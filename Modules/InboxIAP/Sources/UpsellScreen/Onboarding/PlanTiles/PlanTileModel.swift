@@ -58,8 +58,12 @@ final class PlanTileModel: Identifiable {
         planTileData.entitlements.count > visibleEntitlementsWhenCollapsed
     }
 
+    var getPlanButtonTitle: LocalizedStringResource {
+        isFree ? L10n.continueWithFreePlan : L10n.getPlan(named: planTileData.planName)
+    }
+
     var getPlanButtonFlavor: BigButtonStyle.Flavor {
-        planTileData.storeKitProductID == nil ? .weak : .regular
+        isFree ? .weak : .regular
     }
 
     var billingNotice: LocalizedStringResource? {
@@ -84,6 +88,10 @@ final class PlanTileModel: Identifiable {
         formatter.unitsStyle = .full
         return formatter
     }()
+
+    private var isFree: Bool {
+        planTileData.storeKitProductID == nil
+    }
 
     init(planTileData: PlanTileData) {
         self.planTileData = planTileData

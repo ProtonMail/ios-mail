@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Proton Technologies AG
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -15,20 +15,26 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-@testable import InboxCore
 import proton_app_uniffi
 
-class EmbeddedImageProviderSpy: @unchecked Sendable, EmbeddedImageProvider {
+final class CustomSettingsPreviewProvider: CustomSettingsProtocol {
+    private(set) var state: MobileSignature
 
-    var stubbedResult: AttachmentDataResult!
-    private(set) var invokedEmbeddedImageWithCID: [String] = []
-
-    // MARK: - EmbeddedImageProvider
-
-    func getEmbeddedAttachment(cid: String) -> AttachmentDataResult {
-        invokedEmbeddedImageWithCID.append(cid)
-
-        return stubbedResult
+    init(status: MobileSignatureStatus) {
+        state = .init(body: "Sent from Proton Mail for iOS", status: status)
     }
 
+    func mobileSignature() async -> CustomSettingsMobileSignatureResult {
+        .ok(state)
+    }
+
+    func setMobileSignature(signature: String) async -> CustomSettingsSetMobileSignatureResult {
+        state.body = signature
+        return .ok
+    }
+
+    func setMobileSignatureEnabled(enabled: Bool) async -> CustomSettingsSetMobileSignatureEnabledResult {
+        state.status.isEnabled = enabled
+        return .ok
+    }
 }

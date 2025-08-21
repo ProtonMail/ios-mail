@@ -86,21 +86,18 @@ final class SidebarModel: Sendable, ObservableObject {
     private func initLiveQuery() {
         foldersChangesObservation = .init(
             sidebar: sidebar,
-            labelType: .folder,
             updatedData: { [sidebar] in await sidebar.customFolders() }
         ) { [weak self] newFolders in
             self?.updateFolders(with: newFolders)
         }
         labelsChangesObservation = .init(
             sidebar: sidebar,
-            labelType: .label,
             updatedData: { [sidebar] in await sidebar.customLabels() }
         ) { [weak self] newLabels in
             self?.updateLabels(with: newLabels)
         }
         systemLabelsChangesObservation = .init(
             sidebar: sidebar,
-            labelType: .system,
             updatedData: { [sidebar] in await sidebar.systemLabels() }
         ) { [weak self] newSystemLabels in
             self?.updateSystemFolders(with: newSystemLabels)
@@ -128,7 +125,7 @@ final class SidebarModel: Sendable, ObservableObject {
     private func updateLabels(with newLabels: [PMCustomLabel]) {
         state = state.copy(
             \.labels,
-             to: updated(
+            to: updated(
                 newItems: newLabels,
                 stateKeyPath: \.labels,
                 transformation: { label in label.sidebarLabel }
@@ -139,7 +136,7 @@ final class SidebarModel: Sendable, ObservableObject {
     private func updateSystemFolders(with newSystemLabels: [PMSystemLabel]) {
         state = state.copy(
             \.system,
-             to: updated(
+            to: updated(
                 newItems: newSystemLabels,
                 stateKeyPath: \.system,
                 transformation: \.sidebarSystemFolder
@@ -230,7 +227,6 @@ final class SidebarModel: Sendable, ObservableObject {
 private final class SidebarModelsObservation<Model: Sendable>: Sendable {
 
     private let sidebar: SidebarProtocol
-    private let labelType: LabelType
     private let updatedData: @Sendable () async -> Result<[Model], ActionError>
     private let dataUpdate: @MainActor ([Model]) -> Void
 
@@ -238,12 +234,10 @@ private final class SidebarModelsObservation<Model: Sendable>: Sendable {
 
     init(
         sidebar: SidebarProtocol,
-        labelType: LabelType,
         updatedData: @escaping @Sendable () async -> Result<[Model], ActionError>,
         dataUpdate: @escaping @MainActor ([Model]) -> Void
     ) {
         self.sidebar = sidebar
-        self.labelType = labelType
         self.updatedData = updatedData
         self.dataUpdate = dataUpdate
         initLiveQuery()
@@ -263,7 +257,7 @@ private final class SidebarModelsObservation<Model: Sendable>: Sendable {
         }
 
         Task {
-            switch await sidebar.watchLabels(labelType: labelType, callback: updateCallback) {
+            switch await sidebar.watchLabels(callback: updateCallback) {
             case .ok(let watchHandle):
                 self.watchHandle = watchHandle
                 await emitUpdatedModelsIfAvailable()

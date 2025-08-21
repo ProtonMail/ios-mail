@@ -80,7 +80,6 @@ struct AppProtectionSelectionScreen: View {
                             ) {
                                 store.handle(action: .autoLockTapped)
                             }
-                            .roundedRectangleStyle()
                         }.animation(.easeInOut, value: state.shouldShowAutoLockButton)
                     }
                     Spacer()

@@ -17,7 +17,7 @@
 
 import InboxDesignSystem
 import SwiftUI
-import UIFoundations
+import ProtonUIFoundations
 
 enum AccountSettings: CaseIterable, Hashable {
     case qrLogin

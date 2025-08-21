@@ -187,25 +187,27 @@ private extension SelectionModeState {
 
     @MainActor
     final class Model: ObservableObject {
+        var currentPage = 0
         let pageSize = 20
         let subject: PassthroughSubject<PaginatedListUpdate<MailboxItemCellUIModel>, Never> = .init()
 
         lazy var dataSource = PaginatedListDataSource<MailboxItemCellUIModel>(
             paginatedListProvider: .init(
                 updatePublisher: subject.eraseToAnyPublisher(),
-                fetchMore: { [weak self] currentPage in
-                    Task { await self?.nextPage(page: currentPage) }
+                fetchMore: { [weak self] isFirstPage in
+                    Task { await self?.nextPage(isFirstPage: isFirstPage) }
                 }
             )
         )
 
-        private func nextPage(page: Int) async {
+        private func nextPage(isFirstPage: Bool) async {
             try? await Task.sleep(for: .seconds(2))
             let items = MailboxItemCellUIModel.testData()
-            let isLastPage = (page + 1) * pageSize > items.count
-            let range = page * pageSize..<min(items.count, (page + 1) * pageSize)
+            let isLastPage = (currentPage + 1) * pageSize > items.count
+            let range = currentPage * pageSize..<min(items.count, (currentPage + 1) * pageSize)
             let itemsToAppend = Array(items[range])
             subject.send(.init(isLastPage: isLastPage, value: .append(items: itemsToAppend)))
+            currentPage += 1
         }
     }
 

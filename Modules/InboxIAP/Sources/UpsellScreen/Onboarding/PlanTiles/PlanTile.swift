@@ -20,7 +20,7 @@ import InboxCoreUI
 import InboxDesignSystem
 import PaymentsNG
 import SwiftUI
-import UIFoundations
+import ProtonUIFoundations
 
 struct PlanTile: View {
     let model: PlanTileModel
@@ -154,7 +154,7 @@ struct PlanTile: View {
 
     private var getPlanButton: some View {
         ZStack {
-            Button(L10n.getPlan(named: model.planName).string) {
+            Button(model.getPlanButtonTitle.string) {
                 Task {
                     await model.performWhileDisabled {
                         await onGetPlanTapped(model.storeKitProductID)

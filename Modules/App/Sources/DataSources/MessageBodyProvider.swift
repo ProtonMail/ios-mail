@@ -22,10 +22,11 @@ struct MessageBody: Sendable {
     struct HTML: Sendable {
         let rawBody: String
         let options: TransformOpts
-        let embeddedImageProvider: EmbeddedImageProvider
+        let imageProxy: ImageProxy
     }
 
     let rsvpServiceProvider: RsvpEventServiceProvider?
+    let newsletterService: UnsubscribeNewsletter
     let banners: [MessageBanner]
     let html: HTML
 }
@@ -51,10 +52,11 @@ struct MessageBodyProvider {
             let html = MessageBody.HTML(
                 rawBody: decryptedBody.body,
                 options: decryptedBody.transformOpts,
-                embeddedImageProvider: decryptedMessage
+                imageProxy: decryptedMessage
             )
             let body = MessageBody(
                 rsvpServiceProvider: rsvpServiceProvider,
+                newsletterService: decryptedMessage,
                 banners: decryptedBody.bodyBanners,
                 html: html
             )

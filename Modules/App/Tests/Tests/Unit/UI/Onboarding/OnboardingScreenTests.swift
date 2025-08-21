@@ -30,11 +30,6 @@ class OnboardingScreenTests: BaseTestCase {
         try await super.setUp()
         dismissSpy = .init()
         sut = OnboardingScreen()
-
-        // the tests are disabled until we can determine why they're randomly failing after upgrading to Xcode 16
-        // we have already taken the AnyView wrapping into account, and apparently that's not it
-        // perhaps the library will be fixed by its maintainers, or eventually we might decide to remove these tests
-        try XCTSkipIf(true)
     }
 
     override func tearDown() async throws {

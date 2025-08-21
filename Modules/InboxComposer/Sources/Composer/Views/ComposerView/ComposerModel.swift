@@ -76,7 +76,7 @@ final class ComposerModel: ObservableObject {
     private var messageHasBeenSentOrScheduled: Bool = false
     private var composerWillDismiss: Bool = false
 
-    var embeddedImageProvider: EmbeddedImageProvider {
+    var imageProxy: ImageProxy {
         draft
     }
 
@@ -721,4 +721,4 @@ extension ComposerModel {
     }
 }
 
-extension Draft: @retroactive EmbeddedImageProvider {}
+extension Draft: @retroactive ImageProxy {}

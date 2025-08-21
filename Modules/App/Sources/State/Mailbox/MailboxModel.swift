@@ -48,7 +48,7 @@ final class MailboxModel: ObservableObject {
     lazy var paginatedDataSource = PaginatedListDataSource<MailboxItemCellUIModel>(
         paginatedListProvider: .init(
             updatePublisher: listUpdateSubject.eraseToAnyPublisher(),
-            fetchMore: { [weak self] currentPage in self?.fetchNextPage(currentPage: currentPage) }
+            fetchMore: { [weak self] isFirstPage in self?.fetchNextPage(isFirstPage: isFirstPage) }
         ),
         id: \.id
     )
@@ -96,7 +96,7 @@ final class MailboxModel: ObservableObject {
         self.mailSettingsLiveQuery = mailSettingsLiveQuery
         self.appRoute = appRoute
         self.draftPresenter = draftPresenter
-        self.selectedMailbox = appRoute.route.selectedMailbox
+        self.selectedMailbox = appRoute.route.selectedMailbox!
         self.dependencies = dependencies
         self.accountManagerCoordinator = AccountManagerCoordinator(
             appContext: dependencies.appContext.mailSession,
@@ -123,37 +123,36 @@ final class MailboxModel: ObservableObject {
 extension MailboxModel {
 
     private func setUpBindings() {
-        appRoute
-            .onSelectedMailboxChange
-            .sink { [weak self] newSelectedMailbox in
+        appRoute.$route.sink { [weak self] route in
+            guard let self else { return }
+
+            switch route {
+            case .mailbox(selectedMailbox: let newSelectedMailbox):
+                guard newSelectedMailbox != selectedMailbox else {
+                    return
+                }
+
                 Task {
-                    guard let self else { return }
                     self.selectedMailbox = newSelectedMailbox
                     await self.updateMailboxAndScroller()
                     await self.prepareSwipeActions()
                 }
-            }
-            .store(in: &cancellables)
-
-        appRoute
-            .openedMailboxItem
-            .sink { [weak self] openedItem in
-                guard let self else { return }
-
+            case .mailboxOpenMessage(seed: let openedItem):
                 state.isSearchPresented = false
                 replaceCurrentNavigationPath(with: openedItem)
-            }
-            .store(in: &cancellables)
-
-        appRoute
-            .openedDraftForShareExtension
-            .sink { [weak self] in
-                guard let self else { return }
-
+            case .composer(let fromShareExtension):
                 state.isSearchPresented = false
-                openDraftForShareExtension()
+
+                if fromShareExtension {
+                    openDraftForShareExtension()
+                } else {
+                    createDraft()
+                }
+            case .search:
+                state.isSearchPresented = true
             }
-            .store(in: &cancellables)
+        }
+        .store(in: &cancellables)
 
         Publishers.Merge(
             mailSettingsLiveQuery.settingHasChanged(keyPath: \.swipeLeft),
@@ -227,7 +226,7 @@ extension MailboxModel {
 
     private func exitSelectAllModeWhenNewItemsAreFetched() {
         paginatedDataSource.$state
-            .map(\.currentPage)
+            .map { Set($0.items.map(\.id)) }
             .removeDuplicates()
             .sink { [weak self] _ in
                 self?.selectionMode.selectionModifier.exitSelectAllMode()
@@ -414,8 +413,8 @@ extension MailboxModel {
         }
     }
 
-    private func fetchNextPage(currentPage: Int) {
-        AppLogger.log(message: "\(viewMode) fetchNextPage: page \(currentPage)", category: .mailbox)
+    private func fetchNextPage(isFirstPage: Bool) {
+        AppLogger.log(message: "\(viewMode) fetchMore: isFirstPage \(isFirstPage)", category: .mailbox)
         let logError: (MailScrollerError) -> Void = { error in
             AppLogger.log(message: "Error calling fetchMore: \(error)", category: .mailbox, isError: true)
         }
@@ -487,10 +486,10 @@ extension MailboxModel {
 
 extension MailboxModel {
 
-    func createDraft(toastStateStore: ToastStateStore) {
+    func createDraft() {
         Task {
             await draftPresenter.openNewDraft(onError: {
-                toastStateStore.present(toast: .error(message: $0.localizedDescription))
+                toast = .error(message: $0.localizedDescription)
             })
         }
     }

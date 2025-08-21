@@ -36,7 +36,7 @@ struct PhotosPickerItemHandler {
             switch result {
             case .success(let file):
                 do {
-                    if file.isImageType {
+                    if file.isImageType && draft.composerMode == .html {
                         let cid = try await addFileToDraftAsInlineAttachment(draft: draft, file: file)
                         successfulContentIds.append(cid)
                     } else {

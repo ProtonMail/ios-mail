@@ -81,7 +81,7 @@ struct ComposerView: View {
             ComposerControllerRepresentable(
                 state: model.state,
                 bodyAction: $model.bodyAction,
-                embeddedImageProvider: model.embeddedImageProvider,
+                imageProxy: model.imageProxy,
                 invalidAddressAlertStore: model.invalidAddressAlertStore
             ) { event in
                 switch event {

@@ -17,7 +17,7 @@
 
 import AccountChallenge
 import AccountLogin
-import Combine
+@preconcurrency import Combine
 import Foundation
 import InboxCore
 import InboxKeychain
@@ -150,6 +150,8 @@ extension AppContext {
     @MainActor
     private func setupActiveUserSession(session: StoredSession) {
         Task {
+            await waitUntilTheAppIsInForeground()
+
             do {
                 if let existingSession = try await mailSession.initializedUserSessionFromStoredSession(session: session).get() {
                     animateTransition(into: .activeSession(session: existingSession))
@@ -198,6 +200,24 @@ extension AppContext {
     @MainActor
     private func animateTransition(into newSessionState: SessionState) {
         withAnimation(.easeInOut) { sessionState = newSessionState }
+    }
+
+    @MainActor
+    private func waitUntilTheAppIsInForeground() async {
+        // It's possible for `applicationState` to equal `.inactive` during the startup sequence, so it's also accepted as "in foreground".
+        // We only need to worry about the 3rd case - `.background` - which occurs when a `NotificationQuickAction` is executed.
+        guard UIApplication.shared.applicationState == .background else {
+            return
+        }
+
+        var publisher = NotificationCenter
+            .default
+            .publisher(for: UIApplication.willEnterForegroundNotification)
+            .values
+            .map { _ in }
+            .makeAsyncIterator()
+
+        _ = await publisher.next()
     }
 }
 

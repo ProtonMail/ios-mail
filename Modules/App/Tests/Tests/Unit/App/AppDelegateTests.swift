@@ -16,12 +16,13 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import ProtonMail
-import InboxTesting
-import Nimble
-import XCTest
+import Testing
+import UIKit
 
-final class AppDelegateTests: BaseTestCase {
+@MainActor
+final class AppDelegateTests {
 
+    @Test
     func testSceneConfiguration_WhenConnectingSceneSession_HasCustomSceneDelegateConfigured() throws {
         let sceneConfiguration = AppDelegate().application(
             .shared,
@@ -29,7 +30,7 @@ final class AppDelegateTests: BaseTestCase {
             options: try connectionOptions()
         )
 
-        expect(sceneConfiguration.delegateClass) === SceneDelegate.self
+        #expect(sceneConfiguration.delegateClass === SceneDelegate.self)
     }
 
     // MARK: - Private
