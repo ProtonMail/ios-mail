@@ -40,7 +40,7 @@ extension AlertModel {
         )
     }
 
-    static func phishingConfirmation(action: @escaping (PhishingConfirmationAlertAction) -> Void) -> Self {
+    static func phishingConfirmation(action: @escaping (PhishingConfirmationAlertAction) async -> Void) -> Self {
         .init(
             title: L10n.Action.ReportPhishing.Alert.title,
             message: L10n.Action.ReportPhishing.Alert.message,
