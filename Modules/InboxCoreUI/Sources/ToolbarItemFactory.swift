@@ -23,12 +23,29 @@ public enum ToolbarItemFactory {
         leading(Image(symbol: .chevronLeft), action: action)
     }
 
+    public static func leading(_ image: Image, action: @escaping () -> Void) -> some ToolbarContent {
+        button(.topBarLeading, image, DS.Color.Icon.weak, action: action)
+    }
+
     public static func trailing(_ image: Image, action: @escaping () -> Void) -> some ToolbarContent {
         button(.topBarTrailing, image, DS.Color.Icon.accent, action: action)
     }
 
-    public static func leading(_ image: Image, action: @escaping () -> Void) -> some ToolbarContent {
-        button(.topBarLeading, image, DS.Color.Icon.weak, action: action)
+    public static func trailing(_ title: String, action: @escaping () -> Void) -> some ToolbarContent {
+        button(.topBarTrailing, title, action: action)
+    }
+
+    // MARK: - Private
+
+    private static func button(
+        _ placement: ToolbarItemPlacement,
+        _ title: String,
+        action: @escaping () -> Void
+    ) -> some ToolbarContent {
+        ToolbarItem(placement: placement) {
+            Button(title, action: action)
+                .buttonStyle(ToolbarButtonStyle())
+        }
     }
 
     private static func button(
@@ -43,5 +60,19 @@ public enum ToolbarItemFactory {
                     .foregroundStyle(iconColor)
             }
         }
+    }
+}
+
+private struct ToolbarButtonStyle: ButtonStyle {
+    public init() {}
+
+    // MARK: - ButtonStyle
+
+    public func makeBody(configuration: Configuration) -> some View {
+        configuration
+            .label
+            .foregroundStyle(
+                configuration.isPressed ? DS.Color.InteractionBrand.pressed : DS.Color.InteractionBrand.norm
+            )
     }
 }

@@ -29,11 +29,12 @@ final class ContactDetailsStateStore: StateStore {
         case callTapped
         case shareTapped
         case phoneNumberTapped(String)
+        case editTapped
         case emailTapped(ContactDetailsEmail)
         case openURL(urlString: String)
     }
 
-    @Published var state: ContactDetails
+    @Published var state: ContactDetailsState
     private let item: ContactDetailsContext
     private let provider: ContactDetailsProvider
     private let urlOpener: URLOpenerProtocol
@@ -41,14 +42,14 @@ final class ContactDetailsStateStore: StateStore {
     private let toastStateStore: ToastStateStore
 
     init(
-        state: ContactDetails,
+        details: ContactDetails,
         item: ContactDetailsContext,
         provider: ContactDetailsProvider,
         urlOpener: URLOpenerProtocol,
         draftPresenter: ContactsDraftPresenter,
         toastStateStore: ToastStateStore
     ) {
-        self.state = state
+        self.state = .initial(details: details)
         self.item = item
         self.provider = provider
         self.urlOpener = urlOpener
@@ -67,11 +68,13 @@ final class ContactDetailsStateStore: StateStore {
                 await openComposer(with: primaryEmail)
             }
         case .callTapped:
-            if let phoneNumber = state.primaryPhone {
+            if let phoneNumber = state.details.primaryPhone {
                 call(phoneNumber: phoneNumber)
             }
         case .shareTapped:
             toastStateStore.present(toast: .comingSoon)
+        case .editTapped:
+            state = state.copy(\.displayEditPromptSheet, to: true)
         case .emailTapped(let email):
             await openComposer(with: email)
         case .phoneNumberTapped(let phoneNumber):
@@ -86,7 +89,8 @@ final class ContactDetailsStateStore: StateStore {
     // MARK: - Private
 
     private func loadDetails(for contact: ContactDetailsContext) async {
-        state = await provider.contactDetails(for: contact)
+        let details = await provider.contactDetails(for: contact)
+        state = state.copy(\.details, to: details)
     }
 
     private func open(urlString: String) {
@@ -120,7 +124,7 @@ final class ContactDetailsStateStore: StateStore {
 
     private func openComposer(with contact: ContactDetailsEmail) async {
         do {
-            let recipient = SingleRecipientEntry(name: state.displayName, email: contact.email)
+            let recipient = SingleRecipientEntry(name: state.details.displayName, email: contact.email)
             try await draftPresenter.openDraft(with: recipient)
         } catch {
             toastStateStore.present(toast: .error(message: error.localizedDescription))
@@ -128,7 +132,7 @@ final class ContactDetailsStateStore: StateStore {
     }
 
     private var emails: [ContactDetailsEmail] {
-        state.items
+        state.details.items
             .compactMap { item in
                 switch item {
                 case .emails(let emails):

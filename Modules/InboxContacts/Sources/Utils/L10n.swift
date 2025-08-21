@@ -122,6 +122,24 @@ enum L10n {
             comment: "Contact details’ “Share” button title for sharing the given contact’s information."
         )
 
+        enum EditInWebPrompt {
+            static let title = LocalizedStringResource(
+                "Available in web",
+                bundle: .atURL(Bundle.module.bundleURL),
+                comment: "Title of the prompt indicating this action is only available in the web app."
+            )
+            static let subtitle = LocalizedStringResource(
+                "Editing contacts or groups in the app is not yet ready. For now, you can edit them in the web app and changes will sync to your device.",
+                bundle: .atURL(Bundle.module.bundleURL),
+                comment: "Subtitle explaining that editing contacts or groups isn't supported in the app yet, and must be done on the web; changes will sync to the device."
+            )
+            static let actionButtonTitle = LocalizedStringResource(
+                "Edit in web",
+                bundle: .atURL(Bundle.module.bundleURL),
+                comment: "Label for the button that opens the web app to edit a contact."
+            )
+        }
+
         enum Label {
             static let address = LocalizedStringResource(
                 "Address",

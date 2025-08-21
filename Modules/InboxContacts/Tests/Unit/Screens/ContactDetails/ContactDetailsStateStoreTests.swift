@@ -25,7 +25,7 @@ import Testing
 @MainActor
 final class ContactDetailsStateStoreTests {
     private var sut: ContactDetailsStateStore!
-    private var initialState: ContactDetails!
+    private var initialState: ContactDetailsState!
     private var contactItem: ContactsRoute.ContactContext!
     private var providerSpy: ContactDetailsProviderSpy!
     private var urlOpener: EnvironmentURLOpenerSpy!
@@ -34,14 +34,14 @@ final class ContactDetailsStateStoreTests {
 
     init() {
         contactItem = .init(ContactItem.elenaErickson)
-        initialState = .init(contact: contactItem, details: .none)
+        initialState = .init(details: .init(contact: contactItem, details: .none), displayEditPromptSheet: false)
         providerSpy = .init()
         urlOpener = .init()
         draftPresenterSpy = .init()
         toastStateStore = .init(initialState: .initial)
 
         sut = ContactDetailsStateStore(
-            state: initialState,
+            details: initialState.details,
             item: contactItem,
             provider: .init(contactDetails: { [unowned self] contact in
                 providerSpy.contactDetailsCalls.append(.init(contact))
@@ -69,7 +69,13 @@ final class ContactDetailsStateStoreTests {
 
         await sut.handle(action: .onLoad)
 
-        #expect(sut.state == .init(contact: contactItem, details: details))
+        #expect(
+            sut.state
+                == .init(
+                    details: .init(contact: contactItem, details: details),
+                    displayEditPromptSheet: false
+                )
+        )
     }
 
     @Test
@@ -213,6 +219,28 @@ final class ContactDetailsStateStoreTests {
         #expect(draftPresenterSpy.openDraftContactCalls.count == 1)
         #expect(draftPresenterSpy.openDraftContactCalls == [.init(name: contactItem.name, email: stubbedEmail.email)])
         #expect(toastStateStore.state.toasts == [.error(message: expectedError.localizedDescription)])
+    }
+
+    // MARK: - `editTapped` action
+
+    @Test
+    func testEditTappedAction_ItPresentsEditPromptSheet() async {
+        let details = ContactDetailCard.testData(contact: contactItem, fields: .testItems)
+
+        providerSpy.stubbedContactDetails[contactItem] = .init(
+            contact: contactItem,
+            details: details
+        )
+
+        await sut.handle(action: .onLoad)
+        await sut.handle(action: .editTapped)
+
+        #expect(
+            sut.state
+                == .init(
+                    details: .init(contact: contactItem, details: details),
+                    displayEditPromptSheet: true
+                ))
     }
 }
 

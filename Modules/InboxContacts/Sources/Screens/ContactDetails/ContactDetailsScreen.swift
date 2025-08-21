@@ -45,7 +45,7 @@ struct ContactDetailsScreen: View {
     var body: some View {
         StoreView(
             store: ContactDetailsStateStore(
-                state: initialState ?? .initial(with: contact),
+                details: initialState ?? .initial(with: contact),
                 item: contact,
                 provider: provider,
                 urlOpener: urlOpener,
@@ -63,6 +63,22 @@ struct ContactDetailsScreen: View {
                 .padding([.horizontal, .bottom], DS.Spacing.large)
             }
             .background(DS.Color.Background.secondary)
+            .toolbar {
+                ToolbarItemFactory.trailing("Edit") {
+                    store.handle(action: .editTapped)
+                }
+            }
+            .sheet(
+                isPresented: displayEditSheet(store: store, state: state),
+                content: {
+                    PromptSheet(
+                        model: .editInWeb(
+                            onAction: { /* FIXME: To implement */  },
+                            onDismiss: { /* FIXME: To implement */  }
+                        )
+                    )
+                }
+            )
             .onLoad { store.handle(action: .onLoad) }
         }
     }
@@ -70,16 +86,16 @@ struct ContactDetailsScreen: View {
     // MARK: - Private
 
     private func avatarView(state: ContactDetailsStateStore.State) -> some View {
-        ContactAvatarView(hexColor: state.avatarInformation.color) {
-            Text(state.avatarInformation.text)
+        ContactAvatarView(hexColor: state.details.avatarInformation.color) {
+            Text(state.details.avatarInformation.text)
                 .font(.title)
                 .fontWeight(.regular)
                 .foregroundStyle(DS.Color.Text.inverted)
         }
     }
 
-    private func contactDetails(state: ContactDetailsStateStore.State) -> some View {
-        ContactAvatarDetailsView(title: state.displayName, subtitle: state.primaryEmail)
+    private func contactDetails(state: ContactDetailsState) -> some View {
+        ContactAvatarDetailsView(title: state.details.displayName, subtitle: state.details.primaryEmail)
     }
 
     private func actionButtons(
@@ -90,13 +106,13 @@ struct ContactDetailsScreen: View {
             ContactDetailsActionButton(
                 image: DS.Icon.icPenSquare,
                 title: L10n.ContactDetails.newMessage,
-                disabled: state.primaryEmail == nil,
+                disabled: state.details.primaryEmail == nil,
                 action: { store.handle(action: .newMessageTapped) }
             )
             ContactDetailsActionButton(
                 image: DS.Icon.icPhone,
                 title: L10n.ContactDetails.call,
-                disabled: state.primaryPhone == nil,
+                disabled: state.details.primaryPhone == nil,
                 action: { store.handle(action: .callTapped) }
             )
             ContactDetailsActionButton(
@@ -108,8 +124,8 @@ struct ContactDetailsScreen: View {
         }
     }
 
-    private func fields(state: ContactDetailsStateStore.State, store: ContactDetailsStateStore) -> some View {
-        ForEach(state.items, id: \.self) { item in
+    private func fields(state: ContactDetailsState, store: ContactDetailsStateStore) -> some View {
+        ForEach(state.details.items, id: \.self) { item in
             field(for: item, store: store)
         }
     }
@@ -189,6 +205,13 @@ struct ContactDetailsScreen: View {
         button(item: item, action: {})
             .background(DS.Color.BackgroundInverted.secondary)
             .roundedRectangleStyle()
+    }
+
+    private func displayEditSheet(store: ContactDetailsStateStore, state: ContactDetailsState) -> Binding<Bool> {
+        .init(
+            get: { state.displayEditPromptSheet },
+            set: { newValue in store.state = store.state.copy(\.displayEditPromptSheet, to: newValue) }
+        )
     }
 }
 

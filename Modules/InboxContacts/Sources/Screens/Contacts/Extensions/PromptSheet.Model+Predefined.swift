@@ -17,14 +17,41 @@
 
 import InboxCoreUI
 import InboxDesignSystem
+import SwiftUI
 
 extension PromptSheet.Model {
     static func createInWeb(onAction: @escaping () -> Void, onDismiss: @escaping () -> Void) -> Self {
-        .init(
-            image: DS.Images.contactsWebSheet,
+        .webSheetStyle(
             title: L10n.Contacts.CreateInWebPrompt.title,
             subtitle: L10n.Contacts.CreateInWebPrompt.subtitle,
             actionButtonTitle: L10n.Contacts.CreateInWebPrompt.actionButtonTitle,
+            onAction: onAction,
+            onDismiss: onDismiss
+        )
+    }
+
+    static func editInWeb(onAction: @escaping () -> Void, onDismiss: @escaping () -> Void) -> Self {
+        .webSheetStyle(
+            title: L10n.ContactDetails.EditInWebPrompt.title,
+            subtitle: L10n.ContactDetails.EditInWebPrompt.subtitle,
+            actionButtonTitle: L10n.ContactDetails.EditInWebPrompt.actionButtonTitle,
+            onAction: onAction,
+            onDismiss: onDismiss
+        )
+    }
+
+    private static func webSheetStyle(
+        title: LocalizedStringResource,
+        subtitle: LocalizedStringResource,
+        actionButtonTitle: LocalizedStringResource,
+        onAction: @escaping () -> Void,
+        onDismiss: @escaping () -> Void
+    ) -> Self {
+        .init(
+            image: DS.Images.contactsWebSheet,
+            title: title,
+            subtitle: subtitle,
+            actionButtonTitle: actionButtonTitle,
             onAction: onAction,
             onDismiss: onDismiss
         )
