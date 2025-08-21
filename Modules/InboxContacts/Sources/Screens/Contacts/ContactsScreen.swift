@@ -29,6 +29,7 @@ public struct ContactsScreen: View {
 
     /// `state` parameter is exposed only for testing purposes to be able to rely on data source in synchronous manner.
     public init(
+        apiConfig: ApiConfig,
         state: ContactsScreenState = .initial,
         mailUserSession: MailUserSession,
         contactsProvider: GroupedContactsProvider,
@@ -38,6 +39,7 @@ public struct ContactsScreen: View {
         UISearchBar.appearance().tintColor = UIColor(DS.Color.Text.accent)
         _store = .init(
             wrappedValue: .init(
+                apiConfig: apiConfig,
                 state: state,
                 mailUserSession: mailUserSession,
                 contactsWrappers: .productionInstance(
@@ -130,6 +132,7 @@ public struct ContactsScreen: View {
 
 #Preview {
     ContactsScreen(
+        apiConfig: .init(envId: .prod),
         mailUserSession: .init(noPointer: .init()),
         contactsProvider: .previewInstance(),
         contactsWatcher: .previewInstance(),

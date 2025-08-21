@@ -65,7 +65,6 @@ struct ContactDetailsScreen: View {
             .background(DS.Color.Background.secondary)
             .onLoad { store.handle(action: .onLoad) }
         }
-
     }
 
     // MARK: - Private

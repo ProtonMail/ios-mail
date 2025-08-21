@@ -33,6 +33,7 @@ struct HomeScreenModalFactory {
     init(mailUserSession: MailUserSession, accountAuthCoordinator: AccountAuthCoordinator) {
         self.makeContactsScreen = { draftPresenter in
             ContactsScreen(
+                apiConfig: .current,
                 mailUserSession: mailUserSession,
                 contactsProvider: .productionInstance(),
                 contactsWatcher: .productionInstance(),

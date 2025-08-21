@@ -42,6 +42,7 @@ final class ContactsStateStore: ObservableObject {
 
     let router = Router<ContactsRoute>()
 
+    private let apiConfig: ApiConfig
     private let repository: GroupedContactsRepository
     private let contactDeleter: ContactItemDeleterAdapter
     private let contactGroupDeleter: ContactItemDeleterAdapter
@@ -52,11 +53,13 @@ final class ContactsStateStore: ObservableObject {
     private var watchContactsConnection: WatchedContactList?
 
     init(
+        apiConfig: ApiConfig,
         state: ContactsScreenState,
         mailUserSession session: MailUserSession,
         contactsWrappers wrappers: RustContactsWrappers,
         makeContactsLiveQuery: @escaping () -> ContactsLiveQueryCallbackWrapper = { .init() }
     ) {
+        self.apiConfig = apiConfig
         self.state = state
         self.repository = .init(mailUserSession: session, contactsProvider: wrappers.contactsProvider)
         self.contactDeleter = .init(mailUserSession: session, deleteItem: wrappers.contactDeleter)
@@ -77,7 +80,7 @@ final class ContactsStateStore: ObservableObject {
             state = state.copy(\.displayCreateContactSheet, to: false)
 
             if case .openSafari = action {
-                state = state.copy(\.createContactURL, to: .init(url: .Contact.create))
+                state = state.copy(\.createContactURL, to: .init(url: .Contact.create(domain: apiConfig.envId.domain)))
             }
         case .dismissCreateSheet:
             state = state.copy(\.createContactURL, to: nil)

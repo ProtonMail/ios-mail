@@ -19,7 +19,7 @@ import Foundation
 import proton_app_uniffi
 
 extension ApiEnvId {
-    public static let current: Self = {
+    static let current: Self = {
         #if QA || DEBUG
             if let dynamicDomain = UserDefaults.appGroup.string(forKey: "DYNAMIC_DOMAIN") {
                 return .init(dynamicDomain: dynamicDomain)
