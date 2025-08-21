@@ -15,23 +15,20 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
 import InboxCore
+import InboxCoreUI
+import SwiftUI
 
-@Observable
-public class EnvironmentURLOpenerSpy: URLOpenerProtocol {
-    public init() {}
+enum ConfirmLinkAlertAction: AlertActionInfo, CaseIterable {
+    case confirm
+    case cancel
 
-    public private(set) var callAsFunctionInvokedWithURL: [URL] = []
-    public private(set) var callAsFunctionInvoked: [(url: URL, completion: (Bool) -> Void)] = []
-
-    // MARK: - URLOpenerProtocol
-
-    public func callAsFunction(_ url: URL) {
-        callAsFunctionInvokedWithURL.append(url)
-    }
-
-    public func callAsFunction(_ url: URL, completion: @escaping (Bool) -> Void) {
-        callAsFunctionInvoked.append((url, completion: completion))
+    var info: (title: LocalizedStringResource, buttonRole: ButtonRole?) {
+        switch self {
+        case .confirm:
+            (CommonL10n.continue, .destructive)
+        case .cancel:
+            (CommonL10n.cancel, .cancel)
+        }
     }
 }

@@ -287,6 +287,13 @@ enum L10n {
         }
     }
 
+    enum ConfirmLink {
+        static let title = LocalizedStringResource(
+            "You are about to launch the web browser and navigate to",
+            comment: "Prompts the user to confirm before a link is opened - the sentence is cut on purpose, and the link follows."
+        )
+    }
+
     enum EventLoopError {
         static let eventLoopErrorMessage = LocalizedStringResource(
             "We encountered an issue while syncing your mail with the event loop. Please share the logs with our support team for further investigation. Try logging out and logging back in to resolve the issue.",

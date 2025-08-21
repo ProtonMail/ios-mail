@@ -23,6 +23,7 @@ import SwiftUI
 
 struct ConversationDetailListView: View {
     @EnvironmentObject var toastStateStore: ToastStateStore
+    @Environment(\.openURL) var openURLWithoutConfirmation
     @ObservedObject private var model: ConversationDetailModel
     private let mailUserSession: MailUserSession
     private let draftPresenter: RecipientDraftPresenter
@@ -31,6 +32,16 @@ struct ConversationDetailListView: View {
     /// These attributes trigger the different action sheets
     @State private var senderActionTarget: ExpandedMessageCellUIModel?
     @State private var recipientActionTarget: MessageDetail.Recipient?
+
+    private var openURLWithConfirmation: OpenURLAction {
+        let messageLinkOpener = MessageLinkOpener(
+            mailUserSession: mailUserSession,
+            confirmationAlert: $model.linkConfirmationAlert,
+            openURL: openURLWithoutConfirmation
+        )
+
+        return messageLinkOpener.action
+    }
 
     init(
         model: ConversationDetailModel,
@@ -61,6 +72,7 @@ struct ConversationDetailListView: View {
         .sheet(item: $senderActionTarget, content: senderActionSheet)
         .sheet(item: $recipientActionTarget, content: recipientActionSheet)
         .alert(model: $model.editScheduledMessageConfirmationAlert)
+        .alert(model: $model.linkConfirmationAlert)
     }
 
     private func senderActionSheet(target: ExpandedMessageCellUIModel) -> some View {
@@ -148,6 +160,7 @@ struct ConversationDetailListView: View {
             htmlLoaded: { model.markMessageAsReadIfNeeded(metadata: uiModel.toActionMetadata()) }
         )
         .environment(\.forceLightModeInMessageBody, model.isForcingLightMode(forMessageWithId: uiModel.id))
+        .environment(\.openURL, openURLWithConfirmation)
     }
 
     private func onExpandedMessageCellEvent(_ event: ExpandedMessageCellEvent, uiModel: ExpandedMessageCellUIModel) -> Void {

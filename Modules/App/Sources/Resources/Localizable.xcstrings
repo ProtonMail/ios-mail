@@ -52575,6 +52575,9 @@
         }
       }
     },
+    "You are about to launch the web browser and navigate to" : {
+      "comment" : "Prompts the user to confirm before a link is opened - the sentence is cut on purpose, and the link follows."
+    },
     "You are currently offline, please try again with internet connection." : {
       "comment" : "Toast displayed after the report failed to send in offline.",
       "localizations" : {

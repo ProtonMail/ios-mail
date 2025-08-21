@@ -32,6 +32,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
     @Published var actionSheets: MailboxActionSheetsState = .initial()
     @Published var editScheduledMessageConfirmationAlert: AlertModel?
     @Published var deleteConfirmationAlert: AlertModel?
+    @Published var linkConfirmationAlert: AlertModel?
     @Published var attachmentIDToOpen: ID?
 
     let messageAppearanceOverrideStore = MessageAppearanceOverrideStore()

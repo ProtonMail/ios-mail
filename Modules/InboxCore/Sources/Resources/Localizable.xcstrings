@@ -571,6 +571,9 @@
         }
       }
     },
+    "Continue" : {
+
+    },
     "Copied %@ to clipboard" : {
       "comment" : "Message shown to the user confirming that the specified item (name) was successfully copied to the clipboard.",
       "localizations" : {
