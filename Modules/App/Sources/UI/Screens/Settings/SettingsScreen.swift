@@ -22,7 +22,7 @@ import InboxCoreUI
 import InboxDesignSystem
 import proton_app_uniffi
 import SwiftUI
-import UIFoundations
+import ProtonUIFoundations
 
 struct SettingsScreen: View {
     @Environment(\.dismiss) private var dismiss
