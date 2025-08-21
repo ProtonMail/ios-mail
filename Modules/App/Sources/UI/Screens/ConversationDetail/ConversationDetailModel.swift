@@ -210,7 +210,10 @@ final class ConversationDetailModel: Sendable, ObservableObject {
                 to: .init(
                     sheetType: .labelAs,
                     ids: [messageID],
-                    type: .message(isLastMessageInCurrentLocation: false))  // FIXME: - Check if it's used anywhere - It's used check how to fix it
+                    type: .message(
+                        isLastMessageInCurrentLocation: state.hasAtMostOneMessage(withSameLocationAs: messageID)
+                    )
+                )
             )
         case .moveTo:
             actionSheets = .allSheetsDismissed.copy(
@@ -218,10 +221,22 @@ final class ConversationDetailModel: Sendable, ObservableObject {
                 to: .init(
                     sheetType: .moveTo,
                     ids: [messageID],
-                    type: .message(isLastMessageInCurrentLocation: false))  // FIXME: - Check if it's used anywhere
+                    type: .message(
+                        isLastMessageInCurrentLocation: state.hasAtMostOneMessage(withSameLocationAs: messageID)
+                    )
+                )
             )
         case .moveToSystemFolder(let systemFolder), .notSpam(let systemFolder):
-            break
+            actionSheets = .allSheetsDismissed
+            move(
+                id: messageID,
+                itemType: .message(
+                    isLastMessageInCurrentLocation: state.hasAtMostOneMessage(withSameLocationAs: messageID)
+                ),
+                destination: systemFolder,
+                toastStateStore: toastStateStore,
+                goBack: goBack
+            )
         case .permanentDelete:
             break
         case .reply:
@@ -279,7 +294,10 @@ final class ConversationDetailModel: Sendable, ObservableObject {
             actionSheets = .allSheetsDismissed
                 .copy(\.moveTo, to: .init(sheetType: .moveTo, ids: [conversationID], type: .conversation))
         case .moveToSystemFolder(let systemFolder), .notSpam(let systemFolder):
-            moveConversation(
+            actionSheets = .allSheetsDismissed
+            move(
+                id: conversationID,
+                itemType: .conversation,
                 destination: systemFolder,
                 toastStateStore: toastStateStore,
                 goBack: goBack
@@ -328,7 +346,9 @@ final class ConversationDetailModel: Sendable, ObservableObject {
             )
             deleteConfirmationAlert = alert
         case .moveToSystemFolder(let label), .notSpam(let label):
-            moveConversation(destination: label, toastStateStore: toastStateStore, goBack: goBack)
+            break
+
+//            moveConversation(destination: label, toastStateStore: toastStateStore, goBack: goBack)
         case .snooze:
             actionSheets =
                 actionSheets
@@ -381,7 +401,9 @@ extension ConversationDetailModel {
         starActionPerformer.unstar(itemsWithIDs: [conversationID.unsafelyUnwrapped], itemType: .conversation)
     }
 
-    private func moveConversation(
+    private func move(
+        id: ID,
+        itemType: ActionSheetItemType,
         destination: MovableSystemFolderAction,
         toastStateStore: ToastStateStore,
         goBack: @escaping () -> Void
@@ -396,8 +418,8 @@ extension ConversationDetailModel {
             do {
                 let undo = try await moveToActionPerformer.moveTo(
                     destinationID: destination.localId,
-                    itemsIDs: [conversationID.unsafelyUnwrapped],
-                    itemType: .conversation
+                    itemsIDs: [id],
+                    itemType: itemType.inboxItemType
                 )
                 let toastID = UUID()
                 let undoAction = undo.undoAction(userSession: userSession) {
@@ -419,7 +441,10 @@ extension ConversationDetailModel {
             Dispatcher.dispatchOnMain(
                 .init(block: {
                     toastStateStore.present(toast: toast)
-                    goBack()
+
+                    if itemType.dismissNavigation == .dismissAndGoBack {
+                        goBack()
+                    }
                 }))
         }
     }
@@ -781,6 +806,36 @@ enum SnoozeErrorPresenter {
     static func presentIfNeeded(error: SnoozeError, toastStateStore: ToastStateStore) {
         if case .reason(let snoozeErrorReason) = error {
             toastStateStore.present(toast: .error(message: snoozeErrorReason.errorMessage.string))
+        }
+    }
+
+}
+
+private extension ConversationDetailModel.State {
+
+    func hasAtMostOneMessage(withSameLocationAs messageID: ID?) -> Bool {
+        switch self {
+        case .initial, .fetchingMessages, .noConnection:
+            return false
+        case .messagesReady(let messages):
+            let targetMessage = messages
+                .first(where: { $0.id == messageID })
+            return messages
+                .filter { message in message.locationID == targetMessage?.locationID }
+                .count == 1
+        }
+    }
+
+}
+
+extension ActionSheetItemType {
+
+    var dismissNavigation: MailboxItemActionSheetNavigation {
+        switch self {
+        case .conversation:
+            .dismissAndGoBack
+        case .message(let isStandaloneMessage):
+            isStandaloneMessage ? .dismissAndGoBack : .dismiss
         }
     }
 

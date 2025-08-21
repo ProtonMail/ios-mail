@@ -316,20 +316,6 @@ private extension MailboxItemType {
 
 }
 
-private extension ActionSheetItemType {
-
-    var dismissNavigation: MailboxItemActionSheetNavigation {
-        switch self {
-        case .conversation:
-            .dismissAndGoBack
-        case .message(let isStandaloneMessage):
-            isStandaloneMessage ? .dismissAndGoBack : .dismiss
-        }
-    }
-
-}
-
-
 extension ThemeOpts {
     init(colorScheme: ColorScheme, isForcingLightMode: Bool) {
         self.init(currentTheme: .converted(from: colorScheme), themeOverride: isForcingLightMode ? .lightMode : nil)

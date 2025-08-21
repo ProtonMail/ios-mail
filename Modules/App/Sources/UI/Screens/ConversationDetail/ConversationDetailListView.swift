@@ -195,21 +195,6 @@ private extension ExpandedMessageCellUIModel {
 
 }
 
-private extension ConversationDetailModel.State {
-
-    func hasAtMostOneMessage(withLocationID locationID: ID?) -> Bool {
-        switch self {
-        case .initial, .fetchingMessages, .noConnection:
-            false
-        case .messagesReady(let messages):
-            messages
-                .filter { message in message.locationID == locationID }
-                .count == 1
-        }
-    }
-
-}
-
 private extension GeometryProxy {
 
     var cardNeedsVerticalBorders: Bool {
