@@ -18,22 +18,41 @@
 @testable import ProtonMail
 import InboxCoreUI
 import InboxSnapshotTesting
-import InboxTesting
-import XCTest
+import SwiftUI
+import Testing
 
 @MainActor
-class MoveToSheetSnapshotTests: BaseTestCase {
-
-    func testActionSheetLayoutsCorrectly() {
-        let sut = MoveToSheet(
+final class MoveToSheetSnapshotTests {
+    @Test
+    func actionSheetLayoutsCorrectly() async {
+        var moveToSheet = MoveToSheet(
             input: .init(sheetType: .moveTo, ids: [], mailboxItem: .message(isLastMessageInCurrentLocation: false)),
             mailbox: .dummy,
             availableMoveToActions: MoveToSheetPreviewProvider.availableMoveToActions,
             moveToActions: .dummy,
             navigation: { _ in },
-            mailUserSession: .dummy
-        ).environmentObject(ToastStateStore(initialState: .initial))
-        assertSnapshotsOnIPhoneX(of: sut, named: "move_to_sheet")
+            mailUserSession: .dummy)
+
+        for style in [UIUserInterfaceStyle.light, .dark] {
+            let viewController = await renderAndWait { continuation in
+                moveToSheet.didLoad = continuation.resume
+                return moveToSheet.environmentObject(ToastStateStore(initialState: .initial))
+            }
+
+            viewController.overrideUserInterfaceStyle = style
+            assertSnapshotOnIPhoneX(of: viewController, style: style, named: "move_to_sheet")
+        }
     }
 
+    private func renderAndWait<Content: View>(contentBuilder: (CheckedContinuation<Void, Never>) -> Content) async -> UIViewController {
+        var viewController: UIViewController!
+
+        await withCheckedContinuation { continuation in
+            let sut = contentBuilder(continuation)
+            viewController = UIHostingController(rootView: sut)
+            viewController.view.snapshotView(afterScreenUpdates: true)
+        }
+
+        return viewController
+    }
 }

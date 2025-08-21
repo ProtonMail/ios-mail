@@ -30,6 +30,8 @@ struct MoveToSheet: View {
     private let navigation: (MoveToSheetNavigation) -> Void
     private let mailUserSession: MailUserSession
 
+    var didLoad: (() -> Void)?
+
     init(
         input: ActionSheetInput,
         mailbox: Mailbox,
@@ -69,7 +71,12 @@ struct MoveToSheet: View {
                 .background(DS.Color.BackgroundInverted.norm)
                 .navigationTitle(L10n.Action.moveTo.string)
                 .navigationBarTitleDisplayMode(.inline)
-                .onAppear { store.handle(action: .viewAppear) }
+                .onLoad {
+                    Task {
+                        await store.handle(action: .viewAppear)
+                        didLoad?()
+                    }
+                }
                 .sheet(isPresented: store.binding(\.createFolderLabelPresented)) {
                     CreateFolderOrLabelScreen()
                 }

@@ -161,9 +161,7 @@ public func assertSnapshotsOnIPhoneX(
     }
 }
 
-// MARK: - Private
-
-private func assertSnapshotOnIPhoneX(
+public func assertSnapshotOnIPhoneX(
     of controller: UIViewController,
     style: UIUserInterfaceStyle = .light,
     drawHierarchyInKeyWindow: Bool = false,
@@ -195,6 +193,8 @@ private func assertSnapshotOnIPhoneX(
         line: line
     )
 }
+
+// MARK: - Private
 
 private func suffixedName(name: String?, withStyle style: UIUserInterfaceStyle) -> String? {
     [name, style.humanReadable]

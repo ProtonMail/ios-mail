@@ -19,9 +19,10 @@
 import InboxCoreUI
 import InboxTesting
 import proton_app_uniffi
-import XCTest
+import Testing
 
-class MoveToSheetStateStoreTests: BaseTestCase {
+@MainActor
+final class MoveToSheetStateStoreTests {
 
     var invokedAvailableActionsWithMessagesIDs: [ID]!
     var invokedAvailableActionsWithConversationIDs: [ID]!
@@ -29,8 +30,7 @@ class MoveToSheetStateStoreTests: BaseTestCase {
     var toastStateStore: ToastStateStore!
     var moveToActionsSpy: MoveToActionsSpy!
 
-    override func setUp() {
-        super.setUp()
+    init() {
         invokedAvailableActionsWithMessagesIDs = []
         invokedAvailableActionsWithConversationIDs = []
         invokedNavigation = []
@@ -38,83 +38,75 @@ class MoveToSheetStateStoreTests: BaseTestCase {
         moveToActionsSpy = .init()
     }
 
-    override func tearDown() {
-        invokedAvailableActionsWithMessagesIDs = nil
-        invokedAvailableActionsWithConversationIDs = nil
-        invokedNavigation = nil
-        toastStateStore = nil
-        moveToActionsSpy = nil
-
-        super.tearDown()
-    }
-
-    func testState_WhenMailboxTypeIsMessageAndViewAppear_ItReturnsMoveToActions() {
+    @Test
+    func state_WhenMailboxTypeIsMessageAndViewAppear_ItReturnsMoveToActions() async {
         let ids: [ID] = [.init(value: 777), .init(value: 111)]
         let sut = sut(input: .init(sheetType: .moveTo, ids: ids, mailboxItem: .message(isLastMessageInCurrentLocation: false)))
 
-        sut.handle(action: .viewAppear)
+        await sut.handle(action: .viewAppear)
 
-        XCTAssertEqual(invokedAvailableActionsWithMessagesIDs, ids)
-        XCTAssertEqual(invokedAvailableActionsWithConversationIDs, [])
+        #expect(invokedAvailableActionsWithMessagesIDs == ids)
+        #expect(invokedAvailableActionsWithConversationIDs == [])
     }
 
-    func testState_WhenMailboxTypeIsConversationAndViewAppear_ItReturnsMoveToActions() {
+    @Test
+    func state_WhenMailboxTypeIsConversationAndViewAppear_ItReturnsMoveToActions() async {
         let ids: [ID] = [.init(value: 777), .init(value: 111)]
         let sut = sut(input: .init(sheetType: .moveTo, ids: ids, mailboxItem: .conversation))
 
-        sut.handle(action: .viewAppear)
+        await sut.handle(action: .viewAppear)
 
-        XCTAssertEqual(invokedAvailableActionsWithMessagesIDs, [])
-        XCTAssertEqual(invokedAvailableActionsWithConversationIDs, ids)
+        #expect(invokedAvailableActionsWithMessagesIDs == [])
+        #expect(invokedAvailableActionsWithConversationIDs == ids)
     }
 
-    func testState_WhenCreateFolderActionIsHandled_ItPresentsCreateFolderLabelModal() {
+    @Test
+    func state_WhenCreateFolderActionIsHandled_ItPresentsCreateFolderLabelModal() async {
         let sut = sut(input: .init(sheetType: .moveTo, ids: [], mailboxItem: .message(isLastMessageInCurrentLocation: false)))
 
-        sut.handle(action: .createFolderTapped)
+        await sut.handle(action: .createFolderTapped)
 
-        XCTAssertTrue(sut.state.createFolderLabelPresented)
+        #expect(sut.state.createFolderLabelPresented == true)
     }
 
-    func testAction_WhenCustomFolderIsTapped_ItMovesConversationToCustomFolder() {
+    @Test
+    func action_WhenCustomFolderIsTapped_ItMovesConversationToCustomFolder() async {
         let sut = sut(input: .init(sheetType: .moveTo, ids: [.init(value: 2)], mailboxItem: .conversation))
 
-        sut.handle(action: .customFolderTapped(.init(id: .init(value: 1), name: "Private")))
+        await sut.handle(action: .customFolderTapped(.init(id: .init(value: 1), name: "Private")))
 
-        XCTAssertEqual(
-            moveToActionsSpy.invokedMoveToConversation,
-            [
+        #expect(
+            moveToActionsSpy.invokedMoveToConversation == [
                 .init(destinationID: .init(value: 1), itemsIDs: [.init(value: 2)])
             ])
-        XCTAssertEqual(
-            toastStateStore.state.toasts,
-            [
+        #expect(
+            toastStateStore.state.toasts == [
                 .moveTo(id: UUID(), destinationName: "Private", undoAction: .none)
             ]
         )
-        XCTAssertEqual(invokedNavigation, [.dismissAndGoBack])
+        #expect(invokedNavigation == [.dismissAndGoBack])
     }
 
-    func testAction_WhenInboxIsTapped_ItMovesMessageToInbox() {
+    @Test
+    func action_WhenInboxIsTapped_ItMovesMessageToInbox() async {
         let sut = sut(input: .init(sheetType: .moveTo, ids: [.init(value: 1)], mailboxItem: .message(isLastMessageInCurrentLocation: false)))
 
-        sut.handle(action: .systemFolderTapped(.init(id: .init(value: 10), label: .inbox)))
+        await sut.handle(action: .systemFolderTapped(.init(id: .init(value: 10), label: .inbox)))
 
-        XCTAssertEqual(
-            moveToActionsSpy.invokedMoveToMessage,
-            [
+        #expect(
+            moveToActionsSpy.invokedMoveToMessage == [
                 .init(destinationID: .init(value: 10), itemsIDs: [.init(value: 1)])
             ])
-        XCTAssertEqual(
-            toastStateStore.state.toasts,
-            [
+        #expect(
+            toastStateStore.state.toasts == [
                 .moveTo(id: UUID(), destinationName: "Inbox", undoAction: .none)
             ]
         )
-        XCTAssertEqual(invokedNavigation, [.dismiss])
+        #expect(invokedNavigation == [.dismiss])
     }
 
-    func testAction_WhenInboxIsTappedUndoIsAvailableAndTapped_ItTriggersUndoAndDismissesToast() throws {
+    @Test
+    func action_WhenInboxIsTappedUndoIsAvailableAndTapped_ItTriggersUndoAndDismissesToast() async throws {
         let undoSpy = UndoSpy(noPointer: .init())
         moveToActionsSpy.stubbedMoveMessagesToOkResult = undoSpy
 
@@ -126,35 +118,34 @@ class MoveToSheetStateStoreTests: BaseTestCase {
             )
         )
 
-        sut.handle(action: .systemFolderTapped(.init(id: .init(value: 10), label: .inbox)))
+        await sut.handle(action: .systemFolderTapped(.init(id: .init(value: 10), label: .inbox)))
 
-        XCTAssertEqual(
-            moveToActionsSpy.invokedMoveToMessage,
-            [
+        #expect(
+            moveToActionsSpy.invokedMoveToMessage == [
                 .init(destinationID: .init(value: 10), itemsIDs: [.init(value: 1)])
             ])
-        XCTAssertEqual(
-            toastStateStore.state.toasts,
-            [
+        #expect(
+            toastStateStore.state.toasts == [
                 .moveTo(id: UUID(), destinationName: "Inbox", undoAction: {})
             ]
         )
-        XCTAssertEqual(invokedNavigation, [.dismiss])
+        #expect(invokedNavigation == [.dismiss])
 
-        let toastToVeriy: Toast = try XCTUnwrap(toastStateStore.state.toasts.last)
+        let toastToVeriy: Toast = try #require(toastStateStore.state.toasts.last)
 
-        toastToVeriy.simulateUndoAction()
+        await toastToVeriy.simulateUndoAction()
 
-        XCTAssertEqual(undoSpy.undoCallsCount, 1)
-        XCTAssertEqual(toastStateStore.state.toasts.isEmpty, true)
+        #expect(undoSpy.undoCallsCount == 1)
+        #expect(toastStateStore.state.toasts.isEmpty == true)
     }
 
-    func testAction_WhenItsStandaloneMessageInConveration_WhenInboxIsTapped_ItMovesMessageToInbox() {
+    @Test
+    func action_WhenItsStandaloneMessageInConveration_WhenInboxIsTapped_ItMovesMessageToInbox() async {
         let sut = sut(input: .init(sheetType: .moveTo, ids: [.init(value: 1)], mailboxItem: .message(isLastMessageInCurrentLocation: true)))
 
-        sut.handle(action: .systemFolderTapped(.init(id: .init(value: 10), label: .inbox)))
+        await sut.handle(action: .systemFolderTapped(.init(id: .init(value: 10), label: .inbox)))
 
-        XCTAssertEqual(invokedNavigation, [.dismissAndGoBack])
+        #expect(invokedNavigation == [.dismissAndGoBack])
     }
 
     // MARK: - Private
