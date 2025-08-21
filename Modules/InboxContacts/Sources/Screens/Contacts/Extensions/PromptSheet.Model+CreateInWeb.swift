@@ -19,12 +19,12 @@ import InboxCoreUI
 import InboxDesignSystem
 
 extension PromptSheet.Model {
-    static func createContact(onAction: @escaping () -> Void, onDismiss: @escaping () -> Void) -> Self {
+    static func createInWeb(onAction: @escaping () -> Void, onDismiss: @escaping () -> Void) -> Self {
         .init(
             image: DS.Images.contactsWebSheet,
-            title: L10n.Contacts.OpenInWebPrompt.title,
-            subtitle: L10n.Contacts.OpenInWebPrompt.subtitle,
-            actionButtonTitle: L10n.Contacts.OpenInWebPrompt.actionButtonTitle,
+            title: L10n.Contacts.CreateInWebPrompt.title,
+            subtitle: L10n.Contacts.CreateInWebPrompt.subtitle,
+            actionButtonTitle: L10n.Contacts.CreateInWebPrompt.actionButtonTitle,
             onAction: onAction,
             onDismiss: onDismiss
         )

@@ -80,7 +80,7 @@ public struct ContactsScreen: View {
             isPresented: $store.state.displayCreateContactSheet,
             content: {
                 PromptSheet(
-                    model: .createContact(
+                    model: .createInWeb(
                         onAction: { handle(action: .createSheetAction(.openSafari)) },
                         onDismiss: { handle(action: .createSheetAction(.dismiss)) }
                     )

@@ -87,7 +87,7 @@ enum L10n {
             )
         }
 
-        enum OpenInWebPrompt {
+        enum CreateInWebPrompt {
             static let title = LocalizedStringResource(
                 "Available in web",
                 bundle: .atURL(Bundle.module.bundleURL),
