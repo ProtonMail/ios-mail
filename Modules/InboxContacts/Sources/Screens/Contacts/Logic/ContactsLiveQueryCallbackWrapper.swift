@@ -18,11 +18,13 @@
 import proton_app_uniffi
 
 final class ContactsLiveQueryCallbackWrapper: ContactsLiveQueryCallback {
-    var delegate: (([GroupedContacts]) -> Void)?
+    var delegate: (([GroupedContacts]) async -> Void)?
 
     // MARK: - RustContactsLiveQueryCallback
 
     func onUpdate(contacts: [GroupedContacts]) {
-        delegate?(contacts)
+        Task {
+            await delegate?(contacts)
+        }
     }
 }

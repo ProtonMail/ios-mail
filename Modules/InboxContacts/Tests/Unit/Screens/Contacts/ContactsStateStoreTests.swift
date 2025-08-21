@@ -369,7 +369,7 @@ final class ContactsStateStoreTests {
         await sut.handle(action: .onDeleteItem(itemToDelete))
         await sut.handle(action: .onDeleteItemAlertAction(.confirm))
 
-        createdLiveQueryCallbackWrapper?.onUpdate(contacts: groupedItems)
+        await createdLiveQueryCallbackWrapper?.delegate?(groupedItems)
 
         #expect(
             sut.state
@@ -415,7 +415,7 @@ final class ContactsStateStoreTests {
         await sut.handle(action: .onDeleteItem(itemToDelete))
         await sut.handle(action: .onDeleteItemAlertAction(.confirm))
 
-        createdLiveQueryCallbackWrapper?.onUpdate(contacts: groupedItems)
+        await createdLiveQueryCallbackWrapper?.delegate?(groupedItems)
 
         #expect(
             sut.state
@@ -457,7 +457,7 @@ final class ContactsStateStoreTests {
         await sut.handle(action: .onDeleteItem(itemToDelete))
         await sut.handle(action: .onDeleteItemAlertAction(.cancel))
 
-        createdLiveQueryCallbackWrapper?.onUpdate(contacts: groupedItems)
+        await createdLiveQueryCallbackWrapper?.delegate?(groupedItems)
 
         #expect(
             sut.state
@@ -642,7 +642,7 @@ final class ContactsStateStoreTests {
 
         let updatedItems = deleting(item: item, from: groupedContacts)
 
-        createdLiveQueryCallbackWrapper?.onUpdate(contacts: updatedItems)
+        await createdLiveQueryCallbackWrapper?.delegate?(updatedItems)
     }
 
     private func deleting(item itemToDelete: ContactItemType, from items: [GroupedContacts]) -> [GroupedContacts] {

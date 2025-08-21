@@ -129,7 +129,7 @@ final class ContactsStateStore: ObservableObject {
 
     private func startWatchingUpdates() async {
         contactsLiveQueryCallback.delegate = { [weak self] updatedItems in
-            self?.updateState(with: updatedItems)
+            await self?.updateState(with: updatedItems)
         }
 
         watchContactsConnection = try? await watchContacts(contactsLiveQueryCallback)
@@ -137,7 +137,7 @@ final class ContactsStateStore: ObservableObject {
 
     private func loadAllContacts() async {
         let contacts = await repository.allContacts()
-        updateState(with: contacts)
+        await updateState(with: contacts)
     }
 
     private func goToDetails(item: ContactItemType) {
@@ -149,6 +149,7 @@ final class ContactsStateStore: ObservableObject {
         }
     }
 
+    @MainActor
     private func updateState(with items: [GroupedContacts]) {
         state = state.copy(\.allItems, to: items)
     }
