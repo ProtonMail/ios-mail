@@ -48,7 +48,7 @@ final class MailboxModel: ObservableObject {
     lazy var paginatedDataSource = PaginatedListDataSource<MailboxItemCellUIModel>(
         paginatedListProvider: .init(
             updatePublisher: listUpdateSubject.eraseToAnyPublisher(),
-            fetchMore: { [weak self] currentPage in self?.fetchNextPage(currentPage: currentPage) }
+            fetchMore: { [weak self] isFirstPage in self?.fetchNextPage(isFirstPage: isFirstPage) }
         ),
         id: \.id
     )
@@ -226,7 +226,7 @@ extension MailboxModel {
 
     private func exitSelectAllModeWhenNewItemsAreFetched() {
         paginatedDataSource.$state
-            .map(\.currentPage)
+            .map { Set($0.items.map(\.id)) }
             .removeDuplicates()
             .sink { [weak self] _ in
                 self?.selectionMode.selectionModifier.exitSelectAllMode()
@@ -413,8 +413,8 @@ extension MailboxModel {
         }
     }
 
-    private func fetchNextPage(currentPage: Int) {
-        AppLogger.log(message: "\(viewMode) fetchNextPage: page \(currentPage)", category: .mailbox)
+    private func fetchNextPage(isFirstPage: Bool) {
+        AppLogger.log(message: "\(viewMode) fetchMore: isFirstPage \(isFirstPage)", category: .mailbox)
         let logError: (MailScrollerError) -> Void = { error in
             AppLogger.log(message: "Error calling fetchMore: \(error)", category: .mailbox, isError: true)
         }

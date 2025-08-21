@@ -97,14 +97,14 @@ final class PaginatedListDataSourceTests: XCTestCase {
         XCTAssertEqual(sut.state.isFetchingNextPage, false)
     }
 
-    func testUpdatePublisher_append_whenNoItems_stateBecomesDataWithPlaceholder() async {
+    func testUpdatePublisher_append_whenNoItems_stateBecomesDataWithNoItems() async {
         let capturedStates = await expectViewStateStates(count: 2) {
             sut.fetchInitialPage()
             updateSubject.send(.init(isLastPage: false, value: .append(items: [])))
         }
 
         XCTAssertEqual(sut.state.items, [])
-        XCTAssertEqual(capturedStates, [.fetchingInitialPage, .data(.placeholder)])
+        XCTAssertEqual(capturedStates, [.fetchingInitialPage, .data(.noItems)])
     }
 
     func testUpdatePublisher_append_whenItems_stateBecomesDataWithItems() async {

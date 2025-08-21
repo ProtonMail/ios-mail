@@ -21,7 +21,7 @@ import SwiftUI
 
 struct PaginatedListProvider<Item: Equatable & Sendable> {
     let updatePublisher: AnyPublisher<PaginatedListUpdate<Item>, Never>
-    let fetchMore: (_ currentPage: Int) -> Void
+    let fetchMore: (_ isFirstFetch: Bool) -> Void
 }
 
 @MainActor
@@ -70,7 +70,7 @@ final class PaginatedListDataSource<Item: Equatable & Sendable>: ObservableObjec
 
     private func fetchNextPageItems() {
         updateStateMarkIsFetchingNextPage()
-        provider.fetchMore(state.currentPage)
+        provider.fetchMore(state.isFetchingFirstPage)
     }
 
     // MARK: Modifiers
@@ -78,12 +78,12 @@ final class PaginatedListDataSource<Item: Equatable & Sendable>: ObservableObjec
     private func handle(update: PaginatedListUpdate<Item>) {
         var newState = state
         newState.isFetchingNextPage = false
+        newState.isFetchingFirstPage = false
         newState.isLastPage = update.isLastPage
 
         switch update.value {
         case .append(let items):
             newState.items.append(contentsOf: items)
-            newState.currentPage += 1
         case let .replaceFrom(index, items):
             guard isSafeIndex(index) else { break }
             newState.items.replaceSubrange(index..<newState.items.endIndex, with: items)
@@ -118,20 +118,15 @@ final class PaginatedListDataSource<Item: Equatable & Sendable>: ObservableObjec
 
 extension PaginatedListDataSource {
 
-    struct State: Equatable {
+    struct State: Equatable, Copying {
         var items: [Item] = []
-        var currentPage: Int = 0
+        var isFetchingFirstPage = true
         var isFetchingNextPage: Bool = true
         var isLastPage: Bool = false
 
         var viewState: PaginatedListViewState {
-            let isFetchingFirstPage = isFetchingNextPage && currentPage == 0
-
-            guard !isFetchingFirstPage else {
-                return .fetchingInitialPage
-            }
-
-            return .data(items.isEmpty ? .placeholder : .items(isLastPage: isLastPage))
+            guard !isFetchingFirstPage else { return .fetchingInitialPage }
+            return .data(items.isEmpty ? .noItems : .items(isLastPage: isLastPage))
         }
     }
 }

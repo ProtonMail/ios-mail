@@ -36,7 +36,7 @@ final class SearchModel: ObservableObject, @unchecked Sendable {
     lazy var paginatedDataSource = PaginatedListDataSource<MailboxItemCellUIModel>(
         paginatedListProvider: .init(
             updatePublisher: listUpdateSubject.eraseToAnyPublisher(),
-            fetchMore: { [weak self] currentPage in self?.fetchNextPage(currentPage: currentPage) }
+            fetchMore: { [weak self] isFirstPage in self?.fetchNextPage(isFirstPage: isFirstPage) }
         )
     )
 
@@ -119,8 +119,8 @@ final class SearchModel: ObservableObject, @unchecked Sendable {
         }
     }
 
-    private func fetchNextPage(currentPage: Int) {
-        AppLogger.log(message: "search fetchNextPage: page \(currentPage)", category: .mailbox)
+    private func fetchNextPage(isFirstPage: Bool) {
+        AppLogger.log(message: "search fetchMore: isFirstPage \(isFirstPage)", category: .mailbox)
         let result = searchScroller?.fetchMore()
         if case .error(let mailScrollerError) = result {
             AppLogger.log(message: "Error calling fetchMore: \(mailScrollerError)", category: .mailbox, isError: true)

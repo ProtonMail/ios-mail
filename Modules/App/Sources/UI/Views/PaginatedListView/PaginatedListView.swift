@@ -56,7 +56,7 @@ struct PaginatedListView<
             MailboxSkeletonView()
         case .data(let type):
             dataStateView.overlay {
-                if type == .placeholder {
+                if type == .noItems {
                     emptyListView()
                 }
             }
@@ -105,7 +105,7 @@ enum PaginatedListViewState: Equatable {
 
     enum Data: Equatable {
         case items(isLastPage: Bool)
-        case placeholder
+        case noItems
     }
 
     var showBottomSpinner: Bool {
@@ -114,7 +114,7 @@ enum PaginatedListViewState: Equatable {
             true
         case .data(.items(let isLastPage)):
             !isLastPage
-        case .data(.placeholder):
+        case .data(.noItems):
             false
         }
     }
@@ -127,26 +127,28 @@ enum PaginatedListViewState: Equatable {
 
     @MainActor
     final class Model: Sendable {
+        var currentPage = 0
         let pageSize = 20
         let subject: PassthroughSubject<PaginatedListUpdate<PreviewListItem>, Never> = .init()
         lazy var dataSource = PaginatedListDataSource<PreviewListItem>(
             paginatedListProvider: .init(
                 updatePublisher: subject.eraseToAnyPublisher(),
-                fetchMore: { [weak self] page in Task { await self?.nextPage(page: page) }}
+                fetchMore: { [weak self] isFirstPage in Task { await self?.nextPage(isFirstPage: isFirstPage) } }
             )
         )
 
-        private func nextPage(page: Int) async {
+        private func nextPage(isFirstPage: Bool) async {
             try? await Task.sleep(for: .seconds(2))
-            let newItems = Array(page * pageSize..<(page + 1) * pageSize)
+            let newItems = Array(currentPage * pageSize..<(currentPage + 1) * pageSize)
             subject.send(
                 .init(
-                    isLastPage: page == 3,
+                    isLastPage: currentPage == 3,
                     value: .append(
                         items: newItems.map { PreviewListItem(id: $0) }
                     )
                 )
             )
+            currentPage += 1
         }
     }
 
