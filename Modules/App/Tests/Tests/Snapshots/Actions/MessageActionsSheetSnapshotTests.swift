@@ -48,8 +48,6 @@ struct MessageActionsSheetSnapshotTests {
         assertSnapshotsOnIPhoneX(
             of: NavigationStack { sut }
                 .environment(\.messageAppearanceOverrideStore, MessageAppearanceOverrideStore())
-            ,
-            record: true
         )
     }
 

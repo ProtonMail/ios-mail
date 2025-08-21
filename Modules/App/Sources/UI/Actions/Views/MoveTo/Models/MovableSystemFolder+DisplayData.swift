@@ -16,20 +16,19 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import proton_app_uniffi
+import InboxDesignSystem
 
 extension MovableSystemFolder {
     var displayData: ActionDisplayData {
-        let action =
-            switch self {
-            case .inbox:
-                Action.moveToInbox
-            case .trash:
-                Action.moveToTrash
-            case .spam:
-                Action.moveToSpam
-            case .archive:
-                Action.moveToArchive
-            }
-        return action.displayData
+        switch self {
+        case .inbox:
+            .init(title: L10n.Mailbox.SystemFolder.inbox, image: Action.moveToInbox.icon)
+        case .trash:
+            .init(title: L10n.Mailbox.SystemFolder.trash, image: Action.moveToTrash.icon)
+        case .spam:
+            .init(title: L10n.Mailbox.SystemFolder.spam, image: Action.moveToSpam.icon)
+        case .archive:
+            .init(title: L10n.Mailbox.SystemFolder.archive, image: Action.moveToArchive.icon)
+        }
     }
 }
