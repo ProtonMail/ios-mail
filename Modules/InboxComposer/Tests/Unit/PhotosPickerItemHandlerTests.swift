@@ -108,6 +108,17 @@ final class PhotosPickerItemHandlerTests: BaseTestCase {
         XCTAssertTrue(result.successfulContentIds.count == 1)
     }
 
+    func testAddPickerPhotos_whenPhotoItemIsImage_andComposerIsPlainText_itShouldBeAddedToTheDraftAsRegularAttachment() async throws {
+        mockDraft.mockMimeType = .textPlain
+        let mockItem1 = try testsHelper.makeMockPhotosPickerHeicImage(fileName: "image1.heic")
+
+        let result = await sut.addPickerPhotos(to: mockDraft, photos: [mockItem1])
+
+        XCTAssertTrue(mockDraft.mockAttachmentList.capturedAddInlineCalls.count == 0)
+        XCTAssertTrue(mockDraft.mockAttachmentList.capturedAddCalls.count == 1)
+        XCTAssertTrue(result.successfulContentIds.count == 0)
+    }
+
     func testAddPickerPhotos_whenPhotoItemIsVideo_itShouldBeAddedToTheDraftAsRegularAttachment() async throws {
         let mockItem1 = try testsHelper.makeMockPhotosPickerItem(fileName: "video.mp4", createFile: true)
 
