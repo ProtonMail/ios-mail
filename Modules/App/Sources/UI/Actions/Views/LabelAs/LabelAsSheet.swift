@@ -43,8 +43,8 @@ struct LabelAsSheet: View {
             .onAppear { model.handle(action: .viewAppear) }
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button(action: { model.handle(action: .doneButtonTapped) }) {
-                        Text(CommonL10n.done)
+                    Button(action: { model.handle(action: .saveButtonTapped) }) {
+                        Text(CommonL10n.save)
                             .fontWeight(.semibold)
                             .foregroundStyle(DS.Color.InteractionBrand.pressed)
                     }

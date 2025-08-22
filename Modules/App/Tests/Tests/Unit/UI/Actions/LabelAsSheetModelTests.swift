@@ -79,7 +79,7 @@ class LabelAsSheetModelTests: BaseTestCase {
 
     func testNavigation_WhenDoneButtonIsTapped_ItReturnsCorrectValue() {
         let sut = sut(ids: [.init(value: 7), .init(value: 88)], type: .message)
-        sut.handle(action: .doneButtonTapped)
+        sut.handle(action: .saveButtonTapped)
 
         XCTAssertEqual(invokedDismissCount, 1)
     }
@@ -247,7 +247,7 @@ class LabelAsSheetModelTests: BaseTestCase {
         let sut = sut(ids: itemsIDs, type: itemType)
 
         sut.handle(action: .viewAppear)
-        sut.handle(action: .doneButtonTapped)
+        sut.handle(action: .saveButtonTapped)
 
         XCTAssertEqual(
             spyToVerify(),
@@ -286,7 +286,7 @@ class LabelAsSheetModelTests: BaseTestCase {
 
         sut.handle(action: .viewAppear)
         sut.handle(action: .toggleSwitch)
-        sut.handle(action: .doneButtonTapped)
+        sut.handle(action: .saveButtonTapped)
 
         XCTAssertEqual(
             spyToVerify(),

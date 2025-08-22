@@ -57,7 +57,7 @@ class LabelAsSheetModel: ObservableObject {
             state = state.copy(\.shouldArchive, to: state.shouldArchive.toggled)
         case .createLabelButtonTapped:
             state = state.copy(\.createFolderLabelPresented, to: true)
-        case .doneButtonTapped:
+        case .saveButtonTapped:
             executeLabelAsAction()
         }
     }
