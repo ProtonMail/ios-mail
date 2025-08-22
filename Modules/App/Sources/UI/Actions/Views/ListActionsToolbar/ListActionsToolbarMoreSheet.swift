@@ -41,9 +41,7 @@ struct ListActionsToolbarMoreSheet: View {
                     section(content: state.moreSheetOnlyActions)
                     section(content: state.bottomBarActions)
 
-                    if CustomizeToolbarsFlag.isVisible {
-                        editToolbarSection()
-                    }
+                    editToolbarSection()
                 }
                 .padding(.all, DS.Spacing.large)
             }

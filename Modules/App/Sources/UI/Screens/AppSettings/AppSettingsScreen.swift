@@ -89,16 +89,14 @@ struct AppSettingsScreen: View {
                             isOn: comingSoonBinding
                         )
                     }
-                    if CustomizeToolbarsFlag.isVisible {
-                        FormSection(header: nil, footer: nil) {
-                            FormSmallButton(
-                                title: L10n.Settings.App.customizeToolbars,
-                                rightSymbol: .chevronRight
-                            ) {
-                                router.go(to: .customizeToolbars)
-                            }
-                            .roundedRectangleStyle()
+                    FormSection(header: nil, footer: nil) {
+                        FormSmallButton(
+                            title: L10n.Settings.App.customizeToolbars,
+                            rightSymbol: .chevronRight
+                        ) {
+                            router.go(to: .customizeToolbars)
                         }
+                        .roundedRectangleStyle()
                     }
                     mobileSignatureItem(mobileSignatureStatus: store.state.mobileSignatureStatus)
                     FormSection(

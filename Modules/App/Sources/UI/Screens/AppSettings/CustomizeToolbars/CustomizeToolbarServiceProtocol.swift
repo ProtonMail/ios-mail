@@ -15,12 +15,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-// FIXME: - To remove after Rust provides API
-
-enum CustomizeToolbarsFlag {
-    @TaskLocal static var isVisible = false
-}
-
 import proton_app_uniffi
 
 protocol CustomizeToolbarServiceProtocol: Sendable {
