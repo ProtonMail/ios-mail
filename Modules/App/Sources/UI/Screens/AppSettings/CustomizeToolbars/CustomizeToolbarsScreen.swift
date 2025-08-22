@@ -22,28 +22,27 @@ import InboxDesignSystem
 struct CustomizeToolbarsScreen: View {
     @StateObject private var store: CustomizeToolbarsStore
 
-    init(state: CustomizeToolbarState = .initial, toolbarService: ToolbarServiceProtocol) {
-        self._store = .init(wrappedValue: .init(state: state, toolbarService: toolbarService))
+    init(
+        state: CustomizeToolbarState = .initial,
+        customizeToolbarService: CustomizeToolbarServiceProtocol,
+        viewModeProvider: ViewModeProvider
+    ) {
+        self._store = .init(
+            wrappedValue: .init(
+                state: state,
+                customizeToolbarService: customizeToolbarService,
+                viewModeProvider: viewModeProvider
+            ))
     }
 
     var body: some View {
         ScrollView {
             VStack(spacing: DS.Spacing.extraLarge) {
-                FormSection(
-                    header: L10n.Settings.CustomizeToolbars.listToolbarSectionTitle,
-                    footer: L10n.Settings.CustomizeToolbars.listToolbarSectionFooter
-                ) {
-                    list(for: store.state.list) {
-                        store.handle(action: .editListToolbar)
-                    }
-                }
-
-                FormSection(
-                    header: L10n.Settings.CustomizeToolbars.conversationToolbarSectionTitle,
-                    footer: L10n.Settings.CustomizeToolbars.conversationToolbarSectionFooter
-                ) {
-                    list(for: store.state.conversation) {
-                        store.handle(action: .editConversationToolbar)
+                ForEachEnumerated(store.state.toolbars, id: \.offset) { toolbar, _ in
+                    FormSection(header: toolbar.header, footer: toolbar.footer) {
+                        list(for: toolbar.actions.displayItems) {
+                            store.handle(action: .editListToolbar)
+                        }
                     }
                 }
             }
@@ -56,7 +55,7 @@ struct CustomizeToolbarsScreen: View {
         .navigationTitle(L10n.Settings.App.customizeToolbars.string)
     }
 
-    private func list(for items: [CustomizeToolbarsItem], editToolbarAction: @escaping () -> Void) -> some View {
+    private func list(for items: [CustomizeToolbarsDisplayItem], editToolbarAction: @escaping () -> Void) -> some View {
         FormList(collection: items, separator: .normLeftPadding) { item in
             listItem(item, editToolbarAction: editToolbarAction)
         }
@@ -64,7 +63,7 @@ struct CustomizeToolbarsScreen: View {
     }
 
     @ViewBuilder
-    private func listItem(_ item: CustomizeToolbarsItem, editToolbarAction: @escaping () -> Void) -> some View {
+    private func listItem(_ item: CustomizeToolbarsDisplayItem, editToolbarAction: @escaping () -> Void) -> some View {
         switch item {
         case .action(let model):
             HStack(spacing: DS.Spacing.medium) {
@@ -90,43 +89,84 @@ struct CustomizeToolbarsScreen: View {
     }
 }
 
-#Preview {
-    CustomizeToolbarsScreen(toolbarService: ToolbarService())
-}
+import proton_app_uniffi
 
-struct ToolbarActionDisplayData {
-    let image: Image
-    let title: LocalizedStringResource
-}
+extension MobileAction {
 
-private extension ToolbarActionDisplayData {
-    init(imageResource: ImageResource, title: LocalizedStringResource) {
-        self.image = imageResource.image
-        self.title = title
-    }
-}
-
-extension ToolbarActionType {
-
-    var displayData: ToolbarActionDisplayData {
-        switch self {
-        case .markAsUnread:
-            .init(imageResource: DS.Icon.icEnvelopeDot, title: L10n.Action.markAsUnread)
-        case .moveToTrash:
-            .init(imageResource: DS.Icon.icTrash, title: L10n.Action.moveToTrash)
-        case .moveTo:
-            .init(imageResource: DS.Icon.icFolderArrowIn, title: L10n.Action.moveTo)
-        case .labelAs:
-            .init(imageResource: DS.Icon.icTag, title: L10n.Action.labelAs)
-        case .snooze:
-            .init(imageResource: DS.Icon.icClock, title: L10n.Action.snooze)
-        case .star:
-            .init(image: Image(symbol: .star), title: L10n.Action.star)
-        case .archive:
-            .init(imageResource: DS.Icon.icArchiveBox, title: L10n.Action.moveToArchive)
-        case .moveToSpam:
-            .init(imageResource: DS.Icon.icSpam, title: L10n.Action.moveToSpam)
+    var displayData: ActionDisplayData {
+        if let displayData = action?.displayData {
+            return displayData
         }
+        return .init(title: "It's not archive", image: DS.Icon.icArchiveBox.image)
+    }
+
+    private var action: Action? {
+        switch self {
+        case .archive:
+            Action.moveToArchive
+        case .forward:
+            Action.forward
+        case .label:
+            Action.labelAs
+        case .move:
+            Action.moveTo
+        case .print:
+            Action.print
+        case .reply:
+            Action.reply
+        case .reportPhishing:
+            Action.reportPhishing
+        case .savePdf:
+            Action.saveAsPDF
+        case .snooze:
+            Action.snooze
+        case .spam:
+            Action.moveToSpam
+        case .toggleLight:
+            Action.renderInLightMode
+        case .toggleRead:
+            Action.markAsRead
+        case .toggleStar:
+            Action.star
+        case .trash:
+            Action.moveToTrash
+        case .viewHeaders:
+            Action.viewHeaders
+        case .viewHtml:
+            Action.viewHTML
+        case .other, .senderEmails, .saveAttachments, .remind:
+            nil
+        }
+    }
+
+}
+
+private extension ToolbarWithActions {
+
+    var header: LocalizedStringResource {
+        switch self {
+        case .list:
+            L10n.Settings.CustomizeToolbars.listToolbarSectionTitle
+        case .message, .conversation:
+            L10n.Settings.CustomizeToolbars.conversationToolbarSectionTitle
+        }
+    }
+
+    var footer: LocalizedStringResource {
+        switch self {
+        case .list:
+            L10n.Settings.CustomizeToolbars.listToolbarSectionFooter
+        case .message, .conversation:
+            L10n.Settings.CustomizeToolbars.conversationToolbarSectionFooter
+        }
+    }
+
+}
+
+private extension CustomizeToolbarActions {
+
+    var displayItems: [CustomizeToolbarsDisplayItem] {
+        selected.map(CustomizeToolbarsDisplayItem.action) + [.editActions]
     }
 
 }

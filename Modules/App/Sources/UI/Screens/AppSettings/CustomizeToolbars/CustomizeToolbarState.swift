@@ -15,18 +15,46 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-struct CustomizeToolbarState {
-    let list: [CustomizeToolbarsItem]
-    let conversation: [CustomizeToolbarsItem]
+import InboxCore
+
+struct ToolbarsActions {
+    var list: CustomizeToolbarActions
+    var message: CustomizeToolbarActions
+    var conversation: CustomizeToolbarActions
 }
 
-enum CustomizeToolbarsItem {
-    case action(ToolbarActionType)
-    case editActions
+struct CustomizeToolbarActions {
+    var selected: [MobileAction]
+    var unselected: [MobileAction]
 }
+
+struct CustomizeToolbarState: Copying {
+    var toolbars: [ToolbarWithActions]
+}
+
+enum ToolbarWithActions {
+    case list(CustomizeToolbarActions)
+    case message(CustomizeToolbarActions)
+    case conversation(CustomizeToolbarActions)
+
+    var actions: CustomizeToolbarActions {
+        switch self {
+        case .list(let actions), .message(let actions), .conversation(let actions):
+            actions
+        }
+    }
+}
+
+import proton_app_uniffi
+
 
 extension CustomizeToolbarState {
     static var initial: Self {
-        .init(list: [], conversation: [])
+        .init(toolbars: [])
     }
+}
+
+enum CustomizeToolbarsDisplayItem {
+    case action(MobileAction)
+    case editActions
 }

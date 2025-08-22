@@ -16,11 +16,12 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import proton_app_uniffi
 
 enum EditToolbarAction {
     case actionsReordered(fromOffsets: IndexSet, toOffset: Int)
-    case removeFromSelectedTapped(actionToRemove: ToolbarActionType)
-    case addToSelectedTapped(actionToAdd: ToolbarActionType)
+    case removeFromSelectedTapped(actionToRemove: MobileAction)
+    case addToSelectedTapped(actionToAdd: MobileAction)
     case resetToOriginalTapped
     case saveTapped
     case cancelTapped

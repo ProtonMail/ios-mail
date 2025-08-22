@@ -15,26 +15,16 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import InboxCore
+import proton_app_uniffi
 
-enum ToolbarType {
-    case list
-    case message
-    case conversation
+protocol ViewModeProvider: Sendable {
+    func viewMode() async throws -> ViewMode
 }
 
-struct EditToolbarState: Copying {
-    let toolbarType: ToolbarType
-    var toolbarActions: CustomizeToolbarActions
-}
+extension MailUserSession: ViewModeProvider {
 
-extension EditToolbarState {
-
-    static func initial(toolbarType: ToolbarType) -> Self {
-        .init(
-            toolbarType: toolbarType,
-            toolbarActions: .init(selected: [], unselected: []),
-        )
+    func viewMode() async throws -> ViewMode {
+        try await mailSettings(ctx: self).get().viewMode
     }
 
 }

@@ -22,8 +22,8 @@ import InboxDesignSystem
 struct EditToolbarScreen: View {
     @StateObject private var store: EditToolbarStore
 
-    init(state: EditToolbarState, toolbarService: ToolbarServiceProtocol) {
-        self._store = .init(wrappedValue: .init(state: state, toolbarService: toolbarService))
+    init(state: EditToolbarState, customizeToolbarService: CustomizeToolbarServiceProtocol) {
+        self._store = .init(wrappedValue: .init(state: state, customizeToolbarService: customizeToolbarService))
     }
 
     var body: some View {
@@ -193,13 +193,53 @@ private extension EditToolbarState.ScreenType {
     NavigationStack {
         EditToolbarScreen(
             state: .init(
-                screenType: .list,
+                toolbarType: .list,
                 toolbarActions: .init(
-                    selected: [.markAsUnread, .archive, .labelAs],
-                    unselected: [.moveTo, .moveToSpam, .moveToTrash, .snooze, .star]
+                    selected: [.toggleRead, .archive, .label],
+                    unselected: [.move, .spam, .trash, .snooze, .toggleStar]
                 ),
             ),
-            toolbarService: ToolbarService()
+            customizeToolbarService: CustomizeToolbarServiceStub()
         )
+    }
+}
+
+import proton_app_uniffi
+
+final class CustomizeToolbarServiceStub: CustomizeToolbarServiceProtocol {
+    func getListToolbarActions() async throws(ActionError) -> [MobileAction] {
+        []
+    }
+
+    func getMessageToolbarActions() async throws(ActionError) -> [MobileAction] {
+        []
+    }
+
+    func getConversationToolbarActions() async throws(ActionError) -> [MobileAction] {
+        []
+    }
+
+    func updateListToolbarActions(actions: [MobileAction]) async throws(ActionError) {
+
+    }
+
+    func updateConversationToolbarActions(actions: [MobileAction]) async throws(ActionError) {
+
+    }
+
+    func updateMessageToolbarActions(actions: [MobileAction]) async throws(ActionError) {
+
+    }
+
+    func getAllListActions() -> [MobileAction] {
+        []
+    }
+
+    func getAllMessageActions() -> [MobileAction] {
+        []
+    }
+
+    func getAllConversationActions() -> [MobileAction] {
+        []
     }
 }

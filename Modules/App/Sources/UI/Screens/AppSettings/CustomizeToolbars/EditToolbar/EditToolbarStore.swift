@@ -22,11 +22,11 @@ import InboxCoreUI
 @MainActor
 class EditToolbarStore: StateStore {
     @Published var state: EditToolbarState
-    private let toolbarService: ToolbarServiceProtocol
+    private let customizeToolbarRepository: CustomizeToolbarRepository
 
-    init(state: EditToolbarState, toolbarService: ToolbarServiceProtocol) {
+    init(state: EditToolbarState, customizeToolbarService: CustomizeToolbarServiceProtocol) {
         self.state = state
-        self.toolbarService = toolbarService
+        self.customizeToolbarRepository = .init(customizeToolbarService: customizeToolbarService)
     }
 
     func handle(action: EditToolbarAction) async {
@@ -54,7 +54,7 @@ class EditToolbarStore: StateStore {
                 .copy(\.toolbarActions, to: .init(selected: selectedList, unselected: unselectedList))
         case .onLoad:
             do {
-                let actions = try await toolbarService.customizeToolbarActions()[keyPath: state.screenType.actionsKeyPath]
+                let actions = try await customizeToolbarRepository.fetchActions()[keyPath: state.toolbarType.actionsKeyPath]
                 state = state.copy(\.toolbarActions, to: actions)
             } catch {
                 AppLogger.log(error: error, category: .customizeToolbar)
@@ -65,14 +65,14 @@ class EditToolbarStore: StateStore {
     }
 }
 
-extension EditToolbarState.ScreenType {
+private extension ToolbarType {
 
-    var actionsKeyPath: KeyPath<CustomizeToolbarActions, ToolbarActions> {
+    var actionsKeyPath: KeyPath<ToolbarsActions, CustomizeToolbarActions> {
         switch self {
         case .list:
             \.list
         case .message:
-            fatalError("To implement")
+            \.message
         case .conversation:
             \.conversation
         }

@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import proton_app_uniffi
 import Combine
 import InboxCoreUI
 import InboxCore
@@ -22,11 +23,17 @@ import InboxCore
 @MainActor
 class CustomizeToolbarsStore: StateStore {
     @Published var state: CustomizeToolbarState
-    private let toolbarService: ToolbarServiceProtocol
+    private let customizeToolbarRepository: CustomizeToolbarRepository
+    private let viewModeProvider: ViewModeProvider
 
-    init(state: CustomizeToolbarState, toolbarService: ToolbarServiceProtocol) {
+    init(
+        state: CustomizeToolbarState,
+        customizeToolbarService: CustomizeToolbarServiceProtocol,
+        viewModeProvider: ViewModeProvider
+    ) {
         self.state = state
-        self.toolbarService = toolbarService
+        self.customizeToolbarRepository = .init(customizeToolbarService: customizeToolbarService)
+        self.viewModeProvider = viewModeProvider
     }
 
     func handle(action: CustomizeToolbarsAction) async {
@@ -42,13 +49,69 @@ class CustomizeToolbarsStore: StateStore {
 
     private func fetchActions() async {
         do {
-            let actions = try await toolbarService.customizeToolbarActions()
-            state = .init(
-                list: actions.list.selected.map { actionType in .action(actionType) } + [.editActions],
-                conversation: actions.conversation.selected.map { actionType in .action(actionType) } + [.editActions]
-            )
+            let toolbarsActions = try await customizeToolbarRepository.fetchActions()
+            let viewMode = try await viewModeProvider.viewMode()
+            let conversationToolbar: ToolbarWithActions =
+                switch viewMode {
+                case .conversations:
+                    .conversation(toolbarsActions.conversation)
+                case .messages:
+                    .message(toolbarsActions.conversation)
+                }
+            state = state.copy(\.toolbars, to: [.list(toolbarsActions.list), conversationToolbar])
         } catch {
             AppLogger.log(error: error, category: .customizeToolbar)
         }
     }
+}
+
+struct CustomizeToolbarRepository: Sendable {
+    private let customizeToolbarService: CustomizeToolbarServiceProtocol
+
+    init(customizeToolbarService: CustomizeToolbarServiceProtocol) {
+        self.customizeToolbarService = customizeToolbarService
+    }
+
+    func fetchActions() async throws -> ToolbarsActions {
+        .init(
+            list: try await actions(for: .list),
+            message: try await actions(for: .message),
+            conversation: try await actions(for: .conversation)
+        )
+    }
+
+    private func actions(for toolbarType: ToolbarType) async throws -> CustomizeToolbarActions {
+        let allActions = customizeToolbarService.allActions(for: toolbarType)
+        let selectedActions = try await customizeToolbarService.selectedActions(for: toolbarType)
+        return .init(
+            selected: selectedActions,
+            unselected: allActions.filter { action in selectedActions.contains(action) }
+        )
+    }
+}
+
+private extension CustomizeToolbarServiceProtocol {
+
+    func allActions(for toolbar: ToolbarType) -> [MobileAction] {
+        switch toolbar {
+        case .list:
+            getAllListActions()
+        case .message:
+            getAllMessageActions()
+        case .conversation:
+            getAllConversationActions()
+        }
+    }
+
+    func selectedActions(for toolbar: ToolbarType) async throws(ActionError) -> [MobileAction] {
+        switch toolbar {
+        case .list:
+            try await getListToolbarActions()
+        case .message:
+            try await getMessageToolbarActions()
+        case .conversation:
+            try await getConversationToolbarActions()
+        }
+    }
+
 }
