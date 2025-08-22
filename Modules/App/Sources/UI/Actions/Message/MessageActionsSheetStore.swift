@@ -26,7 +26,7 @@ class MessageActionsSheetStore: StateStore {
 
     private let mailbox: Mailbox
     private let service: AllAvailableMessageActionsForActionSheetService
-    private let actionSelected: (MessageAction) -> Void
+    private let actionTapped: (MessageAction) -> Void
     private let messageAppearanceOverrideStore: MessageAppearanceOverrideStore
 
     init(
@@ -34,23 +34,25 @@ class MessageActionsSheetStore: StateStore {
         mailbox: Mailbox,
         messageAppearanceOverrideStore: MessageAppearanceOverrideStore,
         service: @escaping AllAvailableMessageActionsForActionSheetService,
-        actionSelected: @escaping (MessageAction) -> Void,
+        actionTapped: @escaping (MessageAction) -> Void,
     ) {
         self.state = state
         self.mailbox = mailbox
         self.messageAppearanceOverrideStore = messageAppearanceOverrideStore
         self.service = service
-        self.actionSelected = actionSelected
+        self.actionTapped = actionTapped
     }
 
     func handle(action: MessageActionsSheetAction) async {
         switch action {
         case .onLoad:
             await loadActions()
-        case .actionSelected(let action):
-            actionSelected(action)
+        case .actionTapped(let action):
+            actionTapped(action)
         case .colorSchemeChanged(let colorScheme):
             state = state.copy(\.colorScheme, to: colorScheme)
+        case .editToolbarTapped:
+            state = state.copy(\.isEditToolbarPresented, to: true)
         }
     }
 

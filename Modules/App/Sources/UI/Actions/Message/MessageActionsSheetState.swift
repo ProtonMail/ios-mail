@@ -24,6 +24,7 @@ struct MessageActionsSheetState: Copying, Equatable {
     let title: String
     var actions: MessageActionSheet
     var colorScheme: ColorScheme
+    var isEditToolbarPresented: Bool
 }
 
 extension MessageActionsSheetState {
@@ -38,7 +39,8 @@ extension MessageActionsSheetState {
                 moveActions: [],
                 generalActions: []
             ),
-            colorScheme: .light
+            colorScheme: .light,
+            isEditToolbarPresented: false
         )
     }
 

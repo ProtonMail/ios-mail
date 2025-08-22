@@ -24,8 +24,9 @@ import SwiftUI
 struct MessageActionsSheet: View {
     private let state: MessageActionsSheetState
     private let mailbox: Mailbox
+    private let mailUserSession: MailUserSession
     private let service: AllAvailableMessageActionsForActionSheetService
-    private let actionSelected: (MessageAction) -> Void
+    private let actionTapped: (MessageAction) -> Void
 
     @Environment(\.messageAppearanceOverrideStore) var messageAppearanceOverrideStore
     @Environment(\.colorScheme) var colorScheme
@@ -33,13 +34,15 @@ struct MessageActionsSheet: View {
     init(
         state: MessageActionsSheetState,
         mailbox: Mailbox,
+        mailUserSession: MailUserSession,
         service: @escaping AllAvailableMessageActionsForActionSheetService = allAvailableMessageActionsForActionSheet,
-        actionSelected: @escaping (MessageAction) -> Void
+        actionTapped: @escaping (MessageAction) -> Void,
     ) {
         self.state = state
         self.mailbox = mailbox
+        self.mailUserSession = mailUserSession
         self.service = service
-        self.actionSelected = actionSelected
+        self.actionTapped = actionTapped
     }
 
     var body: some View {
@@ -49,7 +52,7 @@ struct MessageActionsSheet: View {
                 mailbox: mailbox,
                 messageAppearanceOverrideStore: messageAppearanceOverrideStore!,
                 service: service,
-                actionSelected: actionSelected
+                actionTapped: actionTapped
             )
         ) { state, store in
             ClosableScreen {
@@ -59,18 +62,26 @@ struct MessageActionsSheet: View {
                         verticalSection(actions: store.state.actions.messageActions, store: store)
                         verticalSection(actions: store.state.actions.moveActions, store: store)
                         verticalSection(actions: store.state.actions.generalActions, store: store)
+
+                        EditToolbarSheetSection {
+                            store.handle(action: .editToolbarTapped)
+                        }
                     }
                     .padding(.all, DS.Spacing.large)
                 }
                 .background(DS.Color.BackgroundInverted.norm)
                 .navigationTitle(store.state.title)
                 .navigationBarTitleDisplayMode(.inline)
-            }.onLoad {
+            }
+            .onLoad {
                 store.handle(action: .colorSchemeChanged(colorScheme))
                 store.handle(action: .onLoad)
             }
             .onChange(of: colorScheme) { _, newValue in
                 store.handle(action: .colorSchemeChanged(newValue))
+            }
+            .sheet(isPresented: store.binding(\.isEditToolbarPresented)) {
+                EditToolbarScreen(state: .initial(toolbarType: .message), customizeToolbarService: mailUserSession)
             }
         }
     }
@@ -85,12 +96,12 @@ struct MessageActionsSheet: View {
 
     private func verticalSection(actions: [MessageAction], store: MessageActionsSheetStore) -> some View {
         ActionSheetVerticalSection(actions: actions) { action in
-            store.handle(action: .actionSelected(action))
+            store.handle(action: .actionTapped(action))
         }
     }
 
     private func horizontalButton(action: MessageAction, store: MessageActionsSheetStore) -> some View {
-        Button(action: { store.handle(action: .actionSelected(action)) }) {
+        Button(action: { store.handle(action: .actionTapped(action)) }) {
             VStack(spacing: DS.Spacing.standard) {
                 action.displayData.image
                     .square(size: 24)

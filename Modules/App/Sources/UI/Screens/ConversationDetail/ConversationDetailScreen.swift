@@ -82,7 +82,7 @@ struct ConversationDetailScreen: View {
                 mailbox: { model.mailbox.unsafelyUnwrapped },
                 mailUserSession: mailUserSession,
                 state: $model.actionSheets,
-                messageActionSelected: { action, id in
+                messageActionTapped: { action, id in
                     Task {
                         await model.handle(
                             action: action,
@@ -94,7 +94,7 @@ struct ConversationDetailScreen: View {
                         }
                     }
                 },
-                conversationActionSelected: { action in
+                conversationActionTapped: { action in
                     Task {
                         await model.handle(
                             action: action,

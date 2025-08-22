@@ -25,15 +25,24 @@ struct ConversationActionsSheet: View {
     private let conversationID: ID
     private let title: String
     private let mailbox: Mailbox
-    private let actionSelected: (ConversationAction) -> Void
+    private let mailUserSession: MailUserSession
+    private let actionTapped: (ConversationAction) -> Void
 
     @State var actions: ConversationActionSheet?
+    @State var isEditToolbarPresented = false
 
-    init(conversationID: ID, title: String, mailbox: Mailbox, actionSelected: @escaping (ConversationAction) -> Void) {
+    init(
+        conversationID: ID,
+        title: String,
+        mailbox: Mailbox,
+        mailUserSession: MailUserSession,
+        actionTapped: @escaping (ConversationAction) -> Void
+    ) {
         self.conversationID = conversationID
         self.title = title
         self.mailbox = mailbox
-        self.actionSelected = actionSelected
+        self.mailUserSession = mailUserSession
+        self.actionTapped = actionTapped
     }
 
     var body: some View {
@@ -44,19 +53,30 @@ struct ConversationActionsSheet: View {
                         verticalSection(actions: actions.conversationActions)
                         verticalSection(actions: actions.moveActions)
                     }
+
+                    EditToolbarSheetSection {
+                        Task { await handle(action: .editToolbarTapped) }
+                    }
                 }
                 .padding(.all, DS.Spacing.large)
             }
             .background(DS.Color.BackgroundInverted.norm)
             .navigationTitle(title)
             .navigationBarTitleDisplayMode(.inline)
-        }.onLoad { Task { await handle(action: .onLoad) } }
+        }
+        .onLoad { Task { await handle(action: .onLoad) } }
+        .sheet(isPresented: $isEditToolbarPresented) {
+            EditToolbarScreen(
+                state: .initial(toolbarType: .conversation),
+                customizeToolbarService: mailUserSession
+            )
+        }
     }
 
     private func verticalSection(actions: [ConversationAction]) -> some View {
         ActionSheetVerticalSection(actions: actions) { action in
             Task {
-                await handle(action: .actionSelected(action))
+                await handle(action: .actionTapped(action))
             }
         }
     }
@@ -65,8 +85,10 @@ struct ConversationActionsSheet: View {
         switch action {
         case .onLoad:
             await loadActions()
-        case .actionSelected(let action):
-            actionSelected(action)
+        case .actionTapped(let action):
+            actionTapped(action)
+        case .editToolbarTapped:
+            isEditToolbarPresented = true
         }
     }
 

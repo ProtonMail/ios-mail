@@ -20,6 +20,7 @@ import SwiftUI
 
 enum MessageActionsSheetAction {
     case onLoad
-    case actionSelected(MessageAction)
+    case actionTapped(MessageAction)
     case colorSchemeChanged(ColorScheme)
+    case editToolbarTapped
 }

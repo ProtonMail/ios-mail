@@ -35,8 +35,8 @@ extension View {
         mailbox: @escaping () -> Mailbox,
         mailUserSession: MailUserSession,
         state: Binding<MailboxActionSheetsState>,
-        messageActionSelected: @escaping (MessageAction, ID) -> Void,
-        conversationActionSelected: @escaping (ConversationAction) -> Void,
+        messageActionTapped: @escaping (MessageAction, ID) -> Void,
+        conversationActionTapped: @escaping (ConversationAction) -> Void,
         goBackNavigation: (() -> Void)? = nil
     ) -> some View {
         modifier(
@@ -44,8 +44,8 @@ extension View {
                 mailbox: mailbox,
                 mailUserSession: mailUserSession,
                 state: state,
-                messageActionSelected: messageActionSelected,
-                conversationActionSelected: conversationActionSelected,
+                messageActionTapped: messageActionTapped,
+                conversationActionTapped: conversationActionTapped,
                 goBackNavigation: goBackNavigation
             ))
     }
@@ -56,22 +56,22 @@ private struct MailboxActionSheets: ViewModifier {
     private let mailbox: () -> Mailbox
     private let mailUserSession: MailUserSession
     private let goBackNavigation: (() -> Void)?
-    private let messageActionSelected: (MessageAction, ID) -> Void
-    private let conversationActionSelected: (ConversationAction) -> Void
+    private let messageActionTapped: (MessageAction, ID) -> Void
+    private let conversationActionTapped: (ConversationAction) -> Void
 
     init(
         mailbox: @escaping () -> Mailbox,
         mailUserSession: MailUserSession,
         state: Binding<MailboxActionSheetsState>,
-        messageActionSelected: @escaping (MessageAction, ID) -> Void,
-        conversationActionSelected: @escaping (ConversationAction) -> Void,
+        messageActionTapped: @escaping (MessageAction, ID) -> Void,
+        conversationActionTapped: @escaping (ConversationAction) -> Void,
         goBackNavigation: (() -> Void)?
     ) {
         self.mailbox = mailbox
         self.mailUserSession = mailUserSession
         self._state = state
-        self.conversationActionSelected = conversationActionSelected
-        self.messageActionSelected = messageActionSelected
+        self.conversationActionTapped = conversationActionTapped
+        self.messageActionTapped = messageActionTapped
         self.goBackNavigation = goBackNavigation
     }
 
@@ -81,7 +81,8 @@ private struct MailboxActionSheets: ViewModifier {
                 MessageActionsSheet(
                     state: .initial(messageID: input.id, title: input.title),
                     mailbox: mailbox(),
-                    actionSelected: { messageActionSelected($0, input.id) }
+                    mailUserSession: mailUserSession,
+                    actionTapped: { messageActionTapped($0, input.id) }
                 )
                 .alert(model: $state.alert)
             }
@@ -90,7 +91,8 @@ private struct MailboxActionSheets: ViewModifier {
                     conversationID: input.id,
                     title: input.title,
                     mailbox: mailbox(),
-                    actionSelected: { conversationActionSelected($0) }
+                    mailUserSession: mailUserSession,
+                    actionTapped: { conversationActionTapped($0) }
                 )
                 .alert(model: $state.alert)
             }
