@@ -26,6 +26,7 @@ struct ConversationDetailScreen: View {
     @State private var isHeaderVisible: Bool = false
     @EnvironmentObject var toastStateStore: ToastStateStore
     @Environment(\.colorScheme) var colorScheme
+    @Environment(\.refreshToolbar) var refreshToolbarNotifier
     @Binding private var navigationPath: NavigationPath
     private let draftPresenter: DraftPresenter
     private let mailUserSession: MailUserSession
@@ -75,6 +76,13 @@ struct ConversationDetailScreen: View {
                     }
                 }
             )
+            .onReceive(refreshToolbarNotifier.refreshToolbar) { toolbarType in
+                if toolbarType == .message || toolbarType == .conversation {
+                    Task {
+                        await model.reloadBottomBarActions()
+                    }
+                }
+            }
             .toolbar(model.isBottomBarHidden ? .hidden : .visible, for: .bottomBar)
             .bottomToolbarStyle()
             .animation(.default, value: model.isBottomBarHidden)

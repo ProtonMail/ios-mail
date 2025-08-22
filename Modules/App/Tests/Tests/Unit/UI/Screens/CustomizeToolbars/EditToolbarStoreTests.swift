@@ -16,16 +16,20 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import ProtonMail
+import Combine
 import Testing
 
 @MainActor
 class EditToolbarStoreTests {
-    lazy var customizeToolbarServiceSpy = CustomizeToolbarServiceSpy()
+    var cancellables = Set<AnyCancellable>()
+    let customizeToolbarServiceSpy = CustomizeToolbarServiceSpy()
+    let refreshToolbarNotifier = RefreshToolbarNotifier()
 
     func makeSUT(toolbarType: ToolbarType, dismiss: @escaping () -> Void) -> EditToolbarStore {
         .init(
             state: .initial(toolbarType: toolbarType),
             customizeToolbarService: customizeToolbarServiceSpy,
+            refreshToolbarNotifier: refreshToolbarNotifier,
             dismiss: dismiss
         )
     }
@@ -34,6 +38,13 @@ class EditToolbarStoreTests {
     func listActions_ItUpdatesStateCorrectly() async {
         customizeToolbarServiceSpy.allMessageActionsStub = [.reply, .forward, .spam, .archive, .move]
         customizeToolbarServiceSpy.getMessageToolbarActionsStub = [.reply]
+
+        var refreshEventReceived: [ToolbarType] = []
+
+        refreshToolbarNotifier
+            .refreshToolbar
+            .sink(receiveValue: { refreshEventReceived.append($0) })
+            .store(in: &cancellables)
 
         var dismissInvokeCount = 0
 
@@ -80,6 +91,7 @@ class EditToolbarStoreTests {
         await sut.handle(action: .saveTapped)
 
         #expect(customizeToolbarServiceSpy.updateMessageToolbarActionsInvoked == [[.spam]])
+        #expect(refreshEventReceived == [.message])
     }
 
     @Test

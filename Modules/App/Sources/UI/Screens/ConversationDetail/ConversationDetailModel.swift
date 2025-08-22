@@ -694,7 +694,7 @@ extension ConversationDetailModel {
         }
     }
 
-    private func reloadBottomBarActions() async {
+    func reloadBottomBarActions() async {
         guard let mailbox else { return }
         switch mailbox.viewMode() {
         case .conversations:

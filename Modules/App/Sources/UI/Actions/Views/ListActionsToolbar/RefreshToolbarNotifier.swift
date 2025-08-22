@@ -15,23 +15,17 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-enum ToolbarType: Equatable {
-    case list
-    case message
-    case conversation
+import Combine
+import SwiftUI
+
+class RefreshToolbarNotifier: ObservableObject {
+    let refreshToolbar = PassthroughSubject<ToolbarType, Never>()
+
+    func refresh(toolbar: ToolbarType) {
+        refreshToolbar.send(toolbar)
+    }
 }
 
-extension ToolbarType: Identifiable {
-
-    var id: String {
-        switch self {
-        case .list:
-            "list"
-        case .message:
-            "message"
-        case .conversation:
-            "conversation"
-        }
-    }
-
+extension EnvironmentValues {
+    @Entry var refreshToolbar = RefreshToolbarNotifier()
 }

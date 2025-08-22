@@ -25,6 +25,7 @@ struct EditToolbarScreen: View {
     private let state: EditToolbarState
     private let customizeToolbarService: CustomizeToolbarServiceProtocol
     @Environment(\.dismiss) var dismiss
+    @Environment(\.refreshToolbar) var refreshToolbarNotifier
 
     init(state: EditToolbarState, customizeToolbarService: CustomizeToolbarServiceProtocol) {
         self.state = state
@@ -37,6 +38,7 @@ struct EditToolbarScreen: View {
                 store: EditToolbarStore(
                     state: state,
                     customizeToolbarService: customizeToolbarService,
+                    refreshToolbarNotifier: refreshToolbarNotifier,
                     dismiss: { dismiss.callAsFunction() }
                 )
             ) { state, store in

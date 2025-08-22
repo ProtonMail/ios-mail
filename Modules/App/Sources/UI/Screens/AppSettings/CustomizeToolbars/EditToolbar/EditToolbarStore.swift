@@ -23,15 +23,18 @@ import InboxCoreUI
 class EditToolbarStore: StateStore {
     @Published var state: EditToolbarState
     private let customizeToolbarRepository: CustomizeToolbarRepository
+    private let refreshToolbarNotifier: RefreshToolbarNotifier
     private let dismiss: () -> Void
 
     init(
         state: EditToolbarState,
         customizeToolbarService: CustomizeToolbarServiceProtocol,
+        refreshToolbarNotifier: RefreshToolbarNotifier,
         dismiss: @escaping () -> Void
     ) {
         self.state = state
         self.customizeToolbarRepository = .init(customizeToolbarService: customizeToolbarService)
+        self.refreshToolbarNotifier = refreshToolbarNotifier
         self.dismiss = dismiss
     }
 
@@ -76,6 +79,7 @@ class EditToolbarStore: StateStore {
             } catch {
                 AppLogger.log(error: error, category: .customizeToolbar)
             }
+            refreshToolbarNotifier.refresh(toolbar: state.toolbarType)
             dismiss()
         case .cancelTapped:
             dismiss()
