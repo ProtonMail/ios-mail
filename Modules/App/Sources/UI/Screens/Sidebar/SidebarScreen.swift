@@ -408,7 +408,7 @@ private extension SidebarOtherItem {
 
     var hideSidebar: Bool {
         switch type {
-        case .createFolder, .createLabel, .settings, .signOut:
+        case .createFolder, .createLabel, .settings:
             true
         case .shareLogs, .contacts, .bugReport, .subscriptions:
             false

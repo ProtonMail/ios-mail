@@ -66,15 +66,6 @@ extension Array where Element == SidebarOtherItem {
             )
         #endif
 
-        items.append(
-            .init(
-                type: .signOut,
-                icon: DS.Icon.icSignOut,
-                name: "Sign Out".notLocalized,
-                isSelected: false
-            )
-        )
-
         return items
     }
 
