@@ -21,10 +21,7 @@ import InboxDesignSystem
 import proton_app_uniffi
 import SwiftUI
 
-@available(*, deprecated, message: "Use SystemLabel directly")
-typealias SystemFolderLabel = SystemLabel
-
-extension SystemFolderLabel {
+extension SystemLabel {
     var humanReadable: LocalizedStringResource {
         switch self {
         case .inbox:

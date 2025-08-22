@@ -149,7 +149,7 @@ private extension SelectedMailbox {
 
 }
 
-private extension SystemFolderLabel {
+private extension SystemLabel {
 
     func emptyScreenVariant(isUnreadFilterOn: Bool) -> NoResultsView.Variant {
         switch self {

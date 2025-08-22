@@ -15,11 +15,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import proton_app_uniffi
 import SwiftUI
 
 struct SystemFolder: Equatable, SelectableItem {
     let folderID: ID
-    let type: SystemFolderLabel
+    let type: SystemLabel
     let unreadCount: String?
 
     // MARK: - SelectableItem

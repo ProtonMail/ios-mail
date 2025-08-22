@@ -15,13 +15,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import proton_app_uniffi
 import UIKit
 
 enum SelectedMailbox: Equatable {
     /// The `inbox` case is a workaround to be able to launch the mailbox screen without having to wait
     /// until the SDK returns the list of available local label ids.
     case inbox
-    case systemFolder(labelId: ID, systemFolder: SystemFolderLabel)
+    case systemFolder(labelId: ID, systemFolder: SystemLabel)
     case customLabel(labelId: ID, name: LocalizedStringResource)
     case customFolder(labelId: ID, name: LocalizedStringResource)
 
@@ -59,7 +60,7 @@ enum SelectedMailbox: Equatable {
     var name: LocalizedStringResource {
         switch self {
         case .inbox:
-            return SystemFolderLabel.inbox.humanReadable
+            return SystemLabel.inbox.humanReadable
         case .systemFolder(_, let systemFolder):
             return systemFolder.humanReadable
         case .customLabel(_, let name):
@@ -70,10 +71,10 @@ enum SelectedMailbox: Equatable {
     }
 
     /// Only available for system folders mailboxes
-    var systemFolder: SystemFolderLabel? {
+    var systemFolder: SystemLabel? {
         switch self {
         case .inbox:
-            return SystemFolderLabel.inbox
+            return SystemLabel.inbox
         case .systemFolder(_, let systemFolder):
             return systemFolder
         case .customLabel, .customFolder:
@@ -83,10 +84,5 @@ enum SelectedMailbox: Equatable {
 
     static func == (lhs: SelectedMailbox, rhs: SelectedMailbox) -> Bool {
         lhs.localId == rhs.localId
-    }
-
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(localId)
-        hasher.combine(name.string)
     }
 }

@@ -76,13 +76,13 @@ final class MailboxModel: ObservableObject {
 
     private var messagesShouldDisplaySenderEmail: Bool {
         let systemFolder = selectedMailbox.systemFolder
-        return ![SystemFolderLabel.drafts, .allDrafts, .sent, .allSent, .scheduled]
+        return ![SystemLabel.drafts, .allDrafts, .sent, .allSent, .scheduled]
             .contains(systemFolder)
     }
 
     private var itemsShouldShowLocation: Bool {
         let systemFolder = selectedMailbox.systemFolder
-        let mailboxOfSpecificSystemFolder = [SystemFolderLabel.allMail, .almostAllMail, .starred].contains(systemFolder)
+        let mailboxOfSpecificSystemFolder = [SystemLabel.allMail, .almostAllMail, .starred].contains(systemFolder)
         return mailboxOfSpecificSystemFolder || selectedMailbox.isCustomLabel
     }
 
