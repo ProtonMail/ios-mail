@@ -21,13 +21,10 @@ import InboxDesignSystem
 extension MobileAction {
 
     var displayData: ActionDisplayData {
-        if let displayData = action?.displayData {
-            return displayData
-        }
-        return .init(title: "It's not archive", image: DS.Icon.icArchiveBox.image)
+        action.displayData
     }
 
-    private var action: Action? {
+    private var action: Action {
         switch self {
         case .archive:
             Action.moveToArchive
@@ -43,8 +40,6 @@ extension MobileAction {
             Action.reply
         case .reportPhishing:
             Action.reportPhishing
-        case .savePdf:
-            Action.saveAsPDF
         case .snooze:
             Action.snooze
         case .spam:
@@ -61,8 +56,6 @@ extension MobileAction {
             Action.viewHeaders
         case .viewHtml:
             Action.viewHTML
-        case .other, .senderEmails, .saveAttachments, .remind:
-            nil
         }
     }
 
