@@ -45,7 +45,7 @@ struct CustomizeToolbarsScreen: View {
                 ForEachEnumerated(store.state.toolbars, id: \.offset) { toolbar, _ in
                     FormSection(header: toolbar.header, footer: toolbar.footer) {
                         list(for: toolbar.actions.displayItems) {
-                            store.handle(action: .editToolbarTapped(toolbar.toolbarType))
+                            store.handle(action: .editToolbarSelected(toolbar.toolbarType))
                         }
                     }
                 }

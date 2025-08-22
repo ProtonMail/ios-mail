@@ -17,7 +17,7 @@
 
 import proton_app_uniffi
 
-struct CustomizeToolbarActions {
+struct CustomizeToolbarActions: Equatable {
     var selected: [MobileAction]
     var unselected: [MobileAction]
 }

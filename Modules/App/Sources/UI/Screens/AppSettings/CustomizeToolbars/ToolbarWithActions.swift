@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-enum ToolbarWithActions {
+enum ToolbarWithActions: Equatable {
     case list(CustomizeToolbarActions)
     case message(CustomizeToolbarActions)
     case conversation(CustomizeToolbarActions)

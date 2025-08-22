@@ -40,7 +40,7 @@ class CustomizeToolbarsStore: StateStore {
         switch action {
         case .onAppear:
             await fetchActions()
-        case .editToolbarTapped(let toolbarType):
+        case .editToolbarSelected(let toolbarType):
             state = state.copy(\.editToolbar, to: toolbarType)
         }
     }
@@ -54,7 +54,7 @@ class CustomizeToolbarsStore: StateStore {
                 case .conversations:
                     .conversation(toolbarsActions.conversation)
                 case .messages:
-                    .message(toolbarsActions.conversation)
+                    .message(toolbarsActions.message)
                 }
             state = state.copy(\.toolbars, to: [.list(toolbarsActions.list), conversationToolbar])
         } catch {

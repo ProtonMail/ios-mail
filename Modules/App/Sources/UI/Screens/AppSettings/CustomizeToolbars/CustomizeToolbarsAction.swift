@@ -17,5 +17,5 @@
 
 enum CustomizeToolbarsAction {
     case onAppear
-    case editToolbarTapped(ToolbarType)
+    case editToolbarSelected(ToolbarType)
 }
