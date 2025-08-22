@@ -79,7 +79,8 @@ class ListActionsToolbarStoreTests: BaseTestCase {
             .init(
                 bottomBarActions: [.notSpam(.testInbox)],
                 moreSheetOnlyActions: [.labelAs, .markRead],
-                isSnoozeSheetPresented: false
+                isSnoozeSheetPresented: false,
+                isEditToolbarSheetPresented: false
             ))
     }
 
@@ -101,8 +102,17 @@ class ListActionsToolbarStoreTests: BaseTestCase {
             .init(
                 bottomBarActions: [.more],
                 moreSheetOnlyActions: [.notSpam(.testInbox), .permanentDelete],
-                isSnoozeSheetPresented: false
+                isSnoozeSheetPresented: false,
+                isEditToolbarSheetPresented: false
             ))
+    }
+
+    func testState_WhenEditToolbarActionIsSelected_ItHasCorrectPresentationStatus() {
+        sut = makeSUT(viewMode: .messages)
+
+        sut.handle(action: .editToolbarTapped)
+
+        XCTAssertEqual(sut.state.isEditToolbarSheetPresented, true)
     }
 
     func testState_WhenListItemsSelectionIsUpdatedWithNoSelection_ItReturnsCorrectState() {

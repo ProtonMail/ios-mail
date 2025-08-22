@@ -41,7 +41,7 @@ class MessageActionsSheetStoreTests {
 
                 return .ok(self.stubbedMessageActions)
             },
-            actionSelected: { action in self.actionSelectedInvoked.append(action) }
+            actionTapped: { action in self.actionSelectedInvoked.append(action) }
         )
     }
 
@@ -62,14 +62,22 @@ class MessageActionsSheetStoreTests {
                     messageID: .init(value: 7),
                     title: "Hello",
                     actions: stubbedMessageActions,
-                    colorScheme: .dark
+                    colorScheme: .dark,
+                    isEditToolbarPresented: false
                 ))
     }
 
     @Test
     func actionIsSlected_ItEmitsCorrectAction() async {
-        await sut.handle(action: .actionSelected(.reply))
+        await sut.handle(action: .actionTapped(.reply))
 
         #expect(actionSelectedInvoked == [.reply])
+    }
+
+    @Test
+    func editToolbarIsTapped_ItHasCorrectPresentationState() async {
+        await sut.handle(action: .editToolbarTapped)
+
+        #expect(sut.state.isEditToolbarPresented == true)
     }
 }
