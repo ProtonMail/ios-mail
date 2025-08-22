@@ -16,17 +16,20 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import SwiftUI
+import InboxCore
 import InboxCoreUI
 import InboxDesignSystem
 
 struct CustomizeToolbarsScreen: View {
     @StateObject private var store: CustomizeToolbarsStore
+    private let customizeToolbarService: CustomizeToolbarServiceProtocol
 
     init(
         state: CustomizeToolbarState = .initial,
         customizeToolbarService: CustomizeToolbarServiceProtocol,
         viewModeProvider: ViewModeProvider
     ) {
+        self.customizeToolbarService = customizeToolbarService
         self._store = .init(
             wrappedValue: .init(
                 state: state,
@@ -41,16 +44,35 @@ struct CustomizeToolbarsScreen: View {
                 ForEachEnumerated(store.state.toolbars, id: \.offset) { toolbar, _ in
                     FormSection(header: toolbar.header, footer: toolbar.footer) {
                         list(for: toolbar.actions.displayItems) {
-                            store.handle(action: .editListToolbar)
+                            store.handle(action: .editToolbarTapped(toolbar.toolbarType))
                         }
                     }
                 }
             }
             .padding(.horizontal, DS.Spacing.large)
             .padding(.bottom, DS.Spacing.extraLarge)
-        }.onLoad {
-            store.handle(action: .onLoad)
+        }.onAppear {
+            store.handle(action: .onAppear)
         }
+        .onChange(
+            of: store.state.editToolbar,
+            { oldValue, newValue in
+                if oldValue != nil && newValue == nil {
+                    store.handle(action: .onAppear)
+                }
+            }
+        )
+        .sheet(
+            item: $store.state.editToolbar,
+            content: { toolbarType in
+                NavigationStack {
+                    EditToolbarScreen(
+                        state: .initial(toolbarType: toolbarType),
+                        customizeToolbarService: customizeToolbarService
+                    )
+                }
+            }
+        )
         .background(DS.Color.BackgroundInverted.norm)
         .navigationTitle(L10n.Settings.App.customizeToolbars.string)
     }
@@ -167,6 +189,36 @@ private extension CustomizeToolbarActions {
 
     var displayItems: [CustomizeToolbarsDisplayItem] {
         selected.map(CustomizeToolbarsDisplayItem.action) + [.editActions]
+    }
+
+}
+
+private extension ToolbarWithActions {
+
+    var toolbarType: ToolbarType {
+        switch self {
+        case .list:
+            .list
+        case .message:
+            .message
+        case .conversation:
+            .conversation
+        }
+    }
+
+}
+
+extension ToolbarType: Identifiable {
+
+    var id: String {
+        switch self {
+        case .list:
+            "list"
+        case .message:
+            "message"
+        case .conversation:
+            "conversation"
+        }
     }
 
 }

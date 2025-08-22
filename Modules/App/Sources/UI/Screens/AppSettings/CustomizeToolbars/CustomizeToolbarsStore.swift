@@ -38,12 +38,10 @@ class CustomizeToolbarsStore: StateStore {
 
     func handle(action: CustomizeToolbarsAction) async {
         switch action {
-        case .onLoad:
+        case .onAppear:
             await fetchActions()
-        case .editListToolbar:
-            break
-        case .editConversationToolbar:
-            break
+        case .editToolbarTapped(let toolbarType):
+            state = state.copy(\.editToolbar, to: toolbarType)
         }
     }
 
@@ -89,7 +87,7 @@ struct CustomizeToolbarRepository: Sendable {
         let selectedActions = try await customizeToolbarService.selectedActions(for: toolbarType)
         return .init(
             selected: selectedActions,
-            unselected: allActions.filter { action in selectedActions.contains(action) }
+            unselected: allActions.filter { action in !selectedActions.contains(action) }
         )
     }
 }

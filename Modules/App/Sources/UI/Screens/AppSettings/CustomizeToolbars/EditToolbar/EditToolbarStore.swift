@@ -76,6 +76,7 @@ class EditToolbarStore: StateStore {
             } catch {
                 AppLogger.log(error: error, category: .customizeToolbar)
             }
+            dismiss()
         case .cancelTapped:
             dismiss()
         }

@@ -30,6 +30,7 @@ struct CustomizeToolbarActions {
 
 struct CustomizeToolbarState: Copying {
     var toolbars: [ToolbarWithActions]
+    var editToolbar: ToolbarType?
 }
 
 enum ToolbarWithActions {
@@ -50,7 +51,7 @@ import proton_app_uniffi
 
 extension CustomizeToolbarState {
     static var initial: Self {
-        .init(toolbars: [])
+        .init(toolbars: [], editToolbar: nil)
     }
 }
 
