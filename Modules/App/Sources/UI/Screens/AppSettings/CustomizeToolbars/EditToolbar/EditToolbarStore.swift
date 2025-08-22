@@ -23,10 +23,16 @@ import InboxCoreUI
 class EditToolbarStore: StateStore {
     @Published var state: EditToolbarState
     private let customizeToolbarRepository: CustomizeToolbarRepository
+    private let dismiss: () -> Void
 
-    init(state: EditToolbarState, customizeToolbarService: CustomizeToolbarServiceProtocol) {
+    init(
+        state: EditToolbarState,
+        customizeToolbarService: CustomizeToolbarServiceProtocol,
+        dismiss: @escaping () -> Void
+    ) {
         self.state = state
         self.customizeToolbarRepository = .init(customizeToolbarService: customizeToolbarService)
+        self.dismiss = dismiss
     }
 
     func handle(action: EditToolbarAction) async {
@@ -52,15 +58,26 @@ class EditToolbarStore: StateStore {
             state =
                 state
                 .copy(\.toolbarActions, to: .init(selected: selectedList, unselected: unselectedList))
-        case .onLoad:
+        case .onLoad, .resetToOriginalTapped:
             do {
-                let actions = try await customizeToolbarRepository.fetchActions()[keyPath: state.toolbarType.actionsKeyPath]
+                let actions = try await customizeToolbarRepository.fetchActions()[
+                    keyPath: state.toolbarType.actionsKeyPath
+                ]
                 state = state.copy(\.toolbarActions, to: actions)
             } catch {
                 AppLogger.log(error: error, category: .customizeToolbar)
             }
-        case .resetToOriginalTapped, .saveTapped, .cancelTapped:
-            break
+        case .saveTapped:
+            do {
+                try await customizeToolbarRepository.save(
+                    actions: state.toolbarActions.selected,
+                    for: state.toolbarType
+                )
+            } catch {
+                AppLogger.log(error: error, category: .customizeToolbar)
+            }
+        case .cancelTapped:
+            dismiss()
         }
     }
 }

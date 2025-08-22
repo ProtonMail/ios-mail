@@ -80,6 +80,10 @@ struct CustomizeToolbarRepository: Sendable {
         )
     }
 
+    func save(actions: [MobileAction], for toolbar: ToolbarType) async throws {
+        try await customizeToolbarService.saveActions(for: toolbar)(actions)
+    }
+
     private func actions(for toolbarType: ToolbarType) async throws -> CustomizeToolbarActions {
         let allActions = customizeToolbarService.allActions(for: toolbarType)
         let selectedActions = try await customizeToolbarService.selectedActions(for: toolbarType)
@@ -111,6 +115,17 @@ private extension CustomizeToolbarServiceProtocol {
             try await getMessageToolbarActions()
         case .conversation:
             try await getConversationToolbarActions()
+        }
+    }
+
+    func saveActions(for toolbar: ToolbarType) -> ([MobileAction]) async throws -> Void {
+        switch toolbar {
+        case .list:
+            updateListToolbarActions
+        case .message:
+            updateMessageToolbarActions
+        case .conversation:
+            updateConversationToolbarActions
         }
     }
 

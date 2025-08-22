@@ -17,55 +17,67 @@
 
 import SwiftUI
 import InboxCore
+import InboxCoreUI
 import InboxDesignSystem
 
 struct EditToolbarScreen: View {
-    @StateObject private var store: EditToolbarStore
+    private let state: EditToolbarState
+    private let customizeToolbarService: CustomizeToolbarServiceProtocol
+    @Environment(\.dismiss) var dismiss
 
     init(state: EditToolbarState, customizeToolbarService: CustomizeToolbarServiceProtocol) {
-        self._store = .init(wrappedValue: .init(state: state, customizeToolbarService: customizeToolbarService))
+        self.state = state
+        self.customizeToolbarService = customizeToolbarService
     }
 
     var body: some View {
-        List {
-            chosenActionsSection()
-            availableActionsSection()
-                .moveDisabled(true)
-            resetToOriginalSection()
-        }
-        .onLoad {
-            store.handle(action: .onLoad)
-        }
-        .listSectionSpacing(DS.Spacing.extraLarge)
-        .navigationTitle(store.state.screenType.screenTitle.string)
-        .navigationBarTitleDisplayMode(.inline)
-        .environment(\.editMode, .constant(.active))
-        .id(store.state.toolbarActions.unselected)
-        .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                Button(action: {
-                    store.handle(action: .saveTapped)
-                }) {
-                    Text(CommonL10n.save)
-                        .fontWeight(.semibold)
-                        .foregroundStyle(DS.Color.Text.accent)
-                }
+        StoreView(
+            store: EditToolbarStore(
+                state: state,
+                customizeToolbarService: customizeToolbarService,
+                dismiss: { dismiss.callAsFunction() }
+            )
+        ) { state, store in
+            List {
+                chosenActionsSection(state: state, store: store)
+                availableActionsSection(state: state, store: store)
+                    .moveDisabled(true)
+                resetToOriginalSection(store: store)
             }
+            .onLoad {
+                store.handle(action: .onLoad)
+            }
+            .listSectionSpacing(DS.Spacing.extraLarge)
+            .navigationTitle(store.state.toolbarType.screenTitle.string)
+            .navigationBarTitleDisplayMode(.inline)
+            .environment(\.editMode, .constant(.active))
+            .id(store.state.toolbarActions.unselected)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button(action: {
+                        store.handle(action: .saveTapped)
+                    }) {
+                        Text(CommonL10n.save)
+                            .fontWeight(.semibold)
+                            .foregroundStyle(DS.Color.Text.accent)
+                    }
+                }
 
-            ToolbarItem(placement: .topBarLeading) {
-                Button(action: {
-                    store.handle(action: .cancelTapped)
-                }) {
-                    Text(CommonL10n.cancel)
-                        .foregroundStyle(DS.Color.Text.accent)
+                ToolbarItem(placement: .topBarLeading) {
+                    Button(action: {
+                        store.handle(action: .cancelTapped)
+                    }) {
+                        Text(CommonL10n.cancel)
+                            .foregroundStyle(DS.Color.Text.accent)
+                    }
                 }
             }
         }
     }
 
-    private func chosenActionsSection() -> some View {
+    private func chosenActionsSection(state: EditToolbarState, store: EditToolbarStore) -> some View {
         Section {
-            ForEach(store.state.toolbarActions.selected) { action in
+            ForEach(state.toolbarActions.selected) { action in
                 HStack(spacing: DS.Spacing.medium) {
                     Button(action: { store.handle(action: .removeFromSelectedTapped(actionToRemove: action)) }) {
                         Image(symbol: .minusCircleFill)
@@ -83,7 +95,7 @@ struct EditToolbarScreen: View {
                         .foregroundStyle(DS.Color.Text.norm)
                 }
                 .selectionDisabled()
-                .disabled(store.state.selectedActionsListDisabled)
+                .disabled(state.selectedActionsListDisabled)
             }
             .onMove { fromOffsets, toOffset in
                 store.handle(action: .actionsReordered(fromOffsets: fromOffsets, toOffset: toOffset))
@@ -103,9 +115,9 @@ struct EditToolbarScreen: View {
         .textCase(.none)
     }
 
-    private func availableActionsSection() -> some View {
+    private func availableActionsSection(state: EditToolbarState, store: EditToolbarStore) -> some View {
         Section {
-            ForEach(store.state.toolbarActions.unselected) { action in
+            ForEach(state.toolbarActions.unselected) { action in
                 HStack(spacing: DS.Spacing.medium) {
                     Button(action: { store.handle(action: .addToSelectedTapped(actionToAdd: action)) }) {
                         Image(symbol: .plusCircleFill)
@@ -123,7 +135,7 @@ struct EditToolbarScreen: View {
                         .foregroundStyle(DS.Color.Text.norm)
                 }
                 .selectionDisabled()
-                .disabled(store.state.availableActionsListDisabled)
+                .disabled(state.availableActionsListDisabled)
             }
         } header: {
             Text(L10n.Settings.CustomizeToolbars.availableActionsSectionTitle)
@@ -135,7 +147,7 @@ struct EditToolbarScreen: View {
         .textCase(.none)
     }
 
-    private func resetToOriginalSection() -> some View {
+    private func resetToOriginalSection(store: EditToolbarStore) -> some View {
         Section {
             Button(action: { store.handle(action: .resetToOriginalTapped) }) {
                 HStack {
@@ -156,8 +168,8 @@ struct EditToolbarScreen: View {
 
 }
 
-extension ToolbarActionType: Identifiable {
-    var id: String {
+extension MobileAction: Identifiable {
+    public var id: String {
         displayData.title.string
     }
 }
@@ -174,7 +186,7 @@ private extension EditToolbarState {
 
 }
 
-private extension EditToolbarState.ScreenType {
+private extension ToolbarType {
 
     var screenTitle: LocalizedStringResource {
         switch self {
