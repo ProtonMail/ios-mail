@@ -54,10 +54,10 @@ struct ConversationToolbarModifier: ViewModifier {
     }
 
     func body(content: Content) -> some View {
-        if let actions {
-            content
-                .toolbar {
-                    ToolbarItemGroup(placement: .bottomBar) {
+        content
+            .toolbar {
+                ToolbarItemGroup(placement: .bottomBar) {
+                    if let actions {
                         switch actions {
                         case .message(let actions):
                             toolbarContent(actions: actions.visibleMessageActions, selected: messageActionSelected)
@@ -66,9 +66,7 @@ struct ConversationToolbarModifier: ViewModifier {
                         }
                     }
                 }
-        } else {
-            content
-        }
+            }
     }
 
     @ViewBuilder
