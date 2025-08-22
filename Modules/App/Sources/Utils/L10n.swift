@@ -181,10 +181,6 @@ enum L10n {
             "Report phishing",
             comment: "Action title for reporting phishing message in the action sheet."
         )
-        static let saveAsPDF = LocalizedStringResource(
-            "Save as PDF",
-            comment: "Action title for saving message as PDF file in the action sheet."
-        )
         static let snooze = LocalizedStringResource(
             "Snooze",
             comment: "Action title for marking message as snoozed in the action sheet."
@@ -472,6 +468,50 @@ enum L10n {
         static let selectionLimitReached = LocalizedStringResource(
             "Maximum selection reached",
             comment: "Toast when attempting to select more than the maximum number of items."
+        )
+    }
+
+    enum Onboarding {
+        enum FirstPage {
+            static let title = LocalizedStringResource(
+                "Welcome to Proton Mail, where privacy is default",
+                comment: "Title of the first onboarding page introducing Proton Mail's privacy focus."
+            )
+            static let subtitle = LocalizedStringResource(
+                "Enjoy encrypted messages, fewer spam, protection from phishing, and blocked trackers. Welcome to privacy.",
+                comment: "Subtitle of the first onboarding page explaining Proton Mail's benefits."
+            )
+        }
+
+        enum SecondPage {
+            static let title = LocalizedStringResource(
+                "Focus at your fingertips",
+                comment: "Title of the second onboarding page about inbox usability and productivity."
+            )
+            static let subtitle = LocalizedStringResource(
+                "Spend less time sorting and more time doing. Your inbox is designed to be easier to navigate, so you can get to what’s important faster.",
+                comment: "Subtitle of the second onboarding page explaining easier inbox navigation."
+            )
+        }
+
+        enum ThirdPage {
+            static let title = LocalizedStringResource(
+                "Stay connected, even offline",
+                comment: "Title of the third onboarding page about offline access to emails."
+            )
+            static let subtitle = LocalizedStringResource(
+                "Read, write, and manage emails wherever you are. Everything syncs automatically the moment you’re back online.",
+                comment: "Subtitle of the third onboarding page explaining offline access and sync."
+            )
+        }
+
+        static let nextButtonTitle = LocalizedStringResource(
+            "Next",
+            comment: "Label of the button that takes the user to the next onboarding page."
+        )
+        static let startButtonTitle = LocalizedStringResource(
+            "Get started",
+            comment: "Label of the button shown on the final onboarding page to complete onboarding and begin using the app."
         )
     }
 

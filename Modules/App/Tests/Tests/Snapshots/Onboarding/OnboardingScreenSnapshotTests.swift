@@ -23,9 +23,23 @@ import Testing
 
 @MainActor
 struct OnboardingScreenSnapshotTests {
+    struct TestCase {
+        let label: String
+        let config: ViewImageConfig
+    }
+
     @Test(arguments: [0, 1, 2])
     func testInitialStateLayoutsCorrectly(selectedPageIndex: Int) {
-        let allPhones: [(String, ViewImageConfig)] = .allPhones
+        let orientations: [ViewImageConfig.Orientation] = [.portrait, .landscape]
+        let devices: [(String, (ViewImageConfig.Orientation) -> ViewImageConfig)] = [
+            ("iPhoneSe", ViewImageConfig.iPhoneSe(_:)),
+            ("iPhone13ProMax", ViewImageConfig.iPhone13ProMax(_:)),
+        ]
+        let allPhones: [(String, ViewImageConfig)] = orientations.flatMap { orientation in
+            devices.map { name, configFactory in
+                ("\(name)_\(orientation)", configFactory(orientation))
+            }
+        }
 
         allPhones.forEach { name, config in
             assertSnapshots(

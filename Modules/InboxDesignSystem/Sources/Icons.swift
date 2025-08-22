@@ -73,7 +73,6 @@ public extension DS.Icon {
     static let icTrashCross = ImageResource.icTrashCross
     static let icUsers = ImageResource.icUsers
     static let icUsersFilled = ImageResource.icUsersFilled
-    static let icSignOut = ImageResource.icArrowOutFromRectangle
     static let icQrCode = ImageResource.icQrCode
 }
 

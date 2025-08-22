@@ -49,17 +49,6 @@ public struct PINLockScreen: View {
         GeometryReader { geometry in
             ZStack(alignment: .top) {
                 BlurredCoverView(showLogo: false)
-                HStack {
-                    Spacer()
-
-                    if store.state.isLogoutButtonVisible {
-                        Button(action: { store.handle(action: .signOutTapped) }) {
-                            Text(L10n.PINLock.signOut)
-                                .foregroundStyle(DS.Color.Text.norm)
-                        }
-                        .padding(.trailing, DS.Spacing.large)
-                    }
-                }
                 VStack(alignment: .center, spacing: .zero) {
                     ScrollView {
                         VStack(alignment: .center, spacing: .zero) {
@@ -85,6 +74,17 @@ public struct PINLockScreen: View {
                     Spacer()
                     confirmButton
                         .padding([.horizontal, .bottom], DS.Spacing.extraLarge)
+                }
+                HStack {
+                    Spacer()
+
+                    if store.state.isLogoutButtonVisible {
+                        Button(action: { store.handle(action: .signOutTapped) }) {
+                            Text(L10n.PINLock.signOut)
+                                .foregroundStyle(DS.Color.Text.norm)
+                        }
+                        .padding(.trailing, DS.Spacing.large)
+                    }
                 }
             }
             .alert(model: $store.state.alert)

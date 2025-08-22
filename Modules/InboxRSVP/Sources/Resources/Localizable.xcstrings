@@ -5062,6 +5062,9 @@
         }
       }
     },
+    "You cannot respond to event invites if you're not on the participants list at the moment." : {
+      "comment" : "Banner text shown when the current user is not on the participants list and therefore cannot respond to the event invitation."
+    },
     "You're offline. The displayed information may be out-of-date." : {
       "comment" : "Warning banner shown when the user has no internet connection.",
       "localizations" : {

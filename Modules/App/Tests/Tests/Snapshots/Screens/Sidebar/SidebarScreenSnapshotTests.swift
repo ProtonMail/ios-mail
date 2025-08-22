@@ -18,12 +18,12 @@
 @testable import ProtonMail
 import InboxSnapshotTesting
 import InboxTesting
-import XCTest
+import Testing
+import UIKit
 
 @MainActor
 final class SidebarScreenSnapshotTests {
 
-    private let sidebarSpy = SidebarSpy()
     private let bundleStub = BundleStub(infoDictionary: .infoDictionaryWithAppVersion)
 
     private let state = SidebarState(
@@ -36,7 +36,9 @@ final class SidebarScreenSnapshotTests {
         createFolder: .createFolder
     )
 
-    func testSidebarWithDataLayoutsCorrectOnIphoneX() {
+    @Test(arguments: [UIUserInterfaceStyle.light, .dark])
+    func testSidebarWithDataLayoutsCorrectOnIphoneX(style: UIUserInterfaceStyle) {
+        let sidebarSpy = SidebarSpy()
         sidebarSpy.stubbedCustomFolders = [.topSecretFolder]
         sidebarSpy.stubbedSystemLabels = [.inbox, .sent, .outbox]
         sidebarSpy.stubbedCustomLabels = [.importantLabel, .topSecretLabel]
@@ -45,13 +47,17 @@ final class SidebarScreenSnapshotTests {
             state: state,
             userSession: .dummy,
             upsellButtonVisibilityPublisher: .init(constant: true),
-            sidebarFactory: { _ in self.sidebarSpy }
+            sidebarFactory: { _ in sidebarSpy }
         ) { _ in }
         .environmentObject(AppUIStateStore(sidebarState: .init(zIndex: .zero, visibleWidth: 320)))
-        assertSnapshotsOnIPhoneX(of: sidebarScreen)
+
+        assertSnapshotsOnIPhoneX(of: sidebarScreen, styles: [style])
     }
 
-    func testSidebarWithoutDynamicDataLayoutsCorrectlyOnIphoneX() {
+    @Test(arguments: [UIUserInterfaceStyle.light, .dark])
+    func testSidebarWithoutDynamicDataLayoutsCorrectlyOnIphoneX(style: UIUserInterfaceStyle) {
+        let sidebarSpy = SidebarSpy()
+
         sidebarSpy.stubbedSystemLabels = [.inbox, .sent]
 
         let sidebarScreen = SidebarScreen(
@@ -59,10 +65,15 @@ final class SidebarScreenSnapshotTests {
             userSession: .dummy,
             upsellButtonVisibilityPublisher: .init(constant: true),
             appVersionProvider: .init(bundle: bundleStub, sdkVersionProvider: .init(sdkVersion: "0.61.0")),
-            sidebarFactory: { _ in self.sidebarSpy }
+            sidebarFactory: { _ in sidebarSpy }
         ) { _ in }
         .environmentObject(AppUIStateStore(sidebarState: .init(zIndex: .zero, visibleWidth: 320)))
-        assertSnapshotsOnIPhoneX(of: sidebarScreen)
+
+        assertSnapshotsOnIPhoneX(of: sidebarScreen, styles: [style])
+    }
+
+    private func waitForQueryInitialization() async throws {
+        try await Task.sleep(for: .milliseconds(50))
     }
 
 }

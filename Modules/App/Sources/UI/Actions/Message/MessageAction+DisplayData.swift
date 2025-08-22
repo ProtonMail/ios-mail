@@ -55,8 +55,6 @@ extension MessageAction: DisplayableAction {
             Action.replyAll.displayData
         case .forward:
             Action.forward.displayData
-        case .savePdf:
-            Action.saveAsPDF.displayData
         case .print:
             Action.print.displayData
         case .viewHeaders:

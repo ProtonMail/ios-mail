@@ -25,24 +25,18 @@ struct OnboardingScreen: View {
         let pages: [OnboardingPage] = [
             .init(
                 image: DS.Images.onboardingFirstPage,
-                title: "Welcome to the new Proton Mail app!".notLocalized.stringResource,
-                subtitle: "Transformed from the ground up".notLocalized.stringResource,
-                text: "Thank you for joining this limited group of early beta testers. Your feedback is critical for helping us build an even better Proton Mail ready for public release.".notLocalized
-                    .stringResource
+                title: L10n.Onboarding.FirstPage.title,
+                subtitle: L10n.Onboarding.FirstPage.subtitle
             ),
             .init(
                 image: DS.Images.onboardingSecondPage,
-                title: "Rebuilt to be better and faster".notLocalized.stringResource,
-                subtitle: "New inbox unboxed".notLocalized.stringResource,
-                text: "The new Proton Mail is faster with a vibrant design and highly-requested features, like offline mode.".notLocalized
-                    .stringResource
+                title: L10n.Onboarding.SecondPage.title,
+                subtitle: L10n.Onboarding.SecondPage.subtitle
             ),
             .init(
                 image: DS.Images.onboardingThirdPage,
-                title: "Thank you for your participation! ".notLocalized.stringResource,
-                subtitle: "Your feedback is key".notLocalized.stringResource,
-                text: "We'll be rolling out new features in the coming months. Please test the app and tap \"Report a problem\" to let us know how we can keep improving. Your input is invaluable!"
-                    .notLocalized.stringResource
+                title: L10n.Onboarding.ThirdPage.title,
+                subtitle: L10n.Onboarding.ThirdPage.subtitle
             ),
         ]
         var selectedPageIndex: Int
@@ -149,7 +143,7 @@ struct OnboardingScreen: View {
     }
 
     private var actionButton: some View {
-        Button(state.hasNextPage ? "Next".notLocalized : "Start testing".notLocalized) {
+        Button(state.hasNextPage ? L10n.Onboarding.nextButtonTitle.string : L10n.Onboarding.startButtonTitle.string) {
             if !state.hasNextPage {
                 dismiss()
             }

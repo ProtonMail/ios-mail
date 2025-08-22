@@ -256,7 +256,9 @@ private final class SidebarModelsObservation<Model: Sendable>: Sendable {
             }
         }
 
-        Task {
+        Task { [weak self] in
+            guard let self else { return }
+
             switch await sidebar.watchLabels(callback: updateCallback) {
             case .ok(let watchHandle):
                 self.watchHandle = watchHandle

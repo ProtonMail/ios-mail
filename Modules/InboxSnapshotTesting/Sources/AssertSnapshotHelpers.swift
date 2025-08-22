@@ -176,11 +176,13 @@ private func assertSnapshotOnIPhoneX(
     line: UInt = #line
 ) {
     controller.overrideUserInterfaceStyle = style
-    let strategy: Snapshotting<UIViewController, UIImage> = drawHierarchyInKeyWindow ? .image(
-        drawHierarchyInKeyWindow: drawHierarchyInKeyWindow,
-        precision: precision,
-        size: ViewImageConfig.iPhoneX.size
-    ) : .image(on: .iPhoneX(.portrait), precision: precision)
+    let strategy: Snapshotting<UIViewController, UIImage> =
+        drawHierarchyInKeyWindow
+        ? .image(
+            drawHierarchyInKeyWindow: drawHierarchyInKeyWindow,
+            precision: precision,
+            size: ViewImageConfig.iPhoneX.size
+        ) : .image(on: .iPhoneX(.portrait), precision: precision)
 
     assertSnapshot(
         of: controller,
@@ -249,7 +251,7 @@ extension Array where Element == (String, ViewImageConfig) {
         return [
             ("iPhoneSe", .iPhoneSe),
             ("iPhoneX", .iPhoneX),
-            ("iPhone13ProMax", .iPhone13ProMax)
+            ("iPhone13ProMax", .iPhone13ProMax),
         ]
     }
 

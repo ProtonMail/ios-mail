@@ -21,5 +21,4 @@ struct OnboardingPage: Hashable {
     let image: ImageResource
     let title: LocalizedStringResource
     let subtitle: LocalizedStringResource
-    let text: LocalizedStringResource
 }

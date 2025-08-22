@@ -20,6 +20,6 @@ import proton_app_uniffi
 
 public extension ApiConfig {
     init(envId: ApiEnvId) {
-        self.init(userAgent: "Mozilla/5.0", envId: envId, proxy: nil)
+        self.init(userAgent: "Mozilla/5.0", envId: envId, proxy: nil, resolver: nil)
     }
 }

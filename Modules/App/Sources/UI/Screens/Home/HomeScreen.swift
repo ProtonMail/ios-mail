@@ -59,8 +59,6 @@ struct HomeScreen: View {
     private let modalFactory: HomeScreenModalFactory
     private let notificationAuthorizationStore: NotificationAuthorizationStore
 
-    @State var presentSignOutDialog = false
-
     init(appContext: AppContext, userSession: MailUserSession, toastStateStore: ToastStateStore) {
         _appRoute = .init(wrappedValue: .initialState)
         _composerCoordinator = .init(wrappedValue: .init(userSession: userSession, toastStateStore: toastStateStore))
@@ -127,8 +125,6 @@ struct HomeScreen: View {
                         presentShareFileController()
                     case .subscriptions:
                         modalState = .subscriptions
-                    case .signOut:
-                        presentSignOutDialog = true
                     }
                 case .label(let label):
                     appRoute.updateRoute(
@@ -161,7 +157,6 @@ struct HomeScreen: View {
                 userDidRespond: userDidRespondToAuthorizationRequest
             )
         }
-        .withPrimaryAccountSignOutDialog(signOutDialogPresented: $presentSignOutDialog, authCoordinator: appContext.accountAuthCoordinator)
         .onAppear { didAppear?(self) }
         .onOpenURL(perform: handleDeepLink)
         .onLoad {
