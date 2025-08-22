@@ -23,14 +23,12 @@ import InboxTesting
 class ListActionsToolbarMoreSheetSnapshotTests: BaseTestCase {
 
     func testMailboxActionBarMoreSheetLayoutsCorrectly() {
-        CustomizeToolbarsFlag.$isVisible.withValue(true) {
-            let sut = ListActionsToolbarMoreSheet(
-                state: ListActionsToolbarMoreSheetPreviewProvider.state(),
-                actionTapped: { _ in },
-                editToolbarTapped: {}
-            )
-            assertSnapshotsOnIPhoneX(of: sut, named: "list_actions_toolbar_more_sheet")
-        }
+        let sut = ListActionsToolbarMoreSheet(
+            state: ListActionsToolbarMoreSheetPreviewProvider.state(),
+            actionTapped: { _ in },
+            editToolbarTapped: {}
+        )
+        assertSnapshotsOnIPhoneX(of: sut, named: "list_actions_toolbar_more_sheet")
     }
 
 }

@@ -28,13 +28,13 @@ struct EditToolbarScreenSnapshotTests {
         let sut = NavigationStack {
             EditToolbarScreen(
                 state: .init(
-                    screenType: .conversation,
+                    toolbarType: .message,
                     toolbarActions: .init(
-                        selected: [.markAsUnread, .archive, .labelAs],
-                        unselected: [.moveTo, .moveToSpam, .moveToTrash, .snooze, .star]
+                        selected: [.toggleRead, .archive, .label],
+                        unselected: [.move, .spam, .trash, .snooze, .toggleStar]
                     )
                 ),
-                toolbarService: ToolbarService()
+                customizeToolbarService: CustomizeToolbarServiceSpy()
             )
         }
 
