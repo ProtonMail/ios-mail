@@ -40,13 +40,15 @@ struct EditToolbarScreen: View {
         ) { state, store in
             List {
                 chosenActionsSection(state: state, store: store)
+                    .listRowBackground(DS.Color.BackgroundInverted.secondary)
                 availableActionsSection(state: state, store: store)
+                    .listRowBackground(DS.Color.BackgroundInverted.secondary)
                     .moveDisabled(true)
                 resetToOriginalSection(store: store)
+                    .listRowBackground(DS.Color.BackgroundInverted.secondary)
             }
-            .onLoad {
-                store.handle(action: .onLoad)
-            }
+            .background(DS.Color.BackgroundInverted.norm)
+            .scrollContentBackground(.hidden)
             .listSectionSpacing(DS.Spacing.extraLarge)
             .navigationTitle(store.state.toolbarType.screenTitle.string)
             .navigationBarTitleDisplayMode(.inline)
@@ -71,6 +73,9 @@ struct EditToolbarScreen: View {
                             .foregroundStyle(DS.Color.Text.accent)
                     }
                 }
+            }
+            .onLoad {
+                store.handle(action: .onLoad)
             }
         }
     }
