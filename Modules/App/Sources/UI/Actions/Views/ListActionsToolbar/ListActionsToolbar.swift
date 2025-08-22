@@ -119,9 +119,12 @@ private struct ListActionBarViewModifier: ViewModifier {
                     ListActionsToolbarMoreSheet(state: state) { action in
                         store.handle(action: .moreSheetAction(action, ids: selectedItemsIDs))
                     } editToolbarTapped: {
-                        // FIXME: - Edit toolbar action
+                        store.handle(action: .editToolbarTapped)
                     }
                     .alert(model: store.binding(\.moreDeleteConfirmationAlert))
+                    .sheet(isPresented: store.binding(\.isEditToolbarSheetPresented)) {
+                        EditToolbarScreen(state: .initial(toolbarType: .list), customizeToolbarService: mailUserSession)
+                    }
                 }
                 .sheet(isPresented: store.binding(\.isSnoozeSheetPresented)) {
                     SnoozeView(

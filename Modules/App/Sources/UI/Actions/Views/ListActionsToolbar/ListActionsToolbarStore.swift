@@ -79,6 +79,8 @@ final class ListActionsToolbarStore: StateStore {
             handle(action: action, ids: ids)
         case .alertActionTapped(let action, let ids):
             handle(action: action, ids: ids, itemType: itemTypeForActionBar)
+        case .editToolbarTapped:
+            state = state.copy(\.isEditToolbarSheetPresented, to: true)
         }
     }
 

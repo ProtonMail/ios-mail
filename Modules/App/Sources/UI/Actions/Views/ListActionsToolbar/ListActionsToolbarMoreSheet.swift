@@ -66,13 +66,8 @@ struct ListActionsToolbarMoreSheet: View {
     }
 
     private func editToolbarSection() -> some View {
-        ActionSheetSection {
-            ActionSheetImageButton(
-                displayData: .init(title: L10n.Action.editToolbar, image: DS.Icon.icMagicWand.image),
-                displayBottomSeparator: false
-            ) {
-                editToolbarTapped()
-            }
+        EditToolbarSheetSection {
+            editToolbarTapped()
         }
     }
 
@@ -84,4 +79,24 @@ struct ListActionsToolbarMoreSheet: View {
         actionTapped: { _ in },
         editToolbarTapped: {}
     )
+}
+
+struct EditToolbarSheetSection: View {
+    private let action: () -> Void
+
+    init(action: @escaping () -> Void) {
+        self.action = action
+    }
+
+    var body: some View {
+        ActionSheetSection {
+            ActionSheetImageButton(
+                displayData: .init(title: L10n.Action.editToolbar, image: DS.Icon.icMagicWand.image),
+                displayBottomSeparator: false
+            ) {
+                action()
+            }
+        }
+    }
+
 }
