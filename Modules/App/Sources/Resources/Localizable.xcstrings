@@ -37360,6 +37360,7 @@
     },
     "Save as PDF" : {
       "comment" : "Action title for saving message as PDF file in the action sheet.",
+      "extractionState" : "stale",
       "localizations" : {
         "be" : {
           "stringUnit" : {

@@ -23,6 +23,7 @@ extension ContactDetailCard {
     static func testData(contact: ContactDetailsContext, fields: [ContactField]) -> Self {
         .init(
             id: contact.id,
+            remoteId: .none,
             avatarInformation: contact.avatarInformation,
             extendedName: .init(last: .none, first: .none),
             fields: fields

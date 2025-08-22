@@ -33,7 +33,7 @@ struct MessageActionsSheetSnapshotTests {
                 replyActions: [.reply, .replyAll, .forward],
                 messageActions: [.markUnread, .star, .labelAs],
                 moveActions: [.moveTo, .moveToSystemFolder(.init(localId: .random(), name: .archive))],
-                generalActions: [.viewHtml, .savePdf, .print]
+                generalActions: [.viewHtml, .print]
             ),
             colorScheme: .light
         )

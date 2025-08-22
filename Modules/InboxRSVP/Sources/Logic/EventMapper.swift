@@ -79,6 +79,8 @@ enum EventMapper {
                     L10n.Header.addressIsIncorrect
                 case .userIsOrganizer:
                     L10n.Header.userIsOrganizer
+                case .userIsNotInvited:
+                    L10n.Header.userIsNotInvited
                 case .networkFailure:
                     L10n.Header.offlineWarning
                 }

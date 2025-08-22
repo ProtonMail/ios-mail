@@ -121,6 +121,11 @@ enum L10n {
             bundle: .module,
             comment: "Banner text shown when the current user is the organizer of the event."
         )
+        static let userIsNotInvited = LocalizedStringResource(
+            "You cannot respond to event invites if you're not on the participants list at the moment.",
+            bundle: .module,
+            comment: "Banner text shown when the current user is not on the participants list and therefore cannot respond to the event invitation."
+        )
         static let cancelledAndOutdated = LocalizedStringResource(
             "Event cancelled. This invitation is out of date.",
             bundle: .module,

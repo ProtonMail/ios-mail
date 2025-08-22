@@ -57,6 +57,10 @@ public final class MailSessionSpy: MailSessionProtocol {
 
     // MARK: - MailSessionProtocol
 
+    public func isFeatureEnabled(featureId: String) async -> Bool? {
+        false
+    }
+
     public func biometricsCheckPassed() {
         fatalError(#function)
     }

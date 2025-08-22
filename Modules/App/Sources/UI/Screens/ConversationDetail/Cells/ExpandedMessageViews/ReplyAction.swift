@@ -1,4 +1,3 @@
-//
 // Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
@@ -16,10 +15,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import proton_app_uniffi
-
-public extension ApiConfig {
-    init(envId: ApiEnvId) {
-        self.init(userAgent: "Mozilla/5.0", envId: envId, proxy: nil, resolver: nil)
-    }
+enum ReplyAction {
+    case reply
+    case replyAll
+    case forward
 }
