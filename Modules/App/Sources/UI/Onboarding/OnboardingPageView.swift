@@ -42,33 +42,16 @@ struct OnboardingPageView: View {
 
     private var portraitLayout: some View {
         VStack(alignment: .center, spacing: DS.Spacing.extraLarge) {
-            title
             image
-            texts(title: model.subtitle, subtitle: model.text, alignment: .center)
+            texts(title: model.title, subtitle: model.subtitle, alignment: .center)
         }
     }
 
     private var landscapeLayout: some View {
         HStack(alignment: .center, spacing: DS.Spacing.extraLarge) {
             image
-
-            VStack(alignment: .leading, spacing: DS.Spacing.extraLarge) {
-                title
-                texts(title: model.subtitle, subtitle: model.text, alignment: .leading)
-            }
+            texts(title: model.title, subtitle: model.subtitle, alignment: .leading)
         }
-    }
-
-    private var title: some View {
-        ZStack {
-            Text(verbatim: " ")
-                .lineLimit(2, reservesSpace: true)
-
-            Text(model.title)
-        }
-        .font(.system(size: 22, weight: .bold))
-        .foregroundStyle(DS.Color.Text.norm)
-        .fixedSize(horizontal: false, vertical: true)
     }
 
     private var image: some View {
@@ -82,8 +65,8 @@ struct OnboardingPageView: View {
     ) -> some View {
         VStack(alignment: alignment, spacing: DS.Spacing.small) {
             Text(title)
-                .font(.body)
-                .fontWeight(.semibold)
+                .font(.title2)
+                .fontWeight(.bold)
                 .foregroundStyle(DS.Color.Text.norm)
                 .fixedSize(horizontal: false, vertical: true)
             Text(subtitle)

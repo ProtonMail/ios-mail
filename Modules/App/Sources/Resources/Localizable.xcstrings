@@ -20857,6 +20857,9 @@
         }
       }
     },
+    "Enjoy encrypted messages, fewer spam, protection from phishing, and blocked trackers. Welcome to privacy." : {
+      "comment" : "Subtitle of the first onboarding page explaining Proton Mail's benefits."
+    },
     "Error logs help us to get to the bottom of your issue. If you don't include them, we might not be able to investigate fully." : {
       "comment" : "Information displayed in the bottom of the screen when send error logs switch is dislabed.",
       "localizations" : {
@@ -21800,6 +21803,9 @@
         }
       }
     },
+    "Focus at your fingertips" : {
+      "comment" : "Title of the second onboarding page about inbox usability and productivity."
+    },
     "Folders and labels" : {
       "comment" : "Title of the Folders and labels settings item.",
       "localizations" : {
@@ -22564,6 +22570,9 @@
           }
         }
       }
+    },
+    "Get started" : {
+      "comment" : "Label of the button shown on the final onboarding page to complete onboarding and begin using the app."
     },
     "Hide details" : {
       "comment" : "Title of the button that hide details of a message.",
@@ -30751,7 +30760,7 @@
       }
     },
     "Next" : {
-      "comment" : "`Next` action title.",
+      "comment" : "Label of the button that takes the user to the next onboarding page.\n`Next` action title.",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -35465,6 +35474,9 @@
           }
         }
       }
+    },
+    "Read, write, and manage emails wherever you are. Everything syncs automatically the moment you’re back online." : {
+      "comment" : "Subtitle of the third onboarding page explaining offline access and sync."
     },
     "Repeat PIN" : {
       "comment" : "Repeat PIN code title.",
@@ -42634,6 +42646,9 @@
         }
       }
     },
+    "Spend less time sorting and more time doing. Your inbox is designed to be easier to navigate, so you can get to what’s important faster." : {
+      "comment" : "Subtitle of the second onboarding page explaining easier inbox navigation."
+    },
     "Star" : {
       "comment" : "Action title for marking message/conversation as starred in the action sheet.",
       "localizations" : {
@@ -43015,6 +43030,9 @@
           }
         }
       }
+    },
+    "Stay connected, even offline" : {
+      "comment" : "Title of the third onboarding page about offline access to emails."
     },
     "Steps to reproduce" : {
       "comment" : "Title of steps to reproduce text field.",
@@ -52383,6 +52401,9 @@
           }
         }
       }
+    },
+    "Welcome to Proton Mail, where privacy is default" : {
+      "comment" : "Title of the first onboarding page introducing Proton Mail's privacy focus."
     },
     "You are about to launch the web browser and navigate to" : {
       "comment" : "Prompts the user to confirm before a link is opened - the sentence is cut on purpose, and the link follows."

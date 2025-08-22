@@ -475,6 +475,50 @@ enum L10n {
         )
     }
 
+    enum Onboarding {
+        enum FirstPage {
+            static let title = LocalizedStringResource(
+                "Welcome to Proton Mail, where privacy is default",
+                comment: "Title of the first onboarding page introducing Proton Mail's privacy focus."
+            )
+            static let subtitle = LocalizedStringResource(
+                "Enjoy encrypted messages, fewer spam, protection from phishing, and blocked trackers. Welcome to privacy.",
+                comment: "Subtitle of the first onboarding page explaining Proton Mail's benefits."
+            )
+        }
+
+        enum SecondPage {
+            static let title = LocalizedStringResource(
+                "Focus at your fingertips",
+                comment: "Title of the second onboarding page about inbox usability and productivity."
+            )
+            static let subtitle = LocalizedStringResource(
+                "Spend less time sorting and more time doing. Your inbox is designed to be easier to navigate, so you can get to what’s important faster.",
+                comment: "Subtitle of the second onboarding page explaining easier inbox navigation."
+            )
+        }
+
+        enum ThirdPage {
+            static let title = LocalizedStringResource(
+                "Stay connected, even offline",
+                comment: "Title of the third onboarding page about offline access to emails."
+            )
+            static let subtitle = LocalizedStringResource(
+                "Read, write, and manage emails wherever you are. Everything syncs automatically the moment you’re back online.",
+                comment: "Subtitle of the third onboarding page explaining offline access and sync."
+            )
+        }
+
+        static let nextButtonTitle = LocalizedStringResource(
+            "Next",
+            comment: "Label of the button that takes the user to the next onboarding page."
+        )
+        static let startButtonTitle = LocalizedStringResource(
+            "Get started",
+            comment: "Label of the button shown on the final onboarding page to complete onboarding and begin using the app."
+        )
+    }
+
     enum NoConnection {
         static let title = LocalizedStringResource(
             "Your device is offline",

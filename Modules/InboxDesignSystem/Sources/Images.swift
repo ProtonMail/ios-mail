@@ -23,9 +23,9 @@ public extension DS.Images {
     static let emptyOutbox = ImageResource.emptyOutbox
     static let mailProductLogo = ImageResource.mailProductLogo
     static let notificationPrompt = ImageResource.notificationPrompt
-    static let onboardingFirstPage = ImageResource.onboardingAlphaV11
-    static let onboardingSecondPage = ImageResource.onboardingAlphaV12
-    static let onboardingThirdPage = ImageResource.onboardingAlphaV13
+    static let onboardingFirstPage = ImageResource.onboarding1
+    static let onboardingSecondPage = ImageResource.onboarding2
+    static let onboardingThirdPage = ImageResource.onboarding3
     static let searchNoResults = ImageResource.searchNoResults
     static let noConnection = ImageResource.noConnection
     static let protonMail = ImageResource.protonMail
