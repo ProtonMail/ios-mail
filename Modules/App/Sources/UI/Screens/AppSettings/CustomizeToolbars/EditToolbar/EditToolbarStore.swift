@@ -76,10 +76,10 @@ class EditToolbarStore: StateStore {
                     actions: state.toolbarActions.selected,
                     for: state.toolbarType
                 )
+                refreshToolbarNotifier.refresh(toolbar: state.toolbarType)
             } catch {
                 AppLogger.log(error: error, category: .customizeToolbar)
             }
-            refreshToolbarNotifier.refresh(toolbar: state.toolbarType)
             dismiss()
         case .cancelTapped:
             dismiss()
