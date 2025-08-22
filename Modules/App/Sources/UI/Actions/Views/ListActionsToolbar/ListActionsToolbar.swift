@@ -111,7 +111,9 @@ private struct ListActionBarViewModifier: ViewModifier {
                     mailbox: { mailbox },
                     mailUserSession: mailUserSession,
                     input: store.binding(\.moveToSheetPresented),
-                    navigation: { _ in }
+                    navigation: { _ in
+                        store.handle(action: .dismissMoveToSheet)
+                    }
                 )
                 .sheet(item: store.binding(\.moreActionSheetPresented)) { state in
                     ListActionsToolbarMoreSheet(state: state) { action in
