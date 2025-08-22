@@ -141,11 +141,11 @@ class OnboardingScreenTests: BaseTestCase {
 private extension InspectableView where View == ViewType.View<OnboardingScreen> {
 
     func simulateTapOnNext() throws {
-        try find(button: "Next").tap()
+        try find(button: L10n.Onboarding.nextButtonTitle.string).tap()
     }
 
     func simulateTapOnStartTesting() throws {
-        try find(button: "Start testing").tap()
+        try find(button: L10n.Onboarding.startButtonTitle.string).tap()
     }
 
     func simulateTapGestureOnDot(atIndex index: Int) throws {
