@@ -65,12 +65,10 @@ struct CustomizeToolbarsScreen: View {
         .sheet(
             item: $store.state.editToolbar,
             content: { toolbarType in
-                NavigationStack {
-                    EditToolbarScreen(
-                        state: .initial(toolbarType: toolbarType),
-                        customizeToolbarService: customizeToolbarService
-                    )
-                }
+                EditToolbarScreen(
+                    state: .initial(toolbarType: toolbarType),
+                    customizeToolbarService: customizeToolbarService
+                )
             }
         )
         .background(DS.Color.BackgroundInverted.norm)

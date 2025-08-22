@@ -19,6 +19,7 @@ import SwiftUI
 import InboxCore
 import InboxCoreUI
 import InboxDesignSystem
+import proton_app_uniffi
 
 struct EditToolbarScreen: View {
     private let state: EditToolbarState
@@ -31,51 +32,53 @@ struct EditToolbarScreen: View {
     }
 
     var body: some View {
-        StoreView(
-            store: EditToolbarStore(
-                state: state,
-                customizeToolbarService: customizeToolbarService,
-                dismiss: { dismiss.callAsFunction() }
-            )
-        ) { state, store in
-            List {
-                chosenActionsSection(state: state, store: store)
-                    .listRowBackground(DS.Color.BackgroundInverted.secondary)
-                availableActionsSection(state: state, store: store)
-                    .listRowBackground(DS.Color.BackgroundInverted.secondary)
-                    .moveDisabled(true)
-                resetToOriginalSection(store: store)
-                    .listRowBackground(DS.Color.BackgroundInverted.secondary)
-            }
-            .background(DS.Color.BackgroundInverted.norm)
-            .scrollContentBackground(.hidden)
-            .listSectionSpacing(DS.Spacing.extraLarge)
-            .navigationTitle(store.state.toolbarType.screenTitle.string)
-            .navigationBarTitleDisplayMode(.inline)
-            .environment(\.editMode, .constant(.active))
-            .id(store.state.toolbarActions.unselected)
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button(action: {
-                        store.handle(action: .saveTapped)
-                    }) {
-                        Text(CommonL10n.save)
-                            .fontWeight(.semibold)
-                            .foregroundStyle(DS.Color.Text.accent)
-                    }
+        NavigationStack {
+            StoreView(
+                store: EditToolbarStore(
+                    state: state,
+                    customizeToolbarService: customizeToolbarService,
+                    dismiss: { dismiss.callAsFunction() }
+                )
+            ) { state, store in
+                List {
+                    chosenActionsSection(state: state, store: store)
+                        .listRowBackground(DS.Color.BackgroundInverted.secondary)
+                    availableActionsSection(state: state, store: store)
+                        .listRowBackground(DS.Color.BackgroundInverted.secondary)
+                        .moveDisabled(true)
+                    resetToOriginalSection(store: store)
+                        .listRowBackground(DS.Color.BackgroundInverted.secondary)
                 }
+                .background(DS.Color.BackgroundInverted.norm)
+                .scrollContentBackground(.hidden)
+                .listSectionSpacing(DS.Spacing.extraLarge)
+                .navigationTitle(store.state.toolbarType.screenTitle.string)
+                .navigationBarTitleDisplayMode(.inline)
+                .environment(\.editMode, .constant(.active))
+                .id(store.state.toolbarActions.unselected)
+                .toolbar {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button(action: {
+                            store.handle(action: .saveTapped)
+                        }) {
+                            Text(CommonL10n.save)
+                                .fontWeight(.semibold)
+                                .foregroundStyle(DS.Color.Text.accent)
+                        }
+                    }
 
-                ToolbarItem(placement: .topBarLeading) {
-                    Button(action: {
-                        store.handle(action: .cancelTapped)
-                    }) {
-                        Text(CommonL10n.cancel)
-                            .foregroundStyle(DS.Color.Text.accent)
+                    ToolbarItem(placement: .topBarLeading) {
+                        Button(action: {
+                            store.handle(action: .cancelTapped)
+                        }) {
+                            Text(CommonL10n.cancel)
+                                .foregroundStyle(DS.Color.Text.accent)
+                        }
                     }
                 }
-            }
-            .onLoad {
-                store.handle(action: .onLoad)
+                .onLoad {
+                    store.handle(action: .onLoad)
+                }
             }
         }
     }
@@ -221,9 +224,7 @@ private extension ToolbarType {
     }
 }
 
-import proton_app_uniffi
-
-final class CustomizeToolbarServiceStub: CustomizeToolbarServiceProtocol {
+private final class CustomizeToolbarServiceStub: CustomizeToolbarServiceProtocol {
     func getListToolbarActions() async throws(ActionError) -> [MobileAction] {
         []
     }
