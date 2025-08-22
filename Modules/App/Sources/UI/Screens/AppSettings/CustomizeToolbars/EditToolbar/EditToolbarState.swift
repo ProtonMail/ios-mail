@@ -17,12 +17,6 @@
 
 import InboxCore
 
-enum ToolbarType {
-    case list
-    case message
-    case conversation
-}
-
 struct EditToolbarState: Copying {
     let toolbarType: ToolbarType
     var toolbarActions: CustomizeToolbarActions

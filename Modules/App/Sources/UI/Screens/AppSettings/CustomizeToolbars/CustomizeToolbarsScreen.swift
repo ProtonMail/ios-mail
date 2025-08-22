@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import proton_app_uniffi
 import SwiftUI
 import InboxCore
 import InboxCoreUI
@@ -109,54 +110,15 @@ struct CustomizeToolbarsScreen: View {
     }
 }
 
-import proton_app_uniffi
+private enum CustomizeToolbarsDisplayItem {
+    case action(MobileAction)
+    case editActions
+}
 
-extension MobileAction {
+private extension CustomizeToolbarActions {
 
-    var displayData: ActionDisplayData {
-        if let displayData = action?.displayData {
-            return displayData
-        }
-        return .init(title: "It's not archive", image: DS.Icon.icArchiveBox.image)
-    }
-
-    private var action: Action? {
-        switch self {
-        case .archive:
-            Action.moveToArchive
-        case .forward:
-            Action.forward
-        case .label:
-            Action.labelAs
-        case .move:
-            Action.moveTo
-        case .print:
-            Action.print
-        case .reply:
-            Action.reply
-        case .reportPhishing:
-            Action.reportPhishing
-        case .savePdf:
-            Action.saveAsPDF
-        case .snooze:
-            Action.snooze
-        case .spam:
-            Action.moveToSpam
-        case .toggleLight:
-            Action.renderInLightMode
-        case .toggleRead:
-            Action.markAsRead
-        case .toggleStar:
-            Action.star
-        case .trash:
-            Action.moveToTrash
-        case .viewHeaders:
-            Action.viewHeaders
-        case .viewHtml:
-            Action.viewHTML
-        case .other, .senderEmails, .saveAttachments, .remind:
-            nil
-        }
+    var displayItems: [CustomizeToolbarsDisplayItem] {
+        selected.map(CustomizeToolbarsDisplayItem.action) + [.editActions]
     }
 
 }
@@ -183,14 +145,6 @@ private extension ToolbarWithActions {
 
 }
 
-private extension CustomizeToolbarActions {
-
-    var displayItems: [CustomizeToolbarsDisplayItem] {
-        selected.map(CustomizeToolbarsDisplayItem.action) + [.editActions]
-    }
-
-}
-
 private extension ToolbarWithActions {
 
     var toolbarType: ToolbarType {
@@ -201,21 +155,6 @@ private extension ToolbarWithActions {
             .message
         case .conversation:
             .conversation
-        }
-    }
-
-}
-
-extension ToolbarType: Identifiable {
-
-    var id: String {
-        switch self {
-        case .list:
-            "list"
-        case .message:
-            "message"
-        case .conversation:
-            "conversation"
         }
     }
 

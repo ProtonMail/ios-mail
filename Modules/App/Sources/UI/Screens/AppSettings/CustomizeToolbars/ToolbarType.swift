@@ -15,15 +15,23 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import InboxCore
-
-struct CustomizeToolbarState: Copying {
-    var toolbars: [ToolbarWithActions]
-    var editToolbar: ToolbarType?
+enum ToolbarType {
+    case list
+    case message
+    case conversation
 }
 
-extension CustomizeToolbarState {
-    static var initial: Self {
-        .init(toolbars: [], editToolbar: nil)
+extension ToolbarType: Identifiable {
+
+    var id: String {
+        switch self {
+        case .list:
+            "list"
+        case .message:
+            "message"
+        case .conversation:
+            "conversation"
+        }
     }
+
 }

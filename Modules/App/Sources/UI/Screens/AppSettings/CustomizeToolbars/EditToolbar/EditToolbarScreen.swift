@@ -176,12 +176,6 @@ struct EditToolbarScreen: View {
 
 }
 
-extension MobileAction: Identifiable {
-    public var id: String {
-        displayData.title.string
-    }
-}
-
 private extension EditToolbarState {
 
     var availableActionsListDisabled: Bool {
@@ -209,55 +203,31 @@ private extension ToolbarType {
 
 }
 
-#Preview {
-    NavigationStack {
-        EditToolbarScreen(
-            state: .init(
-                toolbarType: .list,
-                toolbarActions: .init(
-                    selected: [.toggleRead, .archive, .label],
-                    unselected: [.move, .spam, .trash, .snooze, .toggleStar]
+#if DEBUG
+    #Preview {
+        NavigationStack {
+            EditToolbarScreen(
+                state: .init(
+                    toolbarType: .list,
+                    toolbarActions: .init(
+                        selected: [.toggleRead, .archive, .label],
+                        unselected: [.move, .spam, .trash, .snooze, .toggleStar]
+                    ),
                 ),
-            ),
-            customizeToolbarService: CustomizeToolbarServiceStub()
-        )
-    }
-}
-
-private final class CustomizeToolbarServiceStub: CustomizeToolbarServiceProtocol {
-    func getListToolbarActions() async throws(ActionError) -> [MobileAction] {
-        []
+                customizeToolbarService: CustomizeToolbarServiceStub()
+            )
+        }
     }
 
-    func getMessageToolbarActions() async throws(ActionError) -> [MobileAction] {
-        []
+    private final class CustomizeToolbarServiceStub: CustomizeToolbarServiceProtocol {
+        func getListToolbarActions() async throws(ActionError) -> [MobileAction] { [] }
+        func getMessageToolbarActions() async throws(ActionError) -> [MobileAction] { [] }
+        func getConversationToolbarActions() async throws(ActionError) -> [MobileAction] { [] }
+        func updateListToolbarActions(actions: [MobileAction]) async throws(ActionError) {}
+        func updateConversationToolbarActions(actions: [MobileAction]) async throws(ActionError) {}
+        func updateMessageToolbarActions(actions: [MobileAction]) async throws(ActionError) {}
+        func getAllListActions() -> [MobileAction] { [] }
+        func getAllMessageActions() -> [MobileAction] { [] }
+        func getAllConversationActions() -> [MobileAction] { [] }
     }
-
-    func getConversationToolbarActions() async throws(ActionError) -> [MobileAction] {
-        []
-    }
-
-    func updateListToolbarActions(actions: [MobileAction]) async throws(ActionError) {
-
-    }
-
-    func updateConversationToolbarActions(actions: [MobileAction]) async throws(ActionError) {
-
-    }
-
-    func updateMessageToolbarActions(actions: [MobileAction]) async throws(ActionError) {
-
-    }
-
-    func getAllListActions() -> [MobileAction] {
-        []
-    }
-
-    func getAllMessageActions() -> [MobileAction] {
-        []
-    }
-
-    func getAllConversationActions() -> [MobileAction] {
-        []
-    }
-}
+#endif
