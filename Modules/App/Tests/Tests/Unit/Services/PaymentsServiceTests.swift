@@ -96,4 +96,20 @@ private final class TransactionsObserverSpy: TransactionsObserverProviding {
         let sessionId = try! configuration.rustSession.sessionId().get()
         recordedCalls.append(.setConfiguration(sessionId: sessionId))
     }
+
+    func addTransactionInProgress(_ transactionId: UInt64) {
+        fatalError(#function)
+    }
+
+    func removeTransactionInProgress(_ transactionId: UInt64) {
+        fatalError(#function)
+    }
+
+    func generateTransactionLog() async -> URL? {
+        fatalError(#function)
+    }
+
+    func deleteLogs() async {
+        fatalError(#function)
+    }
 }
