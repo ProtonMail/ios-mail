@@ -90,6 +90,10 @@ struct MessageBodyReaderView: UIViewRepresentable {
     func loadHTML(in webView: WKWebView) {
         let style = """
             <style>
+                body {
+                    width: 100% !important;
+                }
+
                 p,pre {
                     margin: 1em 0;
                 }
