@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import proton_app_uniffi
 import Combine
 import InboxCoreUI
 import InboxCore
@@ -22,31 +23,40 @@ import InboxCore
 @MainActor
 class CustomizeToolbarsStore: StateStore {
     @Published var state: CustomizeToolbarState
-    private let toolbarService: ToolbarServiceProtocol
+    private let customizeToolbarRepository: CustomizeToolbarRepository
+    private let viewModeProvider: ViewModeProvider
 
-    init(state: CustomizeToolbarState, toolbarService: ToolbarServiceProtocol) {
+    init(
+        state: CustomizeToolbarState,
+        customizeToolbarService: CustomizeToolbarServiceProtocol,
+        viewModeProvider: ViewModeProvider
+    ) {
         self.state = state
-        self.toolbarService = toolbarService
+        self.customizeToolbarRepository = .init(customizeToolbarService: customizeToolbarService)
+        self.viewModeProvider = viewModeProvider
     }
 
     func handle(action: CustomizeToolbarsAction) async {
         switch action {
-        case .onLoad:
+        case .onAppear:
             await fetchActions()
-        case .editListToolbar:
-            break
-        case .editConversationToolbar:
-            break
+        case .editToolbarSelected(let toolbarType):
+            state = state.copy(\.editToolbar, to: toolbarType)
         }
     }
 
     private func fetchActions() async {
         do {
-            let actions = try await toolbarService.customizeToolbarActions()
-            state = .init(
-                list: actions.list.selected.map { actionType in .action(actionType) } + [.editActions],
-                conversation: actions.conversation.selected.map { actionType in .action(actionType) } + [.editActions]
-            )
+            let toolbarsActions = try await customizeToolbarRepository.fetchActions()
+            let viewMode = try await viewModeProvider.viewMode()
+            let conversationToolbar: ToolbarWithActions =
+                switch viewMode {
+                case .conversations:
+                    .conversation(toolbarsActions.conversation)
+                case .messages:
+                    .message(toolbarsActions.message)
+                }
+            state = state.copy(\.toolbars, to: [.list(toolbarsActions.list), conversationToolbar])
         } catch {
             AppLogger.log(error: error, category: .customizeToolbar)
         }

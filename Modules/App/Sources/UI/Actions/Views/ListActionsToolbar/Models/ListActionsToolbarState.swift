@@ -28,6 +28,7 @@ struct ListActionsToolbarState: Copying, Equatable {
     var deleteConfirmationAlert: AlertModel?
     var moreDeleteConfirmationAlert: AlertModel?
     var isSnoozeSheetPresented: Bool
+    var isEditToolbarSheetPresented: Bool
 }
 
 extension ListActionsToolbarState {
@@ -40,7 +41,8 @@ extension ListActionsToolbarState {
             moveToSheetPresented: nil,
             deleteConfirmationAlert: nil,
             moreDeleteConfirmationAlert: nil,
-            isSnoozeSheetPresented: false
+            isSnoozeSheetPresented: false,
+            isEditToolbarSheetPresented: false
         )
     }
 }

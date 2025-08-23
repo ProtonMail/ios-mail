@@ -18,21 +18,15 @@
 import InboxCore
 
 struct EditToolbarState: Copying {
-    enum ScreenType {
-        case list
-        case message
-        case conversation
-    }
-
-    let screenType: ScreenType
-    var toolbarActions: ToolbarActions
+    let toolbarType: ToolbarType
+    var toolbarActions: CustomizeToolbarActions
 }
 
 extension EditToolbarState {
 
-    static func initial(screenType: EditToolbarState.ScreenType) -> Self {
+    static func initial(toolbarType: ToolbarType) -> Self {
         .init(
-            screenType: screenType,
+            toolbarType: toolbarType,
             toolbarActions: .init(selected: [], unselected: []),
         )
     }

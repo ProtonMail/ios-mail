@@ -25,18 +25,16 @@ struct EditToolbarScreenSnapshotTests {
 
     @Test
     func editToolbarScreenScreenLayoutsCorrectly() {
-        let sut = NavigationStack {
-            EditToolbarScreen(
-                state: .init(
-                    screenType: .conversation,
-                    toolbarActions: .init(
-                        selected: [.markAsUnread, .archive, .labelAs],
-                        unselected: [.moveTo, .moveToSpam, .moveToTrash, .snooze, .star]
-                    )
-                ),
-                toolbarService: ToolbarService()
-            )
-        }
+        let sut = EditToolbarScreen(
+            state: .init(
+                toolbarType: .message,
+                toolbarActions: .init(
+                    selected: [.toggleRead, .archive, .label],
+                    unselected: [.move, .spam, .trash, .snooze, .toggleStar]
+                )
+            ),
+            customizeToolbarService: CustomizeToolbarServiceSpy()
+        )
 
         assertSnapshotsOnIPhoneX(of: sut, drawHierarchyInKeyWindow: true)
     }

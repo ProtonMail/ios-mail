@@ -23,7 +23,6 @@ import Testing
 
 @MainActor
 struct MessageActionsSheetSnapshotTests {
-
     @Test
     func actionSheetLayoutsCorrectly() {
         let state = MessageActionsSheetState(
@@ -35,20 +34,21 @@ struct MessageActionsSheetSnapshotTests {
                 moveActions: [.moveTo, .moveToSystemFolder(.init(localId: .random(), name: .archive))],
                 generalActions: [.viewHtml, .print]
             ),
-            colorScheme: .light
+            colorScheme: .light,
+            isEditToolbarPresented: false
         )
         let sut = MessageActionsSheet(
             state: state,
             mailbox: .dummy,
+            mailUserSession: .dummy,
             service: { _, _, _ in
                 .ok(.init(replyActions: [], messageActions: [], moveActions: [], generalActions: []))
             },
-            actionSelected: { _ in }
+            actionTapped: { _ in }
         )
         assertSnapshotsOnIPhoneX(
             of: NavigationStack { sut }
                 .environment(\.messageAppearanceOverrideStore, MessageAppearanceOverrideStore())
         )
     }
-
 }

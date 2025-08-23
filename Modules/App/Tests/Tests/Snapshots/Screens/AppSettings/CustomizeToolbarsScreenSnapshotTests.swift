@@ -26,19 +26,100 @@ struct CustomizeToolbarsScreenSnapshotTests {
     func customizeToolbarsScreenLayoutsCorrectly() {
         let sut = CustomizeToolbarsScreen(
             state: .init(
-                list: [.action(.markAsUnread), .action(.archive), .action(.star), .editActions],
-                conversation: [
-                    .action(.moveToSpam),
-                    .action(.snooze),
-                    .action(.moveTo),
-                    .action(.labelAs),
-                    .editActions,
-                ]
+                toolbars: [
+                    .list(.init(selected: [.move, .archive, .label, .toggleRead], unselected: [])),
+                    .message(.init(selected: [.reply, .move, .forward, .toggleRead], unselected: []))
+                ],
+                editToolbar: nil
             ),
-            toolbarService: ToolbarService()
+            customizeToolbarService: CustomizeToolbarServiceSpy(),
+            viewModeProvider: ViewModeProviderStub()
         )
 
         assertSnapshotsOnIPhoneX(of: sut)
     }
 
+}
+
+final class ViewModeProviderStub: ViewModeProvider {
+    var viewModeStub: ViewMode = .conversations
+
+    // MARK: - ViewModeProvider
+
+    func viewMode() async throws -> ViewMode {
+        viewModeStub
+    }
+}
+
+import proton_app_uniffi
+
+final class CustomizeToolbarServiceSpy: CustomizeToolbarServiceProtocol {
+
+    // MARK: - Stubs
+
+    var getListToolbarActionsStub: [MobileAction] = []
+    var getMessageToolbarActionsStub: [MobileAction] = []
+    var getConversationToolbarActionsStub: [MobileAction] = []
+
+    var allListActionsStub: [MobileAction] = []
+    var allMessageActionsStub: [MobileAction] = []
+    var allConversationActionsStub: [MobileAction] = []
+
+    // MARK: - Invocation Tracking
+
+    private(set) var getListToolbarActionsInvokeCount = 0
+    private(set) var getMessageToolbarActionsInvokeCount = 0
+    private(set) var getConversationToolbarActionsInvokeCount = 0
+
+    private(set) var updateListToolbarActionsInvoked: [[MobileAction]] = []
+    private(set) var updateMessageToolbarActionsInvoked: [[MobileAction]] = []
+    private(set) var updateConversationToolbarActionsInvoked: [[MobileAction]] = []
+
+    private(set) var getAllListActionsInvokeCount = 0
+    private(set) var getAllMessageActionsInvokeCount = 0
+    private(set) var getAllConversationActionsInvokeCount = 0
+
+    // MARK: - CustomizeToolbarServiceProtocol
+
+    func getListToolbarActions() async throws(ActionError) -> [MobileAction] {
+        getListToolbarActionsInvokeCount += 1
+        return getListToolbarActionsStub
+    }
+
+    func getMessageToolbarActions() async throws(ActionError) -> [MobileAction] {
+        getMessageToolbarActionsInvokeCount += 1
+        return getMessageToolbarActionsStub
+    }
+
+    func getConversationToolbarActions() async throws(ActionError) -> [MobileAction] {
+        getConversationToolbarActionsInvokeCount += 1
+        return getConversationToolbarActionsStub
+    }
+
+    func updateListToolbarActions(actions: [MobileAction]) async throws(ActionError) {
+        updateListToolbarActionsInvoked.append(actions)
+    }
+
+    func updateConversationToolbarActions(actions: [MobileAction]) async throws(ActionError) {
+        updateConversationToolbarActionsInvoked.append(actions)
+    }
+
+    func updateMessageToolbarActions(actions: [MobileAction]) async throws(ActionError) {
+        updateMessageToolbarActionsInvoked.append(actions)
+    }
+
+    func getAllListActions() -> [MobileAction] {
+        getAllListActionsInvokeCount += 1
+        return allListActionsStub
+    }
+
+    func getAllMessageActions() -> [MobileAction] {
+        getAllMessageActionsInvokeCount += 1
+        return allMessageActionsStub
+    }
+
+    func getAllConversationActions() -> [MobileAction] {
+        getAllConversationActionsInvokeCount += 1
+        return allConversationActionsStub
+    }
 }

@@ -17,55 +17,77 @@
 
 import SwiftUI
 import InboxCore
+import InboxCoreUI
 import InboxDesignSystem
+import proton_app_uniffi
 
 struct EditToolbarScreen: View {
-    @StateObject private var store: EditToolbarStore
+    private let state: EditToolbarState
+    private let customizeToolbarService: CustomizeToolbarServiceProtocol
+    @Environment(\.dismiss) var dismiss
+    @Environment(\.refreshToolbar) var refreshToolbarNotifier
 
-    init(state: EditToolbarState, toolbarService: ToolbarServiceProtocol) {
-        self._store = .init(wrappedValue: .init(state: state, toolbarService: toolbarService))
+    init(state: EditToolbarState, customizeToolbarService: CustomizeToolbarServiceProtocol) {
+        self.state = state
+        self.customizeToolbarService = customizeToolbarService
     }
 
     var body: some View {
-        List {
-            chosenActionsSection()
-            availableActionsSection()
-                .moveDisabled(true)
-            resetToOriginalSection()
-        }
-        .onLoad {
-            store.handle(action: .onLoad)
-        }
-        .listSectionSpacing(DS.Spacing.extraLarge)
-        .navigationTitle(store.state.screenType.screenTitle.string)
-        .navigationBarTitleDisplayMode(.inline)
-        .environment(\.editMode, .constant(.active))
-        .id(store.state.toolbarActions.unselected)
-        .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                Button(action: {
-                    store.handle(action: .saveTapped)
-                }) {
-                    Text(CommonL10n.save)
-                        .fontWeight(.semibold)
-                        .foregroundStyle(DS.Color.Text.accent)
+        NavigationStack {
+            StoreView(
+                store: EditToolbarStore(
+                    state: state,
+                    customizeToolbarService: customizeToolbarService,
+                    refreshToolbarNotifier: refreshToolbarNotifier,
+                    dismiss: { dismiss.callAsFunction() }
+                )
+            ) { state, store in
+                List {
+                    chosenActionsSection(state: state, store: store)
+                        .listRowBackground(DS.Color.BackgroundInverted.secondary)
+                    availableActionsSection(state: state, store: store)
+                        .listRowBackground(DS.Color.BackgroundInverted.secondary)
+                        .moveDisabled(true)
+                    resetToOriginalSection(store: store)
+                        .listRowBackground(DS.Color.BackgroundInverted.secondary)
                 }
-            }
+                .background(DS.Color.BackgroundInverted.norm)
+                .scrollContentBackground(.hidden)
+                .listSectionSpacing(DS.Spacing.extraLarge)
+                .navigationTitle(store.state.toolbarType.screenTitle.string)
+                .navigationBarTitleDisplayMode(.inline)
+                .environment(\.editMode, .constant(.active))
+                .id(store.state.toolbarActions.unselected)
+                .toolbar {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button(action: {
+                            store.handle(action: .saveTapped)
+                        }) {
+                            Text(CommonL10n.save)
+                                .fontWeight(.semibold)
+                                .foregroundStyle(DS.Color.Text.accent)
+                        }
+                    }
 
-            ToolbarItem(placement: .topBarLeading) {
-                Button(action: {
-                    store.handle(action: .cancelTapped)
-                }) {
-                    Text(CommonL10n.cancel)
-                        .foregroundStyle(DS.Color.Text.accent)
+                    ToolbarItem(placement: .topBarLeading) {
+                        Button(action: {
+                            store.handle(action: .cancelTapped)
+                        }) {
+                            Text(CommonL10n.cancel)
+                                .foregroundStyle(DS.Color.Text.accent)
+                        }
+                    }
+                }
+                .onLoad {
+                    store.handle(action: .onLoad)
                 }
             }
         }
     }
 
-    private func chosenActionsSection() -> some View {
+    private func chosenActionsSection(state: EditToolbarState, store: EditToolbarStore) -> some View {
         Section {
-            ForEach(store.state.toolbarActions.selected) { action in
+            ForEach(state.toolbarActions.selected) { action in
                 HStack(spacing: DS.Spacing.medium) {
                     Button(action: { store.handle(action: .removeFromSelectedTapped(actionToRemove: action)) }) {
                         Image(symbol: .minusCircleFill)
@@ -83,7 +105,7 @@ struct EditToolbarScreen: View {
                         .foregroundStyle(DS.Color.Text.norm)
                 }
                 .selectionDisabled()
-                .disabled(store.state.selectedActionsListDisabled)
+                .disabled(state.selectedActionsListDisabled)
             }
             .onMove { fromOffsets, toOffset in
                 store.handle(action: .actionsReordered(fromOffsets: fromOffsets, toOffset: toOffset))
@@ -103,9 +125,9 @@ struct EditToolbarScreen: View {
         .textCase(.none)
     }
 
-    private func availableActionsSection() -> some View {
+    private func availableActionsSection(state: EditToolbarState, store: EditToolbarStore) -> some View {
         Section {
-            ForEach(store.state.toolbarActions.unselected) { action in
+            ForEach(state.toolbarActions.unselected) { action in
                 HStack(spacing: DS.Spacing.medium) {
                     Button(action: { store.handle(action: .addToSelectedTapped(actionToAdd: action)) }) {
                         Image(symbol: .plusCircleFill)
@@ -123,7 +145,7 @@ struct EditToolbarScreen: View {
                         .foregroundStyle(DS.Color.Text.norm)
                 }
                 .selectionDisabled()
-                .disabled(store.state.availableActionsListDisabled)
+                .disabled(state.availableActionsListDisabled)
             }
         } header: {
             Text(L10n.Settings.CustomizeToolbars.availableActionsSectionTitle)
@@ -135,7 +157,7 @@ struct EditToolbarScreen: View {
         .textCase(.none)
     }
 
-    private func resetToOriginalSection() -> some View {
+    private func resetToOriginalSection(store: EditToolbarStore) -> some View {
         Section {
             Button(action: { store.handle(action: .resetToOriginalTapped) }) {
                 HStack {
@@ -156,12 +178,6 @@ struct EditToolbarScreen: View {
 
 }
 
-extension ToolbarActionType: Identifiable {
-    var id: String {
-        displayData.title.string
-    }
-}
-
 private extension EditToolbarState {
 
     var availableActionsListDisabled: Bool {
@@ -174,7 +190,7 @@ private extension EditToolbarState {
 
 }
 
-private extension EditToolbarState.ScreenType {
+private extension ToolbarType {
 
     var screenTitle: LocalizedStringResource {
         switch self {
@@ -189,17 +205,31 @@ private extension EditToolbarState.ScreenType {
 
 }
 
-#Preview {
-    NavigationStack {
-        EditToolbarScreen(
-            state: .init(
-                screenType: .list,
-                toolbarActions: .init(
-                    selected: [.markAsUnread, .archive, .labelAs],
-                    unselected: [.moveTo, .moveToSpam, .moveToTrash, .snooze, .star]
+#if DEBUG
+    #Preview {
+        NavigationStack {
+            EditToolbarScreen(
+                state: .init(
+                    toolbarType: .list,
+                    toolbarActions: .init(
+                        selected: [.toggleRead, .archive, .label],
+                        unselected: [.move, .spam, .trash, .snooze, .toggleStar]
+                    ),
                 ),
-            ),
-            toolbarService: ToolbarService()
-        )
+                customizeToolbarService: CustomizeToolbarServiceStub()
+            )
+        }
     }
-}
+
+    private final class CustomizeToolbarServiceStub: CustomizeToolbarServiceProtocol {
+        func getListToolbarActions() async throws(ActionError) -> [MobileAction] { [] }
+        func getMessageToolbarActions() async throws(ActionError) -> [MobileAction] { [] }
+        func getConversationToolbarActions() async throws(ActionError) -> [MobileAction] { [] }
+        func updateListToolbarActions(actions: [MobileAction]) async throws(ActionError) {}
+        func updateConversationToolbarActions(actions: [MobileAction]) async throws(ActionError) {}
+        func updateMessageToolbarActions(actions: [MobileAction]) async throws(ActionError) {}
+        func getAllListActions() -> [MobileAction] { [] }
+        func getAllMessageActions() -> [MobileAction] { [] }
+        func getAllConversationActions() -> [MobileAction] { [] }
+    }
+#endif

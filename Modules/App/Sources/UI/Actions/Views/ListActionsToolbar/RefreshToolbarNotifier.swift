@@ -15,33 +15,17 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import proton_app_uniffi
-import InboxCore
+import Combine
 import SwiftUI
 
-struct MessageActionsSheetState: Copying, Equatable {
-    let messageID: ID
-    let title: String
-    var actions: MessageActionSheet
-    var colorScheme: ColorScheme
-    var isEditToolbarPresented: Bool
+class RefreshToolbarNotifier: ObservableObject {
+    let refreshToolbar = PassthroughSubject<ToolbarType, Never>()
+
+    func refresh(toolbar: ToolbarType) {
+        refreshToolbar.send(toolbar)
+    }
 }
 
-extension MessageActionsSheetState {
-
-    static func initial(messageID: ID, title: String) -> Self {
-        .init(
-            messageID: messageID,
-            title: title,
-            actions: .init(
-                replyActions: [],
-                messageActions: [],
-                moveActions: [],
-                generalActions: []
-            ),
-            colorScheme: .light,
-            isEditToolbarPresented: false
-        )
-    }
-
+extension EnvironmentValues {
+    @Entry var refreshToolbar = RefreshToolbarNotifier()
 }

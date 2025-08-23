@@ -16,7 +16,6 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 enum CustomizeToolbarsAction {
-    case onLoad
-    case editListToolbar
-    case editConversationToolbar
+    case onAppear
+    case editToolbarSelected(ToolbarType)
 }

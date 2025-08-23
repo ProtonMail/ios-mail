@@ -24,4 +24,5 @@ enum ListActionsToolbarAction {
     case dismissLabelAsSheet
     case dismissMoveToSheet
     case alertActionTapped(DeleteConfirmationAlertAction, ids: [ID])
+    case editToolbarTapped
 }

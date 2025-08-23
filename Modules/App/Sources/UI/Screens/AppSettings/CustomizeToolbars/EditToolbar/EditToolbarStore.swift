@@ -22,11 +22,20 @@ import InboxCoreUI
 @MainActor
 class EditToolbarStore: StateStore {
     @Published var state: EditToolbarState
-    private let toolbarService: ToolbarServiceProtocol
+    private let customizeToolbarRepository: CustomizeToolbarRepository
+    private let refreshToolbarNotifier: RefreshToolbarNotifier
+    private let dismiss: () -> Void
 
-    init(state: EditToolbarState, toolbarService: ToolbarServiceProtocol) {
+    init(
+        state: EditToolbarState,
+        customizeToolbarService: CustomizeToolbarServiceProtocol,
+        refreshToolbarNotifier: RefreshToolbarNotifier,
+        dismiss: @escaping () -> Void
+    ) {
         self.state = state
-        self.toolbarService = toolbarService
+        self.customizeToolbarRepository = .init(customizeToolbarService: customizeToolbarService)
+        self.refreshToolbarNotifier = refreshToolbarNotifier
+        self.dismiss = dismiss
     }
 
     func handle(action: EditToolbarAction) async {
@@ -52,27 +61,40 @@ class EditToolbarStore: StateStore {
             state =
                 state
                 .copy(\.toolbarActions, to: .init(selected: selectedList, unselected: unselectedList))
-        case .onLoad:
+        case .onLoad, .resetToOriginalTapped:
             do {
-                let actions = try await toolbarService.customizeToolbarActions()[keyPath: state.screenType.actionsKeyPath]
+                let actions = try await customizeToolbarRepository.fetchActions()[
+                    keyPath: state.toolbarType.actionsKeyPath
+                ]
                 state = state.copy(\.toolbarActions, to: actions)
             } catch {
                 AppLogger.log(error: error, category: .customizeToolbar)
             }
-        case .resetToOriginalTapped, .saveTapped, .cancelTapped:
-            break
+        case .saveTapped:
+            do {
+                try await customizeToolbarRepository.save(
+                    actions: state.toolbarActions.selected,
+                    for: state.toolbarType
+                )
+                refreshToolbarNotifier.refresh(toolbar: state.toolbarType)
+            } catch {
+                AppLogger.log(error: error, category: .customizeToolbar)
+            }
+            dismiss()
+        case .cancelTapped:
+            dismiss()
         }
     }
 }
 
-extension EditToolbarState.ScreenType {
+private extension ToolbarType {
 
-    var actionsKeyPath: KeyPath<CustomizeToolbarActions, ToolbarActions> {
+    var actionsKeyPath: KeyPath<ToolbarsActions, CustomizeToolbarActions> {
         switch self {
         case .list:
             \.list
         case .message:
-            fatalError("To implement")
+            \.message
         case .conversation:
             \.conversation
         }

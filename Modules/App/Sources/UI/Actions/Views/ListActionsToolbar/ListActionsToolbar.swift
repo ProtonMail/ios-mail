@@ -43,6 +43,7 @@ private struct ListActionBarViewModifier: ViewModifier {
     @Binding var selectedItems: Set<MailboxSelectedItem>
     @EnvironmentObject var mailbox: Mailbox
     @EnvironmentObject var toastStateStore: ToastStateStore
+    @Environment(\.refreshToolbar) var refreshToolbarNotifier
     private let state: ListActionsToolbarState
     private let itemTypeForActionBar: MailboxItemType
     private let availableActions: AvailableListToolbarActions
@@ -119,9 +120,12 @@ private struct ListActionBarViewModifier: ViewModifier {
                     ListActionsToolbarMoreSheet(state: state) { action in
                         store.handle(action: .moreSheetAction(action, ids: selectedItemsIDs))
                     } editToolbarTapped: {
-                        // FIXME: - Edit toolbar action
+                        store.handle(action: .editToolbarTapped)
                     }
                     .alert(model: store.binding(\.moreDeleteConfirmationAlert))
+                    .sheet(isPresented: store.binding(\.isEditToolbarSheetPresented)) {
+                        EditToolbarScreen(state: .initial(toolbarType: .list), customizeToolbarService: mailUserSession)
+                    }
                 }
                 .sheet(isPresented: store.binding(\.isSnoozeSheetPresented)) {
                     SnoozeView(
@@ -130,6 +134,11 @@ private struct ListActionBarViewModifier: ViewModifier {
                             labelId: mailbox.labelId(),
                             conversationIDs: selectedItemsIDs
                         ))
+                }
+                .onReceive(refreshToolbarNotifier.refreshToolbar) { toolbarType in
+                    if toolbarType == .list {
+                        store.handle(action: .listItemsSelectionUpdated(ids: selectedItemsIDs))
+                    }
                 }
                 .alert(model: store.binding(\.deleteConfirmationAlert))
         }

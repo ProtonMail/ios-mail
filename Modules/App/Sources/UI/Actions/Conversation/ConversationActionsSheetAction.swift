@@ -19,5 +19,6 @@ import proton_app_uniffi
 
 enum ConversationActionsSheetAction {
     case onLoad
-    case actionSelected(ConversationAction)
+    case actionTapped(ConversationAction)
+    case editToolbarTapped
 }

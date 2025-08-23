@@ -26,6 +26,7 @@ struct ConversationDetailScreen: View {
     @State private var isHeaderVisible: Bool = false
     @EnvironmentObject var toastStateStore: ToastStateStore
     @Environment(\.colorScheme) var colorScheme
+    @Environment(\.refreshToolbar) var refreshToolbarNotifier
     @Binding private var navigationPath: NavigationPath
     private let draftPresenter: DraftPresenter
     private let mailUserSession: MailUserSession
@@ -75,6 +76,13 @@ struct ConversationDetailScreen: View {
                     }
                 }
             )
+            .onReceive(refreshToolbarNotifier.refreshToolbar) { toolbarType in
+                if toolbarType == .message || toolbarType == .conversation {
+                    Task {
+                        await model.reloadBottomBarActions()
+                    }
+                }
+            }
             .toolbar(model.isBottomBarHidden ? .hidden : .visible, for: .bottomBar)
             .bottomToolbarStyle()
             .animation(.default, value: model.isBottomBarHidden)
@@ -82,7 +90,7 @@ struct ConversationDetailScreen: View {
                 mailbox: { model.mailbox.unsafelyUnwrapped },
                 mailUserSession: mailUserSession,
                 state: $model.actionSheets,
-                messageActionSelected: { action, id in
+                messageActionTapped: { action, id in
                     Task {
                         await model.handle(
                             action: action,
@@ -94,7 +102,7 @@ struct ConversationDetailScreen: View {
                         }
                     }
                 },
-                conversationActionSelected: { action in
+                conversationActionTapped: { action in
                     Task {
                         await model.handle(
                             action: action,

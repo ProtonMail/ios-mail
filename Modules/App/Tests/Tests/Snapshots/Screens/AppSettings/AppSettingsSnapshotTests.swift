@@ -26,34 +26,31 @@ struct AppSettingsSnapshotTests {
 
     @Test(arguments: [MobileSignatureStatus.enabled, .disabled, .needsPaidVersion])
     func testAppSettingsLayoutCorrectly(mobileSignatureStatus: MobileSignatureStatus) {
-        CustomizeToolbarsFlag.$isVisible
-            .withValue(true) {
-                let sut = AppSettingsScreen(
-                    state: .init(
-                        areNotificationsEnabled: false,
-                        appLanguage: "English",
-                        storedAppSettings: .init(
-                            appearance: .system,
-                            protection: .pin,
-                            autoLock: .always,
-                            useCombineContacts: false,
-                            useAlternativeRouting: true
-                        ),
-                        isAppearanceMenuShown: false,
-                        mobileSignatureStatus: mobileSignatureStatus
-                    ),
-                    appSettingsRepository: AppSettingsRepositorySpy()
-                )
+        let sut = AppSettingsScreen(
+            state: .init(
+                areNotificationsEnabled: false,
+                appLanguage: "English",
+                storedAppSettings: .init(
+                    appearance: .system,
+                    protection: .pin,
+                    autoLock: .always,
+                    useCombineContacts: false,
+                    useAlternativeRouting: true
+                ),
+                isAppearanceMenuShown: false,
+                mobileSignatureStatus: mobileSignatureStatus
+            ),
+            appSettingsRepository: AppSettingsRepositorySpy()
+        )
 
-                for userInterfaceStyle in [UIUserInterfaceStyle.light, .dark] {
-                    assertCustomHeightSnapshot(
-                        matching: UIHostingController(rootView: sut).view,
-                        styles: [userInterfaceStyle],
-                        preferredHeight: 900,
-                        named: "\(mobileSignatureStatus)"
-                    )
-                }
-            }
+        for userInterfaceStyle in [UIUserInterfaceStyle.light, .dark] {
+            assertCustomHeightSnapshot(
+                matching: UIHostingController(rootView: sut).view,
+                styles: [userInterfaceStyle],
+                preferredHeight: 900,
+                named: "\(mobileSignatureStatus)"
+            )
+        }
     }
 
 }

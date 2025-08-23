@@ -41,9 +41,7 @@ struct ListActionsToolbarMoreSheet: View {
                     section(content: state.moreSheetOnlyActions)
                     section(content: state.bottomBarActions)
 
-                    if CustomizeToolbarsFlag.isVisible {
-                        editToolbarSection()
-                    }
+                    editToolbarSection()
                 }
                 .padding(.all, DS.Spacing.large)
             }
@@ -68,13 +66,8 @@ struct ListActionsToolbarMoreSheet: View {
     }
 
     private func editToolbarSection() -> some View {
-        ActionSheetSection {
-            ActionSheetImageButton(
-                displayData: .init(title: L10n.Action.editToolbar, image: DS.Icon.icMagicWand.image),
-                displayBottomSeparator: false
-            ) {
-                editToolbarTapped()
-            }
+        EditToolbarSheetSection {
+            editToolbarTapped()
         }
     }
 

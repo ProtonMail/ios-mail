@@ -77,7 +77,7 @@ struct SettingsViewFactory {
         case .subscription:
             AvailablePlansViewFactory.make(mailUserSession: mailUserSession, presentationMode: .push)
         case .customizeToolbars:
-            CustomizeToolbarsScreen(toolbarService: ToolbarService())
+            CustomizeToolbarsScreen(customizeToolbarService: mailUserSession, viewModeProvider: mailUserSession)
         }
     }
 }
