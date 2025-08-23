@@ -74,16 +74,6 @@ public extension AssignedSwipeActionsResult {
         }
     }
 }
-public extension AvailableActionsForConversationsResult {
-    func get() throws(ActionError) -> ConversationAvailableActions {
-        switch self {
-        case .ok(let value):
-            value
-        case .error(let error):
-            throw error
-        }
-    }
-}
 public extension AvailableLabelAsActionsForConversationsResult {
     func get() throws(ActionError) -> [LabelAsAction] {
         switch self {

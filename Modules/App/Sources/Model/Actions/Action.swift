@@ -44,7 +44,6 @@ enum Action: ActionPickerListElement {
     case reply
     case replyAll
     case reportPhishing
-    case saveAsPDF
     case star
     case snooze
     case unpin
@@ -76,7 +75,6 @@ enum Action: ActionPickerListElement {
         case .reply: \.reply
         case .replyAll: \.replyAll
         case .reportPhishing: \.reportPhishing
-        case .saveAsPDF: \.saveAsPDF
         case .star: \.star
         case .snooze: \.snooze
         case .unpin: \.unpin
@@ -124,8 +122,6 @@ enum Action: ActionPickerListElement {
             Image(symbol: .replyAll)
         case .reportPhishing:
             DS.Icon.icHook.image
-        case .saveAsPDF:
-            DS.Icon.icFilePDF.image
         case .snooze:
             DS.Icon.icClock.image
         case .star:

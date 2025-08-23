@@ -18,7 +18,6 @@
 import InboxCoreUI
 import InboxDesignSystem
 import SwiftUI
-import enum proton_app_uniffi.ReplyAction
 
 struct MessageActionButtonsView: View {
     let isSingleRecipient: Bool

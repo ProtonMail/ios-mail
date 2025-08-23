@@ -181,10 +181,6 @@ enum L10n {
             "Report phishing",
             comment: "Action title for reporting phishing message in the action sheet."
         )
-        static let saveAsPDF = LocalizedStringResource(
-            "Save as PDF",
-            comment: "Action title for saving message as PDF file in the action sheet."
-        )
         static let snooze = LocalizedStringResource(
             "Snooze",
             comment: "Action title for marking message as snoozed in the action sheet."

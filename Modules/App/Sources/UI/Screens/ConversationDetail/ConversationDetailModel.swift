@@ -261,7 +261,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         case .forward:
             actionSheets = .allSheetsDismissed
             onForwardMessage(withId: messageID, toastStateStore: toastStateStore)
-        case .savePdf, .viewHeaders, .viewHtml:
+        case .viewHeaders, .viewHtml:
             toastStateStore.present(toast: .comingSoon)
         case .print:
             do {
