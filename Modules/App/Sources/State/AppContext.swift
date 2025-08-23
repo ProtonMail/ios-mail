@@ -154,6 +154,7 @@ extension AppContext {
 
             do {
                 if let existingSession = try await mailSession.initializedUserSessionFromStoredSession(session: session).get() {
+                    AppLogger.log(message: "A session is already initialized", category: .userSessions)
                     animateTransition(into: .activeSession(session: existingSession))
                     return
                 }
@@ -172,6 +173,8 @@ extension AppContext {
     }
 
     private func initializeUserSession(session: StoredSession) async throws -> MailUserSession? {
+        AppLogger.log(message: "Creating a new session", category: .userSessions)
+
         while true {
             let start = ContinuousClock.now
 
@@ -204,9 +207,12 @@ extension AppContext {
 
     @MainActor
     private func waitUntilTheAppIsInForeground() async {
+        let applicationState = UIApplication.shared.applicationState
+        AppLogger.log(message: "Application state: \(applicationState)", category: .appLifeCycle)
+
         // It's possible for `applicationState` to equal `.inactive` during the startup sequence, so it's also accepted as "in foreground".
         // We only need to worry about the 3rd case - `.background` - which occurs when a `NotificationQuickAction` is executed.
-        guard UIApplication.shared.applicationState == .background else {
+        guard applicationState == .background else {
             return
         }
 

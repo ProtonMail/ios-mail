@@ -15,46 +15,41 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Combine
 import InboxCore
 import proton_app_uniffi
 import UIKit
 
-@MainActor
-final class ShortcutItemsService: ApplicationServiceSetUp {
+final class ShortcutItemsService: ApplicationServiceWillResignActive {
+    typealias ActiveUserSession = () -> MailUserSession?
     typealias ResolveSystemLabelID = (MailUserSession, SystemLabel) async throws -> ID?
 
+    private let activeUserSession: ActiveUserSession
     private let resolveSystemLabelID: ResolveSystemLabelID
-    private let sessionState: AnyPublisher<SessionState, Never>
 
-    init(resolveSystemLabelID: @escaping ResolveSystemLabelID, sessionState: any Publisher<SessionState, Never>) {
+    init(activeUserSession: @escaping ActiveUserSession, resolveSystemLabelID: @escaping ResolveSystemLabelID) {
+        self.activeUserSession = activeUserSession
         self.resolveSystemLabelID = resolveSystemLabelID
-        self.sessionState = sessionState.eraseToAnyPublisher()
     }
 
-    convenience init(sessionState: any Publisher<SessionState, Never>) {
+    convenience init(appContext: AppContext) {
         self.init(
-            resolveSystemLabelID: { try await resolveSystemLabelId(ctx: $0, label: $1).get() },
-            sessionState: sessionState
+            activeUserSession: { appContext.sessionState.userSession },
+            resolveSystemLabelID: { try await resolveSystemLabelId(ctx: $0, label: $1).get() }
         )
     }
 
-    func setUpService() {
-        _ = startListeningToUserSessionChanges()
+    func willResignActive() {
+        Task {
+            await updateShortcutItems()
+        }
     }
 
-    func startListeningToUserSessionChanges() -> Task<Void, Never> {
-        let userSessions = sessionState.removeDuplicates().map(\.userSession).valuesWithBuffering
-
-        return .init {
-            for await userSession in userSessions {
-                if let userSession {
-                    let shortcutItems = await shortcutItems(for: userSession)
-                    setShortcutItems(shortcutItems)
-                } else {
-                    setShortcutItems(nil)
-                }
-            }
+    func updateShortcutItems() async {
+        if let userSession = activeUserSession() {
+            let shortcutItems = await shortcutItems(for: userSession)
+            setShortcutItems(shortcutItems)
+        } else {
+            setShortcutItems(nil)
         }
     }
 

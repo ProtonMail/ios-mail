@@ -107,7 +107,7 @@ extension AppLifeCycle {
         )
 
         let foregroundWorkService = ForegroundWorkService(mailSession: { appContext.mailSession })
-        let shortcutItemsService = ShortcutItemsService(sessionState: appContext.$sessionState)
+        let shortcutItemsService = ShortcutItemsService(appContext: appContext)
 
         let userNotificationCenterDelegate = UserNotificationCenterDelegate(
             sessionStatePublisher: appContext.$sessionState.eraseToAnyPublisher(),
@@ -124,7 +124,6 @@ extension AppLifeCycle {
                 notificationAuthorizationService,
                 paymentsService,
                 recurringBackgroundTaskService,
-                shortcutItemsService,
                 userNotificationCenterDelegate,
             ],
             willEnterForegroundServices: [
@@ -132,7 +131,8 @@ extension AppLifeCycle {
                 backgroundTransitionActionsExecutor,
             ],
             willResignActiveServices: [
-                appIconBadgeService
+                appIconBadgeService,
+                shortcutItemsService,
             ],
             didEnterBackgroundServices: [
                 foregroundWorkService,

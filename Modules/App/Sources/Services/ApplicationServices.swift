@@ -17,6 +17,7 @@
 
 import Foundation
 
+@MainActor
 struct ApplicationServices {
     var setUpServices: [ApplicationServiceSetUp] = []
     var willEnterForegroundServices: [ApplicationServiceWillEnterForeground] = []
@@ -24,7 +25,6 @@ struct ApplicationServices {
     var didEnterBackgroundServices: [ApplicationServiceDidEnterBackground] = []
     var terminateServices: [ApplicationServiceTerminate] = []
 
-    @MainActor
     func setUp() {
         setUpServices.forEach { $0.setUpService() }
     }
@@ -59,6 +59,7 @@ protocol ApplicationServiceWillEnterForeground {
     func willEnterForeground()
 }
 
+@MainActor
 protocol ApplicationServiceWillResignActive {
     func willResignActive()
 }

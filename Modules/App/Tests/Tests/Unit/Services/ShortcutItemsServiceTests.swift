@@ -17,7 +17,6 @@
 
 @testable import ProtonMail
 
-import Combine
 import InboxTesting
 import proton_app_uniffi
 import Testing
@@ -26,59 +25,51 @@ import UIKit
 @MainActor
 @Suite(.serialized)
 final class ShortcutItemsServiceTests {
-    private let sessionStateSubject = CurrentValueSubject<SessionState, Never>(.noSession)
+    private var stubbedActiveUserSession: MailUserSessionSpy?
     private var stubbedResolveResult: ResolveSystemLabelIdResult = .ok(0)
 
     private lazy var sut = ShortcutItemsService(
-        resolveSystemLabelID: { [unowned self] _, _ in try await stubbedResolveResult.get() },
-        sessionState: sessionStateSubject
+        activeUserSession: { [unowned self] in stubbedActiveUserSession },
+        resolveSystemLabelID: { [unowned self] _, _ in try await stubbedResolveResult.get() }
     )
 
     private let dummyUserSession = MailUserSessionSpy(id: "foo")
 
     @Test
-    func setsItemsWhenASessionBecomesActive() async {
-        let task = sut.startListeningToUserSessionChanges()
-        sessionStateSubject.send(.activeSession(session: dummyUserSession))
-        await waitForEventHandlingToFinish(task: task)
+    func setsItemsWhenASessionIsActive() async {
+        stubbedActiveUserSession = dummyUserSession
+
+        await sut.updateShortcutItems()
 
         #expect(UIApplication.shared.shortcutItems?.map(\.type) == ["search", "starred", "compose"])
     }
 
     @Test
     func clearsItemsWhenNoSessionIsActive() async {
-        let task = sut.startListeningToUserSessionChanges()
-        sessionStateSubject.send(.activeSession(session: dummyUserSession))
-        sessionStateSubject.send(.noSession)
-        await waitForEventHandlingToFinish(task: task)
+        stubbedActiveUserSession = nil
+
+        await sut.updateShortcutItems()
 
         #expect(UIApplication.shared.shortcutItems == [])
     }
 
     @Test
     func whenStarredFolderDoesNotExist_setsRemainingItems() async {
+        stubbedActiveUserSession = dummyUserSession
         stubbedResolveResult = .ok(nil)
 
-        let task = sut.startListeningToUserSessionChanges()
-        sessionStateSubject.send(.activeSession(session: dummyUserSession))
-        await waitForEventHandlingToFinish(task: task)
+        await sut.updateShortcutItems()
 
         #expect(UIApplication.shared.shortcutItems?.map(\.type) == ["search", "compose"])
     }
 
     @Test
     func whenStarredFolderLookupFails_setsRemainingItems() async {
+        stubbedActiveUserSession = dummyUserSession
         stubbedResolveResult = .error(.unexpected(.database))
 
-        let task = sut.startListeningToUserSessionChanges()
-        sessionStateSubject.send(.activeSession(session: dummyUserSession))
-        await waitForEventHandlingToFinish(task: task)
+        await sut.updateShortcutItems()
 
         #expect(UIApplication.shared.shortcutItems?.map(\.type) == ["search", "compose"])
-    }
-
-    private func waitForEventHandlingToFinish(task: Task<Void, Never>) async {
-        sessionStateSubject.send(completion: .finished)
-        await task.value
     }
 }
