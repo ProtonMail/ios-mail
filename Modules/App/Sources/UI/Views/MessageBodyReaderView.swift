@@ -59,9 +59,9 @@ struct MessageBodyReaderView: UIViewRepresentable {
         }
 
         let userScripts: [AppScript] = [
-            .adjustLayoutAndObserveHeight(viewWidth: viewWidth),
-            .handleEmptyBody,
             .redirectConsoleLogToAppLogger,
+            .handleEmptyBody,
+            .adjustLayoutAndObserveHeight(viewWidth: viewWidth),
         ]
 
         userScripts
@@ -112,6 +112,7 @@ struct MessageBodyReaderView: UIViewRepresentable {
             """
         let fixedBody = body.rawBody.replacingOccurrences(of: "</head>", with: "\(style)</head>")
 
+        AppLogger.log(message: "Will load body", category: .webView)
         webView.loadHTMLString(fixedBody, baseURL: nil)
     }
 
@@ -237,6 +238,9 @@ extension AppScript {
             function executeOnceContentIsLaidOut(callback) {
                 // This is a good enough heuristic without hard coding magic numbers
                 const isContentLaidOut = document.body.offsetWidth > \(viewWidth / 2);
+                console.log("document.body.offsetWidth: " + document.body.offsetWidth);
+                console.log("viewWidth: " + \(viewWidth));
+                console.log("isContentLaidOut: " + isContentLaidOut);
 
                 if (isContentLaidOut) {
                     callback();
@@ -253,18 +257,27 @@ extension AppScript {
                 metaWidth.content = "width=device-width, initial-scale=" + ratio + ", maximum-scale=3.0, user-scalable=yes";
             }
 
+            function sendHeightToSwiftUI(ratio) {
+                var height = document.documentElement.scrollHeight * ratio;
+                console.log("height: " + height);
+                window.webkit.messageHandlers.\(HandlerName.heightChanged.rawValue).postMessage(height);
+            }
+
             function startSendingHeightToSwiftUI(ratio) {
                 const observer = new ResizeObserver(() => {
-                    var height = document.documentElement.scrollHeight * ratio;
-                    window.webkit.messageHandlers.\(HandlerName.heightChanged.rawValue).postMessage(height);
+                    sendHeightToSwiftUI(ratio);
                 });
 
+                console.log("observation will start");
                 observer.observe(document.body);
+                console.log("observation did start");
             }
 
             executeOnceContentIsLaidOut(() => {
                 const ratio = document.body.offsetWidth / document.body.scrollWidth;
+                console.log("ratio: " + ratio);
                 setViewportInitialScale(ratio);
+                sendHeightToSwiftUI(ratio);
                 startSendingHeightToSwiftUI(ratio);
             });
             """
