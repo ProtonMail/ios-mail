@@ -81,6 +81,8 @@ struct ToastView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
     }
 
+    private let buttonBackgroundColor: Color = DS.Color.Background.norm.opacity(0.2)
+
     private func smallImageButton(imageResource: ImageResource, action: @escaping () async -> Void) -> some View {
         Button(
             action: {
@@ -92,7 +94,7 @@ struct ToastView: View {
                 Image(imageResource)
                     .padding(DS.Spacing.standard)
                     .foregroundColor(DS.Color.Text.inverted)
-                    .background(DS.Color.Global.white.opacity(0.2), in: Circle())
+                    .background(buttonBackgroundColor, in: Circle())
             }
         )
     }
@@ -110,7 +112,7 @@ struct ToastView: View {
                     .fontWeight(.regular)
                     .foregroundStyle(DS.Color.Text.inverted)
                     .padding(.init(vertical: DS.Spacing.standard, horizontal: DS.Spacing.large))
-                    .background(DS.Color.Global.white.opacity(0.2), in: Capsule())
+                    .background(buttonBackgroundColor, in: Capsule())
             }
         )
     }
@@ -129,7 +131,7 @@ struct ToastView: View {
                     .foregroundStyle(DS.Color.Text.inverted)
                     .frame(maxWidth: .infinity)
                     .padding(.init(vertical: DS.Spacing.medium, horizontal: DS.Spacing.large))
-                    .background(DS.Color.Global.white.opacity(0.2), in: Capsule())
+                    .background(buttonBackgroundColor, in: Capsule())
             }
         )
     }
