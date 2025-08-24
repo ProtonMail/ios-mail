@@ -25,7 +25,13 @@ protocol MailSettingLiveQuerying {
     /// Emits an event only when the user's view mode setting changes
     var viewModeHasChanged: AnyPublisher<Void, Never> { get }
 
-    func settingHasChanged<Property: Equatable>(keyPath: KeyPath<MailSettings, Property>) -> AnyPublisher<Property, Never>
+    func settingHasChanged<Property: Equatable>(keyPath: KeyPath<MailSettings, Property>, dropFirst: Bool) -> AnyPublisher<Property, Never>
+}
+
+extension MailSettingLiveQuerying {
+    func settingHasChanged<Property: Equatable>(keyPath: KeyPath<MailSettings, Property>) -> AnyPublisher<Property, Never> {
+        settingHasChanged(keyPath: keyPath, dropFirst: true)
+    }
 }
 
 final class MailSettingsLiveQuery: MailSettingLiveQuerying {
@@ -55,11 +61,11 @@ final class MailSettingsLiveQuery: MailSettingLiveQuerying {
             .eraseToAnyPublisher()
     }
 
-    func settingHasChanged<Property: Equatable>(keyPath: KeyPath<MailSettings, Property>) -> AnyPublisher<Property, Never> {
+    func settingHasChanged<Property: Equatable>(keyPath: KeyPath<MailSettings, Property>, dropFirst: Bool) -> AnyPublisher<Property, Never> {
         settingsSubject
             .map(keyPath)
             .removeDuplicates()
-            .dropFirst()
+            .dropFirst(dropFirst ? 1 : 0)
             .debounce(for: .milliseconds(100), scheduler: DispatchQueue.main)
             .eraseToAnyPublisher()
     }

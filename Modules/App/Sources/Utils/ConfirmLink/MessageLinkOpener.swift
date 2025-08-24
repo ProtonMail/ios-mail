@@ -17,54 +17,32 @@
 
 import InboxCore
 import InboxCoreUI
-import proton_app_uniffi
 import SwiftUI
 
 @MainActor
 final class MessageLinkOpener {
-    private let mailSettings: () async throws -> MailSettings
+    private let confirmLink: Bool
     private let confirmationAlert: Binding<AlertModel?>
     private let openURL: URLOpenerProtocol
 
     init(
-        mailSettings: @escaping () async throws -> MailSettings,
+        confirmLink: Bool,
         confirmationAlert: Binding<AlertModel?>,
         openURL: URLOpenerProtocol
     ) {
-        self.mailSettings = mailSettings
+        self.confirmLink = confirmLink
         self.confirmationAlert = confirmationAlert
         self.openURL = openURL
     }
 
-    convenience init(
-        mailUserSession: MailUserSession,
-        confirmationAlert: Binding<AlertModel?>,
-        openURL: URLOpenerProtocol
-    ) {
-        self.init(
-            mailSettings: { try await proton_app_uniffi.mailSettings(ctx: mailUserSession).get() },
-            confirmationAlert: confirmationAlert,
-            openURL: openURL
-        )
-    }
-
     var action: OpenURLAction {
         .init { url in
-            Task { [weak self] in
-                guard let self else { return }
-
-                do {
-                    let settings = try await mailSettings()
-
-                    if settings.confirmLink {
-                        askForConfirmation(beforeOpening: url)
-                    } else {
-                        openURL(url)
-                    }
-                } catch {
-                    AppLogger.log(error: error)
-                }
+            if self.confirmLink {
+                self.askForConfirmation(beforeOpening: url)
+            } else {
+                self.openURL(url)
             }
+
             return .handled
         }
     }

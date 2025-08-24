@@ -29,7 +29,8 @@ final class MessageBodyReaderViewTests {
     private lazy var sut = MessageBodyReaderView(
         bodyContentHeight: .constant(.zero),
         body: .init(rawBody: "<html>dummy</html>", options: .init(), imageProxy: ImageProxySpy()),
-        viewWidth: .zero
+        viewWidth: .zero,
+        confirmLink: true
     )
 
     private lazy var coordinator: MessageBodyReaderView.Coordinator = {

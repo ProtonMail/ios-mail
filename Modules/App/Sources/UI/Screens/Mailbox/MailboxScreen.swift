@@ -130,6 +130,7 @@ struct MailboxScreen: View {
             Dispatcher.dispatchOnMainAfter(.now() + .milliseconds(500), workItem)
             didAppear?(self)
         }
+        .environment(\.confirmLink, mailboxModel.state.confirmLink)
     }
 
     private func onboardingScreenDismissed() {
@@ -323,7 +324,7 @@ class MailSettingsLiveQueryPreviewDummy: MailSettingLiveQuerying {
         Just(Void()).eraseToAnyPublisher()
     }
 
-    func settingHasChanged<Property: Equatable>(keyPath: KeyPath<MailSettings, Property>) -> AnyPublisher<Property, Never> {
+    func settingHasChanged<Property: Equatable>(keyPath: KeyPath<MailSettings, Property>, dropFirst: Bool) -> AnyPublisher<Property, Never> {
         Empty().eraseToAnyPublisher()
     }
 }

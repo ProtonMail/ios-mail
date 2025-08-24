@@ -176,6 +176,13 @@ extension MailboxModel {
             }
             .store(in: &cancellables)
 
+        mailSettingsLiveQuery
+            .settingHasChanged(keyPath: \.confirmLink, dropFirst: false)
+            .sink { [weak self] confirmLink in
+                self?.state.confirmLink = confirmLink
+            }
+            .store(in: &cancellables)
+
         observeSelectionChanges()
         exitSelectAllModeWhenNewItemsAreFetched()
     }
@@ -695,6 +702,8 @@ extension MailboxModel {
 
         var upsellPresented: UpsellScreenModel?
         var onboardingUpsellPresented: OnboardingUpsellScreenModel?
+
+        var confirmLink: Bool = true
     }
 }
 

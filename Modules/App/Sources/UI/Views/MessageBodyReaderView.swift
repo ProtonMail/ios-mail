@@ -29,6 +29,7 @@ struct MessageBodyReaderView: UIViewRepresentable {
     @Binding var bodyContentHeight: CGFloat
     let body: MessageBody.HTML
     let viewWidth: CGFloat
+    let confirmLink: Bool
 
     func makeUIView(context: Context) -> WKWebView {
         let backgroundColor = UIColor(DS.Color.Background.norm)
@@ -42,6 +43,7 @@ struct MessageBodyReaderView: UIViewRepresentable {
 
         let webView = WKWebView(frame: .zero, configuration: config)
         webView.navigationDelegate = context.coordinator
+        webView.uiDelegate = context.coordinator
         webView.scrollView.isScrollEnabled = false
         webView.scrollView.bounces = false
 
@@ -116,7 +118,7 @@ struct MessageBodyReaderView: UIViewRepresentable {
 
 extension MessageBodyReaderView {
 
-    class Coordinator: NSObject, WKNavigationDelegate, WKScriptMessageHandler, @unchecked Sendable {
+    class Coordinator: NSObject, WKNavigationDelegate, WKScriptMessageHandler, WKUIDelegate {
         let parent: MessageBodyReaderView
         var urlOpener: URLOpenerProtocol?
         private var previouslyReceivedBody: MessageBody.HTML?
@@ -193,6 +195,19 @@ extension MessageBodyReaderView {
             } else {
                 return true
             }
+        }
+
+        func webView(
+            _ webView: WKWebView,
+            contextMenuConfigurationFor elementInfo: WKContextMenuElementInfo
+        ) async -> UIContextMenuConfiguration? {
+            let configurationWithoutPreview = UIContextMenuConfiguration(
+                actionProvider: { menuElements in
+                    UIMenu(title: .empty, children: menuElements)
+                }
+            )
+
+            return parent.confirmLink ? configurationWithoutPreview : nil
         }
     }
 }

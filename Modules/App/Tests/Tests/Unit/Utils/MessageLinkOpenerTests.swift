@@ -19,30 +19,20 @@
 
 import InboxCoreUI
 import InboxTesting
-import proton_app_uniffi
 import SwiftUI
 import Testing
 
 @MainActor
 final class MessageLinkOpenerTests {
-    private var stubbedMailSettings = MailSettings.defaults()
-    private var confirmationAlert = ObservableBag<AlertModel?>(wrappedValue: nil)
+    private var confirmationAlert = Binding<AlertModel?>(wrappedValue: nil)
     private let urlOpener = EnvironmentURLOpenerSpy()
     private let testURL = URL(string: "https://example.com")!
 
-    private lazy var sut = MessageLinkOpener(
-        mailSettings: { [unowned self] in await stubbedMailSettings },
-        confirmationAlert: confirmationAlert.bind(),
-        openURL: urlOpener
-    )
-
     @Test
-    func whenConfirmLinkIsDisabled_opensLinkImmediately() async throws {
-        stubbedMailSettings.confirmLink = false
+    func whenConfirmLinkIsDisabled_opensLinkImmediately() throws {
+        let sut = makeSUT(confirmLink: false)
 
         sut.action(testURL)
-
-        try await waitForActionToTakeEffect()
 
         #expect(confirmationAlert.wrappedValue == nil)
         #expect(urlOpener.callAsFunctionInvokedWithURL == [testURL])
@@ -50,11 +40,9 @@ final class MessageLinkOpenerTests {
 
     @Test
     func whenConfirmLinkIsEnabled_askForConfirmation() async throws {
-        stubbedMailSettings.confirmLink = true
+        let sut = makeSUT(confirmLink: true)
 
         sut.action(testURL)
-
-        try await waitForActionToTakeEffect()
 
         let alert = try #require(confirmationAlert.wrappedValue)
         #expect(urlOpener.callAsFunctionInvokedWithURL == [])
@@ -66,34 +54,11 @@ final class MessageLinkOpenerTests {
         #expect(urlOpener.callAsFunctionInvokedWithURL == [testURL])
     }
 
-    private func waitForActionToTakeEffect() async throws {
-        try await withTimeout { [confirmationAlert, urlOpener] in
-            await withCheckedContinuation { continuation in
-                withObservationTracking {
-                    _ = confirmationAlert.wrappedValue
-                    _ = urlOpener.callAsFunctionInvokedWithURL
-                } onChange: {
-                    continuation.resume()
-                }
-            }
-        }
-    }
-}
-
-@MainActor
-@Observable
-private class ObservableBag<Value> {
-    private(set) var wrappedValue: Value
-
-    init(wrappedValue: Value) {
-        self.wrappedValue = wrappedValue
-    }
-
-    func bind() -> Binding<Value> {
-        .init {
-            self.wrappedValue
-        } set: { newValue in
-            self.wrappedValue = newValue
-        }
+    private func makeSUT(confirmLink: Bool) -> MessageLinkOpener {
+        .init(
+            confirmLink: confirmLink,
+            confirmationAlert: confirmationAlert,
+            openURL: urlOpener
+        )
     }
 }

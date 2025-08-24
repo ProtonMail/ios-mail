@@ -31,7 +31,6 @@ final class ConversationDetailModel: Sendable, ObservableObject {
     @Published private(set) var conversationToolbarActions: ConversationToolbarActions?
     @Published var actionSheets: MailboxActionSheetsState = .initial()
     @Published var editScheduledMessageConfirmationAlert: AlertModel?
-    @Published var linkConfirmationAlert: AlertModel?
     @Published var actionAlert: AlertModel?
     @Published var attachmentIDToOpen: ID?
 

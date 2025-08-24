@@ -22,7 +22,10 @@ import SwiftUI
 
 struct MessageBodyHTMLView: View {
     @Environment(\.mainWindowSize) var mainWindowSize
+    @Environment(\.confirmLink) private var confirmLink
+    @Environment(\.openURL) private var openURLWithoutConfirmation
     @Binding var bodyContentHeight: CGFloat
+    @State var linkConfirmationAlert: AlertModel?
 
     let messageBody: MessageBodyStateStore.State.Body
 
@@ -31,6 +34,16 @@ struct MessageBodyHTMLView: View {
     /// meaningful default size avoids more than one scroll movement (before and after the html rendering).
     private var loadingHtmlInitialHeight: CGFloat {
         mainWindowSize.height * 0.5
+    }
+
+    private var openURLWithConfirmation: OpenURLAction {
+        let messageLinkOpener = MessageLinkOpener(
+            confirmLink: confirmLink,
+            confirmationAlert: $linkConfirmationAlert,
+            openURL: openURLWithoutConfirmation
+        )
+
+        return messageLinkOpener.action
     }
 
     var body: some View {
@@ -57,8 +70,10 @@ struct MessageBodyHTMLView: View {
                     MessageBodyReaderView(
                         bodyContentHeight: $bodyContentHeight,
                         body: body,
-                        viewWidth: geometry.size.width
+                        viewWidth: geometry.size.width,
+                        confirmLink: confirmLink
                     )
+                    .environment(\.openURL, openURLWithConfirmation)
                 }
             }
             .frame(height: max(bodyContentHeight, 1))  // WKWebView needs a non-zero height to render properly, before we calculate the final size
@@ -66,6 +81,7 @@ struct MessageBodyHTMLView: View {
             .opacity(bodyContentHeight > 0 ? 1 : 0)
             .accessibilityIdentifier(MessageBodyViewIdentifiers.messageBody)
         }
+        .alert(model: $linkConfirmationAlert)
     }
 }
 
