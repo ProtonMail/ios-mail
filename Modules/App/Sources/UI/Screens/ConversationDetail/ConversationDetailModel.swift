@@ -20,11 +20,6 @@ import InboxCore
 import InboxCoreUI
 import SwiftUI
 
-struct ConversationItem {
-    let id: ID
-    let itemType: MailboxItemType
-}
-
 @MainActor
 final class ConversationDetailModel: Sendable, ObservableObject {
     @Published private(set) var state: State = .initial
@@ -43,6 +38,17 @@ final class ConversationDetailModel: Sendable, ObservableObject {
     let messageAppearanceOverrideStore = MessageAppearanceOverrideStore()
     let messagePrinter: MessagePrinter
     private var colorScheme: ColorScheme = .light
+
+    enum InitialConversationItem {
+        case message(ID)
+        case conversation(ID)
+        case pushNotification(messageID: ID, conversationID: ID)
+    }
+
+    struct ConversationItemMetadata {
+        let item: InitialConversationItem
+        let selectedMailbox: SelectedMailbox
+    }
 
     func configure(colorScheme: ColorScheme) {
         self.colorScheme = colorScheme
@@ -69,10 +75,10 @@ final class ConversationDetailModel: Sendable, ObservableObject {
     private let backOnlineActionExecutor: BackOnlineActionExecutor
     private let snoozeService: SnoozeServiceProtocol
 
-    private lazy var messageListCallback = LiveQueryCallbackWrapper { [weak self] in
+    private lazy var conversationMessageListCallback = LiveQueryCallbackWrapper { [weak self] in
         guard let self else { return }
         Task { @MainActor in
-            let liveQueryValues = await self.readLiveQueryValues()
+            let liveQueryValues = await self.readConversationLiveQueryValues()
             self.isStarred = liveQueryValues.isStarred
             self.updateStateToMessagesReady(with: liveQueryValues.messages)
             await self.reloadBottomBarActions()
@@ -82,7 +88,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
     private lazy var singleMessageCallback = LiveQueryCallbackWrapper { [weak self] in
         guard let self else { return }
         Task { @MainActor in
-            let liveQueryValues = await self.readLiveQueryValues()
+            let liveQueryValues = await self.readMessageLiveQueryValues()
             self.isStarred = liveQueryValues.isStarred
             self.updateStateToMessagesReady(with: liveQueryValues.messages)
             await self.reloadBottomBarActions()
@@ -123,13 +129,13 @@ final class ConversationDetailModel: Sendable, ObservableObject {
             case .message(let id):
                 try await setUpSingleMessageObservation(messageID: id)
             case .conversation(let id):
-                try await setUpMessagesListObservation(conversationID: id, mailbox: mailbox)
+                try await setUpConversationMessagesObservation(conversationID: id, mailbox: mailbox)
             case .pushNotification(let messageID, let conversationID):
                 switch mailbox.viewMode() {
                 case .messages:
                     try await setUpSingleMessageObservation(messageID: messageID)
                 case .conversations:
-                    try await setUpMessagesListObservation(conversationID: conversationID, mailbox: mailbox)
+                    try await setUpConversationMessagesObservation(conversationID: conversationID, mailbox: mailbox)
                 }
             }
             await reloadBottomBarActions()
@@ -149,7 +155,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         updateStateToMessagesReady(with: liveQueryValues.messages)
     }
 
-    private func setUpMessagesListObservation(conversationID: ID, mailbox: Mailbox) async throws {
+    private func setUpConversationMessagesObservation(conversationID: ID, mailbox: Mailbox) async throws {
         conversationItem = .init(id: conversationID, itemType: .conversation)
         let liveQueryValues = try await createLiveQueryAndPrepareMessages(
             forConversationID: conversationID,
@@ -539,17 +545,6 @@ extension ConversationDetailModel {
         }
     }
 
-    enum InitialConversationItem {
-        case message(ID)
-        case conversation(ID)
-        case pushNotification(messageID: ID, conversationID: ID)
-    }
-
-    struct ConversationItemMetadata {
-        let item: InitialConversationItem
-        let selectedMailbox: SelectedMailbox
-    }
-
     private func establishConversationItemMetadata() async throws -> ConversationItemMetadata {
         switch seed {
         case .mailboxItem(let item, let mailbox):
@@ -590,7 +585,7 @@ extension ConversationDetailModel {
         let watchConversationResult = await watchConversation(
             mailbox: mailbox,
             id: conversationID,
-            callback: messageListCallback
+            callback: conversationMessageListCallback
         )
 
         switch watchConversationResult {
