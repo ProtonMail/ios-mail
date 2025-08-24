@@ -625,7 +625,6 @@ extension ConversationDetailModel {
 
     private func setRelevantMessageStateAsExpanded() async {
         if let messageID = await messageIDToScrollTo() {
-            print("*** EXPANDED: \(messageID)")
             expandedMessages.insert(messageID)
         } else {
             let msg = "Failed to expand relevant message. Error: missing messageID."
@@ -641,10 +640,8 @@ extension ConversationDetailModel {
         if let messageIDToScrollTo = await messageIDToScrollTo(),
             let messageToScroll = messages.first(where: { $0.id == messageIDToScrollTo })
         {
-            print("*** [1] Scroll to message: \(messageToScroll.cellId)")
             self.scrollToMessage = messageToScroll.cellId
         } else if let lastNonDraftMessage = messages.last(where: { !$0.isDraft }) {
-            print("*** [2] Scroll to message: \(lastNonDraftMessage.cellId)")
             self.scrollToMessage = lastNonDraftMessage.cellId
         }
     }

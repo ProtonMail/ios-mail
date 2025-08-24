@@ -124,7 +124,6 @@ struct ConversationDetailListView: View {
             .onChange(
                 of: model.scrollToMessage,
                 { oldValue, newValue in
-                    print("*** Scroll to messasge: \(newValue)")
                     if let newValue, newValue != oldValue {
                         scrollView.scrollTo(newValue, anchor: .top)
                     }
