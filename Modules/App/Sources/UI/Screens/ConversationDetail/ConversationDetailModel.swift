@@ -20,19 +20,25 @@ import InboxCore
 import InboxCoreUI
 import SwiftUI
 
+struct ConversationItem {
+    let id: ID
+    let itemType: MailboxItemType
+}
+
 @MainActor
 final class ConversationDetailModel: Sendable, ObservableObject {
     @Published private(set) var state: State = .initial
     @Published private(set) var seed: ConversationDetailSeed
     @Published private(set) var scrollToMessage: String? = nil
     @Published private(set) var mailbox: Mailbox?
-    @Published private(set) var conversationID: ID?
     @Published private(set) var isStarred: Bool
     @Published private(set) var conversationToolbarActions: ConversationToolbarActions?
     @Published var actionSheets: MailboxActionSheetsState = .initial()
     @Published var editScheduledMessageConfirmationAlert: AlertModel?
     @Published var actionAlert: AlertModel?
     @Published var attachmentIDToOpen: ID?
+
+    private var conversationItem: ConversationItem?
 
     let messageAppearanceOverrideStore = MessageAppearanceOverrideStore()
     let messagePrinter: MessagePrinter
@@ -50,7 +56,13 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         seed.isOutbox
     }
 
+    var isSingleMessageMode: Bool {
+        conversationItem?.itemType == .message
+    }
+
     private var messagesLiveQuery: WatchedConversation?
+    private var singleMessageLiveQuery: WatchedMessage?
+
     private var expandedMessages: Set<ID>
     private let draftPresenter: DraftPresenter
     private let dependencies: Dependencies
@@ -58,6 +70,16 @@ final class ConversationDetailModel: Sendable, ObservableObject {
     private let snoozeService: SnoozeServiceProtocol
 
     private lazy var messageListCallback = LiveQueryCallbackWrapper { [weak self] in
+        guard let self else { return }
+        Task { @MainActor in
+            let liveQueryValues = await self.readLiveQueryValues()
+            self.isStarred = liveQueryValues.isStarred
+            self.updateStateToMessagesReady(with: liveQueryValues.messages)
+            await self.reloadBottomBarActions()
+        }
+    }
+
+    private lazy var singleMessageCallback = LiveQueryCallbackWrapper { [weak self] in
         guard let self else { return }
         Task { @MainActor in
             let liveQueryValues = await self.readLiveQueryValues()
@@ -93,19 +115,24 @@ final class ConversationDetailModel: Sendable, ObservableObject {
     func fetchInitialData() async {
         updateState(.fetchingMessages)
         do {
-            let (selectedMailbox, conversationID) = try await establishSelectedMailboxAndConversationID()
-            let mailbox = try await initialiseMailbox(basedOn: selectedMailbox)
+            let metadata = try await establishConversationItemMetadata()
+            let mailbox = try await initialiseMailbox(basedOn: metadata.selectedMailbox)
             self.mailbox = mailbox
-            self.conversationID = conversationID
-            let liveQueryValues = try await createLiveQueryAndPrepareMessages(
-                forConversationID: conversationID,
-                mailbox: mailbox
-            )
 
-            isStarred = liveQueryValues.isStarred
-            updateStateToMessagesReady(with: liveQueryValues.messages)
+            switch metadata.item {
+            case .message(let id):
+                try await setUpSingleMessageObservation(messageID: id)
+            case .conversation(let id):
+                try await setUpMessagesListObservation(conversationID: id, mailbox: mailbox)
+            case .pushNotification(let messageID, let conversationID):
+                switch mailbox.viewMode() {
+                case .messages:
+                    try await setUpSingleMessageObservation(messageID: messageID)
+                case .conversations:
+                    try await setUpMessagesListObservation(conversationID: conversationID, mailbox: mailbox)
+                }
+            }
             await reloadBottomBarActions()
-            try await scrollToRelevantMessage(messages: liveQueryValues.messages)
         } catch ActionError.other(.network) {
             updateState(.noConnection)
             reloadContentWhenBackOnline()
@@ -113,6 +140,25 @@ final class ConversationDetailModel: Sendable, ObservableObject {
             let msg = "Failed fetching initial data. Error: \(String(describing: error))"
             AppLogger.log(message: msg, category: .conversationDetail, isError: true)
         }
+    }
+
+    private func setUpSingleMessageObservation(messageID: ID) async throws {
+        conversationItem = .init(id: messageID, itemType: .message)
+        let liveQueryValues = try await createSingleMessageLiveQuerry(for: messageID)
+        isStarred = liveQueryValues.isStarred
+        updateStateToMessagesReady(with: liveQueryValues.messages)
+    }
+
+    private func setUpMessagesListObservation(conversationID: ID, mailbox: Mailbox) async throws {
+        conversationItem = .init(id: conversationID, itemType: .conversation)
+        let liveQueryValues = try await createLiveQueryAndPrepareMessages(
+            forConversationID: conversationID,
+            mailbox: mailbox
+        )
+
+        isStarred = liveQueryValues.isStarred
+        updateStateToMessagesReady(with: liveQueryValues.messages)
+        try await scrollToRelevantMessage(messages: liveQueryValues.messages)
     }
 
     func onMessageTap(messageId: ID, isDraft: Bool) {
@@ -151,10 +197,10 @@ final class ConversationDetailModel: Sendable, ObservableObject {
     }
 
     func unsnoozeConversation(toastStateStore: ToastStateStore) {
-        guard let labelID = mailbox?.labelId(), let conversationID = conversationID else { return }
+        guard let conversationItem, conversationItem.itemType == .conversation, let labelID = mailbox?.labelId() else { return }
         Task { @MainActor in
             do {
-                try await self.snoozeService.unsnooze(conversation: [conversationID], labelId: labelID).get()
+                try await self.snoozeService.unsnooze(conversation: [conversationItem.id], labelId: labelID).get()
                 toastStateStore.present(toast: .unsnooze)
             } catch {
                 AppLogger.log(error: error, category: .snooze)
@@ -173,7 +219,10 @@ final class ConversationDetailModel: Sendable, ObservableObject {
     }
 
     func toggleStarState() {
-        isStarred ? unstarConversation() : starConversation()
+        guard let conversationItem else { return }
+        isStarred
+            ? starActionPerformer.unstar(itemsWithIDs: [conversationItem.id], itemType: conversationItem.itemType)
+            : starActionPerformer.star(itemsWithIDs: [conversationItem.id], itemType: conversationItem.itemType)
     }
 
     func isForcingLightMode(forMessageWithId messageId: ID) -> Bool {
@@ -300,7 +349,8 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         actionOrigin: ConversationActionOrigin,
         goBack: @MainActor @escaping () -> Void
     ) async {
-        guard let conversationID else { return }
+        guard let conversationItem, conversationItem.itemType == .conversation else { return }
+        let conversationID = conversationItem.id
         switch action {
         case .markRead:
             await markAsRead(id: conversationID, itemType: .conversation)
@@ -434,14 +484,6 @@ extension ConversationDetailModel {
         draftPresenter.openDraft(withId: id)
     }
 
-    private func starConversation() {
-        starActionPerformer.star(itemsWithIDs: [conversationID.unsafelyUnwrapped], itemType: .conversation)
-    }
-
-    private func unstarConversation() {
-        starActionPerformer.unstar(itemsWithIDs: [conversationID.unsafelyUnwrapped], itemType: .conversation)
-    }
-
     @MainActor
     private func move(
         id: ID,
@@ -497,27 +539,34 @@ extension ConversationDetailModel {
         }
     }
 
-    private func establishSelectedMailboxAndConversationID() async throws -> (SelectedMailbox, ID) {
-        let selectedMailbox: SelectedMailbox
-        let conversationId: ID
+    enum InitialConversationItem {
+        case message(ID)
+        case conversation(ID)
+        case pushNotification(messageID: ID, conversationID: ID)
+    }
 
+    struct ConversationItemMetadata {
+        let item: InitialConversationItem
+        let selectedMailbox: SelectedMailbox
+    }
+
+    private func establishConversationItemMetadata() async throws -> ConversationItemMetadata {
         switch seed {
         case .mailboxItem(let item, let mailbox):
-            selectedMailbox = mailbox
-            conversationId = item.conversationID
+            switch item.type {
+            case .conversation:
+                return .init(item: .conversation(item.id), selectedMailbox: mailbox)
+            case .message:
+                return .init(item: .message(item.id), selectedMailbox: mailbox)
+            }
         case .pushNotification(let message):
             let message = try await fetchMessage(with: message.remoteId)
-
-            if let exclusiveLocation = message.exclusiveLocation {
-                selectedMailbox = exclusiveLocation.selectedMailbox
-            } else {
-                selectedMailbox = .inbox
-            }
-
-            conversationId = message.conversationId
+            return .init(
+                item: .pushNotification(
+                    messageID: message.id, conversationID: message.conversationId),
+                selectedMailbox: message.exclusiveLocation?.selectedMailbox ?? .inbox
+            )
         }
-
-        return (selectedMailbox, conversationId)
     }
 
     private func fetchMessage(with remoteId: RemoteId) async throws -> Message {
@@ -553,11 +602,29 @@ extension ConversationDetailModel {
 
         /// We want to set the state to expanded before rendering the list to scroll to the correct position
         await setRelevantMessageStateAsExpanded()
-        return await readLiveQueryValues()
+        return await readConversationLiveQueryValues()
+    }
+
+    private func createSingleMessageLiveQuerry(for messageID: ID) async throws -> LiveQueryValues {
+        let watchMessageResult = await watchMessage(
+            session: userSession,
+            messageId: messageID,
+            callback: singleMessageCallback
+        )
+
+        switch watchMessageResult {
+        case .ok(let message):
+            self.singleMessageLiveQuery = message
+        case .error(let actionError):
+            throw actionError
+        }
+
+        return await readMessageLiveQueryValues()
     }
 
     private func setRelevantMessageStateAsExpanded() async {
         if let messageID = await messageIDToScrollTo() {
+            print("*** EXPANDED: \(messageID)")
             expandedMessages.insert(messageID)
         } else {
             let msg = "Failed to expand relevant message. Error: missing messageID."
@@ -573,8 +640,10 @@ extension ConversationDetailModel {
         if let messageIDToScrollTo = await messageIDToScrollTo(),
             let messageToScroll = messages.first(where: { $0.id == messageIDToScrollTo })
         {
+            print("*** [1] Scroll to message: \(messageToScroll.cellId)")
             self.scrollToMessage = messageToScroll.cellId
         } else if let lastNonDraftMessage = messages.last(where: { !$0.isDraft }) {
+            print("*** [2] Scroll to message: \(lastNonDraftMessage.cellId)")
             self.scrollToMessage = lastNonDraftMessage.cellId
         }
     }
@@ -618,12 +687,49 @@ extension ConversationDetailModel {
     }
 
     private func readLiveQueryValues() async -> LiveQueryValues {
+        switch conversationItem?.itemType {
+        case .conversation:
+            await readConversationLiveQueryValues()
+        case .message:
+            await readMessageLiveQueryValues()
+        case nil:
+            .init(messages: [], isStarred: false)
+        }
+    }
+
+    private func readMessageLiveQueryValues() async -> LiveQueryValues {
         do {
-            guard let conversationID, let mailbox else {
-                let msg = "no mailbox object (labelId=\(String(describing: mailbox?.labelId().value))) or conversationID (\(String(describing: conversationID))"
+            guard let conversationItem, conversationItem.itemType == .message else {
+                return .init(messages: [], isStarred: false)
+            }
+            let messageID = conversationItem.id
+            let message = try await message(session: userSession, id: messageID).get()
+            let isStarred = message?.starred ?? false
+
+            let singleMessage: [MessageCellUIModel] = [message]
+                .compactMap { $0 }
+                .map { message in
+                    .init(
+                        id: message.id,
+                        locationID: message.exclusiveLocation?.model.id,
+                        type: .expanded(message.toExpandedMessageCellUIModel())
+                    )
+                }
+            return .init(messages: singleMessage, isStarred: isStarred)
+        } catch {
+            AppLogger.log(error: error, category: .conversationDetail)
+            return .init(messages: [], isStarred: false)
+        }
+    }
+
+    private func readConversationLiveQueryValues() async -> LiveQueryValues {
+        do {
+            guard let conversationItem, let mailbox else {
+                let msg = "no mailbox object (labelId=\(String(describing: mailbox?.labelId().value))) or conversationItem (\(String(describing: conversationItem))"
                 AppLogger.log(message: msg, category: .conversationDetail, isError: true)
                 return .init(messages: [], isStarred: false)
             }
+            let conversationID = conversationItem.id
             let conversationAndMessages = try await conversation(mailbox: mailbox, id: conversationID).get()
             let isStarred = conversationAndMessages?.conversation.isStarred ?? false
             let messages = conversationAndMessages?.messages ?? []
@@ -694,30 +800,28 @@ extension ConversationDetailModel {
     }
 
     func reloadBottomBarActions() async {
-        guard let mailbox else { return }
+        guard let mailbox, let conversationItem else { return }
         switch mailbox.viewMode() {
         case .conversations:
-            guard let conversationID else { return }
             do {
                 let actions = try await allAvailableConversationActionsForConversation(
                     mailbox: mailbox,
-                    conversationId: conversationID
+                    conversationId: conversationItem.id
                 ).get()
                 self.conversationToolbarActions = .conversation(actions: actions)
             } catch {
                 AppLogger.log(error: error, category: .conversationDetail)
             }
         case .messages:
-            guard let messageID = state.singleMessageIDInMessageMode else { return }
             let theme = messageAppearanceOverrideStore.themeOpts(
-                messageID: messageID,
+                messageID: conversationItem.id,
                 colorScheme: colorScheme
             )
             do {
                 let actions = try await allAvailableMessageActionsForMessage(
                     mailbox: mailbox,
                     theme: theme,
-                    messageId: messageID
+                    messageId: conversationItem.id
                 ).get()
                 self.conversationToolbarActions = .message(actions: actions)
             } catch {
