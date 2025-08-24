@@ -181,7 +181,11 @@ struct ConversationDetailScreen: View {
 
     private var topToolbarTitle: AttributedString {
         guard model.state.messagesCount > 0 else { return .init(.empty) }
-        return isHeaderVisible ? attributedTopTitle : attributedNumberOfMessages
+        if isHeaderVisible {
+            return attributedTopTitle
+        } else {
+            return model.isSingleMessageMode ? .init(.empty) : attributedNumberOfMessages
+        }
     }
 
     private var attributedTopTitle: AttributedString {
