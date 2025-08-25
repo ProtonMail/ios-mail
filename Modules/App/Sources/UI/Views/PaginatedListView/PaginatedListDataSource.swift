@@ -125,8 +125,19 @@ extension PaginatedListDataSource {
         var isLastPage: Bool = false
 
         var viewState: PaginatedListViewState {
-            guard !isFetchingFirstPage else { return .fetchingInitialPage }
-            return .data(items.isEmpty ? .noItems : .items(isLastPage: isLastPage))
+            if isFetchingFirstPage {
+                return .fetchingInitialPage
+            } else if items.isEmpty {
+                if isLastPage {
+                    return .data(.noItems)
+                } else {
+                    // This is to prevent glitching the `.data(.noItems)` state if the first PaginatedListUpdate
+                    // is `.none` but more updates are coming.
+                    return .fetchingInitialPage
+                }
+            } else {
+                return .data(.items(isLastPage: isLastPage))
+            }
         }
     }
 }

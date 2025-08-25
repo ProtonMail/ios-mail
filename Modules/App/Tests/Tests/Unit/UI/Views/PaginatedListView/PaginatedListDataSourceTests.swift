@@ -88,19 +88,40 @@ final class PaginatedListDataSourceTests: XCTestCase {
 
     // MARK: updatePublisher
 
-    func testUpdatePublisher_none_itUpdateStateToNotFetchingNextPage() async {
-        await expectViewStateStates(count: 2) {
+    func testUpdatePublisher_none_whenIsFirstUpdate_andNotLastPage_stateIsFetchingInitialPage() async {
+        let capturedStates = await expectViewStateStates(count: 1) {
             sut.fetchInitialPage()
             updateSubject.send(.init(isLastPage: false, value: .none))
         }
 
         XCTAssertEqual(sut.state.isFetchingNextPage, false)
+        XCTAssertEqual(capturedStates, [.fetchingInitialPage])
     }
 
-    func testUpdatePublisher_append_whenNoItems_stateBecomesDataWithNoItems() async {
+    func testUpdatePublisher_none_whenIsFirstUpdate_andLastPage_stateBecomesNoItems() async {
         let capturedStates = await expectViewStateStates(count: 2) {
             sut.fetchInitialPage()
+            updateSubject.send(.init(isLastPage: true, value: .none))
+        }
+
+        XCTAssertEqual(sut.state.isFetchingNextPage, false)
+        XCTAssertEqual(capturedStates, [.fetchingInitialPage, .data(.noItems)])
+    }
+
+    func testUpdatePublisher_append_whenNoItems_andNotLastPage_stateIsFetchingInitialPage() async {
+        let capturedStates = await expectViewStateStates(count: 1) {
+            sut.fetchInitialPage()
             updateSubject.send(.init(isLastPage: false, value: .append(items: [])))
+        }
+
+        XCTAssertEqual(sut.state.items, [])
+        XCTAssertEqual(capturedStates, [.fetchingInitialPage])
+    }
+
+    func testUpdatePublisher_append_whenNoItems_andLastPage_stateBecomesNoItems() async {
+        let capturedStates = await expectViewStateStates(count: 2) {
+            sut.fetchInitialPage()
+            updateSubject.send(.init(isLastPage: true, value: .append(items: [])))
         }
 
         XCTAssertEqual(sut.state.items, [])
