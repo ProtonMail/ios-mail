@@ -21,6 +21,7 @@ import WebKit
 
 struct WebView: UIViewRepresentable {
     let url: URL
+    let configureUserContentController: (WKUserContentController) -> Void
 
     func makeUIView(context: Context) -> WKWebView {
         let backgroundColor = UIColor(DS.Color.Background.norm)
@@ -29,6 +30,7 @@ struct WebView: UIViewRepresentable {
         webView.backgroundColor = backgroundColor
         webView.scrollView.backgroundColor = backgroundColor
         webView.scrollView.contentInsetAdjustmentBehavior = .never
+        configureUserContentController(webView.configuration.userContentController)
 
         webView.load(URLRequest(url: url))
         return webView

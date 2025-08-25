@@ -17,14 +17,15 @@
 
 import InboxCoreUI
 import InboxDesignSystem
+import InboxIAP
 import SwiftUI
 
 struct ProtonAuthenticatedWebView: View {
     @Environment(\.colorScheme) var colorScheme: ColorScheme
     @StateObject private var model: ProtonAuthenticatedWebModel
 
-    init(webViewPage: ProtonAuthenticatedWebPage) {
-        self._model = .init(wrappedValue: ProtonAuthenticatedWebModel(webViewPage: webViewPage))
+    init(webViewPage: ProtonAuthenticatedWebPage, upsellCoordinator: UpsellCoordinator?) {
+        _model = .init(wrappedValue: ProtonAuthenticatedWebModel(webViewPage: webViewPage, upsellCoordinator: upsellCoordinator))
     }
 
     var body: some View {
@@ -38,6 +39,7 @@ struct ProtonAuthenticatedWebView: View {
             .onDisappear {
                 model.pollEvents()
             }
+            .fullScreenCover(item: $model.presentedUpsell, content: UpsellScreen.init)
     }
 }
 
@@ -50,7 +52,7 @@ extension ProtonAuthenticatedWebView {
             ProgressView()
         case .urlReady(let url):
             VStack(alignment: .leading, spacing: 11) {
-                WebView(url: url)
+                WebView(url: url, configureUserContentController: model.setupUpsellScreenCapability)
                     .accessibilityIdentifier(ProtonAuthenticatedWebViewIdentifiers.webView)
             }
             .accessibilityElement(children: .contain)

@@ -16,19 +16,28 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import InboxCore
+import InboxIAP
 import Foundation
 import proton_app_uniffi
 import enum SwiftUI.ColorScheme
 
-final class ProtonAuthenticatedWebModel: @unchecked Sendable, ObservableObject {
+@MainActor
+final class ProtonAuthenticatedWebModel: NSObject, ObservableObject {
     @Published private(set) var state: State
+    @Published var presentedUpsell: UpsellScreenModel?
     private let webViewPage: ProtonAuthenticatedWebPage
     private let dependencies: Dependencies
+    let upsellCoordinator: UpsellCoordinator?
 
-    init(webViewPage: ProtonAuthenticatedWebPage, dependencies: Dependencies = .init()) {
+    init(
+        webViewPage: ProtonAuthenticatedWebPage,
+        dependencies: Dependencies = .init(),
+        upsellCoordinator: UpsellCoordinator?
+    ) {
         self.webViewPage = webViewPage
         self.state = .forkingSession
         self.dependencies = dependencies
+        self.upsellCoordinator = upsellCoordinator
     }
 
     func generateSubscriptionUrl(colorScheme: ColorScheme) {
@@ -39,15 +48,15 @@ final class ProtonAuthenticatedWebModel: @unchecked Sendable, ObservableObject {
         let appVersion = appDetails.backendFacingVersion
 
         Task {
-            await updateState(.forkingSession)
+            updateState(.forkingSession)
             switch await userSession.fork(platform: appDetails.platform, product: appDetails.product) {
             case .ok(let selectorToken):
                 let theme = colorScheme == .light ? "0" : "1"
                 let url = webPageUrl(domain: domain, appVersion: appVersion, theme: theme, selector: selectorToken)
-                await updateState(.urlReady(url: url))
+                updateState(.urlReady(url: url))
             case .error(let error):
                 AppLogger.log(error: error)
-                await updateState(.error(error))
+                updateState(.error(error))
             }
         }
     }
@@ -56,7 +65,6 @@ final class ProtonAuthenticatedWebModel: @unchecked Sendable, ObservableObject {
         dependencies.appContext.pollEvents()
     }
 
-    @MainActor
     private func updateState(_ newState: State) {
         state = newState
     }

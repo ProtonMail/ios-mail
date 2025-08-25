@@ -52,7 +52,7 @@ struct SettingsViewFactory {
     func makeView(for route: SettingsRoute) -> some View {
         switch route {
         case .webView(let webPage):
-            ProtonAuthenticatedWebView(webViewPage: webPage)
+            ProtonAuthenticatedWebView(webViewPage: webPage, upsellCoordinator: nil)
                 .edgesIgnoringSafeArea(.bottom)
                 .navigationBarTitleDisplayMode(.inline)
                 .navigationTitle(webPage.title.string)

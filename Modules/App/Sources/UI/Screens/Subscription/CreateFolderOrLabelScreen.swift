@@ -17,13 +17,15 @@
 
 import InboxCoreUI
 import InboxDesignSystem
+import InboxIAP
 import SwiftUI
 
 struct CreateFolderOrLabelScreen: View {
+    @EnvironmentObject var upsellCoordinator: UpsellCoordinator
 
     var body: some View {
         ClosableScreen {
-            ProtonAuthenticatedWebView(webViewPage: .createFolderOrLabel)
+            ProtonAuthenticatedWebView(webViewPage: .createFolderOrLabel, upsellCoordinator: upsellCoordinator)
                 .background(DS.Color.Background.norm)
                 .edgesIgnoringSafeArea(.bottom)
                 .navigationBarTitleDisplayMode(.inline)
