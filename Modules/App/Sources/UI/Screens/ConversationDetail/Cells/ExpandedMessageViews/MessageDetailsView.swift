@@ -463,7 +463,7 @@ enum MessageDetailsPreviewProvider {
     static var recipientsTo: [MessageDetail.Recipient] {
         [
             .init(
-                name: "Me", address: "eric.norbert@protonmail.ch",
+                name: "⭐ veryVeryLongEmailAddress1234567890123456@pm.me", address: "veryVeryLongEmailAddress1234567890123456@pm.me",
                 avatarInfo: .init(initials: "E", color: .red)
             ),
             .init(
