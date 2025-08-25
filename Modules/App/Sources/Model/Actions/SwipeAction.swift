@@ -43,7 +43,7 @@ extension AssignedSwipeAction {
         case .toggleStar:
             Image(symbol: isStarred ? .star : .starSlash)
         case .toggleRead:
-            isRead ? DS.Icon.icEnvelopeOpen.image : DS.Icon.icEnvelopeDot.image
+            isRead ? DS.Icon.icEnvelopeDot.image : DS.Icon.icEnvelopeOpen.image
         }
     }
 
