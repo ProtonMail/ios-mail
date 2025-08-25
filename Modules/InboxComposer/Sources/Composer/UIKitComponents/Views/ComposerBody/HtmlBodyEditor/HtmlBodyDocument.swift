@@ -229,6 +229,16 @@ private extension HtmlBodyDocument {
             }
         });
 
+        document.addEventListener('drop', function(event) {
+            event.preventDefault();
+            event.stopPropagation();
+        });
+
+        document.addEventListener('dragover', function(event) {
+            event.preventDefault();
+            event.stopPropagation();
+        });
+
         document.getElementById('\(ID.editor)').addEventListener('paste', function(event) {
             const items = (event.clipboardData || event.originalEvent.clipboardData).items;
             for (let index in items) {
