@@ -37,6 +37,7 @@ struct MailboxScreen: View {
     private let userSession: MailUserSession
     private let notificationAuthorizationStore: NotificationAuthorizationStore
     private let userDefaults: UserDefaults
+    private let refreshToolbarNotifier = RefreshToolbarNotifier()
 
     private var shouldShowOnboardingUpsell: Bool {
         isUpsellButtonVisible && !userDefaults[.hasSeenOnboardingUpsell]
@@ -131,6 +132,7 @@ struct MailboxScreen: View {
             didAppear?(self)
         }
         .environment(\.confirmLink, mailboxModel.state.confirmLink)
+        .environmentObject(refreshToolbarNotifier)
     }
 
     private func onboardingScreenDismissed() {

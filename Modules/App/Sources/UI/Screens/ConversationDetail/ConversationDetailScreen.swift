@@ -26,7 +26,7 @@ struct ConversationDetailScreen: View {
     @State private var isHeaderVisible: Bool = false
     @EnvironmentObject var toastStateStore: ToastStateStore
     @Environment(\.colorScheme) var colorScheme
-    @Environment(\.refreshToolbar) var refreshToolbarNotifier
+    @EnvironmentObject var refreshToolbarNotifier: RefreshToolbarNotifier
     @Binding private var navigationPath: NavigationPath
     private let draftPresenter: DraftPresenter
     private let mailUserSession: MailUserSession

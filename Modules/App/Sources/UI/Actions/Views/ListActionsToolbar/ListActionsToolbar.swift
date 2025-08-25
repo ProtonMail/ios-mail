@@ -43,7 +43,7 @@ private struct ListActionBarViewModifier: ViewModifier {
     @Binding var selectedItems: Set<MailboxSelectedItem>
     @EnvironmentObject var mailbox: Mailbox
     @EnvironmentObject var toastStateStore: ToastStateStore
-    @Environment(\.refreshToolbar) var refreshToolbarNotifier
+    @EnvironmentObject var refreshToolbarNotifier: RefreshToolbarNotifier
     private let state: ListActionsToolbarState
     private let itemTypeForActionBar: MailboxItemType
     private let availableActions: AvailableListToolbarActions

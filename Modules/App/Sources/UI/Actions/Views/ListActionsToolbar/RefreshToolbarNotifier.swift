@@ -25,7 +25,3 @@ class RefreshToolbarNotifier: ObservableObject {
         refreshToolbar.send(toolbar)
     }
 }
-
-extension EnvironmentValues {
-    @Entry var refreshToolbar = RefreshToolbarNotifier()
-}
