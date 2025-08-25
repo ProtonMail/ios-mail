@@ -95,7 +95,7 @@ class EditToolbarStoreTests {
     }
 
     @Test
-    func a() async {
+    func resetToOriginalIsTapped_ItSetsDefaultActionsAsSelected() async {
         customizeToolbarServiceSpy.allMessageActionsStub = [.reply, .forward, .spam, .archive, .move]
         customizeToolbarServiceSpy.getMessageToolbarActionsStub = [.reply]
 
