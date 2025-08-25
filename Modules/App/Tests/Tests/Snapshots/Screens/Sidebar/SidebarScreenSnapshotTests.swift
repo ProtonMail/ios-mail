@@ -36,6 +36,7 @@ final class SidebarScreenSnapshotTests {
         createFolder: .createFolder
     )
 
+    // FIXME: these snapshots do not actually reflect the stubbed data
     @Test(arguments: [UIUserInterfaceStyle.light, .dark])
     func testSidebarWithDataLayoutsCorrectOnIphoneX(style: UIUserInterfaceStyle) {
         let sidebarSpy = SidebarSpy()
@@ -47,6 +48,7 @@ final class SidebarScreenSnapshotTests {
             state: state,
             userSession: .dummy,
             upsellButtonVisibilityPublisher: .init(constant: true),
+            appVersionProvider: .init(bundle: bundleStub, sdkVersionProvider: .init(sdkVersion: "0.61.0")),
             sidebarFactory: { _ in sidebarSpy }
         ) { _ in }
         .environmentObject(AppUIStateStore(sidebarState: .init(zIndex: .zero, visibleWidth: 320)))
