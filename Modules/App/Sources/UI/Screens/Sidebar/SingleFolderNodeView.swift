@@ -47,7 +47,7 @@ struct SingleFolderNodeView<UnreadText: View>: View {
         VStack {
             SidebarItemButton(item: .folder(folder), action: { selected(folder) }) {
                 HStack {
-                    Image(folder.childFolders.isEmpty ? DS.Icon.icFolder : DS.Icon.icFolders)
+                    Image(folder.childFolders.isEmpty ? DS.Icon.icFolderFilled : DS.Icon.icFoldersFilled)
                         .renderingMode(.template)
                         .square(size: 20)
                         .tint(folder.displayColor)

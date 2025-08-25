@@ -149,7 +149,8 @@ private extension Array where Element == MoveToCustomFolder {
             let displayData = ActionSelectableButtonDisplayData(
                 id: item.id,
                 visualAsset: .image(
-                    item.children.isEmpty ? DS.Icon.icFolder.image : DS.Icon.icFolders.image, color: item.color
+                    item.children.isEmpty ? DS.Icon.icFolderFilled.image : DS.Icon.icFoldersFilled.image,
+                    color: item.color
                 ),
                 title: item.name,
                 isSelected: .unselected,
