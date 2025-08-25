@@ -133,6 +133,7 @@ extension MailboxModel {
                 }
 
                 Task {
+                    self.selectionMode.selectionModifier.exitSelectionMode()
                     self.selectedMailbox = newSelectedMailbox
                     await self.updateMailboxAndScroller()
                     await self.prepareSwipeActions()
