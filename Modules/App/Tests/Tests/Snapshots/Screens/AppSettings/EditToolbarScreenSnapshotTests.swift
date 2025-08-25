@@ -38,6 +38,7 @@ struct EditToolbarScreenSnapshotTests {
             ),
             customizeToolbarService: CustomizeToolbarServiceSpy()
         )
+        .environmentObject(RefreshToolbarNotifier())
 
         assertSnapshotsOnIPhoneX(of: sut, drawHierarchyInKeyWindow: true)
     }
