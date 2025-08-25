@@ -276,6 +276,7 @@ struct MessageDetailsView: View {
                     .foregroundStyle(DS.Color.Text.accent)
                     .accessibilityIdentifier(MessageDetailsViewIdentifiers.expandedHeaderRecipientValue(group: group, index: index))
             }
+            .multilineTextAlignment(.leading)
         }
     }
 
