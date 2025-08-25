@@ -31,13 +31,13 @@ struct ComposeButtonView: View {
             label: {
                 HStack(spacing: DS.Spacing.standard) {
                     Image(DS.Icon.icPenSquare)
-                        .foregroundStyle(DS.Color.Text.norm)
+                        .foregroundStyle(DS.Color.Icon.norm)
                         .accessibilityIdentifier(ComposeButtonIdentifiers.icon)
                     if isExpanded {
                         Text(text)
                             .font(.subheadline)
                             .fontWeight(.semibold)
-                            .foregroundStyle(DS.Color.Text.norm)
+                            .foregroundStyle(DS.Color.Icon.norm)
                             .padding(.trailing, DS.Spacing.small)
                             .transition(.move(edge: .trailing).combined(with: .opacity))
                             .accessibilityIdentifier(ComposeButtonIdentifiers.text)
@@ -61,6 +61,10 @@ private struct ComposeButtonStyle: ButtonStyle {
             .label
             .padding(.all, DS.Spacing.moderatelyLarge)
             .background(configuration.isPressed ? DS.Color.InteractionFab.pressed : DS.Color.InteractionFab.norm)
+            .overlay(
+                Capsule(style: .continuous)
+                    .stroke(DS.Color.Border.light, lineWidth: 1)
+            )
             .clipShape(Capsule(style: .continuous))
             .shadow(DS.Shadows.liftedFull, isVisible: true)
             .animation(animation, value: isExpanded)
