@@ -29,8 +29,11 @@ struct EditToolbarScreenSnapshotTests {
             state: .init(
                 toolbarType: .message,
                 toolbarActions: .init(
-                    selected: [.toggleRead, .archive, .label],
-                    unselected: [.move, .spam, .trash, .snooze, .toggleStar]
+                    current: .init(
+                        selected: [.toggleRead, .archive, .label],
+                        unselected: [.move, .spam, .trash, .snooze, .toggleStar]
+                    ),
+                    defaultActions: .init(selected: [], unselected: [])
                 )
             ),
             customizeToolbarService: CustomizeToolbarServiceSpy()

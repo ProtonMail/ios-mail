@@ -57,7 +57,7 @@ struct EditToolbarScreen: View {
                 .navigationTitle(store.state.toolbarType.screenTitle.string)
                 .navigationBarTitleDisplayMode(.inline)
                 .environment(\.editMode, .constant(.active))
-                .id(store.state.toolbarActions.unselected)
+                .id(store.state.toolbarActions.current.unselected)
                 .toolbar {
                     ToolbarItem(placement: .topBarTrailing) {
                         Button(action: {
@@ -87,7 +87,7 @@ struct EditToolbarScreen: View {
 
     private func chosenActionsSection(state: EditToolbarState, store: EditToolbarStore) -> some View {
         Section {
-            ForEach(state.toolbarActions.selected) { action in
+            ForEach(state.toolbarActions.current.selected) { action in
                 HStack(spacing: DS.Spacing.medium) {
                     Button(action: { store.handle(action: .removeFromSelectedTapped(actionToRemove: action)) }) {
                         Image(symbol: .minusCircleFill)
@@ -127,7 +127,7 @@ struct EditToolbarScreen: View {
 
     private func availableActionsSection(state: EditToolbarState, store: EditToolbarStore) -> some View {
         Section {
-            ForEach(state.toolbarActions.unselected) { action in
+            ForEach(state.toolbarActions.current.unselected) { action in
                 HStack(spacing: DS.Spacing.medium) {
                     Button(action: { store.handle(action: .addToSelectedTapped(actionToAdd: action)) }) {
                         Image(symbol: .plusCircleFill)
@@ -181,11 +181,11 @@ struct EditToolbarScreen: View {
 private extension EditToolbarState {
 
     var availableActionsListDisabled: Bool {
-        toolbarActions.selected.count >= 5
+        toolbarActions.current.selected.count >= 5
     }
 
     var selectedActionsListDisabled: Bool {
-        toolbarActions.selected.count <= 1
+        toolbarActions.current.selected.count <= 1
     }
 
 }
@@ -212,9 +212,9 @@ private extension ToolbarType {
                 state: .init(
                     toolbarType: .list,
                     toolbarActions: .init(
-                        selected: [.toggleRead, .archive, .label],
-                        unselected: [.move, .spam, .trash, .snooze, .toggleStar]
-                    ),
+                        current: .init(selected: [.toggleRead, .archive, .label], unselected: [.move, .spam, .trash, .snooze, .toggleStar]),
+                        defaultActions: .init(selected: [], unselected: [])
+                    )
                 ),
                 customizeToolbarService: CustomizeToolbarServiceStub()
             )

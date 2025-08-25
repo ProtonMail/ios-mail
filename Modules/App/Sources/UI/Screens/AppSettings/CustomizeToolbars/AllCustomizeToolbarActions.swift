@@ -15,8 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-struct ToolbarsActions {
-    var list: AllCustomizeToolbarActions
-    var message: AllCustomizeToolbarActions
-    var conversation: AllCustomizeToolbarActions
+struct AllCustomizeToolbarActions: Equatable {
+    var current: CustomizeToolbarActions
+    let defaultActions: CustomizeToolbarActions
 }

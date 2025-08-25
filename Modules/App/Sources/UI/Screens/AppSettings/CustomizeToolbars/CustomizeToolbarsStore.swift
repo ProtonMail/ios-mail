@@ -52,11 +52,11 @@ class CustomizeToolbarsStore: StateStore {
             let conversationToolbar: ToolbarWithActions =
                 switch viewMode {
                 case .conversations:
-                    .conversation(toolbarsActions.conversation)
+                    .conversation(toolbarsActions.conversation.current)
                 case .messages:
-                    .message(toolbarsActions.message)
+                    .message(toolbarsActions.message.current)
                 }
-            state = state.copy(\.toolbars, to: [.list(toolbarsActions.list), conversationToolbar])
+            state = state.copy(\.toolbars, to: [.list(toolbarsActions.list.current), conversationToolbar])
         } catch {
             AppLogger.log(error: error, category: .customizeToolbar)
         }

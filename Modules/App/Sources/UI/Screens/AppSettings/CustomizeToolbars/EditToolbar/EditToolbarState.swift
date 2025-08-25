@@ -19,7 +19,7 @@ import InboxCore
 
 struct EditToolbarState: Copying {
     let toolbarType: ToolbarType
-    var toolbarActions: CustomizeToolbarActions
+    var toolbarActions: AllCustomizeToolbarActions
 }
 
 extension EditToolbarState {
@@ -27,7 +27,10 @@ extension EditToolbarState {
     static func initial(toolbarType: ToolbarType) -> Self {
         .init(
             toolbarType: toolbarType,
-            toolbarActions: .init(selected: [], unselected: []),
+            toolbarActions: .init(
+                current: .init(selected: [], unselected: []),
+                defaultActions: .init(selected: [], unselected: [])
+            )
         )
     }
 

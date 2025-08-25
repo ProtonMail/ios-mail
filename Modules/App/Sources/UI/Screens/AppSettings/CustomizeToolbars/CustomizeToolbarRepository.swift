@@ -20,6 +20,8 @@ import proton_app_uniffi
 struct CustomizeToolbarRepository: Sendable {
     private let customizeToolbarService: CustomizeToolbarServiceProtocol
 
+    private let defaultActions: [MobileAction] = [.toggleRead, .trash, .move, .label]
+
     init(customizeToolbarService: CustomizeToolbarServiceProtocol) {
         self.customizeToolbarService = customizeToolbarService
     }
@@ -36,13 +38,18 @@ struct CustomizeToolbarRepository: Sendable {
         try await customizeToolbarService.saveActions(for: toolbar)(actions)
     }
 
-    private func actions(for toolbarType: ToolbarType) async throws -> CustomizeToolbarActions {
+    private func actions(for toolbarType: ToolbarType) async throws -> AllCustomizeToolbarActions {
         let allActions = customizeToolbarService.allActions(for: toolbarType)
         let selectedActions = try await customizeToolbarService.selectedActions(for: toolbarType)
-        return .init(
+        let current = CustomizeToolbarActions(
             selected: selectedActions,
             unselected: allActions.filter { action in !selectedActions.contains(action) }
         )
+        let defaultActions = CustomizeToolbarActions(
+            selected: defaultActions,
+            unselected: allActions.filter { action in !selectedActions.contains(action) }
+        )
+        return .init(current: current, defaultActions: defaultActions)
     }
 }
 

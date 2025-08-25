@@ -41,27 +41,32 @@ class EditToolbarStore: StateStore {
     func handle(action: EditToolbarAction) async {
         switch action {
         case .actionsReordered(let fromOffsets, let toOffset):
-            var selectedActionsNewOrder = state.toolbarActions.selected
+            var selectedActionsNewOrder = state.toolbarActions.current.selected
             selectedActionsNewOrder.move(fromOffsets: fromOffsets, toOffset: toOffset)
 
             state =
                 state
-                .copy(\.toolbarActions.selected, to: selectedActionsNewOrder)
+                .copy(\.toolbarActions.current.selected, to: selectedActionsNewOrder)
         case .removeFromSelectedTapped(let actionToRemove):
-            let selectedList = state.toolbarActions.selected.removing(actionToRemove)
-            let unselectedList = state.toolbarActions.unselected.inserting(actionToRemove, at: 0)
+            let selectedList = state.toolbarActions.current.selected.removing(actionToRemove)
+            let unselectedList = state.toolbarActions.current.unselected.inserting(actionToRemove, at: 0)
 
             state =
                 state
-                .copy(\.toolbarActions, to: .init(selected: selectedList, unselected: unselectedList))
+                .copy(
+                    \.toolbarActions.current,
+                    to: .init(selected: selectedList, unselected: unselectedList)
+                )
         case .addToSelectedTapped(let actionToAdd):
-            let unselectedList = state.toolbarActions.unselected.removing(actionToAdd)
-            let selectedList = state.toolbarActions.selected.inserting(actionToAdd, at: 0)
+            let unselectedList = state.toolbarActions.current.unselected.removing(actionToAdd)
+            let selectedList = state.toolbarActions.current.selected.inserting(actionToAdd, at: 0)
 
             state =
                 state
-                .copy(\.toolbarActions, to: .init(selected: selectedList, unselected: unselectedList))
-        case .onLoad, .resetToOriginalTapped:
+                .copy(
+                    \.toolbarActions.current,
+                    to: .init(selected: selectedList, unselected: unselectedList))
+        case .onLoad:
             do {
                 let actions = try await customizeToolbarRepository.fetchActions()[
                     keyPath: state.toolbarType.actionsKeyPath
@@ -73,7 +78,7 @@ class EditToolbarStore: StateStore {
         case .saveTapped:
             do {
                 try await customizeToolbarRepository.save(
-                    actions: state.toolbarActions.selected,
+                    actions: state.toolbarActions.current.selected,
                     for: state.toolbarType
                 )
                 refreshToolbarNotifier.refresh(toolbar: state.toolbarType)
@@ -81,6 +86,8 @@ class EditToolbarStore: StateStore {
                 AppLogger.log(error: error, category: .customizeToolbar)
             }
             dismiss()
+        case .resetToOriginalTapped:
+            state = state.copy(\.toolbarActions.current, to: state.toolbarActions.defaultActions)
         case .cancelTapped:
             dismiss()
         }
@@ -89,7 +96,7 @@ class EditToolbarStore: StateStore {
 
 private extension ToolbarType {
 
-    var actionsKeyPath: KeyPath<ToolbarsActions, CustomizeToolbarActions> {
+    var actionsKeyPath: KeyPath<ToolbarsActions, AllCustomizeToolbarActions> {
         switch self {
         case .list:
             \.list

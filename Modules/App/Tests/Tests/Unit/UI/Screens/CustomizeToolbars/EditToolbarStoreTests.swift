@@ -55,7 +55,7 @@ class EditToolbarStoreTests {
         await sut.handle(action: .onLoad)
 
         #expect(
-            sut.state.toolbarActions
+            sut.state.toolbarActions.current
                 == .init(
                     selected: [.reply],
                     unselected: [.forward, .spam, .archive, .move]
@@ -64,7 +64,7 @@ class EditToolbarStoreTests {
         await sut.handle(action: .addToSelectedTapped(actionToAdd: .spam))
 
         #expect(
-            sut.state.toolbarActions
+            sut.state.toolbarActions.current
                 == .init(
                     selected: [.spam, .reply],
                     unselected: [.forward, .archive, .move]
@@ -73,7 +73,7 @@ class EditToolbarStoreTests {
         await sut.handle(action: .actionsReordered(fromOffsets: IndexSet(integersIn: 0..<1), toOffset: 2))
 
         #expect(
-            sut.state.toolbarActions
+            sut.state.toolbarActions.current
                 == .init(
                     selected: [.reply, .spam],
                     unselected: [.forward, .archive, .move]
@@ -82,7 +82,7 @@ class EditToolbarStoreTests {
         await sut.handle(action: .removeFromSelectedTapped(actionToRemove: .reply))
 
         #expect(
-            sut.state.toolbarActions
+            sut.state.toolbarActions.current
                 == .init(
                     selected: [.spam],
                     unselected: [.reply, .forward, .archive, .move]
@@ -92,6 +92,25 @@ class EditToolbarStoreTests {
 
         #expect(customizeToolbarServiceSpy.updateMessageToolbarActionsInvoked == [[.spam]])
         #expect(refreshEventReceived == [.message])
+    }
+
+    @Test
+    func a() async {
+        customizeToolbarServiceSpy.allMessageActionsStub = [.reply, .forward, .spam, .archive, .move]
+        customizeToolbarServiceSpy.getMessageToolbarActionsStub = [.reply]
+
+        let sut = makeSUT(toolbarType: .message) {}
+
+        await sut.handle(action: .onLoad)
+
+        await sut.handle(action: .resetToOriginalTapped)
+
+        #expect(
+            sut.state.toolbarActions.current
+                == .init(
+                    selected: [.toggleRead, .trash, .move, .label],
+                    unselected: [.forward, .spam, .archive, .move]
+                ))
     }
 
     @Test
