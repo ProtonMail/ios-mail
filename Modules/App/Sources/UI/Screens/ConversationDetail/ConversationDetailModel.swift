@@ -684,7 +684,7 @@ extension ConversationDetailModel {
             await readConversationLiveQueryValues()
         case .message:
             await readMessageLiveQueryValues()
-        case nil:
+        case .none:
             .init(messages: [], isStarred: false)
         }
     }
