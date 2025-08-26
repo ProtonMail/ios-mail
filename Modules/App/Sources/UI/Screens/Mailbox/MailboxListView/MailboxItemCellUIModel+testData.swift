@@ -95,8 +95,11 @@ private extension MailboxItemCellUIModel {
             isSenderProtonOfficial: isFromProton,
             messagesCount: [0, 2, 3].randomElement()!,
             labelUIModel: .init(labelModels: Label.randomLabels()),
-            attachmentsUIModel: Attachment.randomAttachment(),
-            attachmentsCount: 3,
+            attachments: .init(
+                previewable: Attachment.randomAttachment(),
+                containsCalendarInvitation: false,
+                totalCount: 4
+            ),
             expirationDate: nil,
             snoozeDate: nil,
             isDraftMessage: false,

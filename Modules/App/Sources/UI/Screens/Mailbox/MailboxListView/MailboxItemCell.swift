@@ -185,14 +185,13 @@ extension MailboxItemCell {
     @ViewBuilder
     private var attachmentRowView: some View {
         AttachmentsView(
-            uiModel: uiModel.attachmentsUIModel,
-            attachmentsCount: uiModel.attachmentsCount,
+            uiModel: uiModel.attachments,
             isAttachmentHighlightEnabled: isParentListSelectionEmpty,
             onTapEvent: {
                 onEvent(.onAttachmentTap(attachmentID: $0))
             }
         )
-        .removeViewIf(uiModel.attachmentsUIModel.isEmpty)
+        .removeViewIf(uiModel.attachments.previewable.isEmpty)
         .accessibilityElement(children: .contain)
         .accessibilityIdentifier(MailboxItemCellIdentifiers.attachments)
     }
@@ -227,8 +226,7 @@ final class MailboxItemCellUIModel: Identifiable, Sendable {
     let isSenderProtonOfficial: Bool
     let messagesCount: UInt64
     let labelUIModel: MailboxLabelUIModel
-    let attachmentsUIModel: [AttachmentCapsuleUIModel]
-    let attachmentsCount: Int
+    let attachments: MailboxItemAttachments
     let replyIcons: ReplyIconsUIModel
     let expirationDate: Date?
     let snoozeDate: String?
@@ -250,8 +248,7 @@ final class MailboxItemCellUIModel: Identifiable, Sendable {
         isSenderProtonOfficial: Bool,
         messagesCount: UInt64,
         labelUIModel: MailboxLabelUIModel = .init(),
-        attachmentsUIModel: [AttachmentCapsuleUIModel] = [],
-        attachmentsCount: Int,
+        attachments: MailboxItemAttachments,
         replyIcons: ReplyIconsUIModel = .init(),
         expirationDate: Date?,
         snoozeDate: Date?,
@@ -272,8 +269,7 @@ final class MailboxItemCellUIModel: Identifiable, Sendable {
         self.isSenderProtonOfficial = isSenderProtonOfficial
         self.messagesCount = messagesCount
         self.labelUIModel = labelUIModel
-        self.attachmentsUIModel = attachmentsUIModel
-        self.attachmentsCount = attachmentsCount
+        self.attachments = attachments
         self.replyIcons = replyIcons
         self.expirationDate = expirationDate
 
@@ -354,10 +350,13 @@ enum MailboxItemCellEvent {
                 labelUIModel: .init(labelModels: [
                     LabelUIModel(labelId: .init(value: 0), text: "Offer lst minute for me and for you", color: .purple)
                 ]),
-                attachmentsUIModel: [
-                    .init(id: .init(value: 1), icon: DS.Icon.icFileTypeIconPdf, name: "#34JE3KLP.pdf")
-                ],
-                attachmentsCount: 1,
+                attachments: .init(
+                    previewable: [
+                        .init(id: .init(value: 1), icon: DS.Icon.icFileTypeIconPdf, name: "#34JE3KLP.pdf")
+                    ],
+                    containsCalendarInvitation: false,
+                    totalCount: 2
+                ),
                 replyIcons: .init(shouldShowForwardedIcon: true),
                 expirationDate: .now,
                 snoozeDate: .now + 500,
@@ -386,12 +385,15 @@ enum MailboxItemCellEvent {
                 messagesCount: 12,
                 labelUIModel: MailboxLabelUIModel(
                     labelModels: [.init(labelId: .init(value: 0), text: "Read later", color: .green)] + LabelUIModel.random(num: 3)),
-                attachmentsUIModel: [
-                    .init(id: .init(value: 1), icon: DS.Icon.icFileTypeIconPdf, name: "today_meeting_minutes.doc"),
-                    .init(id: .init(value: 2), icon: DS.Icon.icFileTypeIconPdf, name: "appendix1.pdf"),
-                    .init(id: .init(value: 3), icon: DS.Icon.icFileTypeIconPdf, name: "appendix2.pdf"),
-                ],
-                attachmentsCount: 3,
+                attachments: .init(
+                    previewable: [
+                        .init(id: .init(value: 1), icon: DS.Icon.icFileTypeIconPdf, name: "today_meeting_minutes.doc"),
+                        .init(id: .init(value: 2), icon: DS.Icon.icFileTypeIconPdf, name: "appendix1.pdf"),
+                        .init(id: .init(value: 3), icon: DS.Icon.icFileTypeIconPdf, name: "appendix2.pdf"),
+                    ],
+                    containsCalendarInvitation: false,
+                    totalCount: 4
+                ),
                 replyIcons: .init(shouldShowRepliedAllIcon: true),
                 expirationDate: .now + 500,
                 snoozeDate: .now + 55000,

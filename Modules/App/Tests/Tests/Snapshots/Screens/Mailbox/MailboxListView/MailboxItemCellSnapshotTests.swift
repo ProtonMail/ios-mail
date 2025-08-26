@@ -92,8 +92,11 @@ private extension MailboxItemCellUIModel {
             isSenderProtonOfficial: false,
             messagesCount: 0,
             labelUIModel: .init(labelModels: []),
-            attachmentsUIModel: [],
-            attachmentsCount: 0,
+            attachments: .init(
+                previewable: [],
+                containsCalendarInvitation: false,
+                totalCount: 0
+            ),
             expirationDate: type == .expirationTime ? expirationTime : nil,
             snoozeDate: type == .snoozed ? snoozeTime : nil,
             isDraftMessage: false,
@@ -117,8 +120,17 @@ private extension MailboxItemCellUIModel {
             isSenderProtonOfficial: false,
             messagesCount: 0,
             labelUIModel: .init(labelModels: [LabelUIModel(labelId: .init(value: 0), text: "MeetUp", color: .green)]),
-            attachmentsUIModel: [AttachmentCapsuleUIModel(id: .init(value: 1), icon: DS.Icon.icFileTypeIconPdf, name: "#KL877N.pdf")],
-            attachmentsCount: 1,
+            attachments: .init(
+                previewable: [
+                    AttachmentCapsuleUIModel(
+                        id: .init(value: 1),
+                        icon: DS.Icon.icFileTypeIconPdf,
+                        name: "#KL877N.pdf"
+                    )
+                ],
+                containsCalendarInvitation: false,
+                totalCount: 1
+            ),
             expirationDate: nil,
             snoozeDate: nil,
             isDraftMessage: false,
@@ -146,12 +158,15 @@ private extension MailboxItemCellUIModel {
                 LabelUIModel(labelId: .init(value: 0), text: "Summer 24", color: .blue),
                 LabelUIModel(labelId: .init(value: 0), text: "Friends", color: .orange),
             ]),
-            attachmentsUIModel: [
-                AttachmentCapsuleUIModel(id: .init(value: 1), icon: DS.Icon.icFileTypeIconImage, name: "DSC_001239.jpg"),
-                AttachmentCapsuleUIModel(id: .init(value: 2), icon: DS.Icon.icFileTypeIconImage, name: "DSC_001301.jpg"),
-                AttachmentCapsuleUIModel(id: .init(value: 3), icon: DS.Icon.icFileTypeIconImage, name: "DSC_001305.jpg"),
-            ],
-            attachmentsCount: 3,
+            attachments: .init(
+                previewable: [
+                    AttachmentCapsuleUIModel(id: .init(value: 1), icon: DS.Icon.icFileTypeIconImage, name: "DSC_001239.jpg"),
+                    AttachmentCapsuleUIModel(id: .init(value: 2), icon: DS.Icon.icFileTypeIconImage, name: "DSC_001301.jpg"),
+                    AttachmentCapsuleUIModel(id: .init(value: 3), icon: DS.Icon.icFileTypeIconImage, name: "DSC_001305.jpg"),
+                ],
+                containsCalendarInvitation: false,
+                totalCount: 4
+            ),
             expirationDate: nil,
             snoozeDate: nil,
             isDraftMessage: false,

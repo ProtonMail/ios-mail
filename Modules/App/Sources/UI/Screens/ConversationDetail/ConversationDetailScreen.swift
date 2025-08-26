@@ -291,10 +291,13 @@ private extension ConversationDetailModel.State {
                     labelUIModel: MailboxLabelUIModel(
                         labelModels: [LabelUIModel(labelId: .init(value: 0), text: "Work", color: .blue)]
                     ),
-                    attachmentsUIModel: [
-                        .init(id: .init(value: 4), icon: DS.Icon.icFileTypeIconWord, name: "notes.doc")
-                    ],
-                    attachmentsCount: 1,
+                    attachments: .init(
+                        previewable: [
+                            .init(id: .init(value: 4), icon: DS.Icon.icFileTypeIconWord, name: "notes.doc")
+                        ],
+                        containsCalendarInvitation: false,
+                        totalCount: 2
+                    ),
                     expirationDate: nil,
                     snoozeDate: nil,
                     isDraftMessage: false,

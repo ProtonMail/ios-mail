@@ -39,8 +39,11 @@ extension Conversation {
             isSenderProtonOfficial: senders.contains(where: \.isProton),
             messagesCount: totalMessages > 1 ? totalMessages : 0,
             labelUIModel: customLabels.toMailboxLabelUIModel(),
-            attachmentsUIModel: attachmentsMetadata.toAttachmentCapsuleUIModels(),
-            attachmentsCount: Int(numAttachments),
+            attachments: .init(
+                previewable: attachmentsMetadata.toAttachmentCapsuleUIModels(),  // FIXME: Add filtering logic
+                containsCalendarInvitation: attachmentsMetadata.contains(where: { $0.mimeType.category == .calendar }),
+                totalCount: Int(numAttachments)
+            ),
             expirationDate: Date(timeIntervalSince1970: TimeInterval(expirationTime)),
             snoozeDate: snoozedUntil?.date,
             isDraftMessage: false,

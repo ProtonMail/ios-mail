@@ -272,8 +272,11 @@ extension SelectionModeTests {
             isSenderProtonOfficial: Bool.random(),
             messagesCount: [0, 2, 3].randomElement()!,
             labelUIModel: .init(labelModels: []),
-            attachmentsUIModel: .init(),
-            attachmentsCount: 0,
+            attachments: .init(
+                previewable: [],
+                containsCalendarInvitation: false,
+                totalCount: 0
+            ),
             expirationDate: nil,
             snoozeDate: nil,
             isDraftMessage: false,

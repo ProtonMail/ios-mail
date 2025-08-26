@@ -23,8 +23,7 @@ import SwiftUI
 struct AttachmentsView: View {
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
 
-    let uiModel: [AttachmentCapsuleUIModel]
-    let attachmentsCount: Int
+    let uiModel: MailboxItemAttachments
     let isAttachmentHighlightEnabled: Bool
     let onTapEvent: ((ID) -> Void)?
 
@@ -34,13 +33,11 @@ struct AttachmentsView: View {
     }
 
     init(
-        uiModel: [AttachmentCapsuleUIModel],
-        attachmentsCount: Int = 0,
+        uiModel: MailboxItemAttachments,
         isAttachmentHighlightEnabled: Bool = false,
         onTapEvent: ((ID) -> Void)? = nil
     ) {
         self.uiModel = uiModel
-        self.attachmentsCount = attachmentsCount
         self.isAttachmentHighlightEnabled = isAttachmentHighlightEnabled
         self.onTapEvent = onTapEvent
     }
@@ -50,7 +47,7 @@ struct AttachmentsView: View {
             let spaceForCapsules =
                 geometry.size.width
                 - (maxNumberOfCapsules * Layout.spacingBetweenCapsules) - Layout.extraAttachmentsViewWidth
-            let capsuleMaxWidth = uiModel.count == 1 ? spaceForCapsules : spaceForCapsules / CGFloat(maxNumberOfCapsules)
+            let capsuleMaxWidth = uiModel.previewable.count == 1 ? spaceForCapsules : spaceForCapsules / CGFloat(maxNumberOfCapsules)
 
             /**
              SwiftUI does not make it easy to calculate dynamically to fit the maximum number of capsules. After trying
@@ -69,7 +66,7 @@ struct AttachmentsView: View {
     func hStackWithAttachments(limit: Int, capsuleMaxWidth: CGFloat) -> some View {
         HStack(spacing: 0) {
             HStack(spacing: Layout.spacingBetweenCapsules) {
-                let items = uiModel.prefix(limit)
+                let items = uiModel.previewable.prefix(limit)
                 ForEachEnumerated(items, id: \.element.id) { item, index in
                     AttachmentCapsuleView(
                         uiModel: item,
@@ -80,7 +77,7 @@ struct AttachmentsView: View {
                     .accessibilityIdentifier(AttachmentsViewIdentifiers.attachmentCapsule(forIndex: index))
                 }
             }
-            let extraAttachments = min(99, attachmentsCount - limit)
+            let extraAttachments = min(99, uiModel.totalCount - limit)
             Text(Strings.plus(count: extraAttachments))
                 .frame(width: Layout.extraAttachmentsViewWidth, alignment: .leading)
                 .fixedSize()
@@ -174,38 +171,50 @@ fileprivate enum Layout {
 #Preview {
     VStack {
         AttachmentsView(
-            uiModel: [
-                .init(
-                    id: .init(value: 1),
-                    icon: DS.Icon.icFileTypePages,
-                    name: "single_attachment_super_long_title_that_goes_beyond_the_half_width_of_a_big_iphone_in_landscape.pdf"
-                )
-            ]
+            uiModel: .init(
+                previewable: [
+                    .init(
+                        id: .init(value: 1),
+                        icon: DS.Icon.icFileTypePages,
+                        name: "single_attachment_super_long_title_that_goes_beyond_the_half_width_of_a_big_iphone_in_landscape.pdf"
+                    )
+                ],
+                containsCalendarInvitation: false,
+                totalCount: 2
+            )
         )
         .border(.red)
 
         AttachmentsView(
-            uiModel: [
-                .init(id: .init(value: 1), icon: DS.Icon.icFileTypeIconPdf, name: "1.pdf"),
-                .init(id: .init(value: 2), icon: DS.Icon.icFileTypeIconImage, name: "2.png"),
-                .init(id: .init(value: 3), icon: DS.Icon.icFileTypeIconExcel, name: "3.xls"),
-                .init(id: .init(value: 4), icon: DS.Icon.icFileTypeIconWord, name: "4.doc"),
-                .init(id: .init(value: 5), icon: DS.Icon.icFileTypeIconCode, name: "5.bash"),
-                .init(id: .init(value: 6), icon: DS.Icon.icFileTypeIconWord, name: "6.pdf"),
-                .init(id: .init(value: 7), icon: DS.Icon.icFileTypeIconCode, name: "7.png"),
-                .init(id: .init(value: 8), icon: DS.Icon.icFileTypeIconWord, name: "8.xls"),
-            ]
+            uiModel: .init(
+                previewable: [
+                    .init(id: .init(value: 1), icon: DS.Icon.icFileTypeIconPdf, name: "1.pdf"),
+                    .init(id: .init(value: 2), icon: DS.Icon.icFileTypeIconImage, name: "2.png"),
+                    .init(id: .init(value: 3), icon: DS.Icon.icFileTypeIconExcel, name: "3.xls"),
+                    .init(id: .init(value: 4), icon: DS.Icon.icFileTypeIconWord, name: "4.doc"),
+                    .init(id: .init(value: 5), icon: DS.Icon.icFileTypeIconCode, name: "5.bash"),
+                    .init(id: .init(value: 6), icon: DS.Icon.icFileTypeIconWord, name: "6.pdf"),
+                    .init(id: .init(value: 7), icon: DS.Icon.icFileTypeIconCode, name: "7.png"),
+                    .init(id: .init(value: 8), icon: DS.Icon.icFileTypeIconWord, name: "8.xls"),
+                ],
+                containsCalendarInvitation: false,
+                totalCount: 9
+            )
         )
         .border(.red)
 
         AttachmentsView(
-            uiModel: [
-                .init(id: .init(value: 1), icon: DS.Icon.icFileTypeIconPdf, name: "super_long_title_that_goes_beyond_half.pdf"),
-                .init(id: .init(value: 2), icon: DS.Icon.icFileTypeIconImage, name: "quite.png"),
-                .init(id: .init(value: 3), icon: DS.Icon.icFileTypeIconExcel, name: "numebrs.xls"),
-                .init(id: .init(value: 4), icon: DS.Icon.icFileTypeIconWord, name: "words.doc"),
-                .init(id: .init(value: 5), icon: DS.Icon.icFileTypeIconCode, name: "scripts.bash"),
-            ]
+            uiModel: .init(
+                previewable: [
+                    .init(id: .init(value: 1), icon: DS.Icon.icFileTypeIconPdf, name: "super_long_title_that_goes_beyond_half.pdf"),
+                    .init(id: .init(value: 2), icon: DS.Icon.icFileTypeIconImage, name: "quite.png"),
+                    .init(id: .init(value: 3), icon: DS.Icon.icFileTypeIconExcel, name: "numebrs.xls"),
+                    .init(id: .init(value: 4), icon: DS.Icon.icFileTypeIconWord, name: "words.doc"),
+                    .init(id: .init(value: 5), icon: DS.Icon.icFileTypeIconCode, name: "scripts.bash"),
+                ],
+                containsCalendarInvitation: false,
+                totalCount: 6
+            )
         )
         .frame(width: 300)
         .border(.red)

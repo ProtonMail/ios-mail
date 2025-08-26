@@ -48,8 +48,11 @@ extension Message {
             isSenderProtonOfficial: sender.isProton,
             messagesCount: 0,
             labelUIModel: customLabels.toMailboxLabelUIModel(),
-            attachmentsUIModel: attachmentsMetadata.toAttachmentCapsuleUIModels(),
-            attachmentsCount: Int(numAttachments),
+            attachments: .init(
+                previewable: attachmentsMetadata.toAttachmentCapsuleUIModels(),  // FIXME: Add filtering logic
+                containsCalendarInvitation: attachmentsMetadata.contains(where: { $0.mimeType.category == .calendar }),
+                totalCount: Int(numAttachments)
+            ),
             replyIcons: .init(
                 shouldShowRepliedIcon: isReplied,
                 shouldShowRepliedAllIcon: isRepliedAll,
