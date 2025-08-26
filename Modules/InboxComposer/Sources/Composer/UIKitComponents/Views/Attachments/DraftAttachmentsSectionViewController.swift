@@ -131,7 +131,14 @@ extension DraftAttachmentsSectionViewController {
             state: DraftAttachmentState
         ) -> DraftAttachmentUIModel {
             let mimeType = AttachmentMimeType(mime: "", category: cat)
-            let attachment = AttachmentMetadata(id: .init(value: id), disposition: .attachment, mimeType: mimeType, name: name, size: size)
+            let attachment = AttachmentMetadata(
+                id: .init(value: id),
+                disposition: .attachment,
+                mimeType: mimeType,
+                name: name,
+                size: size,
+                isListable: false
+            )
             return DraftAttachmentUIModel(attachment: attachment, state: state)
         }
 

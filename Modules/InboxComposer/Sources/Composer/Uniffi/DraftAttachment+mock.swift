@@ -37,7 +37,8 @@ extension DraftAttachment {
             disposition: .attachment,
             mimeType: .init(mime: "", category: .pdf),
             name: "attachment",
-            size: 1
+            size: 1,
+            isListable: false
         )
     }
 }

@@ -922,7 +922,14 @@ extension DraftAttachment {
         disposition: Disposition = .attachment
     ) -> DraftAttachment {
         let mockMimeType = AttachmentMimeType(mime: "pdf", category: .pdf)
-        let mockAttachment = AttachmentMetadata(id: .random(), disposition: disposition, mimeType: mockMimeType, name: name, size: 123456)
+        let mockAttachment = AttachmentMetadata(
+            id: .random(),
+            disposition: disposition,
+            mimeType: mockMimeType,
+            name: name,
+            size: 123456,
+            isListable: false
+        )
         return DraftAttachment(state: state, attachment: mockAttachment, stateModifiedTimestamp: 1742829536)
     }
 }

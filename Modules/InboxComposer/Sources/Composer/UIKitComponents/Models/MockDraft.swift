@@ -40,7 +40,8 @@ final class MockDraft: AppDraftProtocol, @unchecked Sendable {
             disposition: .attachment,
             mimeType: mockMimeType,
             name: "attachment_1",
-            size: 123456
+            size: 123456,
+            isListable: false
         )
         return [DraftAttachment(state: .uploaded, attachment: mockAttachment, stateModifiedTimestamp: 1742829536)]
     }
