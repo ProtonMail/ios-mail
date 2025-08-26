@@ -99,7 +99,7 @@ enum L10n {
                 comment: "Subtitle explaining that creating contacts or groups is not yet supported in the app and must be done on the web."
             )
             static let actionButtonTitle = LocalizedStringResource(
-                "Create in web",
+                "Continue on web",
                 bundle: .atURL(Bundle.module.bundleURL),
                 comment: "Label for the button that opens the web app to create a contact or group."
             )
@@ -139,7 +139,7 @@ enum L10n {
                 comment: "Subtitle explaining that editing contacts or groups isn't supported in the app yet, and must be done on the web; changes will sync to the device."
             )
             static let actionButtonTitle = LocalizedStringResource(
-                "Edit in web",
+                "Continue on web",
                 bundle: .atURL(Bundle.module.bundleURL),
                 comment: "Label for the button that opens the web app to edit a contact."
             )
