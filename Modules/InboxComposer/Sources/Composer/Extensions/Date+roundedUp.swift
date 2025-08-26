@@ -20,9 +20,9 @@ import Foundation
 extension Date {
     /**
      Calculates a future date by applying an initial time buffer and then rounding up to the nearest specified minute interval.
-
+    
      Example:
-
+    
      ```swift
      let now = Date() // Assume current time is 10:07
      let roundedDate = now.roundedUp(
@@ -31,7 +31,7 @@ extension Date {
      )
      // roundedDate will be 10:30
      ```
-
+    
      */
     func roundedUp(by minuteInterval: TimeInterval, withInitialBuffer bufferInMinutes: TimeInterval) -> Date {
         let futureTime = addingTimeInterval(bufferInMinutes * 60)

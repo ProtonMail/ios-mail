@@ -35,7 +35,6 @@ enum DiscardDraftAlertAction: AlertActionInfo, CaseIterable {
     }
 }
 
-
 enum ExpiringMessageUnsupportedAlertAction: AlertActionInfo, CaseIterable {
     case sendAnyway
     case addPassword

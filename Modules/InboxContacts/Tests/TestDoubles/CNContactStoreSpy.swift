@@ -22,9 +22,7 @@ class CNContactStoreSpy: CNContactStoring {
 
     static var stubbedAuthorizationStatus: [CNEntityType: CNAuthorizationStatus] = .default
 
-    private(set) var requestAccessCalls: [
-        (entityType: CNEntityType, completionHandler: (Bool, (any Error)?) -> Void)
-    ] = []
+    private(set) var requestAccessCalls: [(entityType: CNEntityType, completionHandler: (Bool, (any Error)?) -> Void)] = []
     private(set) var enumerateContactsCalls: [CNContactFetchRequest] = []
     var stubbedEnumerateContacts: [CNContact] = []
     var requestAccessCompletionBlockCalledImmediately: Bool = false

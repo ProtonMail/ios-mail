@@ -44,7 +44,7 @@ extension Array where Element == AttachmentDisplayModel {
                 mimeType: .init(mime: "doc", category: .pages),
                 name: "Long long long long long long long long long long name",
                 size: 120000
-            )
+            ),
         ]
     }
 

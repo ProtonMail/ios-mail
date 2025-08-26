@@ -38,12 +38,12 @@ extension Robot {
 
         return self
     }
-    
+
     func waitMessageBySubject(subject: String) {
         let subjectText = application.staticTexts[subject].firstMatch
         subjectText.waitUntilShown()
     }
-    
+
     func clickMessageBySubject(subject: String) {
         let subjectText = application.staticTexts[subject].firstMatch
         subjectText.tap()

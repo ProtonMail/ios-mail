@@ -40,10 +40,11 @@ extension View {
         additionallyObserving modalAction: Binding<ComposerViewModalState?>,  // Change parameter
         content: ComposerViewModalFactory
     ) -> some View {
-        modifier(ComposerModalModifier(
-            modalState: item,
-            modalAction: modalAction,
-            modalFactory: content
-        ))
+        modifier(
+            ComposerModalModifier(
+                modalState: item,
+                modalAction: modalAction,
+                modalFactory: content
+            ))
     }
 }

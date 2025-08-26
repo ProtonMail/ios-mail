@@ -28,7 +28,7 @@ struct CustomizeToolbarsScreenSnapshotTests {
             state: .init(
                 toolbars: [
                     .list(.init(selected: [.move, .archive, .label, .toggleRead], unselected: [])),
-                    .message(.init(selected: [.reply, .move, .forward, .toggleRead], unselected: []))
+                    .message(.init(selected: [.reply, .move, .forward, .toggleRead], unselected: [])),
                 ],
                 editToolbar: nil
             ),

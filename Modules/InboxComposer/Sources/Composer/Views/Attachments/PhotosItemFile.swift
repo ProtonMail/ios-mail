@@ -40,7 +40,8 @@ extension PhotosItemFile: Transferable {
             },
             importing: { received in
                 let cacheDirectory = fileManager.urls(for: .cachesDirectory, in: .userDomainMask).first!
-                let tempFolder = cacheDirectory
+                let tempFolder =
+                    cacheDirectory
                     .appendingPathComponent(tempDestinationFolderName, isDirectory: true)
                     .appendingPathComponent(UUID().uuidString, isDirectory: true)
                 try fileManager.createDirectory(at: tempFolder, withIntermediateDirectories: true)

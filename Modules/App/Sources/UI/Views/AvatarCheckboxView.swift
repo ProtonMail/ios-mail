@@ -58,23 +58,23 @@ struct AvatarCheckboxView: View {
         AvatarCheckboxView(
             isSelected: true,
             avatar: .init(info: .init(initials: "Mb", color: .cyan), type: .sender(params: .init()))
-        ) { _ in}
-            .square(size: 40)
-            .clipped()
+        ) { _ in }
+        .square(size: 40)
+        .clipped()
 
         AvatarCheckboxView(
             isSelected: false,
             avatar: .init(info: .init(initials: "Mb", color: .cyan), type: .sender(params: .init()))
-        ) { _ in}
-            .square(size: 40)
-            .clipped()
+        ) { _ in }
+        .square(size: 40)
+        .clipped()
 
         AvatarCheckboxView(
             isSelected: false,
             avatar: .init(info: .init(initials: "Mb", color: .cyan), type: .sender(params: .init()))
-        ) { _ in}
-            .square(size: 40)
-            .clipped()
+        ) { _ in }
+        .square(size: 40)
+        .clipped()
     }
 }
 

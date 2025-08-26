@@ -19,11 +19,11 @@ import proton_app_uniffi
 
 struct AllMessagesDeleter {
     private let deleteAllMessages: @Sendable (_ labelID: ID) async -> VoidActionResult
-    
+
     init(mailUserSession: MailUserSession, wrapper: RustEmptyFolderBannerWrapper) {
         self.deleteAllMessages = { labelID in await wrapper.deleteAllMessages(mailUserSession, labelID) }
     }
-    
+
     @discardableResult
     func deleteAll(labelID: ID) async -> VoidActionResult {
         await deleteAllMessages(labelID)

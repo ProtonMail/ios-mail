@@ -80,7 +80,7 @@ final class ContactGroupCell: UITableViewCell {
             iconImageView.centerXAnchor.constraint(equalTo: iconBackgroundView.centerXAnchor),
             iconImageView.centerYAnchor.constraint(equalTo: iconBackgroundView.centerYAnchor),
             iconImageView.widthAnchor.constraint(equalToConstant: 20),
-            iconImageView.heightAnchor.constraint(equalTo: iconImageView.widthAnchor)
+            iconImageView.heightAnchor.constraint(equalTo: iconImageView.widthAnchor),
         ])
     }
 

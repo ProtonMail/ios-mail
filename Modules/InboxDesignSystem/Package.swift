@@ -7,7 +7,7 @@ let package = Package(
     name: "InboxDesignSystem",
     platforms: [.iOS(.v17)],
     products: [
-        .library(name: "InboxDesignSystem", targets: ["InboxDesignSystem"]),
+        .library(name: "InboxDesignSystem", targets: ["InboxDesignSystem"])
     ],
     targets: [
         .target(name: "InboxDesignSystem", resources: [.process("Resources")])

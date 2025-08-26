@@ -49,7 +49,7 @@ final class ConversationDetailMessageItemsTests: PMUIMockedNetworkTestCase {
         let expectedCollapsedEntries = [
             UITestConversationCollapsedItemEntry(index: 0, senderName: "notsofree@proton.black", date: "Jun 17", preview: "to youngbee@proton.black"),
             UITestConversationCollapsedItemEntry(index: 1, senderName: "notsofree@proton.black", date: "Jun 18", preview: "to youngbee@proton.black"),
-            UITestConversationCollapsedItemEntry(index: 2, senderName: "Young Bee", date: "Jun 18", preview: "to notsofree@proton.black")
+            UITestConversationCollapsedItemEntry(index: 2, senderName: "Young Bee", date: "Jun 18", preview: "to notsofree@proton.black"),
         ]
 
         navigator.navigateTo(UITestDestination.inbox)

@@ -7,12 +7,12 @@ let package = Package(
     name: "TestableNotificationService",
     platforms: [.iOS(.v17)],
     products: [
-        .library(name: "TestableNotificationService", targets: ["TestableNotificationService"]),
+        .library(name: "TestableNotificationService", targets: ["TestableNotificationService"])
     ],
     dependencies: [
         .package(path: "../InboxCore"),
         .package(path: "../InboxKeychain"),
-        .package(path: "../../ProtonPackages/proton_app_uniffi")
+        .package(path: "../../ProtonPackages/proton_app_uniffi"),
     ],
     targets: [
         .target(name: "TestableNotificationService", dependencies: ["InboxCore", "InboxKeychain", "proton_app_uniffi"]),

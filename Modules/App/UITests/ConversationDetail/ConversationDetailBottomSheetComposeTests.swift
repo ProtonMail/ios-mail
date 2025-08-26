@@ -140,7 +140,7 @@ final class ConversationDetailBottomSheetComposeTests: PMUIMockedNetworkTestCase
             $0.hasComposeButtons()
         }
     }
-    
+
     private func withActionBottomSheetDisplayed(destination: UITestDestination = .inbox, interaction: (ActionBottomSheetRobot) -> Void) {
         navigator.navigateTo(destination)
 

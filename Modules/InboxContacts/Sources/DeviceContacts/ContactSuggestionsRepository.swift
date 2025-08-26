@@ -46,11 +46,12 @@ public struct ContactSuggestionsRepository {
     // MARK: - Private
 
     private func deviceContacts() -> [DeviceContact] {
-        let keys: [CNKeyDescriptor] = [
-            CNContactGivenNameKey,
-            CNContactFamilyNameKey,
-            CNContactEmailAddressesKey
-        ] as [CNKeyDescriptor]
+        let keys: [CNKeyDescriptor] =
+            [
+                CNContactGivenNameKey,
+                CNContactFamilyNameKey,
+                CNContactEmailAddressesKey,
+            ] as [CNKeyDescriptor]
         let request = CNContactFetchRequest(keysToFetch: keys)
         var contacts: [DeviceContact] = []
 

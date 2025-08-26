@@ -23,7 +23,7 @@ struct EmptyFolderBanner {
         case upgradePlan
         case emptyLocation
     }
-    
+
     struct FolderDetails {
         let labelID: ID
         let type: SpamOrTrash

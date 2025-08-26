@@ -22,12 +22,13 @@ func getTestConfigValue(forKey key: String) -> String {
 
     for bundle in testBundles {
         if let url = bundle.url(forResource: "Loki", withExtension: "plist"),
-           let data = try? Data(contentsOf: url),
-           let plist = try? PropertyListSerialization.propertyList(from: data, format: nil) as? [String: Any],
-           let value = plist[key] as? String {
+            let data = try? Data(contentsOf: url),
+            let plist = try? PropertyListSerialization.propertyList(from: data, format: nil) as? [String: Any],
+            let value = plist[key] as? String
+        {
             return value
         }
     }
-    
+
     return ProcessInfo.processInfo.environment[key] ?? "invalid"
 }

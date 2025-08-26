@@ -212,7 +212,7 @@ open class Keychain {
             kSecReturnData as String: kCFBooleanTrue,
             kSecMatchLimit as String: kSecMatchLimitOne,
             kSecAttrAccessGroup as String: self.accessGroup as AnyObject,
-            kSecAttrSynchronizable as String: kSecAttrSynchronizableAny
+            kSecAttrSynchronizable as String: kSecAttrSynchronizableAny,
         ]
         if #available(macOS 10.15, tvOS 13.0, watchOS 6.0, macCatalyst 13.0, *) {
             query[kSecUseDataProtectionKeychain as String] = kCFBooleanTrue
@@ -269,7 +269,7 @@ open class Keychain {
             kSecAttrService as String: self.service as AnyObject,
             kSecAttrAccount as String: key as AnyObject,
             kSecAttrAccessGroup as String: self.accessGroup as AnyObject,
-            kSecAttrSynchronizable as String: kSecAttrSynchronizableAny
+            kSecAttrSynchronizable as String: kSecAttrSynchronizableAny,
         ]
         if #available(macOS 10.15, tvOS 13.0, watchOS 6.0, macCatalyst 13.0, *) {
             query[kSecUseDataProtectionKeychain as String] = kCFBooleanTrue
@@ -303,7 +303,7 @@ open class Keychain {
             kSecAttrService as String: self.service as AnyObject,
             kSecAttrAccount as String: key as AnyObject,
             kSecAttrAccessGroup as String: self.accessGroup as AnyObject,
-            kSecAttrSynchronizable as String: kSecAttrSynchronizableAny
+            kSecAttrSynchronizable as String: kSecAttrSynchronizableAny,
         ]
         if #available(macOS 10.15, tvOS 13.0, watchOS 6.0, macCatalyst 13.0, *) {
             query[kSecUseDataProtectionKeychain as String] = kCFBooleanTrue
@@ -329,7 +329,7 @@ open class Keychain {
             guard codeExisting == errSecItemNotFound else {
                 var updateAttributes: [String: AnyObject] = [
                     kSecAttrSynchronizable as String: NSNumber(value: false),
-                    kSecValueData as String: value as AnyObject
+                    kSecValueData as String: value as AnyObject,
                 ]
                 self.injectAccessControlAttributes(into: &updateAttributes)
 
@@ -370,7 +370,7 @@ open class Keychain {
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrService as String: self.service as AnyObject,
             kSecAttrAccessGroup as String: self.accessGroup as AnyObject,
-            kSecAttrSynchronizable as String: kSecAttrSynchronizableAny
+            kSecAttrSynchronizable as String: kSecAttrSynchronizableAny,
         ]
         if #available(macOS 10.15, tvOS 13.0, watchOS 6.0, macCatalyst 13.0, *) {
             query[kSecUseDataProtectionKeychain as String] = kCFBooleanTrue

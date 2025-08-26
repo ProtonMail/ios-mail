@@ -399,7 +399,7 @@ enum L10n {
         }
 
         static let failedToDecryptExternalEncryptionPassword = LocalizedStringResource(
-            "Failed to decrypt external encryption password", // FIXME: - To verify
+            "Failed to decrypt external encryption password",  // FIXME: - To verify
             comment: "Error in the context of scheduling a message."
         )
 

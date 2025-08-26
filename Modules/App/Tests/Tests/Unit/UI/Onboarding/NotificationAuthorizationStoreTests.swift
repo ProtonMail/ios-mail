@@ -86,7 +86,7 @@ final class NotificationAuthorizationStoreTests {
 
         userDefaults[.notificationAuthorizationRequestDates] = [
             Calendar.autoupdatingCurrent.date(byAdding: .day, value: -20, to: .now)!,
-            Calendar.autoupdatingCurrent.date(byAdding: .day, value: -10, to: .now)!
+            Calendar.autoupdatingCurrent.date(byAdding: .day, value: -10, to: .now)!,
         ]
 
         #expect(await sut.shouldRequestAuthorization(trigger: .messageSent) == false)

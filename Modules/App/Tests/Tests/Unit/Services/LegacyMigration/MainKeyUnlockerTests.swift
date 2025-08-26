@@ -62,7 +62,8 @@ private extension MainKeyUnlockerTests {
     }
 
     var biometricsProtectedMainKey: Data {
-        .init(base64Encoded: "BMXkPgRzsc3e8xTY+Pnndl2HjqyZJ6rN5BF2T8t973NyeSoVs1A3CQGpwiprUAQHopyKa+ovFPzPgk5gFmZsbVIWK2qxX242iy0FOBtGWaEDjv06kQkFP34IFoCpFpfx9YhBb29+KLJd2JHebSpctqY=").unsafelyUnwrapped
+        .init(base64Encoded: "BMXkPgRzsc3e8xTY+Pnndl2HjqyZJ6rN5BF2T8t973NyeSoVs1A3CQGpwiprUAQHopyKa+ovFPzPgk5gFmZsbVIWK2qxX242iy0FOBtGWaEDjv06kQkFP34IFoCpFpfx9YhBb29+KLJd2JHebSpctqY=")
+            .unsafelyUnwrapped
     }
 
     var secureEnclavePrivateKey: Data {
@@ -70,7 +71,10 @@ private extension MainKeyUnlockerTests {
     }
 
     var pinProtectedMainKey: Data {
-        .init(base64Encoded: "dAcGOBeHqCMJvQPyOOy303bveHdY+QmCt8RpD6xX8u6+7PLF3pnUXhn91fIb2UND5P7Se8wKkKboY9a9ayFOJMm9uviXe6jCnT9C9Mh8rT3Bn04ctKPIg1YwZXCQwz80kQ/y/tW8wWACS4xRJ70v2MG5nh9jCGsi2nZ3PfFuX4545dfK0H6K0IpdwYYaZqWT6WJrGr6x+QGkJZZc6qfzLvZ7O7lmenuzc2u/fS7+fRouUROQW/2O7bo=").unsafelyUnwrapped
+        .init(
+            base64Encoded:
+                "dAcGOBeHqCMJvQPyOOy303bveHdY+QmCt8RpD6xX8u6+7PLF3pnUXhn91fIb2UND5P7Se8wKkKboY9a9ayFOJMm9uviXe6jCnT9C9Mh8rT3Bn04ctKPIg1YwZXCQwz80kQ/y/tW8wWACS4xRJ70v2MG5nh9jCGsi2nZ3PfFuX4545dfK0H6K0IpdwYYaZqWT6WJrGr6x+QGkJZZc6qfzLvZ7O7lmenuzc2u/fS7+fRouUROQW/2O7bo="
+        ).unsafelyUnwrapped
     }
 
     var pinProtectionSalt: Data {

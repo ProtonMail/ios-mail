@@ -24,7 +24,7 @@ extension URL {
         static func create(domain: String) -> URL {
             url(domain: domain, path: "/inbox#create-contact")
         }
-        static func edit(domain: String, id: String) -> URL { 
+        static func edit(domain: String, id: String) -> URL {
             url(domain: domain, path: "/inbox#edit-contact=:\(id)")
         }
     }

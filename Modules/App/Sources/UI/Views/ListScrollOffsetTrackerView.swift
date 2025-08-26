@@ -35,9 +35,11 @@ struct ListScrollOffsetTrackerView: View {
             .listRowInsets(EdgeInsets())
             .listRowBackground(Color.clear)
             .frame(maxHeight: 1)
-            .readLayoutData(coordinateSpace: .global, onChange: { data in
-                let realScrollOffset = data.frameInCoordinateSpace.minY - listTopOffset
-                onScrollEvent(.onChangeOffset(value: realScrollOffset))
-            })
+            .readLayoutData(
+                coordinateSpace: .global,
+                onChange: { data in
+                    let realScrollOffset = data.frameInCoordinateSpace.minY - listTopOffset
+                    onScrollEvent(.onChangeOffset(value: realScrollOffset))
+                })
     }
 }

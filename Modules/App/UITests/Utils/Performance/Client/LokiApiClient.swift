@@ -30,7 +30,7 @@ enum LokiPushError: Error {
 @available(macOS 12.0, *)
 class LokiClient {
 
-    init(){
+    init() {
         self.session = URLSession(configuration: .default, delegate: CustomSessionDelegate(), delegateQueue: nil)
     }
 
@@ -89,4 +89,3 @@ class LokiClient {
         }
     }
 }
-

@@ -75,7 +75,8 @@ class RecurringBackgroundTaskScheduler: @unchecked Sendable {
 
     func submit() async {
         let allTaskRequests = await backgroundTaskScheduler.pendingTaskRequests()
-        let isTaskSchedulled = allTaskRequests
+        let isTaskSchedulled =
+            allTaskRequests
             .contains(where: { request in request.identifier == Self.identifier })
         guard !isTaskSchedulled else {
             return
@@ -137,7 +138,8 @@ class RecurringBackgroundTaskScheduler: @unchecked Sendable {
     }
 
     private func checkForSessionSetUpToComplete(completion: @Sendable @escaping () -> Void) {
-        sessionSetUpCheckCancellable = Publishers
+        sessionSetUpCheckCancellable =
+            Publishers
             .CombineLatest(sessionStatePublisher, timerFactory(0.5))
             .map { sessionState, _ in sessionState }
             .prefix(untilOutputFrom: backgroundTaskExpired)

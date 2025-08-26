@@ -18,9 +18,10 @@
 import BackgroundTasks
 
 struct BackgroundTaskRegistration {
-    let registerWithIdentifier: (
-        _ identifier: String,
-        _ queue: DispatchQueue?,
-        _ handler: @escaping (BackgroundTask) -> Void
-    ) -> Bool
+    let registerWithIdentifier:
+        (
+            _ identifier: String,
+            _ queue: DispatchQueue?,
+            _ handler: @escaping (BackgroundTask) -> Void
+        ) -> Bool
 }

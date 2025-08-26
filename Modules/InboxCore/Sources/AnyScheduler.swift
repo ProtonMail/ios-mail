@@ -21,7 +21,7 @@ import Combine
 public typealias DispatchQueueScheduler = AnyScheduler<DispatchQueue.SchedulerTimeType>
 
 public class AnyScheduler<SchedulerTimeType>: Scheduler
-    where SchedulerTimeType: Strideable, SchedulerTimeType.Stride: SchedulerTimeIntervalConvertible {
+where SchedulerTimeType: Strideable, SchedulerTimeType.Stride: SchedulerTimeIntervalConvertible {
 
     public typealias SchedulerOptions = Never
 
@@ -70,16 +70,18 @@ public class AnyScheduler<SchedulerTimeType>: Scheduler
     private let _now: () -> SchedulerTimeType
     private let _minimumTolerance: () -> SchedulerTimeType.Stride
     private let _schedule_action: (@escaping () -> Void) -> Void
-    private let _schedule_after_tolerance_action: (
-        SchedulerTimeType,
-        SchedulerTimeType.Stride,
-        @escaping () -> Void
-    ) -> Void
-    private let _schedule_after_interval_tolerance_action: (
-        SchedulerTimeType,
-        SchedulerTimeType.Stride,
-        SchedulerTimeType.Stride,
-        @escaping () -> Void
-    ) -> Cancellable
+    private let _schedule_after_tolerance_action:
+        (
+            SchedulerTimeType,
+            SchedulerTimeType.Stride,
+            @escaping () -> Void
+        ) -> Void
+    private let _schedule_after_interval_tolerance_action:
+        (
+            SchedulerTimeType,
+            SchedulerTimeType.Stride,
+            SchedulerTimeType.Stride,
+            @escaping () -> Void
+        ) -> Cancellable
 
 }

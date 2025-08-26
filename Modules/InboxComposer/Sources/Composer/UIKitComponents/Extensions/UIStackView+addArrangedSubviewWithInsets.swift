@@ -19,8 +19,7 @@ import UIKit
 
 extension UIStackView {
 
-    func addArrangedSubviewWithInsets(_ view: UIView, insets: UIEdgeInsets)
-    {
+    func addArrangedSubviewWithInsets(_ view: UIView, insets: UIEdgeInsets) {
         let container = UIView()
         container.addSubview(view)
         NSLayoutConstraint.activate([

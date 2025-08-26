@@ -44,9 +44,10 @@ struct AttachmentsView: View {
 
     var body: some View {
         GeometryReader { geometry in
-            let spaceForCapsules = geometry.size.width
-            - (maxNumberOfCapsules*Layout.spacingBetweenCapsules) - Layout.extraAttachmentsViewWidth
-            let capsuleMaxWidth = uiModel.count == 1 ? spaceForCapsules : spaceForCapsules/CGFloat(maxNumberOfCapsules)
+            let spaceForCapsules =
+                geometry.size.width
+                - (maxNumberOfCapsules * Layout.spacingBetweenCapsules) - Layout.extraAttachmentsViewWidth
+            let capsuleMaxWidth = uiModel.count == 1 ? spaceForCapsules : spaceForCapsules / CGFloat(maxNumberOfCapsules)
 
             /**
              SwiftUI does not make it easy to calculate dynamically to fit the maximum number of capsules. After trying
@@ -189,18 +190,18 @@ fileprivate enum Layout {
                 .init(id: .init(value: 5), icon: DS.Icon.icFileTypeIconCode, name: "5.bash"),
                 .init(id: .init(value: 6), icon: DS.Icon.icFileTypeIconWord, name: "6.pdf"),
                 .init(id: .init(value: 7), icon: DS.Icon.icFileTypeIconCode, name: "7.png"),
-                .init(id: .init(value: 8), icon: DS.Icon.icFileTypeIconWord, name: "8.xls")
+                .init(id: .init(value: 8), icon: DS.Icon.icFileTypeIconWord, name: "8.xls"),
             ]
         )
         .border(.red)
 
         AttachmentsView(
-            uiModel:[
+            uiModel: [
                 .init(id: .init(value: 1), icon: DS.Icon.icFileTypeIconPdf, name: "super_long_title_that_goes_beyond_half.pdf"),
                 .init(id: .init(value: 2), icon: DS.Icon.icFileTypeIconImage, name: "quite.png"),
                 .init(id: .init(value: 3), icon: DS.Icon.icFileTypeIconExcel, name: "numebrs.xls"),
                 .init(id: .init(value: 4), icon: DS.Icon.icFileTypeIconWord, name: "words.doc"),
-                .init(id: .init(value: 5), icon: DS.Icon.icFileTypeIconCode, name: "scripts.bash")
+                .init(id: .init(value: 5), icon: DS.Icon.icFileTypeIconCode, name: "scripts.bash"),
             ]
         )
         .frame(width: 300)

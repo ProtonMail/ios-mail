@@ -25,7 +25,7 @@ struct UITestMailboxListItemEntry {
     let date: String
     let count: Int?
     let attachmentPreviews: UITestAttachmentPreviewItemEntry?
-    
+
     init(index: Int, avatar: UITestAvatarItemEntry, sender: String, subject: String, date: String, count: Int? = nil, attachmentPreviews: UITestAttachmentPreviewItemEntry? = nil) {
         self.index = index
         self.avatar = avatar

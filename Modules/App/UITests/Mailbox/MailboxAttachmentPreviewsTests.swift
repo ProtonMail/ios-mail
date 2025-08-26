@@ -220,7 +220,7 @@ final class MailboxAttachmentPreviewsTests: PMUIMockedNetworkTestCase {
 
         let capsules = [
             UITestAttachmentPreviewCapsuleItemEntry(index: 0, attachmentName: "fifth.png"),
-            UITestAttachmentPreviewCapsuleItemEntry(index: 1, attachmentName: "first.png")
+            UITestAttachmentPreviewCapsuleItemEntry(index: 1, attachmentName: "first.png"),
         ]
         let attachmentPreviews = UITestAttachmentPreviewItemEntry(items: capsules, extraItemsCount: 4)
 
@@ -321,7 +321,7 @@ final class MailboxAttachmentPreviewsTests: PMUIMockedNetworkTestCase {
 
         let capsules = [
             UITestAttachmentPreviewCapsuleItemEntry(index: 0, attachmentName: "zipfile.zip"),
-            UITestAttachmentPreviewCapsuleItemEntry(index: 1, attachmentName: "fifth.png")
+            UITestAttachmentPreviewCapsuleItemEntry(index: 1, attachmentName: "fifth.png"),
         ]
         let attachmentPreviews = UITestAttachmentPreviewItemEntry(items: capsules, extraItemsCount: 5)
 
@@ -345,7 +345,7 @@ final class MailboxAttachmentPreviewsTests: PMUIMockedNetworkTestCase {
 
         let capsules = [
             UITestAttachmentPreviewCapsuleItemEntry(index: 0, attachmentName: "zip_conv.zip"),
-            UITestAttachmentPreviewCapsuleItemEntry(index: 1, attachmentName: "zip_rep.zip")
+            UITestAttachmentPreviewCapsuleItemEntry(index: 1, attachmentName: "zip_rep.zip"),
         ]
         let attachmentPreviews = UITestAttachmentPreviewItemEntry(items: capsules, extraItemsCount: 7)
 
@@ -370,7 +370,7 @@ final class MailboxAttachmentPreviewsTests: PMUIMockedNetworkTestCase {
 
         let capsules = [
             UITestAttachmentPreviewCapsuleItemEntry(index: 0, attachmentName: "zip_conv.zip"),
-            UITestAttachmentPreviewCapsuleItemEntry(index: 1, attachmentName: "zip_rep.zip")
+            UITestAttachmentPreviewCapsuleItemEntry(index: 1, attachmentName: "zip_rep.zip"),
         ]
         let attachmentPreviews = UITestAttachmentPreviewItemEntry(items: capsules, extraItemsCount: 1)
 

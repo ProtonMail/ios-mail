@@ -114,17 +114,19 @@ class AppSettingsStateStoreTests {
 
         await changeAlternativeRoutingValue(false)
 
-        #expect(appSettingsRepositorySpy.changedAppSettingsWithDiff == [
-            .diff(useAlternativeRouting: false)
-        ])
+        #expect(
+            appSettingsRepositorySpy.changedAppSettingsWithDiff == [
+                .diff(useAlternativeRouting: false)
+            ])
         #expect(sut.state.storedAppSettings.useAlternativeRouting == false)
 
         await changeAlternativeRoutingValue(true)
 
-        #expect(appSettingsRepositorySpy.changedAppSettingsWithDiff == [
-            .diff(useAlternativeRouting: false),
-            .diff(useAlternativeRouting: true),
-        ])
+        #expect(
+            appSettingsRepositorySpy.changedAppSettingsWithDiff == [
+                .diff(useAlternativeRouting: false),
+                .diff(useAlternativeRouting: true),
+            ])
         #expect(sut.state.storedAppSettings.useAlternativeRouting == true)
     }
 
@@ -134,17 +136,19 @@ class AppSettingsStateStoreTests {
 
         await changeCombinedContactsValue(true)
 
-        #expect(appSettingsRepositorySpy.changedAppSettingsWithDiff == [
-            .diff(useCombineContacts: true)
-        ])
+        #expect(
+            appSettingsRepositorySpy.changedAppSettingsWithDiff == [
+                .diff(useCombineContacts: true)
+            ])
         #expect(sut.state.storedAppSettings.useCombineContacts == true)
 
         await changeCombinedContactsValue(false)
 
-        #expect(appSettingsRepositorySpy.changedAppSettingsWithDiff == [
-            .diff(useCombineContacts: true),
-            .diff(useCombineContacts: false),
-        ])
+        #expect(
+            appSettingsRepositorySpy.changedAppSettingsWithDiff == [
+                .diff(useCombineContacts: true),
+                .diff(useCombineContacts: false),
+            ])
         #expect(sut.state.storedAppSettings.useCombineContacts == false)
     }
 

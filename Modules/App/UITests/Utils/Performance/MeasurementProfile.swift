@@ -16,9 +16,9 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 #if os(macOS)
-import AppKit
+    import AppKit
 #else
-import UIKit
+    import UIKit
 #endif
 
 public class MeasurementProfile: MeasurementProtocol {
@@ -33,15 +33,15 @@ public class MeasurementProfile: MeasurementProtocol {
     public init(workflow: String) {
         self.workflow = workflow
 
-#if os(macOS)
-        let platform = "macOS"
-        let systemVersion = ProcessInfo.processInfo.operatingSystemVersionString
-        let deviceModel = "Mac"
-#else
-        let platform = "iOS"
-        let systemVersion = UIDevice.current.systemVersion
-        let deviceModel = UIDevice.current.model
-#endif
+        #if os(macOS)
+            let platform = "macOS"
+            let systemVersion = ProcessInfo.processInfo.operatingSystemVersionString
+            let deviceModel = "Mac"
+        #else
+            let platform = "iOS"
+            let systemVersion = UIDevice.current.systemVersion
+            let deviceModel = UIDevice.current.model
+        #endif
 
         self.sharedLabels = [
             "workflow": workflow,
@@ -56,12 +56,12 @@ public class MeasurementProfile: MeasurementProtocol {
         self.sharedMetadata = [
             "app_version": MeasurementConfig.version,
             "build_commit_sha1": MeasurementConfig.buildCommitShortSha,
-            "ci_job_id": MeasurementConfig.ciJobId
+            "ci_job_id": MeasurementConfig.ciJobId,
         ]
     }
 
     @discardableResult
-    public  func addMeasurement(_ measurement: Measurement) -> MeasurementProfile {
+    public func addMeasurement(_ measurement: Measurement) -> MeasurementProfile {
         measurements.append(measurement)
         return self
     }
@@ -78,14 +78,14 @@ public class MeasurementProfile: MeasurementProtocol {
         return components.joined(separator: "_")
     }
 
-    public func addMetricToMeasures(_ key: String, _ value: String)  {
+    public func addMetricToMeasures(_ key: String, _ value: String) {
         measuresList.forEach { measure in
             measure.addMetric(key: key, value: value)
         }
     }
 
     @discardableResult
-    public func addMetrics(data: [String: String])  -> MeasurementProfile  {
+    public func addMetrics(data: [String: String]) -> MeasurementProfile {
         measuresList.forEach { measure in
             measure.addMetrics(data)
         }
@@ -93,7 +93,7 @@ public class MeasurementProfile: MeasurementProtocol {
     }
 
     @discardableResult
-    public func setServiceLevelIndicator(_ sli: String) -> MeasurementProfile  {
+    public func setServiceLevelIndicator(_ sli: String) -> MeasurementProfile {
         self.serviceLevelIndicator = sli
         sharedLabels["sli"] = sli
         return self
@@ -118,4 +118,3 @@ public class MeasurementProfile: MeasurementProtocol {
         }
     }
 }
-

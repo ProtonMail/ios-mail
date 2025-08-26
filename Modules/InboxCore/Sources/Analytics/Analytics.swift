@@ -102,8 +102,7 @@ extension Event {
 
         // Check for unhandled exceptions or for specific crash mechanisms
         return exceptions.contains(where: {
-            $0.mechanism?.handled == false ||
-            ["signal", "mach_exception", "uncaught_exception"].contains($0.mechanism?.type)
+            $0.mechanism?.handled == false || ["signal", "mach_exception", "uncaught_exception"].contains($0.mechanism?.type)
         })
     }
 }

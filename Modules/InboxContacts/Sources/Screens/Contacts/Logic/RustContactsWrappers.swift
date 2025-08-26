@@ -43,10 +43,11 @@ extension RustContactsWrappers {
 }
 
 public struct AllContactsProvider {
-    public let contactSuggestions: (
-        _ deviceContacts: [DeviceContact],
-        _ userSession: MailUserSession
-    ) async -> ContactSuggestionsResult
+    public let contactSuggestions:
+        (
+            _ deviceContacts: [DeviceContact],
+            _ userSession: MailUserSession
+        ) async -> ContactSuggestionsResult
 
     public init(
         contactSuggestions: @escaping ([DeviceContact], MailUserSession) async -> ContactSuggestionsResult
@@ -64,10 +65,11 @@ public struct GroupedContactsProvider {
 }
 
 public struct ContactsWatcher {
-    public let watch: (
-        _ session: MailUserSession,
-        _ callback: ContactsLiveQueryCallback
-    ) async -> WatchContactListResult
+    public let watch:
+        (
+            _ session: MailUserSession,
+            _ callback: ContactsLiveQueryCallback
+        ) async -> WatchContactListResult
 }
 
 extension GroupedContactsProvider {

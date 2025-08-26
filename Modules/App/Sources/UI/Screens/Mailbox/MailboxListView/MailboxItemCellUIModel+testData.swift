@@ -23,9 +23,7 @@ extension MailboxItemCellUIModel {
     static let proton2 = makeModel(subject: "sales up to 50%", isFromProton: true)
 
     static func testData() -> [MailboxItemCellUIModel] {
-        [proton1] +
-        MailboxItemCellUIModel.emailSubjects.map { makeModel(subject: $0) } +
-        [proton2]
+        [proton1] + MailboxItemCellUIModel.emailSubjects.map { makeModel(subject: $0) } + [proton2]
     }
 }
 
@@ -42,11 +40,13 @@ private extension MailboxItemCellUIModel {
     enum Attachment {
         static func randomAttachment() -> [AttachmentCapsuleUIModel] {
             if [false, false, Bool.random()].randomElement()! {
-                [[
-                    AttachmentCapsuleUIModel(id: .init(value: 1), icon: DS.Icon.icFileTypeIconPdf, name: "#34JE3KLP.pdf"),
-                    AttachmentCapsuleUIModel(id: .init(value: 2), icon: DS.Icon.icFileTypeIconWord, name: "meeting_minutes.doc"),
-                    AttachmentCapsuleUIModel(id: .init(value: 1), icon: DS.Icon.icFileTypeIconExcel, name: "ARR_Q2.xls"),
-                ].randomElement()!]
+                [
+                    [
+                        AttachmentCapsuleUIModel(id: .init(value: 1), icon: DS.Icon.icFileTypeIconPdf, name: "#34JE3KLP.pdf"),
+                        AttachmentCapsuleUIModel(id: .init(value: 2), icon: DS.Icon.icFileTypeIconWord, name: "meeting_minutes.doc"),
+                        AttachmentCapsuleUIModel(id: .init(value: 1), icon: DS.Icon.icFileTypeIconExcel, name: "ARR_Q2.xls"),
+                    ].randomElement()!
+                ]
             } else {
                 []
             }
@@ -69,16 +69,17 @@ private extension MailboxItemCellUIModel {
 
         static func randomLabels() -> [LabelUIModel] {
             Bool.random()
-            ? [[work, readLater].randomElement()!] + LabelUIModel.random(num: [0, 1, 2].randomElement()!)
-            : []
+                ? [[work, readLater].randomElement()!] + LabelUIModel.random(num: [0, 1, 2].randomElement()!)
+                : []
         }
     }
 
     static func makeModel(subject: String, isFromProton: Bool = false) -> MailboxItemCellUIModel {
-        let avatar = isFromProton
-        ? .init(info: .init(initials: "P", color: .purple), type: .sender(params: .init()))
-        : Avatar.randomAvatar()
-        
+        let avatar =
+            isFromProton
+            ? .init(info: .init(initials: "P", color: .purple), type: .sender(params: .init()))
+            : Avatar.randomAvatar()
+
         return MailboxItemCellUIModel(
             id: .random(),
             conversationID: .random(),
@@ -152,7 +153,7 @@ private extension MailboxItemCellUIModel {
         "What Time Should I Pick You Up on Saturday?",
         "Looking Forward to Seeing You This Weekend",
         "Thanks for Being a Loyal Customer – Enjoy 10% Off",
-        "Only a Few Hours Left – Final Sale Ends Soon!"
+        "Only a Few Hours Left – Final Sale Ends Soon!",
     ]
 
 }

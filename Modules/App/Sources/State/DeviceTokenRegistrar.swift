@@ -42,11 +42,11 @@ actor DeviceTokenRegistrar {
     private func prepareDeviceRegistrationRequest(deviceToken: String) -> RegisteredDevice {
         let environment: DeviceEnvironment
 
-#if DEBUG
-        environment = .appleDev
-#else
-        environment = .appleProd
-#endif
+        #if DEBUG
+            environment = .appleDev
+        #else
+            environment = .appleProd
+        #endif
 
         return RegisteredDevice(
             deviceToken: deviceToken,

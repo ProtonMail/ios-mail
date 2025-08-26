@@ -136,7 +136,22 @@ targets:
     platform: iOS
     supportedDestinations:
       - iOS
-    scheme: {}
+    scheme:
+      preActions:
+        - name: swift-format
+          script: |
+            if [ $ACTION == "build" ]; then
+              cd "$SRCROOT"
+              xcrun swift-format format -r Modules -p -i
+            fi
+          settingsTarget: ProtonMail
+        - name: Sourcery
+          script: |
+            if [ $ACTION == "build" ]; then
+              cd "$SRCROOT"
+              find sourcery/configs -name "*.yaml" -exec /opt/homebrew/bin/mint run sourcery --config {} \;
+            fi
+          settingsTarget: ProtonMail
     sources:
       - path: Modules/App/Sources
     settings:
@@ -211,12 +226,6 @@ targets:
       - package: Scrypt
       - target: ShareExtension
       - package: SwiftUIIntrospect
-    preBuildScripts:
-      - name: swift-format
-        script: xcrun swift-format lint -r Modules -p
-        basedOnDependencyAnalysis: false
-      - name: Sourcery
-        script: find sourcery/configs -name "*.yaml" -exec /opt/homebrew/bin/mint run sourcery --config {} \;
 
   ProtonMailTest:
     type: bundle.unit-test

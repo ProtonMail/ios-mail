@@ -15,7 +15,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-
 import Foundation
 import XCTest
 
@@ -35,7 +34,9 @@ public class MeasureBlock {
     internal func startMeasurement() {
         profile.measuresList.append(self)
         if self.labels["sli"] as! String == "unknown" {
-            XCTFail("MeasurementProfile: measure block for profile with workflow: \"\(profile.workflow)\" expected Service Level Indicator to be set via profile.setServiceLevelIndicator() but it wasn't. Current value is \"null\".")
+            XCTFail(
+                "MeasurementProfile: measure block for profile with workflow: \"\(profile.workflow)\" expected Service Level Indicator to be set via profile.setServiceLevelIndicator() but it wasn't. Current value is \"null\"."
+            )
         }
         profile.measurements.forEach { $0.onStartMeasurement(measurementProfile: profile) }
     }
@@ -47,17 +48,19 @@ public class MeasureBlock {
     }
 
     public func getMeasureStream() -> [String: Any] {
-        let timestamp = Int(Date().timeIntervalSince1970 * 1_000_000_000) // Nanoseconds since epoch
+        let timestamp = Int(Date().timeIntervalSince1970 * 1_000_000_000)  // Nanoseconds since epoch
 
-        let values: [[Any]] = [[
-            "\(timestamp)",
-            metrics.jsonString(),
-            metadata
-        ]]
+        let values: [[Any]] = [
+            [
+                "\(timestamp)",
+                metrics.jsonString(),
+                metadata,
+            ]
+        ]
 
         return [
             "stream": profile.sharedLabels,
-            "values": values
+            "values": values,
         ]
     }
 
@@ -116,4 +119,3 @@ extension Dictionary {
         return "{}"
     }
 }
-

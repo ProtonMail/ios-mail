@@ -35,7 +35,7 @@ extension LegacyKeychain {
     func set(privateKey privateKeyData: Data, forLabel label: PrivateKeyLabel) throws {
         let attributes: [CFString: Any] = [
             kSecAttrKeyClass: kSecAttrKeyClassPrivate,
-            kSecAttrKeyType: kSecAttrKeyTypeECSECPrimeRandom
+            kSecAttrKeyType: kSecAttrKeyTypeECSECPrimeRandom,
         ]
 
         var error: Unmanaged<CFError>?
@@ -51,7 +51,7 @@ extension LegacyKeychain {
             kSecAttrLabel: label.rawValue,
             kSecAttrApplicationTag: service,
             kSecAttrAccessGroup: accessGroup,
-            kSecValueRef: secKey!
+            kSecValueRef: secKey!,
         ]
 
         let status = SecItemAdd(query as CFDictionary, nil)
@@ -65,7 +65,7 @@ extension LegacyKeychain {
         let query: [CFString: Any] = [
             kSecClass: kSecClassKey,
             kSecAttrApplicationTag: service,
-            kSecAttrAccessGroup: accessGroup
+            kSecAttrAccessGroup: accessGroup,
         ]
 
         let status = SecItemDelete(query as CFDictionary)

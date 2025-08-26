@@ -73,7 +73,8 @@ final class FilePickerItemHandlerTests: XCTestCase {
     }
 
     func testAddSelectedFiles_whenThereIsAnErrorInTheResults_itShouldReturnError() async throws {
-        let error = NSError(domain: "".notLocalized, code: -1,
+        let error = NSError(
+            domain: "".notLocalized, code: -1,
             userInfo: [NSLocalizedDescriptionKey: "the localised error".notLocalized]
         )
         await sut.addSelectedFiles(to: mockDraft, selectionResult: .failure(error), onErrors: mockOnErrors)

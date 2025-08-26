@@ -24,7 +24,7 @@ extension AllListActions {
             hiddenListActions: [
                 .notSpam(.testInbox),
                 .permanentDelete,
-                .moveToSystemFolder(.init(localId: .init(value: 7), name: .archive))
+                .moveToSystemFolder(.init(localId: .init(value: 7), name: .archive)),
             ],
             visibleListActions: [.markRead, .star, .moveTo, .labelAs, .more]
         )

@@ -69,7 +69,7 @@ final class DraftActionBarViewController: UIViewController {
         }
 
         stack.addArrangedSubview(passwordButton)
-//        stack.addArrangedSubview(expirationButton) // TODO: Enable when SDK is ready
+        //        stack.addArrangedSubview(expirationButton) // TODO: Enable when SDK is ready
         stack.addArrangedSubview(spacer)
         stack.addArrangedSubview(discardButton)
         attachmentButton.addTarget(self, action: #selector(onAttachmentTap), for: .touchUpInside)

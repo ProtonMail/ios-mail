@@ -40,8 +40,8 @@ public class DispatchQueueImmediateScheduler: Scheduler {
         after date: DispatchQueue.SchedulerTimeType,
         tolerance: DispatchQueue.SchedulerTimeType.Stride,
         options: DispatchQueue.SchedulerOptions?,
-        _ action: @escaping () -> Void)
-    {
+        _ action: @escaping () -> Void
+    ) {
         action()
     }
 

@@ -54,7 +54,8 @@ final class SenderImageAPIDataSource: Sendable, SenderImageDataSource {
         guard let userSession = dependencies.appContext.sessionState.userSession else {
             return nil
         }
-        let senderImageResult = await userSession
+        let senderImageResult =
+            await userSession
             .imageForSender(
                 address: params.address,
                 bimiSelector: params.bimiSelector,

@@ -88,7 +88,7 @@ final class ConversationDetailHeaderMultipleFieldsTests: PMUIMockedNetworkTestCa
             timestamp: 1718976443,
             toRecipients: [
                 UITestHeaderRecipientEntry(index: 0, name: "Test Free Account", address: "notsofree@proton.black"),
-                UITestHeaderRecipientEntry(index: 1, name: "notsofree+1@proton.black", address: "notsofree+1@proton.black")
+                UITestHeaderRecipientEntry(index: 1, name: "notsofree+1@proton.black", address: "notsofree+1@proton.black"),
             ],
             ccRecipients: [
                 UITestHeaderRecipientEntry(index: 0, name: "free@proton.black", address: "free@proton.black")

@@ -22,8 +22,8 @@ import Foundation
 func forceCast<Value, ExpectedType>(_ value: Value, _ type: ExpectedType.Type) -> ExpectedType {
     guard let castedValue = value as? ExpectedType else {
         let message = """
-        Could not cast value: <\(value)> of type: <\(Swift.type(of: value))> to expected type: <\(ExpectedType.self)>.
-        """
+            Could not cast value: <\(value)> of type: <\(Swift.type(of: value))> to expected type: <\(ExpectedType.self)>.
+            """
         AppLogger.log(message: message)
         fatalError(message)
     }

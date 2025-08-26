@@ -25,7 +25,8 @@ enum L10n {
         static let messageSent = LocalizedStringResource("Message sent!", bundle: .module, comment: "Alert shown after the message has been sent")
     }
 
-    static let needToSignIn = LocalizedStringResource("You need to sign-in to Proton Mail to share content.", bundle: .module, comment: "Error message when attempting to use the Share extension without being logged in")
+    static let needToSignIn = LocalizedStringResource(
+        "You need to sign-in to Proton Mail to share content.", bundle: .module, comment: "Error message when attempting to use the Share extension without being logged in")
 
     static let openApp = LocalizedStringResource("Open Proton Mail", bundle: .module, comment: "Button to open the main app from the Share extension")
 }

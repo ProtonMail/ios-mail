@@ -57,7 +57,7 @@ final class ProtonRefreshControl: UIRefreshControl, ObservableObject {
             spinnerAnimation.centerXAnchor.constraint(equalTo: centerXAnchor),
             spinnerAnimation.centerYAnchor.constraint(equalTo: centerYAnchor),
             spinnerAnimation.heightAnchor.constraint(equalToConstant: spinnerSize),
-            spinnerAnimation.widthAnchor.constraint(equalTo: spinnerAnimation.heightAnchor)
+            spinnerAnimation.widthAnchor.constraint(equalTo: spinnerAnimation.heightAnchor),
         ])
     }
 

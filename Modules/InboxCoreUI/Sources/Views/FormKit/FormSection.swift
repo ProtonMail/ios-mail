@@ -27,7 +27,7 @@ public struct FormSection<Content: View>: View {
     public init(
         header: LocalizedStringResource? = nil,
         footer: LocalizedStringResource? = nil,
-        @ViewBuilder content: @escaping  () -> Content
+        @ViewBuilder content: @escaping () -> Content
     ) {
         self.header = header
         self.footer = footer

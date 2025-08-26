@@ -33,11 +33,9 @@ extension Date {
     func mailboxFormat(calendar: Calendar = .current) -> String {
         if calendar.isDateInToday(self) {
             return formatted(.dateTime.hour().minute())
-        }
-        else if calendar.isDate(self, equalTo: .now, toGranularity: .year) {
+        } else if calendar.isDate(self, equalTo: .now, toGranularity: .year) {
             return formatted(.dateTime.month().day())
-        }
-        else {
+        } else {
             return formatted(date: .abbreviated, time: .omitted)
         }
     }
@@ -68,11 +66,9 @@ extension Date {
     func mailboxVoiceOverSupport(calendar: Calendar = .current) -> String {
         if calendar.isDateInToday(self) {
             return formatted(.dateTime.hour().minute())
-        }
-        else if calendar.isDate(self, equalTo: .now, toGranularity: .year) {
+        } else if calendar.isDate(self, equalTo: .now, toGranularity: .year) {
             return formatted(.dateTime.month(.wide).day())
-        }
-        else {
+        } else {
             return formatted(date: .long, time: .omitted)
         }
     }

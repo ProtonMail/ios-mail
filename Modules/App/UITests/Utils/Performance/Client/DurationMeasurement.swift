@@ -25,11 +25,11 @@ public class DurationMeasurement: Measurement {
         return stopTime - startTime
     }
 
-    public init(startTime: TimeInterval = Date().timeIntervalSince1970 , stopTime: TimeInterval = Date().timeIntervalSince1970) {
+    public init(startTime: TimeInterval = Date().timeIntervalSince1970, stopTime: TimeInterval = Date().timeIntervalSince1970) {
         self.startTime = startTime
         self.stopTime = stopTime
     }
-    
+
     public func onStartMeasurement(measurementProfile: MeasurementProfile) {
         startTime = Date().timeIntervalSince1970
     }

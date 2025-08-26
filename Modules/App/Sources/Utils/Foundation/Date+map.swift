@@ -32,9 +32,10 @@ extension Date {
             isAboutToExpire = hours < 1 && minute < 1
         }
 
-        let text = isAboutToExpire
-        ? L10n.Mailbox.Item.expiresInLessThanOneMinute
-        : L10n.Mailbox.Item.expiresIn(value: self.localisedRemainingTimeFromNow())
+        let text =
+            isAboutToExpire
+            ? L10n.Mailbox.Item.expiresInLessThanOneMinute
+            : L10n.Mailbox.Item.expiresIn(value: self.localisedRemainingTimeFromNow())
         return ExpirationDateUIModel(text: text, color: color)
     }
 }

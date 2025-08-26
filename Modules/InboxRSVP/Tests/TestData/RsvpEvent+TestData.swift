@@ -21,7 +21,7 @@ import proton_app_uniffi
 extension RsvpEvent {
 
     static func testData(
-        id: String? = .none, 
+        id: String? = .none,
         summary: String? = .none,
         startsAt: UnixTimestamp = .zero,
         organizer: RsvpOrganizer = .init(name: .empty, email: .empty),

@@ -49,4 +49,3 @@ private extension DescriptionEntitlement {
         .init(type: .empty, text: text, iconName: iconName, hint: nil)
     }
 }
-

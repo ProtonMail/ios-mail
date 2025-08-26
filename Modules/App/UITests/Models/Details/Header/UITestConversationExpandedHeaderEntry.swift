@@ -25,8 +25,11 @@ struct UITestConversationExpandedHeaderEntry {
     let toRecipients: [UITestHeaderRecipientEntry]
     let ccRecipients: [UITestHeaderRecipientEntry]?
     let bccRecipients: [UITestHeaderRecipientEntry]?
-    
-    init(index: Int, senderName: String, senderAddress: String, timestamp: UInt64, toRecipients: [UITestHeaderRecipientEntry], ccRecipients: [UITestHeaderRecipientEntry]? = nil, bccRecipients: [UITestHeaderRecipientEntry]? = nil) {
+
+    init(
+        index: Int, senderName: String, senderAddress: String, timestamp: UInt64, toRecipients: [UITestHeaderRecipientEntry], ccRecipients: [UITestHeaderRecipientEntry]? = nil,
+        bccRecipients: [UITestHeaderRecipientEntry]? = nil
+    ) {
         self.index = index
         self.senderName = senderName
         self.senderAddress = senderAddress

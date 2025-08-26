@@ -53,12 +53,14 @@ struct SendingTag: View {
 }
 
 #Preview {
-    ZStack(alignment: .center, content: {
-        VStack {
-            SendingTag(variant: .sending)
-            SendingTag(variant: .failure)
-        }
-    })
+    ZStack(
+        alignment: .center,
+        content: {
+            VStack {
+                SendingTag(variant: .sending)
+                SendingTag(variant: .failure)
+            }
+        })
 }
 
 private extension SendingTag.Variant {

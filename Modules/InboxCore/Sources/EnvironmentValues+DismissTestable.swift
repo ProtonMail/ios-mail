@@ -44,15 +44,15 @@ private struct DismissKey: EnvironmentKey {
 
         func callAsFunction() {
             let message = """
-                          This should not be used at runtime. For testing purposes, please inject
-                          a test double into the SwiftUI view using the `environment(_: _:)` function, specifying
-                          the keyPath defined in the scope of `EnvironmentValues`, for example:
+                This should not be used at runtime. For testing purposes, please inject
+                a test double into the SwiftUI view using the `environment(_: _:)` function, specifying
+                the keyPath defined in the scope of `EnvironmentValues`, for example:
 
-                          ```
-                          let sut: View = ...
-                          sut.environment(\\.dismissable, DismissSpy())
-                          ```
-                          """
+                ```
+                let sut: View = ...
+                sut.environment(\\.dismissable, DismissSpy())
+                ```
+                """
             fatalError(message)
         }
     }
