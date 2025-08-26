@@ -157,7 +157,7 @@ struct MessageDetailsView: View {
     }
 
     var senderNameText: some View {
-        HStack(spacing: .zero) {
+        HStack(alignment: .firstTextBaseline, spacing: .zero) {
             if !isHeaderCollapsed {
                 Text(L10n.MessageDetails.from)
                     .font(.subheadline)
@@ -171,7 +171,7 @@ struct MessageDetailsView: View {
             Text(uiModel.sender.name)
                 .font(.subheadline)
                 .fontWeight(.semibold)
-                .lineLimit(1)
+                .multilineTextAlignment(.leading)
                 .foregroundColor(DS.Color.Text.norm)
                 .accessibilityIdentifier(MessageDetailsViewIdentifiers.senderName)
         }
@@ -489,6 +489,11 @@ enum MessageDetailsPreviewProvider {
     }
 
     static func testData(
+        sender: MessageDetail.Sender = .init(
+            name: "Camila Hall",
+            address: "camila.hall@protonmail.ch",
+            encryptionInfo: "End to end encrypted and signed"
+        ),
         location: ExclusiveLocation?,
         labels: [LabelUIModel],
         recipientsTo: [MessageDetail.Recipient] = recipientsTo,
@@ -500,11 +505,7 @@ enum MessageDetailsPreviewProvider {
                 info: .init(initials: "", color: DS.Color.Background.secondary),
                 type: .sender(params: .init())
             ),
-            sender: .init(
-                name: "Camila Hall",
-                address: "camila.hall@protonmail.ch",
-                encryptionInfo: "End to end encrypted and signed"
-            ),
+            sender: sender,
             isSenderProtonOfficial: true,
             recipientsTo: recipientsTo,
             recipientsCc: recipientsCc,

@@ -52,6 +52,11 @@ class MessageDetailsViewSnapshotTests {
     @Test
     func testMessageDetailsWithCustomLocationAndLabelsLayoutsCorrectly() {
         let model = MessageDetailsPreviewProvider.testData(
+            sender: .init(
+                name: "Camila Isabella Hall-Rodriguez",
+                address: "camila.isabella.hall.rodriguez.longmail@protonmail.ch",
+                encryptionInfo: "End to end encrypted and signed"
+            ),
             location: .custom(name: "Online shopping", id: .random(), color: .init(value: "#F67900")),
             labels: [
                 .init(labelId: .init(value: 1), text: "Friends and Family", color: .init(hex: "#1795D4")),
