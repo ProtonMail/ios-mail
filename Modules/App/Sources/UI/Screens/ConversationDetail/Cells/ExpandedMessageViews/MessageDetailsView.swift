@@ -189,7 +189,7 @@ struct MessageDetailsView: View {
     private var senderAddressView: some View {
         Text(uiModel.sender.address)
             .font(.caption)
-            .lineLimit(1)
+            .multilineTextAlignment(.leading)
             .foregroundColor(isHeaderCollapsed ? DS.Color.Text.weak : DS.Color.Text.accent)
             .accessibilityIdentifier(MessageDetailsViewIdentifiers.senderAddress)
     }
