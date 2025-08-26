@@ -178,7 +178,7 @@ struct MessageDetailsView: View {
     }
 
     private var senderView: some View {
-        HStack(spacing: DS.Spacing.compact) {
+        HStack(alignment: .firstTextBaseline, spacing: DS.Spacing.compact) {
             senderNameText
             ProtonOfficialBadgeView()
                 .removeViewIf(!uiModel.isSenderProtonOfficial)
