@@ -30,7 +30,7 @@ extension AttachmentMetadata {
 extension Array where Element == AttachmentMetadata {
 
     func toAttachmentCapsuleUIModels() -> [AttachmentCapsuleUIModel] {
-        map { $0.toAttachmentCapsuleUIModel() }
+        filter(\.isListable).map { metadata in metadata.toAttachmentCapsuleUIModel() }
     }
 
 }

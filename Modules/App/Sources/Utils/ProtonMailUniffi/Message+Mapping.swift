@@ -49,7 +49,7 @@ extension Message {
             messagesCount: 0,
             labelUIModel: customLabels.toMailboxLabelUIModel(),
             attachments: .init(
-                previewable: attachmentsMetadata.toAttachmentCapsuleUIModels(),  // FIXME: Add filtering logic
+                previewable: attachmentsMetadata.toAttachmentCapsuleUIModels(),
                 containsCalendarInvitation: attachmentsMetadata.contains(where: { $0.mimeType.category == .calendar }),
                 totalCount: Int(numAttachments)
             ),
