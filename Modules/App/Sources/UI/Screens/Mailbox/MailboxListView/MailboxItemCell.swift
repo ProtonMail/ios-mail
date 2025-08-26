@@ -88,12 +88,23 @@ extension MailboxItemCell {
                 .removeViewIf(!uiModel.isSenderProtonOfficial)
             MailboxConversationMessageCountView(isRead: uiModel.isRead, messagesCount: uiModel.messagesCount)
             Spacer()
+            attachmentIcon(DS.Icon.icPaperClip)
+                .removeViewIf(!uiModel.attachments.hasNonPreviewableOnly)
+            attachmentIcon(DS.Icon.icCalendarGrid)
+                .removeViewIf(!uiModel.attachments.containsCalendarInvitation)
             Text(uiModel.date.mailboxFormat())
                 .font(.caption)
                 .fontWeight(uiModel.isRead ? .regular : .bold)
                 .foregroundColor(dateForegroundColor)
                 .accessibilityIdentifier(MailboxItemCellIdentifiers.dateText)
         }
+    }
+
+    private func attachmentIcon(_ imageResource: ImageResource) -> some View {
+        Image(imageResource)
+            .resizable()
+            .square(size: 12)
+            .foregroundStyle(DS.Color.Icon.weak)
     }
 
     private var subjectRowView: some View {

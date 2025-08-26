@@ -31,4 +31,15 @@ struct MailboxItemAttachments {
     /// Indicates whether the mail has *any* attachments.
     /// This is derived from `totalCount`.
     var hasAny: Bool { totalCount > 0 }
+
+    /// Indicates whether the mail contains only non-previewable attachments.
+    ///
+    /// This becomes `true` when there are attachments present (`hasAny == true`)
+    /// but none of them are previewable (`previewable.isEmpty == true`).
+    ///
+    /// Typically used to decide whether to show a generic paperclip icon
+    /// instead of individual previews.
+    var hasNonPreviewableOnly: Bool {
+        previewable.isEmpty && hasAny
+    }
 }

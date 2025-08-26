@@ -23,32 +23,46 @@ import InboxSnapshotTesting
 @MainActor
 final class MailboxItemCellSnapshotTests: BaseTestCase {
 
-    func testMailboxItemCell_conversationWithSimpleMessage_itLayoutsCorrectOnIphoneX() throws {
+    func testMailboxItemCell_conversationWithSimpleMessage_itLayoutsCorrectOnIphoneX() {
         let cell = MailboxItemCell.testCell(model: .makeSimpleMessage(type: .regular))
         assertSnapshotsOnIPhoneX(of: cell)
     }
 
-    func testMailboxItemCell_conversationWithLocationIcon_itLayoutsCorrectOnIphoneX() throws {
+    func testMailboxItemCell_conversationWithLocationIcon_itLayoutsCorrectOnIphoneX() {
         let cell = MailboxItemCell.testCell(model: .makeSimpleMessage(type: .locationIcon))
         assertSnapshotsOnIPhoneX(of: cell)
     }
 
-    func testMailboxItemCell_conversationWithOneAttachment_andOneLabel_itLayoutsCorrectOnIphoneX() throws {
+    func testMailboxItemCell_conversationWithOneAttachment_andOneLabel_itLayoutsCorrectOnIphoneX() {
         let cell = MailboxItemCell.testCell(model: .oneAttachmentOneLabel)
         assertSnapshotsOnIPhoneX(of: cell)
     }
 
-    func testMailboxItemCell_conversationWithManyAttachments_andManyLabels_itLayoutsCorrectOnIphoneX() throws {
+    func testMailboxItemCell_conversationWithOneICSAttachment_itLayoutsCorrectOnIphoneX() {
+        let cell = MailboxItemCell.testCell(model: .oneICSAttachment(previewableAttachments: []))
+        assertSnapshotsOnIPhoneX(of: cell)
+    }
+
+    func testMailboxItemCell_conversationWithTwoAttachmentsWithOneICS_itLayoutsCorrectOnIphoneX() {
+        let cell = MailboxItemCell.testCell(model: .oneICSAttachment(
+            previewableAttachments: [
+                AttachmentCapsuleUIModel(id: .init(value: 1), icon: DS.Icon.icFileTypeIconPdf, name: "sample.pdf")
+            ])
+        )
+        assertSnapshotsOnIPhoneX(of: cell)
+    }
+
+    func testMailboxItemCell_conversationWithManyAttachments_andManyLabels_itLayoutsCorrectOnIphoneX() {
         let cell = MailboxItemCell.testCell(model: .manyAttachmentsManyLabelsManyMessages)
         assertSnapshotsOnIPhoneX(of: cell)
     }
 
-    func testMailboxItemCell_conversationWithSnoozedMessage_itLayoutsCorrectOnIphoneX() throws {
+    func testMailboxItemCell_conversationWithSnoozedMessage_itLayoutsCorrectOnIphoneX() {
         let cell = MailboxItemCell.testCell(model: .makeSimpleMessage(type: .snoozed))
         assertSnapshotsOnIPhoneX(of: cell, precision: 0.98)
     }
 
-    func testMailboxItemCell_conversationWithExpirationTimeMessage_itLayoutsCorrectOnIphoneX() throws {
+    func testMailboxItemCell_conversationWithExpirationTimeMessage_itLayoutsCorrectOnIphoneX() {
         let cell = MailboxItemCell.testCell(model: .makeSimpleMessage(type: .expirationTime))
         assertSnapshotsOnIPhoneX(of: cell)
     }
@@ -105,7 +119,7 @@ private extension MailboxItemCellUIModel {
     }
 
     static var oneAttachmentOneLabel: MailboxItemCellUIModel {
-        return MailboxItemCellUIModel(
+        .init(
             id: .random(),
             conversationID: .random(),
             type: .conversation,
@@ -138,8 +152,36 @@ private extension MailboxItemCellUIModel {
         )
     }
 
+    static func oneICSAttachment(previewableAttachments: [AttachmentCapsuleUIModel]) -> MailboxItemCellUIModel {
+        .init(
+            id: .random(),
+            conversationID: .random(),
+            type: .conversation,
+            avatar: AvatarUIModel(info: AvatarInfo(initials: "T", color: .teal), type: .sender(params: .init())),
+            emails: "Flights to Palo Alto - 20th of September, 2025",
+            subject: "You're invited to flight KCY877N",
+            date: Date(timeIntervalSince1970: 1717484927),
+            locationIcon: nil,
+            isRead: true,
+            isStarred: false,
+            isSelected: false,
+            isSenderProtonOfficial: false,
+            messagesCount: 0,
+            labelUIModel: .init(labelModels: []),
+            attachments: .init(
+                previewable: previewableAttachments,
+                containsCalendarInvitation: true,
+                totalCount: previewableAttachments.count + 1
+            ),
+            expirationDate: nil,
+            snoozeDate: nil,
+            isDraftMessage: false,
+            shouldUseSnoozedColorForDate: false
+        )
+    }
+
     static var manyAttachmentsManyLabelsManyMessages: MailboxItemCellUIModel {
-        return MailboxItemCellUIModel(
+        .init(
             id: .random(),
             conversationID: .random(),
             type: .conversation,

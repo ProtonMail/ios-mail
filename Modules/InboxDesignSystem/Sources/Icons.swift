@@ -23,6 +23,7 @@ public extension DS.Icon {
     static let icArrowRotateRight = ImageResource.icArrowRotateRight
     static let icBug = ImageResource.icBug
     static let icCalendarToday = ImageResource.icCalendarToday
+    static let icCalendarGrid = ImageResource.icCalendarGrid
     static let icCamera = ImageResource.icCamera
     static let icCheckmark = ImageResource.icCheckmark
     static let icCheckmarkBig = ImageResource.icCheckmarkBig
