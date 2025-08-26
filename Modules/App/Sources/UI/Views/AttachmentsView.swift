@@ -24,6 +24,7 @@ struct AttachmentsView: View {
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
 
     let uiModel: [AttachmentCapsuleUIModel]
+    let attachmentsCount: Int
     let isAttachmentHighlightEnabled: Bool
     let onTapEvent: ((ID) -> Void)?
 
@@ -34,10 +35,12 @@ struct AttachmentsView: View {
 
     init(
         uiModel: [AttachmentCapsuleUIModel],
+        attachmentsCount: Int = 0,
         isAttachmentHighlightEnabled: Bool = false,
         onTapEvent: ((ID) -> Void)? = nil
     ) {
         self.uiModel = uiModel
+        self.attachmentsCount = attachmentsCount
         self.isAttachmentHighlightEnabled = isAttachmentHighlightEnabled
         self.onTapEvent = onTapEvent
     }
@@ -77,7 +80,7 @@ struct AttachmentsView: View {
                     .accessibilityIdentifier(AttachmentsViewIdentifiers.attachmentCapsule(forIndex: index))
                 }
             }
-            let extraAttachments = min(99, uiModel.count - limit)
+            let extraAttachments = min(99, attachmentsCount - limit)
             Text(Strings.plus(count: extraAttachments))
                 .frame(width: Layout.extraAttachmentsViewWidth, alignment: .leading)
                 .fixedSize()

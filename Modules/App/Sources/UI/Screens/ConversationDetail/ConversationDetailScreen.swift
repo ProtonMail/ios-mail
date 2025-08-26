@@ -294,6 +294,7 @@ private extension ConversationDetailModel.State {
                     attachmentsUIModel: [
                         .init(id: .init(value: 4), icon: DS.Icon.icFileTypeIconWord, name: "notes.doc")
                     ],
+                    attachmentsCount: 1,
                     expirationDate: nil,
                     snoozeDate: nil,
                     isDraftMessage: false,

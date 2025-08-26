@@ -186,6 +186,7 @@ extension MailboxItemCell {
     private var attachmentRowView: some View {
         AttachmentsView(
             uiModel: uiModel.attachmentsUIModel,
+            attachmentsCount: uiModel.attachmentsCount,
             isAttachmentHighlightEnabled: isParentListSelectionEmpty,
             onTapEvent: {
                 onEvent(.onAttachmentTap(attachmentID: $0))
@@ -227,6 +228,7 @@ final class MailboxItemCellUIModel: Identifiable, Sendable {
     let messagesCount: UInt64
     let labelUIModel: MailboxLabelUIModel
     let attachmentsUIModel: [AttachmentCapsuleUIModel]
+    let attachmentsCount: Int
     let replyIcons: ReplyIconsUIModel
     let expirationDate: Date?
     let snoozeDate: String?
@@ -249,6 +251,7 @@ final class MailboxItemCellUIModel: Identifiable, Sendable {
         messagesCount: UInt64,
         labelUIModel: MailboxLabelUIModel = .init(),
         attachmentsUIModel: [AttachmentCapsuleUIModel] = [],
+        attachmentsCount: Int,
         replyIcons: ReplyIconsUIModel = .init(),
         expirationDate: Date?,
         snoozeDate: Date?,
@@ -270,6 +273,7 @@ final class MailboxItemCellUIModel: Identifiable, Sendable {
         self.messagesCount = messagesCount
         self.labelUIModel = labelUIModel
         self.attachmentsUIModel = attachmentsUIModel
+        self.attachmentsCount = attachmentsCount
         self.replyIcons = replyIcons
         self.expirationDate = expirationDate
 
@@ -353,6 +357,7 @@ enum MailboxItemCellEvent {
                 attachmentsUIModel: [
                     .init(id: .init(value: 1), icon: DS.Icon.icFileTypeIconPdf, name: "#34JE3KLP.pdf")
                 ],
+                attachmentsCount: 1,
                 replyIcons: .init(shouldShowForwardedIcon: true),
                 expirationDate: .now,
                 snoozeDate: .now + 500,
@@ -386,6 +391,7 @@ enum MailboxItemCellEvent {
                     .init(id: .init(value: 2), icon: DS.Icon.icFileTypeIconPdf, name: "appendix1.pdf"),
                     .init(id: .init(value: 3), icon: DS.Icon.icFileTypeIconPdf, name: "appendix2.pdf"),
                 ],
+                attachmentsCount: 3,
                 replyIcons: .init(shouldShowRepliedAllIcon: true),
                 expirationDate: .now + 500,
                 snoozeDate: .now + 55000,

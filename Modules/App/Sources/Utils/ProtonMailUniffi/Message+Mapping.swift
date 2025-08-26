@@ -49,6 +49,7 @@ extension Message {
             messagesCount: 0,
             labelUIModel: customLabels.toMailboxLabelUIModel(),
             attachmentsUIModel: attachmentsMetadata.toAttachmentCapsuleUIModels(),
+            attachmentsCount: Int(numAttachments),
             replyIcons: .init(
                 shouldShowRepliedIcon: isReplied,
                 shouldShowRepliedAllIcon: isRepliedAll,

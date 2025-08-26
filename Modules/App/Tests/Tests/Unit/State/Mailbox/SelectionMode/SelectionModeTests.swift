@@ -273,6 +273,7 @@ extension SelectionModeTests {
             messagesCount: [0, 2, 3].randomElement()!,
             labelUIModel: .init(labelModels: []),
             attachmentsUIModel: .init(),
+            attachmentsCount: 0,
             expirationDate: nil,
             snoozeDate: nil,
             isDraftMessage: false,

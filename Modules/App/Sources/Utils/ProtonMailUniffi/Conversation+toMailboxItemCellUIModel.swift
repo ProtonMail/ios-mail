@@ -40,6 +40,7 @@ extension Conversation {
             messagesCount: totalMessages > 1 ? totalMessages : 0,
             labelUIModel: customLabels.toMailboxLabelUIModel(),
             attachmentsUIModel: attachmentsMetadata.toAttachmentCapsuleUIModels(),
+            attachmentsCount: Int(numAttachments),
             expirationDate: Date(timeIntervalSince1970: TimeInterval(expirationTime)),
             snoozeDate: snoozedUntil?.date,
             isDraftMessage: false,
