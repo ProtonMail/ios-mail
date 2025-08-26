@@ -19,7 +19,7 @@ import Foundation
 
 extension Bundle {
 
-    /// Returns the app version in a nice to read format
+    /// Returns the app version including the build number. e.g. 7.0.1 (5)
     var appVersion: String {
         "\(bundleShortVersion) (\(buildVersion))"
     }

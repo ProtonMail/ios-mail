@@ -40,7 +40,7 @@ struct IssueReportBuilder {
             operatingSystem: "\(deviceInfo.systemName) - \(deviceInfo.model)",
             operatingSystemVersion: deviceInfo.systemVersion,
             client: "iOS_Native",
-            clientVersion: clientVersion,
+            clientVersion: mainBundle.appVersion,
             clientType: .email,
             title: "Proton Mail App bug report".notLocalized,
             summary: formInfo.summary,
@@ -50,12 +50,6 @@ struct IssueReportBuilder {
             logs: formInfo.includeLogs,
             additionalFiles: []
         )
-    }
-
-    // MARK: - Private
-
-    private var clientVersion: String {
-        "\(mainBundle.effectiveAppVersion) (\(mainBundle.buildVersion))"
     }
 
 }

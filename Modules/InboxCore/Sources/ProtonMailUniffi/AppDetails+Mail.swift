@@ -23,7 +23,7 @@ extension AppDetails {
     public static let mail: Self = .init(
         platform: "ios",
         product: "mail",
-        version: Bundle.main.effectiveAppVersion
+        version: Bundle.main.bundleShortVersion
     )
 
     public var backendFacingVersion: String {

@@ -37,7 +37,7 @@ final class ReportProblemStateStoreTests {
             toastStateStore: toastStateStore,
             mainBundle: BundleStub(infoDictionary: [
                 "CFBundleVersion": "127",
-                "CFBundleShortVersionString": "0.2.0",
+                "CFBundleShortVersionString": "5.2.0",
             ]),
             deviceInfo: DeviceInfoStub(),
             dismiss: { self.dismissInvokeCount += 1 }
@@ -90,7 +90,7 @@ final class ReportProblemStateStoreTests {
                     operatingSystem: "iOS - iPhone",
                     operatingSystemVersion: "18.4",
                     client: "iOS_Native",
-                    clientVersion: "7.0.1 (127)",
+                    clientVersion: "5.2.0 (127)",
                     clientType: .email,
                     title: "Proton Mail App bug report",
                     summary: "Hello summary!",
