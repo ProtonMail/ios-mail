@@ -50,7 +50,7 @@ extension Message {
             labelUIModel: customLabels.toMailboxLabelUIModel(),
             attachments: .init(
                 previewable: attachmentsMetadata.toAttachmentCapsuleUIModels(),
-                containsCalendarInvitation: attachmentsMetadata.contains(where: { $0.mimeType.category == .calendar }),
+                containsCalendarInvitation: attachmentsMetadata.hasICS,
                 totalCount: Int(numAttachments)
             ),
             replyIcons: .init(

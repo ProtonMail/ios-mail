@@ -33,4 +33,8 @@ extension Array where Element == AttachmentMetadata {
         filter(\.isListable).map { metadata in metadata.toAttachmentCapsuleUIModel() }
     }
 
+    var hasICS: Bool {
+        contains(where: { metadata in metadata.mimeType.category == .calendar })
+    }
+
 }
