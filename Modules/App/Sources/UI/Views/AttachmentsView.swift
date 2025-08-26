@@ -23,7 +23,7 @@ import SwiftUI
 struct AttachmentsView: View {
     @Environment(\.horizontalSizeClass) var horizontalSizeClass
 
-    let uiModel: MailboxItemAttachments
+    let model: MailboxItemAttachments
     let isAttachmentHighlightEnabled: Bool
     let onTapEvent: ((ID) -> Void)?
 
@@ -33,11 +33,11 @@ struct AttachmentsView: View {
     }
 
     init(
-        uiModel: MailboxItemAttachments,
+        model: MailboxItemAttachments,
         isAttachmentHighlightEnabled: Bool = false,
         onTapEvent: ((ID) -> Void)? = nil
     ) {
-        self.uiModel = uiModel
+        self.model = model
         self.isAttachmentHighlightEnabled = isAttachmentHighlightEnabled
         self.onTapEvent = onTapEvent
     }
@@ -47,7 +47,7 @@ struct AttachmentsView: View {
             let spaceForCapsules =
                 geometry.size.width
                 - (maxNumberOfCapsules * Layout.spacingBetweenCapsules) - Layout.extraAttachmentsViewWidth
-            let capsuleMaxWidth = uiModel.previewable.count == 1 ? spaceForCapsules : spaceForCapsules / CGFloat(maxNumberOfCapsules)
+            let capsuleMaxWidth = model.previewable.count == 1 ? spaceForCapsules : spaceForCapsules / CGFloat(maxNumberOfCapsules)
 
             /**
              SwiftUI does not make it easy to calculate dynamically to fit the maximum number of capsules. After trying
@@ -66,10 +66,10 @@ struct AttachmentsView: View {
     func hStackWithAttachments(limit: Int, capsuleMaxWidth: CGFloat) -> some View {
         HStack(spacing: 0) {
             HStack(spacing: Layout.spacingBetweenCapsules) {
-                let items = uiModel.previewable.prefix(limit)
+                let items = model.previewable.prefix(limit)
                 ForEachEnumerated(items, id: \.element.id) { item, index in
                     AttachmentCapsuleView(
-                        uiModel: item,
+                        model: item,
                         maxWidth: capsuleMaxWidth,
                         isAttachmentHighlightEnabled: isAttachmentHighlightEnabled,
                         onTapEvent: onTapEvent
@@ -77,7 +77,7 @@ struct AttachmentsView: View {
                     .accessibilityIdentifier(AttachmentsViewIdentifiers.attachmentCapsule(forIndex: index))
                 }
             }
-            let extraAttachments = min(99, uiModel.totalCount - limit)
+            let extraAttachments = min(99, model.totalCount - limit)
             Text(Strings.plus(count: extraAttachments))
                 .frame(width: Layout.extraAttachmentsViewWidth, alignment: .leading)
                 .fixedSize()
@@ -98,7 +98,7 @@ struct AttachmentCapsuleUIModel: Identifiable, Hashable {
 }
 
 struct AttachmentCapsuleView: View {
-    let uiModel: AttachmentCapsuleUIModel
+    let model: AttachmentCapsuleUIModel
     let maxWidth: CGFloat
     let isAttachmentHighlightEnabled: Bool
     let onTapEvent: ((ID) -> Void)?
@@ -109,16 +109,16 @@ struct AttachmentCapsuleView: View {
 
     var body: some View {
         Button(action: {
-            onTapEvent?(uiModel.id)
+            onTapEvent?(model.id)
         }) {
             HStack(spacing: Layout.capsuleSpacing) {
-                Image(uiModel.icon)
+                Image(model.icon)
                     .resizable()
                     .renderingMode(.original)
                     .aspectRatio(contentMode: .fill)
                     .frame(width: Layout.capsuleIconSideSize, height: Layout.capsuleIconSideSize)
                     .clipShape(RoundedRectangle(cornerRadius: DS.Radius.small))
-                Text(uiModel.name)
+                Text(model.name)
                     .font(.caption)
                     .fontWeight(.regular)
                     .foregroundStyle(DS.Color.Text.weak)
@@ -171,7 +171,7 @@ fileprivate enum Layout {
 #Preview {
     VStack {
         AttachmentsView(
-            uiModel: .init(
+            model: .init(
                 previewable: [
                     .init(
                         id: .init(value: 1),
@@ -186,7 +186,7 @@ fileprivate enum Layout {
         .border(.red)
 
         AttachmentsView(
-            uiModel: .init(
+            model: .init(
                 previewable: [
                     .init(id: .init(value: 1), icon: DS.Icon.icFileTypeIconPdf, name: "1.pdf"),
                     .init(id: .init(value: 2), icon: DS.Icon.icFileTypeIconImage, name: "2.png"),
@@ -204,7 +204,7 @@ fileprivate enum Layout {
         .border(.red)
 
         AttachmentsView(
-            uiModel: .init(
+            model: .init(
                 previewable: [
                     .init(id: .init(value: 1), icon: DS.Icon.icFileTypeIconPdf, name: "super_long_title_that_goes_beyond_half.pdf"),
                     .init(id: .init(value: 2), icon: DS.Icon.icFileTypeIconImage, name: "quite.png"),

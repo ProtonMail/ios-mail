@@ -196,7 +196,7 @@ extension MailboxItemCell {
     @ViewBuilder
     private var attachmentRowView: some View {
         AttachmentsView(
-            uiModel: uiModel.attachments,
+            model: uiModel.attachments,
             isAttachmentHighlightEnabled: isParentListSelectionEmpty,
             onTapEvent: {
                 onEvent(.onAttachmentTap(attachmentID: $0))
