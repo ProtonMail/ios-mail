@@ -17,70 +17,39 @@
 
 @testable import ProtonMail
 import InboxDesignSystem
-import InboxTesting
 import InboxSnapshotTesting
+import InboxTesting
+import Testing
 
 @MainActor
-final class MailboxItemCellSnapshotTests: BaseTestCase {
-
-    func testMailboxItemCell_conversationWithSimpleMessage_itLayoutsCorrectOnIphoneX() {
-        let cell = MailboxItemCell.testCell(model: .makeSimpleMessage(type: .regular))
-        assertSnapshotsOnIPhoneX(of: cell)
-    }
-
-    func testMailboxItemCell_conversationWithLocationIcon_itLayoutsCorrectOnIphoneX() {
-        let cell = MailboxItemCell.testCell(model: .makeSimpleMessage(type: .locationIcon))
-        assertSnapshotsOnIPhoneX(of: cell)
-    }
-
-    func testMailboxItemCell_conversationWithOneAttachment_andOneLabel_itLayoutsCorrectOnIphoneX() {
-        let cell = MailboxItemCell.testCell(model: .oneAttachmentOneLabel)
-        assertSnapshotsOnIPhoneX(of: cell)
-    }
-
-    func testMailboxItemCell_conversationWithOneICSAttachment_itLayoutsCorrectOnIphoneX() {
-        let cell = MailboxItemCell.testCell(model: .oneICSAttachment(previewableAttachments: []))
-        assertSnapshotsOnIPhoneX(of: cell)
-    }
-
-    func testMailboxItemCell_conversationWithTwoAttachmentsWithOneICS_itLayoutsCorrectOnIphoneX() {
-        let cell = MailboxItemCell.testCell(model: .oneICSAttachment(
-            previewableAttachments: [
+final class MailboxItemCellSnapshotTests {
+    @Test(arguments: [
+        ("simple_message", MailboxItemCellUIModel.makeSimpleMessage(type: .regular)),
+        ("simple_message_with_location", .makeSimpleMessage(type: .locationIcon)),
+        ("one_attachment_one_label", .oneAttachmentOneLabel),
+        ("one_ics_attachment", .oneICSAttachment(previewableAttachments: [])),
+        (
+            "two_attachments_one_ics",
+            .oneICSAttachment(previewableAttachments: [
                 AttachmentCapsuleUIModel(id: .init(value: 1), icon: DS.Icon.icFileTypeIconPdf, name: "sample.pdf")
             ])
-        )
-        assertSnapshotsOnIPhoneX(of: cell)
-    }
-
-    func testMailboxItemCell_conversationWithManyAttachments_andManyLabels_itLayoutsCorrectOnIphoneX() {
-        let cell = MailboxItemCell.testCell(model: .manyAttachmentsManyLabelsManyMessages)
-        assertSnapshotsOnIPhoneX(of: cell)
-    }
-
-    func testMailboxItemCell_conversationWithSnoozedMessage_itLayoutsCorrectOnIphoneX() {
-        let cell = MailboxItemCell.testCell(model: .makeSimpleMessage(type: .snoozed))
-        assertSnapshotsOnIPhoneX(of: cell, precision: 0.98)
-    }
-
-    func testMailboxItemCell_conversationWithExpirationTimeMessage_itLayoutsCorrectOnIphoneX() {
-        let cell = MailboxItemCell.testCell(model: .makeSimpleMessage(type: .expirationTime))
-        assertSnapshotsOnIPhoneX(of: cell)
+        ),
+        ("many_labels_many_attachments", .manyAttachmentsManyLabelsManyMessages),
+        ("snoozed_message", .makeSimpleMessage(type: .snoozed)),
+        ("expiration_time_message", .makeSimpleMessage(type: .expirationTime)),
+    ])
+    func mailboxItemCell(testName: String, model: MailboxItemCellUIModel) {
+        assertSnapshotsOnIPhoneX(of: MailboxItemCell.testCell(model: model), testName: testName)
     }
 }
 
 private extension MailboxItemCell {
     static func testCell(model: MailboxItemCellUIModel) -> MailboxItemCell {
-        MailboxItemCell(
-            uiModel: model,
-            isParentListSelectionEmpty: true,
-            isSending: false,
-            onEvent: { _ in }
-        )
+        .init(uiModel: model, isParentListSelectionEmpty: true, isSending: false, onEvent: { _ in })
     }
 }
 
 private extension MailboxItemCellUIModel {
-
     enum SimpleMessageType {
         case regular
         case snoozed
@@ -215,5 +184,4 @@ private extension MailboxItemCellUIModel {
             shouldUseSnoozedColorForDate: false
         )
     }
-
 }
