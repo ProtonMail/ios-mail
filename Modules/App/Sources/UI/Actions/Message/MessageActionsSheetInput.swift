@@ -15,4 +15,22 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-typealias MessageActionsSheetInput = ConversationActionsSheetInput
+struct MessageActionsSheetInput: Identifiable {
+    enum Origin {
+        case toolbar
+        case messageHeader
+
+        var isEditToolbarVisible: Bool {
+            switch self {
+            case .toolbar:
+                true
+            case .messageHeader:
+                false
+            }
+        }
+    }
+
+    let id: ID
+    let title: String
+    let origin: Origin
+}

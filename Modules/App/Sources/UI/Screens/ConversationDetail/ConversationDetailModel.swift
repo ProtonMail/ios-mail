@@ -344,7 +344,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
             })
             present(alert: alert, origin: actionOrigin)
         case .more:
-            actionSheets = .allSheetsDismissed.copy(\.message, to: .init(id: messageID, title: seed.subject))
+            actionSheets = .allSheetsDismissed.copy(\.message, to: .init(id: messageID, title: seed.subject, origin: .toolbar))
         }
     }
 

@@ -166,7 +166,7 @@ struct ConversationDetailListView: View {
         case .onForward:
             model.onForwardMessage(withId: uiModel.id, toastStateStore: toastStateStore)
         case .onMoreActions:
-            let input = MessageActionsSheetInput(id: uiModel.id, title: model.seed.subject)
+            let input = MessageActionsSheetInput(id: uiModel.id, title: model.seed.subject, origin: .messageHeader)
             model.actionSheets = model.actionSheets.copy(\.message, to: input)
         case .onSenderTap:
             senderActionTarget = uiModel

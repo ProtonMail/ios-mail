@@ -79,7 +79,11 @@ private struct MailboxActionSheets: ViewModifier {
         content
             .sheet(item: $state.message) { input in
                 MessageActionsSheet(
-                    state: .initial(messageID: input.id, title: input.title),
+                    state: .initial(
+                        messageID: input.id,
+                        title: input.title,
+                        isEditToolbarVisible: input.origin.isEditToolbarVisible
+                    ),
                     mailbox: mailbox(),
                     mailUserSession: mailUserSession,
                     actionTapped: { messageActionTapped($0, input.id) }

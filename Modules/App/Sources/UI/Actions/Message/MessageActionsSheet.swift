@@ -63,8 +63,10 @@ struct MessageActionsSheet: View {
                         verticalSection(actions: store.state.actions.moveActions, store: store)
                         verticalSection(actions: store.state.actions.generalActions, store: store)
 
-                        EditToolbarSheetSection {
-                            store.handle(action: .editToolbarTapped)
+                        if state.isEditToolbarVisible {
+                            EditToolbarSheetSection {
+                                store.handle(action: .editToolbarTapped)
+                            }
                         }
                     }
                     .padding(.all, DS.Spacing.large)
