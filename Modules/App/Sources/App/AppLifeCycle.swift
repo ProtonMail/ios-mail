@@ -98,7 +98,7 @@ extension AppLifeCycle {
             remoteNotificationRegistrar: UIApplication.shared
         )
 
-        let paymentsService = PaymentsService(sessionState: appContext.$sessionState)
+        let paymentsService = PaymentsService(appContext: appContext)
 
         let backgroundTransitionActionsExecutor = BackgroundTransitionActionsExecutor(
             backgroundTransitionTaskScheduler: UIApplication.shared,

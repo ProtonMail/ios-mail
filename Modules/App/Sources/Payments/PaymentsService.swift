@@ -20,22 +20,42 @@ import InboxCore
 import PaymentsNG
 import proton_app_uniffi
 
+@MainActor
 final class PaymentsService: ApplicationServiceSetUp {
     private let sessionState: AnyPublisher<SessionState, Never>
+    private let transactionStatus: AnyPublisher<TransactionType, Never>
     private let transactionsObserver: TransactionsObserverProviding
+    private let refreshUserData: () async -> Void
 
     init(
         sessionState: any Publisher<SessionState, Never>,
-        transactionsObserver: TransactionsObserverProviding = TransactionsObserver.shared
+        transactionStatus: any Publisher<TransactionType, Never>,
+        transactionsObserver: TransactionsObserverProviding,
+        refreshUserData: @escaping () async -> Void
     ) {
         self.sessionState = sessionState.eraseToAnyPublisher()
+        self.transactionStatus = transactionStatus.eraseToAnyPublisher()
         self.transactionsObserver = transactionsObserver
+        self.refreshUserData = refreshUserData
+    }
+
+    convenience init(appContext: AppContext) {
+        let transactionsObserver = TransactionsObserver.shared
+
+        self.init(
+            sessionState: appContext.$sessionState,
+            transactionStatus: transactionsObserver.$transactionStatus,
+            transactionsObserver: transactionsObserver,
+            refreshUserData: appContext.pollEventsAsync
+        )
     }
 
     func setUpService() {
-        _ = startListeningToUserSessionChanges()
+        startListeningToUserSessionChanges()
+        startListeningToSuccessfulPurchases()
     }
 
+    @discardableResult
     func startListeningToUserSessionChanges() -> Task<Void, Never> {
         let userSessionChanges = sessionState.removeDuplicates().map(\.userSession).withPrevious().valuesWithBuffering
 
@@ -57,6 +77,17 @@ final class PaymentsService: ApplicationServiceSetUp {
                         AppLogger.log(error: error, category: .payments)
                     }
                 }
+            }
+        }
+    }
+
+    @discardableResult
+    func startListeningToSuccessfulPurchases() -> Task<Void, Never> {
+        let refreshTriggers = transactionStatus.filter { $0 == .successful }.map { _ in }.valuesWithBuffering
+
+        return .init {
+            for await _ in refreshTriggers {
+                await refreshUserData()
             }
         }
     }
