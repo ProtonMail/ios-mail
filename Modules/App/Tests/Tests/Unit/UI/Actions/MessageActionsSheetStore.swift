@@ -33,7 +33,7 @@ class MessageActionsSheetStoreTests {
 
     init() {
         sut = MessageActionsSheetStore(
-            state: .initial(messageID: .init(value: 7), title: "Hello"),
+            state: .initial(messageID: .init(value: 7), title: "Hello", isEditToolbarVisible: false),
             mailbox: .dummy,
             messageAppearanceOverrideStore: MessageAppearanceOverrideStore(),
             service: { mailbox, theme, messageID in
@@ -61,6 +61,7 @@ class MessageActionsSheetStoreTests {
                 == .init(
                     messageID: .init(value: 7),
                     title: "Hello",
+                    isEditToolbarVisible: false,
                     actions: stubbedMessageActions,
                     colorScheme: .dark,
                     isEditToolbarPresented: false

@@ -27,7 +27,7 @@ struct MessageActionsSheetSnapshotTests {
     func actionSheetLayoutsCorrectly() {
         let state = MessageActionsSheetState(
             messageID: .init(value: 5),
-            title: "Message action sheet",
+            title: "Message action sheet", isEditToolbarVisible: true,
             actions: .init(
                 replyActions: [.reply, .replyAll, .forward],
                 messageActions: [.markUnread, .star, .labelAs],
