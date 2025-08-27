@@ -47,7 +47,7 @@ extension MobileAction {
         case .toggleLight:
             Action.renderInLightMode
         case .toggleRead:
-            Action.markAsRead
+            Action.markAsUnread
         case .toggleStar:
             Action.star
         case .trash:
