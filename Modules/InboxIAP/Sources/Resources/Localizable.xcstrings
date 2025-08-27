@@ -508,7 +508,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ spațiu"
+            "value" : "%@ spațiu de stocare"
           }
         },
         "ru" : {
@@ -859,7 +859,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%llu adresów e-mail"
+            "value" : "Liczba adresów e-mail: %llu"
           }
         },
         "pt" : {
@@ -877,7 +877,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%llu adrese de e-mail"
+            "value" : "Adrese de e-mail: %llu"
           }
         },
         "ru" : {
@@ -1205,7 +1205,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Si rinnova automaticamente allo stesso prezzo e condizioni eccetto annullamento"
+            "value" : "Si rinnova automaticamente allo stesso prezzo e alle stesse condizioni, salvo disdetta"
           }
         },
         "ja" : {
@@ -2065,7 +2065,177 @@
       }
     },
     "Choose subscription" : {
-      "comment" : "Displayed above the plans in the upsell modal"
+      "comment" : "Displayed above the plans in the upsell modal",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выберыце падпіску"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trieu una subscripció"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zvolte předplatné"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vælg abonnement"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abonnement auswählen"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Επιλογή συνδρομής"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choose subscription"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elegir suscripción"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elegir suscripción"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Valitse tilaus"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Choisir un abonnement"
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Előfizetés kiválasztása"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pilih Paket Berlangganan"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scegli l'abbonamento"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "サブスクリプションの選択"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "플랜을 선택하세요"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Velg abonnement"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abonnement kiezen"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wybierz subskrypcję"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Escolha a subscrição"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Escolha uma assinatura"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alegere abonament"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выбор подписки"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vyberte predplatné"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Izberite naročnino"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Välj prenumeration"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abonelik seçin"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Оберіть передплату"
+          }
+        }
+      }
     },
     "Choose your plan" : {
       "comment" : "Displayed above the plans in the upsell modal",
@@ -2253,7 +2423,177 @@
       }
     },
     "Continue with Free Plan" : {
-      "comment" : "The option to exit the upsell modal"
+      "comment" : "The option to exit the upsell modal",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Працягнуць карыстацца бясплатным тарыфным планам"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continueu amb el Free Plan"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pokračovat s bezplatným tarifem"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fortsæt med gratis abonnement"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mit kostenlosem Abonnement fortfahren"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Συνέχεια με το Free Πλάνο"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continue with Free Plan"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continuar con el plan gratuito"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continuar con el plan Free"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jatka ilmaisella tilauksella"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continuer avec l'offre Proton Free"
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folytatás az ingyenes csomaggal"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lanjutkan dengan Paket Free"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continua con il piano Free"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "無料プランで続行"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Free 플랜으로 계속하기"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fortsett med Free-planen"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Doorgaan met gratis abonnement"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kontynuuj z planem Free"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continuar com o plano Free"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continuar com o plano grátis"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continuare cu planul Free"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Продолжить использовать Free тариф"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pokračovať s Free planom"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nadaljujte z Free paketom"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fortsätt med Free paket"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ücretsiz Free tarifesini kullanmayı sürdür"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Залишити Free план"
+          }
+        }
+      }
     },
     "Create all you need to stay organized. Get this and more with %@." : {
       "comment" : "Subtitle of the upsell page",
@@ -2393,7 +2733,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Creați tot ce aveți nevoie pentru a rămâne organizat. Obțineți acest lucru și multe altele cu %@."
+            "value" : "Creați tot ce vă trebuie pentru a vă păstra organizarea. Obțineți acest lucru și mai multe cu %@."
           }
         },
         "ru" : {
@@ -2822,7 +3162,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Maže spam a obsah Koše po 30 dnech. Získejte toto a ještě více s %@."
+            "value" : "Maže obsah Spamu a Koše po 30 dnech. Získejte toto a ještě více s %@."
           }
         },
         "da" : {
@@ -2834,7 +3174,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Löscht Spam und leert Papierkorb nach 30 Tagen. Hole dir dies und mehr mit %@."
+            "value" : "Löscht Spam und leert Papierkorb nach 30 Tagen. Mit %@ profitierst du von diesem und weiteren Vorteilen."
           }
         },
         "el" : {
@@ -2888,7 +3228,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Elimina lo spam e il Cestino dopo 30 giorni. Ottieni questo e altro con %@."
+            "value" : "Elimina lo spam e il cestino dopo 30 giorni. Ottieni questo e altro con %@."
           }
         },
         "ja" : {
@@ -2942,7 +3282,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Șterge mesajele spam și pe cele din Gunoi după 30 de zile. Obțineți acest lucru și multe altele cu %@."
+            "value" : "Șterge mesajele spam și pe cele din „Gunoi” după 30 de zile. Obțineți acest lucru și multe altele cu %@."
           }
         },
         "ru" : {
@@ -4571,7 +4911,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Personalizza la firma mobile"
+            "value" : "Personalizza la firma"
           }
         },
         "ja" : {
@@ -5383,7 +5723,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Trimiteți e-mailuri de grup cu ușurință. Bucurați-vă de acest lucru și multe altele cu %@."
+            "value" : "Trimiteți mesaje la grup cu ușurință. Bucurați-vă de acest lucru și multe altele cu %@."
           }
         },
         "ru" : {
@@ -5824,7 +6164,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Odložte si to — a nechte si to doručit později.  Užívejte si toto a ještě více s %@."
+            "value" : "Odložte to — a nechte doručit později. Užívejte si toto a ještě více s %@."
           }
         },
         "da" : {
@@ -5836,7 +6176,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nachricht zurückstellen – und lasse sie dir verzögert zustellen. Genießen Sie dies und mehr mit %@."
+            "value" : "Nachricht zurückstellen – und sie dir verzögert zustellen lassen. Mit %@ profitierst du von diesem und weiteren Vorteilen."
           }
         },
         "el" : {
@@ -5890,7 +6230,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Posticipala — e falla recapitare più tardi.  Goditi questo e altro con %@."
+            "value" : "Posticipala e falla recapitare più tardi.  Goditi questo e altro con %@."
           }
         },
         "ja" : {
@@ -5926,7 +6266,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Odłóż wiadomość — zostanie dostarczona później. Ciesz się tą funkcją i nie tylko dzięki %@."
+            "value" : "Odłóż wiadomość – zostanie dostarczona później. Ciesz się tą funkcją i nie tylko dzięki %@."
           }
         },
         "pt" : {
@@ -6194,7 +6534,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Požadovaný plán se nepodařilo nalézt."
+            "value" : "Požadovaný tarif se nepodařilo nalézt."
           }
         },
         "da" : {
@@ -6636,7 +6976,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "無制限のフォルダーとラベル"
+            "value" : "無制限のフォルダとラベル"
           }
         },
         "ka" : {
@@ -7137,7 +7477,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ročně (sleva %lld %%)"
+            "value" : "Ročně (sleva %lld%%)"
           }
         },
         "da" : {

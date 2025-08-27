@@ -980,7 +980,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vyžadováno pro ukládání souborů do vaší aplikace Fotky."
+            "value" : "Vyžadováno pro ukládání souborů do vaší aplikace pro Fotky."
           }
         },
         "da" : {
@@ -992,7 +992,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Erforderlich, um Dateien in Ihrer Fotos-App speichern zu können."
+            "value" : "Erforderlich, um Dateien in deiner Fotos-App speichern zu können."
           }
         },
         "el" : {
@@ -1100,7 +1100,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Necesar pentru a salva fișiere în aplicația dvs. Fotografii."
+            "value" : "Necesar pentru a salva fișiere în aplicația Fotografii."
           }
         },
         "ru" : {

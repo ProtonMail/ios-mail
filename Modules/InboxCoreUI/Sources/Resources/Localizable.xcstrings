@@ -430,25 +430,25 @@
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld попытки осталось до выхода."
+                  "value" : "%lld попытки до выхода."
                 }
               },
               "many" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld попыток осталось до выхода."
+                  "value" : "%lld попыток до выхода."
                 }
               },
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld попытка осталось до выхода."
+                  "value" : "%lld попытка до выхода."
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld попыток осталось до выхода."
+                  "value" : "%lld попыток до выхода."
                 }
               }
             }
@@ -636,7 +636,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Zum Fortfahren bestätige, dass du es bist."
+            "value" : "Bestätige zum Fortfahren, dass du es bist."
           }
         },
         "el" : {
@@ -1287,7 +1287,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nieprawidłowy kod PIN. Spróbuj ponownie."
+            "value" : "Niepoprawny kod PIN. Spróbuj ponownie."
           }
         },
         "pt" : {
@@ -1311,7 +1311,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Неверный PIN. Пожалуйста, попробуйте еще раз."
+            "value" : "Неверный PIN. Попробуйте еще раз."
           }
         },
         "sk" : {

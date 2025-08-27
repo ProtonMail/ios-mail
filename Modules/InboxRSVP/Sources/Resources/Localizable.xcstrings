@@ -139,7 +139,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : " anulată"
+            "value" : " anulat"
           }
         },
         "ru" : {
@@ -330,7 +330,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : " s-a încheiat"
+            "value" : " încheiat"
           }
         },
         "ru" : {
@@ -1052,7 +1052,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ (Organizator)"
+            "value" : "%@ (organizator)"
           }
         },
         "pt" : {
@@ -1076,7 +1076,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ (Организатор)"
+            "value" : "%@ (организатор)"
           }
         },
         "sk" : {
@@ -1195,7 +1195,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%d Partecipanti"
+            "value" : "%d partecipanti"
           }
         },
         "ja" : {
@@ -1231,7 +1231,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%d uczestników"
+            "value" : "Liczba uczestników: %d"
           }
         },
         "pt" : {
@@ -1249,13 +1249,13 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%d de participanți"
+            "value" : "Participanți: %d"
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%d Участников"
+            "value" : "%d участн."
           }
         },
         "sk" : {
@@ -1314,7 +1314,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld Assistents"
+            "value" : "%lld assistents"
           }
         },
         "cs" : {
@@ -1422,7 +1422,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld uczestników"
+            "value" : "Liczba uczestników: %lld"
           }
         },
         "pt" : {
@@ -1446,7 +1446,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld Участников"
+            "value" : "%lld участн."
           }
         },
         "sk" : {
@@ -1965,7 +1965,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "イベント"
+            "value" : "予定"
           }
         },
         "ka" : {
@@ -1995,7 +1995,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Zdarzenie"
+            "value" : "Wydarzenie"
           }
         },
         "pt" : {
@@ -2890,7 +2890,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Forse sarò presente"
+            "value" : "Forse parteciperò"
           }
         },
         "ja" : {
@@ -4215,7 +4215,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Non è stato possibile caricare le informazioni.\nRiprova."
+            "value" : "Non è stato possibile caricare\nle informazioni. Riprova."
           }
         },
         "ja" : {
@@ -4269,13 +4269,13 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nu am putut încărca\ninformațiile. Vă rugăm să reîncercați."
+            "value" : "Nu s-au putut încărca informațiile.\nMai încercați."
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Не удалось загрузить\\nинформацию. Пожалуйста, повторите попытку."
+            "value" : "Не удалось загрузить информацию. \nПовторите попытку."
           }
         },
         "sk" : {
@@ -4830,7 +4830,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Dvs. • %@"
+            "value" : "Eu • %@"
           }
         },
         "ru" : {
@@ -4961,7 +4961,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "お客様は主催者です。"
+            "value" : "あなたは主催者です."
           }
         },
         "ka" : {
@@ -5063,7 +5063,147 @@
       }
     },
     "You cannot respond to event invites if you're not on the participants list at the moment." : {
-      "comment" : "Banner text shown when the current user is not on the participants list and therefore cannot respond to the event invitation."
+      "comment" : "Banner text shown when the current user is not on the participants list and therefore cannot respond to the event invitation.",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вы не зможаце адказаць на запрашэнне падзеі, калі ў дадзены момант вы адсутнічаеце ў спісе ўдзельнікаў."
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No podeu respondre a les invitacions d'esdeveniments si no formeu part de la llista de participants en aquell moment."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nemůžete reagovat na pozvánky událostí, pokud momentálně nejste na seznamu účastníků."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du kan ikke svare på begivenhedinvitationer, hvis du ikke er på deltagerlisten i øjeblikket."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du kannst nicht auf Einladungen zu Ereignissen antworten, solange du nicht auf der Teilnehmerliste stehst."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Δεν μπορείτε να απαντήσετε σε προσκλήσεις εκδήλωσης εάν δε βρίσκεστε στη λίστα συμμετεχόντων αυτήν τη στιγμή."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You cannot respond to event invites if you're not on the participants list at the moment."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No puedes responder a las invitaciones del evento si no estás en la lista de participantes en este momento."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No puede responder a las invitaciones del evento si no está en la lista de participantes en este momento."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vous ne pouvez pas répondre aux invitations d'événements lorsque vous ne faites pas partie des participants."
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jelenleg nem tud válaszolni az esemény meghívóira, ha nem szerepel a résztvevők listáján."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Non puoi rispondere agli inviti di evento se non sei sull'elenco dei partecipanti in questo momento."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "現時点で参加者リストに登録されていない場合は、イベントの招待に応答することはできません。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "현재 참여자 목록에 없는 사용자는 이벤트 초대에 응답할 수 없습니다."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du kan ikke respondere til hendelsesinvitasjoner hvis du for øyeblikket ikke er på deltakerlisten."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Op dit moment kunt u niet reageren op afspraakuitnodigingen als u geen deelnemer bent."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nie możesz odpowiedzieć na zaproszenia, jeśli nie jesteś na liście uczestników."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Você não pode responder a convites de eventos se você não estiver na lista de participantes no momento."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nu puteți răspunde la invitațiile la eveniment dacă nu sunteți pe lista de participanți în acest moment."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Na pozvánky na udalosti nemôžete reagovať, ak momentálne nie ste na zozname účastníkov."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du kan inte svara på händelseinbjudningar om du inte finns med på deltagarlistan just nu."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Şu anda katılımcı listesinde olmadığınız etkinlik davetlerine yanıt veremezsiniz."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ви не можете відповідати на запрошення на події, якщо ви не внесені до списку учасників на цей час."
+          }
+        }
+      }
     },
     "You're offline. The displayed information may be out-of-date." : {
       "comment" : "Warning banner shown when the user has no internet connection.",
@@ -5095,7 +5235,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Es besteht keine Internetverbindung. Die angezeigten Informationen sind möglicherweise veraltet."
+            "value" : "Du bist offline. Die angezeigten Informationen sind möglicherweise veraltet."
           }
         },
         "el" : {
@@ -5203,7 +5343,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sunteți offline. Informațiile afișate ar putea fi neactualizate."
+            "value" : "Nu există conexiune. Informațiile afișate pot fi învechite."
           }
         },
         "ru" : {
@@ -5382,13 +5522,13 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Adresa dvs. nu poate fi folosită pentru a răspunde. Vă rugăm să vă actualizați informațiile contului."
+            "value" : "Adresa nu poate fi utilizată pentru a răspunde. Actualizați-vă informațiile din cont."
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ваш адрес не может быть использован для ответа. Пожалуйста, обновите данные аккаунта."
+            "value" : "Ваш адрес не может быть использован для ответа. Обновите данные аккаунта."
           }
         },
         "sk" : {

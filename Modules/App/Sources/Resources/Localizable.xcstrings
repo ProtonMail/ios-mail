@@ -67,7 +67,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "(Brouillon)."
+            "value" : "(Brouillon)"
           }
         },
         "hu" : {
@@ -449,7 +449,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$@ De %2$@"
+            "value" : "%1$@ des %2$@"
           }
         },
         "hu" : {
@@ -2417,7 +2417,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ein Protokoll ist eine Art von Datei, die uns zeigt, welche Aktionen du durchgeführt hast, die zu einem Fehler geführt haben. Sie wird ausschließlich dazu verwendet, unseren Ingenieuren bei der Fehlerbehebung zu helfen."
+            "value" : "Ein Protokoll ist eine Art von Datei, die uns zeigt, welche Aktionen du durchgeführt hast, die zu einem Fehler geführt haben. Es wird ausschließlich dazu verwendet, unseren Technikern bei der Fehlerbehebung zu helfen."
           }
         },
         "el" : {
@@ -2644,7 +2644,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Une réponse à votre message ? Un message important ? Soyez notifié des leur réception."
+            "value" : "Une réponse à votre message ? Un message important ? Soyez notifié dès leur réception."
           }
         },
         "hu" : {
@@ -2984,7 +2984,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aktuelle Ergebnisse"
+            "value" : "Tatsächliche Ergebnisse"
           }
         },
         "el" : {
@@ -4174,7 +4174,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alle Einstellungen der App-Sperre, einschließlich der PIN, werden zurückgesetzt, wenn du dich aus der App abmeldest."
+            "value" : "Alle Einstellungen der App-Sperre, einschließlich der PIN, werden zurückgesetzt, wenn du dich bei der App abmeldest."
           }
         },
         "el" : {
@@ -4295,6 +4295,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vse nastavitve zaklepanja aplikacije, vključno s kodo PIN, se bodo ponastavile, ko se izpišete iz aplikacije."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alla app-låsinställningar, inklusive PIN, kommer att återställas när du loggar ut från appen"
           }
         },
         "tr" : {
@@ -6287,7 +6293,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Êtes-vous sûr de vouloir fermer cette fenêtre ?"
+            "value" : "Êtes-vous sûr(e) de vouloir fermer cette fenêtre ?"
           }
         },
         "hu" : {
@@ -6353,7 +6359,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sigur doriți să închideți această fereastră?"
+            "value" : "Închideți această fereastră?"
           }
         },
         "ru" : {
@@ -6829,19 +6835,19 @@
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Sigur doriți să ștergeți definitiv aceste %lld mesaje?"
+                  "value" : "Ștergeți definitiv aceste %lld mesaje?"
                 }
               },
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Sigur doriți să ștergeți definitiv acest mesaj?"
+                  "value" : "Ștergeți definitiv acest mesaj?"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Sigur doriți să ștergeți definitiv aceste %lld de mesaje?"
+                  "value" : "Ștergeți definitiv aceste %lld mesaje?"
                 }
               }
             }
@@ -7095,7 +7101,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Êtes-vous sûr de supprimer définitivement tous les messages dans le fichier %@ ? Cette action est irréversible."
+            "value" : "Êtes-vous sûr(e) de vouloir supprimer définitivement tous les messages dans le fichier %@ ? Cette action est irréversible."
           }
         },
         "hu" : {
@@ -7161,7 +7167,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sigur doriți să ștergeți definitiv toate mesajele din folderul %@? Această acțiune nu poate fi refăcută."
+            "value" : "Ștergeți definitiv toate mesajele din folderul %@? Această acțiune nu poate fi refăcută."
           }
         },
         "ru" : {
@@ -8169,7 +8175,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bloquegeu aquesta adreça"
+            "value" : "Bloca aquesta adreça"
           }
         },
         "cs" : {
@@ -8915,7 +8921,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nelze zrušit naplánované odeslání. Zpráva byla zahozená nebo již byla odeslána."
+            "value" : "Nelze zrušit naplánované odeslání. Zpráva byla zahozena nebo již byla odeslána."
           }
         },
         "da" : {
@@ -9273,7 +9279,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nelze vrátit odeslání zpět. Zpráva byla zahozená nebo již byla odeslána."
+            "value" : "Nelze vrátit odeslání zpět. Zpráva byla zahozena nebo již byla odeslána."
           }
         },
         "da" : {
@@ -9751,7 +9757,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Schimbați parola principală"
+            "value" : "Modificare parolă principală"
           }
         },
         "ru" : {
@@ -11579,7 +11585,7 @@
                   "many" : {
                     "stringUnit" : {
                       "state" : "translated",
-                      "value" : "Konverzací přesunuto do Archivu."
+                      "value" : "Konverzace přesunuty do Archivu."
                     }
                   },
                   "one" : {
@@ -11591,7 +11597,7 @@
                   "other" : {
                     "stringUnit" : {
                       "state" : "translated",
-                      "value" : "Konverzací přesunuto do Archivu."
+                      "value" : "Konverzace přesunuty do Archivu."
                     }
                   }
                 }
@@ -12043,25 +12049,25 @@
                   "few" : {
                     "stringUnit" : {
                       "state" : "translated",
-                      "value" : "Konwersacje przeniesione do archiwum."
+                      "value" : "Wątki przeniesione do archiwum."
                     }
                   },
                   "many" : {
                     "stringUnit" : {
                       "state" : "translated",
-                      "value" : "Konwersacji przeniesiono do archiwum."
+                      "value" : "Wątki przeniesione do archiwum."
                     }
                   },
                   "one" : {
                     "stringUnit" : {
                       "state" : "translated",
-                      "value" : "Wątek został przeniesiony do archiwum."
+                      "value" : "Wątek przeniesiony do archiwum."
                     }
                   },
                   "other" : {
                     "stringUnit" : {
                       "state" : "translated",
-                      "value" : "Konwersacji przeniesiono do archiwum."
+                      "value" : "Wątki przeniesione do archiwum."
                     }
                   }
                 }
@@ -12083,13 +12089,13 @@
                   "one" : {
                     "stringUnit" : {
                       "state" : "translated",
-                      "value" : "Conversa movida para a pasta Arquivo."
+                      "value" : "Conversa movida para Arquivo."
                     }
                   },
                   "other" : {
                     "stringUnit" : {
                       "state" : "translated",
-                      "value" : "Conversas movidas para o Arquivo."
+                      "value" : "Conversas movidas para Arquivo."
                     }
                   }
                 }
@@ -12173,25 +12179,25 @@
                   "few" : {
                     "stringUnit" : {
                       "state" : "translated",
-                      "value" : "Цепочки писем перемещены в Архив."
+                      "value" : "Цепочки писем перемещены в архив."
                     }
                   },
                   "many" : {
                     "stringUnit" : {
                       "state" : "translated",
-                      "value" : "Цепочек писем перемещено в Архив."
+                      "value" : "Цепочки писем перемещены в архив."
                     }
                   },
                   "one" : {
                     "stringUnit" : {
                       "state" : "translated",
-                      "value" : "Цепочка писем помещена в Архив."
+                      "value" : "Цепочка писем помещена в архив."
                     }
                   },
                   "other" : {
                     "stringUnit" : {
                       "state" : "translated",
-                      "value" : "Цепочек писем перемещено в Архив."
+                      "value" : "Цепочки писем перемещены в архив."
                     }
                   }
                 }
@@ -12497,7 +12503,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pasek narzędzi konwersacji"
+            "value" : "Pasek narzędzi wątku"
           }
         },
         "pt" : {
@@ -13147,7 +13153,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nelze zablokovat odesílatele"
+            "value" : "Nepodařilo se zablokovat odesílatele"
           }
         },
         "da" : {
@@ -13326,7 +13332,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nelze přesunout do složky. Složka mohla být smazána nebo přesunuta."
+            "value" : "Nepodařilo se přesunout do složky. Složka mohla být smazána nebo přesunuta."
           }
         },
         "da" : {
@@ -13505,7 +13511,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Požadovaný e-mail se nepodařilo vytisknout."
+            "value" : "Požadovaný e-mail se nepodařilo vytisknout"
           }
         },
         "da" : {
@@ -14269,7 +14275,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aktueller PIN"
+            "value" : "Aktuelle PIN"
           }
         },
         "el" : {
@@ -16056,7 +16062,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "L'appareil"
+            "value" : "Appareil"
           }
         },
         "hu" : {
@@ -18187,7 +18193,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Edytuj pasek narzędzi konwersacji"
+            "value" : "Edytuj pasek narzędzi wątku"
           }
         },
         "pt" : {
@@ -19118,7 +19124,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Editați bara de unelte"
+            "value" : "Editare bară de unelte"
           }
         },
         "ru" : {
@@ -20282,7 +20288,153 @@
       }
     },
     "Enjoy encrypted messages, fewer spam, protection from phishing, and blocked trackers. Welcome to privacy." : {
-      "comment" : "Subtitle of the first onboarding page explaining Proton Mail's benefits."
+      "comment" : "Subtitle of the first onboarding page explaining Proton Mail's benefits.",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Атрымлівайце асалоду ад зашыфраваных паведамленняў, меншай колькасці спаму, абароны ад фішынгу і заблакіраваных праграм сачэння. Сардэчна запрашаем у прыватнасць."
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gaudiu de missatges xifrats, menys correu brossa, protecció contra suplantacions d'identitat i rastrejadors bloquejats. Us donem la benvinguda a la privacitat."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Využívejte šifrované zprávy, méně spamu, ochranu před phishingem a blokované sledovací prvky. Vítejte v soukromí."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nyd godt af krypterede beskeder, mindre spam, beskyttelse mod phishing og blokerede trackere. Velkommen til privatliv."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Genieße verschlüsselte Nachrichten, weniger Spam, Schutz vor Phishing und gesperrte Tracker. Willkommen in der Privatsphäre."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Απολαύστε κρυπτογραφημένα μηνύματα, λιγότερο ενοχλητικά, προστασία από phishing και αποκλεισμένους ιχνηλάτες. Καλωσορίσατε στην ιδιωτικότητα."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enjoy encrypted messages, fewer spam, protection from phishing, and blocked trackers. Welcome to privacy."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Disfruta de mensajes cifrados, menos spam, protección contra la suplantación y rastreadores bloqueados. Bienvenido a la privacidad."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Disfrute de mensajes cifrados, menos spam, protección contra suplantaciones y rastreadores bloqueados. Le damos la bienvenida a la privacidad."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Profitez des messages chiffrés, de moins de spams, d'une protection contre l'hameçonnage et d'un blocage des traqueurs. Bienvenue dans le respect de la vie privée."
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Élvezze a titkosított üzeneteket, a kevesebb levélszemetet, védelmet az adathalászat ellen és a blokkolt követőket. Üdvözöljük az adatvédelemben."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nikmati pesan yang terenkripsi, lebih sedikit spam, perlindungan dari phishing, dan pelacak yang diblokir. Selamat datang di privasi."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Approfitta di messaggi crittografati, meno spam, protezione dal phishing e nessun tracker. Benvenuto nel mondo della privacy."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "メッセージの暗号化、迷惑メールの削減、フィッシング詐欺からの保護、トラッカーのブロックをご利用いただけます。強固なプライバシーへようこそ。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "암호화된 메시지, 더 적은 스팸, 피싱 예방, 그리고 추적 차단기능을 누리세요. 개인정보 보호의 세계에 오신 것을 환영합니다."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kos deg over krypterte meldinger, færre søppelpost, beskyttelse mot nettfisking og blokkerte sporere. Velkommen til personvern."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geniet van versleutelde berichten, minder spam, bescherming tegen phishing en geblokkeerde trackers. Welkom bij privacy."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ciesz się szyfrowanymi wiadomościami, mniejszą ilością spamu, ochroną przed phishingiem i elementami śledzącymi. Witaj w świecie prywatności."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desfrute de mensagens criptografadas, menos spam, proteção contra phishing e bloqueio de rastreadores. Bem-vindo à privacidade."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bucurați-vă de mesaje criptate, mai puține mesaje nedorite, protecție împotriva înșelăciunii și urmăritori blocați. Bun venit la confidențialitate."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Užite si zašifrované správy, menej spamu, ochranu pred phishingom a zablokované sledovače. Vitajte v súkromí."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Njut av krypterade meddelanden, mindre skräppost, skydd mot nätfiske och blockerade spårare. Välkommen till integritet."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Şifrelenmiş iletilerin, daha az istenmeyen epostanın, kimlik avına karşı korumanın ve engellenen etkinlik izleyicilerin tadını çıkarın. Gizliliğe hoş geldiniz."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Насолоджуйтесь зашифрованими повідомленнями, меншою кількістю спаму, захистом від шахрайства та блокуванням трекерів. Ласкаво просимо до приватності."
+          }
+        }
+      }
     },
     "Error logs help us to get to the bottom of your issue. If you don't include them, we might not be able to investigate fully." : {
       "comment" : "Information displayed in the bottom of the screen when send error logs switch is dislabed.",
@@ -21228,7 +21380,141 @@
       }
     },
     "Focus at your fingertips" : {
-      "comment" : "Title of the second onboarding page about inbox usability and productivity."
+      "comment" : "Title of the second onboarding page about inbox usability and productivity.",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Канцэнтрацыя заўсёды ў вашых руках"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tot el que és important a l'abast de la mà"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Soustředění na dosah ruky"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fokus lige ved hånden"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fokus griffbereit"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Εστίαση στα δάχτυλά σας"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Focus at your fingertips"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Enfoque a su alcance"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tout à la portée de main"
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fókusz a keze ügyében"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fokus pada ujung jari Anda"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tutto a portata di mano"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "すべてがそこに"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "모든 집중을 당신의 손에서"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fokus for hånden"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Focus binnen handbereik"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Koncentracja na wyciągnięcie ręki‎"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Foco ao seu alcance"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Concentrare la dispoziție"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sústredenie na dosah ruky"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Odak parmaklarınızın ucunda"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Фокус у вас під рукою"
+          }
+        }
+      }
     },
     "Folders and labels" : {
       "comment" : "Title of the Folders and labels settings item.",
@@ -21696,7 +21982,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Da: "
+            "value" : "Mittente: "
           }
         },
         "ja" : {
@@ -21804,7 +22090,147 @@
       }
     },
     "Get started" : {
-      "comment" : "Label of the button shown on the final onboarding page to complete onboarding and begin using the app."
+      "comment" : "Label of the button shown on the final onboarding page to complete onboarding and begin using the app.",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Пачаць працу"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Comenceu"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Začínáme"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kom godt i gang"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Los geht's"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ξεκινήστε"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Get started"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Comenzar"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Comenzar"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Commencer"
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kezdés"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inizia ora"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "はじめましょう"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "시작하기"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kom i gang"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aan de slag"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rozpocznij"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Começar"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Începeți"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Začíname"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kom igång"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Başlayalım"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Розпочати"
+          }
+        }
+      }
     },
     "Hide details" : {
       "comment" : "Title of the button that hide details of a message.",
@@ -22148,6 +22574,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Če so spletna mesta Proton blokirana, to omogoča aplikaciji, da poskusi z drugimi omrežnimi potmi, da jih doseže. To lahko pomaga zaobiti požarne zidove ali težave s povezavo. Priporočamo, da je ta možnost vklopljena za boljšo zanesljivost."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Om Proton-webbplatser blockeras, tillåter detta appen att försöka med andra nätverkssökvägar för att nå dem. Det kan hjälpa till att kringgå brandväggar eller anslutningsproblem. Vi rekommenderar att du behåller den aktiverad för bättre tillförlitlighet."
           }
         },
         "tr" : {
@@ -22678,7 +23110,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nieprawidłowy kod PIN. Spróbuj ponownie."
+            "value" : "Niepoprawny kod PIN. Spróbuj ponownie."
           }
         },
         "pt" : {
@@ -22702,7 +23134,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Неверный PIN. Пожалуйста, попробуйте еще раз."
+            "value" : "Неверный PIN. Попробуйте еще раз."
           }
         },
         "sk" : {
@@ -22875,13 +23307,13 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Problemă la încărcarea conținutului. Vă rugăm să încercați să reîmprospătați sau să vă conectați din nou."
+            "value" : "Problemă la încărcarea conținutului. Încercați să reîmprospătați pagina sau să vă reconectați."
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Проблема с загрузкой контента. Пожалуйста, попробуйте обновить страницу или войти снова."
+            "value" : "Проблема с загрузкой контента. Попробуйте обновить страницу или войти снова."
           }
         },
         "sk" : {
@@ -23054,7 +23486,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Problemă la sincronizarea conținutului. Verificați conexiunea sau conectați-vă din nou."
+            "value" : "Problemă la sincronizarea conținutului. Verificați conexiunea sau reconectați-vă."
           }
         },
         "ru" : {
@@ -23209,7 +23641,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Probleem bij het updaten van uw account. Log alstublieft opnieuw in."
+            "value" : "Probleem bij het updaten van uw account. Log opnieuw in."
           }
         },
         "pl" : {
@@ -23233,13 +23665,13 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Problemă la actualizarea contului dvs. Vă rugăm să vă conectați din nou."
+            "value" : "Problemă la actualizarea contului. Reconectați-vă."
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Проблема с обновлением аккаунта. Пожалуйста, войдите снова."
+            "value" : "Проблема с обновлением аккаунта. Войдите снова."
           }
         },
         "sk" : {
@@ -24068,7 +24500,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Listen-Symbolleiste"
+            "value" : "Symbolleiste der Nachrichtenliste"
           }
         },
         "el" : {
@@ -24092,7 +24524,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Barra de herramientas de lista"
+            "value" : "Barra de herramientas de la lista"
           }
         },
         "fi" : {
@@ -24176,7 +24608,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bară de unelte pentru listă"
+            "value" : "Bară de unelte liste"
           }
         },
         "ru" : {
@@ -24588,7 +25020,153 @@
       }
     },
     "Mail list unsubscribed" : {
-      "comment" : "Toast message shown after the user successfully unsubscribes from a mailing list."
+      "comment" : "Toast message shown after the user successfully unsubscribes from a mailing list.",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Падпіска на спіс рассылкі скасавана"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "S'ha eliminat la subscripció a la llista de correu"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Odhlášeno z e-mailového seznamu"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mailliste afmeldt"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aus Verteilerliste abgemeldet"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "΄Εγινε απεγγραφή από λίστα αλληλογραφίας"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mail list unsubscribed"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se ha cancelado la suscripción a la lista de correo."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lista de correo cancelada"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le désabonnement de la liste de diffusion a été effectué."
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Leiratkozva a levelezési listáról"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Iscrizione alla mailing list annullata"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "メールリストの購読を解除しました"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "메일리스트 구독 취소됨"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abonnementet på e-postlisten er avmeldt."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Afgemeld van nieuwsbrieven"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Subskrypcja została anulowana"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lista de e-mails cancelada"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dezabonare de la lista de e-mailuri reușită."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Odhlásené z mailingového zoznamu"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avslutad prenumeration från e-postlista"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-posta listesi aboneliği sonlandırıldı"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Підписку на розсилку скасовано"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已從郵寄清單取消訂閱"
+          }
+        }
+      }
     },
     "Mailbox preferences" : {
       "comment" : "Title of the Email settings item.",
@@ -24656,7 +25234,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Personnalisation de messagerie"
+            "value" : "Préférences de messagerie"
           }
         },
         "hu" : {
@@ -26193,7 +26771,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "E-Mail als seriös kennzeichnen"
+            "value" : "E-Mail als legitim kennzeichnen"
           }
         },
         "el" : {
@@ -26828,7 +27406,7 @@
                   "many" : {
                     "stringUnit" : {
                       "state" : "translated",
-                      "value" : "Zpráv přesunuto do Archivu."
+                      "value" : "Zprávy přesunuty do Archivu."
                     }
                   },
                   "one" : {
@@ -26840,7 +27418,7 @@
                   "other" : {
                     "stringUnit" : {
                       "state" : "translated",
-                      "value" : "Zpráv přesunuto do Archivu."
+                      "value" : "Zprávy přesunuty do Archivu."
                     }
                   }
                 }
@@ -27298,19 +27876,19 @@
                   "many" : {
                     "stringUnit" : {
                       "state" : "translated",
-                      "value" : "Wiadomości przeniesiono do archiwum."
+                      "value" : "Wiadomości przeniesione do archiwum."
                     }
                   },
                   "one" : {
                     "stringUnit" : {
                       "state" : "translated",
-                      "value" : "Wiadomość została przeniesiona do archiwum."
+                      "value" : "Wiadomość przeniesiona do archiwum."
                     }
                   },
                   "other" : {
                     "stringUnit" : {
                       "state" : "translated",
-                      "value" : "Wiadomości przeniesiono do archiwum."
+                      "value" : "Wiadomości przeniesione do archiwum."
                     }
                   }
                 }
@@ -27388,19 +27966,19 @@
                   "few" : {
                     "stringUnit" : {
                       "state" : "translated",
-                      "value" : "Mesaje mutate în Arhivă."
+                      "value" : "Mesajele au fost mutate în „Arhivă”."
                     }
                   },
                   "one" : {
                     "stringUnit" : {
                       "state" : "translated",
-                      "value" : "Mesaj mutat în Arhivă."
+                      "value" : "Mesajul a fost mutat în „Arhivă”."
                     }
                   },
                   "other" : {
                     "stringUnit" : {
                       "state" : "translated",
-                      "value" : "Mesaje mutate în Arhivă."
+                      "value" : "Mesajele au fost mutate în „Arhivă”."
                     }
                   }
                 }
@@ -27422,25 +28000,25 @@
                   "few" : {
                     "stringUnit" : {
                       "state" : "translated",
-                      "value" : "Сообщения перемещены в Архив."
+                      "value" : "Сообщения перемещены в архив."
                     }
                   },
                   "many" : {
                     "stringUnit" : {
                       "state" : "translated",
-                      "value" : "Сообщений перемещено в Архив."
+                      "value" : "Сообщения перемещены в архив."
                     }
                   },
                   "one" : {
                     "stringUnit" : {
                       "state" : "translated",
-                      "value" : "Сообщение помещено в Архив."
+                      "value" : "Сообщение помещено в архив."
                     }
                   },
                   "other" : {
                     "stringUnit" : {
                       "state" : "translated",
-                      "value" : "Сообщений перемещено в Архив."
+                      "value" : "Сообщения перемещены в архив."
                     }
                   }
                 }
@@ -27656,7 +28234,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nachrichten im Papierkorb und im Spam-Ordner werden nach 30 Tagen automatisch gelöscht."
+            "value" : "Nachrichten im Papierkorb und im Spam-Ordner werden nach 30 Tagen automatisch gelöscht."
           }
         },
         "el" : {
@@ -27692,7 +28270,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Les messages dans la corbeille et le pourriel seront automatiquement supprimés après 30 jours."
+            "value" : "Les messages dans la corbeille et les courriers indésirables seront automatiquement supprimés après 30 jours."
           }
         },
         "hu" : {
@@ -28011,6 +28589,18 @@
             "value" : "Signatura mòbil"
           }
         },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Podpis v mobilní aplikaci"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mobilsignatur"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -28035,6 +28625,12 @@
             "value" : "Firma móvil"
           }
         },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Firma móvil"
+          }
+        },
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
@@ -28047,10 +28643,34 @@
             "value" : "Signature mobile"
           }
         },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mobil aláírás"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tanda tangan seluler"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Firma mobile"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "モバイル署名"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "모바일 서명"
           }
         },
         "nb" : {
@@ -28065,10 +28685,46 @@
             "value" : "Mobiele handtekening"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Podpis mobilny"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Assinatura móvel"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Assinatura móvel"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Semnătură mobil"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Мобильная подпись"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Podpis v mobile"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mobilni podpis"
           }
         },
         "sv" : {
@@ -28081,6 +28737,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mobil imza"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Мобільний підпис"
           }
         }
       }
@@ -29058,7 +29720,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "název"
+            "value" : "jméno"
           }
         },
         "da" : {
@@ -29452,7 +30114,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Neuer PIN"
+            "value" : "Neue PIN"
           }
         },
         "el" : {
@@ -31595,7 +32257,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Il: "
+            "value" : "Data: "
           }
         },
         "ja" : {
@@ -31917,7 +32579,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Unser System hat diese Nachricht als Phishing-Versuch gekennzeichnet. Bitte überprüfen, um sicherzustellen, dass sie seriös ist."
+            "value" : "Unser System hat diese Nachricht als Phishing-Versuch gekennzeichnet. Bitte überprüfe, ob sie legitim ist."
           }
         },
         "el" : {
@@ -31977,7 +32639,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "システムはこのメーレがフィッシング詐欺であると判断しました。正当性を確認してください。"
+            "value" : "システムはこのメールがフィッシング詐欺であると判断しました。正当性を確認してください。"
           }
         },
         "ka" : {
@@ -32031,7 +32693,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Наша система пометила это сообщение как попытку фишинга. Пожалуйста, проверьте, является ли оно допустимым."
+            "value" : "Наша система пометила это сообщение как попытку фишинга. Проверьте, является ли оно допустимым."
           }
         },
         "sk" : {
@@ -32759,13 +33421,13 @@
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PIN mag niet meer dan 21 cijfers bevatten"
+            "value" : "Pincode mag niet meer dan 21 cijfers bevatten"
           }
         },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kod PIN nie może przekraczać 21 cyfr"
+            "value" : "Kod PIN nie może być dłuższy niż 21 cyfr"
           }
         },
         "pt" : {
@@ -32783,7 +33445,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Codul PIN nu poate depăși 21 de cifre"
+            "value" : "Codul PIN nu poate depăși 21 de cifre."
           }
         },
         "ru" : {
@@ -32938,7 +33600,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PIN moet 4-21 cijfers lang zijn en alleen uit getallen bestaan"
+            "value" : "Pincode moet 4-21 cijfers lang zijn en alleen uit getallen bestaan"
           }
         },
         "pl" : {
@@ -32962,7 +33624,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Codul PIN trebuie să aibă între 4 și 21 de cifre și să conțină doar numere"
+            "value" : "Codul PIN trebuie să aibă între 4 și 21 de cifre și să conțină doar numere."
           }
         },
         "ru" : {
@@ -33141,7 +33803,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PIN-ul trebuie să aibă cel puțin 4 cifre"
+            "value" : "PIN-ul trebuie să aibă cel puțin 4 cifre."
           }
         },
         "ru" : {
@@ -34132,7 +34794,147 @@
       }
     },
     "Read, write, and manage emails wherever you are. Everything syncs automatically the moment you’re back online." : {
-      "comment" : "Subtitle of the third onboarding page explaining offline access and sync."
+      "comment" : "Subtitle of the third onboarding page explaining offline access and sync.",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Чытайце, пішыце і кіруйце лістамі, дзе б вы не знаходзіліся. Усе элементы сінхранізуюцца аўтаматычна пасля таго, як падключэнне да сеткі зноў з'явіцца на вашай прыладзе."
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Llegiu, escriviu i gestioneu correus allà on us trobeu. Tot se sincronitzarà automàticament un cop torneu a estar en línia."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Čtěte, pište a spravujte svoje emaily odkudkoliv. Vše se automaticky synchronizuje, jakmile jste znovu online."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Læs, skriv og administrer e-mails, uanset hvor du er. Alt synkroniseres automatisk i det øjeblik, du er tilbage online."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-Mails lesen, schreiben und verwalten, wo immer du bist. Alles synchronisiert sich automatisch, sobald wieder eine Internetverbindung besteht."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Διαβάστε, γράψτε και διαχειριστείτε τα email σας όπου και αν βρίσκεστε. Όλα συγχρονίζονται αυτόματα τη στιγμή που ξανασυνδέεστε."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Read, write, and manage emails wherever you are. Everything syncs automatically the moment you’re back online."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lee, escribe y administra correos electrónicos dondequiera que estés. Todo se sincroniza automáticamente en el momento en que vuelves a estar en línea."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lea, escriba y gestione sus correos donde sea que esté. Todo se sincroniza automáticamente cuando vuelva a estar en línea."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lisez, écrivez et gérez des messages où que vous soyez. Tout se synchronise automatiquement dès que vous êtes de nouveau en ligne."
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-maileket olvashat, írhat és kezelhet, bárhol is legyen. Minden automatikusan szinkronizálódik abban a pillanatban, ahogy újra online lesz."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Leggi, scrivi e gestisci i messaggi anche senza connessione a Internet. Tutto viene sincronizzato appena possibile."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "どこにいてもメールの閲覧、作成、管理が可能です。オンラインに戻ると、すぐに変更が自動的に同期されます。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "어디서든 이메일을 읽고 쓰고 관리하세요. 다시 온라인 상태가 되는 순간 모두 자동으로 동기화됩니다."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les, skriv og administrer e-poster uansett hvor du er. Alt synkroniseres automatisk i det øyeblikket du er tilbake på nett."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lees, schrijf en beheer e-mails waar u ook bent. Alles synchroniseert automatisch zodra u weer online bent."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Czytaj, pisz i zarządzaj wiadomościami, gdziekolwiek jesteś. Wszystko synchronizuje się automatycznie w momencie ponownego połączenia z Internetem."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ler, escrever e gerenciar e-mails onde quer que você esteja. Tudo sincroniza automaticamente no momento em que você volta a ficar on-line."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Citiți, scrieți și gestionați mesaje de oriunde v-ați afla. Totul se sincronizează automat în momentul în care aveți conexiune la internet."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Čítajte, píšte a spravujte emaily kdekoľvek sa nachádzate. Všetko sa automaticky synchronizuje v momente, keď sa opäť pripojíte k internetu."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Läs, skriv och hantera e-post var du än är. Allt synkroniseras automatiskt i samma ögonblick som du är online igen."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nerede olursanız olun e-postaları okuyun, yazın ve yönetin. Çevrim içi olduğunuz anda her şey otomatik olarak eşitlenir."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Читайте, пишіть та керуйте електронними листами, де б ви не були. Все синхронізується автоматично, щойно ви знову під'єднаєтеся до Інтернету."
+          }
+        }
+      }
     },
     "Repeat PIN" : {
       "comment" : "Repeat PIN code title.",
@@ -35549,7 +36351,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Reimposta all'originale"
+            "value" : "Ripristina originale"
           }
         },
         "ja" : {
@@ -36426,7 +37228,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mit Face ID sichern"
+            "value" : "Mit Face ID schützen"
           }
         },
         "el" : {
@@ -36611,7 +37413,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mit PIN sichern"
+            "value" : "Mit PIN schützen"
           }
         },
         "el" : {
@@ -36796,7 +37598,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mit Touch ID sichern"
+            "value" : "Mit Touch ID schützen"
           }
         },
         "el" : {
@@ -38306,7 +39108,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PIN setzen"
+            "value" : "PIN festlegen"
           }
         },
         "el" : {
@@ -39344,7 +40146,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Opcji odłóż nie można zastosować do wiadomości w tej lokalizacji."
+            "value" : "Opcji odłożenia nie można zastosować do wiadomości w tej lokalizacji."
           }
         },
         "pt" : {
@@ -39857,7 +40659,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Posticipa a"
+            "value" : "Posticipa fino a"
           }
         },
         "ja" : {
@@ -39893,7 +40695,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Odłóż"
+            "value" : "Odłóż do"
           }
         },
         "pt" : {
@@ -40185,7 +40987,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Zurückgestellt bis %@"
+            "value" : "Später lesen um %@"
           }
         },
         "el" : {
@@ -40920,7 +41722,147 @@
       }
     },
     "Spend less time sorting and more time doing. Your inbox is designed to be easier to navigate, so you can get to what’s important faster." : {
-      "comment" : "Subtitle of the second onboarding page explaining easier inbox navigation."
+      "comment" : "Subtitle of the second onboarding page explaining easier inbox navigation.",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Губляйце менш часу на сартаванне лістоў і вылучайце больш часу на патрэбныя справы. Ваша паштовая скрыня распрацавана так, каб у ёй было лягчэй арыентавацца, таму вы зможаце хутчэй знаходзіць важныя лісты."
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dediqueu menys temps a ordenar i més a fer coses. La vostra safata d'entrada està dissenyada perquè sigui més fàcil de navegar, de manera que pugueu arribar al que és important més ràpidament."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Věnujte více času práci a méně třídění. Vaše doručená pošta je navržena tak, aby se v ní snáze orientovalo, takže se rychleji dostanete k tomu, co je důležité."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brug mindre tid på at sortere og mere tid på at handle. Din indbakke er designet til at være lettere at navigere i, så du hurtigere kan komme til det, der er vigtigt."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verbringe weniger Zeit mit Sortieren und mehr Zeit mit Erledigen. Dein Posteingang ist so gestaltet, dass du dich leichter darin zurechtfindest, damit du schneller zu den wichtigen Dingen gelangst."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ξοδέψτε λιγότερο χρόνο στην οργάνωση και περισσότερο χρόνο στην εκτέλεση. Το εισερχόμενο ταχυδρομείο σας είναι σχεδιασμένο να είναι πιο εύκολο στην πλοήγηση, ώστε να μπορείτε να φτάσετε γρηγορότερα σε ότι είναι σημαντικό."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spend less time sorting and more time doing. Your inbox is designed to be easier to navigate, so you can get to what’s important faster."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dedica menos tiempo a ordenar y más a hacer. Tu bandeja de entrada está diseñada para que la navegación sea más sencilla, así accederás más rápidamente a lo importante."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dedique menos tiempo a ordenar y más tiempo a hacer. Su buzón está diseñado para ser fácil de navegar y así acceder a lo importante más rápido."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Passez moins de temps à trier et plus de temps à agir. Votre boîte de réception est conçue pour une navigation simplifiée, avec un accés rapide à ce qui est le plus important."
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Töltsön kevesebb időt a rendszerezéssel és többet a tényleges feladatokkal. A beérkezett üzenetei úgy lettek kialakítva, hogy könnyebben navigálhatók legyenek, így gyorsabban megtalálhatja, ami fontos."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Risparmia tempo con la nuova interfaccia della casella di posta, progettata per essere navigata più velocemente."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "整理に時間をかけず、行動する時間を増やしましょう。受信トレイは、より操作しやすいように設計されており、重要なものにすばやくアクセスできます。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "분류하는 데 쓰는 시간을 아끼고 더 많은 시간을 활용하세요. 받은 편지함은 탐색하기 쉽도록 설계되어 있어 중요한 것을 더 빠르게 찾을 수 있습니다."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bruk mindre tid på sortering og mer tid på å gjøre ting. Innboksen din er utformet for å være enklere å navigere i, slik at du kan komme raskere til det som er viktig."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Besteed minder tijd aan sorteren en meer tijd aan doen. Uw inbox is ontworpen om gemakkelijker te navigeren, zodat u sneller bij wat belangrijk is kunt komen."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Poświęcaj mniej czasu na porządkowanie, a więcej na pracę. Skrzynka odbiorcza została zaprojektowana tak, aby ułatwić nawigację, dzięki czemu szybciej dotrzesz do tego, co ważne."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gaste menos tempo organizando e mais tempo fazendo. Sua caixa de entrada é projetada para ser mais fácil de navegar, para que você possa chegar ao que é importante mais rápido."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Petreceți mai puțin timp sortând și mai mult timp lucrând. Contul de e-mail este conceput pentru a fi mai ușor de navigat, astfel încât să puteți ajunge mai rapid la ceea ce este important."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Venujte menej času triedeniu a viac času práci. Vaša doručená pošta je navrhnutá tak, aby sa v nej ľahšie orientovalo, takže sa môžete rýchlejšie dostať k tomu, čo je dôležité."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lägg mindre tid på sortering och mer tid på att göra. Din inkorg är designad att vara enklare att navigera så att du kan komma till det viktiga snabbare."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Düzenlemeye daha az, yapmaya daha çok zaman harcayın. Gelen kutunuz daha kolay kullanılacak şekilde tasarlanmıştır. Böylece önemli şeylere daha hızlı ulaşabilirsiniz."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Витрачайте менше часу на сортування і більше часу на роботу. Ваша тека «Вхідні» розроблена так, щоб полегшити навігацію, тому ви можете швидше знайти те, що вам потрібно."
+          }
+        }
+      }
     },
     "Star" : {
       "comment" : "Action title for marking message/conversation as starred in the action sheet.",
@@ -41012,7 +41954,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "星印"
+            "value" : "スター"
           }
         },
         "ka" : {
@@ -41203,7 +42145,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "星印付き"
+            "value" : "スター付き"
           }
         },
         "ka" : {
@@ -41305,7 +42247,147 @@
       }
     },
     "Stay connected, even offline" : {
-      "comment" : "Title of the third onboarding page about offline access to emails."
+      "comment" : "Title of the third onboarding page about offline access to emails.",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Заставайцеся на сувязі, нават па-за сеткай"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mantingueu-vos connectat, fins i tot fora de línia"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zůstaňte ve spojení, dokonce i když jste offline"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Forbliv forbundet, selv offline"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bleib verbunden, auch ohne Internetverbindung"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Μείνετε συνδεδεμένοι, ακόμα και όταν εκτός σύνδεσης"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stay connected, even offline"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mantente conectado, incluso sin conexión"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Manténgase en línea, incluso sin conexión"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restez connecté même hors ligne"
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Maradjon kapcsolatban, még offline is"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sempre disponibile"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "オフラインでも接続"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "오프라인에서도 연결 유지"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hold deg tilkoblet, selv uten nett"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Blijf verbonden, zelfs offline"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pozostań w kontakcie, nawet offline"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fique conectado, mesmo off-line"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rămâneți la zi , chiar și fără conexiune"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zostaňte v kontakte, aj keď ste offline"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Håll dig ansluten, även offline"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Çevrim dışıyken bile bağlı kalın"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Залишайтеся на зв'язку, навіть офлайн"
+          }
+        }
+      }
     },
     "Steps to reproduce" : {
       "comment" : "Title of steps to reproduce text field.",
@@ -42089,7 +43171,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Wischen, um nächsten E-Mail anzuzeigen"
+            "value" : "Zur nächsten E-Mail wischen"
           }
         },
         "el" : {
@@ -43271,7 +44353,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "La barra degli strumenti può avere da 1 a 5 azioni. Non puoi rimuovere l'ultima azione rimasta."
+            "value" : "La barra degli strumenti può contenere da 1 a 5 azioni. Non puoi rimuovere l'ultima azione rimasta."
           }
         },
         "ja" : {
@@ -44715,7 +45797,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Diese Nachricht verfällt in %@"
+            "value" : "Diese Nachricht läuft in %@ ab"
           }
         },
         "el" : {
@@ -45014,7 +46096,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Această bară de unelte apare când sunt selectate mai multe mesaje din lista de mesaje (de ex., Primite, Gunoi etc.)."
+            "value" : "Această bară de unelte apare când sunt selectate mai multe mesaje din lista de mesaje (de ex. Primite, Gunoi etc.)."
           }
         },
         "ru" : {
@@ -45426,7 +46508,195 @@
       }
     },
     "This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address." : {
-      "comment" : "Message shown in the alert explaining the consequence of the 'Unsubscribe' action."
+      "comment" : "Message shown in the alert explaining the consequence of the 'Unsubscribe' action.",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Гэта прывядзе да скасавання вашай падпіскі на спіс рассылкі. Адпраўніку будзе паведамлена пра неабходнасць спыніць адпраўку лістоў на гэты адрас."
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Això us donarà de baixa de la llista de correu. Es notificarà al remitent que ja no enviï correus electrònics a aquesta adreça."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tím se odhlásíte z odběru e-mailů. Odesílatel bude upozorněn, aby na tuto adresu již neposílal e-maily."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dette vil afmelde dig fra mailinglisten. Afsenderen vil få besked om ikke længere at sende e-mails til denne adresse."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dadurch wirst du von der Mailingliste abgemeldet. Der Absender wird benachrichtigt, keine E-Mails mehr an diese Adresse zu senden."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Αυτό θα σας καταργήσει από τη λίστα αλληλογραφίας. Ο αποστολέας θα ειδοποιηθεί να μη στέλνει πλέον μηνύματα ηλεκτρονικού ταχυδρομείου σε αυτήν τη διεύθυνση."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This will unsubscribe you from the mailing list. The sender will be notified to no longer send emails to this address."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esto cancelará tu suscripción de la lista de correo. El remitente será notificado para que no envíe correos a esta dirección."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esto cancelará la suscripción de la lista de correo. El remitente será notificado para que no envíe correos a esta dirección."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tämä lopettaa sähköpostitilauksesi, eli lähettäjää pyydetään lopettamaan näiden viestien lähetys tähän osoitteeseen."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cette action vous permettra de vous désabonner de la liste de diffusion. L'expéditeur sera informé qu'il ne doit plus envoyer de messages à cette adresse e-mail."
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ezzel leiratkozik a levelezőlistáról. A feladó értesítést kap, hogy ne küldjön több e-mailt erre a címre."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tindakan ini akan memberhentikan langganan Anda dari milis. Pengirim pesan akan diberi tahu untuk tidak lagi mengirimkan email ke alamat ini."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Questo ti disiscriverà dalla mailing list. Il mittente verrà avvisato di non inviare più email a questo indirizzo."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "これでメーリングリストからの登録が解除されます。送信者には、今後このアドレスにメールを送信しないよう通知されます。"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ეს დაგზავნის სიის გამოწერას გააუქმებს. გამომგზავნს გავაფრთხილებთ, ამ მისამართზე, ელფოსტა აღარ გამოაგზავნოს."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "메일링 목록의 구독을 해지합니다. 발신자가 더 이상 이 주소로 이메일을 보내지 않도록 요청을 전송합니다."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dette vil melde deg ut av e-postlisten. Avsenderen vil bli varslet om å ikke lenger sende e-post til denne adressen."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hierdoor meldt u zich af van de adressenlijst. De afzender wordt op de hoogte gebracht dat er geen e-mails meer naar dit adres mogen gestuurd worden."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spowoduje to anulowanie subskrypcji listy mailingowej. Nadawca zostanie powiadomiony o anulowaniu subskrypcji."
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Isto irá cancelar a sua subscrição da lista de emails. O remetente será notificado para não enviar mais emails para este endereço."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Isso cancelará sua inscrição na lista de e-mails. O remetente será notificado para não enviar mais e-mails para este endereço."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Acest lucru vă va dezabona din lista de corespondență. Expeditorul va fi notificat să nu mai trimită mesaje la această adresă."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Это отменит подписку на рассылку. Отправитель будет уведомлён о том, чтобы больше не отправлять электронные письма на этот адрес."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Týmto sa odhlásite z mailingového zoznamu. Odosielateľ bude upozornený, aby viac na túto adresu neodosielal emaily."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "S tem se boste odjavili od poštnega seznama. Pošiljatelja bomo obvestili, naj ne pošilja več sporočil na ta naslov."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Detta kommer avsluta din prenumeration från e-postlistan. Avsändaren kommer aviseras att inte längre skicka e-post till denna adress."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bu işlem sizi e-posta listesinden çıkarır. Göndericiye artık bu adrese e-posta göndermemesi bildirilir."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ви відмовитеся від цього списку розсилки. Відправник отримає сповіщення про вашу відмову від роозсилки за цією адресою."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "这将取消您在邮件列表中的订阅。发件人将收到通知，并且不再向该地址发送电子邮件。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "此動作會使您退訂郵件清單。寄件者會收到通知，從此不再傳送郵件到此位址。"
+          }
+        }
+      }
     },
     "To: " : {
       "comment" : "`To` in the message details.",
@@ -45512,7 +46782,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "A: "
+            "value" : "Destinatario: "
           }
         },
         "ja" : {
@@ -46001,7 +47271,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Příliš pozdě na vrácení odeslání zpět. Zpráva byla odeslána."
+            "value" : "Příliš pozdě na zrušení odeslání. Zpráva byla odeslána."
           }
         },
         "da" : {
@@ -46276,7 +47546,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Te veel pogingen te snel na elkaar. Wacht alstublieft voordat u het opnieuw probeert."
+            "value" : "Te veel pogingen te snel na elkaar. Wacht voordat u het opnieuw probeert."
           }
         },
         "pl" : {
@@ -46300,13 +47570,13 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Prea multe încercări prea rapide. Vă rugăm să așteptați înainte de a încerca din nou."
+            "value" : "Prea multe încercări prea rapide. Așteptați înainte de a reîncerca."
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Слишком много попыток за короткое время. Пожалуйста, подождите, прежде чем попробовать снова."
+            "value" : "Слишком много попыток за короткое время. Подождите, прежде чем попробовать снова."
           }
         },
         "sk" : {
@@ -46455,13 +47725,13 @@
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Te veel onjuiste pogingen. Wacht alstublieft voordat u het opnieuw probeert."
+            "value" : "Te veel onjuiste pogingen. Wacht voordat u het opnieuw probeert."
           }
         },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Zbyt wiele nieprawidłowych prób. Poczekaj, zanim spróbujesz ponownie."
+            "value" : "Zbyt wiele niepoprawnych prób. Poczekaj, zanim spróbujesz ponownie."
           }
         },
         "pt" : {
@@ -46479,13 +47749,13 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Prea multe încercări incorecte. Vă rugăm să așteptați înainte de a încerca din nou."
+            "value" : "Prea multe încercări incorecte. Așteptați înainte de a reîncerca."
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Слишком много неверных попыток. Пожалуйста, подождите, прежде чем попробовать снова."
+            "value" : "Слишком много неверных попыток. Подождите, прежде чем попробовать снова."
           }
         },
         "sk" : {
@@ -48442,7 +49712,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Milloreu de pla per accedir-hi"
+            "value" : "Milloreu de pla per a accedir-hi"
           }
         },
         "cs" : {
@@ -48460,7 +49730,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Erweitern für Zugang"
+            "value" : "Upgraden für Zugriff"
           }
         },
         "el" : {
@@ -48824,7 +50094,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Paket erweitern, um E-Mails automatisch zu löschen, die sich seit mehr als 30 Tagen im Papierkorb oder Spam-Ordner befinden."
+            "value" : "Führe ein Upgrade durch, um E-Mails automatisch zu löschen, die sich seit mehr als 30 Tagen im Papierkorb oder Spam-Ordner befinden."
           }
         },
         "el" : {
@@ -48932,7 +50202,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Обновите тариф, чтобы автоматически удалять письма из корзины и спама по истечении 30 дней."
+            "value" : "Обновите тариф, чтобы автоматически удалять письма из Корзины и спама по истечении 30 дней."
           }
         },
         "sk" : {
@@ -49773,7 +51043,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Wir entschuldigen uns. Dies könnte ein Fehler unsererseits gewesen sein. Bitte bestätigen, wenn diese E-Mail als seriös gekennzeichnet werden soll."
+            "value" : "Wir entschuldigen uns. Dies könnte ein Fehler unsererseits gewesen sein. Bitte bestätigen, wenn diese E-Mail als legitim gekennzeichnet werden soll."
           }
         },
         "el" : {
@@ -50066,7 +51336,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "При подготовке почтового ящика произошла ошибка. Пожалуйста, передайте журналы нашей команде поддержки для дальнейшего расследования."
+            "value" : "При подготовке почтового ящика произошла ошибка. Передайте журналы нашей команде поддержки для дальнейшего расследования."
           }
         },
         "sk" : {
@@ -50251,7 +51521,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "При синхронизации почты с циклом обработки событий произошла ошибка. Пожалуйста, передайте журналы нашей команде поддержки для дальнейшего расследования. Попробуйте выйти из аккаунта и войти снова, чтобы устранить проблему."
+            "value" : "При синхронизации почты с циклом обработки событий произошла ошибка. Передайте журналы нашей команде поддержки для дальнейшего расследования. Попробуйте выйти из аккаунта и войти снова, чтобы устранить проблему."
           }
         },
         "sk" : {
@@ -50484,10 +51754,332 @@
       }
     },
     "Welcome to Proton Mail, where privacy is default" : {
-      "comment" : "Title of the first onboarding page introducing Proton Mail's privacy focus."
+      "comment" : "Title of the first onboarding page introducing Proton Mail's privacy focus.",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сардэчна запрашаем у Proton Mail, дзе прыватнасць з'яўляецца паўсядзённасцю"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Us donem la benvinguda a Proton Mail, on la Privacitat està assegurada."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vítejte v Proton Mail, kde soukromí je základem"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Velkommen til Proton Mail, hvor privatliv er standard"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Willkommen bei Proton Mail, wo Datenschutz standardmäßig gewährleistet ist"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Καλώς ήρθατε στο Proton Mail, όπου η ιδιωτικότητα είναι προεπιλογή"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Welcome to Proton Mail, where privacy is default"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le damos la bienvenida a Proton Mail, donde la privacidad es la norma"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bienvenue sur Proton Mail, où le respect de la vie privée est la base"
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Üdvözöljük a Proton Mailben, ahol az adatvédelem alapértelmezett"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Benvenuto in Proton Mail, dove la privacy è una priorità"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "プライバシーが標準のProton Mailへようこそ。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "개인정보 보호가 기본인 Proton Mail에 오신 것을 환영합니다"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Velkommen til Proton Mail, hvor personvern er standard"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Welkom bij Proton Mail, waar privacy standaard is"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Witaj w Proton Mail, gdzie prywatność jest domyślna"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bem-vindo(a) ao Proton Mail, onde a privacidade é padrão"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bun venit la Proton Mail, unde confidențialitatea este implicită"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vitajte v Proton Mail, kde je súkromie štandardom"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Välkommen till Proton Mail, där integritet är standard"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gizlilik odaklı Proton Mail uygulamasına hoş geldiniz"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ласкаво просимо до Proton Mail, де приватність є стандартом"
+          }
+        }
+      }
     },
     "You are about to launch the web browser and navigate to" : {
-      "comment" : "Prompts the user to confirm before a link is opened - the sentence is cut on purpose, and the link follows."
+      "comment" : "Prompts the user to confirm before a link is opened - the sentence is cut on purpose, and the link follows.",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вы збіраецеся запусціць браўзер і перайсці па спасылцы"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esteu a punt de llançar el navegador web i navegar fins a"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chystáte se otevřít webový prohlížeč a přejít na"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du er ved at starte webbrowseren og fortsætte til"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du bist dabei, den Webbrowser zu starten und zur folgenden Website zu navigieren:"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Πρόκειται να εκκινήσετε το πρόγραμμα περιήγησης και να πλοηγηθείτε στο"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You are about to launch the web browser and navigate to"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Estás a punto de abrir el navegador web y navegar hacia"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Está a punto de abrir el navegador web y navegar hacia"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Olet avaamassa verkkoselaimeen kohdetta"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vous êtes sur le point de lancer le navigateur web et de visiter"
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Webböngészőt fog megnyitni a következő címmel:"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anda akan membuka aplikasi browser dan mengunjungi"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Stai per avviare il browser web e navigare in"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ブラウザで次のURLを開こうとしています："
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "თქვენ ახლა გახსნით ბრაუზერს და გადახვალთ"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "브라우저에서 다음 URL을 열려고 하고 있습니다"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du er i ferd med å starte nettleseren og navigere til"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "U staat op het punt de webbrowser te starten en te navigeren naar"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uruchomisz przeglądarkę i przejdziesz do"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Está prestes a iniciar o navegador web e navegar até"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Você está prestes a ser redirecionado para"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sunteți pe cale să lansați navigatorul web și să navigați la"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вы собираетесь запустить браузер и перейти по адресу"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Chystáte sa otvoriť webový prehliadač a prejsť na"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Odprli boste spletni brskalnik in obiskali"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du är på väg att öppna webbläsaren och navigera till"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tarayıcıyı açmak ve şuraya gitmek üzeresiniz"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ви збираєтеся запустити браузер і перейти до"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "您即将在浏览器中打开"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "您將開啟網頁瀏覽器並導覽到"
+          }
+        }
+      }
     },
     "You are currently offline, please try again with internet connection." : {
       "comment" : "Toast displayed after the report failed to send in offline.",
@@ -50519,7 +52111,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bitte mit einer Internetverbindung erneut versuchen."
+            "value" : "Du bist derzeit offline. Bitte mit einer Internetverbindung erneut versuchen."
           }
         },
         "el" : {
@@ -50627,7 +52219,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Сейчас вы не в сети, повторите попытку при наличии подключения к интернету."
+            "value" : "Сейчас вы не в сети, повторите попытку при наличии подключения к Интернету."
           }
         },
         "sk" : {
@@ -50675,7 +52267,141 @@
       }
     },
     "You are unsubscribed from this mailing list." : {
-      "comment" : "Banner indicating that the user is already unsubscribed from a mailing list."
+      "comment" : "Banner indicating that the user is already unsubscribed from a mailing list.",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вы скасавалі падпіску з гэтага спіса рассылкі"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "S'ha cancel·lat la subscripció a aquesta llista de correu."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jste odhlášen z tohoto e-mailového seznamu."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du er afmeldt denne mailingliste."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du bist von dieser Verteilerliste abgemeldet."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Έχετε απεγγραφεί από αυτήν τη λίστα αλληλογραφίας."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You are unsubscribed from this mailing list."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Has sido dado de baja de esta lista de correo"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ha cancelado esta lista de correo."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vous êtes désabonné de cette liste de diffusion."
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ön leiratkozott erről a levelezőlistáról."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sei stato rimosso da questa mailing list."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "このメーリングリストの登録は解除されました。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이 메일리스트에서 구독이 취소되었습니다."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du er avmeldt fra denne e-postlisten."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "U bent afgemeld van deze adressenlijst."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anulowano subskrypcję listy mailingowej."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Você já está descadastrado desta lista de e-mails."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "V-ați dezabonat de la această listă de adrese."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Odhlásili ste sa z tohto mailingového zoznamu."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bu e-posta listesindeki aboneliğiniz sonlandırıldı."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ви відписалися від цього списку розсилки."
+          }
+        }
+      }
     },
     "You blocked this sender" : {
       "comment" : "Banner informing the user that they have blocked this sender.",
@@ -50707,7 +52433,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Der Absender wurde gesperrt"
+            "value" : "Du hast diesen Absender gesperrt"
           }
         },
         "el" : {
@@ -51274,7 +53000,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Das Gerät ist nicht mit dem Internet verbunden"
+            "value" : "Dein Gerät ist offline"
           }
         },
         "el" : {

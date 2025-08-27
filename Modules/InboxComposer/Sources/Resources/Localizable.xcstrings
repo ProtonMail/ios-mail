@@ -2,10 +2,290 @@
   "sourceLanguage" : "en",
   "strings" : {
     "%@ cannot be used to send messages" : {
-      "comment" : "Error shown when the sender address can't be used for sending."
+      "comment" : "Error shown when the sender address can't be used for sending.",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ не можа быць выкарыстаны для адпраўкі паведамленняў"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ no es pot utilitzar per enviar missatges"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ nelze použít k odesílání zpráv"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ kan ikke bruges til at sende beskeder"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ kann nicht zum Senden von Nachrichten verwendet werden"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ δε μπορεί να χρησιμοποιηθεί για αποστολή μηνυμάτων"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ cannot be used to send messages"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ no puede utilizarse para enviar mensajes"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ no puede usarse para enviar mensajes"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ ne peut pas être utilisée pour envoyer des messages"
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ nem használható üzenetek küldéséhez"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ non può essere usato per inviare messaggi"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ はメッセージの送信に使用できません"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ 는 메시지 보내기에 사용할 수 없습니다."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ kan ikke brukes til å sende meldinger"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ kan niet worden gebruikt om berichten te verzenden"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adres %@ nie może zostać użyty do wysyłania wiadomości"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ não pode ser usado para enviar mensagens"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adresa %@ nu poate fi utilizată pentru a trimite mesaje."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ nemôže byť použité na odosielanie správ"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ kan inte användas för att skicka meddelanden"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ ileti göndermek için kullanılamaz"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ не може бути використано для надсилання повідомлень"
+          }
+        }
+      }
     },
     "%@ is disabled. It cannot send messages" : {
-      "comment" : "Error shown when the sender address can't be used because it's disabled."
+      "comment" : "Error shown when the sender address can't be used because it's disabled.",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ адключаны. Ён не можа адпраўляць паведамленні"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ està desactivat. No es poden enviar missatges"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adresa %@ je deaktivována. Nemůže odesílat zprávy"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ er deaktiveret. Den kan ikke sende beskeder"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ ist deaktiviert. Nachrichten können nicht gesendet werden."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ είναι απενεργοποιημένη. Δεν μπορεί να στείλει μηνύματα"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ is disabled. It cannot send messages"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ está deshabilitado. No puede enviar mensajes"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ está deshabilitada. No puede enviar mensajes."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ est désactivée. Elle ne peut pas envoyer de messages"
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ le van tiltva. Nem tud üzeneteket küldeni."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ è disabilitato. Non può inviare messaggi."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ は無効になっています。メッセージを送信できません。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ 는 비활성화상태입니다. 메시지를 보낼 수 없습니다."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ er deaktivert. Den kan ikke sende meldinger"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ is uitgeschakeld. Het kan geen berichten verzenden."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adres %@ jest wyłączony, więc nie może wysyłać wiadomości"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ está desativado. Não pode enviar mensagens"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adresa %@ este dezactivată. Nu poate trimite mesaje."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ je zakázaný. Nemôže odosielať správy."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ är inaktiverad. Den kan inte skicka meddelanden"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ kullanımdan kaldırılmış. İleti gönderemez"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ вимкнено. Воно не може надсилати повідомлення"
+          }
+        }
+      }
     },
     "%lld members" : {
       "comment" : "Contact group row subtitle in contact picker.",
@@ -199,7 +479,147 @@
       }
     },
     "A paid plan is required to use %@" : {
-      "comment" : "Error shown when the sender address can't be used for subscription-based reasons."
+      "comment" : "Error shown when the sender address can't be used for subscription-based reasons.",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Для выкарыстання %@ патрабуецца платны тарыфны план"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Per utilitzar %@ us cal un pla de pagament"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pro použití %@ je vyžadován placený tarif"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Et betalt abonnement er påkrævet for at bruge %@"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Um %@ nutzen zu können, ist ein kostenpflichtiges Abonnement erforderlich"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ένα πλάνο επί πληρωμή απαιτείται για τη χρήση του %@"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A paid plan is required to use %@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se requiere un plan de pago para usar %@"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se requiere un plan de pago para usar %@"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un abonnement payant est nécessaire pour utiliser %@"
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A(z) %@ használatához előfizetéses csomag szükséges."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "È richiesto un piano a pagamento per usare %@"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@を使用するには有料プランが必要です"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ 사용을 위해 유료플랜이 필요합니다."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "En betalt plan kreves for å bruke %@"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Een betaald abonnement is vereist om %@ te gebruiken."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aby użyć adresu %@, wymagany jest płatny plan"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "É preciso de um plano pago para usar %@"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Este necesar un plan cu plată pentru a utiliza %@."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Na používanie %@ je potrebný platený plán."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ett betalt paket är obligatoriskt för att använda %@"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ Kullanmak için ücretli bir tarifeye abone olmalısınız"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Для використання %@ потрібен платний тарифний план"
+          }
+        }
+      }
     },
     "Access to the camera was disabled. Please go to Settings and enable the camera permission." : {
       "comment" : "Alert shown if permission to camera is denied when trying to use it for attachments.",
@@ -965,7 +1385,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Adresu nelze použít k odesílání zpráv."
+            "value" : "Adresu nelze použít k odesílání zpráv"
           }
         },
         "da" : {
@@ -977,7 +1397,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Die Adresse kann nicht zum Versenden von Nachrichten verwendet werden."
+            "value" : "Die Adresse kann nicht zum Versenden von Nachrichten verwendet werden"
           }
         },
         "el" : {
@@ -1085,7 +1505,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Adresa nu poate fi utilizată pentru a trimite mesaje"
+            "value" : "Adresa nu poate fi utilizată pentru a trimite mesaje."
           }
         },
         "ru" : {
@@ -1138,7 +1558,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aquesta adreça està desactivada."
+            "value" : "L'adreça està desactivada."
           }
         },
         "cs" : {
@@ -1264,7 +1684,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Adresă este dezactivată."
+            "value" : "Adresa este dezactivată."
           }
         },
         "ru" : {
@@ -1318,7 +1738,147 @@
       }
     },
     "Address not available" : {
-      "comment" : "Title for the alert telling the user the address is invalid for sending."
+      "comment" : "Title for the alert telling the user the address is invalid for sending.",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Адрас недаступны"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adreça no disponible"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adresa není dostupná"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adresse ikke tilgængelig"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adresse nicht verfügbar"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Η διεύθυνση δεν είναι διαθέσιμη"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Address not available"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dirección no disponible"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dirección no disponible"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L'adresse n'est pas disponible."
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cím nem érhető el"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Indirizzo non disponibile"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "アドレスは利用できません"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "주소를 이용할 수 없습니다"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adresse ikke tilgjengelig"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adres niet beschikbaar"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adres nie jest dostępny"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Endereço não disponível"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adresa nu este disponibilă"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adresa nie je dostupná"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adress inte tillgänglig"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Adres kullanılamıyor"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Адреса недоступна"
+          }
+        }
+      }
     },
     "Address not found" : {
       "comment" : "Error in the context of changing the sender with a wrong sender address.",
@@ -1828,7 +2388,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Adresa nu este recunoscută. Vă rugăm să verificați adresa."
+            "value" : "Adresa nu este recunoscută. Verificați adresa."
           }
         },
         "ru" : {
@@ -1953,7 +2513,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "1 giorno"
+            "value" : "Dopo 1 giorno"
           }
         },
         "ja" : {
@@ -2144,7 +2704,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "1 ora"
+            "value" : "Dopo 1 ora"
           }
         },
         "ja" : {
@@ -2263,7 +2823,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Després de tres dies"
+            "value" : "Després de 3 dies"
           }
         },
         "cs" : {
@@ -2568,7 +3128,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Atașamentul lipsește. Vă rugăm să-l încărcați din nou."
+            "value" : "Atașamentul lipsește. Reîncărcați-l."
           }
         },
         "ru" : {
@@ -3015,7 +3575,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Anhänge sind zu groß. Halte die Größe der Anhänge unter 25 MB."
+            "value" : "Anhänge sind zu groß. Halte die Größe der Anhänge unter 25 MB."
           }
         },
         "el" : {
@@ -3123,7 +3683,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Atașamentele sunt prea mari. Păstrați dimensiunea atașamentului sub 25 MB."
+            "value" : "Atașamentele sunt prea mari. Păstrați dimensiunea atașamentului sub 25 MiB."
           }
         },
         "ru" : {
@@ -3558,7 +4118,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Zakázaná e-mailová adresa. Zkontrolujte, zda je adresa platná a aktivní."
+            "value" : "Deaktivovaná e-mailová adresa. Zkontrolujte, zda je adresa platná a aktivní."
           }
         },
         "da" : {
@@ -3624,7 +4184,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Indirizzo email disabilitato. Controlla che l'indirizzo sia valido e attivo."
+            "value" : "Indirizzo email disattivato. Controlla che l'indirizzo sia valido e attivo."
           }
         },
         "ja" : {
@@ -3660,7 +4220,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Wyłączony adres e-mail. Sprawdź, czy adres jest prawidłowy i aktywny."
+            "value" : "Wyłączony adres e-mail. Sprawdź, czy adres jest poprawny i aktywny."
           }
         },
         "pt" : {
@@ -3684,7 +4244,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Отключённый адрес электронной почты. Проверьте, что адрес действителен и активен."
+            "value" : "Отключённый адрес электронной почты. Убедитесь, что адрес действителен и активен."
           }
         },
         "sk" : {
@@ -4424,7 +4984,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ciorna nu a fost găsită. Este posibil s-o fi înlăturat."
+            "value" : "Ciorna nu a fost găsită. Este posibil să fi fost înlăturată."
           }
         },
         "ru" : {
@@ -5647,7 +6207,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Impossibile decifrare la password di crittografia esterna"
+            "value" : "Impossibile decriptare la password di crittografia esterna"
           }
         },
         "ja" : {
@@ -5701,7 +6261,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nu s-a putut decripta parola de criptare externă"
+            "value" : "Nu s-a putut decripta parola de criptare externă."
           }
         },
         "ru" : {
@@ -6596,7 +7156,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "有効期限の仕組み"
+            "value" : "有効期限はどのように機能しますか？"
           }
         },
         "ka" : {
@@ -6996,7 +7556,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nieprawidłowy adres e-mail. Sprawdź adres i spróbuj ponownie."
+            "value" : "Niepoprawny adres e-mail. Sprawdź adres i spróbuj ponownie."
           }
         },
         "pt" : {
@@ -7175,7 +7735,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nieprawidłowy adres e-mail. Sprawdź adres."
+            "value" : "Niepoprawny adres e-mail. Sprawdź adres."
           }
         },
         "pt" : {
@@ -7193,7 +7753,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Adresă de e-mail nevalidă. Vă rugăm să verificați adresa."
+            "value" : "Adresă de e-mail nevalidă. Verificați adresa."
           }
         },
         "ru" : {
@@ -8052,7 +8612,7 @@
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "L'ora di scadenza del messaggio è troppo vicina."
+            "value" : "L'orario di scadenza del messaggio è troppo vicina."
           }
         },
         "ja" : {
@@ -8464,7 +9024,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mesajul nu a fost găsit. Este posibil să-l fi trimis sau înlăturat."
+            "value" : "Mesajul nu a fost găsit. Este posibil să-l fi trimis sau sa-l fi înlăturat."
           }
         },
         "ru" : {
@@ -9025,7 +9585,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mesajul a fost deja trimis"
+            "value" : "Mesajul a fost deja trimis."
           }
         },
         "ru" : {
@@ -9084,7 +9644,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Zpráva nebyla nalezena na serveru."
+            "value" : "Zpráva nebyla nalezena na serveru"
           }
         },
         "da" : {
@@ -9204,7 +9764,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mesajul nu a fost găsit pe server"
+            "value" : "Mesajul nu a fost găsit pe server."
           }
         },
         "ru" : {
@@ -9556,7 +10116,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nazwa musi zawierać od 8 do 21 znaków"
+            "value" : "Nazwa musi mieć od 8 do 21 znaków"
           }
         },
         "pt" : {
@@ -9574,7 +10134,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Trebuie să aibă între 8 și 21 de caractere"
+            "value" : "Trebuie să aibă între 8 și 21 de caractere."
           }
         },
         "ru" : {
@@ -10015,7 +10575,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Passwort-Hinweis (optional)"
+            "value" : "Passworthinweis (optional)"
           }
         },
         "el" : {
@@ -10546,7 +11106,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Zadejte alespoň jednoho příjemce"
+            "value" : "Zadejte prosím alespoň jednoho příjemce"
           }
         },
         "da" : {
@@ -10666,7 +11226,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Adăugați cel puțin un destinatar"
+            "value" : "Adăugați cel puțin un destinatar."
           }
         },
         "ru" : {
@@ -10863,7 +11423,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Пожалуйста, введите адрес электронной почты в правильном формате"
+            "value" : "Введите адрес электронной почты в правильном формате"
           }
         },
         "sk" : {
@@ -10940,7 +11500,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Zuletzt eingestellt"
+            "value" : "Zuletzt festgelegt"
           }
         },
         "el" : {
@@ -11233,7 +11793,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Problemă la criptarea atașamentului. Vă rugăm să îl încărcați din nou."
+            "value" : "Problemă la criptarea atașamentului. Reîncărcați-l."
           }
         },
         "ru" : {
@@ -11412,7 +11972,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Problemă la efectuarea acelei acțiuni. Vă rugăm să reîncercați."
+            "value" : "Problemă la efectuarea acelei acțiuni. Reîncercați."
           }
         },
         "ru" : {
@@ -11591,7 +12151,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Problemă la trimiterea mesajului. Vă rugăm să reîncercați."
+            "value" : "Problemă la trimiterea mesajului. Reîncercați."
           }
         },
         "ru" : {
@@ -11841,7 +12401,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Odstranit heslo"
+            "value" : "Odebrat heslo"
           }
         },
         "da" : {
@@ -12223,7 +12783,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Odstraněni duplicitní příjemci: %@"
+            "value" : "Odebráni duplicitní příjemci: %@"
           }
         },
         "da" : {
@@ -12235,7 +12795,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Doppelte(n) Empfänger entfernt: %@"
+            "value" : "Doppelte Empfänger entfernt: %@"
           }
         },
         "el" : {
@@ -13011,7 +13571,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "L'heure d'envoi programmé est dans le passé. Allez dans les Brouillons pour l'envoyer ou le reprogrammer."
+            "value" : "L'heure d'envoi programmé se situe dans le passé. Allez dans les Brouillons pour l'envoyer ou le reprogrammer."
           }
         },
         "hu" : {
@@ -13083,7 +13643,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ora de trimitere programată este în trecut. Accesați Ciorne pentru a-l trimite sau a-l reprograma."
+            "value" : "Ora de trimitere programată este în trecut. Accesați „Ciorne” pentru a-l trimite sau a-l reprograma."
           }
         },
         "ru" : {
@@ -14103,7 +14663,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Lege ein Passwort fest, um diese Nachricht für Nutzer, die kein Proton Mail verwenden, zu verschlüsseln."
+            "value" : "Lege ein Passwort fest, um diese Nachricht für Benutzer, die kein Proton Mail verwenden, zu verschlüsseln."
           }
         },
         "el" : {
@@ -17947,7 +18507,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nu am putut confirma că toți destinatarii folosesc Proton Mail. Doar adresele Proton acceptă expirarea mesajelor. În acest caz, vă sugerăm să adăugați o parolă."
+            "value" : "Nu am putut confirma dacă toți destinatarii folosesc Proton Mail. Doar adresele Proton acceptă expirarea mesajelor. În acest caz, vă sugerăm să adăugați o parolă."
           }
         },
         "ru" : {
@@ -18203,7 +18763,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Das Limit für geplante Nachrichten wurde erreicht."
+            "value" : "Die maximale Anzahl geplanter Nachrichten wurde erreicht."
           }
         },
         "el" : {
@@ -18573,7 +19133,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Der Entwurf wird nicht gespeichert"
+            "value" : "Dein Entwurf wird nicht gespeichert"
           }
         },
         "el" : {

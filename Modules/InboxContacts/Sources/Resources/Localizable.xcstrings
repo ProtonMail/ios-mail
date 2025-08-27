@@ -1791,7 +1791,147 @@
       }
     },
     "Available in web" : {
-      "comment" : "Title of the prompt indicating this action is only available in the web app.\nTitle of the prompt informing the user that this action is only available in the web app."
+      "comment" : "Title of the prompt indicating this action is only available in the web app.\nTitle of the prompt informing the user that this action is only available in the web app.",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Даступна ў вэб"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Disponible en web"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dostupné na webu"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tilgængelig i web"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verfügbar in der Web-App"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Διατίθεται στον ιστό"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Available in web"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Disponible en web"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Disponible en la web"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Disponible sur l'application internet"
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Weben elérhető"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Disponibile sul web."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ウェブで利用可能"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "웹에서 이용 가능"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tilgjengelig i nettappen"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beschikbaar op het web"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dostępne w aplikacji internetowej"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Disponível na web"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Disponibil în web"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dostupné na webe"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tillgänglig i webb"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "İnternet üzerinden kullanılabilir"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Доступно у веб"
+          }
+        }
+      }
     },
     "Birthday" : {
       "comment" : "Birthday label in contact details.",
@@ -2552,10 +2692,212 @@
       }
     },
     "Continue on web" : {
-      "comment" : "Label for the button that opens the web app to create a contact or group.\nLabel for the button that opens the web app to edit a contact."
+      "comment" : "Label for the button that opens the web app to create a contact or group.\nLabel for the button that opens the web app to edit a contact.",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Працягнуць у вэб-праграме"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continueu al web"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "In der Web-App fortfahren"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Συνέχεια στο διαδίκτυο"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continue on web"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continuar en la web"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continuar en la web"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continuer sur le web"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ga verder op de website"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continuar na web"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fortsätt på webb"
+          }
+        }
+      }
     },
     "Creating contacts or groups in the app is not yet ready. For now, you can create them in the web app and they’ll sync to your device." : {
-      "comment" : "Subtitle explaining that creating contacts or groups is not yet supported in the app and must be done on the web."
+      "comment" : "Subtitle explaining that creating contacts or groups is not yet supported in the app and must be done on the web.",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Стварэнне кантактаў або груп у праграме пакуль не магчыма. Зараз, вы можаце стварыць іх у вэб-праграме, і яны сінхранізуюцца з вашай прыладай."
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La creació de contactes o grups a l'aplicació encara no està disponible. De moment, els podeu crear a l'aplicació web i se sincronitzaran amb el vostre dispositiu."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vytváření kontaktů nebo skupin v aplikaci není ještě podporováno. Prozatím je můžete vytvořit ve webové aplikaci a budou se synchronizovat s vaším zařízením."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oprettelse af kontakter eller grupper i appen er endnu ikke klar. Du kan foreløbig oprette dem i webappen, og de synkroniseres til din enhed."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Das Erstellen von Kontakten oder Gruppen in der App ist noch nicht möglich. Vorläufig können Sie diese in der Web-App erstellen, sie werden dann mit Ihrem Gerät synchronisiert."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Η δημιουργία επαφών ή ομάδων στην εφαρμογή δεν είναι ακόμα δυνατή. Προς το παρόν, μπορείτε να τις δημιουργήσετε στην εφαρμογή ιστού και θα συγχρονιστούν στη συσκευή σας."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Creating contacts or groups in the app is not yet ready. For now, you can create them in the web app and they’ll sync to your device."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Todavía no es posible crear contactos o grupos en la aplicación. Por ahora, puedes crearlos en la aplicación web y se sincronizarán con tu dispositivo."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Todavía no es posible crear contactos o grupos en la aplicación. Por ahora, puede crearlos en la aplicación web y se sincronizarán con su dispositivo."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La création de contacts ou de groupes n’est pas encore disponible dans l’appli. Créez-les depuis l’application web et ils se synchroniseront automatiquement."
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kapcsolatok vagy csoportok létrehozása az alkalmazásban még nem áll rendelkezésre. Egyelőre a webalkalmazásban hozhatja létre őket, és azok szinkronizálódnak az eszközére."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La creazione di contatti o gruppi nell'app non è ancora disponibile. Per il momento, puoi crearli nell'app web e si sincronizzeranno con il tuo dispositivo."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "アプリでの連絡先またはグループの作成は、まだ準備ができていません。現在は、ウェブアプリで作成すると、お客様のデバイスに同期されます。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "연락처 또는 그룹 생성은 모바일 앱에서 아직 지원되지 않습니다. 현재 웹 브라우저에서 연락처 및 그룹을 생성하실 수 있고 생성된 연락처 및 그룹은 기기에 동기화됩니다."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oppretting av kontakter eller grupper i appen er ikke klart ennå. Foreløpig kan du opprette dem i nettappen, og de vil synkroniseres til din enhet."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Het aanmaken van contacten of groepen in de app is nog niet beschikbaar. Voorlopig kunt u ze aanmaken in de web-app. Ze worden dan gesynchroniseerd met uw apparaat."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tworzenie kontaktów lub grup w aplikacji nie jest jeszcze dostępne. Możesz je tworzyć w aplikacji internetowej, a następnie zsynchronizować z urządzeniem."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Criar contatos ou grupos no aplicativo ainda não está pronto. Por enquanto, você pode criá-los no aplicativo web e eles sincronizarão com o seu dispositivo."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Crearea de contacte sau grupuri în aplicație nu este încă gata. Momentan, le puteți crea în aplicația web și se vor sincroniza cu dispozitivul personal."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vytváranie kontaktov alebo skupín v aplikácii ešte nie je dostupné. Nateraz ich môžete vytvoriť vo webovej aplikácii a synchronizujú sa do vášho zariadenia."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uygulamada kişi veya grup oluşturma özellikleri henüz hazır değil. Şimdilik, onları internet uygulamasından oluşturabilirsiniz ve aygıtınızla eşitlenirler."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Створення контактів або груп у додатку ще не готове. Наразі ви можете створювати їх у веб додатку, і вони синхронізуються з вашим пристроєм."
+          }
+        }
+      }
     },
     "Delete %@" : {
       "comment" : "Title for the alert shown when deleting a contact or contact group.",
@@ -2749,10 +3091,320 @@
       }
     },
     "Edit" : {
-      "comment" : "Contact details’ “Edit” button title for editing the given contact."
+      "comment" : "Contact details’ “Edit” button title for editing the given contact.",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Рэдагаваць"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edita"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Upravit"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Redigér"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bearbeiten"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Επεξεργασία"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edit"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Editar"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Editar"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Muokkaa"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Modifier"
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Szerkesztés"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sunting"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Modifica"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "編集"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ჩასწორება"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "편집"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rediger"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bewerken"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edytuj"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Editar"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Editar"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Editare"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Изменить"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Upraviť"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uredi"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Redigera"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Düzenle"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Змінити"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "编辑"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "編輯"
+          }
+        }
+      }
     },
     "Editing contacts or groups in the app is not yet ready. For now, you can edit them in the web app and changes will sync to your device." : {
-      "comment" : "Subtitle explaining that editing contacts or groups isn't supported in the app yet, and must be done on the web; changes will sync to the device."
+      "comment" : "Subtitle explaining that editing contacts or groups isn't supported in the app yet, and must be done on the web; changes will sync to the device.",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Рэдагаванне кантактаў або груп у праграме пакуль не падтрымліваецца. Пакуль што вы можаце рэдагаваць іх у вэб-праграме, і змены будуць сінхранізавацца з вашай прыладай."
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "L'edició de contactes o grups a l'aplicació encara no està disponible. De moment, els podeu editar a l'aplicació web i els canvis se sincronitzaran amb el vostre dispositiu."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Úpravu kontaktů nebo skupin aplikace zatím neumožňuje. Prozatím můžete úpravy provádět přes webovou aplikaci. Veškeré změny se automaticky synchronizují s vaším zařízením."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Redigering af kontakter eller grupper i appen er endnu ikke klar. Indtil videre kan du redigere dem i web-appen, og ændringer synkroniseres med din enhed."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Das Bearbeiten von Kontakten oder Gruppen ist in der App derzeit noch nicht möglich. Vorläufig kannst du sie in der Web-App bearbeiten, und die Änderungen werden mit deinem Gerät synchronisiert."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Η επεξεργασία επαφών ή ομάδων στην εφαρμογή δεν είναι ακόμα δυνατή. Προς το παρόν, μπορείτε να τις επεξεργαστείτε στην εφαρμογή ιστού και οι αλλαγές θα συγχρονιστούν στη συσκευή σας."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Editing contacts or groups in the app is not yet ready. For now, you can edit them in the web app and changes will sync to your device."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Todavía no es posible editar contactos o grupos en la aplicación. Por ahora, puedes editarlos desde la web y los cambios se sincronizarán con tu dispositivo."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Todavía no es posible editar contactos o grupos en la aplicación. Por ahora, puede editarlos en la aplicación web y los cambios se sincronizarán en su dispositivo."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La modification des contacts ou des groupes dans l'application n'est pas encore prête. Pour l'instant, vous pouvez les modifier dans l'application web et les modifications se synchroniseront sur votre appareil."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Penyuntingan kontak atau grup di aplikasi saat ini belum tersedia. Untuk saat ini, Anda dapat menyunting hal ini pada aplikasi web, di mana segala perubahan yang ada akan disinkronkan ke perangkat Anda."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La modifica di contatti o gruppi nell'app non è ancora disponibile. Per il momento, puoi modificarli nell'app web e le modifiche si sincronizzeranno con il tuo dispositivo."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "アプリでの連絡先またはグループの編集は、現在準備中です。現在は、ウェブアプリで編集することで、変更をお客様のデバイスに同期できます。"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Redigering av kontakter eller grupper i appen er ikke klart ennå. Foreløpig kan du redigere dem i nettappen, og endringer vil synkroniseres til din enhet."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Het bewerken van contacten of groepen in de app is nog niet beschikbaar. Voorlopig kunt u ze bewerken in de web app en worden de wijzigingen gesynchroniseerd met uw apparaat."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Edytowanie kontaktów lub grup w aplikacji nie jest jeszcze dostępne. Możesz je edytować w aplikacji internetowej, a następnie zsynchronizować z urządzeniem."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Editar contatos ou grupos no aplicativo ainda não está pronto. Por enquanto, você pode editá-los na aplicação web e as alterações serão sincronizadas com seu dispositivo."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Editarea contactelor sau a grupurilor în aplicație nu este încă gata. Momentan, le puteți edita în aplicația web iar modificările se vor sincroniza cu dispozitivul."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Úprava kontaktov alebo skupín v aplikácii ešte nie je pripravená. Zatiaľ ich môžete upraviť vo webovej aplikácii a zmeny sa synchronizujú s vaším zariadením."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uygulamada kişileri ve grupları düzenleme özellikleri henüz hazır değil. Şimdilik, onları internet uygulamasında düzenleyebilirsiniz. Değişiklikler aygıtınızla eşitlenir."
+          }
+        }
+      }
     },
     "Email" : {
       "comment" : "Email label in contact details.",
@@ -4658,7 +5310,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Zpráva nebyla nalezena."
+            "value" : "Zpráva nebyla nalezena"
           }
         },
         "da" : {
@@ -4730,7 +5382,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "メッセージが見つかりませんでした。"
+            "value" : "メッセージが見つかりませんでした"
           }
         },
         "ka" : {
@@ -6371,7 +7023,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Funktion"
+            "value" : "Rolle"
           }
         },
         "el" : {
@@ -6944,7 +7596,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Text"
+            "value" : "Textnachricht"
           }
         },
         "el" : {
