@@ -94,7 +94,7 @@ final class ContactSuggestionsRepositoryTests: BaseTestCase {
         contactStoreSpy.stubbedEnumerateContacts = [
             .jonathanHorotvitz,
             .travisHulkenberg,
-            .laura
+            .laura,
         ]
 
         _ = await sut.allContacts()

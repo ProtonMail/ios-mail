@@ -263,6 +263,10 @@ public final class MailSessionSpy: MailSessionProtocol {
         fatalError(#function)
     }
 
+    public func updateOsNetworkStatus(osNetworkStatus: OsNetworkStatus) {
+        fatalError(#function)
+    }
+
     public func userSessionFromStoredSession(session: StoredSession) -> MailSessionUserSessionFromStoredSessionResult {
         fatalError(#function)
     }
