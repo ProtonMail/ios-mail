@@ -76,7 +76,7 @@ private extension MailboxItemCellUIModel {
             messagesCount: 0,
             labelUIModel: .init(labelModels: []),
             attachments: .init(
-                previewable: [],
+                previewables: [],
                 containsCalendarInvitation: false,
                 totalCount: 0
             ),
@@ -104,7 +104,7 @@ private extension MailboxItemCellUIModel {
             messagesCount: 0,
             labelUIModel: .init(labelModels: [LabelUIModel(labelId: .init(value: 0), text: "MeetUp", color: .green)]),
             attachments: .init(
-                previewable: [
+                previewables: [
                     AttachmentCapsuleUIModel(
                         id: .init(value: 1),
                         icon: DS.Icon.icFileTypeIconPdf,
@@ -138,7 +138,7 @@ private extension MailboxItemCellUIModel {
             messagesCount: 0,
             labelUIModel: .init(labelModels: []),
             attachments: .init(
-                previewable: previewableAttachments,
+                previewables: previewableAttachments,
                 containsCalendarInvitation: true,
                 totalCount: previewableAttachments.count + 1
             ),
@@ -170,7 +170,7 @@ private extension MailboxItemCellUIModel {
                 LabelUIModel(labelId: .init(value: 0), text: "Friends", color: .orange),
             ]),
             attachments: .init(
-                previewable: [
+                previewables: [
                     AttachmentCapsuleUIModel(id: .init(value: 1), icon: DS.Icon.icFileTypeIconImage, name: "DSC_001239.jpg"),
                     AttachmentCapsuleUIModel(id: .init(value: 2), icon: DS.Icon.icFileTypeIconImage, name: "DSC_001301.jpg"),
                     AttachmentCapsuleUIModel(id: .init(value: 3), icon: DS.Icon.icFileTypeIconImage, name: "DSC_001305.jpg"),

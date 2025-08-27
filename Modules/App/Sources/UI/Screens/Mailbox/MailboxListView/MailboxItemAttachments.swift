@@ -19,7 +19,7 @@
 struct MailboxItemAttachments {
     /// Attachments that can be directly previewed in the mailbox list
     /// (e.g., images, PDFs, or text documents).
-    let previewable: [AttachmentCapsuleUIModel]
+    let previewables: [AttachmentCapsuleUIModel]
 
     /// Indicates whether the mail contains a calendar invitation
     /// (i.e., an `.ics` attachment).
@@ -37,6 +37,6 @@ struct MailboxItemAttachments {
     /// Typically used to decide whether to show a generic paperclip icon
     /// instead of individual previews.
     var hasNonPreviewableOnly: Bool {
-        previewable.isEmpty && totalCount > 0
+        previewables.isEmpty && totalCount > 0
     }
 }

@@ -292,7 +292,7 @@ private extension ConversationDetailModel.State {
                         labelModels: [LabelUIModel(labelId: .init(value: 0), text: "Work", color: .blue)]
                     ),
                     attachments: .init(
-                        previewable: [
+                        previewables: [
                             .init(id: .init(value: 4), icon: DS.Icon.icFileTypeIconWord, name: "notes.doc")
                         ],
                         containsCalendarInvitation: false,

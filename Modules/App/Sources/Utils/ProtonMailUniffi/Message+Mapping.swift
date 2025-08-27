@@ -49,7 +49,7 @@ extension Message {
             messagesCount: 0,
             labelUIModel: customLabels.toMailboxLabelUIModel(),
             attachments: .init(
-                previewable: attachmentsMetadata.toAttachmentCapsuleUIModels(),
+                previewables: attachmentsMetadata.toAttachmentCapsuleUIModels(),
                 containsCalendarInvitation: attachmentsMetadata.hasICS,
                 totalCount: Int(numAttachments)
             ),

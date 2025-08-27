@@ -273,7 +273,7 @@ extension SelectionModeTests {
             messagesCount: [0, 2, 3].randomElement()!,
             labelUIModel: .init(labelModels: []),
             attachments: .init(
-                previewable: [],
+                previewables: [],
                 containsCalendarInvitation: false,
                 totalCount: 0
             ),

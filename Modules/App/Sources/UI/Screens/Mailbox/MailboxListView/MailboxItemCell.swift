@@ -202,7 +202,7 @@ extension MailboxItemCell {
                 onEvent(.onAttachmentTap(attachmentID: $0))
             }
         )
-        .removeViewIf(uiModel.attachments.previewable.isEmpty)
+        .removeViewIf(uiModel.attachments.previewables.isEmpty)
         .accessibilityElement(children: .contain)
         .accessibilityIdentifier(MailboxItemCellIdentifiers.attachments)
     }
@@ -362,7 +362,7 @@ enum MailboxItemCellEvent {
                     LabelUIModel(labelId: .init(value: 0), text: "Offer lst minute for me and for you", color: .purple)
                 ]),
                 attachments: .init(
-                    previewable: [
+                    previewables: [
                         .init(id: .init(value: 1), icon: DS.Icon.icFileTypeIconPdf, name: "#34JE3KLP.pdf")
                     ],
                     containsCalendarInvitation: false,
@@ -397,7 +397,7 @@ enum MailboxItemCellEvent {
                 labelUIModel: MailboxLabelUIModel(
                     labelModels: [.init(labelId: .init(value: 0), text: "Read later", color: .green)] + LabelUIModel.random(num: 3)),
                 attachments: .init(
-                    previewable: [
+                    previewables: [
                         .init(id: .init(value: 1), icon: DS.Icon.icFileTypeIconPdf, name: "today_meeting_minutes.doc"),
                         .init(id: .init(value: 2), icon: DS.Icon.icFileTypeIconPdf, name: "appendix1.pdf"),
                         .init(id: .init(value: 3), icon: DS.Icon.icFileTypeIconPdf, name: "appendix2.pdf"),

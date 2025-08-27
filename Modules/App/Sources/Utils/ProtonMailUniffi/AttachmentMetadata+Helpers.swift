@@ -34,7 +34,7 @@ extension Array where Element == AttachmentMetadata {
     }
 
     var hasICS: Bool {
-        contains(where: { metadata in metadata.mimeType.category == .calendar })
+        contains { metadata in metadata.mimeType.category == .calendar }
     }
 
 }

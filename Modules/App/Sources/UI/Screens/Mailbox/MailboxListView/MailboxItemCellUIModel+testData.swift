@@ -96,7 +96,7 @@ private extension MailboxItemCellUIModel {
             messagesCount: [0, 2, 3].randomElement()!,
             labelUIModel: .init(labelModels: Label.randomLabels()),
             attachments: .init(
-                previewable: Attachment.randomAttachment(),
+                previewables: Attachment.randomAttachment(),
                 containsCalendarInvitation: false,
                 totalCount: 4
             ),

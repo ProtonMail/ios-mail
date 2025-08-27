@@ -40,7 +40,7 @@ extension Conversation {
             messagesCount: totalMessages > 1 ? totalMessages : 0,
             labelUIModel: customLabels.toMailboxLabelUIModel(),
             attachments: .init(
-                previewable: attachmentsMetadata.toAttachmentCapsuleUIModels(),
+                previewables: attachmentsMetadata.toAttachmentCapsuleUIModels(),
                 containsCalendarInvitation: attachmentsMetadata.hasICS,
                 totalCount: Int(numAttachments)
             ),

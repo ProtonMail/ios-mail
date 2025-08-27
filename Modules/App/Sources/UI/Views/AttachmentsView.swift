@@ -47,7 +47,7 @@ struct AttachmentsView: View {
             let spaceForCapsules =
                 geometry.size.width
                 - (maxNumberOfCapsules * Layout.spacingBetweenCapsules) - Layout.extraAttachmentsViewWidth
-            let capsuleMaxWidth = model.previewable.count == 1 ? spaceForCapsules : spaceForCapsules / CGFloat(maxNumberOfCapsules)
+            let capsuleMaxWidth = model.previewables.count == 1 ? spaceForCapsules : spaceForCapsules / CGFloat(maxNumberOfCapsules)
 
             /**
              SwiftUI does not make it easy to calculate dynamically to fit the maximum number of capsules. After trying
@@ -66,7 +66,7 @@ struct AttachmentsView: View {
     func hStackWithAttachments(limit: Int, capsuleMaxWidth: CGFloat) -> some View {
         HStack(spacing: 0) {
             HStack(spacing: Layout.spacingBetweenCapsules) {
-                let items = model.previewable.prefix(limit)
+                let items = model.previewables.prefix(limit)
                 ForEachEnumerated(items, id: \.element.id) { item, index in
                     AttachmentCapsuleView(
                         model: item,
@@ -172,7 +172,7 @@ fileprivate enum Layout {
     VStack {
         AttachmentsView(
             model: .init(
-                previewable: [
+                previewables: [
                     .init(
                         id: .init(value: 1),
                         icon: DS.Icon.icFileTypePages,
@@ -187,7 +187,7 @@ fileprivate enum Layout {
 
         AttachmentsView(
             model: .init(
-                previewable: [
+                previewables: [
                     .init(id: .init(value: 1), icon: DS.Icon.icFileTypeIconPdf, name: "1.pdf"),
                     .init(id: .init(value: 2), icon: DS.Icon.icFileTypeIconImage, name: "2.png"),
                     .init(id: .init(value: 3), icon: DS.Icon.icFileTypeIconExcel, name: "3.xls"),
@@ -205,7 +205,7 @@ fileprivate enum Layout {
 
         AttachmentsView(
             model: .init(
-                previewable: [
+                previewables: [
                     .init(id: .init(value: 1), icon: DS.Icon.icFileTypeIconPdf, name: "super_long_title_that_goes_beyond_half.pdf"),
                     .init(id: .init(value: 2), icon: DS.Icon.icFileTypeIconImage, name: "quite.png"),
                     .init(id: .init(value: 3), icon: DS.Icon.icFileTypeIconExcel, name: "numebrs.xls"),

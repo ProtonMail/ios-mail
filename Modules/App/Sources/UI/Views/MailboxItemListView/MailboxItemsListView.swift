@@ -155,8 +155,8 @@ struct MailboxItemsListView<EmptyView: View>: View {
         let unread = item.isRead ? "" : L10n.Mailbox.VoiceOver.unread.string
         let expiration = item.expirationDate?.toExpirationDateUIModel?.text.string ?? ""
         let attachments =
-            item.attachments.previewable.count > 0
-            ? L10n.Mailbox.VoiceOver.attachments(count: item.attachments.previewable.count).string
+            item.attachments.previewables.count > 0
+            ? L10n.Mailbox.VoiceOver.attachments(count: item.attachments.previewables.count).string
             : ""
         let value: String = """
             \(unread)
