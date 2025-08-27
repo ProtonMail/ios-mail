@@ -94,6 +94,7 @@ final class ContactSuggestionsRepositoryTests: BaseTestCase {
         contactStoreSpy.stubbedEnumerateContacts = [
             .jonathanHorotvitz,
             .travisHulkenberg,
+            .laura
         ]
 
         _ = await sut.allContacts()
@@ -111,6 +112,16 @@ final class ContactSuggestionsRepositoryTests: BaseTestCase {
                     key: "2",
                     name: "Travis Hulkenberg",
                     emails: ["travis@pm.me", "travis@gmail.com"]
+                ),
+                .init(
+                    key: "4",
+                    name: "laura@example.com",
+                    emails: ["laura@example.com"]
+                ),
+                .init(
+                    key: "4",
+                    name: "l.ronan@example.com",
+                    emails: ["l.ronan@example.com"]
                 ),
             ])
     }
@@ -272,6 +283,14 @@ private extension CNContact {
         )
     }
 
+    static var laura: CNContact {
+        CNContactSpy(
+            id: "4",
+            givenName: "",
+            familyName: "",
+            emails: ["laura@example.com", "l.ronan@example.com"]
+        )
+    }
 }
 
 private extension ContactSuggestion {

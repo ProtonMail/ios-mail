@@ -56,13 +56,17 @@ public struct ContactSuggestionsRepository {
         var contacts: [DeviceContact] = []
 
         try? contactStore.enumerateContacts(with: request) { contact, _ in
-            let contact = DeviceContact(
-                key: contact.identifier,
-                name: [contact.givenName, contact.familyName].joined(separator: " "),
-                emails: contact.emailAddresses.compactMap { address in address.value as String }
-            )
-
-            contacts.append(contact)
+            let name = [contact.givenName, contact.familyName].joined(separator: " ").trimmingCharacters(in: .whitespaces)
+            let emails = contact.emailAddresses.compactMap { address in address.value as String }
+            if name.isEmpty {
+                for email in emails {
+                    let contact = DeviceContact(key: contact.identifier, name: email, emails: [email])
+                    contacts.append(contact)
+                }
+            } else {
+                let contact = DeviceContact(key: contact.identifier, name: name, emails: emails)
+                contacts.append(contact)
+            }
         }
 
         return contacts
