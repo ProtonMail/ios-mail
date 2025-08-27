@@ -185,6 +185,37 @@ final class DraftPresenterTests: BaseTestCase, @unchecked Sendable {
         }
     }
 
+    // MARK: - Open new draft with mailto:
+
+    @MainActor
+    func testOpenDraftWithMailtoData_ItPopulatesAndOpensDraft() async throws {
+        let draftSpy = DraftSpy(noPointer: .init())
+        sut = makeSUT(stubbedNewDraftResult: .ok(draftSpy))
+
+        var capturedDraftToPresent: [DraftToPresent] = []
+        sut.draftToPresent.sink { capturedDraftToPresent.append($0) }.store(in: &cancellables)
+
+        let mailtoData = MailtoData(
+            to: ["john@example.com", "jane@example.com"],
+            cc: [],
+            bcc: ["assistant1@example.com", "assistant2@example.com"],
+            subject: "foo",
+            body: "bar"
+        )
+
+        try await sut.openNewDraft(with: mailtoData)
+
+        XCTAssertEqual(draftSpy.toRecipientsCalls.addSingleRecipientCalls.map(\.email), ["john@example.com", "jane@example.com"])
+        XCTAssertEqual(draftSpy.ccRecipientsCalls.addSingleRecipientCalls.count, 0)
+        XCTAssertEqual(draftSpy.bccRecipientsCalls.addSingleRecipientCalls.map(\.email), ["assistant1@example.com", "assistant2@example.com"])
+        XCTAssertEqual(draftSpy.subject(), "foo")
+        XCTAssertEqual(draftSpy.body(), "bar")
+
+
+        XCTAssertEqual(capturedDraftToPresent.count, 1)
+        XCTAssertEqual(capturedDraftToPresent.first, .new(draft: draftSpy))
+    }
+
     // MARK: handleReplyAction
 
     @MainActor
@@ -291,12 +322,42 @@ private extension Draft {
 }
 
 private class DraftSpy: Draft, @unchecked Sendable {
-    var toRecipientsCalls: ComposerRecipientListSpy = .init(noPointer: .init())
+    let toRecipientsCalls: ComposerRecipientListSpy = .init(noPointer: .init())
+    let ccRecipientsCalls: ComposerRecipientListSpy = .init(noPointer: .init())
+    let bccRecipientsCalls: ComposerRecipientListSpy = .init(noPointer: .init())
+    private(set) var setSubjectCalls: [String] = []
+    private(set) var setBodyCalls: [String] = []
 
     // MARK: - Draft
 
     override func toRecipients() -> ComposerRecipientList {
         toRecipientsCalls
+    }
+
+    override func ccRecipients() -> ComposerRecipientList {
+        ccRecipientsCalls
+    }
+
+    override func bccRecipients() -> ComposerRecipientList {
+        bccRecipientsCalls
+    }
+
+    override func subject() -> String {
+        setSubjectCalls.last ?? .empty
+    }
+
+    override func body() -> String {
+        setBodyCalls.last ?? .empty
+    }
+
+    override func setSubject(subject: String) -> VoidDraftSaveResult {
+        setSubjectCalls.append(subject)
+        return .ok
+    }
+
+    override func setBody(body: String) -> VoidDraftSaveResult {
+        setBodyCalls.append(body)
+        return .ok
     }
 }
 

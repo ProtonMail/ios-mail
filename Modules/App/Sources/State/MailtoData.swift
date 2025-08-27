@@ -15,11 +15,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
-
-public extension Bundle {
-    enum URLScheme: String, Sendable {
-        case mailto
-        case protonmail
-    }
+struct MailtoData: Equatable {
+    let to: [String]
+    let cc: [String]
+    let bcc: [String]
+    let subject: String?
+    let body: String?
 }

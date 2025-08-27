@@ -42,9 +42,10 @@ extension AppRouteState {
 
 }
 
-enum Route: Equatable {
+enum Route: Equatable, CustomStringConvertible {
     case mailbox(selectedMailbox: SelectedMailbox)
     case mailboxOpenMessage(seed: MailboxMessageSeed)
+    case mailto(MailtoData)
     case composer(fromShareExtension: Bool)
     case search
 
@@ -54,7 +55,7 @@ enum Route: Equatable {
             selectedMailbox
         case .mailboxOpenMessage:
             SelectedMailbox.inbox
-        case .composer, .search:
+        case .composer, .mailto, .search:
             nil
         }
     }
@@ -65,12 +66,21 @@ enum Route: Equatable {
             "mailbox \(label.name.string)"
         case .mailboxOpenMessage:
             "mailboxOpenMessage"
+        case .mailto:
+            "mailto"
         case .composer(fromShareExtension: false):
             "composer"
         case .composer(fromShareExtension: true):
             "composerFromShareExtension"
         case .search:
             "search"
+        }
+    }
+
+    var urlScheme: Bundle.URLScheme {
+        switch self {
+        case .mailto: .mailto
+        default: .protonmail
         }
     }
 }

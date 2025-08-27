@@ -149,6 +149,8 @@ extension MailboxModel {
                 } else {
                     createDraft()
                 }
+            case .mailto(let mailtoData):
+                createDraft(with: mailtoData)
             case .search:
                 state.isSearchPresented = true
             }
@@ -504,6 +506,16 @@ extension MailboxModel {
 
     private func openDraftMessage(messageId: ID) {
         draftPresenter.openDraft(withId: messageId)
+    }
+
+    private func createDraft(with mailtoData: MailtoData) {
+        Task {
+            do {
+                try await draftPresenter.openNewDraft(with: mailtoData)
+            } catch {
+                toast = .error(message: error.localizedDescription)
+            }
+        }
     }
 
     private func openDraftForShareExtension() {
