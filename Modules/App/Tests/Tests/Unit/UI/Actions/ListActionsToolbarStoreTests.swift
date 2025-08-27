@@ -19,9 +19,10 @@
 import InboxCoreUI
 import InboxTesting
 import proton_app_uniffi
-import XCTest
+import Testing
 
-class ListActionsToolbarStoreTests: BaseTestCase {
+@MainActor
+class ListActionsToolbarStoreTests {
 
     var sut: ListActionsToolbarStore!
     var invokedAvailableMessageActionsWithIDs: [[ID]]!
@@ -34,8 +35,7 @@ class ListActionsToolbarStoreTests: BaseTestCase {
     var moveToActionsSpy: MoveToActionsSpy!
     var toastStateStore: ToastStateStore!
 
-    override func setUp() {
-        super.setUp()
+    init() {
         invokedAvailableMessageActionsWithIDs = []
         stubbedAvailableMessageActions = .testData
         invokedAvailableConversationActionsWithIDs = []
@@ -46,21 +46,8 @@ class ListActionsToolbarStoreTests: BaseTestCase {
         toastStateStore = .init(initialState: .initial)
     }
 
-    override func tearDown() {
-        sut = nil
-        invokedAvailableMessageActionsWithIDs = nil
-        stubbedAvailableMessageActions = nil
-        invokedAvailableConversationActionsWithIDs = nil
-        starActionPerformerActionsSpy = nil
-        readActionPerformerActionsSpy = nil
-        deleteActionsSpy = nil
-        moveToActionsSpy = nil
-        toastStateStore = nil
-
-        super.tearDown()
-    }
-
-    func testState_WhenListItemsSelectionIsUpdatedInMessageMode_ItReturnsCorrectState() {
+    @Test
+    func state_WhenListItemsSelectionIsUpdatedInMessageMode_ItReturnsCorrectState() async {
         sut = makeSUT(viewMode: .messages)
         stubbedAvailableMessageActions = .init(
             hiddenListActions: [.labelAs, .markRead],
@@ -69,22 +56,23 @@ class ListActionsToolbarStoreTests: BaseTestCase {
 
         let ids: [ID] = [.init(value: 11)]
 
-        sut.handle(action: .listItemsSelectionUpdated(ids: ids))
+        await sut.handle(action: .listItemsSelectionUpdated(ids: ids))
 
-        XCTAssertEqual(invokedAvailableMessageActionsWithIDs.count, 1)
-        XCTAssertEqual(invokedAvailableConversationActionsWithIDs.count, 0)
-        XCTAssertEqual(invokedAvailableMessageActionsWithIDs.first, ids)
-        XCTAssertEqual(
-            sut.state,
-            .init(
-                bottomBarActions: [.notSpam(.testInbox)],
-                moreSheetOnlyActions: [.labelAs, .markRead],
-                isSnoozeSheetPresented: false,
-                isEditToolbarSheetPresented: false
-            ))
+        #expect(invokedAvailableMessageActionsWithIDs.count == 1)
+        #expect(invokedAvailableConversationActionsWithIDs.count == 0)
+        #expect(invokedAvailableMessageActionsWithIDs.first == ids)
+        #expect(
+            sut.state
+                == .init(
+                    bottomBarActions: [.notSpam(.testInbox)],
+                    moreSheetOnlyActions: [.labelAs, .markRead],
+                    isSnoozeSheetPresented: false,
+                    isEditToolbarSheetPresented: false
+                ))
     }
 
-    func testState_WhenListItemsSelectionIsUpdatedInConversationModel_ItReturnsCorrectState() {
+    @Test
+    func state_WhenListItemsSelectionIsUpdatedInConversationModel_ItReturnsCorrectState() async {
         sut = makeSUT(viewMode: .conversations)
         stubbedAvailableConversationActions = .init(
             hiddenListActions: [.notSpam(.testInbox), .permanentDelete],
@@ -92,205 +80,214 @@ class ListActionsToolbarStoreTests: BaseTestCase {
         )
         let ids: [ID] = [.init(value: 22)]
 
-        sut.handle(action: .listItemsSelectionUpdated(ids: ids))
+        await sut.handle(action: .listItemsSelectionUpdated(ids: ids))
 
-        XCTAssertEqual(invokedAvailableMessageActionsWithIDs.count, 0)
-        XCTAssertEqual(invokedAvailableConversationActionsWithIDs.count, 1)
-        XCTAssertEqual(invokedAvailableConversationActionsWithIDs.first, ids)
-        XCTAssertEqual(
-            sut.state,
-            .init(
-                bottomBarActions: [.more],
-                moreSheetOnlyActions: [.notSpam(.testInbox), .permanentDelete],
-                isSnoozeSheetPresented: false,
-                isEditToolbarSheetPresented: false
-            ))
+        #expect(invokedAvailableMessageActionsWithIDs.count == 0)
+        #expect(invokedAvailableConversationActionsWithIDs.count == 1)
+        #expect(invokedAvailableConversationActionsWithIDs.first == ids)
+        #expect(
+            sut.state
+                == .init(
+                    bottomBarActions: [.more],
+                    moreSheetOnlyActions: [.notSpam(.testInbox), .permanentDelete],
+                    isSnoozeSheetPresented: false,
+                    isEditToolbarSheetPresented: false
+                ))
     }
 
-    func testState_WhenEditToolbarActionIsSelected_ItHasCorrectPresentationStatus() {
+    @Test
+    func state_WhenEditToolbarActionIsSelected_ItHasCorrectPresentationStatus() async {
         sut = makeSUT(viewMode: .messages)
 
-        sut.handle(action: .editToolbarTapped)
+        await sut.handle(action: .editToolbarTapped)
 
-        XCTAssertEqual(sut.state.isEditToolbarSheetPresented, true)
+        #expect(sut.state.isEditToolbarSheetPresented == true)
     }
 
-    func testState_WhenListItemsSelectionIsUpdatedWithNoSelection_ItReturnsCorrectState() {
+    @Test
+    func state_WhenListItemsSelectionIsUpdatedWithNoSelection_ItReturnsCorrectState() async {
         sut = makeSUT(viewMode: .messages)
 
-        sut.handle(action: .listItemsSelectionUpdated(ids: []))
+        await sut.handle(action: .listItemsSelectionUpdated(ids: []))
 
-        XCTAssertEqual(invokedAvailableMessageActionsWithIDs.count, 0)
+        #expect(invokedAvailableMessageActionsWithIDs.count == 0)
     }
 
-    func testState_WhenMoveToActionIsSelectedAndThenMoveToSheetIsDismissed_ItReturnsCorrectState() {
+    @Test
+    func state_WhenMoveToActionIsSelectedAndThenMoveToSheetIsDismissed_ItReturnsCorrectState() async {
         sut = makeSUT(viewMode: .messages)
 
-        XCTAssertNil(sut.state.moveToSheetPresented)
+        #expect(sut.state.moveToSheetPresented == nil)
 
-        sut.handle(action: .actionSelected(.moveTo, ids: [.init(value: 7)]))
+        await sut.handle(action: .actionSelected(.moveTo, ids: [.init(value: 7)]))
 
-        XCTAssertEqual(
-            sut.state.moveToSheetPresented,
-            .init(sheetType: .moveTo, ids: [.init(value: 7)], mailboxItem: .message(isLastMessageInCurrentLocation: false))
+        #expect(
+            sut.state.moveToSheetPresented == .init(sheetType: .moveTo, ids: [.init(value: 7)], mailboxItem: .message(isLastMessageInCurrentLocation: false))
         )
 
-        sut.handle(action: .dismissMoveToSheet)
+        await sut.handle(action: .dismissMoveToSheet)
 
-        XCTAssertNil(sut.state.moveToSheetPresented)
+        #expect(sut.state.moveToSheetPresented == nil)
     }
 
-    func testState_WhenLabelAsActionIsSelectedAndThenLabelAsSheetIsDismissed_ItReturnsCorrectState() {
+    @Test
+    func state_WhenLabelAsActionIsSelectedAndThenLabelAsSheetIsDismissed_ItReturnsCorrectState() async {
         sut = makeSUT(viewMode: .conversations)
         let ids: [ID] = [.init(value: 8)]
 
-        XCTAssertNil(sut.state.labelAsSheetPresented)
+        #expect(sut.state.labelAsSheetPresented == nil)
 
-        sut.handle(action: .actionSelected(.labelAs, ids: ids))
+        await sut.handle(action: .actionSelected(.labelAs, ids: ids))
 
-        XCTAssertEqual(sut.state.labelAsSheetPresented, .init(sheetType: .labelAs, ids: ids, mailboxItem: .conversation))
+        #expect(sut.state.labelAsSheetPresented == .init(sheetType: .labelAs, ids: ids, mailboxItem: .conversation))
 
-        sut.handle(action: .dismissLabelAsSheet)
+        await sut.handle(action: .dismissLabelAsSheet)
 
-        XCTAssertNil(sut.state.labelAsSheetPresented)
+        #expect(sut.state.labelAsSheetPresented == nil)
     }
 
-    func testState_WhenMoreActionIsSelected_ItReturnsCorrectState() {
+    @Test
+    func state_WhenMoreActionIsSelected_ItReturnsCorrectState() async {
         sut = makeSUT(viewMode: .messages)
         let ids: [ID] = [.init(value: 9)]
 
-        XCTAssertNil(sut.state.moreActionSheetPresented)
+        #expect(sut.state.moreActionSheetPresented == nil)
 
-        sut.handle(action: .listItemsSelectionUpdated(ids: ids))
-        sut.handle(action: .actionSelected(.more, ids: ids))
+        await sut.handle(action: .listItemsSelectionUpdated(ids: ids))
+        await sut.handle(action: .actionSelected(.more, ids: ids))
 
-        XCTAssertEqual(
-            sut.state.moreActionSheetPresented,
-            .init(
-                selectedItemsIDs: [.init(value: 9)],
-                bottomBarActions: [.markRead, .star, .moveTo, .labelAs],
-                moreSheetOnlyActions: [
-                    .notSpam(.testInbox),
-                    .permanentDelete,
-                    .moveToSystemFolder(.init(localId: .init(value: 7), name: .archive)),
-                ]
-            ))
-    }
-
-    func testState_WhenLabelAsActionOnMoreSheetIsSelected_ItReturnsCorrectState() {
-        sut = makeSUT(viewMode: .messages)
-        let ids: [ID] = [.init(value: 7)]
-
-        sut.handle(action: .moreSheetAction(.labelAs, ids: ids))
-
-        XCTAssertEqual(
-            sut.state.labelAsSheetPresented,
-            .init(sheetType: .labelAs, ids: ids, mailboxItem: .message(isLastMessageInCurrentLocation: false))
+        #expect(
+            sut.state.moreActionSheetPresented
+                == .init(
+                    selectedItemsIDs: [.init(value: 9)],
+                    bottomBarActions: [.markRead, .star, .moveTo, .labelAs],
+                    moreSheetOnlyActions: [
+                        .notSpam(.testInbox),
+                        .permanentDelete,
+                        .moveToSystemFolder(.init(localId: .init(value: 7), name: .archive)),
+                    ]
+                )
         )
     }
 
-    func testState_WhenStarActionIsApplied_ItStarsCorrectMessages() {
+    @Test
+    func state_WhenLabelAsActionOnMoreSheetIsSelected_ItReturnsCorrectState() async {
+        sut = makeSUT(viewMode: .messages)
+        let ids: [ID] = [.init(value: 7)]
+
+        await sut.handle(action: .moreSheetAction(.labelAs, ids: ids))
+
+        #expect(
+            sut.state.labelAsSheetPresented == .init(sheetType: .labelAs, ids: ids, mailboxItem: .message(isLastMessageInCurrentLocation: false))
+        )
+    }
+
+    @Test
+    func state_WhenStarActionIsApplied_ItStarsCorrectMessages() async {
         sut = makeSUT(viewMode: .messages)
         let ids: [ID] = [.init(value: 7), .init(value: 77)]
 
-        sut.handle(action: .actionSelected(.star, ids: ids))
+        await sut.handle(action: .actionSelected(.star, ids: ids))
 
-        XCTAssertEqual(starActionPerformerActionsSpy.invokedStarMessage, ids)
+        #expect(starActionPerformerActionsSpy.invokedStarMessage == ids)
     }
 
-    func testState_WhenUnstarActionIsAppliedFromMoreSheet_ItUnstarsCorrectMessage() {
+    @Test
+    func state_WhenUnstarActionIsAppliedFromMoreSheet_ItUnstarsCorrectMessage() async {
         sut = makeSUT(viewMode: .messages)
         let ids: [ID] = [.init(value: 7), .init(value: 77)]
 
-        sut.handle(action: .actionSelected(.more, ids: ids))
-        XCTAssertNotNil(sut.state.moreActionSheetPresented)
+        await sut.handle(action: .actionSelected(.more, ids: ids))
+        #expect(sut.state.moreActionSheetPresented != nil)
 
-        sut.handle(action: .moreSheetAction(.unstar, ids: ids))
-        XCTAssertEqual(starActionPerformerActionsSpy.invokedUnstarMessage, ids)
+        await sut.handle(action: .moreSheetAction(.unstar, ids: ids))
+        #expect(starActionPerformerActionsSpy.invokedUnstarMessage == ids)
     }
 
-    func testState_WhenReadActionIsApplied_ItMarksMessageAsRead() {
+    @Test
+    func state_WhenReadActionIsApplied_ItMarksMessageAsRead() async {
         sut = makeSUT(viewMode: .messages)
         let ids: [ID] = [.init(value: 7), .init(value: 77)]
 
-        sut.handle(action: .actionSelected(.markRead, ids: ids))
+        await sut.handle(action: .actionSelected(.markRead, ids: ids))
 
-        XCTAssertEqual(readActionPerformerActionsSpy.markMessageAsReadInvoked, ids)
+        #expect(readActionPerformerActionsSpy.markMessageAsReadInvoked == ids)
     }
 
-    func testState_WhenUnreadActionIsApplied_ItMarksConversationAsUnread() {
+    @Test
+    func state_WhenUnreadActionIsApplied_ItMarksConversationAsUnread() async {
         sut = makeSUT(viewMode: .conversations)
         let ids: [ID] = [.init(value: 7), .init(value: 77)]
 
-        sut.handle(action: .actionSelected(.markUnread, ids: ids))
+        await sut.handle(action: .actionSelected(.markUnread, ids: ids))
 
-        XCTAssertEqual(readActionPerformerActionsSpy.markConversationAsUnreadInvoked, ids)
+        #expect(readActionPerformerActionsSpy.markConversationAsUnreadInvoked == ids)
     }
 
-    func testAction_WhenDeleteActionIsApplied_ItDeletesMessage() {
+    @Test
+    func action_WhenDeleteActionIsApplied_ItDeletesMessage() async {
         let ids: [ID] = [.init(value: 7), .init(value: 77)]
         sut = makeSUT(viewMode: .messages)
 
-        sut.handle(action: .actionSelected(.permanentDelete, ids: ids))
+        await sut.handle(action: .actionSelected(.permanentDelete, ids: ids))
 
-        XCTAssertEqual(sut.state.deleteConfirmationAlert, .deleteConfirmation(itemsCount: ids.count, action: { _ in }))
+        #expect(sut.state.deleteConfirmationAlert == .deleteConfirmation(itemsCount: ids.count, action: { _ in }))
 
-        sut.handle(action: .alertActionTapped(.delete, ids: ids))
+        await sut.handle(action: .alertActionTapped(.delete, ids: ids))
 
-        XCTAssertNil(sut.state.deleteConfirmationAlert)
-        XCTAssertEqual(deleteActionsSpy.deletedMessagesWithIDs, ids)
-        XCTAssertEqual(toastStateStore.state.toasts, [.deleted()])
+        #expect(sut.state.deleteConfirmationAlert == nil)
+        #expect(deleteActionsSpy.deletedMessagesWithIDs == ids)
+        #expect(toastStateStore.state.toasts == [.deleted()])
     }
 
-    func testAction_WhenMoveToInboxIsTapped_ItMovesMessage() {
+    @Test
+    func action_WhenMoveToInboxIsTapped_ItMovesMessage() async {
         let ids: [ID] = [.init(value: 7), .init(value: 77)]
         let systemFolder = MovableSystemFolderAction.testInbox
         sut = makeSUT(viewMode: .messages)
 
-        sut.handle(action: .actionSelected(.moveToSystemFolder(systemFolder), ids: ids))
+        await sut.handle(action: .actionSelected(.moveToSystemFolder(systemFolder), ids: ids))
 
-        XCTAssertEqual(
-            toastStateStore.state.toasts,
-            [.moveTo(id: UUID(), destinationName: systemFolder.name.displayData.title.string, undoAction: .none)]
+        #expect(
+            toastStateStore.state.toasts == [.moveTo(id: UUID(), destinationName: systemFolder.name.displayData.title.string, undoAction: .none)]
         )
-        XCTAssertEqual(
-            moveToActionsSpy.invokedMoveToMessage,
-            [.init(destinationID: systemFolder.localId, itemsIDs: ids)]
+        #expect(
+            moveToActionsSpy.invokedMoveToMessage == [.init(destinationID: systemFolder.localId, itemsIDs: ids)]
         )
     }
 
-    func testAction_WhenMoveToInboxIsTappedUndoIsAvailbleAndTapped_ItTriggersUndoAndDismissesToast() throws {
+    @Test
+    func action_WhenMoveToInboxIsTappedUndoIsAvailbleAndTapped_ItTriggersUndoAndDismissesToast() async throws {
         let ids: [ID] = [.init(value: 7), .init(value: 77)]
         let systemFolder = MovableSystemFolderAction.testInbox
         let undoSpy = UndoSpy(noPointer: .init())
         moveToActionsSpy.stubbedMoveMessagesToOkResult = undoSpy
         sut = makeSUT(viewMode: .messages)
 
-        sut.handle(action: .actionSelected(.moveToSystemFolder(systemFolder), ids: ids))
+        await sut.handle(action: .actionSelected(.moveToSystemFolder(systemFolder), ids: ids))
 
-        XCTAssertEqual(
-            toastStateStore.state.toasts,
-            [.moveTo(id: UUID(), destinationName: systemFolder.name.displayData.title.string, undoAction: {})]
+        #expect(
+            toastStateStore.state.toasts == [.moveTo(id: UUID(), destinationName: systemFolder.name.displayData.title.string, undoAction: {})]
         )
-        XCTAssertEqual(
-            moveToActionsSpy.invokedMoveToMessage,
-            [.init(destinationID: systemFolder.localId, itemsIDs: ids)]
+        #expect(
+            moveToActionsSpy.invokedMoveToMessage == [.init(destinationID: systemFolder.localId, itemsIDs: ids)]
         )
 
-        let toastToVeriy: Toast = try XCTUnwrap(toastStateStore.state.toasts.last)
+        let toastToVeriy: Toast = try #require(toastStateStore.state.toasts.last)
 
-        toastToVeriy.simulateUndoAction()
+        await toastToVeriy.simulateUndoAction()
 
-        XCTAssertEqual(undoSpy.undoCallsCount, 1)
-        XCTAssertEqual(toastStateStore.state.toasts.isEmpty, true)
+        #expect(undoSpy.undoCallsCount == 1)
+        #expect(toastStateStore.state.toasts.isEmpty == true)
     }
 
-    func testSnoozeActionIsTapped_ItOpensSnoozeSheet() {
+    @Test
+    func snoozeActionIsTapped_ItOpensSnoozeSheet() async {
         let sut = makeSUT(viewMode: .conversations)
 
-        sut.handle(action: .actionSelected(.snooze, ids: [.init(value: 7)]))
+        await sut.handle(action: .actionSelected(.snooze, ids: [.init(value: 7)]))
 
-        XCTAssertEqual(sut.state.isSnoozeSheetPresented, true)
+        #expect(sut.state.isSnoozeSheetPresented == true)
     }
 
     // MARK: - Private

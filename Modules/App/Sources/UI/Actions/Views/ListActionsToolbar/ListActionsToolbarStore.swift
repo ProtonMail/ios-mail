@@ -20,6 +20,7 @@ import InboxCoreUI
 import proton_app_uniffi
 import SwiftUI
 
+@MainActor
 final class ListActionsToolbarStore: StateStore {
     @Published var state: ListActionsToolbarState
 
@@ -65,20 +66,20 @@ final class ListActionsToolbarStore: StateStore {
         self.toastStateStore = toastStateStore
     }
 
-    func handle(action: ListActionsToolbarAction) {
+    func handle(action: ListActionsToolbarAction) async {
         switch action {
         case .listItemsSelectionUpdated(let ids):
-            fetchAvailableBottomBarActions(for: ids)
+            await fetchAvailableBottomBarActions(for: ids)
         case .actionSelected(let action, let ids):
-            handle(action: action, ids: ids)
+            await handle(action: action, ids: ids)
         case .dismissLabelAsSheet:
             state = state.copy(\.labelAsSheetPresented, to: nil)
         case .dismissMoveToSheet:
             state = state.copy(\.moveToSheetPresented, to: nil)
         case .moreSheetAction(let action, let ids):
-            handle(action: action, ids: ids)
+            await handle(action: action, ids: ids)
         case .alertActionTapped(let action, let ids):
-            handle(action: action, ids: ids, itemType: itemTypeForActionBar)
+            await handle(action: action, ids: ids, itemType: itemTypeForActionBar)
         case .editToolbarTapped:
             state = state.copy(\.isEditToolbarSheetPresented, to: true)
         }
@@ -86,7 +87,7 @@ final class ListActionsToolbarStore: StateStore {
 
     // MARK: - Private
 
-    private func handle(action: ListActions, ids: [ID]) {
+    private func handle(action: ListActions, ids: [ID]) async {
         switch action {
         case .more:
             let moreActionSheetState = ListActionsToolbarMoreSheetState(
@@ -109,16 +110,16 @@ final class ListActionsToolbarStore: StateStore {
                 .copy(\.moveToSheetPresented, to: .init(sheetType: .moveTo, ids: ids, mailboxItem: itemTypeForActionBar.mailboxItem))
         case .star:
             dismissMoreActionSheet()
-            starActionPerformer.star(itemsWithIDs: ids, itemType: itemTypeForActionBar)
+            await starActionPerformer.star(itemsWithIDs: ids, itemType: itemTypeForActionBar)
         case .unstar:
             dismissMoreActionSheet()
-            starActionPerformer.unstar(itemsWithIDs: ids, itemType: itemTypeForActionBar)
+            await starActionPerformer.unstar(itemsWithIDs: ids, itemType: itemTypeForActionBar)
         case .markRead:
             dismissMoreActionSheet()
-            readActionPerformer.markAsRead(itemsWithIDs: ids, itemType: itemTypeForActionBar)
+            await readActionPerformer.markAsRead(itemsWithIDs: ids, itemType: itemTypeForActionBar)
         case .markUnread:
             dismissMoreActionSheet()
-            readActionPerformer.markAsUnread(itemsWithIDs: ids, itemType: itemTypeForActionBar)
+            await readActionPerformer.markAsUnread(itemsWithIDs: ids, itemType: itemTypeForActionBar)
         case .permanentDelete:
             let keyPath: WritableKeyPath<ListActionsToolbarState, AlertModel?> =
                 state.moreActionSheetPresented != nil ? \.moreDeleteConfirmationAlert : \.deleteConfirmationAlert
@@ -128,68 +129,50 @@ final class ListActionsToolbarStore: StateStore {
             )
             state = state.copy(keyPath, to: alert)
         case .moveToSystemFolder(let model), .notSpam(let model):
-            performMoveToAction(destination: model, ids: ids)
+            await performMoveToAction(destination: model, ids: ids)
         case .snooze:
             dismissMoreActionSheet()
             state = state.copy(\.isSnoozeSheetPresented, to: true)
         }
     }
 
-    private func performMoveToAction(destination: MovableSystemFolderAction, ids: [ID]) {
-        Task { [weak self, mailUserSession] in
-            guard let self else { return }
-            do {
-                let undo = try await moveToActionPerformer.moveTo(
-                    destinationID: destination.localId,
-                    itemsIDs: ids,
-                    itemType: itemTypeForActionBar
-                )
-                let toastID = UUID()
-                let undoAction = undo.undoAction(userSession: mailUserSession) {
-                    self.dismissToast(withID: toastID)
-                }
-
-                Dispatcher.dispatchOnMain(
-                    .init {
-                        self.handleMoveActionSuccess(to: destination, toastID: toastID, undoAction: undoAction)
-                    })
-            } catch {
-                Dispatcher.dispatchOnMain(
-                    .init {
-                        self.handleMoveActionFailure(error: error)
-                    })
+    private func performMoveToAction(destination: MovableSystemFolderAction, ids: [ID]) async {
+        do {
+            let undo = try await moveToActionPerformer.moveTo(
+                destinationID: destination.localId,
+                itemsIDs: ids,
+                itemType: itemTypeForActionBar
+            )
+            let toastID = UUID()
+            let undoAction = undo.undoAction(userSession: mailUserSession) {
+                self.dismissToast(withID: toastID)
             }
+
+            handleMoveActionSuccess(to: destination, toastID: toastID, undoAction: undoAction)
+        } catch {
+            handleMoveActionFailure(error: error)
         }
     }
 
-    private func handle(action: DeleteConfirmationAlertAction, ids: [ID], itemType: MailboxItemType) {
+    private func handle(action: DeleteConfirmationAlertAction, ids: [ID], itemType: MailboxItemType) async {
         state =
             state
             .copy(\.deleteConfirmationAlert, to: nil)
             .copy(\.moreDeleteConfirmationAlert, to: nil)
         switch action {
         case .delete:
-            Task {
-                await deleteActionsPerformer.delete(itemsWithIDs: ids, itemType: itemType)
-                Dispatcher.dispatchOnMain(
-                    .init(block: { [weak self] in
-                        self?.itemDeleted()
-                    }))
-            }
+            await deleteActionsPerformer.delete(itemsWithIDs: ids, itemType: itemType)
+            itemDeleted()
         case .cancel:
             break
         }
     }
 
-    private func fetchAvailableBottomBarActions(for ids: [ID]) {
+    private func fetchAvailableBottomBarActions(for ids: [ID]) async {
         guard !ids.isEmpty else { return }
-        Task {
-            let actions = await actionsProvider.actions(forItemsWith: ids)
-            Dispatcher.dispatchOnMain(
-                .init(block: { [weak self] in
-                    self?.updateActions(actions: actions)
-                }))
-        }
+
+        let actions = await actionsProvider.actions(forItemsWith: ids)
+        updateActions(actions: actions)
     }
 
     private func updateActions(actions: AllListActions) {
