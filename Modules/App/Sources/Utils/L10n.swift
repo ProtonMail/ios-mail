@@ -1050,15 +1050,19 @@ enum L10n {
                 comment: "Title of a section displaying selected list toolbar actions."
             )
             static let listToolbarSectionFooter = LocalizedStringResource(
-                "This toolbar appears when multiple messages are selected in the message list (e.g., Inbox, Trash, etc.).",
+                "This toolbar appears when multiple messages are selected in a list view.",
                 comment: "Footer of a section displaying selected list toolbar actions."
+            )
+            static let messageToolbarSectionTitle = LocalizedStringResource(
+                "Message toolbar",
+                comment: "Title of a section displaying selected message toolbar actions."
             )
             static let conversationToolbarSectionTitle = LocalizedStringResource(
                 "Conversation toolbar",
                 comment: "Title of a section displaying selected conversation toolbar actions."
             )
             static let conversationToolbarSectionFooter = LocalizedStringResource(
-                "This toolbar remains consistently visible during message reading.",
+                "This toolbar remains visible when a message is open.",
                 comment: "Footer of a section displaying selected conversation toolbar actions."
             )
             static let editActions = LocalizedStringResource(
