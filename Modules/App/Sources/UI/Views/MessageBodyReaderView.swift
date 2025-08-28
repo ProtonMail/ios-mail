@@ -22,6 +22,7 @@ import WebKit
 
 extension EnvironmentValues {
     @Entry var forceLightModeInMessageBody: Bool = false
+    @Entry var orientationChangeInProgress: Bool = false
 }
 
 struct MessageBodyReaderView: UIViewRepresentable {
@@ -80,6 +81,7 @@ struct MessageBodyReaderView: UIViewRepresentable {
             loadHTML(in: webView)
         }
         webView.overrideUserInterfaceStyle = context.environment.forceLightModeInMessageBody ? .light : .unspecified
+        webView.isHidden = context.environment.orientationChangeInProgress
         context.coordinator.urlOpener = context.environment.openURL
     }
 
