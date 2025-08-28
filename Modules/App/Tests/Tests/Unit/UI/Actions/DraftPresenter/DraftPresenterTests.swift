@@ -211,7 +211,6 @@ final class DraftPresenterTests: BaseTestCase, @unchecked Sendable {
         XCTAssertEqual(draftSpy.subject(), "foo")
         XCTAssertEqual(draftSpy.body(), "bar")
 
-
         XCTAssertEqual(capturedDraftToPresent.count, 1)
         XCTAssertEqual(capturedDraftToPresent.first, .new(draft: draftSpy))
     }

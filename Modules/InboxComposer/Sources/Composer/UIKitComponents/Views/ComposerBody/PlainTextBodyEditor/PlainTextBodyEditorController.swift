@@ -21,6 +21,7 @@ import UIKit
 
 final class PlainTextBodyEditorController: UIViewController, BodyEditor {
     private let textView = SubviewFactory.textView
+    private var hasBodyInitialFocusBeenSet = false
     var onEvent: ((BodyEditorEvent) -> Void)?
 
     required init?(coder: NSCoder) { nil }
@@ -53,6 +54,8 @@ final class PlainTextBodyEditorController: UIViewController, BodyEditor {
     }
 
     func setBodyInitialFocus() {
+        guard !hasBodyInitialFocusBeenSet else { return }
+        hasBodyInitialFocusBeenSet = true
         textView.becomeFirstResponder()
         textView.selectedRange = NSRange(location: 0, length: 0)
     }
