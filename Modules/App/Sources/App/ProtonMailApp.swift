@@ -23,6 +23,69 @@ import InboxDesignSystem
 import proton_app_uniffi
 import SwiftUI
 
+import Sentry
+
+final class UserAnalyticsConfigurator: Sendable {
+    private let mailUserSession: MailUserSessionProtocol
+    private let analytics: Analytics
+
+    private var userSettingsWatchHandle: WatchHandle?
+
+    init(
+        mailUserSession: MailUserSessionProtocol,
+        analytics: Analytics
+    ) {
+        self.mailUserSession = mailUserSession
+        self.analytics = analytics
+
+        print("*** INIT: \(self)")
+    }
+
+    deinit {
+        print("*** DEINIT: \(self)")
+    }
+
+    func observeUserAnalyticsSettings() async {
+        setUpUserSettingsObservation()
+        await readUserSettingsAndConfigureAnalytics()
+    }
+
+    var callback: AsyncLiveQueryCallbackWrapper?
+
+    private func setUpUserSettingsObservation() {
+        let callback = AsyncLiveQueryCallbackWrapper(callback: { [weak self] in
+            print("*** UPDATE")
+            await self?.readUserSettingsAndConfigureAnalytics()
+        })
+        self.callback = callback
+        do {
+            userSettingsWatchHandle = try mailUserSession.watchUserSettings(callback: callback).get()
+            print("*** Watcher ready")
+        } catch {
+            print("*** ERROR: \(error)")
+        }
+    }
+
+    private func readUserSettingsAndConfigureAnalytics() async {
+        do {
+            let userSettings = try await mailUserSession.userSettings().get()
+            let shouldAnalyticsBeEnabled = userSettings.telemetry && userSettings.crashReports
+            if shouldAnalyticsBeEnabled {
+                await analytics.enable(
+                    configuration: .init(
+                        crashReports: userSettings.crashReports,
+                        telemetry: userSettings.telemetry
+                    ))
+            } else {
+                await analytics.disable()
+            }
+            print("*** user: \(userSettings.email.value), shouldAnalyticsBeEnabled: \(shouldAnalyticsBeEnabled)")
+        } catch {
+
+        }
+    }
+}
+
 struct ProtonMailApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
 
@@ -42,6 +105,7 @@ struct ProtonMailApp: App {
                     .environmentObject(legacyMigrationStateStore)
                     .environmentObject(toastStateStore)
                     .environmentObject(appAppearanceStore)
+                    .environmentObject(analytics)
             }
             .task {
                 await appAppearanceStore.updateColorScheme()
@@ -58,7 +122,9 @@ struct ProtonMailApp: App {
 
     func configureAnalyticsIfNeeded(analytics: Analytics) {
         if AnalyticsState.shouldConfigureAnalytics {
-            analytics.configure()
+            Task {
+                await analytics.enable(configuration: .default)
+            }
         }
     }
 }
@@ -67,6 +133,7 @@ private struct RootView: View {
     @EnvironmentObject private var sceneDelegate: SceneDelegate
     @EnvironmentObject private var legacyMigrationStateStore: LegacyMigrationStateStore
     @EnvironmentObject private var toastStateStore: ToastStateStore
+    @EnvironmentObject private var analytics: Analytics
 
     // The route determines the screen that will be rendered
     @ObservedObject private var appContext: AppContext
@@ -118,7 +185,8 @@ private struct RootView: View {
                     HomeScreen(
                         appContext: appContext,
                         userSession: activeUserSession,
-                        toastStateStore: toastStateStore
+                        toastStateStore: toastStateStore,
+                        analytics: analytics
                     )
                     .id(activeUserSession.userId())  // Forces the child view to be recreated when the user account changes
 

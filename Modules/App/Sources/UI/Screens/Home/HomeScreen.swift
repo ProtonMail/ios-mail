@@ -43,6 +43,7 @@ struct HomeScreen: View {
 
     @EnvironmentObject private var appUIStateStore: AppUIStateStore
     @EnvironmentObject private var toastStateStore: ToastStateStore
+    @EnvironmentObject private var analytics: Analytics
     @StateObject private var appRoute: AppRouteState
     @StateObject private var composerCoordinator: ComposerCoordinator
     @StateObject private var upsellButtonVisibilityPublisher: UpsellButtonVisibilityPublisher
@@ -59,8 +60,14 @@ struct HomeScreen: View {
     private let modalFactory: HomeScreenModalFactory
     private let notificationAuthorizationStore: NotificationAuthorizationStore
     private let refreshToolbarNotifier = RefreshToolbarNotifier()
+    private let userAnalyticsConfigurator: UserAnalyticsConfigurator
 
-    init(appContext: AppContext, userSession: MailUserSession, toastStateStore: ToastStateStore) {
+    init(
+        appContext: AppContext,
+        userSession: MailUserSession,
+        toastStateStore: ToastStateStore,
+        analytics: Analytics
+    ) {
         _appRoute = .init(wrappedValue: .initialState)
         _composerCoordinator = .init(wrappedValue: .init(userSession: userSession, toastStateStore: toastStateStore))
         let upsellButtonVisibilityPublisher = UpsellButtonVisibilityPublisher(userSession: userSession)
@@ -83,6 +90,7 @@ struct HomeScreen: View {
         self.userDefaults = appContext.userDefaults
         self.modalFactory = HomeScreenModalFactory(mailUserSession: userSession, accountAuthCoordinator: appContext.accountAuthCoordinator)
         notificationAuthorizationStore = .init(userDefaults: userDefaults)
+        userAnalyticsConfigurator = .init(mailUserSession: userSession, analytics: analytics)
     }
 
     var didAppear: ((Self) -> Void)?
@@ -163,6 +171,7 @@ struct HomeScreen: View {
         .onLoad {
             Task {
                 await upsellCoordinator.prewarm()
+                await userAnalyticsConfigurator.observeUserAnalyticsSettings()
             }
         }
         .environmentObject(upsellCoordinator)
