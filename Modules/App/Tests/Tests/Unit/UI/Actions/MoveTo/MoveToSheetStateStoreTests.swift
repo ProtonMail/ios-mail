@@ -152,6 +152,7 @@ final class MoveToSheetStateStoreTests {
 
     private func sut(input: ActionSheetInput) -> MoveToSheetStateStore {
         .init(
+            state: .initial,
             input: input,
             mailbox: .init(noPointer: .init()),
             availableMoveToActions: .init(

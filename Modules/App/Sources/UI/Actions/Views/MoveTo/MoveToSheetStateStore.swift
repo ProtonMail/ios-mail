@@ -24,7 +24,7 @@ import SwiftUI
 
 @MainActor
 class MoveToSheetStateStore: StateStore {
-    @Published var state: MoveToState = .initial
+    @Published var state: MoveToState
 
     private let input: ActionSheetInput
     private let moveToActionsProvider: MoveToActionsProvider
@@ -34,6 +34,7 @@ class MoveToSheetStateStore: StateStore {
     private let mailUserSession: MailUserSession
 
     init(
+        state: MoveToState,
         input: ActionSheetInput,
         mailbox: Mailbox,
         availableMoveToActions: AvailableMoveToActions,
@@ -42,6 +43,7 @@ class MoveToSheetStateStore: StateStore {
         navigation: @escaping (MoveToSheetNavigation) -> Void,
         mailUserSession: MailUserSession
     ) {
+        self.state = state
         self.input = input
         self.moveToActionsProvider = .init(mailbox: mailbox, availableMoveToActions: availableMoveToActions)
         self.toastStateStore = toastStateStore
@@ -105,7 +107,7 @@ class MoveToSheetStateStore: StateStore {
     }
 }
 
-private extension MoveAction {
+extension MoveAction {
 
     var moveToSystemFolder: MoveToSystemFolder? {
         guard case .systemFolder(let model) = self else {
@@ -134,10 +136,4 @@ private extension CustomFolderAction {
         )
     }
 
-}
-
-private extension MoveToState {
-    static var initial: Self {
-        .init(moveToSystemFolderActions: [], moveToCustomFolderActions: [], createFolderLabelPresented: false)
-    }
 }
