@@ -18,6 +18,7 @@
 
 import InboxCore
 import InboxCoreUI
+import PaymentsNG
 import proton_app_uniffi
 import SwiftUI
 
@@ -25,10 +26,12 @@ import SwiftUI
 final class PurchaseActionPerformer {
     private let eventLoopPolling: EventLoopPolling
     private let planPurchasing: PlanPurchasing
+    private let telemetryReporting: TelemetryReporting
 
-    init(eventLoopPolling: EventLoopPolling, planPurchasing: PlanPurchasing) {
+    init(eventLoopPolling: EventLoopPolling, planPurchasing: PlanPurchasing, telemetryReporting: TelemetryReporting) {
         self.eventLoopPolling = eventLoopPolling
         self.planPurchasing = planPurchasing
+        self.telemetryReporting = telemetryReporting
     }
 
     func purchase(
@@ -38,6 +41,7 @@ final class PurchaseActionPerformer {
         dismiss: () -> Void
     ) async {
         AppLogger.log(message: "Attempting to purchase \(storeKitProductID)", category: .payments)
+        await telemetryReporting.upgradeAttempt(storeKitProductID: storeKitProductID)
 
         isBusy.wrappedValue = true
 
@@ -49,16 +53,19 @@ final class PurchaseActionPerformer {
             try await planPurchasing.purchase(storeKitProductId: storeKitProductID)
 
             AppLogger.log(message: "Purchase successful", category: .payments)
+            await telemetryReporting.upgradeSuccess(storeKitProductID: storeKitProductID)
 
             await eventLoopPolling.forceEventLoopPollAndWait().logError()
 
             dismiss()
+        } catch ProtonPlansManagerError.transactionCancelledByUser {
+            await telemetryReporting.upgradeCancelled(storeKitProductID: storeKitProductID)
+        } catch let error as IAPsNotAvailableInTestFlightError {
+            toastStateStore.present(toast: .information(message: error.localizedDescription))
         } catch {
             AppLogger.log(error: error, category: .payments)
-
-            if let toast = error.toastToShowTheUser {
-                toastStateStore.present(toast: toast)
-            }
+            toastStateStore.present(toast: .error(message: error.localizedDescription))
+            await telemetryReporting.upgradeError(storeKitProductID: storeKitProductID)
         }
     }
 }
@@ -77,6 +84,7 @@ private extension VoidEventResult {
 extension PurchaseActionPerformer {
     static let dummy = PurchaseActionPerformer(
         eventLoopPolling: DummyEventLoopPolling(),
-        planPurchasing: DummyPlanPurchasing()
+        planPurchasing: DummyPlanPurchasing(),
+        telemetryReporting: DummyTelemetryReporting()
     )
 }

@@ -30,7 +30,8 @@ final class OnboardingUpsellScreenModelTests {
         planTiles: PlanTileData.previews,
         purchaseActionPerformer: .init(
             eventLoopPolling: DummyEventLoopPolling(),
-            planPurchasing: planPurchasing
+            planPurchasing: planPurchasing,
+            telemetryReporting: DummyTelemetryReporting()
         )
     )
 

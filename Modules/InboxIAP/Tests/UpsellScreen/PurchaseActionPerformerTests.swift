@@ -27,13 +27,15 @@ import Testing
 final class PurchaseActionPerformerTests {
     private let eventLoopPolling = EventLoopPollingSpy()
     private let planPurchasing = PlanPurchasingSpy()
+    private let telemetryReporting = TelemetryReportingSpy()
     private let toastStateStore = ToastStateStore(initialState: .initial)
     private let isBusy = Binding.constant(false)
     private let storeKitProductID = "iosmail_mail2022_12_usd_auto_renewing"
 
     private lazy var sut = PurchaseActionPerformer(
         eventLoopPolling: eventLoopPolling,
-        planPurchasing: planPurchasing
+        planPurchasing: planPurchasing,
+        telemetryReporting: telemetryReporting
     )
 
     // MARK: Error toasts and screen dismissal
@@ -102,5 +104,44 @@ final class PurchaseActionPerformerTests {
         }
 
         #expect(toastStateStore.state.toasts == [])
+    }
+
+    // MARK: Telemetry
+
+    @Test
+    func whenTransactionIsSuccessful_reportsSuccess() async {
+        await sut.purchase(storeKitProductID: storeKitProductID, isBusy: isBusy, toastStateStore: toastStateStore) {}
+
+        #expect(telemetryReporting.upsellButtonTappedCalls == 0)
+        #expect(telemetryReporting.upgradeAttemptCalls == 1)
+        #expect(telemetryReporting.upgradeSuccessCalls == 1)
+        #expect(telemetryReporting.upgradeErrorCalls == 0)
+        #expect(telemetryReporting.upgradeCancelledCalls == 0)
+    }
+
+    @Test
+    func whenTransactionFails_reportsFailure() async {
+        planPurchasing.stubbedError = ProtonPlansManagerError.transactionUnknownError
+
+        await sut.purchase(storeKitProductID: storeKitProductID, isBusy: isBusy, toastStateStore: toastStateStore) {}
+
+        #expect(telemetryReporting.upsellButtonTappedCalls == 0)
+        #expect(telemetryReporting.upgradeAttemptCalls == 1)
+        #expect(telemetryReporting.upgradeSuccessCalls == 0)
+        #expect(telemetryReporting.upgradeErrorCalls == 1)
+        #expect(telemetryReporting.upgradeCancelledCalls == 0)
+    }
+
+    @Test
+    func whenTransactionIsCancelledByUser_reportsCancellation() async {
+        planPurchasing.stubbedError = ProtonPlansManagerError.transactionCancelledByUser
+
+        await sut.purchase(storeKitProductID: storeKitProductID, isBusy: isBusy, toastStateStore: toastStateStore) {}
+
+        #expect(telemetryReporting.upsellButtonTappedCalls == 0)
+        #expect(telemetryReporting.upgradeAttemptCalls == 1)
+        #expect(telemetryReporting.upgradeSuccessCalls == 0)
+        #expect(telemetryReporting.upgradeErrorCalls == 0)
+        #expect(telemetryReporting.upgradeCancelledCalls == 1)
     }
 }

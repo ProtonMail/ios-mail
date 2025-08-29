@@ -26,6 +26,7 @@ import Testing
 final class UpsellCoordinatorTests {
     private let onlineExecutor = OnlineExecutorDummy()
     private let plansComposer = PlansComposerSpy()
+    private let telemetryReporting = TelemetryReportingSpy()
     private let sut: UpsellCoordinator
 
     init() {
@@ -35,6 +36,7 @@ final class UpsellCoordinatorTests {
             plansComposer: plansComposer,
             planPurchasing: DummyPlanPurchasing(),
             sessionForking: DummySessionForking(),
+            telemetryReporting: telemetryReporting,
             configuration: .dummy
         )
 
@@ -55,5 +57,11 @@ final class UpsellCoordinatorTests {
         _ = try await sut.presentOnboardingUpsellScreen()
 
         #expect(plansComposer.fetchAvailablePlansCalls == 1)
+    }
+
+    @Test
+    func considersReturningScreenModelAsPresentingTheScreen() async throws {
+        _ = try await self.sut.presentUpsellScreen(entryPoint: .mailboxTopBar)
+        #expect(telemetryReporting.upsellButtonTappedCalls == 1)
     }
 }

@@ -22,11 +22,18 @@ public struct UpsellConfiguration: Sendable {
     public let regularPlan: String
     public let onboardingPlans: [String]
     public let apiEnvId: ApiEnvId
+    public let isTelemetryEnabled: Bool
 
-    public init(regularPlan: String, onboardingPlans: [String], apiEnvId: ApiEnvId) {
+    public init(
+        regularPlan: String,
+        onboardingPlans: [String],
+        apiEnvId: ApiEnvId,
+        isTelemetryEnabled: Bool
+    ) {
         self.regularPlan = regularPlan
         self.onboardingPlans = onboardingPlans
         self.apiEnvId = apiEnvId
+        self.isTelemetryEnabled = isTelemetryEnabled
     }
 }
 
@@ -34,6 +41,7 @@ extension UpsellConfiguration {
     static let dummy = UpsellConfiguration(
         regularPlan: "mail2022",
         onboardingPlans: ["bundle2022", "mail2022"],
-        apiEnvId: .custom("https://example.com")
+        apiEnvId: .custom("https://example.com"),
+        isTelemetryEnabled: true
     )
 }

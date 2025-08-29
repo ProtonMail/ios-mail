@@ -56,10 +56,7 @@ final class WebCheckout {
             openURL(url)
         } catch {
             AppLogger.log(error: error, category: .payments)
-
-            if let toast = error.toastToShowTheUser {
-                toastStateStore.present(toast: toast)
-            }
+            toastStateStore.present(toast: .error(message: error.localizedDescription))
         }
     }
 

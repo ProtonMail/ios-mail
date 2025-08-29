@@ -21,8 +21,17 @@ extension UpsellConfiguration {
     static let mail: Self = .init(
         regularPlan: "mail2022",
         onboardingPlans: ["bundle2022", "mail2022"],
-        apiEnvId: .current
+        apiEnvId: .current,
+        isTelemetryEnabled: !isDebugOrQABuild
     )
+
+    private static var isDebugOrQABuild: Bool {
+        #if QA || DEBUG
+            true
+        #else
+            false
+        #endif
+    }
 
     var humanReadableUpsoldPlanName: String {
         "Mail Plus"

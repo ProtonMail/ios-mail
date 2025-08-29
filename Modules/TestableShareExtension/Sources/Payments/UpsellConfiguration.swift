@@ -24,7 +24,16 @@ extension UpsellConfiguration {
         .init(
             regularPlan: "mail2022",
             onboardingPlans: ["bundle2022", "mail2022"],
-            apiEnvId: apiEnvId
+            apiEnvId: apiEnvId,
+            isTelemetryEnabled: !isDebugOrQABuild
         )
+    }
+
+    private static var isDebugOrQABuild: Bool {
+        #if QA || DEBUG
+            true
+        #else
+            false
+        #endif
     }
 }

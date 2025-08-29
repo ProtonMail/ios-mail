@@ -25,6 +25,7 @@ import proton_app_uniffi
 public final class UpsellCoordinator: ObservableObject {
     private let onlineExecutor: OnlineExecutor
     private let plansComposer: PlansComposerProviding
+    private let telemetryReporting: TelemetryReporting
     private let upsellScreenFactory: UpsellScreenFactory
     private let configuration: UpsellConfiguration
 
@@ -34,6 +35,8 @@ public final class UpsellCoordinator: ObservableObject {
         let plansComposer = PlansComposerRust(rustSession: mailUserSession)
         let plansManager = ProtonPlansManager(plansComposer: plansComposer, rustSession: mailUserSession)
         let planPurchasing: PlanPurchasing = configuration.apiEnvId.arePaymentsEnabled ? plansManager : DummyPlanPurchasing()
+        let telemetryReporter = TelemetryReporter(mailUserSession: mailUserSession, telemetryActions: RustTelemetryActions())
+        let telemetryReporting: TelemetryReporting = configuration.isTelemetryEnabled ? telemetryReporter : DummyTelemetryReporting()
 
         self.init(
             eventLoopPolling: mailUserSession,
@@ -41,6 +44,7 @@ public final class UpsellCoordinator: ObservableObject {
             plansComposer: plansComposer,
             planPurchasing: planPurchasing,
             sessionForking: mailUserSession,
+            telemetryReporting: telemetryReporting,
             configuration: configuration
         )
     }
@@ -51,15 +55,18 @@ public final class UpsellCoordinator: ObservableObject {
         plansComposer: PlansComposerProviding,
         planPurchasing: PlanPurchasing,
         sessionForking: SessionForking,
+        telemetryReporting: TelemetryReporting,
         configuration: UpsellConfiguration
     ) {
         self.onlineExecutor = onlineExecutor
         self.plansComposer = plansComposer
+        self.telemetryReporting = telemetryReporting
         self.configuration = configuration
 
         let purchaseActionPerformer = PurchaseActionPerformer(
             eventLoopPolling: eventLoopPolling,
-            planPurchasing: planPurchasing
+            planPurchasing: planPurchasing,
+            telemetryReporting: telemetryReporting
         )
 
         let webCheckout = WebCheckout(sessionForking: sessionForking, upsellConfiguration: configuration)
@@ -83,21 +90,33 @@ public final class UpsellCoordinator: ObservableObject {
     public func presentUpsellScreen(entryPoint: UpsellEntryPoint, upsellType: UpsellType = .standard) async throws -> UpsellScreenModel {
         let availablePlans = try await fetchAvailablePlans()
 
-        return try upsellScreenFactory.upsellScreenModel(
+        let model = try upsellScreenFactory.upsellScreenModel(
             showingPlan: configuration.regularPlan,
             basedOn: availablePlans,
             entryPoint: entryPoint,
             upsellType: upsellType
         )
+
+        if !model.isPromo {
+            telemetryReporting.prepare(entryPoint: entryPoint)
+            await telemetryReporting.upsellButtonTapped()
+        }
+
+        return model
     }
 
     public func presentOnboardingUpsellScreen() async throws -> OnboardingUpsellScreenModel {
         let availablePlans = try await fetchAvailablePlans()
 
-        return try upsellScreenFactory.onboardingUpsellScreenModel(
+        let model = try upsellScreenFactory.onboardingUpsellScreenModel(
             showingPlans: configuration.onboardingPlans,
             basedOn: availablePlans
         )
+
+        telemetryReporting.prepare(entryPoint: .postOnboarding)
+        await telemetryReporting.upsellButtonTapped()
+
+        return model
     }
 
     private func fetchAvailablePlans() async throws -> [ComposedPlan] {
