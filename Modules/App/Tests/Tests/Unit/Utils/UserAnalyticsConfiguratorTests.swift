@@ -29,10 +29,11 @@ class UserAnalyticsConfiguratorTests {
 
     lazy var sut = UserAnalyticsConfigurator(
         mailUserSession: mailUserSessionSpy,
-        analytics: .init(sentryAnalytics: .init(
-            start: { _ in self.sentryStartInvokeCount += 1 },
-            stop: { self.sentryStopInvokeCount += 1 }
-        ))
+        analytics: .init(
+            sentryAnalytics: .init(
+                start: { _ in self.sentryStartInvokeCount += 1 },
+                stop: { self.sentryStopInvokeCount += 1 }
+            ))
     )
 
     @Test

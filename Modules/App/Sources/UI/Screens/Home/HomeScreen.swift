@@ -170,8 +170,12 @@ struct HomeScreen: View {
         .onOpenURL(perform: handleDeepLink)
         .onLoad {
             Task {
+                if AnalyticsState.shouldConfigureAnalytics {
+                    Task {
+                        await userAnalyticsConfigurator.observeUserAnalyticsSettings()
+                    }
+                }
                 await upsellCoordinator.prewarm()
-                await userAnalyticsConfigurator.observeUserAnalyticsSettings()
             }
         }
         .environmentObject(upsellCoordinator)
