@@ -17,7 +17,7 @@
 
 import Sentry
 
-public final actor Analytics {
+public final actor Analytics: ObservableObject {
     enum State: Equatable {
         case enabled(configuration: UserAnalyticsConfiguration)
         case disabled
