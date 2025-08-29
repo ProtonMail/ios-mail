@@ -20,6 +20,8 @@ import proton_app_uniffi
 public final class MailUserSessionSpy: MailUserSession, @unchecked Sendable {
     public var stubbedAccountDetails: AccountDetails?
     public var stubbedUser: User?
+    public var stubbedUserSettings: UserSettings?
+    public var watchUserSettingsCallback: [AsyncLiveQueryCallback] = []
 
     public private(set) var executeNotificationQuickActionInvocations: [PushNotificationQuickAction] = []
 
@@ -62,6 +64,16 @@ public final class MailUserSessionSpy: MailUserSession, @unchecked Sendable {
     }
 
     public override func userSettings() async -> MailUserSessionUserSettingsResult {
-        .error(.reason(.userSessionNotInitialized))
+        if let stubbedUserSettings {
+            return .ok(stubbedUserSettings)
+        } else {
+            return .error(.reason(.userSessionNotInitialized))
+        }
+    }
+
+    public override func watchUserSettings(callback: any AsyncLiveQueryCallback) -> MailUserSessionWatchUserSettingsResult {
+        watchUserSettingsCallback.append(callback)
+
+        return .ok(.init(noPointer: .init()))
     }
 }

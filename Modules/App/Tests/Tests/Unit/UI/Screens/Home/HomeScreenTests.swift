@@ -41,7 +41,8 @@ class HomeScreenTests: BaseTestCase {
         sut = HomeScreen(
             appContext: .shared,
             userSession: try await .testInstance(),
-            toastStateStore: toastStateStore
+            toastStateStore: toastStateStore,
+            analytics: .init(sentryAnalytics: .init(start: { _ in }, stop: {}))
         )
     }
 

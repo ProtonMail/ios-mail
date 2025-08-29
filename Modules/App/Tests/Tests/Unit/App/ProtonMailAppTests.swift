@@ -30,7 +30,7 @@ class ProtonMailAppTests {
 
         optionsConfiguration(stubbedOptions)
     }
-    lazy var analytics = Analytics(sentryAnalytics: .init(start: start))
+    lazy var analytics = Analytics(sentryAnalytics: .init(start: start, stop: {}))
 
     @Test(.analyticsEnabled(true))
     func appIsRunAndAnalyticsAreEnabled_ItConfiguresAnalytics() {

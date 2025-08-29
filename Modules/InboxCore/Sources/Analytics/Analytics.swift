@@ -17,22 +17,6 @@
 
 import Sentry
 
-public struct UserAnalyticsConfiguration: Equatable {
-    let crashReports: Bool
-    let telemetry: Bool
-
-    public init(crashReports: Bool, telemetry: Bool) {
-        self.crashReports = crashReports
-        self.telemetry = telemetry
-    }
-}
-
-extension UserAnalyticsConfiguration {
-    public static var `default`: Self {
-        .init(crashReports: true, telemetry: true)
-    }
-}
-
 public final actor Analytics: ObservableObject {
     enum State: Equatable {
         case enabled(configuration: UserAnalyticsConfiguration)

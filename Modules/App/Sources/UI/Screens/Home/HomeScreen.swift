@@ -51,6 +51,7 @@ struct HomeScreen: View {
     @State private var isNotificationPromptPresented = false
     @StateObject private var eventLoopErrorCoordinator: EventLoopErrorCoordinator
     @StateObject private var upsellCoordinator: UpsellCoordinator
+    @StateObject private var userAnalyticsConfigurator: UserAnalyticsConfigurator
     @ObservedObject private var appContext: AppContext
 
     private let userSession: MailUserSession
@@ -60,7 +61,6 @@ struct HomeScreen: View {
     private let modalFactory: HomeScreenModalFactory
     private let notificationAuthorizationStore: NotificationAuthorizationStore
     private let refreshToolbarNotifier = RefreshToolbarNotifier()
-    private let userAnalyticsConfigurator: UserAnalyticsConfigurator
 
     init(
         appContext: AppContext,
@@ -90,7 +90,7 @@ struct HomeScreen: View {
         self.userDefaults = appContext.userDefaults
         self.modalFactory = HomeScreenModalFactory(mailUserSession: userSession, accountAuthCoordinator: appContext.accountAuthCoordinator)
         notificationAuthorizationStore = .init(userDefaults: userDefaults)
-        userAnalyticsConfigurator = .init(mailUserSession: userSession, analytics: analytics)
+        _userAnalyticsConfigurator = .init(wrappedValue: .init(mailUserSession: userSession, analytics: analytics))
     }
 
     var didAppear: ((Self) -> Void)?

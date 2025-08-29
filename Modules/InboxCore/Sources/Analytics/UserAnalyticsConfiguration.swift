@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Proton Technologies AG
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -15,28 +15,18 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Sentry
+public struct UserAnalyticsConfiguration: Equatable {
+    let crashReports: Bool
+    let telemetry: Bool
 
-public struct SentryAnalytics {
-    public let start: (@escaping (Options) -> Void) -> Void
-    public let stop: () -> Void
-
-    public init(
-        start: @escaping (@escaping (Options) -> Void) -> Void,
-        stop: @escaping () -> Void
-    ) {
-        self.start = start
-        self.stop = stop
+    public init(crashReports: Bool, telemetry: Bool) {
+        self.crashReports = crashReports
+        self.telemetry = telemetry
     }
 }
 
-extension SentryAnalytics {
-
-    public static var production: SentryAnalytics {
-        .init(
-            start: SentrySDK.start,
-            stop: SentrySDK.close
-        )
+extension UserAnalyticsConfiguration {
+    public static var `default`: Self {
+        .init(crashReports: true, telemetry: true)
     }
-
 }
