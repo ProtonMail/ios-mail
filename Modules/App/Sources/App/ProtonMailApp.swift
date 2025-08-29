@@ -45,7 +45,9 @@ struct ProtonMailApp: App {
                     .environmentObject(analytics)
             }
             .task {
-                await appAppearanceStore.updateColorScheme()
+                async let analytics: Void = configureAnalyticsIfNeeded(analytics: analytics)
+                async let updateColorScheme: Void = appAppearanceStore.updateColorScheme()
+                _ = await (analytics, updateColorScheme)
             }
             .preferredColorScheme(appAppearanceStore.colorScheme)
         }
@@ -53,15 +55,12 @@ struct ProtonMailApp: App {
 
     init() {
         legacyMigrationStateStore = .init(toastStateStore: toastStateStore)
-        configureAnalyticsIfNeeded(analytics: analytics)
         DynamicFontSize.capSupportedSizeCategories()
     }
 
-    func configureAnalyticsIfNeeded(analytics: Analytics) {
+    func configureAnalyticsIfNeeded(analytics: Analytics) async {
         if AnalyticsState.shouldConfigureAnalytics {
-            Task {
-                await analytics.enable(configuration: .default)
-            }
+            await analytics.enable(configuration: .default)
         }
     }
 }
