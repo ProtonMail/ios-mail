@@ -45,7 +45,7 @@ final class UserAnalyticsConfigurator: Sendable, ObservableObject {
         do {
             userSettingsWatchHandle = try mailUserSession.watchUserSettings(callback: callback).get()
         } catch {
-
+            AppLogger.log(error: error, category: .sentryConfiguration)
         }
     }
 
@@ -63,7 +63,7 @@ final class UserAnalyticsConfigurator: Sendable, ObservableObject {
                 await analytics.disable()
             }
         } catch {
-
+            AppLogger.log(error: error, category: .sentryConfiguration)
         }
     }
 }
