@@ -30,6 +30,7 @@ struct ProtonMailApp: App {
     private let analytics = Analytics()
     private let appUIStateStore = AppUIStateStore()
     private let legacyMigrationStateStore: LegacyMigrationStateStore
+    private let refreshToolbarNotifier = RefreshToolbarNotifier()
     private let toastStateStore = ToastStateStore(initialState: .initial)
     @StateObject var appAppearanceStore = AppAppearanceStore.shared
 
@@ -40,6 +41,7 @@ struct ProtonMailApp: App {
                     .environment(\.mainWindowSize, proxy.size)
                     .environmentObject(appUIStateStore)
                     .environmentObject(legacyMigrationStateStore)
+                    .environmentObject(refreshToolbarNotifier)
                     .environmentObject(toastStateStore)
                     .environmentObject(appAppearanceStore)
                     .environmentObject(analytics)

@@ -60,7 +60,6 @@ struct HomeScreen: View {
     private let userDefaults: UserDefaults
     private let modalFactory: HomeScreenModalFactory
     private let notificationAuthorizationStore: NotificationAuthorizationStore
-    private let refreshToolbarNotifier = RefreshToolbarNotifier()
 
     init(
         appContext: AppContext,
@@ -179,7 +178,6 @@ struct HomeScreen: View {
             }
         }
         .environmentObject(upsellCoordinator)
-        .environmentObject(refreshToolbarNotifier)
         .environment(\.isUpsellButtonVisible, upsellButtonVisibilityPublisher.isUpsellButtonVisible)
     }
 
