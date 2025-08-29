@@ -22,6 +22,7 @@ import InboxCoreUI
 import enum InboxComposer.ComposerDismissReason
 import InboxIAP
 import proton_app_uniffi
+import PaymentsNG
 import SwiftUI
 
 struct HomeScreen: View {
@@ -212,8 +213,16 @@ struct HomeScreen: View {
             let logFolder = FileManager.default.sharedCacheDirectory
             let sourceLogFile = logFolder.appending(path: "proton-mail-ios.log")
             _ = try appContext.mailSession.exportLogs(filePath: sourceLogFile.path).get()
-            let activityController = UIActivityViewController(activityItems: [sourceLogFile], applicationActivities: nil)
-            UIApplication.shared.keyWindow?.rootViewController?.present(activityController, animated: true)
+            var filesToShare: [URL] = [sourceLogFile]
+
+            Task {
+                if let transactionLog = await TransactionsObserver.shared.generateTransactionLog() {
+                    filesToShare.append(transactionLog)
+                }
+
+                let activityController = UIActivityViewController(activityItems: filesToShare, applicationActivities: nil)
+                UIApplication.shared.keyWindow?.rootViewController?.present(activityController, animated: true)
+            }
         } catch {
             toastStateStore.present(toast: .error(message: error.localizedDescription))
         }
