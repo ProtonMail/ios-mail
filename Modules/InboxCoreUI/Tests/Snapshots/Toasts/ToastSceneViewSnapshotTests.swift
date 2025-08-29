@@ -22,7 +22,6 @@ import InboxTesting
 import XCTest
 
 class ToastSceneViewSnapshotTests: BaseTestCase {
-
     var store: ToastStateStore!
     var workItems: [DispatchWorkItem]!
 
@@ -91,5 +90,4 @@ class ToastSceneViewSnapshotTests: BaseTestCase {
 
         assertSnapshotsOnIPhoneX(of: toastSceneView, named: "0_toasts_manual_dismissal")
     }
-
 }

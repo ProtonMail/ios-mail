@@ -46,9 +46,11 @@ private struct ToastModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .overlay(
-                ZStack {
-                    ForEach(Array(zip(state.toasts.indices, state.toasts)), id: \.1) { index, toast in
-                        toastView(toast: toast).zIndex(Double(-index))
+                ZStack(alignment: .bottom) {
+                    passThroughBlockerView()
+
+                    ForEachEnumerated(state.toasts, id: \.element) { toast, index in
+                        toastView(toast: toast).zIndex(Double(state.toasts.count - index))
                     }
                 }
                 .padding(.bottom, state.bottomBar.effectiveHeight)
@@ -75,6 +77,17 @@ private struct ToastModifier: ViewModifier {
     }
 
     @ViewBuilder
+    /// Transparent view that is shown without animation to block interactions
+    /// with content underneath the toast.
+    private func passThroughBlockerView() -> some View {
+        if !state.toasts.isEmpty {
+            PassThroughBlockerView()
+                .ignoresSafeArea(.all)
+                .frame(height: state.maxHeight)
+        }
+    }
+
+    @ViewBuilder
     private func toastView(toast: Toast) -> some View {
         VStack {
             Spacer()
@@ -93,4 +106,14 @@ private struct ToastModifier: ViewModifier {
         automaticDismissalTasks[toast]?.cancel()
         automaticDismissalTasks[toast] = nil
     }
+}
+
+private struct PassThroughBlockerView: UIViewRepresentable {
+    func makeUIView(context: Context) -> UIView {
+        let view = UIView(frame: .zero)
+        view.backgroundColor = .clear
+        return view
+    }
+
+    func updateUIView(_ uiView: UIView, context: Context) {}
 }
