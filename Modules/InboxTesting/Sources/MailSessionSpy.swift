@@ -191,6 +191,14 @@ public final class MailSessionSpy: MailSessionProtocol {
         fatalError(#function)
     }
 
+    public func onEnterForeground() {
+        fatalError(#function)
+    }
+
+    public func onExitForeground() {
+        fatalError(#function)
+    }
+
     public func pauseWork() {
         fatalError(#function)
     }
