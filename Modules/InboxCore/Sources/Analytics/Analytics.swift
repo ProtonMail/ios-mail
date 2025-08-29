@@ -31,7 +31,7 @@ public final actor Analytics: ObservableObject {
             }
         }
 
-        func shouldConfigure(with newConfiguration: UserAnalyticsConfiguration) -> Bool {
+        func shouldUpdateConfiguration(with newConfiguration: UserAnalyticsConfiguration) -> Bool {
             switch self {
             case .enabled(let configuration):
                 newConfiguration != configuration
@@ -55,7 +55,7 @@ public final actor Analytics: ObservableObject {
     }
 
     public func enable(configuration: UserAnalyticsConfiguration) {
-        guard state.shouldConfigure(with: configuration) else { return }
+        guard state.shouldUpdateConfiguration(with: configuration) else { return }
         sentryAnalytics.stop()
         sentryAnalytics.start { options in
             options.dsn = SentryConfiguration.dsn

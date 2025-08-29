@@ -31,8 +31,8 @@ class UserAnalyticsConfiguratorTests {
         mailUserSession: mailUserSessionSpy,
         analytics: .init(
             sentryAnalytics: .init(
-                start: { _ in self.sentryStartInvokeCount += 1 },
-                stop: { self.sentryStopInvokeCount += 1 }
+                start: { [unowned self] _ in sentryStartInvokeCount += 1 },
+                stop: { [unowned self] in sentryStopInvokeCount += 1 }
             ))
     )
 
