@@ -42,7 +42,6 @@ struct ProtonMailApp: App {
                     .environmentObject(legacyMigrationStateStore)
                     .environmentObject(toastStateStore)
                     .environmentObject(appAppearanceStore)
-                    .environmentObject(analytics)
             }
             .task {
                 await appAppearanceStore.updateColorScheme()
