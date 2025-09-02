@@ -85,7 +85,7 @@ struct MessageDetailsView: View {
                 VStack(alignment: .trailing, spacing: DS.Spacing.standard) {
                     HStack(alignment: .center, spacing: DS.Spacing.compact) {
                         if uiModel.showPaperClip {
-                            PaperClipImage(size: 12)
+                            PaperClipImage()
                         }
                         if uiModel.isStarred {
                             StarImage(isStarred: uiModel.isStarred, size: 14)

@@ -111,7 +111,7 @@ struct CollapsedMessageCell: View {
                 .accessibilityIdentifier(CollapsedMessageCellIdentifiers.senderName)
             Spacer()
             if uiModel.showPaperClip {
-                PaperClipImage(size: 12)
+                PaperClipImage()
             }
             if uiModel.isStarred {
                 StarImage(isStarred: uiModel.isStarred, size: 14)

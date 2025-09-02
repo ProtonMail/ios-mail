@@ -20,16 +20,10 @@ import InboxDesignSystem
 import SwiftUI
 
 struct PaperClipImage: View {
-    private let size: CGFloat
-
-    init(size: CGFloat) {
-        self.size = size
-    }
-
     var body: some View {
         DS.Icon.icPaperClip.image
             .resizable()
-            .square(size: size)
+            .square(size: 12)
             .foregroundStyle(DS.Color.Text.weak)
     }
 }
