@@ -252,10 +252,10 @@ final class ConversationDetailModel: Sendable, ObservableObject {
             actionSheets = .allSheetsDismissed
             goBack()
         case .star:
-            await starActionPerformer.star(itemsWithIDs: [messageID], itemType: .conversation)
+            await starActionPerformer.star(itemsWithIDs: [messageID], itemType: .message)
             actionSheets = .allSheetsDismissed
         case .unstar:
-            await starActionPerformer.unstar(itemsWithIDs: [messageID], itemType: .conversation)
+            await starActionPerformer.unstar(itemsWithIDs: [messageID], itemType: .message)
             actionSheets = .allSheetsDismissed
         case .labelAs:
             actionSheets = .allSheetsDismissed.copy(
