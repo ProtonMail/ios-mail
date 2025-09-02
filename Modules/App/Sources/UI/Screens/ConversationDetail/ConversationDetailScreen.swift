@@ -338,7 +338,7 @@ extension ConversationDetailSeed {
         switch self {
         case .mailboxItem(_, let selectedMailbox):
             selectedMailbox.systemFolder == .outbox
-        case .pushNotification:
+        case .pushNotification, .searchResultItem:
             false
         }
     }

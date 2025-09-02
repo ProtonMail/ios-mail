@@ -547,6 +547,8 @@ extension ConversationDetailModel {
 
     private func establishConversationItemMetadata() async throws -> ConversationItemMetadata {
         switch seed {
+        case .searchResultItem(let item, let mailbox):
+            return .init(item: .conversation(item.conversationID), selectedMailbox: mailbox)
         case .mailboxItem(let item, let mailbox):
             switch item.type {
             case .conversation:
@@ -643,6 +645,8 @@ extension ConversationDetailModel {
     private func messageIDToScrollTo() async -> ID? {
         let messageID: ID?
         switch seed {
+        case .searchResultItem(let item, _):
+            messageID = item.id
         case .mailboxItem(let item, _):
             switch item.type {
             case .conversation:

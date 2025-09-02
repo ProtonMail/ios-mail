@@ -18,24 +18,25 @@
 import Foundation
 
 enum ConversationDetailSeed {
+    case searchResultItem(messageModel: MailboxItemCellUIModel, selectedMailbox: SelectedMailbox)
     case mailboxItem(item: MailboxItemCellUIModel, selectedMailbox: SelectedMailbox)
     case pushNotification(MailboxMessageSeed)
 
     var subject: String {
         switch self {
-        case .mailboxItem(let model, _):
-            return model.subject
+        case .mailboxItem(let model, _), .searchResultItem(let model, _):
+            model.subject
         case .pushNotification(let message):
-            return message.subject
+            message.subject
         }
     }
 
     var isStarred: Bool {
         switch self {
         case .mailboxItem(let model, _):
-            return model.isStarred
-        case .pushNotification:
-            return false
+            model.isStarred
+        case .pushNotification, .searchResultItem:
+            false
         }
     }
 }
