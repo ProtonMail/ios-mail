@@ -74,12 +74,12 @@ struct SingleFolderNodeView<UnreadText: View>: View {
                         .animation(.default, value: isExpanded)
                         .accessibilityIdentifier(SidebarFolderNodeViewIdentifiers.chevronItem)
                     }
-                    VStack {
+                    Group {
                         if let unreadFormatted = UnreadCountFormatter.stringIfGreaterThan0(count: folder.unreadCount) {
                             unreadTextView(unreadFormatted, folder.isSelected)
                         }
                     }
-                    .frame(width: 32, alignment: .trailing)
+                    .frame(width: 35, alignment: .trailing)
                 }
                 .padding(.leading, padding)
                 .accessibilityElement(children: .contain)
