@@ -43,6 +43,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         case message(ID)
         case conversation(ID)
         case pushNotification(messageID: ID, conversationID: ID)
+        case searchResultItem(messageID: ID, conversationID: ID)
     }
 
     struct ConversationItemMetadata {
@@ -130,7 +131,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
                 try await setUpSingleMessageObservation(messageID: id)
             case .conversation(let id):
                 try await setUpConversationMessagesObservation(conversationID: id, mailbox: mailbox)
-            case .pushNotification(let messageID, let conversationID):
+            case .pushNotification(let messageID, let conversationID), .searchResultItem(let messageID, let conversationID):
                 switch mailbox.viewMode() {
                 case .messages:
                     try await setUpSingleMessageObservation(messageID: messageID)
@@ -548,7 +549,10 @@ extension ConversationDetailModel {
     private func establishConversationItemMetadata() async throws -> ConversationItemMetadata {
         switch seed {
         case .searchResultItem(let item, let mailbox):
-            return .init(item: .conversation(item.conversationID), selectedMailbox: mailbox)
+            return .init(
+                item: .searchResultItem(messageID: item.id, conversationID: item.conversationID),
+                selectedMailbox: mailbox
+            )
         case .mailboxItem(let item, let mailbox):
             switch item.type {
             case .conversation:
