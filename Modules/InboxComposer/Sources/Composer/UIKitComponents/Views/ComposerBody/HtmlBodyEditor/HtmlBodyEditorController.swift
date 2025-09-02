@@ -200,10 +200,24 @@ private final actor BodyInitialFocusState {
 
     private var state: State = .bodyNotLoaded
     private var shouldSetFocusWhenLoaded: Bool = false
+    private var focusHasBeenSet: Bool = false
     private let setFocusAction: (() async -> Void)
 
     init(setFocusAction: @escaping (() async -> Void)) {
         self.setFocusAction = setFocusAction
+    }
+
+    func setFocusWhenLoaded() async {
+        switch state {
+        case .bodyNotLoaded:
+            shouldSetFocusWhenLoaded = true
+        case .bodyLoaded, .done:
+            await setFocus()
+        }
+    }
+
+    func bodyWasLoaded() async {
+        await moveToNextState()
     }
 
     private func moveToNextState() async {
@@ -213,7 +227,7 @@ private final actor BodyInitialFocusState {
             state = .bodyLoaded
         case .bodyLoaded:
             if shouldSetFocusWhenLoaded {
-                await setFocusAction()
+                await setFocus()
             }
             state = .done
         case .done:
@@ -222,11 +236,9 @@ private final actor BodyInitialFocusState {
         await moveToNextState()
     }
 
-    func setFocusWhenLoaded() {
-        shouldSetFocusWhenLoaded = true
-    }
-
-    func bodyWasLoaded() async {
-        await moveToNextState()
+    private func setFocus() async {
+        guard !focusHasBeenSet else { return }
+        focusHasBeenSet = true
+        await setFocusAction()
     }
 }
