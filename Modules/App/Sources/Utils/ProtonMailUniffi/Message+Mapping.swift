@@ -84,7 +84,8 @@ extension Message {
                 location: exclusiveLocation?.model,
                 labels: labels,
                 attachments: attachmentsMetadata.map(\.displayModel),
-                isStarred: starred
+                isStarred: starred,
+                showPaperClip: showPaperClip
             )
         )
     }
@@ -97,8 +98,13 @@ extension Message {
             isRead: !unread,
             isDraft: isDraft,
             isStarred: starred,
+            showPaperClip: showPaperClip,
             avatar: sender.senderAvatar
         )
+    }
+
+    private var showPaperClip: Bool {
+        numAttachments > 0
     }
 
     private var recipients: [MessageDetail.Recipient] {

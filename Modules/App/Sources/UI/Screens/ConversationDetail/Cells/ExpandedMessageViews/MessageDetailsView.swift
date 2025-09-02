@@ -84,6 +84,9 @@ struct MessageDetailsView: View {
                 Spacer(minLength: DS.Spacing.moderatelyLarge)
                 VStack(alignment: .trailing, spacing: DS.Spacing.standard) {
                     HStack(alignment: .center, spacing: DS.Spacing.compact) {
+                        if uiModel.showPaperClip {
+                            PaperClipImage(size: 12)
+                        }
                         if uiModel.isStarred {
                             StarImage(isStarred: uiModel.isStarred, size: 14)
                         }
@@ -394,6 +397,7 @@ struct MessageDetailsUIModel: Equatable {
     let labels: [LabelUIModel]
     let attachments: [AttachmentDisplayModel]
     let isStarred: Bool
+    let showPaperClip: Bool
 }
 
 extension MessageDetailsUIModel {
@@ -514,7 +518,8 @@ enum MessageDetailsPreviewProvider {
             location: location?.model,
             labels: labels,
             attachments: .previewData,
-            isStarred: false
+            isStarred: false,
+            showPaperClip: false
         )
     }
 
