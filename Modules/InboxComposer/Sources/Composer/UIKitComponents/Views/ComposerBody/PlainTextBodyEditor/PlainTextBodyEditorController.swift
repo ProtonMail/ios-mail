@@ -66,7 +66,7 @@ final class PlainTextBodyEditorController: UIViewController, BodyEditor {
 
     func handleBodyAction(_ action: ComposerBodyAction) {
         switch action {
-        case .insertInlineImages, .removeInlineImage:
+        case .insertText, .insertInlineImages, .removeInlineImage:
             break
         case .reloadBody(let body):
             updateBody(body)

@@ -64,6 +64,10 @@ final class DraftActionBarViewController: UIViewController {
     }
 
     private func setUpUI() {
+        registerForTraitChanges([UITraitUserInterfaceStyle.self]) { [weak self] (traitObject: Self, _) in
+            // Fix to make the color of the shadow dynamically change
+            self?.view.layer.shadowColor = DS.Color.Shade.shade10.toDynamicUIColor.cgColor
+        }
         if state.isAddingAttachmentsEnabled {
             stack.addArrangedSubview(attachmentButton)
         }

@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Proton Technologies AG
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -15,9 +15,17 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-enum ComposerBodyAction: Equatable {
-    case insertText(text: String)
-    case insertInlineImages(cids: [String])
-    case removeInlineImage(cid: String)
-    case reloadBody(html: String)
+import Foundation
+
+struct HtmlSanitizer {
+
+    static func removeStyleAttribute(html: String) -> String {
+        let regex = try! NSRegularExpression(
+            pattern: #"(?<![\w-])style\s*=\s*(?:"[^"]*"|'[^']*')"#,
+            options: .caseInsensitive
+        )
+        let range = NSRange(location: 0, length: html.utf16.count)
+        let sanitizedString = regex.stringByReplacingMatches(in: html, options: [], range: range, withTemplate: "")
+        return sanitizedString
+    }
 }

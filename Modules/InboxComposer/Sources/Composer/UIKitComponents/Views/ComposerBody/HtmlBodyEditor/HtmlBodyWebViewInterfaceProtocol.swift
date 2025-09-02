@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Proton Technologies AG
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -15,9 +15,16 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-enum ComposerBodyAction: Equatable {
-    case insertText(text: String)
-    case insertInlineImages(cids: [String])
-    case removeInlineImage(cid: String)
-    case reloadBody(html: String)
+import WebKit
+
+protocol HtmlBodyWebViewInterfaceProtocol: AnyObject {
+    var webView: WKWebView { get }
+    var onEvent: ((HtmlBodyWebViewInterface.Event) -> Void)? { get set }
+
+    func loadMessageBody(_ body: String)
+    @MainActor func setFocus() async
+    @MainActor func readMesasgeBody() async -> String?
+    @MainActor func insertText(_ text: String) async
+    @MainActor func insertImages(_ contentIds: [String]) async
+    @MainActor func removeImage(containing cid: String) async
 }
