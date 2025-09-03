@@ -74,4 +74,42 @@ final class HtmlSanitizerTests {
     func removeStyleAttribute(context: String, input: String, expected: String) {
         #expect(HtmlSanitizer.removeStyleAttribute(html: input) == expected, Comment(rawValue: context))
     }
+
+    @Test(
+        "removes or escapes invalid characters correctly",
+        arguments: [
+            (
+                "when empty html",
+                "",
+                ""
+            ),
+            (
+                "when no special characters",
+                "Hello",
+                "Hello"
+            ),
+            (
+                "when backslashes are present",
+                #"C:\Temp\file"#,
+                #"C:\\Temp\\file"#
+            ),
+            (
+                "when single quote is present",
+                #"Don't do it"#,
+                #"Don\'t do it"#
+            ),
+            (
+                "when double quotes are present",
+                #"He said "hi""#,
+                #"He said \"hi\""#
+            ),
+            (
+                "when html attributes contain quotes and backslashes",
+                #"<a href="C:\foo\bar" title='link'>"#,
+                #"<a href=\"C:\\foo\\bar\" title=\'link\'>"#
+            ),
+        ])
+    func removeInvalidCharacters(context: String, input: String, expected: String) {
+        #expect(HtmlSanitizer.escapeQuotesAndBackslash(html: input) == expected, Comment(rawValue: context))
+    }
 }
