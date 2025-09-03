@@ -5290,7 +5290,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Любыя ўведзеныя вамі звесткі будуць страчаны."
+            "value" : "Любая ўведзеная вамі інфармацыя будзе страчана."
           }
         },
         "ca" : {
@@ -10186,7 +10186,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Canvieu la segona contrasenya"
+            "value" : "Canvia la segona contrasenya"
           }
         },
         "cs" : {
@@ -11517,7 +11517,7 @@
                   "many" : {
                     "stringUnit" : {
                       "state" : "translated",
-                      "value" : "Размоў перамешчана ў Архіў."
+                      "value" : "Размовы перамешчаны ў Архіў."
                     }
                   },
                   "one" : {
@@ -12485,7 +12485,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "대화 툴바"
+            "value" : "대화 도구 모음"
           }
         },
         "nb" : {
@@ -13320,7 +13320,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Немагчыма перамясціць у папку. Магчыма, папка была выдалена або перамешчана."
+            "value" : "Немагчыма перамясціць у папку. Магчыма, што папка была выдалена або перамешчана."
           }
         },
         "ca" : {
@@ -14723,7 +14723,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "툴바 사용자화"
+            "value" : "도구 모음 사용자화"
           }
         },
         "nb" : {
@@ -18175,7 +18175,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "대화 툴바 편집"
+            "value" : "대화 도구 모음 편집"
           }
         },
         "nb" : {
@@ -18545,7 +18545,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "목록 툴바 편집"
+            "value" : "목록 도구 모음 편집"
           }
         },
         "nb" : {
@@ -18909,7 +18909,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "메시지 툴바 편집"
+            "value" : "메시지 도구 모음 편집"
           }
         },
         "nb" : {
@@ -19088,7 +19088,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "툴바 편집"
+            "value" : "도구 모음 편집"
           }
         },
         "nb" : {
@@ -19553,7 +19553,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Лісты з %@ больш не будуць дастаўляцца і будуць канчаткова выдалены. Вы можаце кіраваць заблакіраванымі адрасамі электроннай пошты ў наладах."
+            "value" : "Лісты з %@ больш не будуць дастаўляцца і будуць незваротна выдалены. Вы можаце кіраваць заблакіраванымі адрасамі электроннай пошты ў наладах."
           }
         },
         "ca" : {
@@ -20347,7 +20347,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Profitez des messages chiffrés, de moins de spams, d'une protection contre l'hameçonnage et d'un blocage des traqueurs. Bienvenue dans le respect de la vie privée."
+            "value" : "Profitez des messages chiffrés, de moins de pourriels, d'une protection contre l'hameçonnage et d'un blocage des traqueurs. Bienvenue dans le respect de la vie privée."
           }
         },
         "hu" : {
@@ -21385,7 +21385,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Канцэнтрацыя заўсёды ў вашых руках"
+            "value" : "Канцэнтрацыя на адлегласці выцягнутай рукі"
           }
         },
         "ca" : {
@@ -22901,7 +22901,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "받은편지함"
+            "value" : "받은 편지함"
           }
         },
         "nb" : {
@@ -23002,7 +23002,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aquest PIN no és correcte. Torneu-ho a provar."
+            "value" : "PIN incorrecte. Torneu-ho a provar."
           }
         },
         "cs" : {
@@ -24482,7 +24482,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Barra d'eines de la llista"
+            "value" : "Barra d'eines de llista"
           }
         },
         "cs" : {
@@ -24572,7 +24572,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "목록 툴바"
+            "value" : "목록 도구 모음"
           }
         },
         "nb" : {
@@ -27338,7 +27338,7 @@
                   "many" : {
                     "stringUnit" : {
                       "state" : "translated",
-                      "value" : "Паведамленняў перамешчана ў Архіў."
+                      "value" : "Паведамленні перамешчаны ў Архіў."
                     }
                   },
                   "one" : {
@@ -28205,7 +28205,123 @@
       }
     },
     "Message toolbar" : {
-      "comment" : "Title of a section displaying selected message toolbar actions."
+      "comment" : "Title of a section displaying selected message toolbar actions.",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Панэль інструментаў паведамлення"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Barra d'eines del missatge"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Panel nástrojů zprávy"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beskedværktøjslinje"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nachrichten-Symbolleiste"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Γραμμή εργαλείων μηνύματος"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Message toolbar"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Barra de herramientas del mensaje"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Barre d'outils de message"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Barra degli strumenti del messaggio"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "メッセージツールバー"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "메시지 도구 모음"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meldingsverktøylinje"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Berichtwerkbalk"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Barra de ferramentas de mensagem"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bară de unelte pentru mesaj"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Panel nástrojov správy"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meddelandeverktygsfält"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "İleti araç çubuğu"
+          }
+        }
+      }
     },
     "Messages in Trash and Spam will be automatically deleted after 30 days." : {
       "comment" : "Empty Spam/Trash Banner: Title for paid users with auto-delete turned on.",
@@ -33322,7 +33438,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "El PIN no pot excedir els 21 dígits."
+            "value" : "El PIN no pot superar els 21 dígits"
           }
         },
         "cs" : {
@@ -33495,7 +33611,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "PIN павінен мець даўжыню 4–21 лічбы і складацца толькі з лічбаў"
+            "value" : "PIN павінен мець даўжыню ад 4 да 21 лічбы і складацца толькі з лікаў"
           }
         },
         "ca" : {
@@ -36085,7 +36201,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Справаздачы не шыфруюцца скразным метадам. Не адпраўляйце ў іх любыя канфідэнцыяльныя звесткі."
+            "value" : "Справаздачы не шыфруюцца скразным метадам. Не адпраўляйце ў іх любую канфідэнцыяльную інфармацыю."
           }
         },
         "ca" : {
@@ -36461,7 +36577,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Restaura les accions de la barra d'eines per a la vista del missatge a les seves preferències originals per defecte."
+            "value" : "Restaura les accions de la barra d'eines per a la vista del missatge a la seva configuració per defecte."
           }
         },
         "cs" : {
@@ -41444,7 +41560,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "스팸"
+            "value" : "스팸함"
           }
         },
         "nb" : {
@@ -41784,7 +41900,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Passez moins de temps à trier et plus de temps à agir. Votre boîte de réception est conçue pour une navigation simplifiée, avec un accés rapide à ce qui est le plus important."
+            "value" : "Passez moins de temps à trier et plus de temps à agir. Votre boîte de réception est conçue pour une navigation simplifiée, avec un accès rapide à ce qui est le plus important."
           }
         },
         "hu" : {
@@ -42261,7 +42377,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mantingueu-vos connectat, fins i tot fora de línia"
+            "value" : "Estigueu connectat, fins i tot fora de línia"
           }
         },
         "cs" : {
@@ -44374,7 +44490,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "툴바에는 1~5개의 동작을 포함할 수 있습니다. 마지막으로 남은 동작은 삭제할 수 없습니다."
+            "value" : "도구 모음에 1~5개의 동작을 포함할 수 있습니다. 마지막으로 남은 동작은 삭제할 수 없습니다."
           }
         },
         "nb" : {
@@ -45962,10 +46078,242 @@
       }
     },
     "This toolbar appears when multiple messages are selected in a list view." : {
-      "comment" : "Footer of a section displaying selected list toolbar actions."
+      "comment" : "Footer of a section displaying selected list toolbar actions.",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Гэта панэль інструментаў з'яўляецца, калі выбрана некалькі паведамленняў у спісе."
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aquesta barra d'eines apareix quan se seleccionen diversos missatges en una vista de llista."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tento panel nástrojů se zobrazí, když je v zobrazení seznamu vybráno více zpráv."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Denne værktøjslinje vises, når flere beskeder er valgt i en listevisning."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diese Symbolleiste wird angezeigt, wenn mehrere Nachrichten in einer Listenansicht ausgewählt sind."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Αυτή η γραμμή εργαλείων εμφανίζεται όταν πολλά μηνύματα επιλέγονται σε προβολή λίστας."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This toolbar appears when multiple messages are selected in a list view."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esta barra de herramientas aparece cuando se seleccionan varios mensajes en una vista de lista."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cette barre d'outils apparaît lorsque plusieurs messages sont sélectionnés dans la liste des messages."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Questa barra degli strumenti appare quando vengono selezionati più messaggi in una vista elenco."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "このツールバーは、リストビューで複数のメッセージが選択されたときに表示されます。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이 도구 모음은 목록 보기에서 여러 메시지가 선택될 때 표시됩니다."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Denne verktøylinjen vises når flere meldinger er valgt i en listevisning."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deze werkbalk verschijnt wanneer meerdere berichten zijn geselecteerd in een lijstweergave."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esta barra de ferramentas aparece quando várias mensagens são selecionadas em uma visualização de lista."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Această bară de unelte apare când sunt selectate mai multe mesaje în vizualizarea tip listă."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tento panel nástrojov sa zobrazí, keď je v zobrazení zoznamu vybraných viacero správ."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Detta verktygsfält visas när flera meddelanden är valda i en listvy."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bu araç çubuğu, bir liste görünümünde birden fazla ileti seçildiğinde görüntülenir."
+          }
+        }
+      }
     },
     "This toolbar remains visible when a message is open." : {
-      "comment" : "Footer of a section displaying selected conversation toolbar actions."
+      "comment" : "Footer of a section displaying selected conversation toolbar actions.",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Гэта панэль інструментаў застаецца бачнай, калі паведамленне адкрыта."
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aquesta barra d'eines roman visible quan un missatge està obert."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tento panel nástrojů zůstává viditelný při otevřené zprávě."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Denne værktøjslinje forbliver synlig, når en besked er åben."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diese Symbolleiste bleibt sichtbar, wenn eine Nachricht geöffnet ist."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Αυτή η γραμμή εργαλείων παραμένει ορατή όταν ένα μήνυμα είναι ανοιχτό."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This toolbar remains visible when a message is open."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esta barra de herramientas permanece visible cuando se abre un mensaje."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cette barre d'outils reste visible lorsqu'un message est ouvert."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Questa barra degli strumenti resta visibile quando un messaggio è aperto."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "このツールバーは、メッセージ閲覧時に表示されたままになります。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이 도구 모음은 메시지가 열려 있을 때 계속 표시됩니다."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Denne verktøylinjen forblir synlig når en melding er åpen."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deze werkbalk blijft zichtbaar wanneer een bericht geopend is."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esta barra de ferramentas continua visível quando uma mensagem está aberta."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Această bară de unelte rămâne vizibilă atunci când un mesaj este deschis."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tento panel nástrojov zostáva viditeľný, keď je správa otvorená."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Detta verktygsfält förblir synligt när ett meddelande är öppet."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bu araç çubuğu bir ileti açıkken görünür kalır."
+          }
+        }
+      }
     },
     "This weekend" : {
       "comment" : "Predefined snooze option that postpones item until the upcoming weekend.",
@@ -49363,7 +49711,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Milloreu de pla per a accedir-hi"
+            "value" : "Milloreu el pla per a accedir-hi"
           }
         },
         "cs" : {
@@ -51923,7 +52271,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Вы скасавалі падпіску з гэтага спіса рассылкі"
+            "value" : "Вы адпісаліся ад гэтага спіса рассылкі"
           }
         },
         "ca" : {

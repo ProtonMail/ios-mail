@@ -490,7 +490,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Per utilitzar %@ us cal un pla de pagament"
+            "value" : "Es requereix un pla de pagament per a utilitzar %@"
           }
         },
         "cs" : {
@@ -9638,7 +9638,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "El missatge no s'ha trobat al servidor."
+            "value" : "No s'ha trobat el missatge al servidor"
           }
         },
         "cs" : {
@@ -11100,7 +11100,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Afegiu-hi almenys un destinatari"
+            "value" : "Afegiu com a mínim un destinatari."
           }
         },
         "cs" : {
@@ -11661,7 +11661,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Праблема з шыфраваннем укладання. Загрузіце яго яшчэ раз."
+            "value" : "Праблема з шыфраваннем далучэння. Запампуйце яго яшчэ раз."
           }
         },
         "ca" : {
@@ -12777,7 +12777,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "S'han eliminat els destinataris duplicats: %@"
+            "value" : "S'han esborrat els destinataris duplicats: %@"
           }
         },
         "cs" : {
@@ -13141,7 +13141,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Паўтор немагчымы. Укладанне загружаецца або ўжо загружана."
+            "value" : "Паўтор немагчымы. Далучэнне запампоўваецца або ўжо запампавана."
           }
         },
         "ca" : {
@@ -13511,7 +13511,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Запланаваны час адпраўкі ўжо мінуў. Перайдзіце ў Чарнавікі, каб адправіць або перанесці адпраўку."
+            "value" : "Запланаваны час адпраўкі ўжо мінуў. Перайдзіце ў Чарнавікі, каб адправіць або паўторна запланаваць адпраўку."
           }
         },
         "ca" : {
@@ -14639,7 +14639,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Усталюйце пароль для шыфравання гэтага паведамлення для карыстальнікаў, якія не карыстаюцца Proton Mail."
+            "value" : "Задайце пароль для шыфравання гэтага паведамлення для карыстальнікаў, якія не належаць да Proton Mail."
           }
         },
         "ca" : {
@@ -14818,13 +14818,13 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Усталяваць тэрмін дзеяння паведамлення"
+            "value" : "Задаць тэрмін дзеяння паведамлення"
           }
         },
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Establir la caducitat del missatge"
+            "value" : "Establiu la caducitat del missatge"
           }
         },
         "cs" : {
@@ -15188,7 +15188,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Некаторыя атрымальнікі (%@) не падтрымліваюць тэрмін дзеяння па змаўчанні. Дадайце пароль, каб уключыць тэрмін дзеяння для атрымальнікаў, якія не карыстаюцца Proton Mail."
+            "value" : "Некаторыя атрымальнікі (%@) не падтрымліваюць прадвызначаны тэрмін дзеяння. Дадайце пароль, каб уключыць тэрмін дзеяння для атрымальнікаў, якія не карыстаюцца Proton Mail."
           }
         },
         "ca" : {
@@ -18196,7 +18196,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Занадта шмат укладанняў. Адпраўце іх у некалькіх лістах."
+            "value" : "Занадта шмат далучэнняў. Адпраўце іх у некалькіх лістах."
           }
         },
         "ca" : {
@@ -18739,7 +18739,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Вы дасягнулі ліміту запланаваных паведамленняў."
+            "value" : "Вы дасягнулі абмежавання запланаваных паведамленняў."
           }
         },
         "ca" : {
