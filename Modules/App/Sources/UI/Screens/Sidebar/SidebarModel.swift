@@ -53,7 +53,7 @@ final class SidebarModel: Sendable, ObservableObject {
         case .toggle(let folder, let expand):
             changeVisibility(of: folder, expand: expand)
         case .logoTappedFiveTimes:
-            if !state.other.contains(where: { $0.type == .shareLogs }) {
+            if !state.other.contains(where: { other in other.type == .shareLogs }) {
                 state = state.copy(\.other, to: state.other.appending(.shareLogs))
             }
         }
