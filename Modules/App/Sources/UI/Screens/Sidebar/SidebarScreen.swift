@@ -93,6 +93,7 @@ struct SidebarScreen: View {
             Image(DS.Images.mailProductLogo)
                 .padding(.leading, DS.Spacing.extraLarge)
                 .padding(.vertical, DS.Spacing.small)
+                .onTapGesture(count: 5) { screenModel.handle(action: .logoTappedFiveTimes) }
             separator
         }.background(
             GeometryReader { geometry in

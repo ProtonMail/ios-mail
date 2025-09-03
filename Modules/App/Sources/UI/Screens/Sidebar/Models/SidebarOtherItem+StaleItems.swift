@@ -56,14 +56,7 @@ extension Array where Element == SidebarOtherItem {
         ])
 
         #if DEBUG || QA
-            items.append(
-                .init(
-                    type: .shareLogs,
-                    icon: DS.Icon.icBug,
-                    name: "Share logs".notLocalized,
-                    isSelected: false
-                )
-            )
+            items.append(.shareLogs)
         #endif
 
         return items
@@ -87,6 +80,15 @@ extension SidebarOtherItem {
             type: .createFolder,
             icon: DS.Icon.icPlus,
             name: L10n.Sidebar.createFolder.string,
+            isSelected: false
+        )
+    }
+
+    static var shareLogs: Self {
+        .init(
+            type: .shareLogs,
+            icon: DS.Icon.icBug,
+            name: "Share logs".notLocalized,
             isSelected: false
         )
     }

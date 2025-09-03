@@ -31,4 +31,10 @@ public extension RangeReplaceableCollection where Element: Equatable {
         return copy
     }
 
+    func appending(_ item: Element) -> Self {
+        var copy = self
+        copy.append(item)
+        return copy
+    }
+
 }
