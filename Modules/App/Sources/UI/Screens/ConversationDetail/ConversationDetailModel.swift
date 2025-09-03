@@ -130,13 +130,17 @@ final class ConversationDetailModel: Sendable, ObservableObject {
             case .message(let id):
                 try await setUpSingleMessageObservation(messageID: id)
             case .conversation(let id):
-                try await setUpConversationMessagesObservation(conversationID: id, mailbox: mailbox)
+                try await setUpConversationMessagesObservation(conversationID: id, origin: .default, mailbox: mailbox)
             case .pushNotification(let messageID, let conversationID), .searchResultItem(let messageID, let conversationID):
                 switch mailbox.viewMode() {
                 case .messages:
                     try await setUpSingleMessageObservation(messageID: messageID)
                 case .conversations:
-                    try await setUpConversationMessagesObservation(conversationID: conversationID, mailbox: mailbox)
+                    try await setUpConversationMessagesObservation(
+                        conversationID: conversationID,
+                        origin: .pushNotification,
+                        mailbox: mailbox
+                    )
                 }
             }
             await reloadBottomBarActions()
@@ -156,10 +160,15 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         updateStateToMessagesReady(with: liveQueryValues.messages)
     }
 
-    private func setUpConversationMessagesObservation(conversationID: ID, mailbox: Mailbox) async throws {
+    private func setUpConversationMessagesObservation(
+        conversationID: ID,
+        origin: OpenConversationOrigin,
+        mailbox: Mailbox
+    ) async throws {
         conversationItem = .init(id: conversationID, itemType: .conversation)
         let liveQueryValues = try await createLiveQueryAndPrepareMessages(
             forConversationID: conversationID,
+            origin: origin,
             mailbox: mailbox
         )
 
@@ -563,8 +572,7 @@ extension ConversationDetailModel {
         case .pushNotification(let message):
             let message = try await fetchMessage(with: message.remoteId)
             return .init(
-                item: .pushNotification(
-                    messageID: message.id, conversationID: message.conversationId),
+                item: .pushNotification(messageID: message.id, conversationID: message.conversationId),
                 selectedMailbox: message.exclusiveLocation?.selectedMailbox ?? .inbox
             )
         }
@@ -586,11 +594,13 @@ extension ConversationDetailModel {
 
     private func createLiveQueryAndPrepareMessages(
         forConversationID conversationID: ID,
+        origin: OpenConversationOrigin,
         mailbox: Mailbox
     ) async throws -> LiveQueryValues {
         let watchConversationResult = await watchConversation(
             mailbox: mailbox,
             id: conversationID,
+            origin: origin,
             callback: conversationMessageListCallback
         )
 

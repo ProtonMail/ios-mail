@@ -48,3 +48,15 @@ public final class LiveQueryCallbackWrapper: Sendable, LiveQueryCallback {
         callback()
     }
 }
+
+public final class ExecuteWhenOnlineCallbackWrapper: Sendable, ExecuteWhenOnlineCallback {
+    let callback: @Sendable () -> Void
+
+    public init(callback: @escaping @Sendable () -> Void) {
+        self.callback = callback
+    }
+
+    public func onOnline() {
+        callback()
+    }
+}

@@ -57,7 +57,7 @@ public final class UpsellCoordinator: ObservableObject {
 
     public func prewarm() async {
         await withCheckedContinuation { continuation in
-            let callback = LiveQueryCallbackWrapper {
+            let callback = ExecuteWhenOnlineCallbackWrapper {
                 Task {
                     _ = try? await self.fetchAvailablePlans()
                     continuation.resume()

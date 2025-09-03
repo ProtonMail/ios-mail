@@ -19,7 +19,7 @@
 import proton_app_uniffi
 
 protocol OnlineExecutor {
-    func executeWhenOnline(callback: LiveQueryCallback)
+    func executeWhenOnline(callback: ExecuteWhenOnlineCallback)
 }
 
 extension MailUserSession: OnlineExecutor {}
