@@ -236,19 +236,3 @@ private final class BlockAddressSpy: @unchecked Sendable {
         return stubbed[email] ?? .ok
     }
 }
-
-private final class RecipientDraftPresenterSpy: @unchecked Sendable, RecipientDraftPresenter {
-    var stubbedOpenDraftError: Error?
-
-    private(set) var openDraftCalls: [SingleRecipientEntry] = []
-
-    // MARK: - RecipientDraftPresenter
-
-    func openDraft(with contact: SingleRecipientEntry) async throws {
-        openDraftCalls.append(contact)
-
-        if let stubbedOpenDraftError {
-            throw stubbedOpenDraftError
-        }
-    }
-}

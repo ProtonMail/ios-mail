@@ -32,6 +32,7 @@ final class RSVPStateStore: StateStore {
     private let openURL: URLOpenerProtocol
     private let toastStateStore: ToastStateStore
     private let clipboard: Clipboard
+    private let draftPresenter: RecipientDraftPresenter
     private var internalState: InternalState {
         didSet { state = internalState.state }
     }
@@ -43,19 +44,21 @@ final class RSVPStateStore: StateStore {
         case answer(RsvpAnswer)
         case calendarIconTapped
         case copyAddress(email: String)
-        case newMessage
+        case newMessage(email: String)
     }
 
     init(
         serviceProvider: RsvpEventServiceProvider,
         openURL: URLOpenerProtocol,
         toastStateStore: ToastStateStore,
-        pasteboard: UIPasteboard
+        pasteboard: UIPasteboard,
+        draftPresenter: RecipientDraftPresenter
     ) {
         self.serviceProvider = serviceProvider
         self.openURL = openURL
         self.toastStateStore = toastStateStore
         self.clipboard = .init(toastStateStore: toastStateStore, pasteboard: pasteboard)
+        self.draftPresenter = draftPresenter
         self.internalState = .loading
         self.state = internalState.state
     }
@@ -75,8 +78,8 @@ final class RSVPStateStore: StateStore {
             }
         case .copyAddress(let email):
             clipboard.copyToClipboard(value: email, forName: CommonL10n.Clipboard.emailAddress)
-        case .newMessage:
-            toastStateStore.present(toast: .comingSoon)
+        case .newMessage(let email):
+            try? await draftPresenter.openDraft(with: .init(name: .none, email: email))
         }
     }
 

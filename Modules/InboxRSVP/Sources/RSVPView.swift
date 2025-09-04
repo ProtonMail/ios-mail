@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import InboxCore
 import InboxCoreUI
 import proton_app_uniffi
 import SwiftUI
@@ -24,9 +25,11 @@ public struct RSVPView: View {
     @Environment(\.pasteboard) var pasteboard
     @EnvironmentObject var toastStateStore: ToastStateStore
     private let serviceProvider: RsvpEventServiceProvider
+    private let draftPresenter: RecipientDraftPresenter
 
-    public init(serviceProvider: RsvpEventServiceProvider) {
+    public init(serviceProvider: RsvpEventServiceProvider, draftPresenter: RecipientDraftPresenter) {
         self.serviceProvider = serviceProvider
+        self.draftPresenter = draftPresenter
     }
 
     public var body: some View {
@@ -35,7 +38,8 @@ public struct RSVPView: View {
                 serviceProvider: serviceProvider,
                 openURL: openURL,
                 toastStateStore: toastStateStore,
-                pasteboard: pasteboard
+                pasteboard: pasteboard,
+                draftPresenter: draftPresenter
             )
         ) { state, store in
             Group {
@@ -69,7 +73,7 @@ public struct RSVPView: View {
             case .copyAddress:
                 store.handle(action: .copyAddress(email: email))
             case .newMessage:
-                store.handle(action: .newMessage)
+                store.handle(action: .newMessage(email: email))
             }
         }
     }

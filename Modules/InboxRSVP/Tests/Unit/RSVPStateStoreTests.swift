@@ -31,11 +31,13 @@ final class RSVPStateStoreTests {
     private let openURLSpy = EnvironmentURLOpenerSpy()
     private var serviceProviderSpy = RsvpEventServiceProviderSpy(noPointer: .init())
     private let toastStateStore = ToastStateStore(initialState: .initial)
+    private let draftPresenterSpy = RecipientDraftPresenterSpy()
     private(set) lazy var sut = RSVPStateStore(
         serviceProvider: serviceProviderSpy,
         openURL: openURLSpy,
         toastStateStore: toastStateStore,
-        pasteboard: pasteboard
+        pasteboard: pasteboard,
+        draftPresenter: draftPresenterSpy
     )
     private var cancellables = Set<AnyCancellable>()
 
@@ -310,7 +312,7 @@ final class RSVPStateStoreTests {
     // MARK: - `newMessage` action
 
     @Test
-    func newMessageAction_ItDisplaysComingSoonToast() async {
+    func newMessageAction_ItPresentsDraftWithGivenEmail() async {
         let expectedEvent: RsvpEvent = .bestEvent(
             id: .none,
             calendar: .init(id: "calendar_id_42", name: "Work", color: .empty)
@@ -319,10 +321,14 @@ final class RSVPStateStoreTests {
         serviceSpy.stubbedDetailsResult = .ok(expectedEvent)
         serviceProviderSpy.stubbedResult = serviceSpy
 
-        await sut.handle(action: .onLoad)
-        await sut.handle(action: .newMessage)
+        let expectedEmail: String = "sam@pm.me"
 
-        #expect(toastStateStore.state.toasts == [.comingSoon])
+        await sut.handle(action: .onLoad)
+        await sut.handle(action: .newMessage(email: expectedEmail))
+
+        #expect(draftPresenterSpy.openDraftCalls.count == 1)
+        #expect(draftPresenterSpy.openDraftCalls == [.init(name: nil, email: expectedEmail)])
+        #expect(toastStateStore.state.toasts.isEmpty)
     }
 
     // MARK: - Private
