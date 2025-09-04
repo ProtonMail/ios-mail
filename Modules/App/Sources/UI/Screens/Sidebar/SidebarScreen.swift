@@ -161,6 +161,7 @@ struct SidebarScreen: View {
                 VStack(alignment: .leading, spacing: .zero) {
                     if let upsellItem = screenModel.state.upsell {
                         upsellSidebarItem(item: upsellItem)
+                            .padding(.top, DS.Spacing.medium)
                     }
 
                     systemFoldersList()
