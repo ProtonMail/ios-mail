@@ -263,7 +263,7 @@ struct SidebarScreen: View {
 
     private func createButton(for item: SidebarOtherItem, isListEmpty: Bool) -> some View {
         Button(action: { select(item: .other(item)) }) {
-            HStack {
+            HStack(spacing: .zero) {
                 Image(item.icon)
                     .resizable()
                     .renderingMode(.template)
@@ -286,7 +286,7 @@ struct SidebarScreen: View {
     }
 
     private func systemItemContent(model: SystemFolder) -> some View {
-        HStack {
+        HStack(spacing: .zero) {
             sidebarItemImage(icon: model.type.icon, isSelected: model.isSelected)
             itemNameLabel(name: model.type.humanReadable.string, isSelected: model.isSelected)
             Spacer()
@@ -297,7 +297,7 @@ struct SidebarScreen: View {
     }
 
     private func otherItemContent(model: SidebarOtherItem) -> some View {
-        HStack {
+        HStack(spacing: .zero) {
             sidebarItemImage(icon: model.icon.image, isSelected: model.isSelected)
             itemNameLabel(name: model.name, isSelected: model.isSelected)
             Spacer()
@@ -307,6 +307,7 @@ struct SidebarScreen: View {
     private func sidebarItemImage(icon: Image, isSelected: Bool, renderingMode: Image.TemplateRenderingMode = .template) -> some View {
         icon
             .renderingMode(renderingMode)
+            .resizable()
             .square(size: 20)
             .tint(isSelected ? DS.Color.Sidebar.iconSelected : DS.Color.Sidebar.iconNorm)
             .padding(.trailing, DS.Spacing.extraLarge)
@@ -314,9 +315,9 @@ struct SidebarScreen: View {
     }
 
     private func labelItemContent(model: SidebarLabel) -> some View {
-        HStack {
+        HStack(spacing: .zero) {
             Color(hex: model.color)
-                .square(size: 13)
+                .square(size: 12)
                 .clipShape(Circle())
                 .square(size: 20)
                 .padding(.trailing, DS.Spacing.extraLarge)

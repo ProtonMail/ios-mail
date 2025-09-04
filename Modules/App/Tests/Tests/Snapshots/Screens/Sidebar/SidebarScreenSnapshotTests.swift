@@ -20,6 +20,7 @@ import InboxSnapshotTesting
 import InboxTesting
 import Testing
 import UIKit
+import proton_app_uniffi
 
 @MainActor
 final class SidebarScreenSnapshotTests {
@@ -36,20 +37,20 @@ final class SidebarScreenSnapshotTests {
         createFolder: .createFolder
     )
 
-    // FIXME: these snapshots do not actually reflect the stubbed data
     @Test(arguments: [UIUserInterfaceStyle.light, .dark])
     func testSidebarWithDataLayoutsCorrectOnIphoneX(style: UIUserInterfaceStyle) {
-        let sidebarSpy = SidebarSpy()
-        sidebarSpy.stubbedCustomFolders = [.topSecretFolder]
-        sidebarSpy.stubbedSystemLabels = [.inbox, .sent, .outbox]
-        sidebarSpy.stubbedCustomLabels = [.importantLabel, .topSecretLabel]
+        var state = self.state
+
+        state.folders = [SidebarCustomFolder.topSecretFolder].map(\.sidebarFolder)
+        state.system = [PMSystemLabel.inbox, .sent, .outbox].compactMap(\.sidebarSystemFolder)
+        state.labels = [SidebarCustomLabel.importantLabel, .topSecretLabel].map(\.sidebarLabel)
 
         let sidebarScreen = SidebarScreen(
             state: state,
             userSession: .dummy,
             upsellButtonVisibilityPublisher: .init(constant: true),
             appVersionProvider: .init(bundle: bundleStub, sdkVersionProvider: .init(sdkVersion: "0.61.0")),
-            sidebarFactory: { _ in sidebarSpy }
+            sidebarFactory: { _ in SidebarSpy() }
         ) { _ in }
         .environmentObject(AppUIStateStore(sidebarState: .init(zIndex: .zero, visibleWidth: 320)))
 
@@ -58,24 +59,20 @@ final class SidebarScreenSnapshotTests {
 
     @Test(arguments: [UIUserInterfaceStyle.light, .dark])
     func testSidebarWithoutDynamicDataLayoutsCorrectlyOnIphoneX(style: UIUserInterfaceStyle) {
-        let sidebarSpy = SidebarSpy()
+        var state = self.state
 
-        sidebarSpy.stubbedSystemLabels = [.inbox, .sent]
+        state.system = [PMSystemLabel.inbox, .sent].compactMap(\.sidebarSystemFolder)
 
         let sidebarScreen = SidebarScreen(
             state: state,
             userSession: .dummy,
             upsellButtonVisibilityPublisher: .init(constant: true),
             appVersionProvider: .init(bundle: bundleStub, sdkVersionProvider: .init(sdkVersion: "0.61.0")),
-            sidebarFactory: { _ in sidebarSpy }
+            sidebarFactory: { _ in SidebarSpy() }
         ) { _ in }
         .environmentObject(AppUIStateStore(sidebarState: .init(zIndex: .zero, visibleWidth: 320)))
 
         assertSnapshotsOnIPhoneX(of: sidebarScreen, styles: [style])
-    }
-
-    private func waitForQueryInitialization() async throws {
-        try await Task.sleep(for: .milliseconds(50))
     }
 
 }
