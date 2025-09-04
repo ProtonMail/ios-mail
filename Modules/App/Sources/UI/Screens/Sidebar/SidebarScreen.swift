@@ -164,16 +164,16 @@ struct SidebarScreen: View {
                     }
 
                     systemFoldersList()
-                        .padding(.vertical, DS.Spacing.standard)
+                        .padding(.vertical, DS.Spacing.medium)
                     separator
                     customFoldersList()
-                        .padding(.vertical, DS.Spacing.standard)
+                        .padding(.vertical, DS.Spacing.medium)
                     separator
                     labelsList()
-                        .padding(.vertical, DS.Spacing.standard)
+                        .padding(.vertical, DS.Spacing.medium)
                     separator
                     otherItemsList()
-                        .padding(.vertical, DS.Spacing.standard)
+                        .padding(.vertical, DS.Spacing.medium)
                     separator
                     appVersionNote
                 }.onChange(of: appUIStateStore.sidebarState.isOpen) { _, isSidebarOpen in
