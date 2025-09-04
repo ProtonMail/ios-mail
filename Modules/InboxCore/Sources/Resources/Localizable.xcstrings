@@ -1890,6 +1890,9 @@
         }
       }
     },
+    "email address" : {
+      "comment" : "Label for an email address when copying it to the clipboard."
+    },
     "Learn more" : {
       "localizations" : {
         "be" : {
@@ -2079,6 +2082,9 @@
           }
         }
       }
+    },
+    "name" : {
+      "comment" : "Label for a person's name when copying it to the clipboard."
     },
     "Off" : {
       "comment" : "Indicates that a feature is disabled and not functioning.",

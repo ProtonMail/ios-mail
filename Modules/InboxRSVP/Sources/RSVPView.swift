@@ -21,6 +21,7 @@ import SwiftUI
 
 public struct RSVPView: View {
     @Environment(\.openURL) var openURL
+    @Environment(\.pasteboard) var pasteboard
     @EnvironmentObject var toastStateStore: ToastStateStore
     private let serviceProvider: RsvpEventServiceProvider
 
@@ -33,7 +34,8 @@ public struct RSVPView: View {
             store: RSVPStateStore(
                 serviceProvider: serviceProvider,
                 openURL: openURL,
-                toastStateStore: toastStateStore
+                toastStateStore: toastStateStore,
+                pasteboard: pasteboard
             )
         ) { state, store in
             Group {
@@ -62,10 +64,10 @@ public struct RSVPView: View {
             store.handle(action: .answer(selectedAnswer))
         case .calendarIconTapped:
             store.handle(action: .calendarIconTapped)
-        case .participantOptionSelected(let option, _):
+        case .participantOptionSelected(let option, let email):
             switch option {
             case .copyAddress:
-                store.handle(action: .copyAddress)
+                store.handle(action: .copyAddress(email: email))
             case .newMessage:
                 store.handle(action: .newMessage)
             }

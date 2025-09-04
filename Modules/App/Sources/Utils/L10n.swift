@@ -48,17 +48,6 @@ enum L10n {
             )
         }
 
-        enum Clipboard {
-            static let emailAddress = LocalizedStringResource(
-                "email address",
-                comment: "Label for an email address when copying it to the clipboard."
-            )
-            static let name = LocalizedStringResource(
-                "name",
-                comment: "Label for a person's name when copying it to the clipboard."
-            )
-        }
-
         enum Print {
             static let error = LocalizedStringResource(
                 "Could not print requested e-mail",

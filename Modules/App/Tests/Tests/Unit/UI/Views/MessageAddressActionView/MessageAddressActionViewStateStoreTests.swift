@@ -26,7 +26,7 @@ import UIKit
 @MainActor
 final class MessageAddressActionViewStateStoreTests {
     private lazy var sut: MessageAddressActionViewStateStore = makeSUT()
-    private let pasteboard = UIPasteboard.general
+    private let pasteboard = UIPasteboard.testInstance
     private let toastStateStore = ToastStateStore(initialState: .initial)
     private let blockSpy = BlockAddressSpy()
     private let draftPresenterSpy = RecipientDraftPresenterSpy()

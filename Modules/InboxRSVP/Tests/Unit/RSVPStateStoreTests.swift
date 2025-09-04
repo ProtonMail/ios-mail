@@ -23,8 +23,10 @@ import InboxDesignSystem
 import InboxTesting
 import proton_app_uniffi
 import Testing
+import UIKit
 
 final class RSVPStateStoreTests {
+    private let pasteboard = UIPasteboard.testInstance
     private let serviceSpy = RsvpEventServiceSpy(noPointer: .init())
     private let openURLSpy = EnvironmentURLOpenerSpy()
     private var serviceProviderSpy = RsvpEventServiceProviderSpy(noPointer: .init())
@@ -32,7 +34,8 @@ final class RSVPStateStoreTests {
     private(set) lazy var sut = RSVPStateStore(
         serviceProvider: serviceProviderSpy,
         openURL: openURLSpy,
-        toastStateStore: toastStateStore
+        toastStateStore: toastStateStore,
+        pasteboard: pasteboard
     )
     private var cancellables = Set<AnyCancellable>()
 
@@ -286,7 +289,7 @@ final class RSVPStateStoreTests {
     // MARK: - `copyAddress` action
 
     @Test
-    func copyAddressAction_ItDisplaysComingSoonToast() async {
+    func copyAddressAction_ItCopiesEmailAndShowsInformationToast() async {
         let expectedEvent: RsvpEvent = .bestEvent(
             id: .none,
             calendar: .init(id: "calendar_id_42", name: "Work", color: .empty)
@@ -295,10 +298,13 @@ final class RSVPStateStoreTests {
         serviceSpy.stubbedDetailsResult = .ok(expectedEvent)
         serviceProviderSpy.stubbedResult = serviceSpy
 
-        await sut.handle(action: .onLoad)
-        await sut.handle(action: .copyAddress)
+        let expectedEmail: String = "john@pm.me"
 
-        #expect(toastStateStore.state.toasts == [.comingSoon])
+        await sut.handle(action: .onLoad)
+        await sut.handle(action: .copyAddress(email: expectedEmail))
+
+        #expect(pasteboard.string == expectedEmail)
+        #expect(toastStateStore.state.toasts == [.information(message: "Copied email address to clipboard")])
     }
 
     // MARK: - `newMessage` action
