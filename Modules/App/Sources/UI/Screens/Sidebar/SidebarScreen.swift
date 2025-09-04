@@ -196,7 +196,7 @@ struct SidebarScreen: View {
             item: item,
             action: { select(item: item) },
             content: {
-                HStack {
+                HStack(spacing: .zero) {
                     sidebarItemImage(icon: DS.Icon.icDiamond.image, isSelected: false, renderingMode: .original)
                     itemNameLabel(name: L10n.Sidebar.upgrade(to: planName).string, isSelected: false)
                     Spacer()
