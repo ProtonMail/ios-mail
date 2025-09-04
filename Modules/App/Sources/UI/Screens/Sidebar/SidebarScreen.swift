@@ -159,13 +159,14 @@ struct SidebarScreen: View {
         ScrollViewReader { proxy in
             ScrollView {
                 VStack(alignment: .leading, spacing: .zero) {
-                    if let upsellItem = screenModel.state.upsell {
-                        upsellSidebarItem(item: upsellItem)
-                            .padding(.top, DS.Spacing.medium)
+                    VStack(spacing: .zero) {
+                        if let upsellItem = screenModel.state.upsell {
+                            upsellSidebarItem(item: upsellItem)
+                        }
+                        systemFoldersList()
                     }
+                    .padding(.vertical, DS.Spacing.medium)
 
-                    systemFoldersList()
-                        .padding(.vertical, DS.Spacing.medium)
                     separator
                     customFoldersList()
                         .padding(.vertical, DS.Spacing.medium)
