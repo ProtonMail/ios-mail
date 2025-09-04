@@ -20,24 +20,11 @@ import Foundation
 struct HtmlSanitizer {
 
     /// Escapes characters that can trigger WebKit JS SyntaxError
-    static func escapeQuotesAndBackslash(html: String) -> String {
-        var sanitized = ""
-
-        for scalar in html.unicodeScalars {
-            let value = scalar.value
-
-            switch value {
-            case 0x5C:  // \
-                sanitized.append("\\\\")
-            case 0x27:  // '
-                sanitized.append("\\'")
-            case 0x22:  // "
-                sanitized.append("\\\"")
-
-            default:
-                sanitized.append(String(scalar))
-            }
-        }
+    static func applyStringLiteralEscapingRules(html: String) -> String {
+        // We use JSONEncoder as a trick to ensure all problematic
+        // characters (quotes, backslashes, control chars) are properly escaped.
+        let jsonEncodedText = try! JSONEncoder().encode(html)
+        let sanitized = String(data: jsonEncodedText, encoding: .utf8)!
         return sanitized
     }
 

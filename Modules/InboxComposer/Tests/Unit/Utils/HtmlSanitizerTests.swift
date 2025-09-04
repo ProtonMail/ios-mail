@@ -76,40 +76,45 @@ final class HtmlSanitizerTests {
     }
 
     @Test(
-        "removes or escapes invalid characters correctly",
+        "applies JS string literal escaping rules",
         arguments: [
             (
-                "when empty html",
+                "when empty string",
                 "",
-                ""
+                "\"\""
             ),
             (
-                "when no special characters",
+                "when normal ascii",
                 "Hello",
-                "Hello"
+                "\"Hello\""
             ),
             (
-                "when backslashes are present",
-                #"C:\Temp\file"#,
-                #"C:\\Temp\\file"#
+                "when contains quotes",
+                #"He said: "hi""#,
+                "\"He said: \\\"hi\\\"\""
             ),
             (
-                "when single quote is present",
-                #"Don't do it"#,
-                #"Don\'t do it"#
+                "when contains backslashes",
+                #"C:\test\file"#,
+                "\"C:\\\\test\\\\file\""
             ),
             (
-                "when double quotes are present",
-                #"He said "hi""#,
-                #"He said \"hi\""#
+                "when contains newline",
+                "line1\nline2",
+                "\"line1\\nline2\""
             ),
             (
-                "when html attributes contain quotes and backslashes",
-                #"<a href="C:\foo\bar" title='link'>"#,
-                #"<a href=\"C:\\foo\\bar\" title=\'link\'>"#
+                "when contains tab",
+                "col1\tcol2",
+                "\"col1\\tcol2\""
+            ),
+            (
+                "when contains emoji",
+                "Hello 🙂",
+                "\"Hello 🙂\""
             ),
         ])
-    func removeInvalidCharacters(context: String, input: String, expected: String) {
-        #expect(HtmlSanitizer.escapeQuotesAndBackslash(html: input) == expected, Comment(rawValue: context))
+    func applyStringLiteralEscapingRules(context: String, input: String, expected: String) {
+        #expect(HtmlSanitizer.applyStringLiteralEscapingRules(html: input) == expected, Comment(rawValue: context))
     }
 }

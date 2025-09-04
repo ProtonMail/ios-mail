@@ -244,15 +244,23 @@ private extension HtmlBodyDocument {
         document.getElementById('\(ID.editor)').addEventListener('paste', function(event) {
             // We intercept and cancel the paste event to handle it ourselves
             event.preventDefault();
-            
-            const items = (event.clipboardData || event.originalEvent.clipboardData).items;
-            for (let index in items) {
-                const item = items[index];
+
+            const cd = (event.clipboardData || event.originalEvent?.clipboardData);
+            const items = Array.from(cd?.items || []);
+
+            // Handle image files (can be multiple)
+            items.forEach(item => {
                 if (item.kind === 'file') {
                     handleFilePaste(item);
-                } else if (item.kind === 'string') {
-                    handleTextPaste(item);
                 }
+            });
+
+            // Prefer HTML text over plain text, post only once
+            const htmlItem = items.find(item => item.kind === 'string' && item.type === 'text/html');
+            const plainItem = items.find(item => item.kind === 'string' && item.type === 'text/plain');
+            const chosenTextItem = htmlItem || plainItem;
+            if (chosenTextItem) {
+                handleTextPaste(chosenTextItem);
             }
 
             // Pasting could push some content above the visible area of the editor, to avoid 

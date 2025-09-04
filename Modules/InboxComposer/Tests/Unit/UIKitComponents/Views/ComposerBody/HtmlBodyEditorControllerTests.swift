@@ -48,7 +48,7 @@ final class HtmlBodyEditorControllerTests {
         mockInterface.onEvent?(.onTextPasted(text: raw))
 
         await Task.yield()
-        #expect(mockInterface.insertedTexts == ["<span >Hello</span>"])
+        #expect(mockInterface.insertedTexts == ["\"<span >Hello<\\/span>\""])
     }
 }
 

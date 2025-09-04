@@ -85,18 +85,23 @@ final class HtmlBodyWebViewInterface: NSObject, HtmlBodyWebViewInterfaceProtocol
 
     @MainActor
     func insertText(_ text: String) async {
-        await insertHtml(text)
+        await insertHtml(text, wrapInQuotes: false)
     }
 
     @MainActor
     func insertImages(_ contentIds: [String]) async {
         let inlineImageHTML = InlineImageHTML(cids: contentIds).content
-        await insertHtml(inlineImageHTML)
+        await insertHtml(inlineImageHTML, wrapInQuotes: true)
     }
 
     @MainActor
-    private func insertHtml(_ html: String) async {
-        let function = "\(HtmlBodyDocument.JSFunction.insertHtmlAtCurrentPosition.rawValue)('\(html)');"
+    private func insertHtml(_ html: String, wrapInQuotes: Bool) async {
+        let function: String
+        if wrapInQuotes {
+            function = "\(HtmlBodyDocument.JSFunction.insertHtmlAtCurrentPosition.rawValue)('\(html)');"
+        } else {
+            function = "\(HtmlBodyDocument.JSFunction.insertHtmlAtCurrentPosition.rawValue)(\(html));"
+        }
 
         await withCheckedContinuation { continuation in
             webView.evaluateJavaScript(function) { _, error in
