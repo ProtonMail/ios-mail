@@ -38,7 +38,8 @@ class SettingsScreenSnapshotTests: BaseTestCase {
                 .copy(\.userSettings, to: UserSettings.mock())
                 .copy(\.storageInfo, to: StorageInfo.testData),
             mailUserSession: mailUserSession,
-            accountAuthCoordinator: .mock()
+            accountAuthCoordinator: .mock(),
+            upsellCoordinator: .dummy
         )
 
         assertSnapshotsOnIPhoneX(of: sut.environmentObject(store), precision: 0.98)
