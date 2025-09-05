@@ -79,7 +79,7 @@ final class RSVPStateStore: StateStore {
         case .copyAddress(let email):
             clipboard.copyToClipboard(value: email, forName: CommonL10n.Clipboard.emailAddress)
         case .newMessage(let email):
-            try? await draftPresenter.openDraft(with: .init(name: .none, email: email))
+            await openNewDraft(withEmail: email)
         }
     }
 
@@ -119,6 +119,15 @@ final class RSVPStateStore: StateStore {
             toastStateStore.present(toast: .error(message: protonError.localizedDescription))
         case (.ok, .error), (.error, .error):
             updateState(with: .loadFailed)
+        }
+    }
+
+    @MainActor
+    private func openNewDraft(withEmail email: String) async {
+        do {
+            try await draftPresenter.openDraft(with: .init(name: .none, email: email))
+        } catch {
+            toastStateStore.present(toast: .error(message: error.localizedDescription))
         }
     }
 

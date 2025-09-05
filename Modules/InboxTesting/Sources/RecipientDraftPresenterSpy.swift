@@ -27,10 +27,10 @@ public final class RecipientDraftPresenterSpy: @unchecked Sendable, RecipientDra
     // MARK: - RecipientDraftPresenter
 
     public func openDraft(with contact: SingleRecipientEntry) async throws {
-        openDraftCalls.append(contact)
-
         if let stubbedOpenDraftError {
             throw stubbedOpenDraftError
         }
+
+        openDraftCalls.append(contact)
     }
 }

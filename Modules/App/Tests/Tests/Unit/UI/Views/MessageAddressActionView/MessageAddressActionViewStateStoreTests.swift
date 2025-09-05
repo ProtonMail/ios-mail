@@ -167,8 +167,7 @@ final class MessageAddressActionViewStateStoreTests {
         await sut.handle(action: .onTap(.newMessage))
 
         #expect(dismissSpy.callsCount == 1)
-        #expect(draftPresenterSpy.openDraftCalls.count == 1)
-        #expect(draftPresenterSpy.openDraftCalls == [.init(name: displayName, email: email)])
+        #expect(draftPresenterSpy.openDraftCalls.count == 0)
         #expect(toastStateStore.state.toasts == [.error(message: stubbedError.localizedDescription)])
     }
 

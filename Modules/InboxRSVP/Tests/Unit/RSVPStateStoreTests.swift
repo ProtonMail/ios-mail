@@ -312,7 +312,7 @@ final class RSVPStateStoreTests {
     // MARK: - `newMessage` action
 
     @Test
-    func newMessageAction_ItPresentsDraftWithGivenEmail() async {
+    func newMessageAction_WhenOpeningDraftSucceeds_ItPresentsDraftWithGivenEmail() async {
         let expectedEvent: RsvpEvent = .bestEvent(
             id: .none,
             calendar: .init(id: "calendar_id_42", name: "Work", color: .empty)
@@ -329,6 +329,27 @@ final class RSVPStateStoreTests {
         #expect(draftPresenterSpy.openDraftCalls.count == 1)
         #expect(draftPresenterSpy.openDraftCalls == [.init(name: nil, email: expectedEmail)])
         #expect(toastStateStore.state.toasts.isEmpty)
+    }
+
+    @Test
+    func newMessageAction_WhenOpeningDraftFails_ItDoesNotOpenDraftAndPresentsErrorToast() async {
+        let expectedEvent: RsvpEvent = .bestEvent(
+            id: .none,
+            calendar: .init(id: "calendar_id_49", name: "Private", color: .empty)
+        )
+        let stubbedError: ProtonError = .network
+
+        serviceSpy.stubbedDetailsResult = .ok(expectedEvent)
+        serviceProviderSpy.stubbedResult = serviceSpy
+        draftPresenterSpy.stubbedOpenDraftError = stubbedError
+
+        let expectedEmail: String = "mark@pm.me"
+
+        await sut.handle(action: .onLoad)
+        await sut.handle(action: .newMessage(email: expectedEmail))
+
+        #expect(draftPresenterSpy.openDraftCalls.count == 0)
+        #expect(toastStateStore.state.toasts == [.error(message: stubbedError.localizedDescription)])
     }
 
     // MARK: - Private
