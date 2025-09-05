@@ -494,6 +494,11 @@ enum L10n {
             comment: "Error in the context of retrying to upload a draft."
         )
 
+        static let timeout = LocalizedStringResource(
+            "Problem uploading attachment. Please try again.",
+            comment: "Error in the context of saving a draft before being sent."
+        )
+
         static let tooManyAttachments = LocalizedStringResource(
             "Too many attachments. Send them in multiple emails.",
             comment: "Error in the context of saving a draft before being sent."

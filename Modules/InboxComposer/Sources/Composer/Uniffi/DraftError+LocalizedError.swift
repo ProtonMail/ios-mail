@@ -47,6 +47,8 @@ private extension DraftAttachmentUploadErrorReason {
             L10n.DraftAttachmentUploadError.retryInvalidState
         case .tooManyAttachments:
             L10n.DraftAttachmentUploadError.tooManyAttachments
+        case .timeout:
+            L10n.DraftAttachmentUploadError.timeout
         }
     }
 }
