@@ -43,7 +43,8 @@ struct ConversationDetailScreen: View {
                 seed: seed,
                 draftPresenter: draftPresenter,
                 backOnlineActionExecutor: .init(mailUserSession: { AppContext.shared.userSession }),
-                snoozeService: snoozeService
+                snoozeService: snoozeService,
+                messageAppearanceOverrideStore: MessageAppearanceOverrideStore()
             ))
         self._navigationPath = .init(projectedValue: navigationPath)
         self.draftPresenter = draftPresenter
@@ -113,7 +114,8 @@ struct ConversationDetailScreen: View {
                         }
                     }
                 },
-                goBackNavigation: { goBackToMailbox() }
+                goBackNavigation: { goBackToMailbox() },
+                messageAppearanceOverrideStore: model.messageAppearanceOverrideStore
             )
             .alert(model: $model.actionAlert)
             .fullScreenCover(item: $model.attachmentIDToOpen) { id in

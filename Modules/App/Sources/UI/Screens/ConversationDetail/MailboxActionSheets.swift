@@ -37,7 +37,8 @@ extension View {
         state: Binding<MailboxActionSheetsState>,
         messageActionTapped: @escaping (MessageAction, ID) -> Void,
         conversationActionTapped: @escaping (ConversationAction) -> Void,
-        goBackNavigation: (() -> Void)? = nil
+        goBackNavigation: (() -> Void)? = nil,
+        messageAppearanceOverrideStore: MessageAppearanceOverrideStore
     ) -> some View {
         modifier(
             MailboxActionSheets(
@@ -46,7 +47,8 @@ extension View {
                 state: state,
                 messageActionTapped: messageActionTapped,
                 conversationActionTapped: conversationActionTapped,
-                goBackNavigation: goBackNavigation
+                goBackNavigation: goBackNavigation,
+                messageAppearanceOverrideStore: messageAppearanceOverrideStore
             ))
     }
 }
@@ -58,6 +60,7 @@ private struct MailboxActionSheets: ViewModifier {
     private let goBackNavigation: (() -> Void)?
     private let messageActionTapped: (MessageAction, ID) -> Void
     private let conversationActionTapped: (ConversationAction) -> Void
+    private let messageAppearanceOverrideStore: MessageAppearanceOverrideStore
 
     init(
         mailbox: @escaping () -> Mailbox,
@@ -65,7 +68,8 @@ private struct MailboxActionSheets: ViewModifier {
         state: Binding<MailboxActionSheetsState>,
         messageActionTapped: @escaping (MessageAction, ID) -> Void,
         conversationActionTapped: @escaping (ConversationAction) -> Void,
-        goBackNavigation: (() -> Void)?
+        goBackNavigation: (() -> Void)?,
+        messageAppearanceOverrideStore: MessageAppearanceOverrideStore
     ) {
         self.mailbox = mailbox
         self.mailUserSession = mailUserSession
@@ -73,6 +77,7 @@ private struct MailboxActionSheets: ViewModifier {
         self.conversationActionTapped = conversationActionTapped
         self.messageActionTapped = messageActionTapped
         self.goBackNavigation = goBackNavigation
+        self.messageAppearanceOverrideStore = messageAppearanceOverrideStore
     }
 
     func body(content: Content) -> some View {
@@ -86,6 +91,7 @@ private struct MailboxActionSheets: ViewModifier {
                     ),
                     mailbox: mailbox(),
                     mailUserSession: mailUserSession,
+                    messageAppearanceOverrideStore: messageAppearanceOverrideStore,
                     actionTapped: { messageActionTapped($0, input.id) }
                 )
                 .alert(model: $state.alert)

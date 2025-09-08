@@ -26,15 +26,16 @@ struct MessageActionsSheet: View {
     private let mailbox: Mailbox
     private let mailUserSession: MailUserSession
     private let service: AllAvailableMessageActionsForActionSheetService
+    private let messageAppearanceOverrideStore: MessageAppearanceOverrideStore
     private let actionTapped: (MessageAction) -> Void
 
-    @Environment(\.messageAppearanceOverrideStore) var messageAppearanceOverrideStore
     @Environment(\.colorScheme) var colorScheme
 
     init(
         state: MessageActionsSheetState,
         mailbox: Mailbox,
         mailUserSession: MailUserSession,
+        messageAppearanceOverrideStore: MessageAppearanceOverrideStore,
         service: @escaping AllAvailableMessageActionsForActionSheetService = allAvailableMessageActionsForActionSheet,
         actionTapped: @escaping (MessageAction) -> Void,
     ) {
@@ -43,6 +44,7 @@ struct MessageActionsSheet: View {
         self.mailUserSession = mailUserSession
         self.service = service
         self.actionTapped = actionTapped
+        self.messageAppearanceOverrideStore = messageAppearanceOverrideStore
     }
 
     var body: some View {
@@ -50,7 +52,7 @@ struct MessageActionsSheet: View {
             store: MessageActionsSheetStore(
                 state: state,
                 mailbox: mailbox,
-                messageAppearanceOverrideStore: messageAppearanceOverrideStore!,
+                messageAppearanceOverrideStore: messageAppearanceOverrideStore,
                 service: service,
                 actionTapped: actionTapped
             )
