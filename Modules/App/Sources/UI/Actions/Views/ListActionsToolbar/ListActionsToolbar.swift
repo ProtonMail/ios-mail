@@ -161,11 +161,28 @@ private struct ListActionBarViewModifier: ViewModifier {
                     if index == 0 {
                         Spacer()
                     }
-                    Button(action: { store.handle(action: .actionSelected(action, ids: selectedItemsIDs)) }) {
-                        action.displayData.image
-                            .foregroundStyle(DS.Color.Icon.weak)
+                    if action == .more { // FIXME: - Refactor
+                        Menu(
+                            content: {
+                                ForEach(state.moreSheetOnlyActions, id: \.self) { action in
+                                    ActionSheetImageButton(
+                                        displayData: action.displayData,
+                                        displayBottomSeparator: false,
+                                        action: { store.handle(action: .actionSelected(action, ids: selectedItemsIDs)) }
+                                    )
+                                }
+                            },
+                            label: {
+                                action.displayData.image
+                                    .foregroundStyle(DS.Color.Icon.weak)
+                            }
+                        )
+                    } else {
+                        Button(action: { store.handle(action: .actionSelected(action, ids: selectedItemsIDs)) }) {
+                            action.displayData.image
+                                .foregroundStyle(DS.Color.Icon.weak)
+                        }
                     }
-                    .accessibilityIdentifier(MailboxActionBarViewIdentifiers.button(index: index))
                     Spacer()
                 }
             }
@@ -178,6 +195,31 @@ private struct ListActionBarViewModifier: ViewModifier {
             }
             .onDisappear {
                 toastStateStore.state.bottomBar.isVisible = false
+            }
+        }
+    }
+
+    @ViewBuilder
+    private func toolbarItem(for action: ListActions, buttonAction: @escaping (ListActions) -> Void) -> some View {
+        if action == .more {
+            Menu(
+                content: {
+                    ForEach(state.moreSheetOnlyActions, id: \.self) { action in
+                        ActionSheetImageButton(
+                            displayData: action.displayData,
+                            displayBottomSeparator: false,
+                            action: { buttonAction(action) }
+                        )
+                    }
+                },
+                label: {
+                    action.displayData.image
+                        .foregroundStyle(DS.Color.Icon.weak)
+                })
+        } else {
+            Button(action: { buttonAction(action) }) {
+                action.displayData.image
+                    .foregroundStyle(DS.Color.Icon.weak)
             }
         }
     }
