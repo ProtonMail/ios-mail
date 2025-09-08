@@ -23527,6 +23527,9 @@
         }
       }
     },
+    "Issue syncing your email. To resolve it, sign out and back in again." : {
+      "comment" : "Event loop failed because an unexpected error."
+    },
     "Issue updating your account. Please sign in again." : {
       "comment" : "Error toast of the welcome screen.",
       "localizations" : {
@@ -51382,9 +51385,6 @@
           }
         }
       }
-    },
-    "We encountered an issue while syncing your mail. Try logging out and back in to resolve it." : {
-      "comment" : "Event loop failed because an unexpected error."
     },
     "We’re almost there. Thanks for your patience!" : {
       "comment" : "Text shown when user session is being initialized.",
