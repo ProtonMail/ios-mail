@@ -41,6 +41,7 @@ struct MessageActionsSheetSnapshotTests {
             state: state,
             mailbox: .dummy,
             mailUserSession: .dummy,
+            messageAppearanceOverrideStore: .init(),
             service: { _, _, _ in
                 .ok(.init(replyActions: [], messageActions: [], moveActions: [], generalActions: []))
             },
