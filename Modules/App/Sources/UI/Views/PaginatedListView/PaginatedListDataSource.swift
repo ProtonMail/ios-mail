@@ -84,6 +84,9 @@ final class PaginatedListDataSource<Item: Equatable & Sendable>: ObservableObjec
         switch update.value {
         case .append(let items):
             newState.items.append(contentsOf: items)
+        case let .replaceRange(from, to, items):
+            guard isSafeIndex(from), isSafeIndex(to) else { break }
+            newState.items.replaceSubrange(from..<to, with: items)
         case let .replaceFrom(index, items):
             guard isSafeIndex(index) else { break }
             newState.items.replaceSubrange(index..<newState.items.endIndex, with: items)
