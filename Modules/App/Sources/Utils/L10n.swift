@@ -292,7 +292,7 @@ enum L10n {
 
     enum EventLoopError {
         static let eventLoopErrorMessage = LocalizedStringResource(
-            "We encountered an issue while syncing your mail with the event loop. Please share the logs with our support team for further investigation. Try logging out and logging back in to resolve the issue.",
+            "We encountered an issue while syncing your mail. Try logging out and back in to resolve it.",
             comment: "Event loop failed because an unexpected error."
         )
         static let eventSyncingError = LocalizedStringResource(
