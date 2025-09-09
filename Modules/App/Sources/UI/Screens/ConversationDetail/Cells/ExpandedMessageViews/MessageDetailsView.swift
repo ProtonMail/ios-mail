@@ -351,11 +351,7 @@ struct MessageDetailsView: View {
 
     private var labelRow: some View {
         let capsules = uiModel.labels.map { label in
-            CapsuleView(
-                text: label.text.stringResource,
-                color: label.color,
-                style: .label
-            )
+            CapsuleView(text: label.text.stringResource, color: label.color)
         }
 
         return HStack(alignment: .center, spacing: DS.Spacing.small) {

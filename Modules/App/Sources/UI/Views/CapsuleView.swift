@@ -21,36 +21,28 @@ import SwiftUI
 struct CapsuleView: View {
     let text: LocalizedStringResource
     let color: Color
-    let style: CapsuleStyle
 
-    init(text: LocalizedStringResource, color: Color, style: CapsuleStyle) {
+    init(text: LocalizedStringResource, color: Color) {
         self.text = text
         self.color = color
-        self.style = style
     }
 
     var body: some View {
         Text(text)
             .font(.caption2)
-            .fontWeight(style.fontWeight)
+            .fontWeight(.semibold)
             .foregroundColor(.white)
-            .padding(.horizontal, DS.Spacing.standard)
             .padding(.vertical, DS.Spacing.small)
+            .padding(.horizontal, DS.Spacing.standard)
             .lineLimit(1)
             .background(color)
             .clipShape(RoundedRectangle(cornerRadius: DS.Radius.medium))
     }
 }
 
-struct CapsuleStyle {
-    let fontWeight: Font.Weight
-
-    static let label = CapsuleStyle(fontWeight: .semibold)
-}
-
 #Preview {
     VStack {
-        CapsuleView(text: "Work".notLocalized.stringResource, color: .blue, style: .label)
-        CapsuleView(text: "Friends & Fam".notLocalized.stringResource, color: .pink, style: .label)
+        CapsuleView(text: "Work".notLocalized.stringResource, color: .blue)
+        CapsuleView(text: "Friends & Fam".notLocalized.stringResource, color: .pink)
     }
 }

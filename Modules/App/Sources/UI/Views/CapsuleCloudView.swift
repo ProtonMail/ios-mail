@@ -82,13 +82,13 @@ struct CapsuleCloudView: View {
         Text("Labels".notLocalized).font(.largeTitle)
         CapsuleCloudView(
             subviews: [
-                CapsuleView(text: "Work".notLocalized.stringResource, color: .green, style: .label),
-                CapsuleView(text: "Friends & Family and Fools Around the World!".notLocalized.stringResource, color: .cyan, style: .label),
-                CapsuleView(text: "Holidays ".notLocalized.stringResource, color: .pink, style: .label),
-                CapsuleView(text: "Greece meetup".notLocalized.stringResource, color: .blue, style: .label),
-                CapsuleView(text: "Reminders".notLocalized.stringResource, color: .red, style: .label),
-                CapsuleView(text: "Shopping".notLocalized.stringResource, color: .indigo, style: .label),
-                CapsuleView(text: "Shopping".notLocalized.stringResource, color: .purple, style: .label),
+                CapsuleView(text: "Work".notLocalized.stringResource, color: .green),
+                CapsuleView(text: "Friends & Family and Fools Around the World!".notLocalized.stringResource, color: .cyan),
+                CapsuleView(text: "Holidays ".notLocalized.stringResource, color: .pink),
+                CapsuleView(text: "Greece meetup".notLocalized.stringResource, color: .blue),
+                CapsuleView(text: "Reminders".notLocalized.stringResource, color: .red),
+                CapsuleView(text: "Shopping".notLocalized.stringResource, color: .indigo),
+                CapsuleView(text: "Shopping".notLocalized.stringResource, color: .purple),
             ]
         )
         .padding(10)
