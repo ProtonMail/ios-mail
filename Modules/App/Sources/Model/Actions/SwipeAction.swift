@@ -21,15 +21,6 @@ import SwiftUI
 
 extension AssignedSwipeAction {
 
-    var isDestructive: Bool {
-        switch self {
-        case .moveTo(.moveToSystemLabel):
-            true
-        default:
-            false
-        }
-    }
-
     func icon(isRead: Bool, isStarred: Bool) -> Image {
         switch self {
         case .noAction:

@@ -60,7 +60,7 @@ struct MailboxSwipeActionsModifier: ViewModifier {
     @ViewBuilder
     private func button(for action: AssignedSwipeAction) -> some View {
         VStack {
-            Button(role: action.isDestructive ? .destructive : .cancel) {
+            Button(role: .cancel) {
                 onTap(.init(action: action, itemID: mailboxItemId, isItemRead: isItemRead, isItemStarred: isItemStarred))
                 triggerFeedback.toggle()
             } label: {
