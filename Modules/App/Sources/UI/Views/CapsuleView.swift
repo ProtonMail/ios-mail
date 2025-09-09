@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Proton Technologies AG
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -21,43 +21,24 @@ import SwiftUI
 struct CapsuleView: View {
     let text: LocalizedStringResource
     let color: Color
-    let icon: Image?
-    let iconColor: Color?
     let style: CapsuleStyle
 
-    init(
-        text: LocalizedStringResource,
-        color: Color,
-        icon: Image? = nil,
-        iconColor: Color? = nil,
-        style: CapsuleStyle
-    ) {
+    init(text: LocalizedStringResource, color: Color, style: CapsuleStyle) {
         self.text = text
         self.color = color
-        self.icon = icon
-        self.iconColor = iconColor
         self.style = style
     }
 
     var body: some View {
-        HStack(spacing: DS.Spacing.small) {
-            if let icon {
-                icon
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .square(size: 14)
-                    .foregroundColor(iconColor ?? DS.Color.Icon.weak)
-            }
-            Text(text)
-                .font(.caption2)
-                .fontWeight(style.fontWeight)
-                .foregroundColor(style.fontColor)
-                .lineLimit(1)
-                .frame(minWidth: 30)
-        }
-        .padding(.horizontal, DS.Spacing.standard)
-        .padding(.vertical, DS.Spacing.small)
-        .background(RoundedRectangle(cornerRadius: DS.Radius.medium).foregroundColor(color))
+        Text(text)
+            .font(.caption2)
+            .fontWeight(style.fontWeight)
+            .foregroundColor(style.fontColor)
+            .lineLimit(1)
+            .frame(minWidth: 30)
+            .padding(.horizontal, DS.Spacing.standard)
+            .padding(.vertical, DS.Spacing.small)
+            .background(RoundedRectangle(cornerRadius: DS.Radius.medium).foregroundColor(color))
     }
 }
 
