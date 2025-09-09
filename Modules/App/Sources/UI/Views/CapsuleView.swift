@@ -54,13 +54,10 @@ struct CapsuleView: View {
                 .foregroundColor(style.fontColor)
                 .lineLimit(1)
                 .frame(minWidth: 30)
-
         }
-        .padding(EdgeInsets(top: DS.Spacing.small, leading: DS.Spacing.standard, bottom: DS.Spacing.small, trailing: DS.Spacing.standard))
-        .background(
-            RoundedRectangle(cornerRadius: DS.Radius.medium)
-                .foregroundColor(color)
-        )
+        .padding(.horizontal, DS.Spacing.standard)
+        .padding(.vertical, DS.Spacing.small)
+        .background(RoundedRectangle(cornerRadius: DS.Radius.medium).foregroundColor(color))
     }
 }
 
@@ -68,21 +65,11 @@ struct CapsuleStyle {
     let fontColor: Color
     let fontWeight: Font.Weight
 
-    static let attachment: CapsuleStyle = {
-        .init(fontColor: DS.Color.Text.norm, fontWeight: .regular)
-    }()
-
-    static let label: CapsuleStyle = {
-        .init(fontColor: .white, fontWeight: .semibold)
-    }()
-
+    static let label = CapsuleStyle(fontColor: .white, fontWeight: .semibold)
 }
 
 #Preview {
     VStack {
-        CapsuleView(text: "".notLocalized.stringResource, color: DS.Color.Background.secondary, style: .attachment)
-        CapsuleView(text: "2 files".notLocalized.stringResource, color: DS.Color.Background.secondary, icon: Image(DS.Icon.icPaperClip), style: .attachment)
-        CapsuleView(text: "games".notLocalized.stringResource, color: DS.Color.Background.secondary, icon: Image(systemName: "gamecontroller"), style: .attachment)
         CapsuleView(text: "Work".notLocalized.stringResource, color: .blue, style: .label)
         CapsuleView(text: "Friends & Fam".notLocalized.stringResource, color: .pink, style: .label)
     }
