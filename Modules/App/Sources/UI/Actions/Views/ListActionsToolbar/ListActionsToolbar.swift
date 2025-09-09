@@ -189,7 +189,7 @@ private struct ListActionBarViewModifier: ViewModifier {
         if action == .more {
             Menu(
                 content: {
-                    ForEach(state.moreSheetOnlyActions, id: \.self) { action in
+                    ForEach(state.moreSheetOnlyActions.reversed(), id: \.self) { action in
                         ActionSheetImageButton(
                             displayData: action.displayData,
                             displayBottomSeparator: false,
