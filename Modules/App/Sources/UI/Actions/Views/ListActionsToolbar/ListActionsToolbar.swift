@@ -22,7 +22,7 @@ import SwiftUI
 
 extension View {
     func listActionsToolbar(
-        state: ListActionsToolbarState,
+        initialState: ListActionsToolbarState,
         availableActions: AvailableListToolbarActions,
         itemTypeForActionBar: MailboxItemType,
         mailUserSession: MailUserSession,
@@ -30,7 +30,7 @@ extension View {
     ) -> some View {
         modifier(
             ListActionBarViewModifier(
-                state: state,
+                initialState: initialState,
                 availableActions: availableActions,
                 itemTypeForActionBar: itemTypeForActionBar,
                 mailUserSession: mailUserSession,
@@ -40,11 +40,14 @@ extension View {
 }
 
 private struct ListActionBarViewModifier: ViewModifier {
+    typealias State = ListActionsToolbarState
+    typealias Store = ListActionsToolbarStore
+
     @Binding var selectedItems: Set<MailboxSelectedItem>
     @EnvironmentObject var mailbox: Mailbox
     @EnvironmentObject var toastStateStore: ToastStateStore
     @EnvironmentObject var refreshToolbarNotifier: RefreshToolbarNotifier
-    private let state: ListActionsToolbarState
+    private let initialState: ListActionsToolbarState
     private let itemTypeForActionBar: MailboxItemType
     private let availableActions: AvailableListToolbarActions
     private let deleteActions: DeleteActions
@@ -54,7 +57,7 @@ private struct ListActionBarViewModifier: ViewModifier {
     private let readActionPerformerActions: ReadActionPerformerActions
 
     init(
-        state: ListActionsToolbarState,
+        initialState: ListActionsToolbarState,
         availableActions: AvailableListToolbarActions,
         starActionPerformerActions: StarActionPerformerActions = .productionInstance,
         readActionPerformerActions: ReadActionPerformerActions = .productionInstance,
@@ -65,7 +68,7 @@ private struct ListActionBarViewModifier: ViewModifier {
         selectedItems: Binding<Set<MailboxSelectedItem>>
     ) {
         self._selectedItems = selectedItems
-        self.state = state
+        self.initialState = initialState
         self.itemTypeForActionBar = itemTypeForActionBar
         self.availableActions = availableActions
         self.deleteActions = deleteActions
@@ -78,7 +81,7 @@ private struct ListActionBarViewModifier: ViewModifier {
     func body(content: Content) -> some View {
         StoreView(
             store: ListActionsToolbarStore(
-                state: state,
+                state: initialState,
                 availableActions: availableActions,
                 starActionPerformerActions: starActionPerformerActions,
                 readActionPerformerActions: readActionPerformerActions,
@@ -151,37 +154,15 @@ private struct ListActionBarViewModifier: ViewModifier {
         selectedItems.map(\.id)
     }
 
-    private func toolbarContent(
-        state: ListActionsToolbarState,
-        store: ListActionsToolbarStore
-    ) -> some ToolbarContent {
+    private func toolbarContent(state: State, store: Store) -> some ToolbarContent {
         ToolbarItemGroup(placement: .bottomBar) {
             HStack {
                 ForEachEnumerated(state.bottomBarActions, id: \.element) { action, index in
                     if index == 0 {
                         Spacer()
                     }
-                    if action == .more { // FIXME: - Refactor
-                        Menu(
-                            content: {
-                                ForEach(state.moreSheetOnlyActions, id: \.self) { action in
-                                    ActionSheetImageButton(
-                                        displayData: action.displayData,
-                                        displayBottomSeparator: false,
-                                        action: { store.handle(action: .actionSelected(action, ids: selectedItemsIDs)) }
-                                    )
-                                }
-                            },
-                            label: {
-                                action.displayData.image
-                                    .foregroundStyle(DS.Color.Icon.weak)
-                            }
-                        )
-                    } else {
-                        Button(action: { store.handle(action: .actionSelected(action, ids: selectedItemsIDs)) }) {
-                            action.displayData.image
-                                .foregroundStyle(DS.Color.Icon.weak)
-                        }
+                    toolbarItem(for: action, state: state) { buttonAction in
+                        store.handle(action: .actionSelected(buttonAction, ids: selectedItemsIDs))
                     }
                     Spacer()
                 }
@@ -200,7 +181,11 @@ private struct ListActionBarViewModifier: ViewModifier {
     }
 
     @ViewBuilder
-    private func toolbarItem(for action: ListActions, buttonAction: @escaping (ListActions) -> Void) -> some View {
+    private func toolbarItem(
+        for action: ListActions,
+        state: State,
+        buttonAction: @escaping (ListActions) -> Void
+    ) -> some View {
         if action == .more {
             Menu(
                 content: {

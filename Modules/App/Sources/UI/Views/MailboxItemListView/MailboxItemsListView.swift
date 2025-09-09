@@ -57,7 +57,7 @@ struct MailboxItemsListView<EmptyView: View>: View {
                 .toolbar(selectionState.hasItems ? .visible : .hidden, for: .bottomBar)
                 .animation(.default, value: selectionState.hasItems)
                 .listActionsToolbar(
-                    state: .initial,
+                    initialState: .initial,
                     availableActions: .productionInstance,
                     itemTypeForActionBar: config.itemTypeForActionBar,
                     mailUserSession: mailUserSession,
