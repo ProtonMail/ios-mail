@@ -19,6 +19,7 @@ import proton_app_uniffi
 import InboxDesignSystem
 
 extension ConversationAction: DisplayableAction {
+
     var displayData: ActionDisplayData {
         switch self {
         case .labelAs:
@@ -52,6 +53,14 @@ extension ConversationAction: DisplayableAction {
             Action.snooze.displayData
         case .more:
             InternalAction.more.displayData
+        }
+    }
+
+    var isMoreAction: Bool {
+        if case .more = self {
+            true
+        } else {
+            false
         }
     }
 }

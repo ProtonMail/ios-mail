@@ -42,4 +42,12 @@ extension InternalAction: DisplayableAction {
         .init(title: name, image: icon)
     }
 
+    var isMoreAction: Bool {
+        if case .more = self {
+            true
+        } else {
+            false
+        }
+    }
+
 }

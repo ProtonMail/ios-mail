@@ -72,4 +72,12 @@ extension MessageAction: DisplayableAction {
         }
     }
 
+    var isMoreAction: Bool {
+        if case .more = self {
+            true
+        } else {
+            false
+        }
+    }
+
 }
