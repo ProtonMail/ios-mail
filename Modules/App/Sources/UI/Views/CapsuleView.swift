@@ -33,20 +33,20 @@ struct CapsuleView: View {
         Text(text)
             .font(.caption2)
             .fontWeight(style.fontWeight)
-            .foregroundColor(style.fontColor)
-            .lineLimit(1)
-            .frame(minWidth: 30)
+            .foregroundColor(.white)
             .padding(.horizontal, DS.Spacing.standard)
             .padding(.vertical, DS.Spacing.small)
-            .background(RoundedRectangle(cornerRadius: DS.Radius.medium).foregroundColor(color))
+            .lineLimit(1)
+            .frame(minWidth: 30)
+            .background(color)
+            .clipShape(RoundedRectangle(cornerRadius: DS.Radius.medium))
     }
 }
 
 struct CapsuleStyle {
-    let fontColor: Color
     let fontWeight: Font.Weight
 
-    static let label = CapsuleStyle(fontColor: .white, fontWeight: .semibold)
+    static let label = CapsuleStyle(fontWeight: .semibold)
 }
 
 #Preview {
