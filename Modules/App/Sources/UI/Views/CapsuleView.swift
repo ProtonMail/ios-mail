@@ -37,7 +37,6 @@ struct CapsuleView: View {
             .padding(.horizontal, DS.Spacing.standard)
             .padding(.vertical, DS.Spacing.small)
             .lineLimit(1)
-            .frame(minWidth: 30)
             .background(color)
             .clipShape(RoundedRectangle(cornerRadius: DS.Radius.medium))
     }
