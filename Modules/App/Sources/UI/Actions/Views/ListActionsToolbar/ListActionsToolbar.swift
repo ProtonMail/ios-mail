@@ -119,16 +119,9 @@ private struct ListActionBarViewModifier: ViewModifier {
                         store.handle(action: .dismissMoveToSheet)
                     }
                 )
-                .sheet(item: store.binding(\.moreActionSheetPresented)) { state in
-                    ListActionsToolbarMoreSheet(state: state) { action in
-                        store.handle(action: .moreSheetAction(action, ids: selectedItemsIDs))
-                    } editToolbarTapped: {
-                        store.handle(action: .editToolbarTapped)
-                    }
-                    .alert(model: store.binding(\.moreDeleteConfirmationAlert))
-                    .sheet(isPresented: store.binding(\.isEditToolbarSheetPresented)) {
-                        EditToolbarScreen(state: .initial(toolbarType: .list), customizeToolbarService: mailUserSession)
-                    }
+                .alert(model: store.binding(\.moreDeleteConfirmationAlert))
+                .sheet(isPresented: store.binding(\.isEditToolbarSheetPresented)) {
+                    EditToolbarScreen(state: .initial(toolbarType: .list), customizeToolbarService: mailUserSession)
                 }
                 .sheet(isPresented: store.binding(\.isSnoozeSheetPresented)) {
                     SnoozeView(
@@ -161,9 +154,7 @@ private struct ListActionBarViewModifier: ViewModifier {
                     if index == 0 {
                         Spacer()
                     }
-                    toolbarItem(for: action, state: state) { buttonAction in
-                        store.handle(action: .actionSelected(buttonAction, ids: selectedItemsIDs))
-                    }
+                    toolbarItem(for: action, state: state, store: store)
                     Spacer()
                 }
             }
@@ -184,17 +175,25 @@ private struct ListActionBarViewModifier: ViewModifier {
     private func toolbarItem(
         for action: ListActions,
         state: State,
-        buttonAction: @escaping (ListActions) -> Void
+        store: Store
     ) -> some View {
         if action == .more {
             Menu(
                 content: {
-                    ForEach(state.moreSheetOnlyActions.reversed(), id: \.self) { action in
-                        ActionSheetImageButton(
-                            displayData: action.displayData,
-                            displayBottomSeparator: false,
-                            action: { buttonAction(action) }
-                        )
+                    ActionSheetImageButton(
+                        displayData: .init(title: L10n.Action.editToolbar, image: DS.Icon.icMagicWand.image),
+                        displayBottomSeparator: false
+                    ) {
+                        store.handle(action: .editToolbarTapped)
+                    }
+                    Section {
+                        ForEach(state.moreSheetOnlyActions.reversed(), id: \.self) { action in
+                            ActionSheetImageButton(
+                                displayData: action.displayData,
+                                displayBottomSeparator: false,
+                                action: { store.handle(action: .actionSelected(action, ids: selectedItemsIDs)) }
+                            )
+                        }
                     }
                 },
                 label: {
@@ -202,7 +201,7 @@ private struct ListActionBarViewModifier: ViewModifier {
                         .foregroundStyle(DS.Color.Icon.weak)
                 })
         } else {
-            Button(action: { buttonAction(action) }) {
+            Button(action: { store.handle(action: .actionSelected(action, ids: selectedItemsIDs)) }) {
                 action.displayData.image
                     .foregroundStyle(DS.Color.Icon.weak)
             }
