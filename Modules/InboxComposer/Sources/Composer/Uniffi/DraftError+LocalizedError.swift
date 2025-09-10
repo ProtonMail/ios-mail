@@ -129,6 +129,10 @@ private extension DraftSaveErrorReason {
             L10n.DraftSaveError.recipientInvalidAddress
         case .protonRecipientDoesNotExist:
             L10n.DraftSaveError.protonRecipientNotFound
+        case .tooManyAttachments:
+            L10n.DraftSaveError.tooManyAttachments
+        case .attachmentTooLarge, .totalAttachmentSizeTooLarge:
+            L10n.DraftSaveError.attachmentTooLarge
         }
     }
 }

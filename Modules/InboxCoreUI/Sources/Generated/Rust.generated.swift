@@ -254,6 +254,16 @@ public extension LoginFlowGenerateSignInQrCodeResult {
         }
     }
 }
+public extension LoginFlowGetFidoDetailsResult {
+    func get() throws(LoginError) -> Fido2ResponseFfi? {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension LoginFlowLoginResult {
     func get() throws(LoginError) {
         switch self {
