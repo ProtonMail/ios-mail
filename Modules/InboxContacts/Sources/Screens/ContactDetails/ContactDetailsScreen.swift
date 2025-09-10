@@ -264,7 +264,7 @@ private extension VCardUrlValue {
 
 #Preview {
     ContactDetailsScreen(
-        apiConfig: .init(envId: .atlas),
+        apiConfig: .debugPreview,
         contact: ContactItem(
             id: .random(),
             name: .empty,

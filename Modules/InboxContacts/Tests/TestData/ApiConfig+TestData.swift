@@ -18,5 +18,5 @@
 import proton_app_uniffi
 
 extension ApiConfig {
-    static let testData = ApiConfig(envId: .atlas)
+    static let testData = ApiConfig.debugPreview
 }

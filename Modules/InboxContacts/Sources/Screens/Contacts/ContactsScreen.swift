@@ -136,7 +136,7 @@ public struct ContactsScreen: View {
 
 #Preview {
     ContactsScreen(
-        apiConfig: .init(envId: .atlas),
+        apiConfig: .debugPreview,
         mailUserSession: .init(noPointer: .init()),
         contactsProvider: .previewInstance(),
         contactsWatcher: .previewInstance(),

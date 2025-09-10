@@ -201,7 +201,7 @@ private extension MailUserSession {
             .first
             .unsafelyUnwrapped
         let cacheFolder = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first.unsafelyUnwrapped
-        let apiConfig = ApiConfig(envId: .custom("http://localhost:8000"))
+        let apiConfig = ApiConfig(userAgent: "mail tests", envId: .custom("http://localhost:8000"))
         let appDetails = AppDetails.mail
 
         let applicationSupportPath = applicationSupportFolder.path()

@@ -601,7 +601,7 @@ final class ContactsStateStoreTests {
 
     private func makeSUT(search: ContactsScreenState.Search) -> ContactsStateStore {
         .init(
-            apiConfig: .init(envId: .atlas),
+            apiConfig: .debugPreview,
             state: .init(search: search, allItems: [], displayCreateContactSheet: false, createContactURL: .none),
             mailUserSession: .testInstance(),
             contactsWrappers: .init(
