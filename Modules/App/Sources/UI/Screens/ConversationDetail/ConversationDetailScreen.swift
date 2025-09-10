@@ -54,6 +54,9 @@ struct ConversationDetailScreen: View {
         conversationView
             .conversationBottomToolbar(
                 actions: model.conversationToolbarActions,
+                mailbox: { model.mailbox.unsafelyUnwrapped },
+                mailUserSession: mailUserSession,
+                editToolbarTapped: {},
                 messageActionSelected: { action in
                     if let messageID = model.state.singleMessageIDInMessageMode {
                         Task {

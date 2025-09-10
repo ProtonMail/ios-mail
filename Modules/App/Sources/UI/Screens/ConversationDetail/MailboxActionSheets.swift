@@ -77,15 +77,15 @@ private struct MailboxActionSheets: ViewModifier {
 
     func body(content: Content) -> some View {
         content
-            .sheet(item: $state.message) { input in
-                MessageActionsSheet(
-                    state: .initial(messageID: input.id, title: input.title),
-                    mailbox: mailbox(),
-                    mailUserSession: mailUserSession,
-                    actionTapped: { messageActionTapped($0, input.id) }
-                )
-                .alert(model: $state.alert)
-            }
+            //            .sheet(item: $state.message) { input in
+            //                MessageActionsSheet(
+            //                    state: .initial(messageID: input.id, title: input.title),
+            //                    mailbox: mailbox(),
+            //                    mailUserSession: mailUserSession,
+            //                    actionTapped: { messageActionTapped($0, input.id) }
+            //                )
+            //                .alert(model: $state.alert)
+            //            }
             .sheet(item: $state.conversation) { input in
                 ConversationActionsSheet(
                     conversationID: input.id,

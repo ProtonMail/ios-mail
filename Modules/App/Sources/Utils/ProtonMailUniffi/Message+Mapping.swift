@@ -70,6 +70,7 @@ extension Message {
             id: id,
             unread: unread,
             messageDetails: MessageDetailsUIModel(
+                id: id,
                 avatar: sender.senderAvatar,
                 sender: .init(
                     name: sender.uiRepresentation,

@@ -17,8 +17,7 @@
 
 import InboxCoreUI
 import InboxDesignSystem
-import enum proton_app_uniffi.ExclusiveLocation
-import enum proton_app_uniffi.MessageBanner
+import proton_app_uniffi
 import SwiftUI
 
 struct MessageDetailsView: View {
@@ -33,6 +32,8 @@ struct MessageDetailsView: View {
 
     @State private(set) var isHeaderCollapsed: Bool = true
     let uiModel: MessageDetailsUIModel
+    let mailbox: Mailbox
+    let mailUserSession: MailUserSession
     let actionButtonsState: ActionButtonsState
     let onEvent: (MessageDetailsEvent) -> Void
 
@@ -223,10 +224,20 @@ struct MessageDetailsView: View {
                 action: { onEvent(uiModel.isSingleRecipient ? .onReply : .onReplyAll) },
                 image: Image(symbol: uiModel.isSingleRecipient ? .reply : .replyAll)
             )
-            headerActionButton(
-                action: { onEvent(.onMoreActions) },
-                image: DS.Icon.icThreeDotsHorizontal.image
-            )
+            Menu {
+                MessageActionsMenuContent(
+                    state: .initial(messageID: uiModel.id, showEditToolbar: false),
+                    mailbox: mailbox,
+                    mailUserSession: mailUserSession,
+                    actionTapped: { action in onEvent(.onMessageAction(action)) },
+                    editToolbarTapped: { onEvent(.onEditToolbar) }
+                )
+            } label: {
+                headerActionButton(
+                    action: {},
+                    image: DS.Icon.icThreeDotsHorizontal.image
+                )
+            }
             .accessibilityIdentifier(MessageDetailsViewIdentifiers.threeDotsButton)
         }
         .foregroundColor(DS.Color.Icon.weak)
@@ -377,6 +388,7 @@ private enum RecipientGroup {
 }
 
 struct MessageDetailsUIModel: Equatable {
+    let id: ID
     let avatar: AvatarUIModel
     let sender: MessageDetail.Sender
     let isSenderProtonOfficial: Bool
@@ -429,7 +441,8 @@ enum MessageDetailsEvent {
     case onTap
     case onReply
     case onReplyAll
-    case onMoreActions
+    case onMessageAction(MessageAction)
+    case onEditToolbar
     case onSenderTap
     case onRecipientTap(MessageDetail.Recipient)
 }
@@ -451,9 +464,11 @@ extension Array where Element == MessageDetail.Recipient {
             .init(labelId: .init(value: 3), text: "Summer trip", color: .pink),
         ])
 
-    return MessageDetailsView(
+    MessageDetailsView(
         isHeaderCollapsed: false,
         uiModel: model,
+        mailbox: .dummy,
+        mailUserSession: .dummy,
         actionButtonsState: .enabled,
         onEvent: { _ in }
     )
@@ -501,6 +516,7 @@ enum MessageDetailsPreviewProvider {
         recipientsBcc: [MessageDetail.Recipient] = recipientsBcc
     ) -> MessageDetailsUIModel {
         .init(
+            id: ID.random(),
             avatar: .init(
                 info: .init(initials: "", color: DS.Color.Background.secondary),
                 type: .sender(params: .init())

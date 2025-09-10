@@ -51,8 +51,6 @@ class MessageActionsSheetStore: StateStore {
             actionTapped(action)
         case .colorSchemeChanged(let colorScheme):
             state = state.copy(\.colorScheme, to: colorScheme)
-        case .editToolbarTapped:
-            state = state.copy(\.isEditToolbarPresented, to: true)
         }
     }
 

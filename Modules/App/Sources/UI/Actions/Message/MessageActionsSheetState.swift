@@ -21,26 +21,24 @@ import SwiftUI
 
 struct MessageActionsSheetState: Copying, Equatable {
     let messageID: ID
-    let title: String
+    let showEditToolbar: Bool
     var actions: MessageActionSheet
     var colorScheme: ColorScheme
-    var isEditToolbarPresented: Bool
 }
 
 extension MessageActionsSheetState {
 
-    static func initial(messageID: ID, title: String) -> Self {
+    static func initial(messageID: ID, showEditToolbar: Bool) -> Self {
         .init(
             messageID: messageID,
-            title: title,
+            showEditToolbar: showEditToolbar,
             actions: .init(
                 replyActions: [],
                 messageActions: [],
                 moveActions: [],
                 generalActions: []
             ),
-            colorScheme: .light,
-            isEditToolbarPresented: false
+            colorScheme: .light
         )
     }
 

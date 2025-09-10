@@ -146,6 +146,7 @@ struct ConversationDetailListView: View {
     private func expandedMessageCell(uiModel: ExpandedMessageCellUIModel) -> some View {
         ExpandedMessageCell(
             mailbox: model.mailbox.unsafelyUnwrapped,
+            mailUserSession: mailUserSession,
             uiModel: uiModel,
             draftPresenter: draftPresenter,
             areActionsHidden: model.areActionsHidden,
@@ -166,9 +167,18 @@ struct ConversationDetailListView: View {
             model.onReplyAllMessage(withId: uiModel.id, toastStateStore: toastStateStore)
         case .onForward:
             model.onForwardMessage(withId: uiModel.id, toastStateStore: toastStateStore)
-        case .onMoreActions:
-            let input = MessageActionsSheetInput(id: uiModel.id, title: model.seed.subject)
-            model.actionSheets = model.actionSheets.copy(\.message, to: input)
+        case .onEditToolbar:
+            break  // FIXME: -
+        case .onMessageAction(let action):
+            Task {
+                await model.handle(
+                    action: action,
+                    messageID: uiModel.id,
+                    toastStateStore: toastStateStore,
+                    actionOrigin: .sheet,
+                    goBack: goBack
+                )
+            }
         case .onSenderTap:
             senderActionTarget = uiModel
         case .onRecipientTap(let recipient):

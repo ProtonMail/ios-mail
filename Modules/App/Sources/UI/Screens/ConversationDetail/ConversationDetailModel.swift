@@ -800,7 +800,7 @@ extension ConversationDetailModel {
                     mailbox: mailbox,
                     conversationId: conversationItem.id
                 ).get()
-                self.conversationToolbarActions = .conversation(actions: actions)
+                self.conversationToolbarActions = .conversation(actions: actions, conversationID: conversationItem.id)
             } catch {
                 AppLogger.log(error: error, category: .conversationDetail)
             }
@@ -815,7 +815,7 @@ extension ConversationDetailModel {
                     theme: theme,
                     messageId: conversationItem.id
                 ).get()
-                self.conversationToolbarActions = .message(actions: actions)
+                self.conversationToolbarActions = .message(actions: actions, messageID: conversationItem.id)
             } catch {
                 AppLogger.log(error: error, category: .conversationDetail)
             }

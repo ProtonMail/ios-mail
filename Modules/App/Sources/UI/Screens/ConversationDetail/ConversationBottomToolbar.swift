@@ -25,30 +25,46 @@ extension View {
 
     func conversationBottomToolbar(
         actions: ConversationToolbarActions?,
+        mailbox: @escaping () -> Mailbox,
+        mailUserSession: MailUserSession,
+        editToolbarTapped: @escaping () -> Void,
         messageActionSelected: @escaping (MessageAction) -> Void,
         conversationActionSelected: @escaping (ConversationAction) -> Void
     ) -> some View {
         modifier(
             ConversationToolbarModifier(
                 actions: actions,
+                mailbox: mailbox,
+                mailUserSession: mailUserSession,
+                editToolbarTapped: editToolbarTapped,
                 messageActionSelected: messageActionSelected,
                 conversationActionSelected: conversationActionSelected
-            ))
+            )
+        )
     }
 
 }
 
 struct ConversationToolbarModifier: ViewModifier {
     private let actions: ConversationToolbarActions?
+    private let mailbox: () -> Mailbox
+    private let mailUserSession: MailUserSession
+    private let editToolbarTapped: () -> Void
     private let messageActionSelected: (MessageAction) -> Void
     private let conversationActionSelected: (ConversationAction) -> Void
 
     init(
         actions: ConversationToolbarActions?,
+        mailbox: @escaping () -> Mailbox,
+        mailUserSession: MailUserSession,
+        editToolbarTapped: @escaping () -> Void,
         messageActionSelected: @escaping (MessageAction) -> Void,
         conversationActionSelected: @escaping (ConversationAction) -> Void
     ) {
         self.actions = actions
+        self.mailbox = mailbox
+        self.mailUserSession = mailUserSession
+        self.editToolbarTapped = editToolbarTapped
         self.messageActionSelected = messageActionSelected
         self.conversationActionSelected = conversationActionSelected
     }
@@ -59,14 +75,52 @@ struct ConversationToolbarModifier: ViewModifier {
                 ToolbarItemGroup(placement: .bottomBar) {
                     if let actions {
                         switch actions {
-                        case .message(let actions):
-                            toolbarContent(actions: actions.visibleMessageActions, selected: messageActionSelected)
-                        case .conversation(let actions):
+                        case .message(let actions, let messageID):
+                            messageToolbarContent(
+                                messageID: messageID,
+                                actions: actions.visibleMessageActions,
+                                selected: messageActionSelected
+                            )
+                        case .conversation(let actions, let conversationID):
                             toolbarContent(actions: actions.visibleListActions, selected: conversationActionSelected)
                         }
                     }
                 }
             }
+    }
+
+    private func messageToolbarContent<Action: DisplayableAction>(
+        messageID: ID,
+        actions: [Action],
+        selected: @escaping (Action) -> Void
+    ) -> some View {
+        HStack(alignment: .center) {
+            ForEachEnumerated(actions, id: \.offset) { action, index in
+                if index == 0 {
+                    Spacer()
+                }
+                if action.isMoreAction {
+                    Menu {
+                        MessageActionsMenuContent(
+                            state: .initial(messageID: messageID, showEditToolbar: true),
+                            mailbox: mailbox(),
+                            mailUserSession: mailUserSession,
+                            actionTapped: messageActionSelected,
+                            editToolbarTapped: {}
+                        )
+                    } label: {
+                        action.displayData.image
+                            .foregroundStyle(DS.Color.Icon.weak)
+                    }
+                } else {
+                    Button(action: { selected(action) }) {
+                        action.displayData.image
+                            .foregroundStyle(DS.Color.Icon.weak)
+                    }
+                }
+                Spacer()
+            }
+        }
     }
 
     @ViewBuilder

@@ -21,12 +21,13 @@ import InboxCoreUI
 import InboxDesignSystem
 import SwiftUI
 
-struct MessageActionsSheet: View {
+struct MessageActionsMenuContent: View {
     private let state: MessageActionsSheetState
     private let mailbox: Mailbox
     private let mailUserSession: MailUserSession
     private let service: AllAvailableMessageActionsForActionSheetService
     private let actionTapped: (MessageAction) -> Void
+    private let editToolbarTapped: () -> Void
 
     @Environment(\.messageAppearanceOverrideStore) var messageAppearanceOverrideStore
     @Environment(\.colorScheme) var colorScheme
@@ -37,12 +38,14 @@ struct MessageActionsSheet: View {
         mailUserSession: MailUserSession,
         service: @escaping AllAvailableMessageActionsForActionSheetService = allAvailableMessageActionsForActionSheet,
         actionTapped: @escaping (MessageAction) -> Void,
+        editToolbarTapped: @escaping () -> Void
     ) {
         self.state = state
         self.mailbox = mailbox
         self.mailUserSession = mailUserSession
         self.service = service
         self.actionTapped = actionTapped
+        self.editToolbarTapped = editToolbarTapped
     }
 
     var body: some View {
@@ -55,23 +58,32 @@ struct MessageActionsSheet: View {
                 actionTapped: actionTapped
             )
         ) { state, store in
-            ClosableScreen {
-                ScrollView {
-                    VStack(spacing: DS.Spacing.standard) {
-                        horizontalSection(actions: store.state.actions.replyActions, store: store)
-                        verticalSection(actions: store.state.actions.messageActions, store: store)
-                        verticalSection(actions: store.state.actions.moveActions, store: store)
-                        verticalSection(actions: store.state.actions.generalActions, store: store)
-
-                        EditToolbarSheetSection {
-                            store.handle(action: .editToolbarTapped)
+            Group {
+                horizontalSection(actions: store.state.actions.replyActions, store: store)
+                verticalSection(actions: store.state.actions.messageActions, store: store)
+                verticalSection(actions: store.state.actions.moveActions, store: store)
+                Menu {
+                    verticalSection(actions: store.state.actions.generalActions, store: store)
+                    if state.showEditToolbar {
+                        Section {
+                            Button {
+                                editToolbarTapped()
+                            } label: {
+                                Label {
+                                    Text(L10n.Action.editToolbar)
+                                        .font(.body)
+                                        .foregroundStyle(DS.Color.Text.norm)
+                                } icon: {
+                                    DS.Icon.icMagicWand.image
+                                        .square(size: 24)
+                                        .foregroundStyle(DS.Color.Icon.norm)
+                                }
+                            }
                         }
                     }
-                    .padding(.all, DS.Spacing.large)
+                } label: {
+                    Text("More options")
                 }
-                .background(DS.Color.BackgroundInverted.norm)
-                .navigationTitle(store.state.title)
-                .navigationBarTitleDisplayMode(.inline)
             }
             .onLoad {
                 store.handle(action: .colorSchemeChanged(colorScheme))
@@ -80,41 +92,40 @@ struct MessageActionsSheet: View {
             .onChange(of: colorScheme) { _, newValue in
                 store.handle(action: .colorSchemeChanged(newValue))
             }
-            .sheet(isPresented: store.binding(\.isEditToolbarPresented)) {
-                EditToolbarScreen(state: .initial(toolbarType: .message), customizeToolbarService: mailUserSession)
-            }
         }
     }
 
+    @ViewBuilder
     private func horizontalSection(actions: [MessageAction], store: MessageActionsSheetStore) -> some View {
-        HStack(spacing: DS.Spacing.standard) {
+        ControlGroup {
             ForEach(actions, id: \.self) { action in
-                horizontalButton(action: action, store: store)
+                menuButton(action: action, store: store)
             }
         }
     }
 
+    @ViewBuilder
     private func verticalSection(actions: [MessageAction], store: MessageActionsSheetStore) -> some View {
-        ActionSheetVerticalSection(actions: actions) { action in
-            store.handle(action: .actionTapped(action))
+        Section {
+            ForEach(actions, id: \.self) { action in
+                menuButton(action: action, store: store)
+            }
         }
     }
 
-    private func horizontalButton(action: MessageAction, store: MessageActionsSheetStore) -> some View {
-        Button(action: { store.handle(action: .actionTapped(action)) }) {
-            VStack(spacing: DS.Spacing.standard) {
-                action.displayData.image
-                    .square(size: 24)
-                    .foregroundStyle(DS.Color.Icon.norm)
+    private func menuButton(action: MessageAction, store: MessageActionsSheetStore) -> some View {
+        Button {
+            store.handle(action: .actionTapped(action))
+        } label: {
+            Label {
                 Text(action.displayData.title)
                     .font(.body)
                     .foregroundStyle(DS.Color.Text.norm)
+            } icon: {
+                action.displayData.image
+                    .square(size: 24)
+                    .foregroundStyle(DS.Color.Icon.norm)
             }
-            .frame(height: 84)
-            .frame(maxWidth: .infinity)
         }
-        .buttonStyle(RegularButtonStyle())
-        .background(DS.Color.BackgroundInverted.secondary)
-        .clipShape(.rect(cornerRadius: DS.Radius.extraLarge))
     }
 }

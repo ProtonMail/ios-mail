@@ -22,5 +22,4 @@ enum MessageActionsSheetAction {
     case onLoad
     case actionTapped(MessageAction)
     case colorSchemeChanged(ColorScheme)
-    case editToolbarTapped
 }

@@ -24,6 +24,7 @@ import SwiftUI
 
 struct ExpandedMessageCell: View {
     private let mailbox: Mailbox
+    private let mailUserSession: MailUserSession
     private let uiModel: ExpandedMessageCellUIModel
     private let draftPresenter: RecipientDraftPresenter
     private let onEvent: (ExpandedMessageCellEvent) -> Void
@@ -39,6 +40,7 @@ struct ExpandedMessageCell: View {
 
     init(
         mailbox: Mailbox,
+        mailUserSession: MailUserSession,
         uiModel: ExpandedMessageCellUIModel,
         draftPresenter: RecipientDraftPresenter,
         areActionsHidden: Bool,
@@ -47,6 +49,7 @@ struct ExpandedMessageCell: View {
         htmlLoaded: @escaping () -> Void,
     ) {
         self.mailbox = mailbox
+        self.mailUserSession = mailUserSession
         self.uiModel = uiModel
         self.draftPresenter = draftPresenter
         self.areActionsHidden = areActionsHidden
@@ -59,6 +62,8 @@ struct ExpandedMessageCell: View {
         VStack(spacing: .zero) {
             MessageDetailsView(
                 uiModel: uiModel.messageDetails,
+                mailbox: mailbox,
+                mailUserSession: mailUserSession,
                 actionButtonsState: actionButtonsState,
                 onEvent: { event in
                     switch event {
@@ -68,12 +73,14 @@ struct ExpandedMessageCell: View {
                         onEvent(.onReply)
                     case .onReplyAll:
                         onEvent(.onReplyAll)
-                    case .onMoreActions:
-                        onEvent(.onMoreActions)
+                    case .onMessageAction(let action):
+                        onEvent(.onMessageAction(action))
                     case .onSenderTap:
                         onEvent(.onSenderTap)
                     case .onRecipientTap(let recipient):
                         onEvent(.onRecipientTap(recipient))
+                    case .onEditToolbar:
+                        onEvent(.onEditToolbar)
                     }
                 }
             )
@@ -128,13 +135,15 @@ enum ExpandedMessageCellEvent {
     case onReply
     case onReplyAll
     case onForward
-    case onMoreActions
 
     case onSenderTap
     case onRecipientTap(MessageDetail.Recipient)
 
     case onEditScheduledMessage
     case unsnoozeConversation
+
+    case onEditToolbar
+    case onMessageAction(MessageAction)
 }
 
 #Preview {
@@ -148,6 +157,7 @@ enum ExpandedMessageCellEvent {
     return VStack(spacing: 0) {
         ExpandedMessageCell(
             mailbox: .dummy,
+            mailUserSession: .dummy,
             uiModel: .init(
                 id: .init(value: 0),
                 unread: false,
@@ -161,6 +171,7 @@ enum ExpandedMessageCellEvent {
         )
         ExpandedMessageCell(
             mailbox: .dummy,
+            mailUserSession: .dummy,
             uiModel: .init(
                 id: .init(value: 1),
                 unread: false,
