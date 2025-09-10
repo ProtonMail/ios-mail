@@ -745,7 +745,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%llu адрасы(оў) электроннай пошты"
+            "value" : "Адрасоў электроннай пошты: %llu"
           }
         },
         "ca" : {
@@ -936,7 +936,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Доступ да настольнай праграмы"
+            "value" : "Доступ да праграмы для камп'ютара"
           }
         },
         "ca" : {
@@ -2548,7 +2548,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Continuar com o plano grátis"
+            "value" : "Continuar com o Plano Free"
           }
         },
         "ro" : {

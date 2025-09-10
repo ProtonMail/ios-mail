@@ -1847,6 +1847,12 @@
             "value" : "Disponible en la web"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Saatavilla verkossa"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2748,6 +2754,12 @@
             "value" : "Continuar en la web"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jatka verkossa"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2871,6 +2883,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Todavía no es posible crear contactos o grupos en la aplicación. Por ahora, puede crearlos en la aplicación web y se sincronizarán con su dispositivo."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kontaktien tai ryhmien luomista sovelluksessa ei vielä tueta. Voit toistaiseksi luoda ne verkkosovelluksessa, ja ne synkronoituvat laitteellesi."
           }
         },
         "fr" : {
@@ -3390,6 +3408,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Todavía no es posible editar contactos o grupos en la aplicación. Por ahora, puede editarlos en la aplicación web y los cambios se sincronizarán en su dispositivo."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kontaktien tai ryhmien muokkaamista sovelluksessa ei vielä tueta. Voit toistaiseksi muokata niitä verkkosovelluksessa, ja ne synkronoituvat laitteellesi."
           }
         },
         "fr" : {

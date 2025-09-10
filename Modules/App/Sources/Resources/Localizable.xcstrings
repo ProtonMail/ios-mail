@@ -2208,7 +2208,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "1. Знайдзіце электронны ліст з вялікім далучэннем (напрыклад, відэа)\n2. Адкрыйце электронны ліст\n3. Дачакайцеся загрузкі электроннага ліста"
+            "value" : "1. Знайдзіце ліст з вялікім далучэннем (напрыклад, відэа)\n2. Адкрыйце ліст\n3. Дачакайцеся загрузкі ліста"
           }
         },
         "ca" : {
@@ -9631,7 +9631,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Canvieu la contrasenya principal"
+            "value" : "Canvia la contrasenya principal"
           }
         },
         "cs" : {
@@ -20153,6 +20153,12 @@
             "value" : "Disfrute de mensajes cifrados, menos spam, protección contra suplantaciones y rastreadores bloqueados. Le damos la bienvenida a la privacidad."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nauti salatuista viesteistä, vähemmästä roskapostista, tietojenkalastelun torjunnasta ja seurannanestosta. Tervetuloa yksityisyyden pariin."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -20210,7 +20216,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Desfrute de mensagens criptografadas, menos spam, proteção contra phishing e bloqueio de rastreadores. Bem-vindo à privacidade."
+            "value" : "Desfrute de mensagens criptografadas, menos spam, proteção contra phishing e bloqueio de rastreadores. De boas-vindas à privacidade."
           }
         },
         "ro" : {
@@ -21239,6 +21245,12 @@
             "value" : "Enfoque a su alcance"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keskittyminen käden ulottuvilla"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -21953,6 +21965,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Comenzar"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aloita"
           }
         },
         "fr" : {
@@ -24885,6 +24903,12 @@
             "value" : "Lista de correo cancelada"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Postituslistan tilaus on lopetettu"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -24936,7 +24960,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Lista de e-mails cancelada"
+            "value" : "Lista de e-mail cancelada"
           }
         },
         "ro" : {
@@ -28062,6 +28086,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Barra de herramientas del mensaje"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Viestityökalupalkki"
           }
         },
         "fr" : {
@@ -34587,6 +34617,12 @@
             "value" : "Lea, escriba y gestione sus correos donde sea que esté. Todo se sincroniza automáticamente cuando vuelva a estar en línea."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lue, kirjoita ja hallitse sähköposteja missä vain. Kaikki sykronoituu automaattisesti heti, kun yhteys palaa."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -34638,7 +34674,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ler, escrever e gerenciar e-mails onde quer que você esteja. Tudo sincroniza automaticamente no momento em que você volta a ficar on-line."
+            "value" : "Leia, escreva e gerencie e-mails onde quer que você esteja. Tudo sincroniza automaticamente no momento em que você volta a ficar online."
           }
         },
         "ro" : {
@@ -41515,6 +41551,12 @@
             "value" : "Dedique menos tiempo a ordenar y más tiempo a hacer. Su buzón está diseñado para ser fácil de navegar y así acceder a lo importante más rápido."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Käytä vähemmän aikaa lajitteluun ja enemmän tekemiseen. Saapuneet-kansiosi on suunniteltu helpommin navigoitavaksi, jotta pääset tärkeiden asioiden kimppuun nopeammin."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -41566,7 +41608,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Gaste menos tempo organizando e mais tempo fazendo. Sua caixa de entrada é projetada para ser mais fácil de navegar, para que você possa chegar ao que é importante mais rápido."
+            "value" : "Passe menos tempo organizando e mais tempo fazendo. Sua caixa de entrada foi projetada para ser mais fácil de navegar, para que você possa chegar ao que é importante mais rápido."
           }
         },
         "ro" : {
@@ -42040,6 +42082,12 @@
             "value" : "Manténgase en línea, incluso sin conexión"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pysy yhteyksissä jopa ilman yhteyttä"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -42091,7 +42139,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Fique conectado, mesmo off-line"
+            "value" : "Fique conectado, mesmo offline"
           }
         },
         "ro" : {
@@ -45746,6 +45794,12 @@
             "value" : "Esta barra de herramientas aparece cuando se seleccionan varios mensajes en una vista de lista."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tämä työkalupalkki tulee näkyviin, kun useita viestejä on valittuna luettelonäkymässä."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -45863,6 +45917,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Esta barra de herramientas permanece visible cuando se abre un mensaje."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tämä työkalupalkki pysyy näkyvillä, kun viesti on avoinna."
           }
         },
         "fr" : {
@@ -51421,6 +51481,12 @@
             "value" : "Le damos la bienvenida a Proton Mail, donde la privacidad es la norma"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tervetuloa Proton Mailiin, missä yksityisyys on oletusarvo"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -51472,7 +51538,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bem-vindo(a) ao Proton Mail, onde a privacidade é padrão"
+            "value" : "Boas-vindas ao Proton Mail, onde a privacidade é o padrão"
           }
         },
         "ro" : {
@@ -51940,6 +52006,12 @@
             "value" : "Ha cancelado esta lista de correo."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tilauksesi on poistettu tältä postituslistalta."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -51991,7 +52063,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Você já está descadastrado desta lista de e-mails."
+            "value" : "Você cancelou a inscrição nesta lista de e-mails."
           }
         },
         "ro" : {
