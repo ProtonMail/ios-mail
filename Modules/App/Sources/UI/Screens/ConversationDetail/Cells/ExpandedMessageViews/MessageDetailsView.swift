@@ -350,13 +350,13 @@ struct MessageDetailsView: View {
     }
 
     private var labelRow: some View {
-        let capsules = uiModel.labels.map { label in
-            CapsuleView(text: label.text.stringResource, color: label.color)
+        let badges = uiModel.labels.map { label in
+            Badge(text: label.text.stringResource, color: label.color)
         }
 
         return HStack(alignment: .center, spacing: DS.Spacing.small) {
-            CapsuleCloudView(
-                subviews: capsules,
+            BadgesView(
+                badges: badges,
             )
             Spacer()
         }

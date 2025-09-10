@@ -19,13 +19,13 @@ import InboxCoreUI
 import InboxDesignSystem
 import SwiftUI
 
-struct CapsuleCloudView: View {
+struct BadgesView: View {
     @State private var totalHeight: CGFloat = .zero
 
-    private let subviews: [CapsuleView]
+    private let badges: [Badge]
 
-    init(subviews: [CapsuleView]) {
-        self.subviews = subviews
+    init(badges: [Badge]) {
+        self.badges = badges
     }
 
     var body: some View {
@@ -34,8 +34,8 @@ struct CapsuleCloudView: View {
             var yPos: CGFloat = .zero
 
             ZStack(alignment: .topLeading) {
-                ForEach(subviews.indices, id: \.self) { index in
-                    subviews[index]
+                ForEachLast(collection: badges) { model, isLast in
+                    BadgeView(text: model.text, color: model.color)
                         .padding([.horizontal, .vertical], DS.Spacing.tiny)
                         .alignmentGuide(.leading) { viewDimensions in
                             if (abs(xPos - viewDimensions.width) > geometry.size.width) {
@@ -43,7 +43,7 @@ struct CapsuleCloudView: View {
                                 yPos -= viewDimensions.height
                             }
                             let result = xPos
-                            if isLast(index) {
+                            if isLast {
                                 xPos = 0
                             } else {
                                 xPos -= viewDimensions.width
@@ -52,7 +52,7 @@ struct CapsuleCloudView: View {
                         }
                         .alignmentGuide(.top) { viewDimensions in
                             let result = yPos
-                            if isLast(index) {
+                            if isLast {
                                 yPos = 0
                             }
                             return result
@@ -71,24 +71,20 @@ struct CapsuleCloudView: View {
         }
         .frame(height: totalHeight)
     }
-
-    private func isLast(_ index: Int) -> Bool {
-        index == subviews.count - 1
-    }
 }
 
 #Preview {
     VStack {
         Text("Labels".notLocalized).font(.largeTitle)
-        CapsuleCloudView(
-            subviews: [
-                CapsuleView(text: "Work".notLocalized.stringResource, color: .green),
-                CapsuleView(text: "Friends & Family and Fools Around the World!".notLocalized.stringResource, color: .cyan),
-                CapsuleView(text: "Holidays ".notLocalized.stringResource, color: .pink),
-                CapsuleView(text: "Greece meetup".notLocalized.stringResource, color: .blue),
-                CapsuleView(text: "Reminders".notLocalized.stringResource, color: .red),
-                CapsuleView(text: "Shopping".notLocalized.stringResource, color: .indigo),
-                CapsuleView(text: "Shopping".notLocalized.stringResource, color: .purple),
+        BadgesView(
+            badges: [
+                Badge(text: "Work".notLocalized.stringResource, color: .green),
+                Badge(text: "Friends & Family and Fools Around the World!".notLocalized.stringResource, color: .cyan),
+                Badge(text: "Holidays ".notLocalized.stringResource, color: .pink),
+                Badge(text: "Greece meetup".notLocalized.stringResource, color: .blue),
+                Badge(text: "Reminders".notLocalized.stringResource, color: .red),
+                Badge(text: "Shopping".notLocalized.stringResource, color: .indigo),
+                Badge(text: "Shopping".notLocalized.stringResource, color: .purple),
             ]
         )
         .padding(10)

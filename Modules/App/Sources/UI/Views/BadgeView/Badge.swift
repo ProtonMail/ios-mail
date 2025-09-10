@@ -18,31 +18,7 @@
 import InboxDesignSystem
 import SwiftUI
 
-struct CapsuleView: View {
+struct Badge: Hashable {
     let text: LocalizedStringResource
     let color: Color
-
-    init(text: LocalizedStringResource, color: Color) {
-        self.text = text
-        self.color = color
-    }
-
-    var body: some View {
-        Text(text)
-            .font(.caption2)
-            .fontWeight(.semibold)
-            .foregroundColor(.white)
-            .padding(.vertical, DS.Spacing.small)
-            .padding(.horizontal, DS.Spacing.standard)
-            .lineLimit(1)
-            .background(color)
-            .clipShape(RoundedRectangle(cornerRadius: DS.Radius.medium))
-    }
-}
-
-#Preview {
-    VStack {
-        CapsuleView(text: "Work".notLocalized.stringResource, color: .blue)
-        CapsuleView(text: "Friends & Fam".notLocalized.stringResource, color: .pink)
-    }
 }
