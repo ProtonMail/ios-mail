@@ -232,11 +232,17 @@ struct MessageDetailsView: View {
                     actionTapped: { action in onEvent(.onMessageAction(action)) },
                     editToolbarTapped: { onEvent(.onEditToolbar) }
                 )
+                .id(uiModel)
             } label: {
-                headerActionButton(
-                    action: {},
-                    image: DS.Icon.icThreeDotsHorizontal.image
-                )
+                DS.Icon.icThreeDotsHorizontal.image
+                    .square(size: 20)
+                    .foregroundStyle(actionButtonsState.isDisabled ? DS.Color.Text.disabled : DS.Color.Text.weak)
+                    .square(size: 36)
+                    .disabled(actionButtonsState.isDisabled)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: DS.Radius.mediumLarge)
+                            .stroke(DS.Color.Border.norm, lineWidth: 1)
+                    )
             }
             .accessibilityIdentifier(MessageDetailsViewIdentifiers.threeDotsButton)
         }
@@ -387,7 +393,7 @@ private enum RecipientGroup {
     }
 }
 
-struct MessageDetailsUIModel: Equatable {
+struct MessageDetailsUIModel: Hashable {
     let id: ID
     let avatar: AvatarUIModel
     let sender: MessageDetail.Sender
@@ -416,7 +422,7 @@ extension MessageDetailsUIModel {
 
 enum MessageDetail {
 
-    struct Sender: Equatable {
+    struct Sender: Hashable {
         let name: String
         let address: String
         let encryptionInfo: String
@@ -429,11 +435,15 @@ enum MessageDetail {
         let avatarInfo: AvatarInfo
     }
 
-    struct Location: Equatable {
+    struct Location: Hashable {
         let id: ID
         let name: LocalizedStringResource
         let icon: Image
         let iconColor: Color?
+
+        func hash(into hasher: inout Hasher) {
+            hasher.combine(id)
+        }
     }
 }
 

@@ -59,30 +59,34 @@ struct MessageActionsMenuContent: View {
             )
         ) { state, store in
             Group {
-                horizontalSection(actions: store.state.actions.replyActions, store: store)
-                verticalSection(actions: store.state.actions.messageActions, store: store)
-                verticalSection(actions: store.state.actions.moveActions, store: store)
-                Menu {
-                    verticalSection(actions: store.state.actions.generalActions, store: store)
-                    if state.showEditToolbar {
-                        Section {
-                            Button {
-                                editToolbarTapped()
-                            } label: {
-                                Label {
-                                    Text(L10n.Action.editToolbar)
-                                        .font(.body)
-                                        .foregroundStyle(DS.Color.Text.norm)
-                                } icon: {
-                                    DS.Icon.icMagicWand.image
-                                        .square(size: 24)
-                                        .foregroundStyle(DS.Color.Icon.norm)
+                if store.state.actions.replyActions.isEmpty {
+                    Text("")
+                } else {
+                    horizontalSection(actions: store.state.actions.replyActions, store: store)
+                    verticalSection(actions: store.state.actions.messageActions, store: store)
+                    verticalSection(actions: store.state.actions.moveActions, store: store)
+                    Menu {
+                        verticalSection(actions: store.state.actions.generalActions, store: store)
+                        if state.showEditToolbar {
+                            Section {
+                                Button {
+                                    editToolbarTapped()
+                                } label: {
+                                    Label {
+                                        Text(L10n.Action.editToolbar)
+                                            .font(.body)
+                                            .foregroundStyle(DS.Color.Text.norm)
+                                    } icon: {
+                                        DS.Icon.icMagicWand.image
+                                            .square(size: 24)
+                                            .foregroundStyle(DS.Color.Icon.norm)
+                                    }
                                 }
                             }
                         }
+                    } label: {
+                        Text("More options")
                     }
-                } label: {
-                    Text("More options")
                 }
             }
             .onLoad {
