@@ -350,13 +350,9 @@ struct MessageDetailsView: View {
     }
 
     private var labelRow: some View {
-        let badges = uiModel.labels.map { label in
-            Badge(text: label.text.stringResource, color: label.color)
-        }
-
-        return HStack(alignment: .center, spacing: DS.Spacing.small) {
+        HStack(alignment: .center, spacing: DS.Spacing.small) {
             BadgesView(
-                badges: badges,
+                badges: uiModel.labels.map { label in Badge(text: label.text, color: label.color) }
             )
             Spacer()
         }

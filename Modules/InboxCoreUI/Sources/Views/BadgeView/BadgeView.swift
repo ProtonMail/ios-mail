@@ -19,10 +19,10 @@ import InboxDesignSystem
 import SwiftUI
 
 struct BadgeView: View {
-    let text: LocalizedStringResource
+    let text: String
     let color: Color
 
-    init(text: LocalizedStringResource, color: Color) {
+    init(text: String, color: Color) {
         self.text = text
         self.color = color
     }
@@ -42,7 +42,7 @@ struct BadgeView: View {
 
 #Preview {
     VStack {
-        BadgeView(text: "Work".notLocalized.stringResource, color: .blue)
-        BadgeView(text: "Friends & Fam".notLocalized.stringResource, color: .pink)
+        BadgeView(text: "Work".notLocalized, color: .blue)
+        BadgeView(text: "Friends & Fam".notLocalized, color: .pink)
     }
 }

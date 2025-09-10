@@ -18,7 +18,12 @@
 import InboxDesignSystem
 import SwiftUI
 
-struct Badge: Hashable {
-    let text: LocalizedStringResource
-    let color: Color
+public struct Badge: Hashable {
+    public let text: String
+    public let color: Color
+
+    public init(text: String, color: Color) {
+        self.text = text
+        self.color = color
+    }
 }

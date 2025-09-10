@@ -18,11 +18,26 @@
 import InboxDesignSystem
 import SwiftUI
 
-struct FormBigButtonContent: View {
+struct FormBigButtonContent<BottomContent: View>: View {
     let title: LocalizedStringResource
     let value: String
     let hasAccentTextColor: Bool
     let accessoryType: FormBigButton.AccessoryType?
+    @ViewBuilder let bottomContent: () -> BottomContent?
+
+    init(
+        title: LocalizedStringResource,
+        value: String,
+        hasAccentTextColor: Bool,
+        accessoryType: FormBigButton.AccessoryType?,
+        bottomContent: @escaping () -> BottomContent?
+    ) {
+        self.title = title
+        self.value = value
+        self.hasAccentTextColor = hasAccentTextColor
+        self.accessoryType = accessoryType
+        self.bottomContent = bottomContent
+    }
 
     var body: some View {
         HStack(alignment: .center) {
@@ -35,6 +50,9 @@ struct FormBigButtonContent: View {
                     .font(.body)
                     .fontWeight(.regular)
                     .foregroundStyle(hasAccentTextColor ? DS.Color.Text.accent : DS.Color.Text.norm)
+                if let content = bottomContent() {
+                    content
+                }
             }
             if let accessoryType {
                 Spacer(minLength: DS.Spacing.small)

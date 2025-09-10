@@ -15,20 +15,19 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import InboxCoreUI
 import InboxDesignSystem
 import SwiftUI
 
-struct BadgesView: View {
+public struct BadgesView: View {
     @State private var totalHeight: CGFloat = .zero
 
     private let badges: [Badge]
 
-    init(badges: [Badge]) {
+    public init(badges: [Badge]) {
         self.badges = badges
     }
 
-    var body: some View {
+    public var body: some View {
         GeometryReader { geometry in
             var xPos: CGFloat = .zero
             var yPos: CGFloat = .zero
@@ -78,13 +77,13 @@ struct BadgesView: View {
         Text("Labels".notLocalized).font(.largeTitle)
         BadgesView(
             badges: [
-                Badge(text: "Work".notLocalized.stringResource, color: .green),
-                Badge(text: "Friends & Family and Fools Around the World!".notLocalized.stringResource, color: .cyan),
-                Badge(text: "Holidays ".notLocalized.stringResource, color: .pink),
-                Badge(text: "Greece meetup".notLocalized.stringResource, color: .blue),
-                Badge(text: "Reminders".notLocalized.stringResource, color: .red),
-                Badge(text: "Shopping".notLocalized.stringResource, color: .indigo),
-                Badge(text: "Shopping".notLocalized.stringResource, color: .purple),
+                Badge(text: "Work".notLocalized, color: .green),
+                Badge(text: "Friends & Family and Fools Around the World!".notLocalized, color: .cyan),
+                Badge(text: "Holidays ".notLocalized, color: .pink),
+                Badge(text: "Greece meetup".notLocalized, color: .blue),
+                Badge(text: "Reminders".notLocalized, color: .red),
+                Badge(text: "Shopping".notLocalized, color: .indigo),
+                Badge(text: "Shopping".notLocalized, color: .purple),
             ]
         )
         .padding(10)
