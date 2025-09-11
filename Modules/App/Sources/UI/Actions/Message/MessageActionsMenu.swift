@@ -64,7 +64,7 @@ struct MessageActionsMenu<OpenMenuButtonContent: View>: View {
             Menu {
                 Group {
                     if store.state.actions.replyActions.isEmpty {
-                        Text("")
+                        Text("") // FIXME: - Add some kind of loading indication
                     } else {
                         horizontalSection(actions: store.state.actions.replyActions, store: store)
                         verticalSection(actions: store.state.actions.messageActions, store: store)
