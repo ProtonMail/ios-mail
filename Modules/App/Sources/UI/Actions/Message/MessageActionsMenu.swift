@@ -64,7 +64,7 @@ struct MessageActionsMenu<OpenMenuButtonContent: View>: View {
             Menu {
                 Group {
                     if store.state.actions.replyActions.isEmpty {
-                        Text("") // FIXME: - Add some kind of loading indication
+                        Text("")  // FIXME: - Add some kind of loading indication
                     } else {
                         horizontalSection(actions: store.state.actions.replyActions, store: store)
                         verticalSection(actions: store.state.actions.messageActions, store: store)
@@ -110,7 +110,9 @@ struct MessageActionsMenu<OpenMenuButtonContent: View>: View {
     private func horizontalSection(actions: [MessageAction], store: MessageActionsSheetStore) -> some View {
         ControlGroup {
             ForEach(actions, id: \.self) { action in
-                menuButton(action: action, store: store)
+                menuButton(displayData: action.displayData) {
+                    store.handle(action: .actionTapped(action))
+                }
             }
         }
     }
@@ -119,21 +121,23 @@ struct MessageActionsMenu<OpenMenuButtonContent: View>: View {
     private func verticalSection(actions: [MessageAction], store: MessageActionsSheetStore) -> some View {
         Section {
             ForEach(actions, id: \.self) { action in
-                menuButton(action: action, store: store)
+                menuButton(displayData: action.displayData) {
+                    store.handle(action: .actionTapped(action))
+                }
             }
         }
     }
 
-    private func menuButton(action: MessageAction, store: MessageActionsSheetStore) -> some View {
+    private func menuButton(displayData: ActionDisplayData, action: @escaping () -> Void) -> some View {
         Button {
-            store.handle(action: .actionTapped(action))
+            action()
         } label: {
             Label {
-                Text(action.displayData.title)
+                Text(displayData.title)
                     .font(.body)
                     .foregroundStyle(DS.Color.Text.norm)
             } icon: {
-                action.displayData.image
+                displayData.image
                     .square(size: 24)
                     .foregroundStyle(DS.Color.Icon.norm)
             }

@@ -21,62 +21,80 @@ import InboxCore
 import InboxCoreUI
 import SwiftUI
 
-struct ConversationActionsSheet: View {
+struct ConversationActionsMenu<OpenMenuButtonContent: View>: View {
     private let conversationID: ID
-    private let title: String
     private let mailbox: Mailbox
     private let mailUserSession: MailUserSession
     private let actionTapped: (ConversationAction) -> Void
+    private let editToolbarTapped: () -> Void
+    private let label: () -> OpenMenuButtonContent
 
     @State var actions: ConversationActionSheet?
     @State var isEditToolbarPresented = false
 
     init(
         conversationID: ID,
-        title: String,
         mailbox: Mailbox,
         mailUserSession: MailUserSession,
-        actionTapped: @escaping (ConversationAction) -> Void
+        actionTapped: @escaping (ConversationAction) -> Void,
+        editToolbarTapped: @escaping () -> Void,
+        label: @escaping () -> OpenMenuButtonContent
     ) {
         self.conversationID = conversationID
-        self.title = title
         self.mailbox = mailbox
         self.mailUserSession = mailUserSession
         self.actionTapped = actionTapped
+        self.editToolbarTapped = editToolbarTapped
+        self.label = label
     }
 
     var body: some View {
-        ClosableScreen {
-            ScrollView {
-                VStack(spacing: DS.Spacing.standard) {
-                    if let actions {
-                        verticalSection(actions: actions.conversationActions)
-                        verticalSection(actions: actions.moveActions)
+        Menu {
+            Group {
+                if let actions {
+                    Section {
+                        menuButton(
+                            displayData: InternalAction.editToolbar.displayData,
+                            action: editToolbarTapped
+                        )
                     }
+                    verticalSection(actions: actions.moveActions)
+                    verticalSection(actions: actions.conversationActions)
 
-                    EditToolbarSheetSection {
-                        Task { await handle(action: .editToolbarTapped) }
-                    }
+                } else {
+                    Text("")  // FIXME: - Add some kind of loading indication
                 }
-                .padding(.all, DS.Spacing.large)
             }
-            .background(DS.Color.BackgroundInverted.norm)
-            .navigationTitle(title)
-            .navigationBarTitleDisplayMode(.inline)
-        }
-        .onLoad { Task { await handle(action: .onLoad) } }
-        .sheet(isPresented: $isEditToolbarPresented) {
-            EditToolbarScreen(
-                state: .initial(toolbarType: .conversation),
-                customizeToolbarService: mailUserSession
-            )
+            .onLoad { Task { await handle(action: .onLoad) } }
+        } label: {
+            label()
         }
     }
 
     private func verticalSection(actions: [ConversationAction]) -> some View {
-        ActionSheetVerticalSection(actions: actions) { action in
-            Task {
-                await handle(action: .actionTapped(action))
+        Section {
+            ForEach(actions, id: \.self) { action in
+                menuButton(displayData: action.displayData) {
+                    Task {
+                        await handle(action: .actionTapped(action))
+                    }
+                }
+            }
+        }
+    }
+
+    private func menuButton(displayData: ActionDisplayData, action: @escaping () -> Void) -> some View {
+        Button {
+            action()
+        } label: {
+            Label {
+                Text(displayData.title)
+                    .font(.body)
+                    .foregroundStyle(DS.Color.Text.norm)
+            } icon: {
+                displayData.image
+                    .square(size: 24)
+                    .foregroundStyle(DS.Color.Icon.norm)
             }
         }
     }

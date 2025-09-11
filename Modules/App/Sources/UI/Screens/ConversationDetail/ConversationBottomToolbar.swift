@@ -79,20 +79,54 @@ struct ConversationToolbarModifier: ViewModifier {
                             messageToolbarContent(
                                 messageID: messageID,
                                 actions: actions.visibleMessageActions,
-                                selected: messageActionSelected
                             )
+                            .id(actions)
                         case .conversation(let actions, let conversationID):
-                            toolbarContent(actions: actions.visibleListActions, selected: conversationActionSelected)
+                            conversationToolbarContent(
+                                conversationID: conversationID,
+                                actions: actions.visibleListActions
+                            )
+                            .id(actions)
                         }
                     }
                 }
             }
     }
 
-    private func messageToolbarContent<Action: DisplayableAction>(
-        messageID: ID,
+    private func messageToolbarContent(messageID: ID, actions: [MessageAction]) -> some View {
+        toolbarContent(actions: actions, selected: messageActionSelected) {
+            MessageActionsMenu(
+                state: .initial(messageID: messageID, showEditToolbar: true),
+                mailbox: mailbox(),
+                mailUserSession: mailUserSession,
+                actionTapped: messageActionSelected,
+                editToolbarTapped: editToolbarTapped
+            ) {
+                InternalAction.more.displayData.image
+                    .foregroundStyle(DS.Color.Icon.weak)
+            }
+        }
+    }
+
+    private func conversationToolbarContent(conversationID: ID, actions: [ConversationAction]) -> some View {
+        toolbarContent(actions: actions, selected: conversationActionSelected) {
+            ConversationActionsMenu(
+                conversationID: conversationID,
+                mailbox: mailbox(),
+                mailUserSession: mailUserSession,
+                actionTapped: conversationActionSelected,
+                editToolbarTapped: editToolbarTapped
+            ) {
+                InternalAction.more.displayData.image
+                    .foregroundStyle(DS.Color.Icon.weak)
+            }
+        }
+    }
+
+    private func toolbarContent<MoreActionsMenu: View, Action: DisplayableAction>(
         actions: [Action],
-        selected: @escaping (Action) -> Void
+        selected: @escaping (Action) -> Void,
+        moreActionsMenu: @escaping () -> MoreActionsMenu
     ) -> some View {
         HStack(alignment: .center) {
             ForEachEnumerated(actions, id: \.offset) { action, index in
@@ -100,40 +134,12 @@ struct ConversationToolbarModifier: ViewModifier {
                     Spacer()
                 }
                 if action.isMoreAction {
-                    MessageActionsMenu(
-                        state: .initial(messageID: messageID, showEditToolbar: true),
-                        mailbox: mailbox(),
-                        mailUserSession: mailUserSession,
-                        actionTapped: messageActionSelected,
-                        editToolbarTapped: {}
-                    ) {
-                        action.displayData.image
-                            .foregroundStyle(DS.Color.Icon.weak)
-                    }
+                    moreActionsMenu()
                 } else {
                     Button(action: { selected(action) }) {
                         action.displayData.image
                             .foregroundStyle(DS.Color.Icon.weak)
                     }
-                }
-                Spacer()
-            }
-        }
-    }
-
-    @ViewBuilder
-    private func toolbarContent<Action: DisplayableAction>(
-        actions: [Action],
-        selected: @escaping (Action) -> Void
-    ) -> some View {
-        HStack(alignment: .center) {
-            ForEachEnumerated(actions, id: \.offset) { action, index in
-                if index == 0 {
-                    Spacer()
-                }
-                Button(action: { selected(action) }) {
-                    action.displayData.image
-                        .foregroundStyle(DS.Color.Icon.weak)
                 }
                 Spacer()
             }
