@@ -224,16 +224,13 @@ struct MessageDetailsView: View {
                 action: { onEvent(uiModel.isSingleRecipient ? .onReply : .onReplyAll) },
                 image: Image(symbol: uiModel.isSingleRecipient ? .reply : .replyAll)
             )
-            Menu {
-                MessageActionsMenuContent(
-                    state: .initial(messageID: uiModel.id, showEditToolbar: false),
-                    mailbox: mailbox,
-                    mailUserSession: mailUserSession,
-                    actionTapped: { action in onEvent(.onMessageAction(action)) },
-                    editToolbarTapped: { onEvent(.onEditToolbar) }
-                )
-                .id(uiModel)
-            } label: {
+            MessageActionsMenu(
+                state: .initial(messageID: uiModel.id, showEditToolbar: false),
+                mailbox: mailbox,
+                mailUserSession: mailUserSession,
+                actionTapped: { action in onEvent(.onMessageAction(action)) },
+                editToolbarTapped: { onEvent(.onEditToolbar) }
+            ) {
                 DS.Icon.icThreeDotsHorizontal.image
                     .square(size: 20)
                     .foregroundStyle(actionButtonsState.isDisabled ? DS.Color.Text.disabled : DS.Color.Text.weak)
@@ -244,7 +241,7 @@ struct MessageDetailsView: View {
                             .stroke(DS.Color.Border.norm, lineWidth: 1)
                     )
             }
-            .accessibilityIdentifier(MessageDetailsViewIdentifiers.threeDotsButton)
+            .id(uiModel)
         }
         .foregroundColor(DS.Color.Icon.weak)
     }

@@ -21,13 +21,14 @@ import InboxCoreUI
 import InboxDesignSystem
 import SwiftUI
 
-struct MessageActionsMenuContent: View {
+struct MessageActionsMenu<OpenMenuButtonContent: View>: View {
     private let state: MessageActionsSheetState
     private let mailbox: Mailbox
     private let mailUserSession: MailUserSession
     private let service: AllAvailableMessageActionsForActionSheetService
     private let actionTapped: (MessageAction) -> Void
     private let editToolbarTapped: () -> Void
+    private let label: () -> OpenMenuButtonContent
 
     @Environment(\.messageAppearanceOverrideStore) var messageAppearanceOverrideStore
     @Environment(\.colorScheme) var colorScheme
@@ -38,7 +39,8 @@ struct MessageActionsMenuContent: View {
         mailUserSession: MailUserSession,
         service: @escaping AllAvailableMessageActionsForActionSheetService = allAvailableMessageActionsForActionSheet,
         actionTapped: @escaping (MessageAction) -> Void,
-        editToolbarTapped: @escaping () -> Void
+        editToolbarTapped: @escaping () -> Void,
+        label: @escaping () -> OpenMenuButtonContent
     ) {
         self.state = state
         self.mailbox = mailbox
@@ -46,6 +48,7 @@ struct MessageActionsMenuContent: View {
         self.service = service
         self.actionTapped = actionTapped
         self.editToolbarTapped = editToolbarTapped
+        self.label = label
     }
 
     var body: some View {
@@ -58,43 +61,47 @@ struct MessageActionsMenuContent: View {
                 actionTapped: actionTapped
             )
         ) { state, store in
-            Group {
-                if store.state.actions.replyActions.isEmpty {
-                    Text("")
-                } else {
-                    horizontalSection(actions: store.state.actions.replyActions, store: store)
-                    verticalSection(actions: store.state.actions.messageActions, store: store)
-                    verticalSection(actions: store.state.actions.moveActions, store: store)
-                    Menu {
-                        verticalSection(actions: store.state.actions.generalActions, store: store)
-                        if state.showEditToolbar {
-                            Section {
-                                Button {
-                                    editToolbarTapped()
-                                } label: {
-                                    Label {
-                                        Text(L10n.Action.editToolbar)
-                                            .font(.body)
-                                            .foregroundStyle(DS.Color.Text.norm)
-                                    } icon: {
-                                        DS.Icon.icMagicWand.image
-                                            .square(size: 24)
-                                            .foregroundStyle(DS.Color.Icon.norm)
+            Menu {
+                Group {
+                    if store.state.actions.replyActions.isEmpty {
+                        Text("")
+                    } else {
+                        horizontalSection(actions: store.state.actions.replyActions, store: store)
+                        verticalSection(actions: store.state.actions.messageActions, store: store)
+                        verticalSection(actions: store.state.actions.moveActions, store: store)
+                        Menu {
+                            verticalSection(actions: store.state.actions.generalActions, store: store)
+                            if state.showEditToolbar {
+                                Section {
+                                    Button {
+                                        editToolbarTapped()
+                                    } label: {
+                                        Label {
+                                            Text(L10n.Action.editToolbar)
+                                                .font(.body)
+                                                .foregroundStyle(DS.Color.Text.norm)
+                                        } icon: {
+                                            DS.Icon.icMagicWand.image
+                                                .square(size: 24)
+                                                .foregroundStyle(DS.Color.Icon.norm)
+                                        }
                                     }
                                 }
                             }
+                        } label: {
+                            Text("More options")
                         }
-                    } label: {
-                        Text("More options")
                     }
                 }
-            }
-            .onLoad {
-                store.handle(action: .colorSchemeChanged(colorScheme))
-                store.handle(action: .onLoad)
-            }
-            .onChange(of: colorScheme) { _, newValue in
-                store.handle(action: .colorSchemeChanged(newValue))
+                .onLoad {
+                    store.handle(action: .colorSchemeChanged(colorScheme))
+                    store.handle(action: .onLoad)
+                }
+                .onChange(of: colorScheme) { _, newValue in
+                    store.handle(action: .colorSchemeChanged(newValue))
+                }
+            } label: {
+                label()
             }
         }
     }

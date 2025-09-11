@@ -100,15 +100,13 @@ struct ConversationToolbarModifier: ViewModifier {
                     Spacer()
                 }
                 if action.isMoreAction {
-                    Menu {
-                        MessageActionsMenuContent(
-                            state: .initial(messageID: messageID, showEditToolbar: true),
-                            mailbox: mailbox(),
-                            mailUserSession: mailUserSession,
-                            actionTapped: messageActionSelected,
-                            editToolbarTapped: {}
-                        )
-                    } label: {
+                    MessageActionsMenu(
+                        state: .initial(messageID: messageID, showEditToolbar: true),
+                        mailbox: mailbox(),
+                        mailUserSession: mailUserSession,
+                        actionTapped: messageActionSelected,
+                        editToolbarTapped: {}
+                    ) {
                         action.displayData.image
                             .foregroundStyle(DS.Color.Icon.weak)
                     }
