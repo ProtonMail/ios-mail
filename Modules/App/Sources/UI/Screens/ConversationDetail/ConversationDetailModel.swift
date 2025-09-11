@@ -55,7 +55,11 @@ final class ConversationDetailModel: Sendable, ObservableObject {
     }
 
     var isBottomBarHidden: Bool {
-        seed.isOutbox || conversationToolbarActions?.isEmpty == true
+        if let conversationToolbarActions {
+            seed.isOutbox || conversationToolbarActions.isEmpty
+        } else {
+            true
+        }
     }
 
     var areActionsHidden: Bool {
