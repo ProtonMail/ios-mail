@@ -235,12 +235,12 @@ struct MessageDetailsView: View {
                     .square(size: 20)
                     .foregroundStyle(actionButtonsState.isDisabled ? DS.Color.Text.disabled : DS.Color.Text.weak)
                     .square(size: 36)
-                    .disabled(actionButtonsState.isDisabled)
                     .overlay(
                         RoundedRectangle(cornerRadius: DS.Radius.mediumLarge)
                             .stroke(DS.Color.Border.norm, lineWidth: 1)
                     )
             }
+            .disabled(actionButtonsState.isDisabled)
             .id(uiModel)
         }
         .foregroundColor(DS.Color.Icon.weak)
