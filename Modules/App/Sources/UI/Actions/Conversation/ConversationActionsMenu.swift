@@ -62,7 +62,7 @@ struct ConversationActionsMenu<OpenMenuButtonContent: View>: View {
                     verticalSection(actions: actions.conversationActions)
 
                 } else {
-                    Text("")  // FIXME: - Add some kind of loading indication
+                    Text(String.empty.notLocalized)
                 }
             }
             .onLoad { Task { await handle(action: .onLoad) } }

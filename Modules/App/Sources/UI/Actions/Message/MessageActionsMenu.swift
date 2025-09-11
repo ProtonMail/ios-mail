@@ -63,8 +63,8 @@ struct MessageActionsMenu<OpenMenuButtonContent: View>: View {
         ) { state, store in
             Menu {
                 Group {
-                    if store.state.actions.replyActions.isEmpty {
-                        Text("")  // FIXME: - Add some kind of loading indication
+                    if store.state.actions.isEmpty {
+                        Text(String.empty.notLocalized)
                     } else {
                         horizontalSection(actions: store.state.actions.replyActions, store: store)
                         verticalSection(actions: store.state.actions.messageActions, store: store)
@@ -143,4 +143,12 @@ struct MessageActionsMenu<OpenMenuButtonContent: View>: View {
             }
         }
     }
+}
+
+extension MessageActionSheet {
+
+    var isEmpty: Bool {
+        replyActions.isEmpty && generalActions.isEmpty && messageActions.isEmpty && moveActions.isEmpty
+    }
+
 }
