@@ -92,7 +92,7 @@ final class AppContext: Sendable, ObservableObject {
 
         excludeDirectoriesFromBackup(params: params)
 
-        _mailSession.pauseWork()
+        _mailSession.onExitForeground()
         AppLogger.log(message: "MailSession init | \(AppVersionProvider().fullVersion) | \(apiConfig.envId.domain)", category: .rustLibrary)
 
         accountAuthCoordinator = AccountAuthCoordinator(productName: appDetails.product, appContext: _mailSession)
