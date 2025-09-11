@@ -89,7 +89,7 @@ struct MessageActionsMenu<OpenMenuButtonContent: View>: View {
                                 }
                             }
                         } label: {
-                            Text("More options")
+                            Text(L10n.Action.moreOptions)
                         }
                     }
                 }

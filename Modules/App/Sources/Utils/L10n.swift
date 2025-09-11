@@ -210,6 +210,10 @@ enum L10n {
             "Reply all",
             comment: "Action title for replying to a sender and all receipients of given message in the action sheet."
         )
+        static let moreOptions = LocalizedStringResource(
+            "More options",
+            comment: "A button title that shows rest of available actions in the menu"
+        )
 
         enum Delete {
             enum Alert {
