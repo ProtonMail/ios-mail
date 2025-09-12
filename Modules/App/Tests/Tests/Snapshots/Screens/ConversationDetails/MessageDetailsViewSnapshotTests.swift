@@ -18,6 +18,7 @@
 @testable import ProtonMail
 import InboxSnapshotTesting
 import InboxTesting
+import SwiftUI
 import Testing
 
 @MainActor
@@ -100,8 +101,8 @@ class MessageDetailsViewSnapshotTests {
         collapsed: Bool,
         model: MessageDetailsUIModel,
         actionButtonsState: MessageDetailsView.ActionButtonsState = .enabled
-    ) -> MessageDetailsView {
-        .init(
+    ) -> some View {
+        MessageDetailsView(
             isHeaderCollapsed: collapsed,
             uiModel: model,
             mailbox: .dummy,
@@ -109,5 +110,6 @@ class MessageDetailsViewSnapshotTests {
             actionButtonsState: actionButtonsState,
             onEvent: { _ in }
         )
+        .environment(\.messageAppearanceOverrideStore, MessageAppearanceOverrideStore())
     }
 }
