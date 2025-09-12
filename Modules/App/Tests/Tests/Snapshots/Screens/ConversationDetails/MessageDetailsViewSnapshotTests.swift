@@ -101,6 +101,13 @@ class MessageDetailsViewSnapshotTests {
         model: MessageDetailsUIModel,
         actionButtonsState: MessageDetailsView.ActionButtonsState = .enabled
     ) -> MessageDetailsView {
-        .init(isHeaderCollapsed: collapsed, uiModel: model, actionButtonsState: actionButtonsState, onEvent: { _ in })
+        .init(
+            isHeaderCollapsed: collapsed,
+            uiModel: model,
+            mailbox: .dummy,
+            mailUserSession: .dummy,
+            actionButtonsState: actionButtonsState,
+            onEvent: { _ in }
+        )
     }
 }
