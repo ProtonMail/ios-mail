@@ -22,11 +22,9 @@ import InboxCoreUI
 struct ListActionsToolbarState: Copying, Equatable {
     var bottomBarActions: [ListActions]
     var moreSheetOnlyActions: [ListActions]
-    var moreActionSheetPresented: ListActionsToolbarMoreSheetState?
     var labelAsSheetPresented: ActionSheetInput?
     var moveToSheetPresented: ActionSheetInput?
     var deleteConfirmationAlert: AlertModel?
-    var moreDeleteConfirmationAlert: AlertModel?
     var isSnoozeSheetPresented: Bool
     var isEditToolbarSheetPresented: Bool
 }
@@ -36,11 +34,9 @@ extension ListActionsToolbarState {
         .init(
             bottomBarActions: [],
             moreSheetOnlyActions: [],
-            moreActionSheetPresented: nil,
             labelAsSheetPresented: nil,
             moveToSheetPresented: nil,
             deleteConfirmationAlert: nil,
-            moreDeleteConfirmationAlert: nil,
             isSnoozeSheetPresented: false,
             isEditToolbarSheetPresented: false
         )

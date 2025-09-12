@@ -119,7 +119,6 @@ private struct ListActionBarViewModifier: ViewModifier {
                         store.handle(action: .dismissMoveToSheet)
                     }
                 )
-                .alert(model: store.binding(\.moreDeleteConfirmationAlert))
                 .sheet(isPresented: store.binding(\.isEditToolbarSheetPresented)) {
                     EditToolbarScreen(state: .initial(toolbarType: .list), customizeToolbarService: mailUserSession)
                 }
