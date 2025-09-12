@@ -20,8 +20,8 @@ import proton_app_uniffi
 import Testing
 
 @MainActor
-class MessageActionsSheetStoreTests {
-    var sut: MessageActionsSheetStore!
+class MessageActionsMenuStoreTests {
+    var sut: MessageActionsMenuStore!
     var serviceInvoked: [(mailbox: Mailbox, theme: ThemeOpts, messageID: ID)] = []
     let stubbedMessageActions = MessageActionSheet(
         replyActions: [.reply],
@@ -32,8 +32,8 @@ class MessageActionsSheetStoreTests {
     var actionSelectedInvoked: [MessageAction] = []
 
     init() {
-        sut = MessageActionsSheetStore(
-            state: .initial(messageID: .init(value: 7), title: "Hello"),
+        sut = MessageActionsMenuStore(
+            state: .initial(messageID: .init(value: 7), showEditToolbar: false),
             mailbox: .dummy,
             messageAppearanceOverrideStore: MessageAppearanceOverrideStore(),
             service: { mailbox, theme, messageID in
@@ -60,10 +60,9 @@ class MessageActionsSheetStoreTests {
             sut.state
                 == .init(
                     messageID: .init(value: 7),
-                    title: "Hello",
+                    showEditToolbar: false,
                     actions: stubbedMessageActions,
-                    colorScheme: .dark,
-                    isEditToolbarPresented: false
+                    colorScheme: .dark
                 ))
     }
 
@@ -72,12 +71,5 @@ class MessageActionsSheetStoreTests {
         await sut.handle(action: .actionTapped(.reply))
 
         #expect(actionSelectedInvoked == [.reply])
-    }
-
-    @Test
-    func editToolbarIsTapped_ItHasCorrectPresentationState() async {
-        await sut.handle(action: .editToolbarTapped)
-
-        #expect(sut.state.isEditToolbarPresented == true)
     }
 }
