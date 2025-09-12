@@ -97,6 +97,7 @@ final class SearchModel: ObservableObject, @unchecked Sendable {
         Task {
             let query = text.withoutWhitespace
             searchScroller?.handle().disconnect()
+            searchScroller?.terminate()
             paginatedDataSource.resetToInitialState()
 
             let result = await scrollerSearch(

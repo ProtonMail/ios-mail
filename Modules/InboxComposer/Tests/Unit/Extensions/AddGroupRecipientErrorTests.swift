@@ -24,12 +24,12 @@ final class AddGroupRecipientErrorTests {
     @Test
     func testLocalizedErrorMessage_itReturnsCorrectMessage() throws {
         var sut = AddGroupRecipientError.duplicate([])
-        #expect(sut.localizedErrorMessage()?.string == nil)
+        #expect(sut.localizedErrorMessage() == nil)
 
         sut = AddGroupRecipientError.duplicate(["a@example.com"])
-        #expect(sut.localizedErrorMessage()?.string == "Removed duplicate recipient: a@example.com")
+        #expect(sut.localizedErrorMessage() == "Removed duplicate recipient: a@example.com")
 
         sut = AddGroupRecipientError.duplicate(["a@example.com", "b@example.com"])
-        #expect(sut.localizedErrorMessage()?.string == "Removed duplicate recipients: a@example.com, b@example.com")
+        #expect(sut.localizedErrorMessage() == "Removed duplicate recipients: a@example.com, b@example.com")
     }
 }

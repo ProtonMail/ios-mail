@@ -266,7 +266,9 @@ extension MailboxModel {
             // These disconnects will prevent unrequested scroller callbacks
             // for the previous state. Call them before the Mailbox constructor.
             messageScroller?.handle().disconnect()
+            messageScroller?.terminate()
             conversationScroller?.handle().disconnect()
+            conversationScroller?.terminate()
 
             paginatedDataSource.resetToInitialState()
 
