@@ -15,9 +15,11 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import proton_app_uniffi
 import SwiftUI
 
-struct ConversationActionsSheetInput: Identifiable {
-    let id: ID
-    let title: String
+enum MessageActionsMenuAction {
+    case onLoad
+    case actionTapped(MessageAction)
+    case colorSchemeChanged(ColorScheme)
 }

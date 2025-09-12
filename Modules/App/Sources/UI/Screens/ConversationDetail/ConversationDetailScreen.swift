@@ -56,15 +56,14 @@ struct ConversationDetailScreen: View {
                 actions: model.conversationToolbarActions,
                 mailbox: { model.mailbox.unsafelyUnwrapped },
                 mailUserSession: mailUserSession,
-                editToolbarTapped: {},
+                editToolbarTapped: { toolbarType in model.actionSheets.editToolbar = toolbarType },
                 messageActionSelected: { action in
                     if let messageID = model.state.singleMessageIDInMessageMode {
                         Task {
                             await model.handle(
                                 action: action,
                                 messageID: messageID,
-                                toastStateStore: toastStateStore,
-                                actionOrigin: .toolbar,
+                                toastStateStore: toastStateStore
                             ) {
                                 goBackToMailbox()
                             }
@@ -73,7 +72,7 @@ struct ConversationDetailScreen: View {
                 },
                 conversationActionSelected: { action in
                     Task {
-                        await model.handle(action: action, toastStateStore: toastStateStore, actionOrigin: .toolbar) {
+                        await model.handle(action: action, toastStateStore: toastStateStore) {
                             goBackToMailbox()
                         }
                     }
@@ -93,30 +92,16 @@ struct ConversationDetailScreen: View {
                 mailbox: { model.mailbox.unsafelyUnwrapped },
                 mailUserSession: mailUserSession,
                 state: $model.actionSheets,
-                messageActionTapped: { action, id in
-                    Task {
-                        await model.handle(
-                            action: action,
-                            messageID: id,
-                            toastStateStore: toastStateStore,
-                            actionOrigin: .sheet
-                        ) {
-                            goBackToMailbox()
-                        }
-                    }
-                },
-                conversationActionTapped: { action in
-                    Task {
-                        await model.handle(
-                            action: action,
-                            toastStateStore: toastStateStore,
-                            actionOrigin: .sheet
-                        ) {
-                            goBackToMailbox()
-                        }
-                    }
-                },
                 goBackNavigation: { goBackToMailbox() }
+            )
+            .sheet(
+                item: $model.actionSheets.editToolbar,
+                content: { toolbarType in
+                    EditToolbarScreen(
+                        state: .initial(toolbarType: toolbarType),
+                        customizeToolbarService: mailUserSession
+                    )
+                }
             )
             .alert(model: $model.actionAlert)
             .fullScreenCover(item: $model.attachmentIDToOpen) { id in
@@ -157,6 +142,7 @@ struct ConversationDetailScreen: View {
                         model: model,
                         mailUserSession: mailUserSession,
                         draftPresenter: draftPresenter,
+                        editToolbar: {},
                         goBack: { goBackToMailbox() }
                     )
                 }

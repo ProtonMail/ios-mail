@@ -26,6 +26,7 @@ struct ConversationDetailListView: View {
     @ObservedObject private var model: ConversationDetailModel
     private let mailUserSession: MailUserSession
     private let draftPresenter: RecipientDraftPresenter
+    private let editToolbar: () -> Void
     private let goBack: () -> Void
 
     /// These attributes trigger the different action sheets
@@ -36,11 +37,13 @@ struct ConversationDetailListView: View {
         model: ConversationDetailModel,
         mailUserSession: MailUserSession,
         draftPresenter: RecipientDraftPresenter,
+        editToolbar: @escaping () -> Void,
         goBack: @escaping () -> Void
     ) {
         self.model = model
         self.mailUserSession = mailUserSession
         self.draftPresenter = draftPresenter
+        self.editToolbar = editToolbar
         self.goBack = goBack
     }
 
@@ -168,14 +171,13 @@ struct ConversationDetailListView: View {
         case .onForward:
             model.onForwardMessage(withId: uiModel.id, toastStateStore: toastStateStore)
         case .onEditToolbar:
-            break  // FIXME: -
+            editToolbar()
         case .onMessageAction(let action):
             Task {
                 await model.handle(
                     action: action,
                     messageID: uiModel.id,
                     toastStateStore: toastStateStore,
-                    actionOrigin: .sheet,
                     goBack: goBack
                 )
             }

@@ -21,8 +21,8 @@ import InboxCoreUI
 import SwiftUI
 
 @MainActor
-class MessageActionsSheetStore: StateStore {
-    @Published var state: MessageActionsSheetState
+class MessageActionsMenuStore: StateStore {
+    @Published var state: MessageActionsMenuState
 
     private let mailbox: Mailbox
     private let service: AllAvailableMessageActionsForActionSheetService
@@ -30,7 +30,7 @@ class MessageActionsSheetStore: StateStore {
     private let messageAppearanceOverrideStore: MessageAppearanceOverrideStore
 
     init(
-        state: MessageActionsSheetState,
+        state: MessageActionsMenuState,
         mailbox: Mailbox,
         messageAppearanceOverrideStore: MessageAppearanceOverrideStore,
         service: @escaping AllAvailableMessageActionsForActionSheetService,
@@ -43,7 +43,7 @@ class MessageActionsSheetStore: StateStore {
         self.actionTapped = actionTapped
     }
 
-    func handle(action: MessageActionsSheetAction) async {
+    func handle(action: MessageActionsMenuAction) async {
         switch action {
         case .onLoad:
             await loadActions()

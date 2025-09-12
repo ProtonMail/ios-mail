@@ -27,7 +27,7 @@ extension View {
         actions: ConversationToolbarActions?,
         mailbox: @escaping () -> Mailbox,
         mailUserSession: MailUserSession,
-        editToolbarTapped: @escaping () -> Void,
+        editToolbarTapped: @escaping (ToolbarType) -> Void,
         messageActionSelected: @escaping (MessageAction) -> Void,
         conversationActionSelected: @escaping (ConversationAction) -> Void
     ) -> some View {
@@ -49,7 +49,7 @@ struct ConversationToolbarModifier: ViewModifier {
     private let actions: ConversationToolbarActions?
     private let mailbox: () -> Mailbox
     private let mailUserSession: MailUserSession
-    private let editToolbarTapped: () -> Void
+    private let editToolbarTapped: (ToolbarType) -> Void
     private let messageActionSelected: (MessageAction) -> Void
     private let conversationActionSelected: (ConversationAction) -> Void
 
@@ -57,7 +57,7 @@ struct ConversationToolbarModifier: ViewModifier {
         actions: ConversationToolbarActions?,
         mailbox: @escaping () -> Mailbox,
         mailUserSession: MailUserSession,
-        editToolbarTapped: @escaping () -> Void,
+        editToolbarTapped: @escaping (ToolbarType) -> Void,
         messageActionSelected: @escaping (MessageAction) -> Void,
         conversationActionSelected: @escaping (ConversationAction) -> Void
     ) {
@@ -100,7 +100,7 @@ struct ConversationToolbarModifier: ViewModifier {
                 mailbox: mailbox(),
                 mailUserSession: mailUserSession,
                 actionTapped: messageActionSelected,
-                editToolbarTapped: editToolbarTapped
+                editToolbarTapped: { editToolbarTapped(.message) }
             ) {
                 InternalAction.more.displayData.image
                     .foregroundStyle(DS.Color.Icon.weak)
@@ -115,7 +115,7 @@ struct ConversationToolbarModifier: ViewModifier {
                 mailbox: mailbox(),
                 mailUserSession: mailUserSession,
                 actionTapped: conversationActionSelected,
-                editToolbarTapped: editToolbarTapped
+                editToolbarTapped: { editToolbarTapped(.conversation) }
             ) {
                 InternalAction.more.displayData.image
                     .foregroundStyle(DS.Color.Icon.weak)

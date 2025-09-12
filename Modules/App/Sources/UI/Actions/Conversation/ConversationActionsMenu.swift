@@ -53,10 +53,7 @@ struct ConversationActionsMenu<OpenMenuButtonContent: View>: View {
             Group {
                 if let actions {
                     Section {
-                        menuButton(
-                            displayData: InternalAction.editToolbar.displayData,
-                            action: editToolbarTapped
-                        )
+                        ActionMenuButton(displayData: InternalAction.editToolbar.displayData, action: editToolbarTapped)
                     }
                     verticalSection(actions: actions.moveActions)
                     verticalSection(actions: actions.conversationActions)
@@ -74,7 +71,7 @@ struct ConversationActionsMenu<OpenMenuButtonContent: View>: View {
     private func verticalSection(actions: [ConversationAction]) -> some View {
         Section {
             ForEach(actions, id: \.self) { action in
-                menuButton(displayData: action.displayData) {
+                ActionMenuButton(displayData: action.displayData) {
                     Task {
                         await handle(action: .actionTapped(action))
                     }
@@ -83,23 +80,7 @@ struct ConversationActionsMenu<OpenMenuButtonContent: View>: View {
         }
     }
 
-    private func menuButton(displayData: ActionDisplayData, action: @escaping () -> Void) -> some View {
-        Button {
-            action()
-        } label: {
-            Label {
-                Text(displayData.title)
-                    .font(.body)
-                    .foregroundStyle(DS.Color.Text.norm)
-            } icon: {
-                displayData.image
-                    .square(size: 24)
-                    .foregroundStyle(DS.Color.Icon.norm)
-            }
-        }
-    }
-
-    private func handle(action: ConversationActionsSheetAction) async {
+    private func handle(action: ConversationActionsMenuAction) async {
         switch action {
         case .onLoad:
             await loadActions()

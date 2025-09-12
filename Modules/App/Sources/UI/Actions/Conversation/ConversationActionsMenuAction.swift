@@ -15,7 +15,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-enum ConversationActionOrigin {
-    case sheet
-    case toolbar
+import proton_app_uniffi
+
+enum ConversationActionsMenuAction {
+    case onLoad
+    case actionTapped(ConversationAction)
+    case editToolbarTapped
 }

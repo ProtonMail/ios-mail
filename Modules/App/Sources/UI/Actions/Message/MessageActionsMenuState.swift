@@ -16,9 +16,30 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import proton_app_uniffi
+import InboxCore
+import SwiftUI
 
-enum ConversationActionsSheetAction {
-    case onLoad
-    case actionTapped(ConversationAction)
-    case editToolbarTapped
+struct MessageActionsMenuState: Copying, Equatable {
+    let messageID: ID
+    let showEditToolbar: Bool
+    var actions: MessageActionSheet
+    var colorScheme: ColorScheme
+}
+
+extension MessageActionsMenuState {
+
+    static func initial(messageID: ID, showEditToolbar: Bool) -> Self {
+        .init(
+            messageID: messageID,
+            showEditToolbar: showEditToolbar,
+            actions: .init(
+                replyActions: [],
+                messageActions: [],
+                moveActions: [],
+                generalActions: []
+            ),
+            colorScheme: .light
+        )
+    }
+
 }

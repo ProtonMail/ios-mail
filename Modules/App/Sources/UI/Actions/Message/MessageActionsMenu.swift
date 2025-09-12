@@ -22,7 +22,7 @@ import InboxDesignSystem
 import SwiftUI
 
 struct MessageActionsMenu<OpenMenuButtonContent: View>: View {
-    private let state: MessageActionsSheetState
+    private let state: MessageActionsMenuState
     private let mailbox: Mailbox
     private let mailUserSession: MailUserSession
     private let service: AllAvailableMessageActionsForActionSheetService
@@ -34,7 +34,7 @@ struct MessageActionsMenu<OpenMenuButtonContent: View>: View {
     @Environment(\.colorScheme) var colorScheme
 
     init(
-        state: MessageActionsSheetState,
+        state: MessageActionsMenuState,
         mailbox: Mailbox,
         mailUserSession: MailUserSession,
         service: @escaping AllAvailableMessageActionsForActionSheetService = allAvailableMessageActionsForActionSheet,
@@ -53,7 +53,7 @@ struct MessageActionsMenu<OpenMenuButtonContent: View>: View {
 
     var body: some View {
         StoreView(
-            store: MessageActionsSheetStore(
+            store: MessageActionsMenuStore(
                 state: state,
                 mailbox: mailbox,
                 messageAppearanceOverrideStore: messageAppearanceOverrideStore!,
@@ -73,19 +73,10 @@ struct MessageActionsMenu<OpenMenuButtonContent: View>: View {
                             verticalSection(actions: store.state.actions.generalActions, store: store)
                             if state.showEditToolbar {
                                 Section {
-                                    Button {
-                                        editToolbarTapped()
-                                    } label: {
-                                        Label {
-                                            Text(L10n.Action.editToolbar)
-                                                .font(.body)
-                                                .foregroundStyle(DS.Color.Text.norm)
-                                        } icon: {
-                                            DS.Icon.icMagicWand.image
-                                                .square(size: 24)
-                                                .foregroundStyle(DS.Color.Icon.norm)
-                                        }
-                                    }
+                                    ActionMenuButton(
+                                        displayData: InternalAction.editToolbar.displayData,
+                                        action: editToolbarTapped
+                                    )
                                 }
                             }
                         } label: {
@@ -107,10 +98,10 @@ struct MessageActionsMenu<OpenMenuButtonContent: View>: View {
     }
 
     @ViewBuilder
-    private func horizontalSection(actions: [MessageAction], store: MessageActionsSheetStore) -> some View {
+    private func horizontalSection(actions: [MessageAction], store: MessageActionsMenuStore) -> some View {
         ControlGroup {
             ForEach(actions, id: \.self) { action in
-                menuButton(displayData: action.displayData) {
+                ActionMenuButton(displayData: action.displayData) {
                     store.handle(action: .actionTapped(action))
                 }
             }
@@ -118,28 +109,12 @@ struct MessageActionsMenu<OpenMenuButtonContent: View>: View {
     }
 
     @ViewBuilder
-    private func verticalSection(actions: [MessageAction], store: MessageActionsSheetStore) -> some View {
+    private func verticalSection(actions: [MessageAction], store: MessageActionsMenuStore) -> some View {
         Section {
             ForEach(actions, id: \.self) { action in
-                menuButton(displayData: action.displayData) {
+                ActionMenuButton(displayData: action.displayData) {
                     store.handle(action: .actionTapped(action))
                 }
-            }
-        }
-    }
-
-    private func menuButton(displayData: ActionDisplayData, action: @escaping () -> Void) -> some View {
-        Button {
-            action()
-        } label: {
-            Label {
-                Text(displayData.title)
-                    .font(.body)
-                    .foregroundStyle(DS.Color.Text.norm)
-            } icon: {
-                displayData.image
-                    .square(size: 24)
-                    .foregroundStyle(DS.Color.Icon.norm)
             }
         }
     }

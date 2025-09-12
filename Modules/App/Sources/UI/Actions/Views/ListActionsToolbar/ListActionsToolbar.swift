@@ -180,19 +180,14 @@ private struct ListActionBarViewModifier: ViewModifier {
         if action == .more {
             Menu(
                 content: {
-                    ActionSheetImageButton(
-                        displayData: .init(title: L10n.Action.editToolbar, image: DS.Icon.icMagicWand.image),
-                        displayBottomSeparator: false
-                    ) {
+                    ActionMenuButton(displayData: InternalAction.editToolbar.displayData) {
                         store.handle(action: .editToolbarTapped)
                     }
                     Section {
                         ForEach(state.moreSheetOnlyActions.reversed(), id: \.self) { action in
-                            ActionSheetImageButton(
-                                displayData: action.displayData,
-                                displayBottomSeparator: false,
-                                action: { store.handle(action: .actionSelected(action, ids: selectedItemsIDs)) }
-                            )
+                            ActionMenuButton(displayData: action.displayData) {
+                                store.handle(action: .actionSelected(action, ids: selectedItemsIDs))
+                            }
                         }
                     }
                 },
@@ -207,7 +202,6 @@ private struct ListActionBarViewModifier: ViewModifier {
             }
         }
     }
-
 }
 
 // MARK: Accessibility
