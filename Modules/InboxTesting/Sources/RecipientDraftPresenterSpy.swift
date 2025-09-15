@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Proton Technologies AG
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -16,15 +16,21 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import InboxCore
+import proton_app_uniffi
 
-struct MoveToState: Copying {
-    var moveToSystemFolderActions: [MoveToSystemFolder]
-    var moveToCustomFolderActions: [MoveToCustomFolder]
-    var createFolderLabelPresented: Bool
-}
+public final class RecipientDraftPresenterSpy: @unchecked Sendable, RecipientDraftPresenter {
+    public var stubbedOpenDraftError: Error?
+    public private(set) var openDraftCalls: [SingleRecipientEntry] = []
 
-extension MoveToState {
-    static var initial: Self {
-        .init(moveToSystemFolderActions: [], moveToCustomFolderActions: [], createFolderLabelPresented: false)
+    public init() {}
+
+    // MARK: - RecipientDraftPresenter
+
+    public func openDraft(with contact: SingleRecipientEntry) async throws {
+        if let stubbedOpenDraftError {
+            throw stubbedOpenDraftError
+        }
+
+        openDraftCalls.append(contact)
     }
 }

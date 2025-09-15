@@ -745,7 +745,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%llu адрасы(оў) электроннай пошты"
+            "value" : "Адрасоў электроннай пошты: %llu"
           }
         },
         "ca" : {
@@ -936,7 +936,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Доступ да настольнай праграмы"
+            "value" : "Доступ да праграмы для камп'ютара"
           }
         },
         "ca" : {
@@ -2249,7 +2249,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Trieu el vostre pla"
+            "value" : "Trieu el pla"
           }
         },
         "cs" : {
@@ -2458,7 +2458,7 @@
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Συνέχεια με το Free Πλάνο"
+            "value" : "Συνέχεια με το Δωρεάν Πλάνο"
           }
         },
         "en" : {
@@ -2548,7 +2548,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Continuar com o plano grátis"
+            "value" : "Continuar com o Plano Free"
           }
         },
         "ro" : {
@@ -5967,7 +5967,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mostrar-ne més"
+            "value" : "Mostra'n més"
           }
         },
         "cs" : {
@@ -6618,7 +6618,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "요청한 요금제를 찾을 수 없습니다."
+            "value" : "요청한 플랜을 찾을 수 없습니다."
           }
         },
         "nb" : {

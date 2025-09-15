@@ -1617,7 +1617,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Укладанне не знойдзена. Абнавіце старонку або загрузіце яго зноў."
+            "value" : "Далучэнне не знойдзена. Абнавіце старонку або запампуйце яго яшчэ раз."
           }
         },
         "ca" : {
@@ -1796,7 +1796,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Даступна ў вэб"
+            "value" : "Даступна ў вэб-праграме"
           }
         },
         "ca" : {
@@ -1845,6 +1845,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Disponible en la web"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Saatavilla verkossa"
           }
         },
         "fr" : {
@@ -2706,6 +2712,18 @@
             "value" : "Continueu al web"
           }
         },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pokračovat na webu"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fortsæt på web"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2736,10 +2754,40 @@
             "value" : "Continuar en la web"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jatka verkossa"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Continuer sur le web"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prosegui sul web"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ウェブで続行"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "웹에서 계속"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fortsett på nettet"
           }
         },
         "nl" : {
@@ -2754,10 +2802,28 @@
             "value" : "Continuar na web"
           }
         },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Continuare pe web"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pokračovať na webe"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Fortsätt på webb"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "İnternet uygulamasına geç"
           }
         }
       }
@@ -2768,13 +2834,13 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Стварэнне кантактаў або груп у праграме пакуль не магчыма. Зараз, вы можаце стварыць іх у вэб-праграме, і яны сінхранізуюцца з вашай прыладай."
+            "value" : "Стварэнне кантактаў або груп у праграме пакуль немагчыма. Яны могуць быць створаны ў вэб-праграме, а потым сінхранізаваны з вашай прыладай."
           }
         },
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "La creació de contactes o grups a l'aplicació encara no està disponible. De moment, els podeu crear a l'aplicació web i se sincronitzaran amb el vostre dispositiu."
+            "value" : "La creació de contactes o grups a l'aplicació encara no està disponible. De moment, els podeu crear a l'aplicació web i se sincronitzaran al dispositiu."
           }
         },
         "cs" : {
@@ -2817,6 +2883,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Todavía no es posible crear contactos o grupos en la aplicación. Por ahora, puede crearlos en la aplicación web y se sincronizarán con su dispositivo."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kontaktien tai ryhmien luomista sovelluksessa ei vielä tueta. Voit toistaiseksi luoda ne verkkosovelluksessa, ja ne synkronoituvat laitteellesi."
           }
         },
         "fr" : {
@@ -3293,7 +3365,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "L'edició de contactes o grups a l'aplicació encara no està disponible. De moment, els podeu editar a l'aplicació web i els canvis se sincronitzaran amb el vostre dispositiu."
+            "value" : "L'edició de contactes o grups a l'aplicació encara no està disponible. De moment, els podeu editar a l'aplicació web i els canvis se sincronitzaran al dispositiu."
           }
         },
         "cs" : {
@@ -3338,6 +3410,12 @@
             "value" : "Todavía no es posible editar contactos o grupos en la aplicación. Por ahora, puede editarlos en la aplicación web y los cambios se sincronizarán en su dispositivo."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kontaktien tai ryhmien muokkaamista sovelluksessa ei vielä tueta. Voit toistaiseksi muokata niitä verkkosovelluksessa, ja ne synkronoituvat laitteellesi."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3360,6 +3438,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "アプリでの連絡先またはグループの編集は、現在準備中です。現在は、ウェブアプリで編集することで、変更をお客様のデバイスに同期できます。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "연락처 또는 그룹 편집은 앱에서 아직 지원되지 않습니다. 현재 웹 앱에서 편집할 수 있으며 변경 사항은 기기에 동기화됩니다."
           }
         },
         "nb" : {
@@ -4361,7 +4445,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Пазнака не існуе. Вы можаце стварыць яе як новую пазнаку."
+            "value" : "Метка не існуе. Вы можаце стварыць яе як новую метку."
           }
         },
         "ca" : {

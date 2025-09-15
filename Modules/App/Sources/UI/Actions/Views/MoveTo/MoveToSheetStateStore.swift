@@ -22,8 +22,9 @@ import InboxDesignSystem
 import proton_app_uniffi
 import SwiftUI
 
+@MainActor
 class MoveToSheetStateStore: StateStore {
-    @Published var state: MoveToState = .initial
+    @Published var state: MoveToState
 
     private let input: ActionSheetInput
     private let moveToActionsProvider: MoveToActionsProvider
@@ -33,6 +34,7 @@ class MoveToSheetStateStore: StateStore {
     private let mailUserSession: MailUserSession
 
     init(
+        state: MoveToState,
         input: ActionSheetInput,
         mailbox: Mailbox,
         availableMoveToActions: AvailableMoveToActions,
@@ -41,6 +43,7 @@ class MoveToSheetStateStore: StateStore {
         navigation: @escaping (MoveToSheetNavigation) -> Void,
         mailUserSession: MailUserSession
     ) {
+        self.state = state
         self.input = input
         self.moveToActionsProvider = .init(mailbox: mailbox, availableMoveToActions: availableMoveToActions)
         self.toastStateStore = toastStateStore
@@ -49,14 +52,14 @@ class MoveToSheetStateStore: StateStore {
         self.mailUserSession = mailUserSession
     }
 
-    func handle(action: MoveToSheetAction) {
+    func handle(action: MoveToSheetAction) async {
         switch action {
         case .viewAppear:
-            loadMoveToActions()
+            await loadMoveToActions()
         case .customFolderTapped(let customFolder):
-            moveTo(destinationID: customFolder.id, destinationName: customFolder.name)
+            await moveTo(destinationID: customFolder.id, destinationName: customFolder.name)
         case .systemFolderTapped(let systemFolder):
-            moveTo(destinationID: systemFolder.id, destinationName: systemFolder.label.displayData.title.string)
+            await moveTo(destinationID: systemFolder.id, destinationName: systemFolder.label.displayData.title.string)
         case .createFolderTapped:
             state = state.copy(\.createFolderLabelPresented, to: true)
         }
@@ -64,51 +67,36 @@ class MoveToSheetStateStore: StateStore {
 
     // MARK: - Private
 
-    private func moveTo(destinationID: ID, destinationName: String) {
-        Task { [weak self, mailUserSession] in
-            guard let self else { return }
-
-            do {
-                let undo = try await moveToActionPerformer.moveTo(
-                    destinationID: destinationID,
-                    itemsIDs: input.ids,
-                    itemType: input.mailboxItem.itemType
-                )
-                let toastID = UUID()
-                let undoAction = undo.undoAction(userSession: mailUserSession) {
-                    self.dismissToast(withID: toastID)
-                }
-                let toast: Toast = .moveTo(id: toastID, destinationName: destinationName, undoAction: undoAction)
-                dismissSheet(presentingToast: toast)
-            } catch {
-                dismissSheet(presentingToast: .error(message: error.localizedDescription))
+    private func moveTo(destinationID: ID, destinationName: String) async {
+        do {
+            let undo = try await moveToActionPerformer.moveTo(
+                destinationID: destinationID,
+                itemsIDs: input.ids,
+                itemType: input.mailboxItem.itemType
+            )
+            let toastID = UUID()
+            let undoAction = undo.undoAction(userSession: mailUserSession) {
+                self.dismissToast(withID: toastID)
             }
+            let toast: Toast = .moveTo(id: toastID, destinationName: destinationName, undoAction: undoAction)
+            dismissSheet(presentingToast: toast)
+        } catch {
+            dismissSheet(presentingToast: .error(message: error.localizedDescription))
         }
     }
 
     private func dismissToast(withID toastID: UUID) {
-        Dispatcher.dispatchOnMain(
-            .init(block: { [weak self] in
-                self?.toastStateStore.dismiss(withID: toastID)
-            }))
+        toastStateStore.dismiss(withID: toastID)
     }
 
     private func dismissSheet(presentingToast toast: Toast) {
-        Dispatcher.dispatchOnMain(
-            .init { [weak self, input] in
-                self?.toastStateStore.present(toast: toast)
-                self?.navigation(input.mailboxItem.shouldGoBack ? .dismissAndGoBack : .dismiss)
-            })
+        toastStateStore.present(toast: toast)
+        navigation(input.mailboxItem.shouldGoBack ? .dismissAndGoBack : .dismiss)
     }
 
-    private func loadMoveToActions() {
-        Task {
-            let actions = await moveToActionsProvider.actions(for: input.mailboxItem.itemType, ids: input.ids)
-            Dispatcher.dispatchOnMain(
-                .init(block: { [weak self] in
-                    self?.update(moveToActions: actions)
-                }))
-        }
+    private func loadMoveToActions() async {
+        let actions = await moveToActionsProvider.actions(for: input.mailboxItem.itemType, ids: input.ids)
+        update(moveToActions: actions)
     }
 
     private func update(moveToActions: [MoveAction]) {
@@ -119,7 +107,7 @@ class MoveToSheetStateStore: StateStore {
     }
 }
 
-private extension MoveAction {
+extension MoveAction {
 
     var moveToSystemFolder: MoveToSystemFolder? {
         guard case .systemFolder(let model) = self else {
@@ -148,10 +136,4 @@ private extension CustomFolderAction {
         )
     }
 
-}
-
-private extension MoveToState {
-    static var initial: Self {
-        .init(moveToSystemFolderActions: [], moveToCustomFolderActions: [], createFolderLabelPresented: false)
-    }
 }

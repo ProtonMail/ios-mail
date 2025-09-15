@@ -26,7 +26,7 @@ import UIKit
 @MainActor
 final class MessageAddressActionViewStateStoreTests {
     private lazy var sut: MessageAddressActionViewStateStore = makeSUT()
-    private let pasteboard = UIPasteboard.general
+    private let pasteboard = UIPasteboard.testInstance
     private let toastStateStore = ToastStateStore(initialState: .initial)
     private let blockSpy = BlockAddressSpy()
     private let draftPresenterSpy = RecipientDraftPresenterSpy()
@@ -167,8 +167,7 @@ final class MessageAddressActionViewStateStoreTests {
         await sut.handle(action: .onTap(.newMessage))
 
         #expect(dismissSpy.callsCount == 1)
-        #expect(draftPresenterSpy.openDraftCalls.count == 1)
-        #expect(draftPresenterSpy.openDraftCalls == [.init(name: displayName, email: email)])
+        #expect(draftPresenterSpy.openDraftCalls.count == 0)
         #expect(toastStateStore.state.toasts == [.error(message: stubbedError.localizedDescription)])
     }
 
@@ -234,21 +233,5 @@ private final class BlockAddressSpy: @unchecked Sendable {
     func result(for email: String) async -> VoidActionResult {
         calls.append(email)
         return stubbed[email] ?? .ok
-    }
-}
-
-private final class RecipientDraftPresenterSpy: @unchecked Sendable, RecipientDraftPresenter {
-    var stubbedOpenDraftError: Error?
-
-    private(set) var openDraftCalls: [SingleRecipientEntry] = []
-
-    // MARK: - RecipientDraftPresenter
-
-    func openDraft(with contact: SingleRecipientEntry) async throws {
-        openDraftCalls.append(contact)
-
-        if let stubbedOpenDraftError {
-            throw stubbedOpenDraftError
-        }
     }
 }

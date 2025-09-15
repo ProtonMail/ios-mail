@@ -16,14 +16,16 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Collections
+import InboxCore
+import InboxCoreUI
 import InboxDesignSystem
 import proton_app_uniffi
 import SwiftUI
-import InboxCoreUI
 
 struct ExpandedMessageCell: View {
     private let mailbox: Mailbox
     private let uiModel: ExpandedMessageCellUIModel
+    private let draftPresenter: RecipientDraftPresenter
     private let onEvent: (ExpandedMessageCellEvent) -> Void
     private let htmlLoaded: () -> Void
     private let areActionsHidden: Bool
@@ -38,13 +40,15 @@ struct ExpandedMessageCell: View {
     init(
         mailbox: Mailbox,
         uiModel: ExpandedMessageCellUIModel,
+        draftPresenter: RecipientDraftPresenter,
         areActionsHidden: Bool,
         attachmentIDToOpen: Binding<ID?>,
         onEvent: @escaping (ExpandedMessageCellEvent) -> Void,
-        htmlLoaded: @escaping () -> Void
+        htmlLoaded: @escaping () -> Void,
     ) {
         self.mailbox = mailbox
         self.uiModel = uiModel
+        self.draftPresenter = draftPresenter
         self.areActionsHidden = areActionsHidden
         self._attachmentIDToOpen = attachmentIDToOpen
         self.onEvent = onEvent
@@ -81,7 +85,8 @@ struct ExpandedMessageCell: View {
                 isBodyLoaded: $isBodyLoaded,
                 attachmentIDToOpen: $attachmentIDToOpen,
                 editScheduledMessage: { onEvent(.onEditScheduledMessage) },
-                unsnoozeConversation: { onEvent(.unsnoozeConversation) }
+                unsnoozeConversation: { onEvent(.unsnoozeConversation) },
+                draftPresenter: draftPresenter
             )
             if !areActionsHidden {
                 MessageActionButtonsView(
@@ -148,6 +153,7 @@ enum ExpandedMessageCellEvent {
                 unread: false,
                 messageDetails: messageDetails
             ),
+            draftPresenter: DraftPresenter.dummy(),
             areActionsHidden: false,
             attachmentIDToOpen: .constant(nil),
             onEvent: { _ in },
@@ -160,6 +166,7 @@ enum ExpandedMessageCellEvent {
                 unread: false,
                 messageDetails: messageDetails
             ),
+            draftPresenter: DraftPresenter.dummy(),
             areActionsHidden: false,
             attachmentIDToOpen: .constant(nil),
             onEvent: { _ in },

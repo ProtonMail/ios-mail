@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Proton Technologies AG
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -15,16 +15,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import InboxCore
+import SwiftUI
+import UIKit
 
-struct MoveToState: Copying {
-    var moveToSystemFolderActions: [MoveToSystemFolder]
-    var moveToCustomFolderActions: [MoveToCustomFolder]
-    var createFolderLabelPresented: Bool
-}
-
-extension MoveToState {
-    static var initial: Self {
-        .init(moveToSystemFolderActions: [], moveToCustomFolderActions: [], createFolderLabelPresented: false)
-    }
+extension EnvironmentValues {
+    @Entry public var pasteboard: UIPasteboard = .general
 }

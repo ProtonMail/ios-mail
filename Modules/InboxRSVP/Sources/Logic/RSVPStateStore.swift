@@ -31,6 +31,8 @@ final class RSVPStateStore: StateStore {
     private let serviceProvider: RsvpEventServiceProvider
     private let openURL: URLOpenerProtocol
     private let toastStateStore: ToastStateStore
+    private let clipboard: Clipboard
+    private let draftPresenter: RecipientDraftPresenter
     private var internalState: InternalState {
         didSet { state = internalState.state }
     }
@@ -41,18 +43,22 @@ final class RSVPStateStore: StateStore {
         case retry
         case answer(RsvpAnswer)
         case calendarIconTapped
-        case copyAddress
-        case newMessage
+        case copyAddress(email: String)
+        case newMessage(email: String)
     }
 
     init(
         serviceProvider: RsvpEventServiceProvider,
         openURL: URLOpenerProtocol,
-        toastStateStore: ToastStateStore
+        toastStateStore: ToastStateStore,
+        pasteboard: UIPasteboard,
+        draftPresenter: RecipientDraftPresenter
     ) {
         self.serviceProvider = serviceProvider
         self.openURL = openURL
         self.toastStateStore = toastStateStore
+        self.clipboard = .init(toastStateStore: toastStateStore, pasteboard: pasteboard)
+        self.draftPresenter = draftPresenter
         self.internalState = .loading
         self.state = internalState.state
     }
@@ -70,8 +76,10 @@ final class RSVPStateStore: StateStore {
             if case let .loaded(_, event) = internalState {
                 tryToOpenEventInCalendarApp(with: event)
             }
-        case .copyAddress, .newMessage:
-            toastStateStore.present(toast: .comingSoon)
+        case .copyAddress(let email):
+            clipboard.copyToClipboard(value: email, forName: CommonL10n.Clipboard.emailAddress)
+        case .newMessage(let email):
+            await openNewDraft(withEmail: email)
         }
     }
 
@@ -111,6 +119,15 @@ final class RSVPStateStore: StateStore {
             toastStateStore.present(toast: .error(message: protonError.localizedDescription))
         case (.ok, .error), (.error, .error):
             updateState(with: .loadFailed)
+        }
+    }
+
+    @MainActor
+    private func openNewDraft(withEmail email: String) async {
+        do {
+            try await draftPresenter.openDraft(with: .init(name: .none, email: email))
+        } catch {
+            toastStateStore.present(toast: .error(message: error.localizedDescription))
         }
     }
 
