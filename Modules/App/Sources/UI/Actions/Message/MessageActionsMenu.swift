@@ -64,6 +64,8 @@ struct MessageActionsMenu<OpenMenuButtonContent: View>: View {
             Menu {
                 Group {
                     if store.state.actions.isEmpty {
+                        // Workaround to ensure the menu is displayed after dynamic actions are loaded.
+                        // Without this, the menu will not be presented.
                         Text(String.empty.notLocalized)
                     } else {
                         horizontalSection(actions: store.state.actions.replyActions, store: store)
