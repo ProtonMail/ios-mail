@@ -154,18 +154,11 @@ class AppSettingsStateStoreTests {
         #expect(sut.state.storedAppSettings.useCombineContacts == false)
     }
 
-    // MARK: - appIconSelected
+    // MARK: - appIconSelected action
 
     @Test
     func changeIconFromDefaultToCalculator() async throws {
-        sut = AppSettingsStateStore(
-            state: .initial.copy(\.appIcon, to: .default),
-            appSettingsRepository: appSettingsRepositorySpy,
-            notificationCenter: notificationCenterSpy,
-            urlOpener: urlOpenerSpy,
-            appIconConfigurator: appIconConfiguratorSpy,
-            mainBundle: bundleStub
-        )
+        setUpSUT(with: .default)
 
         await sut.handle(action: .appIconSelected(.calculator))
 
@@ -175,14 +168,7 @@ class AppSettingsStateStoreTests {
 
     @Test
     func changeIconFromCalculatorToNotes() async throws {
-        sut = AppSettingsStateStore(
-            state: .initial.copy(\.appIcon, to: .calculator),
-            appSettingsRepository: appSettingsRepositorySpy,
-            notificationCenter: notificationCenterSpy,
-            urlOpener: urlOpenerSpy,
-            appIconConfigurator: appIconConfiguratorSpy,
-            mainBundle: bundleStub
-        )
+        setUpSUT(with: .calculator)
 
         await sut.handle(action: .appIconSelected(.notes))
 
@@ -192,14 +178,7 @@ class AppSettingsStateStoreTests {
 
     @Test
     func changeIconFromCalculatorToDefault() async throws {
-        sut = AppSettingsStateStore(
-            state: .initial.copy(\.appIcon, to: .calculator),
-            appSettingsRepository: appSettingsRepositorySpy,
-            notificationCenter: notificationCenterSpy,
-            urlOpener: urlOpenerSpy,
-            appIconConfigurator: appIconConfiguratorSpy,
-            mainBundle: bundleStub
-        )
+        setUpSUT(with: .calculator)
 
         await sut.handle(action: .appIconSelected(.default))
 
@@ -208,6 +187,17 @@ class AppSettingsStateStoreTests {
     }
 
     // MARK: - Private
+
+    private func setUpSUT(with appIcon: AppIcon) {
+        sut = AppSettingsStateStore(
+            state: .initial.copy(\.appIcon, to: appIcon),
+            appSettingsRepository: appSettingsRepositorySpy,
+            notificationCenter: notificationCenterSpy,
+            urlOpener: urlOpenerSpy,
+            appIconConfigurator: appIconConfiguratorSpy,
+            mainBundle: bundleStub
+        )
+    }
 
     private func changeAppAppearance(_ appAppearance: AppAppearance) async {
         appSettingsRepositorySpy.stubbedAppSettings = appSettingsRepositorySpy.stubbedAppSettings
