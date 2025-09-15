@@ -15,16 +15,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import proton_app_uniffi
+import UIKit
 
-enum AppSettingsAction {
-    case notificationButtonTapped
-    case languageButtonTapped
-    case onAppear
-    case enterForeground
-    case appearanceTapped
-    case appearanceSelected(AppAppearance)
-    case combinedContactsChanged(Bool)
-    case alternativeRoutingChanged(Bool)
-    case appIconSelected(AppIcon)
+protocol AppIconConfigurable {
+    var supportsAlternateIcons: Bool { get }
+
+    func setAlternateIconName(_ alternateIconName: String?) async throws
 }
+
+extension UIApplication: AppIconConfigurable {}

@@ -183,6 +183,21 @@ targets:
             CFBundleURLSchemes:
               - mailto
               - protonmail
+        CFBundleIcons:
+          CFBundleAlternateIcons:
+            AppIcon-notes:
+              CFBundleIconFiles:
+                - AppIcon-notes
+            AppIcon-weather:
+              CFBundleIconFiles:
+                - AppIcon-weather
+            AppIcon-calculator:
+              CFBundleIconFiles:
+                - AppIcon-calculator
+          CFBundlePrimaryIcon:
+            CFBundleIconFiles:
+              - AppIcon
+            UIPrerenderedIcon: NO
         ITSAppUsesNonExemptEncryption: YES
         ITSEncryptionExportComplianceCode: "d90af253-90ca-4698-95d3-40f4e4a36ce4"
         LSRequiresIPhoneOS: YES

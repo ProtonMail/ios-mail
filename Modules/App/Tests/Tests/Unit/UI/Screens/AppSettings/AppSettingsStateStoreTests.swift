@@ -23,23 +23,25 @@ import Testing
 
 @MainActor
 class AppSettingsStateStoreTests {
-
     var sut: AppSettingsStateStore!
     var notificationCenterSpy: UserNotificationCenterSpy!
     var urlOpenerSpy: URLOpenerSpy!
     var bundleStub: BundleStub!
     private var appSettingsRepositorySpy: AppSettingsRepositorySpy!
+    private var appIconConfiguratorSpy = AppIconConfiguratorSpy()
 
     init() {
         notificationCenterSpy = .init()
         urlOpenerSpy = .init()
         bundleStub = .init()
         appSettingsRepositorySpy = .init()
+        appIconConfiguratorSpy = .init()
         sut = AppSettingsStateStore(
             state: .initial,
             appSettingsRepository: appSettingsRepositorySpy,
             notificationCenter: notificationCenterSpy,
             urlOpener: urlOpenerSpy,
+            appIconConfigurator: appIconConfiguratorSpy,
             mainBundle: bundleStub
         )
 
@@ -152,6 +154,61 @@ class AppSettingsStateStoreTests {
         #expect(sut.state.storedAppSettings.useCombineContacts == false)
     }
 
+    // MARK: - appIconSelected
+
+    @Test
+    func changeIconFromDefaultToCalculator() async throws {
+        sut = AppSettingsStateStore(
+            state: .initial.copy(\.appIcon, to: .default),
+            appSettingsRepository: appSettingsRepositorySpy,
+            notificationCenter: notificationCenterSpy,
+            urlOpener: urlOpenerSpy,
+            appIconConfigurator: appIconConfiguratorSpy,
+            mainBundle: bundleStub
+        )
+
+        await sut.handle(action: .appIconSelected(.calculator))
+
+        #expect(sut.state == AppSettingsState.initial.copy(\.appIcon, to: .calculator))
+        #expect(appIconConfiguratorSpy.setAlternateIconNameCalls == [AppIcon.calculator.alternateIconName])
+    }
+
+    @Test
+    func changeIconFromCalculatorToNotes() async throws {
+        sut = AppSettingsStateStore(
+            state: .initial.copy(\.appIcon, to: .calculator),
+            appSettingsRepository: appSettingsRepositorySpy,
+            notificationCenter: notificationCenterSpy,
+            urlOpener: urlOpenerSpy,
+            appIconConfigurator: appIconConfiguratorSpy,
+            mainBundle: bundleStub
+        )
+
+        await sut.handle(action: .appIconSelected(.notes))
+
+        #expect(sut.state == AppSettingsState.initial.copy(\.appIcon, to: .notes))
+        #expect(appIconConfiguratorSpy.setAlternateIconNameCalls == [AppIcon.notes.alternateIconName])
+    }
+
+    @Test
+    func changeIconFromCalculatorToDefault() async throws {
+        sut = AppSettingsStateStore(
+            state: .initial.copy(\.appIcon, to: .calculator),
+            appSettingsRepository: appSettingsRepositorySpy,
+            notificationCenter: notificationCenterSpy,
+            urlOpener: urlOpenerSpy,
+            appIconConfigurator: appIconConfiguratorSpy,
+            mainBundle: bundleStub
+        )
+
+        await sut.handle(action: .appIconSelected(.default))
+
+        #expect(sut.state == AppSettingsState.initial.copy(\.appIcon, to: .default))
+        #expect(appIconConfiguratorSpy.setAlternateIconNameCalls == [AppIcon.default.alternateIconName])
+    }
+
+    // MARK: - Private
+
     private func changeAppAppearance(_ appAppearance: AppAppearance) async {
         appSettingsRepositorySpy.stubbedAppSettings = appSettingsRepositorySpy.stubbedAppSettings
             .copy(\.appearance, to: appAppearance)
@@ -169,7 +226,6 @@ class AppSettingsStateStoreTests {
             .copy(\.useAlternativeRouting, to: value)
         await sut.handle(action: .alternativeRoutingChanged(value))
     }
-
 }
 
 extension AppSettings: @retroactive Copying {}
@@ -189,4 +245,16 @@ private extension AppSettingsDiff {
         )
     }
 
+}
+
+private class AppIconConfiguratorSpy: AppIconConfigurable {
+    private(set) var setAlternateIconNameCalls: [String?] = []
+
+    // MARK: - AppIconConfigurable
+
+    var supportsAlternateIcons: Bool { true }
+
+    func setAlternateIconName(_ alternateIconName: String?) async throws {
+        setAlternateIconNameCalls.append(alternateIconName)
+    }
 }

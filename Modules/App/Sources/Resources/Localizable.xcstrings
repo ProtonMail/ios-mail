@@ -5654,6 +5654,9 @@
         }
       }
     },
+    "App Icon" : {
+      "comment" : "Title of the button that allows the user to change the app’s icon."
+    },
     "App lock" : {
       "comment" : "App lock setting title in app settings.",
       "localizations" : {
@@ -8532,6 +8535,9 @@
           }
         }
       }
+    },
+    "Calculator" : {
+      "comment" : "Name of the alternate 'Calculator' app icon shown in the app icon picker."
     },
     "Call" : {
       "comment" : "Action title for calling phone number in the address action sheet.",
@@ -31188,6 +31194,9 @@
         }
       }
     },
+    "Notes" : {
+      "comment" : "Name of the alternate 'Notes' app icon shown in the app icon picker."
+    },
     "Nothing in Outbox" : {
       "comment" : "Outbox empty state title.",
       "localizations" : {
@@ -33813,6 +33822,9 @@
           }
         }
       }
+    },
+    "Primary" : {
+      "comment" : "Name of the default (primary) app icon shown in the app icon picker."
     },
     "Print" : {
       "comment" : "Action title for printing given message in the action sheet.",
@@ -51250,6 +51262,9 @@
           }
         }
       }
+    },
+    "Weather" : {
+      "comment" : "Name of the alternate 'Weather' app icon shown in the app icon picker."
     },
     "Welcome to Proton Mail, where privacy is default" : {
       "comment" : "Title of the first onboarding page introducing Proton Mail's privacy focus.",

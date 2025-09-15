@@ -23,7 +23,6 @@ import Testing
 
 @MainActor
 struct AppSettingsSnapshotTests {
-
     @Test(arguments: [MobileSignatureStatus.enabled, .disabled, .needsPaidVersion])
     func testAppSettingsLayoutCorrectly(mobileSignatureStatus: MobileSignatureStatus) {
         let sut = AppSettingsScreen(
@@ -37,6 +36,7 @@ struct AppSettingsSnapshotTests {
                     useCombineContacts: false,
                     useAlternativeRouting: true
                 ),
+                appIcon: .notes,
                 isAppearanceMenuShown: false,
                 mobileSignatureStatus: mobileSignatureStatus
             ),
@@ -48,9 +48,8 @@ struct AppSettingsSnapshotTests {
                 matching: UIHostingController(rootView: sut).view,
                 styles: [userInterfaceStyle],
                 preferredHeight: 900,
-                named: "\(mobileSignatureStatus)"
+                named: "\(mobileSignatureStatus)",
             )
         }
     }
-
 }

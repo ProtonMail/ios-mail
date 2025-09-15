@@ -26,12 +26,14 @@ final class AppSettingsStateStore: StateStore, Sendable {
     private let notificationCenter: UserNotificationCenter
     private let urlOpener: URLOpener
     private let appLangaugeProvider: AppLangaugeProvider
+    private let appIconConfigurator: AppIconConfigurable
 
     init(
         state: AppSettingsState,
         appSettingsRepository: AppSettingsRepository,
         notificationCenter: UserNotificationCenter = UNUserNotificationCenter.current(),
         urlOpener: URLOpener = UIApplication.shared,
+        appIconConfigurator: AppIconConfigurable = UIApplication.shared,
         currentLocale: Locale = Locale.current,
         mainBundle: Bundle = Bundle.main
     ) {
@@ -39,6 +41,7 @@ final class AppSettingsStateStore: StateStore, Sendable {
         self.appSettingsRepository = appSettingsRepository
         self.notificationCenter = notificationCenter
         self.urlOpener = urlOpener
+        self.appIconConfigurator = appIconConfigurator
         self.appLangaugeProvider = .init(currentLocale: currentLocale, mainBundle: mainBundle)
     }
 
@@ -62,7 +65,19 @@ final class AppSettingsStateStore: StateStore, Sendable {
             await update(setting: \.useCombineContacts, value: value)
         case .alternativeRoutingChanged(let value):
             await update(setting: \.useAlternativeRouting, value: value)
+        case .appIconSelected(let appIcon):
+            await updateAppIcon(appIcon)
         }
+    }
+
+    @MainActor
+    func updateAppIcon(_ icon: AppIcon) async {
+        guard appIconConfigurator.supportsAlternateIcons else {
+            return
+        }
+
+        try? await appIconConfigurator.setAlternateIconName(icon.alternateIconName)
+        state = state.copy(\.appIcon, to: AppIcon(rawValue: icon.alternateIconName))
     }
 
     func presentUpsellScreen(presenter: UpsellScreenPresenter) async throws {
