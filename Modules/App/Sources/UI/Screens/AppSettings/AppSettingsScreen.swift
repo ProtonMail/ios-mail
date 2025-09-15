@@ -31,13 +31,15 @@ struct AppSettingsScreen: View {
     @StateObject var store: AppSettingsStateStore
 
     init(
-        state: AppSettingsState = .initial,
+        state: AppSettingsState? = .none,
+        appIconConfigurator: AppIconConfigurable = UIApplication.shared,
         appSettingsRepository: AppSettingsRepository = AppContext.shared.mailSession
     ) {
         _store = .init(
             wrappedValue: .init(
-                state: state,
-                appSettingsRepository: appSettingsRepository
+                state: state ?? .initial(appIconName: appIconConfigurator.alternateIconName),
+                appSettingsRepository: appSettingsRepository,
+                appIconConfigurator: appIconConfigurator
             )
         )
     }
@@ -173,10 +175,6 @@ struct AppSettingsScreen: View {
                         HStack(spacing: DS.Spacing.medium) {
                             Text(icon.title)
                             Image(icon.preview)
-                                .resizable()
-                                .scaledToFit()
-                                .square(size: 20)
-                                .clipShape(RoundedRectangle(cornerRadius: DS.Radius.small))
                         }
                     }
                 }
@@ -244,7 +242,7 @@ struct AppSettingsScreen: View {
 
 #Preview {
     NavigationStack {
-        AppSettingsScreen(state: .initial)
+        AppSettingsScreen(state: .initial(appIconName: .none))
     }
 }
 

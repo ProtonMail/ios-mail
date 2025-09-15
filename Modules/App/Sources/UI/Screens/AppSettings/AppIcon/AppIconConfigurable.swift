@@ -18,6 +18,7 @@
 import UIKit
 
 protocol AppIconConfigurable {
+    var alternateIconName: String? { get }
     var supportsAlternateIcons: Bool { get }
 
     func setAlternateIconName(_ alternateIconName: String?) async throws

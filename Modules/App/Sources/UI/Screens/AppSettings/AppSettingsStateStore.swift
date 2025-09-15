@@ -33,7 +33,7 @@ final class AppSettingsStateStore: StateStore, Sendable {
         appSettingsRepository: AppSettingsRepository,
         notificationCenter: UserNotificationCenter = UNUserNotificationCenter.current(),
         urlOpener: URLOpener = UIApplication.shared,
-        appIconConfigurator: AppIconConfigurable = UIApplication.shared,
+        appIconConfigurator: AppIconConfigurable,
         currentLocale: Locale = Locale.current,
         mainBundle: Bundle = Bundle.main
     ) {

@@ -24,20 +24,15 @@ import Testing
 @MainActor
 class AppSettingsStateStoreTests {
     var sut: AppSettingsStateStore!
-    var notificationCenterSpy: UserNotificationCenterSpy!
-    var urlOpenerSpy: URLOpenerSpy!
-    var bundleStub: BundleStub!
-    private var appSettingsRepositorySpy: AppSettingsRepositorySpy!
-    private var appIconConfiguratorSpy = AppIconConfiguratorSpy()
+    let notificationCenterSpy = UserNotificationCenterSpy()
+    let urlOpenerSpy = URLOpenerSpy()
+    let bundleStub = BundleStub()
+    private let appSettingsRepositorySpy = AppSettingsRepositorySpy()
+    private let appIconConfiguratorSpy = AppIconConfiguratorSpy()
 
     init() {
-        notificationCenterSpy = .init()
-        urlOpenerSpy = .init()
-        bundleStub = .init()
-        appSettingsRepositorySpy = .init()
-        appIconConfiguratorSpy = .init()
         sut = AppSettingsStateStore(
-            state: .initial,
+            state: .initial(appIconName: .none),
             appSettingsRepository: appSettingsRepositorySpy,
             notificationCenter: notificationCenterSpy,
             urlOpener: urlOpenerSpy,
@@ -46,14 +41,6 @@ class AppSettingsStateStoreTests {
         )
 
         bundleStub.preferredLocalizationsStub = ["en"]
-    }
-
-    deinit {
-        notificationCenterSpy = nil
-        urlOpenerSpy = nil
-        bundleStub = nil
-        appSettingsRepositorySpy = nil
-        sut = nil
     }
 
     @Test
@@ -162,7 +149,7 @@ class AppSettingsStateStoreTests {
 
         await sut.handle(action: .appIconSelected(.calculator))
 
-        #expect(sut.state == AppSettingsState.initial.copy(\.appIcon, to: .calculator))
+        #expect(sut.state == AppSettingsState.initial(appIconName: AppIcon.calculator.alternateIconName))
         #expect(appIconConfiguratorSpy.setAlternateIconNameCalls == [AppIcon.calculator.alternateIconName])
     }
 
@@ -172,7 +159,7 @@ class AppSettingsStateStoreTests {
 
         await sut.handle(action: .appIconSelected(.notes))
 
-        #expect(sut.state == AppSettingsState.initial.copy(\.appIcon, to: .notes))
+        #expect(sut.state == AppSettingsState.initial(appIconName: AppIcon.notes.alternateIconName))
         #expect(appIconConfiguratorSpy.setAlternateIconNameCalls == [AppIcon.notes.alternateIconName])
     }
 
@@ -182,7 +169,7 @@ class AppSettingsStateStoreTests {
 
         await sut.handle(action: .appIconSelected(.default))
 
-        #expect(sut.state == AppSettingsState.initial.copy(\.appIcon, to: .default))
+        #expect(sut.state == AppSettingsState.initial(appIconName: AppIcon.default.alternateIconName))
         #expect(appIconConfiguratorSpy.setAlternateIconNameCalls == [AppIcon.default.alternateIconName])
     }
 
@@ -190,7 +177,7 @@ class AppSettingsStateStoreTests {
 
     private func setUpSUT(with appIcon: AppIcon) {
         sut = AppSettingsStateStore(
-            state: .initial.copy(\.appIcon, to: appIcon),
+            state: AppSettingsState.initial(appIconName: appIcon.alternateIconName),
             appSettingsRepository: appSettingsRepositorySpy,
             notificationCenter: notificationCenterSpy,
             urlOpener: urlOpenerSpy,
@@ -242,6 +229,7 @@ private class AppIconConfiguratorSpy: AppIconConfigurable {
 
     // MARK: - AppIconConfigurable
 
+    var alternateIconName: String?
     var supportsAlternateIcons: Bool { true }
 
     func setAlternateIconName(_ alternateIconName: String?) async throws {

@@ -22,7 +22,7 @@ import SwiftUI
 import Testing
 
 @MainActor
-struct AppSettingsSnapshotTests {
+struct AppSettingsScreenSnapshotTests {
     @Test(arguments: [MobileSignatureStatus.enabled, .disabled, .needsPaidVersion])
     func testAppSettingsLayoutCorrectly(mobileSignatureStatus: MobileSignatureStatus) {
         let sut = AppSettingsScreen(

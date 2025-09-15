@@ -32,7 +32,7 @@ struct AppSettingsState: Copying, Equatable {
 
 extension AppSettingsState {
 
-    static var initial: Self {
+    static func initial(appIconName: String?) -> Self {
         .init(
             areNotificationsEnabled: false,
             appLanguage: .empty,
@@ -43,7 +43,7 @@ extension AppSettingsState {
                 useCombineContacts: false,
                 useAlternativeRouting: true
             ),
-            appIcon: AppIcon(rawValue: UIApplication.shared.alternateIconName),
+            appIcon: AppIcon(rawValue: appIconName),
             isAppearanceMenuShown: false,
             mobileSignatureStatus: .needsPaidVersion
         )
