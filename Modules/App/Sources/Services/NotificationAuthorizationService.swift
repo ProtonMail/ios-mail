@@ -29,14 +29,8 @@ struct NotificationAuthorizationService: ApplicationServiceSetUp {
         self.remoteNotificationRegistrar = remoteNotificationRegistrar
     }
 
-    func setUpServiceAsync() async {
-        await remoteNotificationRegistrar.registerForRemoteNotifications()
-    }
-
     func setUpService() {
-        Task {
-            await setUpServiceAsync()
-        }
+        remoteNotificationRegistrar.registerForRemoteNotifications()
     }
 }
 

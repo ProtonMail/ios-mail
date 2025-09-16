@@ -85,8 +85,6 @@ struct MobileSignatureScreen: View {
 }
 
 #Preview {
-    let toastStateStore = ToastStateStore(initialState: .initial)
-
     NavigationStack {
         MobileSignatureScreen(customSettings: CustomSettingsPreviewProvider(status: .enabled))
     }
