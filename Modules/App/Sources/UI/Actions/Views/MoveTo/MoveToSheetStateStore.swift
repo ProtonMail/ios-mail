@@ -22,7 +22,6 @@ import InboxDesignSystem
 import proton_app_uniffi
 import SwiftUI
 
-@MainActor
 class MoveToSheetStateStore: StateStore {
     @Published var state: MoveToState
 

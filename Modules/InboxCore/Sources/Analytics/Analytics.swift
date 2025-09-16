@@ -17,19 +17,61 @@
 
 import Sentry
 
-public final class Analytics: Sendable {
+public final actor Analytics: ObservableObject {
+    enum State: Equatable {
+        case enabled(configuration: UserAnalyticsConfiguration)
+        case disabled
+
+        var isEnabled: Bool {
+            switch self {
+            case .enabled:
+                true
+            case .disabled:
+                false
+            }
+        }
+
+        func shouldUpdateConfiguration(with newConfiguration: UserAnalyticsConfiguration) -> Bool {
+            switch self {
+            case .enabled(let configuration):
+                newConfiguration != configuration
+            case .disabled:
+                true
+            }
+        }
+    }
+
     private let sentryAnalytics: SentryAnalytics
+    private var state: State = .disabled
 
     public init(sentryAnalytics: SentryAnalytics = .production) {
         self.sentryAnalytics = sentryAnalytics
     }
 
-    public func configure() {
+    public func disable() {
+        guard state.isEnabled else { return }
+        sentryAnalytics.stop()
+        state = .disabled
+    }
+
+    public func enable(configuration: UserAnalyticsConfiguration) {
+        guard state.shouldUpdateConfiguration(with: configuration) else { return }
+        sentryAnalytics.stop()
         sentryAnalytics.start { options in
             options.dsn = SentryConfiguration.dsn
+
             options.enableAutoPerformanceTracing = false
             options.enableAppHangTracking = false
             options.enableCaptureFailedRequests = false
+
+            options.enableNetworkTracking = configuration.crashReports
+            options.enableNetworkBreadcrumbs = configuration.crashReports
+            options.enableAutoSessionTracking = configuration.crashReports
+            options.enableAutoBreadcrumbTracking = configuration.crashReports
+            options.enableWatchdogTerminationTracking = configuration.crashReports
+
+            options.enableCrashHandler = configuration.crashReports
+
             options.beforeSend = { [weak self] event in
                 guard let self = self, event.isCrash else {
                     return event
@@ -65,13 +107,15 @@ public final class Analytics: Sendable {
                 return event
             }
         }
+
+        state = .enabled(configuration: configuration)
     }
 
     private enum SentryConfiguration {
         static let dsn = "https://a3be1429a241459790c784466f194565@api.protonmail.ch/core/v4/reports/sentry/83"
     }
 
-    private func readLastBytes(from filePath: String, byteCount: UInt64) -> Data? {
+    nonisolated private func readLastBytes(from filePath: String, byteCount: UInt64) -> Data? {
         guard let fileHandle = FileHandle(forReadingAtPath: filePath) else {
             print("Could not open file")
             return nil

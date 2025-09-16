@@ -21,11 +21,12 @@ import InboxTesting
 import LocalAuthentication
 import Testing
 
-class BiometricLockStoreTests {
+@MainActor
+final class BiometricLockStoreTests {
 
     lazy var sut: BiometricLockStore = .init(
         state: .initial,
-        method: .builtIn { [unowned self] in self.laContextSpy },
+        method: .builtIn { [unowned self] in laContextSpy },
         laContext: { [unowned self] in self.laContextSpy },
         output: { [unowned self] output in
             screenOutput.append(output)

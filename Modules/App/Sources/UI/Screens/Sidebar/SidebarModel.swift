@@ -24,6 +24,7 @@ enum SidebarAction {
     case viewAppear
     case select(item: SidebarItem)
     case toggle(folder: SidebarFolder, expand: Bool)
+    case logoTappedFiveTimes
 }
 
 @MainActor
@@ -51,6 +52,10 @@ final class SidebarModel: Sendable, ObservableObject {
             select(item: item)
         case .toggle(let folder, let expand):
             changeVisibility(of: folder, expand: expand)
+        case .logoTappedFiveTimes:
+            if !state.other.contains(where: { other in other.type == .shareLogs }) {
+                state = state.copy(\.other, to: state.other.appending(.shareLogs))
+            }
         }
     }
 

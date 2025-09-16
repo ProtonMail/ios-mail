@@ -266,7 +266,9 @@ extension MailboxModel {
             // These disconnects will prevent unrequested scroller callbacks
             // for the previous state. Call them before the Mailbox constructor.
             messageScroller?.handle().disconnect()
+            messageScroller?.terminate()
             conversationScroller?.handle().disconnect()
+            conversationScroller?.terminate()
 
             paginatedDataSource.resetToInitialState()
 
@@ -349,6 +351,10 @@ extension MailboxModel {
         case .append(let conversations):
             let items = await mailboxItems(conversations: conversations)
             updateType = .append(items: items)
+        case let .replaceRange(from, to, conversations):
+            let items = await mailboxItems(conversations: conversations)
+            updateType = .replaceRange(from: Int(from), to: Int(to), items: items)
+            completion = { [weak self] in self?.updateSelectedItemsAfterDestructiveUpdate() }
         case .replaceFrom(let index, let conversations):
             let items = await mailboxItems(conversations: conversations)
             updateType = .replaceFrom(index: Int(index), items: items)
@@ -375,6 +381,10 @@ extension MailboxModel {
         case .append(let messages):
             let items = await mailboxItems(messages: messages)
             updateType = .append(items: items)
+        case let .replaceRange(from, to, messages):
+            let items = await mailboxItems(messages: messages)
+            updateType = .replaceRange(from: Int(from), to: Int(to), items: items)
+            completion = { [weak self] in self?.updateSelectedItemsAfterDestructiveUpdate() }
         case .replaceFrom(let index, let messages):
             let items = await mailboxItems(messages: messages)
             updateType = .replaceFrom(index: Int(index), items: items)

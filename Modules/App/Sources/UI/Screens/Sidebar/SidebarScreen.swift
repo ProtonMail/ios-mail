@@ -93,6 +93,7 @@ struct SidebarScreen: View {
             Image(DS.Images.mailProductLogo)
                 .padding(.leading, DS.Spacing.extraLarge)
                 .padding(.vertical, DS.Spacing.small)
+                .onTapGesture(count: 5) { screenModel.handle(action: .logoTappedFiveTimes) }
             separator
         }.background(
             GeometryReader { geometry in
@@ -158,21 +159,23 @@ struct SidebarScreen: View {
         ScrollViewReader { proxy in
             ScrollView {
                 VStack(alignment: .leading, spacing: .zero) {
-                    if let upsellItem = screenModel.state.upsell {
-                        upsellSidebarItem(item: upsellItem)
+                    VStack(spacing: .zero) {
+                        if let upsellItem = screenModel.state.upsell {
+                            upsellSidebarItem(item: upsellItem)
+                        }
+                        systemFoldersList()
                     }
+                    .padding(.vertical, DS.Spacing.medium)
 
-                    systemFoldersList()
-                        .padding(.vertical, DS.Spacing.standard)
                     separator
                     customFoldersList()
-                        .padding(.vertical, DS.Spacing.standard)
+                        .padding(.vertical, DS.Spacing.medium)
                     separator
                     labelsList()
-                        .padding(.vertical, DS.Spacing.standard)
+                        .padding(.vertical, DS.Spacing.medium)
                     separator
                     otherItemsList()
-                        .padding(.vertical, DS.Spacing.standard)
+                        .padding(.vertical, DS.Spacing.medium)
                     separator
                     appVersionNote
                 }.onChange(of: appUIStateStore.sidebarState.isOpen) { _, isSidebarOpen in
@@ -193,7 +196,7 @@ struct SidebarScreen: View {
             item: item,
             action: { select(item: item) },
             content: {
-                HStack {
+                HStack(spacing: .zero) {
                     sidebarItemImage(icon: DS.Icon.icDiamond.image, isSelected: false, renderingMode: .original)
                     itemNameLabel(name: L10n.Sidebar.upgrade(to: planName).string, isSelected: false)
                     Spacer()
@@ -262,7 +265,7 @@ struct SidebarScreen: View {
 
     private func createButton(for item: SidebarOtherItem, isListEmpty: Bool) -> some View {
         Button(action: { select(item: .other(item)) }) {
-            HStack {
+            HStack(spacing: .zero) {
                 Image(item.icon)
                     .resizable()
                     .renderingMode(.template)
@@ -285,7 +288,7 @@ struct SidebarScreen: View {
     }
 
     private func systemItemContent(model: SystemFolder) -> some View {
-        HStack {
+        HStack(spacing: .zero) {
             sidebarItemImage(icon: model.type.icon, isSelected: model.isSelected)
             itemNameLabel(name: model.type.humanReadable.string, isSelected: model.isSelected)
             Spacer()
@@ -296,7 +299,7 @@ struct SidebarScreen: View {
     }
 
     private func otherItemContent(model: SidebarOtherItem) -> some View {
-        HStack {
+        HStack(spacing: .zero) {
             sidebarItemImage(icon: model.icon.image, isSelected: model.isSelected)
             itemNameLabel(name: model.name, isSelected: model.isSelected)
             Spacer()
@@ -306,6 +309,7 @@ struct SidebarScreen: View {
     private func sidebarItemImage(icon: Image, isSelected: Bool, renderingMode: Image.TemplateRenderingMode = .template) -> some View {
         icon
             .renderingMode(renderingMode)
+            .resizable()
             .square(size: 20)
             .tint(isSelected ? DS.Color.Sidebar.iconSelected : DS.Color.Sidebar.iconNorm)
             .padding(.trailing, DS.Spacing.extraLarge)
@@ -313,9 +317,9 @@ struct SidebarScreen: View {
     }
 
     private func labelItemContent(model: SidebarLabel) -> some View {
-        HStack {
+        HStack(spacing: .zero) {
             Color(hex: model.color)
-                .square(size: 13)
+                .square(size: 12)
                 .clipShape(Circle())
                 .square(size: 20)
                 .padding(.trailing, DS.Spacing.extraLarge)

@@ -22,6 +22,7 @@ import InboxCoreUI
 import enum InboxComposer.ComposerDismissReason
 import InboxIAP
 import proton_app_uniffi
+import PaymentsNG
 import SwiftUI
 
 struct HomeScreen: View {
@@ -43,6 +44,7 @@ struct HomeScreen: View {
 
     @EnvironmentObject private var appUIStateStore: AppUIStateStore
     @EnvironmentObject private var toastStateStore: ToastStateStore
+    @EnvironmentObject private var analytics: Analytics
     @StateObject private var appRoute: AppRouteState
     @StateObject private var composerCoordinator: ComposerCoordinator
     @StateObject private var upsellButtonVisibilityPublisher: UpsellButtonVisibilityPublisher
@@ -50,6 +52,7 @@ struct HomeScreen: View {
     @State private var isNotificationPromptPresented = false
     @StateObject private var eventLoopErrorCoordinator: EventLoopErrorCoordinator
     @StateObject private var upsellCoordinator: UpsellCoordinator
+    @StateObject private var userAnalyticsConfigurator: UserAnalyticsConfigurator
     @ObservedObject private var appContext: AppContext
 
     private let userSession: MailUserSession
@@ -58,9 +61,13 @@ struct HomeScreen: View {
     private let userDefaults: UserDefaults
     private let modalFactory: HomeScreenModalFactory
     private let notificationAuthorizationStore: NotificationAuthorizationStore
-    private let refreshToolbarNotifier = RefreshToolbarNotifier()
 
-    init(appContext: AppContext, userSession: MailUserSession, toastStateStore: ToastStateStore) {
+    init(
+        appContext: AppContext,
+        userSession: MailUserSession,
+        toastStateStore: ToastStateStore,
+        analytics: Analytics
+    ) {
         _appRoute = .init(wrappedValue: .initialState)
         _composerCoordinator = .init(wrappedValue: .init(userSession: userSession, toastStateStore: toastStateStore))
         let upsellButtonVisibilityPublisher = UpsellButtonVisibilityPublisher(userSession: userSession)
@@ -79,10 +86,16 @@ struct HomeScreen: View {
         self._eventLoopErrorCoordinator = .init(
             wrappedValue: EventLoopErrorCoordinator(userSession: userSession, toastStateStore: toastStateStore)
         )
-        _upsellCoordinator = .init(wrappedValue: .init(mailUserSession: userSession, configuration: .mail))
+        let newUpsellCoordinator = UpsellCoordinator(mailUserSession: userSession, configuration: .mail)
+        _upsellCoordinator = .init(wrappedValue: newUpsellCoordinator)
         self.userDefaults = appContext.userDefaults
-        self.modalFactory = HomeScreenModalFactory(mailUserSession: userSession, accountAuthCoordinator: appContext.accountAuthCoordinator)
+        self.modalFactory = HomeScreenModalFactory(
+            mailUserSession: userSession,
+            accountAuthCoordinator: appContext.accountAuthCoordinator,
+            upsellCoordinator: newUpsellCoordinator
+        )
         notificationAuthorizationStore = .init(userDefaults: userDefaults)
+        _userAnalyticsConfigurator = .init(wrappedValue: .init(mailUserSession: userSession, analytics: analytics))
     }
 
     var didAppear: ((Self) -> Void)?
@@ -162,11 +175,15 @@ struct HomeScreen: View {
         .onOpenURL(perform: handleDeepLink)
         .onLoad {
             Task {
+                if AnalyticsState.shouldConfigureAnalytics {
+                    Task {
+                        await userAnalyticsConfigurator.observeUserAnalyticsSettings()
+                    }
+                }
                 await upsellCoordinator.prewarm()
             }
         }
         .environmentObject(upsellCoordinator)
-        .environmentObject(refreshToolbarNotifier)
         .environment(\.isUpsellButtonVisible, upsellButtonVisibilityPublisher.isUpsellButtonVisible)
     }
 
@@ -201,8 +218,16 @@ struct HomeScreen: View {
             let logFolder = FileManager.default.sharedCacheDirectory
             let sourceLogFile = logFolder.appending(path: "proton-mail-ios.log")
             _ = try appContext.mailSession.exportLogs(filePath: sourceLogFile.path).get()
-            let activityController = UIActivityViewController(activityItems: [sourceLogFile], applicationActivities: nil)
-            UIApplication.shared.keyWindow?.rootViewController?.present(activityController, animated: true)
+            var filesToShare: [URL] = [sourceLogFile]
+
+            Task {
+                if let transactionLog = await TransactionsObserver.shared.generateTransactionLog() {
+                    filesToShare.append(transactionLog)
+                }
+
+                let activityController = UIActivityViewController(activityItems: filesToShare, applicationActivities: nil)
+                UIApplication.shared.keyWindow?.rootViewController?.present(activityController, animated: true)
+            }
         } catch {
             toastStateStore.present(toast: .error(message: error.localizedDescription))
         }

@@ -22,6 +22,7 @@ import WebKit
 
 extension EnvironmentValues {
     @Entry var forceLightModeInMessageBody: Bool = false
+    @Entry var orientationChangeInProgress: Bool = false
 }
 
 struct MessageBodyReaderView: UIViewRepresentable {
@@ -80,6 +81,7 @@ struct MessageBodyReaderView: UIViewRepresentable {
             loadHTML(in: webView)
         }
         webView.overrideUserInterfaceStyle = context.environment.forceLightModeInMessageBody ? .light : .unspecified
+        webView.isHidden = context.environment.orientationChangeInProgress
         context.coordinator.urlOpener = context.environment.openURL
     }
 
@@ -250,6 +252,11 @@ extension AppScript {
 
             function setViewportInitialScale(ratio) {
                 var metaWidth = document.querySelector('meta[name="viewport"]');
+                if (!metaWidth) {
+                    metaWidth = document.createElement('meta');
+                    metaWidth.name = 'viewport';
+                    document.head.appendChild(metaWidth);
+                }
                 metaWidth.content = "width=device-width, initial-scale=" + ratio + ", maximum-scale=3.0, user-scalable=yes";
             }
 

@@ -19,16 +19,24 @@ import Sentry
 
 public struct SentryAnalytics {
     public let start: (@escaping (Options) -> Void) -> Void
+    public let stop: () -> Void
 
-    public init(start: @escaping (@escaping (Options) -> Void) -> Void) {
+    public init(
+        start: @escaping (@escaping (Options) -> Void) -> Void,
+        stop: @escaping () -> Void
+    ) {
         self.start = start
+        self.stop = stop
     }
 }
 
 extension SentryAnalytics {
 
     public static var production: SentryAnalytics {
-        .init(start: SentrySDK.start)
+        .init(
+            start: SentrySDK.start,
+            stop: SentrySDK.close
+        )
     }
 
 }

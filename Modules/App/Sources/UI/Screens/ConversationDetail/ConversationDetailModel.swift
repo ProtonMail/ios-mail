@@ -35,7 +35,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
 
     private var conversationItem: ConversationItem?
 
-    let messageAppearanceOverrideStore = MessageAppearanceOverrideStore()
+    let messageAppearanceOverrideStore: MessageAppearanceOverrideStore
     let messagePrinter: MessagePrinter
     private var colorScheme: ColorScheme = .light
 
@@ -43,6 +43,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         case message(ID)
         case conversation(ID)
         case pushNotification(messageID: ID, conversationID: ID)
+        case searchResultItem(messageID: ID, conversationID: ID)
     }
 
     struct ConversationItemMetadata {
@@ -110,7 +111,8 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         draftPresenter: DraftPresenter,
         dependencies: Dependencies = .init(),
         backOnlineActionExecutor: BackOnlineActionExecutor,
-        snoozeService: SnoozeServiceProtocol
+        snoozeService: SnoozeServiceProtocol,
+        messageAppearanceOverrideStore: MessageAppearanceOverrideStore
     ) {
         self.seed = seed
         self.isStarred = seed.isStarred
@@ -119,6 +121,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         self.dependencies = dependencies
         self.backOnlineActionExecutor = backOnlineActionExecutor
         self.snoozeService = snoozeService
+        self.messageAppearanceOverrideStore = messageAppearanceOverrideStore
         messagePrinter = .init(userSession: { dependencies.appContext.userSession })
     }
 
@@ -133,13 +136,17 @@ final class ConversationDetailModel: Sendable, ObservableObject {
             case .message(let id):
                 try await setUpSingleMessageObservation(messageID: id)
             case .conversation(let id):
-                try await setUpConversationMessagesObservation(conversationID: id, mailbox: mailbox)
-            case .pushNotification(let messageID, let conversationID):
+                try await setUpConversationMessagesObservation(conversationID: id, origin: .default, mailbox: mailbox)
+            case .pushNotification(let messageID, let conversationID), .searchResultItem(let messageID, let conversationID):
                 switch mailbox.viewMode() {
                 case .messages:
                     try await setUpSingleMessageObservation(messageID: messageID)
                 case .conversations:
-                    try await setUpConversationMessagesObservation(conversationID: conversationID, mailbox: mailbox)
+                    try await setUpConversationMessagesObservation(
+                        conversationID: conversationID,
+                        origin: .pushNotification,
+                        mailbox: mailbox
+                    )
                 }
             }
             await reloadBottomBarActions()
@@ -159,10 +166,15 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         updateStateToMessagesReady(with: liveQueryValues.messages)
     }
 
-    private func setUpConversationMessagesObservation(conversationID: ID, mailbox: Mailbox) async throws {
+    private func setUpConversationMessagesObservation(
+        conversationID: ID,
+        origin: OpenConversationOrigin,
+        mailbox: Mailbox
+    ) async throws {
         conversationItem = .init(id: conversationID, itemType: .conversation)
         let liveQueryValues = try await createLiveQueryAndPrepareMessages(
             forConversationID: conversationID,
+            origin: origin,
             mailbox: mailbox
         )
 
@@ -538,6 +550,11 @@ extension ConversationDetailModel {
 
     private func establishConversationItemMetadata() async throws -> ConversationItemMetadata {
         switch seed {
+        case .searchResultItem(let item, let mailbox):
+            return .init(
+                item: .searchResultItem(messageID: item.id, conversationID: item.conversationID),
+                selectedMailbox: mailbox
+            )
         case .mailboxItem(let item, let mailbox):
             switch item.type {
             case .conversation:
@@ -548,8 +565,7 @@ extension ConversationDetailModel {
         case .pushNotification(let message):
             let message = try await fetchMessage(with: message.remoteId)
             return .init(
-                item: .pushNotification(
-                    messageID: message.id, conversationID: message.conversationId),
+                item: .pushNotification(messageID: message.id, conversationID: message.conversationId),
                 selectedMailbox: message.exclusiveLocation?.selectedMailbox ?? .inbox
             )
         }
@@ -571,11 +587,13 @@ extension ConversationDetailModel {
 
     private func createLiveQueryAndPrepareMessages(
         forConversationID conversationID: ID,
+        origin: OpenConversationOrigin,
         mailbox: Mailbox
     ) async throws -> LiveQueryValues {
         let watchConversationResult = await watchConversation(
             mailbox: mailbox,
             id: conversationID,
+            origin: origin,
             callback: conversationMessageListCallback
         )
 
@@ -634,6 +652,8 @@ extension ConversationDetailModel {
     private func messageIDToScrollTo() async -> ID? {
         let messageID: ID?
         switch seed {
+        case .searchResultItem(let item, _):
+            messageID = item.id
         case .mailboxItem(let item, _):
             switch item.type {
             case .conversation:

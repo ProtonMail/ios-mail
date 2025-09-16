@@ -97,6 +97,7 @@ final class SearchModel: ObservableObject, @unchecked Sendable {
         Task {
             let query = text.withoutWhitespace
             searchScroller?.handle().disconnect()
+            searchScroller?.terminate()
             paginatedDataSource.resetToInitialState()
 
             let result = await scrollerSearch(
@@ -148,6 +149,10 @@ final class SearchModel: ObservableObject, @unchecked Sendable {
         case .append(let messages):
             let items = await mailboxItems(messages: messages)
             updateType = .append(items: items)
+        case let .replaceRange(from, to, messages):
+            let items = await mailboxItems(messages: messages)
+            updateType = .replaceRange(from: Int(from), to: Int(to), items: items)
+            completion = { [weak self] in self?.updateSelectedItemsAfterDestructiveUpdate() }
         case .replaceFrom(let index, let messages):
             let items = await mailboxItems(messages: messages)
             updateType = .replaceFrom(index: Int(index), items: items)

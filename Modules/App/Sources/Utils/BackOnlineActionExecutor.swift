@@ -32,7 +32,7 @@ struct BackOnlineActionExecutor: BackOnlineActionExecuting {
     // MARK: - BackOnlineActionExecuting
 
     func execute(action: @Sendable @escaping @MainActor () async -> Void) {
-        let callback = LiveQueryCallbackWrapper {
+        let callback = ExecuteWhenOnlineCallbackWrapper {
             Task {
                 await action()
             }

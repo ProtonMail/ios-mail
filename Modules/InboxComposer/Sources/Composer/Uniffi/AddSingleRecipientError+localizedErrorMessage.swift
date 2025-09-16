@@ -20,14 +20,16 @@ import Foundation
 
 extension AddSingleRecipientError {
 
-    func localizedErrorMessage(entry: SingleRecipientEntry) -> LocalizedStringResource {
+    func localizedErrorMessage(entry: SingleRecipientEntry) -> String {
         switch self {
         case .ok:
-            LocalizedStringResource(stringLiteral: .empty)
+            LocalizedStringResource(stringLiteral: .empty).string
         case .duplicate:
-            L10n.ComposerError.duplicateRecipient(address: entry.email)
-        case .saveFailed, .other:
-            L10n.ComposerError.draftSaveFailed
+            L10n.ComposerError.duplicateRecipient(address: entry.email).string
+        case .saveFailed(let error):
+            error.errorDescription ?? .empty
+        case .other:
+            L10n.ComposerError.draftSaveFailed.string
         }
     }
 }

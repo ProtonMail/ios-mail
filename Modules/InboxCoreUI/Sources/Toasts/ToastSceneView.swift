@@ -47,13 +47,13 @@ private struct ToastModifier: ViewModifier {
         content
             .overlay(
                 ZStack {
-                    ForEach(Array(zip(state.toasts.indices, state.toasts)), id: \.1) { index, toast in
-                        toastView(toast: toast).zIndex(Double(-index))
+                    ForEachEnumerated(state.toasts, id: \.element) { toast, index in
+                        toastView(toast: toast).zIndex(Double(state.toasts.count - index))
                     }
                 }
                 .padding(.bottom, state.bottomBar.effectiveHeight)
                 .animation(.toastAnimation, value: state.toasts)
-                .animation(.default, value: state.bottomBar.effectiveHeight)
+                .animation(.toastAnimation, value: state.bottomBar.effectiveHeight)
             )
             .onChange(of: state.toasts, initial: true) { _, new in
                 if new.isEmpty {

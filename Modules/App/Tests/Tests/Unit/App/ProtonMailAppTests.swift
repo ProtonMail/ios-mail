@@ -20,7 +20,6 @@ import InboxCore
 import Testing
 import Sentry
 
-@MainActor
 class ProtonMailAppTests {
 
     var startInvokeCount = 0
@@ -30,21 +29,21 @@ class ProtonMailAppTests {
 
         optionsConfiguration(stubbedOptions)
     }
-    lazy var analytics = Analytics(sentryAnalytics: .init(start: start))
+    lazy var analytics = Analytics(sentryAnalytics: .init(start: start, stop: {}))
 
     @Test(.analyticsEnabled(true))
-    func appIsRunAndAnalyticsAreEnabled_ItConfiguresAnalytics() {
-        let sut = ProtonMailApp()
-        sut.configureAnalyticsIfNeeded(analytics: analytics)
+    func appIsRunAndAnalyticsAreEnabled_ItConfiguresAnalytics() async {
+        let sut = await ProtonMailApp()
+        await sut.configureAnalyticsIfNeeded(analytics: analytics)
 
         #expect(startInvokeCount == 1)
         #expect(stubbedOptions.dsn != nil)
     }
 
     @Test(.analyticsEnabled(false))
-    func appIsRunAndAnalyticsAreDisabled_ItDoesNotConfigureAnalytics() {
-        let sut = ProtonMailApp()
-        sut.configureAnalyticsIfNeeded(analytics: analytics)
+    func appIsRunAndAnalyticsAreDisabled_ItDoesNotConfigureAnalytics() async {
+        let sut = await ProtonMailApp()
+        await sut.configureAnalyticsIfNeeded(analytics: analytics)
 
         #expect(startInvokeCount == 0)
         #expect(stubbedOptions.dsn == nil)

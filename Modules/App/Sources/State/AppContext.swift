@@ -88,9 +88,11 @@ final class AppContext: Sendable, ObservableObject {
             deviceInfoProvider: ChallengePayloadProvider()
         ).get()
 
+        observeNetworkChanges()
+
         excludeDirectoriesFromBackup(params: params)
 
-        _mailSession.pauseWork()
+        _mailSession.onExitForeground()
         AppLogger.log(message: "MailSession init | \(AppVersionProvider().fullVersion) | \(apiConfig.envId.domain)", category: .rustLibrary)
 
         accountAuthCoordinator = AccountAuthCoordinator(productName: appDetails.product, appContext: _mailSession)
@@ -100,6 +102,20 @@ final class AppContext: Sendable, ObservableObject {
             sessionState = .restoring
             setupActiveUserSession(session: currentSession)
         }
+    }
+
+    @MainActor
+    private func observeNetworkChanges() {
+        NetworkMonitoringService
+            .shared
+            .isConnected
+            .sink { [weak self] receivedValue in
+                guard let isConnected = receivedValue else { return }
+                let status: OsNetworkStatus = isConnected ? .online : .offline
+                AppLogger.log(message: "NetworkMonitoringService \(status) passed to the SDK")
+                self?._mailSession.updateOsNetworkStatus(osNetworkStatus: status)
+            }
+            .store(in: &cancellables)
     }
 
     private func excludeDirectoriesFromBackup(params: MailSessionParams) {

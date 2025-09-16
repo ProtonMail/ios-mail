@@ -56,7 +56,7 @@ extension SystemLabel {
         case .inbox:
             DS.Icon.icInbox.image
         case .allDrafts, .drafts:
-            DS.Icon.icFile.image
+            DS.Icon.icFileLines.image
         case .outbox:
             DS.Icon.icOutbox.image
         case .allSent, .sent:

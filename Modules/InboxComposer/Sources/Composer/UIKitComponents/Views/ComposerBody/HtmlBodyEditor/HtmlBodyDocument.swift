@@ -70,6 +70,7 @@ extension HtmlBodyDocument {
         static let cursorPositionX = "x"
         static let cursorPositionY = "y"
         static let imageData = "imageData"
+        static let text = "text"
     }
 
     enum JSEvent: String, CaseIterable {
@@ -80,12 +81,13 @@ extension HtmlBodyDocument {
         case inlineImageRemoved
         case inlineImageTapped
         case imagePasted
+        case textPasted
     }
 
     enum JSFunction: String {
         case setFocus = "html_editor.setFocus"
         case getHtmlContent = "html_editor.getHtmlContent"
-        case insertImages = "html_editor.insertImages"
+        case insertHtmlAtCurrentPosition = "html_editor.insertHtmlAtCurrentPosition"
         case removeImageWithCID = "html_editor.removeImageWithCID"
 
         var callFunction: String {
@@ -240,23 +242,25 @@ private extension HtmlBodyDocument {
         });
 
         document.getElementById('\(ID.editor)').addEventListener('paste', function(event) {
-            const items = (event.clipboardData || event.originalEvent.clipboardData).items;
-            for (let index in items) {
-                const item = items[index];
+            // We intercept and cancel the paste event to handle it ourselves
+            event.preventDefault();
+
+            const cd = (event.clipboardData || event.originalEvent?.clipboardData);
+            const items = Array.from(cd?.items || []);
+
+            // Handle image files (can be multiple)
+            items.forEach(item => {
                 if (item.kind === 'file') {
-                    const blob = item.getAsFile();
-                    const reader = new FileReader();
-                    reader.onload = function(event) {
-                        const base64data = event.target.result.split(',')[1];
-                        window.webkit.messageHandlers.\(JSEvent.imagePasted).postMessage({
-                            "messageHandler": "\(JSEvent.imagePasted)",
-                            "\(EventAttributeKey.imageData)": base64data
-                        });
-                    };
-                    reader.readAsDataURL(blob);
-                    event.preventDefault();
-                    return;
+                    handleFilePaste(item);
                 }
+            });
+
+            // Prefer HTML text over plain text, post only once
+            const htmlItem = items.find(item => item.kind === 'string' && item.type === 'text/html');
+            const plainItem = items.find(item => item.kind === 'string' && item.type === 'text/plain');
+            const chosenTextItem = htmlItem || plainItem;
+            if (chosenTextItem) {
+                handleTextPaste(chosenTextItem);
             }
 
             // Pasting could push some content above the visible area of the editor, to avoid 
@@ -266,6 +270,30 @@ private extension HtmlBodyDocument {
                 notifyHeightChange();
             }, 20);
         });
+
+        function handleFilePaste(item) {
+            const file = item.getAsFile();
+            if (!file.type.startsWith("image/")) { return; }
+            const reader = new FileReader();
+            reader.onload = function(event) {
+
+                const base64data = event.target.result.split(',')[1];
+                window.webkit.messageHandlers.\(JSEvent.imagePasted).postMessage({
+                    "messageHandler": "\(JSEvent.imagePasted)",
+                    "\(EventAttributeKey.imageData)": base64data
+                });
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function handleTextPaste(item) {
+            item.getAsString((text) => {
+                window.webkit.messageHandlers.\(JSEvent.textPasted).postMessage({
+                    "messageHandler": "\(JSEvent.textPasted)",
+                    "\(EventAttributeKey.text)": text
+                });
+            });
+        }
 
         // --------------------
         // Public Functions
@@ -279,7 +307,7 @@ private extension HtmlBodyDocument {
             return document.getElementById('\(ID.editor)').innerHTML;
         };
 
-        \(JSFunction.insertImages.rawValue) = function (inlineImageHTML) {
+        \(JSFunction.insertHtmlAtCurrentPosition.rawValue) = function (html) {
             const editor = document.getElementById('\(ID.editor)');
             const selection = window.getSelection();
 
@@ -293,7 +321,7 @@ private extension HtmlBodyDocument {
                 selection.addRange(range);
             }
 
-            document.execCommand('insertHTML', false, inlineImageHTML);
+            document.execCommand('insertHTML', false, html);
             editor.dispatchEvent(new Event('input'));
 
             const allImages = editor.getElementsByTagName('img');

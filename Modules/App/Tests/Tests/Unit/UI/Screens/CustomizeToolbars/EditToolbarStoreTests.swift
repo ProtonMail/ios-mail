@@ -96,7 +96,7 @@ class EditToolbarStoreTests {
 
     @Test
     func resetToOriginalIsTapped_ItSetsDefaultActionsAsSelected() async {
-        customizeToolbarServiceSpy.allMessageActionsStub = [.reply, .forward, .spam, .archive, .move]
+        customizeToolbarServiceSpy.allMessageActionsStub = [.reply] + [.toggleRead, .trash, .move, .label]
         customizeToolbarServiceSpy.getMessageToolbarActionsStub = [.reply]
 
         let sut = makeSUT(toolbarType: .message) {}
@@ -109,7 +109,7 @@ class EditToolbarStoreTests {
             sut.state.toolbarActions.current
                 == .init(
                     selected: [.toggleRead, .trash, .move, .label],
-                    unselected: [.forward, .spam, .archive, .move]
+                    unselected: [.reply]
                 ))
     }
 

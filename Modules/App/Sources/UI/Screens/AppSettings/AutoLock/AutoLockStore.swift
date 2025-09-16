@@ -31,7 +31,6 @@ class AutoLockStore: StateStore {
         self.router = router
     }
 
-    @MainActor
     func handle(action: AutoLockAction) async {
         switch action {
         case .optionSelected(let autoLock):

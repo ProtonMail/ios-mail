@@ -21,7 +21,7 @@ import proton_app_uniffi
 @testable import InboxIAP
 
 final class OnlineExecutorDummy: OnlineExecutor {
-    func executeWhenOnline(callback: any LiveQueryCallback) {
-        callback.onUpdate()
+    func executeWhenOnline(callback: any ExecuteWhenOnlineCallback) {
+        callback.onOnline()
     }
 }

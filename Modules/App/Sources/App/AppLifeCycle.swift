@@ -90,6 +90,7 @@ extension AppLifeCycle {
     @MainActor
     private func applicationServicesInitialisation() {
         let testService = TestService()
+        let networkMonitor = NetworkMonitoringService.shared
         let appContext = AppContext.shared
         let appIconBadgeService = AppIconBadgeService(appContext: appContext)
         let legacyMigrationService = LegacyMigrationService.shared
@@ -119,6 +120,7 @@ extension AppLifeCycle {
         applicationServices = .init(
             setUpServices: [
                 testService,
+                networkMonitor,
                 appContext,
                 legacyMigrationService,
                 notificationAuthorizationService,

@@ -47,6 +47,8 @@ private extension DraftAttachmentUploadErrorReason {
             L10n.DraftAttachmentUploadError.retryInvalidState
         case .tooManyAttachments:
             L10n.DraftAttachmentUploadError.tooManyAttachments
+        case .timeout:
+            L10n.DraftAttachmentUploadError.timeout
         }
     }
 }
@@ -127,6 +129,10 @@ private extension DraftSaveErrorReason {
             L10n.DraftSaveError.recipientInvalidAddress
         case .protonRecipientDoesNotExist:
             L10n.DraftSaveError.protonRecipientNotFound
+        case .tooManyAttachments:
+            L10n.DraftSaveError.tooManyAttachments
+        case .attachmentTooLarge, .totalAttachmentSizeTooLarge:
+            L10n.DraftSaveError.attachmentTooLarge
         }
     }
 }

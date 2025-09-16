@@ -22,6 +22,7 @@ import proton_app_uniffi
 import SwiftUI
 
 struct MailboxItemsListView<EmptyView: View>: View {
+    @EnvironmentObject var toastStateStore: ToastStateStore
     let config: MailboxItemsListViewConfiguration
     @ViewBuilder let emptyView: EmptyView
     @ObservedObject private(set) var selectionState: SelectionModeState
@@ -53,6 +54,9 @@ struct MailboxItemsListView<EmptyView: View>: View {
     var body: some View {
         if let mailbox {
             listView
+                .onChange(of: selectionState.hasItems) { _, shouldShowToolbar in
+                    toastStateStore.state.bottomBar.isVisible = shouldShowToolbar
+                }
                 .animation(.none, value: selectionState.hasItems)
                 .toolbar(selectionState.hasItems ? .visible : .hidden, for: .bottomBar)
                 .animation(.default, value: selectionState.hasItems)

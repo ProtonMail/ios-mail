@@ -46,9 +46,10 @@ struct SingleFolderNodeView<UnreadText: View>: View {
     var body: some View {
         VStack {
             SidebarItemButton(item: .folder(folder), action: { selected(folder) }) {
-                HStack {
+                HStack(spacing: .zero) {
                     Image(folder.childFolders.isEmpty ? DS.Icon.icFolderFilled : DS.Icon.icFoldersFilled)
                         .renderingMode(.template)
+                        .resizable()
                         .square(size: 20)
                         .tint(folder.displayColor)
                         .padding(.trailing, DS.Spacing.extraLarge)
@@ -74,12 +75,12 @@ struct SingleFolderNodeView<UnreadText: View>: View {
                         .animation(.default, value: isExpanded)
                         .accessibilityIdentifier(SidebarFolderNodeViewIdentifiers.chevronItem)
                     }
-                    VStack {
+                    Group {
                         if let unreadFormatted = UnreadCountFormatter.stringIfGreaterThan0(count: folder.unreadCount) {
                             unreadTextView(unreadFormatted, folder.isSelected)
                         }
                     }
-                    .frame(width: 32, alignment: .trailing)
+                    .frame(width: 35, alignment: .trailing)
                 }
                 .padding(.leading, padding)
                 .accessibilityElement(children: .contain)

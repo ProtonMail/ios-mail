@@ -19,6 +19,7 @@ import AccountLogin
 import AccountPassword
 import InboxCore
 import InboxCoreUI
+import InboxIAP
 import InboxDesignSystem
 import proton_app_uniffi
 import SwiftUI
@@ -39,14 +40,16 @@ struct SettingsScreen: View {
     init(
         state: SettingsState = .initial,
         mailUserSession: MailUserSession,
-        accountAuthCoordinator: AccountAuthCoordinator
+        accountAuthCoordinator: AccountAuthCoordinator,
+        upsellCoordinator: UpsellCoordinator
     ) {
         _state = .init(initialValue: state)
         _router = .init(wrappedValue: .init())
         self.provider = .init(mailUserSession: mailUserSession)
         self.viewFactory = .init(
             mailUserSession: mailUserSession,
-            accountAuthCoordinator: accountAuthCoordinator
+            accountAuthCoordinator: accountAuthCoordinator,
+            upsellCoordinator: upsellCoordinator
         )
     }
 
@@ -322,7 +325,11 @@ private extension SettingsPreference {
 #if DEBUG
     #Preview {
         NavigationStack {
-            SettingsScreen(mailUserSession: MailUserSession(noPointer: .init()), accountAuthCoordinator: .mock())
+            SettingsScreen(
+                mailUserSession: MailUserSession(noPointer: .init()),
+                accountAuthCoordinator: .mock(),
+                upsellCoordinator: .init(mailUserSession: .dummy, configuration: .mail)
+            )
         }
     }
 #endif

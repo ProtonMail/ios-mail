@@ -75,10 +75,6 @@ extension MailboxListView {
                 }
             },
             onSwipeAction: { [weak model] context in
-                if case .moveTo = context.action {
-                    model?.paginatedDataSource.removeItemsLocally(ids: [context.itemID])
-                }
-
                 model?.onMailboxItemAction(context, toastStateStore: toastStateStore)
             }
         )

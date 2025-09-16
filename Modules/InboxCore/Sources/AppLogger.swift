@@ -146,6 +146,7 @@ extension AppLogger {
         case thirtySecondsBackgroundTask
         case userSessions
         case webView
+        case sentryConfiguration
 
         var rawValue: String {
             let string = String(describing: self)

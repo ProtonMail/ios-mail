@@ -27,7 +27,6 @@ final class AppSettingsStateStore: StateStore, Sendable {
     private let urlOpener: URLOpener
     private let appLangaugeProvider: AppLangaugeProvider
 
-    @MainActor
     init(
         state: AppSettingsState,
         appSettingsRepository: AppSettingsRepository,
@@ -43,7 +42,6 @@ final class AppSettingsStateStore: StateStore, Sendable {
         self.appLangaugeProvider = .init(currentLocale: currentLocale, mainBundle: mainBundle)
     }
 
-    @MainActor
     func handle(action: AppSettingsAction) async {
         switch action {
         case .notificationButtonTapped:
@@ -67,7 +65,6 @@ final class AppSettingsStateStore: StateStore, Sendable {
         }
     }
 
-    @MainActor
     func presentUpsellScreen(presenter: UpsellScreenPresenter) async throws {
         let upsellScreenModel = try await presenter.presentUpsellScreen(entryPoint: .mobileSignature)
         state = state.copy(\.presentedUpsell, to: upsellScreenModel)
@@ -91,7 +88,6 @@ final class AppSettingsStateStore: StateStore, Sendable {
         await refreshStoredAppSettings()
     }
 
-    @MainActor
     private func refreshDeviceSettings() async {
         let areNotificationsEnabled = await areNotificationsEnabled()
         state =
@@ -100,7 +96,6 @@ final class AppSettingsStateStore: StateStore, Sendable {
             .copy(\.appLanguage, to: appLangaugeProvider.appLangauge)
     }
 
-    @MainActor
     private func refreshStoredAppSettings() async {
         do {
             let settings = try await appSettingsRepository.getAppSettings().get()
@@ -110,7 +105,6 @@ final class AppSettingsStateStore: StateStore, Sendable {
         }
     }
 
-    @MainActor
     private func refreshCustomSettings() async {
         guard let userSession = AppContext.shared.sessionState.userSession else {
             return
@@ -154,7 +148,6 @@ final class AppSettingsStateStore: StateStore, Sendable {
         }
     }
 
-    @MainActor
     private func openNativeAppSettings() async {
         await urlOpener.open(.settings, options: [:])
     }

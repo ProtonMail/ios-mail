@@ -43,7 +43,8 @@ struct ConversationDetailScreen: View {
                 seed: seed,
                 draftPresenter: draftPresenter,
                 backOnlineActionExecutor: .init(mailUserSession: { AppContext.shared.userSession }),
-                snoozeService: snoozeService
+                snoozeService: snoozeService,
+                messageAppearanceOverrideStore: MessageAppearanceOverrideStore()
             ))
         self._navigationPath = .init(projectedValue: navigationPath)
         self.draftPresenter = draftPresenter
@@ -327,7 +328,7 @@ extension ConversationDetailSeed {
         switch self {
         case .mailboxItem(_, let selectedMailbox):
             selectedMailbox.systemFolder == .outbox
-        case .pushNotification:
+        case .pushNotification, .searchResultItem:
             false
         }
     }

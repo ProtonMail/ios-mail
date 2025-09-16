@@ -30,6 +30,7 @@ struct ProtonMailApp: App {
     private let analytics = Analytics()
     private let appUIStateStore = AppUIStateStore()
     private let legacyMigrationStateStore: LegacyMigrationStateStore
+    private let refreshToolbarNotifier = RefreshToolbarNotifier()
     private let toastStateStore = ToastStateStore(initialState: .initial)
     @StateObject var appAppearanceStore = AppAppearanceStore.shared
 
@@ -40,11 +41,15 @@ struct ProtonMailApp: App {
                     .environment(\.mainWindowSize, proxy.size)
                     .environmentObject(appUIStateStore)
                     .environmentObject(legacyMigrationStateStore)
+                    .environmentObject(refreshToolbarNotifier)
                     .environmentObject(toastStateStore)
                     .environmentObject(appAppearanceStore)
+                    .environmentObject(analytics)
             }
             .task {
-                await appAppearanceStore.updateColorScheme()
+                async let analytics: Void = configureAnalyticsIfNeeded(analytics: analytics)
+                async let updateColorScheme: Void = appAppearanceStore.updateColorScheme()
+                _ = await (analytics, updateColorScheme)
             }
             .preferredColorScheme(appAppearanceStore.colorScheme)
         }
@@ -52,13 +57,12 @@ struct ProtonMailApp: App {
 
     init() {
         legacyMigrationStateStore = .init(toastStateStore: toastStateStore)
-        configureAnalyticsIfNeeded(analytics: analytics)
         DynamicFontSize.capSupportedSizeCategories()
     }
 
-    func configureAnalyticsIfNeeded(analytics: Analytics) {
+    func configureAnalyticsIfNeeded(analytics: Analytics) async {
         if AnalyticsState.shouldConfigureAnalytics {
-            analytics.configure()
+            await analytics.enable(configuration: .default)
         }
     }
 }
@@ -67,6 +71,7 @@ private struct RootView: View {
     @EnvironmentObject private var sceneDelegate: SceneDelegate
     @EnvironmentObject private var legacyMigrationStateStore: LegacyMigrationStateStore
     @EnvironmentObject private var toastStateStore: ToastStateStore
+    @EnvironmentObject private var analytics: Analytics
 
     // The route determines the screen that will be rendered
     @ObservedObject private var appContext: AppContext
@@ -118,7 +123,8 @@ private struct RootView: View {
                     HomeScreen(
                         appContext: appContext,
                         userSession: activeUserSession,
-                        toastStateStore: toastStateStore
+                        toastStateStore: toastStateStore,
+                        analytics: analytics
                     )
                     .id(activeUserSession.userId())  // Forces the child view to be recreated when the user account changes
 

@@ -44,7 +44,7 @@ final class HomeScreenModalFactoryTests: XCTestCase {
     // MARK: - Private
 
     private func modal(for state: HomeScreen.ModalState) throws -> InspectableView<ViewType.ClassifiedView> {
-        let factory = HomeScreenModalFactory(mailUserSession: .dummy, accountAuthCoordinator: .mock())
+        let factory = HomeScreenModalFactory(mailUserSession: .dummy, accountAuthCoordinator: .mock(), upsellCoordinator: .dummy)
         return try factory.makeModal(for: state, draftPresenter: ContactsDraftPresenterDummy()).inspect()
     }
 }

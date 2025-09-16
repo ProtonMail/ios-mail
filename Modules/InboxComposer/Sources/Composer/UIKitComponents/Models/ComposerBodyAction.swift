@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 enum ComposerBodyAction: Equatable {
+    case insertText(text: String)
     case insertInlineImages(cids: [String])
     case removeInlineImage(cid: String)
     case reloadBody(html: String)

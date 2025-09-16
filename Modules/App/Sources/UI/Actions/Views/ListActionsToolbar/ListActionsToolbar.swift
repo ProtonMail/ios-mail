@@ -161,12 +161,6 @@ private struct ListActionBarViewModifier: ViewModifier {
                 let bottomSafeAreaToRecreate = DS.Spacing.large
                 toastStateStore.state.bottomBar.height = toolbarHeight + bottomSafeAreaToRecreate
             }
-            .onAppear {
-                toastStateStore.state.bottomBar.isVisible = true
-            }
-            .onDisappear {
-                toastStateStore.state.bottomBar.isVisible = false
-            }
         }
     }
 

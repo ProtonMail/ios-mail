@@ -57,17 +57,6 @@ final class PaginatedListDataSource<Item: Equatable & Sendable>: ObservableObjec
         fetchNextPageItems()
     }
 
-    /// Optimistically removes items with matching IDs from local state so the row collapse animates smoothly.
-    /// Requires `id`; this is a UI-only change (no network/provider call).
-    ///
-    /// - Parameter ids: IDs produced using the same `id`.
-    /// - Complexity: O(n) over `state.items`.
-    func removeItemsLocally(ids: some Sequence<ID>) {
-        guard let id else { return }
-        let idSet = Set(ids)
-        state.items.removeAll { item in idSet.contains(id(item)) }
-    }
-
     private func fetchNextPageItems() {
         updateStateMarkIsFetchingNextPage()
         provider.fetchMore(state.isFetchingFirstPage)
@@ -84,6 +73,9 @@ final class PaginatedListDataSource<Item: Equatable & Sendable>: ObservableObjec
         switch update.value {
         case .append(let items):
             newState.items.append(contentsOf: items)
+        case let .replaceRange(from, to, items):
+            guard isSafeIndex(from), isSafeIndex(to) else { break }
+            newState.items.replaceSubrange(from..<to, with: items)
         case let .replaceFrom(index, items):
             guard isSafeIndex(index) else { break }
             newState.items.replaceSubrange(index..<newState.items.endIndex, with: items)

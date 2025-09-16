@@ -47,7 +47,7 @@ struct CustomizeToolbarRepository: Sendable {
         )
         let defaultActions = CustomizeToolbarActions(
             selected: defaultActions,
-            unselected: allActions.filter { action in !selectedActions.contains(action) }
+            unselected: allActions.filter { action in !self.defaultActions.contains(action) }
         )
         return .init(current: current, defaultActions: defaultActions)
     }

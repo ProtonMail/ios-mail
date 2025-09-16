@@ -20,7 +20,7 @@ import InboxCore
 import proton_app_uniffi
 import WebKit
 
-final class HtmlBodyWebViewInterface: NSObject {
+final class HtmlBodyWebViewInterface: NSObject, HtmlBodyWebViewInterfaceProtocol {
 
     enum Event {
         case onContentHeightChange(height: CGFloat)
@@ -30,6 +30,7 @@ final class HtmlBodyWebViewInterface: NSObject {
         case onInlineImageRemoved(cid: String)
         case onInlineImageTapped(cid: String, imageRect: CGRect)
         case onImagePasted(image: Data)
+        case onTextPasted(text: String)
     }
 
     let webView: WKWebView
@@ -83,9 +84,24 @@ final class HtmlBodyWebViewInterface: NSObject {
     }
 
     @MainActor
+    func insertText(_ text: String) async {
+        await insertHtml(text, wrapInQuotes: false)
+    }
+
+    @MainActor
     func insertImages(_ contentIds: [String]) async {
         let inlineImageHTML = InlineImageHTML(cids: contentIds).content
-        let function = "\(HtmlBodyDocument.JSFunction.insertImages.rawValue)('\(inlineImageHTML)');"
+        await insertHtml(inlineImageHTML, wrapInQuotes: true)
+    }
+
+    @MainActor
+    private func insertHtml(_ html: String, wrapInQuotes: Bool) async {
+        let function: String
+        if wrapInQuotes {
+            function = "\(HtmlBodyDocument.JSFunction.insertHtmlAtCurrentPosition.rawValue)('\(html)');"
+        } else {
+            function = "\(HtmlBodyDocument.JSFunction.insertHtmlAtCurrentPosition.rawValue)(\(html));"
+        }
 
         await withCheckedContinuation { continuation in
             webView.evaluateJavaScript(function) { _, error in
@@ -140,6 +156,9 @@ final class HtmlBodyWebViewInterface: NSObject {
         case .imagePasted:
             guard let data = readImageData(from: userInfo) else { return }
             onEvent?(.onImagePasted(image: data))
+        case .textPasted:
+            guard let text = readText(from: userInfo) else { return }
+            onEvent?(.onTextPasted(text: text))
         }
     }
 
@@ -162,6 +181,14 @@ final class HtmlBodyWebViewInterface: NSObject {
             return nil
         }
         return data
+    }
+
+    private func readText(from dict: [String: Any]) -> String? {
+        guard let text = dict[HtmlBodyDocument.EventAttributeKey.text] as? String else {
+            AppLogger.log(message: "no text retrieved", category: .composer, isError: true)
+            return nil
+        }
+        return text
     }
 }
 

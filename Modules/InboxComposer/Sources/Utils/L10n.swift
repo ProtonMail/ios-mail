@@ -381,6 +381,17 @@ enum L10n {
             "Invalid email address. Check address and try again.",
             comment: "Error in the context of saving a draft before being sent."
         )
+
+        static let tooManyAttachments = LocalizedStringResource(
+            "Too many attachments. Send them in multiple emails.",
+            comment: "Error in the context of saving a draft."
+        )
+
+        static let attachmentTooLarge = LocalizedStringResource(
+            "Attachments too large. Keep attachment size under 25 MB.",
+            comment: "Error in the context of saving a draft."
+        )
+
     }
 
     enum DraftSendError {
@@ -492,6 +503,11 @@ enum L10n {
         static let retryInvalidState = LocalizedStringResource(
             "Retry not possible. Attachment is uploading or already uploaded.",
             comment: "Error in the context of retrying to upload a draft."
+        )
+
+        static let timeout = LocalizedStringResource(
+            "Problem uploading attachment. Please try again.",
+            comment: "Error in the context of saving a draft before being sent."
         )
 
         static let tooManyAttachments = LocalizedStringResource(

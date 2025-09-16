@@ -21,8 +21,7 @@ import UIKit
 import WebKit
 
 final class HtmlBodyEditorController: UIViewController, BodyEditor {
-
-    private let htmlInterface: HtmlBodyWebViewInterface
+    private let htmlInterface: HtmlBodyWebViewInterfaceProtocol
     private var webView: WKWebView { htmlInterface.webView }
     private var heightConstraint: NSLayoutConstraint!
     private lazy var initialFocusState = BodyInitialFocusState { [weak self] in
@@ -36,6 +35,19 @@ final class HtmlBodyEditorController: UIViewController, BodyEditor {
         webViewMemoryPressureHandler: WebViewMemoryPressureProtocol = WebViewMemoryPressureHandler(loggerCategory: .composer)
     ) {
         self.htmlInterface = HtmlBodyWebViewInterface(webView: SubviewFactory.webView(imageProxy: imageProxy))
+        self.webViewMemoryPressureHandler = webViewMemoryPressureHandler
+        super.init(nibName: nil, bundle: nil)
+        webViewMemoryPressureHandler.contentReload { [weak self] in
+            self?.onEvent?(.onReloadAfterMemoryPressure)
+        }
+    }
+
+    /// Used for testing
+    init(
+        htmlInterface: HtmlBodyWebViewInterfaceProtocol,
+        webViewMemoryPressureHandler: WebViewMemoryPressureProtocol
+    ) {
+        self.htmlInterface = htmlInterface
         self.webViewMemoryPressureHandler = webViewMemoryPressureHandler
         super.init(nibName: nil, bundle: nil)
         webViewMemoryPressureHandler.contentReload { [weak self] in
@@ -100,6 +112,10 @@ final class HtmlBodyEditorController: UIViewController, BodyEditor {
                     return
                 }
                 onEvent?(.onImagePasted(image: image))
+            case .onTextPasted(let text):
+                let styleStrippedText = HtmlSanitizer.removeStyleAttribute(html: text)
+                let sanitisedText = HtmlSanitizer.applyStringLiteralEscapingRules(html: styleStrippedText)
+                handleBodyAction(.insertText(text: sanitisedText))
             }
         }
     }
@@ -114,6 +130,8 @@ final class HtmlBodyEditorController: UIViewController, BodyEditor {
 
     func handleBodyAction(_ action: ComposerBodyAction) {
         switch action {
+        case .insertText(let text):
+            Task { await htmlInterface.insertText(text) }
         case .insertInlineImages(let cids):
             Task { await htmlInterface.insertImages(cids) }
         case .removeInlineImage(let cid):
@@ -200,10 +218,24 @@ private final actor BodyInitialFocusState {
 
     private var state: State = .bodyNotLoaded
     private var shouldSetFocusWhenLoaded: Bool = false
+    private var focusHasBeenSet: Bool = false
     private let setFocusAction: (() async -> Void)
 
     init(setFocusAction: @escaping (() async -> Void)) {
         self.setFocusAction = setFocusAction
+    }
+
+    func setFocusWhenLoaded() async {
+        switch state {
+        case .bodyNotLoaded:
+            shouldSetFocusWhenLoaded = true
+        case .bodyLoaded, .done:
+            await setFocus()
+        }
+    }
+
+    func bodyWasLoaded() async {
+        await moveToNextState()
     }
 
     private func moveToNextState() async {
@@ -213,7 +245,7 @@ private final actor BodyInitialFocusState {
             state = .bodyLoaded
         case .bodyLoaded:
             if shouldSetFocusWhenLoaded {
-                await setFocusAction()
+                await setFocus()
             }
             state = .done
         case .done:
@@ -222,11 +254,9 @@ private final actor BodyInitialFocusState {
         await moveToNextState()
     }
 
-    func setFocusWhenLoaded() {
-        shouldSetFocusWhenLoaded = true
-    }
-
-    func bodyWasLoaded() async {
-        await moveToNextState()
+    private func setFocus() async {
+        guard !focusHasBeenSet else { return }
+        focusHasBeenSet = true
+        await setFocusAction()
     }
 }

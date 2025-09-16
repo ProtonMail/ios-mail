@@ -15,8 +15,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import InboxCore
 import proton_app_uniffi
 
 extension ApiConfig {
-    static let current = Self.init(envId: .current)
+    static let current = Self.init(userAgent: UserAgent.value(appName: "ProtonMail"), envId: .current)
 }

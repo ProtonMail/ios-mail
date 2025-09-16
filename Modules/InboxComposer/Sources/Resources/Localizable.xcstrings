@@ -3570,7 +3570,7 @@
       }
     },
     "Attachments too large. Keep attachment size under 25 MB." : {
-      "comment" : "Error in the context of saving a draft before being sent.",
+      "comment" : "Error in the context of saving a draft before being sent.\nError in the context of saving a draft.",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -12216,6 +12216,9 @@
         }
       }
     },
+    "Problem uploading attachment. Please try again." : {
+      "comment" : "Error in the context of saving a draft before being sent."
+    },
     "Remove" : {
       "comment" : "Confirmation for the remove attachment action in a Draft.",
       "localizations" : {
@@ -18215,7 +18218,7 @@
       }
     },
     "Too many attachments. Send them in multiple emails." : {
-      "comment" : "Error in the context of saving a draft before being sent.",
+      "comment" : "Error in the context of saving a draft before being sent.\nError in the context of saving a draft.",
       "localizations" : {
         "be" : {
           "stringUnit" : {

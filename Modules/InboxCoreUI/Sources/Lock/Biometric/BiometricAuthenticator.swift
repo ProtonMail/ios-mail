@@ -18,16 +18,16 @@
 import InboxCore
 import LocalAuthentication
 
-public struct BiometricAuthenticator: Sendable {
+public struct BiometricAuthenticator {
     private let method: AuthenticationMethod
 
     public init(method: AuthenticationMethod) {
         self.method = method
     }
 
-    public enum AuthenticationMethod: Sendable {
-        case builtIn(@Sendable () -> LAContext)
-        case external(@Sendable () async throws -> Void)
+    public enum AuthenticationMethod {
+        case builtIn(() -> LAContext)
+        case external(() async throws -> Void)
     }
 
     public enum AuthenticationStatus: Sendable {

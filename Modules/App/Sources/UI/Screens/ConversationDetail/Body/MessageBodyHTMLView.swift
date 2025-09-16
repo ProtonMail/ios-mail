@@ -26,6 +26,7 @@ struct MessageBodyHTMLView: View {
     @Environment(\.openURL) private var openURLWithoutConfirmation
     @Binding var bodyContentHeight: CGFloat
     @State var linkConfirmationAlert: AlertModel?
+    @State var orientationChangeInProgress = false
 
     let messageBody: MessageBodyStateStore.State.Body
 
@@ -74,6 +75,8 @@ struct MessageBodyHTMLView: View {
                         confirmLink: confirmLink
                     )
                     .environment(\.openURL, openURLWithConfirmation)
+                    .environment(\.orientationChangeInProgress, orientationChangeInProgress)
+                    .sizeTransition(inProgress: $orientationChangeInProgress)
                 }
             }
             .frame(height: max(bodyContentHeight, 1))  // WKWebView needs a non-zero height to render properly, before we calculate the final size

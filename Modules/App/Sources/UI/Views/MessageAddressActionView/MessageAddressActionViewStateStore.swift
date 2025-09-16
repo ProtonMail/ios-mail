@@ -70,7 +70,6 @@ final class MessageAddressActionViewStateStore: StateStore {
 
     // MARK: - Public
 
-    @MainActor
     func handle(action: Action) async {
         switch action {
         case .onTap(let tapAction):
@@ -82,7 +81,6 @@ final class MessageAddressActionViewStateStore: StateStore {
 
     // MARK: - Private
 
-    @MainActor
     private func handleTap(action: MessageAddressAction) async {
         switch action {
         case .newMessage:
@@ -107,7 +105,6 @@ final class MessageAddressActionViewStateStore: StateStore {
         }
     }
 
-    @MainActor
     private func handleAlert(action: BlockAddressAlertAction) async {
         switch action {
         case .cancel:

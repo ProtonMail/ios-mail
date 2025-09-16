@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import InboxCore
+import InboxIAP
 import proton_app_uniffi
 import SwiftUI
 import Combine
@@ -47,12 +48,13 @@ enum SettingsRoute: Routable {
 struct SettingsViewFactory {
     let mailUserSession: MailUserSession
     let accountAuthCoordinator: AccountAuthCoordinator
+    let upsellCoordinator: UpsellCoordinator
 
     @MainActor @ViewBuilder
     func makeView(for route: SettingsRoute) -> some View {
         switch route {
         case .webView(let webPage):
-            ProtonAuthenticatedWebView(webViewPage: webPage, upsellCoordinator: nil)
+            ProtonAuthenticatedWebView(webViewPage: webPage, upsellCoordinator: upsellCoordinator)
                 .edgesIgnoringSafeArea(.bottom)
                 .navigationBarTitleDisplayMode(.inline)
                 .navigationTitle(webPage.title.string)

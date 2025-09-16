@@ -28,13 +28,13 @@ class ForegroundWorkService: ApplicationServiceWillEnterForeground, ApplicationS
     // MARK: - ApplicationServiceWillEnterForeground
 
     func willEnterForeground() {
-        mailSession().resumeWork()
+        mailSession().onEnterForeground()
     }
 
     // MARK: - ApplicationServiceDidEnterBackground
 
     func didEnterBackground() {
-        mailSession().pauseWorkAndWait()
+        mailSession().onExitForeground()
     }
 
 }
