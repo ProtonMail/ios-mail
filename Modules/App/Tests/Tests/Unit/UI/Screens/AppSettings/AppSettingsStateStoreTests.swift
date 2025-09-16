@@ -223,16 +223,3 @@ private extension AppSettingsDiff {
     }
 
 }
-
-private class AppIconConfiguratorSpy: AppIconConfigurable {
-    private(set) var setAlternateIconNameCalls: [String?] = []
-
-    // MARK: - AppIconConfigurable
-
-    var alternateIconName: String?
-    var supportsAlternateIcons: Bool { true }
-
-    func setAlternateIconName(_ alternateIconName: String?) async throws {
-        setAlternateIconNameCalls.append(alternateIconName)
-    }
-}

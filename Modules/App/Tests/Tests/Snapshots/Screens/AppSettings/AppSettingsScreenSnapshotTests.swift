@@ -23,8 +23,21 @@ import Testing
 
 @MainActor
 struct AppSettingsScreenSnapshotTests {
-    @Test(arguments: [MobileSignatureStatus.enabled, .disabled, .needsPaidVersion])
-    func testAppSettingsLayoutCorrectly(mobileSignatureStatus: MobileSignatureStatus) {
+    struct TestCase {
+        let signatureStatus: MobileSignatureStatus
+        let appIcon: AppIcon
+        let supportsAlternateIcons: Bool
+    }
+
+    @Test(arguments: [
+        TestCase(signatureStatus: .enabled, appIcon: .default, supportsAlternateIcons: true),
+        TestCase(signatureStatus: .disabled, appIcon: .notes, supportsAlternateIcons: true),
+        TestCase(signatureStatus: .needsPaidVersion, appIcon: .default, supportsAlternateIcons: false),
+    ])
+    func testAppSettingsLayoutCorrectly(testCase: TestCase) {
+        let appIconConfigurator = AppIconConfiguratorSpy()
+        appIconConfigurator.stubbedSupportsAlternateIcons = testCase.supportsAlternateIcons
+
         let sut = AppSettingsScreen(
             state: .init(
                 areNotificationsEnabled: false,
@@ -36,10 +49,11 @@ struct AppSettingsScreenSnapshotTests {
                     useCombineContacts: false,
                     useAlternativeRouting: true
                 ),
-                appIcon: .notes,
+                appIcon: testCase.appIcon,
                 isAppearanceMenuShown: false,
-                mobileSignatureStatus: mobileSignatureStatus
+                mobileSignatureStatus: testCase.signatureStatus
             ),
+            appIconConfigurator: appIconConfigurator,
             appSettingsRepository: AppSettingsRepositorySpy()
         )
 
@@ -48,7 +62,7 @@ struct AppSettingsScreenSnapshotTests {
                 matching: UIHostingController(rootView: sut).view,
                 styles: [userInterfaceStyle],
                 preferredHeight: 900,
-                named: "\(mobileSignatureStatus)",
+                named: "\(testCase.signatureStatus)_\(testCase.appIcon)",
             )
         }
     }

@@ -29,6 +29,7 @@ struct AppSettingsScreen: View {
     @EnvironmentObject var router: Router<SettingsRoute>
     @EnvironmentObject private var upsellCoordinator: UpsellCoordinator
     @StateObject var store: AppSettingsStateStore
+    private let appIconConfigurator: AppIconConfigurable
 
     init(
         state: AppSettingsState? = .none,
@@ -42,6 +43,7 @@ struct AppSettingsScreen: View {
                 appIconConfigurator: appIconConfigurator
             )
         )
+        self.appIconConfigurator = appIconConfigurator
     }
 
     var body: some View {
@@ -73,7 +75,9 @@ struct AppSettingsScreen: View {
                                     value: store.state.storedAppSettings.protection.humanReadable.string,
                                     action: { router.go(to: .appProtection) }
                                 )
-                                appIconButton
+                                if appIconConfigurator.supportsAlternateIcons {
+                                    appIconButton
+                                }
                             }
                             FormSection(footer: L10n.Settings.App.combinedContactsInfo) {
                                 FormSwitchView(
