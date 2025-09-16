@@ -57,6 +57,7 @@ struct ConversationDetailScreen: View {
                 actions: model.conversationToolbarActions,
                 mailbox: { model.mailbox.unsafelyUnwrapped },
                 mailUserSession: mailUserSession,
+                messageAppearanceOverrideStore: model.messageAppearanceOverrideStore,
                 editToolbarTapped: { toolbarType in model.actionSheets.editToolbar = toolbarType },
                 messageActionSelected: { action in
                     if let messageID = model.state.singleMessageIDInMessageMode {

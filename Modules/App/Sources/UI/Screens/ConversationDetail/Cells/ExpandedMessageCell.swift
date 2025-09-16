@@ -27,6 +27,7 @@ struct ExpandedMessageCell: View {
     private let mailUserSession: MailUserSession
     private let uiModel: ExpandedMessageCellUIModel
     private let draftPresenter: RecipientDraftPresenter
+    private let messageAppearanceOverrideStore: MessageAppearanceOverrideStore
     private let onEvent: (ExpandedMessageCellEvent) -> Void
     private let htmlLoaded: () -> Void
     private let areActionsHidden: Bool
@@ -43,6 +44,7 @@ struct ExpandedMessageCell: View {
         mailUserSession: MailUserSession,
         uiModel: ExpandedMessageCellUIModel,
         draftPresenter: RecipientDraftPresenter,
+        messageAppearanceOverrideStore: MessageAppearanceOverrideStore,
         areActionsHidden: Bool,
         attachmentIDToOpen: Binding<ID?>,
         onEvent: @escaping (ExpandedMessageCellEvent) -> Void,
@@ -52,6 +54,7 @@ struct ExpandedMessageCell: View {
         self.mailUserSession = mailUserSession
         self.uiModel = uiModel
         self.draftPresenter = draftPresenter
+        self.messageAppearanceOverrideStore = messageAppearanceOverrideStore
         self.areActionsHidden = areActionsHidden
         self._attachmentIDToOpen = attachmentIDToOpen
         self.onEvent = onEvent
@@ -64,6 +67,7 @@ struct ExpandedMessageCell: View {
                 uiModel: uiModel.messageDetails,
                 mailbox: mailbox,
                 mailUserSession: mailUserSession,
+                messageAppearanceOverrideStore: messageAppearanceOverrideStore,
                 actionButtonsState: actionButtonsState,
                 onEvent: { event in
                     switch event {
@@ -164,6 +168,7 @@ enum ExpandedMessageCellEvent {
                 messageDetails: messageDetails
             ),
             draftPresenter: DraftPresenter.dummy(),
+            messageAppearanceOverrideStore: .init(),
             areActionsHidden: false,
             attachmentIDToOpen: .constant(nil),
             onEvent: { _ in },
@@ -178,6 +183,7 @@ enum ExpandedMessageCellEvent {
                 messageDetails: messageDetails
             ),
             draftPresenter: DraftPresenter.dummy(),
+            messageAppearanceOverrideStore: .init(),
             areActionsHidden: false,
             attachmentIDToOpen: .constant(nil),
             onEvent: { _ in },

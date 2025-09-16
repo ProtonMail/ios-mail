@@ -152,6 +152,7 @@ struct ConversationDetailListView: View {
             mailUserSession: mailUserSession,
             uiModel: uiModel,
             draftPresenter: draftPresenter,
+            messageAppearanceOverrideStore: model.messageAppearanceOverrideStore,
             areActionsHidden: model.areActionsHidden,
             attachmentIDToOpen: $model.attachmentIDToOpen,
             onEvent: { onExpandedMessageCellEvent($0, uiModel: uiModel) },

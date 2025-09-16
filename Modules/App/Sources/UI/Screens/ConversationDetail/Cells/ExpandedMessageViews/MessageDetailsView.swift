@@ -34,6 +34,7 @@ struct MessageDetailsView: View {
     let uiModel: MessageDetailsUIModel
     let mailbox: Mailbox
     let mailUserSession: MailUserSession
+    let messageAppearanceOverrideStore: MessageAppearanceOverrideStore
     let actionButtonsState: ActionButtonsState
     let onEvent: (MessageDetailsEvent) -> Void
 
@@ -231,6 +232,7 @@ struct MessageDetailsView: View {
                 state: .initial(messageID: uiModel.id, showEditToolbar: false),
                 mailbox: mailbox,
                 mailUserSession: mailUserSession,
+                messageAppearanceOverrideStore: messageAppearanceOverrideStore,
                 actionTapped: { action in onEvent(.onMessageAction(action)) },
                 editToolbarTapped: { onEvent(.onEditToolbar) }
             ) {
@@ -480,6 +482,7 @@ extension Array where Element == MessageDetail.Recipient {
         uiModel: model,
         mailbox: .dummy,
         mailUserSession: .dummy,
+        messageAppearanceOverrideStore: .init(),
         actionButtonsState: .enabled,
         onEvent: { _ in }
     )
