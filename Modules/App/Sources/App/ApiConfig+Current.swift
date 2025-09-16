@@ -19,5 +19,5 @@ import InboxCore
 import proton_app_uniffi
 
 extension ApiConfig {
-    static let current = Self.init(userAgent: UserAgent.value(appName: "ProtonMail"), envId: .current)
+    static let current = Self.init(envId: .current)
 }

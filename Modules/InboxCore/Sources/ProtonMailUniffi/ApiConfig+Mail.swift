@@ -19,13 +19,13 @@
 import proton_app_uniffi
 
 public extension ApiConfig {
-    init(userAgent: String, envId: ApiEnvId) {
-        self.init(userAgent: userAgent, envId: envId, proxy: nil, resolver: nil)
+    init(envId: ApiEnvId) {
+        self.init(userAgent: UserAgent.value(appName: "ProtonMail"), envId: envId, proxy: nil, resolver: nil)
     }
 }
 
 public extension ApiConfig {
     static var debugPreview: ApiConfig {
-        .init(userAgent: "mail debug", envId: .atlas)
+        .init(envId: .atlas)
     }
 }

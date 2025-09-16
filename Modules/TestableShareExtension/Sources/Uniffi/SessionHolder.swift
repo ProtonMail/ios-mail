@@ -44,7 +44,7 @@ final class SessionHolder {
         if let cachedMailSession {
             return cachedMailSession
         } else {
-            let apiConfig = ApiConfig(userAgent: "mail tests", envId: apiEnvId)
+            let apiConfig = ApiConfig(envId: apiEnvId)
             let params = MailSessionParamsFactory.make(origin: .iosShareExt, apiConfig: apiConfig)
             let newMailSession = try makeMailSession(params, KeychainSDKWrapper(), nil, ChallengePayloadProvider())
             cachedMailSession = newMailSession
