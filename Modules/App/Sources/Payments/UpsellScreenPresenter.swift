@@ -17,10 +17,11 @@
 
 import Foundation
 import InboxIAP
+import proton_app_uniffi
 
 @MainActor
 protocol UpsellScreenPresenter {
-    func presentUpsellScreen(entryPoint: UpsellScreenEntryPoint) async throws -> UpsellScreenModel
+    func presentUpsellScreen(entryPoint: UpsellEntryPoint) async throws -> UpsellScreenModel
 }
 
 extension UpsellCoordinator: UpsellScreenPresenter {}

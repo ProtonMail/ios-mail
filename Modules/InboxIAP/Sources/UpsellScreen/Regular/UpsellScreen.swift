@@ -215,7 +215,7 @@ public struct UpsellScreen: View {
 #Preview {
     Color.clear
         .sheet(isPresented: .constant(true)) {
-            UpsellScreen(model: .preview(entryPoint: .header))
+            UpsellScreen(model: .preview(entryPoint: .mailboxTopBar))
         }
         .environmentObject(ToastStateStore(initialState: .initial))
 }

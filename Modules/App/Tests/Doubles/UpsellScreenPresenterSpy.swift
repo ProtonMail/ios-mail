@@ -18,11 +18,13 @@
 @testable import ProtonMail
 @testable import InboxIAP
 
+import proton_app_uniffi
+
 class UpsellScreenPresenterSpy: UpsellScreenPresenter {
     var stubbedError: NSError?
-    private(set) var presentUpsellScreenCalled: [UpsellScreenEntryPoint] = []
+    private(set) var presentUpsellScreenCalled: [UpsellEntryPoint] = []
 
-    func presentUpsellScreen(entryPoint: UpsellScreenEntryPoint) async throws -> UpsellScreenModel {
+    func presentUpsellScreen(entryPoint: UpsellEntryPoint) async throws -> UpsellScreenModel {
         presentUpsellScreenCalled.append(entryPoint)
         if let stubbedError {
             throw stubbedError

@@ -205,7 +205,7 @@ struct HomeScreen: View {
     private func presentUpsellScreen() {
         Task {
             do {
-                let upsellScreenModel = try await upsellCoordinator.presentUpsellScreen(entryPoint: .sidebar)
+                let upsellScreenModel = try await upsellCoordinator.presentUpsellScreen(entryPoint: .navbarUpsell)
                 modalState = .upsell(upsellScreenModel)
             } catch {
                 toastStateStore.present(toast: .error(message: error.localizedDescription))

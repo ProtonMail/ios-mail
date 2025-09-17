@@ -17,6 +17,7 @@
 
 import InboxCore
 import InboxIAP
+import proton_app_uniffi
 import WebKit
 
 extension ProtonAuthenticatedWebModel {
@@ -41,12 +42,12 @@ extension ProtonAuthenticatedWebModel: WKScriptMessageHandler {
         }
     }
 
-    private func entryPoint(from messageBody: Any) -> UpsellScreenEntryPoint? {
+    private func entryPoint(from messageBody: Any) -> UpsellEntryPoint? {
         switch messageBody as? String {
         case "folders-action":
-            return .folders
+            return .foldersCreation
         case "labels-action":
-            return .labels
+            return .labelsCreation
         default:
             return nil
         }

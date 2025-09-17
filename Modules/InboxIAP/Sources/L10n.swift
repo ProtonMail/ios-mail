@@ -17,6 +17,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import proton_app_uniffi
 
 enum L10n {
     static let autoRenewalNotice = LocalizedStringResource("Auto-renews at the same price and terms unless canceled", bundle: .module, comment: "Notice at the bottom")
@@ -28,18 +29,22 @@ enum L10n {
     static let showLess = LocalizedStringResource("Show less", bundle: .module, comment: "Button to collapse a list")
     static let showMore = LocalizedStringResource("Show more", bundle: .module, comment: "Button to expand a list")
 
-    static func screenTitle(planName: String, entryPoint: UpsellScreenEntryPoint) -> LocalizedStringResource {
+    static func screenTitle(planName: String, entryPoint: UpsellEntryPoint) -> LocalizedStringResource {
         switch entryPoint {
-        case .autoDelete:
+        case .autoDeleteMessages:
             .init("Automated trash removal", bundle: .module, comment: "Title of the upsell page ")
         case .contactGroups:
             .init("Group your contacts", bundle: .module, comment: "Title of the upsell page")
-        case .folders, .labels:
+        case .dollarPromo, .mailboxTopBarPromo:
+            fatalError("This entry point is not used")
+        case .foldersCreation, .labelsCreation:
             .init("Need more labels or folders?", bundle: .module, comment: "Title of the upsell page")
-        case .header, .sidebar:
+        case .mailboxTopBar, .navbarUpsell:
             .init("Upgrade to \(planName)", bundle: .module, comment: "Title of the upsell page")
-        case .mobileSignature:
+        case .mobileSignatureEdit:
             .init("Personalize your signature", bundle: .module, comment: "Title of the upsell page")
+        case .postOnboarding:
+            fatalError("Onboarding upsell does not have a title")
         case .scheduleSend:
             .init("Schedule now, send later", bundle: .module, comment: "Title of the upsell page")
         case .snooze:
@@ -47,18 +52,22 @@ enum L10n {
         }
     }
 
-    static func screenSubtitle(planName: String, entryPoint: UpsellScreenEntryPoint) -> LocalizedStringResource {
+    static func screenSubtitle(planName: String, entryPoint: UpsellEntryPoint) -> LocalizedStringResource {
         switch entryPoint {
-        case .autoDelete:
+        case .autoDeleteMessages:
             .init("Deletes spam and trash after 30 days. Get this and more with \(planName).", bundle: .module, comment: "Subtitle of the upsell page")
         case .contactGroups:
             .init("Send group emails with ease. Enjoy this and more with \(planName).", bundle: .module, comment: "Subtitle of the upsell page")
-        case .folders, .labels:
+        case .dollarPromo, .mailboxTopBarPromo:
+            fatalError("This entry point is not used")
+        case .foldersCreation, .labelsCreation:
             .init("Create all you need to stay organized. Get this and more with \(planName).", bundle: .module, comment: "Subtitle of the upsell page")
-        case .header, .sidebar:
+        case .mailboxTopBar, .navbarUpsell:
             .init("To unlock more storage and premium features.", bundle: .module, comment: "Subtitle of the upsell page")
-        case .mobileSignature:
+        case .mobileSignatureEdit:
             .init("Make your mobile signature your own. Enjoy this and more with \(planName).", bundle: .module, comment: "Subtitle of the upsell page")
+        case .postOnboarding:
+            fatalError("Onboarding upsell does not have a subtitle")
         case .scheduleSend:
             .init("Customize when an email will be sent. Enjoy this and more with \(planName).", bundle: .module, comment: "Subtitle of the upsell page")
         case .snooze:

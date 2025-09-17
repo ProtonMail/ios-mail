@@ -52,7 +52,7 @@ final class EmptyFolderBannerStateStoreTests {
                     icon: DS.Icon.icTrashClock,
                     title: L10n.EmptyFolderBanner.freeUserTitle.string,
                     buttons: [.upgradePlan, .emptyLocation],
-                    presentedUpsell: .preview(entryPoint: .autoDelete)
+                    presentedUpsell: .preview(entryPoint: .autoDeleteMessages)
                 ))
     }
 
@@ -152,7 +152,7 @@ final class EmptyFolderBannerStateStoreTests {
             toastStateStore: toastStateStore,
             mailUserSession: .dummy,
             wrapper: wrapperSpy.testingInstance,
-            upsellScreenPresenter: UpsellScreenPresenterStub()
+            upsellScreenPresenter: UpsellScreenPresenterSpy()
         )
     }
 }
@@ -175,10 +175,4 @@ private class RustWrappersSpy {
             return stubbedDeleteAllResult
         }
     )
-}
-
-private final class UpsellScreenPresenterStub: UpsellScreenPresenter {
-    func presentUpsellScreen(entryPoint: UpsellScreenEntryPoint) async throws -> UpsellScreenModel {
-        .preview(entryPoint: entryPoint)
-    }
 }
