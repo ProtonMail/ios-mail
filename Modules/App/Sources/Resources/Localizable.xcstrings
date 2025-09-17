@@ -21991,6 +21991,12 @@
             "value" : "Kezdés"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mulai"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -23361,7 +23367,123 @@
       }
     },
     "Issue syncing your email. To resolve it, sign out and back in again." : {
-      "comment" : "Event loop failed because an unexpected error."
+      "comment" : "Event loop failed because an unexpected error.",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Праблема сінхранізацыі вашай электроннай пошты. Выйдзіце і ўвайдзіце яшчэ раз, каб вырашыць яе."
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "S'ha produït un error en la sincronització del vostre email. Per solucionar-ho, tanqueu i torneu a iniciar sessió."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Problém se synchronizací vašeho e-mailu. Chcete-li problém vyřešit, odhlaste se a znovu se přihlaste."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Problem med synkronisering af din e-mail. For at løse problemet skal du logge ud og logge ind igen."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Problem beim Synchronisieren deiner E-Mails. Um das Problem zu beheben, melde dich ab und wieder an."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Πρόβλημα συγχρονισμού του γραμματοκιβώτιού σας. Για να το επιλύσετε, αποσυνδεθήτε και συνδεθήτε ξανά."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Issue syncing your email. To resolve it, sign out and back in again."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hay un problema al sincronizar tu correo electrónico. Para solucionarlo, cierra sesión y vuelve a iniciarla."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ongelma sähköpostin synkronoinnissa. Kirjaudu ulos ja takaisin sisään."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un problème est survenu avec la synchronisation de votre messagerie. Pour le résoudre, déconnectez-vous puis reconnectez-vous."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Problema di sincronizzazione con la tua email. Per risolverlo, disconnettiti e accedi di nuovo."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Problem med å synkronisere e-posten din. For å løse dette, logg av og på igjen."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Probleem met het synchroniseren van uw mail. Log uit en log opnieuw in om dit op te lossen."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wystąpił problem podczas synchronizowania twoich wiadomości e-mail. Wyloguj się i zaloguj ponownie, aby go rozwiązać."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erro de sincronização do email. Encerre a sessão e entre novamente."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Probleme la sincronizarea contului de e-mail. Pentru rezolvare, reconectați-vă."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Problém so synchronizáciou emailov. Na jeho vyriešenie sa odhláste a znovu prihláste."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-posta eşitlemesinde sorun çıktı. Çözmek için oturumu kapatıp yeniden açın."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "邮箱同步出现问题。请注销并再次登入。"
+          }
+        }
+      }
     },
     "Issue updating your account. Please sign in again." : {
       "comment" : "Error toast of the welcome screen.",
@@ -28139,6 +28261,12 @@
             "value" : "Berichtwerkbalk"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pasek narzędzi wiadomości"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -28715,7 +28843,99 @@
       }
     },
     "More options" : {
-      "comment" : "A button title that shows rest of available actions in the menu"
+      "comment" : "A button title that shows rest of available actions in the menu",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Дадатковыя параметры"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Més opcions"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Více možností"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Flere muligheder"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Weitere Optionen"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Περισσότερες επιλογές"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "More options"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plus d'options"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Più opzioni"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Flere alternativer"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meer opties"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mais opções"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ďalšie možnosti"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fler alternativ"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "更多选项"
+          }
+        }
+      }
     },
     "Move to inbox" : {
       "comment" : "Action title for moving message/conversation to the `Inbox` folder in the action sheet.",
@@ -34651,6 +34871,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "E-maileket olvashat, írhat és kezelhet, bárhol is legyen. Minden automatikusan szinkronizálódik abban a pillanatban, ahogy újra online lesz."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Baca, tulis, dan kelola email di mana pun Anda berada. Segala sesuatunya akan tersinkron secara otomatis pada saat Anda kembali online."
           }
         },
         "it" : {
@@ -41587,6 +41813,12 @@
             "value" : "Töltsön kevesebb időt a rendszerezéssel és többet a tényleges feladatokkal. A beérkezett üzenetei úgy lettek kialakítva, hogy könnyebben navigálhatók legyenek, így gyorsabban megtalálhatja, ami fontos."
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gunakan waktu Anda untuk bertindak, bukan untuk menyortir. Kotak masuk Anda dirancang agar lebih mudah digunakan, sehingga Anda dapat menemukan hal yang penting secara lebih cepat."
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -42116,6 +42348,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Maradjon kapcsolatban, még offline is"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tetap terhubung, bahkan pada saat offline"
           }
         },
         "it" : {
@@ -45854,6 +46092,12 @@
             "value" : "Deze werkbalk verschijnt wanneer meerdere berichten zijn geselecteerd in een lijstweergave."
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ten pasek narzędzi pojawia się, kiedy kilka wiadomości jest zaznaczonych w widoku listy"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -45898,7 +46142,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aquesta barra d'eines roman visible quan un missatge està obert."
+            "value" : "Aquesta barra d'eines es manté visible quan un missatge està obert."
           }
         },
         "cs" : {
@@ -45977,6 +46221,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Deze werkbalk blijft zichtbaar wanneer een bericht geopend is."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ten pasek narzędzi pozostaje widoczny, kiedy wiadomość jest otwarta."
           }
         },
         "pt-BR" : {
@@ -51912,6 +52162,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Odhlásili ste sa z tohto mailingového zoznamu."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du har avslutat prenumeration från denna e-postlista."
           }
         },
         "tr" : {

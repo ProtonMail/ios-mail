@@ -3020,7 +3020,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Укладанне адсутнічае. Загрузіце яшчэ раз."
+            "value" : "Далучэнне адсутнічае. Загрузіце яго яшчэ раз."
           }
         },
         "ca" : {
@@ -3575,7 +3575,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Укладанні занадта вялікія. Памер укладанняў не павінен перавышаць 25 МБ."
+            "value" : "Далучэнні занадта вялікія. Памер далучэнняў не павінен быць больш за 25 МБ."
           }
         },
         "ca" : {
@@ -12217,7 +12217,123 @@
       }
     },
     "Problem uploading attachment. Please try again." : {
-      "comment" : "Error in the context of saving a draft before being sent."
+      "comment" : "Error in the context of saving a draft before being sent.",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Праблема з запампоўваннем далучэння. Паспрабуйце яшчэ раз."
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No s'ha pogut carregar l'adjunt. Torneu-ho a provar."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Při nahrávání přílohy došlo k problému. Zkuste to prosím znovu."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Problem med at uploade vedhæftet fil. Prøv igen."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Problem beim Hochladen des Anhangs. Bitte erneut versuchen."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Σφάλμα κατά τη μεταφόρτωση συνημμένου. Παρακαλούμε προσπαθήστε ξανά."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Problem uploading attachment. Please try again."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hay un problema al realizar esa acción. Inténtalo de nuevo."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ongelma liitteen lähettämisessä. Yritä uudelleen."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un problème est survenu lors de l'importation de la pièce jointe. Veuillez réessayer."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Problema durante il caricamento dell'allegato. Riprova."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Problem med opplasting av vedlegg. Prøv på nytt."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Probleem bij het uploaden van de bijlage. Probeer het opnieuw."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Não foi possível enviar o anexo. Tente novamente."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Problemă la încărcarea atașamentului. Reîncercați."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Problém s nahrávaním prílohy. Skúste to znova, prosím."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Problem att ladda upp bilaga. Försök igen."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ek dosya yüklenemedi. Lütfen yeniden deneyin."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "附件上传失败。请重试。"
+          }
+        }
+      }
     },
     "Remove" : {
       "comment" : "Confirmation for the remove attachment action in a Draft.",

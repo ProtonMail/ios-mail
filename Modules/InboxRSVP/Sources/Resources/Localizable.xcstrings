@@ -1499,7 +1499,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Пойдзеце?"
+            "value" : "Удзельнічаеце?"
           }
         },
         "ca" : {
@@ -5183,6 +5183,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nu puteți răspunde la invitațiile la eveniment dacă nu sunteți pe lista de participanți în acest moment."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вы не можете отвечать на приглашения на событие, если в данный момент не внесены в список участников."
           }
         },
         "sk" : {

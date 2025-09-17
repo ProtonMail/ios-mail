@@ -1947,6 +1947,12 @@
             "value" : "dirección de correo"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "sähköpostiosoite"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1980,13 +1986,19 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Endereço de e-mail"
+            "value" : "endereço de e-mail"
           }
         },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "adresa de e-mail"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "адрес электронной почты"
           }
         },
         "sk" : {
@@ -2262,6 +2274,12 @@
             "value" : "nombre"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "nimi"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2302,6 +2320,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "nume"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "имя"
           }
         },
         "sk" : {
