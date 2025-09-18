@@ -15,12 +15,21 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import UIKit
+import WebKit
 
-protocol BodyEditor: UIViewController {
-    var onEvent: ((BodyEditorEvent) -> Void)? { get set }
+protocol WebsiteDataStoreType {
+    func removeData(ofTypes websiteDataTypes: Set<String>, modifiedSince date: Date) async
+}
 
-    func setBodyInitialFocus()
-    func updateBody(_ body: String) async
-    func handleBodyAction(_ action: ComposerBodyAction)
+final class WKWebsiteDataStoreAdapter: WebsiteDataStoreType {
+    private let store: WKWebsiteDataStore
+
+    init(store: WKWebsiteDataStore) {
+        self.store = store
+    }
+
+    @MainActor
+    func removeData(ofTypes websiteDataTypes: Set<String>, modifiedSince date: Date) async {
+        await store.removeData(ofTypes: websiteDataTypes, modifiedSince: date)
+    }
 }

@@ -149,7 +149,7 @@ extension AttachmentErrorAlertState {
 extension DraftAttachment {
 
     var toUploadAttachmentError: UploadAttachmentError {
-        UploadAttachmentError(name: attachment.name, attachmentId: attachment.id, errorTimeStamp: stateModifiedTimestamp)
+        UploadAttachmentError(attachment: attachment, errorTimeStamp: stateModifiedTimestamp)
     }
 }
 
