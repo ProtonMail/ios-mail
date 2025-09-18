@@ -239,6 +239,8 @@ private extension DraftSendErrorReason {
             L10n.DraftSendError.failedToDecryptExternalEncryptionPassword
         case .expirationTimeTooSoon:
             L10n.DraftSendError.expirationTimeTooSoon
+        case .messageTooLarge:
+            L10n.DraftSendError.messageTooLarge
         }
     }
 }
