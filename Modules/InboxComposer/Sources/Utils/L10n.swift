@@ -429,6 +429,11 @@ enum L10n {
             comment: "Error in the context of sending a draft before being sent."
         )
 
+        static let messageTooLarge = LocalizedStringResource(
+            "Message is too large to send. Please reduce the size of your attachments.",
+            comment: "Error in the context of sending a draft before being sent."
+        )
+
         static let missingAttachmentUploads = LocalizedStringResource(
             "Attachment is missing. Please upload again.",
             comment: "Error in the context of managing attachments in a draft."

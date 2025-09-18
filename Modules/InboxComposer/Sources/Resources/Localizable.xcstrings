@@ -8886,6 +8886,9 @@
         }
       }
     },
+    "Message is too large to send. Please reduce the size of your attachments." : {
+      "comment" : "Error in the context of sending a draft before being sent."
+    },
     "Message not found. You may have sent or discarded it." : {
       "comment" : "Error in the context of opening a draft in the composer",
       "localizations" : {

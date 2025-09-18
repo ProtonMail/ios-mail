@@ -41,8 +41,8 @@ extension ContactDetailsProvider {
     static func previewInstance() -> Self {
         let items: [ContactField] = [
             .emails([
-                .init(emailType: [.work], email: "ben.ale@protonmail.com"),
-                .init(emailType: [.video], email: "alexander@proton.me"),
+                .init(emailType: [.work], email: "ben.ale@protonmail.com", groups: []),
+                .init(emailType: [.video], email: "alexander@proton.me", groups: []),
             ]),
             .addresses([
                 .init(

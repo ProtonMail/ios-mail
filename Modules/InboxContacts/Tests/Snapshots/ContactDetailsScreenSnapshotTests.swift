@@ -28,8 +28,8 @@ final class ContactDetailsScreenSnapshotTests {
     func testContactDetailsScreenVariant1() {
         let items: [ContactField] = [
             .emails([
-                .init(emailType: [.work], email: "ben.ale@protonmail.com"),
-                .init(emailType: [.home], email: "alexander@proton.me"),
+                .init(emailType: [.work], email: "ben.ale@protonmail.com", groups: []),
+                .init(emailType: [.home], email: "alexander@proton.me", groups: []),
             ]),
             .addresses([
                 .init(
@@ -62,7 +62,7 @@ final class ContactDetailsScreenSnapshotTests {
     func testContactDetailsScreenVariant2() {
         let items: [ContactField] = [
             .emails([
-                .init(emailType: [.work], email: "ben.ale@protonmail.com")
+                .init(emailType: [.work], email: "ben.ale@protonmail.com", groups: [])
             ]),
             .telephones([
                 .init(number: "+41771234567", telTypes: [.home])
@@ -79,7 +79,7 @@ final class ContactDetailsScreenSnapshotTests {
     func testContactDetailsScreenVariant3() {
         let items: [ContactField] = [
             .emails([
-                .init(emailType: [.work], email: "ben.ale@protonmail.com")
+                .init(emailType: [.work], email: "ben.ale@protonmail.com", groups: [])
             ]),
             .languages(["english", "german"]),
             .timeZones(["Europe/Zürich"]),
@@ -94,7 +94,7 @@ final class ContactDetailsScreenSnapshotTests {
     func testContactDetailsScreenVariant4() {
         let items: [ContactField] = [
             .emails([
-                .init(emailType: [.work], email: "ben.ale@protonmail.com")
+                .init(emailType: [.work], email: "ben.ale@protonmail.com", groups: [])
             ]),
             .languages(["french"]),
             .organizations(["CERN", "NASA"]),
