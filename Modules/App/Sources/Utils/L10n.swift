@@ -471,7 +471,7 @@ enum L10n {
                 comment: "Title of the first onboarding page introducing Proton Mail's privacy focus."
             )
             static let subtitle = LocalizedStringResource(
-                "Enjoy encrypted messages, fewer spam, protection from phishing, and blocked trackers. Welcome to privacy.",
+                "Enjoy encrypted messages, less spam, protection from phishing, and blocked trackers. Welcome to privacy.",
                 comment: "Subtitle of the first onboarding page explaining Proton Mail's benefits."
             )
         }
@@ -635,7 +635,7 @@ enum L10n {
                 .init(
                     "Empty \(folderName) Folder",
                     comment: """
-                        Empty Spam/Trash Banner: Title for the confirmation alert when the user 
+                        Empty Spam/Trash Banner: Title for the confirmation alert when the user
                         is about to empty the specified location (e.g., Spam or Trash).
                         """
                 )
@@ -645,7 +645,7 @@ enum L10n {
                 .init(
                     "Are you sure you want to permanently delete all messages in the \(folderName) folder? This action cannot be undone.",
                     comment: """
-                        Empty Spam/Trash Banner: Message for the confirmation alert asking the user to confirm 
+                        Empty Spam/Trash Banner: Message for the confirmation alert asking the user to confirm
                         permanent deletion of all messages in the specified location (e.g., Spam or Trash).
                         """
                 )
@@ -904,7 +904,7 @@ enum L10n {
 
         enum App {
             static let title = LocalizedStringResource(
-                "App customisations",
+                "App customizations",
                 comment: "Title of the App settings screen."
             )
             static let deviceSectionTitle = LocalizedStringResource(

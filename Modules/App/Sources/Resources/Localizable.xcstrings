@@ -5469,7 +5469,7 @@
         }
       }
     },
-    "App customisations" : {
+    "App customizations" : {
       "comment" : "Title of the App settings screen.",
       "localizations" : {
         "be" : {
@@ -5511,7 +5511,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "App customisations"
+            "value" : "App customizations"
           }
         },
         "es" : {
@@ -7039,7 +7039,7 @@
       }
     },
     "Are you sure you want to permanently delete all messages in the %@ folder? This action cannot be undone." : {
-      "comment" : "Empty Spam/Trash Banner: Message for the confirmation alert asking the user to confirm \npermanent deletion of all messages in the specified location (e.g., Spam or Trash).",
+      "comment" : "Empty Spam/Trash Banner: Message for the confirmation alert asking the user to confirm\npermanent deletion of all messages in the specified location (e.g., Spam or Trash).",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -19542,7 +19542,7 @@
       }
     },
     "Empty %@ Folder" : {
-      "comment" : "Empty Spam/Trash Banner: Title for the confirmation alert when the user \nis about to empty the specified location (e.g., Spam or Trash).",
+      "comment" : "Empty Spam/Trash Banner: Title for the confirmation alert when the user\nis about to empty the specified location (e.g., Spam or Trash).",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -20102,7 +20102,7 @@
         }
       }
     },
-    "Enjoy encrypted messages, fewer spam, protection from phishing, and blocked trackers. Welcome to privacy." : {
+    "Enjoy encrypted messages, less spam, protection from phishing, and blocked trackers. Welcome to privacy." : {
       "comment" : "Subtitle of the first onboarding page explaining Proton Mail's benefits.",
       "localizations" : {
         "be" : {
@@ -20144,7 +20144,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Enjoy encrypted messages, fewer spam, protection from phishing, and blocked trackers. Welcome to privacy."
+            "value" : "Enjoy encrypted messages, less spam, protection from phishing, and blocked trackers. Welcome to privacy."
           }
         },
         "es" : {
