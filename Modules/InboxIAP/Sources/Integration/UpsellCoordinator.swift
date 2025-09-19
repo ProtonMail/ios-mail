@@ -36,6 +36,7 @@ public final class UpsellCoordinator: ObservableObject {
         let planPurchasing: PlanPurchasing = configuration.arePaymentsEnabled ? plansManager : DummyPlanPurchasing()
 
         self.init(
+            eventLoopPolling: mailUserSession,
             onlineExecutor: mailUserSession,
             plansComposer: plansComposer,
             planPurchasing: planPurchasing,
@@ -44,6 +45,7 @@ public final class UpsellCoordinator: ObservableObject {
     }
 
     init(
+        eventLoopPolling: EventLoopPolling,
         onlineExecutor: OnlineExecutor,
         plansComposer: PlansComposerProviding,
         planPurchasing: PlanPurchasing,
@@ -54,6 +56,7 @@ public final class UpsellCoordinator: ObservableObject {
         self.configuration = configuration
 
         let purchaseActionPerformer = PurchaseActionPerformer(
+            eventLoopPolling: eventLoopPolling,
             planPurchasing: planPurchasing
         )
 

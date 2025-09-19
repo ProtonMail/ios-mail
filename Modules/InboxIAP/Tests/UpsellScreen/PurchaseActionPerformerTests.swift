@@ -25,12 +25,14 @@ import Testing
 
 @MainActor
 final class PurchaseActionPerformerTests {
+    private let eventLoopPolling = EventLoopPollingSpy()
     private let planPurchasing = PlanPurchasingSpy()
     private let toastStateStore = ToastStateStore(initialState: .initial)
     private let isBusy = Binding.constant(false)
     private let storeKitProductID = "iosmail_mail2022_12_usd_auto_renewing"
 
     private lazy var sut = PurchaseActionPerformer(
+        eventLoopPolling: eventLoopPolling,
         planPurchasing: planPurchasing
     )
 
@@ -63,6 +65,37 @@ final class PurchaseActionPerformerTests {
         planPurchasing.stubbedError = ProtonPlansManagerError.transactionCancelledByUser
 
         await confirmation(expectedCount: 0) { dismissCalled in
+            await sut.purchase(storeKitProductID: storeKitProductID, isBusy: isBusy, toastStateStore: toastStateStore) {
+                dismissCalled()
+            }
+        }
+
+        #expect(toastStateStore.state.toasts == [])
+    }
+
+    // MARK: Event loop polling
+
+    @Test
+    func whenTransactionIsSuccessful_pollsEventLoop() async {
+        await sut.purchase(storeKitProductID: storeKitProductID, isBusy: isBusy, toastStateStore: toastStateStore) {}
+
+        #expect(eventLoopPolling.forceEventLoopPollCalls == 1)
+    }
+
+    @Test
+    func whenTransactionIsNotSuccessful_doesNotPollEventLoop() async {
+        planPurchasing.stubbedError = ProtonPlansManagerError.transactionUnknownError
+
+        await sut.purchase(storeKitProductID: storeKitProductID, isBusy: isBusy, toastStateStore: toastStateStore) {}
+
+        #expect(eventLoopPolling.forceEventLoopPollCalls == 0)
+    }
+
+    @Test
+    func whenPollingEventLoopFails_doesNotShowErrorAndDismissesScreenRegardless() async {
+        eventLoopPolling.stubbedResult = .error(.other(.network))
+
+        await confirmation(expectedCount: 1) { dismissCalled in
             await sut.purchase(storeKitProductID: storeKitProductID, isBusy: isBusy, toastStateStore: toastStateStore) {
                 dismissCalled()
             }

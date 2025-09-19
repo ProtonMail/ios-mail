@@ -29,6 +29,7 @@ final class OnboardingUpsellScreenModelTests {
     private lazy var sut = OnboardingUpsellScreenModel(
         planTiles: PlanTileData.previews,
         purchaseActionPerformer: .init(
+            eventLoopPolling: DummyEventLoopPolling(),
             planPurchasing: planPurchasing
         )
     )

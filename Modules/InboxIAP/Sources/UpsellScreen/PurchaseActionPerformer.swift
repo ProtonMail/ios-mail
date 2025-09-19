@@ -18,13 +18,16 @@
 
 import InboxCore
 import InboxCoreUI
+import proton_app_uniffi
 import SwiftUI
 
 @MainActor
 final class PurchaseActionPerformer {
+    private let eventLoopPolling: EventLoopPolling
     private let planPurchasing: PlanPurchasing
 
-    init(planPurchasing: PlanPurchasing) {
+    init(eventLoopPolling: EventLoopPolling, planPurchasing: PlanPurchasing) {
+        self.eventLoopPolling = eventLoopPolling
         self.planPurchasing = planPurchasing
     }
 
@@ -47,6 +50,8 @@ final class PurchaseActionPerformer {
 
             AppLogger.log(message: "Purchase successful", category: .payments)
 
+            await eventLoopPolling.forceEventLoopPoll().logError()
+
             dismiss()
         } catch {
             AppLogger.log(error: error, category: .payments)
@@ -58,8 +63,20 @@ final class PurchaseActionPerformer {
     }
 }
 
+private extension VoidEventResult {
+    func logError() async {
+        switch self {
+        case .ok:
+            break
+        case .error(let eventError):
+            AppLogger.log(message: "\(eventError)", category: .payments, isError: true)
+        }
+    }
+}
+
 extension PurchaseActionPerformer {
     static let dummy = PurchaseActionPerformer(
+        eventLoopPolling: DummyEventLoopPolling(),
         planPurchasing: DummyPlanPurchasing()
     )
 }
