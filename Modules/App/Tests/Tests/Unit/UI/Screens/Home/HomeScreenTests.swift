@@ -223,7 +223,8 @@ private extension MailUserSession {
             params: params,
             keyChain: KeychainSDKWrapper(),
             hvNotifier: nil,
-            deviceInfoProvider: nil
+            deviceInfoProvider: nil,
+            issueReporter: SentryIssueReporter()
         ).get()
 
         let authCoordinator = AccountAuthCoordinator(productName: appDetails.product, appContext: mailSession)
