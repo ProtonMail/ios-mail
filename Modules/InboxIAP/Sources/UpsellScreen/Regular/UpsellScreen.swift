@@ -72,7 +72,7 @@ public struct UpsellScreen: View {
 
                 interactiveArea
                     .padding(.top, DS.Spacing.large)
-                    .background(Color.white.opacity(0.01))
+                    .background(TransparentBlur())
             }
         }
     }
@@ -126,6 +126,7 @@ public struct UpsellScreen: View {
                 action: model.scrollingOffsetDidChange
             )
         }
+        .scrollClipDisabled()
         .coordinateSpace(name: coordinateSpaceName)
         .padding(.horizontal, DS.Spacing.extraLarge)
     }
