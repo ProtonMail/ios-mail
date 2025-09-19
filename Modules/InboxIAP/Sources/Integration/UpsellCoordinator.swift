@@ -51,8 +51,14 @@ public final class UpsellCoordinator: ObservableObject {
     ) {
         self.onlineExecutor = onlineExecutor
         self.plansComposer = plansComposer
-        self.upsellScreenFactory = .init(planPurchasing: planPurchasing)
         self.configuration = configuration
+
+        let purchaseActionPerformer = PurchaseActionPerformer(
+            planPurchasing: planPurchasing
+        )
+
+        upsellScreenFactory = .init(purchaseActionPerformer: purchaseActionPerformer)
+
     }
 
     public func prewarm() async {

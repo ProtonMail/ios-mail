@@ -38,15 +38,15 @@ public final class OnboardingUpsellScreenModel: Identifiable {
     }
 
     private let allPlanTiles: [PlanTileModel]
-    private let planPurchasing: PlanPurchasing
+    private let purchaseActionPerformer: PurchaseActionPerformer
 
     private var highestDiscount: Int? {
         allPlanTiles.compactMap(\.discount?.percentageValue).max()
     }
 
-    init(planTiles: [PlanTileData], planPurchasing: PlanPurchasing) {
+    init(planTiles: [PlanTileData], purchaseActionPerformer: PurchaseActionPerformer) {
         allPlanTiles = planTiles.map(PlanTileModel.init)
-        self.planPurchasing = planPurchasing
+        self.purchaseActionPerformer = purchaseActionPerformer
 
         selectedCycle = availableCycles[0]
     }
@@ -74,26 +74,11 @@ public final class OnboardingUpsellScreenModel: Identifiable {
             return
         }
 
-        AppLogger.log(message: "Attempting to purchase \(storeKitProductID)", category: .payments)
-
-        isBusy = true
-
-        defer {
-            isBusy = false
-        }
-
-        do {
-            try await planPurchasing.purchase(storeKitProductId: storeKitProductID)
-
-            AppLogger.log(message: "Purchase successful", category: .payments)
-
-            dismiss()
-        } catch {
-            AppLogger.log(error: error, category: .payments)
-
-            if let toast = error.toastToShowTheUser {
-                toastStateStore.present(toast: toast)
-            }
-        }
+        await purchaseActionPerformer.purchase(
+            storeKitProductID: storeKitProductID,
+            isBusy: .init(get: { self.isBusy }, set: { self.isBusy = $0 }),
+            toastStateStore: toastStateStore,
+            dismiss: dismiss
+        )
     }
 }
