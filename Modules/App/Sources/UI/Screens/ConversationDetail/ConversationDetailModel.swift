@@ -772,11 +772,11 @@ extension ConversationDetailModel {
 
     private func onReplyAction(messageId: ID, action: ReplyAction, toastStateStore: ToastStateStore) {
         Task {
-            await draftPresenter.handleReplyAction(
-                for: messageId, action: action,
-                onError: { error in
-                    toastStateStore.present(toast: .error(message: error.localizedDescription))
-                })
+            do {
+                try await draftPresenter.handleReplyAction(for: messageId, action: action)
+            } catch {
+                toastStateStore.present(toast: .error(message: error.localizedDescription))
+            }
         }
     }
 
