@@ -86,6 +86,7 @@ struct MessageAddressActionView: View {
         [
             [.newMessage, .addToContacts],
             [.copyAddress, .copyName],
+            avatar.type.isSender ? [.blockContact] : [],
         ]
     }
 
