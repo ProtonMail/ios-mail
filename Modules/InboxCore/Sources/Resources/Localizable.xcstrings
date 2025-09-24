@@ -1971,6 +1971,12 @@
             "value" : "メールアドレス"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이메일 주소"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2296,6 +2302,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "名前"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이름"
           }
         },
         "nb" : {

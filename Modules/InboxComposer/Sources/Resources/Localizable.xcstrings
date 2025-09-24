@@ -1397,7 +1397,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aquesta adreça no es pot utilitzar per enviar missatges"
+            "value" : "No es pot utilitzar l'adreça per a enviar missatges"
           }
         },
         "cs" : {
@@ -3939,7 +3939,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Карыстальніцкі"
+            "value" : "Карыстальніцкае"
           }
         },
         "ca" : {
@@ -4130,7 +4130,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Адключаны адрас электроннай пошты. Праверце, што адрас сапраўдны і актыўны."
+            "value" : "Адключаны адрас электроннай пошты. Праверце, што гэты адрас сапраўдны і актыўны."
           }
         },
         "ca" : {
@@ -4876,7 +4876,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Чарнавік не знойдзены. Магчыма, вы яго адхілілі."
+            "value" : "Чарнавік не знойдзены. Магчыма, што ён быў адхілены."
           }
         },
         "ca" : {
@@ -5055,7 +5055,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Чарнавік не знойдзены. Магчыма, вы яго ўжо адправілі."
+            "value" : "Чарнавік не знойдзены. Магчыма, што ён ўжо адпраўлены."
           }
         },
         "ca" : {
@@ -6523,7 +6523,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "З вашай бібліятэкі фатаграфій"
+            "value" : "З вашай фотатэкі"
           }
         },
         "ca" : {
@@ -8911,7 +8911,123 @@
       }
     },
     "Message is too large to send. Please reduce the size of your attachments." : {
-      "comment" : "Error in the context of sending a draft before being sent."
+      "comment" : "Error in the context of sending a draft before being sent.",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Паведамленне занадта вялікае для адпраўкі. Скараціце памер сваіх далучэнняў."
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El missatge és massa gran per ser enviat. Reduïu-ne la mida dels adjunts."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zpráva je příliš velká na odeslání. Prosím, zmenšete velikost svých příloh."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Besked er for stor til at sende. Reducér venligst størrelsen på dine vedhæftninger."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die Nachricht ist zu groß, um gesendet zu werden. Bitte verkleinere deine Anhänge."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Το μήνυμα είναι πολύ μεγάλο για να αποστολή. Παρακαλούμε μειώστε το μέγεθος των συνημμένων αρχείων."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Message is too large to send. Please reduce the size of your attachments."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El mensaje es demasiado grande para enviarlo. Por favor, reduce el tamaño de tus archivos adjuntos."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El mensaje es demasiado grande para enviarlo. Reduzca el tamaño de los archivos adjuntos."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le message est trop volumineux pour être envoyé. Veuillez réduire la taille de vos pièces jointes."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Il messaggio è troppo grande per essere inviato. Riduci la dimensione dei tuoi allegati."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "메시지가 너무 커 보낼 수 없습니다. 첨부 파일 크기를 줄여주세요."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meldingen er for stor til å sendes. Reduser størrelsen på vedleggene dine."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bericht is te groot om te verzenden. Gelieve de grootte van uw bijlagen te verkleinen."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A mensagem é grande demais para enviar. Reduza o tamanho de seus anexos."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mesajul este prea mare pentru a fi trimis. Reduceți mărimea atașamentelor."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Správa je príliš veľká na odoslanie. Zmenšite veľkosť príloh, prosím."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meddelande är för stor för att skicka. Minska storleken på dina bilagor."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "İleti boyutu çok büyük. Lütfen ek dosyalarınızın boyutunu azaltın."
+          }
+        }
+      }
     },
     "Message not found. You may have sent or discarded it." : {
       "comment" : "Error in the context of opening a draft in the composer",
@@ -10584,7 +10700,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pista per a la contrasenya (opcional)"
+            "value" : "Pista de contrasenya (opcional)"
           }
         },
         "cs" : {
@@ -12052,7 +12168,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hi ha hagut un problema en enviar el missatge. Torneu-ho a provar."
+            "value" : "S'ha produït un problema en enviar el missatge. Torneu-ho a provar."
           }
         },
         "cs" : {
@@ -12270,6 +12386,12 @@
             "value" : "Hay un problema al realizar esa acción. Inténtalo de nuevo."
           }
         },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hay un problema al cargar el archivo. Intente de nuevo."
+          }
+        },
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12286,6 +12408,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Problema durante il caricamento dell'allegato. Riprova."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "添付ファイルのアップロード中に問題が発生しました。もう一度お試しください。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "첨부 파일 업로드 중 문제가 발생했습니다. 나중에 다시 시도해 주세요."
           }
         },
         "nb" : {

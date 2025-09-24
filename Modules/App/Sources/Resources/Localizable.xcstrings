@@ -5493,7 +5493,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tilpasninger af app"
+            "value" : "App-tilpasninger"
           }
         },
         "de" : {
@@ -5526,40 +5526,16 @@
             "value" : "Personalizaciones de la aplicación"
           }
         },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sovelluksen mukauttaminen"
-          }
-        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Personnalisations de l'appli"
-          }
-        },
-        "hu" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Alkalmazás testreszabása"
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Penyesuaian aplikasi"
+            "value" : "Personnalisations de l'application"
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Personalizzazioni dell'app"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "アプリのカスタマイズ"
+            "value" : "Personalizzazione dell'applicazione"
           }
         },
         "ko" : {
@@ -5571,31 +5547,13 @@
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "App-tilpasninger"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "App aanpassingen"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dostosowanie aplikacji"
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Personalizações da aplicação"
+            "value" : "Apptilpasninger"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Personalizações do aplicativo"
+            "value" : "Personalização do aplicativo"
           }
         },
         "ro" : {
@@ -5604,22 +5562,10 @@
             "value" : "Personalizări aplicație"
           }
         },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Настройки приложения"
-          }
-        },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Prispôsobenie aplikácie"
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Prilagoditve aplikacije"
           }
         },
         "sv" : {
@@ -5633,29 +5579,133 @@
             "state" : "translated",
             "value" : "Uygulama özelleştirmeleri"
           }
-        },
-        "uk" : {
+        }
+      }
+    },
+    "App Icon" : {
+      "comment" : "Title of the button that allows the user to change the app’s icon.",
+      "localizations" : {
+        "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Налаштування застосунку"
+            "value" : "Значок праграмы"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Icona de l'aplicació"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ikona aplikace"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "App-ikon"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "App-Symbol"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Εικονίδιο εφαρμογής"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "App Icon"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Icono de la aplicación"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ícono de la aplicación"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Icône d'application"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Icona dell'app"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "アプリアイコン"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "앱 아이콘"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Appikon"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ícone do aplicativo"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pictogramă aplicație"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ikona aplikácie"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Appikon"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uygulama simgesi"
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "应用个性化设置"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "應用程式自訂"
+            "value" : "应用图标"
           }
         }
       }
-    },
-    "App Icon" : {
-      "comment" : "Title of the button that allows the user to change the app’s icon."
     },
     "App lock" : {
       "comment" : "App lock setting title in app settings.",
@@ -8537,7 +8587,129 @@
       }
     },
     "Calculator" : {
-      "comment" : "Name of the alternate 'Calculator' app icon shown in the app icon picker."
+      "comment" : "Name of the alternate 'Calculator' app icon shown in the app icon picker.",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Калькулятар"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Calculadora"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kalkulačka"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lommeregner"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Taschenrechner"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Αριθμομηχανή"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Calculator"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Calculadora"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Calculadora"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Calculatrice"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Calcolatrice"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "計算機"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "계산기"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kalkulator"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Calculadora"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Calculator"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kalkulačka"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kalkylator"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hesaplayıcı"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "计算器"
+          }
+        }
+      }
     },
     "Call" : {
       "comment" : "Action title for calling phone number in the address action sheet.",
@@ -11517,25 +11689,25 @@
                   "few" : {
                     "stringUnit" : {
                       "state" : "translated",
-                      "value" : "Размовы перамешчаны ў Архіў."
+                      "value" : "Размовы перамешчаны ў архіў."
                     }
                   },
                   "many" : {
                     "stringUnit" : {
                       "state" : "translated",
-                      "value" : "Размовы перамешчаны ў Архіў."
+                      "value" : "Размовы перамешчаны ў архіў."
                     }
                   },
                   "one" : {
                     "stringUnit" : {
                       "state" : "translated",
-                      "value" : "Размова перамешчана ў Архіў."
+                      "value" : "Размова перамешчана ў архіў."
                     }
                   },
                   "other" : {
                     "stringUnit" : {
                       "state" : "translated",
-                      "value" : "Размовы перамешчаны ў Архіў."
+                      "value" : "Размовы перамешчаны ў архіў."
                     }
                   }
                 }
@@ -12765,7 +12937,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Капіяваць адрас"
+            "value" : "Скапіяваць адрас"
           }
         },
         "ca" : {
@@ -12956,7 +13128,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Капіяваць імя"
+            "value" : "Скапіяваць імя"
           }
         },
         "ca" : {
@@ -14442,7 +14614,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Карыстальніцкі"
+            "value" : "Карыстальніцкае"
           }
         },
         "ca" : {
@@ -20114,7 +20286,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Gaudiu de missatges xifrats, menys correu brossa, protecció contra suplantacions d'identitat i rastrejadors bloquejats. Us donem la benvinguda a la privacitat."
+            "value" : "Gaudiu de missatges xifrats, menys correu brossa, protecció contra suplantacions d'identitat i rastrejadors bloquejats. Benvinguts a la privacitat."
           }
         },
         "cs" : {
@@ -20132,13 +20304,13 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Genieße verschlüsselte Nachrichten, weniger Spam, Schutz vor Phishing und gesperrte Tracker. Willkommen in der Privatsphäre."
+            "value" : "Genieße verschlüsselte Nachrichten, weniger Spam, Schutz vor Phishing und blockierte Tracker. Willkommen in der Privatsphäre."
           }
         },
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Απολαύστε κρυπτογραφημένα μηνύματα, λιγότερο ενοχλητικά, προστασία από phishing και αποκλεισμένους ιχνηλάτες. Καλωσορίσατε στην ιδιωτικότητα."
+            "value" : "Απολαύστε κρυπτογραφημένα μηνύματα, λιγότερα ενοχλητικά, προστασία από phishing και αποκλεισμένους ιχνηλάτες. Καλωσορίσατε στην ιδιωτικότητα."
           }
         },
         "en" : {
@@ -20150,7 +20322,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Disfruta de mensajes cifrados, menos spam, protección contra la suplantación y rastreadores bloqueados. Bienvenido a la privacidad."
+            "value" : "Disfruta de mensajes cifrados, menos correo no deseado, protección contra suplantación de identidad y rastreadores bloqueados. Te damos la bienvenida a la privacidad."
           }
         },
         "es-419" : {
@@ -20159,28 +20331,10 @@
             "value" : "Disfrute de mensajes cifrados, menos spam, protección contra suplantaciones y rastreadores bloqueados. Le damos la bienvenida a la privacidad."
           }
         },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nauti salatuista viesteistä, vähemmästä roskapostista, tietojenkalastelun torjunnasta ja seurannanestosta. Tervetuloa yksityisyyden pariin."
-          }
-        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Profitez des messages chiffrés, de moins de pourriels, d'une protection contre l'hameçonnage et d'un blocage des traqueurs. Bienvenue dans le respect de la vie privée."
-          }
-        },
-        "hu" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Élvezze a titkosított üzeneteket, a kevesebb levélszemetet, védelmet az adathalászat ellen és a blokkolt követőket. Üdvözöljük az adatvédelemben."
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nikmati pesan yang terenkripsi, lebih sedikit spam, perlindungan dari phishing, dan pelacak yang diblokir. Selamat datang di privasi."
+            "value" : "Profitez de messages chiffrés, de moins de spams, d'une protection contre l'hameçonnage et de traqueurs bloqués. Bienvenue dans le respect de la vie privée."
           }
         },
         "it" : {
@@ -20189,34 +20343,16 @@
             "value" : "Approfitta di messaggi crittografati, meno spam, protezione dal phishing e nessun tracker. Benvenuto nel mondo della privacy."
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "メッセージの暗号化、迷惑メールの削減、フィッシング詐欺からの保護、トラッカーのブロックをご利用いただけます。強固なプライバシーへようこそ。"
-          }
-        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "암호화된 메시지, 더 적은 스팸, 피싱 예방, 그리고 추적 차단기능을 누리세요. 개인정보 보호의 세계에 오신 것을 환영합니다."
+            "value" : "암호화된 메시지, 더 적은 스팸, 피싱 예방, 그리고 추적 차단기능을 누려보세요. 개인정보 보호의 세계에 오신 것을 환영합니다."
           }
         },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kos deg over krypterte meldinger, færre søppelpost, beskyttelse mot nettfisking og blokkerte sporere. Velkommen til personvern."
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Geniet van versleutelde berichten, minder spam, bescherming tegen phishing en geblokkeerde trackers. Welkom bij privacy."
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ciesz się szyfrowanymi wiadomościami, mniejszą ilością spamu, ochroną przed phishingiem i elementami śledzącymi. Witaj w świecie prywatności."
           }
         },
         "pt-BR" : {
@@ -20228,7 +20364,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bucurați-vă de mesaje criptate, mai puține mesaje nedorite, protecție împotriva înșelăciunii și urmăritori blocați. Bun venit la confidențialitate."
+            "value" : "Bucurați-vă de mesaje criptate, mai puține mesaje nedorite, protecție împotriva înșelăciunii și uneltelor de urmărire blocate. Bun venit la confidențialitate."
           }
         },
         "sk" : {
@@ -20246,13 +20382,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Şifrelenmiş iletilerin, daha az istenmeyen epostanın, kimlik avına karşı korumanın ve engellenen etkinlik izleyicilerin tadını çıkarın. Gizliliğe hoş geldiniz."
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Насолоджуйтесь зашифрованими повідомленнями, меншою кількістю спаму, захистом від шахрайства та блокуванням трекерів. Ласкаво просимо до приватності."
+            "value" : "Şifrelenmiş iletilerin, daha az istenmeyen e-postanın, kimlik avına karşı korumanın ve etkinlik izleyicilerini engellemenin tadını çıkarın. Gizliliğe hoş geldiniz."
           }
         }
       }
@@ -23417,6 +23547,12 @@
             "value" : "Hay un problema al sincronizar tu correo electrónico. Para solucionarlo, cierra sesión y vuelve a iniciarla."
           }
         },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hay un problema al sincronizar su correo electrónico. Para solucionarlo, cierre sesión y vuelva a iniciarla."
+          }
+        },
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
@@ -23435,6 +23571,18 @@
             "value" : "Problema di sincronizzazione con la tua email. Per risolverlo, disconnettiti e accedi di nuovo."
           }
         },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "お客様のメールの同期に問題が発生しました。解決するには、サインアウトして再度サインインしてください。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이메일 동기화에 문제가 발생했습니다. 해결하기 위해 로그아웃했다가 다시 로그인하십시오."
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -23450,7 +23598,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Wystąpił problem podczas synchronizowania twoich wiadomości e-mail. Wyloguj się i zaloguj ponownie, aby go rozwiązać."
+            "value" : "Wystąpił problem podczas synchronizowania wiadomości. Zaloguj się ponownie, aby to rozwiązać."
           }
         },
         "pt-BR" : {
@@ -23469,6 +23617,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Problém so synchronizáciou emailov. Na jeho vyriešenie sa odhláste a znovu prihláste."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Problem att synkronisera din e-post. För att lösa det, logga ut och logga in igen."
           }
         },
         "tr" : {
@@ -28887,6 +29041,12 @@
             "value" : "More options"
           }
         },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Más opciones"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -28897,6 +29057,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Più opzioni"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "詳細設定を表示"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "추가 옵션"
           }
         },
         "nb" : {
@@ -28917,6 +29089,12 @@
             "value" : "Mais opções"
           }
         },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mai multe opțiuni"
+          }
+        },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
@@ -28927,6 +29105,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Fler alternativ"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diğer seçenekler"
           }
         },
         "zh-Hans" : {
@@ -31415,7 +31599,195 @@
       }
     },
     "Notes" : {
-      "comment" : "Name of the alternate 'Notes' app icon shown in the app icon picker."
+      "comment" : "Name of the alternate 'Notes' app icon shown in the app icon picker.",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Нататкі"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notes"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Poznámky"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Noter"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notizen"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Σημειώσεις"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notes"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notas"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notas"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Muistiinpanot"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notes"
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Megjegyzések"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Catatan"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Note"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "メモ"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "შენიშვნები"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "메모"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notater"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notities"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notatki"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notas"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notas"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notițe"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Примечания"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Poznámky"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zapiski"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anteckningar"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Notlar"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Примітки"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "备注"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "備註"
+          }
+        }
+      }
     },
     "Nothing in Outbox" : {
       "comment" : "Outbox empty state title.",
@@ -34044,7 +34416,129 @@
       }
     },
     "Primary" : {
-      "comment" : "Name of the default (primary) app icon shown in the app icon picker."
+      "comment" : "Name of the default (primary) app icon shown in the app icon picker.",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Асноўны"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Principal"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Primární"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Primær"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Primäre"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Κύριο"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Primary"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Principal"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Principal"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Principale"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Primario"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "プライマリー"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "우선 순위"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Primær"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Primária"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Primară"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Predvolená"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Primär"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Birincil"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "主要"
+          }
+        }
+      }
     },
     "Print" : {
       "comment" : "Action title for printing given message in the action sheet.",
@@ -39482,7 +39976,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Inicieu sessió en un altre dispositiu"
+            "value" : "Inicia sessió en un altre dispositiu"
           }
         },
         "cs" : {
@@ -46095,7 +46589,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ten pasek narzędzi pojawia się, kiedy kilka wiadomości jest zaznaczonych w widoku listy"
+            "value" : "Pasek narzędzi jest widoczny podczas zaznaczania wiadomości."
           }
         },
         "pt-BR" : {
@@ -46226,7 +46720,7 @@
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ten pasek narzędzi pozostaje widoczny, kiedy wiadomość jest otwarta."
+            "value" : "Pasek narzędzi jest widoczny podczas czytania wiadomości."
           }
         },
         "pt-BR" : {
@@ -51514,7 +52008,129 @@
       }
     },
     "Weather" : {
-      "comment" : "Name of the alternate 'Weather' app icon shown in the app icon picker."
+      "comment" : "Name of the alternate 'Weather' app icon shown in the app icon picker.",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Надвор'е"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Temps"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Počasí"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vejr"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wetter"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Καιρός"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Weather"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tiempo"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tiempo"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Météo"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meteo"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "天気"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "날씨"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vær"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Clima"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meteo"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Počasie"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Väder"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hava durumu"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "天气"
+          }
+        }
+      }
     },
     "Welcome to Proton Mail, where privacy is default" : {
       "comment" : "Title of the first onboarding page introducing Proton Mail's privacy focus.",

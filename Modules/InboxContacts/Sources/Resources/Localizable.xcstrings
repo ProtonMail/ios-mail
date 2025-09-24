@@ -2894,7 +2894,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "La création de contacts ou de groupes n’est pas encore disponible dans l’appli. Créez-les depuis l’application web et ils se synchroniseront automatiquement."
+            "value" : "La création de contacts ou de groupes n’est pas encore disponible dans l’application. Créez-les depuis l’application web et ils se synchroniseront automatiquement."
           }
         },
         "hu" : {
@@ -2955,6 +2955,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vytváranie kontaktov alebo skupín v aplikácii ešte nie je dostupné. Nateraz ich môžete vytvoriť vo webovej aplikácii a synchronizujú sa do vášho zariadenia."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skapande av kontakter eller grupper i appen är ännu inte klart. För tillfället kan du skapa dem i webbappen så kommer det synkroniseras till din enhet."
           }
         },
         "tr" : {
@@ -3359,7 +3365,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Рэдагаванне кантактаў або груп у праграме пакуль не падтрымліваецца. Пакуль што вы можаце рэдагаваць іх у вэб-праграме, і змены будуць сінхранізавацца з вашай прыладай."
+            "value" : "Рэдагаванне кантактаў або груп у праграме пакуль недаступна. У цяперашні час вы можаце зрабіць гэта ў вэб-праграме, а змены будуць сінхранізавацца з вашай прыладай."
           }
         },
         "ca" : {
@@ -3480,6 +3486,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Úprava kontaktov alebo skupín v aplikácii ešte nie je pripravená. Zatiaľ ich môžete upraviť vo webovej aplikácii a zmeny sa synchronizujú s vaším zariadením."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Redigering av kontakter eller grupper i appen är ännu inte klart. För tillfället kan du redigera dem i webbappen och ändringarna kommer synkroniseras till din enhet."
           }
         },
         "tr" : {
