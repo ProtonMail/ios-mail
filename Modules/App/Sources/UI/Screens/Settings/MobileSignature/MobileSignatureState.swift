@@ -22,10 +22,6 @@ import proton_app_uniffi
 struct MobileSignatureState: Copying, Equatable {
     var mobileSignature: MobileSignature
     var toast: Toast?
-
-    var textBoxOpacity: Double {
-        mobileSignature.status.isEnabled ? 1 : 0
-    }
 }
 
 extension MobileSignatureStatus {

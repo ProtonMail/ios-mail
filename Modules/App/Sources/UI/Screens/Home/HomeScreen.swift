@@ -234,10 +234,22 @@ struct HomeScreen: View {
     }
 
     private func handleDeepLink(_ deepLink: URL) {
+        guard isCurrentSessionActive() else {
+            return
+        }
+
         if let route = DeepLinkRouteCoder.decode(deepLink: deepLink) {
             modalState = nil
             appUIStateStore.toggleSidebar(isOpen: false)
             appRoute.updateRoute(to: route)
         }
+    }
+
+    private func isCurrentSessionActive() -> Bool {
+        guard let activeSession = appContext.sessionState.userSession else {
+            return false
+        }
+
+        return ObjectIdentifier(activeSession) == ObjectIdentifier(userSession)
     }
 }

@@ -45,7 +45,7 @@ private extension DraftUndoSendErrorReason {
         switch self {
         case .messageCanNotBeUndoSent, .sendCanNoLongerBeUndone:
             L10n.Action.UndoSendError.sendCannotBeUndone
-        case .messageIsNotADraft, .messageDoesNotExist:
+        case .messageDoesNotExist:
             L10n.Action.UndoSendError.draftNotFound
         }
     }

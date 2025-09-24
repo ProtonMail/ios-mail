@@ -47,10 +47,11 @@ public final class ShareScreenModel: ObservableObject {
         self.init(
             apiEnvId: apiEnvId,
             extensionContext: extensionContext,
-            makeMailSession: { try createMailSession(params: $0, keyChain: $1, hvNotifier: $2, deviceInfoProvider: $3).get() },
+            makeMailSession: {
+                try createMailSession(params: $0, keyChain: $1, hvNotifier: $2, deviceInfoProvider: $3, issueReporter: $4).get()
+            },
             makeNewDraft: {
                 try await DraftStubWriter().createDraftStub(basedOn: $1)
-                // TODO: do not create the draft here, open composer faster and load the draft there
                 return try await newDraft(session: $0, createMode: .fromIosShareExtension).get()
             }
         )

@@ -27,7 +27,13 @@ import proton_app_uniffi
  - retained for the entire lifetime of the Share extension
  */
 final class SessionHolder {
-    typealias MakeMailSession = (MailSessionParams, OsKeyChain, ChallengeNotifier?, DeviceInfoProvider?) throws -> MailSessionProtocol
+    typealias MakeMailSession = (
+        MailSessionParams,
+        OsKeyChain,
+        ChallengeNotifier?,
+        DeviceInfoProvider?,
+        IssueReporter
+    ) throws -> MailSessionProtocol
 
     private let apiEnvId: ApiEnvId
     private let makeMailSession: MakeMailSession
@@ -44,9 +50,17 @@ final class SessionHolder {
         if let cachedMailSession {
             return cachedMailSession
         } else {
-            let apiConfig = ApiConfig(userAgent: "mail tests", envId: apiEnvId)
+            let apiConfig = ApiConfig(envId: apiEnvId)
             let params = MailSessionParamsFactory.make(origin: .iosShareExt, apiConfig: apiConfig)
-            let newMailSession = try makeMailSession(params, KeychainSDKWrapper(), nil, ChallengePayloadProvider())
+
+            let newMailSession = try makeMailSession(
+                params,
+                KeychainSDKWrapper(),
+                nil,
+                ChallengePayloadProvider(),
+                SentryIssueReporter()
+            )
+
             cachedMailSession = newMailSession
             return newMailSession
         }

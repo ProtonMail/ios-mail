@@ -23,35 +23,24 @@ import Testing
 
 @MainActor
 class AppSettingsStateStoreTests {
-
     var sut: AppSettingsStateStore!
-    var notificationCenterSpy: UserNotificationCenterSpy!
-    var urlOpenerSpy: URLOpenerSpy!
-    var bundleStub: BundleStub!
-    private var appSettingsRepositorySpy: AppSettingsRepositorySpy!
+    let notificationCenterSpy = UserNotificationCenterSpy()
+    let urlOpenerSpy = URLOpenerSpy()
+    let bundleStub = BundleStub()
+    private let appSettingsRepositorySpy = AppSettingsRepositorySpy()
+    private let appIconConfiguratorSpy = AppIconConfiguratorSpy()
 
     init() {
-        notificationCenterSpy = .init()
-        urlOpenerSpy = .init()
-        bundleStub = .init()
-        appSettingsRepositorySpy = .init()
         sut = AppSettingsStateStore(
-            state: .initial,
+            state: .initial(appIconName: .none),
             appSettingsRepository: appSettingsRepositorySpy,
             notificationCenter: notificationCenterSpy,
             urlOpener: urlOpenerSpy,
+            appIconConfigurator: appIconConfiguratorSpy,
             mainBundle: bundleStub
         )
 
         bundleStub.preferredLocalizationsStub = ["en"]
-    }
-
-    deinit {
-        notificationCenterSpy = nil
-        urlOpenerSpy = nil
-        bundleStub = nil
-        appSettingsRepositorySpy = nil
-        sut = nil
     }
 
     @Test
@@ -152,6 +141,51 @@ class AppSettingsStateStoreTests {
         #expect(sut.state.storedAppSettings.useCombineContacts == false)
     }
 
+    // MARK: - appIconSelected action
+
+    @Test
+    func changeIconFromDefaultToCalculator() async throws {
+        setUpSUT(with: .default)
+
+        await sut.handle(action: .appIconSelected(.calculator))
+
+        #expect(sut.state == AppSettingsState.initial(appIconName: AppIcon.calculator.alternateIconName))
+        #expect(appIconConfiguratorSpy.setAlternateIconNameCalls == [AppIcon.calculator.alternateIconName])
+    }
+
+    @Test
+    func changeIconFromCalculatorToNotes() async throws {
+        setUpSUT(with: .calculator)
+
+        await sut.handle(action: .appIconSelected(.notes))
+
+        #expect(sut.state == AppSettingsState.initial(appIconName: AppIcon.notes.alternateIconName))
+        #expect(appIconConfiguratorSpy.setAlternateIconNameCalls == [AppIcon.notes.alternateIconName])
+    }
+
+    @Test
+    func changeIconFromCalculatorToDefault() async throws {
+        setUpSUT(with: .calculator)
+
+        await sut.handle(action: .appIconSelected(.default))
+
+        #expect(sut.state == AppSettingsState.initial(appIconName: AppIcon.default.alternateIconName))
+        #expect(appIconConfiguratorSpy.setAlternateIconNameCalls == [AppIcon.default.alternateIconName])
+    }
+
+    // MARK: - Private
+
+    private func setUpSUT(with appIcon: AppIcon) {
+        sut = AppSettingsStateStore(
+            state: AppSettingsState.initial(appIconName: appIcon.alternateIconName),
+            appSettingsRepository: appSettingsRepositorySpy,
+            notificationCenter: notificationCenterSpy,
+            urlOpener: urlOpenerSpy,
+            appIconConfigurator: appIconConfiguratorSpy,
+            mainBundle: bundleStub
+        )
+    }
+
     private func changeAppAppearance(_ appAppearance: AppAppearance) async {
         appSettingsRepositorySpy.stubbedAppSettings = appSettingsRepositorySpy.stubbedAppSettings
             .copy(\.appearance, to: appAppearance)
@@ -169,7 +203,6 @@ class AppSettingsStateStoreTests {
             .copy(\.useAlternativeRouting, to: value)
         await sut.handle(action: .alternativeRoutingChanged(value))
     }
-
 }
 
 extension AppSettings: @retroactive Copying {}

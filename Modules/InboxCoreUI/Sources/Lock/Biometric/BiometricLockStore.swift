@@ -38,7 +38,6 @@ class BiometricLockStore: StateStore {
         self.output = output
     }
 
-    @MainActor
     func handle(action: BiometricLockScreenAction) async {
         switch action {
         case .onLoad, .unlockTapped:
@@ -55,7 +54,6 @@ class BiometricLockStore: StateStore {
         }
     }
 
-    @MainActor
     private func handle(alertAction: PolicyUnavailableAlertAction) async {
         switch alertAction {
         case .ok:

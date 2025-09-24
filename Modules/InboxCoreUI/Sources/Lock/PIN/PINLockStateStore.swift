@@ -27,7 +27,6 @@ class PINLockStateStore: StateStore {
         self.output = output
     }
 
-    @MainActor
     func handle(action: PINLockScreenAction) {
         switch action {
         case .confirmTapped:
@@ -58,7 +57,6 @@ class PINLockStateStore: StateStore {
         }
     }
 
-    @MainActor
     private func handleAlert(action: LogOutConformationAction) {
         switch action {
         case .signOut:

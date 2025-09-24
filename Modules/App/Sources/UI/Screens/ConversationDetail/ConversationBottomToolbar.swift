@@ -25,30 +25,51 @@ extension View {
 
     func conversationBottomToolbar(
         actions: ConversationToolbarActions?,
+        mailbox: @escaping () -> Mailbox,
+        mailUserSession: MailUserSession,
+        messageAppearanceOverrideStore: MessageAppearanceOverrideStore,
+        editToolbarTapped: @escaping (ToolbarType) -> Void,
         messageActionSelected: @escaping (MessageAction) -> Void,
         conversationActionSelected: @escaping (ConversationAction) -> Void
     ) -> some View {
         modifier(
             ConversationToolbarModifier(
                 actions: actions,
+                mailbox: mailbox,
+                mailUserSession: mailUserSession,
+                messageAppearanceOverrideStore: messageAppearanceOverrideStore,
+                editToolbarTapped: editToolbarTapped,
                 messageActionSelected: messageActionSelected,
                 conversationActionSelected: conversationActionSelected
-            ))
+            )
+        )
     }
 
 }
 
 struct ConversationToolbarModifier: ViewModifier {
     private let actions: ConversationToolbarActions?
+    private let mailbox: () -> Mailbox
+    private let mailUserSession: MailUserSession
+    private let messageAppearanceOverrideStore: MessageAppearanceOverrideStore
+    private let editToolbarTapped: (ToolbarType) -> Void
     private let messageActionSelected: (MessageAction) -> Void
     private let conversationActionSelected: (ConversationAction) -> Void
 
     init(
         actions: ConversationToolbarActions?,
+        mailbox: @escaping () -> Mailbox,
+        mailUserSession: MailUserSession,
+        messageAppearanceOverrideStore: MessageAppearanceOverrideStore,
+        editToolbarTapped: @escaping (ToolbarType) -> Void,
         messageActionSelected: @escaping (MessageAction) -> Void,
         conversationActionSelected: @escaping (ConversationAction) -> Void
     ) {
         self.actions = actions
+        self.mailbox = mailbox
+        self.mailUserSession = mailUserSession
+        self.messageAppearanceOverrideStore = messageAppearanceOverrideStore
+        self.editToolbarTapped = editToolbarTapped
         self.messageActionSelected = messageActionSelected
         self.conversationActionSelected = conversationActionSelected
     }
@@ -59,29 +80,72 @@ struct ConversationToolbarModifier: ViewModifier {
                 ToolbarItemGroup(placement: .bottomBar) {
                     if let actions {
                         switch actions {
-                        case .message(let actions):
-                            toolbarContent(actions: actions.visibleMessageActions, selected: messageActionSelected)
-                        case .conversation(let actions):
-                            toolbarContent(actions: actions.visibleListActions, selected: conversationActionSelected)
+                        case .message(let actions, let messageID):
+                            messageToolbarContent(
+                                messageID: messageID,
+                                actions: actions.visibleMessageActions,
+                            )
+                            .id(actions)
+                        case .conversation(let actions, let conversationID):
+                            conversationToolbarContent(
+                                conversationID: conversationID,
+                                actions: actions.visibleListActions
+                            )
+                            .id(actions)
                         }
                     }
                 }
             }
     }
 
-    @ViewBuilder
-    private func toolbarContent<Action: DisplayableAction>(
+    private func messageToolbarContent(messageID: ID, actions: [MessageAction]) -> some View {
+        toolbarContent(actions: actions, selected: messageActionSelected) {
+            MessageActionsMenu(
+                state: .initial(messageID: messageID, showEditToolbar: true),
+                mailbox: mailbox(),
+                mailUserSession: mailUserSession,
+                messageAppearanceOverrideStore: messageAppearanceOverrideStore,
+                actionTapped: messageActionSelected,
+                editToolbarTapped: { editToolbarTapped(.message) }
+            ) {
+                InternalAction.more.displayData.image
+                    .foregroundStyle(DS.Color.Icon.weak)
+            }
+        }
+    }
+
+    private func conversationToolbarContent(conversationID: ID, actions: [ConversationAction]) -> some View {
+        toolbarContent(actions: actions, selected: conversationActionSelected) {
+            ConversationActionsMenu(
+                conversationID: conversationID,
+                mailbox: mailbox(),
+                mailUserSession: mailUserSession,
+                actionTapped: conversationActionSelected,
+                editToolbarTapped: { editToolbarTapped(.conversation) }
+            ) {
+                InternalAction.more.displayData.image
+                    .foregroundStyle(DS.Color.Icon.weak)
+            }
+        }
+    }
+
+    private func toolbarContent<MoreActionsMenu: View, Action: DisplayableAction>(
         actions: [Action],
-        selected: @escaping (Action) -> Void
+        selected: @escaping (Action) -> Void,
+        moreActionsMenu: @escaping () -> MoreActionsMenu
     ) -> some View {
         HStack(alignment: .center) {
             ForEachEnumerated(actions, id: \.offset) { action, index in
                 if index == 0 {
                     Spacer()
                 }
-                Button(action: { selected(action) }) {
-                    action.displayData.image
-                        .foregroundStyle(DS.Color.Icon.weak)
+                if action.isMoreAction {
+                    moreActionsMenu()
+                } else {
+                    Button(action: { selected(action) }) {
+                        action.displayData.image
+                            .foregroundStyle(DS.Color.Icon.weak)
+                    }
                 }
                 Spacer()
             }

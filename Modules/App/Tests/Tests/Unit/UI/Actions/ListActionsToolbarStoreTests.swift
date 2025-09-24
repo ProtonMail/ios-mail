@@ -147,30 +147,6 @@ class ListActionsToolbarStoreTests {
     }
 
     @Test
-    func state_WhenMoreActionIsSelected_ItReturnsCorrectState() async {
-        sut = makeSUT(viewMode: .messages)
-        let ids: [ID] = [.init(value: 9)]
-
-        #expect(sut.state.moreActionSheetPresented == nil)
-
-        await sut.handle(action: .listItemsSelectionUpdated(ids: ids))
-        await sut.handle(action: .actionSelected(.more, ids: ids))
-
-        #expect(
-            sut.state.moreActionSheetPresented
-                == .init(
-                    selectedItemsIDs: [.init(value: 9)],
-                    bottomBarActions: [.markRead, .star, .moveTo, .labelAs],
-                    moreSheetOnlyActions: [
-                        .notSpam(.testInbox),
-                        .permanentDelete,
-                        .moveToSystemFolder(.init(localId: .init(value: 7), name: .archive)),
-                    ]
-                )
-        )
-    }
-
-    @Test
     func state_WhenLabelAsActionOnMoreSheetIsSelected_ItReturnsCorrectState() async {
         sut = makeSUT(viewMode: .messages)
         let ids: [ID] = [.init(value: 7)]
@@ -198,7 +174,6 @@ class ListActionsToolbarStoreTests {
         let ids: [ID] = [.init(value: 7), .init(value: 77)]
 
         await sut.handle(action: .actionSelected(.more, ids: ids))
-        #expect(sut.state.moreActionSheetPresented != nil)
 
         await sut.handle(action: .moreSheetAction(.unstar, ids: ids))
         #expect(starActionPerformerActionsSpy.invokedUnstarMessage == ids)

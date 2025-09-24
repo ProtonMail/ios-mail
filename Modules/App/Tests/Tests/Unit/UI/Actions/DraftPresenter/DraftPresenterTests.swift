@@ -24,7 +24,6 @@ import XCTest
 
 final class DraftPresenterTests: BaseTestCase, @unchecked Sendable {
     private var sut: DraftPresenter!
-    private let emptyErrorCallback: (DraftOpenError) -> Void = { _ in }
     private var cancellables: Set<AnyCancellable>!
 
     override func setUp() {
@@ -59,11 +58,11 @@ final class DraftPresenterTests: BaseTestCase, @unchecked Sendable {
     // MARK: openNewDraft
 
     @MainActor
-    func testOpenNewDraft_whenDraftIsCreated_itShouldPublishADraftToPresent() async {
+    func testOpenNewDraft_whenDraftIsCreated_itShouldPublishADraftToPresent() async throws {
         var capturedDraftToPresent: [DraftToPresent] = []
         sut.draftToPresent.sink { capturedDraftToPresent.append($0) }.store(in: &cancellables)
 
-        await sut.openNewDraft(onError: emptyErrorCallback)
+        try await sut.openNewDraft()
         XCTAssertEqual(capturedDraftToPresent.count, 1)
     }
 
@@ -73,9 +72,12 @@ final class DraftPresenterTests: BaseTestCase, @unchecked Sendable {
         var capturedDraftToPresent: [DraftToPresent] = []
         sut.draftToPresent.sink { capturedDraftToPresent.append($0) }.store(in: &cancellables)
 
-        await sut.openNewDraft(onError: { error in
+        do {
+            try await sut.openNewDraft()
+            XCTFail("Expected error")
+        } catch {
             XCTAssertEqual(error, .other(.network))
-        })
+        }
         XCTAssertEqual(capturedDraftToPresent.count, 0)
     }
 
@@ -107,12 +109,13 @@ final class DraftPresenterTests: BaseTestCase, @unchecked Sendable {
 
         let recipient = SingleRecipientEntry(name: "John Maxon", email: "john.maxon@pm.me")
 
-        await XCTAssertAsyncThrowsError(try await sut.openDraft(with: recipient)) { error in
-            let draftOpenError = error as? DraftOpenError
-
-            XCTAssertEqual(capturedDraftToPresent.count, 0)
-            XCTAssertEqual(draftOpenError, .reason(.messageIsNotADraft))
+        do {
+            try await sut.openDraft(with: recipient)
+            XCTFail("Expected error")
+        } catch {
+            XCTAssertEqual(error, .reason(.messageIsNotADraft))
         }
+        XCTAssertEqual(capturedDraftToPresent.count, 0)
     }
 
     // MARK: - Open new draft with contact group
@@ -177,12 +180,13 @@ final class DraftPresenterTests: BaseTestCase, @unchecked Sendable {
             ]
         )
 
-        await XCTAssertAsyncThrowsError(try await sut.openDraft(with: group)) { error in
-            let draftOpenError = error as? DraftOpenError
-
-            XCTAssertEqual(capturedDraftToPresent.count, 0)
-            XCTAssertEqual(draftOpenError, .reason(.messageDoesNotExist))
+        do {
+            try await sut.openDraft(with: group)
+            XCTFail("Expected error")
+        } catch {
+            XCTAssertEqual(error, .reason(.messageDoesNotExist))
         }
+        XCTAssertEqual(capturedDraftToPresent.count, 0)
     }
 
     // MARK: - Open new draft with mailto:
@@ -218,12 +222,12 @@ final class DraftPresenterTests: BaseTestCase, @unchecked Sendable {
     // MARK: handleReplyAction
 
     @MainActor
-    func testHandleReplyAction_whenDraftForMessageReplyIsCreated_itShouldPublishADraftToPresent() async {
+    func testHandleReplyAction_whenDraftForMessageReplyIsCreated_itShouldPublishADraftToPresent() async throws {
         var capturedDraftToPresent: [DraftToPresent] = []
         sut.draftToPresent.sink { capturedDraftToPresent.append($0) }.store(in: &cancellables)
 
         let dummyMessageId: ID = .random()
-        await sut.handleReplyAction(for: dummyMessageId, action: .reply, onError: emptyErrorCallback)
+        try await sut.handleReplyAction(for: dummyMessageId, action: .reply)
         XCTAssertEqual(capturedDraftToPresent.count, 1)
     }
 
@@ -234,11 +238,12 @@ final class DraftPresenterTests: BaseTestCase, @unchecked Sendable {
         sut.draftToPresent.sink { capturedDraftToPresent.append($0) }.store(in: &cancellables)
 
         let dummyMessageId: ID = .random()
-        await sut.handleReplyAction(
-            for: dummyMessageId, action: .reply,
-            onError: { error in
-                XCTAssertEqual(error, .other(.network))
-            })
+        do {
+            try await sut.handleReplyAction(for: dummyMessageId, action: .reply)
+            XCTFail("Expected error")
+        } catch {
+            XCTAssertEqual(error, .other(.network))
+        }
         XCTAssertEqual(capturedDraftToPresent.count, 0)
     }
 

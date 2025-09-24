@@ -85,7 +85,8 @@ final class AppContext: Sendable, ObservableObject {
             params: params,
             keyChain: dependencies.keychain,
             hvNotifier: accountChallengeCoordinator,
-            deviceInfoProvider: ChallengePayloadProvider()
+            deviceInfoProvider: ChallengePayloadProvider(),
+            issueReporter: SentryIssueReporter()
         ).get()
 
         observeNetworkChanges()
@@ -182,10 +183,20 @@ extension AppContext {
                 }
                 AppLogger.log(message: "initializeUserSession finished", category: .userSessions)
             } catch {
-                AppLogger.log(error: error, category: .userSessions)
-                errorSubject.send(error)
+                logAndDisplayError(error)
+
+                do {
+                    try await mailSession.deleteAccount(userId: session.userId()).get()
+                } catch {
+                    logAndDisplayError(error)
+                }
             }
         }
+    }
+
+    private func logAndDisplayError(_ error: Error) {
+        AppLogger.log(error: error, category: .userSessions)
+        errorSubject.send(error)
     }
 
     private func initializeUserSession(session: StoredSession) async throws -> MailUserSession? {
@@ -208,7 +219,6 @@ extension AppContext {
                 let earliestNextAttemptTime = start + minimumTimeBetweenRetries
                 try await Task.sleep(until: earliestNextAttemptTime)
             case .error(let error):
-                try await mailSession.deleteAccount(userId: session.userId()).get()
                 throw error
             }
         }

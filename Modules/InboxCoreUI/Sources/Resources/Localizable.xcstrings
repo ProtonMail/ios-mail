@@ -1179,7 +1179,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aquest PIN no és correcte. Torneu-ho a provar."
+            "value" : "PIN incorrecte. Torneu-ho a provar."
           }
         },
         "cs" : {

@@ -21,7 +21,6 @@ import InboxDesignSystem
 import proton_app_uniffi
 import SwiftUI
 
-@MainActor
 final class ContactDetailsStateStore: StateStore {
     enum Action {
         case onLoad

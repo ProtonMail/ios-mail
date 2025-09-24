@@ -22,7 +22,7 @@ struct AvatarInfo: Hashable {
     let color: Color
 }
 
-struct AvatarUIModel: Equatable {
+struct AvatarUIModel: Hashable {
     let info: AvatarInfo
     let type: AvatarViewType
 

@@ -95,7 +95,7 @@ settings:
     CODE_SIGN_STYLE: Manual
     CURRENT_PROJECT_VERSION: 1
     DEVELOPMENT_TEAM: 2SB5Z68H26
-    MARKETING_VERSION: 7.0.3
+    MARKETING_VERSION: 7.1.0
     SWIFT_STRICT_CONCURRENCY: complete
   configs:
     Debug:
@@ -158,6 +158,7 @@ targets:
       base:
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
         ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME: AccentColor
+        ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS: YES
         PRODUCT_BUNDLE_IDENTIFIER: "ch.protonmail.protonmail"
         PROVISIONING_PROFILE_SPECIFIER: "ProtonMail Release"
         SWIFT_EMIT_LOC_STRINGS: YES
@@ -183,6 +184,21 @@ targets:
             CFBundleURLSchemes:
               - mailto
               - protonmail
+        CFBundleIcons:
+          CFBundleAlternateIcons:
+            AppIcon-notes:
+              CFBundleIconFiles:
+                - AppIcon-notes
+            AppIcon-weather:
+              CFBundleIconFiles:
+                - AppIcon-weather
+            AppIcon-calculator:
+              CFBundleIconFiles:
+                - AppIcon-calculator
+          CFBundlePrimaryIcon:
+            CFBundleIconFiles:
+              - AppIcon
+            UIPrerenderedIcon: NO
         ITSAppUsesNonExemptEncryption: YES
         ITSEncryptionExportComplianceCode: "d90af253-90ca-4698-95d3-40f4e4a36ce4"
         LSRequiresIPhoneOS: YES

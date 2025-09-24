@@ -174,16 +174,6 @@ public extension PasswordFlowSubmitFidoResult {
         }
     }
 }
-public extension PasswordFlowSubmitPassResult {
-    func get() throws(PasswordError) -> SimplePasswordState {
-        switch self {
-        case .ok(let value):
-            value
-        case .error(let error):
-            throw error
-        }
-    }
-}
 public extension PasswordFlowSubmitTotpResult {
     func get() throws(PasswordError) -> SimplePasswordState {
         switch self {

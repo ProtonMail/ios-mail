@@ -20,7 +20,6 @@ import InboxCore
 import InboxCoreUI
 import proton_app_uniffi
 
-@MainActor
 final class MobileSignatureStateStore: StateStore {
     @Published var state: MobileSignatureState = .initial
 

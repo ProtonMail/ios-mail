@@ -21,12 +21,10 @@ import proton_app_uniffi
 import SwiftUI
 
 struct MailboxActionSheetsState: Copying {
-    var message: MessageActionsSheetInput?
-    var conversation: ConversationActionsSheetInput?
     var labelAs: ActionSheetInput?
     var moveTo: ActionSheetInput?
     var snooze: ID?
-    var alert: AlertModel?
+    var editToolbar: ToolbarType?
 }
 
 extension View {
@@ -35,20 +33,14 @@ extension View {
         mailbox: @escaping () -> Mailbox,
         mailUserSession: MailUserSession,
         state: Binding<MailboxActionSheetsState>,
-        messageActionTapped: @escaping (MessageAction, ID) -> Void,
-        conversationActionTapped: @escaping (ConversationAction) -> Void,
-        goBackNavigation: (() -> Void)? = nil,
-        messageAppearanceOverrideStore: MessageAppearanceOverrideStore
+        goBackNavigation: (() -> Void)? = nil
     ) -> some View {
         modifier(
             MailboxActionSheets(
                 mailbox: mailbox,
                 mailUserSession: mailUserSession,
                 state: state,
-                messageActionTapped: messageActionTapped,
-                conversationActionTapped: conversationActionTapped,
-                goBackNavigation: goBackNavigation,
-                messageAppearanceOverrideStore: messageAppearanceOverrideStore
+                goBackNavigation: goBackNavigation
             ))
     }
 }
@@ -58,54 +50,21 @@ private struct MailboxActionSheets: ViewModifier {
     private let mailbox: () -> Mailbox
     private let mailUserSession: MailUserSession
     private let goBackNavigation: (() -> Void)?
-    private let messageActionTapped: (MessageAction, ID) -> Void
-    private let conversationActionTapped: (ConversationAction) -> Void
-    private let messageAppearanceOverrideStore: MessageAppearanceOverrideStore
 
     init(
         mailbox: @escaping () -> Mailbox,
         mailUserSession: MailUserSession,
         state: Binding<MailboxActionSheetsState>,
-        messageActionTapped: @escaping (MessageAction, ID) -> Void,
-        conversationActionTapped: @escaping (ConversationAction) -> Void,
-        goBackNavigation: (() -> Void)?,
-        messageAppearanceOverrideStore: MessageAppearanceOverrideStore
+        goBackNavigation: (() -> Void)?
     ) {
         self.mailbox = mailbox
         self.mailUserSession = mailUserSession
         self._state = state
-        self.conversationActionTapped = conversationActionTapped
-        self.messageActionTapped = messageActionTapped
         self.goBackNavigation = goBackNavigation
-        self.messageAppearanceOverrideStore = messageAppearanceOverrideStore
     }
 
     func body(content: Content) -> some View {
         content
-            .sheet(item: $state.message) { input in
-                MessageActionsSheet(
-                    state: .initial(
-                        messageID: input.id,
-                        title: input.title,
-                        isEditToolbarVisible: input.origin.isEditToolbarVisible
-                    ),
-                    mailbox: mailbox(),
-                    mailUserSession: mailUserSession,
-                    messageAppearanceOverrideStore: messageAppearanceOverrideStore,
-                    actionTapped: { messageActionTapped($0, input.id) }
-                )
-                .alert(model: $state.alert)
-            }
-            .sheet(item: $state.conversation) { input in
-                ConversationActionsSheet(
-                    conversationID: input.id,
-                    title: input.title,
-                    mailbox: mailbox(),
-                    mailUserSession: mailUserSession,
-                    actionTapped: { conversationActionTapped($0) }
-                )
-                .alert(model: $state.alert)
-            }
             .sheet(item: snoozeBinding) { conversationID in
                 SnoozeView(
                     state: .initial(

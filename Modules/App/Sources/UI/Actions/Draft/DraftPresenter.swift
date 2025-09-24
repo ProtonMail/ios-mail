@@ -44,9 +44,9 @@ struct DraftPresenter: ContactsDraftPresenter {
         self.undoScheduleSendProvider = undoScheduleSendProvider
     }
 
-    func openNewDraft(onError: (DraftOpenError) -> Void) async {
+    func openNewDraft() async throws(DraftOpenError) {
         AppLogger.log(message: "open new draft", category: .composer)
-        await openNewDraft(createMode: .empty, onError: onError)
+        try await openNewDraft(createMode: .empty, updateDraft: .none)
     }
 
     func openDraft(withId messageId: ID, lastScheduledTime: UInt64? = nil) {
@@ -54,7 +54,7 @@ struct DraftPresenter: ContactsDraftPresenter {
         draftToPresentSubject.send(.openDraftId(messageId: messageId, lastScheduledTime: lastScheduledTime))
     }
 
-    func openDraft(with recipient: SingleRecipientEntry) async throws {
+    func openDraft(with recipient: SingleRecipientEntry) async throws(DraftOpenError) {
         AppLogger.log(message: "open new draft with single recipient", category: .composer)
 
         try await openNewEmptyDraft { toRecipients in
@@ -62,7 +62,7 @@ struct DraftPresenter: ContactsDraftPresenter {
         }
     }
 
-    func openDraft(with group: ContactGroupItem) async throws {
+    func openDraft(with group: ContactGroupItem) async throws(DraftOpenError) {
         AppLogger.log(message: "open new draft with contact group details", category: .composer)
 
         try await openNewEmptyDraft { toRecipients in
@@ -125,15 +125,9 @@ struct DraftPresenter: ContactsDraftPresenter {
         try await openNewDraft(createMode: .fromIosShareExtension, updateDraft: .none)
     }
 
-    func handleReplyAction(for messageId: ID, action: ReplyAction, onError: (DraftOpenError) -> Void) async {
-        switch action {
-        case .reply:
-            await openReplyDraft(for: messageId, onError: onError)
-        case .replyAll:
-            await openReplyAllDraft(for: messageId, onError: onError)
-        case .forward:
-            await openForwardDraft(for: messageId, onError: onError)
-        }
+    func handleReplyAction(for messageId: ID, action: ReplyAction) async throws(DraftOpenError) {
+        AppLogger.log(message: action.logDescription, category: .composer)
+        try await openNewDraft(createMode: action.createMode(messageId: messageId), updateDraft: .none)
     }
 
     func undoSentMessageAndOpenDraft(for messageId: ID) async throws(DraftUndoSendError) {
@@ -152,32 +146,6 @@ struct DraftPresenter: ContactsDraftPresenter {
 
 extension DraftPresenter {
 
-    private func openReplyDraft(for messageId: ID, onError: (DraftOpenError) -> Void) async {
-        AppLogger.log(message: "open reply draft", category: .composer)
-        await openNewDraft(createMode: .reply(messageId), onError: onError)
-    }
-
-    private func openReplyAllDraft(for messageId: ID, onError: (DraftOpenError) -> Void) async {
-        AppLogger.log(message: "open reply all draft", category: .composer)
-        await openNewDraft(createMode: .replyAll(messageId), onError: onError)
-    }
-
-    private func openForwardDraft(for messageId: ID, onError: (DraftOpenError) -> Void) async {
-        AppLogger.log(message: "open forward draft", category: .composer)
-        await openNewDraft(createMode: .forward(messageId), onError: onError)
-    }
-
-    private func openNewDraft(
-        createMode: DraftCreateMode,
-        onError: (DraftOpenError) -> Void
-    ) async {
-        do {
-            try await openNewDraft(createMode: createMode, updateDraft: .none)
-        } catch {
-            onError(error)
-        }
-    }
-
     private func openNewDraft(
         createMode: DraftCreateMode,
         updateDraft: ((Draft) -> Void)?
@@ -192,7 +160,7 @@ extension DraftPresenter {
         }
     }
 
-    private func openNewEmptyDraft(updateToRecipients: @escaping (ComposerRecipientList) -> Void) async throws {
+    private func openNewEmptyDraft(updateToRecipients: @escaping (ComposerRecipientList) -> Void) async throws(DraftOpenError) {
         let updateDraft: (Draft) -> Void = { draft in
             updateToRecipients(draft.toRecipients())
         }
@@ -200,6 +168,24 @@ extension DraftPresenter {
         try await openNewDraft(createMode: .empty, updateDraft: updateDraft)
     }
 
+}
+
+private extension ReplyAction {
+    var logDescription: String {
+        switch self {
+        case .reply: "open reply draft"
+        case .replyAll: "open reply all draft"
+        case .forward: "open forward draft"
+        }
+    }
+
+    func createMode(messageId: ID) -> DraftCreateMode {
+        switch self {
+        case .reply: .reply(messageId)
+        case .replyAll: .replyAll(messageId)
+        case .forward: .forward(messageId)
+        }
+    }
 }
 
 extension DraftPresenter {

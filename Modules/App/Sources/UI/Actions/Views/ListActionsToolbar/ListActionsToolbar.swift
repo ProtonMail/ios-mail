@@ -22,7 +22,7 @@ import SwiftUI
 
 extension View {
     func listActionsToolbar(
-        state: ListActionsToolbarState,
+        initialState: ListActionsToolbarState,
         availableActions: AvailableListToolbarActions,
         itemTypeForActionBar: MailboxItemType,
         mailUserSession: MailUserSession,
@@ -30,7 +30,7 @@ extension View {
     ) -> some View {
         modifier(
             ListActionBarViewModifier(
-                state: state,
+                initialState: initialState,
                 availableActions: availableActions,
                 itemTypeForActionBar: itemTypeForActionBar,
                 mailUserSession: mailUserSession,
@@ -40,11 +40,14 @@ extension View {
 }
 
 private struct ListActionBarViewModifier: ViewModifier {
+    typealias State = ListActionsToolbarState
+    typealias Store = ListActionsToolbarStore
+
     @Binding var selectedItems: Set<MailboxSelectedItem>
     @EnvironmentObject var mailbox: Mailbox
     @EnvironmentObject var toastStateStore: ToastStateStore
     @EnvironmentObject var refreshToolbarNotifier: RefreshToolbarNotifier
-    private let state: ListActionsToolbarState
+    private let initialState: ListActionsToolbarState
     private let itemTypeForActionBar: MailboxItemType
     private let availableActions: AvailableListToolbarActions
     private let deleteActions: DeleteActions
@@ -54,7 +57,7 @@ private struct ListActionBarViewModifier: ViewModifier {
     private let readActionPerformerActions: ReadActionPerformerActions
 
     init(
-        state: ListActionsToolbarState,
+        initialState: ListActionsToolbarState,
         availableActions: AvailableListToolbarActions,
         starActionPerformerActions: StarActionPerformerActions = .productionInstance,
         readActionPerformerActions: ReadActionPerformerActions = .productionInstance,
@@ -65,7 +68,7 @@ private struct ListActionBarViewModifier: ViewModifier {
         selectedItems: Binding<Set<MailboxSelectedItem>>
     ) {
         self._selectedItems = selectedItems
-        self.state = state
+        self.initialState = initialState
         self.itemTypeForActionBar = itemTypeForActionBar
         self.availableActions = availableActions
         self.deleteActions = deleteActions
@@ -78,7 +81,7 @@ private struct ListActionBarViewModifier: ViewModifier {
     func body(content: Content) -> some View {
         StoreView(
             store: ListActionsToolbarStore(
-                state: state,
+                state: initialState,
                 availableActions: availableActions,
                 starActionPerformerActions: starActionPerformerActions,
                 readActionPerformerActions: readActionPerformerActions,
@@ -116,16 +119,8 @@ private struct ListActionBarViewModifier: ViewModifier {
                         store.handle(action: .dismissMoveToSheet)
                     }
                 )
-                .sheet(item: store.binding(\.moreActionSheetPresented)) { state in
-                    ListActionsToolbarMoreSheet(state: state) { action in
-                        store.handle(action: .moreSheetAction(action, ids: selectedItemsIDs))
-                    } editToolbarTapped: {
-                        store.handle(action: .editToolbarTapped)
-                    }
-                    .alert(model: store.binding(\.moreDeleteConfirmationAlert))
-                    .sheet(isPresented: store.binding(\.isEditToolbarSheetPresented)) {
-                        EditToolbarScreen(state: .initial(toolbarType: .list), customizeToolbarService: mailUserSession)
-                    }
+                .sheet(isPresented: store.binding(\.isEditToolbarSheetPresented)) {
+                    EditToolbarScreen(state: .initial(toolbarType: .list), customizeToolbarService: mailUserSession)
                 }
                 .sheet(isPresented: store.binding(\.isSnoozeSheetPresented)) {
                     SnoozeView(
@@ -151,21 +146,14 @@ private struct ListActionBarViewModifier: ViewModifier {
         selectedItems.map(\.id)
     }
 
-    private func toolbarContent(
-        state: ListActionsToolbarState,
-        store: ListActionsToolbarStore
-    ) -> some ToolbarContent {
+    private func toolbarContent(state: State, store: Store) -> some ToolbarContent {
         ToolbarItemGroup(placement: .bottomBar) {
             HStack {
                 ForEachEnumerated(state.bottomBarActions, id: \.element) { action, index in
                     if index == 0 {
                         Spacer()
                     }
-                    Button(action: { store.handle(action: .actionSelected(action, ids: selectedItemsIDs)) }) {
-                        action.displayData.image
-                            .foregroundStyle(DS.Color.Icon.weak)
-                    }
-                    .accessibilityIdentifier(MailboxActionBarViewIdentifiers.button(index: index))
+                    toolbarItem(for: action, state: state, store: store)
                     Spacer()
                 }
             }
@@ -176,6 +164,37 @@ private struct ListActionBarViewModifier: ViewModifier {
         }
     }
 
+    @ViewBuilder
+    private func toolbarItem(
+        for action: ListActions,
+        state: State,
+        store: Store
+    ) -> some View {
+        if action == .more {
+            Menu(
+                content: {
+                    ActionMenuButton(displayData: InternalAction.editToolbar.displayData) {
+                        store.handle(action: .editToolbarTapped)
+                    }
+                    Section {
+                        ForEach(state.moreSheetOnlyActions.reversed(), id: \.self) { action in
+                            ActionMenuButton(displayData: action.displayData) {
+                                store.handle(action: .actionSelected(action, ids: selectedItemsIDs))
+                            }
+                        }
+                    }
+                },
+                label: {
+                    action.displayData.image
+                        .foregroundStyle(DS.Color.Icon.weak)
+                })
+        } else {
+            Button(action: { store.handle(action: .actionSelected(action, ids: selectedItemsIDs)) }) {
+                action.displayData.image
+                    .foregroundStyle(DS.Color.Icon.weak)
+            }
+        }
+    }
 }
 
 // MARK: Accessibility

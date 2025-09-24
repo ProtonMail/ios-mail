@@ -19,7 +19,6 @@ import SwiftUI
 import InboxCore
 import InboxCoreUI
 
-@MainActor
 class PINStateStore: StateStore {
     @Published var state: PINScreenState
     private let pinScreenValidator: PINValidator

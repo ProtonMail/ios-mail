@@ -27,7 +27,7 @@ final class ReportProblemStateStoreTests {
     var dismissInvokeCount: Int!
     private var reportProblemServiceSpy: ReportProblemServiceSpy!
 
-    init() async {
+    init() {
         reportProblemServiceSpy = .init()
         toastStateStore = .init(initialState: .initial)
         dismissInvokeCount = 0

@@ -83,12 +83,6 @@ final class PlanTileModel: Identifiable {
     let planTileData: PlanTileData
     private let visibleEntitlementsWhenCollapsed = 3
 
-    private let dateComponentsFormatter: DateComponentsFormatter = {
-        let formatter = DateComponentsFormatter()
-        formatter.unitsStyle = .full
-        return formatter
-    }()
-
     private var isFree: Bool {
         planTileData.storeKitProductID == nil
     }

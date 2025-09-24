@@ -201,7 +201,7 @@ private extension MailUserSession {
             .first
             .unsafelyUnwrapped
         let cacheFolder = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first.unsafelyUnwrapped
-        let apiConfig = ApiConfig(userAgent: "mail tests", envId: .custom("http://localhost:8000"))
+        let apiConfig = ApiConfig(envId: .custom("http://localhost:8000"))
         let appDetails = AppDetails.mail
 
         let applicationSupportPath = applicationSupportFolder.path()
@@ -223,7 +223,8 @@ private extension MailUserSession {
             params: params,
             keyChain: KeychainSDKWrapper(),
             hvNotifier: nil,
-            deviceInfoProvider: nil
+            deviceInfoProvider: nil,
+            issueReporter: SentryIssueReporter()
         ).get()
 
         let authCoordinator = AccountAuthCoordinator(productName: appDetails.product, appContext: mailSession)

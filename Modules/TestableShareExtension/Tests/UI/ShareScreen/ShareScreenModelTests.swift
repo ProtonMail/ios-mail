@@ -33,7 +33,7 @@ final class ShareScreenModelTests {
     private lazy var sut = ShareScreenModel(
         apiEnvId: .atlas,
         extensionContext: extensionContext,
-        makeMailSession: { [unowned self] _, _, _, _ in
+        makeMailSession: { [unowned self] _, _, _, _, _ in
             try stubbedMailSessionResult.get()
         },
         makeNewDraft: { [unowned self] _, _ in

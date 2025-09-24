@@ -22,7 +22,7 @@ extension UpsellScreenModel {
             planName: "Mail Plus",
             planInstances: DisplayablePlanInstance.previews,
             entryPoint: entryPoint,
-            planPurchasing: DummyPlanPurchasing()
+            purchaseActionPerformer: .dummy
         )
     }
 }
