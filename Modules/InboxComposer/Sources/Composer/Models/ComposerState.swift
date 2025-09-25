@@ -40,7 +40,9 @@ struct ComposerState: Equatable, Copying {
     }
 
     var isSendAvailable: Bool {
-        !toRecipients.recipients.isEmpty  // FIXME: Implement final logic
+        !toRecipients.recipients.isEmpty
+            || !ccRecipients.recipients.isEmpty
+            || !bccRecipients.recipients.isEmpty
     }
     var isAddingAttachmentsEnabled: Bool
     var isPasswordProtected: Bool
