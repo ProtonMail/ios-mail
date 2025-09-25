@@ -114,6 +114,16 @@ public extension AvailableMoveToActionsForMessagesResult {
         }
     }
 }
+public extension BulkMessageUnreadStatusResult {
+    func get() throws(ActionError) -> [Bool] {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension ContactGroupByIdResult {
     func get() throws(ActionError) -> ContactGroupItem {
         switch self {
