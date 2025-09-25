@@ -17,7 +17,24 @@
 
 import SwiftUI
 
-public struct TransparentBlur: UIViewRepresentable {
+public struct BlurredBackground: View {
+    private let fallbackBackgroundColor: Color
+    @Environment(\.accessibilityReduceTransparency) var reduceTransparency
+
+    public init(fallbackBackgroundColor: Color) {
+        self.fallbackBackgroundColor = fallbackBackgroundColor
+    }
+
+    public var body: some View {
+        if reduceTransparency {
+            fallbackBackgroundColor
+        } else {
+            TransparentBlur()
+        }
+    }
+}
+
+private struct TransparentBlur: UIViewRepresentable {
     public init() {}
 
     public func makeUIView(context: Context) -> some UIView {

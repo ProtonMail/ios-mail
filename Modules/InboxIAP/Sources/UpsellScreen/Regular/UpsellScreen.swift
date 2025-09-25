@@ -126,7 +126,6 @@ public struct UpsellScreen: View {
                 action: model.scrollingOffsetDidChange
             )
         }
-        .scrollClipDisabled()
         .coordinateSpace(name: coordinateSpaceName)
         .padding(.horizontal, DS.Spacing.extraLarge)
     }
