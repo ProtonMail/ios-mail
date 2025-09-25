@@ -27,14 +27,14 @@ public struct BlurredCoverView: View {
     public var body: some View {
         GeometryReader { geometry in
             ZStack(alignment: .top) {
-                TransparentBlur()
-
                 if showLogo {
                     Image
                         .protonLogo(size: 120)
                         .padding(.top, geometry.size.height * 0.37)
                 }
             }
+            .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+            .background(.ultraThinMaterial)
         }.ignoresSafeArea()
     }
 }
