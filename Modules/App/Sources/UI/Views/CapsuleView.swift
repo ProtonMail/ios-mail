@@ -48,7 +48,7 @@ struct CapsuleView: View {
                     .square(size: 14)
                     .foregroundColor(iconColor ?? DS.Color.Icon.weak)
             }
-            Text(text)
+            Text(verbatim: text.string)
                 .font(.caption2)
                 .fontWeight(style.fontWeight)
                 .foregroundColor(style.fontColor)
