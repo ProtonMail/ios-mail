@@ -72,7 +72,7 @@ public struct UpsellScreen: View {
 
                 interactiveArea
                     .padding(.top, DS.Spacing.large)
-                    .background(TransparentBlur())
+                    .background(Color.white.opacity(0.01))
             }
         }
     }
