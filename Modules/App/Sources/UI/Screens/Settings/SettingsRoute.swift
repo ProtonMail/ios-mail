@@ -30,6 +30,7 @@ enum SettingsRoute: Routable {
     case autoLock
     case mobileSignature
     case scanQRCode
+    case signatures
     case changePassword(PasswordChange.State)
     case customizeToolbars
     case securityKeys(UserSettings)
@@ -76,6 +77,8 @@ struct SettingsViewFactory {
             PasswordChange.view(from: state)
         case .securityKeys(let userSettings):
             accountAuthCoordinator.securityKeyListView(userSettings: userSettings)
+        case .signatures:
+            SignaturesScreen(userSession: mailUserSession)
         case .subscription:
             AvailablePlansViewFactory.make(mailUserSession: mailUserSession, presentationMode: .push)
         case .customizeToolbars:
@@ -90,6 +93,8 @@ private extension ProtonAuthenticatedWebPage {
         switch self {
         case .accountSettings:
             L10n.Settings.account
+        case .addressSignatures:
+            L10n.Settings.Signatures.AddressSignatures.title
         case .emailSettings:
             L10n.Settings.email
         case .spamFiltersSettings:

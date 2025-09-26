@@ -17,7 +17,6 @@
 
 import proton_app_uniffi
 import InboxCore
-import InboxIAP
 import SwiftUI
 
 struct AppSettingsState: Copying {
@@ -25,8 +24,6 @@ struct AppSettingsState: Copying {
     var appLanguage: String
     var storedAppSettings: AppSettings
     var isAppearanceMenuShown: Bool
-    var mobileSignatureStatus: MobileSignatureStatus
-    var presentedUpsell: UpsellScreenModel?
 }
 
 extension AppSettingsState {
@@ -42,8 +39,7 @@ extension AppSettingsState {
                 useCombineContacts: false,
                 useAlternativeRouting: true
             ),
-            isAppearanceMenuShown: false,
-            mobileSignatureStatus: .needsPaidVersion
+            isAppearanceMenuShown: false
         )
     }
 

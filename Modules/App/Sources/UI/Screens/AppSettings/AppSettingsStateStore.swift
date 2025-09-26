@@ -53,7 +53,6 @@ final class AppSettingsStateStore: StateStore, Sendable {
         case .onAppear:
             await refreshStoredAppSettings()
             await refreshDeviceSettings()
-            await refreshCustomSettings()
         case .enterForeground:
             await refreshDeviceSettings()
         case .appearanceTapped:
@@ -65,12 +64,6 @@ final class AppSettingsStateStore: StateStore, Sendable {
         case .alternativeRoutingChanged(let value):
             await update(setting: \.useAlternativeRouting, value: value)
         }
-    }
-
-    @MainActor
-    func presentUpsellScreen(presenter: UpsellScreenPresenter) async throws {
-        let upsellScreenModel = try await presenter.presentUpsellScreen(entryPoint: .mobileSignature)
-        state = state.copy(\.presentedUpsell, to: upsellScreenModel)
     }
 
     // MARK: - Private
@@ -105,22 +98,6 @@ final class AppSettingsStateStore: StateStore, Sendable {
         do {
             let settings = try await appSettingsRepository.getAppSettings().get()
             state = state.copy(\.storedAppSettings, to: settings)
-        } catch {
-            AppLogger.log(error: error, category: .appSettings)
-        }
-    }
-
-    @MainActor
-    private func refreshCustomSettings() async {
-        guard let userSession = AppContext.shared.sessionState.userSession else {
-            return
-        }
-
-        let customSettings = customSettings(ctx: userSession)
-
-        do {
-            let mobileSignature = try await customSettings.mobileSignature().get()
-            state = state.copy(\.mobileSignatureStatus, to: mobileSignature.status)
         } catch {
             AppLogger.log(error: error, category: .appSettings)
         }

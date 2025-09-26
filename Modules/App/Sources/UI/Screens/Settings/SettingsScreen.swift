@@ -223,6 +223,8 @@ struct SettingsScreen: View {
                             if let page = preference.webPage {
                                 router.go(to: .webView(page))
                             }
+                        case .signatures:
+                            router.go(to: .signatures)
                         case .app:
                             router.go(to: .appSettings)
                         }
@@ -315,7 +317,7 @@ private extension SettingsPreference {
             return .spamFiltersSettings
         case .privacyAndSecurity:
             return .privacySecuritySettings
-        case .app:
+        case .signatures, .app:
             return nil
         }
     }

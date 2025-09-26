@@ -5284,6 +5284,9 @@
         }
       }
     },
+    "An extra signature that appears in addition to your email signature when sending from this device." : {
+      "comment" : "Footnote describing how mobile signature works."
+    },
     "Any information you’ve entered will be lost." : {
       "comment" : "Report problem dismiss confirmation alert message.",
       "localizations" : {
@@ -19546,6 +19549,9 @@
           }
         }
       }
+    },
+    "Email signature" : {
+      "comment" : "Action item to manage the signature associated with an email address."
     },
     "Emails from %@ will no longer be delivered and will be permanently deleted. You can manage blocked email addresses in the settings." : {
       "comment" : "Message shown in the alert explaining the consequences of blocking the specified email address.",
@@ -39838,6 +39844,9 @@
         }
       }
     },
+    "Signatures" : {
+      "comment" : "Title of an item in Settings."
+    },
     "Snooze" : {
       "comment" : "Action title for marking message as snoozed in the action sheet.",
       "localizations" : {
@@ -52978,6 +52987,9 @@
           }
         }
       }
+    },
+    "Your email signature, that is automatically added to all emails you send." : {
+      "comment" : "Footnote describing how email signature works."
     }
   },
   "version" : "1.0"

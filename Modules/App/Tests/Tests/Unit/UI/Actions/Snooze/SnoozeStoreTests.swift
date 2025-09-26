@@ -16,7 +16,6 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import ProtonMail
-@testable import InboxIAP
 import InboxCoreUI
 import proton_app_uniffi
 import Testing
@@ -148,19 +147,5 @@ class SnoozeStoreTests {
 
         #expect(toastStateStore.state.toasts == [.error(message: error.localizedDescription)])
         #expect(sut.state.presentUpsellScreen == nil)
-    }
-}
-
-private class UpsellScreenPresenterSpy: UpsellScreenPresenter {
-    var stubbedError: NSError?
-    private(set) var presentUpsellScreenCalled: [UpsellScreenEntryPoint] = []
-
-    func presentUpsellScreen(entryPoint: UpsellScreenEntryPoint) async throws -> UpsellScreenModel {
-        presentUpsellScreenCalled.append(entryPoint)
-        if let stubbedError {
-            throw stubbedError
-        } else {
-            return .preview(entryPoint: entryPoint)
-        }
     }
 }

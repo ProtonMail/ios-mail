@@ -97,6 +97,7 @@ extension ProtonAuthenticatedWebModel {
 
 enum ProtonAuthenticatedWebPage: Int, Identifiable {
     case accountSettings
+    case addressSignatures
     case emailSettings
     case spamFiltersSettings
     case privacySecuritySettings
@@ -106,6 +107,8 @@ enum ProtonAuthenticatedWebPage: Int, Identifiable {
         switch self {
         case .accountSettings:
             "account-settings"
+        case .addressSignatures:
+            "email-signatures"
         case .emailSettings:
             "email-settings"
         case .spamFiltersSettings:

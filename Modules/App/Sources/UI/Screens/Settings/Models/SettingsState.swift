@@ -58,7 +58,7 @@ extension SettingsState {
         .init(
             accountInfo: nil,
             accountSettings: .stale,
-            preferences: .stale,
+            preferences: SettingsPreference.allCases,
             userSettings: nil,
             hasMailboxPassword: false
         )
@@ -70,14 +70,6 @@ private extension Array where Element == AccountSettings {
 
     static var stale: [Element] {
         [.changePassword, .securityKeys]
-    }
-
-}
-
-private extension Array where Element == SettingsPreference {
-
-    static var stale: [Element] {
-        [.email, .foldersAndLabels, .filters, .privacyAndSecurity, .app]
     }
 
 }

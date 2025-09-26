@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import InboxDesignSystem
+import ProtonUIFoundations
 import SwiftUI
 
 enum SettingsPreference: CaseIterable, Hashable {
@@ -23,6 +24,7 @@ enum SettingsPreference: CaseIterable, Hashable {
     case foldersAndLabels
     case filters
     case privacyAndSecurity
+    case signatures
     case app
 
     struct DisplayData {
@@ -40,6 +42,8 @@ enum SettingsPreference: CaseIterable, Hashable {
             .init(title: L10n.Settings.filters, icon: DS.Icon.icSliders)
         case .privacyAndSecurity:
             .init(title: L10n.Settings.privacyAndSecurity, icon: DS.Icon.icShield2Bolt)
+        case .signatures:
+            .init(title: L10n.Settings.Signatures.title, icon: Theme.icon.cardIdentity)
         case .app:
             .init(title: L10n.Settings.App.title, icon: DS.Icon.icMobile)
         }

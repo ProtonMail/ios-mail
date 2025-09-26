@@ -24,8 +24,8 @@ import Testing
 @MainActor
 struct AppSettingsSnapshotTests {
 
-    @Test(arguments: [MobileSignatureStatus.enabled, .disabled, .needsPaidVersion])
-    func testAppSettingsLayoutCorrectly(mobileSignatureStatus: MobileSignatureStatus) {
+    @Test()
+    func testAppSettingsLayoutCorrectly() {
         let sut = AppSettingsScreen(
             state: .init(
                 areNotificationsEnabled: false,
@@ -37,8 +37,7 @@ struct AppSettingsSnapshotTests {
                     useCombineContacts: false,
                     useAlternativeRouting: true
                 ),
-                isAppearanceMenuShown: false,
-                mobileSignatureStatus: mobileSignatureStatus
+                isAppearanceMenuShown: false
             ),
             appSettingsRepository: AppSettingsRepositorySpy()
         )
@@ -47,8 +46,7 @@ struct AppSettingsSnapshotTests {
             assertCustomHeightSnapshot(
                 matching: UIHostingController(rootView: sut).view,
                 styles: [userInterfaceStyle],
-                preferredHeight: 900,
-                named: "\(mobileSignatureStatus)"
+                preferredHeight: 1000
             )
         }
     }

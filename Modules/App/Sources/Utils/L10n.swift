@@ -1105,6 +1105,27 @@ enum L10n {
             static let textBoxLabel = LocalizedStringResource("Signature", comment: "Above the text box to populate the signature in settings.")
         }
 
+        enum Signatures {
+            enum AddressSignatures {
+                static let title = LocalizedStringResource(
+                    "Email signature",
+                    comment: "Action item to manage the signature associated with an email address."
+                )
+
+                static let footnote = LocalizedStringResource(
+                    "Your email signature, that is automatically added to all emails you send.",
+                    comment: "Footnote describing how email signature works."
+                )
+            }
+
+            static let title = LocalizedStringResource("Signatures", comment: "Title of an item in Settings.")
+
+            static let mobileSignatureFootnote = LocalizedStringResource(
+                "An extra signature that appears in addition to your email signature when sending from this device.",
+                comment: "Footnote describing how mobile signature works."
+            )
+        }
+
         static let subscription = LocalizedStringResource(
             "Subscription",
             comment: "Subscription menu title in the settings."

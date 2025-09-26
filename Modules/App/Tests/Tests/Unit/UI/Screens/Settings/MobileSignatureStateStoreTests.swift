@@ -85,36 +85,6 @@ final class MobileSignatureStateStoreTests {
     }
 }
 
-private final class CustomSettingsSpy: CustomSettingsProtocol {
-    private let initialState: MobileSignature
-    private(set) var setMobileSignatureCalls: [String] = []
-    private(set) var setMobileSignatureEnabledCalls: [Bool] = []
-
-    var stubbedOnLoadError: ProtonError?
-
-    init(initialState: MobileSignature) {
-        self.initialState = initialState
-    }
-
-    func mobileSignature() async -> CustomSettingsMobileSignatureResult {
-        if let stubbedOnLoadError {
-            return .error(stubbedOnLoadError)
-        } else {
-            return .ok(initialState)
-        }
-    }
-
-    func setMobileSignature(signature: String) async -> CustomSettingsSetMobileSignatureResult {
-        setMobileSignatureCalls.append(signature)
-        return .ok
-    }
-
-    func setMobileSignatureEnabled(enabled: Bool) async -> CustomSettingsSetMobileSignatureEnabledResult {
-        setMobileSignatureEnabledCalls.append(enabled)
-        return .ok
-    }
-}
-
 private struct AlmostImmediateClock: Clock {
     private let wrappedClock = ContinuousClock()
 

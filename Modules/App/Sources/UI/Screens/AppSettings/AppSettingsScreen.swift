@@ -18,7 +18,6 @@
 import InboxCore
 import InboxCoreUI
 import InboxDesignSystem
-import InboxIAP
 import proton_app_uniffi
 import SwiftUI
 
@@ -27,7 +26,6 @@ struct AppSettingsScreen: View {
     @EnvironmentObject var toastStateStore: ToastStateStore
     @EnvironmentObject var appAppearanceStore: AppAppearanceStore
     @EnvironmentObject var router: Router<SettingsRoute>
-    @EnvironmentObject private var upsellCoordinator: UpsellCoordinator
     @StateObject var store: AppSettingsStateStore
 
     init(
@@ -98,7 +96,6 @@ struct AppSettingsScreen: View {
                         }
                         .roundedRectangleStyle()
                     }
-                    mobileSignatureItem(mobileSignatureStatus: store.state.mobileSignatureStatus)
                     FormSection(
                         header: L10n.Settings.App.advanced,
                         footer: L10n.Settings.App.alternativeRoutingInfo
@@ -115,7 +112,6 @@ struct AppSettingsScreen: View {
         }
         .navigationTitle(L10n.Settings.App.title.string)
         .navigationBarTitleDisplayMode(.inline)
-        .sheet(item: $store.state.presentedUpsell, content: UpsellScreen.init)
         .onAppear { store.handle(action: .onAppear) }
         .onChange(
             of: scenePhase,
@@ -186,30 +182,6 @@ struct AppSettingsScreen: View {
 
     private func comingSoon() {
         toastStateStore.present(toast: .comingSoon)
-    }
-
-    @ViewBuilder
-    private func mobileSignatureItem(mobileSignatureStatus: MobileSignatureStatus) -> some View {
-        let needsPaidVersion = mobileSignatureStatus == .needsPaidVersion
-
-        FormBigButton(
-            title: L10n.Settings.MobileSignature.title,
-            accessoryType: needsPaidVersion ? .upsell : .symbol(.chevronRight),
-            value: mobileSignatureStatus.isEnabled ? CommonL10n.on.string : CommonL10n.off.string,
-            action: {
-                if needsPaidVersion {
-                    Task {
-                        do {
-                            try await store.presentUpsellScreen(presenter: upsellCoordinator)
-                        } catch {
-                            toastStateStore.present(toast: .error(message: error.localizedDescription))
-                        }
-                    }
-                } else {
-                    router.go(to: .mobileSignature)
-                }
-            }
-        )
     }
 }
 

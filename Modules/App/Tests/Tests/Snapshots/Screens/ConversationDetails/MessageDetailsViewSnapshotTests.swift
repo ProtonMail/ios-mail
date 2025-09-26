@@ -88,7 +88,7 @@ class MessageDetailsViewSnapshotTests {
             location: .system(.outbox),
             labels: [
                 .init(labelId: .init(value: 1), text: "Friends and Family", color: .init(hex: "#1795D4")),
-                .init(labelId: .init(value: 2), text: "swisspost@mail.com", color: .init(hex: "#1B9B78"))
+                .init(labelId: .init(value: 2), text: "swisspost@mail.com", color: .init(hex: "#1B9B78")),
             ],
             recipientsTo: [MessageDetailsPreviewProvider.recipientsTo.first].compactMap { $0 },
             recipientsCc: [],
