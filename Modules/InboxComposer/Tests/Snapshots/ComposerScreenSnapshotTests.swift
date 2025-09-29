@@ -22,7 +22,6 @@ import InboxSnapshotTesting
 
 @MainActor
 final class ComposerScreenSnapshotTests: BaseTestCase {
-
     func testComposerScreen_whenEmpty_itLayoutsCorrectOnIphoneX() throws {
         let toastStateStore = ToastStateStore.init(initialState: .initial)
         let composerScreen = ComposerScreen(
