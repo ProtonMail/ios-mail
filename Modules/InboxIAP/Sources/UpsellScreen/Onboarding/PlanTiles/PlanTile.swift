@@ -37,7 +37,7 @@ struct PlanTile: View {
                     }
                 }
 
-                monthlyPrice
+                price
 
                 if let discount = model.discount {
                     discountLabel(discount: discount)
@@ -53,12 +53,6 @@ struct PlanTile: View {
             Spacer.exactly(DS.Spacing.huge)
 
             getPlanButton
-
-            Spacer.exactly(DS.Spacing.mediumLight)
-
-            if let billingNotice = model.billingNotice {
-                billingNoticeLabel(billingNotice: billingNotice)
-            }
         }
         .padding(DS.Spacing.extraLarge)
         .background {
@@ -88,14 +82,15 @@ struct PlanTile: View {
             }
     }
 
-    private var monthlyPrice: some View {
+    private var price: some View {
         HStack {
-            Text(model.monthlyPrice)
+            Text(model.formattedPrice)
                 .font(.title)
                 .fontWeight(.bold)
                 .foregroundStyle(DS.Color.Text.norm)
 
-            Text(L10n.perMonth)
+            Text("/\(model.localizedCycleUnit)".notLocalized)
+                .textCase(.lowercase)
                 .font(.footnote)
                 .foregroundStyle(DS.Color.Text.weak)
         }
@@ -168,12 +163,6 @@ struct PlanTile: View {
                 .progressViewStyle(CircularProgressViewStyle(tint: DS.Color.Brand.norm))
                 .visible(model.isGetButtonDisabled)
         }
-    }
-
-    private func billingNoticeLabel(billingNotice: LocalizedStringResource) -> some View {
-        Text(billingNotice)
-            .font(.caption)
-            .foregroundStyle(DS.Color.Brand.plus10)
     }
 }
 

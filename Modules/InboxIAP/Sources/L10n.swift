@@ -70,10 +70,6 @@ enum L10n {
         .init("Pay annually and save \(amount)", bundle: .module, comment: "Shown when selecting the yearly billing cycle")
     }
 
-    static func billingNotice(billingPrice: String, every billingCycleInMonths: String) -> LocalizedStringResource {
-        .init("Billed at \(billingPrice) every \(billingCycleInMonths)", bundle: .module, comment: "Notice at the bottom of the upsell screen")
-    }
-
     enum BillingCycle {
         static let monthly = LocalizedStringResource("Monthly", bundle: .module, comment: "Refers to billing cycle")
         static let yearlyNoDiscount = LocalizedStringResource("Yearly", bundle: .module, comment: "Refers to billing cycle")

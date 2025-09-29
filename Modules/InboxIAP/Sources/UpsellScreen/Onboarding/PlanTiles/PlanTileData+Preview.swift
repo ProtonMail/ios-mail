@@ -24,37 +24,33 @@ extension PlanTileData {
             storeKitProductID: "iosmail_bundle2022_12_usd_auto_renewing",
             planName: "Proton Unlimited",
             cycleInMonths: 12,
-            monthlyPrice: "$9.99",
             discount: .init(percentageValue: 23, savedAmount: "$36.00"),
             entitlements: .unlimited,
-            billingPrice: "$119.88"
+            formattedPrice: "$119.88"
         ),
         .init(
             storeKitProductID: "iosmail_bundle2022_1_usd_auto_renewing",
             planName: "Proton Unlimited",
             cycleInMonths: 1,
-            monthlyPrice: "$12.99",
             discount: nil,
             entitlements: .unlimited,
-            billingPrice: "$12.99"
+            formattedPrice: "$12.99"
         ),
         .init(
             storeKitProductID: "iosmail_mail2022_12_usd_auto_renewing",
             planName: "Mail Plus",
             cycleInMonths: 12,
-            monthlyPrice: "$3.99",
             discount: .init(percentageValue: 20, savedAmount: "$12.00"),
             entitlements: .mailPlus,
-            billingPrice: "$47.88"
+            formattedPrice: "$47.88"
         ),
         .init(
             storeKitProductID: "iosmail_mail2022_1_usd_auto_renewing",
             planName: "Mail Plus",
             cycleInMonths: 1,
-            monthlyPrice: "$4.99",
             discount: nil,
             entitlements: .mailPlus,
-            billingPrice: "$4.99"
+            formattedPrice: "$4.99"
         ),
         .free(priceFormatStyle: .usd, cycleInMonths: 12),
         .free(priceFormatStyle: .usd, cycleInMonths: 1),
@@ -65,10 +61,9 @@ extension PlanTileData {
             storeKitProductID: nil,
             planName: "Proton Free",
             cycleInMonths: cycleInMonths,
-            monthlyPrice: priceFormatStyle.format(0.0),
             discount: nil,
             entitlements: .free,
-            billingPrice: nil
+            formattedPrice: priceFormatStyle.format(0.0)
         )
     }
 }

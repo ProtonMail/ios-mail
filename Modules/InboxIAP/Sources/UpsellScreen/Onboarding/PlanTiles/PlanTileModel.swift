@@ -19,6 +19,7 @@
 import InboxCoreUI
 import Foundation
 import PaymentsNG
+import StoreKit
 
 @MainActor
 @Observable
@@ -42,8 +43,13 @@ final class PlanTileModel: Identifiable {
         planTileData.cycleInMonths
     }
 
-    var monthlyPrice: String {
-        planTileData.monthlyPrice
+    var formattedPrice: String {
+        planTileData.formattedPrice
+    }
+
+    var localizedCycleUnit: String {
+        let subscriptionPeriodUnit = Product.SubscriptionPeriod.Unit(cycleInMonths: cycleInMonths) ?? .month
+        return subscriptionPeriodUnit.localizedDescription
     }
 
     var discount: PlanTileData.Discount? {
@@ -64,20 +70,6 @@ final class PlanTileModel: Identifiable {
 
     var getPlanButtonFlavor: BigButtonStyle.Flavor {
         isFree ? .weak : .regular
-    }
-
-    var billingNotice: LocalizedStringResource? {
-        guard let billingPrice = planTileData.billingPrice else { return nil }
-
-        var dateComponents = DateComponents()
-        dateComponents.month = planTileData.cycleInMonths
-
-        guard let cycleString = DateComponentsFormatter.billingCycle.string(from: dateComponents) else {
-            assertionFailure()
-            return nil
-        }
-
-        return L10n.billingNotice(billingPrice: billingPrice, every: cycleString)
     }
 
     let planTileData: PlanTileData
@@ -104,10 +96,15 @@ final class PlanTileModel: Identifiable {
     }
 }
 
-private extension DateComponentsFormatter {
-    static let billingCycle: DateComponentsFormatter = {
-        let formatter = DateComponentsFormatter()
-        formatter.unitsStyle = .full
-        return formatter
-    }()
+private extension Product.SubscriptionPeriod.Unit {
+    init?(cycleInMonths: Int) {
+        switch cycleInMonths {
+        case 1:
+            self = .month
+        case 12:
+            self = .year
+        default:
+            return nil
+        }
+    }
 }

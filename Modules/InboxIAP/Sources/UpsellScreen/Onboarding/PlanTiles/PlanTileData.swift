@@ -27,8 +27,7 @@ struct PlanTileData: Hashable {
     let storeKitProductID: String?
     let planName: String
     let cycleInMonths: Int
-    let monthlyPrice: String
     let discount: Discount?
     let entitlements: [DescriptionEntitlement]
-    let billingPrice: String?
+    let formattedPrice: String
 }

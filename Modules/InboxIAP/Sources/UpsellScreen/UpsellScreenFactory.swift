@@ -86,10 +86,9 @@ final class UpsellScreenFactory {
                 storeKitProductID: composedPlan.storeKitProductID,
                 planName: composedPlan.plan.title,
                 cycleInMonths: composedPlan.instance.cycle,
-                monthlyPrice: composedPlan.pricePerMonthLabel,
                 discount: discount(of: composedPlan, comparedTo: mostExpensiveInstance),
                 entitlements: composedPlan.plan.entitlements.compactMap(\.asDescription),
-                billingPrice: composedPlan.product.displayPrice
+                formattedPrice: composedPlan.product.displayPrice
             )
         }
     }
