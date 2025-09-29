@@ -29,7 +29,7 @@ public struct BlurredCoverView: View {
             ZStack(alignment: .top) {
                 if showLogo {
                     Image
-                        .protonLogo(size: 120)
+                        .protonLogo(size: 160)
                         .padding(.top, geometry.size.height * 0.37)
                 }
             }

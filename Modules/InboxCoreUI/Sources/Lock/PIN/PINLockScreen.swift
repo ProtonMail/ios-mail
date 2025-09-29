@@ -53,7 +53,7 @@ public struct PINLockScreen: View {
                     ScrollView {
                         VStack(alignment: .center, spacing: .zero) {
                             Image
-                                .protonLogo(size: 90)
+                                .protonLogo(size: 120)
                                 .padding(.top, geometry.size.height * 0.20)
                             Text(L10n.PINLock.title)
                                 .foregroundStyle(DS.Color.Text.norm)
