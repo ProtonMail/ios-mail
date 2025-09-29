@@ -21,11 +21,6 @@ import proton_app_uniffi
 import UIKit
 import UserNotifications
 
-enum RemoteNotificationType {
-    case newMessage(sessionId: String, remoteId: RemoteId)
-    case urlToOpen(String)
-}
-
 @MainActor
 final class UserNotificationCenterDelegate: NSObject, UNUserNotificationCenterDelegate, ApplicationServiceSetUp {
     private let sessionStatePublisher: AnyPublisher<SessionState, Never>
@@ -73,7 +68,7 @@ final class UserNotificationCenterDelegate: NSObject, UNUserNotificationCenterDe
         let notificationContent = response.notification.request.content
         let actionIdentifier = response.actionIdentifier
 
-        guard let notificationType = detectNotificationType(userInfo: notificationContent.userInfo) else {
+        guard let notificationType = RemoteNotificationType(userInfo: notificationContent.userInfo) else {
             AppLogger.log(message: "Unrecognized notification type", category: .notifications, isError: true)
             return
         }
@@ -98,16 +93,6 @@ final class UserNotificationCenterDelegate: NSObject, UNUserNotificationCenterDe
         }
 
         AppLogger.log(message: "Finished handling notification", category: .notifications)
-    }
-
-    private func detectNotificationType(userInfo: [AnyHashable: Any]) -> RemoteNotificationType? {
-        if let sessionId = userInfo["UID"] as? String, let messageId = userInfo["messageId"] as? String {
-            return .newMessage(sessionId: sessionId, remoteId: .init(value: messageId))
-        } else if let url = userInfo["url"] as? String {
-            return .urlToOpen(url)
-        } else {
-            return nil
-        }
     }
 
     private func handleNewMessage(

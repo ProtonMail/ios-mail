@@ -23,13 +23,14 @@ import SwiftUI
 
 final class SceneDelegate: UIResponder, UIWindowSceneDelegate, ObservableObject {
 
-    typealias TransitionAnimation = @MainActor (
-        _ view: UIView,
-        _ duration: TimeInterval,
-        _ options: UIView.AnimationOptions,
-        _ animations: (() -> Void)?,
-        _ completion: ((Bool) -> Void)?
-    ) -> Void
+    typealias TransitionAnimation =
+        @MainActor (
+            _ view: UIView,
+            _ duration: TimeInterval,
+            _ options: UIView.AnimationOptions,
+            _ animations: (() -> Void)?,
+            _ completion: ((Bool) -> Void)?
+        ) -> Void
 
     weak var windowScene: UIWindowScene?
     var overlayWindow: UIWindow?

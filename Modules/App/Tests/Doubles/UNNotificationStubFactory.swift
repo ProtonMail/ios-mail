@@ -19,9 +19,10 @@ import UserNotifications
 
 /// This factory allows for instantiating several UserNotification classes for unit testing purposes, as they do not expose feasible initializers
 enum UNNotificationResponseStubFactory {
-    static func makeNotification(content: UNNotificationContent) -> UNNotification {
+    static func makeNotification(identifier: String? = nil, content: UNNotificationContent) -> UNNotification {
         let request = class_createInstance(UNNotificationRequestStub.self, 0) as! UNNotificationRequestStub
         request._content = content
+        request._identifier = identifier
 
         let notification = class_createInstance(UNNotificationStub.self, 0) as! UNNotificationStub
         notification._request = request
@@ -69,9 +70,14 @@ private class UNNotificationStub: UNNotification {
 
 private class UNNotificationRequestStub: UNNotificationRequest {
     var _content: UNNotificationContent?
+    var _identifier: String?
 
     override var content: UNNotificationContent {
         _content ?? super.content
+    }
+
+    override var identifier: String {
+        _identifier ?? super.identifier
     }
 
     @available(*, unavailable)

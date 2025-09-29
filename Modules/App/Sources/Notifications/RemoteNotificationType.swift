@@ -15,21 +15,19 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import UserNotifications
+import proton_app_uniffi
 
-protocol UserNotificationCenter: AnyObject {
-    var delegate: UNUserNotificationCenterDelegate? { get set }
+enum RemoteNotificationType {
+    case newMessage(sessionId: String, remoteId: RemoteId)
+    case urlToOpen(String)
 
-    func authorizationStatus() async -> UNAuthorizationStatus
-    func requestAuthorization(options: UNAuthorizationOptions) async throws -> Bool
-    func setNotificationCategories(_ categories: Set<UNNotificationCategory>)
-
-    func deliveredNotifications() async -> [UNNotification]
-    func removeDeliveredNotifications(withIdentifiers identifiers: [String])
-}
-
-extension UNUserNotificationCenter: UserNotificationCenter {
-    func authorizationStatus() async -> UNAuthorizationStatus {
-        await notificationSettings().authorizationStatus
+    init?(userInfo: [AnyHashable: Any]) {
+        if let sessionId = userInfo["UID"] as? String, let messageId = userInfo["messageId"] as? String {
+            self = .newMessage(sessionId: sessionId, remoteId: .init(value: messageId))
+        } else if let url = userInfo["url"] as? String {
+            self = .urlToOpen(url)
+        } else {
+            return nil
+        }
     }
 }

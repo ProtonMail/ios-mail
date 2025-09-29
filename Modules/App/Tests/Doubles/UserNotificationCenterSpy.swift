@@ -23,12 +23,27 @@ final class UserNotificationCenterSpy: UserNotificationCenter {
     var delegate: UNUserNotificationCenterDelegate?
     var stubbedAuthorizationResult = true
     var stubbedAuthorizationStatus: UNAuthorizationStatus = .notDetermined
+    var stubbedDeliveredNotifications: [UNNotification] = []
 
     private(set) var requestAuthorizationInvocations: [UNAuthorizationOptions] = []
     private(set) var setNotificationCategoriesInvocations: [Set<UNNotificationCategory>] = []
 
+    // the real UNUserNotificationCenter is thread-safe, so we use this to emulate that characteristic
+    // otherwise tests can crash because of concurrent access
+    private let queue = DispatchQueue(label: "com.protonmail.UserNotificationCenterSpy")
+
     func authorizationStatus() async -> UNAuthorizationStatus {
         stubbedAuthorizationStatus
+    }
+
+    func deliveredNotifications() -> [UNNotification] {
+        stubbedDeliveredNotifications
+    }
+
+    func removeDeliveredNotifications(withIdentifiers identifiers: [String]) {
+        queue.sync {
+            stubbedDeliveredNotifications.removeAll { identifiers.contains($0.request.identifier) }
+        }
     }
 
     func requestAuthorization(options: UNAuthorizationOptions) async throws -> Bool {

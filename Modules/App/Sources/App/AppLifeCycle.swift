@@ -99,6 +99,7 @@ extension AppLifeCycle {
             remoteNotificationRegistrar: UIApplication.shared
         )
 
+        let notificationCleanupService = NotificationCleanupService()
         let paymentsService = PaymentsService(appContext: appContext)
 
         let backgroundTransitionActionsExecutor = BackgroundTransitionActionsExecutor(
@@ -134,6 +135,7 @@ extension AppLifeCycle {
             ],
             willResignActiveServices: [
                 appIconBadgeService,
+                notificationCleanupService,
                 shortcutItemsService,
             ],
             didEnterBackgroundServices: [
