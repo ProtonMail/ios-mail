@@ -18,6 +18,7 @@
 @testable import ProtonMail
 import InboxSnapshotTesting
 import InboxTesting
+import SwiftUI
 import Testing
 
 @MainActor
@@ -88,7 +89,7 @@ class MessageDetailsViewSnapshotTests {
             location: .system(.outbox),
             labels: [
                 .init(labelId: .init(value: 1), text: "Friends and Family", color: .init(hex: "#1795D4")),
-                .init(labelId: .init(value: 2), text: "swisspost@mail.com", color: .init(hex: "#1B9B78"))
+                .init(labelId: .init(value: 2), text: "swisspost@mail.com", color: .init(hex: "#1B9B78")),
             ],
             recipientsTo: [MessageDetailsPreviewProvider.recipientsTo.first].compactMap { $0 },
             recipientsCc: [],
@@ -101,7 +102,16 @@ class MessageDetailsViewSnapshotTests {
         collapsed: Bool,
         model: MessageDetailsUIModel,
         actionButtonsState: MessageDetailsView.ActionButtonsState = .enabled
-    ) -> MessageDetailsView {
-        .init(isHeaderCollapsed: collapsed, uiModel: model, actionButtonsState: actionButtonsState, onEvent: { _ in })
+    ) -> some View {
+        MessageDetailsView(
+            isHeaderCollapsed: collapsed,
+            uiModel: model,
+            mailbox: .dummy,
+            mailUserSession: .dummy,
+            messageAppearanceOverrideStore: .init(),
+            actionButtonsState: actionButtonsState,
+            onEvent: { _ in }
+        )
+        .environment(\.messageAppearanceOverrideStore, MessageAppearanceOverrideStore())
     }
 }

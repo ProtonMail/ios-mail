@@ -18,19 +18,17 @@
 import proton_app_uniffi
 import SwiftUI
 
+@MainActor
 class AppAppearanceStore: ObservableObject {
-    @MainActor
     static let shared = AppAppearanceStore(mailSession: { AppContext.shared.mailSession })
 
     @Published var colorScheme: ColorScheme?
     private let mailSession: () -> MailSessionProtocol
 
-    @MainActor
     init(mailSession: @escaping () -> MailSessionProtocol) {
         self.mailSession = mailSession
     }
 
-    @MainActor
     func updateColorScheme() async {
         let appearance = try! await mailSession().getAppSettings().get().appearance
         switch appearance {

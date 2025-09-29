@@ -35,7 +35,7 @@ public final class UpsellScreenModel: Identifiable {
     private let logoScaleFactorRange: ClosedRange<CGFloat> = 0.8...1
     private let logoOpacityRange: ClosedRange<CGFloat> = 0.2...1
     private let entryPoint: UpsellScreenEntryPoint
-    private let planPurchasing: PlanPurchasing
+    private let purchaseActionPerformer: PurchaseActionPerformer
 
     var logo: ImageResource {
         entryPoint.logo
@@ -53,12 +53,12 @@ public final class UpsellScreenModel: Identifiable {
         planName: String,
         planInstances: [DisplayablePlanInstance],
         entryPoint: UpsellScreenEntryPoint,
-        planPurchasing: PlanPurchasing
+        purchaseActionPerformer: PurchaseActionPerformer
     ) {
         self.planName = planName
         self.planInstances = planInstances
         self.entryPoint = entryPoint
-        self.planPurchasing = planPurchasing
+        self.purchaseActionPerformer = purchaseActionPerformer
         selectedInstanceId = planInstances[0].storeKitProductId
     }
 
@@ -73,27 +73,12 @@ public final class UpsellScreenModel: Identifiable {
     }
 
     func onPurchaseTapped(toastStateStore: ToastStateStore, dismiss: () -> Void) async {
-        AppLogger.log(message: "Attempting to purchase \(selectedInstanceId)", category: .payments)
-
-        isBusy = true
-
-        defer {
-            isBusy = false
-        }
-
-        do {
-            try await planPurchasing.purchase(storeKitProductId: selectedInstanceId)
-
-            AppLogger.log(message: "Purchase successful", category: .payments)
-
-            dismiss()
-        } catch {
-            AppLogger.log(error: error, category: .payments)
-
-            if let toast = error.toastToShowTheUser {
-                toastStateStore.present(toast: toast)
-            }
-        }
+        await purchaseActionPerformer.purchase(
+            storeKitProductID: selectedInstanceId,
+            isBusy: .init(get: { self.isBusy }, set: { self.isBusy = $0 }),
+            toastStateStore: toastStateStore,
+            dismiss: dismiss
+        )
     }
 }
 

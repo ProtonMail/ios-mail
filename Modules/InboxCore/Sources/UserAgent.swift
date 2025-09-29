@@ -19,10 +19,10 @@
 import proton_app_uniffi
 import UIKit
 
-public struct UserAgent {
+enum UserAgent {
 
     /// Returns the user agent information expected by the backend, e.g. ProtonMail/7.0.2 (25) (iOS 18.6.2; iPhone14,4)
-    public static func value(appName: String) -> String {
+    static func value(appName: String) -> String {
         let appVersion = Bundle.main.appVersion
         let iOSVersion = UIDevice.current.systemVersion
         let deviceModel = getDeviceModelIdentifier()

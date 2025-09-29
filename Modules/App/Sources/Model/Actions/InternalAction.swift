@@ -20,11 +20,14 @@ import InboxDesignSystem
 
 enum InternalAction {
     case more
+    case editToolbar
 
     var icon: Image {
         switch self {
         case .more:
             DS.Icon.icThreeDotsHorizontal.image
+        case .editToolbar:
+            DS.Icon.icMagicWand.image
         }
     }
 
@@ -32,6 +35,8 @@ enum InternalAction {
         switch self {
         case .more:
             .empty
+        case .editToolbar:
+            L10n.Action.editToolbar
         }
     }
 }
@@ -40,6 +45,14 @@ extension InternalAction: DisplayableAction {
 
     var displayData: ActionDisplayData {
         .init(title: name, image: icon)
+    }
+
+    var isMoreAction: Bool {
+        if case .more = self {
+            true
+        } else {
+            false
+        }
     }
 
 }

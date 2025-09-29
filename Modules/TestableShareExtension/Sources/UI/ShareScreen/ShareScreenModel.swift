@@ -52,7 +52,6 @@ public final class ShareScreenModel: ObservableObject {
             },
             makeNewDraft: {
                 try await DraftStubWriter().createDraftStub(basedOn: $1)
-                // TODO: do not create the draft here, open composer faster and load the draft there
                 return try await newDraft(session: $0, createMode: .fromIosShareExtension).get()
             }
         )

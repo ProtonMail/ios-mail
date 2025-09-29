@@ -42,6 +42,7 @@ final class DraftActionBarViewController: UIViewController {
     private let expirationButton = SubviewFactory.expirationButton
     private let discardButton = SubviewFactory.discardButton
     private let spacer = UIView()
+    private let topBorder = SubviewFactory.topBorder
     private let buttonSize = 40.0
     private let messageExpirationLearnMoreUrl = URL(string: "https://proton.me/support/expiration")!
     var onEvent: ((Event) -> Void)?
@@ -64,10 +65,6 @@ final class DraftActionBarViewController: UIViewController {
     }
 
     private func setUpUI() {
-        registerForTraitChanges([UITraitUserInterfaceStyle.self]) { [weak self] (traitObject: Self, _) in
-            // Fix to make the color of the shadow dynamically change
-            self?.view.layer.shadowColor = DS.Color.Shade.shade10.toDynamicUIColor.cgColor
-        }
         if state.isAddingAttachmentsEnabled {
             stack.addArrangedSubview(attachmentButton)
         }
@@ -81,18 +78,16 @@ final class DraftActionBarViewController: UIViewController {
         passwordButton.menu = UIMenu(children: getPasswordMenu())
         discardButton.addTarget(self, action: #selector(onDiscardDraftTap), for: .touchUpInside)
         view.addSubview(stack)
+        view.addSubview(topBorder)
 
         view.backgroundColor = DS.Color.Background.norm.toDynamicUIColor
-        view.layer.masksToBounds = false
-        view.layer.shadowOffset = .init(width: 0.0, height: -1.0)
-        view.layer.shadowColor = DS.Color.Shade.shade10.toDynamicUIColor.cgColor
-        view.layer.shadowOpacity = 1.0
 
         applyState()
     }
 
     private func setUpConstraints() {
         view.translatesAutoresizingMaskIntoConstraints = false
+        topBorder.translatesAutoresizingMaskIntoConstraints = false
         spacer.translatesAutoresizingMaskIntoConstraints = false
         attachmentButton.setContentHuggingPriority(.required, for: .horizontal)
         passwordButton.setContentHuggingPriority(.required, for: .horizontal)
@@ -100,9 +95,15 @@ final class DraftActionBarViewController: UIViewController {
         discardButton.setContentHuggingPriority(.required, for: .horizontal)
         NSLayoutConstraint.activate([
             stack.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: DS.Spacing.standard),
-            stack.topAnchor.constraint(equalTo: view.topAnchor),
+            stack.topAnchor.constraint(equalTo: topBorder.bottomAnchor),
             stack.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -DS.Spacing.standard),
             stack.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+        ])
+        NSLayoutConstraint.activate([
+            topBorder.heightAnchor.constraint(equalToConstant: 1),
+            topBorder.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            topBorder.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            topBorder.topAnchor.constraint(equalTo: view.topAnchor),
         ])
         [attachmentButton, passwordButton, discardButton].forEach { button in
             NSLayoutConstraint.activate([
@@ -196,6 +197,12 @@ final class DraftActionBarViewController: UIViewController {
 extension DraftActionBarViewController {
 
     private enum SubviewFactory {
+
+        static var topBorder: UIView {
+            let view = UIView()
+            view.backgroundColor = DS.Color.Border.light.toDynamicUIColor
+            return view
+        }
 
         static var stack: UIStackView {
             let view = UIStackView()

@@ -129,7 +129,9 @@ private extension ToolbarWithActions {
         switch self {
         case .list:
             L10n.Settings.CustomizeToolbars.listToolbarSectionTitle
-        case .message, .conversation:
+        case .message:
+            L10n.Settings.CustomizeToolbars.messageToolbarSectionTitle
+        case .conversation:
             L10n.Settings.CustomizeToolbars.conversationToolbarSectionTitle
         }
     }

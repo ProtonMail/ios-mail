@@ -18,7 +18,7 @@
 import InboxCore
 import proton_app_uniffi
 
-class ContactsDraftPresenterSpy: ContactsDraftPresenter {
+final class ContactsDraftPresenterSpy: ContactsDraftPresenter {
     var stubbedOpenDraftContactError: Error?
     var stubbedOpenDraftGroupError: Error?
 

@@ -39,9 +39,7 @@ public struct OnboardingUpsellScreen: View {
                     }
                     .padding(.bottom, DS.Spacing.standard)
                     .padding(.horizontal, DS.Spacing.large)
-                    .background {
-                        TransparentBlur()
-                    }
+                    .background(BlurredBackground(fallbackBackgroundColor: DS.Color.Background.norm))
                 }
             }
         }

@@ -29,17 +29,21 @@ struct AppSettingsScreen: View {
     @EnvironmentObject var router: Router<SettingsRoute>
     @EnvironmentObject private var upsellCoordinator: UpsellCoordinator
     @StateObject var store: AppSettingsStateStore
+    private let appIconConfigurator: AppIconConfigurable
 
     init(
-        state: AppSettingsState = .initial,
+        state: AppSettingsState? = .none,
+        appIconConfigurator: AppIconConfigurable = UIApplication.shared,
         appSettingsRepository: AppSettingsRepository = AppContext.shared.mailSession
     ) {
         _store = .init(
             wrappedValue: .init(
-                state: state,
-                appSettingsRepository: appSettingsRepository
+                state: state ?? .initial(appIconName: appIconConfigurator.alternateIconName),
+                appSettingsRepository: appSettingsRepository,
+                appIconConfigurator: appIconConfigurator
             )
         )
+        self.appIconConfigurator = appIconConfigurator
     }
 
     var body: some View {
@@ -71,6 +75,9 @@ struct AppSettingsScreen: View {
                                     value: store.state.storedAppSettings.protection.humanReadable.string,
                                     action: { router.go(to: .appProtection) }
                                 )
+                                if appIconConfigurator.supportsAlternateIcons {
+                                    appIconButton
+                                }
                             }
                             FormSection(footer: L10n.Settings.App.combinedContactsInfo) {
                                 FormSwitchView(
@@ -163,6 +170,30 @@ struct AppSettingsScreen: View {
         )
     }
 
+    @ViewBuilder
+    private var appIconButton: some View {
+        Menu(
+            content: {
+                ForEach(AppIcon.allCases.filter { icon in store.state.appIcon != icon }, id: \.self) { icon in
+                    Button(action: { store.handle(action: .appIconSelected(icon)) }) {
+                        HStack(spacing: DS.Spacing.medium) {
+                            Text(icon.title)
+                            Image(icon.preview)
+                        }
+                    }
+                }
+            },
+            label: {
+                FormBigButton(
+                    title: L10n.Settings.AppIcon.buttonTitle,
+                    symbol: .chevronUpChevronDown,
+                    value: store.state.appIcon.title.string,
+                    action: {}
+                )
+            }
+        )
+    }
+
     private var combinedContactsBinding: Binding<Bool> {
         .init(
             get: { store.state.storedAppSettings.useCombineContacts },
@@ -215,7 +246,7 @@ struct AppSettingsScreen: View {
 
 #Preview {
     NavigationStack {
-        AppSettingsScreen(state: .initial)
+        AppSettingsScreen(state: .initial(appIconName: .none))
     }
 }
 

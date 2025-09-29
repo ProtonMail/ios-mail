@@ -20,10 +20,11 @@ import InboxCore
 import InboxIAP
 import SwiftUI
 
-struct AppSettingsState: Copying {
+struct AppSettingsState: Copying, Equatable {
     var areNotificationsEnabled: Bool
     var appLanguage: String
     var storedAppSettings: AppSettings
+    var appIcon: AppIcon
     var isAppearanceMenuShown: Bool
     var mobileSignatureStatus: MobileSignatureStatus
     var presentedUpsell: UpsellScreenModel?
@@ -31,7 +32,7 @@ struct AppSettingsState: Copying {
 
 extension AppSettingsState {
 
-    static var initial: Self {
+    static func initial(appIconName: String?) -> Self {
         .init(
             areNotificationsEnabled: false,
             appLanguage: .empty,
@@ -42,6 +43,7 @@ extension AppSettingsState {
                 useCombineContacts: false,
                 useAlternativeRouting: true
             ),
+            appIcon: AppIcon(rawValue: appIconName),
             isAppearanceMenuShown: false,
             mobileSignatureStatus: .needsPaidVersion
         )
