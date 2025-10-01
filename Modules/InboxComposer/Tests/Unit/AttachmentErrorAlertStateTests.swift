@@ -27,6 +27,7 @@ final class AttachmentErrorAlertStateTests {
     private let tooManyError1 = DraftAttachment.makeMock(id: 1, state: .error(.reason(.tooManyAttachments)), timestamp: timeStamp1)
     private let tooManyError2 = DraftAttachment.makeMock(id: 2, state: .error(.reason(.tooManyAttachments)), timestamp: timeStamp2)
     private let tooLargeError1 = DraftAttachment.makeMock(id: 3, state: .error(.reason(.attachmentTooLarge)), timestamp: timeStamp3)
+    private let totalTooLargeError1 = DraftAttachment.makeMock(id: 4, state: .error(.reason(.totalAttachmentSizeTooLarge)), timestamp: timeStamp3)
 
     init() {
         sut = .init()
@@ -116,7 +117,7 @@ final class AttachmentErrorAlertStateTests {
 
     @Test
     func testEnqueueAnyUploadError_whenErrorsOfDifferentTypesInConsecutiveCalls_itShouldEnqueueTheSecondError() async {
-        await sut.enqueueAnyUploadError([tooLargeError1])
+        await sut.enqueueAnyUploadError([totalTooLargeError1])
         await sut.enqueueAnyUploadError([tooManyError1])
 
         let errorToPresent = await sut.errorToPresent
