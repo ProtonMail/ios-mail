@@ -1989,6 +1989,12 @@
             "value" : "e-mailadres"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "adres e-mail"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2320,6 +2326,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "naam"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "nazwa"
           }
         },
         "pt-BR" : {

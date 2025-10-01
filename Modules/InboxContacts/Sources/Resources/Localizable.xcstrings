@@ -2796,6 +2796,12 @@
             "value" : "Ga verder op de website"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Przejdź do strony internetowej"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",

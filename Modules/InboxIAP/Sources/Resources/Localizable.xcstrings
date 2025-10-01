@@ -2607,7 +2607,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Creeu tot el que necessiteu per mantenir-vos organitzat. Aconseguiu això i més amb %@."
+            "value" : "Creeu tot el que necessiteu per mantenir-vos organitzat. Obteniu això i més amb %@."
           }
         },
         "cs" : {
@@ -3156,7 +3156,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Suprimeix el correu brossa i la paperera després de 30 dies. Aconseguiu això i més amb %@."
+            "value" : "Suprimeix el correu brossa i la paperera després de 30 dies. Obteniu això i més amb %@."
           }
         },
         "cs" : {
@@ -4093,7 +4093,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Зрабіце свой мабільны подпіс унікальным. Карыстайцеся гэтым і многім іншым з %@."
+            "value" : "Зрабіце свой мабільны подпіс. Атрымлівайце асалоду ад гэтай функцыі і ад многіх іншых з %@."
           }
         },
         "ca" : {

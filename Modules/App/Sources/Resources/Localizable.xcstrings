@@ -5550,6 +5550,12 @@
             "value" : "Apptilpasninger"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dostosowanie aplikacji"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5667,6 +5673,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Appikon"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ikona aplikacji"
           }
         },
         "pt-BR" : {
@@ -8673,6 +8685,12 @@
             "value" : "Kalkulator"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kalkulator"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8914,7 +8932,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "No es pot cancel·lar l'enviament programat. El missatge ja s'ha enviat."
+            "value" : "No es pot cancel·lar l'enviament planificat. El missatge ja s'ha enviat."
           }
         },
         "cs" : {
@@ -20355,6 +20373,12 @@
             "value" : "Kos deg over krypterte meldinger, færre søppelpost, beskyttelse mot nettfisking og blokkerte sporere. Velkommen til personvern."
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ciesz się szyfrowanymi wiadomościami, mniejszą ilością spamu, ochroną przed phishingiem i elementami śledzącymi. Witaj w świecie prywatności."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -21373,6 +21397,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Focus at your fingertips"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Concéntrate en lo importante"
           }
         },
         "es-419" : {
@@ -23150,7 +23180,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hi ha hagut un problema en carregar el vostre contingut. Proveu d'actualitzar-lo o d'iniciar la sessió de nou."
+            "value" : "S'ha produït un error en carregar el contingut. Proveu d'actualitzar o tornar a iniciar la sessió."
           }
         },
         "cs" : {
@@ -23329,7 +23359,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hi ha hagut un problema en sincronitzar el vostre contingut. Comproveu la connexió o torneu a iniciar la sessió."
+            "value" : "S'ha produït u problema en sincronitzar el contingut. Comproveu la connexió o torneu a iniciar la sessió."
           }
         },
         "cs" : {
@@ -23508,7 +23538,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "S'ha produït un error en la sincronització del vostre email. Per solucionar-ho, tanqueu i torneu a iniciar sessió."
+            "value" : "S'ha produït un error en la sincronització del correu electrònic. Per a resoldre-ho, inicieu la sessió i torneu a entrar."
           }
         },
         "cs" : {
@@ -23651,7 +23681,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hi ha hagut un problema en actualitzar el vostre compte. Torneu a iniciar la sessió."
+            "value" : "Hi ha hagut un problema en actualitzar el compte. Torneu a iniciar la sessió."
           }
         },
         "cs" : {
@@ -27450,25 +27480,25 @@
                   "few" : {
                     "stringUnit" : {
                       "state" : "translated",
-                      "value" : "Паведамленні перамешчаны ў Архіў."
+                      "value" : "Паведамленні перамешчаны ў архіў."
                     }
                   },
                   "many" : {
                     "stringUnit" : {
                       "state" : "translated",
-                      "value" : "Паведамленні перамешчаны ў Архіў."
+                      "value" : "Паведамленні перамешчаны ў архіў."
                     }
                   },
                   "one" : {
                     "stringUnit" : {
                       "state" : "translated",
-                      "value" : "Паведамленне перамешчана ў Архіў."
+                      "value" : "Паведамленне перамешчана ў архіў."
                     }
                   },
                   "other" : {
                     "stringUnit" : {
                       "state" : "translated",
-                      "value" : "Паведамленні перамешчаны ў Архіў."
+                      "value" : "Паведамленні перамешчаны ў архіў."
                     }
                   }
                 }
@@ -29041,6 +29071,12 @@
             "value" : "More options"
           }
         },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Más opciones"
+          }
+        },
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
@@ -29081,6 +29117,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Meer opties"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Więcej opcji"
           }
         },
         "pt-BR" : {
@@ -34500,6 +34542,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Primær"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Główna"
           }
         },
         "pt-BR" : {
@@ -47704,7 +47752,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "És massa tard per desfer l'enviament. El missatge ja es va enviar."
+            "value" : "Massa tard per a desfer l'enviament. S'ha enviat el missatge."
           }
         },
         "cs" : {
@@ -47883,7 +47931,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hi ha hagut massa intents seguits. Espereu abans de tornar-ho a provar."
+            "value" : "Massa intents massa ràpid. Espereu abans de tornar-ho a intentar."
           }
         },
         "cs" : {
@@ -48062,7 +48110,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hi ha hagut massa intents incorrectes. Espereu-vos abans de tornar-ho a provar."
+            "value" : "Massa intents incorrectes. Espereu abans de tornar-ho a intentar."
           }
         },
         "cs" : {
@@ -52094,6 +52142,12 @@
             "value" : "Vær"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pogoda"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -52175,6 +52229,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Welcome to Proton Mail, where privacy is default"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Te damos la bienvenida a Proton Mail, donde la privacidad es prioritaria"
           }
         },
         "es-419" : {

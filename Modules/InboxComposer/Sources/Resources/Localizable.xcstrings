@@ -4882,7 +4882,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "No s'ha trobat l'esborrany. Potser l'havíeu descartat."
+            "value" : "No s'ha trobat l'esborrany. Potser l'heu descartat."
           }
         },
         "cs" : {
@@ -5061,7 +5061,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "No s'ha trobat l'esborrany. Potser ja l'havíeu enviat."
+            "value" : "No s'ha trobat l'esborrany. Potser ja l'heu enviat."
           }
         },
         "cs" : {
@@ -7472,7 +7472,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aquesta adreça de correu electrònic no és vàlida. Comproveu-la i torneu-ho a provar."
+            "value" : "Adreça de correu electrònic no vàlida. Comproveu l'adreça i torneu-ho a provar."
           }
         },
         "cs" : {
@@ -7651,7 +7651,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aquesta adreça de correu electrònic no és vàlida. Comproveu-la."
+            "value" : "Adreça de correu electrònic no vàlida. Comproveu l'adreça."
           }
         },
         "cs" : {
@@ -8558,7 +8558,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Тэрмін дзеяння паведамлення занадта хуткі."
+            "value" : "Тэрмін дзеяння паведамлення наступае занадта хутка."
           }
         },
         "ca" : {
@@ -9035,13 +9035,13 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Паведамленне не знойдзена. Магчыма, вы яго адправілі або адхілілі."
+            "value" : "Паведамленне не знойдзена. Магчыма, што вы яго ўжо адправілі або адхілілі."
           }
         },
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "No s'ha trobat el missatge. Pot ser que l'hàgiu enviat o descartat."
+            "value" : "No s'ha trobat el missatge. Potser l'heu enviat o descartat."
           }
         },
         "cs" : {
@@ -9423,7 +9423,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Besked sendt"
+            "value" : "Besked afsendt"
           }
         },
         "de" : {
@@ -11989,7 +11989,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hi ha hagut un problema en dur a terme aquesta acció. Torneu-ho a provar."
+            "value" : "Hi ha hagut un problema en realitzar aquesta acció. Torneu-ho a provar."
           }
         },
         "cs" : {
@@ -13427,7 +13427,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "No es pot tornar a intentar. El fitxer adjunt s'està penjant o ja s'ha penjat."
+            "value" : "No es pot tornar a intentar. L'adjunt s'està carregant o ja s'ha carregat."
           }
         },
         "cs" : {
@@ -18482,7 +18482,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hi ha massa fitxers adjunts. Envieu-los en diversos correus electrònics."
+            "value" : "Massa adjunts. Envieu-los en diversos correus electrònics."
           }
         },
         "cs" : {
@@ -19025,7 +19025,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Heu assolit el límit de missatges programats."
+            "value" : "Heu assolit el límit de missatges planificats."
           }
         },
         "cs" : {
