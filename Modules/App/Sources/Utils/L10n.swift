@@ -64,13 +64,6 @@ enum L10n {
                 "Could not print requested e-mail",
                 comment: "Error message when printing fails."
             )
-
-            static func plusMore(count: Int) -> LocalizedStringResource {
-                .init(
-                    "+\(count) more",
-                    comment: "At the end of a list of items, showing how many more are hidden."
-                )
-            }
         }
 
         enum Send {

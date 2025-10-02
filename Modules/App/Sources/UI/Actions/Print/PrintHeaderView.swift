@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import InboxCore
 import InboxDesignSystem
 import SwiftUI
 
@@ -75,7 +76,7 @@ struct PrintHeaderView: View {
                     }
 
                     if numberOfHiddenParticipants > 0 {
-                        Text(L10n.Action.Print.plusMore(count: numberOfHiddenParticipants))
+                        Text(CommonL10n.plusMore(count: numberOfHiddenParticipants))
                             .foregroundStyle(DS.Color.Text.weak)
                             .fontWeight(.medium)
                     }

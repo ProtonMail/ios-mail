@@ -43,6 +43,12 @@ public enum CommonL10n {
             comment: "Message shown to the user confirming that the specified item (name) was successfully copied to the clipboard."
         )
     }
+    public static func plusMore(count: Int) -> LocalizedStringResource {
+        .init(
+            "+\(count) more",
+            comment: "At the end of a list of items, showing how many more are hidden."
+        )
+    }
     public static let upsellButtonSubtitle = LocalizedStringResource(
         "Upgrade for full flexibility",
         bundle: .module,

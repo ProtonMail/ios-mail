@@ -30,8 +30,9 @@ final class MessageExpirationRecipientsValidatorTests {
     private lazy var binding = Binding<AlertModel?>(get: { self.alertModel }, set: { self.alertModel = $0 })
 
     private let dummyCustomDate = UnixTimestamp(Date.now.timeIntervalSince1970)
-    private let dummyProtonAddresses = ["a@pm.me"]
-    private let dummyAddresses = ["a@example.com", "b@example.com"]
+    private let oneDummyAddress = ["a@example.com"]
+    private let twoDummyAddresses = ["b@example.com", "c@example.com"]
+    private let threeDummyAddresses = ["d@example.com", "e@example.com", "f@example.com"]
 
     @Test
     func testValidate_whenExpirationNever_itShouldProceedWithoutAlert() async {
@@ -55,7 +56,7 @@ final class MessageExpirationRecipientsValidatorTests {
     func testValidate_whenAllUnsupported_itShouldShowAlert() async {
         let draft = mockDraft(
             expirationTimeResult: .ok(.custom(dummyCustomDate)),
-            validationResult: .ok(.init(supported: [], unsupported: dummyAddresses, unknown: []))
+            validationResult: .ok(.init(supported: [], unsupported: twoDummyAddresses, unknown: []))
         )
 
         Task {
@@ -68,11 +69,11 @@ final class MessageExpirationRecipientsValidatorTests {
     }
 
     @Test
-    func testValidate_whenSomeUnsupported_itShouldShowAlert() async {
-        let unssuportedAddress = dummyAddresses.first!
+    func testValidate_whenOneUnsupported_butAlsoOneSupported_itShouldShowAlert() async {
+        let unsuportedAddress = [twoDummyAddresses.first!]
         let draft = mockDraft(
             expirationTimeResult: .ok(.custom(dummyCustomDate)),
-            validationResult: .ok(.init(supported: dummyProtonAddresses, unsupported: [unssuportedAddress], unknown: []))
+            validationResult: .ok(.init(supported: oneDummyAddress, unsupported: unsuportedAddress, unknown: []))
         )
 
         Task {
@@ -81,14 +82,43 @@ final class MessageExpirationRecipientsValidatorTests {
         await Task.yield()
 
         #expect(alertModel != nil)
-        #expect(alertModel?.message?.string == L10n.MessageExpiration.alertUnsupportedForSomeRecipientsMessage(addresses: unssuportedAddress).string)
+        #expect(
+            alertModel?.message?.string
+                == L10n
+                .MessageExpiration
+                .alertUnsupportedForSomeRecipientsMessage(addresses: unsuportedAddress.first!)
+                .string
+        )
+    }
+
+    @Test
+    func testValidate_whenMultipleUnsupported_butAlsoSomeSupported_itShouldShowAlert() async {
+        let draft = mockDraft(
+            expirationTimeResult: .ok(.custom(dummyCustomDate)),
+            validationResult: .ok(.init(supported: oneDummyAddress, unsupported: threeDummyAddresses + twoDummyAddresses, unknown: []))
+        )
+
+        Task {
+            await sut.validateRecipientsIfMessageHasExpiration(draft: draft)
+        }
+        await Task.yield()
+
+        #expect(alertModel != nil)
+        let expectedListOfAddresses = threeDummyAddresses.joined(separator: ", ") + ", " + CommonL10n.plusMore(count: 2).string
+        #expect(
+            alertModel?.message?.string
+                == L10n
+                .MessageExpiration
+                .alertUnsupportedForSomeRecipientsMessage(addresses: expectedListOfAddresses)
+                .string
+        )
     }
 
     @Test
     func testValidate_whenAllUnknown_itShouldShowAlert() async {
         let draft = mockDraft(
             expirationTimeResult: .ok(.custom(dummyCustomDate)),
-            validationResult: .ok(.init(supported: [], unsupported: [], unknown: dummyAddresses))
+            validationResult: .ok(.init(supported: [], unsupported: [], unknown: twoDummyAddresses))
         )
 
         Task { await sut.validateRecipientsIfMessageHasExpiration(draft: draft) }
@@ -102,7 +132,7 @@ final class MessageExpirationRecipientsValidatorTests {
     func testValidate_whenSendAnywayIsSelected_itShouldProceed() async {
         let draft = mockDraft(
             expirationTimeResult: .ok(.custom(dummyCustomDate)),
-            validationResult: .ok(.init(supported: [], unsupported: dummyAddresses, unknown: []))
+            validationResult: .ok(.init(supported: [], unsupported: twoDummyAddresses, unknown: []))
         )
 
         let task = Task { await sut.validateRecipientsIfMessageHasExpiration(draft: draft) }
@@ -119,7 +149,7 @@ final class MessageExpirationRecipientsValidatorTests {
     func testValidate_whenAddPasswordIsSelected_itShouldReturnDoNotProceedAddPassword() async {
         let draft = mockDraft(
             expirationTimeResult: .ok(.custom(dummyCustomDate)),
-            validationResult: .ok(.init(supported: [], unsupported: dummyAddresses, unknown: []))
+            validationResult: .ok(.init(supported: [], unsupported: twoDummyAddresses, unknown: []))
         )
 
         let task = Task { await sut.validateRecipientsIfMessageHasExpiration(draft: draft) }
@@ -136,7 +166,7 @@ final class MessageExpirationRecipientsValidatorTests {
     func testValidate_whenCancelIsSelected_ItShouldNotProceed() async {
         let draft = mockDraft(
             expirationTimeResult: .ok(.custom(dummyCustomDate)),
-            validationResult: .ok(.init(supported: [], unsupported: dummyAddresses, unknown: []))
+            validationResult: .ok(.init(supported: [], unsupported: twoDummyAddresses, unknown: []))
         )
 
         let task = Task { await sut.validateRecipientsIfMessageHasExpiration(draft: draft) }

@@ -1,6 +1,9 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "+%lld more" : {
+      "comment" : "At the end of a list of items, showing how many more are hidden."
+    },
     "Cancel" : {
       "localizations" : {
         "be" : {

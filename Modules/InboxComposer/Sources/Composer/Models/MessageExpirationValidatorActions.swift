@@ -74,15 +74,25 @@ private extension MessageExpirationValidatorActions {
             if report.supported.isEmpty && report.unknown.isEmpty {
                 messageToShowUser = L10n.MessageExpiration.alertUnsupportedForAllRecipientsMessage
             } else {
-                messageToShowUser = L10n
-                    .MessageExpiration
-                    .alertUnsupportedForSomeRecipientsMessage(
-                        addresses: report.unsupported.joined(separator: ", ")
-                    )
+                messageToShowUser = someUnsupportedMessage(addresses: report.unsupported)
             }
         } else if !report.unknown.isEmpty {
             messageToShowUser = L10n.MessageExpiration.alertUnknownSupportForAllRecipientsMessage
         }
         return messageToShowUser
+    }
+
+    static func someUnsupportedMessage(addresses: [String]) -> LocalizedStringResource {
+        let numOfSamples = 3
+        let separator = ", "
+        let sampleAddresses = addresses.prefix(numOfSamples).joined(separator: separator)
+        let remaining = addresses.count - numOfSamples
+
+        let listOfAddresses: String =
+            remaining > 0
+            ? sampleAddresses + separator + CommonL10n.plusMore(count: remaining).string
+            : sampleAddresses
+
+        return L10n.MessageExpiration.alertUnsupportedForSomeRecipientsMessage(addresses: listOfAddresses)
     }
 }
