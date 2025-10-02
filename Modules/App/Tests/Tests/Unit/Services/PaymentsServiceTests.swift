@@ -140,7 +140,7 @@ private final class TransactionsObserverSpy: TransactionsObserverProviding {
         fatalError(#function)
     }
 
-    func generateTransactionLog() async -> URL? {
+    func generateTransactionLog() -> URL? {
         fatalError(#function)
     }
 
