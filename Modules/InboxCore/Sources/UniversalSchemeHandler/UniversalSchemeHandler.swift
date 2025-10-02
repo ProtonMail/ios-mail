@@ -19,43 +19,28 @@ import proton_app_uniffi
 import TryCatch
 import WebKit
 
-public final class CIDSchemeHandler: NSObject, WKURLSchemeHandler {
+public final class UniversalSchemeHandler: NSObject, WKURLSchemeHandler {
     private let imageProxy: ImageProxy
     private var urlSchemeActiveTasks = Set<ObjectIdentifier>()
-    private let queue = DispatchQueue(label: "\(Bundle.defaultIdentifier).\(CIDSchemeHandler.self)")
+    private let queue = DispatchQueue(label: "\(Bundle.defaultIdentifier).\(UniversalSchemeHandler.self)")
 
     public init(imageProxy: ImageProxy) {
         self.imageProxy = imageProxy
     }
 
     public enum HandlerError: Error, Equatable {
-        case missingCID
+        case missingURL
     }
 
-    public static let handlerScheme = "cid"
+    public static let handlerSchemes: [String] = ["cid", "proton-http", "proton-https"]
 
     // MARK: - WKURLSchemeHandler
 
-    /// Handles custom `cid` schemes in the HTML body loaded into the `WKWebView`.
-    ///
-    /// This method is invoked by the `WKWebView` when a resource with a `cid` scheme is requested.
-    /// The `cid` scheme is used to reference inline resources, such as images within
-    /// HTML content, and connect them with correct message attachments.
-    /// The function retrieves the requested resource from the Rust SDK and provides it to the web view as a response.
-    ///
-    /// Example HTML with cid scheme
-    ///
-    /// <div style="font-family: Arial, sans-serif; font-size: 14px;">
-    ///    Here is embedded image -> <img alt="embedded_image.png" src="cid:43affe26@protonmail.com">
-    /// </div>
-    ///
-    /// In above's case when html is loaded to the web view and this handler is registered as cid scheme handler for web view,
-    /// it will call this function where the `urlSchemeTask` requested URL will be `cid:43affe26@protonmail.com`
     public func webView(_ webView: WKWebView, start urlSchemeTask: WKURLSchemeTask) {
         queue.sync { _ = urlSchemeActiveTasks.insert(ObjectIdentifier(urlSchemeTask)) }
         let url = urlSchemeTask.request.url
-        guard let url, url.scheme == Self.handlerScheme else {
-            urlSchemeTask.didFailWithError(HandlerError.missingCID)
+        guard let url else {
+            urlSchemeTask.didFailWithError(HandlerError.missingURL)
             return
         }
 
@@ -97,12 +82,9 @@ public final class CIDSchemeHandler: NSObject, WKURLSchemeHandler {
 
             switch result {
             case .ok(let image):
-                let message = "embedded image mime type: \(image.mime), content length: \(image.data.count)"
-                AppLogger.logTemporarily(message: message, category: .conversationDetail)
                 handleAttachment(image, url: url, urlSchemeTask: urlSchemeTask)
             case .error(let error):
-                let message = "error: \(error)"
-                AppLogger.log(message: message, category: .composer, isError: true)
+                AppLogger.log(error: error, category: .webView)
                 urlSchemeTask.markAsFailedCatchingExceptions(error)
             }
 

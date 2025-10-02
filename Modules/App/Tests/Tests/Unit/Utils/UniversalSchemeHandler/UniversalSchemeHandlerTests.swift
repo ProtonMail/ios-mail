@@ -22,30 +22,13 @@ import proton_app_uniffi
 import Testing
 import WebKit
 
-/**
- The `CIDSchemeHandler` is part of `InboxCore`, but its tests (`CIDSchemeHandlerTests`) are located in
- the App module because moving them to `InboxCore` would create a circular dependency.
-
- Specifically, `CIDSchemeHandlerTests` depends on `InboxTesting`, and `InboxTesting` itself relies on classes
- from `InboxCore`. To avoid this circular dependency, the tests remain in the App module.
- */
 @MainActor
 @Suite(.serialized)  // reason for serialized: https://github.com/Quick/Nimble/issues/1188
-final class CIDSchemeHandlerTests {
+final class UniversalSchemeHandlerTests {
     private let imageProxySpy = ImageProxySpy()
     private var urlSchemeTaskSpy: WKURLSchemeTaskSpy!
 
-    private lazy var sut = CIDSchemeHandler(imageProxy: imageProxySpy)
-
-    @Test
-    func testFetchingEmbeddedImage_WhenCIDIsMissing_ItReturnsError() async {
-        let request = URLRequest(url: .init(string: "https://proton.me").unsafelyUnwrapped)
-        urlSchemeTaskSpy = .init(request: request)
-        sut.webView(WKWebView(), start: urlSchemeTaskSpy)
-
-        await expect(self.urlSchemeTaskSpy.didInvokeFailWithError.count).toEventually(equal(1))
-        #expect(urlSchemeTaskSpy.didInvokeFailWithError.compactMap(\.asHandlerError) == [.missingCID])
-    }
+    private lazy var sut = UniversalSchemeHandler(imageProxy: imageProxySpy)
 
     @Test
     func testFetchingEmbeddedImage_WhenImageIsMissing_ItReturnsError() async {
@@ -150,8 +133,8 @@ private extension Error {
         self as? ProtonError
     }
 
-    var asHandlerError: CIDSchemeHandler.HandlerError? {
-        self as? CIDSchemeHandler.HandlerError
+    var asHandlerError: UniversalSchemeHandler.HandlerError? {
+        self as? UniversalSchemeHandler.HandlerError
     }
 
 }

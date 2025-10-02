@@ -34,13 +34,8 @@ struct MessageBodyReaderView: UIViewRepresentable {
 
     func makeUIView(context: Context) -> WKWebView {
         let backgroundColor = UIColor(DS.Color.Background.norm)
-        let config = WKWebViewConfiguration()
-        config.dataDetectorTypes = [.link]
+        let config = WKWebViewConfiguration.default(imageProxy: body.imageProxy)
         config.defaultWebpagePreferences.allowsContentJavaScript = false
-        config.setURLSchemeHandler(
-            CIDSchemeHandler(imageProxy: body.imageProxy),
-            forURLScheme: CIDSchemeHandler.handlerScheme
-        )
 
         let webView = WKWebView(frame: .zero, configuration: config)
         webView.navigationDelegate = context.coordinator

@@ -180,12 +180,7 @@ extension HtmlBodyEditorController {
     enum SubviewFactory {
 
         static func webView(imageProxy: ImageProxy) -> WKWebView {
-            let config = WKWebViewConfiguration()
-            config.dataDetectorTypes = [.link]
-            config.setURLSchemeHandler(
-                CIDSchemeHandler(imageProxy: imageProxy),
-                forURLScheme: CIDSchemeHandler.handlerScheme
-            )
+            let config = WKWebViewConfiguration.default(imageProxy: imageProxy)
 
             let backgroundColor = DS.Color.Background.norm.toDynamicUIColor
             let webView = WKWebViewWithNoAccessoryView(frame: .zero, configuration: config)
