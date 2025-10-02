@@ -658,6 +658,14 @@ enum L10n {
             comment: "Sending to non-Proton accounts alert title"
         )
 
+        static var alertUnsupportedForAllRecipientsMessage: LocalizedStringResource {
+            LocalizedStringResource(
+                "None of the recipients support expiration by default. Add a password to enable expiration for non-Proton Mail recipients.",
+                bundle: .atURL(Bundle.module.bundleURL),
+                comment: "Sending to only non-Proton accounts alert message"
+            )
+        }
+
         static func alertUnsupportedForSomeRecipientsMessage(addresses: String) -> LocalizedStringResource {
             LocalizedStringResource(
                 "Some recipients (\(addresses)) don’t support expiration by default. Add a password to enable expiration for non-Proton Mail recipients.",

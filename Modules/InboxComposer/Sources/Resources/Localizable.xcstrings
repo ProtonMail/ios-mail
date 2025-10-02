@@ -10369,6 +10369,9 @@
         }
       }
     },
+    "None of the recipients support expiration by default. Add a password to enable expiration for non-Proton Mail recipients." : {
+      "comment" : "Sending to only non-Proton accounts alert message"
+    },
     "On specific date" : {
       "comment" : "Predefined option for the message expiration menu",
       "localizations" : {

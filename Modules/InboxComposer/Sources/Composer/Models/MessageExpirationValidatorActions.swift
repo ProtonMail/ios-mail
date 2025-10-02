@@ -30,7 +30,9 @@ struct MessageExpirationValidatorActions {
     }
 
     static func dummy(returning result: MessageExpiryValidationResult) -> Self {
-        .init(validate: { _, _ in result })
+        .init(validate: { _, _ in
+            result
+        })
     }
 }
 
@@ -69,11 +71,15 @@ private extension MessageExpirationValidatorActions {
     static func messageToShowUser(for report: DraftRecipientExpirationFeatureReport) -> LocalizedStringResource? {
         var messageToShowUser: LocalizedStringResource?
         if !report.unsupported.isEmpty {
-            messageToShowUser = L10n
-                .MessageExpiration
-                .alertUnsupportedForSomeRecipientsMessage(
-                    addresses: report.unsupported.joined(separator: ", ")
-                )
+            if report.supported.isEmpty && report.unknown.isEmpty {
+                messageToShowUser = L10n.MessageExpiration.alertUnsupportedForAllRecipientsMessage
+            } else {
+                messageToShowUser = L10n
+                    .MessageExpiration
+                    .alertUnsupportedForSomeRecipientsMessage(
+                        addresses: report.unsupported.joined(separator: ", ")
+                    )
+            }
         } else if !report.unknown.isEmpty {
             messageToShowUser = L10n.MessageExpiration.alertUnknownSupportForAllRecipientsMessage
         }

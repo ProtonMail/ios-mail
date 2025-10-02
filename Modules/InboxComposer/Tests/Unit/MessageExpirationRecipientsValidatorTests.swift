@@ -30,6 +30,7 @@ final class MessageExpirationRecipientsValidatorTests {
     private lazy var binding = Binding<AlertModel?>(get: { self.alertModel }, set: { self.alertModel = $0 })
 
     private let dummyCustomDate = UnixTimestamp(Date.now.timeIntervalSince1970)
+    private let dummyProtonAddresses = ["a@pm.me"]
     private let dummyAddresses = ["a@example.com", "b@example.com"]
 
     @Test
@@ -51,20 +52,40 @@ final class MessageExpirationRecipientsValidatorTests {
     }
 
     @Test
-    func testValidate_whenUnsupported_itShouldShowAlert() async {
+    func testValidate_whenAllUnsupported_itShouldShowAlert() async {
         let draft = mockDraft(
             expirationTimeResult: .ok(.custom(dummyCustomDate)),
             validationResult: .ok(.init(supported: [], unsupported: dummyAddresses, unknown: []))
         )
 
-        Task { await sut.validateRecipientsIfMessageHasExpiration(draft: draft) }
+        Task {
+            await sut.validateRecipientsIfMessageHasExpiration(draft: draft)
+        }
         await Task.yield()
 
         #expect(alertModel != nil)
+        #expect(alertModel?.message == L10n.MessageExpiration.alertUnsupportedForAllRecipientsMessage)
     }
 
     @Test
-    func testValidate_whenUnknown_itShouldShowAlert() async {
+    func testValidate_whenSomeUnsupported_itShouldShowAlert() async {
+        let unssuportedAddress = dummyAddresses.first!
+        let draft = mockDraft(
+            expirationTimeResult: .ok(.custom(dummyCustomDate)),
+            validationResult: .ok(.init(supported: dummyProtonAddresses, unsupported: [unssuportedAddress], unknown: []))
+        )
+
+        Task {
+            await sut.validateRecipientsIfMessageHasExpiration(draft: draft)
+        }
+        await Task.yield()
+
+        #expect(alertModel != nil)
+        #expect(alertModel?.message?.string == L10n.MessageExpiration.alertUnsupportedForSomeRecipientsMessage(addresses: unssuportedAddress).string)
+    }
+
+    @Test
+    func testValidate_whenAllUnknown_itShouldShowAlert() async {
         let draft = mockDraft(
             expirationTimeResult: .ok(.custom(dummyCustomDate)),
             validationResult: .ok(.init(supported: [], unsupported: [], unknown: dummyAddresses))
@@ -74,6 +95,7 @@ final class MessageExpirationRecipientsValidatorTests {
         await Task.yield()
 
         #expect(alertModel != nil)
+        #expect(alertModel?.message == L10n.MessageExpiration.alertUnknownSupportForAllRecipientsMessage)
     }
 
     @Test
