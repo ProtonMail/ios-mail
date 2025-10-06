@@ -22,9 +22,15 @@ import proton_app_uniffi
 import SwiftUI
 
 struct SidebarScreen: View {
+    private enum AxisLock {
+        case none, horizontal, vertical
+    }
+
     @EnvironmentObject private var appUIStateStore: AppUIStateStore
     @StateObject private var screenModel: SidebarModel
     @State private var headerHeight: CGFloat = .zero
+    @State private var axisLock: AxisLock = .none
+
     private let widthOfDragableSpaceOnTheMailbox: CGFloat = 25
     private let openCloseSidebarMinimumDistance: CGFloat = 100
     /// This value is to make sure a twitch of a finger when releasing the sidebar won't cause the sidebar to move in the other direction against user's wishes.
@@ -107,29 +113,45 @@ struct SidebarScreen: View {
         )
     }
 
+    /// Minimum movement (pts) before locking axis.
+    /// Avoids accidental lock from tiny diagonal wiggles.
+    private let axisSlop: CGFloat = 6
+
     private var sidebarDragGesture: some Gesture {
         DragGesture(minimumDistance: openCloseSidebarMinimumDistance, coordinateSpace: .global)
             .onChanged { value in
-                guard !isScrollingVertically(value) else {
-                    return
+                if axisLock == .none {
+                    let dx = abs(value.translation.width)
+                    let dy = abs(value.translation.height)
+                    if max(dx, dy) > axisSlop {
+                        axisLock = dx > dy ? .horizontal : .vertical
+                    }
                 }
 
-                appUIStateStore.sidebarState.visibleWidth = min(appUIStateStore.sidebarWidth, value.location.x)
+                if axisLock == .horizontal {
+                    let newWidth = min(appUIStateStore.sidebarWidth, max(0, value.location.x))
+                    appUIStateStore.sidebarState.visibleWidth = newWidth
+                }
             }
             .onEnded { value in
-                guard !isScrollingVertically(value) else {
-                    return
-                }
+                defer { axisLock = .none }
 
-                let predictedSlideDistanceFromLeftToRight = value.predictedEndLocation.x - value.location.x
-                let wasDragEndedWithEnoughVelocity = abs(predictedSlideDistanceFromLeftToRight) < lastSwipeSignificanceThreshold
+                switch axisLock {
+                case .horizontal:
+                    let predictedEndWidth = value.predictedEndTranslation.width
+                    let predictedDx = predictedEndWidth - value.translation.width
 
-                if wasDragEndedWithEnoughVelocity {
-                    let isCloserToOpenPositionThanToClosedPosition = appUIStateStore.sidebarState.visibleWidth > appUIStateStore.sidebarWidth / 2
-                    appUIStateStore.toggleSidebar(isOpen: isCloserToOpenPositionThanToClosedPosition)
-                } else {
-                    let isLastSwipeLeftToRight = predictedSlideDistanceFromLeftToRight > 0
-                    appUIStateStore.toggleSidebar(isOpen: isLastSwipeLeftToRight)
+                    if abs(predictedDx) > lastSwipeSignificanceThreshold {
+                        appUIStateStore.toggleSidebar(isOpen: predictedEndWidth > 0)
+                    } else {
+                        appUIStateStore.toggleSidebar(
+                            isOpen: appUIStateStore.sidebarState.visibleWidth > appUIStateStore.sidebarWidth / 2
+                        )
+                    }
+                case .vertical, .none:
+                    appUIStateStore.toggleSidebar(
+                        isOpen: appUIStateStore.sidebarState.visibleWidth > appUIStateStore.sidebarWidth / 2
+                    )
                 }
             }
     }
