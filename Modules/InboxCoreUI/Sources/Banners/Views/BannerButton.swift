@@ -18,6 +18,23 @@
 import InboxDesignSystem
 import SwiftUI
 
+public struct BannerToggle: View {
+    let model: Banner.Toggle
+
+    public var body: some View {
+        Toggle(model.title, isOn: isOnBinding)
+            .labelsHidden()
+            .tint(DS.Color.Brand.norm)
+    }
+
+    var isOnBinding: Binding<Bool> {
+        .init(
+            get: { model.isOn },
+            set: { isOn in model.action(isOn) }
+        )
+    }
+}
+
 public struct BannerButton: View {
     let model: Banner.Button
     let style: Banner.ButtonStyle

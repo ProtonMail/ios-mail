@@ -75,7 +75,7 @@ struct MessageBannersView: View {
                 return oneLine(
                     icon: DS.Icon.icCircleSlash,
                     message: L10n.MessageBanner.blockedSenderTitle,
-                    size: .small(button),
+                    size: .small(.button(button)),
                     style: .regular
                 )
             case .phishingAttempt:
@@ -127,7 +127,7 @@ struct MessageBannersView: View {
                 return oneLine(
                     icon: DS.Icon.icEnvelopes,
                     message: L10n.MessageBanner.unsubscribeNewsletterTitle,
-                    size: .small(button),
+                    size: .small(.button(button)),
                     style: .regular
                 )
             case .unsubscribeNewsletter(true):
@@ -157,7 +157,7 @@ struct MessageBannersView: View {
                 return oneLine(
                     icon: DS.Icon.icClock,
                     message: L10n.MessageBanner.snoozedTitle(formattedTime: timestamp.date.snoozeFormat()),
-                    size: .small(button),
+                    size: .small(.button(button)),
                     style: .regular
                 )
             case .embeddedImages:
@@ -168,7 +168,7 @@ struct MessageBannersView: View {
                 return oneLine(
                     icon: DS.Icon.icCogWheel,
                     message: L10n.MessageBanner.embeddedImagesTitle,
-                    size: .small(button),
+                    size: .small(.button(button)),
                     style: .regular
                 )
             case .remoteContent:
@@ -179,7 +179,7 @@ struct MessageBannersView: View {
                 return oneLine(
                     icon: DS.Icon.icCogWheel,
                     message: L10n.MessageBanner.remoteContentTitle,
-                    size: .small(button),
+                    size: .small(.button(button)),
                     style: .regular
                 )
             case .unableToDecrypt:

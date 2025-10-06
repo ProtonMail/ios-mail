@@ -56,14 +56,14 @@ public struct BannersView: View {
             icon: DS.Icon.icFire,
             title: "Lorem ipsum dolor sit amet",
             subtitle: nil,
-            size: .small(.init(title: "Action", action: {})),
+            size: .small(.button(.init(title: "Action", action: {}))),
             style: .regular
         ),
         .init(
             icon: DS.Icon.icFire,
             title: "Lorem ipsum dolor sit amet",
             subtitle: nil,
-            size: .small(.init(title: "Action", action: {})),
+            size: .small(.button(.init(title: "Action", action: {}))),
             style: .error
         ),
         .init(

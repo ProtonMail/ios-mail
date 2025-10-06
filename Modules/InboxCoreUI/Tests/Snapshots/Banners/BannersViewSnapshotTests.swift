@@ -43,15 +43,22 @@ class BannersViewSnapshotTests: BaseTestCase {
                 icon: DS.Icon.icCogWheel,
                 title: "Lorem ipsum dolor sit amet.",
                 subtitle: nil,
-                size: .small(.init(title: "Action", action: {})),
+                size: .small(.button(.init(title: "Action", action: {}))),
                 style: .regular
             ),
             .init(
                 icon: DS.Icon.icCogWheel,
                 title: "Lorem ipsum dolor sit amet.",
                 subtitle: nil,
-                size: .small(.init(title: "Action", action: {})),
+                size: .small(.button(.init(title: "Action", action: {}))),
                 style: .error
+            ),
+            .init(
+                icon: DS.Icon.icTrash,
+                title: "Show trashed messages in this conversation.",
+                subtitle: nil,
+                size: .small(.toggle(.init(title: "Action", isOn: true, action: { _ in }))),
+                style: .regular
             ),
             .init(
                 icon: DS.Icon.icHook,

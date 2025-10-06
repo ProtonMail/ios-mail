@@ -42,7 +42,7 @@ struct BannerView: View {
     @ViewBuilder
     private func container() -> some View {
         switch model.size {
-        case .small(let button):
+        case .small(let interactionElement):
             HStack(alignment: .center, spacing: DS.Spacing.moderatelyLarge) {
                 BannerIconTextView(
                     icon: model.icon,
@@ -51,13 +51,19 @@ struct BannerView: View {
                     style: model.style.color.content,
                     lineLimit: 2
                 )
-                if let button = button {
-                    smallButton(model: button, style: model.style.color.button)
+                if let interactionElement {
+                    switch interactionElement {
+                    case .button(let button):
+                        smallButton(model: button, style: model.style.color.button)
+                    case .toggle(let toggle):
+                        BannerToggle(model: toggle)
+                            .padding(.vertical, DS.Spacing.mediumLight)
+                    }
                 }
             }
             .padding(
                 .init(
-                    vertical: button == nil ? DS.Spacing.large : DS.Spacing.mediumLight,
+                    vertical: interactionElement == nil ? DS.Spacing.large : DS.Spacing.mediumLight,
                     horizontal: DS.Spacing.large
                 ))
         case .large(let type):
@@ -120,7 +126,7 @@ struct BannerView: View {
                     icon: DS.Icon.icFire,
                     title: "Lorem ipsum dolor sit amet",
                     subtitle: nil,
-                    size: .small(.init(title: "Action", action: {})),
+                    size: .small(.button(.init(title: "Action", action: {}))),
                     style: .regular
                 )
             )
@@ -129,7 +135,7 @@ struct BannerView: View {
                     icon: DS.Icon.icFire,
                     title: "Lorem ipsum dolor sit amet",
                     subtitle: nil,
-                    size: .small(.init(title: "Action", action: {})),
+                    size: .small(.button(.init(title: "Action", action: {}))),
                     style: .error
                 )
             )
@@ -138,7 +144,7 @@ struct BannerView: View {
                     icon: DS.Icon.icFire,
                     title: "Lorem ipsum dolor sit amet",
                     subtitle: nil,
-                    size: .small(.init(title: "Action", action: {})),
+                    size: .small(.button(.init(title: "Action", action: {}))),
                     style: .regular
                 )
             )

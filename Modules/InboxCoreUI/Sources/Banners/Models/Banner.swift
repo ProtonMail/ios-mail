@@ -37,6 +37,27 @@ public struct Banner: Hashable {
         }
     }
 
+    public struct Toggle: Hashable {
+        public let title: String
+        public let isOn: Bool
+        public let action: (Bool) -> Void
+
+        init(title: String, isOn: Bool, action: @escaping (Bool) -> Void) {
+            self.title = title
+            self.isOn = isOn
+            self.action = action
+        }
+
+        public static func == (lhs: Toggle, rhs: Toggle) -> Bool {
+            lhs.isOn == rhs.isOn && lhs.title == rhs.title
+        }
+
+        public func hash(into hasher: inout Hasher) {
+            hasher.combine(isOn)
+            hasher.combine(title)
+        }
+    }
+
     public struct ColorStyle: Hashable {
         let background: Color
         let border: Color
@@ -73,13 +94,18 @@ public struct Banner: Hashable {
         }
     }
 
+    public enum InteractionElement: Hashable {
+        case button(Button)
+        case toggle(Toggle)
+    }
+
     public enum LargeType: Hashable {
         case one(Button)
         case two(left: Button, right: Button)
     }
 
     public enum Size: Hashable {
-        case small(Button?)
+        case small(InteractionElement?)
         case large(LargeType)
     }
 
