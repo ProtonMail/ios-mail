@@ -29,7 +29,7 @@ struct SidebarScreen: View {
     @EnvironmentObject private var appUIStateStore: AppUIStateStore
     @StateObject private var screenModel: SidebarModel
     @State private var headerHeight: CGFloat = .zero
-    @State private var axisLock: AxisLock = .none
+    @State private var lockedAxis: AxisLock = .none
 
     private let widthOfDragableSpaceOnTheMailbox: CGFloat = 25
     private let openCloseSidebarMinimumDistance: CGFloat = 100
@@ -113,29 +113,23 @@ struct SidebarScreen: View {
         )
     }
 
-    /// Minimum movement (pts) before locking axis.
-    /// Avoids accidental lock from tiny diagonal wiggles.
-    private let axisSlop: CGFloat = 6
-
     private var sidebarDragGesture: some Gesture {
         DragGesture(minimumDistance: openCloseSidebarMinimumDistance, coordinateSpace: .global)
             .onChanged { value in
-                if axisLock == .none {
+                if lockedAxis == .none {
                     let dx = abs(value.translation.width)
                     let dy = abs(value.translation.height)
 
-                    if max(dx, dy) > axisSlop {
-                        axisLock = dx > dy ? .horizontal : .vertical
-                    }
+                    lockedAxis = dx > dy ? .horizontal : .vertical
                 }
 
-                if axisLock == .horizontal {
+                if lockedAxis == .horizontal {
                     let newSidebarWidth = min(appUIStateStore.sidebarWidth, max(0, value.location.x))
                     appUIStateStore.sidebarState.visibleWidth = newSidebarWidth
                 }
             }
             .onEnded { value in
-                defer { axisLock = .none }
+                defer { lockedAxis = .none }
 
                 let predictedEndWidth = value.predictedEndTranslation.width
                 let predictedDx = predictedEndWidth - value.translation.width
@@ -144,7 +138,7 @@ struct SidebarScreen: View {
 
                 let shouldBeOpen: Bool
 
-                switch axisLock {
+                switch lockedAxis {
                 case .horizontal where hasPredictedSignificantSlide:
                     shouldBeOpen = predictedEndWidth > 0
                 case .horizontal, .vertical, .none:
