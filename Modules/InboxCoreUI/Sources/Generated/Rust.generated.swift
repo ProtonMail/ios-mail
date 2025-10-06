@@ -664,6 +664,16 @@ public extension MailSettingsResult {
         }
     }
 }
+public extension MailSettingsSyncResult {
+    func get() throws(UserSessionError) -> MailSettings {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension MailUserSessionAccountDetailsResult {
     func get() throws(UserSessionError) -> AccountDetails {
         switch self {
