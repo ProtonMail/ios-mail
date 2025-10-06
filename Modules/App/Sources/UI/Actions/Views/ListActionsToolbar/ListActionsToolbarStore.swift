@@ -20,7 +20,6 @@ import InboxCoreUI
 import proton_app_uniffi
 import SwiftUI
 
-@MainActor
 final class ListActionsToolbarStore: StateStore {
     @Published var state: ListActionsToolbarState
 
@@ -89,50 +88,34 @@ final class ListActionsToolbarStore: StateStore {
 
     private func handle(action: ListActions, ids: [ID]) async {
         switch action {
-        case .more:
-            let moreActionSheetState = ListActionsToolbarMoreSheetState(
-                selectedItemsIDs: ids,
-                bottomBarActions: state.bottomBarActions.moreActionFiltered,
-                moreSheetOnlyActions: state.moreSheetOnlyActions
-            )
-            state =
-                state
-                .copy(\.moreActionSheetPresented, to: moreActionSheetState)
         case .labelAs:
-            dismissMoreActionSheet()
             state =
                 state
                 .copy(\.labelAsSheetPresented, to: .init(sheetType: .labelAs, ids: ids, mailboxItem: itemTypeForActionBar.mailboxItem))
         case .moveTo:
-            dismissMoreActionSheet()
             state =
                 state
                 .copy(\.moveToSheetPresented, to: .init(sheetType: .moveTo, ids: ids, mailboxItem: itemTypeForActionBar.mailboxItem))
         case .star:
-            dismissMoreActionSheet()
             await starActionPerformer.star(itemsWithIDs: ids, itemType: itemTypeForActionBar)
         case .unstar:
-            dismissMoreActionSheet()
             await starActionPerformer.unstar(itemsWithIDs: ids, itemType: itemTypeForActionBar)
         case .markRead:
-            dismissMoreActionSheet()
             await readActionPerformer.markAsRead(itemsWithIDs: ids, itemType: itemTypeForActionBar)
         case .markUnread:
-            dismissMoreActionSheet()
             await readActionPerformer.markAsUnread(itemsWithIDs: ids, itemType: itemTypeForActionBar)
         case .permanentDelete:
-            let keyPath: WritableKeyPath<ListActionsToolbarState, AlertModel?> =
-                state.moreActionSheetPresented != nil ? \.moreDeleteConfirmationAlert : \.deleteConfirmationAlert
             let alert: AlertModel = .deleteConfirmation(
                 itemsCount: ids.count,
                 action: { [weak self] action in self?.handle(action: .alertActionTapped(action, ids: ids)) }
             )
-            state = state.copy(keyPath, to: alert)
+            state = state.copy(\.deleteConfirmationAlert, to: alert)
         case .moveToSystemFolder(let model), .notSpam(let model):
             await performMoveToAction(destination: model, ids: ids)
         case .snooze:
-            dismissMoreActionSheet()
             state = state.copy(\.isSnoozeSheetPresented, to: true)
+        case .more:
+            break
         }
     }
 
@@ -158,7 +141,6 @@ final class ListActionsToolbarStore: StateStore {
         state =
             state
             .copy(\.deleteConfirmationAlert, to: nil)
-            .copy(\.moreDeleteConfirmationAlert, to: nil)
         switch action {
         case .delete:
             await deleteActionsPerformer.delete(itemsWithIDs: ids, itemType: itemType)
@@ -182,13 +164,8 @@ final class ListActionsToolbarStore: StateStore {
             .copy(\.moreSheetOnlyActions, to: actions.hiddenListActions)
     }
 
-    private func dismissMoreActionSheet() {
-        state = state.copy(\.moreActionSheetPresented, to: nil)
-    }
-
     private func itemDeleted() {
         toastStateStore.present(toast: .deleted())
-        dismissMoreActionSheet()
     }
 
     private func handleMoveActionSuccess(
@@ -199,12 +176,10 @@ final class ListActionsToolbarStore: StateStore {
         let destinationName = destination.name.displayData.title.string
         let toast: Toast = .moveTo(id: toastID, destinationName: destinationName, undoAction: undoAction)
         toastStateStore.present(toast: toast)
-        dismissMoreActionSheet()
     }
 
     private func handleMoveActionFailure(error: Error) {
         toastStateStore.present(toast: .error(message: error.localizedDescription))
-        dismissMoreActionSheet()
     }
 
     private func dismissToast(withID toastID: UUID) {

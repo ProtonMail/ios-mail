@@ -18,6 +18,6 @@
 
 extension OnboardingUpsellScreenModel {
     static var preview: Self {
-        .init(planTiles: PlanTileData.previews, planPurchasing: DummyPlanPurchasing())
+        .init(planTiles: PlanTileData.previews, purchaseActionPerformer: .dummy)
     }
 }

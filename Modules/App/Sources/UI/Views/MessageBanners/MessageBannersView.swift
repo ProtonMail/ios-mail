@@ -35,7 +35,6 @@ struct MessageBannersView: View {
         case unsubscribeNewsletterTapped
     }
 
-    @EnvironmentObject var toastStateStore: ToastStateStore
     let types: OrderedSet<MessageBanner>
     let timerPublisher: Publishers.Autoconnect<Timer.TimerPublisher>
     let scheduleSendDateFormatter: ScheduleSendDateFormatter

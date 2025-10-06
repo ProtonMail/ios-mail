@@ -19,7 +19,6 @@ import Combine
 import InboxCore
 import InboxCoreUI
 
-@MainActor
 class EditToolbarStore: StateStore {
     @Published var state: EditToolbarState
     private let customizeToolbarRepository: CustomizeToolbarRepository

@@ -160,7 +160,10 @@ struct ContactDetailsScreen: View {
             }
         case .emails(let emails):
             FormList(collection: emails) { email in
-                button(item: ContactFormatter.Email.formatted(from: email)) {
+                emailButton(
+                    item: ContactFormatter.Email.formatted(from: email),
+                    badges: email.groups.map { group in Badge(text: group.name, color: Color(hex: group.color)) }
+                ) {
                     store.handle(action: .emailTapped(email))
                 }
             }
@@ -203,12 +206,29 @@ struct ContactDetailsScreen: View {
         }
     }
 
+    private func emailButton(
+        item: ContactDetailsItem,
+        badges: [Badge],
+        action: @escaping () -> Void
+    ) -> some View {
+        VStack(alignment: .leading, spacing: DS.Spacing.small) {
+            LongPressFormBigButton<BadgesView>(
+                title: item.label.stringResource,
+                value: item.value,
+                hasAccentTextColor: item.isInteractive,
+                onTap: action,
+                bottomContent: { badges.isEmpty ? nil : BadgesView(badges: badges) }
+            )
+        }
+    }
+
     private func button(item: ContactDetailsItem, action: @escaping () -> Void = {}) -> some View {
-        LongPressFormBigButton(
+        LongPressFormBigButton<EmptyView>(
             title: item.label.stringResource,
             value: item.value,
             hasAccentTextColor: item.isInteractive,
-            onTap: action
+            onTap: action,
+            bottomContent: { nil }
         )
     }
 

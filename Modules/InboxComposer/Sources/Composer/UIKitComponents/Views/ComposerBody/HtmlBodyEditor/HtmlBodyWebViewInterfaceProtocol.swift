@@ -17,14 +17,15 @@
 
 import WebKit
 
+@MainActor
 protocol HtmlBodyWebViewInterfaceProtocol: AnyObject {
     var webView: WKWebView { get }
     var onEvent: ((HtmlBodyWebViewInterface.Event) -> Void)? { get set }
 
-    func loadMessageBody(_ body: String)
-    @MainActor func setFocus() async
-    @MainActor func readMesasgeBody() async -> String?
-    @MainActor func insertText(_ text: String) async
-    @MainActor func insertImages(_ contentIds: [String]) async
-    @MainActor func removeImage(containing cid: String) async
+    func loadMessageBody(_ body: String, clearCacheFirst: Bool) async
+    func setFocus() async
+    func readMesasgeBody() async -> String?
+    func insertText(_ text: String) async
+    func insertImages(_ contentIds: [String]) async
+    func removeImage(containing cid: String) async
 }

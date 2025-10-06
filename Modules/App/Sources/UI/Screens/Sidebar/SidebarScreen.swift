@@ -97,7 +97,7 @@ struct SidebarScreen: View {
             separator
         }.background(
             GeometryReader { geometry in
-                TransparentBlur()
+                BlurredBackground(fallbackBackgroundColor: DS.Color.Sidebar.background)
                     .edgesIgnoringSafeArea(.all)
                     .preference(key: HeightPreferenceKey.self, value: geometry.size.height)
                     .onPreferenceChange(HeightPreferenceKey.self) { value in

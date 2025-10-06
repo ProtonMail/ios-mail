@@ -18,14 +18,15 @@
 @testable import ProtonMail
 import InboxCoreUI
 import InboxSnapshotTesting
-import InboxTesting
-import XCTest
+import Testing
 
 @MainActor
-class MoveToSheetSnapshotTests: BaseTestCase {
+final class MoveToSheetSnapshotTests {
 
-    func testActionSheetLayoutsCorrectly() {
+    @Test
+    func actionSheetLayoutsCorrectly() async {
         let sut = MoveToSheet(
+            initialState: MoveToSheetPreviewProvider.state(),
             input: .init(sheetType: .moveTo, ids: [], mailboxItem: .message(isLastMessageInCurrentLocation: false)),
             mailbox: .dummy,
             availableMoveToActions: MoveToSheetPreviewProvider.availableMoveToActions,

@@ -26,4 +26,5 @@ enum AppSettingsAction {
     case appearanceSelected(AppAppearance)
     case combinedContactsChanged(Bool)
     case alternativeRoutingChanged(Bool)
+    case appIconSelected(AppIcon)
 }

@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import OrderedCollections
+import InboxCore
 import InboxCoreUI
 import InboxDesignSystem
 import InboxRSVP
@@ -31,6 +32,7 @@ struct MessageBodyView: View {
     let mailbox: Mailbox
     let editScheduledMessage: () -> Void
     let unsnoozeConversation: () -> Void
+    let draftPresenter: RecipientDraftPresenter
     @Binding var isBodyLoaded: Bool
     @Binding var attachmentIDToOpen: ID?
     @State var bodyContentHeight: CGFloat = .zero
@@ -43,7 +45,8 @@ struct MessageBodyView: View {
         isBodyLoaded: Binding<Bool>,
         attachmentIDToOpen: Binding<ID?>,
         editScheduledMessage: @escaping () -> Void,
-        unsnoozeConversation: @escaping () -> Void
+        unsnoozeConversation: @escaping () -> Void,
+        draftPresenter: RecipientDraftPresenter
     ) {
         self.messageID = messageID
         self.emailAddress = emailAddress
@@ -53,6 +56,7 @@ struct MessageBodyView: View {
         self._attachmentIDToOpen = attachmentIDToOpen
         self.editScheduledMessage = editScheduledMessage
         self.unsnoozeConversation = unsnoozeConversation
+        self.draftPresenter = draftPresenter
     }
 
     var body: some View {
@@ -67,7 +71,7 @@ struct MessageBodyView: View {
         ) { state, store in
             VStack(spacing: .zero) {
                 if case .loaded(let body) = state.body, let rsvpServiceProvider = body.rsvpServiceProvider {
-                    RSVPView(serviceProvider: rsvpServiceProvider)
+                    RSVPView(serviceProvider: rsvpServiceProvider, draftPresenter: draftPresenter)
                 }
                 if case .loaded(let body) = state.body, !body.banners.isEmpty {
                     MessageBannersView(

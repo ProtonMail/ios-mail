@@ -26,13 +26,14 @@ final class AppSettingsStateStore: StateStore, Sendable {
     private let notificationCenter: UserNotificationCenter
     private let urlOpener: URLOpener
     private let appLangaugeProvider: AppLangaugeProvider
+    private let appIconConfigurator: AppIconConfigurable
 
-    @MainActor
     init(
         state: AppSettingsState,
         appSettingsRepository: AppSettingsRepository,
         notificationCenter: UserNotificationCenter = UNUserNotificationCenter.current(),
         urlOpener: URLOpener = UIApplication.shared,
+        appIconConfigurator: AppIconConfigurable,
         currentLocale: Locale = Locale.current,
         mainBundle: Bundle = Bundle.main
     ) {
@@ -40,10 +41,10 @@ final class AppSettingsStateStore: StateStore, Sendable {
         self.appSettingsRepository = appSettingsRepository
         self.notificationCenter = notificationCenter
         self.urlOpener = urlOpener
+        self.appIconConfigurator = appIconConfigurator
         self.appLangaugeProvider = .init(currentLocale: currentLocale, mainBundle: mainBundle)
     }
 
-    @MainActor
     func handle(action: AppSettingsAction) async {
         switch action {
         case .notificationButtonTapped:
@@ -63,7 +64,19 @@ final class AppSettingsStateStore: StateStore, Sendable {
             await update(setting: \.useCombineContacts, value: value)
         case .alternativeRoutingChanged(let value):
             await update(setting: \.useAlternativeRouting, value: value)
+        case .appIconSelected(let appIcon):
+            await updateAppIcon(appIcon)
         }
+    }
+
+    @MainActor
+    func updateAppIcon(_ icon: AppIcon) async {
+        guard appIconConfigurator.supportsAlternateIcons else {
+            return
+        }
+
+        try? await appIconConfigurator.setAlternateIconName(icon.alternateIconName)
+        state = state.copy(\.appIcon, to: AppIcon(rawValue: icon.alternateIconName))
     }
 
     // MARK: - Private
@@ -84,7 +97,6 @@ final class AppSettingsStateStore: StateStore, Sendable {
         await refreshStoredAppSettings()
     }
 
-    @MainActor
     private func refreshDeviceSettings() async {
         let areNotificationsEnabled = await areNotificationsEnabled()
         state =
@@ -93,7 +105,6 @@ final class AppSettingsStateStore: StateStore, Sendable {
             .copy(\.appLanguage, to: appLangaugeProvider.appLangauge)
     }
 
-    @MainActor
     private func refreshStoredAppSettings() async {
         do {
             let settings = try await appSettingsRepository.getAppSettings().get()
@@ -131,7 +142,6 @@ final class AppSettingsStateStore: StateStore, Sendable {
         }
     }
 
-    @MainActor
     private func openNativeAppSettings() async {
         await urlOpener.open(.settings, options: [:])
     }

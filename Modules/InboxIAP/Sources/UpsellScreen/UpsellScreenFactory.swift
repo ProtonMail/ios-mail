@@ -21,10 +21,10 @@ import proton_app_uniffi
 import StoreKit
 
 final class UpsellScreenFactory {
-    private let planPurchasing: PlanPurchasing
+    private let purchaseActionPerformer: PurchaseActionPerformer
 
-    init(planPurchasing: PlanPurchasing) {
-        self.planPurchasing = planPurchasing
+    init(purchaseActionPerformer: PurchaseActionPerformer) {
+        self.purchaseActionPerformer = purchaseActionPerformer
     }
 
     @MainActor
@@ -51,7 +51,7 @@ final class UpsellScreenFactory {
             planName: mostExpensiveInstance.plan.title,
             planInstances: displayablePlanInstances,
             entryPoint: entryPoint,
-            planPurchasing: planPurchasing
+            purchaseActionPerformer: purchaseActionPerformer
         )
     }
 
@@ -71,7 +71,7 @@ final class UpsellScreenFactory {
             )
         }
 
-        return .init(planTiles: paidPlanTilesData + freePlanTilesData, planPurchasing: planPurchasing)
+        return .init(planTiles: paidPlanTilesData + freePlanTilesData, purchaseActionPerformer: purchaseActionPerformer)
     }
 
     @MainActor

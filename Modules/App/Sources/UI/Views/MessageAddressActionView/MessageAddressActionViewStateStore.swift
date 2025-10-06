@@ -70,7 +70,6 @@ final class MessageAddressActionViewStateStore: StateStore {
 
     // MARK: - Public
 
-    @MainActor
     func handle(action: Action) async {
         switch action {
         case .onTap(let tapAction):
@@ -82,7 +81,6 @@ final class MessageAddressActionViewStateStore: StateStore {
 
     // MARK: - Private
 
-    @MainActor
     private func handleTap(action: MessageAddressAction) async {
         switch action {
         case .newMessage:
@@ -97,9 +95,9 @@ final class MessageAddressActionViewStateStore: StateStore {
                 openURL(url)
             }
         case .copyAddress:
-            clipboard.copyToClipboard(value: state.email, forName: L10n.Action.Clipboard.emailAddress)
+            clipboard.copyToClipboard(value: state.email, forName: CommonL10n.Clipboard.emailAddress)
         case .copyName:
-            clipboard.copyToClipboard(value: state.name, forName: L10n.Action.Clipboard.name)
+            clipboard.copyToClipboard(value: state.name, forName: CommonL10n.Clipboard.name)
         case .addToContacts:
             toastStateStore.present(toast: .comingSoon)
         case .blockContact:
@@ -107,7 +105,6 @@ final class MessageAddressActionViewStateStore: StateStore {
         }
     }
 
-    @MainActor
     private func handleAlert(action: BlockAddressAlertAction) async {
         switch action {
         case .cancel:
