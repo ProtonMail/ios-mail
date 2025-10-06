@@ -51,7 +51,7 @@ struct ConversationDetailListView: View {
                 EmptyView()
             case .fetchingMessages:
                 ConversationDetailsSkeletonView()
-            case .messagesReady(let messages):
+            case .messagesReady(let messages, let trashBannerState):
                 messageList(messages: messages)
                     .padding(.top, DS.Spacing.compact)
             case .noConnection:

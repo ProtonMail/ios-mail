@@ -397,6 +397,7 @@ struct MessageDetailsUIModel: Equatable {
     let labels: [LabelUIModel]
     let attachments: [AttachmentDisplayModel]
     let isStarred: Bool
+    let isTrashed: Bool
     let showPaperClip: Bool
 }
 
@@ -519,6 +520,7 @@ enum MessageDetailsPreviewProvider {
             labels: labels,
             attachments: .previewData,
             isStarred: false,
+            isTrashed: false,
             showPaperClip: false
         )
     }

@@ -645,7 +645,14 @@ extension ConversationDetailModel {
     }
 
     private func updateStateToMessagesReady(with messages: [MessageCellUIModel]) {
-        updateState(.messagesReady(messages: messages))
+        let areAnyTrashedMessages = messages.filter { $0.isTrashed }.count > 0
+        let areAllMessagesTrashed = messages.allSatisfy { $0.isTrashed }
+        let showTrashBanner = areAnyTrashedMessages && !areAllMessagesTrashed
+        updateState(
+            .messagesReady(
+                messages: messages,
+                trashBannerState: showTrashBanner ? .visible(isOn: state.isShowTrashedMessagesSwitchedOn) : .hidden
+            ))
     }
 
     private func scrollToRelevantMessage(messages: [MessageCellUIModel]) async throws {
@@ -844,17 +851,29 @@ extension ConversationDetailModel {
 }
 
 extension ConversationDetailModel {
+    enum TrashBannerState: Equatable {
+        case hidden
+        case visible(isOn: Bool)
+    }
+
     enum State: Equatable {
         case initial
         case fetchingMessages
         case noConnection
-        case messagesReady(messages: [MessageCellUIModel])
+        case messagesReady(messages: [MessageCellUIModel], trashBannerState: TrashBannerState)
 
         var debugDescription: String {
-            if case .messagesReady(let messages) = self {
+            if case .messagesReady(let messages, _) = self {  // FIXME: - Check if we use it
                 return "messagesReady: \(messages.count) messages"
             }
             return "\(self)"
+        }
+
+        var isShowTrashedMessagesSwitchedOn: Bool {
+            if case .messagesReady(_, let trashBannerState) = self, case .visible(let isOn) = trashBannerState {
+                return isOn
+            }
+            return false
         }
     }
 }
@@ -922,6 +941,15 @@ private extension MessageCellUIModel {
         }
     }
 
+    var isTrashed: Bool {
+        switch type {
+        case .collapsed(let model):
+            model.isTrashed
+        case .expanded(let model):
+            model.messageDetails.isTrashed
+        }
+    }
+
 }
 
 enum SnoozeErrorPresenter {
@@ -940,7 +968,7 @@ private extension ConversationDetailModel.State {
         switch self {
         case .initial, .fetchingMessages, .noConnection:
             return false
-        case .messagesReady(let messages):
+        case .messagesReady(let messages, _):
             let targetMessage =
                 messages
                 .first(where: { $0.id == messageID })

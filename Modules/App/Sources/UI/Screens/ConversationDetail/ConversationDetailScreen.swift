@@ -125,7 +125,7 @@ struct ConversationDetailScreen: View {
             .onChange(
                 of: model.state,
                 { _, newValue in
-                    if case .messagesReady(let messages) = newValue, messages.isEmpty {
+                    if case .messagesReady(let messages, _) = newValue, messages.isEmpty {
                         goBackToMailbox()
                     }
                 }
@@ -265,7 +265,7 @@ private extension ConversationDetailModel.State {
         switch self {
         case .initial, .fetchingMessages, .noConnection:
             0
-        case .messagesReady(let messages):
+        case .messagesReady(let messages, _):
             messages.count
         }
     }
