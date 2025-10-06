@@ -123,41 +123,38 @@ struct SidebarScreen: View {
                 if axisLock == .none {
                     let dx = abs(value.translation.width)
                     let dy = abs(value.translation.height)
+
                     if max(dx, dy) > axisSlop {
                         axisLock = dx > dy ? .horizontal : .vertical
                     }
                 }
 
                 if axisLock == .horizontal {
-                    let newWidth = min(appUIStateStore.sidebarWidth, max(0, value.location.x))
-                    appUIStateStore.sidebarState.visibleWidth = newWidth
+                    let newSidebarWidth = min(appUIStateStore.sidebarWidth, max(0, value.location.x))
+                    appUIStateStore.sidebarState.visibleWidth = newSidebarWidth
                 }
             }
             .onEnded { value in
                 defer { axisLock = .none }
 
+                let predictedEndWidth = value.predictedEndTranslation.width
+                let predictedDx = predictedEndWidth - value.translation.width
+                /// True if drag prediction suggests a large remaining horizontal slide
+                let hasPredictedSignificantSlide = abs(predictedDx) > lastSwipeSignificanceThreshold
+
+                let shouldBeOpen: Bool
+
                 switch axisLock {
-                case .horizontal:
-                    let predictedEndWidth = value.predictedEndTranslation.width
-                    let predictedDx = predictedEndWidth - value.translation.width
-
-                    if abs(predictedDx) > lastSwipeSignificanceThreshold {
-                        appUIStateStore.toggleSidebar(isOpen: predictedEndWidth > 0)
-                    } else {
-                        appUIStateStore.toggleSidebar(
-                            isOpen: appUIStateStore.sidebarState.visibleWidth > appUIStateStore.sidebarWidth / 2
-                        )
-                    }
-                case .vertical, .none:
-                    appUIStateStore.toggleSidebar(
-                        isOpen: appUIStateStore.sidebarState.visibleWidth > appUIStateStore.sidebarWidth / 2
-                    )
+                case .horizontal where hasPredictedSignificantSlide:
+                    shouldBeOpen = predictedEndWidth > 0
+                case .horizontal, .vertical, .none:
+                    let state = appUIStateStore
+                    let isCloserToOpenThanClosed = state.sidebarState.visibleWidth > state.sidebarWidth / 2
+                    shouldBeOpen = isCloserToOpenThanClosed
                 }
-            }
-    }
 
-    private func isScrollingVertically(_ gestureState: DragGesture.Value) -> Bool {
-        abs(gestureState.translation.height) > abs(gestureState.translation.width)
+                appUIStateStore.toggleSidebar(isOpen: shouldBeOpen)
+            }
     }
 
     private var closeSidebarTapGesture: some Gesture {
