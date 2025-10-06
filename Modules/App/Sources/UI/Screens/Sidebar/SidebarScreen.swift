@@ -68,7 +68,7 @@ struct SidebarScreen: View {
                 Color.clear
                     .contentShape(Rectangle())
                     .frame(width: appUIStateStore.sidebarWidth + geometry.safeAreaInsets.leading + widthOfDragableSpaceOnTheMailbox)
-                    .gesture(sidebarDragGesture)
+                    .highPriorityGesture(sidebarDragGesture)
                     .gesture(appUIStateStore.sidebarState.isOpen ? closeSidebarTapGesture : nil)
 
                 HStack(spacing: .zero) {
@@ -197,6 +197,7 @@ struct SidebarScreen: View {
                     }
                 }.accessibilityElement(children: .contain)
             }
+            .scrollDisabled(lockedAxis == .horizontal)
             .frame(maxWidth: .infinity)
         }
     }
