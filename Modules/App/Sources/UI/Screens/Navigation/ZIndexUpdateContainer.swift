@@ -19,7 +19,7 @@ import SwiftUI
 
 struct SidebarZIndexUpdateContainer<ContentView: View>: View {
     @EnvironmentObject private var appUIStateStore: AppUIStateStore
-    let content: () -> ContentView
+    @ViewBuilder let content: () -> ContentView
 
     var body: some View {
         content()

@@ -23,21 +23,26 @@ import SwiftUI
 struct ConversationDetailScreen: View {
     @StateObject private var model: ConversationDetailModel
     @State private var animateViewIn: Bool = false
-    @State private var isHeaderVisible: Bool = false
     @EnvironmentObject var toastStateStore: ToastStateStore
     @Environment(\.colorScheme) var colorScheme
-    @EnvironmentObject var refreshToolbarNotifier: RefreshToolbarNotifier
     @Binding private var navigationPath: NavigationPath
     private let draftPresenter: DraftPresenter
     private let mailUserSession: MailUserSession
+    private let onLoad: (ConversationDetailModel) -> Void
+    private let onDidAppear: (ConversationDetailModel) -> Void
+
+    let seed: ConversationDetailSeed
 
     init(
         seed: ConversationDetailSeed,
         draftPresenter: DraftPresenter,
         navigationPath: Binding<NavigationPath>,
         mailUserSession: MailUserSession,
-        snoozeService: SnoozeServiceProtocol = SnoozeService(mailUserSession: { AppContext.shared.userSession })
+        snoozeService: SnoozeServiceProtocol = SnoozeService(mailUserSession: { AppContext.shared.userSession }),
+        onLoad: @escaping (ConversationDetailModel) -> Void,
+        onDidAppear: @escaping (ConversationDetailModel) -> Void
     ) {
+        self.seed = seed
         self._model = StateObject(
             wrappedValue: .init(
                 seed: seed,
@@ -49,44 +54,18 @@ struct ConversationDetailScreen: View {
         self._navigationPath = .init(projectedValue: navigationPath)
         self.draftPresenter = draftPresenter
         self.mailUserSession = mailUserSession
+        self.onLoad = onLoad
+        self.onDidAppear = onDidAppear
     }
 
     var body: some View {
         conversationView
-            .conversationBottomToolbar(
-                actions: model.conversationToolbarActions,
-                messageActionSelected: { action in
-                    if let messageID = model.state.singleMessageIDInMessageMode {
-                        Task {
-                            await model.handle(
-                                action: action,
-                                messageID: messageID,
-                                toastStateStore: toastStateStore,
-                                actionOrigin: .toolbar,
-                            ) {
-                                goBackToMailbox()
-                            }
-                        }
-                    }
-                },
-                conversationActionSelected: { action in
-                    Task {
-                        await model.handle(action: action, toastStateStore: toastStateStore, actionOrigin: .toolbar) {
-                            goBackToMailbox()
-                        }
-                    }
-                }
-            )
-            .onReceive(refreshToolbarNotifier.refreshToolbar) { toolbarType in
-                if toolbarType == .message || toolbarType == .conversation {
-                    Task {
-                        await model.reloadBottomBarActions()
-                    }
-                }
+            .onLoad {
+                onLoad(model)
             }
-            .toolbar(model.isBottomBarHidden ? .hidden : .visible, for: .bottomBar)
-            .bottomToolbarStyle()
-            .animation(.default, value: model.isBottomBarHidden)
+            .onDidAppear {
+                onDidAppear(model)
+            }
             .actionSheetsFlow(
                 mailbox: { model.mailbox.unsafelyUnwrapped },
                 mailUserSession: mailUserSession,
@@ -147,7 +126,7 @@ struct ConversationDetailScreen: View {
         GeometryReader { proxy in
             ScrollView {
                 VStack {
-                    ListHeaderView(isHeaderVisible: $isHeaderVisible, parentGeometry: proxy) {
+                    ListHeaderView(isHeaderVisible: $model.isHeaderVisible, parentGeometry: proxy) {
                         subjectView
                             .padding(.top, DS.Spacing.medium)
                             .padding(.horizontal, DS.Spacing.large)
@@ -165,14 +144,6 @@ struct ConversationDetailScreen: View {
                 .accessibilityElement(children: .contain)
                 .accessibilityIdentifier(ConversationDetailScreenIdentifiers.rootItem)
             }
-            .navigationBarTitleDisplayMode(.inline)
-            .conversationTopToolbar(
-                title: topToolbarTitle,
-                trailingButton: {
-                    navigationTrailingButton
-                        .square(size: 40)
-                }
-            )
             .opacity(animateViewIn ? 1.0 : 0.0)
             .smoothScreenTransition()
             .task {
@@ -209,29 +180,6 @@ struct ConversationDetailScreen: View {
         )
     }
 
-    private var topToolbarTitle: AttributedString {
-        guard model.state.messagesCount > 0 else { return .init(.empty) }
-        if isHeaderVisible {
-            return attributedTopTitle
-        } else {
-            return model.isSingleMessageMode ? .init(.empty) : attributedNumberOfMessages
-        }
-    }
-
-    private var attributedTopTitle: AttributedString {
-        var text = AttributedString(model.seed.subject)
-        text.font = .system(.body, weight: .semibold)
-        text.foregroundColor = DS.Color.Text.norm
-        return text
-    }
-
-    private var attributedNumberOfMessages: AttributedString {
-        var text = AttributedString(localized: L10n.Conversation.messages(count: model.state.messagesCount))
-        text.font = .caption
-        text.foregroundColor = DS.Color.Text.hint
-        return text
-    }
-
     private var subjectView: some View {
         Text(model.seed.subject)
             .font(.title2)
@@ -241,22 +189,6 @@ struct ConversationDetailScreen: View {
             .textSelection(.enabled)
             .frame(maxWidth: .infinity, alignment: .center)
             .accessibilityIdentifier(ConversationDetailScreenIdentifiers.subjectText)
-    }
-
-    @ViewBuilder
-    private var navigationTrailingButton: some View {
-        if !model.areActionsHidden {
-            Button(
-                action: {
-                    model.toggleStarState()
-                },
-                label: {
-                    Image(symbol: model.isStarred ? .starFilled : .star)
-                        .foregroundStyle(model.isStarred ? DS.Color.Star.selected : DS.Color.Star.default)
-                })
-        } else {
-            Color.clear
-        }
     }
 
     @MainActor
@@ -285,19 +217,6 @@ private extension View {
     func smoothScreenTransition() -> some View {
         self.modifier(ModifiersForSmoothScreenTransition())
     }
-}
-
-private extension ConversationDetailModel.State {
-
-    var messagesCount: Int {
-        switch self {
-        case .initial, .fetchingMessages, .noConnection:
-            0
-        case .messagesReady(let messageListState):
-            messageListState.messages.count
-        }
-    }
-
 }
 
 #Preview("From Mailbox") {
@@ -337,7 +256,9 @@ private extension ConversationDetailModel.State {
             ),
             draftPresenter: .dummy(),
             navigationPath: .constant(.init()),
-            mailUserSession: .dummy
+            mailUserSession: .dummy,
+            onLoad: { _ in },
+            onDidAppear: { _ in }
         )
     }
 }
@@ -352,7 +273,9 @@ private extension ConversationDetailModel.State {
                 )),
             draftPresenter: .dummy(),
             navigationPath: .constant(.init()),
-            mailUserSession: .dummy
+            mailUserSession: .dummy,
+            onLoad: { _ in },
+            onDidAppear: { _ in }
         )
     }
 }

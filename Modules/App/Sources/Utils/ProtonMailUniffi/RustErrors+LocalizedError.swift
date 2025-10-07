@@ -77,6 +77,27 @@ extension DraftCancelScheduleSendErrorReason {
     }
 }
 
+extension MailScrollerError: LocalizedError {
+    public var errorDescription: String? {
+        switch self {
+        case .reason(let reason):
+            reason.errorMessage
+        case .other(let protonError):
+            protonError.localizedDescription
+        }
+    }
+}
+
+extension MailScrollerErrorReason {
+
+    var errorMessage: String {
+        switch self {
+        case .notSynced:
+            "Sync error"
+        }
+    }
+}
+
 extension PinSetError: LocalizedError {
     public var errorDescription: String? {
         switch self {

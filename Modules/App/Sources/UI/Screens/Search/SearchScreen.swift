@@ -128,7 +128,9 @@ struct SearchScreen: View {
             seed: .searchResultItem(messageModel: uiModel, selectedMailbox: model.selectedMailbox),
             draftPresenter: composerCoordinator.draftPresenter,
             navigationPath: $model.state.navigationPath,
-            mailUserSession: userSession
+            mailUserSession: userSession,
+            onLoad: { _ in },
+            onDidAppear: { _ in }
         )
     }
 }

@@ -255,24 +255,37 @@ extension MailboxScreen {
 
     @ViewBuilder
     private func mailboxItemDestination(uiModel: MailboxItemCellUIModel) -> some View {
-        SidebarZIndexUpdateContainer {
-            ConversationDetailScreen(
-                seed: .mailboxItem(item: uiModel, selectedMailbox: mailboxModel.selectedMailbox),
-                draftPresenter: mailboxModel.draftPresenter,
-                navigationPath: $mailboxModel.state.navigationPath,
-                mailUserSession: userSession
-            )
+        if let mailboxCursor = mailboxModel.mailboxCursor(uiModel: uiModel) {
+            SidebarZIndexUpdateContainer {
+                ConversationsPageViewController(
+                    startingItem: uiModel,
+                    mailboxCursor: mailboxCursor,
+                    draftPresenter: mailboxModel.draftPresenter,
+                    navigationPath: $mailboxModel.state.navigationPath,
+                    selectedMailbox: mailboxModel.selectedMailbox,
+                    userSession: userSession
+                )
+            }
+        } else {
+            messageSeedDestination(seed: .mailboxItem(item: uiModel, selectedMailbox: mailboxModel.selectedMailbox))
         }
     }
 
     @ViewBuilder
     private func messageSeedDestination(seed: MailboxMessageSeed) -> some View {
+        messageSeedDestination(seed: .pushNotification(seed))
+    }
+
+    @ViewBuilder
+    private func messageSeedDestination(seed: ConversationDetailSeed) -> some View {
         SidebarZIndexUpdateContainer {
             ConversationDetailScreen(
-                seed: .pushNotification(seed),
+                seed: seed,
                 draftPresenter: mailboxModel.draftPresenter,
                 navigationPath: $mailboxModel.state.navigationPath,
-                mailUserSession: userSession
+                mailUserSession: userSession,
+                onLoad: { _ in },
+                onDidAppear: { _ in }
             )
         }
     }
