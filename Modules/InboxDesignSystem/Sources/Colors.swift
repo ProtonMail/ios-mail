@@ -150,7 +150,13 @@ public extension DS.Color {
 
     enum Text {
         public static let norm = Color(.shade100)
-        public static let weak = Color(.shade80)
+        public static let weak: Color = Color(
+            UIColor { traitCollection in
+                traitCollection.userInterfaceStyle == .light
+                    ? UIColor(resource: .shade80)
+                    : UIColor(resource: .shade90)
+            }
+        )
         public static let hint = Color(.textHint)
         public static let disabled = Color(.textDisabled)
         public static let inverted = Color(.shade0)
