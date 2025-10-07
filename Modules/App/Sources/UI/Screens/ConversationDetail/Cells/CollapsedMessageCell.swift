@@ -132,7 +132,6 @@ struct CollapsedMessageCellUIModel: Equatable {
     let isRead: Bool
     let isDraft: Bool
     let isStarred: Bool
-    let isTrashed: Bool
     let showPaperClip: Bool
     let avatar: AvatarUIModel
 }
@@ -149,7 +148,6 @@ struct CollapsedMessageCellUIModel: Equatable {
                 isRead: true,
                 isDraft: false,
                 isStarred: false,
-                isTrashed: false,
                 showPaperClip: false,
                 avatar: .init(info: .init(initials: "Ba", color: .blue), type: .sender(params: .init()))
             ), onTap: {})
@@ -163,7 +161,6 @@ struct CollapsedMessageCellUIModel: Equatable {
                 isRead: false,
                 isDraft: false,
                 isStarred: false,
-                isTrashed: false,
                 showPaperClip: false,
                 avatar: .init(info: .init(initials: "De", color: .yellow), type: .sender(params: .init()))
             ), onTap: {})
@@ -177,7 +174,6 @@ struct CollapsedMessageCellUIModel: Equatable {
                 isRead: true,
                 isDraft: false,
                 isStarred: false,
-                isTrashed: false,
                 showPaperClip: false,
                 avatar: .init(info: .init(initials: "Pr", color: .green), type: .sender(params: .init()))
             ), onTap: {})

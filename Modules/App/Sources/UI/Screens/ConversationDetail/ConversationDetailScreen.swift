@@ -152,6 +152,9 @@ struct ConversationDetailScreen: View {
                             .padding(.top, DS.Spacing.medium)
                             .padding(.horizontal, DS.Spacing.large)
                     }
+                    if let hiddenMessageBanner {
+                        BannersView(model: [hiddenMessageBanner])
+                    }
                     ConversationDetailListView(
                         model: model,
                         mailUserSession: mailUserSession,
@@ -177,6 +180,20 @@ struct ConversationDetailScreen: View {
                     animateViewIn = true
                 }
                 await model.fetchInitialData()
+            }
+        }
+    }
+
+    private var hiddenMessageBanner: Banner? {
+        switch model.state.hiddenMessagesBannerState {
+        case .none:
+            nil
+        case .some(let state):
+            switch state.bannerVariant {
+            case .containsTrashedMessages:
+                .trashed(toggleAction: { _ in })  // FIXME: - Add missing action
+            case .containsNonTrashedMessages:
+                .nonTrashed(toggleAction: { _ in })  // FIXME: - Add missing action
             }
         }
     }

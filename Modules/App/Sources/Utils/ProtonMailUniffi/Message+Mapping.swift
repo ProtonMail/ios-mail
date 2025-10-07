@@ -85,7 +85,6 @@ extension Message {
                 labels: labels,
                 attachments: attachmentsMetadata.map(\.displayModel),
                 isStarred: starred,
-                isTrashed: false,  // FIXME: - Change to value provided from Rust
                 showPaperClip: showPaperClip
             )
         )
@@ -99,7 +98,6 @@ extension Message {
             isRead: !unread,
             isDraft: isDraft,
             isStarred: starred,
-            isTrashed: false,  // FIXME: - Change to value provided from Rust
             showPaperClip: showPaperClip,
             avatar: sender.senderAvatar
         )

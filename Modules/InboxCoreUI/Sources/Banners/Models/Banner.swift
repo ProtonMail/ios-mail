@@ -42,7 +42,7 @@ public struct Banner: Hashable {
         public let isOn: Bool
         public let action: (Bool) -> Void
 
-        init(title: String, isOn: Bool, action: @escaping (Bool) -> Void) {
+        public init(title: String, isOn: Bool, action: @escaping (Bool) -> Void) {
             self.title = title
             self.isOn = isOn
             self.action = action

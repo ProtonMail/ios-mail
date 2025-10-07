@@ -20,6 +20,11 @@ import InboxCore
 import InboxCoreUI
 import SwiftUI
 
+enum HiddenMessagesBanner {  // FIXME: - To remove
+    case containsTrashedMessages
+    case containsNonTrashedMessages
+}
+
 @MainActor
 final class ConversationDetailModel: Sendable, ObservableObject {
     @Published private(set) var state: State = .initial
@@ -81,7 +86,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         Task { @MainActor in
             let liveQueryValues = await self.readConversationLiveQueryValues()
             self.isStarred = liveQueryValues.isStarred
-            self.updateStateToMessagesReady(with: liveQueryValues.messages)
+            self.updateStateToMessagesReady(with: liveQueryValues)
             await self.reloadBottomBarActions()
         }
     }
@@ -91,7 +96,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         Task { @MainActor in
             let liveQueryValues = await self.readMessageLiveQueryValues()
             self.isStarred = liveQueryValues.isStarred
-            self.updateStateToMessagesReady(with: liveQueryValues.messages)
+            self.updateStateToMessagesReady(with: liveQueryValues)
             await self.reloadBottomBarActions()
         }
     }
@@ -159,7 +164,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         conversationItem = .init(id: messageID, itemType: .message)
         let liveQueryValues = try await createSingleMessageLiveQuerry(for: messageID)
         isStarred = liveQueryValues.isStarred
-        updateStateToMessagesReady(with: liveQueryValues.messages)
+        updateStateToMessagesReady(with: liveQueryValues)
     }
 
     private func setUpConversationMessagesObservation(
@@ -175,7 +180,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         )
 
         isStarred = liveQueryValues.isStarred
-        updateStateToMessagesReady(with: liveQueryValues.messages)
+        updateStateToMessagesReady(with: liveQueryValues)
         try await scrollToRelevantMessage(messages: liveQueryValues.messages)
     }
 
@@ -191,7 +196,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
                 expandedMessages.insert(messageId)
             }
             let liveQueryValues = await readLiveQueryValues()
-            updateStateToMessagesReady(with: liveQueryValues.messages)
+            updateStateToMessagesReady(with: liveQueryValues)
         }
     }
 
@@ -644,14 +649,17 @@ extension ConversationDetailModel {
         }
     }
 
-    private func updateStateToMessagesReady(with messages: [MessageCellUIModel]) {
-        let areAnyTrashedMessages = messages.filter { $0.isTrashed }.count > 0
-        let areAllMessagesTrashed = messages.allSatisfy { $0.isTrashed }
-        let showTrashBanner = areAnyTrashedMessages && !areAllMessagesTrashed
+    private func updateStateToMessagesReady(with liveQueryValues: ConversationDetailModel.LiveQueryValues) {
+        let hiddenMessagesBannerState = liveQueryValues.hiddenMessagesBanner.map { bannerVariant in
+            HiddenMessagesBannerState(
+                isOn: state.isHiddenMessagesBannerOn,
+                bannerVariant: bannerVariant
+            )
+        }
         updateState(
             .messagesReady(
-                messages: messages,
-                trashBannerState: showTrashBanner ? .visible(isOn: state.isShowTrashedMessagesSwitchedOn) : .hidden
+                messages: liveQueryValues.messages,
+                hiddenMessagesBannerState: hiddenMessagesBannerState
             ))
     }
 
@@ -703,6 +711,7 @@ extension ConversationDetailModel {
     private struct LiveQueryValues {
         let messages: [MessageCellUIModel]
         let isStarred: Bool
+        let hiddenMessagesBanner: HiddenMessagesBanner?
     }
 
     private func readLiveQueryValues() async -> LiveQueryValues {
@@ -712,14 +721,14 @@ extension ConversationDetailModel {
         case .message:
             await readMessageLiveQueryValues()
         case .none:
-            .init(messages: [], isStarred: false)
+            .init(messages: [], isStarred: false, hiddenMessagesBanner: nil)
         }
     }
 
     private func readMessageLiveQueryValues() async -> LiveQueryValues {
         do {
             guard let conversationItem, conversationItem.itemType == .message else {
-                return .init(messages: [], isStarred: false)
+                return .init(messages: [], isStarred: false, hiddenMessagesBanner: nil)
             }
             let messageID = conversationItem.id
             let message = try await message(session: userSession, id: messageID).get()
@@ -734,10 +743,10 @@ extension ConversationDetailModel {
                         type: .expanded(message.toExpandedMessageCellUIModel())
                     )
                 }
-            return .init(messages: singleMessage, isStarred: isStarred)
+            return .init(messages: singleMessage, isStarred: isStarred, hiddenMessagesBanner: nil)
         } catch {
             AppLogger.log(error: error, category: .conversationDetail)
-            return .init(messages: [], isStarred: false)
+            return .init(messages: [], isStarred: false, hiddenMessagesBanner: nil)
         }
     }
 
@@ -746,7 +755,7 @@ extension ConversationDetailModel {
             guard let conversationItem, let mailbox else {
                 let msg = "no mailbox object (labelId=\(String(describing: mailbox?.labelId().value))) or conversationItem (\(String(describing: conversationItem))"
                 AppLogger.log(message: msg, category: .conversationDetail, isError: true)
-                return .init(messages: [], isStarred: false)
+                return .init(messages: [], isStarred: false, hiddenMessagesBanner: nil)
             }
             let conversationID = conversationItem.id
             let conversationAndMessages = try await conversation(mailbox: mailbox, id: conversationID).get()
@@ -774,10 +783,10 @@ extension ConversationDetailModel {
                     )
                 }
 
-            return .init(messages: result, isStarred: isStarred)
+            return .init(messages: result, isStarred: isStarred, hiddenMessagesBanner: .containsTrashedMessages)  // FIXME: - Change to what Rust returns
         } catch {
             AppLogger.log(error: error, category: .conversationDetail)
-            return .init(messages: [], isStarred: false)
+            return .init(messages: [], isStarred: false, hiddenMessagesBanner: nil)
         }
     }
 
@@ -851,16 +860,16 @@ extension ConversationDetailModel {
 }
 
 extension ConversationDetailModel {
-    enum TrashBannerState: Equatable {
-        case hidden
-        case visible(isOn: Bool)
+    struct HiddenMessagesBannerState: Equatable {
+        let isOn: Bool
+        let bannerVariant: HiddenMessagesBanner
     }
 
     enum State: Equatable {
         case initial
         case fetchingMessages
         case noConnection
-        case messagesReady(messages: [MessageCellUIModel], trashBannerState: TrashBannerState)
+        case messagesReady(messages: [MessageCellUIModel], hiddenMessagesBannerState: HiddenMessagesBannerState?)
 
         var debugDescription: String {
             if case .messagesReady(let messages, _) = self {  // FIXME: - Check if we use it
@@ -869,11 +878,16 @@ extension ConversationDetailModel {
             return "\(self)"
         }
 
-        var isShowTrashedMessagesSwitchedOn: Bool {
-            if case .messagesReady(_, let trashBannerState) = self, case .visible(let isOn) = trashBannerState {
-                return isOn
+        var isHiddenMessagesBannerOn: Bool {
+            hiddenMessagesBannerState.map(\.isOn) ?? false
+        }
+
+        var hiddenMessagesBannerState: HiddenMessagesBannerState? {
+            if case .messagesReady(_, let hiddenMessagesBannerState) = self {
+                return hiddenMessagesBannerState
+            } else {
+                return nil
             }
-            return false
         }
     }
 }
@@ -938,15 +952,6 @@ private extension MessageCellUIModel {
             model.isDraft
         case .expanded:
             false
-        }
-    }
-
-    var isTrashed: Bool {
-        switch type {
-        case .collapsed(let model):
-            model.isTrashed
-        case .expanded(let model):
-            model.messageDetails.isTrashed
         }
     }
 
