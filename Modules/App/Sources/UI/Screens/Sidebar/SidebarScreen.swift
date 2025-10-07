@@ -32,7 +32,7 @@ struct SidebarScreen: View {
     @State private var lockedAxis: AxisLock = .none
 
     private let widthOfDragableSpaceOnTheMailbox: CGFloat = 25
-    private let openCloseSidebarMinimumDistance: CGFloat = 10
+    private let openCloseSidebarMinimumDistance: CGFloat = 20
     /// This value is to make sure a twitch of a finger when releasing the sidebar won't cause the sidebar to move in the other direction against user's wishes.
     private let lastSwipeSignificanceThreshold: CGFloat = 25
     private let animationDuration = 0.2
@@ -68,7 +68,7 @@ struct SidebarScreen: View {
                 Color.clear
                     .contentShape(Rectangle())
                     .frame(width: appUIStateStore.sidebarWidth + geometry.safeAreaInsets.leading + widthOfDragableSpaceOnTheMailbox)
-                    .highPriorityGesture(sidebarDragGesture)
+                    .simultaneousGesture(sidebarDragGesture)
                     .gesture(appUIStateStore.sidebarState.isOpen ? closeSidebarTapGesture : nil)
 
                 HStack(spacing: .zero) {
@@ -85,7 +85,7 @@ struct SidebarScreen: View {
                     .accessibilityIdentifier(SidebarScreenIdentifiers.rootItem)
                 }
                 .frame(width: appUIStateStore.sidebarWidth)
-                .gesture(sidebarDragGesture)
+                .highPriorityGesture(sidebarDragGesture)
             }
             .animation(.easeOut(duration: animationDuration), value: appUIStateStore.sidebarState.visibleWidth)
             .offset(x: appUIStateStore.sidebarState.visibleWidth - appUIStateStore.sidebarWidth - geometry.safeAreaInsets.leading)
