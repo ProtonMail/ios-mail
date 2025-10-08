@@ -742,7 +742,11 @@ extension ConversationDetailModel {
                 return .init(messages: [], isStarred: false)
             }
             let conversationID = conversationItem.id
-            let conversationAndMessages = try await conversation(mailbox: mailbox, id: conversationID).get()
+            let conversationAndMessages = try await conversation(
+                mailbox: mailbox,
+                id: conversationID,
+                showAll: true
+            ).get()
             let isStarred = conversationAndMessages?.conversation.isStarred ?? false
             let messages = conversationAndMessages?.messages ?? []
 

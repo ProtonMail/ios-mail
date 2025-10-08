@@ -454,16 +454,6 @@ public extension ScrollerSearchResult {
         }
     }
 }
-public extension SearchForConversationsResult {
-    func get() throws(ActionError) -> [Conversation] {
-        switch self {
-        case .ok(let value):
-            value
-        case .error(let error):
-            throw error
-        }
-    }
-}
 public extension SearchForMessagesResult {
     func get() throws(ActionError) -> [Message] {
         switch self {

@@ -104,6 +104,26 @@ public extension CustomSettingsSetMobileSignatureResult {
         }
     }
 }
+public extension CustomSettingsSetSwipeToAdjacentConversationResult {
+    func get() throws(ProtonError) {
+        switch self {
+        case .ok:
+            break
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension CustomSettingsSwipeToAdjacentConversationResult {
+    func get() throws(ProtonError) -> Bool {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension DraftExpirationTimeResult {
     func get() throws(ProtonError) -> DraftExpirationTime {
         switch self {
@@ -969,6 +989,16 @@ public extension RsvpEventGetResult {
         switch self {
         case .ok(let value):
             value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension UpdateNextMessageOnMoveResult {
+    func get() throws(UserSessionError) {
+        switch self {
+        case .ok:
+            break
         case .error(let error):
             throw error
         }
