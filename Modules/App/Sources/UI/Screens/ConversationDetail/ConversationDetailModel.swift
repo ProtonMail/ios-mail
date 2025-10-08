@@ -726,6 +726,10 @@ extension ConversationDetailModel {
         let messages: [MessageCellUIModel]
         let isStarred: Bool
         let hiddenMessagesBanner: HiddenMessagesBanner?
+
+        static var empty: Self {
+            .init(messages: [], isStarred: false, hiddenMessagesBanner: nil)
+        }
     }
 
     private func readLiveQueryValues() async -> LiveQueryValues {
@@ -735,14 +739,14 @@ extension ConversationDetailModel {
         case .message:
             await readMessageLiveQueryValues()
         case .none:
-            .init(messages: [], isStarred: false, hiddenMessagesBanner: nil)
+            .empty
         }
     }
 
     private func readMessageLiveQueryValues() async -> LiveQueryValues {
         do {
             guard let conversationItem, conversationItem.itemType == .message else {
-                return .init(messages: [], isStarred: false, hiddenMessagesBanner: nil)
+                return .empty
             }
             let messageID = conversationItem.id
             let message = try await message(session: userSession, id: messageID).get()
@@ -760,7 +764,7 @@ extension ConversationDetailModel {
             return .init(messages: singleMessage, isStarred: isStarred, hiddenMessagesBanner: nil)
         } catch {
             AppLogger.log(error: error, category: .conversationDetail)
-            return .init(messages: [], isStarred: false, hiddenMessagesBanner: nil)
+            return .empty
         }
     }
 
@@ -769,7 +773,7 @@ extension ConversationDetailModel {
             guard let conversationItem, let mailbox else {
                 let msg = "no mailbox object (labelId=\(String(describing: mailbox?.labelId().value))) or conversationItem (\(String(describing: conversationItem))"
                 AppLogger.log(message: msg, category: .conversationDetail, isError: true)
-                return .init(messages: [], isStarred: false, hiddenMessagesBanner: nil)
+                return .empty
             }
             let conversationID = conversationItem.id
             let conversationAndMessages = try await conversation(
@@ -805,7 +809,7 @@ extension ConversationDetailModel {
             return .init(messages: result, isStarred: isStarred, hiddenMessagesBanner: hiddenMessagesBanner)
         } catch {
             AppLogger.log(error: error, category: .conversationDetail)
-            return .init(messages: [], isStarred: false, hiddenMessagesBanner: nil)
+            return .empty
         }
     }
 
