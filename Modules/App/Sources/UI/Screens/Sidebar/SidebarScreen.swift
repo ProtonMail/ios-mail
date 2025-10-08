@@ -30,6 +30,7 @@ struct SidebarScreen: View {
     @StateObject private var screenModel: SidebarModel
     @State private var headerHeight: CGFloat = .zero
     @State private var lockedAxis: AxisLock = .none
+    @State private var dragStartWidth: CGFloat?
 
     private let widthOfDragableSpaceOnTheMailbox: CGFloat = 25
     private let openCloseSidebarMinimumDistance: CGFloat = 30
@@ -85,7 +86,7 @@ struct SidebarScreen: View {
                     .accessibilityIdentifier(SidebarScreenIdentifiers.rootItem)
                 }
                 .frame(width: appUIStateStore.sidebarWidth)
-                .highPriorityGesture(sidebarDragGesture)
+                .simultaneousGesture(sidebarDragGesture)
             }
             .animation(.easeOut(duration: animationDuration), value: appUIStateStore.sidebarState.visibleWidth)
             .offset(x: appUIStateStore.sidebarState.visibleWidth - appUIStateStore.sidebarWidth - geometry.safeAreaInsets.leading)
@@ -113,35 +114,58 @@ struct SidebarScreen: View {
         )
     }
 
+    /// Minimum movement (pts) before locking axis.
+    /// Avoids accidental lock from tiny diagonal wiggles.
+    private let axisSlop: CGFloat = 6
+
     private var sidebarDragGesture: some Gesture {
-        DragGesture(minimumDistance: openCloseSidebarMinimumDistance, coordinateSpace: .global)
+        DragGesture(minimumDistance: .zero, coordinateSpace: .global)
             .onChanged { value in
+                if dragStartWidth == nil {
+                    dragStartWidth = appUIStateStore.sidebarState.visibleWidth
+                }
+
                 if lockedAxis == .none {
                     let dx = abs(value.translation.width)
                     let dy = abs(value.translation.height)
 
-                    lockedAxis = dx > dy ? .horizontal : .vertical
+                    if max(dx, dy) > axisSlop {
+                        lockedAxis = dx > dy ? .horizontal : .vertical
+                    }
                 }
 
                 if lockedAxis == .horizontal {
-                    let newSidebarWidth = min(appUIStateStore.sidebarWidth, max(0, value.location.x))
-                    appUIStateStore.sidebarState.visibleWidth = newSidebarWidth
+                    guard let startWidth = dragStartWidth else {
+                        return
+                    }
+
+                    let dragTranslation = value.translation.width
+                    let newWidth = startWidth + dragTranslation
+
+                    let clampedWidth = min(appUIStateStore.sidebarWidth, max(0, newWidth))
+                    appUIStateStore.sidebarState.visibleWidth = clampedWidth
                 }
             }
             .onEnded { value in
-                defer { lockedAxis = .none }
+                guard lockedAxis == .horizontal else {
+                    lockedAxis = .none
+                    return
+                }
+
+                defer {
+                    dragStartWidth = nil
+                    lockedAxis = .none
+                }
 
                 let predictedEndWidth = value.predictedEndTranslation.width
                 let predictedDx = predictedEndWidth - value.translation.width
-                /// True if drag prediction suggests a large remaining horizontal slide
                 let hasPredictedSignificantSlide = abs(predictedDx) > lastSwipeSignificanceThreshold
 
                 let shouldBeOpen: Bool
 
-                switch lockedAxis {
-                case .horizontal where hasPredictedSignificantSlide:
+                if hasPredictedSignificantSlide {
                     shouldBeOpen = predictedEndWidth > 0
-                case .horizontal, .vertical, .none:
+                } else {
                     let state = appUIStateStore
                     let isCloserToOpenThanClosed = state.sidebarState.visibleWidth > state.sidebarWidth / 2
                     shouldBeOpen = isCloserToOpenThanClosed
