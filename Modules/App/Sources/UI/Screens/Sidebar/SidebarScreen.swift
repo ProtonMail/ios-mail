@@ -32,7 +32,7 @@ struct SidebarScreen: View {
     @State private var lockedAxis: AxisLock = .none
 
     private let widthOfDragableSpaceOnTheMailbox: CGFloat = 25
-    private let openCloseSidebarMinimumDistance: CGFloat = 100
+    private let openCloseSidebarMinimumDistance: CGFloat = 30
     /// This value is to make sure a twitch of a finger when releasing the sidebar won't cause the sidebar to move in the other direction against user's wishes.
     private let lastSwipeSignificanceThreshold: CGFloat = 25
     private let animationDuration = 0.2
