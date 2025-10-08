@@ -39,13 +39,11 @@ public struct Banner: Hashable {
 
     public struct Toggle: Hashable {
         public let title: String
-        public let isOn: Bool
-        public let action: (Bool) -> Void
+        @Binding public var isOn: Bool
 
-        public init(title: String, isOn: Bool, action: @escaping (Bool) -> Void) {
+        public init(title: String, isOn: Binding<Bool>) {
             self.title = title
-            self.isOn = isOn
-            self.action = action
+            self._isOn = isOn
         }
 
         public static func == (lhs: Toggle, rhs: Toggle) -> Bool {

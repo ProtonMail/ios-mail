@@ -21,8 +21,8 @@ extension ConversationDetailModel.State {
         switch self {
         case .initial, .fetchingMessages, .noConnection:
             nil
-        case .messagesReady(let messages, _):
-            messages.first?.id
+        case .messagesReady(let messageListState):
+            messageListState.messages.first?.id
         }
     }
 

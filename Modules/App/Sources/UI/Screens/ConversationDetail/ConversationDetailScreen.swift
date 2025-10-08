@@ -125,7 +125,7 @@ struct ConversationDetailScreen: View {
             .onChange(
                 of: model.state,
                 { _, newValue in
-                    if case .messagesReady(let messages, _) = newValue, messages.isEmpty {
+                    if case .messagesReady(let messageListState) = newValue, messageListState.messages.isEmpty {
                         goBackToMailbox()
                     }
                 }
@@ -153,7 +153,7 @@ struct ConversationDetailScreen: View {
                             .padding(.horizontal, DS.Spacing.large)
                     }
                     if let hiddenMessageBanner {
-                        BannersView(model: [hiddenMessageBanner])
+                        BannerView(model: hiddenMessageBanner)
                     }
                     ConversationDetailListView(
                         model: model,
@@ -185,17 +185,28 @@ struct ConversationDetailScreen: View {
     }
 
     private var hiddenMessageBanner: Banner? {
-        switch model.state.hiddenMessagesBannerState {
+        guard let messageListState = model.state.messageListState else {
+            return nil
+        }
+
+        switch messageListState.hiddenMessagesBannerState {
         case .none:
-            nil
+            return nil
         case .some(let state):
             switch state.bannerVariant {
             case .containsTrashedMessages:
-                .trashed(toggleAction: { _ in })  // FIXME: - Add missing action
+                return .trashed(isOn: hiddenMessagesBannerBinding)
             case .containsNonTrashedMessages:
-                .nonTrashed(toggleAction: { _ in })  // FIXME: - Add missing action
+                return .nonTrashed(isOn: hiddenMessagesBannerBinding)
             }
         }
+    }
+
+    private var hiddenMessagesBannerBinding: Binding<Bool> {
+        .init(
+            get: { model.state.isHiddenMessagesBannerOn },
+            set: { newValue in model.toggle(value: newValue) }
+        )
     }
 
     private var topToolbarTitle: AttributedString {
@@ -282,8 +293,8 @@ private extension ConversationDetailModel.State {
         switch self {
         case .initial, .fetchingMessages, .noConnection:
             0
-        case .messagesReady(let messages, _):
-            messages.count
+        case .messagesReady(let messageListState):
+            messageListState.messages.count
         }
     }
 

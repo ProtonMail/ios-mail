@@ -20,11 +20,6 @@ import InboxCore
 import InboxCoreUI
 import SwiftUI
 
-enum HiddenMessagesBanner {  // FIXME: - To remove
-    case containsTrashedMessages
-    case containsNonTrashedMessages
-}
-
 @MainActor
 final class ConversationDetailModel: Sendable, ObservableObject {
     @Published private(set) var state: State = .initial
@@ -158,6 +153,19 @@ final class ConversationDetailModel: Sendable, ObservableObject {
             let msg = "Failed fetching initial data. Error: \(String(describing: error))"
             AppLogger.log(message: msg, category: .conversationDetail, isError: true)
         }
+    }
+
+    func toggle(value: Bool) {
+        guard let messageListState = state.messageListState, let hiddenMessagesBannerState = messageListState.hiddenMessagesBannerState else {
+            return
+        }
+
+        state = .messagesReady(
+            state: .init(
+                messages: messageListState.messages,
+                hiddenMessagesBannerState: hiddenMessagesBannerState.copy(\.isOn, to: value)
+            )
+        )
     }
 
     private func setUpSingleMessageObservation(messageID: ID) async throws {
@@ -658,8 +666,7 @@ extension ConversationDetailModel {
         }
         updateState(
             .messagesReady(
-                messages: liveQueryValues.messages,
-                hiddenMessagesBannerState: hiddenMessagesBannerState
+                state: .init(messages: liveQueryValues.messages, hiddenMessagesBannerState: hiddenMessagesBannerState)
             ))
     }
 
@@ -758,7 +765,12 @@ extension ConversationDetailModel {
                 return .init(messages: [], isStarred: false, hiddenMessagesBanner: nil)
             }
             let conversationID = conversationItem.id
-            let conversationAndMessages = try await conversation(mailbox: mailbox, id: conversationID).get()
+            let conversationAndMessages = try await conversation(
+                mailbox: mailbox,
+                id: conversationID,
+                showAll: state.isHiddenMessagesBannerOn
+            ).get()
+            let hiddenMessagesBanner = conversationAndMessages?.conversation.hiddenMessagesBanner
             let isStarred = conversationAndMessages?.conversation.isStarred ?? false
             let messages = conversationAndMessages?.messages ?? []
 
@@ -783,7 +795,7 @@ extension ConversationDetailModel {
                     )
                 }
 
-            return .init(messages: result, isStarred: isStarred, hiddenMessagesBanner: .containsTrashedMessages)  // FIXME: - Change to what Rust returns
+            return .init(messages: result, isStarred: isStarred, hiddenMessagesBanner: hiddenMessagesBanner)
         } catch {
             AppLogger.log(error: error, category: .conversationDetail)
             return .init(messages: [], isStarred: false, hiddenMessagesBanner: nil)
@@ -860,31 +872,40 @@ extension ConversationDetailModel {
 }
 
 extension ConversationDetailModel {
-    struct HiddenMessagesBannerState: Equatable {
-        let isOn: Bool
+    struct HiddenMessagesBannerState: Equatable, Copying {
+        var isOn: Bool
         let bannerVariant: HiddenMessagesBanner
     }
 
-    enum State: Equatable {
+    struct messageListState: Equatable {
+        let messages: [MessageCellUIModel]
+        let hiddenMessagesBannerState: HiddenMessagesBannerState?
+    }
+
+    enum State: Equatable, Copying {
         case initial
         case fetchingMessages
         case noConnection
-        case messagesReady(messages: [MessageCellUIModel], hiddenMessagesBannerState: HiddenMessagesBannerState?)
+        case messagesReady(state: messageListState)
 
         var debugDescription: String {
-            if case .messagesReady(let messages, _) = self {  // FIXME: - Check if we use it
-                return "messagesReady: \(messages.count) messages"
+            if case .messagesReady(let messageListState) = self {  // FIXME: - Check if we use it
+                return "messagesReady: \(messageListState.messages.count) messages"
             }
             return "\(self)"
         }
 
         var isHiddenMessagesBannerOn: Bool {
-            hiddenMessagesBannerState.map(\.isOn) ?? false
+            if let messageListState {
+                messageListState.hiddenMessagesBannerState?.isOn ?? false
+            } else {
+                false
+            }
         }
 
-        var hiddenMessagesBannerState: HiddenMessagesBannerState? {
-            if case .messagesReady(_, let hiddenMessagesBannerState) = self {
-                return hiddenMessagesBannerState
+        var messageListState: messageListState? {
+            if case .messagesReady(let messageListState) = self {
+                return messageListState
             } else {
                 return nil
             }
@@ -973,12 +994,12 @@ private extension ConversationDetailModel.State {
         switch self {
         case .initial, .fetchingMessages, .noConnection:
             return false
-        case .messagesReady(let messages, _):
+        case .messagesReady(let messageListState):
             let targetMessage =
-                messages
+                messageListState.messages
                 .first(where: { $0.id == messageID })
             return
-                messages
+                messageListState.messages
                 .filter { message in message.locationID == targetMessage?.locationID }
                 .count == 1
         }
