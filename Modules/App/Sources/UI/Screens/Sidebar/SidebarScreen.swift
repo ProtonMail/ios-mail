@@ -232,6 +232,7 @@ struct SidebarScreen: View {
 
         SidebarItemButton(
             item: item,
+            isTappable: isButtonTappable,
             action: { select(item: item) },
             content: {
                 HStack(spacing: .zero) {
@@ -249,6 +250,7 @@ struct SidebarScreen: View {
             ForEach(screenModel.state.system) { item in
                 SidebarItemButton(
                     item: .system(item),
+                    isTappable: isButtonTappable,
                     action: { select(item: .system(item)) },
                     content: { systemItemContent(model: item) }
                 )
@@ -261,6 +263,7 @@ struct SidebarScreen: View {
             ForEach(screenModel.state.folders) { folder in
                 SingleFolderNodeView(
                     folder: folder,
+                    isTappable: isButtonTappable,
                     selected: { folder in select(item: .folder(folder)) },
                     toggle: { folder, expand in screenModel.handle(action: .toggle(folder: folder, expand: expand)) },
                     unreadTextView: { count, isSelected in unreadLabel(unreadCount: count, isSelected: isSelected) }
@@ -278,6 +281,7 @@ struct SidebarScreen: View {
             ForEach(screenModel.state.labels) { item in
                 SidebarItemButton(
                     item: .label(item),
+                    isTappable: isButtonTappable,
                     action: { select(item: .label(item)) },
                     content: { labelItemContent(model: item) }
                 )
@@ -294,6 +298,7 @@ struct SidebarScreen: View {
             ForEach(screenModel.state.other) { item in
                 SidebarItemButton(
                     item: .other(item),
+                    isTappable: isButtonTappable,
                     action: { select(item: .other(item)) },
                     content: { otherItemContent(model: item) }
                 )
@@ -419,6 +424,10 @@ struct SidebarScreen: View {
         default:
             break
         }
+    }
+
+    private var isButtonTappable: Bool {
+        lockedAxis == .none
     }
 }
 

@@ -20,17 +20,28 @@ import SwiftUI
 
 struct SidebarItemButton<Content: View>: View {
     private let item: SidebarItem
+    private let isTappable: Bool
     private let action: () -> Void
     @ViewBuilder private let content: () -> Content
 
-    init(item: SidebarItem, action: @escaping () -> Void, @ViewBuilder content: @escaping () -> Content) {
+    init(
+        item: SidebarItem,
+        isTappable: Bool,
+        action: @escaping () -> Void,
+        @ViewBuilder content: @escaping () -> Content
+    ) {
         self.item = item
+        self.isTappable = isTappable
         self.action = action
         self.content = content
     }
 
     var body: some View {
-        Button(action: action) {
+        Button(action: {
+            if isTappable {
+                action()
+            }
+        }) {
             content()
         }
         .padding(.vertical, DS.Spacing.medium)
