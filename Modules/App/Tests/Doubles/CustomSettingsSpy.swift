@@ -45,4 +45,12 @@ final class CustomSettingsSpy: CustomSettingsProtocol {
         setMobileSignatureEnabledCalls.append(enabled)
         return .ok
     }
+
+    func setSwipeToAdjacentConversation(enabled: Bool) async -> CustomSettingsSetSwipeToAdjacentConversationResult {
+        .ok
+    }
+
+    func swipeToAdjacentConversation() async -> CustomSettingsSwipeToAdjacentConversationResult {
+        .ok(true)
+    }
 }
