@@ -18,14 +18,14 @@
 import InboxDesignSystem
 import SwiftUI
 
-struct BannerView: View {
-    let model: Banner
+public struct BannerView: View {
+    public let model: Banner
 
-    init(model: Banner) {
+    public init(model: Banner) {
         self.model = model
     }
 
-    var body: some View {
+    public var body: some View {
         container()
             .background {
                 RoundedRectangle(cornerRadius: DS.Radius.extraLarge)
