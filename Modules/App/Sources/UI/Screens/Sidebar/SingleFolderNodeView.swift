@@ -20,8 +20,8 @@ import InboxDesignSystem
 import SwiftUI
 
 struct SingleFolderNodeView<UnreadText: View>: View {
-
     private let folder: SidebarFolder
+    private let isTappable: Bool
     private let padding: CGFloat
     private let selected: (SidebarFolder) -> Void
     private let toggle: (SidebarFolder, Bool) -> Void
@@ -30,12 +30,14 @@ struct SingleFolderNodeView<UnreadText: View>: View {
 
     init(
         folder: SidebarFolder,
+        isTappable: Bool,
         padding: CGFloat = 0,
         selected: @escaping (SidebarFolder) -> Void,
         toggle: @escaping (SidebarFolder, Bool) -> Void,
         unreadTextView: @escaping (_ count: String, _ isSelected: Bool) -> UnreadText
     ) {
         self.folder = folder
+        self.isTappable = isTappable
         self.padding = padding
         self.selected = selected
         self.toggle = toggle
@@ -45,7 +47,11 @@ struct SingleFolderNodeView<UnreadText: View>: View {
 
     var body: some View {
         VStack {
-            SidebarItemButton(item: .folder(folder), action: { selected(folder) }) {
+            SidebarItemButton(
+                item: .folder(folder),
+                isTappable: isTappable,
+                action: { selected(folder) }
+            ) {
                 HStack(spacing: .zero) {
                     Image(folder.childFolders.isEmpty ? DS.Icon.icFolderFilled : DS.Icon.icFoldersFilled)
                         .renderingMode(.template)
@@ -90,6 +96,7 @@ struct SingleFolderNodeView<UnreadText: View>: View {
                 ForEach(folder.childFolders) { childFolder in
                     SingleFolderNodeView(
                         folder: childFolder,
+                        isTappable: isTappable,
                         padding: padding + DS.Spacing.large,
                         selected: selected,
                         toggle: toggle,
@@ -104,7 +111,6 @@ struct SingleFolderNodeView<UnreadText: View>: View {
         isExpanded.toggle()
         toggle(folder, isExpanded)
     }
-
 }
 
 private struct SidebarFolderNodeViewIdentifiers {
