@@ -118,6 +118,7 @@ final class MessageAddressActionViewStateStoreTests {
                 ))
 
         #expect(blockSpy.calls == [email])
+        #expect(dismissSpy.callsCount == 1)
         #expect(onSenderBlockedCallsCount == 1)
         #expect(toastStateStore.state.toasts == [.information(message: "Sender blocked")])
     }

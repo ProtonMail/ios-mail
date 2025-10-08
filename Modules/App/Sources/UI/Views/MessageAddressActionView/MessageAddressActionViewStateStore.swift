@@ -118,6 +118,7 @@ final class MessageAddressActionViewStateStore: StateStore {
 
                 switch await blockAddress(session, emailToBlock) {
                 case .ok:
+                    dismiss()
                     messageBannersNotifier.refresh()
                     toastStateStore.present(toast: .information(message: L10n.BlockAddress.Toast.success.string))
                 case .error:
