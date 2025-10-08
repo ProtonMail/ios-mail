@@ -205,7 +205,7 @@ struct ConversationDetailScreen: View {
     private var hiddenMessagesBannerBinding: Binding<Bool> {
         .init(
             get: { model.state.isHiddenMessagesBannerOn },
-            set: { newValue in model.toggle(value: newValue) }
+            set: { newValue in model.toggleHiddenMessagesBanner(value: newValue) }
         )
     }
 

@@ -79,9 +79,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
     private lazy var conversationMessageListCallback = LiveQueryCallbackWrapper { [weak self] in
         guard let self else { return }
         Task { @MainActor in
-            let liveQueryValues = await self.readConversationLiveQueryValues()
-            self.isStarred = liveQueryValues.isStarred
-            self.updateStateToMessagesReady(with: liveQueryValues)
+            await self.refreshConversation()
             await self.reloadBottomBarActions()
         }
     }
@@ -155,7 +153,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         }
     }
 
-    func toggle(value: Bool) {
+    func toggleHiddenMessagesBanner(value: Bool) {
         guard let messageListState = state.messageListState, let hiddenMessagesBannerState = messageListState.hiddenMessagesBannerState else {
             return
         }
@@ -166,6 +164,15 @@ final class ConversationDetailModel: Sendable, ObservableObject {
                 hiddenMessagesBannerState: hiddenMessagesBannerState.copy(\.isOn, to: value)
             )
         )
+        Task {
+            await refreshConversation()
+        }
+    }
+
+    private func refreshConversation() async {
+        let liveQueryValues = await readConversationLiveQueryValues()
+        isStarred = liveQueryValues.isStarred
+        updateStateToMessagesReady(with: liveQueryValues)
     }
 
     private func setUpSingleMessageObservation(messageID: ID) async throws {

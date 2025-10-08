@@ -21,7 +21,7 @@ import SwiftUI
 
 extension Banner {
     static func nonTrashed(isOn: Binding<Bool>) -> Banner {
-        hiddenMessagesBanner(title: "Show non-trashed messages in this conversation", isOn: isOn)
+        hiddenMessagesBanner(title: "Show non-trashed messages in this conversation.", isOn: isOn)
     }
 
     static func trashed(isOn: Binding<Bool>) -> Banner {
