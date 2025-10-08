@@ -87,7 +87,8 @@ private extension Conversation {
             size: 1_024,
             subject: .notUsed,
             time: 1622548800,
-            avatar: .init(text: .notUsed, color: .notUsed)
+            avatar: .init(text: .notUsed, color: .notUsed),
+            hiddenMessagesBanner: nil
         )
     }
 }
