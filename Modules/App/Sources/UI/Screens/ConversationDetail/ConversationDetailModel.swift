@@ -896,8 +896,8 @@ extension ConversationDetailModel {
         case messagesReady(state: messageListState)
 
         var debugDescription: String {
-            if case .messagesReady(let messageListState) = self {  // FIXME: - Check if we use it
-                return "messagesReady: \(messageListState.messages.count) messages"
+            if case .messagesReady(let messageListState) = self {
+                return "messagesReady: \(messageListState.messages.count) messages, banner: \(messageListState.hiddenMessagesBannerState)"
             }
             return "\(self)"
         }

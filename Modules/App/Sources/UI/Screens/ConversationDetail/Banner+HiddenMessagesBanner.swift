@@ -20,12 +20,12 @@ import InboxDesignSystem
 import SwiftUI
 
 extension Banner {
-    static func nonTrashed(isOn: Binding<Bool>) -> Banner {
-        hiddenMessagesBanner(title: "Show non-trashed messages in this conversation.", isOn: isOn)
+    static func trashed(isOn: Binding<Bool>) -> Banner {
+        hiddenMessagesBanner(title: L10n.Conversation.trashedMessagesBannerTitle.string, isOn: isOn)
     }
 
-    static func trashed(isOn: Binding<Bool>) -> Banner {
-        hiddenMessagesBanner(title: "Show trashed messages in this conversation.", isOn: isOn)
+    static func nonTrashed(isOn: Binding<Bool>) -> Banner {
+        hiddenMessagesBanner(title: L10n.Conversation.nonTrashedMessagesBannerTitle.string, isOn: isOn)
     }
 
     private static func hiddenMessagesBanner(title: String, isOn: Binding<Bool>) -> Banner {

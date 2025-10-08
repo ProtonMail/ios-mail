@@ -39272,6 +39272,12 @@
         }
       }
     },
+    "Show non-trashed messages in this conversation." : {
+      "comment" : "Title of the banner displayed in a conversation for showing or hiding non-trashed messages."
+    },
+    "Show trashed messages in this conversation." : {
+      "comment" : "Title of the banner displayed in a conversation for showing or hiding trashed messages."
+    },
     "Sign in on another device" : {
       "localizations" : {
         "be" : {

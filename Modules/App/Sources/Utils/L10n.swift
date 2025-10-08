@@ -1275,8 +1275,18 @@ enum L10n {
         )
     }
 
-    static func messages(count: Int) -> LocalizedStringResource {
-        .init("\(count) messages", comment: "Number of messages in a conversation.")
+    enum Conversation {
+        static let trashedMessagesBannerTitle = LocalizedStringResource(
+            "Show trashed messages in this conversation.",
+            comment: "Title of the banner displayed in a conversation for showing or hiding trashed messages."
+        )
+        static let nonTrashedMessagesBannerTitle = LocalizedStringResource(
+            "Show non-trashed messages in this conversation.",
+            comment: "Title of the banner displayed in a conversation for showing or hiding non-trashed messages."
+        )
+        static func messages(count: Int) -> LocalizedStringResource {
+            .init("\(count) messages", comment: "Number of messages in a conversation.")
+        }
     }
     static let official = LocalizedStringResource("Official", comment: "Proton official badge title.")
 }

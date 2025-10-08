@@ -226,7 +226,7 @@ struct ConversationDetailScreen: View {
     }
 
     private var attributedNumberOfMessages: AttributedString {
-        var text = AttributedString(localized: L10n.messages(count: model.state.messagesCount))
+        var text = AttributedString(localized: L10n.Conversation.messages(count: model.state.messagesCount))
         text.font = .caption
         text.foregroundColor = DS.Color.Text.hint
         return text
