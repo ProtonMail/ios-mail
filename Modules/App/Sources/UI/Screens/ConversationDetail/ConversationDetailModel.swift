@@ -153,7 +153,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         }
     }
 
-    func toggleHiddenMessagesBanner(value: Bool) {
+    func setConversationHiddenMessagesBannerVisible(value: Bool) {
         guard let messageListState = state.messageListState, let hiddenMessagesBannerState = messageListState.hiddenMessagesBannerState else {
             return
         }
