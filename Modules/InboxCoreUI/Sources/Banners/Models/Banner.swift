@@ -137,7 +137,6 @@ public struct Banner: Hashable {
         }
     }
 
-    let id: UUID = UUID()
     public let icon: ImageResource
     public let title: String
     public let subtitle: String?
