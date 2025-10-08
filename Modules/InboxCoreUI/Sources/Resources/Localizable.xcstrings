@@ -1317,7 +1317,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nesprávny PIN. Prosím, skúste to znova."
+            "value" : "Nesprávny PIN. Skúste to znova, prosím."
           }
         },
         "sl" : {

@@ -1623,7 +1623,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Fitxer adjunt no trobat. Actualitzeu la pàgina o torneu-lo a pujar."
+            "value" : "No s'ha trobat l'adjunt. Refresqueu la pàgina o la torneu-lo a penjar."
           }
         },
         "cs" : {

@@ -5094,7 +5094,117 @@
       }
     },
     "An extra signature that appears in addition to your email signature when sending from this device." : {
-      "comment" : "Footnote describing how mobile signature works."
+      "comment" : "Footnote describing how mobile signature works.",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Дадатковы подпіс, які з'яўляецца ў дадатак да вашага подпісу электроннай пошты пры адпраўцы з гэтай прылады."
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Una signatura addicional que apareixerà a més de la vostra signatura de correu electrònic en enviar des d'aquest dispositiu."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dodatečný podpis, který se při odesílání z tohoto zařízení zobrazí navíc k vašemu e-mailovému podpisu."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Eine zusätzliche Signatur, die zusätzlich zu deiner E-Mail-Signatur angezeigt wird, wenn von diesem Gerät aus gesendet wird."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Μια επιπλέον υπογραφή που εμφανίζεται εκτός από την υπογραφή του email σας όταν στέλνετε μηνύματα από αυτή τη συσκευή."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "An extra signature that appears in addition to your email signature when sending from this device."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Una firma adicional que aparece además de tu firma de correo electrónico al enviar desde este dispositivo."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Una firma adicional que aparece además de su firma de correo electrónico al ser enviada desde este dispositivo."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Une signature supplémentaire qui apparaît en plus de votre signature de message lors de l'envoi depuis cet appareil."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Una firma aggiuntiva che compare oltre alla tua firma email quando invii messaggi da questo dispositivo."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "このデバイスから送信する際に、お客様のメール署名に追加して表示される署名。"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "En ekstra signatur som vises i tillegg til e-postsignaturen din når du sender fra denne enheten."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Een extra handtekening die verschijnt naast uw e-mailhandtekening bij het verzenden vanaf dit apparaat."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uma assinatura extra que aparece além da sua assinatura de e-mail ao enviar deste dispositivo."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O semnătură suplimentară care apare pe lângă semnătura de e-mail atunci când trimiteți de pe acest dispozitiv."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dodatočný podpis, ktorý sa zobrazuje okrem vášho emailového podpisu pri odosielaní z tohto zariadenia."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "En extra signatur som visas utöver din e-postsignatur som skickas från denna enhet."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bu aygıttan gönderirken e-posta imzanıza ek olarak görüntülenecek bir ek imza."
+          }
+        }
+      }
     },
     "Any information you’ve entered will be lost." : {
       "comment" : "Report problem dismiss confirmation alert message.",
@@ -5338,6 +5448,12 @@
             "value" : "Personalizaciones de la aplicación"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sovelluksen mukauttaminen"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5348,6 +5464,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Personalizzazione dell'applicazione"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "アプリのカスタマイズ"
           }
         },
         "ko" : {
@@ -5455,6 +5577,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ícono de la aplicación"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sovelluksen kuvake"
           }
         },
         "fr" : {
@@ -8467,6 +8595,12 @@
             "value" : "Calculadora"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Laskin"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9102,7 +9236,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "No es pot cancel·lar l'enviament programat. El missatge no s'havia programat."
+            "value" : "No es pot cancel·lar l'enviament planificat. El missatge no estava planificat."
           }
         },
         "cs" : {
@@ -9281,7 +9415,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "No es pot desfer l'enviament. El missatge ja s'havia descartat o enviat."
+            "value" : "No es pot desfer l'enviament. El missatge s'ha descartat o ja s'ha enviat."
           }
         },
         "cs" : {
@@ -10523,7 +10657,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vybraté akcie"
+            "value" : "Vybrané akcie"
           }
         },
         "sl" : {
@@ -13651,7 +13785,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nepodarilo sa vytlačiť požadovaný e-mail"
+            "value" : "Nepodarilo sa vytlačiť požadovaný email"
           }
         },
         "sl" : {
@@ -19365,7 +19499,117 @@
       }
     },
     "Email signature" : {
-      "comment" : "Action item to manage the signature associated with an email address."
+      "comment" : "Action item to manage the signature associated with an email address.",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Подпіс электроннай пошты"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Signatura de correu electrònic"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-mailový podpis"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-Mail-Signatur"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Υπογραφή email"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Email signature"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Firma de correo electrónico"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Firma de correo electrónico"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Signature de message"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Firma email"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "メール署名"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-postsignatur"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-mailhandtekening"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Assinatura de e-mail"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Semnătură e-mail"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Podpis v emailoch"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-postsignatur"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-posta imzası"
+          }
+        }
+      }
     },
     "Emails from %@ will no longer be delivered and will be permanently deleted. You can manage blocked email addresses in the settings." : {
       "comment" : "Message shown in the alert explaining the consequences of blocking the specified email address.",
@@ -19517,7 +19761,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "E-maily od %@ už nebudú doručované a budú trvalo vymazané. Zablokované emailové adresy môžete spravovať v nastaveniach."
+            "value" : "Emaily od %@ už nebudú doručované a budú trvalo vymazané. Zablokované emailové adresy môžete spravovať v nastaveniach."
           }
         },
         "sl" : {
@@ -20174,6 +20418,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Approfitta di messaggi crittografati, meno spam, protezione dal phishing e nessun tracker. Benvenuto nel mondo della privacy."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "メッセージの暗号化、スパムメールの削減、フィッシング詐欺からの保護、トラッカーのブロックなど、プライバシーを守ります。"
           }
         },
         "ko" : {
@@ -22954,7 +23204,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nesprávny PIN. Prosím, skúste to znova."
+            "value" : "Nesprávny PIN. Skúste to znova, prosím."
           }
         },
         "sl" : {
@@ -23634,7 +23884,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Problém s aktualizáciou vášho účtu. Prosím, prihláste sa znova."
+            "value" : "Problém pri aktualizácii vášho účtu. Prihláste sa znova, prosím."
           }
         },
         "sl" : {
@@ -28015,7 +28265,7 @@
                   "one" : {
                     "stringUnit" : {
                       "state" : "translated",
-                      "value" : "Správa bola presunutá do archívu."
+                      "value" : "Správa bola presunutá do Archívu."
                     }
                   },
                   "other" : {
@@ -28896,6 +29146,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Más opciones"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lisää vaihtoehtoja"
           }
         },
         "fr" : {
@@ -32034,7 +32290,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Апавяшчэнні дапамагаюць сачыць за вашай паштовай скрыняй, нават калі вы знаходзіцеся ў іншай праграме."
+            "value" : "Апавяшчэнні дапамагаюць быць у курсе, што адбываецца ў вашай паштовай скрыні, нават калі вы знаходзіцеся ў іншай праграме."
           }
         },
         "ca" : {
@@ -32554,7 +32810,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "V: "
+            "value" : "Dňa: "
           }
         },
         "sl" : {
@@ -34327,6 +34583,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Principal"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ensisijainen"
           }
         },
         "fr" : {
@@ -40210,7 +40472,117 @@
       }
     },
     "Signatures" : {
-      "comment" : "Title of an item in Settings."
+      "comment" : "Title of an item in Settings.",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Подпісы"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Signatures"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Podpisy"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Signaturen"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Υπογραφές"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Signatures"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Firmas"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Firmas"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Signatures"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Firma"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "署名"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Signaturer"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Handtekeningen"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Assinaturas"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Semnături"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Podpisy"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Signaturer"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "İmzalar"
+          }
+        }
+      }
     },
     "Snooze" : {
       "comment" : "Action title for marking message as snoozed in the action sheet.",
@@ -40415,7 +40787,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "L'ajornament no es pot aplicar als missatges en aquesta ubicació."
+            "value" : "No es pot aplicar l'ajornament als missatges d'aquesta ubicació."
           }
         },
         "cs" : {
@@ -47326,7 +47698,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pre: ..."
+            "value" : "Komu: ..."
           }
         },
         "sl" : {
@@ -47887,7 +48259,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Príliš veľa pokusov v krátkom čase. Počkajte, prosím, a potom to skúste znova."
+            "value" : "Príliš veľa pokusov v krátkom čase. Pred ďalším pokusom počkajte, prosím."
           }
         },
         "sl" : {
@@ -48066,7 +48438,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Príliš veľa nesprávnych pokusov. Počkajte, prosím, a potom to skúste znova."
+            "value" : "Príliš veľa nesprávnych pokusov. Pred ďalším pokusom počkajte, prosím."
           }
         },
         "sl" : {
@@ -50155,7 +50527,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pre prístup navýšte účet"
+            "value" : "Pre prístup navýšte úroveň účtu"
           }
         },
         "sl" : {
@@ -51930,6 +52302,12 @@
             "value" : "Tiempo"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sää"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -53437,7 +53815,117 @@
       }
     },
     "Your email signature, that is automatically added to all emails you send." : {
-      "comment" : "Footnote describing how email signature works."
+      "comment" : "Footnote describing how email signature works.",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ваш подпіс электроннай пошты, які аўтаматычна дадаецца да ўсіх лістоў, якія вы адпраўляеце."
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La vostra signatura de correu electrònic, que s'afegeix automàticament a tots els correus que envieu."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Váš e-mailový podpis, který je automaticky přidán ke všem e-mailům, které odesíláte."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deine E-Mail-Signatur, die automatisch zu allen von dir gesendeten E-Mails hinzugefügt wird."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Η υπογραφή του email σας, η οποία προστίθεται αυτόματα σε όλα τα email που στέλνετε."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your email signature, that is automatically added to all emails you send."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tu firma de correo electrónico, se añadirá automáticamente a todos los correos que envíes."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Su firma de correo, que se agregará automaticamente a todos los correos electrónicos que envíe."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Votre signature de message, qui est automatiquement ajoutée à tous les messages que vous envoyez."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La tua firma email, che viene automaticamente aggiunta a tutte le email che invii."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "お客様が送信するすべてのメールに自動的に追加される、メールの署名です。"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-postsignaturen din, som automatisk legges til i alle e-poster du sender."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uw e-mailhandtekening, die automatisch wordt toegevoegd aan alle e-mails die u verzendt."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sua assinatura de e-mail, adicionada automaticamente a todos os e-mails que você envia."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Semnătura personală de e-mail, care este adăugată automat tuturor mesajelor pe care le trimiteți."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Váš podpis v emailoch, ktorý sa automaticky pridáva do všetkých odosielaných emailov."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Din e-postsignatur som automatiskt läggs till i all e-post du skickar."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gönderdiğiniz tüm e-postalara otomatik olarak eklenecek e-posta imzanız."
+          }
+        }
+      }
     }
   },
   "version" : "1.0"

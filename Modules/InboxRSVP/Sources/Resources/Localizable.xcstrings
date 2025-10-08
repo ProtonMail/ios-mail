@@ -2078,7 +2078,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aquest esdeveniment s'ha cancelat. La invitatció ha caducat."
+            "value" : "S'ha cancel·lat l'esdeveniment. Aquesta invitació està caducada."
           }
         },
         "cs" : {
@@ -3767,7 +3767,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aquest esdeveniment no és al vostre calendari, per tant, no hi podeu respondre."
+            "value" : "Aquest esdeveniment no és al calendari, per tant, no hi podeu respondre."
           }
         },
         "cs" : {
@@ -3911,7 +3911,7 @@
         "sl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tega dogodka ni v vašem koledarju, zato se nanj ne morete odzvati."
+            "value" : "Ta dogodek ni v vašem koledarju, zato nanj ne morete odgovoriti."
           }
         },
         "sv" : {
@@ -5197,6 +5197,12 @@
             "value" : "Na pozvánky na udalosti nemôžete reagovať, ak momentálne nie ste na zozname účastníkov."
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ne morete se odzvati na povabila na dogodek, če trenutno niste na seznamu udeležencev."
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5229,7 +5235,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "No teniu connexió. La informació que es mostra pot no estar actualitzada."
+            "value" : "Esteu fora de línia. La informació mostrada pot estar desfasada."
           }
         },
         "cs" : {
