@@ -57,7 +57,7 @@ class BannersViewSnapshotTests: BaseTestCase {
                 icon: DS.Icon.icTrash,
                 title: "Show trashed messages in this conversation.",
                 subtitle: nil,
-                size: .small(.toggle(.init(title: "Action", isOn: true, action: { _ in }))),
+                size: .small(.toggle(.init(title: "Action", isOn: .readonly(get: { true })))),
                 style: .regular
             ),
             .init(

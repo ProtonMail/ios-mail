@@ -239,7 +239,7 @@ struct MessageDetailsView: View {
         Button(action: action) {
             image
                 .square(size: 20)
-                .foregroundStyle(actionButtonsState.isDisabled ? DS.Color.Text.disabled : DS.Color.Text.weak)
+                .foregroundStyle(actionButtonsState.isDisabled ? DS.Color.Icon.disabled : DS.Color.Icon.weak)
         }
         .square(size: 36)
         .disabled(actionButtonsState.isDisabled)

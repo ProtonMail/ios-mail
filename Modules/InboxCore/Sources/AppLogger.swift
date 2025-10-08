@@ -145,6 +145,7 @@ extension AppLogger {
         case snooze
         case thirtySecondsBackgroundTask
         case userSessions
+        case userSettings
         case webView
         case sentryConfiguration
 

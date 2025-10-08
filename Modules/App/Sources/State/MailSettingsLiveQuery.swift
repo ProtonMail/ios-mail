@@ -38,7 +38,7 @@ final class MailSettingsLiveQuery: MailSettingLiveQuerying {
 
     private let userSession: MailUserSession
     private var watchHandle: WatchHandle?
-    private let settingsSubject: CurrentValueSubject<MailSettings, Never> = .init(.defaults())
+    private let settingsSubject: CurrentValueSubject<MailSettings, Never>
 
     private lazy var updateCallback = LiveQueryCallbackWrapper { [weak self] in
         self?.onSettingsUpdate()
@@ -46,6 +46,14 @@ final class MailSettingsLiveQuery: MailSettingLiveQuerying {
 
     init(userSession: MailUserSession) {
         self.userSession = userSession
+        let settingsValue: MailSettings
+        do {
+            settingsValue = try mailSettingsSync(ctx: userSession).get()
+        } catch {
+            AppLogger.log(message: "User settings fail: \(error)", category: .userSettings, isError: true)
+            settingsValue = .defaults()
+        }
+        self.settingsSubject = .init(settingsValue)
         setUpLiveQuery()
     }
 
@@ -66,7 +74,6 @@ final class MailSettingsLiveQuery: MailSettingLiveQuerying {
             .map(keyPath)
             .removeDuplicates()
             .dropFirst(dropFirst ? 1 : 0)
-            .debounce(for: .milliseconds(100), scheduler: DispatchQueue.main)
             .eraseToAnyPublisher()
     }
 
@@ -93,7 +100,7 @@ final class MailSettingsLiveQuery: MailSettingLiveQuerying {
 
 extension MailSettings {
 
-    /// These defaults are wrong and only a wrokaround until Rust provides default values
+    /// These default values are only a backup value in case the function to read the user settings throws an error
     static func defaults() -> MailSettings {
         .init(
             almostAllMail: .allMail,
