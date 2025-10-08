@@ -92,7 +92,7 @@ public struct Banner: Hashable {
         }
     }
 
-    public enum InteractionElement: Hashable {
+    public enum InteractionItem: Hashable {
         case button(Button)
         case toggle(Toggle)
     }
@@ -103,7 +103,7 @@ public struct Banner: Hashable {
     }
 
     public enum Size: Hashable {
-        case small(InteractionElement?)
+        case small(InteractionItem?)
         case large(LargeType)
     }
 

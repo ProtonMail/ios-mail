@@ -888,7 +888,7 @@ extension ConversationDetailModel {
         let bannerVariant: HiddenMessagesBanner
     }
 
-    struct messageListState: Equatable {
+    struct MessageListState: Equatable {
         let messages: [MessageCellUIModel]
         let hiddenMessagesBannerState: HiddenMessagesBannerState?
     }
@@ -897,7 +897,7 @@ extension ConversationDetailModel {
         case initial
         case fetchingMessages
         case noConnection
-        case messagesReady(state: messageListState)
+        case messagesReady(state: MessageListState)
 
         var debugDescription: String {
             if case .messagesReady(let messageListState) = self {
@@ -914,7 +914,7 @@ extension ConversationDetailModel {
             }
         }
 
-        var messageListState: messageListState? {
+        var messageListState: MessageListState? {
             if case .messagesReady(let messageListState) = self {
                 return messageListState
             } else {
