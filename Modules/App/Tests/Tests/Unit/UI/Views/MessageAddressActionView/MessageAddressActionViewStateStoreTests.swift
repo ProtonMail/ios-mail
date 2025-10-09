@@ -30,6 +30,7 @@ final class MessageAddressActionViewStateStoreTests {
     private let pasteboard = UIPasteboard.testInstance
     private let toastStateStore = ToastStateStore(initialState: .initial)
     private let blockSpy = BlockAddressSpy()
+    private let messageAddressSpy = RustMessageAddressWrapperSpy()
     private let draftPresenterSpy = RecipientDraftPresenterSpy()
     private let urlOpener = EnvironmentURLOpenerSpy()
     private let dismissSpy = DismissSpy()
@@ -39,7 +40,7 @@ final class MessageAddressActionViewStateStoreTests {
 
     private let avatar = AvatarUIModel(
         info: .init(initials: "Aa", color: .purple),
-        type: .sender(params: .init())
+        type: .sender(SenderInfo(params: .init(), blocked: .notLoaded))
     )
     private let displayName = "Camila"
     private let email = "camila.hall@gmail.com"
@@ -59,6 +60,33 @@ final class MessageAddressActionViewStateStoreTests {
                     phoneNumber: .none,
                     emailToBlock: .none
                 ))
+    }
+
+    // MARK: - `onLoad` action
+
+    @Test
+    func testOnLoad_WhenIsSenderBlockedReturnsTrue_ItUpdatesAvatarWithBlockedState() async {
+        messageAddressSpy.stubbedIsSenderBlocked = true
+
+        let sut = makeSUT()
+
+        await sut.handle(action: .onLoad)
+
+        #expect(messageAddressSpy.isSenderBlockedCalls.count == 1)
+        #expect(messageAddressSpy.isSenderBlockedCalls.last?.messageID == .init(value: 1_000))
+        #expect(sut.state.avatar.type == .sender(.init(params: .init(), blocked: .yes)))
+    }
+
+    @Test
+    func testOnLoad_WhenIsSenderBlockedReturnsFalse_ItUpdatesAvatarWithNotBlockedState() async {
+        messageAddressSpy.stubbedIsSenderBlocked = false
+
+        let sut = makeSUT()
+
+        await sut.handle(action: .onLoad)
+
+        #expect(messageAddressSpy.isSenderBlockedCalls.count == 1)
+        #expect(sut.state.avatar.type == .sender(.init(params: .init(), blocked: .no)))
     }
 
     // MARK: - `Block contact` action
@@ -222,17 +250,24 @@ final class MessageAddressActionViewStateStoreTests {
             .store(in: &cancellables)
 
         return .init(
+            messageID: .init(value: 1_000),
             avatar: avatar,
             name: displayName,
             email: email,
             phoneNumber: phoneNumber,
+            mailbox: .dummy,
             session: .dummy,
             toastStateStore: toastStateStore,
             pasteboard: pasteboard,
             openURL: urlOpener,
-            blockAddress: { [unowned self] session, address in
-                await self.blockSpy.result(for: address)
-            },
+            wrapper: .init(
+                block: { [unowned self] session, address in
+                    await self.blockSpy.result(for: address)
+                },
+                isSenderBlocked: { [unowned self] mailbox, messageID in
+                    await self.messageAddressSpy.isSenderBlocked(mailbox: mailbox, messageID: messageID)
+                }
+            ),
             draftPresenter: draftPresenterSpy,
             dismiss: dismissSpy,
             messageBannersNotifier: messageBannersNotifier
@@ -247,5 +282,15 @@ private final class BlockAddressSpy: @unchecked Sendable {
     func result(for email: String) async -> VoidActionResult {
         calls.append(email)
         return stubbed[email] ?? .ok
+    }
+}
+
+private final class RustMessageAddressWrapperSpy: @unchecked Sendable {
+    var stubbedIsSenderBlocked: Bool = false
+    private(set) var isSenderBlockedCalls: [(mailbox: Mailbox, messageID: Id)] = []
+
+    func isSenderBlocked(mailbox: Mailbox, messageID: Id) async -> Bool {
+        isSenderBlockedCalls.append((mailbox, messageID))
+        return stubbedIsSenderBlocked
     }
 }

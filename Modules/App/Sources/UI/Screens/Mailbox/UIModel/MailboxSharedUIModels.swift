@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import InboxCore
 import SwiftUI
 
 struct AvatarInfo: Hashable {
@@ -22,9 +23,9 @@ struct AvatarInfo: Hashable {
     let color: Color
 }
 
-struct AvatarUIModel: Hashable {
+struct AvatarUIModel: Hashable, Copying {
     let info: AvatarInfo
-    let type: AvatarViewType
+    var type: AvatarViewType
 
     init(info: AvatarInfo, type: AvatarViewType) {
         self.info = info

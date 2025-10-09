@@ -54,9 +54,18 @@ private extension MailboxItemCellUIModel {
     }
 
     enum Avatar {
-        static let j = AvatarUIModel(info: AvatarInfo(initials: "J", color: .indigo), type: .sender(params: .init()))
-        static let l = AvatarUIModel(info: AvatarInfo(initials: "L", color: .mint), type: .sender(params: .init()))
-        static let s = AvatarUIModel(info: AvatarInfo(initials: "S", color: .cyan), type: .sender(params: .init()))
+        static let j = AvatarUIModel(
+            info: AvatarInfo(initials: "J", color: .indigo),
+            type: .sender(.init(params: .init(), blocked: .no))
+        )
+        static let l = AvatarUIModel(
+            info: AvatarInfo(initials: "L", color: .mint),
+            type: .sender(.init(params: .init(), blocked: .no))
+        )
+        static let s = AvatarUIModel(
+            info: AvatarInfo(initials: "S", color: .cyan),
+            type: .sender(.init(params: .init(), blocked: .no))
+        )
 
         static func randomAvatar() -> AvatarUIModel {
             return [j, l, s].randomElement()!
@@ -77,7 +86,10 @@ private extension MailboxItemCellUIModel {
     static func makeModel(subject: String, isFromProton: Bool = false) -> MailboxItemCellUIModel {
         let avatar =
             isFromProton
-            ? .init(info: .init(initials: "P", color: .purple), type: .sender(params: .init()))
+            ? .init(
+                info: .init(initials: "P", color: .purple),
+                type: .sender(.init(params: .init(), blocked: .notLoaded))
+            )
             : Avatar.randomAvatar()
 
         return MailboxItemCellUIModel(

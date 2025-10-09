@@ -348,7 +348,10 @@ enum MailboxItemCellEvent {
                 id: .random(),
                 conversationID: .random(),
                 type: .message,
-                avatar: .init(info: .init(initials: "FE", color: .yellow), type: .sender(params: .init())),
+                avatar: .init(
+                    info: .init(initials: "FE", color: .yellow),
+                    type: .sender(.init(params: .init(), blocked: .no))
+                ),
                 emails: "FedEx",
                 subject: "Your package",
                 date: Calendar.current.date(byAdding: .day, value: -1, to: Date())!,
@@ -384,7 +387,10 @@ enum MailboxItemCellEvent {
                 id: .random(),
                 conversationID: .random(),
                 type: .message,
-                avatar: .init(info: .init(initials: "MA", color: .cyan), type: .sender(params: .init())),
+                avatar: .init(
+                    info: .init(initials: "MA", color: .cyan),
+                    type: .sender(.init(params: .init(), blocked: .no))
+                ),
                 emails: "Mary, Elijah Wood, wiseman@pm.me",
                 subject: "Summer holidays pictures and more!",
                 date: Calendar.current.date(byAdding: .year, value: -1, to: Date())!,

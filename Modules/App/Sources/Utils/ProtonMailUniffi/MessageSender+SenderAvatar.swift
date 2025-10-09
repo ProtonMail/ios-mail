@@ -21,11 +21,15 @@ extension MessageSender {
 
     var senderAvatar: AvatarUIModel {
         let type: AvatarViewType = .sender(
-            params: .init(
-                address: address,
-                bimiSelector: bimiSelector,
-                displaySenderImage: displaySenderImage
-            ))
+            .init(
+                params: .init(
+                    address: address,
+                    bimiSelector: bimiSelector,
+                    displaySenderImage: displaySenderImage
+                ),
+                blocked: .yes
+            )
+        )
 
         return .init(info: avatarInfo, type: type)
     }

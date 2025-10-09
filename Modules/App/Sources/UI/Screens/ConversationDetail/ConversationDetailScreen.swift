@@ -179,7 +179,10 @@ struct ConversationDetailScreen: View {
                     id: .random(),
                     conversationID: .random(),
                     type: .conversation,
-                    avatar: .init(info: .init(initials: "Pf", color: .blue), type: .sender(params: .init())),
+                    avatar: .init(
+                        info: .init(initials: "Pf", color: .blue),
+                        type: .sender(.init(params: .init(), blocked: .no))
+                    ),
                     emails: "",
                     subject: "Embarking on an Epic Adventure: Planning Our Team Expedition to Patagonia",
                     date: .now,

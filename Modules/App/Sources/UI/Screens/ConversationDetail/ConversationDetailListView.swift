@@ -69,9 +69,11 @@ struct ConversationDetailListView: View {
 
     private func senderActionSheet(target: ExpandedMessageCellUIModel) -> some View {
         MessageAddressActionView(
+            messageID: target.id,
             avatarUIModel: target.messageDetails.avatar,
             name: target.messageDetails.sender.name,
             emailAddress: target.messageDetails.sender.address,
+            mailbox: model.mailbox.unsafelyUnwrapped,
             mailUserSession: mailUserSession,
             draftPresenter: draftPresenter
         )
@@ -81,9 +83,11 @@ struct ConversationDetailListView: View {
 
     private func recipientActionSheet(target: MessageDetail.Recipient) -> some View {
         MessageAddressActionView(
+            messageID: .init(value: 1),  // FIXME: Consider passing optional
             avatarUIModel: AvatarUIModel(info: target.avatarInfo, type: .other),
             name: target.name,
             emailAddress: target.address,
+            mailbox: model.mailbox.unsafelyUnwrapped,
             mailUserSession: mailUserSession,
             draftPresenter: draftPresenter
         )

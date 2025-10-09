@@ -524,7 +524,7 @@ enum MessageDetailsPreviewProvider {
             id: ID.random(),
             avatar: .init(
                 info: .init(initials: "", color: DS.Color.Background.secondary),
-                type: .sender(params: .init())
+                type: .sender(.init(params: .init(), blocked: .yes))
             ),
             sender: sender,
             isSenderProtonOfficial: true,

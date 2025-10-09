@@ -57,21 +57,30 @@ struct AvatarCheckboxView: View {
     return VStack {
         AvatarCheckboxView(
             isSelected: true,
-            avatar: .init(info: .init(initials: "Mb", color: .cyan), type: .sender(params: .init()))
+            avatar: .init(
+                info: .init(initials: "Mb", color: .cyan),
+                type: .sender(.init(params: .init(), blocked: .no))
+            )
         ) { _ in }
         .square(size: 40)
         .clipped()
 
         AvatarCheckboxView(
             isSelected: false,
-            avatar: .init(info: .init(initials: "Mb", color: .cyan), type: .sender(params: .init()))
+            avatar: .init(
+                info: .init(initials: "Mb", color: .cyan),
+                type: .sender(.init(params: .init(), blocked: .no))
+            )
         ) { _ in }
         .square(size: 40)
         .clipped()
 
         AvatarCheckboxView(
             isSelected: false,
-            avatar: .init(info: .init(initials: "Mb", color: .cyan), type: .sender(params: .init()))
+            avatar: .init(
+                info: .init(initials: "Mb", color: .cyan),
+                type: .sender(.init(params: .init(), blocked: .no))
+            )
         ) { _ in }
         .square(size: 40)
         .clipped()
