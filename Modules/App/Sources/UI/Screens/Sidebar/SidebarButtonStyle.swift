@@ -18,7 +18,7 @@
 import InboxDesignSystem
 import SwiftUI
 
-struct SidebarItemButtonStyle: ButtonStyle {
+struct SidebarButtonStyle: ButtonStyle {
     let isSelected: Bool
     let isTappable: Bool
 

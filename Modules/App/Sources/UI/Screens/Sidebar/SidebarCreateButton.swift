@@ -46,7 +46,7 @@ struct SidebarCreateButton: View {
                 Spacer()
             }
         }
-        .buttonStyle(SidebarItemButtonStyle(isSelected: item.isSelected, isTappable: isTappable))
+        .buttonStyle(SidebarButtonStyle(isSelected: item.isSelected, isTappable: isTappable))
         .accessibilityIdentifier(SidebarScreenIdentifiers.otherButton(type: item.type))
     }
 }

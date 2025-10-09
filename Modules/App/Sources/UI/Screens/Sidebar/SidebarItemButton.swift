@@ -44,6 +44,6 @@ struct SidebarItemButton<Content: View>: View {
         }) {
             content()
         }
-        .buttonStyle(SidebarItemButtonStyle(isSelected: item.isSelected, isTappable: isTappable))
+        .buttonStyle(SidebarButtonStyle(isSelected: item.isSelected, isTappable: isTappable))
     }
 }
