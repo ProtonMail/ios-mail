@@ -44,8 +44,6 @@ struct SidebarItemButton<Content: View>: View {
         }) {
             content()
         }
-        .padding(.vertical, DS.Spacing.medium)
-        .padding(.horizontal, DS.Spacing.extraLarge)
-        .background(item.isSelected ? DS.Color.Sidebar.interactionPressed : .clear)
+        .buttonStyle(SidebarItemButtonStyle(isSelected: item.isSelected, isTappable: isTappable))
     }
 }

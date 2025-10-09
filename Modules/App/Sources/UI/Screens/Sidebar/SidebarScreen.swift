@@ -307,7 +307,7 @@ struct SidebarScreen: View {
     }
 
     private func createButton(for item: SidebarOtherItem, isListEmpty: Bool) -> some View {
-        SidebarCreateButton(item: item, isButtonTappable: isButtonTappable, isListEmpty: isListEmpty) {
+        SidebarCreateButton(item: item, isTappable: isButtonTappable, isListEmpty: isListEmpty) {
             select(item: .other(item))
         }
     }
@@ -336,7 +336,7 @@ struct SidebarScreen: View {
             .renderingMode(renderingMode)
             .resizable()
             .square(size: 20)
-            .tint(isSelected ? DS.Color.Sidebar.iconSelected : DS.Color.Sidebar.iconNorm)
+            .foregroundStyle(isSelected ? DS.Color.Sidebar.iconSelected : DS.Color.Sidebar.iconNorm)
             .padding(.trailing, DS.Spacing.extraLarge)
             .accessibilityIdentifier(SidebarScreenIdentifiers.icon)
     }

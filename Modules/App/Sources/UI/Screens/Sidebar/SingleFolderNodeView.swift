@@ -57,7 +57,7 @@ struct SingleFolderNodeView<UnreadText: View>: View {
                         .renderingMode(.template)
                         .resizable()
                         .square(size: 20)
-                        .tint(folder.displayColor)
+                        .foregroundStyle(folder.displayColor)
                         .padding(.trailing, DS.Spacing.extraLarge)
                         .accessibilityIdentifier(SidebarFolderNodeViewIdentifiers.icon)
                     Text(folder.name)
@@ -77,7 +77,7 @@ struct SingleFolderNodeView<UnreadText: View>: View {
                             Image(isExpanded ? DS.Icon.icChevronUpFilled : DS.Icon.icChevronDownFilled)
                                 .resizable()
                                 .square(size: 16)
-                                .tint(DS.Color.Sidebar.iconWeak)
+                                .foregroundStyle(DS.Color.Sidebar.iconWeak)
                                 .background(DS.Color.Global.white.opacity(0.04))
                                 .clipShape(RoundedRectangle(cornerRadius: 4))
                         }

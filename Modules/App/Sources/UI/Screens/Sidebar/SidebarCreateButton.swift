@@ -20,13 +20,13 @@ import SwiftUI
 
 struct SidebarCreateButton: View {
     let item: SidebarOtherItem
-    let isButtonTappable: Bool
+    let isTappable: Bool
     let isListEmpty: Bool
     let action: () -> Void
 
     var body: some View {
         Button(action: {
-            if isButtonTappable {
+            if isTappable {
                 action()
             }
         }) {
@@ -35,7 +35,7 @@ struct SidebarCreateButton: View {
                     .resizable()
                     .renderingMode(.template)
                     .square(size: 20)
-                    .tint(DS.Color.Sidebar.iconWeak)
+                    .foregroundStyle(DS.Color.Sidebar.iconWeak)
                     .padding(.trailing, DS.Spacing.extraLarge)
                     .accessibilityIdentifier(SidebarScreenIdentifiers.icon)
                 Text(item.name)
@@ -46,9 +46,7 @@ struct SidebarCreateButton: View {
                 Spacer()
             }
         }
-        .padding(.vertical, DS.Spacing.medium)
-        .padding(.horizontal, DS.Spacing.extraLarge)
-        .background(item.isSelected ? DS.Color.Sidebar.interactionPressed : .clear)
+        .buttonStyle(SidebarItemButtonStyle(isSelected: item.isSelected, isTappable: isTappable))
         .accessibilityIdentifier(SidebarScreenIdentifiers.otherButton(type: item.type))
     }
 }
