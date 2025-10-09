@@ -69,7 +69,11 @@ struct SingleFolderNodeView<UnreadText: View>: View {
                     Spacer()
 
                     if !folder.childFolders.isEmpty {
-                        Button(action: { toggleChildFoldersVisibility() }) {
+                        Button(action: {
+                            if isTappable {
+                                toggleChildFoldersVisibility()
+                            }
+                        }) {
                             Image(isExpanded ? DS.Icon.icChevronUpFilled : DS.Icon.icChevronDownFilled)
                                 .resizable()
                                 .square(size: 16)

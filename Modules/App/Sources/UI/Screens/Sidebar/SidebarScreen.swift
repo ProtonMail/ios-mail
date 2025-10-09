@@ -307,27 +307,9 @@ struct SidebarScreen: View {
     }
 
     private func createButton(for item: SidebarOtherItem, isListEmpty: Bool) -> some View {
-        Button(action: { select(item: .other(item)) }) {
-            HStack(spacing: .zero) {
-                Image(item.icon)
-                    .resizable()
-                    .renderingMode(.template)
-                    .square(size: 20)
-                    .tint(DS.Color.Sidebar.iconWeak)
-                    .padding(.trailing, DS.Spacing.extraLarge)
-                    .accessibilityIdentifier(SidebarScreenIdentifiers.icon)
-                Text(item.name)
-                    .font(.subheadline)
-                    .foregroundStyle(isListEmpty ? DS.Color.Sidebar.textNorm : DS.Color.Sidebar.textWeak)
-                    .lineLimit(1)
-                    .accessibilityIdentifier(SidebarScreenIdentifiers.textItem)
-                Spacer()
-            }
+        SidebarCreateButton(item: item, isButtonTappable: isButtonTappable, isListEmpty: isListEmpty) {
+            select(item: .other(item))
         }
-        .padding(.vertical, DS.Spacing.medium)
-        .padding(.horizontal, DS.Spacing.extraLarge)
-        .background(item.isSelected ? DS.Color.Sidebar.interactionPressed : .clear)
-        .accessibilityIdentifier(SidebarScreenIdentifiers.otherButton(type: item.type))
     }
 
     private func systemItemContent(model: SystemFolder) -> some View {
@@ -431,7 +413,7 @@ struct SidebarScreen: View {
     }
 }
 
-private struct SidebarScreenIdentifiers {
+struct SidebarScreenIdentifiers {
     static let rootItem = "sidebar.rootItem"
     static let icon = "sidebar.button.icon"
     static let textItem = "sidebar.button.text"
