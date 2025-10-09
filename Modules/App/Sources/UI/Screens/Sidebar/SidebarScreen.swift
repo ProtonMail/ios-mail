@@ -33,7 +33,6 @@ struct SidebarScreen: View {
     @State private var dragStartWidth: CGFloat?
 
     private let widthOfDragableSpaceOnTheMailbox: CGFloat = 25
-    private let openCloseSidebarMinimumDistance: CGFloat = 30
     /// This value is to make sure a twitch of a finger when releasing the sidebar won't cause the sidebar to move in the other direction against user's wishes.
     private let lastSwipeSignificanceThreshold: CGFloat = 25
     private let animationDuration = 0.2
@@ -134,11 +133,7 @@ struct SidebarScreen: View {
                     }
                 }
 
-                if lockedAxis == .horizontal {
-                    guard let startWidth = dragStartWidth else {
-                        return
-                    }
-
+                if lockedAxis == .horizontal, let startWidth = dragStartWidth {
                     let dragTranslation = value.translation.width
                     let newWidth = startWidth + dragTranslation
 
