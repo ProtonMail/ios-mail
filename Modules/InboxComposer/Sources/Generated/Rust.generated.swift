@@ -44,16 +44,6 @@ public extension AttachmentListRemoveWithCidResult {
         }
     }
 }
-public extension AttachmentListRetryResult {
-    func get() throws(DraftAttachmentUploadError) {
-        switch self {
-        case .ok:
-            break
-        case .error(let error):
-            throw error
-        }
-    }
-}
 public extension AttachmentListWatcherResult {
     func get() throws(DraftAttachmentUploadError) -> DraftAttachmentWatcher {
         switch self {

@@ -24,9 +24,9 @@ final class AttachmentErrorAlertStateTests {
     private static let timeStamp1: Int64 = 1743000520
     private static let timeStamp2: Int64 = 1743009702
     private static let timeStamp3: Int64 = 1743032002
-    private let tooManyError1 = DraftAttachment.makeMock(id: 1, state: .error(.reason(.tooManyAttachments)), timestamp: timeStamp1)
-    private let tooManyError2 = DraftAttachment.makeMock(id: 2, state: .error(.reason(.tooManyAttachments)), timestamp: timeStamp2)
-    private let tooLargeError1 = DraftAttachment.makeMock(id: 3, state: .error(.reason(.attachmentTooLarge)), timestamp: timeStamp3)
+    private let tooManyError1 = DraftAttachment.makeMock(id: 1, state: .error(.upload(.reason(.tooManyAttachments))), timestamp: timeStamp1)
+    private let tooManyError2 = DraftAttachment.makeMock(id: 2, state: .error(.upload(.reason(.tooManyAttachments))), timestamp: timeStamp2)
+    private let tooLargeError1 = DraftAttachment.makeMock(id: 3, state: .error(.upload(.reason(.attachmentTooLarge))), timestamp: timeStamp3)
 
     init() {
         sut = .init()

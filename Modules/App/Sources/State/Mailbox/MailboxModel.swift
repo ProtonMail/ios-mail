@@ -286,7 +286,8 @@ extension MailboxModel {
                 messageScroller = try await scrollMessagesForLabel(
                     session: userSession,
                     labelId: mailbox.labelId(),
-                    filter: unreadFilter,
+                    unread: unreadFilter,
+                    include: .default,
                     callback: MessageScrollerLiveQueryCallbackkWrapper { [weak self] update in
                         Task {
                             await self?.handleMessagesUpdate(update)
@@ -297,7 +298,8 @@ extension MailboxModel {
                 conversationScroller = try await scrollConversationsForLabel(
                     session: userSession,
                     labelId: mailbox.labelId(),
-                    filter: unreadFilter,
+                    unread: unreadFilter,
+                    include: .default,
                     callback: ConversationScrollerLiveQueryCallbackkWrapper { [weak self] update in
                         Task {
                             await self?.handleConversationsUpdate(update)
@@ -495,9 +497,9 @@ extension MailboxModel {
         Task {
             AppLogger.log(message: "unread filter has changed to \(unreadFilter)", category: .mailbox)
             if viewMode == .conversations {
-                _ = conversationScroller?.changeFilter(filter: unreadFilter)
+                _ = conversationScroller?.changeFilter(unread: unreadFilter)
             } else {
-                _ = messageScroller?.changeFilter(filter: unreadFilter)
+                _ = messageScroller?.changeFilter(unread: unreadFilter)
             }
         }
     }

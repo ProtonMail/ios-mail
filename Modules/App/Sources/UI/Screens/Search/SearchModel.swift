@@ -103,6 +103,7 @@ final class SearchModel: ObservableObject, @unchecked Sendable {
             let result = await scrollerSearch(
                 session: dependencies.appContext.userSession,
                 options: .init(keywords: query),
+                include: .default,
                 callback: MessageScrollerLiveQueryCallbackkWrapper { [weak self] update in
                     Task {
                         await self?.handleMessagesUpdate(update)

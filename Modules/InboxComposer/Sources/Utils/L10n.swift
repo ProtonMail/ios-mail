@@ -521,6 +521,14 @@ enum L10n {
         )
     }
 
+    enum DraftAttachmentDispositionSwapError {
+        static let somethingWentWrong = LocalizedStringResource(
+            "The attachment disposition could not be updated, please try again",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Attachment disposition change failed because an unexpected error"
+        )
+    }
+
     enum DraftSenderAddressChangeError {
         static let addressEmailNotFound = LocalizedStringResource(
             "Address not found",  // FIXME: Check

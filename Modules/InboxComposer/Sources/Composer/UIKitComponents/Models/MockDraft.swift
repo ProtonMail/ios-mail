@@ -358,6 +358,10 @@ final class MockAttachmentList: AttachmentListProtocol, @unchecked Sendable {
         .ok
     }
 
+    func swapAttachmentDisposition(contentId: String) async -> VoidDraftAttachmentDispositionSwapResult {
+        .ok
+    }
+
     func watcher(callback: any AsyncLiveQueryCallback) async -> AttachmentListWatcherResult {
         .error(.reason(.crypto))
     }

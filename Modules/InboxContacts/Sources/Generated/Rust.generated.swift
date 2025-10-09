@@ -204,6 +204,16 @@ public extension GetMessageBodyResult {
         }
     }
 }
+public extension IsMessageSenderBlockedResult {
+    func get() throws(ActionError) -> Bool? {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension LabelConversationsAsResult {
     func get() throws(ActionError) -> LabelAsOutput {
         switch self {

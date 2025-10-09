@@ -27,7 +27,7 @@ final class DraftAttachmentArrayTests {
             .makeMockDraftAttachment(name: "attach_1", state: .uploaded, disposition: .attachment),
             .makeMockDraftAttachment(name: "attach_2", state: .uploaded, disposition: .inline),
             .makeMockDraftAttachment(name: "attach_3", state: .uploading, disposition: .attachment),
-            .makeMockDraftAttachment(name: "attach_4", state: .error(.reason(.crypto)), disposition: .attachment),
+            .makeMockDraftAttachment(name: "attach_4", state: .error(.upload(.reason(.crypto))), disposition: .attachment),
             .makeMockDraftAttachment(name: "attach_5", state: .offline, disposition: .attachment),
             .makeMockDraftAttachment(name: "attach_6", state: .pending, disposition: .attachment),
             .makeMockDraftAttachment(name: "attach_7", state: .pending, disposition: .inline),

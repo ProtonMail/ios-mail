@@ -84,6 +84,8 @@ public final class SendResultPublisher: Sendable, ObservableObject {
                 case .failure(let draftError):
                     subject.send(.init(messageId: messageId, type: .error(draftError)))
                 }
+            case .attachmentDispositionSwap:
+                break
             }
         }
     }

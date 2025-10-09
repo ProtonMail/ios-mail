@@ -16319,6 +16319,9 @@
         }
       }
     },
+    "The attachment disposition could not be updated, please try again" : {
+      "comment" : "Attachment disposition change failed because an unexpected error"
+    },
     "The draft was not found" : {
       "comment" : "Error in the context of saving a draft before being sent.",
       "localizations" : {

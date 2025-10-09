@@ -185,9 +185,9 @@ extension DraftAttachment {
                     Task {
                         await state.errorState.enqueueAnyUploadError([
                             DraftAttachment.makeMock(state: .uploaded, timestamp: 1),
-                            DraftAttachment.makeMock(state: .error(.reason(.attachmentTooLarge)), timestamp: 2),
-                            DraftAttachment.makeMock(state: .error(.other(.network)), timestamp: 3),
-                            DraftAttachment.makeMock(state: .error(.reason(.attachmentTooLarge)), timestamp: 4),
+                            DraftAttachment.makeMock(state: .error(.upload(.reason(.attachmentTooLarge))), timestamp: 2),
+                            DraftAttachment.makeMock(state: .error(.upload(.other(.network))), timestamp: 3),
+                            DraftAttachment.makeMock(state: .error(.upload(.reason(.attachmentTooLarge))), timestamp: 4),
                         ])
                     }
                 }

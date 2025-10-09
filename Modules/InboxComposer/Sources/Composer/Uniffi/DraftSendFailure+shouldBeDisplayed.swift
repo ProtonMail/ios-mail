@@ -25,7 +25,7 @@ extension DraftSendFailure {
             reason.shouldBeDisplayed
         case .save(let reason):
             reason.shouldBeDisplayed
-        case .attachmentUpload, .other:
+        case .attachmentUpload, .attachmentDispositionSwap, .other:
             true
         }
     }

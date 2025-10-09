@@ -150,7 +150,7 @@ final class ComposerModelTests: BaseTestCase {
     }
 
     func testOnLoad_whenAttachmentInErrorState_itPresentsAlert() async throws {
-        let draftError = DraftAttachmentUploadError.reason(.attachmentTooLarge)
+        let draftError = DraftAttachmentError.upload(.reason(.attachmentTooLarge))
         let mockDraft: MockDraft = .makeWithAttachments([.makeMockDraftAttachment(state: .error(draftError))])
         let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: testContactProvider)
 

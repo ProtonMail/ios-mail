@@ -25,7 +25,12 @@ extension DraftAttachmentState {
 
     var attachmentUploadError: DraftAttachmentUploadError? {
         if case .error(let error) = self {
-            return error
+            switch error {
+            case .upload(let draftAttachmentUploadError):
+                return draftAttachmentUploadError
+            case .dispositionSwap:
+                return nil
+            }
         }
         return nil
     }
