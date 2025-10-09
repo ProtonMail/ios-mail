@@ -30,6 +30,7 @@ struct SearchScreen: View {
     @Environment(\.mainWindowSize) private var mainWindowSize
     @EnvironmentObject private var composerCoordinator: ComposerCoordinator
     @State private(set) var resultsState: SearchScreenState = .initial
+    @State private(set) var isListAtTop: Bool = true
     @StateObject private var model: SearchModel
     @FocusState var isTextFieldFocused: Bool
     private let userSession: MailUserSession
@@ -49,14 +50,27 @@ struct SearchScreen: View {
                 case .initial:
                     EmptyView()
                 case .search:
-                    resultsList
-                        .fullScreenCover(item: $model.state.attachmentPresented) { config in
-                            AttachmentView(config: config)
-                                .edgesIgnoringSafeArea([.top, .bottom])
+                    VStack(spacing: .zero) {
+                        HStack {
+                            SelectableCapsuleButton(
+                                isSelected: false,
+                                action: {},
+                                label: { Text("Include Trash/Spam") }
+                            )
+                            Spacer()
                         }
-                        .navigationDestination(for: MailboxItemCellUIModel.self) { uiModel in
-                            mailboxItemDestination(uiModel: uiModel)
-                        }
+                        .padding(.leading, DS.Spacing.large)
+                        .padding(.vertical, DS.Spacing.mediumLight)
+
+                        resultsList
+                            .fullScreenCover(item: $model.state.attachmentPresented) { config in
+                                AttachmentView(config: config)
+                                    .edgesIgnoringSafeArea([.top, .bottom])
+                            }
+                            .navigationDestination(for: MailboxItemCellUIModel.self) { uiModel in
+                                mailboxItemDestination(uiModel: uiModel)
+                            }
+                    }
                 }
             }
             .toolbar {
@@ -90,6 +104,10 @@ struct SearchScreen: View {
             selectionState: model.selectionMode.selectionState,
             itemTypeForActionBar: .message,
             isOutboxLocation: false,
+            listEventHandler: .init(
+                listAtTop: { value in isListAtTop = value },
+                pullToRefresh: nil
+            ),
             cellEventHandler: .init(onCellEvent: handleResultCellEvent)
         )
     }

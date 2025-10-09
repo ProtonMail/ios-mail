@@ -26,24 +26,40 @@ struct UnreadFilterBarView: View {
     let onSelectAllTapped: () -> Void
 
     var body: some View {
-        HStack {
-            switch state.visibilityMode {
-            case .regular:
-                unreadButton()
-            case .selectionMode:
-                selectAllButton()
-            }
+        ScrollView(.horizontal) {
+            HStack {
+                switch state.visibilityMode {
+                case .regular:
+                    HStack {
+                        unreadButton()
 
-            Spacer()
+                        if case .visible(let isSelected) = state.spamTrashToggleState {
+                            spamTrashToggle(isSelected: isSelected)
+                        }
+                    }
+                    .animation(.easeOut(duration: 0.2), value: state)
+                case .selectionMode:
+                    selectAllButton()
+                }
+            }
         }
+        .scrollClipDisabled()
         .padding(.horizontal, DS.Spacing.large)
         .padding(.vertical, DS.Spacing.standard)
         .background(DS.Color.Background.norm)
         .accessibilityIdentifier(UnreadFilterIdentifiers.rootElement)
     }
 
+    private func spamTrashToggle(isSelected: Bool) -> some View {
+        SelectableCapsuleButton(isSelected: isSelected) {
+            state.spamTrashToggleState = state.spamTrashToggleState.toggled()
+        } label: {
+            Text("Include Trash/Spam")
+        }
+    }
+
     private func unreadButton() -> some View {
-        Button {
+        SelectableCapsuleButton(isSelected: state.isUnreadButtonSelected) {
             state.isUnreadButtonSelected.toggle()
         } label: {
             HStack(spacing: DS.Spacing.small) {
@@ -52,28 +68,8 @@ struct UnreadFilterBarView: View {
                 Text(state.unreadCount.string)
                     .fontWeight(.semibold)
                     .accessibilityIdentifier(UnreadFilterIdentifiers.countValue)
-                if state.isUnreadButtonSelected {
-                    Image(symbol: .xmark)
-                        .foregroundStyle(DS.Color.Brand.plus30)
-                        .transition(.scale.combined(with: .opacity))
-                }
             }
-            .animation(.easeIn(duration: 0.1), value: state.isUnreadButtonSelected)
-            .font(.footnote)
-            .foregroundStyle(state.isUnreadButtonSelected ? DS.Color.Brand.plus30 : DS.Color.Text.norm)
         }
-        .accessibilityAddTraits(state.isUnreadButtonSelected ? .isSelected : [])
-        .padding(.vertical, DS.Spacing.standard)
-        .padding(.horizontal, DS.Spacing.medium * scale)
-        .background(
-            RoundedRectangle(cornerRadius: DS.Radius.massive * scale, style: .continuous)
-                .fill(state.isUnreadButtonSelected ? DS.Color.InteractionBrandWeak.norm : DS.Color.Background.norm)
-        )
-        .overlay {
-            RoundedRectangle(cornerRadius: DS.Radius.massive * scale, style: .continuous)
-                .stroke(state.isUnreadButtonSelected ? .clear : DS.Color.Border.norm)
-        }
-        .animation(.easeOut(duration: 0.2), value: state.isUnreadButtonSelected)
     }
 
     private func selectAllButton() -> some View {
@@ -98,12 +94,12 @@ struct UnreadFilterBarView: View {
     }
 }
 
-enum FilterBarVivibilityMode {
+enum FilterBarVivibilityMode: Equatable {
     case regular
     case selectionMode
 }
 
-enum UnreadCounterState {
+enum UnreadCounterState: Equatable {
     case known(unreadCount: UInt64)
     case unknown
 
@@ -117,7 +113,7 @@ enum UnreadCounterState {
     }
 }
 
-enum SelectAllState {
+enum SelectAllState: Equatable {
     struct ButtonStyle {
         let icon: DS.SFSymbol
         let iconColor: Color
@@ -146,11 +142,45 @@ enum SelectAllState {
     }
 }
 
-struct FilterBarState {
+enum SpamTrashToggleState: Equatable {
+    case visible(isSelected: Bool)
+    case hidden
+}
+
+extension SpamTrashToggleState {
+    func toggled() -> Self {
+        if case .visible(let isSelected) = self {
+            .visible(isSelected: !isSelected)
+        } else {
+            .hidden
+        }
+    }
+
+    var isShown: Bool {
+        switch self {
+        case .visible:
+            true
+        case .hidden:
+            false
+        }
+    }
+
+    var isSelected: Bool {
+        switch self {
+        case .visible(let isSelected):
+            isSelected
+        case .hidden:
+            false
+        }
+    }
+}
+
+struct FilterBarState: Equatable {
     var visibilityMode: FilterBarVivibilityMode = .regular
     var isUnreadButtonSelected: Bool = false
     var selectAll: SelectAllState = .canSelectMoreItems
     var unreadCount: UnreadCounterState = .unknown
+    var spamTrashToggleState: SpamTrashToggleState = .visible(isSelected: false)
 }
 
 private struct UnreadFilterIdentifiers {
