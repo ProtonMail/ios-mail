@@ -35,6 +35,9 @@ struct SidebarScreen: View {
     private let widthOfDragableSpaceOnTheMailbox: CGFloat = 25
     /// This value is to make sure a twitch of a finger when releasing the sidebar won't cause the sidebar to move in the other direction against user's wishes.
     private let lastSwipeSignificanceThreshold: CGFloat = 25
+    /// Minimum movement (pts) before locking axis.
+    /// Avoids accidental lock from tiny diagonal wiggles.
+    private let axisSlop: CGFloat = 6
     private let animationDuration = 0.2
     private let selectedItem: (SidebarItem) -> Void
     private let appVersionProvider: AppVersionProvider
@@ -112,10 +115,6 @@ struct SidebarScreen: View {
             }
         )
     }
-
-    /// Minimum movement (pts) before locking axis.
-    /// Avoids accidental lock from tiny diagonal wiggles.
-    private let axisSlop: CGFloat = 6
 
     private var sidebarDragGesture: some Gesture {
         DragGesture(minimumDistance: .zero, coordinateSpace: .global)
