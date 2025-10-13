@@ -54,9 +54,7 @@ final class AppSettingsStateStore: StateStore, Sendable {
         case .languageButtonTapped:
             await openNativeAppSettings()
         case .onAppear:
-            await refreshStoredAppSettings()
-            await refreshDeviceSettings()
-            await refreshCustomSettings()
+            await refreshAllSettings()
         case .enterForeground:
             await refreshDeviceSettings()
         case .appearanceTapped:
@@ -86,6 +84,30 @@ final class AppSettingsStateStore: StateStore, Sendable {
             AppLogger.log(error: error, category: .appSettings)
         }
         await refreshStoredAppSettings()
+    }
+
+    @MainActor
+    private func refreshAllSettings() async {
+        async let getAppSettings = appSettingsRepository.getAppSettings().get()
+        async let getAreNotificationsEnabled = areNotificationsEnabled()
+        async let getSwipeToAdjacentConversation = customSettings.swipeToAdjacentConversation().get()
+
+        do {
+            let (appSettings, areNotificationsEnabled, isSwipeToAdjacentEnabled) = try await (
+                getAppSettings,
+                getAreNotificationsEnabled,
+                getSwipeToAdjacentConversation
+            )
+
+            state =
+                state
+                .copy(\.storedAppSettings, to: appSettings)
+                .copy(\.areNotificationsEnabled, to: areNotificationsEnabled)
+                .copy(\.appLanguage, to: appLangaugeProvider.appLangauge)
+                .copy(\.isSwipeToAdjacentEmailEnabled, to: isSwipeToAdjacentEnabled)
+        } catch {
+            AppLogger.log(error: error, category: .appSettings)
+        }
     }
 
     @MainActor
