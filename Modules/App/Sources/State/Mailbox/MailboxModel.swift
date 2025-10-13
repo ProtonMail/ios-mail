@@ -294,6 +294,7 @@ extension MailboxModel {
                         }
                     }
                 ).get()
+                setUpSpamTrashToggleVisibility(supportsIncludeFilter: messageScroller?.supportsIncludeFilter() ?? false)
             } else {
                 conversationScroller = try await scrollConversationsForLabel(
                     session: userSession,
@@ -306,6 +307,7 @@ extension MailboxModel {
                         }
                     }
                 ).get()
+                setUpSpamTrashToggleVisibility(supportsIncludeFilter: conversationScroller?.supportsIncludeFilter() ?? false)
             }
             paginatedDataSource.fetchInitialPage()
 
@@ -320,6 +322,16 @@ extension MailboxModel {
             AppLogger.log(error: error, category: .mailbox)
             toast = .error(message: L10n.Mailbox.Error.mailboxErrorMessage.string, duration: .long)
         }
+    }
+
+    private func setUpSpamTrashToggleVisibility(supportsIncludeFilter: Bool) {
+        let spamTrashToggleState: SpamTrashToggleState
+        if supportsIncludeFilter {
+            spamTrashToggleState = .visible(isSelected: state.filterBar.spamTrashToggleState.isSelected)
+        } else {
+            spamTrashToggleState = .hidden
+        }
+        state.filterBar.spamTrashToggleState = spamTrashToggleState
     }
 
     private func conversationScrollerHasMore() async -> Bool {
