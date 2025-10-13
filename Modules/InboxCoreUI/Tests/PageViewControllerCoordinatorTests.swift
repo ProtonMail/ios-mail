@@ -29,7 +29,8 @@ final class PageViewControllerCoordinatorTests {
 
     private lazy var sut = PageViewController.Coordinator(
         cursor: cursor,
-        pageFactory: { _ in Text("sample page") }
+        pageFactory: { _ in Text("sample page") },
+        dismiss: {}
     )
 
     @Test

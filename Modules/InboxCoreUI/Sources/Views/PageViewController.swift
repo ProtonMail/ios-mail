@@ -15,11 +15,18 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import Combine
 import InboxCore
 import proton_app_uniffi
 import SwiftUI
 
+extension Notification.Name {
+    public static let advanceToNextMessage = Notification.Name("advanceToNextMessage")
+}
+
 public struct PageViewController<Page: View>: UIViewControllerRepresentable {
+    @Environment(\.presentationMode) var presentationMode
+
     let cursor: MailboxCursorProtocol
     let isSwipeToAdjacentEnabled: Bool
     let startingPage: () -> Page
@@ -40,6 +47,7 @@ public struct PageViewController<Page: View>: UIViewControllerRepresentable {
     public func makeUIViewController(context: Context) -> UIPageViewController {
         let pageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal)
         pageViewController.delegate = context.coordinator
+        context.coordinator.initialize(pageViewController: pageViewController)
 
         let page = startingPage()
         let hostingController = UIHostingController(rootView: page)
@@ -53,7 +61,11 @@ public struct PageViewController<Page: View>: UIViewControllerRepresentable {
     }
 
     public func makeCoordinator() -> Coordinator {
-        .init(cursor: cursor, pageFactory: pageFactory)
+        .init(
+            cursor: cursor,
+            pageFactory: pageFactory,
+            dismiss: { presentationMode.wrappedValue.dismiss() }
+        )
     }
 }
 
@@ -61,10 +73,39 @@ extension PageViewController {
     public final class Coordinator: NSObject, UIPageViewControllerDataSource, UIPageViewControllerDelegate {
         private let cursor: MailboxCursorProtocol
         private let pageFactory: (CursorEntry) -> Page
+        private let dismiss: () -> Void
+        private var cancellables = Set<AnyCancellable>()
 
-        init(cursor: MailboxCursorProtocol, pageFactory: @escaping (CursorEntry) -> Page) {
+        init(
+            cursor: MailboxCursorProtocol,
+            pageFactory: @escaping (CursorEntry) -> Page,
+            dismiss: @escaping () -> Void
+        ) {
             self.cursor = cursor
             self.pageFactory = pageFactory
+            self.dismiss = dismiss
+        }
+
+        func initialize(pageViewController: UIPageViewController) {
+            NotificationCenter
+                .default
+                .publisher(for: .advanceToNextMessage)
+                .sink { [weak self] _ in
+                    self?.swipeToNextPageAfterMove(pageViewController: pageViewController)
+                }
+                .store(in: &cancellables)
+        }
+
+        private func swipeToNextPageAfterMove(pageViewController: UIPageViewController) {
+            guard
+                let currentViewController = pageViewController.viewControllers?.first,
+                let newCenterViewController = self.pageViewController(pageViewController, viewControllerAfter: currentViewController)
+            else {
+                dismiss()
+                return
+            }
+
+            pageViewController.setViewControllers([newCenterViewController], direction: .forward, animated: false)
         }
 
         // MARK: UIPageViewControllerDataSource
@@ -108,7 +149,7 @@ extension PageViewController {
             case .none:
                 return nil
             case .callAsync:
-                let loadingView = LoadingView {
+                let loadingView = LoadingView(dismiss: dismiss) {
                     try await self.loadNextPage()
                 }
 
@@ -158,7 +199,7 @@ extension PageViewController {
 
                 if reachedViewController.view.tag > previousViewController.view.tag {
                     cursor.goForward()
-                } else {
+                } else if reachedViewController.view.tag < previousViewController.view.tag {
                     cursor.goBackward()
                 }
             }

@@ -20,9 +20,12 @@ import InboxCore
 import SwiftUI
 
 struct LoadingView<Content: View>: View {
+    let dismiss: () -> Void
     let block: @MainActor () async throws -> Content
 
     @State private var content: Content?
+    @State private var isFullyVisible = false
+    @State private var shouldDismissOnceFullyVisible = false
 
     var body: some View {
         if let content {
@@ -35,9 +38,21 @@ struct LoadingView<Content: View>: View {
                             content = try await block()
                         } catch {
                             AppLogger.log(error: error)
+                            shouldDismissOnceFullyVisible = true
                         }
                     }
                 }
+                .onDidAppear {
+                    isFullyVisible = true
+                }
+                .onChange(of: isFullyVisible, dismissIfNeeded)
+                .onChange(of: shouldDismissOnceFullyVisible, dismissIfNeeded)
+        }
+    }
+
+    private func dismissIfNeeded() {
+        if isFullyVisible, shouldDismissOnceFullyVisible {
+            dismiss()
         }
     }
 }

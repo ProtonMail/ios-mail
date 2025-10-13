@@ -186,6 +186,13 @@ extension MailboxModel {
             }
             .store(in: &cancellables)
 
+        mailSettingsLiveQuery
+            .settingHasChanged(keyPath: \.nextMessageOnMove, dropFirst: false)
+            .sink { [weak self] value in
+                self?.state.nextMessageOnMove = value
+            }
+            .store(in: &cancellables)
+
         observeSelectionChanges()
         exitSelectAllModeWhenNewItemsAreFetched()
     }
@@ -754,6 +761,14 @@ extension EnvironmentValues {
 
 extension MailboxModel {
     func proceedAfterMove() {
+        if state.nextMessageOnMove == .enabledExplicit {
+            NotificationCenter.default.post(name: .advanceToNextMessage, object: nil)
+        } else {
+            goBackToMailbox()
+        }
+    }
+
+    private func goBackToMailbox() {
         guard !state.navigationPath.isEmpty else { return }
         state.navigationPath.removeLast()
     }
@@ -779,6 +794,7 @@ extension MailboxModel {
         var onboardingUpsellPresented: OnboardingUpsellScreenModel?
 
         var confirmLink: Bool = true
+        var nextMessageOnMove: NextMessageOnMove?
     }
 }
 
