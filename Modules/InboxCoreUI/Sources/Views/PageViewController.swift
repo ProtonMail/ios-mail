@@ -1,0 +1,168 @@
+// Copyright (c) 2025 Proton Technologies AG
+//
+// This file is part of Proton Mail.
+//
+// Proton Mail is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// Proton Mail is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Proton Mail. If not, see https://www.gnu.org/licenses/.
+
+import InboxCore
+import proton_app_uniffi
+import SwiftUI
+
+public struct PageViewController<Page: View>: UIViewControllerRepresentable {
+    let cursor: MailboxCursorProtocol
+    let startingPage: () -> Page
+    let pageFactory: (CursorEntry) -> Page
+
+    public init(
+        cursor: MailboxCursorProtocol,
+        startingPage: @escaping () -> Page,
+        pageFactory: @escaping (CursorEntry) -> Page
+    ) {
+        self.cursor = cursor
+        self.startingPage = startingPage
+        self.pageFactory = pageFactory
+    }
+
+    public func makeUIViewController(context: Context) -> UIPageViewController {
+        let pageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal)
+        pageViewController.dataSource = context.coordinator
+        pageViewController.delegate = context.coordinator
+
+        let page = startingPage()
+        let hostingController = UIHostingController(rootView: page)
+        pageViewController.setViewControllers([hostingController], direction: .forward, animated: false)
+
+        return pageViewController
+    }
+
+    public func updateUIViewController(_ uiViewController: UIPageViewController, context: Context) {
+    }
+
+    public func makeCoordinator() -> Coordinator {
+        .init(cursor: cursor, pageFactory: pageFactory)
+    }
+}
+
+extension PageViewController {
+    public final class Coordinator: NSObject, UIPageViewControllerDataSource, UIPageViewControllerDelegate {
+        private let cursor: MailboxCursorProtocol
+        private let pageFactory: (CursorEntry) -> Page
+
+        init(cursor: MailboxCursorProtocol, pageFactory: @escaping (CursorEntry) -> Page) {
+            self.cursor = cursor
+            self.pageFactory = pageFactory
+        }
+
+        // MARK: UIPageViewControllerDataSource
+
+        public func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
+            makeViewController(adjacentTo: viewController, inDirection: .reverse)
+        }
+
+        public func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
+            makeViewController(adjacentTo: viewController, inDirection: .forward)
+        }
+
+        private func makeViewController(
+            adjacentTo centerViewController: UIViewController,
+            inDirection direction: UIPageViewController.NavigationDirection
+        ) -> UIViewController? {
+            guard let adjacentView = adjacentView(direction: direction) else {
+                return nil
+            }
+
+            // this is needed to be able to determine direction in didFinishAnimating
+            switch direction {
+            case .forward:
+                adjacentView.view.tag = centerViewController.view.tag + 1
+            case .reverse:
+                adjacentView.view.tag = centerViewController.view.tag - 1
+            @unknown default:
+                break
+            }
+
+            return adjacentView
+        }
+
+        private func adjacentView(direction: UIPageViewController.NavigationDirection) -> UIViewController? {
+            let result = adjacentItem(direction: direction)
+
+            switch result {
+            case .some(let adjacentItem):
+                let page = pageFactory(adjacentItem)
+                return UIHostingController(rootView: page)
+            case .none:
+                return nil
+            case .callAsync:
+                let loadingView = LoadingView {
+                    try await self.loadNextPage()
+                }
+
+                return UIHostingController(rootView: loadingView)
+            }
+        }
+
+        private func adjacentItem(direction: UIPageViewController.NavigationDirection) -> NextCursorEntry {
+            do {
+                switch direction {
+                case .forward:
+                    return try cursor.getNext().get()
+                case .reverse:
+                    if let previousItem = try cursor.getPrevious().get() {
+                        return .some(previousItem)
+                    } else {
+                        return .none
+                    }
+                @unknown default:
+                    return .none
+                }
+            } catch {
+                AppLogger.log(error: error)
+                return .none
+            }
+        }
+
+        private func loadNextPage() async throws -> Page {
+            if let nextItem = try await cursor.fetchNext().get() {
+                return pageFactory(nextItem)
+            } else {
+                throw CursorError.nextPagePromisedButNotProvided
+            }
+        }
+
+        // MARK: UIPageViewControllerDelegate
+
+        public func pageViewController(
+            _ pageViewController: UIPageViewController,
+            didFinishAnimating finished: Bool,
+            previousViewControllers: [UIViewController],
+            transitionCompleted completed: Bool
+        ) {
+            if completed {
+                let reachedViewController = pageViewController.viewControllers![0]
+                let previousViewController = previousViewControllers[0]
+
+                if reachedViewController.view.tag > previousViewController.view.tag {
+                    cursor.goForward()
+                } else {
+                    cursor.goBackward()
+                }
+            }
+        }
+    }
+}
+
+private enum CursorError: Error {
+    case nextPagePromisedButNotProvided
+}

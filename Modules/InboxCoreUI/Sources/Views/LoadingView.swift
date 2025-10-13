@@ -1,3 +1,4 @@
+//
 // Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
@@ -15,6 +16,28 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import proton_app_uniffi
+import InboxCore
+import SwiftUI
 
-extension MailScrollerError: Error {}
+struct LoadingView<Content: View>: View {
+    let block: @MainActor () async throws -> Content
+
+    @State private var content: Content?
+
+    var body: some View {
+        if let content {
+            content
+        } else {
+            ProtonSpinner()
+                .onLoad {
+                    Task {
+                        do {
+                            content = try await block()
+                        } catch {
+                            AppLogger.log(error: error)
+                        }
+                    }
+                }
+        }
+    }
+}

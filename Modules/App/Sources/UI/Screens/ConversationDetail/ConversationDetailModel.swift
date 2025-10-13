@@ -32,6 +32,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
     @Published var editScheduledMessageConfirmationAlert: AlertModel?
     @Published var actionAlert: AlertModel?
     @Published var attachmentIDToOpen: ID?
+    @Published var isHeaderVisible: Bool = false
 
     private var conversationItem: ConversationItem?
 

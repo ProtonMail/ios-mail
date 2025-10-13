@@ -710,6 +710,21 @@ extension MailboxModel {
     }
 }
 
+// MARK: Swipe between conversations
+
+extension MailboxModel {
+    func mailboxCursor(uiModel: MailboxItemCellUIModel) -> MailboxCursor? {
+        let index = UInt64(paginatedDataSource.state.items.firstIndex(of: uiModel) ?? 0)
+
+        switch viewMode {
+        case .conversations:
+            return conversationScroller?.cursor(index: index)
+        case .messages:
+            return messageScroller?.cursor(index: index)
+        }
+    }
+}
+
 extension MailboxModel {
 
     struct State {

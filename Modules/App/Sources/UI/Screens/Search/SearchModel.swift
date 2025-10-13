@@ -248,6 +248,15 @@ extension SearchModel {
     }
 }
 
+// MARK: Swipe between conversations
+
+extension SearchModel {
+    func mailboxCursor(uiModel: MailboxItemCellUIModel) -> MailboxCursor {
+        let index = paginatedDataSource.state.items.firstIndex(of: uiModel) ?? 0
+        return searchScroller!.cursor(index: UInt64(index))
+    }
+}
+
 extension SearchModel {
 
     struct State {

@@ -255,12 +255,16 @@ extension MailboxScreen {
 
     @ViewBuilder
     private func mailboxItemDestination(uiModel: MailboxItemCellUIModel) -> some View {
+        let mailboxCursor = mailboxModel.mailboxCursor(uiModel: uiModel)!
+
         SidebarZIndexUpdateContainer {
-            ConversationDetailScreen(
-                seed: .mailboxItem(item: uiModel, selectedMailbox: mailboxModel.selectedMailbox),
+            ConversationsPageViewController(
+                startingItem: uiModel,
+                mailboxCursor: mailboxCursor,
                 draftPresenter: mailboxModel.draftPresenter,
                 navigationPath: $mailboxModel.state.navigationPath,
-                mailUserSession: userSession
+                selectedMailbox: mailboxModel.selectedMailbox,
+                userSession: userSession
             )
         }
     }
@@ -268,7 +272,7 @@ extension MailboxScreen {
     @ViewBuilder
     private func messageSeedDestination(seed: MailboxMessageSeed) -> some View {
         SidebarZIndexUpdateContainer {
-            ConversationDetailScreen(
+            PagelessConversationDetailScreen(
                 seed: .pushNotification(seed),
                 draftPresenter: mailboxModel.draftPresenter,
                 navigationPath: $mailboxModel.state.navigationPath,

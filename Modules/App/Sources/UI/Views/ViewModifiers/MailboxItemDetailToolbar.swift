@@ -20,7 +20,6 @@ import InboxDesignSystem
 import SwiftUI
 
 struct ConversationToolbar<TrailingButton: View>: ViewModifier {
-    @Environment(\.presentationMode) var presentationMode
     private let title: AttributedString
     private let trailingButton: () -> TrailingButton?
 
@@ -31,21 +30,7 @@ struct ConversationToolbar<TrailingButton: View>: ViewModifier {
 
     func body(content: Content) -> some View {
         content
-            .navigationBarBackButtonHidden()
             .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    Button(
-                        action: {
-                            presentationMode.wrappedValue.dismiss()
-                        },
-                        label: {
-                            Image(symbol: .chevronLeft)
-                                .foregroundStyle(DS.Color.Icon.norm)
-                        }
-                    )
-                    .square(size: 40)
-                }
-
                 ToolbarItem(placement: .principal) {
                     Text(title)
                         .frame(maxWidth: .infinity)

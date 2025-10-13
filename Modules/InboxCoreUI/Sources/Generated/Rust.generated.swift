@@ -64,6 +64,86 @@ public extension ChallengeLoaderPutResult {
         }
     }
 }
+public extension ConversationScrollerChangeFilterResult {
+    func get() throws(MailScrollerError) {
+        switch self {
+        case .ok:
+            break
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension ConversationScrollerFetchMoreResult {
+    func get() throws(MailScrollerError) {
+        switch self {
+        case .ok:
+            break
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension ConversationScrollerFetchNewResult {
+    func get() throws(MailScrollerError) {
+        switch self {
+        case .ok:
+            break
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension ConversationScrollerForceRefreshResult {
+    func get() throws(MailScrollerError) {
+        switch self {
+        case .ok:
+            break
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension ConversationScrollerGetItemsResult {
+    func get() throws(MailScrollerError) {
+        switch self {
+        case .ok:
+            break
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension ConversationScrollerHasMoreResult {
+    func get() throws(MailScrollerError) -> Bool {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension ConversationScrollerRefreshResult {
+    func get() throws(MailScrollerError) {
+        switch self {
+        case .ok:
+            break
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension ConversationScrollerTotalResult {
+    func get() throws(MailScrollerError) -> UInt64 {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension CreateMailSessionResult {
     func get() throws(UserSessionError) -> MailSession {
         switch self {
@@ -904,6 +984,36 @@ public extension MailUserSessionWatchUserSettingsResult {
         }
     }
 }
+public extension MailboxCursorFetchNextResult {
+    func get() throws(MailScrollerError) -> CursorEntry? {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension MailboxCursorGetNextResult {
+    func get() throws(MailScrollerError) -> NextCursorEntry {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension MailboxCursorGetPreviousResult {
+    func get() throws(MailScrollerError) -> CursorEntry? {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension MailboxUnreadCountResult {
     func get() throws(UserSessionError) -> UInt64 {
         switch self {
@@ -916,6 +1026,86 @@ public extension MailboxUnreadCountResult {
 }
 public extension MailboxWatchUnreadCountResult {
     func get() throws(UserSessionError) -> WatchHandle {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension MessageScrollerChangeFilterResult {
+    func get() throws(MailScrollerError) {
+        switch self {
+        case .ok:
+            break
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension MessageScrollerFetchMoreResult {
+    func get() throws(MailScrollerError) {
+        switch self {
+        case .ok:
+            break
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension MessageScrollerFetchNewResult {
+    func get() throws(MailScrollerError) {
+        switch self {
+        case .ok:
+            break
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension MessageScrollerForceRefreshResult {
+    func get() throws(MailScrollerError) {
+        switch self {
+        case .ok:
+            break
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension MessageScrollerGetItemsResult {
+    func get() throws(MailScrollerError) {
+        switch self {
+        case .ok:
+            break
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension MessageScrollerHasMoreResult {
+    func get() throws(MailScrollerError) -> Bool {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension MessageScrollerRefreshResult {
+    func get() throws(MailScrollerError) {
+        switch self {
+        case .ok:
+            break
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension MessageScrollerTotalResult {
+    func get() throws(MailScrollerError) -> UInt64 {
         switch self {
         case .ok(let value):
             value
@@ -986,6 +1176,66 @@ public extension ResolveSystemLabelIdResult {
 }
 public extension RsvpEventGetResult {
     func get() throws(ProtonError) -> RsvpEvent {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension SearchScrollerFetchMoreResult {
+    func get() throws(MailScrollerError) {
+        switch self {
+        case .ok:
+            break
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension SearchScrollerForceRefreshResult {
+    func get() throws(MailScrollerError) {
+        switch self {
+        case .ok:
+            break
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension SearchScrollerGetItemsResult {
+    func get() throws(MailScrollerError) {
+        switch self {
+        case .ok:
+            break
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension SearchScrollerHasMoreResult {
+    func get() throws(MailScrollerError) -> Bool {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension SearchScrollerRefreshResult {
+    func get() throws(MailScrollerError) {
+        switch self {
+        case .ok:
+            break
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension SearchScrollerTotalResult {
+    func get() throws(MailScrollerError) -> UInt64 {
         switch self {
         case .ok(let value):
             value
