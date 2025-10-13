@@ -316,9 +316,11 @@ final class MockAttachmentList: AttachmentListProtocol, @unchecked Sendable {
     var attachmentUploadDirectoryURL: URL = URL(fileURLWithPath: .empty)
     var capturedAddCalls: [(path: String, filenameOverride: String?)] = []
     var capturedAddInlineCalls: [(path: String, filenameOverride: String?)] = []
+    var capturedSwapInlineCalls: [String] = []
     var capturedRemoveCalls: [String] = []
     var mockAttachmentListAddResult = [(lastPathComponent: String, result: AttachmentListAddResult)]()
     var mockAttachmentListAddInlineResult = [(lastPathComponent: String, result: AttachmentListAddInlineResult)]()
+    var mockAttachmentSwapWithCidResult: VoidDraftAttachmentDispositionSwapResult = .ok
     var mockAttachmentListRemoveWithCidResult = [(cid: String, result: AttachmentListRemoveWithCidResult)]()
 
     func add(path: String, filenameOverride: String?) async -> AttachmentListAddResult {
@@ -359,7 +361,8 @@ final class MockAttachmentList: AttachmentListProtocol, @unchecked Sendable {
     }
 
     func swapAttachmentDisposition(contentId: String) async -> VoidDraftAttachmentDispositionSwapResult {
-        .ok
+        capturedSwapInlineCalls.append(contentId)
+        return mockAttachmentSwapWithCidResult
     }
 
     func watcher(callback: any AsyncLiveQueryCallback) async -> AttachmentListWatcherResult {

@@ -144,8 +144,8 @@ struct ComposerView: View {
                         Task { await model.addAttachments(image: image) }
                     case .onInlineImageRemoved(let cid), .onInlineImageRemovalRequested(let cid):
                         Task { await model.removeAttachment(cid: cid) }
-                    case .onInlineImageDispositionChangeRequested:
-                        toastStateStore.present(toast: .comingSoon)
+                    case .onInlineImageDispositionChangeRequested(let cid):
+                        Task { await model.transformInlineAttachmentToRegular(cid: cid) }
                     case .onReloadAfterMemoryPressure:
                         Task { await model.reloadBodyAfterMemoryPressure() }
                     }

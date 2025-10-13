@@ -78,6 +78,7 @@ final class ComposerModel: ObservableObject {
 
     private var updateBodyDebounceTask: DebouncedTask?
 
+    private var inlineAttachmentsTransformed = Set<String>()
     private var messageHasBeenSentOrScheduled: Bool = false
     private var composerWillDismiss: Bool = false
 
@@ -378,12 +379,26 @@ final class ComposerModel: ObservableObject {
         }
     }
 
+    @MainActor
+    func transformInlineAttachmentToRegular(cid: String) async {
+        switch await draft.attachmentList().swapAttachmentDisposition(contentId: cid) {
+        case .ok:
+            inlineAttachmentsTransformed.insert(cid)
+            bodyAction = .removeInlineImage(cid: cid)
+        case .error(let error):
+            let message = "Failed to transform inline attachment to regular attachment: \(error)"
+            AppLogger.log(message: message, category: .composer, isError: true)
+            showToast(.error(message: error.localizedDescription))
+        }
+    }
+
     func removeAttachment(id attachmendId: ID) {
         Task { await draft.attachmentList().remove(id: attachmendId) }
     }
 
     @MainActor
     func removeAttachment(cid: String) async {
+        guard !inlineAttachmentsTransformed.contains(cid) else { return }
         switch await draft.attachmentList().removeWithCid(contentId: cid) {
         case .ok:
             bodyAction = .removeInlineImage(cid: cid)
@@ -575,6 +590,10 @@ extension ComposerModel {
     private func updateStateAttachmentUIModels() async {
         do {
             let draftAttachments = try await draft.attachmentList().attachments().get()
+            let dispositions = draftAttachments.map(\.attachment.disposition)
+            let inlineCount = dispositions.filter { $0 == .inline }.count
+            let attachmentCount = dispositions.filter { $0 == .attachment }.count
+            AppLogger.log(message: "Attachments update: inline: \(inlineCount), attachment: \(attachmentCount)", category: .composer)
             state.attachments = draftAttachments.toDraftAttachmentUIModels()
             attachmentAlertState.enqueueAlertsForFailedAttachmentUploads(attachments: draftAttachments)
         } catch {

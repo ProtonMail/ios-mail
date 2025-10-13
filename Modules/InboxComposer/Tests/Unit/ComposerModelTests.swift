@@ -628,6 +628,46 @@ final class ComposerModelTests: BaseTestCase {
         XCTAssertEqual(Set(mockDraft.attachmentPathsFor(dispositon: .attachment)).count, 1)
     }
 
+    // MARK: transformInlineAttachmentToRegular(cid:)
+
+    func testTransformInlineAttachmentToRegular_whenSuccess_itShouldSetBodyAction() async throws {
+        let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: .mockInstance)
+
+        await sut.transformInlineAttachmentToRegular(cid: "123456")
+
+        XCTAssertEqual(mockDraft.mockAttachmentList.capturedSwapInlineCalls.first, "123456")
+        XCTAssertEqual(sut.bodyAction, ComposerBodyAction.removeInlineImage(cid: "123456"))
+    }
+
+    func testTransformInlineAttachmentToRegular_whenSuccess_itShouldNotCallRemoveAttachment() async throws {
+        let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: .mockInstance)
+
+        await sut.transformInlineAttachmentToRegular(cid: "123456")
+
+        XCTAssertEqual(mockDraft.mockAttachmentList.capturedRemoveCalls.count, 0)
+    }
+
+    func testTransformInlineAttachmentToRegular_whenSwapFails_itShouldNotSetBodyAction() async throws {
+        let dispositionSwapError = DraftAttachmentDispositionSwapError.reason(.invalidState)
+        mockDraft.mockAttachmentList.mockAttachmentSwapWithCidResult = .error(dispositionSwapError)
+        let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: .mockInstance)
+
+        await sut.transformInlineAttachmentToRegular(cid: "123456")
+
+        XCTAssertEqual(mockDraft.mockAttachmentList.capturedSwapInlineCalls.first, "123456")
+        XCTAssertNil(sut.bodyAction)
+    }
+
+    func testTransformInlineAttachmentToRegular_whenSwapFails_itShouldShowAToast() async throws {
+        let dispositionSwapError = DraftAttachmentDispositionSwapError.reason(.invalidState)
+        mockDraft.mockAttachmentList.mockAttachmentSwapWithCidResult = .error(dispositionSwapError)
+        let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: .mockInstance)
+
+        await sut.transformInlineAttachmentToRegular(cid: "123456")
+
+        XCTAssertEqual(sut.toast, Toast.error(message: dispositionSwapError.localizedDescription))
+    }
+
     // MARK: removeAttachment(cid:)
 
     func testRemoveAttachment_whenSuccessfullyRemovesAttachment_itShouldSetBodyAction() async throws {

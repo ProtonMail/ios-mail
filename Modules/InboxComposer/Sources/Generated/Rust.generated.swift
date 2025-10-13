@@ -284,6 +284,16 @@ public extension SignupFlowSubmitRecoveryPhoneResult {
         }
     }
 }
+public extension VoidDraftAttachmentDispositionSwapResult {
+    func get() throws(DraftAttachmentDispositionSwapError) {
+        switch self {
+        case .ok:
+            break
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension VoidDraftDiscardResult {
     func get() throws(DraftDiscardError) {
         switch self {

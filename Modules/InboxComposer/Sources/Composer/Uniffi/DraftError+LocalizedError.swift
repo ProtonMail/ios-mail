@@ -53,16 +53,28 @@ private extension DraftAttachmentUploadErrorReason {
     }
 }
 
-extension DraftAttachmentDispositionSwapErrorReason: LocalizedError {
+extension DraftAttachmentDispositionSwapError: LocalizedError {
 
     public var errorDescription: String? {
+        switch self {
+        case .reason(let reason):
+            reason.errorMessage.string
+        case .other(let protonError):
+            protonError.localizedDescription
+        }
+    }
+}
+
+extension DraftAttachmentDispositionSwapErrorReason {
+
+    public var errorMessage: LocalizedStringResource {
         switch self {
         case .invalidState,
             .noop,
             .attachmentDoesNotExist,
             .attachmentMessageDoesNotExist,
             .attachmentMessageIsNotADraft:
-            L10n.DraftAttachmentDispositionSwapError.somethingWentWrong.string
+            L10n.DraftAttachmentDispositionSwapError.somethingWentWrong
         }
     }
 }
@@ -218,8 +230,8 @@ extension DraftSendFailure: LocalizedError {
             draftAttachmentUploadErrorReason.errorMessage.string
         case .other(let protonError):
             protonError.localizedDescription
-        case .attachmentDispositionSwap(let attachmentDispositionSwapError):
-            attachmentDispositionSwapError.localizedDescription
+        case .attachmentDispositionSwap(let attachmentDispositionSwapErrorReason):
+            attachmentDispositionSwapErrorReason.errorMessage.string
         }
     }
 }
