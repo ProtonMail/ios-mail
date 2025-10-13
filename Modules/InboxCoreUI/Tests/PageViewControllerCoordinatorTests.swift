@@ -127,7 +127,7 @@ final class PageViewControllerCoordinatorTests {
     }
 }
 
-private final class MailboxCursorSpy: MailboxCursorProtocol {
+private final class MailboxCursorSpy: @unchecked Sendable, MailboxCursorProtocol {
     var stubbedGetNextResult: MailboxCursorGetNextResult = .ok(.some(.conversationEntry(.testData())))
 
     private(set) var receivedMovements: [UIPageViewController.NavigationDirection] = []
