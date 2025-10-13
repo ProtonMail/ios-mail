@@ -180,7 +180,7 @@ struct FilterBarState: Equatable {
     var isUnreadButtonSelected: Bool = false
     var selectAll: SelectAllState = .canSelectMoreItems
     var unreadCount: UnreadCounterState = .unknown
-    var spamTrashToggleState: SpamTrashToggleState = .visible(isSelected: false)
+    var spamTrashToggleState: SpamTrashToggleState = .hidden
 }
 
 private struct UnreadFilterIdentifiers {

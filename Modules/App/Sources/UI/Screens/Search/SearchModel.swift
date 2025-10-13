@@ -115,10 +115,25 @@ final class SearchModel: ObservableObject, @unchecked Sendable {
             case .ok(let searchScroller):
                 self.searchScroller = searchScroller
                 paginatedDataSource.fetchInitialPage()
+                setUpSpamTrashToggleVisibility(supportsIncludeFilter: searchScroller.supportsIncludeFilter())
             case .error(let error):
                 AppLogger.log(error: error, category: .search)
             }
         }
+    }
+
+    func includeTrashSpamTapped() {
+        // FIXME: - Implement action
+    }
+
+    private func setUpSpamTrashToggleVisibility(supportsIncludeFilter: Bool) {
+        let spamTrashToggleState: SpamTrashToggleState
+        if supportsIncludeFilter {
+            spamTrashToggleState = .visible(isSelected: state.spamTrashToggleState.isSelected)
+        } else {
+            spamTrashToggleState = .hidden
+        }
+        state.spamTrashToggleState = spamTrashToggleState
     }
 
     private func fetchNextPage(isFirstPage: Bool) {
@@ -262,6 +277,7 @@ extension SearchModel {
     struct State {
         var attachmentPresented: AttachmentViewConfig?
         var navigationPath: NavigationPath = .init()
+        var spamTrashToggleState: SpamTrashToggleState = .hidden
     }
 }
 

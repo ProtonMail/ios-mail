@@ -51,22 +51,24 @@ struct SearchScreen: View {
                     EmptyView()
                 case .search:
                     VStack(spacing: .zero) {
-                        HStack {
-                            SelectableCapsuleButton(
-                                isSelected: false,
-                                action: {},
-                                label: { Text("Include Trash/Spam") }
+                        if case .visible(let isOn) = model.state.spamTrashToggleState {
+                            HStack {
+                                SelectableCapsuleButton(
+                                    isSelected: isOn,
+                                    action: { model.includeTrashSpamTapped() },
+                                    label: { Text("Include Trash/Spam") }
+                                )
+                                Spacer()
+                            }
+                            .padding(.leading, DS.Spacing.large)
+                            .padding(.vertical, DS.Spacing.mediumLight)
+                            .background(DS.Color.Background.norm)
+                            .background(
+                                DS.Color.Background.norm
+                                    .shadow(DS.Shadows.raisedBottom, isVisible: !isListAtTop)
                             )
-                            Spacer()
+                            .zIndex(1)
                         }
-                        .padding(.leading, DS.Spacing.large)
-                        .padding(.vertical, DS.Spacing.mediumLight)
-                        .background(DS.Color.Background.norm)
-                        .background(
-                            DS.Color.Background.norm
-                                .shadow(DS.Shadows.raisedBottom, isVisible: !isListAtTop)
-                        )
-                        .zIndex(1)
 
                         resultsList
                             .fullScreenCover(item: $model.state.attachmentPresented) { config in
