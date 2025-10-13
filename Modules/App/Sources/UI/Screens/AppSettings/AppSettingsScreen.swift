@@ -86,7 +86,7 @@ struct AppSettingsScreen: View {
                     ) {
                         FormSwitchView(
                             title: L10n.Settings.App.swipeToNextEmail,
-                            isOn: comingSoonBinding
+                            isOn: swipeToNextEmailBinding
                         )
                     }
                     FormSection(header: nil, footer: nil) {
@@ -175,15 +175,11 @@ struct AppSettingsScreen: View {
         )
     }
 
-    private var comingSoonBinding: Binding<Bool> {
-        Binding(
-            get: { false },
-            set: { _ in comingSoon() }
+    private var swipeToNextEmailBinding: Binding<Bool> {
+        .init(
+            get: { store.state.isSwipeToAdjacentEmailEnabled },
+            set: { newValue in store.handle(action: .swipeToNextEmailChanged(newValue)) }
         )
-    }
-
-    private func comingSoon() {
-        toastStateStore.present(toast: .comingSoon)
     }
 }
 

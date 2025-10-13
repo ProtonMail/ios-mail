@@ -149,6 +149,32 @@ class AppSettingsStateStoreTests {
         #expect(sut.state.storedAppSettings.useCombineContacts == false)
     }
 
+    // MARK: - `swipeToNextEmailChanged` action
+
+    @Test
+    func whenSwipeToNextEmailChanged_AndSucceeds_ItUpdatesToGivenState() async {
+        #expect(sut.state.isSwipeToAdjacentEmailEnabled == false)
+
+        await sut.handle(action: .swipeToNextEmailChanged(true))
+
+        #expect(sut.state.isSwipeToAdjacentEmailEnabled == true)
+
+        await sut.handle(action: .swipeToNextEmailChanged(false))
+
+        #expect(sut.state.isSwipeToAdjacentEmailEnabled == false)
+    }
+
+    @Test
+    func whenSwipeToNextEmailChanged_AndFails_ItRevertsToPreviousState() async {
+        #expect(sut.state.isSwipeToAdjacentEmailEnabled == false)
+
+        customSettingsSpy.stubbedSwipeToAdjacent = .error(ProtonError.network)
+
+        await sut.handle(action: .swipeToNextEmailChanged(true))
+
+        #expect(sut.state.isSwipeToAdjacentEmailEnabled == false)
+    }
+
     // MARK: - Private
 
     private func changeAppAppearance(_ appAppearance: AppAppearance) async {

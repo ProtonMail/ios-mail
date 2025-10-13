@@ -65,6 +65,9 @@ final class AppSettingsStateStore: StateStore, Sendable {
             await update(setting: \.useCombineContacts, value: value)
         case .alternativeRoutingChanged(let value):
             await update(setting: \.useAlternativeRouting, value: value)
+        case .swipeToNextEmailChanged(let value):
+            _ = await customSettings.setSwipeToAdjacentConversation(enabled: value)
+            await refreshCustomSettings()
         }
     }
 

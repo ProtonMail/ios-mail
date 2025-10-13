@@ -55,7 +55,13 @@ final class CustomSettingsSpy: CustomSettingsProtocol, @unchecked Sendable {
     }
 
     func setSwipeToAdjacentConversation(enabled: Bool) async -> CustomSettingsSetSwipeToAdjacentConversationResult {
-        .ok
+        guard case .ok = stubbedSwipeToAdjacent else {
+            return .error(.network)
+        }
+
+        stubbedSwipeToAdjacent = .ok(enabled)
+
+        return .ok
     }
 
     func swipeToAdjacentConversation() async -> CustomSettingsSwipeToAdjacentConversationResult {
