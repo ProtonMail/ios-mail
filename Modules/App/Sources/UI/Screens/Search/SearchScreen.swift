@@ -61,6 +61,12 @@ struct SearchScreen: View {
                         }
                         .padding(.leading, DS.Spacing.large)
                         .padding(.vertical, DS.Spacing.mediumLight)
+                        .background(DS.Color.Background.norm)
+                        .background(
+                            DS.Color.Background.norm
+                                .shadow(DS.Shadows.raisedBottom, isVisible: !isListAtTop)
+                        )
+                        .zIndex(1)
 
                         resultsList
                             .fullScreenCover(item: $model.state.attachmentPresented) { config in
