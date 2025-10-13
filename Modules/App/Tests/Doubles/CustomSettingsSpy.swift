@@ -17,22 +17,30 @@
 
 import proton_app_uniffi
 
-final class CustomSettingsSpy: CustomSettingsProtocol {
-    var state: MobileSignature
+final class CustomSettingsSpy: CustomSettingsProtocol, @unchecked Sendable {
+    var stubbedMobileSignature: MobileSignature
+    var stubbedSwipeToAdjacent: CustomSettingsSwipeToAdjacentConversationResult
+
     private(set) var setMobileSignatureCalls: [String] = []
     private(set) var setMobileSignatureEnabledCalls: [Bool] = []
 
-    var stubbedOnLoadError: ProtonError?
+    var stubbedMobileSignatureError: ProtonError?
 
-    init(initialState: MobileSignature = .init(body: .empty, status: .needsPaidVersion)) {
-        state = initialState
+    init(
+        stubbedMobileSignature: MobileSignature = .init(body: .empty, status: .needsPaidVersion),
+        stubbedSwipeToAdjacent: CustomSettingsSwipeToAdjacentConversationResult = .ok(false)
+    ) {
+        self.stubbedMobileSignature = stubbedMobileSignature
+        self.stubbedSwipeToAdjacent = stubbedSwipeToAdjacent
     }
 
+    // MARK: - CustomSettingsProtocol
+
     func mobileSignature() async -> CustomSettingsMobileSignatureResult {
-        if let stubbedOnLoadError {
-            return .error(stubbedOnLoadError)
+        if let stubbedMobileSignatureError {
+            return .error(stubbedMobileSignatureError)
         } else {
-            return .ok(state)
+            return .ok(stubbedMobileSignature)
         }
     }
 
@@ -51,6 +59,6 @@ final class CustomSettingsSpy: CustomSettingsProtocol {
     }
 
     func swipeToAdjacentConversation() async -> CustomSettingsSwipeToAdjacentConversationResult {
-        .ok(true)
+        stubbedSwipeToAdjacent
     }
 }

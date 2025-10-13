@@ -61,7 +61,7 @@ struct SettingsViewFactory {
                 .navigationTitle(webPage.title.string)
                 .navigationBarBackButtonHidden(true)
         case .appSettings:
-            AppSettingsScreen()
+            AppSettingsScreen(customSettings: customSettings(ctx: mailUserSession))
         case .appProtection:
             AppProtectionSelectionScreen()
         case .autoLock:

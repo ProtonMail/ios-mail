@@ -30,12 +30,14 @@ struct AppSettingsScreen: View {
 
     init(
         state: AppSettingsState = .initial,
-        appSettingsRepository: AppSettingsRepository = AppContext.shared.mailSession
+        appSettingsRepository: AppSettingsRepository = AppContext.shared.mailSession,
+        customSettings: CustomSettingsProtocol
     ) {
         _store = .init(
             wrappedValue: .init(
                 state: state,
-                appSettingsRepository: appSettingsRepository
+                appSettingsRepository: appSettingsRepository,
+                customSettings: customSettings
             )
         )
     }
@@ -187,7 +189,7 @@ struct AppSettingsScreen: View {
 
 #Preview {
     NavigationStack {
-        AppSettingsScreen(state: .initial)
+        AppSettingsScreen(state: .initial, customSettings: CustomSettings(noPointer: .init()))
     }
 }
 

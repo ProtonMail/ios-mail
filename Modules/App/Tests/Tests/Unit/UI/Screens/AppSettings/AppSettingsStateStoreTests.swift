@@ -23,36 +23,25 @@ import Testing
 
 @MainActor
 class AppSettingsStateStoreTests {
-
-    var sut: AppSettingsStateStore!
-    var notificationCenterSpy: UserNotificationCenterSpy!
-    var urlOpenerSpy: URLOpenerSpy!
-    var bundleStub: BundleStub!
-    private var appSettingsRepositorySpy: AppSettingsRepositorySpy!
+    private lazy var sut = AppSettingsStateStore(
+        state: .initial,
+        appSettingsRepository: appSettingsRepositorySpy,
+        customSettings: customSettingsSpy,
+        notificationCenter: notificationCenterSpy,
+        urlOpener: urlOpenerSpy,
+        mainBundle: bundleStub
+    )
+    private let notificationCenterSpy = UserNotificationCenterSpy()
+    private let urlOpenerSpy = URLOpenerSpy()
+    private let bundleStub = BundleStub()
+    private let appSettingsRepositorySpy = AppSettingsRepositorySpy()
+    private let customSettingsSpy = CustomSettingsSpy()
 
     init() {
-        notificationCenterSpy = .init()
-        urlOpenerSpy = .init()
-        bundleStub = .init()
-        appSettingsRepositorySpy = .init()
-        sut = AppSettingsStateStore(
-            state: .initial,
-            appSettingsRepository: appSettingsRepositorySpy,
-            notificationCenter: notificationCenterSpy,
-            urlOpener: urlOpenerSpy,
-            mainBundle: bundleStub
-        )
-
         bundleStub.preferredLocalizationsStub = ["en"]
     }
 
-    deinit {
-        notificationCenterSpy = nil
-        urlOpenerSpy = nil
-        bundleStub = nil
-        appSettingsRepositorySpy = nil
-        sut = nil
-    }
+    // MARK: - `notificationButtonTapped` action
 
     @Test
     func whenNotificationsButtonIsTapped_ItAskForNotificationsPermissions() async {
@@ -74,6 +63,8 @@ class AppSettingsStateStoreTests {
         #expect(urlOpenerSpy.openURLInvocations == [.settings])
     }
 
+    // MARK: - `onAppear` action
+
     @Test
     func whenViewAppears_ItOverrideDefaultStateValuesAndSetCorrectOnes() async {
         notificationCenterSpy.stubbedAuthorizationStatus = .authorized
@@ -85,13 +76,17 @@ class AppSettingsStateStoreTests {
             useCombineContacts: true,
             useAlternativeRouting: true
         )
+        customSettingsSpy.stubbedSwipeToAdjacent = .ok(true)
 
         await sut.handle(action: .onAppear)
 
         #expect(sut.state.areNotificationsEnabled)
         #expect(sut.state.appLanguage == "Polish")
         #expect(sut.state.storedAppSettings == appSettingsRepositorySpy.stubbedAppSettings)
+        #expect(sut.state.isSwipeToAdjacentEmailEnabled == true)
     }
+
+    // MARK: - `appearanceTapped` action
 
     @Test
     func whenAppearanceIsTapped_WhenAppearanceIsChnaged_ItUpdatesAppearance() async {
@@ -107,6 +102,8 @@ class AppSettingsStateStoreTests {
 
         #expect(appSettingsRepositorySpy.changedAppSettingsWithDiff == [.diff(appearance: .darkMode)])
     }
+
+    // MARK: - `alternativeRoutingChanged` action
 
     @Test
     func whenAlternativeRoutingIsDisabledAndThenEnabled_ItUpdatesStoredValues() async {
@@ -152,6 +149,8 @@ class AppSettingsStateStoreTests {
         #expect(sut.state.storedAppSettings.useCombineContacts == false)
     }
 
+    // MARK: - Private
+
     private func changeAppAppearance(_ appAppearance: AppAppearance) async {
         appSettingsRepositorySpy.stubbedAppSettings = appSettingsRepositorySpy.stubbedAppSettings
             .copy(\.appearance, to: appAppearance)
@@ -169,7 +168,6 @@ class AppSettingsStateStoreTests {
             .copy(\.useAlternativeRouting, to: value)
         await sut.handle(action: .alternativeRoutingChanged(value))
     }
-
 }
 
 extension AppSettings: @retroactive Copying {}

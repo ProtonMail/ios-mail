@@ -22,7 +22,7 @@ import Testing
 
 @MainActor
 final class MobileSignatureStateStoreTests {
-    private let customSettings = CustomSettingsSpy(initialState: .init(body: "Foo bar", status: .enabled))
+    private let customSettings = CustomSettingsSpy(stubbedMobileSignature: .init(body: "Foo bar", status: .enabled))
 
     private lazy var sut = MobileSignatureStateStore(customSettings: customSettings, clock: AlmostImmediateClock())
 
@@ -38,7 +38,7 @@ final class MobileSignatureStateStoreTests {
     @Test
     func showsAnErrorIfFailedToLoad() async {
         let error = ProtonError.unexpected(.crypto)
-        customSettings.stubbedOnLoadError = error
+        customSettings.stubbedMobileSignatureError = error
 
         await sut.handle(action: .onLoad)
 

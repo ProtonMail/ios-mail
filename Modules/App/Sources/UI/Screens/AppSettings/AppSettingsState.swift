@@ -24,6 +24,7 @@ struct AppSettingsState: Copying {
     var appLanguage: String
     var storedAppSettings: AppSettings
     var isAppearanceMenuShown: Bool
+    var isSwipeToAdjacentEmailEnabled: Bool
 }
 
 extension AppSettingsState {
@@ -39,7 +40,8 @@ extension AppSettingsState {
                 useCombineContacts: false,
                 useAlternativeRouting: true
             ),
-            isAppearanceMenuShown: false
+            isAppearanceMenuShown: false,
+            isSwipeToAdjacentEmailEnabled: false
         )
     }
 

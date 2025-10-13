@@ -23,6 +23,7 @@ import SwiftUI
 final class AppSettingsStateStore: StateStore, Sendable {
     @Published var state: AppSettingsState
     private let appSettingsRepository: AppSettingsRepository
+    private let customSettings: CustomSettingsProtocol
     private let notificationCenter: UserNotificationCenter
     private let urlOpener: URLOpener
     private let appLangaugeProvider: AppLangaugeProvider
@@ -31,6 +32,7 @@ final class AppSettingsStateStore: StateStore, Sendable {
     init(
         state: AppSettingsState,
         appSettingsRepository: AppSettingsRepository,
+        customSettings: CustomSettingsProtocol,
         notificationCenter: UserNotificationCenter = UNUserNotificationCenter.current(),
         urlOpener: URLOpener = UIApplication.shared,
         currentLocale: Locale = Locale.current,
@@ -38,6 +40,7 @@ final class AppSettingsStateStore: StateStore, Sendable {
     ) {
         self.state = state
         self.appSettingsRepository = appSettingsRepository
+        self.customSettings = customSettings
         self.notificationCenter = notificationCenter
         self.urlOpener = urlOpener
         self.appLangaugeProvider = .init(currentLocale: currentLocale, mainBundle: mainBundle)
@@ -53,6 +56,7 @@ final class AppSettingsStateStore: StateStore, Sendable {
         case .onAppear:
             await refreshStoredAppSettings()
             await refreshDeviceSettings()
+            await refreshCustomSettings()
         case .enterForeground:
             await refreshDeviceSettings()
         case .appearanceTapped:
@@ -85,6 +89,16 @@ final class AppSettingsStateStore: StateStore, Sendable {
     }
 
     @MainActor
+    private func refreshStoredAppSettings() async {
+        do {
+            let settings = try await appSettingsRepository.getAppSettings().get()
+            state = state.copy(\.storedAppSettings, to: settings)
+        } catch {
+            AppLogger.log(error: error, category: .appSettings)
+        }
+    }
+
+    @MainActor
     private func refreshDeviceSettings() async {
         let areNotificationsEnabled = await areNotificationsEnabled()
         state =
@@ -94,10 +108,10 @@ final class AppSettingsStateStore: StateStore, Sendable {
     }
 
     @MainActor
-    private func refreshStoredAppSettings() async {
+    func refreshCustomSettings() async {
         do {
-            let settings = try await appSettingsRepository.getAppSettings().get()
-            state = state.copy(\.storedAppSettings, to: settings)
+            let isSwipeToAdjacentEmailEnabled = try await customSettings.swipeToAdjacentConversation().get()
+            state = state.copy(\.isSwipeToAdjacentEmailEnabled, to: isSwipeToAdjacentEmailEnabled)
         } catch {
             AppLogger.log(error: error, category: .appSettings)
         }

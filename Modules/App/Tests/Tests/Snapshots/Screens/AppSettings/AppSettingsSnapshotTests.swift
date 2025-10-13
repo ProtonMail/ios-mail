@@ -23,8 +23,7 @@ import Testing
 
 @MainActor
 struct AppSettingsSnapshotTests {
-
-    @Test()
+    @Test
     func testAppSettingsLayoutCorrectly() {
         let sut = AppSettingsScreen(
             state: .init(
@@ -37,9 +36,11 @@ struct AppSettingsSnapshotTests {
                     useCombineContacts: false,
                     useAlternativeRouting: true
                 ),
-                isAppearanceMenuShown: false
+                isAppearanceMenuShown: false,
+                isSwipeToAdjacentEmailEnabled: false
             ),
-            appSettingsRepository: AppSettingsRepositorySpy()
+            appSettingsRepository: AppSettingsRepositorySpy(),
+            customSettings: CustomSettingsSpy()
         )
 
         for userInterfaceStyle in [UIUserInterfaceStyle.light, .dark] {
@@ -50,5 +51,4 @@ struct AppSettingsSnapshotTests {
             )
         }
     }
-
 }

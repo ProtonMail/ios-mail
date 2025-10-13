@@ -39,7 +39,7 @@ final class SignaturesStateStoreTests {
 
     @Test(arguments: [MobileSignatureStatus.enabled, .disabled, .needsPaidVersion])
     func onAppear_updatesMobileSignatureStatus(mobileSignatureStatus: MobileSignatureStatus) async {
-        customSettings.state.status = mobileSignatureStatus
+        customSettings.stubbedMobileSignature.status = mobileSignatureStatus
 
         await sut.handle(action: .onAppear)
 
