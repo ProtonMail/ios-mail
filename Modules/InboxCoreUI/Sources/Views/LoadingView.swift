@@ -17,6 +17,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import InboxCore
+import InboxDesignSystem
 import SwiftUI
 
 struct LoadingView<Content: View>: View {
@@ -31,22 +32,26 @@ struct LoadingView<Content: View>: View {
         if let content {
             content
         } else {
-            ProtonSpinner()
-                .onLoad {
-                    Task {
-                        do {
-                            content = try await block()
-                        } catch {
-                            AppLogger.log(error: error)
-                            shouldDismissOnceFullyVisible = true
-                        }
+            ZStack {
+                DS.Color.Background.norm
+
+                ProtonSpinner()
+            }
+            .onLoad {
+                Task {
+                    do {
+                        content = try await block()
+                    } catch {
+                        AppLogger.log(error: error)
+                        shouldDismissOnceFullyVisible = true
                     }
                 }
-                .onDidAppear {
-                    isFullyVisible = true
-                }
-                .onChange(of: isFullyVisible, dismissIfNeeded)
-                .onChange(of: shouldDismissOnceFullyVisible, dismissIfNeeded)
+            }
+            .onDidAppear {
+                isFullyVisible = true
+            }
+            .onChange(of: isFullyVisible, dismissIfNeeded)
+            .onChange(of: shouldDismissOnceFullyVisible, dismissIfNeeded)
         }
     }
 
