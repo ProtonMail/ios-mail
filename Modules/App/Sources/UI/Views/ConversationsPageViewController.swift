@@ -31,27 +31,9 @@ struct ConversationsPageViewController: View {
     let navigationPath: Binding<NavigationPath>
     let selectedMailbox: SelectedMailbox
     let userSession: MailUserSession
-    let customSettings: CustomSettingsProtocol
 
     @State var activeModel: ConversationDetailModel?
     @State private var isSwipeToAdjacentEnabled: Bool = false
-
-    init(
-        startingItem: MailboxItemCellUIModel,
-        mailboxCursor: MailboxCursorProtocol,
-        draftPresenter: DraftPresenter,
-        navigationPath: Binding<NavigationPath>,
-        selectedMailbox: SelectedMailbox,
-        userSession: MailUserSession
-    ) {
-        self.startingItem = startingItem
-        self.mailboxCursor = mailboxCursor
-        self.draftPresenter = draftPresenter
-        self.navigationPath = navigationPath
-        self.selectedMailbox = selectedMailbox
-        self.userSession = userSession
-        self.customSettings = proton_app_uniffi.customSettings(ctx: userSession)
-    }
 
     var body: some View {
         PageViewController(
@@ -84,6 +66,7 @@ struct ConversationsPageViewController: View {
         }
         .task {
             do {
+                let customSettings = customSettings(ctx: userSession)
                 let isEnabled = try await customSettings.swipeToAdjacentConversation().get()
                 isSwipeToAdjacentEnabled = isEnabled
             } catch {
