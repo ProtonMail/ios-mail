@@ -26,5 +26,5 @@ enum AppSettingsAction {
     case appearanceSelected(AppAppearance)
     case combinedContactsChanged(Bool)
     case alternativeRoutingChanged(Bool)
-    case swipeToAdjacentEmailChanged(Bool)
+    case swipeToAdjacentConversationChanged(Bool)
 }

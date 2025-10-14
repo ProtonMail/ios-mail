@@ -83,7 +83,7 @@ class AppSettingsStateStoreTests {
         #expect(sut.state.areNotificationsEnabled)
         #expect(sut.state.appLanguage == "Polish")
         #expect(sut.state.storedAppSettings == appSettingsRepositorySpy.stubbedAppSettings)
-        #expect(sut.state.isSwipeToAdjacentEmailEnabled == true)
+        #expect(sut.state.isSwipeToAdjacentConversationEnabled == true)
     }
 
     // MARK: - `appearanceTapped` action
@@ -149,30 +149,30 @@ class AppSettingsStateStoreTests {
         #expect(sut.state.storedAppSettings.useCombineContacts == false)
     }
 
-    // MARK: - `swipeToAdjacentEmailChanged` action
+    // MARK: - `swipeToAdjacentConversationChanged` action
 
     @Test
-    func whenSwipeToAdjacentEmailChanged_AndSucceeds_ItUpdatesToGivenState() async {
-        #expect(sut.state.isSwipeToAdjacentEmailEnabled == false)
+    func whenSwipeToAdjacentConversationChanged_AndSucceeds_ItUpdatesToGivenState() async {
+        #expect(sut.state.isSwipeToAdjacentConversationEnabled == false)
 
-        await sut.handle(action: .swipeToAdjacentEmailChanged(true))
+        await sut.handle(action: .swipeToAdjacentConversationChanged(true))
 
-        #expect(sut.state.isSwipeToAdjacentEmailEnabled == true)
+        #expect(sut.state.isSwipeToAdjacentConversationEnabled == true)
 
-        await sut.handle(action: .swipeToAdjacentEmailChanged(false))
+        await sut.handle(action: .swipeToAdjacentConversationChanged(false))
 
-        #expect(sut.state.isSwipeToAdjacentEmailEnabled == false)
+        #expect(sut.state.isSwipeToAdjacentConversationEnabled == false)
     }
 
     @Test
-    func whenSwipeToAdjacentEmailChanged_AndFails_ItRevertsToPreviousState() async {
-        #expect(sut.state.isSwipeToAdjacentEmailEnabled == false)
+    func whenSwipeToAdjacentConversationChanged_AndFails_ItRevertsToPreviousState() async {
+        #expect(sut.state.isSwipeToAdjacentConversationEnabled == false)
 
         customSettingsSpy.stubbedSwipeToAdjacent = .error(ProtonError.network)
 
-        await sut.handle(action: .swipeToAdjacentEmailChanged(true))
+        await sut.handle(action: .swipeToAdjacentConversationChanged(true))
 
-        #expect(sut.state.isSwipeToAdjacentEmailEnabled == false)
+        #expect(sut.state.isSwipeToAdjacentConversationEnabled == false)
     }
 
     // MARK: - Private

@@ -92,9 +92,9 @@ public struct Toast: Hashable, Sendable {
 
     public struct Button: Hashable, Sendable {
         let type: ButtonType
-        let action: @Sendable () async -> Void
+        let action: () async -> Void
 
-        public init(type: ButtonType, action: @Sendable @escaping () async -> Void) {
+        public init(type: ButtonType, action: @escaping () async -> Void) {
             self.type = type
             self.action = action
         }

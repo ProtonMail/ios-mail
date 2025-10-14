@@ -65,7 +65,7 @@ final class AppSettingsStateStore: StateStore, Sendable {
             await update(setting: \.useCombineContacts, value: value)
         case .alternativeRoutingChanged(let value):
             await update(setting: \.useAlternativeRouting, value: value)
-        case .swipeToAdjacentEmailChanged(let value):
+        case .swipeToAdjacentConversationChanged(let value):
             _ = await customSettings.setSwipeToAdjacentConversation(enabled: value)
             await refreshSwipeToAdjacentSettings()
         }
@@ -107,7 +107,7 @@ final class AppSettingsStateStore: StateStore, Sendable {
                 .copy(\.storedAppSettings, to: appSettings)
                 .copy(\.areNotificationsEnabled, to: areNotificationsEnabled)
                 .copy(\.appLanguage, to: appLangaugeProvider.appLangauge)
-                .copy(\.isSwipeToAdjacentEmailEnabled, to: isSwipeToAdjacentEnabled)
+                .copy(\.isSwipeToAdjacentConversationEnabled, to: isSwipeToAdjacentEnabled)
         } catch {
             AppLogger.log(error: error, category: .appSettings)
         }
@@ -136,7 +136,7 @@ final class AppSettingsStateStore: StateStore, Sendable {
     func refreshSwipeToAdjacentSettings() async {
         do {
             let isSwipeToAdjacentEmailEnabled = try await customSettings.swipeToAdjacentConversation().get()
-            state = state.copy(\.isSwipeToAdjacentEmailEnabled, to: isSwipeToAdjacentEmailEnabled)
+            state = state.copy(\.isSwipeToAdjacentConversationEnabled, to: isSwipeToAdjacentEmailEnabled)
         } catch {
             AppLogger.log(error: error, category: .appSettings)
         }

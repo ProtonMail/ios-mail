@@ -37,7 +37,7 @@ struct AppSettingsSnapshotTests {
                     useAlternativeRouting: true
                 ),
                 isAppearanceMenuShown: false,
-                isSwipeToAdjacentEmailEnabled: false
+                isSwipeToAdjacentConversationEnabled: false
             ),
             appSettingsRepository: AppSettingsRepositorySpy(),
             customSettings: CustomSettingsSpy()

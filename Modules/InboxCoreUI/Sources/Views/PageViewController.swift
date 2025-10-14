@@ -39,7 +39,6 @@ public struct PageViewController<Page: View>: UIViewControllerRepresentable {
 
     public func makeUIViewController(context: Context) -> UIPageViewController {
         let pageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal)
-        pageViewController.dataSource = context.coordinator
         pageViewController.delegate = context.coordinator
 
         let page = startingPage()

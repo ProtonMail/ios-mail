@@ -264,8 +264,7 @@ extension MailboxScreen {
                 draftPresenter: mailboxModel.draftPresenter,
                 navigationPath: $mailboxModel.state.navigationPath,
                 selectedMailbox: mailboxModel.selectedMailbox,
-                userSession: userSession,
-                customSettings: customSettings(ctx: userSession)
+                userSession: userSession
             )
         }
     }

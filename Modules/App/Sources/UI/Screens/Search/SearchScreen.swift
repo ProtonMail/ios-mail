@@ -132,8 +132,7 @@ struct SearchScreen: View {
             draftPresenter: composerCoordinator.draftPresenter,
             navigationPath: $model.state.navigationPath,
             selectedMailbox: model.selectedMailbox,
-            userSession: userSession,
-            customSettings: customSettings(ctx: userSession)
+            userSession: userSession
         )
     }
 }

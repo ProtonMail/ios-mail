@@ -75,7 +75,7 @@ struct AppSettingsScreen: View {
                             FormSection(footer: L10n.Settings.App.combinedContactsInfo) {
                                 FormSwitchView(
                                     title: L10n.Settings.App.combinedContacts,
-                                    isOn: combinedContactsBinding
+                                    isOn: useCombinedContacts
                                 )
                             }
                         }
@@ -86,7 +86,7 @@ struct AppSettingsScreen: View {
                     ) {
                         FormSwitchView(
                             title: L10n.Settings.App.swipeToNextEmail,
-                            isOn: swipeToAdjacentEmailBinding
+                            isOn: isSwipeToAdjacentConversation
                         )
                     }
                     FormSection(header: nil, footer: nil) {
@@ -104,7 +104,7 @@ struct AppSettingsScreen: View {
                     ) {
                         FormSwitchView(
                             title: L10n.Settings.App.alternativeRouting,
-                            isOn: alternativeRoutingBinding
+                            isOn: isAlternativeRoutingEnabled
                         )
                     }
                 }
@@ -161,24 +161,24 @@ struct AppSettingsScreen: View {
         )
     }
 
-    private var combinedContactsBinding: Binding<Bool> {
+    private var useCombinedContacts: Binding<Bool> {
         .init(
             get: { store.state.storedAppSettings.useCombineContacts },
             set: { newValue in store.handle(action: .combinedContactsChanged(newValue)) }
         )
     }
 
-    private var alternativeRoutingBinding: Binding<Bool> {
+    private var isAlternativeRoutingEnabled: Binding<Bool> {
         .init(
             get: { store.state.storedAppSettings.useAlternativeRouting },
             set: { newValue in store.handle(action: .alternativeRoutingChanged(newValue)) }
         )
     }
 
-    private var swipeToAdjacentEmailBinding: Binding<Bool> {
+    private var isSwipeToAdjacentConversation: Binding<Bool> {
         .init(
-            get: { store.state.isSwipeToAdjacentEmailEnabled },
-            set: { newValue in store.handle(action: .swipeToAdjacentEmailChanged(newValue)) }
+            get: { store.state.isSwipeToAdjacentConversationEnabled },
+            set: { newValue in store.handle(action: .swipeToAdjacentConversationChanged(newValue)) }
         )
     }
 }
