@@ -22805,6 +22805,9 @@
         }
       }
     },
+    "Include Trash/Spam" : {
+      "comment" : "Toggle to include Trash and Spam messages in the results list."
+    },
     "Incorrect PIN. Please try again." : {
       "comment" : "Error message when a user enters an invalid PIN",
       "localizations" : {

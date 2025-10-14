@@ -55,7 +55,7 @@ struct UnreadFilterBarView: View {
         SelectableCapsuleButton(isSelected: isSelected) {
             state.spamTrashToggleState = state.spamTrashToggleState.toggled()
         } label: {
-            Text("Include Trash/Spam")
+            Text(L10n.Mailbox.includeTrashSpamToggleTitle)
         }
     }
 

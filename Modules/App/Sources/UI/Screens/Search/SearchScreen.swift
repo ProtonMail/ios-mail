@@ -56,7 +56,7 @@ struct SearchScreen: View {
                                 SelectableCapsuleButton(
                                     isSelected: isOn,
                                     action: { model.includeTrashSpamTapped() },
-                                    label: { Text("Include Trash/Spam") }
+                                    label: { Text(L10n.Mailbox.includeTrashSpamToggleTitle) }
                                 )
                                 Spacer()
                             }

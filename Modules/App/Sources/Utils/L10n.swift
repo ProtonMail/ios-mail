@@ -462,6 +462,10 @@ enum L10n {
             "Maximum selection reached",
             comment: "Toast when attempting to select more than the maximum number of items."
         )
+        static let includeTrashSpamToggleTitle = LocalizedStringResource(
+            "Include Trash/Spam",
+            comment: "Toggle to include Trash and Spam messages in the results list."
+        )
     }
 
     enum Onboarding {
