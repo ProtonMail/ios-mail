@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import InboxCore
 import InboxCoreUI
 import InboxDesignSystem
 import proton_app_uniffi
@@ -30,12 +31,15 @@ struct ConversationsPageViewController: View {
     let navigationPath: Binding<NavigationPath>
     let selectedMailbox: SelectedMailbox
     let userSession: MailUserSession
+    let customSettings: CustomSettingsProtocol
 
     @State var activeModel: ConversationDetailModel?
+    @State private var isSwipeToAdjacentEnabled: Bool = false
 
     var body: some View {
         PageViewController(
             cursor: mailboxCursor,
+            isSwipeToAdjacentEnabled: isSwipeToAdjacentEnabled,
             startingPage: startingPage,
             pageFactory: pageFactory
         )
@@ -59,6 +63,14 @@ struct ConversationsPageViewController: View {
                 Color
                     .clear
                     .conversationDetailToolbars(model: activeModel, navigationPath: navigationPath)
+            }
+        }
+        .task {
+            do {
+                let isEnabled = try await customSettings.swipeToAdjacentConversation().get()
+                isSwipeToAdjacentEnabled = isEnabled
+            } catch {
+                AppLogger.log(error: error, category: .appSettings)
             }
         }
     }

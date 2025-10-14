@@ -21,15 +21,18 @@ import SwiftUI
 
 public struct PageViewController<Page: View>: UIViewControllerRepresentable {
     let cursor: MailboxCursorProtocol
+    let isSwipeToAdjacentEnabled: Bool
     let startingPage: () -> Page
     let pageFactory: (CursorEntry) -> Page
 
     public init(
         cursor: MailboxCursorProtocol,
+        isSwipeToAdjacentEnabled: Bool,
         startingPage: @escaping () -> Page,
         pageFactory: @escaping (CursorEntry) -> Page
     ) {
         self.cursor = cursor
+        self.isSwipeToAdjacentEnabled = isSwipeToAdjacentEnabled
         self.startingPage = startingPage
         self.pageFactory = pageFactory
     }
@@ -47,6 +50,7 @@ public struct PageViewController<Page: View>: UIViewControllerRepresentable {
     }
 
     public func updateUIViewController(_ uiViewController: UIPageViewController, context: Context) {
+        uiViewController.dataSource = isSwipeToAdjacentEnabled ? context.coordinator : nil
     }
 
     public func makeCoordinator() -> Coordinator {
