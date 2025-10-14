@@ -76,7 +76,7 @@ struct ConversationDetailScreen: View {
                             toastStateStore: toastStateStore,
                             actionOrigin: .sheet
                         ) {
-                            goBackToMailbox()
+                            proceedAfterMove()
                         }
                     }
                 },
@@ -87,11 +87,11 @@ struct ConversationDetailScreen: View {
                             toastStateStore: toastStateStore,
                             actionOrigin: .sheet
                         ) {
-                            goBackToMailbox()
+                            proceedAfterMove()
                         }
                     }
                 },
-                goBackNavigation: { goBackToMailbox() },
+                goBackNavigation: proceedAfterMove,
                 messageAppearanceOverrideStore: model.messageAppearanceOverrideStore
             )
             .alert(model: $model.actionAlert)
@@ -103,7 +103,7 @@ struct ConversationDetailScreen: View {
                 of: model.state,
                 { _, newValue in
                     if case .messagesReady(let messageListState) = newValue, messageListState.messages.isEmpty {
-                        goBackToMailbox()
+                        proceedAfterMove()
                     }
                 }
             )
@@ -136,7 +136,7 @@ struct ConversationDetailScreen: View {
                         model: model,
                         mailUserSession: mailUserSession,
                         draftPresenter: draftPresenter,
-                        goBack: { goBackToMailbox() }
+                        goBack: proceedAfterMove
                     )
                 }
                 .accessibilityElement(children: .contain)
@@ -187,11 +187,6 @@ struct ConversationDetailScreen: View {
             .textSelection(.enabled)
             .frame(maxWidth: .infinity, alignment: .center)
             .accessibilityIdentifier(ConversationDetailScreenIdentifiers.subjectText)
-    }
-
-    @MainActor
-    private func goBackToMailbox() {
-        proceedAfterMove()
     }
 }
 
