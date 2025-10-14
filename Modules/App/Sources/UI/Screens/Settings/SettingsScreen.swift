@@ -65,8 +65,8 @@ struct SettingsScreen: View {
                         storageSection()
                         preferencesSection()
                     }
+                    .padding(.horizontal, DS.Spacing.large)
                 }
-                .padding(.horizontal, DS.Spacing.large)
                 .navigationTitle(L10n.Settings.title.string)
                 .toolbarTitleDisplayMode(.large)
                 .toolbarBackground(DS.Color.BackgroundInverted.norm, for: .navigationBar)
