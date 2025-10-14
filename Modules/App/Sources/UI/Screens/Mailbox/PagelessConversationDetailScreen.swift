@@ -25,7 +25,6 @@ struct PagelessConversationDetailScreen: View {
 
     let seed: ConversationDetailSeed
     let draftPresenter: DraftPresenter
-    let navigationPath: Binding<NavigationPath>
     let mailUserSession: MailUserSession
 
     @State var activeModel: ConversationDetailModel?
@@ -34,7 +33,6 @@ struct PagelessConversationDetailScreen: View {
         ConversationDetailScreen(
             seed: seed,
             draftPresenter: draftPresenter,
-            navigationPath: navigationPath,
             mailUserSession: mailUserSession,
             onLoad: { activeModel = $0 },
             onDidAppear: { _ in }
@@ -58,7 +56,7 @@ struct PagelessConversationDetailScreen: View {
             if let activeModel {
                 Color
                     .clear
-                    .conversationDetailToolbars(model: activeModel, navigationPath: navigationPath)
+                    .conversationDetailToolbars(model: activeModel)
             }
         }
     }

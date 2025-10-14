@@ -133,6 +133,7 @@ struct MailboxScreen: View {
             didAppear?(self)
         }
         .environment(\.confirmLink, mailboxModel.state.confirmLink)
+        .environment(\.proceedAfterMove, mailboxModel.proceedAfterMove)
     }
 
     private func onboardingScreenDismissed() {
@@ -262,7 +263,6 @@ extension MailboxScreen {
                 startingItem: uiModel,
                 mailboxCursor: mailboxCursor,
                 draftPresenter: mailboxModel.draftPresenter,
-                navigationPath: $mailboxModel.state.navigationPath,
                 selectedMailbox: mailboxModel.selectedMailbox,
                 userSession: userSession
             )
@@ -275,7 +275,6 @@ extension MailboxScreen {
             PagelessConversationDetailScreen(
                 seed: .pushNotification(seed),
                 draftPresenter: mailboxModel.draftPresenter,
-                navigationPath: $mailboxModel.state.navigationPath,
                 mailUserSession: userSession
             )
         }

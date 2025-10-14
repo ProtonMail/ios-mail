@@ -746,6 +746,19 @@ extension MailboxModel {
     }
 }
 
+// MARK: Auto-advance
+
+extension EnvironmentValues {
+    @Entry var proceedAfterMove: () -> Void = {}
+}
+
+extension MailboxModel {
+    func proceedAfterMove() {
+        guard !state.navigationPath.isEmpty else { return }
+        state.navigationPath.removeLast()
+    }
+}
+
 extension MailboxModel {
 
     struct State {

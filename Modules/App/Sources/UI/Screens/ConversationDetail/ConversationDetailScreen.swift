@@ -25,7 +25,7 @@ struct ConversationDetailScreen: View {
     @State private var animateViewIn: Bool = false
     @EnvironmentObject var toastStateStore: ToastStateStore
     @Environment(\.colorScheme) var colorScheme
-    @Binding private var navigationPath: NavigationPath
+    @Environment(\.proceedAfterMove) var proceedAfterMove
     private let draftPresenter: DraftPresenter
     private let mailUserSession: MailUserSession
     private let onLoad: (ConversationDetailModel) -> Void
@@ -36,7 +36,6 @@ struct ConversationDetailScreen: View {
     init(
         seed: ConversationDetailSeed,
         draftPresenter: DraftPresenter,
-        navigationPath: Binding<NavigationPath>,
         mailUserSession: MailUserSession,
         snoozeService: SnoozeServiceProtocol = SnoozeService(mailUserSession: { AppContext.shared.userSession }),
         onLoad: @escaping (ConversationDetailModel) -> Void,
@@ -51,7 +50,6 @@ struct ConversationDetailScreen: View {
                 snoozeService: snoozeService,
                 messageAppearanceOverrideStore: MessageAppearanceOverrideStore()
             ))
-        self._navigationPath = .init(projectedValue: navigationPath)
         self.draftPresenter = draftPresenter
         self.mailUserSession = mailUserSession
         self.onLoad = onLoad
@@ -193,8 +191,7 @@ struct ConversationDetailScreen: View {
 
     @MainActor
     private func goBackToMailbox() {
-        guard !navigationPath.isEmpty else { return }
-        navigationPath.removeLast()
+        proceedAfterMove()
     }
 }
 
@@ -234,7 +231,6 @@ struct ConversationDetailScreen: View {
                 selectedMailbox: .inbox
             ),
             draftPresenter: .dummy(),
-            navigationPath: .constant(.init()),
             mailUserSession: .dummy,
             onLoad: { _ in },
             onDidAppear: { _ in }
@@ -251,7 +247,6 @@ struct ConversationDetailScreen: View {
                     subject: "Embarking on an Epic Adventure: Planning Our Team Expedition to Patagonia"
                 )),
             draftPresenter: .dummy(),
-            navigationPath: .constant(.init()),
             mailUserSession: .dummy,
             onLoad: { _ in },
             onDidAppear: { _ in }

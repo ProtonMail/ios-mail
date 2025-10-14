@@ -21,18 +21,17 @@ import SwiftUI
 
 extension View {
     func conversationDetailToolbars(
-        model: ConversationDetailModel,
-        navigationPath: Binding<NavigationPath>
+        model: ConversationDetailModel
     ) -> some View {
-        modifier(ConversationDetailToolbars(model: model, navigationPath: navigationPath))
+        modifier(ConversationDetailToolbars(model: model))
     }
 }
 
 private struct ConversationDetailToolbars: ViewModifier {
     @EnvironmentObject var refreshToolbarNotifier: RefreshToolbarNotifier
     @EnvironmentObject private var toastStateStore: ToastStateStore
+    @Environment(\.proceedAfterMove) var proceedAfterMove
     @ObservedObject var model: ConversationDetailModel
-    @Binding var navigationPath: NavigationPath
 
     func body(content: Content) -> some View {
         content
@@ -56,7 +55,7 @@ private struct ConversationDetailToolbars: ViewModifier {
                                 toastStateStore: toastStateStore,
                                 actionOrigin: .toolbar,
                             ) {
-                                goBackToMailbox()
+                                proceedAfterMove()
                             }
                         }
                     }
@@ -64,7 +63,7 @@ private struct ConversationDetailToolbars: ViewModifier {
                 conversationActionSelected: { action in
                     Task {
                         await model.handle(action: action, toastStateStore: toastStateStore, actionOrigin: .toolbar) {
-                            goBackToMailbox()
+                            proceedAfterMove()
                         }
                     }
                 }
@@ -118,11 +117,6 @@ private struct ConversationDetailToolbars: ViewModifier {
         } else {
             Color.clear
         }
-    }
-
-    private func goBackToMailbox() {
-        guard !navigationPath.isEmpty else { return }
-        navigationPath.removeLast()
     }
 }
 

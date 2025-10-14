@@ -139,7 +139,6 @@ struct SearchScreen: View {
             startingItem: uiModel,
             mailboxCursor: mailboxCursor,
             draftPresenter: composerCoordinator.draftPresenter,
-            navigationPath: $model.state.navigationPath,
             selectedMailbox: model.selectedMailbox,
             userSession: userSession
         )

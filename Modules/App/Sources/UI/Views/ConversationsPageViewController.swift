@@ -28,7 +28,6 @@ struct ConversationsPageViewController: View {
     let mailboxCursor: MailboxCursorProtocol
 
     let draftPresenter: DraftPresenter
-    let navigationPath: Binding<NavigationPath>
     let selectedMailbox: SelectedMailbox
     let userSession: MailUserSession
 
@@ -61,7 +60,7 @@ struct ConversationsPageViewController: View {
             if let activeModel {
                 Color
                     .clear
-                    .conversationDetailToolbars(model: activeModel, navigationPath: navigationPath)
+                    .conversationDetailToolbars(model: activeModel)
             }
         }
         .task {
@@ -87,7 +86,6 @@ struct ConversationsPageViewController: View {
         .init(
             seed: .mailboxItem(item: model, selectedMailbox: selectedMailbox),
             draftPresenter: draftPresenter,
-            navigationPath: navigationPath,
             mailUserSession: userSession,
             onLoad: { if activeModel == nil { activeModel = $0 } },
             onDidAppear: { activeModel = $0 }
