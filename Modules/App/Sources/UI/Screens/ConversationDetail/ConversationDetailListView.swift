@@ -83,7 +83,7 @@ struct ConversationDetailListView: View {
 
     private func recipientActionSheet(target: MessageDetail.Recipient) -> some View {
         MessageAddressActionView(
-            messageID: .init(value: 1),  // FIXME: Consider passing optional
+            messageID: .none,
             avatarUIModel: AvatarUIModel(info: target.avatarInfo, type: .other),
             name: target.name,
             emailAddress: target.address,

@@ -27,7 +27,7 @@ struct MessageAddressActionView: View {
     @Environment(\.openURL) var openURL
     @Environment(\.pasteboard) var pasteboard
     @Environment(\.dismissTestable) var dismiss
-    let messageID: Id
+    let messageID: ID?
     let avatarUIModel: AvatarUIModel
     let name: String
     let emailAddress: String
@@ -115,7 +115,7 @@ struct MessageAddressActionView: View {
 #Preview {
     HStack {
         MessageAddressActionView(
-            messageID: .init(value: 1),
+            messageID: .none,
             avatarUIModel: .init(
                 info: .init(initials: "Aa", color: .purple),
                 type: .sender(.init(params: .init(), blocked: .no))

@@ -38,7 +38,7 @@ final class MessageAddressActionViewStateStore: StateStore {
 
     @Published var state: State
 
-    private let messageID: Id
+    private let messageID: ID?
     private let mailbox: Mailbox
     private let session: MailUserSession
     private let toastStateStore: ToastStateStore
@@ -50,7 +50,7 @@ final class MessageAddressActionViewStateStore: StateStore {
     private let messageBannersNotifier: RefreshMessageBannersNotifier
 
     init(
-        messageID: Id,
+        messageID: ID?,
         avatar: AvatarUIModel,
         name: String,
         email: String,
@@ -83,7 +83,7 @@ final class MessageAddressActionViewStateStore: StateStore {
     func handle(action: Action) async {
         switch action {
         case .onLoad:
-            if case .sender(let senderInfo) = state.avatar.type {
+            if case .sender(let senderInfo) = state.avatar.type, let messageID {
                 let isBlocked = await wrapper.isSenderBlocked(mailbox, messageID)
                 let blocked: SenderInfo.Blocked = isBlocked ? .yes : .no
                 let updatedSenderInfo = senderInfo.copy(\.blocked, to: blocked)
@@ -147,11 +147,11 @@ final class MessageAddressActionViewStateStore: StateStore {
 
 struct RustMessageAddressWrapper {
     let block: @Sendable (_ userSession: MailUserSession, _ emailAddress: String) async -> VoidActionResult
-    let isSenderBlocked: @Sendable (_ mailbox: Mailbox, _ messageID: Id) async -> Bool
+    let isSenderBlocked: @Sendable (_ mailbox: Mailbox, _ messageID: ID) async -> Bool
 
     init(
         block: @escaping @Sendable (MailUserSession, String) async -> VoidActionResult,
-        isSenderBlocked: @escaping @Sendable (Mailbox, Id) async -> Bool
+        isSenderBlocked: @escaping @Sendable (Mailbox, ID) async -> Bool
     ) {
         self.block = block
         self.isSenderBlocked = isSenderBlocked
