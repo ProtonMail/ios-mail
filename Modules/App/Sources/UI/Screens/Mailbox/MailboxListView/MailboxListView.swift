@@ -39,6 +39,7 @@ struct MailboxListView: View {
             mailboxListView()
         }
         .onChange(of: model.state.filterBar.isUnreadButtonSelected, { model.onUnreadFilterChange() })
+        .onChange(of: model.state.filterBar.spamTrashToggleState) { model.onIncludeSpamTrashFilterChange() }
     }
 }
 

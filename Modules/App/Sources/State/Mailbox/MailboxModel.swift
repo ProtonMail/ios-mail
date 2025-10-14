@@ -287,7 +287,7 @@ extension MailboxModel {
                     session: userSession,
                     labelId: mailbox.labelId(),
                     unread: unreadFilter,
-                    include: .default,
+                    include: state.filterBar.spamTrashToggleState.includeSpamTrash,
                     callback: MessageScrollerLiveQueryCallbackkWrapper { [weak self] update in
                         Task {
                             await self?.handleMessagesUpdate(update)
@@ -300,7 +300,7 @@ extension MailboxModel {
                     session: userSession,
                     labelId: mailbox.labelId(),
                     unread: unreadFilter,
-                    include: .default,
+                    include: state.filterBar.spamTrashToggleState.includeSpamTrash,
                     callback: ConversationScrollerLiveQueryCallbackkWrapper { [weak self] update in
                         Task {
                             await self?.handleConversationsUpdate(update)
@@ -513,6 +513,15 @@ extension MailboxModel {
             } else {
                 _ = messageScroller?.changeFilter(unread: unreadFilter)
             }
+        }
+    }
+
+    func onIncludeSpamTrashFilterChange() {
+        let includeSpamTrash = state.filterBar.spamTrashToggleState.includeSpamTrash
+        if viewMode == .conversations {
+            _ = conversationScroller?.changeInclude(include: includeSpamTrash)
+        } else {
+            _ = messageScroller?.changeInclude(include: includeSpamTrash)
         }
     }
 }

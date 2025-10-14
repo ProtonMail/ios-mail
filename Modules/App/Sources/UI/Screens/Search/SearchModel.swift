@@ -103,7 +103,7 @@ final class SearchModel: ObservableObject, @unchecked Sendable {
             let result = await scrollerSearch(
                 session: dependencies.appContext.userSession,
                 options: .init(keywords: query),
-                include: .default,
+                include: state.spamTrashToggleState.includeSpamTrash,
                 callback: MessageScrollerLiveQueryCallbackkWrapper { [weak self] update in
                     Task {
                         await self?.handleMessagesUpdate(update)
@@ -123,7 +123,14 @@ final class SearchModel: ObservableObject, @unchecked Sendable {
     }
 
     func includeTrashSpamTapped() {
-        // FIXME: - Implement action
+        guard let searchScroller else { return }
+        do {
+            let newSpamTrashToggleState = state.spamTrashToggleState.toggled()
+            _ = try searchScroller.changeInclude(include: newSpamTrashToggleState.includeSpamTrash).get()
+            state.spamTrashToggleState = newSpamTrashToggleState
+        } catch {
+            AppLogger.log(error: error, category: .search)
+        }
     }
 
     private func setUpSpamTrashToggleVisibility(supportsIncludeFilter: Bool) {

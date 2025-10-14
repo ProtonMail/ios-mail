@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import proton_app_uniffi
 import InboxDesignSystem
 import SwiftUI
 
@@ -156,15 +157,6 @@ extension SpamTrashToggleState {
         }
     }
 
-    var isShown: Bool {
-        switch self {
-        case .visible:
-            true
-        case .hidden:
-            false
-        }
-    }
-
     var isSelected: Bool {
         switch self {
         case .visible(let isSelected):
@@ -172,6 +164,10 @@ extension SpamTrashToggleState {
         case .hidden:
             false
         }
+    }
+
+    var includeSpamTrash: IncludeSwitch {
+        isSelected ? .withSpamAndTrash : .default
     }
 }
 
