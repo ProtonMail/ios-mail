@@ -21,11 +21,12 @@ struct BodyEditorFactory {
     let imageProxy: ImageProxy
 
     func makeEditor(for composerMode: ComposerMode) -> BodyEditor {
+        AppLogger.log(message: "initialize editor for composer mode: \(composerMode)", category: .composer)
         switch composerMode {
         case .html:
-            HtmlBodyEditorController(imageProxy: imageProxy)
+            return HtmlBodyEditorController(imageProxy: imageProxy)
         case .plainText:
-            PlainTextBodyEditorController()
+            return PlainTextBodyEditorController()
         }
     }
 }
