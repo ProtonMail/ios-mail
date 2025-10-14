@@ -74,16 +74,6 @@ public extension ConversationScrollerChangeFilterResult {
         }
     }
 }
-public extension ConversationScrollerChangeIncludeResult {
-    func get() throws(MailScrollerError) {
-        switch self {
-        case .ok:
-            break
-        case .error(let error):
-            throw error
-        }
-    }
-}
 public extension ConversationScrollerFetchMoreResult {
     func get() throws(MailScrollerError) {
         switch self {
@@ -1054,16 +1044,6 @@ public extension MessageScrollerChangeFilterResult {
         }
     }
 }
-public extension MessageScrollerChangeIncludeResult {
-    func get() throws(MailScrollerError) {
-        switch self {
-        case .ok:
-            break
-        case .error(let error):
-            throw error
-        }
-    }
-}
 public extension MessageScrollerFetchMoreResult {
     func get() throws(MailScrollerError) {
         switch self {
@@ -1199,16 +1179,6 @@ public extension RsvpEventGetResult {
         switch self {
         case .ok(let value):
             value
-        case .error(let error):
-            throw error
-        }
-    }
-}
-public extension SearchScrollerChangeIncludeResult {
-    func get() throws(MailScrollerError) {
-        switch self {
-        case .ok:
-            break
         case .error(let error):
             throw error
         }
