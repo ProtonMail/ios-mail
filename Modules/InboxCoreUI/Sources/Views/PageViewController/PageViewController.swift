@@ -20,10 +20,6 @@ import InboxCore
 import proton_app_uniffi
 import SwiftUI
 
-extension Notification.Name {
-    public static let advanceToNextMessage = Notification.Name("advanceToNextMessage")
-}
-
 public struct PageViewController<Page: View>: UIViewControllerRepresentable {
     @Environment(\.presentationMode) var presentationMode
 
@@ -47,11 +43,14 @@ public struct PageViewController<Page: View>: UIViewControllerRepresentable {
     public func makeUIViewController(context: Context) -> UIPageViewController {
         let pageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal)
         pageViewController.delegate = context.coordinator
-        context.coordinator.initialize(pageViewController: pageViewController)
 
         let page = startingPage()
         let hostingController = UIHostingController(rootView: page)
         pageViewController.setViewControllers([hostingController], direction: .forward, animated: false)
+
+        if let notifier = context.environment.goToNextPageNotifier {
+            context.coordinator.subscribe(notifier: notifier, pageViewController: pageViewController)
+        }
 
         return pageViewController
     }
@@ -86,10 +85,9 @@ extension PageViewController {
             self.dismiss = dismiss
         }
 
-        func initialize(pageViewController: UIPageViewController) {
-            NotificationCenter
-                .default
-                .publisher(for: .advanceToNextMessage)
+        func subscribe(notifier: GoToNextPageNotifier, pageViewController: UIPageViewController) {
+            notifier
+                .publisher
                 .sink { [weak self] _ in
                     self?.swipeToNextPageAfterMove(pageViewController: pageViewController)
                 }

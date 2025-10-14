@@ -133,6 +133,7 @@ struct MailboxScreen: View {
             didAppear?(self)
         }
         .environment(\.confirmLink, mailboxModel.state.confirmLink)
+        .environment(\.goToNextPageNotifier, mailboxModel.goToNextConversationNotifier)
         .environment(\.proceedAfterMove, mailboxModel.proceedAfterMove)
     }
 

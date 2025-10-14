@@ -41,6 +41,7 @@ final class MailboxModel: ObservableObject {
     @ObservedObject private var appRoute: AppRouteState
     @Published private(set) var mailbox: Mailbox?
     let draftPresenter: DraftPresenter
+    let goToNextConversationNotifier = GoToNextPageNotifier()
 
     private var messageScroller: MessageScroller?
     private var conversationScroller: ConversationScroller?
@@ -762,7 +763,7 @@ extension EnvironmentValues {
 extension MailboxModel {
     func proceedAfterMove() {
         if state.nextMessageOnMove == .enabledExplicit {
-            NotificationCenter.default.post(name: .advanceToNextMessage, object: nil)
+            goToNextConversationNotifier.notify()
         } else {
             goBackToMailbox()
         }
