@@ -65,9 +65,9 @@ final class AppSettingsStateStore: StateStore, Sendable {
             await update(setting: \.useCombineContacts, value: value)
         case .alternativeRoutingChanged(let value):
             await update(setting: \.useAlternativeRouting, value: value)
-        case .swipeToNextEmailChanged(let value):
+        case .swipeToAdjacentEmailChanged(let value):
             _ = await customSettings.setSwipeToAdjacentConversation(enabled: value)
-            await refreshCustomSettings()
+            await refreshSwipeToAdjacentSettings()
         }
     }
 
@@ -133,7 +133,7 @@ final class AppSettingsStateStore: StateStore, Sendable {
     }
 
     @MainActor
-    func refreshCustomSettings() async {
+    func refreshSwipeToAdjacentSettings() async {
         do {
             let isSwipeToAdjacentEmailEnabled = try await customSettings.swipeToAdjacentConversation().get()
             state = state.copy(\.isSwipeToAdjacentEmailEnabled, to: isSwipeToAdjacentEmailEnabled)
@@ -174,5 +174,4 @@ final class AppSettingsStateStore: StateStore, Sendable {
     private func openNativeAppSettings() async {
         await urlOpener.open(.settings, options: [:])
     }
-
 }

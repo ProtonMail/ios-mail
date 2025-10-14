@@ -86,7 +86,7 @@ struct AppSettingsScreen: View {
                     ) {
                         FormSwitchView(
                             title: L10n.Settings.App.swipeToNextEmail,
-                            isOn: swipeToNextEmailBinding
+                            isOn: swipeToAdjacentEmailBinding
                         )
                     }
                     FormSection(header: nil, footer: nil) {
@@ -175,10 +175,10 @@ struct AppSettingsScreen: View {
         )
     }
 
-    private var swipeToNextEmailBinding: Binding<Bool> {
+    private var swipeToAdjacentEmailBinding: Binding<Bool> {
         .init(
             get: { store.state.isSwipeToAdjacentEmailEnabled },
-            set: { newValue in store.handle(action: .swipeToNextEmailChanged(newValue)) }
+            set: { newValue in store.handle(action: .swipeToAdjacentEmailChanged(newValue)) }
         )
     }
 }
