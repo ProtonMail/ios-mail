@@ -271,7 +271,7 @@ extension MailboxModel {
             conversationScroller?.terminate()
 
             paginatedDataSource.resetToInitialState()
-            state.filterBar.isUnreadButtonSelected = false
+            state.filterBar = .init()
 
             let mailbox =
                 selectedMailbox.isInbox

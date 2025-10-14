@@ -35,7 +35,7 @@ struct MailboxListView: View {
 
     var body: some View {
         VStack(spacing: .zero) {
-            unreadFilter()
+            filterBar()
             mailboxListView()
         }
         .onChange(of: model.state.filterBar.isUnreadButtonSelected, { model.onUnreadFilterChange() })
@@ -109,8 +109,8 @@ extension MailboxListView {
     }
 
     @ViewBuilder
-    private func unreadFilter() -> some View {
-        UnreadFilterBarView(state: $model.state.filterBar, onSelectAllTapped: model.onSelectAllTapped)
+    private func filterBar() -> some View {
+        FilterBarView(state: $model.state.filterBar, onSelectAllTapped: model.onSelectAllTapped)
             .background(
                 DS.Color.Background.norm
                     .shadow(DS.Shadows.raisedBottom, isVisible: !isListAtTop)

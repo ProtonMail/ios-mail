@@ -19,7 +19,7 @@ import proton_app_uniffi
 import InboxDesignSystem
 import SwiftUI
 
-struct UnreadFilterBarView: View {
+struct FilterBarView: View {
     @ScaledMetric var scale: CGFloat = 1
 
     @Binding var state: FilterBarState
@@ -194,11 +194,11 @@ private struct UnreadFilterIdentifiers {
         @State var stateSelectAllDisabled: FilterBarState = .init(visibilityMode: .selectionMode, selectAll: .selectionLimitReached)
         var body: some View {
             VStack {
-                UnreadFilterBarView(state: $stateRegular) { fatalError("button should be hidden") }
-                UnreadFilterBarView(state: $stateRegularUnknownCount) { fatalError("button should be hidden") }
-                UnreadFilterBarView(state: $stateSelectAllAvailable) { print("select all tapped") }
-                UnreadFilterBarView(state: $stateSelectAllAllSelected) { print("select all tapped") }
-                UnreadFilterBarView(state: $stateSelectAllDisabled) { fatalError("button should be disabled") }
+                FilterBarView(state: $stateRegular) { fatalError("button should be hidden") }
+                FilterBarView(state: $stateRegularUnknownCount) { fatalError("button should be hidden") }
+                FilterBarView(state: $stateSelectAllAvailable) { print("select all tapped") }
+                FilterBarView(state: $stateSelectAllAllSelected) { print("select all tapped") }
+                FilterBarView(state: $stateSelectAllDisabled) { fatalError("button should be disabled") }
             }
             .border(.red)
         }
