@@ -39,6 +39,8 @@ extension View {
 }
 
 struct ConversationToolbarModifier: ViewModifier {
+    @EnvironmentObject private var toastStateStore: ToastStateStore
+
     private let actions: ConversationToolbarActions?
     private let messageActionSelected: (MessageAction) -> Void
     private let conversationActionSelected: (ConversationAction) -> Void
@@ -85,6 +87,16 @@ struct ConversationToolbarModifier: ViewModifier {
                 }
                 Spacer()
             }
+        }
+        .onGeometryChange(for: CGFloat.self, of: \.size.height) { toolbarHeight in
+            let bottomSafeAreaToRecreate = DS.Spacing.large
+            toastStateStore.state.bottomBar.height = toolbarHeight + bottomSafeAreaToRecreate
+        }
+        .onAppear {
+            toastStateStore.state.bottomBar.isVisible = true
+        }
+        .onDisappear {
+            toastStateStore.state.bottomBar.isVisible = false
         }
     }
 
