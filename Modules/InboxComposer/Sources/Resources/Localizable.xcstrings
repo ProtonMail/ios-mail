@@ -10536,6 +10536,12 @@
             "value" : "Žádný z příjemců ve výchozím nastavení nepodporuje vypršení platnosti. Přidejte heslo, abyste povolili vypršení platnosti pro příjemce, kteří nepoužívají Proton Mail."
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ingen af modtagerne understøtter udløb som standard. Tilføj en adgangskode for at aktivere udløb for modtagere, som ikke har Proton Mail."
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -10563,7 +10569,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ninguno de los destinatarios admite la expiración por defecto. Añada una contraseña para activar la expiración a todos los destinatarios que cuentan con Proton Mail."
+            "value" : "Ninguno de los destinatarios admite la expiración por defecto. Añada una contraseña para activar la expiración a todos los destinatarios que no son de Proton Mail."
           }
         },
         "fr" : {

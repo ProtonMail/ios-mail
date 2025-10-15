@@ -22,6 +22,12 @@
             "value" : "+%lld další(ch)"
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "+%lld mere"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -68,6 +74,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "+%lld 以上"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "그 외 %lld개"
           }
         },
         "nb" : {

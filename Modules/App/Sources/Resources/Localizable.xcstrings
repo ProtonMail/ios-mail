@@ -5114,6 +5114,12 @@
             "value" : "Dodatečný podpis, který se při odesílání z tohoto zařízení zobrazí navíc k vašemu e-mailovému podpisu."
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "En ekstra signatur, der vises ud over din e-mail-signatur, når der sendes fra denne enhed."
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8647,6 +8653,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Calculator"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Калькулятор"
           }
         },
         "sk" : {
@@ -19504,7 +19516,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Подпіс электроннай пошты"
+            "value" : "Подпіс ліста"
           }
         },
         "ca" : {
@@ -19517,6 +19529,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "E-mailový podpis"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-mail-signatur"
           }
         },
         "de" : {
@@ -19565,6 +19583,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "メール署名"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이메일 서명"
           }
         },
         "nb" : {
@@ -40492,6 +40516,12 @@
             "value" : "Podpisy"
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Signaturer"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -40540,6 +40570,12 @@
             "value" : "署名"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "서명"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -40562,6 +40598,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Semnături"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Подписи"
           }
         },
         "sk" : {
@@ -52356,6 +52398,12 @@
             "value" : "Meteo"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Погода"
+          }
+        },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
@@ -53835,6 +53883,12 @@
             "value" : "Váš e-mailový podpis, který je automaticky přidán ke všem e-mailům, které odesíláte."
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Din e-mail-signatur, der automatisk tilføjes til alle e-mails, du sender."
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -53862,7 +53916,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Su firma de correo, que se agregará automaticamente a todos los correos electrónicos que envíe."
+            "value" : "Su firma de correo se añadirá automaticamente a todos los correos electrónicos que envíe."
           }
         },
         "fr" : {
