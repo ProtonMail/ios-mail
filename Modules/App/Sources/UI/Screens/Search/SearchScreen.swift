@@ -138,6 +138,7 @@ struct SearchScreen: View {
         ConversationsPageViewController(
             startingItem: uiModel,
             mailboxCursor: mailboxCursor,
+            modelToSeedMapping: ConversationDetailSeed.searchResultItem,
             draftPresenter: composerCoordinator.draftPresenter,
             selectedMailbox: model.selectedMailbox,
             userSession: userSession

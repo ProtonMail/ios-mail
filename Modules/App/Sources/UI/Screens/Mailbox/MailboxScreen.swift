@@ -263,6 +263,7 @@ extension MailboxScreen {
             ConversationsPageViewController(
                 startingItem: uiModel,
                 mailboxCursor: mailboxCursor,
+                modelToSeedMapping: ConversationDetailSeed.mailboxItem,
                 draftPresenter: mailboxModel.draftPresenter,
                 selectedMailbox: mailboxModel.selectedMailbox,
                 userSession: userSession

@@ -26,6 +26,7 @@ struct ConversationsPageViewController: View {
 
     let startingItem: MailboxItemCellUIModel
     let mailboxCursor: MailboxCursorProtocol
+    let modelToSeedMapping: (MailboxItemCellUIModel, SelectedMailbox) -> ConversationDetailSeed
 
     let draftPresenter: DraftPresenter
     let selectedMailbox: SelectedMailbox
@@ -84,7 +85,7 @@ struct ConversationsPageViewController: View {
 
     private func pageFactory(model: MailboxItemCellUIModel) -> ConversationDetailScreen {
         .init(
-            seed: .mailboxItem(item: model, selectedMailbox: selectedMailbox),
+            seed: modelToSeedMapping(model, selectedMailbox),
             draftPresenter: draftPresenter,
             mailUserSession: userSession,
             onLoad: { if activeModel == nil { activeModel = $0 } },
