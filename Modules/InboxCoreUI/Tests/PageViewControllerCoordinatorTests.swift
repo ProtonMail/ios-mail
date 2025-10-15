@@ -45,7 +45,7 @@ final class PageViewControllerCoordinatorTests {
     @Test
     func whenNextItemIsPromisedButNotProvidedByCursor_thenShowsLoadingView() throws {
         let centerViewController = setupCenterViewController()
-        cursor.stubbedGetNextResult = .ok(.callAsync)
+        cursor.stubbedPeekNextResult = .unknown
 
         let nextViewController = sut.pageViewController(pageViewController, viewControllerAfter: centerViewController)
 
@@ -55,7 +55,7 @@ final class PageViewControllerCoordinatorTests {
     @Test
     func whenThereIsNoNextItemProvidedByCursor_thenDoesntShowAnything() {
         let centerViewController = setupCenterViewController()
-        cursor.stubbedGetNextResult = .ok(.none)
+        cursor.stubbedPeekNextResult = .none
 
         let nextViewController = sut.pageViewController(pageViewController, viewControllerAfter: centerViewController)
 
@@ -143,28 +143,28 @@ final class PageViewControllerCoordinatorTests {
     }
 }
 
-private final class MailboxCursorSpy: @unchecked Sendable, MailboxCursorProtocol {
-    var stubbedGetNextResult: MailboxCursorGetNextResult = .ok(.some(.conversationEntry(.testData())))
+private final class MailboxCursorSpy: MailboxCursorProtocol {
+    var stubbedPeekNextResult: MailboxCursorPeekNextResult = .some(.conversationEntry(.testData()))
 
     private(set) var receivedMovements: [UIPageViewController.NavigationDirection] = []
 
-    func fetchNext() async -> MailboxCursorFetchNextResult {
-        .ok(.none)
+    func fetchNext() async throws(MailScrollerError) -> CursorEntry? {
+        nil
     }
 
-    func getNext() -> MailboxCursorGetNextResult {
-        stubbedGetNextResult
+    func peekNext() -> MailboxCursorPeekNextResult {
+        stubbedPeekNextResult
     }
 
-    func getPrevious() -> MailboxCursorGetPreviousResult {
-        .ok(.some(.conversationEntry(.testData())))
+    func peekPrev() -> CursorEntry? {
+        .conversationEntry(.testData())
     }
 
-    func goBackward() {
+    func gotoPrev() {
         receivedMovements.append(.reverse)
     }
 
-    func goForward() {
+    func gotoNext() {
         receivedMovements.append(.forward)
     }
 }

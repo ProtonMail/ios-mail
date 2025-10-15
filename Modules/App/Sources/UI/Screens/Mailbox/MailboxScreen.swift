@@ -257,7 +257,7 @@ extension MailboxScreen {
 
     @ViewBuilder
     private func mailboxItemDestination(uiModel: MailboxItemCellUIModel) -> some View {
-        let mailboxCursor = mailboxModel.mailboxCursor(uiModel: uiModel)!
+        let mailboxCursor = mailboxModel.mailboxCursor(startingAt: uiModel.id)!
 
         SidebarZIndexUpdateContainer {
             ConversationsPageViewController(

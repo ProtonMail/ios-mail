@@ -135,7 +135,7 @@ struct SearchScreen: View {
 
     @ViewBuilder
     private func mailboxItemDestination(uiModel: MailboxItemCellUIModel) -> some View {
-        let mailboxCursor = model.mailboxCursor(uiModel: uiModel)
+        let mailboxCursor = model.mailboxCursor(startingAt: uiModel.id)
 
         ConversationsPageViewController(
             startingItem: uiModel,

@@ -103,7 +103,7 @@ extension PageViewController {
                 return
             }
 
-            cursor.goForward()
+            cursor.gotoNext()
 
             pageViewController.setViewControllers([newCenterViewController], direction: .forward, animated: false)
         }
@@ -148,7 +148,7 @@ extension PageViewController {
                 return UIHostingController(rootView: page)
             case .none:
                 return nil
-            case .callAsync:
+            case .unknown:
                 let loadingView = LoadingView(dismiss: dismiss) {
                     try await self.loadNextPage()
                 }
@@ -157,29 +157,24 @@ extension PageViewController {
             }
         }
 
-        private func adjacentItem(direction: UIPageViewController.NavigationDirection) -> NextCursorEntry {
-            do {
-                switch direction {
-                case .forward:
-                    return try cursor.getNext().get()
-                case .reverse:
-                    if let previousItem = try cursor.getPrevious().get() {
-                        return .some(previousItem)
-                    } else {
-                        return .none
-                    }
-                @unknown default:
-                    return .none
+        private func adjacentItem(direction: UIPageViewController.NavigationDirection) -> MailboxCursorPeekNextResult {
+            switch direction {
+            case .forward:
+                cursor.peekNext()
+            case .reverse:
+                if let previousItem = cursor.peekPrev() {
+                    .some(previousItem)
+                } else {
+                    .none
                 }
-            } catch {
-                AppLogger.log(error: error)
-                return .none
+            @unknown default:
+                .none
             }
         }
 
         private func loadNextPage() async throws -> Page {
-            if let nextItem = try await cursor.fetchNext().get() {
-                return pageFactory(nextItem)
+            if let nextItem = try await cursor.fetchNext() {
+                pageFactory(nextItem)
             } else {
                 throw CursorError.nextPagePromisedButNotProvided
             }
@@ -198,9 +193,9 @@ extension PageViewController {
                 let previousViewController = previousViewControllers[0]
 
                 if reachedViewController.view.tag > previousViewController.view.tag {
-                    cursor.goForward()
+                    cursor.gotoNext()
                 } else if reachedViewController.view.tag < previousViewController.view.tag {
-                    cursor.goBackward()
+                    cursor.gotoPrev()
                 }
             }
         }
