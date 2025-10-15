@@ -114,6 +114,21 @@ final class PageViewControllerCoordinatorTests {
         #expect(cursor.receivedMovements == [.reverse])
     }
 
+    @Test
+    func whenGoToNextPageIsRequested_thenReplacesCurrentPageAndMovesCursorForward() throws {
+        setupCenterViewController(withTag: 1)
+
+        let goToNextPageNotifier = GoToNextPageNotifier()
+        sut.subscribe(to: goToNextPageNotifier, pageViewController: pageViewController)
+
+        goToNextPageNotifier.notify()
+
+        #expect(cursor.receivedMovements == [.forward])
+
+        let currentViewController = try #require(pageViewController.viewControllers?.first)
+        #expect(currentViewController.view.tag == 2)
+    }
+
     @discardableResult
     private func setupCenterViewController(withTag tag: Int = 0) -> UIViewController {
         let centerViewController = makeViewController(withTag: tag)

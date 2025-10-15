@@ -49,7 +49,7 @@ public struct PageViewController<Page: View>: UIViewControllerRepresentable {
         pageViewController.setViewControllers([hostingController], direction: .forward, animated: false)
 
         if let notifier = context.environment.goToNextPageNotifier {
-            context.coordinator.subscribe(notifier: notifier, pageViewController: pageViewController)
+            context.coordinator.subscribe(to: notifier, pageViewController: pageViewController)
         }
 
         return pageViewController
@@ -85,16 +85,16 @@ extension PageViewController {
             self.dismiss = dismiss
         }
 
-        func subscribe(notifier: GoToNextPageNotifier, pageViewController: UIPageViewController) {
+        func subscribe(to notifier: GoToNextPageNotifier, pageViewController: UIPageViewController) {
             notifier
                 .publisher
                 .sink { [weak self] _ in
-                    self?.swipeToNextPageAfterMove(pageViewController: pageViewController)
+                    self?.goToNextPage(pageViewController: pageViewController)
                 }
                 .store(in: &cancellables)
         }
 
-        private func swipeToNextPageAfterMove(pageViewController: UIPageViewController) {
+        private func goToNextPage(pageViewController: UIPageViewController) {
             guard
                 let currentViewController = pageViewController.viewControllers?.first,
                 let newCenterViewController = self.pageViewController(pageViewController, viewControllerAfter: currentViewController)
@@ -102,6 +102,8 @@ extension PageViewController {
                 dismiss()
                 return
             }
+
+            cursor.goForward()
 
             pageViewController.setViewControllers([newCenterViewController], direction: .forward, animated: false)
         }
