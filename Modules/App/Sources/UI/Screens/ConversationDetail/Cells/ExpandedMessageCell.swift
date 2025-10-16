@@ -25,10 +25,11 @@ struct ExpandedMessageCell: View {
     private let mailbox: Mailbox
     private let uiModel: ExpandedMessageCellUIModel
     private let onEvent: (ExpandedMessageCellEvent) -> Void
-    private let htmlLoaded: () -> Void
+    private let htmlDisplayed: () -> Void
     private let areActionsHidden: Bool
     @Binding var attachmentIDToOpen: ID?
     @State private var isBodyLoaded: Bool = false
+    @State private var viewDidAppear = false
 
     private var actionButtonsState: MessageDetailsView.ActionButtonsState {
         guard !areActionsHidden else { return .hidden }
@@ -41,14 +42,14 @@ struct ExpandedMessageCell: View {
         areActionsHidden: Bool,
         attachmentIDToOpen: Binding<ID?>,
         onEvent: @escaping (ExpandedMessageCellEvent) -> Void,
-        htmlLoaded: @escaping () -> Void
+        htmlDisplayed: @escaping () -> Void
     ) {
         self.mailbox = mailbox
         self.uiModel = uiModel
         self.areActionsHidden = areActionsHidden
         self._attachmentIDToOpen = attachmentIDToOpen
         self.onEvent = onEvent
-        self.htmlLoaded = htmlLoaded
+        self.htmlDisplayed = htmlDisplayed
     }
 
     var body: some View {
@@ -103,10 +104,11 @@ struct ExpandedMessageCell: View {
             }
         }
         .padding(.top, DS.Spacing.large)
-        .onChange(of: isBodyLoaded) { oldIsLoaded, newIsLoaded in
-            if newIsLoaded {
-                htmlLoaded()
-            }
+        .onDidAppear {
+            viewDidAppear = true
+        }
+        .onChange(of: isBodyLoaded && viewDidAppear) {
+            htmlDisplayed()
         }
     }
 }
@@ -151,7 +153,7 @@ enum ExpandedMessageCellEvent {
             areActionsHidden: false,
             attachmentIDToOpen: .constant(nil),
             onEvent: { _ in },
-            htmlLoaded: {}
+            htmlDisplayed: {}
         )
         ExpandedMessageCell(
             mailbox: .dummy,
@@ -163,7 +165,7 @@ enum ExpandedMessageCellEvent {
             areActionsHidden: false,
             attachmentIDToOpen: .constant(nil),
             onEvent: { _ in },
-            htmlLoaded: {}
+            htmlDisplayed: {}
         )
     }.environmentObject(ToastStateStore(initialState: .initial))
 }

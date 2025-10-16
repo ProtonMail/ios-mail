@@ -150,7 +150,7 @@ struct ConversationDetailListView: View {
             areActionsHidden: model.areActionsHidden,
             attachmentIDToOpen: $model.attachmentIDToOpen,
             onEvent: { onExpandedMessageCellEvent($0, uiModel: uiModel) },
-            htmlLoaded: { model.markMessageAsReadIfNeeded(metadata: uiModel.toActionMetadata()) }
+            htmlDisplayed: { model.markMessageAsReadIfNeeded(metadata: uiModel.toActionMetadata()) }
         )
         .environment(\.forceLightModeInMessageBody, model.isForcingLightMode(forMessageWithId: uiModel.id))
     }
