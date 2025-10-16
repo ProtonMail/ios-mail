@@ -94,6 +94,7 @@ final class SearchModel: ObservableObject, @unchecked Sendable {
     }
 
     func searchText(_ text: String) {
+        guard let mailbox else { return }
         Task {
             let query = text.withoutWhitespace
             searchScroller?.handle().disconnect()
@@ -101,7 +102,8 @@ final class SearchModel: ObservableObject, @unchecked Sendable {
             paginatedDataSource.resetToInitialState()
 
             let result = await scrollerSearch(
-                session: dependencies.appContext.userSession,
+                //                session: dependencies.appContext.userSession,
+                mailbox: mailbox,
                 options: .init(keywords: query),
                 include: state.spamTrashToggleState.includeSpamTrash,
                 callback: MessageScrollerLiveQueryCallbackkWrapper { [weak self] update in

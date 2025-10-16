@@ -34,7 +34,7 @@ struct FilterBarView: View {
                     HStack {
                         unreadButton()
 
-                        if case .visible(let isSelected) = state.spamTrashToggleState, Flag.showTrashSpamToggle {
+                        if case .visible(let isSelected) = state.spamTrashToggleState {
                             spamTrashToggle(isSelected: isSelected)
                         }
                     }

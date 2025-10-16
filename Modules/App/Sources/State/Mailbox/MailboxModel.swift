@@ -292,7 +292,8 @@ extension MailboxModel {
 
             if mailbox.viewMode() == .messages {
                 messageScroller = try await scrollMessagesForLabel(
-                    session: userSession,
+                    //                    session: userSession,
+                    mailbox: mailbox,
                     labelId: mailbox.labelId(),
                     unread: unreadFilter,
                     include: state.filterBar.spamTrashToggleState.includeSpamTrash,
@@ -305,7 +306,8 @@ extension MailboxModel {
                 setUpSpamTrashToggleVisibility(supportsIncludeFilter: messageScroller?.supportsIncludeFilter() ?? false)
             } else {
                 conversationScroller = try await scrollConversationsForLabel(
-                    session: userSession,
+                    //                    session: userSession,
+                    mailbox: mailbox,
                     labelId: mailbox.labelId(),
                     unread: unreadFilter,
                     include: state.filterBar.spamTrashToggleState.includeSpamTrash,
@@ -566,6 +568,19 @@ extension MailboxModel {
                 try await draftPresenter.openDraftForShareExtension()
             } catch {
                 toast = .error(message: error.localizedDescription)
+            }
+        }
+    }
+
+    func replaceSelectedMailboxWhenNeeded() -> SelectedMailbox {
+        switch selectedMailbox {
+        case .customFolder, .inbox, .customLabel:
+            return selectedMailbox
+        case .systemFolder(let labelID, let systemFolder):
+            if mailbox?.labelId() != labelID, let mailboxLabelID = mailbox?.labelId() {
+                return .systemFolder(labelId: mailboxLabelID, systemFolder: systemFolder)
+            } else {
+                return selectedMailbox
             }
         }
     }

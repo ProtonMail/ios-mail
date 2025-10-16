@@ -51,9 +51,9 @@ struct SearchScreen: View {
                     EmptyView()
                 case .search:
                     VStack(spacing: .zero) {
-                        if Flag.showTrashSpamToggle {
-                            filtersBar()
-                        }
+                        //                        if Flag.showTrashSpamToggle {
+                        filtersBar()
+                        //                        }
 
                         resultsList
                             .fullScreenCover(item: $model.state.attachmentPresented) { config in
