@@ -90,6 +90,8 @@ private final class MockHtmlBodyWebViewInterface: HtmlBodyWebViewInterfaceProtoc
     func insertImages(_ contentIds: [String]) async {}
 
     func removeImage(containing cid: String) async {}
+
+    func logHtmlHealthCheck(tag: String) async {}
 }
 
 private final class MockMemoryPressureHandler: WebViewMemoryPressureProtocol {
