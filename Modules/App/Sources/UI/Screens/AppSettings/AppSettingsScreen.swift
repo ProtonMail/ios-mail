@@ -30,14 +30,14 @@ struct AppSettingsScreen: View {
     private let appIconConfigurator: AppIconConfigurable
 
     init(
-        state: AppSettingsState = .initial(appIconName: .none),
+        state: AppSettingsState? = .none,
         appSettingsRepository: AppSettingsRepository = AppContext.shared.mailSession,
         customSettings: CustomSettingsProtocol,
         appIconConfigurator: AppIconConfigurable = UIApplication.shared,
     ) {
         _store = .init(
             wrappedValue: .init(
-                state: state,
+                state: state ?? .initial(appIconName: appIconConfigurator.alternateIconName),
                 appSettingsRepository: appSettingsRepository,
                 customSettings: customSettings,
                 appIconConfigurator: appIconConfigurator

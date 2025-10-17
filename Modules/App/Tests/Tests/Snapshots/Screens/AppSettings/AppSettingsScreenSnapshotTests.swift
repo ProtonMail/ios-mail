@@ -21,61 +21,50 @@ import proton_app_uniffi
 import SwiftUI
 import Testing
 
-//@MainActor
-//<<<<<<< HEAD:Modules/App/Tests/Tests/Snapshots/Screens/AppSettings/AppSettingsSnapshotTests.swift
-//struct AppSettingsSnapshotTests {
-//    @Test
-//    func testAppSettingsLayoutCorrectly() {
-//=======
-//struct AppSettingsScreenSnapshotTests {
-//    struct TestCase {
-//        let appIcon: AppIcon
-//        let supportsAlternateIcons: Bool
-//    }
-//
-//    @Test(arguments: [
-//        TestCase(appIcon: .default, supportsAlternateIcons: true),
-//        TestCase(appIcon: .notes, supportsAlternateIcons: true),
-//        TestCase(appIcon: .default, supportsAlternateIcons: false),
-//    ])
-//    func testAppSettingsLayoutCorrectly(testCase: TestCase) {
-//        let appIconConfigurator = AppIconConfiguratorSpy()
-//        appIconConfigurator.stubbedSupportsAlternateIcons = testCase.supportsAlternateIcons
-//
-//>>>>>>> main:Modules/App/Tests/Tests/Snapshots/Screens/AppSettings/AppSettingsScreenSnapshotTests.swift
-//        let sut = AppSettingsScreen(
-//            state: .init(
-//                areNotificationsEnabled: false,
-//                appLanguage: "English",
-//                storedAppSettings: .init(
-//                    appearance: .system,
-//                    protection: .pin,
-//                    autoLock: .always,
-//                    useCombineContacts: false,
-//                    useAlternativeRouting: true
-//                ),
-//<<<<<<< HEAD:Modules/App/Tests/Tests/Snapshots/Screens/AppSettings/AppSettingsSnapshotTests.swift
-//                isAppearanceMenuShown: false,
-//                isSwipeToAdjacentConversationEnabled: false
-//            ),
-//            appSettingsRepository: AppSettingsRepositorySpy(),
-//            customSettings: CustomSettingsSpy()
-//=======
-//                appIcon: testCase.appIcon,
-//                isAppearanceMenuShown: false
-//            ),
-//            appIconConfigurator: appIconConfigurator,
-//            appSettingsRepository: AppSettingsRepositorySpy()
-//>>>>>>> main:Modules/App/Tests/Tests/Snapshots/Screens/AppSettings/AppSettingsScreenSnapshotTests.swift
-//        )
-//
-//        for userInterfaceStyle in [UIUserInterfaceStyle.light, .dark] {
-//            assertCustomHeightSnapshot(
-//                matching: UIHostingController(rootView: sut).view,
-//                styles: [userInterfaceStyle],
-//                preferredHeight: 1000,
-//                named: "\(testCase.appIcon.title.string)_\(testCase.supportsAlternateIcons)"
-//            )
-//        }
-//    }
-//}
+@MainActor
+struct AppSettingsScreenSnapshotTests {
+    struct TestCase {
+        let appIcon: AppIcon
+        let supportsAlternateIcons: Bool
+        let isSwipeToAdjacentConversationEnabled: Bool
+    }
+
+    @Test(arguments: [
+        TestCase(appIcon: .default, supportsAlternateIcons: true, isSwipeToAdjacentConversationEnabled: false),
+        TestCase(appIcon: .notes, supportsAlternateIcons: true, isSwipeToAdjacentConversationEnabled: false),
+        TestCase(appIcon: .default, supportsAlternateIcons: false, isSwipeToAdjacentConversationEnabled: true),
+    ])
+    func testAppSettingsLayoutCorrectly(testCase: TestCase) {
+        let appIconConfigurator = AppIconConfiguratorSpy()
+        appIconConfigurator.stubbedSupportsAlternateIcons = testCase.supportsAlternateIcons
+
+        let sut = AppSettingsScreen(
+            state: .init(
+                areNotificationsEnabled: false,
+                appLanguage: "English",
+                storedAppSettings: .init(
+                    appearance: .system,
+                    protection: .pin,
+                    autoLock: .always,
+                    useCombineContacts: false,
+                    useAlternativeRouting: true
+                ),
+                appIcon: testCase.appIcon,
+                isAppearanceMenuShown: false,
+                isSwipeToAdjacentConversationEnabled: testCase.isSwipeToAdjacentConversationEnabled
+            ),
+            appSettingsRepository: AppSettingsRepositorySpy(),
+            customSettings: CustomSettingsSpy(),
+            appIconConfigurator: appIconConfigurator
+        )
+
+        for userInterfaceStyle in [UIUserInterfaceStyle.light, .dark] {
+            assertCustomHeightSnapshot(
+                matching: UIHostingController(rootView: sut).view,
+                styles: [userInterfaceStyle],
+                preferredHeight: 1000,
+                named: "\(testCase.appIcon.title.string)_\(testCase.supportsAlternateIcons)"
+            )
+        }
+    }
+}
