@@ -393,10 +393,6 @@ final class ComposerModel: ObservableObject {
         }
     }
 
-    func removeAttachment(id attachmendId: ID) {
-        Task { await draft.attachmentList().remove(id: attachmendId) }
-    }
-
     func removeAttachment(attachment: AttachmentMetadata) async {
         do {
             try await draft.attachmentList().remove(id: attachment.id).get()
