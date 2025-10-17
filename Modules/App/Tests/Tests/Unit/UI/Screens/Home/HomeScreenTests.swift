@@ -216,8 +216,7 @@ private extension MailUserSession {
             logDir: cachePath,
             logDebug: true,
             apiEnvConfig: apiConfig,
-            appDetails: appDetails,
-            eventPollDurationSeconds: nil
+            appDetails: appDetails
         )
 
         let mailSession = try createMailSession(

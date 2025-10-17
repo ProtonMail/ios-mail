@@ -37,8 +37,7 @@ public enum MailSessionParamsFactory {
             logDir: cachePath,
             logDebug: false,
             apiEnvConfig: apiConfig,
-            appDetails: .mail,
-            eventPollDurationSeconds: nil
+            appDetails: .mail
         )
     }
 }
