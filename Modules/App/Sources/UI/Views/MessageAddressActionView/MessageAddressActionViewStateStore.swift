@@ -44,6 +44,7 @@ final class MessageAddressActionViewStateStore: StateStore {
     private let blockAddress: (_ userSession: MailUserSession, _ emailAddress: String) async -> VoidActionResult
     private let draftPresenter: RecipientDraftPresenter
     private let dismiss: Dismissable
+    private let messageBannersNotifier: RefreshMessageBannersNotifier
 
     init(
         avatar: AvatarUIModel,
@@ -56,7 +57,8 @@ final class MessageAddressActionViewStateStore: StateStore {
         openURL: URLOpenerProtocol,
         blockAddress: @escaping (_ userSession: MailUserSession, _ emailAddress: String) async -> VoidActionResult,
         draftPresenter: RecipientDraftPresenter,
-        dismiss: Dismissable
+        dismiss: Dismissable,
+        messageBannersNotifier: RefreshMessageBannersNotifier
     ) {
         self.state = .init(avatar: avatar, name: name, email: email, phoneNumber: phoneNumber, emailToBlock: .none)
         self.session = session
@@ -66,6 +68,7 @@ final class MessageAddressActionViewStateStore: StateStore {
         self.blockAddress = blockAddress
         self.draftPresenter = draftPresenter
         self.dismiss = dismiss
+        self.messageBannersNotifier = messageBannersNotifier
     }
 
     // MARK: - Public
@@ -115,6 +118,7 @@ final class MessageAddressActionViewStateStore: StateStore {
 
                 switch await blockAddress(session, emailToBlock) {
                 case .ok:
+                    messageBannersNotifier.refresh()
                     toastStateStore.present(toast: .information(message: L10n.BlockAddress.Toast.success.string))
                 case .error:
                     toastStateStore.present(toast: .error(message: L10n.BlockAddress.Toast.failure.string))

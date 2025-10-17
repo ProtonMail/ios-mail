@@ -32,6 +32,7 @@ struct ConversationDetailListView: View {
     /// These attributes trigger the different action sheets
     @State private var senderActionTarget: ExpandedMessageCellUIModel?
     @State private var recipientActionTarget: MessageDetail.Recipient?
+    @State private var messageBannersNotifier = RefreshMessageBannersNotifier()
 
     init(
         model: ConversationDetailModel,
@@ -75,6 +76,7 @@ struct ConversationDetailListView: View {
             draftPresenter: draftPresenter
         )
         .pickerViewStyle([.height(450)])
+        .environmentObject(messageBannersNotifier)
     }
 
     private func recipientActionSheet(target: MessageDetail.Recipient) -> some View {
@@ -86,6 +88,7 @@ struct ConversationDetailListView: View {
             draftPresenter: draftPresenter
         )
         .pickerViewStyle([.height(390)])
+        .environmentObject(messageBannersNotifier)
     }
 
     private func messageList(messages: [MessageCellUIModel]) -> some View {
@@ -159,6 +162,7 @@ struct ConversationDetailListView: View {
             htmlDisplayed: { model.markMessageAsReadIfNeeded(metadata: uiModel.toActionMetadata()) }
         )
         .environment(\.forceLightModeInMessageBody, model.isForcingLightMode(forMessageWithId: uiModel.id))
+        .environmentObject(messageBannersNotifier)
     }
 
     private func onExpandedMessageCellEvent(_ event: ExpandedMessageCellEvent, uiModel: ExpandedMessageCellUIModel) -> Void {

@@ -23,6 +23,7 @@ import SwiftUI
 
 struct MessageAddressActionView: View {
     @EnvironmentObject var toastStateStore: ToastStateStore
+    @EnvironmentObject var messageBannersNotifier: RefreshMessageBannersNotifier
     @Environment(\.openURL) var openURL
     @Environment(\.pasteboard) var pasteboard
     @Environment(\.dismissTestable) var dismiss
@@ -45,7 +46,8 @@ struct MessageAddressActionView: View {
                 openURL: openURL,
                 blockAddress: blockAddress(session:email:),
                 draftPresenter: draftPresenter,
-                dismiss: dismiss
+                dismiss: dismiss,
+                messageBannersNotifier: messageBannersNotifier
             ),
             content: { state, store in
                 ActionPickerList(

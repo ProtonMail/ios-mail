@@ -26,6 +26,7 @@ import SwiftUI
 struct MessageBodyView: View {
     @Environment(\.messagePrinter) var messagePrinter: MessagePrinter
     @EnvironmentObject var toastStateStore: ToastStateStore
+    @EnvironmentObject var refreshBannersListener: RefreshMessageBannersNotifier
     let messageID: ID
     let emailAddress: String
     let attachments: [AttachmentDisplayModel]
@@ -96,6 +97,9 @@ struct MessageBodyView: View {
                             }
                         }
                     )
+                    .onReceive(refreshBannersListener.refreshBanners) { _ in
+                        store.handle(action: .refreshBanners)
+                    }
                 }
                 if !attachments.isEmpty {
                     MessageBodyAttachmentsView(attachments: attachments, attachmentIDToOpen: $attachmentIDToOpen)

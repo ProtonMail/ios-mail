@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import ProtonMail
+import Combine
 import InboxCore
 import InboxCoreUI
 import InboxTesting
@@ -32,6 +33,9 @@ final class MessageAddressActionViewStateStoreTests {
     private let draftPresenterSpy = RecipientDraftPresenterSpy()
     private let urlOpener = EnvironmentURLOpenerSpy()
     private let dismissSpy = DismissSpy()
+    private let messageBannersNotifier = RefreshMessageBannersNotifier()
+    private var onSenderBlockedCallsCount: Int = 0
+    private var cancellables: Set<AnyCancellable> = []
 
     private let avatar = AvatarUIModel(
         info: .init(initials: "Aa", color: .purple),
@@ -90,7 +94,9 @@ final class MessageAddressActionViewStateStoreTests {
                     phoneNumber: .none,
                     emailToBlock: .none
                 ))
+
         #expect(blockSpy.calls == [])
+        #expect(onSenderBlockedCallsCount == 0)
         #expect(toastStateStore.state.toasts == [])
     }
 
@@ -110,7 +116,9 @@ final class MessageAddressActionViewStateStoreTests {
                     phoneNumber: .none,
                     emailToBlock: .none
                 ))
+
         #expect(blockSpy.calls == [email])
+        #expect(onSenderBlockedCallsCount == 1)
         #expect(toastStateStore.state.toasts == [.information(message: "Sender blocked")])
     }
 
@@ -208,7 +216,11 @@ final class MessageAddressActionViewStateStoreTests {
     // MARK: - Private
 
     private func makeSUT(phoneNumber: String? = nil) -> MessageAddressActionViewStateStore {
-        .init(
+        messageBannersNotifier.refreshBanners
+            .sink { [unowned self] in self.onSenderBlockedCallsCount += 1 }
+            .store(in: &cancellables)
+
+        return .init(
             avatar: avatar,
             name: displayName,
             email: email,
@@ -221,7 +233,8 @@ final class MessageAddressActionViewStateStoreTests {
                 await self.blockSpy.result(for: address)
             },
             draftPresenter: draftPresenterSpy,
-            dismiss: dismissSpy
+            dismiss: dismissSpy,
+            messageBannersNotifier: messageBannersNotifier
         )
     }
 }
