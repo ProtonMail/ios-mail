@@ -17,7 +17,7 @@
 
 import proton_app_uniffi
 
-class MailboxStub: Mailbox {
+final class MailboxStub: Mailbox, @unchecked Sendable {
     override func viewMode() -> ViewMode {
         _viewMode
     }

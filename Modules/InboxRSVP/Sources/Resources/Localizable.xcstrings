@@ -938,7 +938,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ (Арганізатар)"
+            "value" : "%@ (арганізатар)"
           }
         },
         "ca" : {
@@ -1117,7 +1117,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%d удзельнікаў"
+            "value" : "Удзельнікаў: %d"
           }
         },
         "ca" : {
@@ -1308,7 +1308,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld удзельнікаў"
+            "value" : "Удзельнікаў: %lld"
           }
         },
         "ca" : {
@@ -1499,7 +1499,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Пойдзеце?"
+            "value" : "Удзельнічаеце?"
           }
         },
         "ca" : {
@@ -1690,7 +1690,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Капіяваць адрас"
+            "value" : "Скапіяваць адрас"
           }
         },
         "ca" : {
@@ -2072,13 +2072,13 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Падзея скасавана. Гэтае запрашэнне састарэла."
+            "value" : "Падзея скасавана. Гэта запрашэнне састарэла."
           }
         },
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aquest esdeveniment s'ha cancelat. La invitatció ha caducat."
+            "value" : "S'ha cancel·lat l'esdeveniment. Aquesta invitació està caducada."
           }
         },
         "cs" : {
@@ -2436,7 +2436,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Падрабязнасці запрашэння недаступныя"
+            "value" : "Падрабязнасці запрашэння недаступны"
           }
         },
         "ca" : {
@@ -2812,7 +2812,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Магчыма я прыму ўдзел"
+            "value" : "Магчыма, я прыму ўдзел"
           }
         },
         "ca" : {
@@ -3767,7 +3767,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aquest esdeveniment no és al vostre calendari, per tant, no hi podeu respondre."
+            "value" : "Aquest esdeveniment no és al calendari, per tant, no hi podeu respondre."
           }
         },
         "cs" : {
@@ -3911,7 +3911,7 @@
         "sl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tega dogodka ni v vašem koledarju, zato se nanj ne morete odzvati."
+            "value" : "Ta dogodek ni v vašem koledarju, zato nanj ne morete odgovoriti."
           }
         },
         "sv" : {
@@ -3946,7 +3946,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Запрашэнне састарэла. Падзея была абноўлена."
+            "value" : "Запрашэнне больш неактуальна. Падзея была абноўлена."
           }
         },
         "ca" : {
@@ -4883,7 +4883,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "En sou l'organitzador."
+            "value" : "Sou l'organitzador."
           }
         },
         "cs" : {
@@ -5074,7 +5074,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "No podeu respondre a les invitacions d'esdeveniments si no formeu part de la llista de participants en aquell moment."
+            "value" : "No podeu respondre a les invitacions d'esdeveniments si no sou a la llista de participants en aquest moment."
           }
         },
         "cs" : {
@@ -5117,6 +5117,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "No puede responder a las invitaciones del evento si no está en la lista de participantes en este momento."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Et voi vastata tapahtumakutsuihin, jos et ole tällä hetkellä osallistujalistalla."
           }
         },
         "fr" : {
@@ -5179,10 +5185,22 @@
             "value" : "Nu puteți răspunde la invitațiile la eveniment dacă nu sunteți pe lista de participanți în acest moment."
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вы не можете отвечать на приглашения на событие, если в данный момент не внесены в список участников."
+          }
+        },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Na pozvánky na udalosti nemôžete reagovať, ak momentálne nie ste na zozname účastníkov."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ne morete se odzvati na povabila na dogodek, če trenutno niste na seznamu udeležencev."
           }
         },
         "sv" : {
@@ -5211,13 +5229,13 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Вы па-за сеткай. Паказаная інфармацыя можа быць састарэлай."
+            "value" : "Вы па-за сеткай. Адлюстраваная інфармацыя можа быць неактуальнай."
           }
         },
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "No teniu connexió. La informació que es mostra pot no estar actualitzada."
+            "value" : "Esteu fora de línia. La informació mostrada pot estar desfasada."
           }
         },
         "cs" : {
@@ -5390,7 +5408,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ваш адрас нельга выкарыстоўваць для адказу. Калі ласка, абнавіце інфармацыю свайго ўліковага запісу."
+            "value" : "Ваш адрас нельга выкарыстоўваць для адказу. Абнавіце інфармацыю свайго ўліковага запісу."
           }
         },
         "ca" : {

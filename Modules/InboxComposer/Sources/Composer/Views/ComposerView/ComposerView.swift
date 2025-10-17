@@ -131,7 +131,7 @@ struct ComposerView: View {
                     case .onTap:
                         toastStateStore.present(toast: .comingSoon)
                     case .onRemove(let uiModel):
-                        model.removeAttachment(id: uiModel.attachment.id)
+                        Task { await model.removeAttachment(attachment: uiModel.attachment) }
                     }
 
                 case .bodyEvent(let event):
@@ -205,7 +205,7 @@ struct ComposerView: View {
         ForEach(error.actions) { action in
             Button(role: .cancel) {
                 if action.removeAttachment {
-                    model.removeAttachments(for: error)
+                    Task { await model.removeAttachments(for: error) }
                 }
                 model.attachmentAlertState.errorDismissedShowNextError()
             } label: {

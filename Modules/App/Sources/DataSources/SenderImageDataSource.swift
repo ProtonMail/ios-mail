@@ -27,7 +27,7 @@ protocol SenderImageDataSource {
 }
 
 /// This is the information required by the Rust SDK to retrieve a sender's avatar image
-struct SenderImageDataParameters: Equatable {
+struct SenderImageDataParameters: Hashable {
     let address: String
     let bimiSelector: String?
     let displaySenderImage: Bool

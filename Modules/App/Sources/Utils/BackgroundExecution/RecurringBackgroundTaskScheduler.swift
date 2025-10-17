@@ -137,7 +137,7 @@ class RecurringBackgroundTaskScheduler: @unchecked Sendable {
         }
     }
 
-    private func checkForSessionSetUpToComplete(completion: @Sendable @escaping () -> Void) {
+    private func checkForSessionSetUpToComplete(completion: @escaping () -> Void) {
         sessionSetUpCheckCancellable =
             Publishers
             .CombineLatest(sessionStatePublisher, timerFactory(0.5))

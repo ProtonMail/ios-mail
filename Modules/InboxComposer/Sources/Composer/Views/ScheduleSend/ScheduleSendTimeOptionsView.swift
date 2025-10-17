@@ -174,7 +174,7 @@ private extension View {
 }
 
 #Preview {
-    var options: (Bool, UInt64?) -> ScheduleSendTimeOptions = { isCustomAvailable, lastScheduledTime in
+    let options: (Bool, UInt64?) -> ScheduleSendTimeOptions = { isCustomAvailable, lastScheduledTime in
         try! ScheduleSendOptionsProvider.dummy(isCustomAvailable: isCustomAvailable)
             .scheduleSendOptions()
             .get()

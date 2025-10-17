@@ -62,7 +62,22 @@ final class ContactDetailsScreenSnapshotTests {
     func testContactDetailsScreenVariant2() {
         let items: [ContactField] = [
             .emails([
-                .init(emailType: [.work], email: "ben.ale@protonmail.com", groups: [])
+                .init(
+                    emailType: [.work],
+                    email: "ben.ale@protonmail.com",
+                    groups: [
+                        .init(name: "zhaocheng", color: "#179FD9"),
+                        .init(name: "jibohan", color: "#3CBB3A"),
+                        .init(name: "shaoni", color: "#8080FF"),
+                        .init(name: "qinlangan", color: "#DB60D6"),
+                        .init(name: "wuqi", color: "#3CBB3A"),
+                        .init(name: "dongke", color: "#1DA583"),
+                        .init(name: "ranfei", color: "#BA1E55"),
+                        .init(name: "fengying", color: "#B4A40E"),
+                        .init(name: "sunzi", color: "#5252CC"),
+                        .init(name: "chaming", color: "#A839A4"),
+                    ]
+                )
             ]),
             .telephones([
                 .init(number: "+41771234567", telTypes: [.home])
@@ -94,7 +109,16 @@ final class ContactDetailsScreenSnapshotTests {
     func testContactDetailsScreenVariant4() {
         let items: [ContactField] = [
             .emails([
-                .init(emailType: [.work], email: "ben.ale@protonmail.com", groups: [])
+                .init(
+                    emailType: [.work],
+                    email: "ben.ale@protonmail.com",
+                    groups: [
+                        .init(name: "wuqi", color: "#3CBB3A"),
+                        .init(name: "dongke", color: "#1DA583"),
+                        .init(name: "ranfei", color: "#BA1E55"),
+                        .init(name: "fengying", color: "#B4A40E"),
+                    ]
+                )
             ]),
             .languages(["french"]),
             .organizations(["CERN", "NASA"]),

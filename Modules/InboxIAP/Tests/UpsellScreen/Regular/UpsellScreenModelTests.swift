@@ -18,7 +18,6 @@
 
 import CoreGraphics
 import InboxCoreUI
-import PaymentsNG
 import Testing
 
 @testable import InboxIAP
@@ -32,7 +31,10 @@ final class UpsellScreenModelTests {
         planName: "foo",
         planInstances: DisplayablePlanInstance.previews,
         entryPoint: .header,
-        planPurchasing: planPurchasing
+        purchaseActionPerformer: .init(
+            eventLoopPolling: DummyEventLoopPolling(),
+            planPurchasing: planPurchasing
+        )
     )
 
     @Test(
@@ -56,41 +58,6 @@ final class UpsellScreenModelTests {
         await sut.onPurchaseTapped(toastStateStore: toastStateStore) {}
 
         #expect(planPurchasing.purchaseInvocations.count == 1)
-    }
-
-    @Test
-    func whenTransactionIsSuccessful_dismissesTheScreen() async {
-        await confirmation(expectedCount: 1) { dismissCalled in
-            await sut.onPurchaseTapped(toastStateStore: toastStateStore) {
-                dismissCalled()
-            }
-        }
-    }
-
-    @Test
-    func whenTransactionFails_showsErrorAndDoesNotDismissTheScreen() async {
-        planPurchasing.stubbedError = ProtonPlansManagerError.transactionUnknownError
-
-        await confirmation(expectedCount: 0) { dismissCalled in
-            await sut.onPurchaseTapped(toastStateStore: toastStateStore) {
-                dismissCalled()
-            }
-        }
-
-        #expect(toastStateStore.state.toasts.count == 1)
-    }
-
-    @Test
-    func whenTransactionIsCancelledByUser_doesNotShowErrorAndDoesNotDismissTheScreen() async {
-        planPurchasing.stubbedError = ProtonPlansManagerError.transactionCancelledByUser
-
-        await confirmation(expectedCount: 0) { dismissCalled in
-            await sut.onPurchaseTapped(toastStateStore: toastStateStore) {
-                dismissCalled()
-            }
-        }
-
-        #expect(toastStateStore.state.toasts == [])
     }
 }
 

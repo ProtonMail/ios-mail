@@ -30,6 +30,7 @@ final class UpsellCoordinatorTests {
 
     init() {
         sut = UpsellCoordinator(
+            eventLoopPolling: DummyEventLoopPolling(),
             onlineExecutor: onlineExecutor,
             plansComposer: plansComposer,
             planPurchasing: DummyPlanPurchasing(),

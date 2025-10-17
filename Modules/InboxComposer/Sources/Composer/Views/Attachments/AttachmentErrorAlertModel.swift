@@ -99,9 +99,8 @@ enum AttachmentErrorOrigin: Hashable {
 }
 
 struct UploadAttachmentError: Identifiable, Hashable {
-    var id: String { "\(attachmentId)-\(errorTimeStamp)" }
-    let name: String
-    let attachmentId: Id
+    var id: String { "\(attachment.id)-\(errorTimeStamp)" }
+    let attachment: AttachmentMetadata
     let errorTimeStamp: Int64
 }
 

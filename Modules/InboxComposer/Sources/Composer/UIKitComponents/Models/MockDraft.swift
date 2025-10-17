@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import typealias InboxCore.ID
 import proton_app_uniffi
 
 extension SingleRecipientEntry {
@@ -317,7 +318,8 @@ final class MockAttachmentList: AttachmentListProtocol, @unchecked Sendable {
     var capturedAddCalls: [(path: String, filenameOverride: String?)] = []
     var capturedAddInlineCalls: [(path: String, filenameOverride: String?)] = []
     var capturedSwapInlineCalls: [String] = []
-    var capturedRemoveCalls: [String] = []
+    var capturedRemoveIdCalls: [ID] = []
+    var capturedRemoveContentIdCalls: [String] = []
     var mockAttachmentListAddResult = [(lastPathComponent: String, result: AttachmentListAddResult)]()
     var mockAttachmentListAddInlineResult = [(lastPathComponent: String, result: AttachmentListAddInlineResult)]()
     var mockAttachmentSwapWithCidResult: VoidDraftAttachmentDispositionSwapResult = .ok
@@ -346,11 +348,12 @@ final class MockAttachmentList: AttachmentListProtocol, @unchecked Sendable {
     }
 
     func remove(id: Id) async -> AttachmentListRemoveResult {
-        .ok
+        capturedRemoveIdCalls.append(id)
+        return .ok
     }
 
     func removeWithCid(contentId: String) async -> AttachmentListRemoveWithCidResult {
-        capturedRemoveCalls.append(contentId)
+        capturedRemoveContentIdCalls.append(contentId)
         return mockAttachmentListRemoveWithCidResult.first(where: {
             $0.cid == contentId
         })?.result ?? AttachmentListRemoveWithCidResult.ok

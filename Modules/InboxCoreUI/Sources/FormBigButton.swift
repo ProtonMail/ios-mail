@@ -55,11 +55,12 @@ public struct FormBigButton: View {
 
     public var body: some View {
         Button(action: action) {
-            FormBigButtonContent(
+            FormBigButtonContent<EmptyView>(
                 title: title,
                 value: value,
                 hasAccentTextColor: false,
-                accessoryType: accessoryType
+                accessoryType: accessoryType,
+                bottomContent: { nil }
             )
         }
         .background(DS.Color.BackgroundInverted.secondary)
