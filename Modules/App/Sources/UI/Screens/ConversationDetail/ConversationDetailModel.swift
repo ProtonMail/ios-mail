@@ -33,8 +33,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
     @Published var actionAlert: AlertModel?
     @Published var attachmentIDToOpen: ID?
     @Published var isHeaderVisible: Bool = false
-
-    private var conversationItem: ConversationItem?
+    @Published private(set) var conversationItem: ConversationItem?
 
     let messageAppearanceOverrideStore: MessageAppearanceOverrideStore
     let messagePrinter: MessagePrinter

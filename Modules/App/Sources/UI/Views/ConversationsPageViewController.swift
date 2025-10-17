@@ -24,8 +24,8 @@ import SwiftUI
 struct ConversationsPageViewController: View {
     @Environment(\.presentationMode) var presentationMode
 
-    let startingItem: MailboxItemCellUIModel
-    let mailboxCursor: MailboxCursorProtocol
+    let startingItem: ConversationDetailSeed
+    let makeMailboxCursor: ((ID) -> MailboxCursorProtocol?)?
     let modelToSeedMapping: (MailboxItemCellUIModel, SelectedMailbox) -> ConversationDetailSeed
 
     let draftPresenter: DraftPresenter
@@ -34,6 +34,40 @@ struct ConversationsPageViewController: View {
 
     @State var activeModel: ConversationDetailModel?
     @State private var isSwipeToAdjacentEnabled: Bool = false
+    @State private var mailboxCursor: MailboxCursorProtocol?
+
+    init(
+        startingItem: MailboxItemCellUIModel,
+        mailboxCursor: MailboxCursorProtocol,
+        modelToSeedMapping: @escaping (MailboxItemCellUIModel, SelectedMailbox) -> ConversationDetailSeed,
+        draftPresenter: DraftPresenter,
+        selectedMailbox: SelectedMailbox,
+        userSession: MailUserSession
+    ) {
+        self.startingItem = modelToSeedMapping(startingItem, selectedMailbox)
+        self.makeMailboxCursor = nil
+        self.modelToSeedMapping = ConversationDetailSeed.mailboxItem
+        self.draftPresenter = draftPresenter
+        self.selectedMailbox = selectedMailbox
+        self.userSession = userSession
+
+        _mailboxCursor = .init(initialValue: mailboxCursor)
+    }
+
+    init(
+        seed: ConversationDetailSeed,
+        makeMailboxCursor: @escaping (ID) -> MailboxCursorProtocol?,
+        draftPresenter: DraftPresenter,
+        selectedMailbox: SelectedMailbox,
+        userSession: MailUserSession
+    ) {
+        self.startingItem = seed
+        self.makeMailboxCursor = makeMailboxCursor
+        self.modelToSeedMapping = ConversationDetailSeed.mailboxItem
+        self.draftPresenter = draftPresenter
+        self.selectedMailbox = selectedMailbox
+        self.userSession = userSession
+    }
 
     var body: some View {
         PageViewController(
@@ -73,10 +107,15 @@ struct ConversationsPageViewController: View {
                 AppLogger.log(error: error, category: .appSettings)
             }
         }
+        .onChange(of: activeModel?.conversationItem) { _, item in
+            if let item {
+                updateCursor(itemID: item.id)
+            }
+        }
     }
 
     private func startingPage() -> ConversationDetailScreen {
-        pageFactory(model: startingItem)
+        pageFactory(seed: startingItem)
     }
 
     private func pageFactory(cursorEntry: CursorEntry) -> ConversationDetailScreen {
@@ -84,13 +123,31 @@ struct ConversationsPageViewController: View {
     }
 
     private func pageFactory(model: MailboxItemCellUIModel) -> ConversationDetailScreen {
+        pageFactory(seed: modelToSeedMapping(model, selectedMailbox))
+    }
+
+    private func pageFactory(seed: ConversationDetailSeed) -> ConversationDetailScreen {
         .init(
-            seed: modelToSeedMapping(model, selectedMailbox),
+            seed: seed,
             draftPresenter: draftPresenter,
             mailUserSession: userSession,
             onLoad: { if activeModel == nil { activeModel = $0 } },
-            onDidAppear: { activeModel = $0 }
+            onDidAppear: { newActiveModel in
+                activeModel = newActiveModel
+
+                if let itemID = newActiveModel.conversationItem?.id {
+                    updateCursor(itemID: itemID)
+                }
+            }
         )
+    }
+
+    private func updateCursor(itemID: ID) {
+        guard let makeMailboxCursor, mailboxCursor == nil else {
+            return
+        }
+
+        mailboxCursor = makeMailboxCursor(itemID)
     }
 }
 

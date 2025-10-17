@@ -23,13 +23,13 @@ import SwiftUI
 public struct PageViewController<Page: View>: UIViewControllerRepresentable {
     @Environment(\.presentationMode) var presentationMode
 
-    let cursor: MailboxCursorProtocol
+    let cursor: MailboxCursorProtocol?
     let isSwipeToAdjacentEnabled: Bool
     let startingPage: () -> Page
     let pageFactory: (CursorEntry) -> Page
 
     public init(
-        cursor: MailboxCursorProtocol,
+        cursor: MailboxCursorProtocol?,
         isSwipeToAdjacentEnabled: Bool,
         startingPage: @escaping () -> Page,
         pageFactory: @escaping (CursorEntry) -> Page
@@ -57,11 +57,11 @@ public struct PageViewController<Page: View>: UIViewControllerRepresentable {
 
     public func updateUIViewController(_ uiViewController: UIPageViewController, context: Context) {
         uiViewController.dataSource = isSwipeToAdjacentEnabled ? context.coordinator : nil
+        context.coordinator.setCursor(cursor)
     }
 
     public func makeCoordinator() -> Coordinator {
         .init(
-            cursor: cursor,
             pageFactory: pageFactory,
             dismiss: { presentationMode.wrappedValue.dismiss() }
         )
@@ -70,19 +70,21 @@ public struct PageViewController<Page: View>: UIViewControllerRepresentable {
 
 extension PageViewController {
     public final class Coordinator: NSObject, UIPageViewControllerDataSource, UIPageViewControllerDelegate {
-        private let cursor: MailboxCursorProtocol
         private let pageFactory: (CursorEntry) -> Page
         private let dismiss: () -> Void
+        private var cursor: MailboxCursorProtocol = EmptyCursor()
         private var cancellables = Set<AnyCancellable>()
 
         init(
-            cursor: MailboxCursorProtocol,
             pageFactory: @escaping (CursorEntry) -> Page,
             dismiss: @escaping () -> Void
         ) {
-            self.cursor = cursor
             self.pageFactory = pageFactory
             self.dismiss = dismiss
+        }
+
+        func setCursor(_ cursor: MailboxCursorProtocol?) {
+            self.cursor = cursor ?? EmptyCursor()
         }
 
         func subscribe(to notifier: GoToNextPageNotifier, pageViewController: UIPageViewController) {
@@ -204,4 +206,24 @@ extension PageViewController {
 
 private enum CursorError: Error {
     case nextPagePromisedButNotProvided
+}
+
+private final class EmptyCursor: MailboxCursorProtocol {
+    func fetchNext() async throws(MailScrollerError) -> CursorEntry? {
+        nil
+    }
+
+    func gotoNext() {
+    }
+
+    func gotoPrev() {
+    }
+
+    func peekNext() -> MailboxCursorPeekNextResult {
+        .none
+    }
+
+    func peekPrev() -> CursorEntry? {
+        nil
+    }
 }

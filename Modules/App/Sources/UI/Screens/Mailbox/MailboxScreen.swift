@@ -274,10 +274,12 @@ extension MailboxScreen {
     @ViewBuilder
     private func messageSeedDestination(seed: MailboxMessageSeed) -> some View {
         SidebarZIndexUpdateContainer {
-            PagelessConversationDetailScreen(
+            ConversationsPageViewController(
                 seed: .pushNotification(seed),
+                makeMailboxCursor: mailboxModel.mailboxCursor,
                 draftPresenter: mailboxModel.draftPresenter,
-                mailUserSession: userSession
+                selectedMailbox: mailboxModel.selectedMailbox,
+                userSession: userSession
             )
         }
     }
