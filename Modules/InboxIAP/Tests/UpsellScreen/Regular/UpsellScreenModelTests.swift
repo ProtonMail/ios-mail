@@ -41,8 +41,8 @@ final class UpsellScreenModelTests {
         arguments: [
             VerticalScrollingTestCase(verticalOffset: -5, expectedLogoScaleFactor: 1, expectedLogoOpacity: 1),
             VerticalScrollingTestCase(verticalOffset: 0, expectedLogoScaleFactor: 1, expectedLogoOpacity: 1),
-            VerticalScrollingTestCase(verticalOffset: 59, expectedLogoScaleFactor: 0.9, expectedLogoOpacity: 0.6),
-            VerticalScrollingTestCase(verticalOffset: 118, expectedLogoScaleFactor: 0.8, expectedLogoOpacity: 0.2),
+            VerticalScrollingTestCase(verticalOffset: 75, expectedLogoScaleFactor: 0.9, expectedLogoOpacity: 0.6),
+            VerticalScrollingTestCase(verticalOffset: 150, expectedLogoScaleFactor: 0.8, expectedLogoOpacity: 0.2),
             VerticalScrollingTestCase(verticalOffset: 300, expectedLogoScaleFactor: 0.8, expectedLogoOpacity: 0.2),
         ]
     )

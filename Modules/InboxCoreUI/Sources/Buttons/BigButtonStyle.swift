@@ -22,7 +22,7 @@ import SwiftUI
 public struct BigButtonStyle: ButtonStyle {
     public enum Flavor {
         case regular
-        case inverted
+        case inverted(backgroundColorOverride: Color?)
         case weak
 
         var foregroundColor: Color {
@@ -40,8 +40,8 @@ public struct BigButtonStyle: ButtonStyle {
             switch self {
             case .regular:
                 isPressed ? DS.Color.InteractionBrand.pressed : DS.Color.InteractionBrand.norm
-            case .inverted:
-                DS.Color.Background.norm
+            case .inverted(let override):
+                override ?? DS.Color.Background.norm
             case .weak:
                 isPressed ? DS.Color.InteractionBrandWeak.pressed : DS.Color.InteractionBrandWeak.norm
             }

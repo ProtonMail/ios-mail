@@ -17,6 +17,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import InboxSnapshotTesting
+import proton_app_uniffi
 import SnapshotTesting
 import SwiftUI
 import Testing
@@ -24,10 +25,12 @@ import Testing
 @testable import InboxIAP
 
 @MainActor
+@Suite(.serialized)
 struct UpsellScreenSnapshotTests {
     struct TestCase {
         let label: String
         let config: ViewImageConfig
+        let entryPoint: UpsellEntryPoint
     }
 
     nonisolated private static let testCases: [TestCase] = {
@@ -38,19 +41,32 @@ struct UpsellScreenSnapshotTests {
             ("13 Pro Max", ViewImageConfig.iPhone13ProMax(_:)),
         ]
 
+        let entryPoints: [UpsellEntryPoint] = [.mailboxTopBar, .mailboxTopBarPromo]
+
         return orientations.flatMap { orientation in
-            devices.map { device in
-                let config = device.configFactory(orientation)
-                return .init(label: "\(device.label)_\(orientation)", config: config)
+            devices.flatMap { device in
+                entryPoints.map { entryPoint in
+                    .init(
+                        label: "\(device.label)_\(orientation)\(entryPoint.isPromo ? "_promo" : .empty)",
+                        config: device.configFactory(orientation),
+                        entryPoint: entryPoint
+                    )
+                }
             }
         }
     }()
 
     @Test(arguments: testCases)
     func upsellScreen(testCase: TestCase) {
-        let sut = UpsellScreen(model: .preview(entryPoint: .mailboxTopBar))
+        let sut = UpsellScreen(model: .preview(entryPoint: testCase.entryPoint))
         let viewController = UIHostingController(rootView: sut)
 
-        assertSnapshots(matching: viewController, on: [(testCase.label, testCase.config)], styles: [.dark])
+        let strategy: Snapshotting<UIViewController, UIImage> = .image(
+            on: testCase.config,
+            drawHierarchyInKeyWindow: true,
+            precision: 0.99
+        )
+
+        assertSnapshot(of: viewController, as: strategy, named: testCase.label)
     }
 }

@@ -30,8 +30,13 @@ struct PlanComparisonGrid: View {
     ]
 
     private let highlightBorderWidth: CGFloat = 2
+    private let highlightStroke: any ShapeStyle
 
     @State private var highlightedColumnWidth: CGFloat = 0
+
+    init(highlightStroke: (any ShapeStyle)? = nil) {
+        self.highlightStroke = highlightStroke ?? LinearGradient.highlight
+    }
 
     var body: some View {
         Grid(horizontalSpacing: 26, verticalSpacing: DS.Spacing.large) {
@@ -45,7 +50,7 @@ struct PlanComparisonGrid: View {
                     .padding(.horizontal, DS.Spacing.standard)
                     .overlay {
                         RoundedRectangle(cornerRadius: DS.Radius.medium)
-                            .stroke(LinearGradient.highlight, lineWidth: highlightBorderWidth)
+                            .stroke(AnyShapeStyle(highlightStroke), lineWidth: highlightBorderWidth)
                             .padding(highlightBorderWidth / 2)
                     }
                     .padding(.horizontal, DS.Spacing.small)

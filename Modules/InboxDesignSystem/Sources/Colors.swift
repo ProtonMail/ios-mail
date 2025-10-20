@@ -125,6 +125,10 @@ public extension DS.Color {
         public static let warning900 = Color(.notificationWarning900)
     }
 
+    enum Promo {
+        public static let blackFriday = Color(.blackFriday)
+    }
+
     enum Shade {
         public static let shade0 = Color(.shade0)
         public static let shade10 = Color(.shade10)

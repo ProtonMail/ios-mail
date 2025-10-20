@@ -22,7 +22,7 @@ extension UpsellScreenModel {
     static func preview(entryPoint: UpsellEntryPoint) -> UpsellScreenModel {
         .init(
             planName: "Mail Plus",
-            planInstances: DisplayablePlanInstance.previews,
+            planInstances: entryPoint.isPromo ? DisplayablePlanInstance.blackFridayPreviews : DisplayablePlanInstance.previews,
             entryPoint: entryPoint,
             purchaseActionPerformer: .dummy
         )

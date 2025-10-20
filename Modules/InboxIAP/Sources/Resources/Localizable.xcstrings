@@ -3132,6 +3132,9 @@
         }
       }
     },
+    "Discounts are based on standard monthly pricing. Auto-renews at CHF XX.XX until canceled." : {
+      "comment" : "Notice at the bottom of the upsell page"
+    },
     "Email addresses" : {
       "comment" : "Description of a feature of a paid subscription",
       "localizations" : {

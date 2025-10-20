@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import InboxCoreUI
+import InboxDesignSystem
 import PaymentsNG
 import proton_app_uniffi
 import SwiftUI
@@ -25,7 +26,6 @@ import SwiftUI
 public final class UpsellScreenModel: Identifiable {
     let planName: String
     let planInstances: [DisplayablePlanInstance]
-    let logoHeight: CGFloat = 118
 
     var logoScaleFactor: CGFloat = 1
     var logoOpacity: CGFloat = 1
@@ -41,12 +41,36 @@ public final class UpsellScreenModel: Identifiable {
         entryPoint.logo
     }
 
-    var title: LocalizedStringResource {
+    var logoHeight: CGFloat? {
+        isPromo ? nil : 118
+    }
+
+    var logoHorizontalPadding: CGFloat? {
+        isPromo ? DS.Spacing.standard : nil
+    }
+
+    var title: LocalizedStringResource? {
         L10n.screenTitle(planName: planName, entryPoint: entryPoint)
     }
 
-    var subtitle: LocalizedStringResource {
+    var subtitle: LocalizedStringResource? {
         L10n.screenSubtitle(planName: planName, entryPoint: entryPoint)
+    }
+
+    var highlightStroke: (any ShapeStyle)? {
+        isPromo ? DS.Color.Promo.blackFriday : nil
+    }
+
+    var ctaBackgroundOverride: Color? {
+        isPromo ? DS.Color.Promo.blackFriday : nil
+    }
+
+    var autoRenewalNotice: LocalizedStringResource {
+        isPromo ? L10n.discountRenewalNotice(renewalPrice: "XX.XX") : L10n.autoRenewalNotice
+    }
+
+    var isPromo: Bool {
+        entryPoint.isPromo
     }
 
     init(
@@ -65,7 +89,7 @@ public final class UpsellScreenModel: Identifiable {
     func scrollingOffsetDidChange(newValue verticalOffset: CGFloat) {
         guard verticalOffset > 0 else { return }
 
-        let ratio = 1 - min(verticalOffset / logoHeight, 1)
+        let ratio = 1 - min(verticalOffset / 150, 1)
         let ratioRange: ClosedRange<CGFloat> = 0...1
 
         logoScaleFactor = ratio.normalize(inputRange: ratioRange, outputRange: logoScaleFactorRange)
@@ -73,12 +97,20 @@ public final class UpsellScreenModel: Identifiable {
     }
 
     func onPurchaseTapped(toastStateStore: ToastStateStore, dismiss: () -> Void) async {
-        await purchaseActionPerformer.purchase(
-            storeKitProductID: selectedInstanceId,
-            isBusy: .init(get: { self.isBusy }, set: { self.isBusy = $0 }),
-            toastStateStore: toastStateStore,
-            dismiss: dismiss
-        )
+        if isPromo {
+            openWebPage()
+        } else {
+            await purchaseActionPerformer.purchase(
+                storeKitProductID: selectedInstanceId,
+                isBusy: .init(get: { self.isBusy }, set: { self.isBusy = $0 }),
+                toastStateStore: toastStateStore,
+                dismiss: dismiss
+            )
+        }
+    }
+
+    private func openWebPage() {
+
     }
 }
 
@@ -93,5 +125,16 @@ private extension BinaryFloatingPoint {
     func normalize(inputRange: ClosedRange<Self>, outputRange: ClosedRange<Self>) -> Self {
         assert(inputRange.contains(self))
         return (outputRange.upperBound - outputRange.lowerBound) * ((self - inputRange.lowerBound) / (inputRange.upperBound - inputRange.lowerBound)) + outputRange.lowerBound
+    }
+}
+
+extension UpsellEntryPoint {
+    var isPromo: Bool {
+        switch self {
+        case .dollarPromo, .mailboxTopBarPromo:
+            true
+        default:
+            false
+        }
     }
 }
