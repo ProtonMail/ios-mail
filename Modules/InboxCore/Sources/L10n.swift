@@ -54,6 +54,18 @@ public enum CommonL10n {
         bundle: .module,
         comment: "Upsell button subtitle displayed for a free user."
     )
+    public enum Clipboard {
+        public static let emailAddress = LocalizedStringResource(
+            "email address",
+            bundle: .module,
+            comment: "Label for an email address when copying it to the clipboard."
+        )
+        public static let name = LocalizedStringResource(
+            "name",
+            bundle: .module,
+            comment: "Label for a person's name when copying it to the clipboard."
+        )
+    }
 }
 
 public extension LocalizedStringResource.BundleDescription {

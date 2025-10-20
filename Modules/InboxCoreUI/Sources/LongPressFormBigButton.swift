@@ -18,23 +18,26 @@
 import InboxDesignSystem
 import SwiftUI
 
-public struct LongPressFormBigButton: View {
+public struct LongPressFormBigButton<BottomContent: View>: View {
     private let title: LocalizedStringResource
     private let value: String
     private let hasAccentTextColor: Bool
     private let onTap: () -> Void
+    @ViewBuilder private let bottomContent: () -> BottomContent?
     @State private var isPressed: Bool = false
 
     public init(
         title: LocalizedStringResource,
         value: String,
         hasAccentTextColor: Bool,
-        onTap: @escaping () -> Void
+        onTap: @escaping () -> Void,
+        bottomContent: @escaping () -> BottomContent?
     ) {
         self.title = title
         self.value = value
         self.hasAccentTextColor = hasAccentTextColor
         self.onTap = onTap
+        self.bottomContent = bottomContent
     }
 
     public var body: some View {
@@ -42,7 +45,8 @@ public struct LongPressFormBigButton: View {
             title: title,
             value: value,
             hasAccentTextColor: hasAccentTextColor,
-            accessoryType: .none
+            accessoryType: .none,
+            bottomContent: bottomContent
         )
         .textSelection(.enabled)
         .conditionalLongPress(onPressingChanged: { changed in isPressed = changed })

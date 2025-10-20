@@ -15,7 +15,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import InboxDesignSystem
 import proton_app_uniffi
 
 extension MessageAction: DisplayableAction {
@@ -69,6 +68,14 @@ extension MessageAction: DisplayableAction {
             Action.reportPhishing.displayData
         case .more:
             InternalAction.more.displayData
+        }
+    }
+
+    var isMoreAction: Bool {
+        if case .more = self {
+            true
+        } else {
+            false
         }
     }
 

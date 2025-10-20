@@ -46,6 +46,10 @@ private struct ConversationDetailToolbars: ViewModifier {
             .smoothScreenTransition()
             .conversationBottomToolbar(
                 actions: model.conversationToolbarActions,
+                mailbox: { model.mailbox.unsafelyUnwrapped },
+                mailUserSession: AppContext.shared.userSession,
+                messageAppearanceOverrideStore: model.messageAppearanceOverrideStore,
+                editToolbarTapped: { toolbarType in model.actionSheets.editToolbar = toolbarType },
                 messageActionSelected: { action in
                     if let messageID = model.state.singleMessageIDInMessageMode {
                         Task {
@@ -53,7 +57,6 @@ private struct ConversationDetailToolbars: ViewModifier {
                                 action: action,
                                 messageID: messageID,
                                 toastStateStore: toastStateStore,
-                                actionOrigin: .toolbar,
                             ) {
                                 proceedAfterMove()
                             }
@@ -62,7 +65,7 @@ private struct ConversationDetailToolbars: ViewModifier {
                 },
                 conversationActionSelected: { action in
                     Task {
-                        await model.handle(action: action, toastStateStore: toastStateStore, actionOrigin: .toolbar) {
+                        await model.handle(action: action, toastStateStore: toastStateStore) {
                             proceedAfterMove()
                         }
                     }

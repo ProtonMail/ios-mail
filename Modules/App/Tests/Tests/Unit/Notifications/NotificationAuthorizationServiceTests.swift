@@ -19,6 +19,7 @@ import Testing
 
 @testable import ProtonMail
 
+@MainActor
 struct NotificationAuthorizationServiceTests {
     private var sut: NotificationAuthorizationService!
     private var remoteNotificationRegistrar: RemoteNotificationRegistrarSpy!
@@ -29,8 +30,8 @@ struct NotificationAuthorizationServiceTests {
     }
 
     @Test
-    func onAppLaunch_registersForRemoteNotifications() async {
-        await sut.setUpServiceAsync()
+    func onAppLaunch_registersForRemoteNotifications() {
+        sut.setUpService()
 
         #expect(remoteNotificationRegistrar.isRegisteredForRemoteNotifications)
     }

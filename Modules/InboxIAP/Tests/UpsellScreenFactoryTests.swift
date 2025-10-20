@@ -24,7 +24,7 @@ import Testing
 
 @MainActor
 final class UpsellScreenFactoryTests {
-    private lazy var sut = UpsellScreenFactory(planPurchasing: DummyPlanPurchasing())
+    private lazy var sut = UpsellScreenFactory(purchaseActionPerformer: .dummy)
     private let availablePlans = [AvailablePlan.mailPlus, .unlimited].flatMap(\.asComposedPlans)
 
     @Test

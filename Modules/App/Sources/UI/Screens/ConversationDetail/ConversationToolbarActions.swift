@@ -18,17 +18,17 @@
 import proton_app_uniffi
 
 enum ConversationToolbarActions {
-    case message(actions: AllMessageActions)
-    case conversation(actions: AllConversationActions)
+    case message(actions: AllMessageActions, messageID: ID)
+    case conversation(actions: AllConversationActions, conversationID: ID)
 }
 
 extension ConversationToolbarActions {
 
     var isEmpty: Bool {
         switch self {
-        case .message(let actions):
+        case .message(let actions, _):
             actions.visibleMessageActions.isEmpty
-        case .conversation(let actions):
+        case .conversation(let actions, _):
             actions.visibleListActions.isEmpty
         }
     }

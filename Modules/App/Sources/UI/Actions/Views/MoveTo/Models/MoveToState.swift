@@ -22,3 +22,9 @@ struct MoveToState: Copying {
     var moveToCustomFolderActions: [MoveToCustomFolder]
     var createFolderLabelPresented: Bool
 }
+
+extension MoveToState {
+    static var initial: Self {
+        .init(moveToSystemFolderActions: [], moveToCustomFolderActions: [], createFolderLabelPresented: false)
+    }
+}

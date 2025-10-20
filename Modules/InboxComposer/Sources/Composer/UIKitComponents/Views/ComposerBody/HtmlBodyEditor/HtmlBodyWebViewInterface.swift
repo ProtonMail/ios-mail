@@ -34,6 +34,7 @@ final class HtmlBodyWebViewInterface: NSObject, HtmlBodyWebViewInterfaceProtocol
     }
 
     let webView: WKWebView
+    private let websiteDataStore: WebsiteDataStoreType
     var onEvent: ((Event) -> Void)?
 
     private let htmlDocument: HtmlBodyDocument
@@ -41,8 +42,9 @@ final class HtmlBodyWebViewInterface: NSObject, HtmlBodyWebViewInterfaceProtocol
         WeakScriptMessageHandler(target: self)
     }()
 
-    init(webView: WKWebView) {
+    init(webView: WKWebView, websiteDataStore: WebsiteDataStoreType? = nil) {
         self.webView = webView
+        self.websiteDataStore = websiteDataStore ?? WKWebsiteDataStoreAdapter(store: webView.configuration.websiteDataStore)
         self.htmlDocument = HtmlBodyDocument()
         super.init()
         setUpCallbacks()
@@ -54,9 +56,14 @@ final class HtmlBodyWebViewInterface: NSObject, HtmlBodyWebViewInterfaceProtocol
         }
     }
 
-    func loadMessageBody(_ body: String) {
+    func loadMessageBody(_ body: String, clearCacheFirst: Bool) async {
         let nonce = generateCspNonce()
         let html = htmlDocument.html(nonce: nonce, bodyContent: body)
+
+        if clearCacheFirst {
+            let types = WKWebsiteDataStore.allWebsiteDataTypes()
+            await websiteDataStore.removeData(ofTypes: types, modifiedSince: .distantPast)
+        }
         webView.loadHTMLString(html, baseURL: nil)
         Task { await logHtmlHealthCheck(tag: "loadMessageBody") }
     }

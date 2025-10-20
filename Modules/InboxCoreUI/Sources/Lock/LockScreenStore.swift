@@ -40,7 +40,6 @@ class LockScreenStore: StateStore {
         self.dismissLock = dismissLock
     }
 
-    @MainActor
     func handle(action: LockScreenAction) async {
         switch action {
         case .biometric(let output):
@@ -66,7 +65,6 @@ class LockScreenStore: StateStore {
         }
     }
 
-    @MainActor
     private func signOutAllAccounts() async {
         do {
             try await signOutService.signOutAllAccounts()
@@ -76,7 +74,6 @@ class LockScreenStore: StateStore {
         }
     }
 
-    @MainActor
     private func handlePinAuthenticationError(attemptsLeft: Int) {
         switch attemptsLeft {
         case 0:
@@ -92,7 +89,6 @@ class LockScreenStore: StateStore {
         }
     }
 
-    @MainActor
     private func verify(pin: PIN) async {
         switch await pinVerifier.verifyPinCode(pin: pin.digits) {
         case .ok:
@@ -105,7 +101,6 @@ class LockScreenStore: StateStore {
         }
     }
 
-    @MainActor
     private func readNumberOfAttempts() async -> Int {
         do {
             let attempts = try await pinVerifier.remainingPinAttempts().get() ?? 0

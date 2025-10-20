@@ -18,7 +18,7 @@
 @testable import ProtonMail
 import proton_app_uniffi
 
-class AppSettingsRepositorySpy: AppSettingsRepository {
+final class AppSettingsRepositorySpy: AppSettingsRepository {
 
     var stubbedAppSettings: AppSettings = .init(
         appearance: .lightMode,
