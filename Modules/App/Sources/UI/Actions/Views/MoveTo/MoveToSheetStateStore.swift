@@ -52,7 +52,9 @@ class MoveToSheetStateStore: StateStore {
     func handle(action: MoveToSheetAction) {
         switch action {
         case .viewAppear:
-            loadMoveToActions()
+            Task {
+                await loadMoveToActions()
+            }
         case .customFolderTapped(let customFolder):
             moveTo(destinationID: customFolder.id, destinationName: customFolder.name)
         case .systemFolderTapped(let systemFolder):
@@ -101,13 +103,15 @@ class MoveToSheetStateStore: StateStore {
             })
     }
 
-    private func loadMoveToActions() {
-        Task {
-            let actions = await moveToActionsProvider.actions(for: input.mailboxItem.itemType, ids: input.ids)
+    private func loadMoveToActions() async {
+        do {
+            let actions = try await moveToActionsProvider.actions(for: input.mailboxItem.itemType, ids: input.ids)
             Dispatcher.dispatchOnMain(
                 .init(block: { [weak self] in
                     self?.update(moveToActions: actions)
                 }))
+        } catch {
+            AppLogger.log(error: error)
         }
     }
 

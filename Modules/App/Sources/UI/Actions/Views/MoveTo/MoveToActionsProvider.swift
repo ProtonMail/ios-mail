@@ -26,21 +26,19 @@ struct MoveToActionsProvider {
         self.availableMoveToActions = availableMoveToActions
     }
 
-    func actions(for type: MailboxItemType, ids: [ID]) async -> [MoveAction] {
+    func actions(for type: MailboxItemType, ids: [ID]) async throws -> [MoveAction] {
         switch type {
         case .message:
-            let actions = try? await availableMoveToActions.message(mailbox, ids).get()
-            return actions ?? []
+            try await availableMoveToActions.message(mailbox, ids).get()
         case .conversation:
-            let actions = try? await availableMoveToActions.conversation(mailbox, ids).get()
-            return actions ?? []
+            try await availableMoveToActions.conversation(mailbox, ids).get()
         }
     }
 }
 
 struct AvailableMoveToActions {
-    let message: (_ mailbox: Mailbox, _ messageIDs: [ID]) async -> AvailableMoveToActionsForMessagesResult
-    let conversation: (_ mailbox: Mailbox, _ conversationIDs: [ID]) async -> AvailableMoveToActionsForConversationsResult
+    let message: (_ mailbox: Mailbox, _ messageIDs: [ID]) async throws -> AvailableMoveToActionsForMessagesResult
+    let conversation: (_ mailbox: Mailbox, _ conversationIDs: [ID]) async throws -> AvailableMoveToActionsForConversationsResult
 }
 
 extension AvailableMoveToActions {
