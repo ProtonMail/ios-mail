@@ -68,31 +68,16 @@ struct ConversationDetailScreen: View {
                 mailbox: { model.mailbox.unsafelyUnwrapped },
                 mailUserSession: mailUserSession,
                 state: $model.actionSheets,
-                messageActionTapped: { action, id in
-                    Task {
-                        await model.handle(
-                            action: action,
-                            messageID: id,
-                            toastStateStore: toastStateStore,
-                            actionOrigin: .sheet
-                        ) {
-                            proceedAfterMove()
-                        }
-                    }
-                },
-                conversationActionTapped: { action in
-                    Task {
-                        await model.handle(
-                            action: action,
-                            toastStateStore: toastStateStore,
-                            actionOrigin: .sheet
-                        ) {
-                            proceedAfterMove()
-                        }
-                    }
-                },
-                goBackNavigation: proceedAfterMove,
-                messageAppearanceOverrideStore: model.messageAppearanceOverrideStore
+                goBackNavigation: proceedAfterMove
+            )
+            .sheet(
+                item: $model.actionSheets.editToolbar,
+                content: { toolbarType in
+                    EditToolbarScreen(
+                        state: .initial(toolbarType: toolbarType),
+                        customizeToolbarService: mailUserSession
+                    )
+                }
             )
             .alert(model: $model.actionAlert)
             .fullScreenCover(item: $model.attachmentIDToOpen) { id in
@@ -136,6 +121,7 @@ struct ConversationDetailScreen: View {
                         model: model,
                         mailUserSession: mailUserSession,
                         draftPresenter: draftPresenter,
+                        editToolbar: {},
                         goBack: proceedAfterMove
                     )
                 }

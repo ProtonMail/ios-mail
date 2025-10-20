@@ -33,11 +33,4 @@ extension DeleteActions {
         )
     }
 
-    static var dummy: Self {
-        .init(
-            message: { _, _ in .ok },
-            conversation: { _, _ in .ok }
-        )
-    }
-
 }

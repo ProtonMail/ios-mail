@@ -44,7 +44,6 @@ class AppProtectionSelectionStore: StateStore {
         self.laContext = laContext
     }
 
-    @MainActor
     func handle(action: AppProtectionSelectionAction) async {
         switch action {
         case .onAppear:
@@ -73,7 +72,6 @@ class AppProtectionSelectionStore: StateStore {
         }
     }
 
-    @MainActor
     private func reloadProtectionData() async {
         guard let settings = await currentAppSettings() else { return }
         let protection = settings.protection
@@ -82,7 +80,6 @@ class AppProtectionSelectionStore: StateStore {
             .copy(\.autoLock, to: settings.autoLock)
     }
 
-    @MainActor
     private func disableProtection() async {
         switch state.currentProtection {
         case .biometrics:
@@ -94,7 +91,6 @@ class AppProtectionSelectionStore: StateStore {
         }
     }
 
-    @MainActor
     private func disableBiometricProtection() async {
         guard await biometricAuthDidSucceed() else { return }
         do {
@@ -104,7 +100,6 @@ class AppProtectionSelectionStore: StateStore {
         }
     }
 
-    @MainActor
     private func enableBiometricProtection() async {
         switch state.currentProtection {
         case .none:
@@ -120,7 +115,6 @@ class AppProtectionSelectionStore: StateStore {
         }
     }
 
-    @MainActor
     private func setPINProtection() async {
         switch state.currentProtection {
         case .none:
@@ -134,7 +128,6 @@ class AppProtectionSelectionStore: StateStore {
         }
     }
 
-    @MainActor
     private func currentAppSettings() async -> AppSettings? {
         do {
             return try await appSettingsRepository.getAppSettings().get()
@@ -144,7 +137,6 @@ class AppProtectionSelectionStore: StateStore {
         }
     }
 
-    @MainActor
     private func availableAppProtectionMethods(selected: AppProtection?) -> [AppProtectionMethodViewModel] {
         let availableMethods: [AppProtectionMethodViewModel.MethodType] =
             [.none, .pin] + [supportedBiometry()].compactMap { $0 }
@@ -157,7 +149,6 @@ class AppProtectionSelectionStore: StateStore {
         }
     }
 
-    @MainActor
     private func supportedBiometry() -> AppProtectionMethodViewModel.MethodType? {
         switch SupportedBiometry.configuredOnDevice(context: laContext()) {
         case .none:
@@ -169,7 +160,6 @@ class AppProtectionSelectionStore: StateStore {
         }
     }
 
-    @MainActor
     private func biometricAuthDidSucceed() async -> Bool {
         await biometricAuthenticator.authenticate().isSuccess
     }

@@ -26,6 +26,7 @@ struct ConversationDetailListView: View {
     @ObservedObject private var model: ConversationDetailModel
     private let mailUserSession: MailUserSession
     private let draftPresenter: RecipientDraftPresenter
+    private let editToolbar: () -> Void
     private let goBack: () -> Void
 
     /// These attributes trigger the different action sheets
@@ -36,11 +37,13 @@ struct ConversationDetailListView: View {
         model: ConversationDetailModel,
         mailUserSession: MailUserSession,
         draftPresenter: RecipientDraftPresenter,
+        editToolbar: @escaping () -> Void,
         goBack: @escaping () -> Void
     ) {
         self.model = model
         self.mailUserSession = mailUserSession
         self.draftPresenter = draftPresenter
+        self.editToolbar = editToolbar
         self.goBack = goBack
     }
 
@@ -146,7 +149,10 @@ struct ConversationDetailListView: View {
     private func expandedMessageCell(uiModel: ExpandedMessageCellUIModel) -> some View {
         ExpandedMessageCell(
             mailbox: model.mailbox.unsafelyUnwrapped,
+            mailUserSession: mailUserSession,
             uiModel: uiModel,
+            draftPresenter: draftPresenter,
+            messageAppearanceOverrideStore: model.messageAppearanceOverrideStore,
             areActionsHidden: model.areActionsHidden,
             attachmentIDToOpen: $model.attachmentIDToOpen,
             onEvent: { onExpandedMessageCellEvent($0, uiModel: uiModel) },
@@ -165,9 +171,17 @@ struct ConversationDetailListView: View {
             model.onReplyAllMessage(withId: uiModel.id, toastStateStore: toastStateStore)
         case .onForward:
             model.onForwardMessage(withId: uiModel.id, toastStateStore: toastStateStore)
-        case .onMoreActions:
-            let input = MessageActionsSheetInput(id: uiModel.id, title: model.seed.subject, origin: .messageHeader)
-            model.actionSheets = model.actionSheets.copy(\.message, to: input)
+        case .onEditToolbar:
+            editToolbar()
+        case .onMessageAction(let action):
+            Task {
+                await model.handle(
+                    action: action,
+                    messageID: uiModel.id,
+                    toastStateStore: toastStateStore,
+                    goBack: goBack
+                )
+            }
         case .onSenderTap:
             senderActionTarget = uiModel
         case .onRecipientTap(let recipient):

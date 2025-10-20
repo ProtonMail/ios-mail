@@ -68,7 +68,7 @@ extension AttachmentErrorAlertState {
 
     /// Groups together `DraftAttachmentUploadError` by error type to reduce the total number of alerts.
     private func aggregateAddingAttachmentErrors(_ errors: [DraftAttachmentUploadError]) -> [AttachmentErrorAlertModel] {
-        var attachmentTooLargeCount = 0
+        var overSizeLimitCount = 0
         var tooManyAttachmentsCount = 0
         var otherCount = 0
 
@@ -78,9 +78,10 @@ extension AttachmentErrorAlertState {
                 switch reason {
                 case .tooManyAttachments:
                     tooManyAttachmentsCount += 1
-                case .attachmentTooLarge:
-                    attachmentTooLargeCount += 1
-                default:
+                case .attachmentTooLarge, .totalAttachmentSizeTooLarge:
+                    overSizeLimitCount += 1
+                case .messageDoesNotExist, .messageAlreadySent, .messageDoesNotExistOnServer,
+                    .retryInvalidState, .timeout, .crypto:
                     otherCount += 1
                 }
             case .other:
@@ -89,8 +90,8 @@ extension AttachmentErrorAlertState {
         }
 
         var result = [AttachmentErrorAlertModel]()
-        if attachmentTooLargeCount > 0 {
-            result.append(.overSizeLimit(origin: .adding(.defaultAddAttachmentError(count: attachmentTooLargeCount))))
+        if overSizeLimitCount > 0 {
+            result.append(.overSizeLimit(origin: .adding(.defaultAddAttachmentError(count: overSizeLimitCount))))
         }
         if tooManyAttachmentsCount > 0 {
             result.append(.tooMany(origin: .adding(.defaultAddAttachmentError(count: tooManyAttachmentsCount))))
@@ -103,8 +104,8 @@ extension AttachmentErrorAlertState {
 
     /// Groups together `DraftAttachment` by error type to reduce the total number of alerts.
     private func aggregateUploadingAttachmentErrors(_ attachments: [DraftAttachment]) -> [AttachmentErrorAlertModel] {
-        var tooLargeFailures = [DraftAttachment]()
-        var tooManyFailures = [DraftAttachment]()
+        var overSizeFailures = [DraftAttachment]()
+        var tooManyAttachmentsFailures = [DraftAttachment]()
         var otherFailures = [DraftAttachment]()
 
         for attachment in attachments {
@@ -114,10 +115,11 @@ extension AttachmentErrorAlertState {
             case .reason(let reason):
                 switch reason {
                 case .tooManyAttachments:
-                    tooManyFailures.append(attachment)
-                case .attachmentTooLarge:
-                    tooLargeFailures.append(attachment)
-                default:
+                    tooManyAttachmentsFailures.append(attachment)
+                case .attachmentTooLarge, .totalAttachmentSizeTooLarge:
+                    overSizeFailures.append(attachment)
+                case .messageDoesNotExist, .messageAlreadySent, .messageDoesNotExistOnServer,
+                    .retryInvalidState, .timeout, .crypto:
                     otherFailures.append(attachment)
                 }
             case .other:
@@ -126,10 +128,10 @@ extension AttachmentErrorAlertState {
         }
 
         var result = [AttachmentErrorAlertModel]()
-        if !tooLargeFailures.isEmpty, let uploadingError = mapUnseenToUploadingErrorOrigin(tooLargeFailures) {
+        if !overSizeFailures.isEmpty, let uploadingError = mapUnseenToUploadingErrorOrigin(overSizeFailures) {
             result.append(.overSizeLimit(origin: uploadingError))
         }
-        if !tooManyFailures.isEmpty, let uploadingError = mapUnseenToUploadingErrorOrigin(tooManyFailures) {
+        if !tooManyAttachmentsFailures.isEmpty, let uploadingError = mapUnseenToUploadingErrorOrigin(tooManyAttachmentsFailures) {
             result.append(.tooMany(origin: uploadingError))
         }
         if !otherFailures.isEmpty, let uploadingError = mapUnseenToUploadingErrorOrigin(otherFailures) {
@@ -149,7 +151,7 @@ extension AttachmentErrorAlertState {
 extension DraftAttachment {
 
     var toUploadAttachmentError: UploadAttachmentError {
-        UploadAttachmentError(name: attachment.name, attachmentId: attachment.id, errorTimeStamp: stateModifiedTimestamp)
+        UploadAttachmentError(attachment: attachment, errorTimeStamp: stateModifiedTimestamp)
     }
 }
 

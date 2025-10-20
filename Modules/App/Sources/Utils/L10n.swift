@@ -48,17 +48,6 @@ enum L10n {
             )
         }
 
-        enum Clipboard {
-            static let emailAddress = LocalizedStringResource(
-                "email address",
-                comment: "Label for an email address when copying it to the clipboard."
-            )
-            static let name = LocalizedStringResource(
-                "name",
-                comment: "Label for a person's name when copying it to the clipboard."
-            )
-        }
-
         enum Print {
             static let error = LocalizedStringResource(
                 "Could not print requested e-mail",
@@ -213,6 +202,10 @@ enum L10n {
         static let replyAll = LocalizedStringResource(
             "Reply all",
             comment: "Action title for replying to a sender and all receipients of given message in the action sheet."
+        )
+        static let moreOptions = LocalizedStringResource(
+            "More options",
+            comment: "A button title that shows rest of available actions in the menu"
         )
 
         enum Delete {
@@ -883,6 +876,29 @@ enum L10n {
     }
 
     enum Settings {
+        enum AppIcon {
+            static let buttonTitle = LocalizedStringResource(
+                "App Icon",
+                comment: "Title of the button that allows the user to change the app’s icon."
+            )
+            static let primary = LocalizedStringResource(
+                "Primary",
+                comment: "Name of the default (primary) app icon shown in the app icon picker."
+            )
+            static let notes = LocalizedStringResource(
+                "Notes",
+                comment: "Name of the alternate 'Notes' app icon shown in the app icon picker."
+            )
+            static let weather = LocalizedStringResource(
+                "Weather",
+                comment: "Name of the alternate 'Weather' app icon shown in the app icon picker."
+            )
+            static let calculator = LocalizedStringResource(
+                "Calculator",
+                comment: "Name of the alternate 'Calculator' app icon shown in the app icon picker."
+            )
+        }
+
         enum App {
             static let title = LocalizedStringResource(
                 "App customizations",
@@ -1047,15 +1063,19 @@ enum L10n {
                 comment: "Title of a section displaying selected list toolbar actions."
             )
             static let listToolbarSectionFooter = LocalizedStringResource(
-                "This toolbar appears when multiple messages are selected in the message list (e.g., Inbox, Trash, etc.).",
+                "This toolbar appears when multiple messages are selected in a list view.",
                 comment: "Footer of a section displaying selected list toolbar actions."
+            )
+            static let messageToolbarSectionTitle = LocalizedStringResource(
+                "Message toolbar",
+                comment: "Title of a section displaying selected message toolbar actions."
             )
             static let conversationToolbarSectionTitle = LocalizedStringResource(
                 "Conversation toolbar",
                 comment: "Title of a section displaying selected conversation toolbar actions."
             )
             static let conversationToolbarSectionFooter = LocalizedStringResource(
-                "This toolbar remains consistently visible during message reading.",
+                "This toolbar remains visible when a message is open.",
                 comment: "Footer of a section displaying selected conversation toolbar actions."
             )
             static let editActions = LocalizedStringResource(

@@ -23,18 +23,12 @@ import Testing
 
 @MainActor
 class AppSettingsStateStoreTests {
-    private lazy var sut = AppSettingsStateStore(
-        state: .initial,
-        appSettingsRepository: appSettingsRepositorySpy,
-        customSettings: customSettingsSpy,
-        notificationCenter: notificationCenterSpy,
-        urlOpener: urlOpenerSpy,
-        mainBundle: bundleStub
-    )
+    private lazy var sut = setUpSUT(with: .default)
     private let notificationCenterSpy = UserNotificationCenterSpy()
     private let urlOpenerSpy = URLOpenerSpy()
     private let bundleStub = BundleStub()
     private let appSettingsRepositorySpy = AppSettingsRepositorySpy()
+    private let appIconConfiguratorSpy = AppIconConfiguratorSpy()
     private let customSettingsSpy = CustomSettingsSpy()
 
     init() {
@@ -175,6 +169,38 @@ class AppSettingsStateStoreTests {
         #expect(sut.state.isSwipeToAdjacentConversationEnabled == false)
     }
 
+    // MARK: - appIconSelected action
+
+    @Test
+    func changeIconFromDefaultToCalculator() async throws {
+        sut = setUpSUT(with: .default)
+
+        await sut.handle(action: .appIconSelected(.calculator))
+
+        #expect(sut.state == AppSettingsState.initial(appIconName: AppIcon.calculator.alternateIconName))
+        #expect(appIconConfiguratorSpy.setAlternateIconNameCalls == [AppIcon.calculator.alternateIconName])
+    }
+
+    @Test
+    func changeIconFromCalculatorToNotes() async throws {
+        sut = setUpSUT(with: .calculator)
+
+        await sut.handle(action: .appIconSelected(.notes))
+
+        #expect(sut.state == AppSettingsState.initial(appIconName: AppIcon.notes.alternateIconName))
+        #expect(appIconConfiguratorSpy.setAlternateIconNameCalls == [AppIcon.notes.alternateIconName])
+    }
+
+    @Test
+    func changeIconFromCalculatorToDefault() async throws {
+        sut = setUpSUT(with: .calculator)
+
+        await sut.handle(action: .appIconSelected(.default))
+
+        #expect(sut.state == AppSettingsState.initial(appIconName: AppIcon.default.alternateIconName))
+        #expect(appIconConfiguratorSpy.setAlternateIconNameCalls == [AppIcon.default.alternateIconName])
+    }
+
     // MARK: - Private
 
     private func changeAppAppearance(_ appAppearance: AppAppearance) async {
@@ -193,6 +219,18 @@ class AppSettingsStateStoreTests {
         appSettingsRepositorySpy.stubbedAppSettings = appSettingsRepositorySpy.stubbedAppSettings
             .copy(\.useAlternativeRouting, to: value)
         await sut.handle(action: .alternativeRoutingChanged(value))
+    }
+
+    private func setUpSUT(with appIcon: AppIcon) -> AppSettingsStateStore {
+        AppSettingsStateStore(
+            state: AppSettingsState.initial(appIconName: appIcon.alternateIconName),
+            appSettingsRepository: appSettingsRepositorySpy,
+            customSettings: customSettingsSpy,
+            notificationCenter: notificationCenterSpy,
+            urlOpener: urlOpenerSpy,
+            appIconConfigurator: appIconConfiguratorSpy,
+            mainBundle: bundleStub
+        )
     }
 }
 

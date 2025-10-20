@@ -540,9 +540,11 @@ extension MailboxModel {
 
     func createDraft() {
         Task {
-            await draftPresenter.openNewDraft(onError: {
-                toast = .error(message: $0.localizedDescription)
-            })
+            do {
+                try await draftPresenter.openNewDraft()
+            } catch {
+                toast = .error(message: error.localizedDescription)
+            }
         }
     }
 

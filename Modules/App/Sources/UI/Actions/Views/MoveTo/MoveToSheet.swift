@@ -23,6 +23,7 @@ import InboxCore
 
 struct MoveToSheet: View {
     @EnvironmentObject var toastStateStore: ToastStateStore
+    private let initialState: MoveToState
     private let input: ActionSheetInput
     private let mailbox: Mailbox
     private let availableMoveToActions: AvailableMoveToActions
@@ -31,6 +32,7 @@ struct MoveToSheet: View {
     private let mailUserSession: MailUserSession
 
     init(
+        initialState: MoveToState = .initial,
         input: ActionSheetInput,
         mailbox: Mailbox,
         availableMoveToActions: AvailableMoveToActions,
@@ -38,6 +40,7 @@ struct MoveToSheet: View {
         navigation: @escaping (MoveToSheetNavigation) -> Void,
         mailUserSession: MailUserSession
     ) {
+        self.initialState = initialState
         self.input = input
         self.mailbox = mailbox
         self.availableMoveToActions = availableMoveToActions
@@ -49,6 +52,7 @@ struct MoveToSheet: View {
     var body: some View {
         StoreView(
             store: MoveToSheetStateStore(
+                state: initialState,
                 input: input,
                 mailbox: mailbox,
                 availableMoveToActions: availableMoveToActions,

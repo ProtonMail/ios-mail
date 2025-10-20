@@ -19,7 +19,7 @@ import proton_app_uniffi
 import WebKit
 
 @MainActor
-final class MessagePrinter: PrintActionPerformer {
+final class MessagePrinter {
     typealias FindMessage = (ID) async throws -> Message?
     typealias PresentPrintInteractionController = (WebViewPrintingTransaction) async throws(PrintError) -> Void
 

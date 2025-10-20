@@ -21,7 +21,6 @@ import InboxIAP
 import SwiftUI
 import proton_app_uniffi
 
-@MainActor
 class SnoozeStore: StateStore {
     @Published var state: SnoozeState
     private let upsellScreenPresenter: UpsellScreenPresenter
