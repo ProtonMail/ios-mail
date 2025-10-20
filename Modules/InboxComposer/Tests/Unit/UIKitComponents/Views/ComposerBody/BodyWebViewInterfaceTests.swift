@@ -22,29 +22,43 @@ import WebKit
 @MainActor
 final class BodyWebViewInterfaceTests {
     private let sut: HtmlBodyWebViewInterface
+    private var mockWebsiteDataStore: MockWebsiteDataStore!
     private var delegate: WebViewDelegate!
+    private let dummyMessage = "<p>dummy message</p>"
 
     init() {
-        self.sut = .init(webView: WKWebView(frame: .zero, configuration: WKWebViewConfiguration()))
+        self.mockWebsiteDataStore = .init()
+        let webView = WKWebView(frame: .zero, configuration: WKWebViewConfiguration())
+        self.sut = .init(webView: webView, websiteDataStore: mockWebsiteDataStore)
     }
 
     // MARK: loadMessageBody
 
     @Test
-    func testLoadMessageBodyBody_itLoadsTheGivenHtml() async {
-        let dummyMessage = "<p>dummy message</p>"
-        sut.loadMessageBody(dummyMessage)
+    func testLoadMessageBodyBody_whioutClearingCache_itLoadsTheGivenHtml() async {
+        await sut.loadMessageBody(dummyMessage, clearCacheFirst: false)
         await waitForWebViewDidFinish(sut.webView)
 
         let html = await sut.readMesasgeBody()
         #expect(html == dummyMessage)
+        #expect(mockWebsiteDataStore.removeDataCalled == false)
+    }
+
+    @Test
+    func testLoadMessageBody_whenClearCacheFirst_itClearsCacheAndLoadsTheGivenHtml() async {
+        await sut.loadMessageBody(dummyMessage, clearCacheFirst: true)
+        await waitForWebViewDidFinish(sut.webView)
+
+        let html = await sut.readMesasgeBody()
+        #expect(html == dummyMessage)
+        #expect(mockWebsiteDataStore.removeDataCalled == true)
     }
 
     // MARK: insertImages
 
     @Test
     func testInsertImages_whenNoCursorExists_itInsertsTheImagesAtTheBeginning() async {
-        sut.loadMessageBody("<p>initial message</p>")
+        await sut.loadMessageBody("<p>initial message</p>", clearCacheFirst: false)
         await waitForWebViewDidFinish(sut.webView)
 
         await sut.insertImages(["12345", "qwerty"])
@@ -58,7 +72,7 @@ final class BodyWebViewInterfaceTests {
 
     @Test
     func testInsertImages_whenCursorExists_itInsertsTheImagesAtTheCursorPosition() async throws {
-        sut.loadMessageBody("<p>first part</p><p>second part</p>")
+        await sut.loadMessageBody("<p>first part</p><p>second part</p>", clearCacheFirst: false)
         await waitForWebViewDidFinish(sut.webView)
 
         try await setCursorAfter(text: "first part")
@@ -72,7 +86,7 @@ final class BodyWebViewInterfaceTests {
 
     @Test
     func testRemoveImage_whenThereIsCIDMatch_itRemovesTheImgObject() async {
-        sut.loadMessageBody("<p>hello<img src=\"cid:12345\"><br></p>")
+        await sut.loadMessageBody("<p>hello<img src=\"cid:12345\"><br></p>", clearCacheFirst: false)
         await waitForWebViewDidFinish(sut.webView)
 
         await sut.removeImage(containing: "12345")
@@ -86,7 +100,7 @@ final class BodyWebViewInterfaceTests {
 
     @Test
     func testRemoveImage_whenThereIsPartialCIDMatch_itDoesNotRemoveTheImage() async {
-        sut.loadMessageBody("<p>hello<img src=\"cid:123456789\"><br></p>")
+        await sut.loadMessageBody("<p>hello<img src=\"cid:123456789\"><br></p>", clearCacheFirst: false)
         await waitForWebViewDidFinish(sut.webView)
 
         await sut.removeImage(containing: "12345")
@@ -100,7 +114,7 @@ final class BodyWebViewInterfaceTests {
 
     @Test
     func testRemoveImage_whenCIDDoesNotExist_itDoesNotModifyTheHTML() async {
-        sut.loadMessageBody("<p>hello<img src=\"cid:12345\"><br></p>")
+        await sut.loadMessageBody("<p>hello<img src=\"cid:12345\"><br></p>", clearCacheFirst: false)
         await waitForWebViewDidFinish(sut.webView)
 
         await sut.removeImage(containing: "12567")
@@ -154,5 +168,13 @@ private class WebViewDelegate: NSObject, WKNavigationDelegate {
     }
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         continuation.resume()
+    }
+}
+
+private final class MockWebsiteDataStore: WebsiteDataStoreType {
+    private(set) var removeDataCalled = false
+
+    func removeData(ofTypes websiteDataTypes: Set<String>, modifiedSince date: Date) async {
+        removeDataCalled = true
     }
 }

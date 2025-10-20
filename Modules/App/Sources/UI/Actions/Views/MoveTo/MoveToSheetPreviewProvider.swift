@@ -23,24 +23,41 @@ enum MoveToSheetPreviewProvider {
     static var availableMoveToActions: AvailableMoveToActions {
         .init(
             message: { _, _ in
-                .ok([
-                    .systemFolder(.init(localId: .init(value: 1), name: .inbox)),
-                    .systemFolder(.init(localId: .init(value: 2), name: .archive)),
-                    .customFolder(customFoldersTree),
-                    .customFolder(
-                        .init(
-                            localId: .init(value: 6),
-                            name: "4",
-                            color: .init(value: "#9E221A"),
-                            children: []
-                        )),
-                ])
+                .ok(systemFolderActions + customFolderActions)
             },
             conversation: { _, _ in .ok([]) }
         )
     }
 
+    static func state() -> MoveToState {
+        .init(
+            moveToSystemFolderActions: systemFolderActions.compactMap(\.moveToSystemFolder),
+            moveToCustomFolderActions: customFolderActions.compactMap(\.moveToCustomFolder),
+            createFolderLabelPresented: false
+        )
+    }
+
     // MARK: - Private
+
+    private static var systemFolderActions: [MoveAction] {
+        [
+            .systemFolder(.init(localId: .init(value: 1), name: .inbox)),
+            .systemFolder(.init(localId: .init(value: 2), name: .archive)),
+        ]
+    }
+
+    private static var customFolderActions: [MoveAction] {
+        [
+            .customFolder(customFoldersTree),
+            .customFolder(
+                .init(
+                    localId: .init(value: 6),
+                    name: "4",
+                    color: .init(value: "#9E221A"),
+                    children: []
+                )),
+        ]
+    }
 
     private static var customFoldersTree: CustomFolderAction {
         .init(

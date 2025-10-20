@@ -34,6 +34,7 @@ final class HtmlBodyWebViewInterface: NSObject, HtmlBodyWebViewInterfaceProtocol
     }
 
     let webView: WKWebView
+    private let websiteDataStore: WebsiteDataStoreType
     var onEvent: ((Event) -> Void)?
 
     private let htmlDocument: HtmlBodyDocument
@@ -41,8 +42,9 @@ final class HtmlBodyWebViewInterface: NSObject, HtmlBodyWebViewInterfaceProtocol
         WeakScriptMessageHandler(target: self)
     }()
 
-    init(webView: WKWebView) {
+    init(webView: WKWebView, websiteDataStore: WebsiteDataStoreType? = nil) {
         self.webView = webView
+        self.websiteDataStore = websiteDataStore ?? WKWebsiteDataStoreAdapter(store: webView.configuration.websiteDataStore)
         self.htmlDocument = HtmlBodyDocument()
         super.init()
         setUpCallbacks()
@@ -54,10 +56,16 @@ final class HtmlBodyWebViewInterface: NSObject, HtmlBodyWebViewInterfaceProtocol
         }
     }
 
-    func loadMessageBody(_ body: String) {
+    func loadMessageBody(_ body: String, clearCacheFirst: Bool) async {
         let nonce = generateCspNonce()
         let html = htmlDocument.html(nonce: nonce, bodyContent: body)
+
+        if clearCacheFirst {
+            let types = WKWebsiteDataStore.allWebsiteDataTypes()
+            await websiteDataStore.removeData(ofTypes: types, modifiedSince: .distantPast)
+        }
         webView.loadHTMLString(html, baseURL: nil)
+        Task { await logHtmlHealthCheck(tag: "loadMessageBody") }
     }
 
     @MainActor
@@ -76,6 +84,8 @@ final class HtmlBodyWebViewInterface: NSObject, HtmlBodyWebViewInterfaceProtocol
             webView.evaluateJavaScript(HtmlBodyDocument.JSFunction.getHtmlContent.callFunction) { result, error in
                 if let error { AppLogger.log(error: error, category: .composer) }
                 guard let html = (result as? String)?.withoutWhitespace else {
+                    AppLogger.log(message: "readMessageBody returned nil", category: .composer, isError: true)
+                    Task { [weak self] in await self?.logHtmlHealthCheck(tag: "readMessageBody") }
                     return continuation.resume(returning: nil)
                 }
                 continuation.resume(returning: html)
@@ -118,6 +128,48 @@ final class HtmlBodyWebViewInterface: NSObject, HtmlBodyWebViewInterfaceProtocol
         await withCheckedContinuation { continuation in
             webView.evaluateJavaScript(function) { _, error in
                 if let error { AppLogger.log(error: error, category: .composer) }
+                continuation.resume()
+            }
+        }
+    }
+
+    /// Checks the correctness of the HTML and JS status.
+    @MainActor
+    func logHtmlHealthCheck(tag: String) async {
+        let prefix = "[body health check: \(tag)]"
+        AppLogger.log(message: "\(prefix) start...", category: .composer)
+        let healthCheck =
+            """
+            (() => ({
+              documentState: document.readyState,
+              isHtmlEditorInstantiated: !!window.html_editor,
+              isTextboxEditorAccessible: !!document.getElementById('editor'),
+              isGetHtmlContentAccessible: typeof window.html_editor.getHtmlContent === 'function'
+            }))()
+            """
+        await withCheckedContinuation { continuation in
+            let isContentLoaded = !webView.isLoading && webView.estimatedProgress == 1.0
+            webView.evaluateJavaScript(healthCheck) { result, error in
+                if let error {
+                    let message =
+                        isContentLoaded
+                        ? "JS error: \(error.localizedDescription)"
+                        : "JS failed to evaluate content not loaded"
+                    AppLogger.log(message: "\(prefix) \(message)", category: .composer, isError: isContentLoaded)
+                    return continuation.resume()
+                }
+                if let dict = result as? [String: Any] {
+                    let sortedDict = dict.keys
+                        .sorted()
+                        .compactMap { key in
+                            guard let value = dict[key] else { return "\"\(key)\": nil" }
+                            return "\"\(key)\": \(value)"
+                        }
+                        .joined(separator: ", ")
+                    AppLogger.log(message: "\(prefix) \(sortedDict)", category: .composer)
+                } else {
+                    AppLogger.log(message: "\(prefix) unexpected result: \(String(describing: result))", category: .composer, isError: true)
+                }
                 continuation.resume()
             }
         }

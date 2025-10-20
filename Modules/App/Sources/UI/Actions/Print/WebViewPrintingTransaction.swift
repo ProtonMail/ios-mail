@@ -32,7 +32,7 @@ final class WebViewPrintingTransaction {
         self.webView = webView
     }
 
-    func perform<Output>(block: (Message, WKWebView) async throws(PrintError) -> Output) async throws(PrintError) -> Output {
+    func perform<Output: Sendable>(block: (Message, WKWebView) async throws(PrintError) -> Output) async throws(PrintError) -> Output {
         let headerImage = renderHeaderImage(
             subject: message.subject,
             messageDetails: message.toExpandedMessageCellUIModel().messageDetails

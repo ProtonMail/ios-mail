@@ -454,6 +454,26 @@ public extension LoginFlowUserIdResult {
         }
     }
 }
+public extension MailConversationCursorFetchNextResult {
+    func get() throws(MailScrollerError) -> Conversation? {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension MailMessageCursorFetchNextResult {
+    func get() throws(MailScrollerError) -> Message? {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension MailSessionAppProtectionResult {
     func get() throws(UserSessionError) -> AppProtection {
         switch self {
@@ -986,36 +1006,6 @@ public extension MailUserSessionWatchUserResult {
 }
 public extension MailUserSessionWatchUserSettingsResult {
     func get() throws(ProtonError) -> WatchHandle {
-        switch self {
-        case .ok(let value):
-            value
-        case .error(let error):
-            throw error
-        }
-    }
-}
-public extension MailboxCursorFetchNextResult {
-    func get() throws(MailScrollerError) -> CursorEntry? {
-        switch self {
-        case .ok(let value):
-            value
-        case .error(let error):
-            throw error
-        }
-    }
-}
-public extension MailboxCursorGetNextResult {
-    func get() throws(MailScrollerError) -> NextCursorEntry {
-        switch self {
-        case .ok(let value):
-            value
-        case .error(let error):
-            throw error
-        }
-    }
-}
-public extension MailboxCursorGetPreviousResult {
-    func get() throws(MailScrollerError) -> CursorEntry? {
         switch self {
         case .ok(let value):
             value

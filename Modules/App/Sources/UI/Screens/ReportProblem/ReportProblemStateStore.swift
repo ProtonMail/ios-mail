@@ -28,7 +28,6 @@ final class ReportProblemStateStore: StateStore {
     private let issueReportBuilder: IssueReportBuilder
     private let dismiss: () -> Void
 
-    @MainActor
     init(
         state: ReportProblemState,
         reportProblemService: ReportProblemService,
@@ -45,7 +44,6 @@ final class ReportProblemStateStore: StateStore {
         self.dismiss = dismiss
     }
 
-    @MainActor
     func handle(action: ReportProblemAction) async {
         switch action {
         case .textEntered:
@@ -110,12 +108,10 @@ final class ReportProblemStateStore: StateStore {
         }
     }
 
-    @MainActor
     private var isFormEmpty: Bool {
         [state.summary, state.actualResults, state.expectedResults, state.stepsToReproduce].allSatisfy(\.isEmpty)
     }
 
-    @MainActor
     private var issueReport: IssueReport {
         issueReportBuilder.build(
             with: .init(

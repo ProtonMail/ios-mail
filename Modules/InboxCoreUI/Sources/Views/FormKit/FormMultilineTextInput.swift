@@ -24,7 +24,7 @@ public struct FormTextInput: View {
         case multiline
     }
 
-    public enum ValidationStatus: Equatable {
+    public enum ValidationStatus: Equatable, Sendable {
         case ok
         case failure(String)
 

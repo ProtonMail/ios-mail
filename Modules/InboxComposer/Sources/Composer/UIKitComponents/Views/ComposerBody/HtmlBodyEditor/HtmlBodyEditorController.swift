@@ -124,8 +124,8 @@ final class HtmlBodyEditorController: UIViewController, BodyEditor {
         Task { await initialFocusState.setFocusWhenLoaded() }
     }
 
-    func updateBody(_ body: String) {
-        htmlInterface.loadMessageBody(body)
+    func updateBody(_ body: String) async {
+        await htmlInterface.loadMessageBody(body, clearCacheFirst: false)
     }
 
     func handleBodyAction(_ action: ComposerBodyAction) {
@@ -137,7 +137,7 @@ final class HtmlBodyEditorController: UIViewController, BodyEditor {
         case .removeInlineImage(let cid):
             Task { await htmlInterface.removeImage(containing: cid) }
         case .reloadBody(let html):
-            updateBody(html)
+            Task { await htmlInterface.loadMessageBody(html, clearCacheFirst: true) }
         }
     }
 
@@ -168,6 +168,7 @@ extension HtmlBodyEditorController: WKNavigationDelegate {
 
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         Task { await initialFocusState.bodyWasLoaded() }
+        Task { await htmlInterface.logHtmlHealthCheck(tag: "webView.didFinish") }
     }
 
     func webViewWebContentProcessDidTerminate(_ webView: WKWebView) {
@@ -181,6 +182,9 @@ extension HtmlBodyEditorController {
 
         static func webView(imageProxy: ImageProxy) -> WKWebView {
             let config = WKWebViewConfiguration.default(imageProxy: imageProxy)
+
+            // using a custom cache to be able to flush it when necessary (e.g. failed inline image upload)
+            config.websiteDataStore = WKWebsiteDataStore.nonPersistent()
 
             let backgroundColor = DS.Color.Background.norm.toDynamicUIColor
             let webView = WKWebViewWithNoAccessoryView(frame: .zero, configuration: config)

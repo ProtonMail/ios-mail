@@ -20,7 +20,6 @@ import InboxCore
 import InboxCoreUI
 import proton_app_uniffi
 
-@MainActor
 final class MobileSignatureStateStore: StateStore {
     @Published var state: MobileSignatureState = .initial
 
@@ -33,9 +32,14 @@ final class MobileSignatureStateStore: StateStore {
         }
     }
 
-    init(customSettings: CustomSettingsProtocol, clock: any Clock<Duration> = ContinuousClock()) {
+    init(
+        customSettings: CustomSettingsProtocol,
+        clock: any Clock<Duration> = ContinuousClock(),
+        initialState: MobileSignatureState = .initial
+    ) {
         self.customSettings = customSettings
         self.clock = clock
+        state = initialState
     }
 
     func handle(action: MobileSignatureStateStoreAction) async {

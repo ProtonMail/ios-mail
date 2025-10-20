@@ -57,7 +57,11 @@ final class ConversationDetailModel: Sendable, ObservableObject {
     }
 
     var isBottomBarHidden: Bool {
-        seed.isOutbox || conversationToolbarActions?.isEmpty == true
+        if let conversationToolbarActions {
+            seed.isOutbox || conversationToolbarActions.isEmpty
+        } else {
+            true
+        }
     }
 
     var areActionsHidden: Bool {
@@ -273,7 +277,6 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         action: MessageAction,
         messageID: ID,
         toastStateStore: ToastStateStore,
-        actionOrigin: ConversationActionOrigin,
         goBack: @MainActor @escaping () -> Void
     ) async {
         switch action {
@@ -338,7 +341,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
                     )
                 }
             )
-            present(alert: alert, origin: actionOrigin)
+            actionAlert = alert
         case .reply:
             actionSheets = .allSheetsDismissed
             onReplyMessage(withId: messageID, toastStateStore: toastStateStore)
@@ -375,9 +378,9 @@ final class ConversationDetailModel: Sendable, ObservableObject {
                     goBack: goBack
                 )
             })
-            present(alert: alert, origin: actionOrigin)
+            actionAlert = alert
         case .more:
-            actionSheets = .allSheetsDismissed.copy(\.message, to: .init(id: messageID, title: seed.subject, origin: .toolbar))
+            break
         }
     }
 
@@ -385,7 +388,6 @@ final class ConversationDetailModel: Sendable, ObservableObject {
     func handle(
         action: ConversationAction,
         toastStateStore: ToastStateStore,
-        actionOrigin: ConversationActionOrigin,
         goBack: @MainActor @escaping () -> Void
     ) async {
         guard let conversationItem, conversationItem.itemType == .conversation else { return }
@@ -401,8 +403,6 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         case .labelAs:
             actionSheets = .allSheetsDismissed
                 .copy(\.labelAs, to: .init(sheetType: .labelAs, ids: [conversationID], mailboxItem: .conversation))
-        case .more:
-            actionSheets = actionSheets.copy(\.conversation, to: .init(id: conversationID, title: seed.subject))
         case .moveTo:
             actionSheets = .allSheetsDismissed
                 .copy(\.moveTo, to: .init(sheetType: .moveTo, ids: [conversationID], mailboxItem: .conversation))
@@ -427,7 +427,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
                     )
                 }
             )
-            present(alert: alert, origin: actionOrigin)
+            actionAlert = alert
         case .star:
             await starActionPerformer.star(itemsWithIDs: [conversationID], itemType: .conversation)
             actionSheets = .allSheetsDismissed
@@ -436,6 +436,8 @@ final class ConversationDetailModel: Sendable, ObservableObject {
             actionSheets = .allSheetsDismissed
         case .snooze:
             actionSheets = .allSheetsDismissed.copy(\.snooze, to: conversationID)
+        case .more:
+            break
         }
     }
 
@@ -473,19 +475,8 @@ final class ConversationDetailModel: Sendable, ObservableObject {
     }
 
     @MainActor
-    private func present(alert: AlertModel, origin: ConversationActionOrigin) {
-        switch origin {
-        case .sheet:
-            actionSheets.alert = alert
-        case .toolbar:
-            actionAlert = alert
-        }
-    }
-
-    @MainActor
     private func hideAlert() {
         actionAlert = nil
-        actionSheets.alert = nil
     }
 
     @MainActor
@@ -821,11 +812,11 @@ extension ConversationDetailModel {
 
     private func onReplyAction(messageId: ID, action: ReplyAction, toastStateStore: ToastStateStore) {
         Task {
-            await draftPresenter.handleReplyAction(
-                for: messageId, action: action,
-                onError: { error in
-                    toastStateStore.present(toast: .error(message: error.localizedDescription))
-                })
+            do {
+                try await draftPresenter.handleReplyAction(for: messageId, action: action)
+            } catch {
+                toastStateStore.present(toast: .error(message: error.localizedDescription))
+            }
         }
     }
 
@@ -860,7 +851,7 @@ extension ConversationDetailModel {
                     mailbox: mailbox,
                     conversationId: conversationItem.id
                 ).get()
-                self.conversationToolbarActions = .conversation(actions: actions)
+                self.conversationToolbarActions = .conversation(actions: actions, conversationID: conversationItem.id)
             } catch {
                 AppLogger.log(error: error, category: .conversationDetail)
             }
@@ -875,7 +866,7 @@ extension ConversationDetailModel {
                     theme: theme,
                     messageId: conversationItem.id
                 ).get()
-                self.conversationToolbarActions = .message(actions: actions)
+                self.conversationToolbarActions = .message(actions: actions, messageID: conversationItem.id)
             } catch {
                 AppLogger.log(error: error, category: .conversationDetail)
             }
@@ -973,7 +964,7 @@ enum ConversationModelError: Error {
 
 private extension MailboxActionSheetsState {
     static func initial() -> Self {
-        .init(message: nil, labelAs: nil, moveTo: nil)
+        .init(labelAs: nil, moveTo: nil, editToolbar: nil)
     }
 }
 

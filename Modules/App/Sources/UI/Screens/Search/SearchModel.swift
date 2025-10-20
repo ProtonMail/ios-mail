@@ -18,6 +18,7 @@
 import Combine
 import Foundation
 import InboxCore
+import InboxCoreUI
 import proton_app_uniffi
 import SwiftUI
 
@@ -275,9 +276,8 @@ extension SearchModel {
 // MARK: Swipe between conversations
 
 extension SearchModel {
-    func mailboxCursor(uiModel: MailboxItemCellUIModel) -> MailboxCursor {
-        let index = paginatedDataSource.state.items.firstIndex(of: uiModel) ?? 0
-        return searchScroller!.cursor(index: UInt64(index))
+    func mailboxCursor(startingAt id: ID) -> MailboxCursorProtocol {
+        searchScroller!.cursor(lookingAt: id)
     }
 }
 

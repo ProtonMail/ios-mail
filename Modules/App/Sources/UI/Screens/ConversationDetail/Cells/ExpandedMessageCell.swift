@@ -16,19 +16,24 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Collections
+import InboxCore
+import InboxCoreUI
 import InboxDesignSystem
 import proton_app_uniffi
 import SwiftUI
-import InboxCoreUI
 
 struct ExpandedMessageCell: View {
     private let mailbox: Mailbox
+    private let mailUserSession: MailUserSession
     private let uiModel: ExpandedMessageCellUIModel
+    private let draftPresenter: RecipientDraftPresenter
+    private let messageAppearanceOverrideStore: MessageAppearanceOverrideStore
     private let onEvent: (ExpandedMessageCellEvent) -> Void
-    private let htmlLoaded: () -> Void
+    private let htmlDisplayed: () -> Void
     private let areActionsHidden: Bool
     @Binding var attachmentIDToOpen: ID?
     @State private var isBodyLoaded: Bool = false
+    @State private var viewDidAppear = false
 
     private var actionButtonsState: MessageDetailsView.ActionButtonsState {
         guard !areActionsHidden else { return .hidden }
@@ -37,24 +42,33 @@ struct ExpandedMessageCell: View {
 
     init(
         mailbox: Mailbox,
+        mailUserSession: MailUserSession,
         uiModel: ExpandedMessageCellUIModel,
+        draftPresenter: RecipientDraftPresenter,
+        messageAppearanceOverrideStore: MessageAppearanceOverrideStore,
         areActionsHidden: Bool,
         attachmentIDToOpen: Binding<ID?>,
         onEvent: @escaping (ExpandedMessageCellEvent) -> Void,
-        htmlLoaded: @escaping () -> Void
+        htmlDisplayed: @escaping () -> Void
     ) {
         self.mailbox = mailbox
+        self.mailUserSession = mailUserSession
         self.uiModel = uiModel
+        self.draftPresenter = draftPresenter
+        self.messageAppearanceOverrideStore = messageAppearanceOverrideStore
         self.areActionsHidden = areActionsHidden
         self._attachmentIDToOpen = attachmentIDToOpen
         self.onEvent = onEvent
-        self.htmlLoaded = htmlLoaded
+        self.htmlDisplayed = htmlDisplayed
     }
 
     var body: some View {
         VStack(spacing: .zero) {
             MessageDetailsView(
                 uiModel: uiModel.messageDetails,
+                mailbox: mailbox,
+                mailUserSession: mailUserSession,
+                messageAppearanceOverrideStore: messageAppearanceOverrideStore,
                 actionButtonsState: actionButtonsState,
                 onEvent: { event in
                     switch event {
@@ -64,12 +78,14 @@ struct ExpandedMessageCell: View {
                         onEvent(.onReply)
                     case .onReplyAll:
                         onEvent(.onReplyAll)
-                    case .onMoreActions:
-                        onEvent(.onMoreActions)
+                    case .onMessageAction(let action):
+                        onEvent(.onMessageAction(action))
                     case .onSenderTap:
                         onEvent(.onSenderTap)
                     case .onRecipientTap(let recipient):
                         onEvent(.onRecipientTap(recipient))
+                    case .onEditToolbar:
+                        onEvent(.onEditToolbar)
                     }
                 }
             )
@@ -81,7 +97,8 @@ struct ExpandedMessageCell: View {
                 isBodyLoaded: $isBodyLoaded,
                 attachmentIDToOpen: $attachmentIDToOpen,
                 editScheduledMessage: { onEvent(.onEditScheduledMessage) },
-                unsnoozeConversation: { onEvent(.unsnoozeConversation) }
+                unsnoozeConversation: { onEvent(.unsnoozeConversation) },
+                draftPresenter: draftPresenter
             )
             if !areActionsHidden {
                 MessageActionButtonsView(
@@ -103,10 +120,11 @@ struct ExpandedMessageCell: View {
             }
         }
         .padding(.top, DS.Spacing.large)
-        .onChange(of: isBodyLoaded) { oldIsLoaded, newIsLoaded in
-            if newIsLoaded {
-                htmlLoaded()
-            }
+        .onDidAppear {
+            viewDidAppear = true
+        }
+        .onChange(of: isBodyLoaded && viewDidAppear) {
+            htmlDisplayed()
         }
     }
 }
@@ -123,13 +141,15 @@ enum ExpandedMessageCellEvent {
     case onReply
     case onReplyAll
     case onForward
-    case onMoreActions
 
     case onSenderTap
     case onRecipientTap(MessageDetail.Recipient)
 
     case onEditScheduledMessage
     case unsnoozeConversation
+
+    case onEditToolbar
+    case onMessageAction(MessageAction)
 }
 
 #Preview {
@@ -143,27 +163,33 @@ enum ExpandedMessageCellEvent {
     return VStack(spacing: 0) {
         ExpandedMessageCell(
             mailbox: .dummy,
+            mailUserSession: .dummy,
             uiModel: .init(
                 id: .init(value: 0),
                 unread: false,
                 messageDetails: messageDetails
             ),
+            draftPresenter: DraftPresenter.dummy(),
+            messageAppearanceOverrideStore: .init(),
             areActionsHidden: false,
             attachmentIDToOpen: .constant(nil),
             onEvent: { _ in },
-            htmlLoaded: {}
+            htmlDisplayed: {}
         )
         ExpandedMessageCell(
             mailbox: .dummy,
+            mailUserSession: .dummy,
             uiModel: .init(
                 id: .init(value: 1),
                 unread: false,
                 messageDetails: messageDetails
             ),
+            draftPresenter: DraftPresenter.dummy(),
+            messageAppearanceOverrideStore: .init(),
             areActionsHidden: false,
             attachmentIDToOpen: .constant(nil),
             onEvent: { _ in },
-            htmlLoaded: {}
+            htmlDisplayed: {}
         )
     }.environmentObject(ToastStateStore(initialState: .initial))
 }

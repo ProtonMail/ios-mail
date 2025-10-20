@@ -67,7 +67,6 @@ final class MessageBodyStateStore: StateStore {
         self.backOnlineActionExecutor = backOnlineActionExecutor
     }
 
-    @MainActor
     func handle(action: Action) async {
         switch action {
         case .onLoad:
@@ -117,7 +116,6 @@ final class MessageBodyStateStore: StateStore {
 
     // MARK: - Private
 
-    @MainActor
     private func loadMessageBody(with options: TransformOpts) async {
         switch await provider.messageBody(forMessageID: messageID, with: options) {
         case .success(let body):
@@ -130,7 +128,6 @@ final class MessageBodyStateStore: StateStore {
         }
     }
 
-    @MainActor
     private func reloadContentWhenBackOnline(options: TransformOpts) {
         backOnlineActionExecutor.execute { [weak self] in
             guard let self else { return }
@@ -139,7 +136,6 @@ final class MessageBodyStateStore: StateStore {
         }
     }
 
-    @MainActor
     private func markAsLegitimate(with options: TransformOpts) async {
         await executeAndReloadMessage(
             operation: { await legitMessageMarker.markAsLegitimate(forMessageID: messageID) },
@@ -147,7 +143,6 @@ final class MessageBodyStateStore: StateStore {
         )
     }
 
-    @MainActor
     private func unblockSender(emailAddress: String, with options: TransformOpts) async {
         await executeAndReloadMessage(
             operation: { await senderUnblocker.unblock(emailAddress: emailAddress) },
@@ -155,7 +150,6 @@ final class MessageBodyStateStore: StateStore {
         )
     }
 
-    @MainActor
     private func unsubscribeNewsletter(with newsletterService: UnsubscribeNewsletter, options: TransformOpts) async {
         await executeAndReloadMessage(
             operation: { await newsletterService.unsubscribeFromNewsletter() },
@@ -164,7 +158,6 @@ final class MessageBodyStateStore: StateStore {
         )
     }
 
-    @MainActor
     private func executeAndReloadMessage(
         operation: () async -> VoidActionResult,
         with options: TransformOpts,

@@ -287,9 +287,7 @@ final class ComposerModel: ObservableObject {
 
     @MainActor
     func reloadBodyAfterMemoryPressure() async {
-        guard !messageHasBeenSentOrScheduled else { return }
-        await updateBodyDebounceTask?.executeImmediately()
-        bodyAction = .reloadBody(html: draft.body())
+        await reloadBody()
     }
 
     func scheduleSendState(lastScheduledTime: UInt64?) -> ComposerViewModalState? {
@@ -395,8 +393,15 @@ final class ComposerModel: ObservableObject {
         }
     }
 
-    func removeAttachment(id attachmendId: ID) {
-        Task { await draft.attachmentList().remove(id: attachmendId) }
+    func removeAttachment(attachment: AttachmentMetadata) async {
+        do {
+            try await draft.attachmentList().remove(id: attachment.id).get()
+            if attachment.disposition == .inline {
+                await reloadBody()
+            }
+        } catch {
+            AppLogger.log(error: error, category: .composer)
+        }
     }
 
     @MainActor
@@ -411,10 +416,11 @@ final class ComposerModel: ObservableObject {
         }
     }
 
-    func removeAttachments(for error: AttachmentErrorAlertModel) {
+    @MainActor
+    func removeAttachments(for error: AttachmentErrorAlertModel) async {
         if case .uploading(let uploadAttachmentErrors) = error.origin {
-            for attachment in uploadAttachmentErrors {
-                removeAttachment(id: attachment.attachmentId)
+            for error in uploadAttachmentErrors {
+                await removeAttachment(attachment: error.attachment)
             }
         }
     }
@@ -603,6 +609,13 @@ extension ComposerModel {
             AppLogger.log(error: error, category: .composer)
             showToast(.error(message: error.localizedDescription))
         }
+    }
+
+    @MainActor
+    private func reloadBody() async {
+        guard !messageHasBeenSentOrScheduled else { return }
+        await updateBodyDebounceTask?.executeImmediately()
+        bodyAction = .reloadBody(html: draft.body())
     }
 
     private func stateRecipientUIModels(for group: RecipientGroupType) -> [RecipientUIModel] {

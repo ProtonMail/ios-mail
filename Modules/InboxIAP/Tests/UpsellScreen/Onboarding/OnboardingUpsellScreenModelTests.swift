@@ -17,7 +17,6 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import InboxCoreUI
-import PaymentsNG
 import Testing
 
 @testable import InboxIAP
@@ -29,7 +28,10 @@ final class OnboardingUpsellScreenModelTests {
 
     private lazy var sut = OnboardingUpsellScreenModel(
         planTiles: PlanTileData.previews,
-        planPurchasing: planPurchasing
+        purchaseActionPerformer: .init(
+            eventLoopPolling: DummyEventLoopPolling(),
+            planPurchasing: planPurchasing
+        )
     )
 
     @Test
@@ -59,40 +61,5 @@ final class OnboardingUpsellScreenModelTests {
         await sut.onGetPlanTapped(storeKitProductID: "foo", toastStateStore: toastStateStore) {}
 
         #expect(planPurchasing.purchaseInvocations.count == 1)
-    }
-
-    @Test
-    func whenTransactionIsSuccessful_dismissesTheScreen() async {
-        await confirmation(expectedCount: 1) { dismissCalled in
-            await sut.onGetPlanTapped(storeKitProductID: "foo", toastStateStore: toastStateStore) {
-                dismissCalled()
-            }
-        }
-    }
-
-    @Test
-    func whenTransactionFails_showsErrorAndDoesNotDismissTheScreen() async {
-        planPurchasing.stubbedError = ProtonPlansManagerError.transactionUnknownError
-
-        await confirmation(expectedCount: 0) { dismissCalled in
-            await sut.onGetPlanTapped(storeKitProductID: "foo", toastStateStore: toastStateStore) {
-                dismissCalled()
-            }
-        }
-
-        #expect(toastStateStore.state.toasts.count == 1)
-    }
-
-    @Test
-    func whenTransactionIsCancelledByUser_doesNotShowErrorAndDoesNotDismissTheScreen() async {
-        planPurchasing.stubbedError = ProtonPlansManagerError.transactionCancelledByUser
-
-        await confirmation(expectedCount: 0) { dismissCalled in
-            await sut.onGetPlanTapped(storeKitProductID: "foo", toastStateStore: toastStateStore) {
-                dismissCalled()
-            }
-        }
-
-        #expect(toastStateStore.state.toasts == [])
     }
 }

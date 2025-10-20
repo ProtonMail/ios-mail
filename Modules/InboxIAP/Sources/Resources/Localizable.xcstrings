@@ -745,7 +745,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%llu адрасы(оў) электроннай пошты"
+            "value" : "Адрасоў электроннай пошты: %llu"
           }
         },
         "ca" : {
@@ -936,7 +936,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Доступ да настольнай праграмы"
+            "value" : "Доступ да праграмы для камп'ютара"
           }
         },
         "ca" : {
@@ -1127,7 +1127,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Аўтаматычнае падаўжэнне па тым жа самым кошце і на тых жа ўмовах пакуль не будзе скасавана"
+            "value" : "Аўтападаўжэнне па тым жа самым кошце і на тых жа ўмовах пакуль не будзе скасавана"
           }
         },
         "ca" : {
@@ -2011,7 +2011,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Выбор подписки"
+            "value" : "Выбрать подписку"
           }
         },
         "sk" : {
@@ -2058,7 +2058,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Trieu el vostre pla"
+            "value" : "Trieu el pla"
           }
         },
         "cs" : {
@@ -2267,7 +2267,7 @@
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Συνέχεια με το Free Πλάνο"
+            "value" : "Συνέχεια με το Δωρεάν Πλάνο"
           }
         },
         "en" : {
@@ -2357,7 +2357,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Continuar com o plano grátis"
+            "value" : "Continuar com o Plano Free"
           }
         },
         "ro" : {
@@ -2381,7 +2381,7 @@
         "sl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nadaljujte z Free paketom"
+            "value" : "Nadaljujte z brezplačnim paketom"
           }
         },
         "sv" : {
@@ -2410,13 +2410,13 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Стварайце ўсё неабходнае для арганізацыі. Атрымайце гэта і многае іншае з %@."
+            "value" : "Стварайце ўсё неабходнае, каб і далей падтрымліваць парадак. Атрымайце гэту функцыю і многія іншыя з %@."
           }
         },
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Creeu tot el que necessiteu per mantenir-vos organitzat. Aconseguiu això i més amb %@."
+            "value" : "Creeu tot el que necessiteu per mantenir-vos organitzat. Obteniu això i més amb %@."
           }
         },
         "cs" : {
@@ -2780,7 +2780,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Наладзьце час адпраўкі ліста. Карыстайцеся гэтым і многім іншым з %@."
+            "value" : "Наладзьце час адпраўкі ліста. Атрымлівайце асалоду ад гэтай функцыяі і многіх іншых з %@."
           }
         },
         "ca" : {
@@ -2959,13 +2959,13 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Выдаляе спам і змесціва Сметніцы праз 30 дзён. Атрымайце гэта і многае іншае з %@."
+            "value" : "Выдаляе спам і змесціва са сметніцы праз 30 дзён. Атрымайце гэту функцыю і многія іншыя з %@."
           }
         },
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Suprimeix el correu brossa i la paperera després de 30 dies. Aconseguiu això i més amb %@."
+            "value" : "Suprimeix el correu brossa i la paperera després de 30 dies. Obteniu això i més amb %@."
           }
         },
         "cs" : {
@@ -3520,7 +3520,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Перайсці на %@"
+            "value" : "Атрымаць %@"
           }
         },
         "ca" : {
@@ -3902,7 +3902,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Зрабіце свой мабільны подпіс унікальным. Карыстайцеся гэтым і многім іншым з %@."
+            "value" : "Зрабіце свой мабільны подпіс. Атрымлівайце асалоду ад гэтай функцыі і ад многіх іншых з %@."
           }
         },
         "ca" : {
@@ -5776,7 +5776,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mostrar-ne més"
+            "value" : "Mostra'n més"
           }
         },
         "cs" : {
@@ -6427,7 +6427,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "요청한 요금제를 찾을 수 없습니다."
+            "value" : "요청한 플랜을 찾을 수 없습니다."
           }
         },
         "nb" : {

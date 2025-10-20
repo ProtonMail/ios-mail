@@ -19,6 +19,7 @@ import Combine
 import Contacts
 @testable import InboxComposer
 @testable import InboxTesting
+import typealias InboxCore.ID
 import InboxCoreUI
 import PhotosUI
 import proton_app_uniffi
@@ -41,6 +42,7 @@ final class ComposerModelTests: BaseTestCase {
     let dummyInvalidAddress = "invalid_address_format@example"
     let singleRecipient1 = ComposerRecipient.single(.init(displayName: "", address: "inbox1@pm.me", validState: .valid))
     let singleRecipient2 = ComposerRecipient.single(.init(displayName: "", address: "inbox2@pm.me", validState: .valid))
+    let dummyBody = "<html>dummy body</html>"
     var cancellables: Set<AnyCancellable>!
 
     override func setUpWithError() throws {
@@ -644,7 +646,7 @@ final class ComposerModelTests: BaseTestCase {
 
         await sut.transformInlineAttachmentToRegular(cid: "123456")
 
-        XCTAssertEqual(mockDraft.mockAttachmentList.capturedRemoveCalls.count, 0)
+        XCTAssertEqual(mockDraft.mockAttachmentList.capturedRemoveIdCalls.count, 0)
     }
 
     func testTransformInlineAttachmentToRegular_whenSwapFails_itShouldNotSetBodyAction() async throws {
@@ -668,6 +670,34 @@ final class ComposerModelTests: BaseTestCase {
         XCTAssertEqual(sut.toast, Toast.error(message: dispositionSwapError.localizedDescription))
     }
 
+    // MARK: removeAttachment(attachment:)
+
+    func testRemoveAttachment_whenAttachmentIsRegular_itShouldNotReloadBody() async throws {
+        let attachmentId: ID = 12345
+        let draftAttachment: DraftAttachment = .makeMockDraftAttachment(id: attachmentId, state: .uploaded, disposition: .attachment)
+        let mockDraft: MockDraft = .makeWithAttachments([draftAttachment])
+        mockDraft.mockBody = dummyBody
+        let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: .mockInstance)
+
+        await sut.removeAttachment(attachment: draftAttachment.attachment)
+
+        XCTAssertEqual(mockDraft.mockAttachmentList.capturedRemoveIdCalls.first, attachmentId)
+        XCTAssertEqual(sut.bodyAction, nil)
+    }
+
+    func testRemoveAttachment_whenAttachmentIsInline_itShouldReloadBody() async throws {
+        let attachmentId: ID = 12345
+        let draftAttachment: DraftAttachment = .makeMockDraftAttachment(id: attachmentId, state: .uploaded, disposition: .inline)
+        let mockDraft: MockDraft = .makeWithAttachments([draftAttachment])
+        mockDraft.mockBody = dummyBody
+        let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: .mockInstance)
+
+        await sut.removeAttachment(attachment: draftAttachment.attachment)
+
+        XCTAssertEqual(mockDraft.mockAttachmentList.capturedRemoveIdCalls.first, attachmentId)
+        XCTAssertEqual(sut.bodyAction, ComposerBodyAction.reloadBody(html: dummyBody))
+    }
+
     // MARK: removeAttachment(cid:)
 
     func testRemoveAttachment_whenSuccessfullyRemovesAttachment_itShouldSetBodyAction() async throws {
@@ -675,7 +705,7 @@ final class ComposerModelTests: BaseTestCase {
 
         await sut.removeAttachment(cid: "123456")
 
-        XCTAssertEqual(mockDraft.mockAttachmentList.capturedRemoveCalls.first, "123456")
+        XCTAssertEqual(mockDraft.mockAttachmentList.capturedRemoveContentIdCalls.first, "123456")
         XCTAssertEqual(sut.bodyAction, ComposerBodyAction.removeInlineImage(cid: "123456"))
     }
 
@@ -957,13 +987,14 @@ private extension ComposerContact {
 extension DraftAttachment {
 
     static func makeMockDraftAttachment(
+        id: ID = .random(),
         name: String = "attachment",
         state: DraftAttachmentState,
         disposition: Disposition = .attachment
     ) -> DraftAttachment {
         let mockMimeType = AttachmentMimeType(mime: "pdf", category: .pdf)
         let mockAttachment = AttachmentMetadata(
-            id: .random(),
+            id: id,
             disposition: disposition,
             mimeType: mockMimeType,
             name: name,

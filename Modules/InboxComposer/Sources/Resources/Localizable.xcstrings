@@ -58,6 +58,12 @@
             "value" : "%@ no puede usarse para enviar mensajes"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ ei voi käyttää viestien lähettämiseen"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -199,6 +205,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ está deshabilitada. No puede enviar mensajes."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ on poistettu käytöstä. Se ei voi lähettää viestejä."
           }
         },
         "fr" : {
@@ -490,7 +502,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Per utilitzar %@ us cal un pla de pagament"
+            "value" : "Es requereix un pla de pagament per a utilitzar %@"
           }
         },
         "cs" : {
@@ -533,6 +545,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Se requiere un plan de pago para usar %@"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ käyttämiseen vaaditaan maksullinen tilaus"
           }
         },
         "fr" : {
@@ -586,7 +604,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "É preciso de um plano pago para usar %@"
+            "value" : "É necessário um plano pago para usar %@"
           }
         },
         "ro" : {
@@ -1338,7 +1356,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pridajte heslo na použitie exspirácie"
+            "value" : "Pridať heslo na použitie po uplynutí platnosti"
           }
         },
         "sl" : {
@@ -1379,7 +1397,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aquesta adreça no es pot utilitzar per enviar missatges"
+            "value" : "No es pot utilitzar l'adreça per a enviar missatges"
           }
         },
         "cs" : {
@@ -1794,6 +1812,12 @@
             "value" : "Dirección no disponible"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Osoite ei ole käytettävissä"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2077,7 +2101,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Адрас не знойдзены. Дадайце яшчэ раз ці зноў адкрыйце чарнавік."
+            "value" : "Адрас не знойдзены. Дадайце яшчэ раз або яшчэ раз адкрыйце чарнавік."
           }
         },
         "ca" : {
@@ -2262,7 +2286,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aquesta adreça no es reconeix. Comproveu-la."
+            "value" : "Adreça no reconeguda. Comproveu l'adreça."
           }
         },
         "cs" : {
@@ -2400,7 +2424,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Adresa nebola rozpoznaná. Skontrolujte prosím adresu."
+            "value" : "Adresa nebola rozpoznaná. Skontrolujte adresu, prosím."
           }
         },
         "sl" : {
@@ -2871,7 +2895,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "3 päivän kuluttua"
+            "value" : "Kolmen päivän kuluttua"
           }
         },
         "fr" : {
@@ -2996,7 +3020,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Укладанне адсутнічае. Загрузіце яшчэ раз."
+            "value" : "Далучэнне адсутнічае. Загрузіце яго яшчэ раз."
           }
         },
         "ca" : {
@@ -3140,7 +3164,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Príloha chýba. Nahrajte ju prosím znova."
+            "value" : "Príloha chýba. Nahrajte ju znova, prosím."
           }
         },
         "sl" : {
@@ -3551,13 +3575,13 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Укладанні занадта вялікія. Памер укладанняў не павінен перавышаць 25 МБ."
+            "value" : "Далучэнні занадта вялікія. Памер далучэнняў не павінен быць больш за 25 МБ."
           }
         },
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Els adjunts són massa grans. Mantingueu-ne la mida per sota de 25 MB."
+            "value" : "Els adjunts són massa grans. Mantingueu la mida per sota de 25 MB."
           }
         },
         "cs" : {
@@ -3915,7 +3939,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Карыстальніцкі"
+            "value" : "Карыстальніцкае"
           }
         },
         "ca" : {
@@ -4106,7 +4130,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Адключаны адрас электроннай пошты. Праверце, што адрас сапраўдны і актыўны."
+            "value" : "Адключаны адрас электроннай пошты. Праверце, што гэты адрас сапраўдны і актыўны."
           }
         },
         "ca" : {
@@ -4852,13 +4876,13 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Чарнавік не знойдзены. Магчыма, вы яго адхілілі."
+            "value" : "Чарнавік не знойдзены. Магчыма, што ён быў адхілены."
           }
         },
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "No s'ha trobat l'esborrany. Potser l'havíeu descartat."
+            "value" : "No s'ha trobat l'esborrany. Potser l'heu descartat."
           }
         },
         "cs" : {
@@ -5031,13 +5055,13 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Чарнавік не знойдзены. Магчыма, вы яго ўжо адправілі."
+            "value" : "Чарнавік не знойдзены. Магчыма, што ён ўжо адпраўлены."
           }
         },
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "No s'ha trobat l'esborrany. Potser ja l'havíeu enviat."
+            "value" : "No s'ha trobat l'esborrany. Potser ja l'heu enviat."
           }
         },
         "cs" : {
@@ -5407,7 +5431,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "L'esborrany no s'havia descartat. Proveu de tornar-lo a descartar."
+            "value" : "L'esborrany no s'ha descartat. Proveu de tornar-lo a descartar."
           }
         },
         "cs" : {
@@ -6135,7 +6159,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "No s'ha pogut desxifrar la contrasenya de xifratge extern"
+            "value" : "No s'ha pogut desxifrar la contrasenya de xifratge externa"
           }
         },
         "cs" : {
@@ -6499,7 +6523,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "З вашай бібліятэкі фатаграфій"
+            "value" : "З вашай фотатэкі"
           }
         },
         "ca" : {
@@ -7448,7 +7472,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aquesta adreça de correu electrònic no és vàlida. Comproveu-la i torneu-ho a provar."
+            "value" : "Adreça de correu electrònic no vàlida. Comproveu l'adreça i torneu-ho a provar."
           }
         },
         "cs" : {
@@ -7627,7 +7651,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aquesta adreça de correu electrònic no és vàlida. Comproveu-la."
+            "value" : "Adreça de correu electrònic no vàlida. Comproveu l'adreça."
           }
         },
         "cs" : {
@@ -8534,7 +8558,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Тэрмін дзеяння паведамлення занадта хуткі."
+            "value" : "Тэрмін дзеяння паведамлення наступае занадта хутка."
           }
         },
         "ca" : {
@@ -8887,7 +8911,129 @@
       }
     },
     "Message is too large to send. Please reduce the size of your attachments." : {
-      "comment" : "Error in the context of sending a draft before being sent."
+      "comment" : "Error in the context of sending a draft before being sent.",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Паведамленне занадта вялікае для адпраўкі. Скараціце памер сваіх далучэнняў."
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El missatge és massa gran per ser enviat. Reduïu-ne la mida dels adjunts."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zpráva je příliš velká na odeslání. Prosím, zmenšete velikost svých příloh."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Besked er for stor til at sende. Reducér venligst størrelsen på dine vedhæftninger."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die Nachricht ist zu groß, um gesendet zu werden. Bitte verkleinere deine Anhänge."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Το μήνυμα είναι πολύ μεγάλο για να αποστολή. Παρακαλούμε μειώστε το μέγεθος των συνημμένων αρχείων."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Message is too large to send. Please reduce the size of your attachments."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El mensaje es demasiado grande para enviarlo. Por favor, reduce el tamaño de tus archivos adjuntos."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El mensaje es demasiado grande para enviarlo. Reduzca el tamaño de los archivos adjuntos."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le message est trop volumineux pour être envoyé. Veuillez réduire la taille de vos pièces jointes."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Il messaggio è troppo grande per essere inviato. Riduci la dimensione dei tuoi allegati."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "メッセージが大きすぎて送信できません。添付ファイルのサイズを小さくしてください。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "메시지가 너무 커 보낼 수 없습니다. 첨부 파일 크기를 줄여주세요."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meldingen er for stor til å sendes. Reduser størrelsen på vedleggene dine."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bericht is te groot om te verzenden. Gelieve de grootte van uw bijlagen te verkleinen."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A mensagem é grande demais para enviar. Reduza o tamanho de seus anexos."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mesajul este prea mare pentru a fi trimis. Reduceți mărimea atașamentelor."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Správa je príliš veľká na odoslanie. Zmenšite veľkosť príloh, prosím."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meddelande är för stor för att skicka. Minska storleken på dina bilagor."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "İleti boyutu çok büyük. Lütfen ek dosyalarınızın boyutunu azaltın."
+          }
+        }
+      }
     },
     "Message not found. You may have sent or discarded it." : {
       "comment" : "Error in the context of opening a draft in the composer",
@@ -8895,13 +9041,13 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Паведамленне не знойдзена. Магчыма, вы яго адправілі або адхілілі."
+            "value" : "Паведамленне не знойдзена. Магчыма, што вы яго ўжо адправілі або адхілілі."
           }
         },
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "No s'ha trobat el missatge. Pot ser que l'hàgiu enviat o descartat."
+            "value" : "No s'ha trobat el missatge. Potser l'heu enviat o descartat."
           }
         },
         "cs" : {
@@ -9283,7 +9429,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Besked sendt"
+            "value" : "Besked afsendt"
           }
         },
         "de" : {
@@ -9641,7 +9787,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "El missatge no s'ha trobat al servidor."
+            "value" : "No s'ha trobat el missatge al servidor"
           }
         },
         "cs" : {
@@ -10370,7 +10516,117 @@
       }
     },
     "None of the recipients support expiration by default. Add a password to enable expiration for non-Proton Mail recipients." : {
-      "comment" : "Sending to only non-Proton accounts alert message"
+      "comment" : "Sending to only non-Proton accounts alert message",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ніводны атрымальнік не падтрымлівае прадвызначаны тэрмін дзеяння. Дадайце пароль, каб уключыць тэрмін дзеяння для атрымальнікаў, якія не карыстаюцца Proton Mail."
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cap dels destinataris no admet la caducitat per defecte. Afegiu una contrasenya per activar la caducitat per als destinataris que no siguin de Proton Mail."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Žádný z příjemců ve výchozím nastavení nepodporuje vypršení platnosti. Přidejte heslo, abyste povolili vypršení platnosti pro příjemce, kteří nepoužívají Proton Mail."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ingen af modtagerne understøtter udløb som standard. Tilføj en adgangskode for at aktivere udløb for modtagere, som ikke har Proton Mail."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keiner der Empfänger unterstützt standardmäßig das Verfallen von E-Mails. Füge ein Passwort hinzu, um das Verfallen für Empfänger, die Proton Mail nicht nutzen, zu aktivieren."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Κανένας από τους παραλήπτες δεν υποστηρίζει τη λήξη από προεπιλογή. Προσθέστε έναν κωδικό πρόσβασης για να ενεργοποιήσετε τη λήξη για παραλήπτες που δε χρησιμοποιούν το Proton Mail."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "None of the recipients support expiration by default. Add a password to enable expiration for non-Proton Mail recipients."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De forma predeterminada, la expiración no está soportada para ninguno de los destinatarios. Para aquellos que no usan Proton Mail, es necesario añadir una contraseña para habilitarla."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ninguno de los destinatarios admite la expiración por defecto. Añada una contraseña para activar la expiración a todos los destinatarios que no son de Proton Mail."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aucun des destinataires ne prend en charge l'expiration par défaut. Ajoutez un mot de passe pour activer l'expiration pour les destinataires qui n'utilisent pas Proton Mail."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nessuno dei destinatari supporta la scadenza per impostazione predefinita. Imposta una password per crittografare i messaggi e attivare la scadenza per i destinatari che non usano Proton Mail."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "受信者はいずれもデフォルトでは有効期限をサポートしていません。Proton Mail以外の宛先の有効期限を有効にするには、パスワードを追加してください。"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ingen av mottakerne støtter utløpsdato som standard. Legg til et passord for å aktivere utløpsdato for ikke-Proton Mail-mottakere."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geen van de ontvangers ondersteunt standaard een verloopdatum. Voeg een wachtwoord toe om een verloopdatum in te schakelen voor niet-Proton Mail-ontvangers."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nenhum dos destinatários suporta expiração por padrão. Adicione uma senha para ativar a expiração para destinatários que não usam o Proton Mail."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Niciunul dintre destinatari nu acceptă expirarea în mod implicit. Adăugați o parolă pentru a activa expirarea pentru destinatarii care nu folosesc Proton Mail."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Žiaden z príjemcov predvolene nepodporuje exspiráciu. Pridajte heslo, aby ste povolili exspiráciu pre príjemcov, ktorí nepoužívajú Proton Mail."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alıcıların hiçbirinde varsayılan olarak geçerlilik süresi desteklenmiyor. Proton Mail kullanmayan alıcılarda geçerlilik süresini kullanabilmek için bir parola ekleyin."
+          }
+        }
+      }
     },
     "On specific date" : {
       "comment" : "Predefined option for the message expiration menu",
@@ -10563,7 +10819,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pista per a la contrasenya (opcional)"
+            "value" : "Pista de contrasenya (opcional)"
           }
         },
         "cs" : {
@@ -11106,7 +11362,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Afegiu-hi almenys un destinatari"
+            "value" : "Afegiu com a mínim un destinatari."
           }
         },
         "cs" : {
@@ -11667,7 +11923,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Праблема з шыфраваннем укладання. Загрузіце яго яшчэ раз."
+            "value" : "Праблема з шыфраваннем далучэння. Запампуйце яго яшчэ раз."
           }
         },
         "ca" : {
@@ -11852,7 +12108,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hi ha hagut un problema en dur a terme aquesta acció. Torneu-ho a provar."
+            "value" : "Hi ha hagut un problema en realitzar aquesta acció. Torneu-ho a provar."
           }
         },
         "cs" : {
@@ -12031,7 +12287,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hi ha hagut un problema en enviar el missatge. Torneu-ho a provar."
+            "value" : "S'ha produït un problema en enviar el missatge. Torneu-ho a provar."
           }
         },
         "cs" : {
@@ -12199,7 +12455,141 @@
       }
     },
     "Problem uploading attachment. Please try again." : {
-      "comment" : "Error in the context of saving a draft before being sent."
+      "comment" : "Error in the context of saving a draft before being sent.",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Праблема з запампоўваннем далучэння. Паспрабуйце яшчэ раз."
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No s'ha pogut carregar l'adjunt. Torneu-ho a provar."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Při nahrávání přílohy došlo k problému. Zkuste to prosím znovu."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Problem med at uploade vedhæftet fil. Prøv igen."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Problem beim Hochladen des Anhangs. Bitte erneut versuchen."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Σφάλμα κατά τη μεταφόρτωση συνημμένου. Παρακαλούμε προσπαθήστε ξανά."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Problem uploading attachment. Please try again."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hay un problema al realizar esa acción. Inténtalo de nuevo."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hay un problema al cargar el archivo. Intente de nuevo."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ongelma liitteen lähettämisessä. Yritä uudelleen."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Un problème est survenu lors de l'importation de la pièce jointe. Veuillez réessayer."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Problema durante il caricamento dell'allegato. Riprova."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "添付ファイルのアップロード中に問題が発生しました。もう一度お試しください。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "첨부 파일 업로드 중 문제가 발생했습니다. 나중에 다시 시도해 주세요."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Problem med opplasting av vedlegg. Prøv på nytt."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Probleem bij het uploaden van de bijlage. Probeer het opnieuw."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Não foi possível enviar o anexo. Tente novamente."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Problemă la încărcarea atașamentului. Reîncercați."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Problém s nahrávaním prílohy. Skúste to znova, prosím."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Problem att ladda upp bilaga. Försök igen."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ek dosya yüklenemedi. Lütfen yeniden deneyin."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "附件上传失败。请重试。"
+          }
+        }
+      }
     },
     "Remove" : {
       "comment" : "Confirmation for the remove attachment action in a Draft.",
@@ -12786,7 +13176,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "S'han eliminat els destinataris duplicats: %@"
+            "value" : "S'han esborrat els destinataris duplicats: %@"
           }
         },
         "cs" : {
@@ -13150,13 +13540,13 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Паўтор немагчымы. Укладанне загружаецца або ўжо загружана."
+            "value" : "Паўтор немагчымы. Далучэнне запампоўваецца або ўжо запампавана."
           }
         },
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "No es pot tornar a intentar. El fitxer adjunt s'està penjant o ja s'ha penjat."
+            "value" : "No es pot tornar a intentar. L'adjunt s'està carregant o ja s'ha carregat."
           }
         },
         "cs" : {
@@ -13520,7 +13910,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Запланаваны час адпраўкі ўжо мінуў. Перайдзіце ў Чарнавікі, каб адправіць або перанесці адпраўку."
+            "value" : "Запланаваны час адпраўкі ўжо мінуў. Перайдзіце ў Чарнавікі, каб адправіць або паўторна запланаваць адпраўку."
           }
         },
         "ca" : {
@@ -14648,7 +15038,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Усталюйце пароль для шыфравання гэтага паведамлення для карыстальнікаў, якія не карыстаюцца Proton Mail."
+            "value" : "Задайце пароль для шыфравання гэтага паведамлення для карыстальнікаў, якія не належаць да Proton Mail."
           }
         },
         "ca" : {
@@ -14827,13 +15217,13 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Усталяваць тэрмін дзеяння паведамлення"
+            "value" : "Задаць тэрмін дзеяння паведамлення"
           }
         },
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Establir la caducitat del missatge"
+            "value" : "Establiu la caducitat del missatge"
           }
         },
         "cs" : {
@@ -15197,7 +15587,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Некаторыя атрымальнікі (%@) не падтрымліваюць тэрмін дзеяння па змаўчанні. Дадайце пароль, каб уключыць тэрмін дзеяння для атрымальнікаў, якія не карыстаюцца Proton Mail."
+            "value" : "Некаторыя атрымальнікі (%@) не падтрымліваюць прадвызначаны тэрмін дзеяння. Дадайце пароль, каб уключыць тэрмін дзеяння для атрымальнікаў, якія не карыстаюцца Proton Mail."
           }
         },
         "ca" : {
@@ -15359,7 +15749,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bazı alıcılarda (%@) varsayılan olarak geçerlilik süresi desteklenmez. Proton Mail kullanmayan alıcılarda geçerlilik süresini kullanabilmek için bir parola ekleyin."
+            "value" : "Bazı alıcılarda (%@) varsayılan olarak geçerlilik süresi desteklenmiyor. Proton Mail kullanmayan alıcılarda geçerlilik süresini kullanabilmek için bir parola ekleyin."
           }
         },
         "uk" : {
@@ -17785,7 +18175,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pre:"
+            "value" : "Komu:"
           }
         },
         "sl" : {
@@ -18208,13 +18598,13 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Занадта шмат укладанняў. Адпраўце іх у некалькіх лістах."
+            "value" : "Занадта шмат далучэнняў. Адпраўце іх у некалькіх лістах."
           }
         },
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hi ha massa fitxers adjunts. Envieu-los en diversos correus electrònics."
+            "value" : "Massa adjunts. Envieu-los en diversos correus electrònics."
           }
         },
         "cs" : {
@@ -18751,13 +19141,13 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Вы дасягнулі ліміту запланаваных паведамленняў."
+            "value" : "Вы дасягнулі абмежавання запланаваных паведамленняў."
           }
         },
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Heu assolit el límit de missatges programats."
+            "value" : "Heu assolit el límit de missatges planificats."
           }
         },
         "cs" : {

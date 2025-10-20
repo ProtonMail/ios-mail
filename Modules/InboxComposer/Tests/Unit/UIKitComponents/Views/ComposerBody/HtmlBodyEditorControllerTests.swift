@@ -35,7 +35,7 @@ final class HtmlBodyEditorControllerTests {
     @Test
     func updateBody_itShouldCallLoadMessageBody() async {
         triggerViewDidLoad()
-        sut.updateBody("hello")
+        await sut.updateBody("hello")
         #expect(mockInterface.loadedBody == "hello")
     }
 
@@ -75,7 +75,7 @@ private final class MockHtmlBodyWebViewInterface: HtmlBodyWebViewInterfaceProtoc
     private(set) var loadedBody: String = ""
     private(set) var insertedTexts: [String] = []
 
-    func loadMessageBody(_ body: String) {
+    func loadMessageBody(_ body: String, clearCacheFirst: Bool) {
         loadedBody = body
     }
 
@@ -90,6 +90,8 @@ private final class MockHtmlBodyWebViewInterface: HtmlBodyWebViewInterfaceProtoc
     func insertImages(_ contentIds: [String]) async {}
 
     func removeImage(containing cid: String) async {}
+
+    func logHtmlHealthCheck(tag: String) async {}
 }
 
 private final class MockMemoryPressureHandler: WebViewMemoryPressureProtocol {

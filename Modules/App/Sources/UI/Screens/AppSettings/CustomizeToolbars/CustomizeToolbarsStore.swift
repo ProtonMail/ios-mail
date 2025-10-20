@@ -20,7 +20,6 @@ import Combine
 import InboxCoreUI
 import InboxCore
 
-@MainActor
 class CustomizeToolbarsStore: StateStore {
     @Published var state: CustomizeToolbarState
     private let customizeToolbarRepository: CustomizeToolbarRepository

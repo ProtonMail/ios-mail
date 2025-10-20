@@ -21,6 +21,6 @@ protocol BodyEditor: UIViewController {
     var onEvent: ((BodyEditorEvent) -> Void)? { get set }
 
     func setBodyInitialFocus()
-    func updateBody(_ body: String)
+    func updateBody(_ body: String) async
     func handleBodyAction(_ action: ComposerBodyAction)
 }
