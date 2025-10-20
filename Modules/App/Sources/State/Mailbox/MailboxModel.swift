@@ -526,13 +526,11 @@ extension MailboxModel {
 extension MailboxModel {
 
     func onUnreadFilterChange() {
-        Task {
-            AppLogger.log(message: "unread filter has changed to \(unreadFilter)", category: .mailbox)
-            if viewMode == .conversations {
-                _ = conversationScroller?.changeFilter(unread: unreadFilter)
-            } else {
-                _ = messageScroller?.changeFilter(unread: unreadFilter)
-            }
+        AppLogger.log(message: "unread filter has changed to \(unreadFilter)", category: .mailbox)
+        if viewMode == .conversations {
+            _ = conversationScroller?.changeFilter(unread: unreadFilter)
+        } else {
+            _ = messageScroller?.changeFilter(unread: unreadFilter)
         }
     }
 
