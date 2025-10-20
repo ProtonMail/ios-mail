@@ -292,7 +292,6 @@ extension MailboxModel {
 
             if mailbox.viewMode() == .messages {
                 messageScroller = try await scrollMessagesForLabel(
-                    //                    session: userSession,
                     mailbox: mailbox,
                     labelId: mailbox.labelId(),
                     unread: unreadFilter,
@@ -300,13 +299,13 @@ extension MailboxModel {
                     callback: MessageScrollerLiveQueryCallbackkWrapper { [weak self] update in
                         Task {
                             await self?.handleMessagesUpdate(update)
+                            await self?.updateSelectedMailboxIfNeeded()
                         }
                     }
                 ).get()
                 setUpSpamTrashToggleVisibility(supportsIncludeFilter: messageScroller?.supportsIncludeFilter() ?? false)
             } else {
                 conversationScroller = try await scrollConversationsForLabel(
-                    //                    session: userSession,
                     mailbox: mailbox,
                     labelId: mailbox.labelId(),
                     unread: unreadFilter,
@@ -314,6 +313,7 @@ extension MailboxModel {
                     callback: ConversationScrollerLiveQueryCallbackkWrapper { [weak self] update in
                         Task {
                             await self?.handleConversationsUpdate(update)
+                            await self?.updateSelectedMailboxIfNeeded()
                         }
                     }
                 ).get()
@@ -424,6 +424,16 @@ extension MailboxModel {
             updateType = .error(error)
         }
         listUpdateSubject.send(.init(isLastPage: isLastPage, value: updateType, completion: completion))
+    }
+
+    private func updateSelectedMailboxIfNeeded() async {
+        guard let mailbox, mailbox.labelId() != selectedMailbox.localId,
+            let systemLabel = try? await resolveSystemLabelById(
+                ctx: dependencies.appContext.userSession,
+                id: mailbox.labelId()
+            ).get()
+        else { return }
+        self.selectedMailbox = .systemFolder(labelId: mailbox.labelId(), systemFolder: systemLabel)
     }
 
     // TODO: Remove once the SDK does not return network as a possible MailScrollerError
@@ -570,19 +580,6 @@ extension MailboxModel {
                 try await draftPresenter.openDraftForShareExtension()
             } catch {
                 toast = .error(message: error.localizedDescription)
-            }
-        }
-    }
-
-    func replaceSelectedMailboxWhenNeeded() -> SelectedMailbox {
-        switch selectedMailbox {
-        case .customFolder, .inbox, .customLabel:
-            return selectedMailbox
-        case .systemFolder(let labelID, let systemFolder):
-            if mailbox?.labelId() != labelID, let mailboxLabelID = mailbox?.labelId() {
-                return .systemFolder(labelId: mailboxLabelID, systemFolder: systemFolder)
-            } else {
-                return selectedMailbox
             }
         }
     }

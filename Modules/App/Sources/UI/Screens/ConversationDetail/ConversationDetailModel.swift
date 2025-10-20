@@ -615,6 +615,7 @@ extension ConversationDetailModel {
             mailbox: mailbox,
             id: conversationID,
             origin: origin,
+            showAll: showAllMessages,
             callback: conversationMessageListCallback
         )
 
@@ -771,7 +772,7 @@ extension ConversationDetailModel {
             let conversationAndMessages = try await conversation(
                 mailbox: mailbox,
                 id: conversationID,
-                showAll: state.isHiddenMessagesBannerOn
+                showAll: showAllMessages
             ).get()
             let hiddenMessagesBanner = conversationAndMessages?.conversation.hiddenMessagesBanner
             let isStarred = conversationAndMessages?.conversation.isStarred ?? false
@@ -840,6 +841,10 @@ extension ConversationDetailModel {
                 }
             }
         }
+    }
+
+    private var showAllMessages: Bool {
+        seed.isAllMail ? true : state.isHiddenMessagesBannerOn
     }
 
     func reloadBottomBarActions() async {
@@ -1015,6 +1020,24 @@ private extension MessageAppearanceOverrideStore {
     func themeOpts(messageID: ID, colorScheme: ColorScheme) -> ThemeOpts {
         let isForcingLightMode = isForcingLightMode(forMessageWithId: messageID)
         return .init(colorScheme: colorScheme, isForcingLightMode: isForcingLightMode)
+    }
+
+}
+
+private extension ConversationDetailSeed {
+
+    var isAllMail: Bool {
+        switch self {
+        case .searchResultItem, .pushNotification:
+            false
+        case .mailboxItem(_, let selectedMailbox):
+            switch selectedMailbox {
+            case .inbox, .customLabel, .customFolder:
+                false
+            case .systemFolder(_, let systemFolder):
+                systemFolder == .allMail
+            }
+        }
     }
 
 }

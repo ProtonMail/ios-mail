@@ -265,7 +265,7 @@ extension MailboxScreen {
                 mailboxCursor: mailboxCursor,
                 modelToSeedMapping: ConversationDetailSeed.mailboxItem,
                 draftPresenter: mailboxModel.draftPresenter,
-                selectedMailbox: mailboxModel.replaceSelectedMailboxWhenNeeded(),
+                selectedMailbox: mailboxModel.selectedMailbox,
                 userSession: userSession
             )
         }
