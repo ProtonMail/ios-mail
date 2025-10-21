@@ -26,9 +26,7 @@ import SwiftUI
 final class SearchModel: ObservableObject, @unchecked Sendable {
     @Published var state: State = .init()
     let selectionMode: SelectionMode = .init()
-    var selectedMailbox: SelectedMailbox {
-        .systemFolder(labelId: mailbox.labelId(), systemFolder: .allMail)
-    }
+    lazy var selectedMailbox: SelectedMailbox = .systemFolder(labelId: mailbox.labelId(), systemFolder: .allMail)
 
     private(set) var mailbox: Mailbox!
     private var searchScroller: SearchScroller?
@@ -103,13 +101,12 @@ final class SearchModel: ObservableObject, @unchecked Sendable {
             paginatedDataSource.resetToInitialState()
 
             let result = await scrollerSearch(
-                //                session: dependencies.appContext.userSession,
                 mailbox: mailbox,
                 options: .init(keywords: query),
                 include: state.spamTrashToggleState.includeSpamTrash,
                 callback: MessageScrollerLiveQueryCallbackkWrapper { [weak self] update in
                     Task {
-                        await self?.handleMessagesUpdate(update)
+                        await self?.trigger(update: update)
                     }
                 }
             )
@@ -134,6 +131,21 @@ final class SearchModel: ObservableObject, @unchecked Sendable {
         } catch {
             AppLogger.log(error: error, category: .search)
         }
+    }
+
+    private func trigger(update: MessageScrollerUpdate) async {
+        await handleMessagesUpdate(update)
+        await updateSelectedMailboxIfNeeded()
+    }
+
+    private func updateSelectedMailboxIfNeeded() async {
+        guard let mailbox, mailbox.labelId() != selectedMailbox.localId,
+            let systemLabel = try? await resolveSystemLabelById(
+                ctx: dependencies.appContext.userSession,
+                id: mailbox.labelId()
+            ).get()
+        else { return }
+        self.selectedMailbox = .systemFolder(labelId: mailbox.labelId(), systemFolder: systemLabel)
     }
 
     private func setUpSpamTrashToggleVisibility(supportsIncludeFilter: Bool) {
