@@ -138,6 +138,13 @@ final class SearchModel: ObservableObject, @unchecked Sendable {
         await updateSelectedMailboxIfNeeded()
     }
 
+    /// Updates `selectedMailbox` if the currently loaded `mailbox` has changed underneath.
+    ///
+    /// The underlying mailbox can switch when the user toggles the **Include Spam/Trash**
+    /// filter. In that case, *All Mail* (includes spam/trash) and *Almost All Mail*
+    /// (excludes spam/trash) are represented by different locations/label IDs. When this
+    /// mismatch is detected, we resolve the corresponding system label (almostAllMail or allMail) and update the
+    /// selection accordingly.
     private func updateSelectedMailboxIfNeeded() async {
         guard let mailbox, mailbox.labelId() != selectedMailbox.localId,
             let systemLabel = try? await resolveSystemLabelById(
@@ -145,7 +152,7 @@ final class SearchModel: ObservableObject, @unchecked Sendable {
                 id: mailbox.labelId()
             ).get()
         else { return }
-        self.selectedMailbox = .systemFolder(labelId: mailbox.labelId(), systemFolder: systemLabel)
+        selectedMailbox = .systemFolder(labelId: mailbox.labelId(), systemFolder: systemLabel)
     }
 
     private func setUpSpamTrashToggleVisibility(supportsIncludeFilter: Bool) {
