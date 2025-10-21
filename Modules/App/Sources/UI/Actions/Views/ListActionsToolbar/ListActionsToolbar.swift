@@ -137,7 +137,6 @@ private struct ListActionBarViewModifier: ViewModifier {
                 }
                 .alert(model: store.binding(\.deleteConfirmationAlert))
         }
-        .id(MailboxIdentifiaction(viewMode: mailbox.viewMode(), id: mailbox.labelId()))
     }
 
     // MARK: - Private
@@ -161,6 +160,7 @@ private struct ListActionBarViewModifier: ViewModifier {
                 let bottomSafeAreaToRecreate = DS.Spacing.large
                 toastStateStore.state.bottomBar.height = toolbarHeight + bottomSafeAreaToRecreate
             }
+            .id(MailboxIdentifiaction(viewMode: mailbox.viewMode(), id: mailbox.labelId()))
         }
     }
 
