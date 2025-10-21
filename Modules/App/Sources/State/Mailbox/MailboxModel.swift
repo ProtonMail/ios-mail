@@ -740,12 +740,17 @@ extension MailboxModel {
 // MARK: Swipe between conversations
 
 extension MailboxModel {
-    func mailboxCursor(startingAt id: ID) -> MailboxCursorProtocol? {
-        switch viewMode {
-        case .conversations:
-            conversationScroller?.cursor(lookingAt: id)
-        case .messages:
-            messageScroller?.cursor(lookingAt: id)
+    func mailboxCursor(startingAt id: ID) async -> MailboxCursorProtocol? {
+        do {
+            switch viewMode {
+            case .conversations:
+                return try await conversationScroller?.cursor(lookingAt: id)
+            case .messages:
+                return try await messageScroller?.cursor(lookingAt: id)
+            }
+        } catch {
+            AppLogger.log(error: error, category: .mailbox)
+            return nil
         }
     }
 }

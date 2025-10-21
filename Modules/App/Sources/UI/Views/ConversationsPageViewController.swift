@@ -25,7 +25,7 @@ struct ConversationsPageViewController: View {
     @Environment(\.presentationMode) var presentationMode
 
     let startingItem: ConversationDetailSeed
-    let makeMailboxCursor: ((ID) -> MailboxCursorProtocol?)?
+    let makeMailboxCursor: (ID) async -> MailboxCursorProtocol?
     let modelToSeedMapping: (MailboxItemCellUIModel, SelectedMailbox) -> ConversationDetailSeed
 
     let draftPresenter: DraftPresenter
@@ -35,39 +35,6 @@ struct ConversationsPageViewController: View {
     @State var activeModel: ConversationDetailModel?
     @State private var isSwipeToAdjacentEnabled: Bool = false
     @State private var mailboxCursor: MailboxCursorProtocol?
-
-    init(
-        startingItem: MailboxItemCellUIModel,
-        mailboxCursor: MailboxCursorProtocol,
-        modelToSeedMapping: @escaping (MailboxItemCellUIModel, SelectedMailbox) -> ConversationDetailSeed,
-        draftPresenter: DraftPresenter,
-        selectedMailbox: SelectedMailbox,
-        userSession: MailUserSession
-    ) {
-        self.startingItem = modelToSeedMapping(startingItem, selectedMailbox)
-        self.makeMailboxCursor = nil
-        self.modelToSeedMapping = ConversationDetailSeed.mailboxItem
-        self.draftPresenter = draftPresenter
-        self.selectedMailbox = selectedMailbox
-        self.userSession = userSession
-
-        _mailboxCursor = .init(initialValue: mailboxCursor)
-    }
-
-    init(
-        seed: ConversationDetailSeed,
-        makeMailboxCursor: @escaping (ID) -> MailboxCursorProtocol?,
-        draftPresenter: DraftPresenter,
-        selectedMailbox: SelectedMailbox,
-        userSession: MailUserSession
-    ) {
-        self.startingItem = seed
-        self.makeMailboxCursor = makeMailboxCursor
-        self.modelToSeedMapping = ConversationDetailSeed.mailboxItem
-        self.draftPresenter = draftPresenter
-        self.selectedMailbox = selectedMailbox
-        self.userSession = userSession
-    }
 
     var body: some View {
         PageViewController(
@@ -143,11 +110,17 @@ struct ConversationsPageViewController: View {
     }
 
     private func updateCursor(itemID: ID) {
-        guard let makeMailboxCursor, mailboxCursor == nil else {
+        guard mailboxCursor == nil else {
             return
         }
 
-        mailboxCursor = makeMailboxCursor(itemID)
+        Task {
+            let mailboxCursor = await makeMailboxCursor(itemID)
+
+            if self.mailboxCursor == nil {
+                self.mailboxCursor = mailboxCursor
+            }
+        }
     }
 }
 

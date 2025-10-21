@@ -271,8 +271,13 @@ extension SearchModel {
 // MARK: Swipe between conversations
 
 extension SearchModel {
-    func mailboxCursor(startingAt id: ID) -> MailboxCursorProtocol {
-        searchScroller!.cursor(lookingAt: id)
+    func mailboxCursor(startingAt id: ID) async -> MailboxCursorProtocol? {
+        do {
+            return try await searchScroller?.cursor(lookingAt: id)
+        } catch {
+            AppLogger.log(error: error, category: .mailbox)
+            return nil
+        }
     }
 }
 

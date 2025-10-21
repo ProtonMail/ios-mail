@@ -257,26 +257,21 @@ extension MailboxScreen {
 
     @ViewBuilder
     private func mailboxItemDestination(uiModel: MailboxItemCellUIModel) -> some View {
-        let mailboxCursor = mailboxModel.mailboxCursor(startingAt: uiModel.id)!
-
-        SidebarZIndexUpdateContainer {
-            ConversationsPageViewController(
-                startingItem: uiModel,
-                mailboxCursor: mailboxCursor,
-                modelToSeedMapping: ConversationDetailSeed.mailboxItem,
-                draftPresenter: mailboxModel.draftPresenter,
-                selectedMailbox: mailboxModel.selectedMailbox,
-                userSession: userSession
-            )
-        }
+        conversationSeedDestination(seed: .mailboxItem(item: uiModel, selectedMailbox: mailboxModel.selectedMailbox))
     }
 
     @ViewBuilder
     private func messageSeedDestination(seed: MailboxMessageSeed) -> some View {
+        conversationSeedDestination(seed: .pushNotification(seed))
+    }
+
+    @ViewBuilder
+    private func conversationSeedDestination(seed: ConversationDetailSeed) -> some View {
         SidebarZIndexUpdateContainer {
             ConversationsPageViewController(
-                seed: .pushNotification(seed),
+                startingItem: seed,
                 makeMailboxCursor: mailboxModel.mailboxCursor,
+                modelToSeedMapping: ConversationDetailSeed.mailboxItem,
                 draftPresenter: mailboxModel.draftPresenter,
                 selectedMailbox: mailboxModel.selectedMailbox,
                 userSession: userSession
