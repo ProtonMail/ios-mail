@@ -35,10 +35,7 @@ final class SearchModel: ObservableObject, @unchecked Sendable {
 
     private let listUpdateSubject: PassthroughSubject<PaginatedListUpdate<MailboxItemCellUIModel>, Never> = .init()
     lazy var paginatedDataSource = PaginatedListDataSource<MailboxItemCellUIModel>(
-        paginatedListProvider: .init(
-            updatePublisher: listUpdateSubject.eraseToAnyPublisher(),
-            fetchMore: { [weak self] isFirstPage in self?.fetchNextPage(isFirstPage: isFirstPage) }
-        )
+        fetchMore: { [weak self] isFirstPage in self?.fetchNextPage(isFirstPage: isFirstPage) }
     )
 
     private let dependencies: Dependencies

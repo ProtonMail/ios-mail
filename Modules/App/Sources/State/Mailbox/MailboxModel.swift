@@ -45,12 +45,8 @@ final class MailboxModel: ObservableObject {
 
     private var messageScroller: MessageScroller?
     private var conversationScroller: ConversationScroller?
-    private let listUpdateSubject: PassthroughSubject<PaginatedListUpdate<MailboxItemCellUIModel>, Never> = .init()
     lazy var paginatedDataSource = PaginatedListDataSource<MailboxItemCellUIModel>(
-        paginatedListProvider: .init(
-            updatePublisher: listUpdateSubject.eraseToAnyPublisher(),
-            fetchMore: { [weak self] isFirstPage in self?.fetchNextPage(isFirstPage: isFirstPage) }
-        ),
+        fetchMore: { [weak self] isFirstPage in self?.fetchNextPage(isFirstPage: isFirstPage) },
         id: \.id
     )
     private var unreadCountLiveQuery: UnreadItemsCountLiveQuery?
@@ -391,7 +387,7 @@ extension MailboxModel {
             showScrollerErrorIfNotNetwork(error: error)
             updateType = .error(error)
         }
-        listUpdateSubject.send(.init(isLastPage: isLastPage, value: updateType, completion: completion))
+        paginatedDataSource.handle(update: .init(isLastPage: isLastPage, value: updateType, completion: completion))
     }
 
     private func handleMessagesUpdate(_ update: MessageScrollerUpdate) async {
@@ -421,7 +417,7 @@ extension MailboxModel {
             showScrollerErrorIfNotNetwork(error: error)
             updateType = .error(error)
         }
-        listUpdateSubject.send(.init(isLastPage: isLastPage, value: updateType, completion: completion))
+        paginatedDataSource.handle(update: .init(isLastPage: isLastPage, value: updateType, completion: completion))
     }
 
     // TODO: Remove once the SDK does not return network as a possible MailScrollerError

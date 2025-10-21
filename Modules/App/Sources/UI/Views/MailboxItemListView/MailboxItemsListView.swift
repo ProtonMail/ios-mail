@@ -196,12 +196,9 @@ private extension SelectionModeState {
         let subject: PassthroughSubject<PaginatedListUpdate<MailboxItemCellUIModel>, Never> = .init()
 
         lazy var dataSource = PaginatedListDataSource<MailboxItemCellUIModel>(
-            paginatedListProvider: .init(
-                updatePublisher: subject.eraseToAnyPublisher(),
-                fetchMore: { [weak self] isFirstPage in
-                    Task { await self?.nextPage(isFirstPage: isFirstPage) }
-                }
-            )
+            fetchMore: { [weak self] isFirstPage in
+                Task { await self?.nextPage(isFirstPage: isFirstPage) }
+            }
         )
 
         private func nextPage(isFirstPage: Bool) async {

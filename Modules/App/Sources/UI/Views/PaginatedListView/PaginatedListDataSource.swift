@@ -19,25 +19,18 @@ import Combine
 import InboxCore
 import SwiftUI
 
-struct PaginatedListProvider<Item: Equatable & Sendable> {
-    let updatePublisher: AnyPublisher<PaginatedListUpdate<Item>, Never>
-    let fetchMore: (_ isFirstFetch: Bool) -> Void
-}
-
 @MainActor
 final class PaginatedListDataSource<Item: Equatable & Sendable>: ObservableObject, @unchecked Sendable {
-    @Published private(set) var state: State
-    private let provider: PaginatedListProvider<Item>
-    private let id: ((Item) -> ID)?
-    private var cancellables = Set<AnyCancellable>()
+    typealias FetchMore = (_ isFetchingFirstPage: Bool) -> Void
 
-    init(paginatedListProvider: PaginatedListProvider<Item>, id: ((Item) -> ID)? = nil) {
+    @Published private(set) var state: State
+    private let fetchMore: FetchMore
+    private let id: ((Item) -> ID)?
+
+    init(fetchMore: @escaping FetchMore, id: ((Item) -> ID)? = nil) {
         self.state = .init()
-        self.provider = paginatedListProvider
+        self.fetchMore = fetchMore
         self.id = id
-        provider.updatePublisher.receive(on: DispatchQueue.main).sink { [weak self] update in
-            self?.handle(update: update)
-        }.store(in: &cancellables)
     }
 
     /// This function is for convenience to be able to show the initial state if the operation to have the fetchPage ready
@@ -57,14 +50,7 @@ final class PaginatedListDataSource<Item: Equatable & Sendable>: ObservableObjec
         fetchNextPageItems()
     }
 
-    private func fetchNextPageItems() {
-        updateStateMarkIsFetchingNextPage()
-        provider.fetchMore(state.isFetchingFirstPage)
-    }
-
-    // MARK: Modifiers
-
-    private func handle(update: PaginatedListUpdate<Item>) {
+    func handle(update: PaginatedListUpdate<Item>) {
         var newState = state
         newState.isFetchingNextPage = false
         newState.isFetchingFirstPage = false
@@ -89,6 +75,11 @@ final class PaginatedListDataSource<Item: Equatable & Sendable>: ObservableObjec
         state = newState
         AppLogger.log(message: "handle update: \(update), total items = \(state.items.count)", category: .mailbox)
         update.completion?()
+    }
+
+    private func fetchNextPageItems() {
+        updateStateMarkIsFetchingNextPage()
+        fetchMore(state.isFetchingFirstPage)
     }
 
     private func isSafeIndex(_ index: Int) -> Bool {
@@ -128,7 +119,7 @@ extension PaginatedListDataSource {
                     return .fetchingInitialPage
                 }
             } else {
-                return .data(.items(isLastPage: isLastPage))
+                return .data(.items(isFetchingNextPage: isFetchingNextPage))
             }
         }
     }
