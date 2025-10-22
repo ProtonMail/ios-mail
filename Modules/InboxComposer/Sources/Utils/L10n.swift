@@ -244,6 +244,18 @@ enum L10n {
             comment: "Attachment failed because the total size was above the limit"
         )
 
+        static let storageQuotaExceededTitle = LocalizedStringResource(
+            "Storage quota exceeded",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Attachment failed because account storage is full"
+        )
+
+        static let storageQuotaExceededMessage = LocalizedStringResource(
+            "Your storage is full. Please free up space or upgrade to add more.",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Attachment failed because account storage is full"
+        )
+
         static let somethingWentWrongTitle = LocalizedStringResource(
             "Something went wrong",
             bundle: .atURL(Bundle.module.bundleURL),
@@ -508,6 +520,11 @@ enum L10n {
         static let retryInvalidState = LocalizedStringResource(
             "Retry not possible. Attachment is uploading or already uploaded.",
             comment: "Error in the context of retrying to upload a draft."
+        )
+
+        static let storageQuotaExceeded = LocalizedStringResource(
+            "Your storage is full. Please free up space or upgrade to add more.",
+            comment: "Error in the context of uploading an attachment for a message before being sent."
         )
 
         static let timeout = LocalizedStringResource(

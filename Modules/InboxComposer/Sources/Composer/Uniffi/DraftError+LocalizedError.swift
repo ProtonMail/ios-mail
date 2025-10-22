@@ -49,6 +49,8 @@ private extension DraftAttachmentUploadErrorReason {
             L10n.DraftAttachmentUploadError.tooManyAttachments
         case .timeout:
             L10n.DraftAttachmentUploadError.timeout
+        case .storageQuotaExceeded:
+            L10n.DraftAttachmentUploadError.storageQuotaExceeded
         }
     }
 }

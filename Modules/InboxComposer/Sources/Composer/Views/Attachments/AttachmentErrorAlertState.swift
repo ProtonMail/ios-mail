@@ -70,6 +70,7 @@ extension AttachmentErrorAlertState {
     private func aggregateAddingAttachmentErrors(_ errors: [DraftAttachmentUploadError]) -> [AttachmentErrorAlertModel] {
         var overSizeLimitCount = 0
         var tooManyAttachmentsCount = 0
+        var storageQuotaExceededCount = 0
         var otherCount = 0
 
         for error in errors {
@@ -80,6 +81,8 @@ extension AttachmentErrorAlertState {
                     tooManyAttachmentsCount += 1
                 case .attachmentTooLarge, .totalAttachmentSizeTooLarge:
                     overSizeLimitCount += 1
+                case .storageQuotaExceeded:
+                    storageQuotaExceededCount += 1
                 case .messageDoesNotExist, .messageAlreadySent, .messageDoesNotExistOnServer,
                     .retryInvalidState, .timeout, .crypto:
                     otherCount += 1
@@ -96,6 +99,9 @@ extension AttachmentErrorAlertState {
         if tooManyAttachmentsCount > 0 {
             result.append(.tooMany(origin: .adding(.defaultAddAttachmentError(count: tooManyAttachmentsCount))))
         }
+        if storageQuotaExceededCount > 0 {
+            result.append(.storageQuotaExceeded(origin: .adding(.defaultAddAttachmentError(count: storageQuotaExceededCount))))
+        }
         if otherCount > 0 {
             result.append(.somethingWentWrong(origin: .adding(.defaultAddAttachmentError(count: otherCount))))
         }
@@ -106,6 +112,7 @@ extension AttachmentErrorAlertState {
     private func aggregateUploadingAttachmentErrors(_ attachments: [DraftAttachment]) -> [AttachmentErrorAlertModel] {
         var overSizeFailures = [DraftAttachment]()
         var tooManyAttachmentsFailures = [DraftAttachment]()
+        var storageQuotaExceededFailures = [DraftAttachment]()
         var otherFailures = [DraftAttachment]()
 
         for attachment in attachments {
@@ -118,6 +125,8 @@ extension AttachmentErrorAlertState {
                     tooManyAttachmentsFailures.append(attachment)
                 case .attachmentTooLarge, .totalAttachmentSizeTooLarge:
                     overSizeFailures.append(attachment)
+                case .storageQuotaExceeded:
+                    storageQuotaExceededFailures.append(attachment)
                 case .messageDoesNotExist, .messageAlreadySent, .messageDoesNotExistOnServer,
                     .retryInvalidState, .timeout, .crypto:
                     otherFailures.append(attachment)
@@ -133,6 +142,9 @@ extension AttachmentErrorAlertState {
         }
         if !tooManyAttachmentsFailures.isEmpty, let uploadingError = mapUnseenToUploadingErrorOrigin(tooManyAttachmentsFailures) {
             result.append(.tooMany(origin: uploadingError))
+        }
+        if !storageQuotaExceededFailures.isEmpty, let uploadingError = mapUnseenToUploadingErrorOrigin(storageQuotaExceededFailures) {
+            result.append(.storageQuotaExceeded(origin: uploadingError))
         }
         if !otherFailures.isEmpty, let uploadingError = mapUnseenToUploadingErrorOrigin(otherFailures) {
             result.append(.somethingWentWrong(origin: uploadingError))

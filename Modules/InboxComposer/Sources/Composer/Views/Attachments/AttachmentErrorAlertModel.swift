@@ -21,11 +21,12 @@ import proton_app_uniffi
 enum AttachmentErrorAlertModel: Hashable {
     case overSizeLimit(origin: AttachmentErrorOrigin)
     case tooMany(origin: AttachmentErrorOrigin)
+    case storageQuotaExceeded(origin: AttachmentErrorOrigin)
     case somethingWentWrong(origin: AttachmentErrorOrigin)
 
     var origin: AttachmentErrorOrigin {
         switch self {
-        case .overSizeLimit(let origin), .tooMany(let origin), .somethingWentWrong(let origin):
+        case .overSizeLimit(let origin), .tooMany(let origin), .storageQuotaExceeded(let origin), .somethingWentWrong(let origin):
             origin
         }
     }
@@ -41,6 +42,8 @@ enum AttachmentErrorAlertModel: Hashable {
             case .uploading:
                 L10n.AttachmentError.tooManyAttachmentsFromServerTitle
             }
+        case .storageQuotaExceeded:
+            L10n.AttachmentError.storageQuotaExceededTitle
         case .somethingWentWrong:
             L10n.AttachmentError.somethingWentWrongTitle
         }
@@ -66,6 +69,8 @@ enum AttachmentErrorAlertModel: Hashable {
                  */
                 L10n.AttachmentError.tooManyAttachmentsFromServerMessage
             }
+        case .storageQuotaExceeded:
+            L10n.AttachmentError.storageQuotaExceededTitle
         case .somethingWentWrong:
             L10n.AttachmentError.somethingWentWrongMessage
         }
@@ -73,7 +78,7 @@ enum AttachmentErrorAlertModel: Hashable {
 
     var actions: [AttachmentErrorActions] {
         switch self {
-        case .overSizeLimit(let origin), .tooMany(let origin), .somethingWentWrong(let origin):
+        case .overSizeLimit(let origin), .tooMany(let origin), .somethingWentWrong(let origin), .storageQuotaExceeded(let origin):
             switch origin {
             case .adding:
                 return [.gotIt]
