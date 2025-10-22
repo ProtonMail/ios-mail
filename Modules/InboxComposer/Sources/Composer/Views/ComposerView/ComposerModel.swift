@@ -287,7 +287,7 @@ final class ComposerModel: ObservableObject {
 
     @MainActor
     func reloadBodyAfterMemoryPressure() async {
-        await reloadBody()
+        await reloadBody(clearImageCacheFirst: false)
     }
 
     func scheduleSendState(lastScheduledTime: UInt64?) -> ComposerViewModalState? {
@@ -397,7 +397,7 @@ final class ComposerModel: ObservableObject {
         do {
             try await draft.attachmentList().remove(id: attachment.id).get()
             if attachment.disposition == .inline {
-                await reloadBody()
+                await reloadBody(clearImageCacheFirst: true)
             }
         } catch {
             AppLogger.log(error: error, category: .composer)
@@ -493,7 +493,7 @@ extension ComposerModel: ChangeSenderHandlerProtocol {
         case .ok:
             let attachments = try await draft.attachmentList().attachments().get().toDraftAttachmentUIModels()
             state = makeState(from: draft, attachments: attachments)
-            bodyAction = .reloadBody(html: state.initialBody)
+            bodyAction = .reloadBody(html: state.initialBody, clearImageCacheFirst: false)
         case .error(let error):
             throw error
         }
@@ -612,10 +612,10 @@ extension ComposerModel {
     }
 
     @MainActor
-    private func reloadBody() async {
+    private func reloadBody(clearImageCacheFirst: Bool) async {
         guard !messageHasBeenSentOrScheduled else { return }
         await updateBodyDebounceTask?.executeImmediately()
-        bodyAction = .reloadBody(html: draft.body())
+        bodyAction = .reloadBody(html: draft.body(), clearImageCacheFirst: clearImageCacheFirst)
     }
 
     private func stateRecipientUIModels(for group: RecipientGroupType) -> [RecipientUIModel] {

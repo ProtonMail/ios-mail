@@ -466,7 +466,7 @@ final class ComposerModelTests: BaseTestCase {
 
         try await sut.changeSenderAddress(email: newAddress)
         let html = mockDraft.body()
-        XCTAssertEqual(sut.bodyAction, ComposerBodyAction.reloadBody(html: html))
+        XCTAssertEqual(sut.bodyAction, ComposerBodyAction.reloadBody(html: html, clearImageCacheFirst: false))
     }
 
     func testChangeSenderAddress_whenFailure_itDoesNotSetBodyActionToReloadBody() async {
@@ -695,7 +695,7 @@ final class ComposerModelTests: BaseTestCase {
         await sut.removeAttachment(attachment: draftAttachment.attachment)
 
         XCTAssertEqual(mockDraft.mockAttachmentList.capturedRemoveIdCalls.first, attachmentId)
-        XCTAssertEqual(sut.bodyAction, ComposerBodyAction.reloadBody(html: dummyBody))
+        XCTAssertEqual(sut.bodyAction, ComposerBodyAction.reloadBody(html: dummyBody, clearImageCacheFirst: true))
     }
 
     // MARK: removeAttachment(cid:)
@@ -747,7 +747,7 @@ final class ComposerModelTests: BaseTestCase {
         mockDraft.mockBody = "<html>test body</html>"
         let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: .mockInstance)
         await sut.reloadBodyAfterMemoryPressure()
-        XCTAssertEqual(sut.bodyAction, ComposerBodyAction.reloadBody(html: "<html>test body</html>"))
+        XCTAssertEqual(sut.bodyAction, ComposerBodyAction.reloadBody(html: "<html>test body</html>", clearImageCacheFirst: false))
     }
 
     // MARK: sendMessage

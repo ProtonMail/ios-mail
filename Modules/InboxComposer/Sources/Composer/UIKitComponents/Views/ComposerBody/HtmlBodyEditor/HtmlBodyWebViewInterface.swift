@@ -56,13 +56,15 @@ final class HtmlBodyWebViewInterface: NSObject, HtmlBodyWebViewInterfaceProtocol
         }
     }
 
-    func loadMessageBody(_ body: String, clearCacheFirst: Bool) async {
+    func loadMessageBody(_ body: String, clearImageCacheFirst: Bool) async {
         let nonce = generateCspNonce()
         let html = htmlDocument.html(nonce: nonce, bodyContent: body)
 
-        if clearCacheFirst {
-            let types = WKWebsiteDataStore.allWebsiteDataTypes()
-            await websiteDataStore.removeData(ofTypes: types, modifiedSince: .distantPast)
+        if clearImageCacheFirst {
+            // Be selective in what needs to be cleared. Using `WKWebsiteDataStore.allWebsiteDataTypes()`
+            // could potentially bring issues (e.g. https://protonag.atlassian.net/browse/ET-5047)
+            let cachedImageTypes: Set<String> = [WKWebsiteDataTypeMemoryCache]
+            await websiteDataStore.removeData(ofTypes: cachedImageTypes, modifiedSince: .distantPast)
         }
         webView.loadHTMLString(html, baseURL: nil)
         Task { await logHtmlHealthCheck(tag: "loadMessageBody") }

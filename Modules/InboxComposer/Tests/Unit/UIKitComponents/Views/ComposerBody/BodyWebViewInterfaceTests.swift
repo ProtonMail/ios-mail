@@ -36,7 +36,7 @@ final class BodyWebViewInterfaceTests {
 
     @Test
     func testLoadMessageBodyBody_whioutClearingCache_itLoadsTheGivenHtml() async {
-        await sut.loadMessageBody(dummyMessage, clearCacheFirst: false)
+        await sut.loadMessageBody(dummyMessage, clearImageCacheFirst: false)
         await waitForWebViewDidFinish(sut.webView)
 
         let html = await sut.readMesasgeBody()
@@ -46,7 +46,7 @@ final class BodyWebViewInterfaceTests {
 
     @Test
     func testLoadMessageBody_whenClearCacheFirst_itClearsCacheAndLoadsTheGivenHtml() async {
-        await sut.loadMessageBody(dummyMessage, clearCacheFirst: true)
+        await sut.loadMessageBody(dummyMessage, clearImageCacheFirst: true)
         await waitForWebViewDidFinish(sut.webView)
 
         let html = await sut.readMesasgeBody()
@@ -58,7 +58,7 @@ final class BodyWebViewInterfaceTests {
 
     @Test
     func testInsertImages_whenNoCursorExists_itInsertsTheImagesAtTheBeginning() async {
-        await sut.loadMessageBody("<p>initial message</p>", clearCacheFirst: false)
+        await sut.loadMessageBody("<p>initial message</p>", clearImageCacheFirst: false)
         await waitForWebViewDidFinish(sut.webView)
 
         await sut.insertImages(["12345", "qwerty"])
@@ -72,7 +72,7 @@ final class BodyWebViewInterfaceTests {
 
     @Test
     func testInsertImages_whenCursorExists_itInsertsTheImagesAtTheCursorPosition() async throws {
-        await sut.loadMessageBody("<p>first part</p><p>second part</p>", clearCacheFirst: false)
+        await sut.loadMessageBody("<p>first part</p><p>second part</p>", clearImageCacheFirst: false)
         await waitForWebViewDidFinish(sut.webView)
 
         try await setCursorAfter(text: "first part")
@@ -86,7 +86,7 @@ final class BodyWebViewInterfaceTests {
 
     @Test
     func testRemoveImage_whenThereIsCIDMatch_itRemovesTheImgObject() async {
-        await sut.loadMessageBody("<p>hello<img src=\"cid:12345\"><br></p>", clearCacheFirst: false)
+        await sut.loadMessageBody("<p>hello<img src=\"cid:12345\"><br></p>", clearImageCacheFirst: false)
         await waitForWebViewDidFinish(sut.webView)
 
         await sut.removeImage(containing: "12345")
@@ -100,7 +100,7 @@ final class BodyWebViewInterfaceTests {
 
     @Test
     func testRemoveImage_whenThereIsPartialCIDMatch_itDoesNotRemoveTheImage() async {
-        await sut.loadMessageBody("<p>hello<img src=\"cid:123456789\"><br></p>", clearCacheFirst: false)
+        await sut.loadMessageBody("<p>hello<img src=\"cid:123456789\"><br></p>", clearImageCacheFirst: false)
         await waitForWebViewDidFinish(sut.webView)
 
         await sut.removeImage(containing: "12345")
@@ -114,7 +114,7 @@ final class BodyWebViewInterfaceTests {
 
     @Test
     func testRemoveImage_whenCIDDoesNotExist_itDoesNotModifyTheHTML() async {
-        await sut.loadMessageBody("<p>hello<img src=\"cid:12345\"><br></p>", clearCacheFirst: false)
+        await sut.loadMessageBody("<p>hello<img src=\"cid:12345\"><br></p>", clearImageCacheFirst: false)
         await waitForWebViewDidFinish(sut.webView)
 
         await sut.removeImage(containing: "12567")
