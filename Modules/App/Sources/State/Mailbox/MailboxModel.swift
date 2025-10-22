@@ -499,9 +499,7 @@ extension MailboxModel {
 extension MailboxModel {
 
     func onPullToRefresh() async {
-        await dependencies.appContext.pollEventsAsync()
-        let uxExpectedDuration = Duration.seconds(1.5)
-        try? await Task.sleep(for: uxExpectedDuration)
+        await dependencies.appContext.pollEventsAndWait()
     }
 }
 
