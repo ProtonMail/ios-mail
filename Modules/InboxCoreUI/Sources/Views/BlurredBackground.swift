@@ -29,7 +29,7 @@ import SwiftUI
 ///   the blur effect is disabled by the system. In that case, the view falls
 ///   back to displaying a solid background color instead of a blur.
 public struct BlurredBackground: View {
-    private let fallbackBackgroundColor: Color
+    private let fallbackBackgroundColor: Color?
     @Environment(\.accessibilityReduceTransparency) var reduceTransparency
 
     /// Creates a blurred background.
@@ -38,7 +38,7 @@ public struct BlurredBackground: View {
     ///   The color used as a solid background when the **Reduce Transparency**
     ///   accessibility setting is turned on. This prevents the content behind
     ///   the view from becoming fully visible when blur is removed.
-    public init(fallbackBackgroundColor: Color) {
+    public init(fallbackBackgroundColor: Color?) {
         self.fallbackBackgroundColor = fallbackBackgroundColor
     }
 

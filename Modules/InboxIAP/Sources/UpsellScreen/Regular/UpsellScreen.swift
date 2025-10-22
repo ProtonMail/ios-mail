@@ -20,6 +20,7 @@ import InboxDesignSystem
 import SwiftUI
 
 public struct UpsellScreen: View {
+    @Environment(\.accessibilityReduceTransparency) var reduceTransparency
     @Environment(\.dismiss) private var dismiss
     @Environment(\.verticalSizeClass) private var verticalSizeClass
     @EnvironmentObject private var toastStateStore: ToastStateStore
@@ -72,7 +73,7 @@ public struct UpsellScreen: View {
 
                 interactiveArea
                     .padding(.top, DS.Spacing.large)
-                    .background(BlurredBackground(fallbackBackgroundColor: Color.white.opacity(0.01)))
+                    .background(BlurredBackground(fallbackBackgroundColor: nil))
             }
         }
     }
@@ -126,7 +127,7 @@ public struct UpsellScreen: View {
                 action: model.scrollingOffsetDidChange
             )
         }
-        .scrollClipDisabled()
+        .scrollClipDisabled(!reduceTransparency)
         .coordinateSpace(name: coordinateSpaceName)
         .padding(.horizontal, DS.Spacing.extraLarge)
     }
