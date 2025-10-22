@@ -5168,6 +5168,12 @@
             "value" : "このデバイスから送信する際に、お客様のメール署名に追加して表示される署名。"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이 기기에서 보낼 때 사용자의 이메일 서명 외에 추가로 표시되는 서명입니다."
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7237,7 +7243,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Аўтавыдаленне выключана. Паведамленні ў папках \"Сметніца\" і \"Спам\" будуць захоўвацца там, пакуль вы не выдаліце іх уручную."
+            "value" : "Аўтавыдаленне выключана. Паведамленні ў папках Сметніца і Спам будуць захоўвацца там, пакуль вы не выдаліце іх уручную."
           }
         },
         "ca" : {
@@ -23079,7 +23085,117 @@
       }
     },
     "Include Trash/Spam" : {
-      "comment" : "Toggle to include Trash and Spam messages in the results list."
+      "comment" : "Toggle to include Trash and Spam messages in the results list.",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Уключыць Сметніца/Спам"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inclou Paperera/Correu brossa"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zahrnout koš/spam"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Papierkorb/Spam einschließen"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Συμπεριλάβετε Κάδο Απορριμμάτων/Ενοχλητικά"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Include Trash/Spam"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Incluir Papelera/Spam"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Incluir Papelera/Spam"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inclure corbeille et indésirables/spam"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Includi Cestino/Spam"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ごみ箱/迷惑メールを含める"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inkluder papirkurv/søppelpost"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Incluir Lixeira/Spam"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Includere Gunoi/Nedorite"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zahrnúť Kôš/Spam"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inkludera Papperskorg/Skräppost"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Çöptekiler/İstenmeyenler katılsın"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "包含回收站中的邮件和垃圾邮件"
+          }
+        }
+      }
     },
     "Incorrect PIN. Please try again." : {
       "comment" : "Error message when a user enters an invalid PIN",
@@ -28581,7 +28697,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Паведамленні ў папцы \"Сметніца\" і \"Спам\" будуць аўтаматычна выдалены праз 30 дзён."
+            "value" : "Паведамленні ў папцы Сметніца і Спам будуць аўтаматычна выдалены праз 30 дзён."
           }
         },
         "ca" : {
@@ -33069,7 +33185,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Наша сістэма пазначыла гэта паведамленне як спробу фішынгу. Пераканайце ў яго надзейнасці."
+            "value" : "Наша сістэма пазначыла гэта паведамленне як спробу фішынгу. Праверце яго надзейнасць."
           }
         },
         "ca" : {
@@ -35605,7 +35721,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Паўтарыць PIN"
+            "value" : "Паўтарыце PIN"
           }
         },
         "ca" : {
@@ -36745,7 +36861,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Справаздачы не шыфруюцца скразным метадам. Не адпраўляйце ў іх любую канфідэнцыяльную інфармацыю."
+            "value" : "Справаздачы не зашыфраваны скразным метадам. Не перасылайце ў іх канфідэнцыяльную інфармацыю."
           }
         },
         "ca" : {
@@ -38052,7 +38168,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Абараніце з дапамогай PIN"
+            "value" : "Абараніць з дапамогай PIN"
           }
         },
         "ca" : {
@@ -38237,7 +38353,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Абараніце з дапамогай Touch ID"
+            "value" : "Абараніць з дапамогай Touch ID"
           }
         },
         "ca" : {
@@ -38613,7 +38729,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "У вас пакуль няма лістоў"
+            "value" : "Здаецца, што ў вас пакуль няма непрачытаных лістоў"
           }
         },
         "ca" : {
@@ -39365,7 +39481,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Адпраўка.."
+            "value" : "Адпраўка..."
           }
         },
         "ca" : {
@@ -40118,10 +40234,224 @@
       }
     },
     "Show non-trashed messages in this conversation." : {
-      "comment" : "Title of the banner displayed in a conversation for showing or hiding non-trashed messages."
+      "comment" : "Title of the banner displayed in a conversation for showing or hiding non-trashed messages.",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Паказаць невыдаленыя паведамленні ў гэтай размове."
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostrar els missatges no esborrats d'aquesta conversa."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zobrazit v této konverzaci zprávy, které nejsou v koši."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nicht gelöschte Nachrichten in dieser Unterhaltung anzeigen."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Εμφάνιση μηνυμάτων που δεν έχουν διαγραφεί σε αυτήν τη συνομιλία."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show non-trashed messages in this conversation."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostrar mensajes no eliminados en esta conversación."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostrar mensajes de la papelera en esta conversación."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Montrer les messages non supprimés dans cette conversation."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostra i messaggi non cestinati in questa conversazione."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "この会話内の削除済みではないメッセージを表示"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vis meldinger som ikke er i søppelkurven i denne samtalen."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostrar mensagens não excluídas nesta conversa."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Afișare mesaje neșterse în această conversație."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zobraziť správy, ktoré nie sú v koši, v tejto konverzácii."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bu yazışmada çöp kutusunda olmayan iletileri görüntüler."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "显示此会话中的非回收站中的邮件"
+          }
+        }
+      }
     },
     "Show trashed messages in this conversation." : {
-      "comment" : "Title of the banner displayed in a conversation for showing or hiding trashed messages."
+      "comment" : "Title of the banner displayed in a conversation for showing or hiding trashed messages.",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Паказаць выдаленыя паведамленні ў гэтай размове."
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostrar els missatges esborrats d'aquesta conversa."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zobrazit v této konverzaci zprávy, které jsou v koši."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gelöschte Nachrichten in dieser Unterhaltung anzeigen."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Εμφάνιση μηνυμάτων που έχουν διαγραφεί σε αυτήν τη συνομιλία."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show trashed messages in this conversation."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostrar mensajes eliminados en esta conversación."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostrar mensajes de la papelera en esta conversación."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Montrer les messages mis à la corbeille dans cette conversation."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostra messaggi nel Cestino in questa conversazione."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "この会話のごみ箱にあるメッセージを表示。"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vis meldinger i papirkurven i denne samtalen."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mostrar mensagens na Lixeira nesta conversa."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Afișare mesaje șterse în această conversație."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zobraziť správy z Koša v tejto konverzácii."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Visa kastade meddelanden i denna konversation."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bu yazışmada çöp kutusundaki iletileri görüntüler."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "显示此会话中的回收站中的邮件"
+          }
+        }
+      }
     },
     "Sign in on another device" : {
       "localizations" : {
@@ -45099,7 +45429,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Панэль інструментаў можа мець 1–5 дзеянняў. Нельга выдаліць апошняе дзеянне."
+            "value" : "Панэль інструментаў можа мець ад 1 да 5 дзеянняў. Вы не можаце выдаліць апошняе дзеянне, якое засталося."
           }
         },
         "ca" : {
@@ -45278,7 +45608,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Пры адпраўцы справаздачы адбылася памылка. Паспрабуйце яшчэ раз"
+            "value" : "Адбылася памылка пры адпраўцы справаздачы. Паспрабуйце яшчэ раз"
           }
         },
         "ca" : {
@@ -46788,7 +47118,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Гэта панэль інструментаў з'яўляецца, калі выбрана некалькі паведамленняў у спісе."
+            "value" : "Гэта панэль інструментаў з'явіцца пры выбары некалькіх паведамленняў у спісе."
           }
         },
         "ca" : {
@@ -46919,7 +47249,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Гэта панэль інструментаў застаецца бачнай, калі паведамленне адкрыта."
+            "value" : "Гэта панэль інструментаў застаецца бачнай пры адкрытым паведамленні."
           }
         },
         "ca" : {
@@ -47241,7 +47571,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Гэта прывядзе да скасавання вашай падпіскі на спіс рассылкі. Адпраўніку будзе паведамлена пра неабходнасць спыніць адпраўку лістоў на гэты адрас."
+            "value" : "Гэта прывядзе да скасавання вашай падпіскі на спіс рассылкі. Адпраўнік атрымае апавяшчэнне аб неабходнасці спыніць адпраўку лістоў на гэты адрас."
           }
         },
         "ca" : {
@@ -48166,7 +48496,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Занадта шмат спроб за кароткі час. Пачакайце, перш чым паспрабаваць зноў."
+            "value" : "Вельмі шмат спроб за кароткі прамежак часу. Пачакайце, перш чым паспрабаваць зноў."
           }
         },
         "ca" : {
@@ -50052,7 +50382,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Адпісацца"
+            "value" : "Скасаваць падпіску"
           }
         },
         "ca" : {
@@ -50798,7 +51128,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Палепшыце свой тарыфны план, каб аўтаматычна выдаляць лісты, якія знаходзяцца ў папцы \"Сметніца\" або \"Спам\" больш за 30 дзён."
+            "value" : "Палепшыце свой тарыфны план, каб аўтаматычна выдаляць лісты, якія знаходзяцца ў папках сметніца або спам больш за 30 дзён."
           }
         },
         "ca" : {
@@ -53944,6 +54274,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "お客様が送信するすべてのメールに自動的に追加される、メールの署名です。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "보내는 모든 이메일에 자동으로 추가되는 이메일 서명"
           }
         },
         "nb" : {

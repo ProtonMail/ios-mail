@@ -130,6 +130,12 @@
             "value" : "%@ nemôže byť použité na odosielanie správ"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Z naslova %@ ni mogoče pošiljati sporočil"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -617,6 +623,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Na používanie %@ je potrebný platený plán."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Za uporabo %@ je zahtevan plačljiv paket"
           }
         },
         "sv" : {
@@ -1878,10 +1890,22 @@
             "value" : "Adresa nu este disponibilă"
           }
         },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Адрес недоступен"
+          }
+        },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Adresa nie je dostupná"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Naslov ni na voljo"
           }
         },
         "sv" : {
@@ -9000,7 +9024,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bericht is te groot om te verzenden. Gelieve de grootte van uw bijlagen te verkleinen."
+            "value" : "Bericht is te groot om te verzenden. Verklein de grootte van uw bijlagen."
           }
         },
         "pt-BR" : {
@@ -9019,6 +9043,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Správa je príliš veľká na odoslanie. Zmenšite veľkosť príloh, prosím."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sporočilo je preveliko za pošiljanje. Zmanjšajte velikost priponk."
           }
         },
         "sv" : {
@@ -10588,6 +10618,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "受信者はいずれもデフォルトでは有効期限をサポートしていません。Proton Mail以外の宛先の有効期限を有効にするには、パスワードを追加してください。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "어떤 수신인도 기본적으로 유효기간을 지원하지 않습니다. Proton Mail 외부 수신인의 유효기간 활성화를 위해 비밀번호를 추가하십시오."
           }
         },
         "nb" : {
@@ -12571,6 +12607,12 @@
             "value" : "Problém s nahrávaním prílohy. Skúste to znova, prosím."
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Težava pri nalaganju priponke. Poskusite znova."
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -13910,7 +13952,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Запланаваны час адпраўкі ўжо мінуў. Перайдзіце ў Чарнавікі, каб адправіць або паўторна запланаваць адпраўку."
+            "value" : "Запланаваны час адпраўкі ўжо мінуў. Перайдзіце ў чарнавікі, каб адправіць або паўторна запланаваць адпраўку."
           }
         },
         "ca" : {
@@ -15038,7 +15080,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Задайце пароль для шыфравання гэтага паведамлення для карыстальнікаў, якія не належаць да Proton Mail."
+            "value" : "Задайце пароль, каб зашыфраваць гэта паведамленне для карыстальнікаў, якія не належаць да Proton Mail."
           }
         },
         "ca" : {
@@ -15217,7 +15259,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Задаць тэрмін дзеяння паведамлення"
+            "value" : "Задаць тэрмін дзеяння для паведамлення"
           }
         },
         "ca" : {
@@ -16713,7 +16755,111 @@
       }
     },
     "The attachment disposition could not be updated, please try again" : {
-      "comment" : "Attachment disposition change failed because an unexpected error"
+      "comment" : "Attachment disposition change failed because an unexpected error",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Немагчыма абнавіць размяшчэнне далучэння. Паспрабуйце яшчэ раз."
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No s'ha pogut actualitzar la disposició de l'adjunt, torneu-ho a provar"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dispozice přílohy nemohla být aktualizována. Zkuste to prosím znovu."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Die Anhangs-Darstellungsweise konnte nicht aktualisiert werden. Bitte erneut versuchen."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Δεν ήταν δυνατή η ενημέρωση της διάταξης επισύναψης. Παρακαλούμε, δοκιμάστε ξανά."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The attachment disposition could not be updated, please try again"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se ha podido actualizar la disposición del archivo adjunto. Inténtalo de nuevo."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudo actualizar la disposición del adjunto, intente de nuevo."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La disposition de la pièce jointe n'a pas pu être mise à jour, veuillez réessayer."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Non è stato possibile aggiornare la disposizione dell'allegato, si prega di riprovare"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "添付ファイルの処理を更新できませんでした、もう一度お試しください"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Visningsstilen for vedlegget kunne ikke oppdateres. Prøv på nytt."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Não foi possível atualizar a disposição do anexo. Tente novamente."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dispoziția atașamentului nu a putut fi actualizată. Mai încercați."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prílohu sa nepodarilo aktualizovať, skúste to znova, prosím."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ek dosya isteği güncellenemedi. Lütfen yeniden deneyin."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "附件处置无法更新，请重试"
+          }
+        }
+      }
     },
     "The draft was not found" : {
       "comment" : "Error in the context of saving a draft before being sent.",
@@ -17282,7 +17428,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Існуе абмежаванне ў 25 МБ для далучэнняў на электронны ліст і немагчыма дадаць %lld далучэнне(яў). Адпраўце іх асобнымі лістамі або абагуліце праз Proton Drive."
+            "value" : "Існуе абмежаванне ў 25 МБ для далучэнняў на ліст і немагчыма дадаць %lld далучэнні(яў). Адпраўце іх асобнымі лістамі або абагуліце праз Proton Drive."
           }
         },
         "ca" : {
@@ -17467,7 +17613,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Існуе абмежаванне ў 25 МБ для далучэнняў на электронны ліст. Адпраўце іх асобнымі лістамі або абагуліце праз Proton Drive."
+            "value" : "Існуе абмежаванне ў 25 МБ для далучэнняў на ліст. Адпраўце іх асобнымі лістамі або абагуліце праз Proton Drive."
           }
         },
         "ca" : {

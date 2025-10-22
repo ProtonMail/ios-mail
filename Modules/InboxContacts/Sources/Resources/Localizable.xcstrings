@@ -1919,6 +1919,12 @@
             "value" : "Dostupné na webe"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Na voljo v spletu"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2818,6 +2824,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pokračovať na webe"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nadaljuj na spletu"
           }
         },
         "sv" : {
@@ -6528,7 +6540,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Іншае"
+            "value" : "Іншая"
           }
         },
         "ca" : {
