@@ -15951,6 +15951,9 @@
         }
       }
     },
+    "Storage quota exceeded" : {
+      "comment" : "Attachment failed because account storage is full"
+    },
     "Subject:" : {
       "comment" : "Composer subject.",
       "localizations" : {
@@ -19689,6 +19692,9 @@
           }
         }
       }
+    },
+    "Your storage is full. Please free up space or upgrade to add more." : {
+      "comment" : "Attachment failed because account storage is full\nError in the context of uploading an attachment for a message before being sent."
     }
   },
   "version" : "1.0"
