@@ -63,7 +63,7 @@ final class EmptyFolderBannerStateStore: StateStore {
         switch action {
         case .upgradeToAutoDelete:
             do {
-                let presentedUpsell = try await upsellScreenPresenter.presentUpsellScreen(entryPoint: .autoDelete)
+                let presentedUpsell = try await upsellScreenPresenter.presentUpsellScreen(entryPoint: .autoDeleteMessages)
                 state = state.copy(\.presentedUpsell, to: presentedUpsell)
             } catch {
                 toastStateStore.present(toast: .error(message: error.localizedDescription))

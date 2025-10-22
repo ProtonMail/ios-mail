@@ -45,12 +45,8 @@ final class MailboxModel: ObservableObject {
 
     private var messageScroller: MessageScroller?
     private var conversationScroller: ConversationScroller?
-    private let listUpdateSubject: PassthroughSubject<PaginatedListUpdate<MailboxItemCellUIModel>, Never> = .init()
     lazy var paginatedDataSource = PaginatedListDataSource<MailboxItemCellUIModel>(
-        paginatedListProvider: .init(
-            updatePublisher: listUpdateSubject.eraseToAnyPublisher(),
-            fetchMore: { [weak self] isFirstPage in self?.fetchNextPage(isFirstPage: isFirstPage) }
-        ),
+        fetchMore: { [weak self] isFirstPage in self?.fetchNextPage(isFirstPage: isFirstPage) },
         id: \.id
     )
     private var unreadCountLiveQuery: UnreadItemsCountLiveQuery?
@@ -393,7 +389,7 @@ extension MailboxModel {
             showScrollerErrorIfNotNetwork(error: error)
             updateType = .error(error)
         }
-        listUpdateSubject.send(.init(isLastPage: isLastPage, value: updateType, completion: completion))
+        paginatedDataSource.handle(update: .init(isLastPage: isLastPage, value: updateType, completion: completion))
     }
 
     private func handleMessagesUpdate(_ update: MessageScrollerUpdate) async {
@@ -423,7 +419,7 @@ extension MailboxModel {
             showScrollerErrorIfNotNetwork(error: error)
             updateType = .error(error)
         }
-        listUpdateSubject.send(.init(isLastPage: isLastPage, value: updateType, completion: completion))
+        paginatedDataSource.handle(update: .init(isLastPage: isLastPage, value: updateType, completion: completion))
     }
 
     /// Updates `selectedMailbox` if the currently loaded `mailbox` has changed underneath.
@@ -522,9 +518,7 @@ extension MailboxModel {
 extension MailboxModel {
 
     func onPullToRefresh() async {
-        await dependencies.appContext.pollEventsAsync()
-        let uxExpectedDuration = Duration.seconds(1.5)
-        try? await Task.sleep(for: uxExpectedDuration)
+        await dependencies.appContext.pollEventsAndWait()
     }
 }
 
@@ -761,12 +755,17 @@ extension MailboxModel {
 // MARK: Swipe between conversations
 
 extension MailboxModel {
-    func mailboxCursor(startingAt id: ID) -> MailboxCursorProtocol? {
-        switch viewMode {
-        case .conversations:
-            conversationScroller?.cursor(lookingAt: id)
-        case .messages:
-            messageScroller?.cursor(lookingAt: id)
+    func mailboxCursor(startingAt id: ID) async -> MailboxCursorProtocol? {
+        do {
+            switch viewMode {
+            case .conversations:
+                return try await conversationScroller?.cursor(lookingAt: id).get()
+            case .messages:
+                return try await messageScroller?.cursor(lookingAt: id).get()
+            }
+        } catch {
+            AppLogger.log(error: error, category: .mailbox)
+            return nil
         }
     }
 }

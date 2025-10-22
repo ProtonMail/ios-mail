@@ -27,11 +27,16 @@ final class PageViewControllerCoordinatorTests {
     private let pageViewController = UIPageViewController()
     private let cursor = MailboxCursorSpy()
 
-    private lazy var sut = PageViewController.Coordinator(
-        cursor: cursor,
-        pageFactory: { _ in Text("sample page") },
-        dismiss: {}
-    )
+    private let sut: PageViewController<Text>.Coordinator
+
+    init() {
+        sut = .init(
+            pageFactory: { _ in Text("sample page") },
+            dismiss: {}
+        )
+
+        sut.setCursor(cursor)
+    }
 
     @Test
     func whenNextItemIsProvidedByCursor_thenShowsPage() throws {

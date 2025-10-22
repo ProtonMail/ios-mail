@@ -94,8 +94,12 @@ class MoveToSheetStateStore: StateStore {
     }
 
     private func loadMoveToActions() async {
-        let actions = await moveToActionsProvider.actions(for: input.mailboxItem.itemType, ids: input.ids)
-        update(moveToActions: actions)
+        do {
+            let actions = try await moveToActionsProvider.actions(for: input.mailboxItem.itemType, ids: input.ids)
+            update(moveToActions: actions)
+        } catch {
+            AppLogger.log(error: error)
+        }
     }
 
     private func update(moveToActions: [MoveAction]) {

@@ -37,7 +37,6 @@ struct ConversationDetailScreen: View {
         seed: ConversationDetailSeed,
         draftPresenter: DraftPresenter,
         mailUserSession: MailUserSession,
-        snoozeService: SnoozeServiceProtocol = SnoozeService(mailUserSession: { AppContext.shared.userSession }),
         onLoad: @escaping (ConversationDetailModel) -> Void,
         onDidAppear: @escaping (ConversationDetailModel) -> Void
     ) {
@@ -46,8 +45,8 @@ struct ConversationDetailScreen: View {
             wrappedValue: .init(
                 seed: seed,
                 draftPresenter: draftPresenter,
-                backOnlineActionExecutor: .init(mailUserSession: { AppContext.shared.userSession }),
-                snoozeService: snoozeService,
+                backOnlineActionExecutor: .init(mailUserSession: { mailUserSession }),
+                snoozeService: SnoozeService(mailUserSession: { mailUserSession }),
                 messageAppearanceOverrideStore: MessageAppearanceOverrideStore()
             ))
         self.draftPresenter = draftPresenter

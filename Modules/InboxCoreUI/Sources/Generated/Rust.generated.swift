@@ -84,6 +84,16 @@ public extension ConversationScrollerChangeIncludeResult {
         }
     }
 }
+public extension ConversationScrollerCursorResult {
+    func get() throws(MailScrollerError) -> MailConversationCursor {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension ConversationScrollerFetchMoreResult {
     func get() throws(MailScrollerError) {
         switch self {
@@ -604,6 +614,16 @@ public extension MailSessionInitializedUserSessionFromStoredSessionResult {
         }
     }
 }
+public extension MailSessionIsFeatureEnabledResult {
+    func get() throws(ProtonError) -> Bool? {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension MailSessionNewLoginFlowResult {
     func get() throws(ProtonError) -> LoginFlow {
         switch self {
@@ -764,6 +784,26 @@ public extension MailSessionWatchAccountsResult {
         }
     }
 }
+public extension MailSessionWatchFeatureFlagsAsyncResult {
+    func get() throws(ProtonError) -> WatchedFeatureFlags {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension MailSessionWatchFeatureFlagsResult {
+    func get() throws(ProtonError) -> WatchedFeatureFlags {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension MailSessionWatchSessionsAsyncResult {
     func get() throws(UserSessionError) -> WatchedSessions {
         switch self {
@@ -856,6 +896,16 @@ public extension MailUserSessionGetPaymentsPlansResult {
 }
 public extension MailUserSessionGetPaymentsResourcesIconsResult {
     func get() throws(UserSessionError) -> Data {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension MailUserSessionGetPaymentsStatusResult {
+    func get() throws(UserSessionError) -> PaymentsStatus {
         switch self {
         case .ok(let value):
             value
@@ -1054,6 +1104,16 @@ public extension MessageScrollerChangeIncludeResult {
         }
     }
 }
+public extension MessageScrollerCursorResult {
+    func get() throws(MailScrollerError) -> MailMessageCursor {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension MessageScrollerFetchMoreResult {
     func get() throws(MailScrollerError) {
         switch self {
@@ -1174,6 +1234,16 @@ public extension NewMailboxResult {
         }
     }
 }
+public extension ResolveSystemLabelByIdResult {
+    func get() throws(ProtonError) -> SystemLabel? {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension ResolveSystemLabelIdResult {
     func get() throws(ProtonError) -> Id? {
         switch self {
@@ -1199,6 +1269,16 @@ public extension SearchScrollerChangeIncludeResult {
         switch self {
         case .ok:
             break
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension SearchScrollerCursorResult {
+    func get() throws(MailScrollerError) -> MailMessageCursor {
+        switch self {
+        case .ok(let value):
+            value
         case .error(let error):
             throw error
         }

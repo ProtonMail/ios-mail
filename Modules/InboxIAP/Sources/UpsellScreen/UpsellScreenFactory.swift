@@ -31,7 +31,7 @@ final class UpsellScreenFactory {
     func upsellScreenModel(
         showingPlan planName: String,
         basedOn availablePlans: [ComposedPlan],
-        entryPoint: UpsellScreenEntryPoint
+        entryPoint: UpsellEntryPoint
     ) throws -> UpsellScreenModel {
         let (plansSortedByPriceAscending, mostExpensiveInstance) = try sortedInstancesWithMostExpensiveInstance(
             ofPlanNamed: planName,

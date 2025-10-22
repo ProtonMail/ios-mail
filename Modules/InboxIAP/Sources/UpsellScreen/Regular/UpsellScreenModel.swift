@@ -18,6 +18,7 @@
 import InboxCore
 import InboxCoreUI
 import PaymentsNG
+import proton_app_uniffi
 import SwiftUI
 
 @MainActor
@@ -34,7 +35,7 @@ public final class UpsellScreenModel: Identifiable {
 
     private let logoScaleFactorRange: ClosedRange<CGFloat> = 0.8...1
     private let logoOpacityRange: ClosedRange<CGFloat> = 0.2...1
-    private let entryPoint: UpsellScreenEntryPoint
+    private let entryPoint: UpsellEntryPoint
     private let purchaseActionPerformer: PurchaseActionPerformer
 
     var logo: ImageResource {
@@ -52,7 +53,7 @@ public final class UpsellScreenModel: Identifiable {
     init(
         planName: String,
         planInstances: [DisplayablePlanInstance],
-        entryPoint: UpsellScreenEntryPoint,
+        entryPoint: UpsellEntryPoint,
         purchaseActionPerformer: PurchaseActionPerformer
     ) {
         self.planName = planName

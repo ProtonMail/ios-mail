@@ -86,7 +86,7 @@ struct MainToolbar<AvatarView: View>: ViewModifier {
                             if isUpsellButtonVisible {
                                 toolbarButton(icon: DS.Icon.icBrandProtonMailUpsellBlackAndWhite.image.renderingMode(.template)) {
                                     do {
-                                        let upsellScreenModel = try await upsellCoordinator.presentUpsellScreen(entryPoint: .header)
+                                        let upsellScreenModel = try await upsellCoordinator.presentUpsellScreen(entryPoint: .mailboxTopBar)
                                         onEvent(.onUpsell(upsellScreenModel))
                                     } catch {
                                         toastStateStore.present(toast: .error(message: error.localizedDescription))

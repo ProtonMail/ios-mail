@@ -54,7 +54,7 @@ final class UpsellCoordinatorTests {
             #expect(plansComposer.fetchAvailablePlansCalls == 1)
         }
 
-        _ = try await sut.presentUpsellScreen(entryPoint: .header)
+        _ = try await sut.presentUpsellScreen(entryPoint: .mailboxTopBar)
         _ = try await sut.presentOnboardingUpsellScreen()
 
         #expect(plansComposer.fetchAvailablePlansCalls == 1)

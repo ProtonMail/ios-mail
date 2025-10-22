@@ -33,10 +33,7 @@ final class SearchModel: ObservableObject, @unchecked Sendable {
 
     private let listUpdateSubject: PassthroughSubject<PaginatedListUpdate<MailboxItemCellUIModel>, Never> = .init()
     lazy var paginatedDataSource = PaginatedListDataSource<MailboxItemCellUIModel>(
-        paginatedListProvider: .init(
-            updatePublisher: listUpdateSubject.eraseToAnyPublisher(),
-            fetchMore: { [weak self] isFirstPage in self?.fetchNextPage(isFirstPage: isFirstPage) }
-        )
+        fetchMore: { [weak self] isFirstPage in self?.fetchNextPage(isFirstPage: isFirstPage) }
     )
 
     private let dependencies: Dependencies
@@ -295,8 +292,13 @@ extension SearchModel {
 // MARK: Swipe between conversations
 
 extension SearchModel {
-    func mailboxCursor(startingAt id: ID) -> MailboxCursorProtocol {
-        searchScroller!.cursor(lookingAt: id)
+    func mailboxCursor(startingAt id: ID) async -> MailboxCursorProtocol? {
+        do {
+            return try await searchScroller?.cursor(lookingAt: id).get()
+        } catch {
+            AppLogger.log(error: error, category: .mailbox)
+            return nil
+        }
     }
 }
 

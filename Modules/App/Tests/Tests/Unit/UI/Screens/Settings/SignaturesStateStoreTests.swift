@@ -63,6 +63,6 @@ final class SignaturesStateStoreTests {
         await sut.handle(action: .mobileSignatureTapped)
 
         #expect(router.stack == [])
-        #expect(upsellPresenter.presentUpsellScreenCalled == [.mobileSignature])
+        #expect(upsellPresenter.presentUpsellScreenCalled == [.mobileSignatureEdit])
     }
 }

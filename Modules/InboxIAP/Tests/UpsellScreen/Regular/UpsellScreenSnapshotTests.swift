@@ -48,7 +48,7 @@ struct UpsellScreenSnapshotTests {
 
     @Test(arguments: testCases)
     func upsellScreen(testCase: TestCase) {
-        let sut = UpsellScreen(model: .preview(entryPoint: .header))
+        let sut = UpsellScreen(model: .preview(entryPoint: .mailboxTopBar))
         let viewController = UIHostingController(rootView: sut)
 
         assertSnapshots(matching: viewController, on: [(testCase.label, testCase.config)], styles: [.dark])

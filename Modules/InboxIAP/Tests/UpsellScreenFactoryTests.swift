@@ -32,7 +32,7 @@ final class UpsellScreenFactoryTests {
         let upsellScreenModel = try sut.upsellScreenModel(
             showingPlan: "mail2022",
             basedOn: availablePlans,
-            entryPoint: .header
+            entryPoint: .mailboxTopBar
         )
 
         #expect(upsellScreenModel.planName == "Mail Plus")

@@ -112,7 +112,7 @@ targetTemplates:
       - path: Modules/${target_name}/Sources
     settings:
       base:
-        CODE_SIGN_IDENTITY: "iPhone Distribution: Proton AG (2SB5Z68H26)"
+        CODE_SIGN_IDENTITY: "Apple Distribution: Proton AG (2SB5Z68H26)"
         CODE_SIGN_ENTITLEMENTS: ${target_name}.entitlements
         PRODUCT_BUNDLE_IDENTIFIER: ${bundle_identifier}
         PROVISIONING_PROFILE_SPECIFIER: ${release_provisioning_profile}
@@ -163,7 +163,7 @@ targets:
         PROVISIONING_PROFILE_SPECIFIER: "ProtonMail Release"
         SWIFT_EMIT_LOC_STRINGS: YES
         CODE_SIGN_ENTITLEMENTS: "ProtonMail.entitlements"
-        CODE_SIGN_IDENTITY: "iPhone Distribution: Proton AG (2SB5Z68H26)"
+        CODE_SIGN_IDENTITY: "Apple Distribution: Proton AG (2SB5Z68H26)"
       configs:
         Debug:
           CODE_SIGN_ENTITLEMENTS: "ProtonMailDebug.entitlements"

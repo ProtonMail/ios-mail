@@ -67,7 +67,7 @@ final class SignaturesStateStore: StateStore {
 
         if needsPaidVersion {
             do {
-                let upsellScreenModel = try await upsellPresenter.presentUpsellScreen(entryPoint: .mobileSignature)
+                let upsellScreenModel = try await upsellPresenter.presentUpsellScreen(entryPoint: .mobileSignatureEdit)
                 state = state.copy(\.presentedUpsell, to: upsellScreenModel)
             } catch {
                 onError(error)

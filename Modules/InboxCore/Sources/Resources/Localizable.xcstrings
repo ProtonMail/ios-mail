@@ -112,6 +112,12 @@
             "value" : "+%lld ďalších"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "in še %lld"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -122,6 +128,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "+%lld diğer"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "+还有 %lld 个"
           }
         }
       }
@@ -1061,6 +1073,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Скопійовано %@ в буфер обміну"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已将 %@ 复制到剪贴板"
           }
         }
       }

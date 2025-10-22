@@ -23,21 +23,15 @@ import XCTest
 @MainActor
 final class PaginatedListDataSourceTests: XCTestCase {
     private var sut: PaginatedListDataSource<String>!
-    private var provider: PaginatedListProvider<String>!
     private let dummyItemsForEachPage = ["Item 1", "Item 2"]
-    private let updateSubject: PassthroughSubject<PaginatedListUpdate<String>, Never> = .init()
     private var cancellables: Set<AnyCancellable> = .init()
     private var fetchMoreCallCounter: Int = 0
 
     @MainActor
     override func setUp() {
-        provider = PaginatedListProvider(
-            updatePublisher: updateSubject.eraseToAnyPublisher(),
-            fetchMore: { [unowned self] currentPage in
-                self.fetchMoreCallCounter += 1
-            }
-        )
-        sut = PaginatedListDataSource(paginatedListProvider: provider)
+        sut = PaginatedListDataSource(fetchMore: { [unowned self] currentPage in
+            self.fetchMoreCallCounter += 1
+        })
     }
 
     // MARK: init
@@ -54,11 +48,9 @@ final class PaginatedListDataSourceTests: XCTestCase {
     }
 
     func testFetchInitialPage_whenStateIsData_stateShouldGoToInitialStateAgain() async {
-        let capturedStates = await expectViewStateStates(count: 2) {
-            sut.fetchInitialPage()
-            updateSubject.send(.init(isLastPage: false, value: .append(items: dummyItemsForEachPage)))
-        }
-        XCTAssertEqual(capturedStates, [.fetchingInitialPage, .data(.items(isLastPage: false))])
+        sut.fetchInitialPage()
+        sut.handle(update: .init(isLastPage: false, value: .append(items: dummyItemsForEachPage)))
+        XCTAssertEqual(sut.state.viewState, .data(.items(isFetchingNextPage: false)))
 
         sut.fetchInitialPage()
         XCTAssertEqual(sut.state.viewState, .fetchingInitialPage)
@@ -67,260 +59,197 @@ final class PaginatedListDataSourceTests: XCTestCase {
     // MARK: fetchNextPageIfNeeded
 
     func testFetchNextPageIfNeeded_whenNotLastPage_itCallsFetchMore() async {
-        await expectViewStateStates(count: 2) {
-            sut.fetchInitialPage()
-            updateSubject.send(.init(isLastPage: false, value: .append(items: dummyItemsForEachPage)))
-        }
+        sut.fetchInitialPage()
+        sut.handle(update: .init(isLastPage: false, value: .append(items: dummyItemsForEachPage)))
         XCTAssertEqual(fetchMoreCallCounter, 1)
+
         sut.fetchNextPageIfNeeded()
         XCTAssertEqual(fetchMoreCallCounter, 2)
     }
 
     func testFetchNextPageIfNeeded_whenLastPage_itDoesNotCallFetchMore() async {
-        await expectViewStateStates(count: 2) {
-            sut.fetchInitialPage()
-            updateSubject.send(.init(isLastPage: true, value: .append(items: dummyItemsForEachPage)))
-        }
+        sut.fetchInitialPage()
+        sut.handle(update: .init(isLastPage: true, value: .append(items: dummyItemsForEachPage)))
         XCTAssertEqual(fetchMoreCallCounter, 1)
+
         sut.fetchNextPageIfNeeded()
         XCTAssertEqual(fetchMoreCallCounter, 1)
     }
 
-    // MARK: updatePublisher
+    // MARK: sut.handle(update:)
 
-    func testUpdatePublisher_none_whenIsFirstUpdate_andNotLastPage_stateIsFetchingInitialPage() async {
-        let capturedStates = await expectViewStateStates(count: 1) {
-            sut.fetchInitialPage()
-            updateSubject.send(.init(isLastPage: false, value: .none))
-        }
+    func testHandleUpdate_none_whenIsFirstUpdate_andNotLastPage_stateIsFetchingInitialPage() async {
+        sut.fetchInitialPage()
+        sut.handle(update: .init(isLastPage: false, value: .none))
 
         XCTAssertEqual(sut.state.isFetchingNextPage, false)
-        XCTAssertEqual(capturedStates, [.fetchingInitialPage])
+        XCTAssertEqual(sut.state.viewState, .fetchingInitialPage)
     }
 
-    func testUpdatePublisher_none_whenIsFirstUpdate_andLastPage_stateBecomesNoItems() async {
-        let capturedStates = await expectViewStateStates(count: 2) {
-            sut.fetchInitialPage()
-            updateSubject.send(.init(isLastPage: true, value: .none))
-        }
+    func testHandleUpdate_none_whenIsFirstUpdate_andLastPage_stateBecomesNoItems() async {
+        sut.fetchInitialPage()
+        XCTAssertEqual(sut.state.viewState, .fetchingInitialPage)
+        sut.handle(update: .init(isLastPage: true, value: .none))
 
         XCTAssertEqual(sut.state.isFetchingNextPage, false)
-        XCTAssertEqual(capturedStates, [.fetchingInitialPage, .data(.noItems)])
+        XCTAssertEqual(sut.state.viewState, .data(.noItems))
     }
 
-    func testUpdatePublisher_append_whenNoItems_andNotLastPage_stateIsFetchingInitialPage() async {
-        let capturedStates = await expectViewStateStates(count: 1) {
-            sut.fetchInitialPage()
-            updateSubject.send(.init(isLastPage: false, value: .append(items: [])))
-        }
+    func testHandleUpdate_append_whenNoItems_andNotLastPage_stateIsFetchingInitialPage() async {
+        sut.fetchInitialPage()
+        sut.handle(update: .init(isLastPage: false, value: .append(items: [])))
 
         XCTAssertEqual(sut.state.items, [])
-        XCTAssertEqual(capturedStates, [.fetchingInitialPage])
+        XCTAssertEqual(sut.state.viewState, .fetchingInitialPage)
     }
 
-    func testUpdatePublisher_append_whenNoItems_andLastPage_stateBecomesNoItems() async {
-        let capturedStates = await expectViewStateStates(count: 2) {
-            sut.fetchInitialPage()
-            updateSubject.send(.init(isLastPage: true, value: .append(items: [])))
-        }
+    func testHandleUpdate_append_whenNoItems_andLastPage_stateBecomesNoItems() async {
+        sut.fetchInitialPage()
+        XCTAssertEqual(sut.state.viewState, .fetchingInitialPage)
 
+        sut.handle(update: .init(isLastPage: true, value: .append(items: [])))
         XCTAssertEqual(sut.state.items, [])
-        XCTAssertEqual(capturedStates, [.fetchingInitialPage, .data(.noItems)])
+        XCTAssertEqual(sut.state.viewState, .data(.noItems))
     }
 
-    func testUpdatePublisher_append_whenItems_stateBecomesDataWithItems() async {
-        let capturedStates = await expectViewStateStates(count: 2) {
-            sut.fetchInitialPage()
-            updateSubject.send(.init(isLastPage: false, value: .append(items: dummyItemsForEachPage)))
-        }
+    func testHandleUpdate_append_whenItems_stateBecomesDataWithItems() async {
+        sut.fetchInitialPage()
+        XCTAssertEqual(sut.state.viewState, .fetchingInitialPage)
 
+        sut.handle(update: .init(isLastPage: false, value: .append(items: dummyItemsForEachPage)))
         XCTAssertEqual(sut.state.items, dummyItemsForEachPage)
-        XCTAssertEqual(capturedStates, [.fetchingInitialPage, .data(.items(isLastPage: false))])
+        XCTAssertEqual(sut.state.viewState, .data(.items(isFetchingNextPage: false)))
     }
 
-    func testUpdatePublisher_append_whenItems_andLastPage_stateBecomesDataAndIsLastPage() async {
-        let capturedStates = await expectViewStateStates(count: 2) {
-            sut.fetchInitialPage()
-            updateSubject.send(.init(isLastPage: true, value: .append(items: dummyItemsForEachPage)))
-        }
+    func testHandleUpdate_append_whenItems_andLastPage_stateBecomesDataAndIsLastPage() async {
+        sut.fetchInitialPage()
+        XCTAssertEqual(sut.state.viewState, .fetchingInitialPage)
 
+        sut.handle(update: .init(isLastPage: true, value: .append(items: dummyItemsForEachPage)))
+        XCTAssertEqual(sut.state.viewState, .data(.items(isFetchingNextPage: false)))
         XCTAssertEqual(sut.state.items, dummyItemsForEachPage)
-        XCTAssertEqual(capturedStates, [.fetchingInitialPage, .data(.items(isLastPage: true))])
+        XCTAssertTrue(sut.state.isLastPage)
     }
 
-    func testUpdatePublisher_replaceRange_whenAddingItems() async {
-        await expectIsLastPage {
-            updateSubject.send(.init(isLastPage: false, value: .append(items: ["1", "2", "3", "4"])))
-            updateSubject.send(.init(isLastPage: true, value: .replaceRange(from: 1, to: 3, items: ["A", "B", "C"])))
-        }
+    func testHandleUpdate_replaceRange_whenAddingItems() async {
+        sut.handle(update: .init(isLastPage: false, value: .append(items: ["1", "2", "3", "4"])))
 
+        sut.handle(update: .init(isLastPage: true, value: .replaceRange(from: 1, to: 3, items: ["A", "B", "C"])))
         XCTAssertEqual(sut.state.items, ["1", "A", "B", "C", "4"])
     }
 
-    func testUpdatePublisher_replaceRange_whenAddingItemsUsingTheSameIndex_itInsertsNewElements() async {
-        await expectIsLastPage {
-            updateSubject.send(.init(isLastPage: false, value: .append(items: ["1", "2", "3", "4"])))
-            updateSubject.send(.init(isLastPage: true, value: .replaceRange(from: 1, to: 1, items: ["A", "B"])))
-        }
+    func testHandleUpdate_replaceRange_whenAddingItemsUsingTheSameIndex_itInsertsNewElements() async {
+        sut.handle(update: .init(isLastPage: false, value: .append(items: ["1", "2", "3", "4"])))
 
+        sut.handle(update: .init(isLastPage: true, value: .replaceRange(from: 1, to: 1, items: ["A", "B"])))
         XCTAssertEqual(sut.state.items, ["1", "A", "B", "2", "3", "4"])
     }
 
-    func testUpdatePublisher_replaceRange_whenRemovingItems() async {
-        await expectIsLastPage {
-            updateSubject.send(.init(isLastPage: false, value: .append(items: ["1", "2", "3", "4"])))
-            updateSubject.send(.init(isLastPage: true, value: .replaceRange(from: 1, to: 3, items: [])))
-        }
+    func testHandleUpdate_replaceRange_whenRemovingItems() async {
+        sut.handle(update: .init(isLastPage: false, value: .append(items: ["1", "2", "3", "4"])))
 
+        sut.handle(update: .init(isLastPage: true, value: .replaceRange(from: 1, to: 3, items: [])))
         XCTAssertEqual(sut.state.items, ["1", "4"])
     }
 
-    func testUpdatePublisher_replaceRange_whenRemovingAllItems() async {
-        await expectIsLastPage {
-            updateSubject.send(.init(isLastPage: false, value: .append(items: ["1", "2", "3"])))
-            updateSubject.send(.init(isLastPage: true, value: .replaceRange(from: 0, to: 3, items: [])))
-        }
+    func testHandleUpdate_replaceRange_whenRemovingAllItems() async {
+        sut.handle(update: .init(isLastPage: false, value: .append(items: ["1", "2", "3"])))
+
+        sut.handle(update: .init(isLastPage: true, value: .replaceRange(from: 0, to: 3, items: [])))
+        XCTAssertEqual(sut.state.items, [])
+    }
+
+    func testHandleUpdate_replaceRange_whenInvalidIndices_itDoesNotCrash() async {
+        sut.handle(update: .init(isLastPage: false, value: .append(items: [])))
+        sut.handle(update: .init(isLastPage: false, value: .replaceRange(from: 1, to: 1, items: ["1"])))
+        sut.handle(update: .init(isLastPage: false, value: .replaceRange(from: -1, to: 0, items: ["1"])))
+        sut.handle(update: .init(isLastPage: true, value: .replaceRange(from: 0, to: -1, items: ["1"])))
 
         XCTAssertEqual(sut.state.items, [])
     }
 
-    func testUpdatePublisher_replaceRange_whenInvalidIndices_itDoesNotCrash() async {
-        await expectIsLastPage {
-            updateSubject.send(.init(isLastPage: false, value: .append(items: [])))
-            updateSubject.send(.init(isLastPage: false, value: .replaceRange(from: 1, to: 1, items: ["1"])))
-            updateSubject.send(.init(isLastPage: false, value: .replaceRange(from: -1, to: 0, items: ["1"])))
-            updateSubject.send(.init(isLastPage: true, value: .replaceRange(from: 0, to: -1, items: ["1"])))
-        }
+    func testHandleUpdate_replaceFrom_whenAddingItems() async {
+        sut.handle(update: .init(isLastPage: false, value: .append(items: ["1", "2"])))
 
-        XCTAssertEqual(sut.state.items, [])
-    }
-
-    func testUpdatePublisher_replaceFrom_whenAddingItems() async {
-        await expectIsLastPage {
-            updateSubject.send(.init(isLastPage: false, value: .append(items: ["1", "2"])))
-            updateSubject.send(.init(isLastPage: true, value: .replaceFrom(index: 1, items: ["3", "4"])))
-        }
-
+        sut.handle(update: .init(isLastPage: true, value: .replaceFrom(index: 1, items: ["3", "4"])))
         XCTAssertEqual(sut.state.items, ["1", "3", "4"])
     }
 
-    func testUpdatePublisher_replaceFrom_whenRemovingItems() async {
-        await expectIsLastPage {
-            updateSubject.send(.init(isLastPage: false, value: .append(items: ["1", "2"])))
-            updateSubject.send(.init(isLastPage: true, value: .replaceFrom(index: 1, items: [])))
-        }
+    func testHandleUpdate_replaceFrom_whenRemovingItems() async {
+        sut.handle(update: .init(isLastPage: false, value: .append(items: ["1", "2"])))
 
+        sut.handle(update: .init(isLastPage: true, value: .replaceFrom(index: 1, items: [])))
         XCTAssertEqual(sut.state.items, ["1"])
     }
 
-    func testUpdatePublisher_replaceFrom_whenRemovingAllItems() async {
-        await expectIsLastPage {
-            updateSubject.send(.init(isLastPage: false, value: .append(items: ["1", "2"])))
-            updateSubject.send(.init(isLastPage: true, value: .replaceFrom(index: 0, items: [])))
-        }
+    func testHandleUpdate_replaceFrom_whenRemovingAllItems() async {
+        sut.handle(update: .init(isLastPage: false, value: .append(items: ["1", "2"])))
 
+        sut.handle(update: .init(isLastPage: true, value: .replaceFrom(index: 0, items: [])))
         XCTAssertEqual(sut.state.items, [])
     }
 
-    func testUpdatePublisher_replaceFrom_whenhInvalidIndex_itDoesNotCrash() async {
-        await expectIsLastPage {
-            updateSubject.send(.init(isLastPage: false, value: .append(items: [])))
-            updateSubject.send(.init(isLastPage: false, value: .replaceFrom(index: 1, items: ["1"])))
-            updateSubject.send(.init(isLastPage: true, value: .replaceFrom(index: -1, items: ["1"])))
-        }
+    func testHandleUpdate_replaceFrom_whenInvalidIndex_itDoesNotCrash() async {
+        sut.handle(update: .init(isLastPage: false, value: .append(items: [])))
 
+        sut.handle(update: .init(isLastPage: false, value: .replaceFrom(index: 1, items: ["1"])))
+        sut.handle(update: .init(isLastPage: true, value: .replaceFrom(index: -1, items: ["1"])))
         XCTAssertEqual(sut.state.items, [])
     }
 
-    func testUpdatePublisher_replaceBefore_whenAddingItems() async {
-        await expectIsLastPage {
-            updateSubject.send(.init(isLastPage: false, value: .append(items: ["1", "2"])))
-            updateSubject.send(.init(isLastPage: true, value: .replaceBefore(index: 1, items: ["3", "4"])))
-        }
+    func testHandleUpdate_replaceBefore_whenAddingItems() async {
+        sut.handle(update: .init(isLastPage: false, value: .append(items: ["1", "2"])))
 
+        sut.handle(update: .init(isLastPage: true, value: .replaceBefore(index: 1, items: ["3", "4"])))
         XCTAssertEqual(sut.state.items, ["3", "4", "2"])
     }
 
-    func testUpdatePublisher_replaceBefore_whenRemovingItems() async {
-        await expectIsLastPage {
-            updateSubject.send(.init(isLastPage: false, value: .append(items: ["1", "2"])))
-            updateSubject.send(.init(isLastPage: true, value: .replaceBefore(index: 1, items: [])))
-        }
+    func testHandleUpdate_replaceBefore_whenRemovingItems() async {
+        sut.handle(update: .init(isLastPage: false, value: .append(items: ["1", "2"])))
 
+        sut.handle(update: .init(isLastPage: true, value: .replaceBefore(index: 1, items: [])))
         XCTAssertEqual(sut.state.items, ["2"])
     }
 
-    func testUpdatePublisher_replaceBefore_whenRemovingAllItems() async {
-        await expectIsLastPage {
-            updateSubject.send(.init(isLastPage: false, value: .append(items: ["1", "2"])))
-            updateSubject.send(.init(isLastPage: true, value: .replaceBefore(index: 2, items: [])))
-        }
+    func testHandleUpdate_replaceBefore_whenRemovingAllItems() async {
+        sut.handle(update: .init(isLastPage: false, value: .append(items: ["1", "2"])))
 
+        sut.handle(update: .init(isLastPage: true, value: .replaceBefore(index: 2, items: [])))
         XCTAssertEqual(sut.state.items, [])
     }
 
-    func testUpdatePublisher_replaceBefore_whenhInvalidIndex_itDoesNotCrash() async {
-        await expectIsLastPage {
-            updateSubject.send(.init(isLastPage: false, value: .append(items: [])))
-            updateSubject.send(.init(isLastPage: false, value: .replaceBefore(index: 1, items: ["1"])))
-            updateSubject.send(.init(isLastPage: true, value: .replaceBefore(index: -1, items: ["1"])))
-        }
+    func testHandleUpdate_replaceBefore_whenInvalidIndex_itDoesNotCrash() async {
+        sut.handle(update: .init(isLastPage: false, value: .append(items: [])))
 
+        sut.handle(update: .init(isLastPage: false, value: .replaceBefore(index: 1, items: ["1"])))
+        sut.handle(update: .init(isLastPage: true, value: .replaceBefore(index: -1, items: ["1"])))
         XCTAssertEqual(sut.state.items, [])
     }
 
-    func testUpdatePublisher_error_itUpdateStateToNotFetchingNextPage() async {
-        await expectViewStateStates(count: 2) {
-            sut.fetchInitialPage()
-            updateSubject.send(.init(isLastPage: true, value: .error(MailScrollerError.other(.network))))
-        }
+    func testHandleUpdate_error_itUpdateStateToNotFetchingNextPage() async {
+        sut.fetchInitialPage()
 
+        sut.handle(update: .init(isLastPage: true, value: .error(MailScrollerError.other(.network))))
         XCTAssertEqual(sut.state.isFetchingNextPage, false)
     }
-}
 
-private extension PaginatedListDataSourceTests {
+    func testHandleUpdate_whenIsFetchingNextPage_anyUpdate_setsIsFetchingToFalse() async {
+        sut.fetchInitialPage()
+        sut.fetchNextPageIfNeeded()
+        XCTAssertTrue(sut.state.isFetchingNextPage)
 
-    func expectIsLastPage(timeout: TimeInterval = 1.0, perform: () -> Void) async {
-        let expectation = XCTestExpectation(description: "Wait for isLastPage")
+        let updateList: [PaginatedListUpdateType] = [
+            .none,
+            .append(items: dummyItemsForEachPage),
+            .replaceBefore(index: 0, items: dummyItemsForEachPage),
+            .replaceFrom(index: 0, items: dummyItemsForEachPage),
+            .replaceRange(from: 0, to: 0, items: dummyItemsForEachPage),
+            .error(MailScrollerError.reason(.notSynced)),
+        ]
 
-        sut.$state
-            .removeDuplicates()
-            .sink { state in
-                if state.isLastPage {
-                    expectation.fulfill()
-                }
-            }
-            .store(in: &cancellables)
-
-        perform()
-
-        await fulfillment(of: [expectation], timeout: timeout)
-    }
-
-    @discardableResult
-    func expectViewStateStates(
-        count expectedCount: Int,
-        timeout: TimeInterval = 1.0,
-        perform: () -> Void
-    ) async -> [PaginatedListViewState] {
-        let expectation = XCTestExpectation(description: "Wait for \(expectedCount) state updates")
-        var capturedStates: [PaginatedListViewState] = []
-
-        sut.$state
-            .map(\.viewState)
-            .removeDuplicates()
-            .sink { viewState in
-                capturedStates.append(viewState)
-                if capturedStates.count == expectedCount {
-                    expectation.fulfill()
-                }
-            }
-            .store(in: &cancellables)
-
-        perform()
-
-        await fulfillment(of: [expectation], timeout: timeout)
-        return capturedStates
+        for update in updateList {
+            sut.handle(update: .init(isLastPage: Bool.random(), value: update))
+            XCTAssertFalse(sut.state.isFetchingNextPage, "For update: \(update)")
+        }
     }
 }

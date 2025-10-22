@@ -74,6 +74,11 @@ struct PaginatedListView<
 
             ForEachEnumerated(dataSource.state.items, id: \.element.id) { item, index in
                 cellView(index, item)
+                    .onAppear {
+                        if item == dataSource.state.items.last {
+                            dataSource.fetchNextPageIfNeeded()
+                        }
+                    }
             }
 
             if viewState.showBottomSpinner {
@@ -81,9 +86,6 @@ struct PaginatedListView<
                     ProtonSpinner()
                         .frame(maxWidth: .infinity, alignment: .center)
                         .background(.clear)
-                        .onAppear {
-                            dataSource.fetchNextPageIfNeeded()
-                        }
                 }
                 .listRowSeparator(.hidden)
                 .listRowBackground(Color.clear)
@@ -104,18 +106,16 @@ enum PaginatedListViewState: Equatable {
     case data(Data)
 
     enum Data: Equatable {
-        case items(isLastPage: Bool)
+        case items(isFetchingNextPage: Bool)
         case noItems
     }
 
     var showBottomSpinner: Bool {
         switch self {
-        case .fetchingInitialPage:
-            true
-        case .data(.items(let isLastPage)):
-            !isLastPage
-        case .data(.noItems):
+        case .fetchingInitialPage, .data(.noItems):
             false
+        case .data(.items(let isFetchingNextPage)):
+            isFetchingNextPage
         }
     }
 }
@@ -131,10 +131,7 @@ enum PaginatedListViewState: Equatable {
         let pageSize = 20
         let subject: PassthroughSubject<PaginatedListUpdate<PreviewListItem>, Never> = .init()
         lazy var dataSource = PaginatedListDataSource<PreviewListItem>(
-            paginatedListProvider: .init(
-                updatePublisher: subject.eraseToAnyPublisher(),
-                fetchMore: { [weak self] isFirstPage in Task { await self?.nextPage(isFirstPage: isFirstPage) } }
-            )
+            fetchMore: { [weak self] isFirstPage in Task { await self?.nextPage(isFirstPage: isFirstPage) } }
         )
 
         private func nextPage(isFirstPage: Bool) async {

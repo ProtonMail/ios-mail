@@ -292,6 +292,19 @@ extension AppContext {
             AppLogger.log(error: error, category: .rustLibrary)
         }
     }
+
+    func pollEventsAndWait() async {
+        do {
+            guard let userSession = sessionState.userSession else {
+                AppLogger.log(message: "poll events and wait called but no active session found", category: .userSessions)
+                return
+            }
+            AppLogger.log(message: "force event loop poll and wait", category: .rustLibrary)
+            try await userSession.forceEventLoopPollAndWait().get()
+        } catch {
+            AppLogger.log(error: error, category: .rustLibrary)
+        }
+    }
 }
 
 private extension URL {
