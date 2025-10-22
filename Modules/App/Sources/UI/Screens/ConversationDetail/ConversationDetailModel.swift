@@ -614,6 +614,7 @@ extension ConversationDetailModel {
             mailbox: mailbox,
             id: conversationID,
             origin: origin,
+            showAll: state.isHiddenMessagesBannerOn,
             callback: conversationMessageListCallback
         )
 

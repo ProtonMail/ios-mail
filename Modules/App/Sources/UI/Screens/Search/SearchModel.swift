@@ -99,7 +99,7 @@ final class SearchModel: ObservableObject, @unchecked Sendable {
             paginatedDataSource.resetToInitialState()
 
             let result = await scrollerSearch(
-                session: dependencies.appContext.userSession,
+                mailbox: mailbox,
                 options: .init(keywords: query),
                 include: state.spamTrashToggleState.includeSpamTrash,
                 callback: MessageScrollerLiveQueryCallbackkWrapper { [weak self] update in
@@ -273,7 +273,7 @@ extension SearchModel {
 extension SearchModel {
     func mailboxCursor(startingAt id: ID) async -> MailboxCursorProtocol? {
         do {
-            return try await searchScroller?.cursor(lookingAt: id)
+            return try await searchScroller?.cursor(lookingAt: id).get()
         } catch {
             AppLogger.log(error: error, category: .mailbox)
             return nil

@@ -288,7 +288,7 @@ extension MailboxModel {
 
             if mailbox.viewMode() == .messages {
                 messageScroller = try await scrollMessagesForLabel(
-                    session: userSession,
+                    mailbox: mailbox,
                     labelId: mailbox.labelId(),
                     unread: unreadFilter,
                     include: state.filterBar.spamTrashToggleState.includeSpamTrash,
@@ -301,7 +301,7 @@ extension MailboxModel {
                 setUpSpamTrashToggleVisibility(supportsIncludeFilter: messageScroller?.supportsIncludeFilter() ?? false)
             } else {
                 conversationScroller = try await scrollConversationsForLabel(
-                    session: userSession,
+                    mailbox: mailbox,
                     labelId: mailbox.labelId(),
                     unread: unreadFilter,
                     include: state.filterBar.spamTrashToggleState.includeSpamTrash,
@@ -744,9 +744,9 @@ extension MailboxModel {
         do {
             switch viewMode {
             case .conversations:
-                return try await conversationScroller?.cursor(lookingAt: id)
+                return try await conversationScroller?.cursor(lookingAt: id).get()
             case .messages:
-                return try await messageScroller?.cursor(lookingAt: id)
+                return try await messageScroller?.cursor(lookingAt: id).get()
             }
         } catch {
             AppLogger.log(error: error, category: .mailbox)
