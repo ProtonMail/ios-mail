@@ -259,13 +259,27 @@ final class ComposerModelTests: BaseTestCase {
     // MARK: addRecipientFromInput
 
     func testaddRecipientFromInput_whenInputIsValid_itShouldAddTheRecipient() async {
+        let valid = dummyAddress1
         let sut = makeSut(draft: .emptyMock, draftOrigin: .new, contactProvider: testContactProvider)
         sut.startEditingRecipients(for: .to)
-        await prepareInput(sut: sut, input: dummyAddress1, for: .to)
+        await prepareInput(sut: sut, input: valid, for: .to)
 
         sut.addRecipientFromInput()
 
         XCTAssertEqual(sut.state.toRecipients.recipients.first?.displayName, dummyAddress1)
+        XCTAssertTrue(sut.state.ccRecipients.recipients.isEmpty)
+        XCTAssertTrue(sut.state.bccRecipients.recipients.isEmpty)
+    }
+
+    func testaddRecipientFromInput_whenInputIsValid_andContainsDisplayName_itShouldAddTheRecipient() async {
+        let valid = "john <john@example.com>"
+        let sut = makeSut(draft: .emptyMock, draftOrigin: .new, contactProvider: testContactProvider)
+        sut.startEditingRecipients(for: .to)
+        await prepareInput(sut: sut, input: valid, for: .to)
+
+        sut.addRecipientFromInput()
+
+        XCTAssertEqual(sut.state.toRecipients.recipients.first?.displayName, "john")
         XCTAssertTrue(sut.state.ccRecipients.recipients.isEmpty)
         XCTAssertTrue(sut.state.bccRecipients.recipients.isEmpty)
     }

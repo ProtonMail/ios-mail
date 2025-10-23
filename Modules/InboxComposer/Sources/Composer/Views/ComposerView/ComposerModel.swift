@@ -237,8 +237,8 @@ final class ComposerModel: ObservableObject {
         else {
             return
         }
-        let entry = SingleRecipientEntry(name: nil, email: input)
-        addEntryInRecipients(for: draft, entry: entry, group: group)
+        let singleRecipient = newRecipient(email: input)
+        addEntryInRecipients(for: draft, entry: singleRecipient, group: group)
     }
 
     @MainActor
