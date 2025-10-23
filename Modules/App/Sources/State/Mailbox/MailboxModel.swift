@@ -365,14 +365,15 @@ extension MailboxModel {
             await handleConversationsList(update: listUpdate)
         case .status(let statusUpdate):
             switch statusUpdate {
-            case .fetchNewStart:
-                break
-            case .fetchNewEnd:
+            case .fetchNewStart, .fetchNewEnd:
+                // FIXME: - Show / hide loading line animation
                 break
             }
         case .error(let error):
             AppLogger.log(error: error, category: .mailbox)
             showScrollerErrorIfNotNetwork(error: error)
+            let isLastPage = await !conversationScrollerHasMore()
+            paginatedDataSource.handle(update: .init(isLastPage: isLastPage, value: .error(error), completion: nil))
         }
     }
 
@@ -408,14 +409,15 @@ extension MailboxModel {
             await handleMessagesList(update: listUpdate)
         case .status(let statusUpdate):
             switch statusUpdate {
-            case .fetchNewStart:
-                break
-            case .fetchNewEnd:
+            case .fetchNewStart, .fetchNewEnd:
+                // FIXME: - Show / hide loading line animation
                 break
             }
         case .error(let error):
             AppLogger.log(error: error, category: .mailbox)
             showScrollerErrorIfNotNetwork(error: error)
+            let isLastPage = await !messageScrollerHasMore()
+            paginatedDataSource.handle(update: .init(isLastPage: isLastPage, value: .error(error), completion: nil))
         }
     }
 

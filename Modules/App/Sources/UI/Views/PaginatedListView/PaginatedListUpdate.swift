@@ -39,6 +39,7 @@ enum PaginatedListUpdateType<Item>: CustomStringConvertible {
     case replaceRange(from: Int, to: Int, items: [Item])
     case replaceFrom(index: Int, items: [Item])
     case replaceBefore(index: Int, items: [Item])
+    case error(Error)
 
     var description: String {
         switch self {
@@ -47,6 +48,7 @@ enum PaginatedListUpdateType<Item>: CustomStringConvertible {
         case .replaceRange(let from, let to, let items): "replaceRange from \(from) to \(to), \(items.count) items"
         case .replaceFrom(let index, let items): "replaceFrom index \(index), \(items.count) items"
         case .replaceBefore(let index, let items): "replaceBefore index \(index), \(items.count) items"
+        case .error(let error): "error: \(error)"
         }
     }
 }

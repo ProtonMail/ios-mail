@@ -166,13 +166,14 @@ final class SearchModel: ObservableObject, @unchecked Sendable {
             await handleMessagesList(update: listUpdate)
         case .status(let statusUpdate):
             switch statusUpdate {
-            case .fetchNewStart:
-                break
-            case .fetchNewEnd:
+            case .fetchNewStart, .fetchNewEnd:
+                // FIXME: - Show / hide loading line animation
                 break
             }
         case .error(let error):
             AppLogger.log(error: error, category: .mailbox)
+            let isLastPage = await !searchScrollerHasMore()
+            listUpdateSubject.send(.init(isLastPage: isLastPage, value: .error(error), completion: nil))
         }
     }
 
