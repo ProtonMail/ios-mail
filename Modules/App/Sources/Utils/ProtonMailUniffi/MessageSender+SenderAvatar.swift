@@ -27,7 +27,7 @@ extension MessageSender {
                     bimiSelector: bimiSelector,
                     displaySenderImage: displaySenderImage
                 ),
-                blocked: .yes
+                blocked: .notLoaded
             )
         )
 
