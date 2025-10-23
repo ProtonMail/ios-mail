@@ -28,6 +28,7 @@ enum MessageAddressAction: ActionPickerListElement {
     case call
     case addToContacts
     case blockContact
+    case unblockContact
     case copyAddress
     case copyName
 
@@ -41,6 +42,8 @@ enum MessageAddressAction: ActionPickerListElement {
             L10n.Action.Address.addToContacts
         case .blockContact:
             L10n.Action.Address.blockContact
+        case .unblockContact:
+            L10n.Action.Address.unblockContact
         case .copyAddress:
             L10n.Action.Address.copyAddress
         case .copyName:
@@ -62,7 +65,7 @@ enum MessageAddressAction: ActionPickerListElement {
             DS.Icon.icPhone
         case .addToContacts:
             DS.Icon.icUserPlus
-        case .blockContact:
+        case .blockContact, .unblockContact:
             DS.Icon.icCircleSlash
         case .copyAddress, .copyName:
             DS.Icon.icSquares

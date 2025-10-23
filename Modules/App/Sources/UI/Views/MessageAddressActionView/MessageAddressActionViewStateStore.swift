@@ -45,6 +45,7 @@ final class MessageAddressActionViewStateStore: StateStore {
     private let clipboard: Clipboard
     private let openURL: URLOpenerProtocol
     private let wrapper: RustMessageAddressWrapper
+    private let senderUnblocker: SenderUnblocker
     private let draftPresenter: RecipientDraftPresenter
     private let dismiss: Dismissable
     private let messageBannersNotifier: RefreshMessageBannersNotifier
@@ -61,6 +62,7 @@ final class MessageAddressActionViewStateStore: StateStore {
         pasteboard: UIPasteboard,
         openURL: URLOpenerProtocol,
         wrapper: RustMessageAddressWrapper,
+        senderUnblocker: SenderUnblocker,
         draftPresenter: RecipientDraftPresenter,
         dismiss: Dismissable,
         messageBannersNotifier: RefreshMessageBannersNotifier
@@ -73,6 +75,7 @@ final class MessageAddressActionViewStateStore: StateStore {
         self.clipboard = .init(toastStateStore: toastStateStore, pasteboard: pasteboard)
         self.openURL = openURL
         self.wrapper = wrapper
+        self.senderUnblocker = senderUnblocker
         self.draftPresenter = draftPresenter
         self.dismiss = dismiss
         self.messageBannersNotifier = messageBannersNotifier
@@ -121,6 +124,8 @@ final class MessageAddressActionViewStateStore: StateStore {
             toastStateStore.present(toast: .comingSoon)
         case .blockContact:
             state = state.copy(\.emailToBlock, to: state.email)
+        case .unblockContact:
+            await unblock(email: state.email)
         }
     }
 
@@ -141,6 +146,16 @@ final class MessageAddressActionViewStateStore: StateStore {
                     toastStateStore.present(toast: .error(message: L10n.BlockAddress.Toast.failure.string))
                 }
             }
+        }
+    }
+
+    private func unblock(email: String) async {
+        switch await senderUnblocker.unblock(emailAddress: email) {
+        case .ok:
+            dismiss()
+            messageBannersNotifier.refresh()
+        case .error:
+            toastStateStore.present(toast: .error(message: L10n.UnblockAddress.Toast.failure.string))
         }
     }
 }

@@ -49,6 +49,7 @@ struct MessageAddressActionView: View {
                 pasteboard: pasteboard,
                 openURL: openURL,
                 wrapper: .productionInstance(),
+                senderUnblocker: .init(mailbox: mailbox, wrapper: .productionInstance()),
                 draftPresenter: draftPresenter,
                 dismiss: dismiss,
                 messageBannersNotifier: messageBannersNotifier

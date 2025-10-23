@@ -13832,6 +13832,9 @@
         }
       }
     },
+    "Could not unblock sender" : {
+      "comment" : "Toast message shown when unblocking an email address (sender) fails."
+    },
     "Create a folder" : {
       "comment" : "Button in the sidebar menu that redirects a user to the create folder screen.",
       "localizations" : {
@@ -49420,6 +49423,9 @@
           }
         }
       }
+    },
+    "Unblock this contact" : {
+      "comment" : "Action title for unblocking email address in the address action sheet."
     },
     "Unpin" : {
       "comment" : "Message unpin action title.",

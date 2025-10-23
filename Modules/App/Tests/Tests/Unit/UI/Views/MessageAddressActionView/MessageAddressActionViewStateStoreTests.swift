@@ -29,13 +29,14 @@ final class MessageAddressActionViewStateStoreTests {
     private lazy var sut: MessageAddressActionViewStateStore = makeSUT()
     private let pasteboard = UIPasteboard.testInstance
     private let toastStateStore = ToastStateStore(initialState: .initial)
-    private let blockSpy = BlockAddressSpy()
+    private let blockSpy = BlockUnblockAddressSpy()
+    private let unblockSpy = BlockUnblockAddressSpy()
     private let messageAddressSpy = RustMessageAddressWrapperSpy()
     private let draftPresenterSpy = RecipientDraftPresenterSpy()
     private let urlOpener = EnvironmentURLOpenerSpy()
     private let dismissSpy = DismissSpy()
     private let messageBannersNotifier = RefreshMessageBannersNotifier()
-    private var onSenderBlockedCallsCount: Int = 0
+    private var refreshBannersCount: Int = 0
     private var cancellables: Set<AnyCancellable> = []
 
     private let avatar = AvatarUIModel(
@@ -124,7 +125,7 @@ final class MessageAddressActionViewStateStoreTests {
                 ))
 
         #expect(blockSpy.calls == [])
-        #expect(onSenderBlockedCallsCount == 0)
+        #expect(refreshBannersCount == 0)
         #expect(toastStateStore.state.toasts == [])
     }
 
@@ -147,7 +148,7 @@ final class MessageAddressActionViewStateStoreTests {
 
         #expect(blockSpy.calls == [email])
         #expect(dismissSpy.callsCount == 1)
-        #expect(onSenderBlockedCallsCount == 1)
+        #expect(refreshBannersCount == 1)
         #expect(toastStateStore.state.toasts == [.information(message: "Sender blocked")])
     }
 
@@ -169,6 +170,66 @@ final class MessageAddressActionViewStateStoreTests {
                 ))
         #expect(blockSpy.calls == [email])
         #expect(toastStateStore.state.toasts == [.error(message: "Could not block sender")])
+    }
+
+    // MARK: - `Unblock contact` action
+
+    @Test
+    func testUnblockContactAction_WhenActionSucceeds_ItUnblocksContact() async throws {
+        messageAddressSpy.stubbedIsSenderBlocked = true
+
+        let sut = makeSUT()
+
+        await sut.handle(action: .onLoad)
+
+        messageAddressSpy.stubbedIsSenderBlocked = false
+
+        await sut.handle(action: .onTap(.unblockContact))
+
+        let info: SenderInfo = try #require(avatar.type.senderInfo)
+
+        #expect(
+            sut.state
+                == .init(
+                    avatar: avatar.copy(\.type, to: .sender(info.copy(\.blocked, to: .yes))),
+                    name: displayName,
+                    email: email,
+                    phoneNumber: .none,
+                    emailToBlock: .none
+                ))
+
+        #expect(unblockSpy.calls == [email])
+        #expect(dismissSpy.callsCount == 1)
+        #expect(refreshBannersCount == 1)
+        #expect(toastStateStore.state.toasts == [])
+    }
+
+    @Test
+    func testUnblockContactAction_WhenActionFails_ItDoesNotUnblockContact() async throws {
+        messageAddressSpy.stubbedIsSenderBlocked = true
+        unblockSpy.stubbed[email] = .error(.other(.network))
+
+        let sut = makeSUT()
+
+        await sut.handle(action: .onLoad)
+        await sut.handle(action: .onTap(.unblockContact))
+
+        let info: SenderInfo = try #require(avatar.type.senderInfo)
+
+        #expect(
+            sut.state
+                == .init(
+                    avatar: avatar.copy(\.type, to: .sender(info.copy(\.blocked, to: .yes))),
+                    name: displayName,
+                    email: email,
+                    phoneNumber: .none,
+                    emailToBlock: .none
+                ))
+
+        #expect(unblockSpy.calls == [email])
+        #expect(dismissSpy.callsCount == 0)
+        #expect(refreshBannersCount == 0)
+        #expect(toastStateStore.state.toasts == [.error(message: "Could not unblock sender")])
     }
 
     // MARK: - `Add to contacts` action
@@ -246,7 +307,7 @@ final class MessageAddressActionViewStateStoreTests {
 
     private func makeSUT(phoneNumber: String? = nil) -> MessageAddressActionViewStateStore {
         messageBannersNotifier.refreshBanners
-            .sink { [unowned self] in self.onSenderBlockedCallsCount += 1 }
+            .sink { [unowned self] in self.refreshBannersCount += 1 }
             .store(in: &cancellables)
 
         return .init(
@@ -268,6 +329,16 @@ final class MessageAddressActionViewStateStoreTests {
                     await self.messageAddressSpy.isSenderBlocked(mailbox: mailbox, messageID: messageID)
                 }
             ),
+            senderUnblocker: .init(
+                mailbox: .dummy,
+                wrapper: .init(
+                    messageBody: { _, _ in .ok(.init(noPointer: .init())) },
+                    markMessageHam: { _, _ in .ok },
+                    unblockSender: { _, emailAddress in
+                        await self.unblockSpy.result(for: emailAddress)
+                    }
+                )
+            ),
             draftPresenter: draftPresenterSpy,
             dismiss: dismissSpy,
             messageBannersNotifier: messageBannersNotifier
@@ -275,7 +346,7 @@ final class MessageAddressActionViewStateStoreTests {
     }
 }
 
-private final class BlockAddressSpy: @unchecked Sendable {
+private final class BlockUnblockAddressSpy: @unchecked Sendable {
     private(set) var calls: [String] = []
     var stubbed: [String: VoidActionResult] = [:]
 

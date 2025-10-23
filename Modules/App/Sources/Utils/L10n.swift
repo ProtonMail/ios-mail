@@ -30,6 +30,10 @@ enum L10n {
                 "Block this contact",
                 comment: "Action title for blocking email address in the address action sheet."
             )
+            static let unblockContact = LocalizedStringResource(
+                "Unblock this contact",
+                comment: "Action title for unblocking email address in the address action sheet."
+            )
             static let call = LocalizedStringResource(
                 "Call",
                 comment: "Action title for calling phone number in the address action sheet."
@@ -265,6 +269,15 @@ enum L10n {
             static let failure = LocalizedStringResource(
                 "Could not block sender",
                 comment: "Toast message shown when blocking an email address (sender) fails."
+            )
+        }
+    }
+
+    enum UnblockAddress {
+        enum Toast {
+            static let failure = LocalizedStringResource(
+                "Could not unblock sender",
+                comment: "Toast message shown when unblocking an email address (sender) fails."
             )
         }
     }
