@@ -98,6 +98,7 @@ final class SearchModel: ObservableObject, @unchecked Sendable {
                 return
             }
             do {
+                paginatedDataSource.resetToInitialState()
                 try searchScroller.changeKeywords(keywords: .init(keywords: query)).get()
             } catch {
                 AppLogger.log(error: error, category: .search)
