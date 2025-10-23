@@ -87,8 +87,7 @@ final class MessageAddressActionViewStateStore: StateStore {
         switch action {
         case .onLoad:
             if case .sender(let senderInfo) = state.avatar.type, let messageID {
-                let isBlocked = await wrapper.isSenderBlocked(mailbox, messageID)
-                let blocked: SenderInfo.Blocked = isBlocked ? .yes : .no
+                let blocked = await wrapper.isSenderBlocked(mailbox, messageID)
                 let updatedSenderInfo = senderInfo.copy(\.blocked, to: blocked)
                 let updatedAvatar = state.avatar.copy(\.type, to: .sender(updatedSenderInfo))
 
@@ -158,34 +157,4 @@ final class MessageAddressActionViewStateStore: StateStore {
             toastStateStore.present(toast: .error(message: L10n.UnblockAddress.Toast.failure.string))
         }
     }
-}
-
-struct RustMessageAddressWrapper {
-    let block: @Sendable (_ userSession: MailUserSession, _ emailAddress: String) async -> VoidActionResult
-    let isSenderBlocked: @Sendable (_ mailbox: Mailbox, _ messageID: ID) async -> Bool
-
-    init(
-        block: @escaping @Sendable (MailUserSession, String) async -> VoidActionResult,
-        isSenderBlocked: @escaping @Sendable (Mailbox, ID) async -> Bool
-    ) {
-        self.block = block
-        self.isSenderBlocked = isSenderBlocked
-    }
-}
-
-extension RustMessageAddressWrapper {
-
-    static func productionInstance() -> Self {
-        .init(
-            block: { session, email in await blockAddress(session: session, email: email) },
-            isSenderBlocked: { mailbox, id in
-                guard let isBlocked = try? await isMessageSenderBlocked(mbox: mailbox, messageId: id).get() else {
-                    return true
-                }
-
-                return isBlocked
-            }
-        )
-    }
-
 }

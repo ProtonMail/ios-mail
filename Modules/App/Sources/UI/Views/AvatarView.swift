@@ -19,31 +19,6 @@ import InboxCore
 import InboxDesignSystem
 import SwiftUI
 
-struct SenderInfo: Hashable, Copying {
-    enum Blocked {
-        case notLoaded
-        case yes
-        case no
-    }
-
-    let params: SenderImageDataParameters
-    var blocked: Blocked
-}
-
-enum AvatarViewType: Hashable {
-    case sender(SenderInfo)
-    case other
-
-    var senderInfo: SenderInfo? {
-        switch self {
-        case .sender(let info):
-            return info
-        case .other:
-            return nil
-        }
-    }
-}
-
 struct AvatarView: View {
     let avatar: AvatarUIModel
 

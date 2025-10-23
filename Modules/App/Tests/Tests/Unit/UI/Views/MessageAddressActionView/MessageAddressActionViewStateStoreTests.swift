@@ -67,7 +67,7 @@ final class MessageAddressActionViewStateStoreTests {
 
     @Test
     func testOnLoad_WhenIsSenderBlockedReturnsTrue_ItUpdatesAvatarWithBlockedState() async {
-        messageAddressSpy.stubbedIsSenderBlocked = true
+        messageAddressSpy.stubbedIsSenderBlocked = .yes
 
         let sut = makeSUT()
 
@@ -80,7 +80,7 @@ final class MessageAddressActionViewStateStoreTests {
 
     @Test
     func testOnLoad_WhenIsSenderBlockedReturnsFalse_ItUpdatesAvatarWithNotBlockedState() async {
-        messageAddressSpy.stubbedIsSenderBlocked = false
+        messageAddressSpy.stubbedIsSenderBlocked = .no
 
         let sut = makeSUT()
 
@@ -176,13 +176,13 @@ final class MessageAddressActionViewStateStoreTests {
 
     @Test
     func testUnblockContactAction_WhenActionSucceeds_ItUnblocksContact() async throws {
-        messageAddressSpy.stubbedIsSenderBlocked = true
+        messageAddressSpy.stubbedIsSenderBlocked = .yes
 
         let sut = makeSUT()
 
         await sut.handle(action: .onLoad)
 
-        messageAddressSpy.stubbedIsSenderBlocked = false
+        messageAddressSpy.stubbedIsSenderBlocked = .no
 
         await sut.handle(action: .onTap(.unblockContact))
 
@@ -206,7 +206,7 @@ final class MessageAddressActionViewStateStoreTests {
 
     @Test
     func testUnblockContactAction_WhenActionFails_ItDoesNotUnblockContact() async throws {
-        messageAddressSpy.stubbedIsSenderBlocked = true
+        messageAddressSpy.stubbedIsSenderBlocked = .yes
         unblockSpy.stubbed[email] = .error(.other(.network))
 
         let sut = makeSUT()
@@ -357,10 +357,10 @@ private final class BlockUnblockAddressSpy: @unchecked Sendable {
 }
 
 private final class RustMessageAddressWrapperSpy: @unchecked Sendable {
-    var stubbedIsSenderBlocked: Bool = false
+    var stubbedIsSenderBlocked: BlockedSender = .no
     private(set) var isSenderBlockedCalls: [(mailbox: Mailbox, messageID: Id)] = []
 
-    func isSenderBlocked(mailbox: Mailbox, messageID: Id) async -> Bool {
+    func isSenderBlocked(mailbox: Mailbox, messageID: Id) async -> BlockedSender {
         isSenderBlockedCalls.append((mailbox, messageID))
         return stubbedIsSenderBlocked
     }
