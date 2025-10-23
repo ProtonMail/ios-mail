@@ -89,7 +89,6 @@ final class SearchModel: ObservableObject, @unchecked Sendable {
     }
 
     func searchText(_ text: String) {
-        guard let mailbox else { return }
         Task {
             let query = text.withoutWhitespace
             guard let searchScroller else {
@@ -120,6 +119,7 @@ final class SearchModel: ObservableObject, @unchecked Sendable {
         case .ok(let searchScroller):
             self.searchScroller = searchScroller
             paginatedDataSource.fetchInitialPage()
+            await setUpSpamTrashToggleVisibility()
         case .error(let error):
             AppLogger.log(error: error, category: .search)
         }
@@ -158,14 +158,20 @@ final class SearchModel: ObservableObject, @unchecked Sendable {
         selectedMailbox = .systemFolder(labelId: mailbox.labelId(), systemFolder: systemLabel)
     }
 
-    private func setUpSpamTrashToggleVisibility(supportsIncludeFilter: Bool) {
-        let spamTrashToggleState: SpamTrashToggleState
-        if supportsIncludeFilter {
-            spamTrashToggleState = .visible(isSelected: state.spamTrashToggleState.isSelected)
-        } else {
-            spamTrashToggleState = .hidden
+    private func setUpSpamTrashToggleVisibility() async {
+        guard let searchScroller else { return }
+        do {
+            let supportsIncludeFilter = try await searchScroller.supportsIncludeFilter().get()
+            let spamTrashToggleState: SpamTrashToggleState
+            if supportsIncludeFilter {
+                spamTrashToggleState = .visible(isSelected: state.spamTrashToggleState.isSelected)
+            } else {
+                spamTrashToggleState = .hidden
+            }
+            state.spamTrashToggleState = spamTrashToggleState
+        } catch {
+            AppLogger.log(error: error, category: .search)
         }
-        state.spamTrashToggleState = spamTrashToggleState
     }
 
     private func fetchNextPage(isFirstPage: Bool) {
