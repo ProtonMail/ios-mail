@@ -33,7 +33,6 @@ final class SearchModel: ObservableObject, @unchecked Sendable {
     private(set) var mailbox: Mailbox!
     private var searchScroller: SearchScroller?
 
-    private let listUpdateSubject: PassthroughSubject<PaginatedListUpdate<MailboxItemCellUIModel>, Never> = .init()
     lazy var paginatedDataSource = PaginatedListDataSource<MailboxItemCellUIModel>(
         fetchMore: { [weak self] isFirstPage in self?.fetchNextPage(isFirstPage: isFirstPage) }
     )
@@ -94,27 +93,35 @@ final class SearchModel: ObservableObject, @unchecked Sendable {
     func searchText(_ text: String) {
         Task {
             let query = text.withoutWhitespace
-            searchScroller?.handle().disconnect()
-            searchScroller?.terminate()
-            paginatedDataSource.resetToInitialState()
-
-            let result = await scrollerSearch(
-                mailbox: mailbox,
-                options: .init(keywords: query),
-                callback: MessageScrollerLiveQueryCallbackkWrapper { [weak self] update in
-                    Task {
-                        await self?.handleSearchScroller(update: update)
-                    }
-                }
-            )
-
-            switch result {
-            case .ok(let searchScroller):
-                self.searchScroller = searchScroller
-                paginatedDataSource.fetchInitialPage()
-            case .error(let error):
+            guard let searchScroller else {
+                await initializeScroller(query: query)
+                return
+            }
+            do {
+                try searchScroller.changeKeywords(keywords: .init(keywords: query)).get()
+            } catch {
                 AppLogger.log(error: error, category: .search)
             }
+        }
+    }
+
+    private func initializeScroller(query: String) async {
+        let result = await scrollerSearch(
+            mailbox: mailbox,
+            options: .init(keywords: nil),
+            callback: MessageScrollerLiveQueryCallbackkWrapper { [weak self] update in
+                Task {
+                    await self?.handleSearchScroller(update: update)
+                }
+            }
+        )
+
+        switch result {
+        case .ok(let searchScroller):
+            self.searchScroller = searchScroller
+            paginatedDataSource.fetchInitialPage()
+        case .error(let error):
+            AppLogger.log(error: error, category: .search)
         }
     }
 
@@ -171,7 +178,7 @@ final class SearchModel: ObservableObject, @unchecked Sendable {
         case .error(let error):
             AppLogger.log(error: error, category: .mailbox)
             let isLastPage = await !searchScrollerHasMore()
-            listUpdateSubject.send(.init(isLastPage: isLastPage, value: .error(error), completion: nil))
+            paginatedDataSource.handle(update: .init(isLastPage: isLastPage, value: .error(error), completion: nil))
         }
     }
 
@@ -198,7 +205,7 @@ final class SearchModel: ObservableObject, @unchecked Sendable {
             updateType = .replaceBefore(index: Int(index), items: items)
             completion = { [weak self] in self?.updateSelectedItemsAfterDestructiveUpdate() }
         }
-        listUpdateSubject.send(.init(isLastPage: isLastPage, value: updateType, completion: completion))
+        paginatedDataSource.handle(update: .init(isLastPage: isLastPage, value: updateType, completion: completion))
     }
 
     private func updateSelectedItemsAfterDestructiveUpdate() {
