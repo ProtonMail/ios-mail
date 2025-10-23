@@ -23,7 +23,6 @@ import SwiftUI
 
 struct AppSettingsScreen: View {
     @Environment(\.scenePhase) private var scenePhase
-    @EnvironmentObject var toastStateStore: ToastStateStore
     @EnvironmentObject var appAppearanceStore: AppAppearanceStore
     @EnvironmentObject var router: Router<SettingsRoute>
     @StateObject var store: AppSettingsStateStore

@@ -25,12 +25,10 @@ final class PaginatedListDataSource<Item: Equatable & Sendable>: ObservableObjec
 
     @Published private(set) var state: State
     private let fetchMore: FetchMore
-    private let id: ((Item) -> ID)?
 
-    init(fetchMore: @escaping FetchMore, id: ((Item) -> ID)? = nil) {
+    init(fetchMore: @escaping FetchMore) {
         self.state = .init()
         self.fetchMore = fetchMore
-        self.id = id
     }
 
     /// This function is for convenience to be able to show the initial state if the operation to have the fetchPage ready

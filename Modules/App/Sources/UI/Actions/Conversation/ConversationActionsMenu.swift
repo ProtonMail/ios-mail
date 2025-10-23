@@ -16,7 +16,6 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import proton_app_uniffi
-import InboxDesignSystem
 import InboxCore
 import InboxCoreUI
 import SwiftUI
@@ -24,7 +23,6 @@ import SwiftUI
 struct ConversationActionsMenu<OpenMenuButtonContent: View>: View {
     private let conversationID: ID
     private let mailbox: Mailbox
-    private let mailUserSession: MailUserSession
     private let actionTapped: (ConversationAction) -> Void
     private let editToolbarTapped: () -> Void
     private let label: () -> OpenMenuButtonContent
@@ -35,14 +33,12 @@ struct ConversationActionsMenu<OpenMenuButtonContent: View>: View {
     init(
         conversationID: ID,
         mailbox: Mailbox,
-        mailUserSession: MailUserSession,
         actionTapped: @escaping (ConversationAction) -> Void,
         editToolbarTapped: @escaping () -> Void,
         label: @escaping () -> OpenMenuButtonContent
     ) {
         self.conversationID = conversationID
         self.mailbox = mailbox
-        self.mailUserSession = mailUserSession
         self.actionTapped = actionTapped
         self.editToolbarTapped = editToolbarTapped
         self.label = label

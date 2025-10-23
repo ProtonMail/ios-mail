@@ -16,10 +16,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-public struct InlineImageHTML {
-    public let content: String
+struct InlineImageHTML {
+    let content: String
 
-    public init(cids: [String]) {
+    init(cids: [String]) {
         content = cids.map { cid in
             #"<img src="cid:\#(cid)" style="max-width: 100%;"><br>"#
         }.joined()

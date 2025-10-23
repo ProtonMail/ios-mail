@@ -44,7 +44,6 @@ struct HomeScreen: View {
 
     @EnvironmentObject private var appUIStateStore: AppUIStateStore
     @EnvironmentObject private var toastStateStore: ToastStateStore
-    @EnvironmentObject private var analytics: Analytics
     @StateObject private var appRoute: AppRouteState
     @StateObject private var composerCoordinator: ComposerCoordinator
     @StateObject private var upsellButtonVisibilityPublisher: UpsellButtonVisibilityPublisher

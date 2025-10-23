@@ -16,7 +16,6 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Combine
-import InboxCore
 import Network
 
 @MainActor
@@ -46,9 +45,5 @@ final class NetworkMonitoringService: ApplicationServiceSetUp {
             }
         }
         monitor.start(queue: queue)
-    }
-
-    private func stopMonitoring() {
-        monitor.cancel()
     }
 }

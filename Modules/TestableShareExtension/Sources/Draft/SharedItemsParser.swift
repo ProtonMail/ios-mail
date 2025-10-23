@@ -17,7 +17,6 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import InboxCore
 import UniformTypeIdentifiers
 
 public struct SharedContent {

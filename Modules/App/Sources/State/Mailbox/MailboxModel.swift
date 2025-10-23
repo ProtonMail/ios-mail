@@ -46,8 +46,7 @@ final class MailboxModel: ObservableObject {
     private var messageScroller: MessageScroller?
     private var conversationScroller: ConversationScroller?
     lazy var paginatedDataSource = PaginatedListDataSource<MailboxItemCellUIModel>(
-        fetchMore: { [weak self] isFirstPage in self?.fetchNextPage(isFirstPage: isFirstPage) },
-        id: \.id
+        fetchMore: { [weak self] isFirstPage in self?.fetchNextPage(isFirstPage: isFirstPage) }
     )
     private var unreadCountLiveQuery: UnreadItemsCountLiveQuery?
 

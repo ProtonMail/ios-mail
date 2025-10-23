@@ -16,7 +16,6 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import InboxCoreUI
 import proton_app_uniffi
 
 enum EventMapper {
@@ -30,8 +29,7 @@ enum EventMapper {
             recurrence: uniffiModel.recurrence,
             location: uniffiModel.location,
             organizer: organizer(from: uniffiModel.organizer),
-            participants: participants(attendees: uniffiModel.attendees, userIndex: uniffiModel.userAttendeeIdx),
-            userParticipantIndex: uniffiModel.userAttendeeIdx.map(Int.init)
+            participants: participants(attendees: uniffiModel.attendees, userIndex: uniffiModel.userAttendeeIdx)
         )
     }
 

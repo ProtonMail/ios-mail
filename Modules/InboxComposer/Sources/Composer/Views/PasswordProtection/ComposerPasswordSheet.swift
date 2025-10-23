@@ -24,7 +24,6 @@ struct ComposerPasswordSheet: View {
     typealias Save = (_ password: String, _ hint: String?) async -> Void
 
     @Environment(\.dismiss) var dismiss
-    @Environment(\.openURL) var openUrl
 
     @State private var state: ComposerPasswordState
     @FocusState private var isPasswordFocused: Bool

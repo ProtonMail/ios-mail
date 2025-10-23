@@ -18,10 +18,10 @@
 import InboxDesignSystem
 import SwiftUI
 
-public struct BannerToggle: View {
+struct BannerToggle: View {
     let model: Banner.Toggle
 
-    public var body: some View {
+    var body: some View {
         Toggle(model.title, isOn: model.$isOn)
             .labelsHidden()
             .tint(DS.Color.Brand.norm)

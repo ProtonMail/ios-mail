@@ -20,7 +20,6 @@ import SwiftUI
 struct LayoutData: Equatable {
     let size: CGSize
     let frameInCoordinateSpace: CGRect
-    let safeAreaInsets: EdgeInsets
 }
 
 extension View {
@@ -35,7 +34,6 @@ extension View {
                             value: LayoutData(
                                 size: geometryProxy.size,
                                 frameInCoordinateSpace: geometryProxy.frame(in: coordinateSpace),
-                                safeAreaInsets: geometryProxy.safeAreaInsets
                             )
                         )
                 })
@@ -45,6 +43,6 @@ extension View {
 }
 
 private struct SizePreferenceKey: PreferenceKey {
-    static let defaultValue = LayoutData(size: .zero, frameInCoordinateSpace: CGRect.zero, safeAreaInsets: EdgeInsets())
+    static let defaultValue = LayoutData(size: .zero, frameInCoordinateSpace: CGRect.zero)
     static func reduce(value: inout LayoutData, nextValue: () -> LayoutData) {}
 }

@@ -64,11 +64,11 @@ public enum ToolbarItemFactory {
 }
 
 private struct ToolbarButtonStyle: ButtonStyle {
-    public init() {}
+    init() {}
 
     // MARK: - ButtonStyle
 
-    public func makeBody(configuration: Configuration) -> some View {
+    func makeBody(configuration: Configuration) -> some View {
         configuration
             .label
             .foregroundStyle(

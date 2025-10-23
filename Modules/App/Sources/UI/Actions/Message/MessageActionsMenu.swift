@@ -18,13 +18,11 @@
 import proton_app_uniffi
 import InboxCore
 import InboxCoreUI
-import InboxDesignSystem
 import SwiftUI
 
 struct MessageActionsMenu<OpenMenuButtonContent: View>: View {
     private let state: MessageActionsMenuState
     private let mailbox: Mailbox
-    private let mailUserSession: MailUserSession
     private let service: AllAvailableMessageActionsForActionSheetService
     private let messageAppearanceOverrideStore: MessageAppearanceOverrideStore
     private let actionTapped: (MessageAction) -> Void
@@ -36,7 +34,6 @@ struct MessageActionsMenu<OpenMenuButtonContent: View>: View {
     init(
         state: MessageActionsMenuState,
         mailbox: Mailbox,
-        mailUserSession: MailUserSession,
         messageAppearanceOverrideStore: MessageAppearanceOverrideStore,
         service: @escaping AllAvailableMessageActionsForActionSheetService = allAvailableMessageActionsForActionSheet,
         actionTapped: @escaping (MessageAction) -> Void,
@@ -45,7 +42,6 @@ struct MessageActionsMenu<OpenMenuButtonContent: View>: View {
     ) {
         self.state = state
         self.mailbox = mailbox
-        self.mailUserSession = mailUserSession
         self.service = service
         self.actionTapped = actionTapped
         self.messageAppearanceOverrideStore = messageAppearanceOverrideStore

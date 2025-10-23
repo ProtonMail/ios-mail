@@ -19,10 +19,10 @@
 import InboxDesignSystem
 import SwiftUI
 
-public struct SmallButtonStyle: ButtonStyle {
-    public init() {}
+struct SmallButtonStyle: ButtonStyle {
+    init() {}
 
-    public func makeBody(configuration: Self.Configuration) -> some View {
+    func makeBody(configuration: Self.Configuration) -> some View {
         configuration
             .label
             .font(.callout)
