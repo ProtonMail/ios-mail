@@ -34,11 +34,8 @@ final class UpsellCoordinatorTests {
             onlineExecutor: onlineExecutor,
             plansComposer: plansComposer,
             planPurchasing: DummyPlanPurchasing(),
-            configuration: .init(
-                regularPlan: "mail2022",
-                onboardingPlans: ["bundle2022", "mail2022"],
-                arePaymentsEnabled: false
-            )
+            sessionForking: DummySessionForking(),
+            configuration: .dummy
         )
 
         plansComposer.stubbedAvailablePlans = [AvailablePlan.mailPlus, .unlimited].flatMap(\.asComposedPlans)

@@ -22,9 +22,11 @@ import StoreKit
 
 final class UpsellScreenFactory {
     private let purchaseActionPerformer: PurchaseActionPerformer
+    private let webCheckout: WebCheckout
 
-    init(purchaseActionPerformer: PurchaseActionPerformer) {
+    init(purchaseActionPerformer: PurchaseActionPerformer, webCheckout: WebCheckout) {
         self.purchaseActionPerformer = purchaseActionPerformer
+        self.webCheckout = webCheckout
     }
 
     @MainActor
@@ -50,7 +52,8 @@ final class UpsellScreenFactory {
             planInstances: displayablePlanInstances,
             entryPoint: entryPoint,
             upsellType: upsellType,
-            purchaseActionPerformer: purchaseActionPerformer
+            purchaseActionPerformer: purchaseActionPerformer,
+            webCheckout: webCheckout
         )
     }
 

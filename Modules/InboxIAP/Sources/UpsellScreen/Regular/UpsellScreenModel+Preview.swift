@@ -36,7 +36,8 @@ extension UpsellScreenModel {
             planInstances: planInstances,
             entryPoint: entryPoint,
             upsellType: upsellType,
-            purchaseActionPerformer: .dummy
+            purchaseActionPerformer: .dummy,
+            webCheckout: .dummy
         )
     }
 }

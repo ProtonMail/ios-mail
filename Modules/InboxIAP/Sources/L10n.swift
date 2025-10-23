@@ -81,7 +81,7 @@ enum L10n {
     }
 
     static func onlyXPerMonth(_ amount: String) -> LocalizedStringResource {
-        .init("only \(amount) / month", bundle: .module, comment: "Shown next to the discounted monthly price")
+        .init("only \(amount) /month", bundle: .module, comment: "Shown next to the discounted monthly price")
     }
 
     enum BillingCycle {

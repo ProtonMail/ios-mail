@@ -25,14 +25,15 @@ import Testing
 
 @MainActor
 final class UpsellScreenFactoryTests {
-    private lazy var sut = UpsellScreenFactory(purchaseActionPerformer: .dummy)
+    private lazy var sut = UpsellScreenFactory(purchaseActionPerformer: .dummy, webCheckout: .dummy)
     private let availablePlans = [AvailablePlan.mailPlus, .unlimited].flatMap(\.asComposedPlans)
+    private let configuration = UpsellConfiguration.dummy
     private let entryPoint: UpsellEntryPoint = .mailboxTopBar
 
     @Test
     func upsellScreenModelGeneration() throws {
         let upsellScreenModel = try sut.upsellScreenModel(
-            showingPlan: "mail2022",
+            showingPlan: configuration.regularPlan,
             basedOn: availablePlans,
             entryPoint: entryPoint,
             upsellType: .standard
@@ -45,7 +46,7 @@ final class UpsellScreenFactoryTests {
     @Test
     func firstWavePromoUpsellScreenModelGeneration() throws {
         let upsellScreenModel = try sut.upsellScreenModel(
-            showingPlan: "mail2022",
+            showingPlan: configuration.regularPlan,
             basedOn: availablePlans,
             entryPoint: entryPoint,
             upsellType: .blackFriday(.wave1)
@@ -58,7 +59,7 @@ final class UpsellScreenFactoryTests {
     @Test
     func secondWavePromoUpsellScreenModelGeneration() throws {
         let upsellScreenModel = try sut.upsellScreenModel(
-            showingPlan: "mail2022",
+            showingPlan: configuration.regularPlan,
             basedOn: availablePlans,
             entryPoint: entryPoint,
             upsellType: .blackFriday(.wave2)
@@ -71,7 +72,7 @@ final class UpsellScreenFactoryTests {
     @Test
     func onboardingUpsellScreenModelGeneration() throws {
         let upsellScreenModel = try sut.onboardingUpsellScreenModel(
-            showingPlans: ["bundle2022", "mail2022"],
+            showingPlans: configuration.onboardingPlans,
             basedOn: availablePlans
         )
 

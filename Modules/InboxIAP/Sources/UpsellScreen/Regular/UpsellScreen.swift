@@ -22,6 +22,7 @@ import SwiftUI
 public struct UpsellScreen: View {
     @Environment(\.accessibilityReduceTransparency) var reduceTransparency
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.openURL) private var openURL
     @Environment(\.verticalSizeClass) private var verticalSizeClass
     @EnvironmentObject private var toastStateStore: ToastStateStore
 
@@ -223,7 +224,11 @@ public struct UpsellScreen: View {
     private var getPlanButton: some View {
         Button(L10n.getPlan(named: model.planName).string) {
             Task {
-                await model.onPurchaseTapped(toastStateStore: toastStateStore, dismiss: dismiss.callAsFunction)
+                await model.onPurchaseTapped(
+                    toastStateStore: toastStateStore,
+                    openURL: openURL.callAsFunction,
+                    dismiss: dismiss.callAsFunction
+                )
             }
         }
         .buttonStyle(BigButtonStyle(flavor: .inverted(backgroundColorOverride: model.ctaBackgroundOverride)))

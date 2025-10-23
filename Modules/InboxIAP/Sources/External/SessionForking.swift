@@ -16,25 +16,16 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-public struct UpsellConfiguration: Sendable {
-    public let regularPlan: String
-    public let onboardingPlans: [String]
-    public let arePaymentsEnabled: Bool
-    public let apiDomain: String
+import proton_app_uniffi
 
-    public init(regularPlan: String, onboardingPlans: [String], arePaymentsEnabled: Bool, apiDomain: String) {
-        self.regularPlan = regularPlan
-        self.onboardingPlans = onboardingPlans
-        self.arePaymentsEnabled = arePaymentsEnabled
-        self.apiDomain = apiDomain
-    }
+protocol SessionForking {
+    func fork(platform: String, product: String) async -> MailUserSessionForkResult
 }
 
-extension UpsellConfiguration {
-    static let dummy = UpsellConfiguration(
-        regularPlan: "mail2022",
-        onboardingPlans: ["bundle2022", "mail2022"],
-        arePaymentsEnabled: true,
-        apiDomain: "example.com"
-    )
+extension MailUserSession: SessionForking {}
+
+struct DummySessionForking: SessionForking {
+    func fork(platform: String, product: String) async -> MailUserSessionForkResult {
+        .ok(.empty)
+    }
 }

@@ -22,7 +22,7 @@ import StoreKit
 @testable import InboxIAP
 @testable import PaymentsNG
 
-extension AvailablePlan: @unchecked @retroactive Sendable {
+extension AvailablePlan {
     static let mailPlus = AvailablePlan(
         description: "Secure email with advanced features for your everyday communications.",
         instances: [

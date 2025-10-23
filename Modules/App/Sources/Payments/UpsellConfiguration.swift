@@ -22,7 +22,8 @@ extension UpsellConfiguration {
     static let mail: Self = .init(
         regularPlan: "mail2022",
         onboardingPlans: ["bundle2022", "mail2022"],
-        arePaymentsEnabled: ApiEnvId.current.arePaymentsEnabled
+        arePaymentsEnabled: ApiEnvId.current.arePaymentsEnabled,
+        apiDomain: ApiEnvId.current.domain
     )
 
     var humanReadableUpsoldPlanName: String {

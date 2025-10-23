@@ -4290,7 +4290,7 @@
         }
       }
     },
-    "only %@ / month" : {
+    "only %@ /month" : {
       "comment" : "Shown next to the discounted monthly price"
     },
     "Pay annually and save %@" : {

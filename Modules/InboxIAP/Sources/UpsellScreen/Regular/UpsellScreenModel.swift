@@ -37,6 +37,7 @@ public final class UpsellScreenModel: Identifiable {
     private let entryPoint: UpsellEntryPoint
     private let upsellType: UpsellType
     private let purchaseActionPerformer: PurchaseActionPerformer
+    private let webCheckout: WebCheckout
 
     var logo: ImageResource {
         switch upsellType {
@@ -98,13 +99,15 @@ public final class UpsellScreenModel: Identifiable {
         planInstances: [DisplayablePlanInstance],
         entryPoint: UpsellEntryPoint,
         upsellType: UpsellType,
-        purchaseActionPerformer: PurchaseActionPerformer
+        purchaseActionPerformer: PurchaseActionPerformer,
+        webCheckout: WebCheckout
     ) {
         self.planName = planName
         self.planInstances = planInstances
         self.entryPoint = entryPoint
         self.upsellType = upsellType
         self.purchaseActionPerformer = purchaseActionPerformer
+        self.webCheckout = webCheckout
         selectedInstanceId = planInstances[0].storeKitProductId
     }
 
@@ -118,21 +121,26 @@ public final class UpsellScreenModel: Identifiable {
         logoOpacity = ratio.normalize(inputRange: ratioRange, outputRange: logoOpacityRange)
     }
 
-    func onPurchaseTapped(toastStateStore: ToastStateStore, dismiss: () -> Void) async {
-        if isPromo {
-            openWebPage()
-        } else {
+    func onPurchaseTapped(toastStateStore: ToastStateStore, openURL: (URL) -> Void, dismiss: () -> Void) async {
+        let isBusyBinding = Binding(get: { self.isBusy }, set: { self.isBusy = $0 })
+
+        switch upsellType {
+        case .standard:
             await purchaseActionPerformer.purchase(
                 storeKitProductID: selectedInstanceId,
-                isBusy: .init(get: { self.isBusy }, set: { self.isBusy = $0 }),
+                isBusy: isBusyBinding,
                 toastStateStore: toastStateStore,
                 dismiss: dismiss
             )
+        case .blackFriday(let wave):
+            await webCheckout.initiate(
+                for: wave,
+                isBusy: isBusyBinding,
+                toastStateStore: toastStateStore,
+                openURL: openURL,
+                dismiss: dismiss
+            )
         }
-    }
-
-    private func openWebPage() {
-
     }
 }
 
