@@ -16,7 +16,6 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Combine
-import InboxCore
 import InboxCoreUI
 import SwiftUI
 import TestableShareExtension

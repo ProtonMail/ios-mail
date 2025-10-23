@@ -52,13 +52,13 @@ public struct BlurredBackground: View {
 }
 
 private struct TransparentBlur: UIViewRepresentable {
-    public init() {}
+    init() {}
 
-    public func makeUIView(context: Context) -> some UIView {
+    func makeUIView(context: Context) -> some UIView {
         TransparentBlurView(effect: UIBlurEffect(style: .systemUltraThinMaterial))
     }
 
-    public func updateUIView(_ uiView: UIViewType, context: Context) {}
+    func updateUIView(_ uiView: UIViewType, context: Context) {}
 }
 
 private class TransparentBlurView: UIVisualEffectView {

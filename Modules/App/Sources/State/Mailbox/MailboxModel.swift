@@ -46,8 +46,7 @@ final class MailboxModel: ObservableObject {
     private var messageScroller: MessageScroller?
     private var conversationScroller: ConversationScroller?
     lazy var paginatedDataSource = PaginatedListDataSource<MailboxItemCellUIModel>(
-        fetchMore: { [weak self] isFirstPage in self?.fetchNextPage(isFirstPage: isFirstPage) },
-        id: \.id
+        fetchMore: { [weak self] isFirstPage in self?.fetchNextPage(isFirstPage: isFirstPage) }
     )
     private var unreadCountLiveQuery: UnreadItemsCountLiveQuery?
 
@@ -289,31 +288,21 @@ extension MailboxModel {
             if mailbox.viewMode() == .messages {
                 messageScroller = try await scrollMessagesForLabel(
                     mailbox: mailbox,
-                    labelId: mailbox.labelId(),
-                    unread: unreadFilter,
-                    include: state.filterBar.spamTrashToggleState.includeSpamTrash,
                     callback: MessageScrollerLiveQueryCallbackkWrapper { [weak self] update in
                         Task {
-                            await self?.handleMessagesUpdate(update)
-                            await self?.updateSelectedMailboxIfNeeded()
+                            await self?.handleMessageScroller(update: update)
                         }
                     }
                 ).get()
-                setUpSpamTrashToggleVisibility(supportsIncludeFilter: messageScroller?.supportsIncludeFilter() ?? false)
             } else {
                 conversationScroller = try await scrollConversationsForLabel(
                     mailbox: mailbox,
-                    labelId: mailbox.labelId(),
-                    unread: unreadFilter,
-                    include: state.filterBar.spamTrashToggleState.includeSpamTrash,
                     callback: ConversationScrollerLiveQueryCallbackkWrapper { [weak self] update in
                         Task {
-                            await self?.handleConversationsUpdate(update)
-                            await self?.updateSelectedMailboxIfNeeded()
+                            await self?.handleConversationScroller(update: update)
                         }
                     }
                 ).get()
-                setUpSpamTrashToggleVisibility(supportsIncludeFilter: conversationScroller?.supportsIncludeFilter() ?? false)
             }
             paginatedDataSource.fetchInitialPage()
 
@@ -324,13 +313,22 @@ extension MailboxModel {
                 }
             }
             await unreadCountLiveQuery?.setUpLiveQuery()
+            try await setUpSpamTrashToggleVisibility()
         } catch {
             AppLogger.log(error: error, category: .mailbox)
             toast = .error(message: L10n.Mailbox.Error.mailboxErrorMessage.string, duration: .long)
         }
     }
 
-    private func setUpSpamTrashToggleVisibility(supportsIncludeFilter: Bool) {
+    private func setUpSpamTrashToggleVisibility() async throws {
+        let supportsIncludeFilter: Bool
+        switch viewMode {
+        case .messages:
+            supportsIncludeFilter = try await messageScroller?.supportsIncludeFilter().get() ?? false
+        case .conversations:
+            supportsIncludeFilter = try await conversationScroller?.supportsIncludeFilter().get() ?? false
+        }
+
         let spamTrashToggleState: SpamTrashToggleState
         if supportsIncludeFilter {
             spamTrashToggleState = .visible(isSelected: state.filterBar.spamTrashToggleState.isSelected)
@@ -362,7 +360,25 @@ extension MailboxModel {
         }
     }
 
-    private func handleConversationsUpdate(_ update: ConversationScrollerUpdate) async {
+    private func handleConversationScroller(update: ConversationScrollerUpdate) async {
+        switch update {
+        case .list(let listUpdate):
+            await handleConversationsList(update: listUpdate)
+        case .status(let statusUpdate):
+            switch statusUpdate {
+            case .fetchNewStart, .fetchNewEnd:
+                // FIXME: - Show / hide loading line animation
+                break
+            }
+        case .error(let error):
+            AppLogger.log(error: error, category: .mailbox)
+            showScrollerErrorIfNotNetwork(error: error)
+            let isLastPage = await !conversationScrollerHasMore()
+            paginatedDataSource.handle(update: .init(isLastPage: isLastPage, value: .error(error), completion: nil))
+        }
+    }
+
+    private func handleConversationsList(update: ConversationScrollerListUpdate) async {
         let updateType: PaginatedListUpdateType<MailboxItemCellUIModel>
         let isLastPage = await !conversationScrollerHasMore()
         var completion: (() -> Void)? = nil
@@ -384,15 +400,29 @@ extension MailboxModel {
             let items = await mailboxItems(conversations: conversations)
             updateType = .replaceBefore(index: Int(index), items: items)
             completion = { [weak self] in self?.updateSelectedItemsAfterDestructiveUpdate() }
-        case .error(let error):
-            AppLogger.log(error: error, category: .mailbox)
-            showScrollerErrorIfNotNetwork(error: error)
-            updateType = .error(error)
         }
         paginatedDataSource.handle(update: .init(isLastPage: isLastPage, value: updateType, completion: completion))
     }
 
-    private func handleMessagesUpdate(_ update: MessageScrollerUpdate) async {
+    private func handleMessageScroller(update: MessageScrollerUpdate) async {
+        switch update {
+        case .list(let listUpdate):
+            await handleMessagesList(update: listUpdate)
+        case .status(let statusUpdate):
+            switch statusUpdate {
+            case .fetchNewStart, .fetchNewEnd:
+                // FIXME: - Show / hide loading line animation
+                break
+            }
+        case .error(let error):
+            AppLogger.log(error: error, category: .mailbox)
+            showScrollerErrorIfNotNetwork(error: error)
+            let isLastPage = await !messageScrollerHasMore()
+            paginatedDataSource.handle(update: .init(isLastPage: isLastPage, value: .error(error), completion: nil))
+        }
+    }
+
+    private func handleMessagesList(update: MessageScrollerListUpdate) async {
         let updateType: PaginatedListUpdateType<MailboxItemCellUIModel>
         let isLastPage = await !messageScrollerHasMore()
         var completion: (() -> Void)? = nil
@@ -414,10 +444,6 @@ extension MailboxModel {
             let items = await mailboxItems(messages: messages)
             updateType = .replaceBefore(index: Int(index), items: items)
             completion = { [weak self] in self?.updateSelectedItemsAfterDestructiveUpdate() }
-        case .error(let error):
-            AppLogger.log(error: error, category: .mailbox)
-            showScrollerErrorIfNotNetwork(error: error)
-            updateType = .error(error)
         }
         paginatedDataSource.handle(update: .init(isLastPage: isLastPage, value: updateType, completion: completion))
     }

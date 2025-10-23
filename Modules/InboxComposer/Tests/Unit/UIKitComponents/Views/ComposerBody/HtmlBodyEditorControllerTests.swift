@@ -75,7 +75,7 @@ private final class MockHtmlBodyWebViewInterface: HtmlBodyWebViewInterfaceProtoc
     private(set) var loadedBody: String = ""
     private(set) var insertedTexts: [String] = []
 
-    func loadMessageBody(_ body: String, clearCacheFirst: Bool) {
+    func loadMessageBody(_ body: String, clearImageCacheFirst: Bool) {
         loadedBody = body
     }
 

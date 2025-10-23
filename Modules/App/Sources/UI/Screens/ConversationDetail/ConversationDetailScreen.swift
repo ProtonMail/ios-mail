@@ -23,15 +23,12 @@ import SwiftUI
 struct ConversationDetailScreen: View {
     @StateObject private var model: ConversationDetailModel
     @State private var animateViewIn: Bool = false
-    @EnvironmentObject var toastStateStore: ToastStateStore
     @Environment(\.colorScheme) var colorScheme
     @Environment(\.proceedAfterMove) var proceedAfterMove
     private let draftPresenter: DraftPresenter
     private let mailUserSession: MailUserSession
     private let onLoad: (ConversationDetailModel) -> Void
     private let onDidAppear: (ConversationDetailModel) -> Void
-
-    let seed: ConversationDetailSeed
 
     init(
         seed: ConversationDetailSeed,
@@ -40,7 +37,6 @@ struct ConversationDetailScreen: View {
         onLoad: @escaping (ConversationDetailModel) -> Void,
         onDidAppear: @escaping (ConversationDetailModel) -> Void
     ) {
-        self.seed = seed
         self._model = StateObject(
             wrappedValue: .init(
                 seed: seed,
@@ -250,15 +246,4 @@ extension ConversationDetailSeed {
         }
     }
 
-}
-
-// MARK: Accessibility
-
-private struct MailboxActionBarViewIdentifiers {
-    static let rootItem = "mailbox.actionBar.rootItem"
-
-    static func button(index: Int) -> String {
-        let number = index + 1
-        return "mailbox.actionBar.button\(number)"
-    }
 }

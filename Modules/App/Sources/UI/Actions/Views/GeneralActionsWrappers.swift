@@ -29,10 +29,6 @@ extension GeneralActionsWrappers {
         .init(markMessagePhishing: { mailbox, id in await reportPhishing(mailbox: mailbox, messageId: id) })
     }
 
-    static var dummy: GeneralActionsWrappers {
-        .init(markMessagePhishing: { _, _ in .ok })
-    }
-
 }
 
 struct GeneralActionsPerformer {

@@ -40,7 +40,6 @@ public extension DS.Icon {
     static let icEnvelopes = ImageResource.icEnvelopes
     static let icEnvelopesCross = ImageResource.icEnvelopeCross
     static let icExclamationCircle = ImageResource.icExclamationCircle
-    static let icFile = ImageResource.icFile
     static let icFire = ImageResource.icFire
     static let icFolder = ImageResource.icFolder
     static let icFolderFilled = ImageResource.icFolderFilled
@@ -93,7 +92,6 @@ public extension DS.Icon {
     static let icEnvelopeDot = ImageResource.icEnvelopeDot
     static let icEnvelopeOpen = ImageResource.icEnvelopeOpen
     static let icFileLines = ImageResource.icFileLines
-    static let icFilePDF = ImageResource.icFilePdf
     static let icFolderArrowIn = ImageResource.icFolderArrowIn
     static let icHook = ImageResource.icHook
     static let icPinAngled = ImageResource.icPinAngled

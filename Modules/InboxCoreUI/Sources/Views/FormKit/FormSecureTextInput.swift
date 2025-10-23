@@ -20,17 +20,14 @@ import SwiftUI
 
 struct FormSecureTextInput: View {
     private let configuration: SecureInput.Configuration
-    private let title: LocalizedStringResource
     @Binding private var text: String
     @State var secureEntry: Bool = true
 
     init(
         configuration: SecureInput.Configuration,
-        title: LocalizedStringResource,
         text: Binding<String>
     ) {
         self.configuration = configuration
-        self.title = title
         self._text = text
     }
 

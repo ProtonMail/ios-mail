@@ -113,7 +113,7 @@ public struct FormTextInput: View {
     private func input() -> some View {
         switch inputType {
         case .secureOneline(let configuration):
-            FormSecureTextInput(configuration: configuration, title: title, text: $text)
+            FormSecureTextInput(configuration: configuration, text: $text)
         case .multiline:
             ZStack(alignment: .topLeading) {
                 TextEditor(text: $text)

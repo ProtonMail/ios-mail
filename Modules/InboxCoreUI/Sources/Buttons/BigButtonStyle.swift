@@ -25,7 +25,7 @@ public struct BigButtonStyle: ButtonStyle {
         case inverted
         case weak
 
-        func foregroundColor(isPressed: Bool) -> Color {
+        var foregroundColor: Color {
             switch self {
             case .regular:
                 DS.Color.Text.inverted
@@ -59,7 +59,7 @@ public struct BigButtonStyle: ButtonStyle {
             .label
             .font(.subheadline)
             .fontWeight(.semibold)
-            .foregroundStyle(flavor.foregroundColor(isPressed: configuration.isPressed))
+            .foregroundStyle(flavor.foregroundColor)
             .frame(height: 44)
             .frame(maxWidth: .infinity)
             .background(

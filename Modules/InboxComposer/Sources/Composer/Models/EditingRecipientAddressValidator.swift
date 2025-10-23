@@ -42,7 +42,8 @@ struct EditingRecipientAddressValidator {
         guard let editingRecipient = readState()?.editingRecipientFieldState else { return true }
         if editingRecipient.controllerState == .editing {
             let trimmedInput = editingRecipient.input.withoutWhitespace
-            return trimmedInput.isEmpty || isValidEmailAddress(address: trimmedInput)
+            let singleRecipient = newRecipient(email: trimmedInput)
+            return trimmedInput.isEmpty || isValidEmailAddress(address: singleRecipient.email)
         }
         return true
     }

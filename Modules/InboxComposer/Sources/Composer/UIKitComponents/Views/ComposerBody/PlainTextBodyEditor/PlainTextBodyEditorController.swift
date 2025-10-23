@@ -15,7 +15,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import InboxCore
 import InboxDesignSystem
 import UIKit
 
@@ -68,7 +67,7 @@ final class PlainTextBodyEditorController: UIViewController, BodyEditor {
         switch action {
         case .insertText, .insertInlineImages, .removeInlineImage:
             break
-        case .reloadBody(let body):
+        case .reloadBody(let body, _):
             updateBody(body)
         }
     }

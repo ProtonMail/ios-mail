@@ -259,13 +259,27 @@ final class ComposerModelTests: BaseTestCase {
     // MARK: addRecipientFromInput
 
     func testaddRecipientFromInput_whenInputIsValid_itShouldAddTheRecipient() async {
+        let valid = dummyAddress1
         let sut = makeSut(draft: .emptyMock, draftOrigin: .new, contactProvider: testContactProvider)
         sut.startEditingRecipients(for: .to)
-        await prepareInput(sut: sut, input: dummyAddress1, for: .to)
+        await prepareInput(sut: sut, input: valid, for: .to)
 
         sut.addRecipientFromInput()
 
         XCTAssertEqual(sut.state.toRecipients.recipients.first?.displayName, dummyAddress1)
+        XCTAssertTrue(sut.state.ccRecipients.recipients.isEmpty)
+        XCTAssertTrue(sut.state.bccRecipients.recipients.isEmpty)
+    }
+
+    func testaddRecipientFromInput_whenInputIsValid_andContainsDisplayName_itShouldAddTheRecipient() async {
+        let valid = "john <john@example.com>"
+        let sut = makeSut(draft: .emptyMock, draftOrigin: .new, contactProvider: testContactProvider)
+        sut.startEditingRecipients(for: .to)
+        await prepareInput(sut: sut, input: valid, for: .to)
+
+        sut.addRecipientFromInput()
+
+        XCTAssertEqual(sut.state.toRecipients.recipients.first?.displayName, "john")
         XCTAssertTrue(sut.state.ccRecipients.recipients.isEmpty)
         XCTAssertTrue(sut.state.bccRecipients.recipients.isEmpty)
     }
@@ -466,7 +480,7 @@ final class ComposerModelTests: BaseTestCase {
 
         try await sut.changeSenderAddress(email: newAddress)
         let html = mockDraft.body()
-        XCTAssertEqual(sut.bodyAction, ComposerBodyAction.reloadBody(html: html))
+        XCTAssertEqual(sut.bodyAction, ComposerBodyAction.reloadBody(html: html, clearImageCacheFirst: false))
     }
 
     func testChangeSenderAddress_whenFailure_itDoesNotSetBodyActionToReloadBody() async {
@@ -695,7 +709,7 @@ final class ComposerModelTests: BaseTestCase {
         await sut.removeAttachment(attachment: draftAttachment.attachment)
 
         XCTAssertEqual(mockDraft.mockAttachmentList.capturedRemoveIdCalls.first, attachmentId)
-        XCTAssertEqual(sut.bodyAction, ComposerBodyAction.reloadBody(html: dummyBody))
+        XCTAssertEqual(sut.bodyAction, ComposerBodyAction.reloadBody(html: dummyBody, clearImageCacheFirst: true))
     }
 
     // MARK: removeAttachment(cid:)
@@ -747,7 +761,7 @@ final class ComposerModelTests: BaseTestCase {
         mockDraft.mockBody = "<html>test body</html>"
         let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: .mockInstance)
         await sut.reloadBodyAfterMemoryPressure()
-        XCTAssertEqual(sut.bodyAction, ComposerBodyAction.reloadBody(html: "<html>test body</html>"))
+        XCTAssertEqual(sut.bodyAction, ComposerBodyAction.reloadBody(html: "<html>test body</html>", clearImageCacheFirst: false))
     }
 
     // MARK: sendMessage

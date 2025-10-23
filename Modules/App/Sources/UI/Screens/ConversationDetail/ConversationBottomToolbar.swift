@@ -16,7 +16,6 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import proton_app_uniffi
-import InboxCore
 import InboxCoreUI
 import InboxDesignSystem
 import SwiftUI
@@ -105,7 +104,6 @@ struct ConversationToolbarModifier: ViewModifier {
             MessageActionsMenu(
                 state: .initial(messageID: messageID, showEditToolbar: true),
                 mailbox: mailbox(),
-                mailUserSession: mailUserSession,
                 messageAppearanceOverrideStore: messageAppearanceOverrideStore,
                 actionTapped: messageActionSelected,
                 editToolbarTapped: { editToolbarTapped(.message) }
@@ -121,7 +119,6 @@ struct ConversationToolbarModifier: ViewModifier {
             ConversationActionsMenu(
                 conversationID: conversationID,
                 mailbox: mailbox(),
-                mailUserSession: mailUserSession,
                 actionTapped: conversationActionSelected,
                 editToolbarTapped: { editToolbarTapped(.conversation) }
             ) {

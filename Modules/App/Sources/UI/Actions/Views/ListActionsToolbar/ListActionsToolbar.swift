@@ -197,17 +197,6 @@ private struct ListActionBarViewModifier: ViewModifier {
     }
 }
 
-// MARK: Accessibility
-
-private struct MailboxActionBarViewIdentifiers {
-    static let rootItem = "mailbox.actionBar.rootItem"
-
-    static func button(index: Int) -> String {
-        let number = index + 1
-        return "mailbox.actionBar.button\(number)"
-    }
-}
-
 private struct MailboxIdentifiaction: Hashable {
     let viewMode: ViewMode
     let id: ID

@@ -60,7 +60,7 @@ struct ComposerState: Equatable, Copying {
     }
 }
 
-public enum ComposerMode {
+enum ComposerMode {
     case html
     case plainText
 }

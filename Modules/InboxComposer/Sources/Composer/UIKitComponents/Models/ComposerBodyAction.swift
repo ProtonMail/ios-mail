@@ -19,5 +19,5 @@ enum ComposerBodyAction: Equatable {
     case insertText(text: String)
     case insertInlineImages(cids: [String])
     case removeInlineImage(cid: String)
-    case reloadBody(html: String)
+    case reloadBody(html: String, clearImageCacheFirst: Bool)
 }

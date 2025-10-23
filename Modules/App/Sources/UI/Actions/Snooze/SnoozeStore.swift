@@ -17,7 +17,6 @@
 
 import InboxCore
 import InboxCoreUI
-import InboxIAP
 import SwiftUI
 import proton_app_uniffi
 

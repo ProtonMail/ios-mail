@@ -45,7 +45,7 @@ struct ContactGroupDetailsScreen: View {
                 VStack(spacing: DS.Spacing.large) {
                     avatarView(state: state)
                     groupDetails(state: state)
-                    newMessageButton(state: state, store: store)
+                    newMessageButton(store: store)
                     items(state: state, store: store)
                 }
                 .padding(.horizontal, DS.Spacing.large)
@@ -72,7 +72,6 @@ struct ContactGroupDetailsScreen: View {
     private typealias NewMessageButton = L10n.ContactGroupDetails.NewMessageButton
 
     private func newMessageButton(
-        state: ContactGroupItem,
         store: ContactGroupDetailsStateStore
     ) -> some View {
         Button(action: { store.handle(action: .sendGroupMessageTapped) }) {

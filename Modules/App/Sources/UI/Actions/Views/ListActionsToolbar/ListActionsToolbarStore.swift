@@ -189,11 +189,3 @@ final class ListActionsToolbarStore: StateStore {
             }))
     }
 }
-
-private extension Array where Element == ListActions {
-
-    var moreActionFiltered: Self {
-        filter { $0 != .more }
-    }
-
-}

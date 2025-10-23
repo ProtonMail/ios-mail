@@ -231,7 +231,6 @@ struct MessageDetailsView: View {
             MessageActionsMenu(
                 state: .initial(messageID: uiModel.id, showEditToolbar: false),
                 mailbox: mailbox,
-                mailUserSession: mailUserSession,
                 messageAppearanceOverrideStore: messageAppearanceOverrideStore,
                 actionTapped: { action in onEvent(.onMessageAction(action)) },
                 editToolbarTapped: { onEvent(.onEditToolbar) }

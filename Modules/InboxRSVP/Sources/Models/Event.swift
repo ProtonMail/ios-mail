@@ -61,5 +61,4 @@ struct Event: Copying {
     let location: String?
     let organizer: Organizer
     var participants: [Participant]
-    let userParticipantIndex: Int?
 }
