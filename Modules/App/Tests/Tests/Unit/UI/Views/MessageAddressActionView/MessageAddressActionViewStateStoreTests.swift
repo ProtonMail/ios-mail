@@ -90,11 +90,11 @@ final class MessageAddressActionViewStateStoreTests {
         #expect(sut.state.avatar.type == .sender(.init(params: .init(), blocked: .no)))
     }
 
-    // MARK: - `Block contact` action
+    // MARK: - `Block address` action
 
     @Test
     func testOnTapBlockContact_ItPresentsAlert() async {
-        await sut.handle(action: .onTap(.blockContact))
+        await sut.handle(action: .onTap(.blockAddress))
 
         #expect(
             sut.state
@@ -110,8 +110,8 @@ final class MessageAddressActionViewStateStoreTests {
     }
 
     @MainActor
-    func testOnBlockAlertAction_CancelActionTapped_ItDismissesAlertAndDoesNotCallBlock() async {
-        await sut.handle(action: .onTap(.blockContact))
+    func testOnTapBlockAlertAction_CancelActionTapped_ItDismissesAlertAndDoesNotCallBlock() async {
+        await sut.handle(action: .onTap(.blockAddress))
         await sut.handle(action: .onBlockAlertAction(.cancel))
 
         #expect(
@@ -130,10 +130,10 @@ final class MessageAddressActionViewStateStoreTests {
     }
 
     @Test
-    func testOnBlockAlertAction_ConfirmActionTappedAndSucceeds_ItShowsInformationToast() async {
+    func testOnTapBlockAlertAction_ConfirmActionTappedAndSucceeds_ItShowsInformationToast() async {
         blockSpy.stubbed[email] = .ok
 
-        await sut.handle(action: .onTap(.blockContact))
+        await sut.handle(action: .onTap(.blockAddress))
         await sut.handle(action: .onBlockAlertAction(.confirm))
 
         #expect(
@@ -153,10 +153,10 @@ final class MessageAddressActionViewStateStoreTests {
     }
 
     @Test
-    func testOnBlockAlertAction_ConfirmActionTappedAndFailed_ItShowsErrorToast() async {
+    func testOnTapBlockAlertAction_ConfirmActionTappedAndFailed_ItShowsErrorToast() async {
         blockSpy.stubbed[email] = .error(.other(.network))
 
-        await sut.handle(action: .onTap(.blockContact))
+        await sut.handle(action: .onTap(.blockAddress))
         await sut.handle(action: .onBlockAlertAction(.confirm))
 
         #expect(
@@ -172,10 +172,10 @@ final class MessageAddressActionViewStateStoreTests {
         #expect(toastStateStore.state.toasts == [.error(message: "Could not block sender")])
     }
 
-    // MARK: - `Unblock contact` action
+    // MARK: - `Unblock address` action
 
     @Test
-    func testUnblockContactAction_WhenActionSucceeds_ItUnblocksContact() async throws {
+    func testOnTapUnblockAddress_WhenActionSucceeds_ItUnblocksContact() async throws {
         messageAddressSpy.stubbedIsSenderBlocked = .yes
 
         let sut = makeSUT()
@@ -184,7 +184,7 @@ final class MessageAddressActionViewStateStoreTests {
 
         messageAddressSpy.stubbedIsSenderBlocked = .no
 
-        await sut.handle(action: .onTap(.unblockContact))
+        await sut.handle(action: .onTap(.unblockAddress))
 
         let info: SenderInfo = try #require(avatar.type.senderInfo)
 
@@ -205,14 +205,14 @@ final class MessageAddressActionViewStateStoreTests {
     }
 
     @Test
-    func testUnblockContactAction_WhenActionFails_ItDoesNotUnblockContact() async throws {
+    func testOnTapUnblockAddress_WhenActionFails_ItDoesNotUnblockContact() async throws {
         messageAddressSpy.stubbedIsSenderBlocked = .yes
         unblockSpy.stubbed[email] = .error(.other(.network))
 
         let sut = makeSUT()
 
         await sut.handle(action: .onLoad)
-        await sut.handle(action: .onTap(.unblockContact))
+        await sut.handle(action: .onTap(.unblockAddress))
 
         let info: SenderInfo = try #require(avatar.type.senderInfo)
 

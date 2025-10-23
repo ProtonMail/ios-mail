@@ -121,9 +121,9 @@ final class MessageAddressActionViewStateStore: StateStore {
             clipboard.copyToClipboard(value: state.name, forName: CommonL10n.Clipboard.name)
         case .addToContacts:
             toastStateStore.present(toast: .comingSoon)
-        case .blockContact:
+        case .blockAddress:
             state = state.copy(\.emailToBlock, to: state.email)
-        case .unblockContact:
+        case .unblockAddress:
             await unblock(email: state.email)
         }
     }

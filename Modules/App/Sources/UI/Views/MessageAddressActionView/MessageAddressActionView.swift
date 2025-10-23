@@ -101,9 +101,9 @@ struct MessageAddressActionView: View {
     private func blockUnblockAction(avatar: AvatarUIModel) -> [MessageAddressAction] {
         switch avatar.type.senderInfo?.blocked {
         case .yes:
-            [.unblockContact]
+            [.unblockAddress]
         case .no:
-            [.blockContact]
+            [.blockAddress]
         case .none, .notLoaded:
             []
         }
