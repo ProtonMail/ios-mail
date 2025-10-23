@@ -288,29 +288,21 @@ extension MailboxModel {
             if mailbox.viewMode() == .messages {
                 messageScroller = try await scrollMessagesForLabel(
                     mailbox: mailbox,
-                    labelId: mailbox.labelId(),
-                    unread: unreadFilter,
-                    include: state.filterBar.spamTrashToggleState.includeSpamTrash,
                     callback: MessageScrollerLiveQueryCallbackkWrapper { [weak self] update in
                         Task {
                             await self?.handleMessageScroller(update: update)
                         }
                     }
                 ).get()
-                setUpSpamTrashToggleVisibility(supportsIncludeFilter: messageScroller?.supportsIncludeFilter() ?? false)
             } else {
                 conversationScroller = try await scrollConversationsForLabel(
                     mailbox: mailbox,
-                    labelId: mailbox.labelId(),
-                    unread: unreadFilter,
-                    include: state.filterBar.spamTrashToggleState.includeSpamTrash,
                     callback: ConversationScrollerLiveQueryCallbackkWrapper { [weak self] update in
                         Task {
                             await self?.handleConversationScroller(update: update)
                         }
                     }
                 ).get()
-                setUpSpamTrashToggleVisibility(supportsIncludeFilter: conversationScroller?.supportsIncludeFilter() ?? false)
             }
             paginatedDataSource.fetchInitialPage()
 
@@ -321,13 +313,22 @@ extension MailboxModel {
                 }
             }
             await unreadCountLiveQuery?.setUpLiveQuery()
+            try await setUpSpamTrashToggleVisibility()
         } catch {
             AppLogger.log(error: error, category: .mailbox)
             toast = .error(message: L10n.Mailbox.Error.mailboxErrorMessage.string, duration: .long)
         }
     }
 
-    private func setUpSpamTrashToggleVisibility(supportsIncludeFilter: Bool) {
+    private func setUpSpamTrashToggleVisibility() async throws {
+        let supportsIncludeFilter: Bool
+        switch viewMode {
+        case .messages:
+            supportsIncludeFilter = try await messageScroller?.supportsIncludeFilter().get() ?? false
+        case .conversations:
+            supportsIncludeFilter = try await conversationScroller?.supportsIncludeFilter().get() ?? false
+        }
+
         let spamTrashToggleState: SpamTrashToggleState
         if supportsIncludeFilter {
             spamTrashToggleState = .visible(isSelected: state.filterBar.spamTrashToggleState.isSelected)
@@ -535,13 +536,11 @@ extension MailboxModel {
 extension MailboxModel {
 
     func onUnreadFilterChange() {
-        Task {
-            AppLogger.log(message: "unread filter has changed to \(unreadFilter)", category: .mailbox)
-            if viewMode == .conversations {
-                _ = conversationScroller?.changeFilter(unread: unreadFilter)
-            } else {
-                _ = messageScroller?.changeFilter(unread: unreadFilter)
-            }
+        AppLogger.log(message: "unread filter has changed to \(unreadFilter)", category: .mailbox)
+        if viewMode == .conversations {
+            _ = conversationScroller?.changeFilter(unread: unreadFilter)
+        } else {
+            _ = messageScroller?.changeFilter(unread: unreadFilter)
         }
     }
 

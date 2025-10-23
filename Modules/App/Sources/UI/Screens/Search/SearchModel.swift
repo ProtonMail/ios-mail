@@ -101,7 +101,6 @@ final class SearchModel: ObservableObject, @unchecked Sendable {
             let result = await scrollerSearch(
                 mailbox: mailbox,
                 options: .init(keywords: query),
-                include: state.spamTrashToggleState.includeSpamTrash,
                 callback: MessageScrollerLiveQueryCallbackkWrapper { [weak self] update in
                     Task {
                         await self?.handleSearchScroller(update: update)
@@ -113,7 +112,6 @@ final class SearchModel: ObservableObject, @unchecked Sendable {
             case .ok(let searchScroller):
                 self.searchScroller = searchScroller
                 paginatedDataSource.fetchInitialPage()
-                setUpSpamTrashToggleVisibility(supportsIncludeFilter: searchScroller.supportsIncludeFilter())
             case .error(let error):
                 AppLogger.log(error: error, category: .search)
             }
