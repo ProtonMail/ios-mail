@@ -293,7 +293,7 @@ extension MailboxModel {
                     include: state.filterBar.spamTrashToggleState.includeSpamTrash,
                     callback: MessageScrollerLiveQueryCallbackkWrapper { [weak self] update in
                         Task {
-                            await self?.handleMessagesUpdate(update)
+                            await self?.handleMessageScroller(update: update)
                         }
                     }
                 ).get()
@@ -306,7 +306,7 @@ extension MailboxModel {
                     include: state.filterBar.spamTrashToggleState.includeSpamTrash,
                     callback: ConversationScrollerLiveQueryCallbackkWrapper { [weak self] update in
                         Task {
-                            await self?.handleConversationsUpdate(update)
+                            await self?.handleConversationScroller(update: update)
                         }
                     }
                 ).get()
@@ -359,7 +359,24 @@ extension MailboxModel {
         }
     }
 
-    private func handleConversationsUpdate(_ update: ConversationScrollerUpdate) async {
+    private func handleConversationScroller(update: ConversationScrollerUpdate) async {
+        switch update {
+        case .list(let listUpdate):
+            await handleConversationsList(update: listUpdate)
+        case .status(let statusUpdate):
+            switch statusUpdate {
+            case .fetchNewStart:
+                break
+            case .fetchNewEnd:
+                break
+            }
+        case .error(let error):
+            AppLogger.log(error: error, category: .mailbox)
+            showScrollerErrorIfNotNetwork(error: error)
+        }
+    }
+
+    private func handleConversationsList(update: ConversationScrollerListUpdate) async {
         let updateType: PaginatedListUpdateType<MailboxItemCellUIModel>
         let isLastPage = await !conversationScrollerHasMore()
         var completion: (() -> Void)? = nil
@@ -381,15 +398,28 @@ extension MailboxModel {
             let items = await mailboxItems(conversations: conversations)
             updateType = .replaceBefore(index: Int(index), items: items)
             completion = { [weak self] in self?.updateSelectedItemsAfterDestructiveUpdate() }
-        case .error(let error):
-            AppLogger.log(error: error, category: .mailbox)
-            showScrollerErrorIfNotNetwork(error: error)
-            updateType = .error(error)
         }
         paginatedDataSource.handle(update: .init(isLastPage: isLastPage, value: updateType, completion: completion))
     }
 
-    private func handleMessagesUpdate(_ update: MessageScrollerUpdate) async {
+    private func handleMessageScroller(update: MessageScrollerUpdate) async {
+        switch update {
+        case .list(let listUpdate):
+            await handleMessagesList(update: listUpdate)
+        case .status(let statusUpdate):
+            switch statusUpdate {
+            case .fetchNewStart:
+                break
+            case .fetchNewEnd:
+                break
+            }
+        case .error(let error):
+            AppLogger.log(error: error, category: .mailbox)
+            showScrollerErrorIfNotNetwork(error: error)
+        }
+    }
+
+    private func handleMessagesList(update: MessageScrollerListUpdate) async {
         let updateType: PaginatedListUpdateType<MailboxItemCellUIModel>
         let isLastPage = await !messageScrollerHasMore()
         var completion: (() -> Void)? = nil
@@ -411,10 +441,6 @@ extension MailboxModel {
             let items = await mailboxItems(messages: messages)
             updateType = .replaceBefore(index: Int(index), items: items)
             completion = { [weak self] in self?.updateSelectedItemsAfterDestructiveUpdate() }
-        case .error(let error):
-            AppLogger.log(error: error, category: .mailbox)
-            showScrollerErrorIfNotNetwork(error: error)
-            updateType = .error(error)
         }
         paginatedDataSource.handle(update: .init(isLastPage: isLastPage, value: updateType, completion: completion))
     }

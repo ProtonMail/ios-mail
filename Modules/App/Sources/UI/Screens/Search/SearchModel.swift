@@ -104,7 +104,7 @@ final class SearchModel: ObservableObject, @unchecked Sendable {
                 include: state.spamTrashToggleState.includeSpamTrash,
                 callback: MessageScrollerLiveQueryCallbackkWrapper { [weak self] update in
                     Task {
-                        await self?.handleMessagesUpdate(update)
+                        await self?.handleSearchScroller(update: update)
                     }
                 }
             )
@@ -160,7 +160,23 @@ final class SearchModel: ObservableObject, @unchecked Sendable {
         }
     }
 
-    private func handleMessagesUpdate(_ update: MessageScrollerUpdate) async {
+    private func handleSearchScroller(update: MessageScrollerUpdate) async {
+        switch update {
+        case .list(let listUpdate):
+            await handleMessagesList(update: listUpdate)
+        case .status(let statusUpdate):
+            switch statusUpdate {
+            case .fetchNewStart:
+                break
+            case .fetchNewEnd:
+                break
+            }
+        case .error(let error):
+            AppLogger.log(error: error, category: .mailbox)
+        }
+    }
+
+    private func handleMessagesList(update: MessageScrollerListUpdate) async {
         let isLastPage = await !searchScrollerHasMore()
         let updateType: PaginatedListUpdateType<MailboxItemCellUIModel>
         var completion: (() -> Void)? = nil
@@ -182,9 +198,6 @@ final class SearchModel: ObservableObject, @unchecked Sendable {
             let items = await mailboxItems(messages: messages)
             updateType = .replaceBefore(index: Int(index), items: items)
             completion = { [weak self] in self?.updateSelectedItemsAfterDestructiveUpdate() }
-        case .error(let error):
-            AppLogger.log(error: error, category: .mailbox)
-            updateType = .error(error)
         }
         listUpdateSubject.send(.init(isLastPage: isLastPage, value: updateType, completion: completion))
     }

@@ -66,7 +66,7 @@ final class PaginatedListDataSource<Item: Equatable & Sendable>: ObservableObjec
         case let .replaceBefore(index, items):
             guard isSafeIndex(index) else { break }
             newState.items.replaceSubrange(newState.items.startIndex..<index, with: items)
-        case .none, .error:
+        case .none:
             break
         }
 
