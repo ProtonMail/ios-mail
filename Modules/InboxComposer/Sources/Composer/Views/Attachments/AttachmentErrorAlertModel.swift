@@ -70,7 +70,7 @@ enum AttachmentErrorAlertModel: Hashable {
                 L10n.AttachmentError.tooManyAttachmentsFromServerMessage
             }
         case .storageQuotaExceeded:
-            L10n.AttachmentError.storageQuotaExceededTitle
+            L10n.DraftAttachmentUploadError.storageQuotaExceeded
         case .somethingWentWrong:
             L10n.AttachmentError.somethingWentWrongMessage
         }
