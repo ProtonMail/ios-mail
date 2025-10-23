@@ -109,7 +109,7 @@ final class SearchModel: ObservableObject, @unchecked Sendable {
     private func initializeScroller(query: String) async {
         let result = await scrollerSearch(
             mailbox: mailbox,
-            options: .init(keywords: nil),
+            options: .init(keywords: query),
             callback: MessageScrollerLiveQueryCallbackkWrapper { [weak self] update in
                 Task {
                     await self?.handleSearchScroller(update: update)
