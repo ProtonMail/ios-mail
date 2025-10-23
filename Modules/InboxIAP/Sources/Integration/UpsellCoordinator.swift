@@ -80,14 +80,14 @@ public final class UpsellCoordinator: ObservableObject {
         }
     }
 
-    public func presentUpsellScreen(entryPoint: UpsellEntryPoint) async throws -> UpsellScreenModel {
+    public func presentUpsellScreen(entryPoint: UpsellEntryPoint, upsellType: UpsellType = .standard) async throws -> UpsellScreenModel {
         let availablePlans = try await fetchAvailablePlans()
 
         return try upsellScreenFactory.upsellScreenModel(
             showingPlan: configuration.regularPlan,
             basedOn: availablePlans,
             entryPoint: entryPoint,
-            upsellType: .standard
+            upsellType: upsellType
         )
     }
 

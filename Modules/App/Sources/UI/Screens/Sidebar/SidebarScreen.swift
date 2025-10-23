@@ -51,7 +51,7 @@ struct SidebarScreen: View {
     init(
         state: SidebarState,
         userSession: MailUserSession,
-        upsellButtonVisibilityPublisher: UpsellButtonVisibilityPublisher,
+        upsellEligibilityPublisher: UpsellEligibilityPublisher,
         appVersionProvider: AppVersionProvider = .init(),
         sidebarFactory: @escaping (MailUserSession) -> SidebarProtocol = Sidebar.init,
         selectedItem: @escaping (SidebarItem) -> Void
@@ -59,7 +59,7 @@ struct SidebarScreen: View {
         let screenModel = SidebarModel(
             state: state,
             sidebar: sidebarFactory(userSession),
-            upsellButtonVisibilityPublisher: upsellButtonVisibilityPublisher
+            upsellEligibilityPublisher: upsellEligibilityPublisher
         )
 
         _screenModel = .init(wrappedValue: screenModel)
@@ -207,8 +207,8 @@ struct SidebarScreen: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: .zero) {
                     VStack(spacing: .zero) {
-                        if let upsellItem = screenModel.state.upsell {
-                            upsellSidebarItem(item: upsellItem)
+                        if let upsellItem = screenModel.state.upsell, case .upsell(let upsellType) = upsellItem {
+                            upsellSidebarItem(item: upsellItem, upsellType: upsellType)
                         }
                         systemFoldersList()
                     }
@@ -237,7 +237,7 @@ struct SidebarScreen: View {
     }
 
     @ViewBuilder
-    private func upsellSidebarItem(item: SidebarItem) -> some View {
+    private func upsellSidebarItem(item: SidebarItem, upsellType: UpsellType) -> some View {
         let planName = UpsellConfiguration.mail.humanReadableUpsoldPlanName
 
         SidebarItemButton(
@@ -246,8 +246,8 @@ struct SidebarScreen: View {
             action: { select(item: item) },
             content: {
                 HStack(spacing: .zero) {
-                    sidebarItemImage(icon: DS.Icon.icDiamond.image, isSelected: false, renderingMode: .original)
-                    itemNameLabel(name: L10n.Sidebar.upgrade(to: planName).string, isSelected: false)
+                    sidebarItemImage(icon: upsellType.icon.image, isSelected: false, renderingMode: .original)
+                    itemNameLabel(name: upsellType.title(planName: planName), isSelected: false, foregroundColor: upsellType.tint)
                     Spacer()
                 }
             }
@@ -376,11 +376,11 @@ struct SidebarScreen: View {
             .accessibilityIdentifier(SidebarScreenIdentifiers.badgeIcon)
     }
 
-    private func itemNameLabel(name: String, isSelected: Bool) -> some View {
+    private func itemNameLabel(name: String, isSelected: Bool, foregroundColor: Color? = nil) -> some View {
         Text(name)
             .font(.subheadline)
             .fontWeight(isSelected ? .bold : .regular)
-            .foregroundStyle(isSelected ? DS.Color.Sidebar.textSelected : DS.Color.Sidebar.textNorm)
+            .foregroundStyle(foregroundColor ?? (isSelected ? DS.Color.Sidebar.textSelected : DS.Color.Sidebar.textNorm))
             .lineLimit(1)
             .accessibilityIdentifier(SidebarScreenIdentifiers.textItem)
     }
@@ -462,4 +462,35 @@ private extension SidebarOtherItem {
         }
     }
 
+}
+
+private extension UpsellType {
+    var icon: ImageResource {
+        switch self {
+        case .standard:
+            DS.Icon.icDiamond
+        case .blackFriday(.wave1):
+            DS.Icon.upsellBlackFridaySidebarItemWave1
+        case .blackFriday(.wave2):
+            DS.Icon.upsellBlackFridaySidebarItemWave2
+        }
+    }
+
+    func title(planName: String) -> String {
+        switch self {
+        case .standard:
+            L10n.Sidebar.upgrade(to: planName).string
+        case .blackFriday:
+            "Black Friday Sale".notLocalized
+        }
+    }
+
+    var tint: Color? {
+        switch self {
+        case .standard:
+            nil
+        case .blackFriday:
+            DS.Color.Promo.blackFriday
+        }
+    }
 }

@@ -24,4 +24,8 @@ protocol UpsellScreenPresenter {
     func presentUpsellScreen(entryPoint: UpsellEntryPoint) async throws -> UpsellScreenModel
 }
 
-extension UpsellCoordinator: UpsellScreenPresenter {}
+extension UpsellCoordinator: UpsellScreenPresenter {
+    func presentUpsellScreen(entryPoint: UpsellEntryPoint) async throws -> UpsellScreenModel {
+        try await presentUpsellScreen(entryPoint: entryPoint, upsellType: .standard)
+    }
+}

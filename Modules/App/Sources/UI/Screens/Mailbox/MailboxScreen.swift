@@ -27,7 +27,7 @@ struct MailboxScreen: View {
     @EnvironmentObject private var appUIStateStore: AppUIStateStore
     @EnvironmentObject private var toastStateStore: ToastStateStore
     @EnvironmentObject private var upsellCoordinator: UpsellCoordinator
-    @Environment(\.isUpsellButtonVisible) private var isUpsellButtonVisible
+    @Environment(\.upsellEligibility) private var upsellEligibility
     @StateObject private var mailboxModel: MailboxModel
     @State private var isComposeButtonExpanded: Bool = true
     @State private var isOnboardingPresented = false
@@ -39,7 +39,7 @@ struct MailboxScreen: View {
     private let userDefaults: UserDefaults
 
     private var shouldShowOnboardingUpsell: Bool {
-        isUpsellButtonVisible && !userDefaults[.hasSeenOnboardingUpsell]
+        upsellEligibility == .eligible(.standard) && !userDefaults[.hasSeenOnboardingUpsell]
     }
 
     init(

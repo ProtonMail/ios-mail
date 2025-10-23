@@ -23,7 +23,7 @@ import XCTest
 @MainActor
 final class SidebarModelTests {
 
-    private lazy var sut = SidebarModel(state: .initial, sidebar: sidebarSpy, upsellButtonVisibilityPublisher: .init(constant: true))
+    private lazy var sut = SidebarModel(state: .initial, sidebar: sidebarSpy, upsellEligibilityPublisher: .init(constant: .eligible(.standard)))
     private let sidebarSpy = SidebarSpy()
 
     func test_WhenAppear_ItSelectsFirstSystemFolder() throws {

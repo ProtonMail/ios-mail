@@ -19,12 +19,13 @@ import AccountManager
 import InboxCoreUI
 import InboxDesignSystem
 import InboxIAP
+import proton_app_uniffi
 import SwiftUI
 
 struct MainToolbar<AvatarView: View>: ViewModifier {
     @EnvironmentObject private var toastStateStore: ToastStateStore
     @EnvironmentObject private var upsellCoordinator: UpsellCoordinator
-    @Environment(\.isUpsellButtonVisible) private var isUpsellButtonVisible
+    @Environment(\.upsellEligibility) private var upsellEligibility
     @ObservedObject private var selectionMode: SelectionModeState
     let onEvent: (MainToolbarEvent) -> Void
     let avatarView: () -> AvatarView
@@ -83,10 +84,10 @@ struct MainToolbar<AvatarView: View>: ViewModifier {
                 ToolbarItemGroup(placement: .topBarTrailing) {
                     if !selectionMode.hasItems {
                         HStack(spacing: DS.Spacing.standard) {
-                            if isUpsellButtonVisible {
-                                toolbarButton(icon: DS.Icon.icBrandProtonMailUpsellBlackAndWhite.image.renderingMode(.template)) {
+                            if case .eligible(let upsellType) = upsellEligibility {
+                                toolbarButton(icon: upsellType.icon) {
                                     do {
-                                        let upsellScreenModel = try await upsellCoordinator.presentUpsellScreen(entryPoint: .mailboxTopBar)
+                                        let upsellScreenModel = try await upsellCoordinator.presentUpsellScreen(entryPoint: .mailboxTopBar, upsellType: upsellType)
                                         onEvent(.onUpsell(upsellScreenModel))
                                     } catch {
                                         toastStateStore.present(toast: .error(message: error.localizedDescription))
@@ -157,6 +158,19 @@ enum MainToolbarEvent {
     case onExitSelectionMode
     case onSearch
     case onUpsell(UpsellScreenModel)
+}
+
+private extension UpsellType {
+    var icon: Image {
+        switch self {
+        case .standard:
+            DS.Icon.icBrandProtonMailUpsellBlackAndWhite.image.renderingMode(.template)
+        case .blackFriday(.wave1):
+            DS.Icon.upsellBlackFridayHeaderButtonWave1.image
+        case .blackFriday(.wave2):
+            DS.Icon.upsellBlackFridayHeaderButtonWave2.image
+        }
+    }
 }
 
 #Preview {

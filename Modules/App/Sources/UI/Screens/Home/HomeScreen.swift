@@ -46,7 +46,7 @@ struct HomeScreen: View {
     @EnvironmentObject private var toastStateStore: ToastStateStore
     @StateObject private var appRoute: AppRouteState
     @StateObject private var composerCoordinator: ComposerCoordinator
-    @StateObject private var upsellButtonVisibilityPublisher: UpsellButtonVisibilityPublisher
+    @StateObject private var upsellEligibilityPublisher: UpsellEligibilityPublisher
     @State private var modalState: ModalState?
     @State private var isNotificationPromptPresented = false
     @StateObject private var eventLoopErrorCoordinator: EventLoopErrorCoordinator
@@ -69,8 +69,8 @@ struct HomeScreen: View {
     ) {
         _appRoute = .init(wrappedValue: .initialState)
         _composerCoordinator = .init(wrappedValue: .init(userSession: userSession, toastStateStore: toastStateStore))
-        let upsellButtonVisibilityPublisher = UpsellButtonVisibilityPublisher(userSession: userSession)
-        _upsellButtonVisibilityPublisher = .init(wrappedValue: upsellButtonVisibilityPublisher)
+        let upsellEligibilityPublisher = UpsellEligibilityPublisher(mailSession: appContext.mailSession, userSession: userSession)
+        _upsellEligibilityPublisher = .init(wrappedValue: upsellEligibilityPublisher)
         self.appContext = appContext
         self.userSession = userSession
         self.mailSettingsLiveQuery = MailSettingsLiveQuery(userSession: userSession)
@@ -78,7 +78,7 @@ struct HomeScreen: View {
             SidebarScreen(
                 state: .initial,
                 userSession: userSession,
-                upsellButtonVisibilityPublisher: upsellButtonVisibilityPublisher,
+                upsellEligibilityPublisher: upsellEligibilityPublisher,
                 selectedItem: selectedItem
             )
         }
@@ -115,8 +115,8 @@ struct HomeScreen: View {
 
             makeSidebarScreen() { selectedItem in
                 switch selectedItem {
-                case .upsell:
-                    presentUpsellScreen()
+                case .upsell(let upsellType):
+                    presentUpsellScreen(ofType: upsellType)
                 case .system(let systemFolder):
                     appRoute.updateRoute(
                         to: .mailbox(
@@ -183,7 +183,7 @@ struct HomeScreen: View {
             }
         }
         .environmentObject(upsellCoordinator)
-        .environment(\.isUpsellButtonVisible, upsellButtonVisibilityPublisher.isUpsellButtonVisible)
+        .environment(\.upsellEligibility, upsellEligibilityPublisher.state)
     }
 
     private func requestNotificationAuthorizationIfApplicable() {
@@ -201,10 +201,10 @@ struct HomeScreen: View {
         }
     }
 
-    private func presentUpsellScreen() {
+    private func presentUpsellScreen(ofType upsellType: UpsellType) {
         Task {
             do {
-                let upsellScreenModel = try await upsellCoordinator.presentUpsellScreen(entryPoint: .navbarUpsell)
+                let upsellScreenModel = try await upsellCoordinator.presentUpsellScreen(entryPoint: .navbarUpsell, upsellType: upsellType)
                 modalState = .upsell(upsellScreenModel)
             } catch {
                 toastStateStore.present(toast: .error(message: error.localizedDescription))

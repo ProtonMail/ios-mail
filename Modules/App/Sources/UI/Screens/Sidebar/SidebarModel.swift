@@ -35,13 +35,13 @@ final class SidebarModel: Sendable, ObservableObject {
     private var labelsChangesObservation: SidebarModelsObservation<PMCustomLabel>?
     private var systemLabelsChangesObservation: SidebarModelsObservation<PMSystemLabel>?
     private let sidebar: SidebarProtocol
-    private let upsellButtonVisibilityPublisher: UpsellButtonVisibilityPublisher
+    private let upsellEligibilityPublisher: UpsellEligibilityPublisher
     private var cancellables: Set<AnyCancellable> = []
 
-    init(state: SidebarState, sidebar: SidebarProtocol, upsellButtonVisibilityPublisher: UpsellButtonVisibilityPublisher) {
+    init(state: SidebarState, sidebar: SidebarProtocol, upsellEligibilityPublisher: UpsellEligibilityPublisher) {
         self.state = state
         self.sidebar = sidebar
-        self.upsellButtonVisibilityPublisher = upsellButtonVisibilityPublisher
+        self.upsellEligibilityPublisher = upsellEligibilityPublisher
     }
 
     func handle(action: SidebarAction) {
@@ -108,10 +108,10 @@ final class SidebarModel: Sendable, ObservableObject {
             self?.updateSystemFolders(with: newSystemLabels)
         }
 
-        upsellButtonVisibilityPublisher
-            .$isUpsellButtonVisible
-            .sink { [weak self] isVisible in
-                self?.updateUpsellItemVisibility(isVisible: isVisible)
+        upsellEligibilityPublisher
+            .$state
+            .sink { [weak self] eligibility in
+                self?.updateUpsellItemState(eligibility: eligibility)
             }
             .store(in: &cancellables)
     }
@@ -223,8 +223,13 @@ final class SidebarModel: Sendable, ObservableObject {
         }
     }
 
-    private func updateUpsellItemVisibility(isVisible: Bool) {
-        state = state.copy(\.upsell, to: isVisible ? .upsell : nil)
+    private func updateUpsellItemState(eligibility: UpsellEligibility) {
+        switch eligibility {
+        case .notEligible:
+            state = state.copy(\.upsell, to: nil)
+        case .eligible(let type):
+            state = state.copy(\.upsell, to: .upsell(type))
+        }
     }
 }
 
