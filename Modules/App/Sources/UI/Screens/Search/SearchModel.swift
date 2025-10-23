@@ -137,7 +137,7 @@ final class SearchModel: ObservableObject, @unchecked Sendable {
     }
 
     private func trigger(update: MessageScrollerUpdate) async {
-        await handleMessagesUpdate(update)
+        await handleSearchScroller(update: update)
         await updateSelectedMailboxIfNeeded()
     }
 

@@ -291,6 +291,7 @@ extension MailboxModel {
                     callback: MessageScrollerLiveQueryCallbackkWrapper { [weak self] update in
                         Task {
                             await self?.handleMessageScroller(update: update)
+                            await self?.updateSelectedMailboxIfNeeded()
                         }
                     }
                 ).get()
@@ -300,6 +301,7 @@ extension MailboxModel {
                     callback: ConversationScrollerLiveQueryCallbackkWrapper { [weak self] update in
                         Task {
                             await self?.handleConversationScroller(update: update)
+                            await self?.updateSelectedMailboxIfNeeded()
                         }
                     }
                 ).get()
