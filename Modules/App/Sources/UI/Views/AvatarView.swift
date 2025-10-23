@@ -42,26 +42,6 @@ enum AvatarViewType: Hashable {
             return nil
         }
     }
-
-    var shouldShowBlockOption: Bool {
-        switch self {
-        case .sender(let info):
-            shouldShowBlockOption(info.blocked)
-        case .other:
-            false
-        }
-    }
-
-    // MARK: - Private
-
-    private func shouldShowBlockOption(_ state: SenderInfo.Blocked) -> Bool {
-        switch state {
-        case .notLoaded, .yes:
-            false
-        case .no:
-            true
-        }
-    }
 }
 
 struct AvatarView: View {

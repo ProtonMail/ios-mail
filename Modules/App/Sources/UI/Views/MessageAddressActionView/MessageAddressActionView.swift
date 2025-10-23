@@ -94,8 +94,19 @@ struct MessageAddressActionView: View {
         [
             [.newMessage, .addToContacts],
             [.copyAddress, .copyName],
-            avatar.type.shouldShowBlockOption ? [.blockContact] : [],
+            blockUnblockAction(avatar: avatar),
         ]
+    }
+
+    private func blockUnblockAction(avatar: AvatarUIModel) -> [MessageAddressAction] {
+        switch avatar.type.senderInfo?.blocked {
+        case .yes:
+            [.unblockContact]
+        case .no:
+            [.blockContact]
+        case .none, .notLoaded:
+            []
+        }
     }
 
     private func blockConfirmationAlert(
