@@ -117,7 +117,7 @@ struct SidebarScreen: View {
     }
 
     private var sidebarDragGesture: some Gesture {
-        DragGesture(minimumDistance: .zero, coordinateSpace: .global)
+        DragGesture(coordinateSpace: .global)
             .onChanged { value in
                 if dragStartWidth == nil {
                     dragStartWidth = appUIStateStore.sidebarState.visibleWidth
