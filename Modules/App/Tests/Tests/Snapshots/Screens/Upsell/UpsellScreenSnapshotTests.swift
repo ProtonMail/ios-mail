@@ -30,7 +30,7 @@ struct UpsellScreenSnapshotTests {
     struct TestCase {
         let label: String
         let config: ViewImageConfig
-        let entryPoint: UpsellEntryPoint
+        let upsellType: UpsellType
     }
 
     nonisolated private static let testCases: [TestCase] = {
@@ -41,15 +41,15 @@ struct UpsellScreenSnapshotTests {
             ("13 Pro Max", ViewImageConfig.iPhone13ProMax(_:)),
         ]
 
-        let entryPoints: [UpsellEntryPoint] = [.mailboxTopBar, .mailboxTopBarPromo]
+        let upsellTypes: [UpsellType] = [.standard, .blackFriday(.wave1), .blackFriday(.wave2)]
 
         return orientations.flatMap { orientation in
             devices.flatMap { device in
-                entryPoints.map { entryPoint in
+                upsellTypes.map { upsellType in
                     .init(
-                        label: "\(device.label)_\(orientation)\(entryPoint.isPromo ? "_promo" : .empty)",
+                        label: "\(device.label)_\(orientation)_\(upsellType.label)",
                         config: device.configFactory(orientation),
-                        entryPoint: entryPoint
+                        upsellType: upsellType
                     )
                 }
             }
@@ -58,7 +58,7 @@ struct UpsellScreenSnapshotTests {
 
     @Test(arguments: testCases)
     func upsellScreen(testCase: TestCase) {
-        let sut = UpsellScreen(model: .preview(entryPoint: testCase.entryPoint))
+        let sut = UpsellScreen(model: .preview(entryPoint: .mailboxTopBar, upsellType: testCase.upsellType))
         let viewController = UIHostingController(rootView: sut)
 
         let strategy: Snapshotting<UIViewController, UIImage> = .image(
@@ -68,5 +68,18 @@ struct UpsellScreenSnapshotTests {
         )
 
         assertSnapshot(of: viewController, as: strategy, named: testCase.label)
+    }
+}
+
+private extension UpsellType {
+    var label: String {
+        switch self {
+        case .standard:
+            "standard"
+        case .blackFriday(.wave1):
+            "BF_1"
+        case .blackFriday(.wave2):
+            "BF_2"
+        }
     }
 }

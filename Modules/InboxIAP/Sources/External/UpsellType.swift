@@ -1,3 +1,4 @@
+//
 // Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
@@ -15,21 +16,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-@testable import ProtonMail
-@testable import InboxIAP
+enum UpsellType {
+    case standard
+    case blackFriday(BlackFridayWave)
+}
 
-import proton_app_uniffi
-
-class UpsellScreenPresenterSpy: UpsellScreenPresenter {
-    var stubbedError: NSError?
-    private(set) var presentUpsellScreenCalled: [UpsellEntryPoint] = []
-
-    func presentUpsellScreen(entryPoint: UpsellEntryPoint) async throws -> UpsellScreenModel {
-        presentUpsellScreenCalled.append(entryPoint)
-        if let stubbedError {
-            throw stubbedError
-        } else {
-            return .preview(entryPoint: entryPoint, upsellType: .standard)
-        }
-    }
+enum BlackFridayWave {
+    case wave1
+    case wave2
 }

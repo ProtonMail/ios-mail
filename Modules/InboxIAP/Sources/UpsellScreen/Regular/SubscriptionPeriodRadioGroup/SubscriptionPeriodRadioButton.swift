@@ -17,6 +17,7 @@
 
 import Foundation
 import InboxDesignSystem
+import StoreKit
 import SwiftUI
 
 struct SubscriptionPeriodRadioButton: View {
@@ -53,7 +54,7 @@ struct SubscriptionPeriodRadioButton: View {
 
                 Spacer()
 
-                monthlyPrice
+                pricing
             }
             .padding(.horizontal, DS.Spacing.large)
             .padding(.vertical, 22)
@@ -94,14 +95,37 @@ struct SubscriptionPeriodRadioButton: View {
             .clipShape(RoundedRectangle(cornerRadius: DS.Radius.medium))
     }
 
-    private var monthlyPrice: some View {
-        Text(planInstance.monthlyPrice)
-            .font(.body)
-            .fontWeight(.semibold)
-            .foregroundColor(.white)
-            + Text(" \(L10n.perMonth)")
-            .font(.caption)
-            .foregroundColor(Color.white.opacity(0.7))
+    @ViewBuilder
+    private var pricing: some View {
+        switch planInstance.pricing {
+        case .regular(let monthlyPrice):
+            pricePerPeriod(formattedPrice: monthlyPrice, unit: .month, isEmphasized: true)
+        case .discountedYearlyPlan(let discountedMonthlyPrice, let discountedYearlyPrice, _):
+            VStack(alignment: .trailing, spacing: .zero) {
+                pricePerPeriod(formattedPrice: discountedYearlyPrice, unit: .year, isEmphasized: true)
+
+                pricingText(L10n.onlyXPerMonth(discountedMonthlyPrice).string, isEmphasized: false)
+            }
+        case .discountedMonthlyPlan(let discountedPrice, let renewalPrice):
+            VStack(alignment: .trailing, spacing: .zero) {
+                pricePerPeriod(formattedPrice: discountedPrice, unit: .month, isEmphasized: true)
+
+                pricePerPeriod(formattedPrice: renewalPrice, unit: .month, isEmphasized: false)
+                    .strikethrough()
+            }
+        }
+    }
+
+    private func pricePerPeriod(formattedPrice: String, unit: Product.SubscriptionPeriod.Unit, isEmphasized: Bool) -> Text {
+        pricingText(formattedPrice, isEmphasized: isEmphasized)
+            + pricingText(" /\(unit.localizedDescription.lowercased())", isEmphasized: false)
+    }
+
+    private func pricingText(_ value: String, isEmphasized: Bool) -> Text {
+        Text(value)
+            .font(isEmphasized ? .body : .caption)
+            .fontWeight(isEmphasized ? .semibold : nil)
+            .foregroundColor(isEmphasized ? .white : .white.opacity(0.7))
     }
 
     private var selectionIndicator: some View {
@@ -130,6 +154,12 @@ struct SubscriptionPeriodRadioButton: View {
 #Preview {
     @Previewable @State var selectedInstanceID = DisplayablePlanInstance.previews[0].storeKitProductId
 
-    SubscriptionPeriodRadioGroup(planInstances: DisplayablePlanInstance.previews, selectedInstanceID: $selectedInstanceID)
-        .background(DS.Color.Brand.norm)
+    VStack {
+        SubscriptionPeriodRadioGroup(planInstances: DisplayablePlanInstance.previews, selectedInstanceID: $selectedInstanceID)
+
+        ForEach(DisplayablePlanInstance.blackFridayPreviews, id: \.storeKitProductId) { planInstance in
+            SubscriptionPeriodRadioButton(planInstance: planInstance, isSelected: false) {}
+        }
+    }
+    .background(DS.Color.Brand.norm)
 }

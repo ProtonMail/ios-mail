@@ -19,11 +19,23 @@
 import proton_app_uniffi
 
 extension UpsellScreenModel {
-    static func preview(entryPoint: UpsellEntryPoint) -> UpsellScreenModel {
-        .init(
+    static func preview(entryPoint: UpsellEntryPoint, upsellType: UpsellType) -> UpsellScreenModel {
+        let planInstances: [DisplayablePlanInstance]
+
+        switch upsellType {
+        case .standard:
+            planInstances = DisplayablePlanInstance.previews
+        case .blackFriday(.wave1):
+            planInstances = [DisplayablePlanInstance.blackFridayPreviews[0]]
+        case .blackFriday(.wave2):
+            planInstances = [DisplayablePlanInstance.blackFridayPreviews[1]]
+        }
+
+        return .init(
             planName: "Mail Plus",
-            planInstances: entryPoint.isPromo ? DisplayablePlanInstance.blackFridayPreviews : DisplayablePlanInstance.previews,
+            planInstances: planInstances,
             entryPoint: entryPoint,
+            upsellType: upsellType,
             purchaseActionPerformer: .dummy
         )
     }

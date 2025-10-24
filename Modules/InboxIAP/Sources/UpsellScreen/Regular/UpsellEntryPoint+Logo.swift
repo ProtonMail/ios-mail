@@ -26,14 +26,12 @@ extension UpsellEntryPoint {
             DS.Images.Upsell.logoAutoDelete
         case .contactGroups:
             DS.Images.Upsell.logoContactGroups
-        case .dollarPromo:
-            DS.Images.Upsell.BlackFriday.logo80
+        case .dollarPromo, .mailboxTopBarPromo:
+            fatalError("This entry point is not used")
         case .foldersCreation, .labelsCreation:
             DS.Images.Upsell.logoFoldersAndLabels
         case .mailboxTopBar, .navbarUpsell:
             DS.Images.Upsell.logoDefault
-        case .mailboxTopBarPromo:
-            DS.Images.Upsell.BlackFriday.logo50
         case .mobileSignatureEdit:
             DS.Images.Upsell.logoMobileSignature
         case .postOnboarding:

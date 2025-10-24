@@ -35,10 +35,18 @@ public final class UpsellScreenModel: Identifiable {
     private let logoScaleFactorRange: ClosedRange<CGFloat> = 0.8...1
     private let logoOpacityRange: ClosedRange<CGFloat> = 0.2...1
     private let entryPoint: UpsellEntryPoint
+    private let upsellType: UpsellType
     private let purchaseActionPerformer: PurchaseActionPerformer
 
     var logo: ImageResource {
-        entryPoint.logo
+        switch upsellType {
+        case .standard:
+            entryPoint.logo
+        case .blackFriday(.wave1):
+            DS.Images.Upsell.BlackFriday.logo50
+        case .blackFriday(.wave2):
+            DS.Images.Upsell.BlackFriday.logo80
+        }
     }
 
     var logoHeight: CGFloat? {
@@ -50,11 +58,11 @@ public final class UpsellScreenModel: Identifiable {
     }
 
     var title: LocalizedStringResource? {
-        L10n.screenTitle(planName: planName, entryPoint: entryPoint)
+        isPromo ? nil : L10n.screenTitle(planName: planName, entryPoint: entryPoint)
     }
 
     var subtitle: LocalizedStringResource? {
-        L10n.screenSubtitle(planName: planName, entryPoint: entryPoint)
+        isPromo ? nil : L10n.screenSubtitle(planName: planName, entryPoint: entryPoint)
     }
 
     var highlightStroke: (any ShapeStyle)? {
@@ -66,22 +74,36 @@ public final class UpsellScreenModel: Identifiable {
     }
 
     var autoRenewalNotice: LocalizedStringResource {
-        isPromo ? L10n.discountRenewalNotice(renewalPrice: "XX.XX") : L10n.autoRenewalNotice
+        switch planInstances[0].pricing {
+        case .regular:
+            L10n.autoRenewalNotice
+        case .discountedYearlyPlan(_, _, let renewalPrice):
+            L10n.discountRenewalNotice(renewalPrice: renewalPrice, period: .year)
+        case .discountedMonthlyPlan(_, let renewalPrice):
+            L10n.discountRenewalNotice(renewalPrice: renewalPrice, period: .month)
+        }
     }
 
     var isPromo: Bool {
-        entryPoint.isPromo
+        switch upsellType {
+        case .standard:
+            false
+        case .blackFriday:
+            true
+        }
     }
 
     init(
         planName: String,
         planInstances: [DisplayablePlanInstance],
         entryPoint: UpsellEntryPoint,
+        upsellType: UpsellType,
         purchaseActionPerformer: PurchaseActionPerformer
     ) {
         self.planName = planName
         self.planInstances = planInstances
         self.entryPoint = entryPoint
+        self.upsellType = upsellType
         self.purchaseActionPerformer = purchaseActionPerformer
         selectedInstanceId = planInstances[0].storeKitProductId
     }
@@ -125,16 +147,5 @@ private extension BinaryFloatingPoint {
     func normalize(inputRange: ClosedRange<Self>, outputRange: ClosedRange<Self>) -> Self {
         assert(inputRange.contains(self))
         return (outputRange.upperBound - outputRange.lowerBound) * ((self - inputRange.lowerBound) / (inputRange.upperBound - inputRange.lowerBound)) + outputRange.lowerBound
-    }
-}
-
-extension UpsellEntryPoint {
-    var isPromo: Bool {
-        switch self {
-        case .dollarPromo, .mailboxTopBarPromo:
-            true
-        default:
-            false
-        }
     }
 }

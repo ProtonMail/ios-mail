@@ -18,6 +18,7 @@
 
 import Foundation
 import proton_app_uniffi
+import StoreKit
 
 enum L10n {
     static let autoRenewalNotice = LocalizedStringResource("Auto-renews at the same price and terms unless canceled", bundle: .module, comment: "Notice at the bottom")
@@ -29,14 +30,14 @@ enum L10n {
     static let showLess = LocalizedStringResource("Show less", bundle: .module, comment: "Button to collapse a list")
     static let showMore = LocalizedStringResource("Show more", bundle: .module, comment: "Button to expand a list")
 
-    static func screenTitle(planName: String, entryPoint: UpsellEntryPoint) -> LocalizedStringResource? {
+    static func screenTitle(planName: String, entryPoint: UpsellEntryPoint) -> LocalizedStringResource {
         switch entryPoint {
         case .autoDeleteMessages:
             .init("Automated trash removal", bundle: .module, comment: "Title of the upsell page ")
         case .contactGroups:
             .init("Group your contacts", bundle: .module, comment: "Title of the upsell page")
         case .dollarPromo, .mailboxTopBarPromo:
-            nil
+            fatalError("This entry point is not used")
         case .foldersCreation, .labelsCreation:
             .init("Need more labels or folders?", bundle: .module, comment: "Title of the upsell page")
         case .mailboxTopBar, .navbarUpsell:
@@ -52,14 +53,14 @@ enum L10n {
         }
     }
 
-    static func screenSubtitle(planName: String, entryPoint: UpsellEntryPoint) -> LocalizedStringResource? {
+    static func screenSubtitle(planName: String, entryPoint: UpsellEntryPoint) -> LocalizedStringResource {
         switch entryPoint {
         case .autoDeleteMessages:
             .init("Deletes spam and trash after 30 days. Get this and more with \(planName).", bundle: .module, comment: "Subtitle of the upsell page")
         case .contactGroups:
             .init("Send group emails with ease. Enjoy this and more with \(planName).", bundle: .module, comment: "Subtitle of the upsell page")
         case .dollarPromo, .mailboxTopBarPromo:
-            nil
+            fatalError("This entry point is not used")
         case .foldersCreation, .labelsCreation:
             .init("Create all you need to stay organized. Get this and more with \(planName).", bundle: .module, comment: "Subtitle of the upsell page")
         case .mailboxTopBar, .navbarUpsell:
@@ -77,6 +78,10 @@ enum L10n {
 
     static func payAnnuallyAndSave(amount: String) -> LocalizedStringResource {
         .init("Pay annually and save \(amount)", bundle: .module, comment: "Shown when selecting the yearly billing cycle")
+    }
+
+    static func onlyXPerMonth(_ amount: String) -> LocalizedStringResource {
+        .init("only \(amount) / month", bundle: .module, comment: "Shown next to the discounted monthly price")
     }
 
     enum BillingCycle {
@@ -119,8 +124,12 @@ enum L10n {
         .init("Get \(planName)", bundle: .module, comment: "CTA button to purchase a plan (e.g. Get Mail Plus)")
     }
 
-    static func discountRenewalNotice(renewalPrice: String) -> LocalizedStringResource {
-        .init("Discounts are based on standard monthly pricing. Auto-renews at CHF XX.XX until canceled.", bundle: .module, comment: "Notice at the bottom of the upsell page")
+    static func discountRenewalNotice(renewalPrice: String, period: Product.SubscriptionPeriod.Unit) -> LocalizedStringResource {
+        .init(
+            "Discounts are based on standard monthly pricing. Auto-renews at \(renewalPrice) /\(period.localizedDescription.lowercased()) until canceled.",
+            bundle: .module,
+            comment: "Notice at the bottom of the upsell page"
+        )
     }
 }
 

@@ -83,7 +83,8 @@ public final class UpsellCoordinator: ObservableObject {
         return try upsellScreenFactory.upsellScreenModel(
             showingPlan: configuration.regularPlan,
             basedOn: availablePlans,
-            entryPoint: entryPoint
+            entryPoint: entryPoint,
+            upsellType: .standard
         )
     }
 

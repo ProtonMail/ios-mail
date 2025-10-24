@@ -31,6 +31,7 @@ final class UpsellScreenModelTests {
         planName: "foo",
         planInstances: DisplayablePlanInstance.previews,
         entryPoint: .mailboxTopBar,
+        upsellType: .standard,
         purchaseActionPerformer: .init(
             eventLoopPolling: DummyEventLoopPolling(),
             planPurchasing: planPurchasing

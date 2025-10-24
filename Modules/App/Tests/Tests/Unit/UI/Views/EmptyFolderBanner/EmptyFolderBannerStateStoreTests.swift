@@ -52,7 +52,7 @@ final class EmptyFolderBannerStateStoreTests {
                     icon: DS.Icon.icTrashClock,
                     title: L10n.EmptyFolderBanner.freeUserTitle.string,
                     buttons: [.upgradePlan, .emptyLocation],
-                    presentedUpsell: .preview(entryPoint: .autoDeleteMessages)
+                    presentedUpsell: .preview(entryPoint: .autoDeleteMessages, upsellType: .standard)
                 ))
     }
 

@@ -21,13 +21,13 @@ extension DisplayablePlanInstance {
         .init(
             storeKitProductId: "iosmail_mail2022_12_usd_auto_renewing",
             cycleInMonths: 12,
-            monthlyPrice: "$3.99",
-            discount: 20
+            pricing: .regular(monthlyPrice: "$3.99"),
+            discount: 20,
         ),
         .init(
             storeKitProductId: "iosmail_mail2022_1_usd_auto_renewing",
             cycleInMonths: 1,
-            monthlyPrice: "$4.99",
+            pricing: .regular(monthlyPrice: "$4.99"),
             discount: nil
         ),
     ]
@@ -36,8 +36,18 @@ extension DisplayablePlanInstance {
         .init(
             storeKitProductId: "iosmail_mail2022_12_usd_auto_renewing",
             cycleInMonths: 12,
-            monthlyPrice: "$2.49",
+            pricing: .discountedYearlyPlan(
+                discountedMonthlyPrice: "$2.49",
+                discountedYearlyPrice: "$29.88",
+                renewalPrice: "$47.88"
+            ),
             discount: 50
-        )
+        ),
+        .init(
+            storeKitProductId: "iosmail_mail2022_1_usd_auto_renewing",
+            cycleInMonths: 1,
+            pricing: .discountedMonthlyPlan(discountedPrice: "$1", renewalPrice: "$4.99"),
+            discount: 80
+        ),
     ]
 }

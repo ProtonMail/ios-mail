@@ -239,15 +239,23 @@ public struct UpsellScreen: View {
 #Preview("regular") {
     Color.clear
         .sheet(isPresented: .constant(true)) {
-            UpsellScreen(model: .preview(entryPoint: .mailboxTopBar))
+            UpsellScreen(model: .preview(entryPoint: .mailboxTopBar, upsellType: .standard))
         }
         .environmentObject(ToastStateStore(initialState: .initial))
 }
 
-#Preview("black friday") {
+#Preview("black friday wave 1") {
     Color.clear
         .sheet(isPresented: .constant(true)) {
-            UpsellScreen(model: .preview(entryPoint: .mailboxTopBarPromo))
+            UpsellScreen(model: .preview(entryPoint: .mailboxTopBar, upsellType: .blackFriday(.wave1)))
+        }
+        .environmentObject(ToastStateStore(initialState: .initial))
+}
+
+#Preview("black friday wave 2") {
+    Color.clear
+        .sheet(isPresented: .constant(true)) {
+            UpsellScreen(model: .preview(entryPoint: .mailboxTopBar, upsellType: .blackFriday(.wave2)))
         }
         .environmentObject(ToastStateStore(initialState: .initial))
 }
