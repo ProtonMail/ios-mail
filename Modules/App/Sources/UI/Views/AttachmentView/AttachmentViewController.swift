@@ -19,12 +19,11 @@ import QuickLook
 import SwiftUI
 
 struct AttachmentViewController: UIViewControllerRepresentable {
-    @Environment(\.presentationMode) var presentationMode
+    @Environment(\.dismiss) var dismiss
 
     typealias UIViewControllerType = UINavigationController
     typealias Coordinator = AttachmentViewCoordinator
 
-    /// property accessed from the `Coordinator`
     let url: URL
 
     @MainActor
@@ -32,8 +31,8 @@ struct AttachmentViewController: UIViewControllerRepresentable {
         let controller = QLPreviewController()
         controller.dataSource = context.coordinator
         controller.navigationItem.leftBarButtonItem = UIBarButtonItem(
-            barButtonSystemItem: .done, target: context.coordinator,
-            action: #selector(context.coordinator.dismiss)
+            systemItem: .done,
+            primaryAction: UIAction(handler: { _ in dismiss() })
         )
 
         let navigationController = UINavigationController(rootViewController: controller)
@@ -44,6 +43,6 @@ struct AttachmentViewController: UIViewControllerRepresentable {
     }
 
     func makeCoordinator() -> Coordinator {
-        Coordinator(parent: self)
+        Coordinator(url: url)
     }
 }

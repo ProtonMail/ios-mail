@@ -18,10 +18,10 @@
 import QuickLook
 
 final class AttachmentViewCoordinator: QLPreviewControllerDataSource {
-    let parent: AttachmentViewController
+    private let url: URL
 
-    init(parent: AttachmentViewController) {
-        self.parent = parent
+    init(url: URL) {
+        self.url = url
     }
 
     func numberOfPreviewItems(in controller: QLPreviewController) -> Int {
@@ -29,10 +29,6 @@ final class AttachmentViewCoordinator: QLPreviewControllerDataSource {
     }
 
     func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> QLPreviewItem {
-        return parent.url as QLPreviewItem
-    }
-
-    @objc func dismiss() {
-        parent.presentationMode.wrappedValue.dismiss()
+        url as QLPreviewItem
     }
 }
