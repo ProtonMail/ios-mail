@@ -85,7 +85,7 @@ extension User {
             private: true,
             name: "",
             productUsedSpace: .init(calendar: 0, contact: 0, drive: 0, mail: 0, pass: 0),
-            role: 1,
+            role: .member,
             services: 0,
             subscribed: 1,
             toMigrate: false,
