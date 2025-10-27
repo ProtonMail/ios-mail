@@ -48,7 +48,8 @@ class ListActionsToolbarStoreTests {
 
     @Test
     func state_WhenListItemsSelectionIsUpdatedInMessageMode_ItReturnsCorrectState() async {
-        sut = makeSUT(viewMode: .messages)
+        let viewMode = ViewMode.messages
+        sut = makeSUT(viewMode: viewMode)
         stubbedAvailableMessageActions = .init(
             hiddenListActions: [.labelAs, .markRead],
             visibleListActions: [.notSpam(.testInbox)]
@@ -56,7 +57,7 @@ class ListActionsToolbarStoreTests {
 
         let ids: [ID] = [.init(value: 11)]
 
-        await sut.handle(action: .listItemsSelectionUpdated(ids: ids))
+        await sut.handle(action: .listItemsSelectionUpdated(ids: ids, itemType: viewMode.itemType))
 
         #expect(invokedAvailableMessageActionsWithIDs.count == 1)
         #expect(invokedAvailableConversationActionsWithIDs.count == 0)
@@ -73,14 +74,15 @@ class ListActionsToolbarStoreTests {
 
     @Test
     func state_WhenListItemsSelectionIsUpdatedInConversationModel_ItReturnsCorrectState() async {
-        sut = makeSUT(viewMode: .conversations)
+        let viewMode = ViewMode.conversations
+        sut = makeSUT(viewMode: viewMode)
         stubbedAvailableConversationActions = .init(
             hiddenListActions: [.notSpam(.testInbox), .permanentDelete],
             visibleListActions: [.more]
         )
         let ids: [ID] = [.init(value: 22)]
 
-        await sut.handle(action: .listItemsSelectionUpdated(ids: ids))
+        await sut.handle(action: .listItemsSelectionUpdated(ids: ids, itemType: viewMode.itemType))
 
         #expect(invokedAvailableMessageActionsWithIDs.count == 0)
         #expect(invokedAvailableConversationActionsWithIDs.count == 1)
@@ -106,20 +108,22 @@ class ListActionsToolbarStoreTests {
 
     @Test
     func state_WhenListItemsSelectionIsUpdatedWithNoSelection_ItReturnsCorrectState() async {
-        sut = makeSUT(viewMode: .messages)
+        let viewMode = ViewMode.messages
+        sut = makeSUT(viewMode: viewMode)
 
-        await sut.handle(action: .listItemsSelectionUpdated(ids: []))
+        await sut.handle(action: .listItemsSelectionUpdated(ids: [], itemType: viewMode.itemType))
 
         #expect(invokedAvailableMessageActionsWithIDs.count == 0)
     }
 
     @Test
     func state_WhenMoveToActionIsSelectedAndThenMoveToSheetIsDismissed_ItReturnsCorrectState() async {
-        sut = makeSUT(viewMode: .messages)
+        let viewMode = ViewMode.messages
+        sut = makeSUT(viewMode: viewMode)
 
         #expect(sut.state.moveToSheetPresented == nil)
 
-        await sut.handle(action: .actionSelected(.moveTo, ids: [.init(value: 7)]))
+        await sut.handle(action: .actionSelected(.moveTo, ids: [.init(value: 7)], itemType: viewMode.itemType))
 
         #expect(
             sut.state.moveToSheetPresented == .init(sheetType: .moveTo, ids: [.init(value: 7)], mailboxItem: .message(isLastMessageInCurrentLocation: false))
@@ -132,14 +136,15 @@ class ListActionsToolbarStoreTests {
 
     @Test
     func state_WhenLabelAsActionIsSelectedAndThenLabelAsSheetIsDismissed_ItReturnsCorrectState() async {
-        sut = makeSUT(viewMode: .conversations)
+        let viewMode = ViewMode.conversations
+        sut = makeSUT(viewMode: viewMode)
         let ids: [ID] = [.init(value: 8)]
 
         #expect(sut.state.labelAsSheetPresented == nil)
 
-        await sut.handle(action: .actionSelected(.labelAs, ids: ids))
+        await sut.handle(action: .actionSelected(.labelAs, ids: ids, itemType: .conversation))
 
-        #expect(sut.state.labelAsSheetPresented == .init(sheetType: .labelAs, ids: ids, mailboxItem: .conversation))
+        #expect(sut.state.labelAsSheetPresented == .init(sheetType: .labelAs, ids: ids, mailboxItem: viewMode.itemType.mailboxItem))
 
         await sut.handle(action: .dismissLabelAsSheet)
 
@@ -148,10 +153,11 @@ class ListActionsToolbarStoreTests {
 
     @Test
     func state_WhenLabelAsActionOnMoreSheetIsSelected_ItReturnsCorrectState() async {
-        sut = makeSUT(viewMode: .messages)
+        let viewMode = ViewMode.messages
+        sut = makeSUT(viewMode: viewMode)
         let ids: [ID] = [.init(value: 7)]
 
-        await sut.handle(action: .moreSheetAction(.labelAs, ids: ids))
+        await sut.handle(action: .moreSheetAction(.labelAs, ids: ids, itemType: viewMode.itemType))
 
         #expect(
             sut.state.labelAsSheetPresented == .init(sheetType: .labelAs, ids: ids, mailboxItem: .message(isLastMessageInCurrentLocation: false))
@@ -160,41 +166,45 @@ class ListActionsToolbarStoreTests {
 
     @Test
     func state_WhenStarActionIsApplied_ItStarsCorrectMessages() async {
-        sut = makeSUT(viewMode: .messages)
+        let viewMode = ViewMode.messages
+        sut = makeSUT(viewMode: viewMode)
         let ids: [ID] = [.init(value: 7), .init(value: 77)]
 
-        await sut.handle(action: .actionSelected(.star, ids: ids))
+        await sut.handle(action: .actionSelected(.star, ids: ids, itemType: viewMode.itemType))
 
         #expect(starActionPerformerActionsSpy.invokedStarMessage == ids)
     }
 
     @Test
     func state_WhenUnstarActionIsAppliedFromMoreSheet_ItUnstarsCorrectMessage() async {
-        sut = makeSUT(viewMode: .messages)
+        let viewMode = ViewMode.messages
+        sut = makeSUT(viewMode: viewMode)
         let ids: [ID] = [.init(value: 7), .init(value: 77)]
 
-        await sut.handle(action: .actionSelected(.more, ids: ids))
+        await sut.handle(action: .actionSelected(.more, ids: ids, itemType: viewMode.itemType))
 
-        await sut.handle(action: .moreSheetAction(.unstar, ids: ids))
+        await sut.handle(action: .moreSheetAction(.unstar, ids: ids, itemType: viewMode.itemType))
         #expect(starActionPerformerActionsSpy.invokedUnstarMessage == ids)
     }
 
     @Test
     func state_WhenReadActionIsApplied_ItMarksMessageAsRead() async {
-        sut = makeSUT(viewMode: .messages)
+        let viewMode = ViewMode.messages
+        sut = makeSUT(viewMode: viewMode)
         let ids: [ID] = [.init(value: 7), .init(value: 77)]
 
-        await sut.handle(action: .actionSelected(.markRead, ids: ids))
+        await sut.handle(action: .actionSelected(.markRead, ids: ids, itemType: viewMode.itemType))
 
         #expect(readActionPerformerActionsSpy.markMessageAsReadInvoked == ids)
     }
 
     @Test
     func state_WhenUnreadActionIsApplied_ItMarksConversationAsUnread() async {
-        sut = makeSUT(viewMode: .conversations)
+        let viewMode = ViewMode.conversations
+        sut = makeSUT(viewMode: viewMode)
         let ids: [ID] = [.init(value: 7), .init(value: 77)]
 
-        await sut.handle(action: .actionSelected(.markUnread, ids: ids))
+        await sut.handle(action: .actionSelected(.markUnread, ids: ids, itemType: viewMode.itemType))
 
         #expect(readActionPerformerActionsSpy.markConversationAsUnreadInvoked == ids)
     }
@@ -202,13 +212,14 @@ class ListActionsToolbarStoreTests {
     @Test
     func action_WhenDeleteActionIsApplied_ItDeletesMessage() async {
         let ids: [ID] = [.init(value: 7), .init(value: 77)]
-        sut = makeSUT(viewMode: .messages)
+        let viewMode = ViewMode.messages
+        sut = makeSUT(viewMode: viewMode)
 
-        await sut.handle(action: .actionSelected(.permanentDelete, ids: ids))
+        await sut.handle(action: .actionSelected(.permanentDelete, ids: ids, itemType: viewMode.itemType))
 
         #expect(sut.state.deleteConfirmationAlert == .deleteConfirmation(itemsCount: ids.count, action: { _ in }))
 
-        await sut.handle(action: .alertActionTapped(.delete, ids: ids))
+        await sut.handle(action: .alertActionTapped(.delete, ids: ids, itemType: viewMode.itemType))
 
         #expect(sut.state.deleteConfirmationAlert == nil)
         #expect(deleteActionsSpy.deletedMessagesWithIDs == ids)
@@ -219,9 +230,10 @@ class ListActionsToolbarStoreTests {
     func action_WhenMoveToInboxIsTapped_ItMovesMessage() async {
         let ids: [ID] = [.init(value: 7), .init(value: 77)]
         let systemFolder = MovableSystemFolderAction.testInbox
-        sut = makeSUT(viewMode: .messages)
+        let viewMode = ViewMode.messages
+        sut = makeSUT(viewMode: viewMode)
 
-        await sut.handle(action: .actionSelected(.moveToSystemFolder(systemFolder), ids: ids))
+        await sut.handle(action: .actionSelected(.moveToSystemFolder(systemFolder), ids: ids, itemType: viewMode.itemType))
 
         #expect(
             toastStateStore.state.toasts == [.moveTo(id: UUID(), destinationName: systemFolder.name.displayData.title.string, undoAction: .none)]
@@ -236,10 +248,11 @@ class ListActionsToolbarStoreTests {
         let ids: [ID] = [.init(value: 7), .init(value: 77)]
         let systemFolder = MovableSystemFolderAction.testInbox
         let undoSpy = UndoSpy(noPointer: .init())
+        let viewMode = ViewMode.messages
         moveToActionsSpy.stubbedMoveMessagesToOkResult = undoSpy
-        sut = makeSUT(viewMode: .messages)
+        sut = makeSUT(viewMode: viewMode)
 
-        await sut.handle(action: .actionSelected(.moveToSystemFolder(systemFolder), ids: ids))
+        await sut.handle(action: .actionSelected(.moveToSystemFolder(systemFolder), ids: ids, itemType: viewMode.itemType))
 
         #expect(
             toastStateStore.state.toasts == [.moveTo(id: UUID(), destinationName: systemFolder.name.displayData.title.string, undoAction: {})]
@@ -258,9 +271,10 @@ class ListActionsToolbarStoreTests {
 
     @Test
     func snoozeActionIsTapped_ItOpensSnoozeSheet() async {
-        let sut = makeSUT(viewMode: .conversations)
+        let viewMode = ViewMode.conversations
+        let sut = makeSUT(viewMode: viewMode)
 
-        await sut.handle(action: .actionSelected(.snooze, ids: [.init(value: 7)]))
+        await sut.handle(action: .actionSelected(.snooze, ids: [.init(value: 7)], itemType: viewMode.itemType))
 
         #expect(sut.state.isSnoozeSheetPresented == true)
     }
@@ -286,7 +300,6 @@ class ListActionsToolbarStoreTests {
             readActionPerformerActions: readActionPerformerActionsSpy.testingInstance,
             deleteActions: deleteActionsSpy.testingInstance,
             moveToActions: moveToActionsSpy.testingInstance,
-            itemTypeForActionBar: viewMode.itemType,
             mailUserSession: .dummy,
             mailbox: MailboxStub(viewMode: viewMode),
             toastStateStore: toastStateStore
