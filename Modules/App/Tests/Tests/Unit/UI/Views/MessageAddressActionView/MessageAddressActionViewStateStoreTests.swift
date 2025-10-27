@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 @testable import ProtonMail
+import Combine
 import InboxCore
 import InboxCoreUI
 import InboxTesting
@@ -28,14 +29,19 @@ final class MessageAddressActionViewStateStoreTests {
     private lazy var sut: MessageAddressActionViewStateStore = makeSUT()
     private let pasteboard = UIPasteboard.testInstance
     private let toastStateStore = ToastStateStore(initialState: .initial)
-    private let blockSpy = BlockAddressSpy()
+    private let blockSpy = BlockUnblockAddressSpy()
+    private let unblockSpy = BlockUnblockAddressSpy()
+    private let messageAddressSpy = RustMessageAddressWrapperSpy()
     private let draftPresenterSpy = RecipientDraftPresenterSpy()
     private let urlOpener = EnvironmentURLOpenerSpy()
     private let dismissSpy = DismissSpy()
+    private let messageBannersNotifier = RefreshMessageBannersNotifier()
+    private var refreshBannersCount: Int = 0
+    private var cancellables: Set<AnyCancellable> = []
 
     private let avatar = AvatarUIModel(
         info: .init(initials: "Aa", color: .purple),
-        type: .sender(params: .init())
+        type: .sender(SenderInfo(params: .init(), blocked: .notLoaded))
     )
     private let displayName = "Camila"
     private let email = "camila.hall@gmail.com"
@@ -57,11 +63,38 @@ final class MessageAddressActionViewStateStoreTests {
                 ))
     }
 
-    // MARK: - `Block contact` action
+    // MARK: - `onLoad` action
+
+    @Test
+    func testOnLoad_WhenIsSenderBlockedReturnsTrue_ItUpdatesAvatarWithBlockedState() async {
+        messageAddressSpy.stubbedIsSenderBlocked = .yes
+
+        let sut = makeSUT()
+
+        await sut.handle(action: .onLoad)
+
+        #expect(messageAddressSpy.isSenderBlockedCalls.count == 1)
+        #expect(messageAddressSpy.isSenderBlockedCalls.last?.messageID == .init(value: 1_000))
+        #expect(sut.state.avatar.type == .sender(.init(params: .init(), blocked: .yes)))
+    }
+
+    @Test
+    func testOnLoad_WhenIsSenderBlockedReturnsFalse_ItUpdatesAvatarWithNotBlockedState() async {
+        messageAddressSpy.stubbedIsSenderBlocked = .no
+
+        let sut = makeSUT()
+
+        await sut.handle(action: .onLoad)
+
+        #expect(messageAddressSpy.isSenderBlockedCalls.count == 1)
+        #expect(sut.state.avatar.type == .sender(.init(params: .init(), blocked: .no)))
+    }
+
+    // MARK: - `Block address` action
 
     @Test
     func testOnTapBlockContact_ItPresentsAlert() async {
-        await sut.handle(action: .onTap(.blockContact))
+        await sut.handle(action: .onTap(.blockAddress))
 
         #expect(
             sut.state
@@ -77,8 +110,8 @@ final class MessageAddressActionViewStateStoreTests {
     }
 
     @MainActor
-    func testOnBlockAlertAction_CancelActionTapped_ItDismissesAlertAndDoesNotCallBlock() async {
-        await sut.handle(action: .onTap(.blockContact))
+    func testOnTapBlockAlertAction_CancelActionTapped_ItDismissesAlertAndDoesNotCallBlock() async {
+        await sut.handle(action: .onTap(.blockAddress))
         await sut.handle(action: .onBlockAlertAction(.cancel))
 
         #expect(
@@ -90,15 +123,17 @@ final class MessageAddressActionViewStateStoreTests {
                     phoneNumber: .none,
                     emailToBlock: .none
                 ))
+
         #expect(blockSpy.calls == [])
+        #expect(refreshBannersCount == 0)
         #expect(toastStateStore.state.toasts == [])
     }
 
     @Test
-    func testOnBlockAlertAction_ConfirmActionTappedAndSucceeds_ItShowsInformationToast() async {
+    func testOnTapBlockAlertAction_ConfirmActionTappedAndSucceeds_ItShowsInformationToast() async {
         blockSpy.stubbed[email] = .ok
 
-        await sut.handle(action: .onTap(.blockContact))
+        await sut.handle(action: .onTap(.blockAddress))
         await sut.handle(action: .onBlockAlertAction(.confirm))
 
         #expect(
@@ -110,15 +145,18 @@ final class MessageAddressActionViewStateStoreTests {
                     phoneNumber: .none,
                     emailToBlock: .none
                 ))
+
         #expect(blockSpy.calls == [email])
+        #expect(dismissSpy.callsCount == 1)
+        #expect(refreshBannersCount == 1)
         #expect(toastStateStore.state.toasts == [.information(message: "Sender blocked")])
     }
 
     @Test
-    func testOnBlockAlertAction_ConfirmActionTappedAndFailed_ItShowsErrorToast() async {
+    func testOnTapBlockAlertAction_ConfirmActionTappedAndFailed_ItShowsErrorToast() async {
         blockSpy.stubbed[email] = .error(.other(.network))
 
-        await sut.handle(action: .onTap(.blockContact))
+        await sut.handle(action: .onTap(.blockAddress))
         await sut.handle(action: .onBlockAlertAction(.confirm))
 
         #expect(
@@ -132,6 +170,66 @@ final class MessageAddressActionViewStateStoreTests {
                 ))
         #expect(blockSpy.calls == [email])
         #expect(toastStateStore.state.toasts == [.error(message: "Could not block sender")])
+    }
+
+    // MARK: - `Unblock address` action
+
+    @Test
+    func testOnTapUnblockAddress_WhenActionSucceeds_ItUnblocksContact() async throws {
+        messageAddressSpy.stubbedIsSenderBlocked = .yes
+
+        let sut = makeSUT()
+
+        await sut.handle(action: .onLoad)
+
+        messageAddressSpy.stubbedIsSenderBlocked = .no
+
+        await sut.handle(action: .onTap(.unblockAddress))
+
+        let info: SenderInfo = try #require(avatar.type.senderInfo)
+
+        #expect(
+            sut.state
+                == .init(
+                    avatar: avatar.copy(\.type, to: .sender(info.copy(\.blocked, to: .yes))),
+                    name: displayName,
+                    email: email,
+                    phoneNumber: .none,
+                    emailToBlock: .none
+                ))
+
+        #expect(unblockSpy.calls == [email])
+        #expect(dismissSpy.callsCount == 1)
+        #expect(refreshBannersCount == 1)
+        #expect(toastStateStore.state.toasts == [])
+    }
+
+    @Test
+    func testOnTapUnblockAddress_WhenActionFails_ItDoesNotUnblockContact() async throws {
+        messageAddressSpy.stubbedIsSenderBlocked = .yes
+        unblockSpy.stubbed[email] = .error(.other(.network))
+
+        let sut = makeSUT()
+
+        await sut.handle(action: .onLoad)
+        await sut.handle(action: .onTap(.unblockAddress))
+
+        let info: SenderInfo = try #require(avatar.type.senderInfo)
+
+        #expect(
+            sut.state
+                == .init(
+                    avatar: avatar.copy(\.type, to: .sender(info.copy(\.blocked, to: .yes))),
+                    name: displayName,
+                    email: email,
+                    phoneNumber: .none,
+                    emailToBlock: .none
+                ))
+
+        #expect(unblockSpy.calls == [email])
+        #expect(dismissSpy.callsCount == 0)
+        #expect(refreshBannersCount == 0)
+        #expect(toastStateStore.state.toasts == [.error(message: "Could not unblock sender")])
     }
 
     // MARK: - `Add to contacts` action
@@ -208,30 +306,62 @@ final class MessageAddressActionViewStateStoreTests {
     // MARK: - Private
 
     private func makeSUT(phoneNumber: String? = nil) -> MessageAddressActionViewStateStore {
-        .init(
+        messageBannersNotifier.refreshBanners
+            .sink { [unowned self] in self.refreshBannersCount += 1 }
+            .store(in: &cancellables)
+
+        return .init(
+            messageID: .init(value: 1_000),
             avatar: avatar,
             name: displayName,
             email: email,
             phoneNumber: phoneNumber,
+            mailbox: .dummy,
             session: .dummy,
             toastStateStore: toastStateStore,
             pasteboard: pasteboard,
             openURL: urlOpener,
-            blockAddress: { [unowned self] session, address in
-                await self.blockSpy.result(for: address)
-            },
+            wrapper: .init(
+                block: { [unowned self] session, address in
+                    await self.blockSpy.result(for: address)
+                },
+                isSenderBlocked: { [unowned self] mailbox, messageID in
+                    await self.messageAddressSpy.isSenderBlocked(mailbox: mailbox, messageID: messageID)
+                }
+            ),
+            senderUnblocker: .init(
+                mailbox: .dummy,
+                wrapper: .init(
+                    messageBody: { _, _ in .ok(.init(noPointer: .init())) },
+                    markMessageHam: { _, _ in .ok },
+                    unblockSender: { _, emailAddress in
+                        await self.unblockSpy.result(for: emailAddress)
+                    }
+                )
+            ),
             draftPresenter: draftPresenterSpy,
-            dismiss: dismissSpy
+            dismiss: dismissSpy,
+            messageBannersNotifier: messageBannersNotifier
         )
     }
 }
 
-private final class BlockAddressSpy: @unchecked Sendable {
+private final class BlockUnblockAddressSpy: @unchecked Sendable {
     private(set) var calls: [String] = []
     var stubbed: [String: VoidActionResult] = [:]
 
     func result(for email: String) async -> VoidActionResult {
         calls.append(email)
         return stubbed[email] ?? .ok
+    }
+}
+
+private final class RustMessageAddressWrapperSpy: @unchecked Sendable {
+    var stubbedIsSenderBlocked: BlockedSender = .no
+    private(set) var isSenderBlockedCalls: [(mailbox: Mailbox, messageID: Id)] = []
+
+    func isSenderBlocked(mailbox: Mailbox, messageID: Id) async -> BlockedSender {
+        isSenderBlockedCalls.append((mailbox, messageID))
+        return stubbedIsSenderBlocked
     }
 }

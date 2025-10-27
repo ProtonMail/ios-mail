@@ -32,6 +32,7 @@ struct ConversationDetailListView: View {
     /// These attributes trigger the different action sheets
     @State private var senderActionTarget: ExpandedMessageCellUIModel?
     @State private var recipientActionTarget: MessageDetail.Recipient?
+    @State private var messageBannersNotifier = RefreshMessageBannersNotifier()
 
     init(
         model: ConversationDetailModel,
@@ -68,24 +69,30 @@ struct ConversationDetailListView: View {
 
     private func senderActionSheet(target: ExpandedMessageCellUIModel) -> some View {
         MessageAddressActionView(
+            messageID: target.id,
             avatarUIModel: target.messageDetails.avatar,
             name: target.messageDetails.sender.name,
             emailAddress: target.messageDetails.sender.address,
+            mailbox: model.mailbox.unsafelyUnwrapped,
             mailUserSession: mailUserSession,
             draftPresenter: draftPresenter
         )
-        .pickerViewStyle([.height(390)])
+        .pickerViewStyle([.height(450)])
+        .environmentObject(messageBannersNotifier)
     }
 
     private func recipientActionSheet(target: MessageDetail.Recipient) -> some View {
         MessageAddressActionView(
+            messageID: .none,
             avatarUIModel: AvatarUIModel(info: target.avatarInfo, type: .other),
             name: target.name,
             emailAddress: target.address,
+            mailbox: model.mailbox.unsafelyUnwrapped,
             mailUserSession: mailUserSession,
             draftPresenter: draftPresenter
         )
         .pickerViewStyle([.height(390)])
+        .environmentObject(messageBannersNotifier)
     }
 
     private func messageList(messages: [MessageCellUIModel]) -> some View {
@@ -159,6 +166,7 @@ struct ConversationDetailListView: View {
             htmlDisplayed: { model.markMessageAsReadIfNeeded(metadata: uiModel.toActionMetadata()) }
         )
         .environment(\.forceLightModeInMessageBody, model.isForcingLightMode(forMessageWithId: uiModel.id))
+        .environmentObject(messageBannersNotifier)
     }
 
     private func onExpandedMessageCellEvent(_ event: ExpandedMessageCellEvent, uiModel: ExpandedMessageCellUIModel) -> Void {

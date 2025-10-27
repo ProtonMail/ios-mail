@@ -20,10 +20,21 @@ public struct UpsellConfiguration: Sendable {
     public let regularPlan: String
     public let onboardingPlans: [String]
     public let arePaymentsEnabled: Bool
+    public let apiDomain: String
 
-    public init(regularPlan: String, onboardingPlans: [String], arePaymentsEnabled: Bool) {
+    public init(regularPlan: String, onboardingPlans: [String], arePaymentsEnabled: Bool, apiDomain: String) {
         self.regularPlan = regularPlan
         self.onboardingPlans = onboardingPlans
         self.arePaymentsEnabled = arePaymentsEnabled
+        self.apiDomain = apiDomain
     }
+}
+
+extension UpsellConfiguration {
+    static let dummy = UpsellConfiguration(
+        regularPlan: "mail2022",
+        onboardingPlans: ["bundle2022", "mail2022"],
+        arePaymentsEnabled: true,
+        apiDomain: "example.com"
+    )
 }

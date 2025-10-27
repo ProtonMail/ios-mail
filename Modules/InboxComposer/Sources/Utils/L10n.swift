@@ -250,12 +250,6 @@ enum L10n {
             comment: "Attachment failed because account storage is full"
         )
 
-        static let storageQuotaExceededMessage = LocalizedStringResource(
-            "Your storage is full. Please free up space or upgrade to add more.",
-            bundle: .atURL(Bundle.module.bundleURL),
-            comment: "Attachment failed because account storage is full"
-        )
-
         static let somethingWentWrongTitle = LocalizedStringResource(
             "Something went wrong",
             bundle: .atURL(Bundle.module.bundleURL),
@@ -523,7 +517,7 @@ enum L10n {
         )
 
         static let storageQuotaExceeded = LocalizedStringResource(
-            "Your storage is full. Please free up space or upgrade to add more.",
+            "Cannot upload attachment because your Proton Mail storage is full. Free up space or upgrade your plan.",
             comment: "Error in the context of uploading an attachment for a message before being sent."
         )
 

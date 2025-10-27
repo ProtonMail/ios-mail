@@ -22,6 +22,7 @@ import SwiftUI
 public struct UpsellScreen: View {
     @Environment(\.accessibilityReduceTransparency) var reduceTransparency
     @Environment(\.dismiss) private var dismiss
+    @Environment(\.openURL) private var openURL
     @Environment(\.verticalSizeClass) private var verticalSizeClass
     @EnvironmentObject private var toastStateStore: ToastStateStore
 
@@ -35,7 +36,7 @@ public struct UpsellScreen: View {
 
     public var body: some View {
         sizeClassDependentBody
-            .background(LinearGradient.screenBackground)
+            .background(background)
             .foregroundStyle(Color.white)
             .mask {
                 VStack(spacing: .zero) {
@@ -55,6 +56,15 @@ public struct UpsellScreen: View {
     }
 
     @ViewBuilder
+    private var background: some View {
+        if model.isPromo {
+            DS.Images.Upsell.BlackFriday.background.image.resizable()
+        } else {
+            LinearGradient.screenBackground
+        }
+    }
+
+    @ViewBuilder
     private var sizeClassDependentBody: some View {
         if verticalSizeClass == .compact {
             HStack {
@@ -63,7 +73,6 @@ public struct UpsellScreen: View {
                 interactiveArea
                     .padding(.top, headerHeight)
             }
-
         } else {
             VStack(spacing: .zero) {
                 infoSection
@@ -109,15 +118,19 @@ public struct UpsellScreen: View {
                     Spacer.exactly(DS.Spacing.extraLarge)
                 }
 
-                title
+                if let title = model.title {
+                    titleView(title: title)
 
-                Spacer.exactly(DS.Spacing.standard)
+                    Spacer.exactly(DS.Spacing.standard)
+                }
 
-                subtitle
+                if let subtitle = model.subtitle {
+                    subtitleView(subtitle: subtitle)
 
-                Spacer.exactly(DS.Spacing.huge)
+                    Spacer.exactly(DS.Spacing.huge)
+                }
 
-                PlanComparisonGrid()
+                PlanComparisonGrid(highlightStroke: model.highlightStroke)
             }
             .padding(.top, headerHeight)
             .padding(.bottom, DS.Spacing.extraLarge)
@@ -137,18 +150,19 @@ public struct UpsellScreen: View {
             .resizable()
             .aspectRatio(contentMode: .fit)
             .frame(height: model.logoHeight)
+            .padding(.horizontal, model.logoHorizontalPadding)
             .scaleEffect(model.logoScaleFactor)
             .opacity(model.logoOpacity)
     }
 
-    private var title: some View {
-        Text(model.title)
+    private func titleView(title: LocalizedStringResource) -> some View {
+        Text(title)
             .font(.title2)
             .fontWeight(.bold)
     }
 
-    private var subtitle: some View {
-        Text(model.subtitle)
+    private func subtitleView(subtitle: LocalizedStringResource) -> some View {
+        Text(subtitle)
             .font(.callout)
             .multilineTextAlignment(.center)
             .fixedSize(horizontal: false, vertical: true)
@@ -158,7 +172,9 @@ public struct UpsellScreen: View {
 
     private var interactiveArea: some View {
         VStack(spacing: .zero) {
-            chooseYourPlanPrompt
+            if model.planInstances.count > 1 {
+                chooseYourPlanPrompt
+            }
 
             ZStack {
                 purchasingOptions
@@ -187,12 +203,19 @@ public struct UpsellScreen: View {
 
     private var purchasingOptions: some View {
         VStack(spacing: .zero) {
-            SubscriptionPeriodRadioGroup(
-                planInstances: model.planInstances,
-                selectedInstanceID: $model.selectedInstanceId
-            )
+            if model.isPromo {
+                SubscriptionPeriodRadioButton(
+                    planInstance: model.planInstances[0],
+                    isSelected: false
+                ) {}
+            } else {
+                SubscriptionPeriodRadioGroup(
+                    planInstances: model.planInstances,
+                    selectedInstanceID: $model.selectedInstanceId
+                )
+            }
 
-            Spacer.exactly(14)
+            Spacer.exactly(DS.Spacing.moderatelyLarge)
 
             getPlanButton
         }
@@ -201,23 +224,43 @@ public struct UpsellScreen: View {
     private var getPlanButton: some View {
         Button(L10n.getPlan(named: model.planName).string) {
             Task {
-                await model.onPurchaseTapped(toastStateStore: toastStateStore, dismiss: dismiss.callAsFunction)
+                await model.onPurchaseTapped(
+                    toastStateStore: toastStateStore,
+                    openURL: openURL.callAsFunction,
+                    dismiss: dismiss.callAsFunction
+                )
             }
         }
-        .buttonStyle(BigButtonStyle(flavor: .inverted))
+        .buttonStyle(BigButtonStyle(flavor: .inverted(backgroundColorOverride: model.ctaBackgroundOverride)))
     }
 
     private var autoRenewalNotice: some View {
-        Text(L10n.autoRenewalNotice)
+        Text(model.autoRenewalNotice)
             .font(.caption)
             .foregroundStyle(Color.white.opacity(0.9))
     }
 }
 
-#Preview {
+#Preview("regular") {
     Color.clear
         .sheet(isPresented: .constant(true)) {
-            UpsellScreen(model: .preview(entryPoint: .mailboxTopBar))
+            UpsellScreen(model: .preview(entryPoint: .mailboxTopBar, upsellType: .standard))
+        }
+        .environmentObject(ToastStateStore(initialState: .initial))
+}
+
+#Preview("black friday wave 1") {
+    Color.clear
+        .sheet(isPresented: .constant(true)) {
+            UpsellScreen(model: .preview(entryPoint: .mailboxTopBar, upsellType: .blackFriday(.wave1)))
+        }
+        .environmentObject(ToastStateStore(initialState: .initial))
+}
+
+#Preview("black friday wave 2") {
+    Color.clear
+        .sheet(isPresented: .constant(true)) {
+            UpsellScreen(model: .preview(entryPoint: .mailboxTopBar, upsellType: .blackFriday(.wave2)))
         }
         .environmentObject(ToastStateStore(initialState: .initial))
 }

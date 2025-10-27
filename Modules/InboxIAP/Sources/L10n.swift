@@ -18,6 +18,7 @@
 
 import Foundation
 import proton_app_uniffi
+import StoreKit
 
 enum L10n {
     static let autoRenewalNotice = LocalizedStringResource("Auto-renews at the same price and terms unless canceled", bundle: .module, comment: "Notice at the bottom")
@@ -79,6 +80,10 @@ enum L10n {
         .init("Pay annually and save \(amount)", bundle: .module, comment: "Shown when selecting the yearly billing cycle")
     }
 
+    static func onlyXPerMonth(_ amount: String) -> LocalizedStringResource {
+        .init("only \(amount) /month", bundle: .module, comment: "Shown next to the discounted monthly price")
+    }
+
     enum BillingCycle {
         static let monthly = LocalizedStringResource("Monthly", bundle: .module, comment: "Refers to billing cycle")
         static let yearlyNoDiscount = LocalizedStringResource("Yearly", bundle: .module, comment: "Refers to billing cycle")
@@ -117,6 +122,14 @@ enum L10n {
 
     static func getPlan(named planName: String) -> LocalizedStringResource {
         .init("Get \(planName)", bundle: .module, comment: "CTA button to purchase a plan (e.g. Get Mail Plus)")
+    }
+
+    static func discountRenewalNotice(renewalPrice: String, period: Product.SubscriptionPeriod.Unit) -> LocalizedStringResource {
+        .init(
+            "Discounts are based on standard monthly pricing. Auto-renews at \(renewalPrice) /\(period.localizedDescription.lowercased()) until canceled.",
+            bundle: .module,
+            comment: "Notice at the bottom of the upsell page"
+        )
     }
 }
 

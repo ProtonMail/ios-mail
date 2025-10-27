@@ -15,38 +15,16 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import InboxCore
 import InboxDesignSystem
 import SwiftUI
-
-enum AvatarViewType: Hashable {
-    case sender(params: SenderImageDataParameters)
-    case other
-
-    var senderImageDataParameters: SenderImageDataParameters? {
-        switch self {
-        case .sender(let params):
-            return params
-        case .other:
-            return nil
-        }
-    }
-
-    var isSender: Bool {
-        switch self {
-        case .sender:
-            return true
-        case .other:
-            return false
-        }
-    }
-}
 
 struct AvatarView: View {
     let avatar: AvatarUIModel
 
     var body: some View {
-        if let senderParams = avatar.type.senderImageDataParameters {
-            AsyncSenderImageView(senderImageParams: senderParams) { senderImage in
+        if let senderInfo = avatar.type.senderInfo {
+            AsyncSenderImageView(senderImageParams: senderInfo.params) { senderImage in
                 switch senderImage {
                 case .empty:
                     initialsView
@@ -83,17 +61,18 @@ private struct AvatarViewIdentifiers {
 
 #Preview {
     let senderParams = SenderImageDataParameters(address: "aaron@proton.me", displaySenderImage: true)
+    let info = SenderInfo(params: senderParams, blocked: .no)
     let avatarUIModel1 = AvatarUIModel(
         info: .init(initials: "Gh", color: .cyan),
-        type: .sender(params: senderParams)
+        type: .sender(info)
     )
     let avatarUIModel2 = AvatarUIModel(
         info: .init(initials: "Aa", color: DS.Color.Brand.norm),
-        type: .sender(params: senderParams)
+        type: .sender(info)
     )
     let avatarUIModel3 = AvatarUIModel(
         info: .init(initials: "Ad", color: DS.Color.Brand.norm),
-        type: .sender(params: senderParams)
+        type: .sender(info)
     )
 
     return VStack {

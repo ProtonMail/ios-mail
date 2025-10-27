@@ -30,6 +30,7 @@ final class MessageBodyStateStore: StateStore {
         case unblockSender(emailAddress: String)
         case unsubscribeNewsletter
         case unsubscribeNewsletterConfirmed(UnsubscribeNewsletterAlertAction)
+        case refreshBanners
     }
 
     struct State: Copying {
@@ -71,6 +72,10 @@ final class MessageBodyStateStore: StateStore {
         switch action {
         case .onLoad:
             await loadMessageBody(with: .init())
+        case .refreshBanners:
+            if case let .loaded(body) = state.body {
+                await loadMessageBody(with: body.html.options)
+            }
         case .displayEmbeddedImages:
             if case let .loaded(body) = state.body {
                 let updatedOptions = body.html.options

@@ -23,29 +23,36 @@ import SwiftUI
 
 struct MessageAddressActionView: View {
     @EnvironmentObject var toastStateStore: ToastStateStore
+    @EnvironmentObject var messageBannersNotifier: RefreshMessageBannersNotifier
     @Environment(\.openURL) var openURL
     @Environment(\.pasteboard) var pasteboard
     @Environment(\.dismissTestable) var dismiss
+    let messageID: ID?
     let avatarUIModel: AvatarUIModel
     let name: String
     let emailAddress: String
+    let mailbox: Mailbox
     let mailUserSession: MailUserSession
     let draftPresenter: RecipientDraftPresenter
 
     var body: some View {
         StoreView(
             store: MessageAddressActionViewStateStore(
+                messageID: messageID,
                 avatar: avatarUIModel,
                 name: name,
                 email: emailAddress,
                 phoneNumber: .none,
+                mailbox: mailbox,
                 session: mailUserSession,
                 toastStateStore: toastStateStore,
                 pasteboard: pasteboard,
                 openURL: openURL,
-                blockAddress: blockAddress(session:email:),
+                wrapper: .productionInstance(),
+                senderUnblocker: .init(mailbox: mailbox, wrapper: .productionInstance()),
                 draftPresenter: draftPresenter,
-                dismiss: dismiss
+                dismiss: dismiss,
+                messageBannersNotifier: messageBannersNotifier
             ),
             content: { state, store in
                 ActionPickerList(
@@ -57,6 +64,7 @@ struct MessageAddressActionView: View {
                     onElementTap: { action in store.handle(action: .onTap(action)) }
                 )
                 .alert(model: blockConfirmationAlert(state: state, store: store))
+                .onLoad { store.handle(action: .onLoad) }
             }
         )
     }
@@ -86,7 +94,19 @@ struct MessageAddressActionView: View {
         [
             [.newMessage, .addToContacts],
             [.copyAddress, .copyName],
+            blockUnblockAction(avatar: avatar),
         ]
+    }
+
+    private func blockUnblockAction(avatar: AvatarUIModel) -> [MessageAddressAction] {
+        switch avatar.type.senderInfo?.blocked {
+        case .yes:
+            [.unblockAddress]
+        case .no:
+            [.blockAddress]
+        case .none, .notLoaded:
+            []
+        }
     }
 
     private func blockConfirmationAlert(
@@ -107,12 +127,14 @@ struct MessageAddressActionView: View {
 #Preview {
     HStack {
         MessageAddressActionView(
+            messageID: .none,
             avatarUIModel: .init(
                 info: .init(initials: "Aa", color: .purple),
-                type: .sender(params: .init())
+                type: .sender(.init(params: .init(), blocked: .no))
             ),
             name: "Aaron",
             emailAddress: "aaron@proton.me",
+            mailbox: .dummy,
             mailUserSession: .dummy,
             draftPresenter: DraftPresenter(
                 userSession: .dummy,

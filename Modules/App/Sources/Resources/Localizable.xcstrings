@@ -8181,7 +8181,7 @@
       }
     },
     "Block this address" : {
-      "comment" : "Title of the alert asking the user to confirm blocking an email address.",
+      "comment" : "Action title for blocking email address in the address action sheet.\nTitle of the alert asking the user to confirm blocking an email address.",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -8355,197 +8355,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Заблокувати цю адресу"
-          }
-        }
-      }
-    },
-    "Block this contact" : {
-      "comment" : "Action title for blocking email address in the address action sheet.",
-      "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Заблакіраваць гэты кантакт"
-          }
-        },
-        "ca" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bloqueja aquest contacte"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Zablokovat tento kontakt"
-          }
-        },
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Blokér denne kontakt"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Diesen Kontakt blockieren"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Φραγή αυτής της επαφής"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Block this contact"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bloquear este contacto"
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bloquear este contacto"
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Estä yhteystieto"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bloquer ce contact"
-          }
-        },
-        "hu" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cím letiltása"
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Blokir kontak ini"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Blocca il contatto"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "この連絡先をブロック"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ამ კონტაქტის დაბლოკვა"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "이 연락처 차단"
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Blokker denne kontakten"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Deze contactpersoon blokkeren?"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Zablokuj kontakt"
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bloquear este contacto"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bloquear este contato"
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Blocare acest contact"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Заблокировать этот контакт"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Zablokovať tento kontakt"
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Blokiraj ta stik"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Blockera denna kontakt"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bu kişiyi engelle"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Заблокувати цей контакт"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "屏蔽此联系人"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "封鎖此聯絡人"
           }
         }
       }
@@ -13831,6 +13640,9 @@
           }
         }
       }
+    },
+    "Could not unblock sender" : {
+      "comment" : "Toast message shown when unblocking an email address (sender) fails."
     },
     "Create a folder" : {
       "comment" : "Button in the sidebar menu that redirects a user to the create folder screen.",
@@ -49420,6 +49232,9 @@
           }
         }
       }
+    },
+    "Unblock this address" : {
+      "comment" : "Action title for unblocking email address in the address action sheet."
     },
     "Unpin" : {
       "comment" : "Message unpin action title.",

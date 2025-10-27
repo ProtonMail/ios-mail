@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import InboxCoreUI
+import InboxDesignSystem
 import PaymentsNG
 import proton_app_uniffi
 import SwiftUI
@@ -25,7 +26,6 @@ import SwiftUI
 public final class UpsellScreenModel: Identifiable {
     let planName: String
     let planInstances: [DisplayablePlanInstance]
-    let logoHeight: CGFloat = 118
 
     var logoScaleFactor: CGFloat = 1
     var logoOpacity: CGFloat = 1
@@ -35,50 +35,112 @@ public final class UpsellScreenModel: Identifiable {
     private let logoScaleFactorRange: ClosedRange<CGFloat> = 0.8...1
     private let logoOpacityRange: ClosedRange<CGFloat> = 0.2...1
     private let entryPoint: UpsellEntryPoint
+    private let upsellType: UpsellType
     private let purchaseActionPerformer: PurchaseActionPerformer
+    private let webCheckout: WebCheckout
 
     var logo: ImageResource {
-        entryPoint.logo
+        switch upsellType {
+        case .standard:
+            entryPoint.logo
+        case .blackFriday(.wave1):
+            DS.Images.Upsell.BlackFriday.logo50
+        case .blackFriday(.wave2):
+            DS.Images.Upsell.BlackFriday.logo80
+        }
     }
 
-    var title: LocalizedStringResource {
-        L10n.screenTitle(planName: planName, entryPoint: entryPoint)
+    var logoHeight: CGFloat? {
+        isPromo ? nil : 118
     }
 
-    var subtitle: LocalizedStringResource {
-        L10n.screenSubtitle(planName: planName, entryPoint: entryPoint)
+    var logoHorizontalPadding: CGFloat? {
+        isPromo ? DS.Spacing.standard : nil
+    }
+
+    var title: LocalizedStringResource? {
+        isPromo ? nil : L10n.screenTitle(planName: planName, entryPoint: entryPoint)
+    }
+
+    var subtitle: LocalizedStringResource? {
+        isPromo ? nil : L10n.screenSubtitle(planName: planName, entryPoint: entryPoint)
+    }
+
+    var highlightStroke: (any ShapeStyle)? {
+        isPromo ? DS.Color.Promo.blackFriday : nil
+    }
+
+    var ctaBackgroundOverride: Color? {
+        isPromo ? DS.Color.Promo.blackFriday : nil
+    }
+
+    var autoRenewalNotice: LocalizedStringResource {
+        switch planInstances[0].pricing {
+        case .regular:
+            L10n.autoRenewalNotice
+        case .discountedYearlyPlan(_, _, let renewalPrice):
+            L10n.discountRenewalNotice(renewalPrice: renewalPrice, period: .year)
+        case .discountedMonthlyPlan(_, let renewalPrice):
+            L10n.discountRenewalNotice(renewalPrice: renewalPrice, period: .month)
+        }
+    }
+
+    var isPromo: Bool {
+        switch upsellType {
+        case .standard:
+            false
+        case .blackFriday:
+            true
+        }
     }
 
     init(
         planName: String,
         planInstances: [DisplayablePlanInstance],
         entryPoint: UpsellEntryPoint,
-        purchaseActionPerformer: PurchaseActionPerformer
+        upsellType: UpsellType,
+        purchaseActionPerformer: PurchaseActionPerformer,
+        webCheckout: WebCheckout
     ) {
         self.planName = planName
         self.planInstances = planInstances
         self.entryPoint = entryPoint
+        self.upsellType = upsellType
         self.purchaseActionPerformer = purchaseActionPerformer
+        self.webCheckout = webCheckout
         selectedInstanceId = planInstances[0].storeKitProductId
     }
 
     func scrollingOffsetDidChange(newValue verticalOffset: CGFloat) {
         guard verticalOffset > 0 else { return }
 
-        let ratio = 1 - min(verticalOffset / logoHeight, 1)
+        let ratio = 1 - min(verticalOffset / 150, 1)
         let ratioRange: ClosedRange<CGFloat> = 0...1
 
         logoScaleFactor = ratio.normalize(inputRange: ratioRange, outputRange: logoScaleFactorRange)
         logoOpacity = ratio.normalize(inputRange: ratioRange, outputRange: logoOpacityRange)
     }
 
-    func onPurchaseTapped(toastStateStore: ToastStateStore, dismiss: () -> Void) async {
-        await purchaseActionPerformer.purchase(
-            storeKitProductID: selectedInstanceId,
-            isBusy: .init(get: { self.isBusy }, set: { self.isBusy = $0 }),
-            toastStateStore: toastStateStore,
-            dismiss: dismiss
-        )
+    func onPurchaseTapped(toastStateStore: ToastStateStore, openURL: (URL) -> Void, dismiss: () -> Void) async {
+        let isBusyBinding = Binding(get: { self.isBusy }, set: { self.isBusy = $0 })
+
+        switch upsellType {
+        case .standard:
+            await purchaseActionPerformer.purchase(
+                storeKitProductID: selectedInstanceId,
+                isBusy: isBusyBinding,
+                toastStateStore: toastStateStore,
+                dismiss: dismiss
+            )
+        case .blackFriday(let wave):
+            await webCheckout.initiate(
+                for: wave,
+                isBusy: isBusyBinding,
+                toastStateStore: toastStateStore,
+                openURL: openURL,
+                dismiss: dismiss
+            )
+        }
     }
 }
 

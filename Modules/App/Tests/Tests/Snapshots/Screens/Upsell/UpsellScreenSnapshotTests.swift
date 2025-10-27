@@ -17,6 +17,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import InboxSnapshotTesting
+import proton_app_uniffi
 import SnapshotTesting
 import SwiftUI
 import Testing
@@ -24,10 +25,12 @@ import Testing
 @testable import InboxIAP
 
 @MainActor
+@Suite(.serialized)
 struct UpsellScreenSnapshotTests {
     struct TestCase {
         let label: String
         let config: ViewImageConfig
+        let upsellType: UpsellType
     }
 
     nonisolated private static let testCases: [TestCase] = {
@@ -38,19 +41,45 @@ struct UpsellScreenSnapshotTests {
             ("13 Pro Max", ViewImageConfig.iPhone13ProMax(_:)),
         ]
 
+        let upsellTypes: [UpsellType] = [.standard, .blackFriday(.wave1), .blackFriday(.wave2)]
+
         return orientations.flatMap { orientation in
-            devices.map { device in
-                let config = device.configFactory(orientation)
-                return .init(label: "\(device.label)_\(orientation)", config: config)
+            devices.flatMap { device in
+                upsellTypes.map { upsellType in
+                    .init(
+                        label: "\(device.label)_\(orientation)_\(upsellType.label)",
+                        config: device.configFactory(orientation),
+                        upsellType: upsellType
+                    )
+                }
             }
         }
     }()
 
     @Test(arguments: testCases)
     func upsellScreen(testCase: TestCase) {
-        let sut = UpsellScreen(model: .preview(entryPoint: .mailboxTopBar))
+        let sut = UpsellScreen(model: .preview(entryPoint: .mailboxTopBar, upsellType: testCase.upsellType))
         let viewController = UIHostingController(rootView: sut)
 
-        assertSnapshots(matching: viewController, on: [(testCase.label, testCase.config)], styles: [.dark])
+        let strategy: Snapshotting<UIViewController, UIImage> = .image(
+            on: testCase.config,
+            drawHierarchyInKeyWindow: true,
+            precision: 0.99
+        )
+
+        assertSnapshot(of: viewController, as: strategy, named: testCase.label)
+    }
+}
+
+private extension UpsellType {
+    var label: String {
+        switch self {
+        case .standard:
+            "standard"
+        case .blackFriday(.wave1):
+            "BF_1"
+        case .blackFriday(.wave2):
+            "BF_2"
+        }
     }
 }

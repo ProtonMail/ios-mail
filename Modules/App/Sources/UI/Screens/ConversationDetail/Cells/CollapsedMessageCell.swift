@@ -149,7 +149,10 @@ struct CollapsedMessageCellUIModel: Equatable {
                 isDraft: false,
                 isStarred: false,
                 showPaperClip: false,
-                avatar: .init(info: .init(initials: "Ba", color: .blue), type: .sender(params: .init()))
+                avatar: .init(
+                    info: .init(initials: "Ba", color: .blue),
+                    type: .sender(.init(params: .init(), blocked: .no))
+                )
             ), onTap: {})
         CollapsedMessageCell(
             uiModel: .init(
@@ -162,7 +165,10 @@ struct CollapsedMessageCellUIModel: Equatable {
                 isDraft: false,
                 isStarred: false,
                 showPaperClip: false,
-                avatar: .init(info: .init(initials: "De", color: .yellow), type: .sender(params: .init()))
+                avatar: .init(
+                    info: .init(initials: "De", color: .yellow),
+                    type: .sender(.init(params: .init(), blocked: .no))
+                )
             ), onTap: {})
         CollapsedMessageCell(
             uiModel: .init(
@@ -175,7 +181,10 @@ struct CollapsedMessageCellUIModel: Equatable {
                 isDraft: false,
                 isStarred: false,
                 showPaperClip: false,
-                avatar: .init(info: .init(initials: "Pr", color: .green), type: .sender(params: .init()))
+                avatar: .init(
+                    info: .init(initials: "Pr", color: .green),
+                    type: .sender(.init(params: .init(), blocked: .yes))
+                )
             ), onTap: {})
     }
 }

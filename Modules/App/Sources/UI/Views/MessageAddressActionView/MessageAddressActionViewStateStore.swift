@@ -22,12 +22,13 @@ import SwiftUI
 
 final class MessageAddressActionViewStateStore: StateStore {
     enum Action {
+        case onLoad
         case onTap(MessageAddressAction)
         case onBlockAlertAction(BlockAddressAlertAction)
     }
 
     struct State: Copying, Equatable {
-        let avatar: AvatarUIModel
+        var avatar: AvatarUIModel
         let name: String
         let email: String
         let phoneNumber: String?
@@ -37,41 +38,61 @@ final class MessageAddressActionViewStateStore: StateStore {
 
     @Published var state: State
 
+    private let messageID: ID?
+    private let mailbox: Mailbox
     private let session: MailUserSession
     private let toastStateStore: ToastStateStore
     private let clipboard: Clipboard
     private let openURL: URLOpenerProtocol
-    private let blockAddress: (_ userSession: MailUserSession, _ emailAddress: String) async -> VoidActionResult
+    private let wrapper: RustMessageAddressWrapper
+    private let senderUnblocker: SenderUnblocker
     private let draftPresenter: RecipientDraftPresenter
     private let dismiss: Dismissable
+    private let messageBannersNotifier: RefreshMessageBannersNotifier
 
     init(
+        messageID: ID?,
         avatar: AvatarUIModel,
         name: String,
         email: String,
         phoneNumber: String?,
+        mailbox: Mailbox,
         session: MailUserSession,
         toastStateStore: ToastStateStore,
         pasteboard: UIPasteboard,
         openURL: URLOpenerProtocol,
-        blockAddress: @escaping (_ userSession: MailUserSession, _ emailAddress: String) async -> VoidActionResult,
+        wrapper: RustMessageAddressWrapper,
+        senderUnblocker: SenderUnblocker,
         draftPresenter: RecipientDraftPresenter,
-        dismiss: Dismissable
+        dismiss: Dismissable,
+        messageBannersNotifier: RefreshMessageBannersNotifier
     ) {
+        self.messageID = messageID
         self.state = .init(avatar: avatar, name: name, email: email, phoneNumber: phoneNumber, emailToBlock: .none)
+        self.mailbox = mailbox
         self.session = session
         self.toastStateStore = toastStateStore
         self.clipboard = .init(toastStateStore: toastStateStore, pasteboard: pasteboard)
         self.openURL = openURL
-        self.blockAddress = blockAddress
+        self.wrapper = wrapper
+        self.senderUnblocker = senderUnblocker
         self.draftPresenter = draftPresenter
         self.dismiss = dismiss
+        self.messageBannersNotifier = messageBannersNotifier
     }
 
     // MARK: - Public
 
     func handle(action: Action) async {
         switch action {
+        case .onLoad:
+            if case .sender(let senderInfo) = state.avatar.type, let messageID {
+                let blocked = await wrapper.isSenderBlocked(mailbox, messageID)
+                let updatedSenderInfo = senderInfo.copy(\.blocked, to: blocked)
+                let updatedAvatar = state.avatar.copy(\.type, to: .sender(updatedSenderInfo))
+
+                state = state.copy(\.avatar, to: updatedAvatar)
+            }
         case .onTap(let tapAction):
             await handleTap(action: tapAction)
         case .onBlockAlertAction(let alertAction):
@@ -100,8 +121,10 @@ final class MessageAddressActionViewStateStore: StateStore {
             clipboard.copyToClipboard(value: state.name, forName: CommonL10n.Clipboard.name)
         case .addToContacts:
             toastStateStore.present(toast: .comingSoon)
-        case .blockContact:
+        case .blockAddress:
             state = state.copy(\.emailToBlock, to: state.email)
+        case .unblockAddress:
+            await unblock(email: state.email)
         }
     }
 
@@ -113,13 +136,25 @@ final class MessageAddressActionViewStateStore: StateStore {
             if let emailToBlock = state.emailToBlock {
                 state = state.copy(\.emailToBlock, to: nil)
 
-                switch await blockAddress(session, emailToBlock) {
+                switch await wrapper.block(session, emailToBlock) {
                 case .ok:
+                    dismiss()
+                    messageBannersNotifier.refresh()
                     toastStateStore.present(toast: .information(message: L10n.BlockAddress.Toast.success.string))
                 case .error:
                     toastStateStore.present(toast: .error(message: L10n.BlockAddress.Toast.failure.string))
                 }
             }
+        }
+    }
+
+    private func unblock(email: String) async {
+        switch await senderUnblocker.unblock(emailAddress: email) {
+        case .ok:
+            dismiss()
+            messageBannersNotifier.refresh()
+        case .error:
+            toastStateStore.present(toast: .error(message: L10n.UnblockAddress.Toast.failure.string))
         }
     }
 }

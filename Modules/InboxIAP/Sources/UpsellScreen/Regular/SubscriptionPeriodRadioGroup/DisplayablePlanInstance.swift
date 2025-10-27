@@ -17,8 +17,14 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 struct DisplayablePlanInstance: Equatable {
+    enum Pricing: Equatable {
+        case regular(monthlyPrice: String)
+        case discountedYearlyPlan(discountedMonthlyPrice: String, discountedYearlyPrice: String, renewalPrice: String)
+        case discountedMonthlyPlan(discountedPrice: String, renewalPrice: String)
+    }
+
     let storeKitProductId: String
     let cycleInMonths: Int
-    let monthlyPrice: String
+    let pricing: Pricing
     let discount: Int?
 }

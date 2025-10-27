@@ -64,7 +64,10 @@ private extension MailboxItemCellUIModel {
             id: .random(),
             conversationID: .random(),
             type: .conversation,
-            avatar: AvatarUIModel(info: AvatarInfo(initials: "A", color: .teal), type: .sender(params: .init())),
+            avatar: AvatarUIModel(
+                info: AvatarInfo(initials: "A", color: .teal),
+                type: .sender(.init(params: .init(), blocked: .no))
+            ),
             emails: "arya.lindt@example.com",
             subject: "Making the most of Safari",
             date: Date(timeIntervalSince1970: 1717485341),
@@ -92,7 +95,10 @@ private extension MailboxItemCellUIModel {
             id: .random(),
             conversationID: .random(),
             type: .conversation,
-            avatar: AvatarUIModel(info: AvatarInfo(initials: "T", color: .teal), type: .sender(params: .init())),
+            avatar: AvatarUIModel(
+                info: AvatarInfo(initials: "T", color: .teal),
+                type: .sender(.init(params: .init(), blocked: .no))
+            ),
             emails: "Travel",
             subject: "Your booking confirmation KL877N",
             date: Date(timeIntervalSince1970: 1717483827),
@@ -126,7 +132,10 @@ private extension MailboxItemCellUIModel {
             id: .random(),
             conversationID: .random(),
             type: .conversation,
-            avatar: AvatarUIModel(info: AvatarInfo(initials: "T", color: .teal), type: .sender(params: .init())),
+            avatar: AvatarUIModel(
+                info: AvatarInfo(initials: "T", color: .teal),
+                type: .sender(.init(params: .init(), blocked: .no))
+            ),
             emails: "Flights to Palo Alto - 20th of September, 2025",
             subject: "You're invited to flight KCY877N",
             date: Date(timeIntervalSince1970: 1717484927),
@@ -154,7 +163,10 @@ private extension MailboxItemCellUIModel {
             id: .random(),
             conversationID: .random(),
             type: .conversation,
-            avatar: AvatarUIModel(info: AvatarInfo(initials: "J", color: .indigo), type: .sender(params: .init())),
+            avatar: AvatarUIModel(
+                info: AvatarInfo(initials: "J", color: .indigo),
+                type: .sender(.init(params: .init(), blocked: .no))
+            ),
             emails: "Jane Doe, Mike, Laureen Smith",
             subject: "Photos from Portugal",
             date: Date(timeIntervalSince1970: 1717484830),

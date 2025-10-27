@@ -40,6 +40,7 @@ public final class UpsellCoordinator: ObservableObject {
             onlineExecutor: mailUserSession,
             plansComposer: plansComposer,
             planPurchasing: planPurchasing,
+            sessionForking: mailUserSession,
             configuration: configuration
         )
     }
@@ -49,6 +50,7 @@ public final class UpsellCoordinator: ObservableObject {
         onlineExecutor: OnlineExecutor,
         plansComposer: PlansComposerProviding,
         planPurchasing: PlanPurchasing,
+        sessionForking: SessionForking,
         configuration: UpsellConfiguration
     ) {
         self.onlineExecutor = onlineExecutor
@@ -60,7 +62,8 @@ public final class UpsellCoordinator: ObservableObject {
             planPurchasing: planPurchasing
         )
 
-        upsellScreenFactory = .init(purchaseActionPerformer: purchaseActionPerformer)
+        let webCheckout = WebCheckout(sessionForking: sessionForking, upsellConfiguration: configuration)
+        upsellScreenFactory = .init(purchaseActionPerformer: purchaseActionPerformer, webCheckout: webCheckout)
 
     }
 
@@ -83,7 +86,8 @@ public final class UpsellCoordinator: ObservableObject {
         return try upsellScreenFactory.upsellScreenModel(
             showingPlan: configuration.regularPlan,
             basedOn: availablePlans,
-            entryPoint: entryPoint
+            entryPoint: entryPoint,
+            upsellType: .standard
         )
     }
 

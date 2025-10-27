@@ -99,6 +99,39 @@ final class MessageBodyStateStoreTests {
         #expect(sut.state == .init(body: .error(expectedError), alert: .none))
     }
 
+    // MARK: - `refreshBanners` action
+
+    @Test
+    func testState_WhenRefreshBannersActionTriggered_ItFetchesBodyWithSameOptions() async {
+        let initialOptions = TransformOpts()
+        let decryptedMessageSpy = DecryptedMessageSpy(stubbedOptions: initialOptions)
+
+        wrapperSpy.stubbedMessageBodyResult = .ok(decryptedMessageSpy)
+
+        await sut.handle(action: .onLoad)
+
+        #expect(wrapperSpy.messageBodyCalls == [stubbedMessageID])
+        #expect(decryptedMessageSpy.bodyWithOptionsCalls == [initialOptions])
+        #expect(
+            sut.state
+                == .noBannersAlert(
+                    rawBody: "<html>dummy_with_custom_options</html>",
+                    options: initialOptions,
+                    decryptedMessage: decryptedMessageSpy
+                ))
+
+        await sut.handle(action: .refreshBanners)
+
+        #expect(decryptedMessageSpy.bodyWithOptionsCalls == [initialOptions, initialOptions])
+        #expect(
+            sut.state
+                == .noBannersAlert(
+                    rawBody: "<html>dummy_with_custom_options</html>",
+                    options: initialOptions,
+                    decryptedMessage: decryptedMessageSpy
+                ))
+    }
+
     // MARK: - `displayEmbeddedImagesTapped` action
 
     @Test

@@ -54,11 +54,15 @@ extension Conversation {
     private func avatarUIModelFor(senders: [MessageSender]) -> AvatarUIModel {
         let first = senders.first
         let viewType: AvatarViewType = .sender(
-            params: .init(
-                address: first?.address ?? .empty,
-                bimiSelector: first?.bimiSelector ?? nil,
-                displaySenderImage: true
-            ))
+            .init(
+                params: .init(
+                    address: first?.address ?? .empty,
+                    bimiSelector: first?.bimiSelector ?? nil,
+                    displaySenderImage: true
+                ),
+                blocked: .notLoaded
+            )
+        )
         return .init(info: avatarInformationFromMessageSenders(addressList: senders).info, type: viewType)
     }
 }
