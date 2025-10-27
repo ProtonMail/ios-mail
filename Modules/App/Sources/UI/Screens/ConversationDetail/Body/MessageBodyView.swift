@@ -97,9 +97,6 @@ struct MessageBodyView: View {
                             }
                         }
                     )
-                    .onReceive(refreshBannersListener.refreshBanners) { _ in
-                        store.handle(action: .refreshBanners)
-                    }
                 }
                 if !attachments.isEmpty {
                     MessageBodyAttachmentsView(attachments: attachments, attachmentIDToOpen: $attachmentIDToOpen)
@@ -115,6 +112,9 @@ struct MessageBodyView: View {
                 if oldValue.isZero && !newValue.isZero {
                     isBodyLoaded = true
                 }
+            }
+            .onReceive(refreshBannersListener.refreshBanners) { _ in
+                store.handle(action: .refreshBanners)
             }
         }
     }
