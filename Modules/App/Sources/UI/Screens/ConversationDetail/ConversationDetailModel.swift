@@ -1033,15 +1033,10 @@ private extension ConversationDetailSeed {
 
     var isAllMail: Bool {
         switch self {
-        case .searchResultItem, .pushNotification:
+        case .mailboxItem(_, .systemFolder(_, .allMail)):
+            true
+        default:
             false
-        case .mailboxItem(_, let selectedMailbox):
-            switch selectedMailbox {
-            case .inbox, .customLabel, .customFolder:
-                false
-            case .systemFolder(_, let systemFolder):
-                systemFolder == .allMail
-            }
         }
     }
 
