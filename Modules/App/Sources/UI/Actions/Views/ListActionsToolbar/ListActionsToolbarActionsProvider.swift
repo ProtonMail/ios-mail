@@ -19,11 +19,10 @@ import proton_app_uniffi
 
 struct ListActionsToolbarActionsProvider {
     let availableActions: AvailableListToolbarActions
-    let itemTypeForActionBar: MailboxItemType
     let mailbox: Mailbox
 
-    func actions(forItemsWith ids: [ID]) async -> AllListActions {
-        switch itemTypeForActionBar {
+    func actions(forItemsWith ids: [ID], itemType: MailboxItemType) async -> AllListActions {
+        switch itemType {
         case .message:
             try! await availableActions.message(mailbox, ids).get()
         case .conversation:

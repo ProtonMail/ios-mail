@@ -87,7 +87,6 @@ private struct ListActionBarViewModifier: ViewModifier {
                 readActionPerformerActions: readActionPerformerActions,
                 deleteActions: deleteActions,
                 moveToActions: moveToActions,
-                itemTypeForActionBar: itemTypeForActionBar,
                 mailUserSession: mailUserSession,
                 mailbox: mailbox,
                 toastStateStore: toastStateStore
@@ -100,11 +99,19 @@ private struct ListActionBarViewModifier: ViewModifier {
                 .bottomToolbarStyle()
                 .onChange(of: selectedItems) { oldValue, newValue in
                     if oldValue != newValue {
-                        store.handle(action: .listItemsSelectionUpdated(ids: selectedItemsIDs))
+                        store.handle(
+                            action: .listItemsSelectionUpdated(
+                                ids: selectedItemsIDs,
+                                itemType: itemTypeForActionBar
+                            ))
                     }
                 }
                 .onLoad {
-                    store.handle(action: .listItemsSelectionUpdated(ids: selectedItemsIDs))
+                    store.handle(
+                        action: .listItemsSelectionUpdated(
+                            ids: selectedItemsIDs,
+                            itemType: itemTypeForActionBar
+                        ))
                 }
                 .labelAsSheet(
                     mailbox: { mailbox },
@@ -132,7 +139,11 @@ private struct ListActionBarViewModifier: ViewModifier {
                 }
                 .onReceive(refreshToolbarNotifier.refreshToolbar) { toolbarType in
                     if toolbarType == .list {
-                        store.handle(action: .listItemsSelectionUpdated(ids: selectedItemsIDs))
+                        store.handle(
+                            action: .listItemsSelectionUpdated(
+                                ids: selectedItemsIDs,
+                                itemType: itemTypeForActionBar
+                            ))
                     }
                 }
                 .alert(model: store.binding(\.deleteConfirmationAlert))
@@ -179,7 +190,12 @@ private struct ListActionBarViewModifier: ViewModifier {
                     Section {
                         ForEach(state.moreSheetOnlyActions.reversed(), id: \.self) { action in
                             ActionMenuButton(displayData: action.displayData) {
-                                store.handle(action: .actionSelected(action, ids: selectedItemsIDs))
+                                store.handle(
+                                    action: .actionSelected(
+                                        action,
+                                        ids: selectedItemsIDs,
+                                        itemType: itemTypeForActionBar
+                                    ))
                             }
                         }
                     }
@@ -189,7 +205,14 @@ private struct ListActionBarViewModifier: ViewModifier {
                         .foregroundStyle(DS.Color.Icon.weak)
                 })
         } else {
-            Button(action: { store.handle(action: .actionSelected(action, ids: selectedItemsIDs)) }) {
+            Button(action: {
+                store.handle(
+                    action: .actionSelected(
+                        action,
+                        ids: selectedItemsIDs,
+                        itemType: itemTypeForActionBar)
+                )
+            }) {
                 action.displayData.image
                     .foregroundStyle(DS.Color.Icon.weak)
             }

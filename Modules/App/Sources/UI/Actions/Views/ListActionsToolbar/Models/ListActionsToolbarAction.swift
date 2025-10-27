@@ -18,11 +18,11 @@
 import proton_app_uniffi
 
 enum ListActionsToolbarAction {
-    case listItemsSelectionUpdated(ids: [ID])
-    case actionSelected(ListActions, ids: [ID])
-    case moreSheetAction(ListActions, ids: [ID])
+    case listItemsSelectionUpdated(ids: [ID], itemType: MailboxItemType)
+    case actionSelected(ListActions, ids: [ID], itemType: MailboxItemType)
+    case moreSheetAction(ListActions, ids: [ID], itemType: MailboxItemType)
     case dismissLabelAsSheet
     case dismissMoveToSheet
-    case alertActionTapped(DeleteConfirmationAlertAction, ids: [ID])
+    case alertActionTapped(DeleteConfirmationAlertAction, ids: [ID], itemType: MailboxItemType)
     case editToolbarTapped
 }
