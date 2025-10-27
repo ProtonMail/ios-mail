@@ -37,10 +37,7 @@ struct MailboxScreen: View {
     private let userSession: MailUserSession
     private let notificationAuthorizationStore: NotificationAuthorizationStore
     private let userDefaults: UserDefaults
-
-    private var shouldShowOnboardingUpsell: Bool {
-        upsellEligibility == .eligible(.standard) && !userDefaults[.hasSeenOnboardingUpsell]
-    }
+    private let introductionPromptsDisabled: Bool
 
     init(
         mailSettingsLiveQuery: MailSettingLiveQuerying,
@@ -48,7 +45,8 @@ struct MailboxScreen: View {
         notificationAuthorizationStore: NotificationAuthorizationStore,
         userSession: MailUserSession,
         userDefaults: UserDefaults,
-        draftPresenter: DraftPresenter
+        draftPresenter: DraftPresenter,
+        introductionPromptsDisabled: Bool = false
     ) {
         self._mailboxModel = StateObject(
             wrappedValue: MailboxModel(
@@ -60,6 +58,7 @@ struct MailboxScreen: View {
         self.notificationAuthorizationStore = notificationAuthorizationStore
         self.userSession = userSession
         self.userDefaults = userDefaults
+        self.introductionPromptsDisabled = introductionPromptsDisabled
     }
 
     var didAppear: ((Self) -> Void)?
@@ -96,6 +95,13 @@ struct MailboxScreen: View {
                         mailboxModel.state.moveToSheetPresented = nil
                     }
                 )
+                .onChange(of: upsellEligibility) { _, newValue in
+                    if case .eligible = newValue {
+                        Task {
+                            await presentAppropriateIntroductoryView()
+                        }
+                    }
+                }
                 .fullScreenCover(isPresented: $mailboxModel.state.isSearchPresented) {
                     SearchScreen(userSession: userSession)
                 }
@@ -103,12 +109,16 @@ struct MailboxScreen: View {
                     AttachmentView(config: config)
                         .edgesIgnoringSafeArea([.top, .bottom])
                 }
-                .sheet(item: $mailboxModel.state.upsellPresented) { upsellScreenModel in
-                    UpsellScreen(model: upsellScreenModel)
-                }
+                .sheet(
+                    item: $mailboxModel.state.upsellPresented,
+                    onDismiss: upsellDismissed,
+                    content: { upsellScreenModel in
+                        UpsellScreen(model: upsellScreenModel)
+                    }
+                )
                 .sheet(
                     item: $mailboxModel.state.onboardingUpsellPresented,
-                    onDismiss: onboardingUpsellDismissed,
+                    onDismiss: upsellDismissed,
                     content: { upsellScreenModel in
                         OnboardingUpsellScreen(model: upsellScreenModel)
                     }
@@ -145,8 +155,13 @@ struct MailboxScreen: View {
         }
     }
 
-    private func onboardingUpsellDismissed() {
-        userDefaults[.hasSeenOnboardingUpsell] = true
+    private func upsellDismissed() {
+        if case .eligible(let upsellType) = upsellEligibility {
+            userDefaults[.hasSeenOnboardingUpsell(ofType: upsellType)] = true
+        }
+
+        // ensure that the standard onboarding upsell will never be shown even if a promo upsell has been shown in its place
+        userDefaults[.hasSeenOnboardingUpsell(ofType: .standard)] = true
 
         Task {
             await presentAppropriateIntroductoryView()
@@ -161,16 +176,28 @@ struct MailboxScreen: View {
     }
 
     private func presentAppropriateIntroductoryView() async {
+        guard !introductionPromptsDisabled else {
+            return
+        }
+
         let introductionProgress = await calculateIntroductionProgress()
         isOnboardingPresented = introductionProgress == .onboarding
         isNotificationPromptPresented = introductionProgress == .notifications
 
-        if introductionProgress == .upsell {
+        if case .upsell(let upsellType) = introductionProgress {
             do {
-                mailboxModel.state.onboardingUpsellPresented = try await upsellCoordinator.presentOnboardingUpsellScreen()
+                switch upsellType {
+                case .standard:
+                    mailboxModel.state.onboardingUpsellPresented = try await upsellCoordinator.presentOnboardingUpsellScreen()
+                case .blackFriday:
+                    mailboxModel.state.upsellPresented = try await upsellCoordinator.presentUpsellScreen(
+                        entryPoint: .postOnboarding,
+                        upsellType: upsellType
+                    )
+                }
             } catch {
                 AppLogger.log(error: error, category: .payments)
-                onboardingUpsellDismissed()
+                upsellDismissed()
             }
         }
     }
@@ -180,8 +207,8 @@ struct MailboxScreen: View {
             return .onboarding
         } else if await notificationAuthorizationStore.shouldRequestAuthorization(trigger: .onboardingFinished) {
             return .notifications
-        } else if shouldShowOnboardingUpsell {
-            return .upsell
+        } else if case .eligible(let upsellType) = upsellEligibility, !userDefaults[.hasSeenOnboardingUpsell(ofType: upsellType)] {
+            return .upsell(upsellType)
         } else {
             return .finished
         }
@@ -289,10 +316,10 @@ extension MailboxScreen {
 }
 
 extension MailboxScreen {
-    enum IntroductionProgress {
+    enum IntroductionProgress: Equatable {
         case onboarding
         case notifications
-        case upsell
+        case upsell(UpsellType)
         case finished
     }
 }

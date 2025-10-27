@@ -17,12 +17,29 @@
 
 import Foundation
 import InboxCore
+import proton_app_uniffi
 
 extension UserDefaultsKey<Bool> {
     static let hasSeenAlphaOnboarding = Self(name: "hasSeenAlphaOnboarding")
-    static let hasSeenOnboardingUpsell = Self(name: "hasSeenOnboardingUpsell")
+
+    static func hasSeenOnboardingUpsell(ofType upsellType: UpsellType) -> Self {
+        .init(name: upsellType.onboardingUserDefaultsKey)
+    }
 }
 
 extension UserDefaultsKey<[Date]> {
     static let notificationAuthorizationRequestDates = Self(name: "notificationAuthorizationRequestDates")
+}
+
+private extension UpsellType {
+    var onboardingUserDefaultsKey: String {
+        switch self {
+        case .standard:
+            "hasSeenOnboardingUpsell"
+        case .blackFriday(.wave1):
+            "hasSeenOnboardingUpsell_BF2025_1"
+        case .blackFriday(.wave2):
+            "hasSeenOnboardingUpsell_BF2025_2"
+        }
+    }
 }

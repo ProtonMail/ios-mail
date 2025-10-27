@@ -186,13 +186,7 @@ private struct RootView: View {
 }
 
 private struct SessionTransitionScreen: View {
-    private let userDefaultsWithPromptsDisabled: UserDefaults = {
-        let userDefaults = UserDefaults(suiteName: "transition")!
-        userDefaults[.hasSeenAlphaOnboarding] = true
-        userDefaults[.notificationAuthorizationRequestDates] = [.now]
-        userDefaults[.hasSeenOnboardingUpsell] = true
-        return userDefaults
-    }()
+    private let dummyUserDefaults = UserDefaults(suiteName: "transition")!
 
     var body: some View {
         ZStack {
@@ -206,10 +200,11 @@ private struct SessionTransitionScreen: View {
         MailboxScreen(
             mailSettingsLiveQuery: MailSettingsLiveQueryPreviewDummy(),
             appRoute: .initialState,
-            notificationAuthorizationStore: .init(userDefaults: userDefaultsWithPromptsDisabled),
+            notificationAuthorizationStore: .init(userDefaults: dummyUserDefaults),
             userSession: .dummy,
-            userDefaults: userDefaultsWithPromptsDisabled,
-            draftPresenter: .dummy()
+            userDefaults: dummyUserDefaults,
+            draftPresenter: .dummy(),
+            introductionPromptsDisabled: true
         )
         .blur(radius: 5)
         .allowsHitTesting(false)
