@@ -29,8 +29,14 @@ struct SidebarScreen: View {
     @EnvironmentObject private var appUIStateStore: AppUIStateStore
     @StateObject private var screenModel: SidebarModel
     @State private var headerHeight: CGFloat = .zero
-    @State private var lockedAxis: AxisLock = .none
-    @State private var dragStartWidth: CGFloat?
+    @GestureState private var gestureState: GestureStateData = .init()
+    @State private var lastCommittedAxis: AxisLock = .none
+
+    private struct GestureStateData {
+        var isDragging: Bool = false
+        var startWidth: CGFloat?
+        var lockedAxis: AxisLock = .none
+    }
 
     private let widthOfDragableSpaceOnTheMailbox: CGFloat = 25
     /// This value is to make sure a twitch of a finger when releasing the sidebar won't cause the sidebar to move in the other direction against user's wishes.
@@ -93,6 +99,12 @@ struct SidebarScreen: View {
             .animation(.easeOut(duration: animationDuration), value: appUIStateStore.sidebarState.visibleWidth)
             .offset(x: appUIStateStore.sidebarState.visibleWidth - appUIStateStore.sidebarWidth - geometry.safeAreaInsets.leading)
         }
+        .onChange(of: gestureState.isDragging) { _, isDragging in
+            if !isDragging && lastCommittedAxis != .none {
+                appUIStateStore.toggleSidebar(isOpen: isCloserToOpenThanClosed)
+                lastCommittedAxis = .none
+            }
+        }
         .onAppear { screenModel.handle(action: .viewAppear) }
         .onOpenURL(perform: handleDeepLink)
     }
@@ -118,21 +130,28 @@ struct SidebarScreen: View {
 
     private var sidebarDragGesture: some Gesture {
         DragGesture(coordinateSpace: .global)
-            .onChanged { value in
-                if dragStartWidth == nil {
-                    dragStartWidth = appUIStateStore.sidebarState.visibleWidth
+            .updating($gestureState) { value, state, _ in
+                if !state.isDragging {
+                    state.isDragging = true
+                    state.startWidth = appUIStateStore.sidebarState.visibleWidth
+                    state.lockedAxis = .none
                 }
 
-                if lockedAxis == .none {
+                if state.lockedAxis == .none {
                     let dx = abs(value.translation.width)
                     let dy = abs(value.translation.height)
 
                     if max(dx, dy) > axisSlop {
-                        lockedAxis = dx > dy ? .horizontal : .vertical
+                        state.lockedAxis = dx > dy ? .horizontal : .vertical
                     }
                 }
+            }
+            .onChanged { value in
+                if gestureState.lockedAxis != .none && lastCommittedAxis == .none {
+                    lastCommittedAxis = gestureState.lockedAxis
+                }
 
-                if lockedAxis == .horizontal, let startWidth = dragStartWidth {
+                if gestureState.lockedAxis == .horizontal, let startWidth = gestureState.startWidth {
                     let dragTranslation = value.translation.width
                     let newWidth = startWidth + dragTranslation
 
@@ -141,14 +160,13 @@ struct SidebarScreen: View {
                 }
             }
             .onEnded { value in
-                guard lockedAxis == .horizontal else {
-                    lockedAxis = .none
+                guard lastCommittedAxis == .horizontal else {
+                    lastCommittedAxis = .none
                     return
                 }
 
                 defer {
-                    dragStartWidth = nil
-                    lockedAxis = .none
+                    lastCommittedAxis = .none
                 }
 
                 let predictedEndWidth = value.predictedEndTranslation.width
@@ -160,8 +178,6 @@ struct SidebarScreen: View {
                 if hasPredictedSignificantSlide {
                     shouldBeOpen = predictedEndWidth > 0
                 } else {
-                    let state = appUIStateStore
-                    let isCloserToOpenThanClosed = state.sidebarState.visibleWidth > state.sidebarWidth / 2
                     shouldBeOpen = isCloserToOpenThanClosed
                 }
 
@@ -215,7 +231,7 @@ struct SidebarScreen: View {
                     }
                 }.accessibilityElement(children: .contain)
             }
-            .scrollDisabled(lockedAxis == .horizontal)
+            .scrollDisabled(gestureState.lockedAxis == .horizontal || lastCommittedAxis == .horizontal)
             .frame(maxWidth: .infinity)
         }
     }
@@ -403,7 +419,11 @@ struct SidebarScreen: View {
     }
 
     private var isButtonTappable: Bool {
-        lockedAxis == .none
+        gestureState.lockedAxis == .none && lastCommittedAxis == .none
+    }
+
+    private var isCloserToOpenThanClosed: Bool {
+        appUIStateStore.sidebarState.visibleWidth > appUIStateStore.sidebarWidth / 2
     }
 }
 
