@@ -842,6 +842,12 @@ extension ConversationDetailModel {
         }
     }
 
+    /// Determines whether all messages of the conversation should be shown.
+    ///
+    /// - If the user comes from the "All Mail" location (not "Almost All Mail"),
+    ///   the banner for showing trashed messages is **not** displayed - all messages
+    ///   are shown automatically (including trashed ones).
+    /// - For other locations, the visibility depends on `state.isHiddenMessagesBannerOn`.
     private var showAllMessages: Bool {
         seed.isAllMail ? true : state.isHiddenMessagesBannerOn
     }
