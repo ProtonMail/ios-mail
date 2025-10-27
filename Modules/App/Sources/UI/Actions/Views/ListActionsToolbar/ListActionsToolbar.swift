@@ -171,7 +171,6 @@ private struct ListActionBarViewModifier: ViewModifier {
                 let bottomSafeAreaToRecreate = DS.Spacing.large
                 toastStateStore.state.bottomBar.height = toolbarHeight + bottomSafeAreaToRecreate
             }
-            .id(MailboxIdentifiaction(viewMode: mailbox.viewMode(), id: mailbox.labelId()))
         }
     }
 
