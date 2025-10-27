@@ -32,7 +32,7 @@ struct ConversationDetailListView: View {
     /// These attributes trigger the different action sheets
     @State private var senderActionTarget: ExpandedMessageCellUIModel?
     @State private var recipientActionTarget: MessageDetail.Recipient?
-    @State private var messageBannersNotifier = RefreshMessageBannersNotifier()
+    @StateObject var messageBannersNotifier = RefreshMessageBannersNotifier()
 
     init(
         model: ConversationDetailModel,
