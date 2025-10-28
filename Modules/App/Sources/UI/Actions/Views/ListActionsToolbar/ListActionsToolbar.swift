@@ -21,6 +21,14 @@ import proton_app_uniffi
 import SwiftUI
 
 extension View {
+    /// Attaches the list actions toolbar to this view.
+    ///
+    /// The modifier is applied via `background(Color.clear)` **on purpose** to
+    /// constrain view invalidation when the active `Mailbox` (and its
+    /// `labelId`) changes. The action bar must be re-rendered and its
+    /// `ListActionsToolbarStore` `@StateObject` recreated on each mailbox change
+    /// to ensure the correct `labelId` is used under the hood—without forcing
+    /// unnecessary re-renders of the surrounding view hierarchy.
     func listActionsToolbar(
         initialState: ListActionsToolbarState,
         availableActions: AvailableListToolbarActions,
@@ -28,14 +36,17 @@ extension View {
         mailUserSession: MailUserSession,
         selectedItems: Binding<Set<MailboxSelectedItem>>
     ) -> some View {
-        modifier(
-            ListActionBarViewModifier(
-                initialState: initialState,
-                availableActions: availableActions,
-                itemTypeForActionBar: itemTypeForActionBar,
-                mailUserSession: mailUserSession,
-                selectedItems: selectedItems
-            ))
+        background(
+            Color.clear
+                .modifier(
+                    ListActionBarViewModifier(
+                        initialState: initialState,
+                        availableActions: availableActions,
+                        itemTypeForActionBar: itemTypeForActionBar,
+                        mailUserSession: mailUserSession,
+                        selectedItems: selectedItems
+                    )
+                ))
     }
 }
 
