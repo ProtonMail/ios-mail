@@ -85,7 +85,7 @@ final class WebCheckout {
             .init(name: "start", value: "checkout"),
         ]
 
-        var urlComponents = URLComponents(string: "https://account.\(upsellConfiguration.apiDomain)/lite")!
+        var urlComponents = URLComponents(string: "https://account.\(upsellConfiguration.apiEnvId.domain)/lite")!
         urlComponents.queryItems = queryItems
         urlComponents.fragment = "selector=\(selector)"
         return urlComponents.url!

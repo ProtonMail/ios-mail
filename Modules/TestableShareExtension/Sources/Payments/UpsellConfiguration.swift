@@ -24,8 +24,7 @@ extension UpsellConfiguration {
         .init(
             regularPlan: "mail2022",
             onboardingPlans: ["bundle2022", "mail2022"],
-            arePaymentsEnabled: apiEnvId.arePaymentsEnabled,
-            apiDomain: apiEnvId.domain
+            apiEnvId: apiEnvId
         )
     }
 }
