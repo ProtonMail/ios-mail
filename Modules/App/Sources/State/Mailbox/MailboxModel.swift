@@ -41,6 +41,7 @@ final class MailboxModel: ObservableObject {
     @ObservedObject private var appRoute: AppRouteState
     @Published private(set) var mailbox: Mailbox?
     let draftPresenter: DraftPresenter
+    private let loadingBarStateStore: LoadingBarStateStore
     let goToNextConversationNotifier = GoToNextPageNotifier()
 
     private var messageScroller: MessageScroller?
@@ -86,12 +87,14 @@ final class MailboxModel: ObservableObject {
         mailSettingsLiveQuery: MailSettingLiveQuerying,
         appRoute: AppRouteState,
         draftPresenter: DraftPresenter,
+        loadingBarStateStore: LoadingBarStateStore,
         dependencies: Dependencies = .init()
     ) {
         AppLogger.log(message: "MailboxModel init", category: .mailbox)
         self.mailSettingsLiveQuery = mailSettingsLiveQuery
         self.appRoute = appRoute
         self.draftPresenter = draftPresenter
+        self.loadingBarStateStore = loadingBarStateStore
         self.selectedMailbox = appRoute.route.selectedMailbox!
         self.dependencies = dependencies
         self.accountManagerCoordinator = AccountManagerCoordinator(
@@ -368,9 +371,10 @@ extension MailboxModel {
             await handleConversationsList(update: listUpdate)
         case .status(let statusUpdate):
             switch statusUpdate {
-            case .fetchNewStart, .fetchNewEnd:
-                // FIXME: - Show / hide loading line animation
-                break
+            case .fetchNewStart:
+                loadingBarStateStore.handle(action: .startLoading)
+            case .fetchNewEnd:
+                loadingBarStateStore.handle(action: .stopLoading)
             }
         case .error(let error):
             AppLogger.log(error: error, category: .mailbox)
@@ -412,9 +416,10 @@ extension MailboxModel {
             await handleMessagesList(update: listUpdate)
         case .status(let statusUpdate):
             switch statusUpdate {
-            case .fetchNewStart, .fetchNewEnd:
-                // FIXME: - Show / hide loading line animation
-                break
+            case .fetchNewStart:
+                loadingBarStateStore.handle(action: .startLoading)
+            case .fetchNewEnd:
+                loadingBarStateStore.handle(action: .stopLoading)
             }
         case .error(let error):
             AppLogger.log(error: error, category: .mailbox)

@@ -55,9 +55,12 @@ struct PaginatedListView<
         case .fetchingInitialPage:
             MailboxSkeletonView()
         case .data(let type):
-            dataStateView.overlay {
-                if type == .noItems {
-                    emptyListView()
+            ZStack(alignment: .top) {
+                LoadingBar()
+                dataStateView.overlay {
+                    if type == .noItems {
+                        emptyListView()
+                    }
                 }
             }
         }

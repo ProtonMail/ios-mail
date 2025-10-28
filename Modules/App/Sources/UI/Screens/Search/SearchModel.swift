@@ -30,6 +30,7 @@ final class SearchModel: ObservableObject, @unchecked Sendable {
 
     private(set) var mailbox: Mailbox!
     private var searchScroller: SearchScroller?
+    private let loadingBarStateStore: LoadingBarStateStore
 
     lazy var paginatedDataSource = PaginatedListDataSource<MailboxItemCellUIModel>(
         fetchMore: { [weak self] isFirstPage in self?.fetchNextPage(isFirstPage: isFirstPage) }
@@ -39,10 +40,15 @@ final class SearchModel: ObservableObject, @unchecked Sendable {
     private lazy var starActionPerformer = StarActionPerformer(mailUserSession: dependencies.appContext.userSession)
     private var cancellables: Set<AnyCancellable> = .init()
 
-    init(searchScroller: SearchScroller? = nil, dependencies: Dependencies = .init()) {
+    init(
+        searchScroller: SearchScroller? = nil,
+        dependencies: Dependencies = .init(),
+        loadingBarStateStore: LoadingBarStateStore
+    ) {
         AppLogger.logTemporarily(message: "SearchModel init", category: .search)
         self.searchScroller = searchScroller
         self.dependencies = dependencies
+        self.loadingBarStateStore = loadingBarStateStore
         setUpBindings()
         initialiseMailbox()
     }
@@ -199,9 +205,10 @@ final class SearchModel: ObservableObject, @unchecked Sendable {
             await handleMessagesList(update: listUpdate)
         case .status(let statusUpdate):
             switch statusUpdate {
-            case .fetchNewStart, .fetchNewEnd:
-                // FIXME: - Show / hide loading line animation
-                break
+            case .fetchNewStart:
+                loadingBarStateStore.handle(action: .startLoading)
+            case .fetchNewEnd:
+                loadingBarStateStore.handle(action: .stopLoading)
             }
         case .error(let error):
             AppLogger.log(error: error, category: .mailbox)

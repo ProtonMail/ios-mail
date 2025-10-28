@@ -28,6 +28,7 @@ struct MailboxScreen: View {
     @EnvironmentObject private var toastStateStore: ToastStateStore
     @EnvironmentObject private var upsellCoordinator: UpsellCoordinator
     @Environment(\.upsellEligibility) private var upsellEligibility
+    @StateObject private var loadingBarStateStore: LoadingBarStateStore
     @StateObject private var mailboxModel: MailboxModel
     @State private var isComposeButtonExpanded: Bool = true
     @State private var isOnboardingPresented = false
@@ -48,11 +49,14 @@ struct MailboxScreen: View {
         draftPresenter: DraftPresenter,
         introductionPromptsDisabled: Bool = false
     ) {
-        self._mailboxModel = StateObject(
+        let loadingBarStateStore = LoadingBarStateStore()
+        _loadingBarStateStore = .init(wrappedValue: loadingBarStateStore)
+        _mailboxModel = StateObject(
             wrappedValue: MailboxModel(
                 mailSettingsLiveQuery: mailSettingsLiveQuery,
                 appRoute: appRoute,
-                draftPresenter: draftPresenter
+                draftPresenter: draftPresenter,
+                loadingBarStateStore: loadingBarStateStore
             )
         )
         self.notificationAuthorizationStore = notificationAuthorizationStore
@@ -103,7 +107,7 @@ struct MailboxScreen: View {
                     }
                 }
                 .fullScreenCover(isPresented: $mailboxModel.state.isSearchPresented) {
-                    SearchScreen(userSession: userSession)
+                    SearchScreen(userSession: userSession, loadingBarStateStore: loadingBarStateStore)
                 }
                 .fullScreenCover(item: $mailboxModel.state.attachmentPresented) { config in
                     AttachmentView(config: config)
@@ -145,6 +149,7 @@ struct MailboxScreen: View {
         .environment(\.confirmLink, mailboxModel.state.confirmLink)
         .environment(\.goToNextPageNotifier, mailboxModel.goToNextConversationNotifier)
         .environment(\.proceedAfterMove, mailboxModel.proceedAfterMove)
+        .environmentObject(loadingBarStateStore)
     }
 
     private func onboardingScreenDismissed() {

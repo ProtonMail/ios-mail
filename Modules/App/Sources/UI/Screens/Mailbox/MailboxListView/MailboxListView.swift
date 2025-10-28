@@ -127,7 +127,8 @@ extension MailboxListView {
         model: .init(
             mailSettingsLiveQuery: MailSettingsLiveQueryPreviewDummy(),
             appRoute: route,
-            draftPresenter: .dummy()
+            draftPresenter: .dummy(),
+            loadingBarStateStore: LoadingBarStateStore()
         ),
         mailUserSession: .dummy
     )
