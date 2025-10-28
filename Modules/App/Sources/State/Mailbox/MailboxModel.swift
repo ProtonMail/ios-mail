@@ -291,8 +291,7 @@ extension MailboxModel {
                     callback: MessageScrollerLiveQueryCallbackkWrapper { [weak self] update in
                         Task {
                             await self?.handleMessageScroller(update: update)
-                            // FIXME: - Fix spam / trash filter
-                            //                            await self?.updateSelectedMailboxIfNeeded()
+                            await self?.updateSelectedMailboxIfNeeded()
                         }
                     }
                 ).get()
@@ -302,8 +301,7 @@ extension MailboxModel {
                     callback: ConversationScrollerLiveQueryCallbackkWrapper { [weak self] update in
                         Task {
                             await self?.handleConversationScroller(update: update)
-                            // FIXME: - Fix spam / trash filter
-                            //                            await self?.updateSelectedMailboxIfNeeded()
+                            await self?.updateSelectedMailboxIfNeeded()
                         }
                     }
                 ).get()
@@ -317,8 +315,7 @@ extension MailboxModel {
                 }
             }
             await unreadCountLiveQuery?.setUpLiveQuery()
-            // FIXME: - Fix spam / trash filter
-            //            try await setUpSpamTrashToggleVisibility()
+            try await setUpSpamTrashToggleVisibility()
         } catch {
             AppLogger.log(error: error, category: .mailbox)
             toast = .error(message: L10n.Mailbox.Error.mailboxErrorMessage.string, duration: .long)

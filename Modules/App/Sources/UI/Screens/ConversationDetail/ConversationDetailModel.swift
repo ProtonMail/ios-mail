@@ -614,7 +614,7 @@ extension ConversationDetailModel {
             mailbox: mailbox,
             id: conversationID,
             origin: origin,
-            showAll: state.isHiddenMessagesBannerOn,  // FIXME: - Fix spam / trash filter
+            showAll: showAllMessages,
             callback: conversationMessageListCallback
         )
 
@@ -771,7 +771,7 @@ extension ConversationDetailModel {
             let conversationAndMessages = try await conversation(
                 mailbox: mailbox,
                 id: conversationID,
-                showAll: state.isHiddenMessagesBannerOn  // FIXME: - Fix spam / trash filter
+                showAll: showAllMessages
             ).get()
             let hiddenMessagesBanner = conversationAndMessages?.conversation.hiddenMessagesBanner
             let isStarred = conversationAndMessages?.conversation.isStarred ?? false

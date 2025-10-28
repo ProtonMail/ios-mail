@@ -54,16 +54,6 @@ public extension AttachmentListWatcherResult {
         }
     }
 }
-public extension AttachmentListWatcherStreamResult {
-    func get() throws(DraftAttachmentUploadError) -> DraftAttachmentListUpdateStream {
-        switch self {
-        case .ok(let value):
-            value
-        case .error(let error):
-            throw error
-        }
-    }
-}
 public extension DraftChangeSenderAddressResult {
     func get() throws(DraftSenderAddressChangeError) {
         switch self {
