@@ -1104,6 +1104,16 @@ public extension MailUserSessionWatchUserSettingsResult {
         }
     }
 }
+public extension MailUserSessionWatchUserStreamResult {
+    func get() throws(ProtonError) -> WatchUserStream {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension MailboxUnreadCountResult {
     func get() throws(UserSessionError) -> UInt64 {
         switch self {
@@ -1459,6 +1469,26 @@ public extension WatchMailSettingsResult {
         switch self {
         case .ok(let value):
             value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension WatchUserStreamNextAsyncResult {
+    func get() throws(ProtonError) {
+        switch self {
+        case .ok:
+            break
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension WatchUserStreamNextSyncResult {
+    func get() throws(ProtonError) {
+        switch self {
+        case .ok:
+            break
         case .error(let error):
             throw error
         }
