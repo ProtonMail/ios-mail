@@ -148,6 +148,7 @@ private struct ListActionBarViewModifier: ViewModifier {
                 }
                 .alert(model: store.binding(\.deleteConfirmationAlert))
         }
+        .id(MailboxIdentifiaction(viewMode: mailbox.viewMode(), id: mailbox.labelId()))  // FIXME: - Fix spam / trash filter
     }
 
     // MARK: - Private
