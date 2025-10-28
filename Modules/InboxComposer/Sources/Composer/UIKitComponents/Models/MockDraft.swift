@@ -371,4 +371,8 @@ final class MockAttachmentList: AttachmentListProtocol, @unchecked Sendable {
     func watcher(callback: any AsyncLiveQueryCallback) async -> AttachmentListWatcherResult {
         .error(.reason(.crypto))
     }
+
+    func watcherStream() async -> AttachmentListWatcherStreamResult {
+        .ok(DraftAttachmentListUpdateStream.init(noPointer: .init()))
+    }
 }
