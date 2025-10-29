@@ -270,7 +270,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ penyimpanan"
+            "value" : "Ruang penyimpanan %@"
           }
         },
         "it" : {
@@ -1773,7 +1773,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pilih Paket Berlangganan"
+            "value" : "Pilih langganan"
           }
         },
         "it" : {
@@ -2131,7 +2131,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Lanjutkan dengan Paket Free"
+            "value" : "Lanjut dengan Paket Free"
           }
         },
         "it" : {
@@ -2304,7 +2304,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Buat semua yang Anda butuhkan agar tetap teratur. Dapatkan ini dan lebih banyak lagi dengan %@."
+            "value" : "Ciptakan segala hal yang Anda butuhkan untuk tetap teratur. Dapatkan fitur ini dan berbagai fitur lainnya dengan %@."
           }
         },
         "it" : {
@@ -2674,7 +2674,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sesuaikan kapan email akan dikirim. Nikmati ini dan lebih banyak lagi dengan %@."
+            "value" : "Sesuaikan kapan email Anda akan dikirim. Nikmati fitur ini dan berbagai fitur lainnya dengan %@."
           }
         },
         "it" : {
@@ -2853,7 +2853,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Menghapus spam dan Sampah setelah 30 hari. Dapatkan ini dan lebih banyak lagi dengan %@."
+            "value" : "Membersihkan spam dan sampah setelah 30 hari. Dapatkan fitur ini dan berbagai fitur lainnya dengan %@."
           }
         },
         "it" : {
@@ -2957,10 +2957,112 @@
     "Discounts are based on standard monthly pricing. Auto-renews at %@ /%@ until canceled." : {
       "comment" : "Notice at the bottom of the upsell page",
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Скідкі разлічваюцца на падставе стандартнай платы за месяц. Аўтаматычна падаўжаецца з коштам у %1$@ / %2$@, пакуль не будзе скасавана."
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Els descomptes es basen en el preu mensual estàndard. Es renovarà automàticament per %1$@ /%2$@ fins que ho cancel·leu."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Slevy jsou založeny na standardních měsíčních cenách. Automatické obnovení za cenu %1$@ /%2$@ až do zrušení."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rabatter er baseret på standard månedspriser. Fornyes automatisk til %1$@ /%2$@, indtil det annulleres."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rabatte basieren auf den regulären monatlichen Preisen. Automatische Verlängerung zu %1$@ /%2$@ bis zur Kündigung."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Οι εκπτώσεις βασίζονται στην τυπική μηνιαία τιμολόγηση. Αυτόματη ανανέωση σε %1$@ /%2$@ μέχρι να ακυρωθεί."
+          }
+        },
         "en" : {
           "stringUnit" : {
             "state" : "new",
             "value" : "Discounts are based on standard monthly pricing. Auto-renews at %1$@ /%2$@ until canceled."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Los descuentos se basan en el precio mensual estándar. Se renueva automáticamente por %1$@ /%2$@ hasta que se cancele."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Los descuentos se basan en el precio mensual estándar. Se renueva automáticamente por %1$@ /%2$@ hasta que se cancele."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Les réductions sont établies à partir de la tarification mensuelle standard. Il se renouvelle automatiquement à %1$@ / %2$@ jusqu'à annulation."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diskon didasarkan pada harga bulanan standar. Diperbarui secara otomatis pada harga %1$@/%2$@ hingga dibatalkan."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gli sconti si basano sui prezzi mensili standard. Si rinnova automaticamente a %1$@ /%2$@ fino all'annullamento."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "割引は標準月額料金に基づいています。キャンセルされるまで%1$@ /%2$@にて自動更新されます。"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rabatter er basert på standard månedspris. Fornyes automatisk til %1$@ /%2$@ inntil abonnementet kanselleres."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kortingen zijn gebaseerd op de standaard maandelijkse tarieven. Wordt automatisch verlengd voor %1$@ /%2$@ totdat u annuleert."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Os descontos são baseados no preço mensal padrão. Renovação automática a %1$@ /%2$@ até você cancelar."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zľavy sú založené na štandardných mesačných cenách. Automaticky sa obnoví za %1$@/%2$@, kým nebude zrušené."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "İndirimler standart aylık ücretlere göre belirlenir. İptal edilene kadar %1$@ / %2$@ ile otomatik olarak yenilenir."
           }
         }
       }
@@ -3807,7 +3909,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Buat tanda tangan seluler Anda sendiri. Nikmati ini dan lebih banyak lagi dengan %@."
+            "value" : "Buat tanda tangan seluler khas Anda sendiri. Nikmati fitur ini dan berbagai fitur lainnya dengan %@."
           }
         },
         "it" : {
@@ -4291,7 +4393,105 @@
       }
     },
     "only %@ /month" : {
-      "comment" : "Shown next to the discounted monthly price"
+      "comment" : "Shown next to the discounted monthly price",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "толькі %@ /месяц"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "només %@ al mes"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "pouze %@ /měsíc"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "kun %@ /måned"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "nur %@/Monat"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "μόνο %@ /μήνα"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "only %@ /month"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "solo %@ /mes"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "seulement %@ /mois"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Solo %@ /mese"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "月額%@のみ"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "kun %@ /måned"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "somente %@ /mês"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "len %@ / mesiac"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "endast %@/månad"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "yalnızca %@ / ay"
+          }
+        }
+      }
     },
     "Pay annually and save %@" : {
       "comment" : "Shown when selecting the yearly billing cycle",
@@ -5308,7 +5508,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kirim email grup dengan mudah. Nikmati ini dan lebih banyak lagi dengan %@."
+            "value" : "Kirim email grup dengan mudah. Nikmati fitur ini dan berbagai fitur lainnya dengan %@."
           }
         },
         "it" : {
@@ -5869,7 +6069,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tunda — dan minta dikirim nanti.  Nikmati ini dan lebih banyak lagi dengan %@."
+            "value" : "Tunda email yang masuk — dan atur agar email ini diterima di lain waktu. Nikmati fitur ini dan berbagai fitur lainnya dengan %@."
           }
         },
         "it" : {
@@ -7110,7 +7310,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Штогод (зніжка %lld%%)"
+            "value" : "Штогод (СКІДКА %lld%%)"
           }
         },
         "ca" : {
@@ -7182,7 +7382,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tahunan (%lld%% DISKON)"
+            "value" : "Tahunan (DISKON %lld%%)"
           }
         },
         "it" : {

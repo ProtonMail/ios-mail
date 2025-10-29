@@ -449,7 +449,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : " sekarang"
+            "value" : " sedang berlangsung"
           }
         },
         "it" : {
@@ -1953,7 +1953,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Peristiwa"
+            "value" : "Acara"
           }
         },
         "it" : {
@@ -2508,7 +2508,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Detail undangan tidak tersedia"
+            "value" : "Rincian undangan tidak tersedia"
           }
         },
         "it" : {
@@ -3833,7 +3833,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Acara ini tidak ada di kalender Anda sehingga Anda tidak dapat membalasnya."
+            "value" : "Acara ini tidak terdapat pada kalender Anda, sehingga Anda tidak dapat membalas acara ini."
           }
         },
         "it" : {
@@ -4209,7 +4209,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kami tidak dapat memuat\ninformasi. Silakan coba lagi."
+            "value" : "Kami tidak dapat memuat\ninformasi ini. Silakan coba lagi."
           }
         },
         "it" : {
@@ -4507,7 +4507,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Так, я пайду"
+            "value" : "Так, я ўдзельнічаю"
           }
         },
         "ca" : {
@@ -5137,6 +5137,12 @@
             "value" : "Jelenleg nem tud válaszolni az esemény meghívóira, ha nem szerepel a résztvevők listáján."
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Untuk saat ini, Anda tidak dapat merespon undangan acara apabila nama Anda tidak tertera dalam daftar peserta."
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5301,7 +5307,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Anda sedang offline. Informasi yang ditampilkan mungkin sudah kedaluwarsa."
+            "value" : "Anda sedang offline. Informasi yang ditampilkan mungkin telah kedaluwarsa."
           }
         },
         "it" : {

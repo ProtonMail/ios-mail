@@ -5070,7 +5070,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alternatif yöneltme"
+            "value" : "Alternatif yönlendirme"
           }
         },
         "uk" : {
@@ -5154,6 +5154,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Une signature supplémentaire qui apparaît en plus de votre signature de message lors de l'envoi depuis cet appareil."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tanda tangan tambahan yang muncul di samping tanda tangan email Anda pada saat Anda mengirim dari perangkat ini."
           }
         },
         "it" : {
@@ -5472,6 +5478,12 @@
             "value" : "Personnalisations de l'application"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Penyesuaian aplikasi"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5603,6 +5615,12 @@
             "value" : "Icône d'application"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ikon Aplikasi"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5625,6 +5643,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Appikon"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "App-icoon"
           }
         },
         "pl" : {
@@ -8428,6 +8452,12 @@
             "value" : "Calculatrice"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kalkulator"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8450,6 +8480,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kalkulator"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rekenmachine"
           }
         },
         "pl" : {
@@ -13642,7 +13678,129 @@
       }
     },
     "Could not unblock sender" : {
-      "comment" : "Toast message shown when unblocking an email address (sender) fails."
+      "comment" : "Toast message shown when unblocking an email address (sender) fails.",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Немагчыма разблакіраваць адпраўніка"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No s'ha pogut desbloquejar el remitent"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nelze odblokovat odesílatele"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kunne ikke ophæve blokering af afsender"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Absender konnte nicht entsperren werden"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Δεν ήταν δυνατή η απεμπλοκή του αποστολέα"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Could not unblock sender"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudo desbloquear al remitente"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudo desbloquear al remitente"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Le déblocage de l'expéditeur n'a pas abouti."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Blokir pengirim tidak dapat dibuka"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Impossibile bloccare il mittente"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "差出人のブロックを解除できませんでした"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kunne ikke oppheve blokkeringen av avsenderen"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kon afzender niet deblokkeren"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Não foi possível desbloquear o remetente"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Expeditorul nu a putut fi deblocat."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Odosielateľa sa nepodarilo odblokovať"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kunde inte avblockera avsändare"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Göndericinin engellemesi kaldırılamadı"
+          }
+        }
+      }
     },
     "Create a folder" : {
       "comment" : "Button in the sidebar menu that redirects a user to the create folder screen.",
@@ -19391,6 +19549,12 @@
             "value" : "Signature de message"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tanda tangan email"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -20254,6 +20418,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Profitez de messages chiffrés, de moins de spams, d'une protection contre l'hameçonnage et de traqueurs bloqués. Bienvenue dans le respect de la vie privée."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nikmati pesan yang terenkripsi, lebih sedikit spam, perlindungan dari phishing, dan pelacak yang diblokir. Selamat datang di privasi."
           }
         },
         "it" : {
@@ -22917,6 +23087,12 @@
             "value" : "Zahrnout koš/spam"
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inkluder papirkurv/spam"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -22951,6 +23127,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Inclure corbeille et indésirables/spam"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sertakan Sampah/Spam"
           }
         },
         "it" : {
@@ -23613,6 +23795,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Un problème est survenu avec la synchronisation de votre messagerie. Pour le résoudre, déconnectez-vous puis reconnectez-vous."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Terjadi kesalahan dalam menyinkronkan email Anda. Untuk menyelesaikan masalah ini, silakan keluar dan masuk kembali."
           }
         },
         "it" : {
@@ -25254,6 +25442,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Leiratkozva a levelezési listáról"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Langganan milis dihentikan"
           }
         },
         "it" : {
@@ -28435,6 +28629,12 @@
             "value" : "Barre d'outils de message"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toolbar pesan"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -29113,6 +29313,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Plus d'options"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opsi lainnya"
           }
         },
         "it" : {
@@ -34550,6 +34756,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Principale"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Utama"
           }
         },
         "it" : {
@@ -40066,6 +40278,12 @@
             "value" : "Zobrazit v této konverzaci zprávy, které nejsou v koši."
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vis ikke-slettede beskeder i denne samtale."
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -40100,6 +40318,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Montrer les messages non supprimés dans cette conversation."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tampilkan pesan yang tidak dibuang dalam percakapan ini."
           }
         },
         "it" : {
@@ -40173,6 +40397,12 @@
             "value" : "Zobrazit v této konverzaci zprávy, které jsou v koši."
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vis beskeder i papirkurven i denne samtale."
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -40207,6 +40437,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Montrer les messages mis à la corbeille dans cette conversation."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tampilkan pesan yang dibuang dalam percakapan ini."
           }
         },
         "it" : {
@@ -40707,6 +40943,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Signatures"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tanda tangan"
           }
         },
         "it" : {
@@ -46987,6 +47229,12 @@
             "value" : "Cette barre d'outils apparaît lorsque plusieurs messages sont sélectionnés dans la liste des messages."
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toolbar ini muncul pada saat terdapat lebih dari satu pesan yang dipilih dalam tampilan daftar."
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -47116,6 +47364,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cette barre d'outils reste visible lorsqu'un message est ouvert."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toolbar ini akan tetap terlihat pada saat suatu pesan sedang dibuka."
           }
         },
         "it" : {
@@ -49234,7 +49488,129 @@
       }
     },
     "Unblock this address" : {
-      "comment" : "Action title for unblocking email address in the address action sheet."
+      "comment" : "Action title for unblocking email address in the address action sheet.",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Разблакіраваць гэты адрас"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desbloquegeu aquesta adreça"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Odblokovat tuto adresu"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fjern blokering af denne adresse"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diese Adresse entsperren"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ξεμπλοκάρισμα αυτής της διεύθυνσης"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unblock this address"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desbloquear esta dirección"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desbloquear esta dirección"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Débloquer cette adresse"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Buka blokir alamat ini"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sblocca questo indirizzo"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "このアドレスのブロックを解除"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opphev blokkeringen av denne adressen"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deblokkeer dit adres"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desbloquear este endereço"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Deblocare această adresă"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Odblokovať túto adresu"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avblockera denna adress"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bu adresin engellemesini kaldır"
+          }
+        }
+      }
     },
     "Unpin" : {
       "comment" : "Message unpin action title.",
@@ -51892,7 +52268,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Прыносім прабачэнні. Верагодна, што гэта наша памылка. Пацвердзіце, ці хочаце вы пазначыць гэты ліст як надзейны."
+            "value" : "Прыносім прабачэнні. Верагодна, што гэта наша памылка. Пацвердзіце, калі хочаце пазначыць гэты ліст як надзейны."
           }
         },
         "ca" : {
@@ -52510,6 +52886,12 @@
             "value" : "Météo"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cuaca"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -52532,6 +52914,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vær"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Weer"
           }
         },
         "pl" : {
@@ -52657,6 +53045,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Üdvözöljük a Proton Mailben, ahol az adatvédelem alapértelmezett"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Selamat datang di Proton Mail, di mana privasi merupakan hal yang baku"
           }
         },
         "it" : {
@@ -53115,7 +53509,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Вы адпісаліся ад гэтага спіса рассылкі"
+            "value" : "Вы скасавалі падпіску на гэты спіс рассылкі."
           }
         },
         "ca" : {
@@ -53182,6 +53576,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ön leiratkozott erről a levelezőlistáról."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anda telah berhenti berlangganan dari milis ini."
           }
         },
         "it" : {
@@ -53455,7 +53855,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Вы можаце змяніць ваш пошукавы запыт або ачысціць яго."
+            "value" : "Вы можаце змяніць свой пошукавы запыт або ачысціць яго."
           }
         },
         "ca" : {
@@ -54077,6 +54477,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Votre signature de message, qui est automatiquement ajoutée à tous les messages que vous envoyez."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tanda tangan email Anda, yang secara otomatis dibubuhkan ke seluruh email yang Anda kirim."
           }
         },
         "it" : {

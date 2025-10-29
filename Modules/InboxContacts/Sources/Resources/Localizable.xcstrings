@@ -1865,6 +1865,12 @@
             "value" : "Weben elérhető"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tersedia di web"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2772,6 +2778,12 @@
             "value" : "Continuer sur le web"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lanjut di web"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2919,6 +2931,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kapcsolatok vagy csoportok létrehozása az alkalmazásban még nem áll rendelkezésre. Egyelőre a webalkalmazásban hozhatja létre őket, és azok szinkronizálódnak az eszközére."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fitur pembuatan kontak atau grup di aplikasi saat ini belum tersedia. Untuk saat ini, Anda dapat membuat kontak/grup ini pada aplikasi web, dan segala perubahan yang Anda buat akan disinkronkan ke perangkat Anda."
           }
         },
         "it" : {

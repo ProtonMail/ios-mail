@@ -64,6 +64,12 @@
             "value" : "+%lld de plus"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "+%lld lainnya"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -104,6 +110,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "+ încă %lld"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "+%lld ещё"
           }
         },
         "sk" : {
@@ -2102,6 +2114,12 @@
             "value" : "Adresse e-mail"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "alamat email"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2445,6 +2463,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "nom"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "nama"
           }
         },
         "it" : {

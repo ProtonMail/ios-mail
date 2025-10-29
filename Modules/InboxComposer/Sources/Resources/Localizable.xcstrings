@@ -76,6 +76,12 @@
             "value" : "%@ nem használható üzenetek küldéséhez"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ tidak dapat digunaakn untuk mengirim pesan"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -122,6 +128,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Adresa %@ nu poate fi utilizată pentru a trimite mesaje."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ невозможно использовать для отправки сообщений"
           }
         },
         "sk" : {
@@ -231,6 +243,12 @@
             "value" : "%@ le van tiltva. Nem tud üzeneteket küldeni."
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ dinonaktifkan. Alamat ini tidak dapat mengirim pesan."
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -277,6 +295,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Adresa %@ este dezactivată. Nu poate trimite mesaje."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ отключён. Отправка сообщений невозможна"
           }
         },
         "sk" : {
@@ -571,6 +595,12 @@
             "value" : "A(z) %@ használatához előfizetéses csomag szükséges."
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Paket berbayar dibutuhkan untuk menggunakan %@"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -617,6 +647,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Este necesar un plan cu plată pentru a utiliza %@."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Требуется платный тариф для использования %@"
           }
         },
         "sk" : {
@@ -1842,6 +1878,12 @@
             "value" : "Cím nem érhető el"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alamat tidak tersedia"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2197,7 +2239,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alamat tidak ditemukan. Tambahkan lagi atau buka kembali draf."
+            "value" : "Alamat tidak ditemukan. Tambahkan alamat ini lagi atau buka kembali draf."
           }
         },
         "it" : {
@@ -2376,7 +2418,7 @@
         "id" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alamat tidak dikenali. Harap periksa alamat tersebut."
+            "value" : "Alamat tidak dikenali. Silakan periksa alamat ini."
           }
         },
         "it" : {
@@ -3958,7 +4000,129 @@
       }
     },
     "Cannot upload attachment because your Proton Mail storage is full. Free up space or upgrade your plan." : {
-      "comment" : "Error in the context of uploading an attachment for a message before being sent."
+      "comment" : "Error in the context of uploading an attachment for a message before being sent.",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Немагчыма запампаваць далучэнне, бо ваша сховішча Proton Mail запоўнена. Вызваліце месца або палепшыце свой тарыфны план."
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No es pot carregar l'adjunt perquè l'emmagatzematge de Proton Mail és ple. Allibereu espai o actualitzeu el vostre pla."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nelze nahrát přílohu, protože vaše úložiště Proton Mail je plné. Uvolněte místo nebo navyšte svůj tarif."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kan ikke uploade vedhæftning, fordi din Proton Mail-lagerplads er fuld. Frigør plads, eller opgradér dit abonnement."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anhang konnte nicht hochgeladen werden, da dein Proton Mail-Speicher aufgebraucht ist. Schaffe Platz oder aktualisiere dein Abonnement."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Δεν είναι δυνατή η αποστολή συνημμένου, επειδή ο χώρος αποθήκευσης του Proton Mail είναι πλήρης. Απελευθερώστε χώρο ή αναβαθμίστε το πλάνο σας."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cannot upload attachment because your Proton Mail storage is full. Free up space or upgrade your plan."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se puede cargar el adjunto porque el almacenamiento está lleno. Libere espacio o mejore su plan."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La pièce jointe n'a pas pu être importé, car votre espace de stockage Proton Mail est plein. Libérez de l'espace ou changez d'abonnement."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lampiran tidak dapat diunggah karena ruang penyimpanan Proton Mail Anda penuh. Kosongkan ruang yang ada atau tingkatkan paket Anda."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Non puoi caricare l'allegato perché la tua archiviazione Proton Mail è piena. Libera spazio o effettua l'upgrade del tuo piano."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton Mailの容量がいっぱいのため、添付ファイルをアップロードできません。スペースを空けるか、プランをアップグレードしてください。"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kan ikke laste opp vedlegg fordi Proton Mail-lagringsplassen er full. Frigjør plass eller oppgrader planen din."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kan bijlage niet uploaden omdat uw Proton Mail Opslag vol is. Maak ruimte vrij of upgrade uw abonnement."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Não é possível enviar o anexo porque seu armazenamento do Proton Mail está cheio. Libere espaço ou faça upgrade do seu plano."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Atașamentul nu se poate încărca deoarece spațiul de stocare Proton Mail este plin. Eliberați spațiu sau schimbați planul."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Невозможно загрузить вложение, так как ваше хранилище Proton Mail переполнено. Освободите место или улучшите тариф."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prílohu nie je možné nahrať, pretože vaše Proton Mail úložisko je plné. Uvoľnite miesto alebo si zvýšte úroveň vášho plánu."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kan inte ladda upp bilaga eftersom ditt Proton Mail-lagringsutrymme är fullt. Frigör utrymme eller uppgradera ditt paket."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton Mail depolama alanınız dolu olduğu için ek dosya yüklenemiyor. Yer açın veya tarifenizi yükseltin."
+          }
+        }
+      }
     },
     "Custom" : {
       "comment" : "Schedule send custom time option tile",
@@ -9000,6 +9164,12 @@
             "value" : "Le message est trop volumineux pour être envoyé. Veuillez réduire la taille de vos pièces jointes."
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pesan terlalu besar untuk dikirim. Silakan kurangi ukuran lampiran Anda."
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9040,6 +9210,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mesajul este prea mare pentru a fi trimis. Reduceți mărimea atașamentelor."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Сообщение слишком большое для отправки. Уменьшите размер вложений."
           }
         },
         "sk" : {
@@ -10611,6 +10787,12 @@
             "value" : "Aucun des destinataires ne prend en charge l'expiration par défaut. Ajoutez un mot de passe pour activer l'expiration pour les destinataires qui n'utilisent pas Proton Mail."
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tidak ada satu pun dari penerima yang mendukung fitur kedaluwarsa pesan secara bawaan. Tambahkan kata sandi untuk mengaktifkan kedaluwarsa pesan bagi penerima non-Proton Mail."
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -10651,6 +10833,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Niciunul dintre destinatari nu acceptă expirarea în mod implicit. Adăugați o parolă pentru a activa expirarea pentru destinatarii care nu folosesc Proton Mail."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ни один из получателей не поддерживает срок действия по умолчанию. Добавьте пароль, чтобы включить срок действия для получателей, не использующих Proton Mail."
           }
         },
         "sk" : {
@@ -12562,6 +12750,12 @@
             "value" : "Un problème est survenu lors de l'importation de la pièce jointe. Veuillez réessayer."
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Terjadi kesalahan dalam mengunggah lampiran. Silakan coba lagi."
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12602,6 +12796,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Problemă la încărcarea atașamentului. Reîncercați."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не удалось загрузить вложение. Повторите попытку."
           }
         },
         "sk" : {
@@ -15997,7 +16197,195 @@
       }
     },
     "Storage quota exceeded" : {
-      "comment" : "Attachment failed because account storage is full"
+      "comment" : "Attachment failed because account storage is full",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Перавышана квота на аб'ём сховішча"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Límit d'emmagatzematge superat"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kvóta úložiště byla překročena"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lagerpladskvote overskredet"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Speicherkontingent überschritten"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Υπέρβαση ορίου αποθηκευτικού χώρου"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Storage quota exceeded"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Límite de almacenamiento superado"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Límite de almacenamiento superado"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tallennuskiintiö on ylittynyt"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quota d'espace de stockage dépassé"
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Túllépte a tárhely méretét"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kuota penyimpanan terlampaui"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Limite d'archiviazione superato"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ストレージの容量制限を超過しました"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "საცავის კვოტა გადაჭარბებულია"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "저장 공간 한도 도달"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Overskredet lagringskvote"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opslagquota overschreden"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Limit przestrzeni dyskowej został przekroczony"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Limite de armazenamento excedido"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cota de armazenamento excedida"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cota de stocare depășită"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Превышена квота хранилища"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kvóta úložiska prekročená"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Presežena kvota shrambe"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lagringskvot överskriden"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Depolama alanı kotası aşıldı"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Перевищено квоту сховища"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "超出存储上限"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "超過儲存空間限制"
+          }
+        }
+      }
     },
     "Subject:" : {
       "comment" : "Composer subject.",
@@ -16778,6 +17166,12 @@
             "value" : "Dispozice přílohy nemohla být aktualizována. Zkuste to prosím znovu."
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vedhæftningsdispositionen kunne ikke opdateres, prøv igen"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -16814,6 +17208,12 @@
             "value" : "La disposition de la pièce jointe n'a pas pu être mise à jour, veuillez réessayer."
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Disposisi lampiran tidak dapat diperbarui. Silakan coba lagi."
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -16842,6 +17242,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Dispoziția atașamentului nu a putut fi actualizată. Mai încercați."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не удалось обновить параметры вложения, повторите попытку"
           }
         },
         "sk" : {
@@ -18929,7 +19335,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Мы не змаглі пацвердзіць, што ўсе атрымальнікі выкарыстоўваюць Proton Mail. Толькі адрасы Proton падтрымліваюць тэрмін дзеяння паведамленняў. У гэтым выпадку мы прапануем замест гэтага дадаць пароль."
+            "value" : "Адсутнічае пацвярджэнне таго, што ўсе атрымальнікі выкарыстоўваюць Proton Mail. Толькі адрасы Proton падтрымліваюць паведамленні з тэрмінам дзеяння. У якасці альтэрнатыўнага варыянту вы можаце абараніць свой ліст паролем."
           }
         },
         "ca" : {
