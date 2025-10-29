@@ -63,7 +63,7 @@ final class UpsellScreenModelTests {
         let sut = makeSUT(upsellType: .blackFriday(.wave2))
         let expectedWebCheckoutURL = URL(
             string: """
-                https://account.example.com/lite?action=subscribe-account&app-version=ios-mail@16.0&coupon=BF25PROMO1M&currency=USD&cycle=1&disableCycleSelector=1&disablePlanSelection=1&fullscreen=auto&hideClose=true&plan=mail2022&redirect=protonmail://&start=checkout#selector=FORK_SELECTOR
+                https://account.example.com/lite?action=subscribe-account&app-version=web-account-lite@5.0.304.0&coupon=BF25PROMO1M&currency=USD&cycle=1&disableCycleSelector=1&disablePlanSelection=1&fullscreen=auto&hideClose=true&plan=mail2022&redirect=protonmail://&start=checkout#selector=FORK_SELECTOR
                 """
         )
 

@@ -64,12 +64,15 @@ final class WebCheckout {
     }
 
     private func checkoutURL(wave: BlackFridayWave) async throws -> URL {
-        let appDetails = AppDetails.mail
-        let selector = try await sessionForking.fork(platform: appDetails.platform, product: appDetails.product).get()
+        let checkoutPlatform = "web"
+        let checkoutApp = "account-lite"
+        let checkoutAppVersion = "5.0.304.0"
+
+        let selector = try await sessionForking.fork(platform: checkoutPlatform, product: checkoutApp).get()
 
         let queryItems: [URLQueryItem] = [
             .init(name: "action", value: "subscribe-account"),
-            .init(name: "app-version", value: appDetails.backendFacingVersion),
+            .init(name: "app-version", value: "\(checkoutPlatform)-\(checkoutApp)@\(checkoutAppVersion)"),
             .init(name: "coupon", value: wave.discountCoupon),
             .init(name: "currency", value: "USD"),
             .init(name: "cycle", value: "\(wave.cycle)"),
