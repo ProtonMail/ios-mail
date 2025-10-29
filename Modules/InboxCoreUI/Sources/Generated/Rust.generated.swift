@@ -894,6 +894,16 @@ public extension MailUserSessionForkResult {
         }
     }
 }
+public extension MailUserSessionGetPaymentMethodResult {
+    func get() throws(UserSessionError) -> PaymentMethod {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension MailUserSessionGetPaymentsPlansResult {
     func get() throws(UserSessionError) -> PaymentsPlans {
         switch self {
@@ -1004,6 +1014,16 @@ public extension MailUserSessionSessionUuidResult {
         }
     }
 }
+public extension MailUserSessionUpsellEligibilityResult {
+    func get() throws(UserSessionError) -> UpsellEligibility {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension MailUserSessionUserIdResult {
     func get() throws(ProtonError) -> String {
         switch self {
@@ -1054,6 +1074,16 @@ public extension MailUserSessionWatchLabelsResult {
         }
     }
 }
+public extension MailUserSessionWatchUpsellEligibilityResult {
+    func get() throws(ProtonError) -> WatchHandle {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension MailUserSessionWatchUserResult {
     func get() throws(ProtonError) -> WatchHandle {
         switch self {
@@ -1066,16 +1096,6 @@ public extension MailUserSessionWatchUserResult {
 }
 public extension MailUserSessionWatchUserSettingsResult {
     func get() throws(ProtonError) -> WatchHandle {
-        switch self {
-        case .ok(let value):
-            value
-        case .error(let error):
-            throw error
-        }
-    }
-}
-public extension MailUserSessionWatchUserStreamResult {
-    func get() throws(ProtonError) -> WatchUserStream {
         switch self {
         case .ok(let value):
             value
@@ -1439,26 +1459,6 @@ public extension WatchMailSettingsResult {
         switch self {
         case .ok(let value):
             value
-        case .error(let error):
-            throw error
-        }
-    }
-}
-public extension WatchUserStreamNextAsyncResult {
-    func get() throws(ProtonError) {
-        switch self {
-        case .ok:
-            break
-        case .error(let error):
-            throw error
-        }
-    }
-}
-public extension WatchUserStreamNextSyncResult {
-    func get() throws(ProtonError) {
-        switch self {
-        case .ok:
-            break
         case .error(let error):
             throw error
         }
