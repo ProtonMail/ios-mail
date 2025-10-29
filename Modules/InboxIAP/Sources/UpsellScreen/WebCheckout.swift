@@ -72,7 +72,7 @@ final class WebCheckout {
             .init(name: "app-version", value: appDetails.backendFacingVersion),
             .init(name: "coupon", value: wave.discountCoupon),
             .init(name: "currency", value: "USD"),
-            .init(name: "cycle", value: "12"),
+            .init(name: "cycle", value: "\(wave.cycle)"),
             .init(name: "disableCycleSelector", value: "1"),
             .init(name: "disablePlanSelection", value: "1"),
             .init(name: "fullscreen", value: "auto"),
@@ -90,6 +90,15 @@ final class WebCheckout {
 }
 
 private extension BlackFridayWave {
+    var cycle: Int {
+        switch self {
+        case .wave1:
+            12
+        case .wave2:
+            1
+        }
+    }
+
     var discountCoupon: String {
         switch self {
         case .wave1:
