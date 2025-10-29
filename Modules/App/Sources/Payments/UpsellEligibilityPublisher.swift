@@ -49,14 +49,6 @@ final class UpsellEligibilityPublisher: ObservableObject {
         state = constant
     }
 
-    deinit {
-        for watchHandle in watchHandles {
-            watchHandle.disconnect()
-        }
-
-        watchHandles.removeAll()
-    }
-
     private func updateState(mailSession: MailSession, userSession: MailUserSession) async {
         do {
             let upsellEligibility = try await userSession.upsellEligibility().get()
