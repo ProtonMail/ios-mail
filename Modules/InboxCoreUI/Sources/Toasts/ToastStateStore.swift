@@ -18,7 +18,7 @@
 import Foundation
 import OrderedCollections
 
-// FIXME: `ToastStateStore` should be on @MainActor
+@MainActor
 public final class ToastStateStore: ObservableObject {
     public struct State {
         public var toasts: OrderedSet<Toast>
@@ -37,17 +37,14 @@ public final class ToastStateStore: ObservableObject {
     }
 
     public func present(toast: Toast) {
-        assert(Thread.isMainThread)
         state.toasts.append(toast)
     }
 
     public func dismiss(toast: Toast) {
-        assert(Thread.isMainThread)
         state.toasts.remove(toast)
     }
 
     public func dismiss(withID id: UUID) {
-        assert(Thread.isMainThread)
         state.toasts.removeAll { toast in toast.id == id }
     }
 }

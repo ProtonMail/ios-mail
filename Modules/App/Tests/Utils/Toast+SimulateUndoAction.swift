@@ -19,13 +19,6 @@
 import InboxCore
 
 extension Toast {
-    @available(*, deprecated, message: "Prefer the async variant")
-    func simulateUndoAction() {
-        Task {
-            await simulateUndoAction()
-        }
-    }
-
     func simulateUndoAction() async {
         guard
             let button,

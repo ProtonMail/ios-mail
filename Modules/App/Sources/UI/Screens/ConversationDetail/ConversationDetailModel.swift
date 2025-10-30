@@ -1006,6 +1006,7 @@ private extension MessageCellUIModel {
 
 }
 
+@MainActor
 enum SnoozeErrorPresenter {
 
     static func presentIfNeeded(error: SnoozeError, toastStateStore: ToastStateStore) {

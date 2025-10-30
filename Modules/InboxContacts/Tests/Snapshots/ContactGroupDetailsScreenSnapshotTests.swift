@@ -21,10 +21,11 @@ import InboxCoreUI
 import InboxSnapshotTesting
 import proton_app_uniffi
 import SwiftUI
-import XCTest
+import Testing
 
-final class ContactGroupDetailsScreenSnapshotTests: XCTestCase {
-
+@MainActor
+final class ContactGroupDetailsScreenSnapshotTests {
+    @Test
     func testContactGroupDetailsScreenLayoutsCorrectOnIphoneX() {
         assertSnapshotsOnIPhoneX(of: makeSUT())
     }

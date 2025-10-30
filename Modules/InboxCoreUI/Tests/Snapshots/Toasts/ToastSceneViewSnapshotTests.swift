@@ -15,37 +15,25 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import Dispatch
 import InboxCore
 @testable import InboxCoreUI
 import InboxSnapshotTesting
 import InboxTesting
-import XCTest
+import Testing
 
-class ToastSceneViewSnapshotTests: BaseTestCase {
-    var store: ToastStateStore!
-    var workItems: [DispatchWorkItem]!
+@MainActor
+final class ToastSceneViewSnapshotTests {
+    private let store = ToastStateStore(initialState: .initial)
 
-    override func setUp() {
-        super.setUp()
-        store = .init(initialState: .initial)
-        workItems = []
-        Dispatcher.dispatchOnMainAfter = { _, workItem in
-            self.workItems.append(workItem)
-        }
-    }
-
-    override func tearDown() {
-        store = nil
-        workItems = nil
-        super.tearDown()
-    }
-
+    @Test
     func testToastSceneViewWithoutToastsLayoutsCorrectly() {
         let toastSceneView = ToastSceneView().environmentObject(store)
 
         assertSnapshotsOnIPhoneX(of: toastSceneView)
     }
 
+    @Test
     func testToastSceneViewWithOneToastPresentedTwiceLayoutsCorrectly() {
         let toastSceneView = ToastSceneView().environmentObject(store)
 
@@ -55,6 +43,7 @@ class ToastSceneViewSnapshotTests: BaseTestCase {
         assertSnapshotsOnIPhoneX(of: toastSceneView)
     }
 
+    @Test
     func testToastSceneViewWithFourToastsLayoutsCorrectly() {
         let toastSceneView = ToastSceneView().environmentObject(store)
 
@@ -69,7 +58,14 @@ class ToastSceneViewSnapshotTests: BaseTestCase {
         assertSnapshotsOnIPhoneX(of: toastSceneView)
     }
 
+    @Test
     func testToastSceneViewWithThreeToastsLayoutsCorrectly() throws {
+        var workItems: [DispatchWorkItem] = []
+
+        Dispatcher.dispatchOnMainAfter = { _, workItem in
+            workItems.append(workItem)
+        }
+
         let toastSceneView = ToastSceneView().environmentObject(store)
 
         store.present(toast: ToastViewPreviewProvider.smallInformationLongTextWithButton)
@@ -78,7 +74,7 @@ class ToastSceneViewSnapshotTests: BaseTestCase {
 
         assertSnapshotsOnIPhoneX(of: toastSceneView, named: "3_toasts_initial")
 
-        workItems.first?.perform()
+        workItems[0].perform()
 
         assertSnapshotsOnIPhoneX(of: toastSceneView, named: "2_toasts_4_seconds_elapsed")
 
