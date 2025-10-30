@@ -24,9 +24,10 @@ import UIKit
  To keep the gesture it's necessary to extend `UINavigationController`
  and set interactivePopGestureRecognizer's delegate which is used under
  the hood by the SwiftUI for navigation.
+
+ More context: https://stackoverflow.com/a/41248703
  */
 extension UINavigationController: UIGestureRecognizerDelegate {
-
     override open func viewDidLoad() {
         super.viewDidLoad()
         interactivePopGestureRecognizer?.delegate = self
@@ -35,7 +36,16 @@ extension UINavigationController: UIGestureRecognizerDelegate {
     // MARK: - UIGestureRecognizerDelegate
 
     public func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
-        return viewControllers.count > 1
+        viewControllers.count > 1
     }
 
+    // needed to unblock the gesture, because of the UIPageViewController
+    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        true
+    }
+
+    // prevent pages inside UIPageViewController from scrolling during the pop gesture
+    public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        true
+    }
 }
