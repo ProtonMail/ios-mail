@@ -67,11 +67,27 @@ public struct UpsellScreen: View {
     @ViewBuilder
     private var sizeClassDependentBody: some View {
         if verticalSizeClass == .compact {
-            HStack {
-                infoSection
+            if model.isPromo {
+                HStack {
+                    VStack {
+                        Image(model.logo)
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .padding(.top, headerHeight)
 
-                interactiveArea
-                    .padding(.top, headerHeight)
+                        interactiveArea
+                    }
+                    .background(BlurredBackground(fallbackBackgroundColor: nil))
+
+                    infoSection
+                }
+            } else {
+                HStack {
+                    infoSection
+
+                    interactiveArea
+                        .padding(.top, headerHeight)
+                }
             }
         } else {
             VStack(spacing: .zero) {
@@ -238,6 +254,7 @@ public struct UpsellScreen: View {
         Text(model.autoRenewalNotice)
             .font(.caption)
             .foregroundStyle(Color.white.opacity(0.9))
+            .fixedSize(horizontal: false, vertical: true)
     }
 }
 
