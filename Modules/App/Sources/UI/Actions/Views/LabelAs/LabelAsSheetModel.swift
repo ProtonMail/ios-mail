@@ -21,6 +21,7 @@ import InboxCoreUI
 import proton_app_uniffi
 import SwiftUI
 
+@MainActor
 class LabelAsSheetModel: ObservableObject {
     @Published var state: LabelAsSheetState = .initial
     private let input: ActionSheetInput
@@ -47,10 +48,10 @@ class LabelAsSheetModel: ObservableObject {
         self.dismiss = dismiss
     }
 
-    func handle(action: LabelAsSheetAction) {
+    func handle(action: LabelAsSheetAction) async {
         switch action {
         case .viewAppear:
-            loadLabels()
+            await loadLabels()
         case .selected(let label):
             updateSelection(of: label)
         case .toggleSwitch:
@@ -58,27 +59,28 @@ class LabelAsSheetModel: ObservableObject {
         case .createLabelButtonTapped:
             state = state.copy(\.createFolderLabelPresented, to: true)
         case .saveButtonTapped:
-            executeLabelAsAction()
+            await executeLabelAsAction()
+        }
+    }
+
+    func handle(action: LabelAsSheetAction) {
+        Task {
+            await handle(action: action)
         }
     }
 
     // MARK: - Private
 
-    private func loadLabels() {
-        Task {
-            do {
-                let labels = try await actionsProvider.actions(for: input.mailboxItem.itemType, ids: input.ids)
-                Dispatcher.dispatchOnMain(
-                    .init(block: { [weak self] in
-                        self?.update(labels: labels)
-                    }))
-            } catch {
-                showError(error)
-            }
+    private func loadLabels() async {
+        do {
+            let labels = try await actionsProvider.actions(for: input.mailboxItem.itemType, ids: input.ids)
+            update(labels: labels)
+        } catch {
+            showError(error)
         }
     }
 
-    private func executeLabelAsAction() {
+    private func executeLabelAsAction() async {
         let input = LabelAsActionPerformer.Input(
             itemType: input.mailboxItem.itemType,
             itemsIDs: input.ids,
@@ -87,34 +89,27 @@ class LabelAsSheetModel: ObservableObject {
             archive: state.shouldArchive
         )
 
-        Task { [weak self] in
-            guard let self else { return }
-
-            do {
-                let result = try await labelAsActionPerformer.labelAs(input: input)
-                let toastID = UUID()
-                let undoAction = result.undo.undoAction(userSession: mailUserSession) {
-                    self.dismissToast(withID: toastID)
-                }
-                let toast = Toast.labelAsArchive(
-                    id: toastID,
-                    for: input.itemType,
-                    count: input.itemsIDs.count,
-                    undoAction: undoAction
-                )
-
-                if input.archive {
-                    showToast(toast)
-                }
-            } catch {
-                showError(error)
+        do {
+            let result = try await labelAsActionPerformer.labelAs(input: input)
+            let toastID = UUID()
+            let undoAction = result.undo.undoAction(userSession: mailUserSession) {
+                self.dismissToast(withID: toastID)
             }
+            let toast = Toast.labelAsArchive(
+                id: toastID,
+                for: input.itemType,
+                count: input.itemsIDs.count,
+                undoAction: undoAction
+            )
 
-            Dispatcher.dispatchOnMain(
-                .init(block: { [weak self] in
-                    self?.dismiss()
-                }))
+            if input.archive {
+                showToast(toast)
+            }
+        } catch {
+            showError(error)
         }
+
+        dismiss()
     }
 
     private func update(labels: [LabelAsAction]) {
@@ -135,7 +130,7 @@ class LabelAsSheetModel: ObservableObject {
     }
 
     private func showToast(_ toast: Toast) {
-        Dispatcher.dispatchOnMain(.init(block: { [weak self] in self?.toastStateStore.present(toast: toast) }))
+        toastStateStore.present(toast: toast)
     }
 
     private func showError(_ error: Error) {
@@ -143,7 +138,7 @@ class LabelAsSheetModel: ObservableObject {
     }
 
     private func dismissToast(withID toastID: UUID) {
-        Dispatcher.dispatchOnMain(.init(block: { [weak self] in self?.toastStateStore.dismiss(withID: toastID) }))
+        toastStateStore.dismiss(withID: toastID)
     }
 }
 

@@ -17,6 +17,7 @@
 
 import proton_app_uniffi
 
+@MainActor
 enum LabelAsSheetPreviewProvider {
     static func testData() -> LabelAsSheetModel {
         .init(
