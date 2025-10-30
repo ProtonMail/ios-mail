@@ -1035,6 +1035,8 @@ private extension ConversationDetailSeed {
         switch self {
         case .mailboxItem(_, .systemFolder(_, .allMail)):
             true
+        case .searchResultItem(_, let selectedMailbox):
+            selectedMailbox.systemFolder == .allMail
         default:
             false
         }
