@@ -24,17 +24,19 @@ struct CyclingProgressBar: View {
     @State private var animationPhase: CGFloat
     private let isAnimationEnabled: Bool
 
-    private let animationDurationInSeconds: TimeInterval = 1.2
+    private let configuration: LoadingBarConfiguration
     private let barHeight: CGFloat = 2
     private let primaryColor = DS.Color.Loader.success
     private let edgeColor = DS.Color.Loader.success.opacity(0)
 
-    init() {
+    init(configuration: LoadingBarConfiguration) {
+        self.configuration = configuration
         _animationPhase = State(initialValue: 0)
         isAnimationEnabled = true
     }
 
     init(animationPhase: CGFloat) {
+        self.configuration = .init()
         _animationPhase = State(initialValue: animationPhase)
         isAnimationEnabled = false
     }
@@ -63,7 +65,7 @@ struct CyclingProgressBar: View {
         .clipped()
         .onAppear {
             if isAnimationEnabled {
-                withAnimation(.linear(duration: animationDurationInSeconds).repeatForever(autoreverses: false)) {
+                withAnimation(.linear(duration: configuration.cycleDuration).repeatForever(autoreverses: false)) {
                     animationPhase = 1.0
                 }
             }
@@ -80,7 +82,7 @@ private struct CyclingProgressBar_Preview: View {
                 .font(.headline)
                 .padding(.top, 60)
             if visible {
-                CyclingProgressBar()
+                CyclingProgressBar(configuration: .init())
             }
 
             Spacer()

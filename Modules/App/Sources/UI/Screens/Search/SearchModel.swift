@@ -206,9 +206,9 @@ final class SearchModel: ObservableObject, @unchecked Sendable {
         case .status(let statusUpdate):
             switch statusUpdate {
             case .fetchNewStart:
-                loadingBarStateStore.handle(action: .startLoading)
+                loadingBarStateStore.handle(action: .showLoadingBar)
             case .fetchNewEnd:
-                loadingBarStateStore.handle(action: .stopLoading)
+                loadingBarStateStore.handle(action: .hideLoadingBar)
             }
         case .error(let error):
             AppLogger.log(error: error, category: .mailbox)

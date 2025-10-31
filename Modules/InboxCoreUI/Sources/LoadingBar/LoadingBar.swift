@@ -15,42 +15,45 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import Combine
 import SwiftUI
 
 public struct LoadingBar: View {
-    @EnvironmentObject var stateStore: LoadingBarStateStore
+    private let isLoading: Bool
+    private let configuration: LoadingBarConfiguration
+    @StateObject private var stateStore: LoadingBarStateStore
+    @State private var timer: Publishers.Autoconnect<Timer.TimerPublisher>
 
-    public init() {}
-
-    // MARK: - View
+    public init(isLoading: Bool) {
+        let configuration = LoadingBarConfiguration()
+        self.isLoading = isLoading
+        self.configuration = configuration
+        _stateStore = .init(wrappedValue: .init(configuration: configuration))
+        _timer = .init(
+            wrappedValue:
+                Timer
+                .publish(every: configuration.cycleDuration, on: .main, in: .common)
+                .autoconnect()
+        )
+    }
 
     public var body: some View {
         Group {
             if stateStore.isLoading {
-                CyclingProgressBar()
+                CyclingProgressBar(configuration: configuration)
                     .transition(.opacity)
+                    .onReceive(timer) { _ in
+                        stateStore.handle(action: .cycleCompleted)
+                    }
+            }
+        }
+        .onChange(of: isLoading) { _, newValue in
+            if newValue {
+                stateStore.handle(action: .startLoading)
+            } else {
+                stateStore.handle(action: .stopLoading)
             }
         }
         .animation(.easeInOut, value: stateStore.isLoading)
-    }
-}
-
-public final class LoadingBarStateStore: ObservableObject {
-    public enum Action {
-        case startLoading
-        case stopLoading
-    }
-
-    @Published fileprivate var isLoading: Bool = false
-
-    public init() {}
-
-    public func handle(action: Action) {
-        switch action {
-        case .startLoading:
-            isLoading = true
-        case .stopLoading:
-            isLoading = false
-        }
     }
 }

@@ -25,6 +25,7 @@ struct PaginatedListView<
     EmptyListView: View,
     CellView: View
 >: View {
+    @EnvironmentObject private var loadingBarStore: LoadingBarStateStore
     @ObservedObject private var dataSource: PaginatedListDataSource<Item>
     private var headerView: () -> HeaderView?
     private var emptyListView: () -> EmptyListView
@@ -56,7 +57,7 @@ struct PaginatedListView<
             MailboxSkeletonView()
         case .data(let type):
             ZStack(alignment: .top) {
-                LoadingBar()
+                LoadingBar(isLoading: loadingBarStore.isShowingLoadingBar)
                 dataStateView.overlay {
                     if type == .noItems {
                         emptyListView()
