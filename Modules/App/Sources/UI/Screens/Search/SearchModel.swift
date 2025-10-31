@@ -110,7 +110,7 @@ final class SearchModel: ObservableObject, @unchecked Sendable {
             options: .init(keywords: query),
             callback: MessageScrollerLiveQueryCallbackkWrapper { [weak self] update in
                 Task {
-                    await self?.handleSearchScroller(update: update)
+                    await self?.trigger(update: update)
                 }
             }
         )
