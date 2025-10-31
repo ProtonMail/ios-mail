@@ -125,11 +125,13 @@ struct MailboxItemsListView<EmptyView: View>: View {
             SwipeableView(
                 leftAction: .init(
                     image: config.swipeActions.left.icon(isRead: item.isRead, isStarred: item.isStarred),
-                    color: config.swipeActions.left.color
+                    color: config.swipeActions.left.color,
+                    isDesctructive: config.swipeActions.left.isDestructive
                 ),
                 rightAction: .init(
                     image: config.swipeActions.right.icon(isRead: item.isRead, isStarred: item.isStarred),
-                    color: config.swipeActions.right.color
+                    color: config.swipeActions.right.color,
+                    isDesctructive: config.swipeActions.right.isDestructive
                 ),
                 onLeftAction: {
                     config.cellEventHandler?.onSwipeAction?(
@@ -277,6 +279,7 @@ import UIKit
 struct SwipeActionModel {
     let image: Image
     let color: Color
+    let isDesctructive: Bool
 }
 
 struct SwipeableView<Content: View>: View {
@@ -302,6 +305,7 @@ struct SwipeableView<Content: View>: View {
     @State private var activeAction: ActiveAction?
     @State private var axisLock: AxisLock = .none
     @State private var rowWidth: CGFloat = 0
+    @State var isSwiping: Bool = false
 
     // Tuning
     private let triggerFactor: CGFloat = 0.20
@@ -334,16 +338,17 @@ struct SwipeableView<Content: View>: View {
             }
 
             content()
-                .offset(x: swipeOffset)
+                .clipShape(RoundedRectangle(cornerRadius: isSwiping ? 16 : 0))
+                .offset(x: swipeOffset, y: isSwiping ? -2 : 0)
+                .animation(.default, value: isSwiping)
                 .sensoryFeedback(.impact, trigger: crossedThreshold)
                 .contentShape(Rectangle())
+
         }
         .onGeometryChange(
             for: CGFloat.self,
             of: { geometry in geometry.size.width },
-            action: { value in
-                rowWidth = value
-            }
+            action: { value in rowWidth = value }
         )
         .simultaneousGesture(  // It has to be gesture for iOS under 18 and over simulatouslyGesture
             DragGesture(minimumDistance: 8)
@@ -374,6 +379,7 @@ struct SwipeableView<Content: View>: View {
 
         guard axisLock == .horizontal else { return }
         swipeOffset = dx
+        isSwiping = true
 
         if dx > 0 {
             activeAction = .init(side: .right, model: rightAction)
@@ -396,8 +402,14 @@ struct SwipeableView<Content: View>: View {
             }
         }
         withAnimation {
-            swipeOffset = 0
+            if let activeAction, activeAction.model.isDesctructive, didCross {
+                swipeOffset = activeAction.side == .left ? -rowWidth : rowWidth
+            } else {
+                swipeOffset = 0
+            }
+            isSwiping = false
         } completion: {
+            swipeOffset = 0
             activeAction = nil
         }
     }
@@ -407,10 +419,30 @@ struct SwipeableView<Content: View>: View {
     @ViewBuilder
     private func actionView(_ action: ActiveAction) -> some View {
         action.model.image
+            .foregroundStyle(DS.Color.Icon.inverted)
             .square(size: 16)
-            .scaleEffect(crossedThreshold ? 1.5 : 1)
+            .scaleEffect(crossedThreshold ? 1.3 : 1)
             .animation(.default, value: crossedThreshold)
             .frame(maxWidth: .infinity, alignment: action.side.aligment)
-            .padding(.horizontal, 16)
+            .padding(.horizontal, 28)
     }
+}
+
+extension AssignedSwipeAction {
+
+    var isDestructive: Bool {
+        switch self {
+        case .noAction:
+            false
+        case .moveTo(let swipeActionMoveToTarget):
+            true
+        case .labelAs:
+            false
+        case .toggleStar:
+            false
+        case .toggleRead:
+            false
+        }
+    }
+
 }
