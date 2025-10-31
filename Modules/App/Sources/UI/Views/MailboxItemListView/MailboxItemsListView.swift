@@ -122,21 +122,43 @@ struct MailboxItemsListView<EmptyView: View>: View {
 
     private func cellView(index: Int, item: MailboxItemCellUIModel) -> some View {
         VStack {
-            MailboxItemCell(
-                uiModel: item,
-                isParentListSelectionEmpty: !selectionState.hasItems,
-                isSending: config.isOutboxLocation,
-                onEvent: { config.cellEventHandler?.onCellEvent($0, item) }
-            )
-            .accessibilityElementGroupedVoiceOver(value: voiceOverValue(for: item))
-            .accessibilityIdentifier("\(MailboxListViewIdentifiers.listCell)\(index)")
-            .mailboxSwipeActions(
-                swipeActions: config.swipeActions,
-                isSwipeEnabled: !selectionState.hasItems,
-                mailboxItem: item
-            ) { context in
-                config.cellEventHandler?.onSwipeAction?(context)
+            SwipeableView(
+                leftAction: .init(
+                    image: config.swipeActions.left.icon(isRead: item.isRead, isStarred: item.isStarred),
+                    color: config.swipeActions.left.color
+                ),
+                rightAction: .init(
+                    image: config.swipeActions.right.icon(isRead: item.isRead, isStarred: item.isStarred),
+                    color: config.swipeActions.right.color
+                ),
+                onLeftAction: {
+                    config.cellEventHandler?.onSwipeAction?(
+                        .init(action: config.swipeActions.left, itemID: item.conversationID, isItemRead: item.isRead, isItemStarred: item.isStarred)
+                    )
+                },
+                onRightAction: {
+                    config.cellEventHandler?.onSwipeAction?(
+                        .init(action: config.swipeActions.right, itemID: item.conversationID, isItemRead: item.isRead, isItemStarred: item.isStarred)
+                    )
+                }
+            ) {
+                MailboxItemCell(
+                    uiModel: item,
+                    isParentListSelectionEmpty: !selectionState.hasItems,
+                    isSending: config.isOutboxLocation,
+                    onEvent: { config.cellEventHandler?.onCellEvent($0, item) }
+                )
+                .accessibilityElementGroupedVoiceOver(value: voiceOverValue(for: item))
+                .accessibilityIdentifier("\(MailboxListViewIdentifiers.listCell)\(index)")
             }
+
+            //            .mailboxSwipeActions(
+            //                swipeActions: config.swipeActions,
+            //                isSwipeEnabled: !selectionState.hasItems,
+            //                mailboxItem: item
+            //            ) { context in
+            //                config.cellEventHandler?.onSwipeAction?(context)
+            //            }
         }
         .listRowBackground(Color.clear)
         .listRowInsets(
@@ -247,4 +269,148 @@ private extension SelectionModeState {
         }
     }
     return Container()
+}
+
+import SwiftUI
+import UIKit
+
+struct SwipeActionModel {
+    let image: Image
+    let color: Color
+}
+
+struct SwipeableView<Content: View>: View {
+    struct ActiveAction {
+        let side: ActionSide
+        let model: SwipeActionModel
+    }
+
+    enum ActionSide {
+        case right, left
+        var aligment: Alignment { self == .right ? .leading : .trailing }
+    }
+
+    private enum AxisLock { case none, horizontal, vertical }
+
+    let content: () -> Content
+    let leftAction: SwipeActionModel
+    let rightAction: SwipeActionModel
+    let onLeftAction: () -> Void
+    let onRightAction: () -> Void
+
+    @State private var swipeOffset: CGFloat = 0
+    @State private var activeAction: ActiveAction?
+    @State private var axisLock: AxisLock = .none
+    @State private var rowWidth: CGFloat = 0
+
+    // Tuning
+    private let triggerFactor: CGFloat = 0.20
+    private let lockSlop: CGFloat = 10
+
+    private var crossedThreshold: Bool {
+        abs(swipeOffset) > rowWidth * triggerFactor
+    }
+
+    init(
+        leftAction: SwipeActionModel,
+        rightAction: SwipeActionModel,
+        onLeftAction: @escaping () -> Void,
+        onRightAction: @escaping () -> Void,
+        content: @escaping () -> Content
+    ) {
+        self.leftAction = leftAction
+        self.rightAction = rightAction
+        self.onLeftAction = onLeftAction
+        self.onRightAction = onRightAction
+        self.content = content
+    }
+
+    var body: some View {
+        ZStack {
+            if let activeAction {
+                actionView(activeAction)
+                    .frame(maxHeight: .infinity)
+                    .background(activeAction.model.color)
+            }
+
+            content()
+                .offset(x: swipeOffset)
+                .sensoryFeedback(.impact, trigger: crossedThreshold)
+                .contentShape(Rectangle())
+        }
+        .onGeometryChange(
+            for: CGFloat.self,
+            of: { geometry in geometry.size.width },
+            action: { value in
+                rowWidth = value
+            }
+        )
+        .simultaneousGesture(  // It has to be gesture for iOS under 18 and over simulatouslyGesture
+            DragGesture(minimumDistance: 8)
+                .onChanged(onDragChanged)
+                .onEnded(onDragEnded), including: .gesture
+        )
+    }
+
+    // MARK: - Gesture
+
+    private func onDragChanged(_ value: DragGesture.Value) {
+        let dx = value.translation.width
+        let dy = value.translation.height
+
+        if axisLock == .none {
+            if abs(dx) > abs(dy) + lockSlop {
+                axisLock = .horizontal
+                activeAction =
+                    dx >= 0
+                    ? .init(side: .right, model: rightAction)
+                    : .init(side: .left, model: leftAction)
+            } else if abs(dy) > abs(dx) + lockSlop {
+                axisLock = .vertical
+            } else {
+                return
+            }
+        }
+
+        guard axisLock == .horizontal else { return }
+        swipeOffset = dx
+
+        if dx > 0 {
+            activeAction = .init(side: .right, model: rightAction)
+        } else if dx < 0 {
+            activeAction = .init(side: .left, model: leftAction)
+        }
+    }
+
+    private func onDragEnded(_ value: DragGesture.Value) {
+        defer { axisLock = .none }
+
+        guard axisLock == .horizontal else { return }
+
+        let didCross = crossedThreshold
+        if didCross {
+            let side: ActionSide = swipeOffset >= 0 ? .right : .left
+            switch side {
+            case .left: onLeftAction()
+            case .right: onRightAction()
+            }
+        }
+        withAnimation {
+            swipeOffset = 0
+        } completion: {
+            activeAction = nil
+        }
+    }
+
+    // MARK: - UI
+
+    @ViewBuilder
+    private func actionView(_ action: ActiveAction) -> some View {
+        action.model.image
+            .square(size: 16)
+            .scaleEffect(crossedThreshold ? 1.5 : 1)
+            .animation(.default, value: crossedThreshold)
+            .frame(maxWidth: .infinity, alignment: action.side.aligment)
+            .padding(.horizontal, 16)
+    }
 }
