@@ -135,17 +135,20 @@ final class ConversationDetailModel: Sendable, ObservableObject {
                 try await setUpSingleMessageObservation(messageID: id)
             case .conversation(let id):
                 try await setUpConversationMessagesObservation(conversationID: id, origin: .default, mailbox: mailbox)
-            case .pushNotification(let messageID, let conversationID), .searchResultItem(let messageID, let conversationID):
-                switch mailbox.viewMode() {
-                case .messages:
-                    try await setUpSingleMessageObservation(messageID: messageID)
-                case .conversations:
-                    try await setUpConversationMessagesObservation(
-                        conversationID: conversationID,
-                        origin: .pushNotification,
-                        mailbox: mailbox
-                    )
-                }
+            case .pushNotification(let messageID, let conversationID):
+                try await setUpObservationForCurrentViewMode(
+                    mailbox: mailbox,
+                    messageID: messageID,
+                    conversationID: conversationID,
+                    origin: .pushNotification
+                )
+            case .searchResultItem(let messageID, let conversationID):
+                try await setUpObservationForCurrentViewMode(
+                    mailbox: mailbox,
+                    messageID: messageID,
+                    conversationID: conversationID,
+                    origin: .default
+                )
             }
             await reloadBottomBarActions()
         } catch ActionError.other(.network) {
@@ -154,6 +157,24 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         } catch {
             let msg = "Failed fetching initial data. Error: \(String(describing: error))"
             AppLogger.log(message: msg, category: .conversationDetail, isError: true)
+        }
+    }
+
+    private func setUpObservationForCurrentViewMode(
+        mailbox: Mailbox,
+        messageID: ID,
+        conversationID: ID,
+        origin: OpenConversationOrigin
+    ) async throws {
+        switch mailbox.viewMode() {
+        case .messages:
+            try await setUpSingleMessageObservation(messageID: messageID)
+        case .conversations:
+            try await setUpConversationMessagesObservation(
+                conversationID: conversationID,
+                origin: origin,
+                mailbox: mailbox
+            )
         }
     }
 
