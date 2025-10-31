@@ -21,13 +21,18 @@ import SwiftUI
 /// A view that displays a progress bar with a cycling, animated gradient.
 /// The animation continuously moves from left to right, creating an infinite loading effect.
 struct CyclingProgressBar: View {
+    private struct ViewState {
+        let barHeight: CGFloat = 2
+        let primaryColor = DS.Color.Loader.success
+        let edgeColor = DS.Color.Loader.success.opacity(0)
+        let backgroundColor = DS.Color.Shade.shade10.opacity(0.91)
+    }
+
     @State private var animationPhase: CGFloat
     private let isAnimationEnabled: Bool
 
     private let configuration: LoadingBarConfiguration
-    private let barHeight: CGFloat = 2
-    private let primaryColor = DS.Color.Loader.success
-    private let edgeColor = DS.Color.Loader.success.opacity(0)
+    private let viewState: ViewState = .init()
 
     init(configuration: LoadingBarConfiguration) {
         self.configuration = configuration
@@ -46,7 +51,7 @@ struct CyclingProgressBar: View {
     var body: some View {
         GeometryReader { geometry in
             let gradient = LinearGradient(
-                gradient: Gradient(colors: [edgeColor, primaryColor, edgeColor]),
+                gradient: Gradient(colors: [viewState.edgeColor, viewState.primaryColor, viewState.edgeColor]),
                 startPoint: .leading,
                 endPoint: .trailing
             )
@@ -60,8 +65,8 @@ struct CyclingProgressBar: View {
                 .frame(width: barWidth)
                 .offset(x: xOffset)
         }
-        .frame(height: barHeight)
-        .background(DS.Color.Shade.shade10.opacity(0.91))
+        .frame(height: viewState.barHeight)
+        .background(viewState.backgroundColor)
         .clipped()
         .onAppear {
             if isAnimationEnabled {
