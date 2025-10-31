@@ -3,7 +3,7 @@ import SwiftUI
 
 @MainActor
 final class LoadingBarStateStore: ObservableObject {
-    public enum Action {
+    enum Action {
         case startLoading
         case stopLoading
         case cycleCompleted
@@ -17,7 +17,7 @@ final class LoadingBarStateStore: ObservableObject {
     private var startDate: Date?
     private var targetCyclesAfterStop: Int?
 
-    public init(configuration: LoadingBarConfiguration) {
+    init(configuration: LoadingBarConfiguration) {
         self.configuration = configuration
     }
 
@@ -31,7 +31,7 @@ final class LoadingBarStateStore: ObservableObject {
             targetCyclesAfterStop = nil
         case .stopLoading:
             guard isLoading, let start = startDate else {
-                finish()
+                stopLoading()
                 return
             }
 
@@ -40,7 +40,7 @@ final class LoadingBarStateStore: ObservableObject {
             let currentDate = DateEnvironment.currentDate()
 
             if shouldStopNowIfOnBoundary(now: currentDate, start: start) {
-                finish()
+                stopLoading()
                 return
             }
 
@@ -56,14 +56,14 @@ final class LoadingBarStateStore: ObservableObject {
             guard stopRequested else { return }
 
             if let targetCycles = targetCyclesAfterStop, completedCycles >= targetCycles {
-                finish()
+                stopLoading()
             }
         }
     }
 
     // MARK: - Private
 
-    private func finish() {
+    private func stopLoading() {
         isLoading = false
         completedCycles = 0
         stopRequested = false
@@ -76,8 +76,10 @@ final class LoadingBarStateStore: ObservableObject {
         let tolerance = configuration.tolerance
 
         let requiredCycles = max(1, Int(ceil(elapsedTimeInSeconds / cycleDuration)))
-        let toBoundary = Double(requiredCycles) * cycleDuration - elapsedTimeInSeconds
-        let needExtraCycle = tolerance > 0 && toBoundary > 0 && toBoundary < tolerance && elapsedTimeInSeconds >= cycleDuration
+        let remainingTimeInCurrentCycle = Double(requiredCycles) * cycleDuration - elapsedTimeInSeconds
+
+        let needExtraCycle =
+            tolerance > 0 && remainingTimeInCurrentCycle > 0 && remainingTimeInCurrentCycle < tolerance && elapsedTimeInSeconds >= cycleDuration
         let extraCycle = needExtraCycle ? 1 : 0
 
         return requiredCycles + extraCycle
@@ -85,16 +87,19 @@ final class LoadingBarStateStore: ObservableObject {
 
     private func shouldStopNowIfOnBoundary(now: Date, start: Date) -> Bool {
         let elapsed = now.timeIntervalSince(start)
+        let cycleDuration = configuration.cycleDuration
 
         /// Must complete at least one cycle before allowing immediate stop
-        guard elapsed >= configuration.cycleDuration else {
+        guard elapsed >= cycleDuration else {
             return false
         }
 
-        let cycles = elapsed / configuration.cycleDuration
-        let fractional = cycles - floor(cycles)
-        let boundaryTolerance = 1e-6
+        let elapsedCycles = elapsed / cycleDuration
+        let fractionalPart = elapsedCycles - floor(elapsedCycles)
 
-        return fractional < boundaryTolerance || (1.0 - fractional) < boundaryTolerance
+        let isNearCycleStart = fractionalPart < configuration.fractionalTolerance
+        let isNearCycleEnd = (1.0 - fractionalPart) < configuration.fractionalTolerance
+
+        return isNearCycleStart || isNearCycleEnd
     }
 }

@@ -17,20 +17,16 @@
 
 import SwiftUI
 
-class LoadingBarStateStore: ObservableObject {
-    enum Action {
-        case showLoadingBar
-        case hideLoadingBar
+public final class LoadingBarPresenter: ObservableObject {
+    @Published public private(set) var isVisible: Bool = false
+
+    public init() {}
+
+    public func show() {
+        isVisible = true
     }
 
-    @Published private(set) var isShowingLoadingBar: Bool = false
-
-    func handle(action: Action) {
-        switch action {
-        case .showLoadingBar:
-            isShowingLoadingBar = true
-        case .hideLoadingBar:
-            isShowingLoadingBar = false
-        }
+    public func hide() {
+        isVisible = false
     }
 }

@@ -37,6 +37,8 @@ public struct LoadingBar: View {
         )
     }
 
+    // MARK: - View
+
     public var body: some View {
         Group {
             if stateStore.isLoading {
@@ -48,11 +50,8 @@ public struct LoadingBar: View {
             }
         }
         .onChange(of: isLoading) { _, newValue in
-            if newValue {
-                stateStore.handle(action: .startLoading)
-            } else {
-                stateStore.handle(action: .stopLoading)
-            }
+            let action: LoadingBarStateStore.Action = newValue ? .startLoading : .stopLoading
+            stateStore.handle(action: action)
         }
         .animation(.easeInOut, value: stateStore.isLoading)
     }

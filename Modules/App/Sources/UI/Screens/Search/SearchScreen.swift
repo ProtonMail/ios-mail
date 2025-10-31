@@ -35,8 +35,8 @@ struct SearchScreen: View {
     @FocusState var isTextFieldFocused: Bool
     private let userSession: MailUserSession
 
-    init(userSession: MailUserSession, loadingBarStateStore: LoadingBarStateStore) {
-        _model = StateObject(wrappedValue: .init(loadingBarStateStore: loadingBarStateStore))
+    init(userSession: MailUserSession, loadingBarPresenter: LoadingBarPresenter) {
+        _model = StateObject(wrappedValue: .init(loadingBarPresenter: loadingBarPresenter))
         self.userSession = userSession
     }
 

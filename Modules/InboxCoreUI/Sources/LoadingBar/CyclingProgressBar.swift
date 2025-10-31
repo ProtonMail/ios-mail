@@ -32,7 +32,7 @@ struct CyclingProgressBar: View {
     private let isAnimationEnabled: Bool
 
     private let configuration: LoadingBarConfiguration
-    private let viewState: ViewState = .init()
+    private let viewState = ViewState()
 
     init(configuration: LoadingBarConfiguration) {
         self.configuration = configuration

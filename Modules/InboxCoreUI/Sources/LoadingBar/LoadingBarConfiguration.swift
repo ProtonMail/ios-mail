@@ -18,8 +18,11 @@
 import SwiftUI
 
 struct LoadingBarConfiguration {
-    /// Duration of a single animation cycle in seconds
+    /// Duration of a single animation cycle (seconds).
     let cycleDuration: TimeInterval = 2.5
-    /// Tolerance near cycle boundaries.
+    /// UX tolerance near the end of a cycle (seconds).
+    /// If stop occurs within this window, one extra cycle is added.
     let tolerance: TimeInterval = 0.05
+    /// Numeric tolerance for detecting exact cycle boundaries (fractional).
+    let fractionalTolerance: Double = 1e-6
 }

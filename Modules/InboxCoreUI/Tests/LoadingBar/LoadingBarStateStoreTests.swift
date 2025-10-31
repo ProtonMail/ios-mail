@@ -107,16 +107,17 @@ class LoadingBarStateStoreTests {
 
         sut.handle(action: .cycleCompleted)
 
-        #expect(sut.isLoading == false, "First boundary at 2.5s - should stop")
+        #expect(sut.isLoading == false, "First boundary - should stop")
     }
 
     // MARK: - Stop during later cycles tests
 
     @Test
-    func stopLoading_After1_5s_CompletesTwoCycles() {
-        /// Scenario: 3.0s elapsed means we're 0.5s into the 2nd cycle
+    func stopLoading_After0_2CycleDurationOf2ndCycle_CompletesTwoCycles() {
+        /// Scenario: Stop 0.2 * cycleDuration into the 2nd cycle
         /// Should complete the 2nd cycle before stopping
         let t0 = Date(timeIntervalSince1970: 1000)
+        let cycle = configuration.cycleDuration
 
         withCurrentDate(t0) {
             sut.handle(action: .startLoading)
@@ -127,21 +128,23 @@ class LoadingBarStateStoreTests {
 
         #expect(sut.isLoading == true)
 
-        /// Stop at 3.0s (0.5s into 2nd cycle)
-        withCurrentDate(t0.adding(seconds: 3.0)) {
+        /// Stop 0.2 * cycle into 2nd cycle (e.g., 0.5s for 2.5s cycle)
+        withCurrentDate(t0.adding(seconds: cycle + 0.2 * cycle)) {
             sut.handle(action: .stopLoading)
         }
+
         #expect(sut.isLoading == true)
 
         sut.handle(action: .cycleCompleted)
 
-        #expect(sut.isLoading == false, "Second boundary at 5.0s - should stop")
+        #expect(sut.isLoading == false, "Second boundary - should stop")
     }
 
     @Test
-    func stopLoading_After3_5s_CompletesThreeCycles() {
-        /// 6.0s = 2 complete cycles + 1.0s into 3rd cycle
+    func stopLoading_After0_4CycleDurationOf3rdCycle_CompletesThreeCycles() {
+        /// Stop 0.4 * cycleDuration into 3rd cycle (2 complete cycles + 0.4 into 3rd)
         let t0 = Date(timeIntervalSince1970: 1000)
+        let cycle = configuration.cycleDuration
 
         withCurrentDate(t0) {
             sut.handle(action: .startLoading)
@@ -152,37 +155,41 @@ class LoadingBarStateStoreTests {
 
         #expect(sut.isLoading == true)
 
-        /// Stop at 6.0s
-        withCurrentDate(t0.adding(seconds: 6.0)) {
+        /// Stop 0.4 * cycle into 3rd cycle
+        withCurrentDate(t0.adding(seconds: 2 * cycle + 0.4 * cycle)) {
             sut.handle(action: .stopLoading)
         }
+
         #expect(sut.isLoading == true)
 
         sut.handle(action: .cycleCompleted)
-        #expect(sut.isLoading == false, "Third boundary at 7.5s - should stop")
+
+        #expect(sut.isLoading == false, "Third boundary - should stop")
     }
 
     // MARK: - Tolerance tests
 
     @Test
     func stopLoading_VeryCloseToBoundary_AddsExtraCycle() {
-
         let t0 = Date(timeIntervalSince1970: 1000)
+        let cycle = configuration.cycleDuration
+        let tolerance = configuration.tolerance
 
         withCurrentDate(t0) {
             sut.handle(action: .startLoading)
         }
 
-        /// Stop at 4.97s = 0.03s before 2nd boundary (within tolerance of 0.05s)
-        /// Tolerance only applies when elapsed >= 1 cycle (2.5s)
+        /// Stop 0.03s before 2nd boundary (within tolerance of 0.05s)
+        /// Tolerance only applies when elapsed >= 1 cycle
         sut.handle(action: .cycleCompleted)
 
         #expect(sut.isLoading == true, "Should wait for an extra cycle (3 total instead of 2)")
 
-        /// Stop at 4.97s (0.03s before 2nd boundary at 5.0s)
-        /// elapsed=4.97, ceil(4.97/2.5)=2, toBoundary=0.03 < tolerance=0.05, elapsed >= 2.5
-        /// So requiredCycles = 2 + 1 = 3
-        withCurrentDate(t0.adding(seconds: 4.97)) {
+        /// Stop just before 2nd boundary (within tolerance)
+        /// toBoundary = 0.03 < tolerance = 0.05, so adds extra cycle
+        /// requiredCycles = 2 + 1 = 3
+        let stopTime = 2 * cycle - (tolerance - 0.02)  // 0.03s before boundary
+        withCurrentDate(t0.adding(seconds: stopTime)) {
             sut.handle(action: .stopLoading)
         }
 
@@ -190,30 +197,34 @@ class LoadingBarStateStoreTests {
 
         sut.handle(action: .cycleCompleted)
 
-        #expect(sut.isLoading == true, "Second boundary at 5.0s - should NOT stop yet (tolerance adds extra cycle)")
+        #expect(sut.isLoading == true, "Second boundary - should NOT stop yet (tolerance adds extra cycle)")
 
         sut.handle(action: .cycleCompleted)
 
-        #expect(sut.isLoading == false, "Third boundary at 7.5s - should stop")
+        #expect(sut.isLoading == false, "Third boundary - should stop")
     }
 
     @Test
     func stopLoading_JustOutsideTolerance_DoesNotAddExtraCycle() {
         let t0 = Date(timeIntervalSince1970: 1000)
+        let cycle = configuration.cycleDuration
+        let tolerance = configuration.tolerance
 
         withCurrentDate(t0) {
             sut.handle(action: .startLoading)
         }
 
-        /// Stop at 4.94s = 0.06s before 2nd boundary (outside tolerance of 0.05s)
+        /// Stop just outside tolerance before 2nd boundary
         /// Should stop at 2nd boundary (2 total cycles)
         sut.handle(action: .cycleCompleted)
+
         #expect(sut.isLoading == true)
 
-        /// Stop at 4.94s (0.06s before 2nd boundary at 5.0s)
-        /// elapsed=4.94, ceil(4.94/2.5)=2, toBoundary=0.06 >= tolerance=0.05
-        /// So requiredCycles = 2 (no extra cycle added)
-        withCurrentDate(t0.adding(seconds: 4.94)) {
+        /// Stop just outside tolerance (0.06s before boundary)
+        /// toBoundary = 0.06 >= tolerance = 0.05, so NO extra cycle
+        /// requiredCycles = 2
+        let stopTime = 2 * cycle - (tolerance + 0.01)  // 0.06s before boundary
+        withCurrentDate(t0.adding(seconds: stopTime)) {
             sut.handle(action: .stopLoading)
         }
 
@@ -221,7 +232,7 @@ class LoadingBarStateStoreTests {
 
         sut.handle(action: .cycleCompleted)
 
-        #expect(sut.isLoading == false, "Second boundary at 5.0s - should stop (outside tolerance)")
+        #expect(sut.isLoading == false, "Second boundary - should stop (outside tolerance)")
     }
 
     // MARK: - Edge cases
@@ -322,6 +333,7 @@ class LoadingBarStateStoreTests {
 
         /// First boundary
         sut.handle(action: .cycleCompleted)
+
         #expect(sut.isLoading == true)
 
         /// Stop mid-second-cycle

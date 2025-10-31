@@ -30,7 +30,7 @@ final class SearchModel: ObservableObject, @unchecked Sendable {
 
     private(set) var mailbox: Mailbox!
     private var searchScroller: SearchScroller?
-    private let loadingBarStateStore: LoadingBarStateStore
+    private let loadingBarPresenter: LoadingBarPresenter
 
     lazy var paginatedDataSource = PaginatedListDataSource<MailboxItemCellUIModel>(
         fetchMore: { [weak self] isFirstPage in self?.fetchNextPage(isFirstPage: isFirstPage) }
@@ -43,12 +43,12 @@ final class SearchModel: ObservableObject, @unchecked Sendable {
     init(
         searchScroller: SearchScroller? = nil,
         dependencies: Dependencies = .init(),
-        loadingBarStateStore: LoadingBarStateStore
+        loadingBarPresenter: LoadingBarPresenter
     ) {
         AppLogger.logTemporarily(message: "SearchModel init", category: .search)
         self.searchScroller = searchScroller
         self.dependencies = dependencies
-        self.loadingBarStateStore = loadingBarStateStore
+        self.loadingBarPresenter = loadingBarPresenter
         setUpBindings()
         initialiseMailbox()
     }
@@ -206,9 +206,9 @@ final class SearchModel: ObservableObject, @unchecked Sendable {
         case .status(let statusUpdate):
             switch statusUpdate {
             case .fetchNewStart:
-                loadingBarStateStore.handle(action: .showLoadingBar)
+                loadingBarPresenter.show()
             case .fetchNewEnd:
-                loadingBarStateStore.handle(action: .hideLoadingBar)
+                loadingBarPresenter.hide()
             }
         case .error(let error):
             AppLogger.log(error: error, category: .mailbox)

@@ -41,7 +41,7 @@ final class MailboxModel: ObservableObject {
     @ObservedObject private var appRoute: AppRouteState
     @Published private(set) var mailbox: Mailbox?
     let draftPresenter: DraftPresenter
-    private let loadingBarStateStore: LoadingBarStateStore
+    private let loadingBarPresenter: LoadingBarPresenter
     let goToNextConversationNotifier = GoToNextPageNotifier()
 
     private var messageScroller: MessageScroller?
@@ -87,14 +87,14 @@ final class MailboxModel: ObservableObject {
         mailSettingsLiveQuery: MailSettingLiveQuerying,
         appRoute: AppRouteState,
         draftPresenter: DraftPresenter,
-        loadingBarStateStore: LoadingBarStateStore,
+        loadingBarPresenter: LoadingBarPresenter,
         dependencies: Dependencies = .init()
     ) {
         AppLogger.log(message: "MailboxModel init", category: .mailbox)
         self.mailSettingsLiveQuery = mailSettingsLiveQuery
         self.appRoute = appRoute
         self.draftPresenter = draftPresenter
-        self.loadingBarStateStore = loadingBarStateStore
+        self.loadingBarPresenter = loadingBarPresenter
         self.selectedMailbox = appRoute.route.selectedMailbox!
         self.dependencies = dependencies
         self.accountManagerCoordinator = AccountManagerCoordinator(
@@ -372,9 +372,9 @@ extension MailboxModel {
         case .status(let statusUpdate):
             switch statusUpdate {
             case .fetchNewStart:
-                loadingBarStateStore.handle(action: .showLoadingBar)
+                loadingBarPresenter.show()
             case .fetchNewEnd:
-                loadingBarStateStore.handle(action: .hideLoadingBar)
+                loadingBarPresenter.hide()
             }
         case .error(let error):
             AppLogger.log(error: error, category: .mailbox)
@@ -417,9 +417,9 @@ extension MailboxModel {
         case .status(let statusUpdate):
             switch statusUpdate {
             case .fetchNewStart:
-                loadingBarStateStore.handle(action: .showLoadingBar)
+                loadingBarPresenter.show()
             case .fetchNewEnd:
-                loadingBarStateStore.handle(action: .hideLoadingBar)
+                loadingBarPresenter.hide()
             }
         case .error(let error):
             AppLogger.log(error: error, category: .mailbox)
