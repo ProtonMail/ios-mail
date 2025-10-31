@@ -25,15 +25,11 @@ import Testing
 @MainActor
 final class PaymentsServiceTests {
     private let sessionStateSubject = CurrentValueSubject<SessionState, Never>(.noSession)
-    private let transactionStatusSubject = CurrentValueSubject<TransactionType, Never>(.unknown)
     private let transactionsObserver = TransactionsObserverSpy()
-    private var refreshUserDataCalls = 0
 
     private lazy var sut = PaymentsService(
         sessionState: sessionStateSubject,
-        transactionStatus: transactionStatusSubject,
-        transactionsObserver: transactionsObserver,
-        refreshUserData: { [unowned self] in refreshUserDataCalls += 1 }
+        transactionsObserver: transactionsObserver
     )
 
     @Test
@@ -73,34 +69,8 @@ final class PaymentsServiceTests {
         #expect(transactionsObserver.recordedCalls == expectedCalls)
     }
 
-    @Test
-    func pollsEventLoopAfterSuccessfulTransaction() async {
-        let task = sut.startListeningToSuccessfulPurchases()
-
-        transactionStatusSubject.send(.successful)
-
-        await waitForEventHandlingToFinish(task: task)
-
-        #expect(refreshUserDataCalls == 1)
-    }
-
-    @Test
-    func doesNotPollEventLoopAfterOtherTransactionEvents() async {
-        let task = sut.startListeningToSuccessfulPurchases()
-
-        transactionStatusSubject.send(.failed)
-        transactionStatusSubject.send(.renewal)
-        transactionStatusSubject.send(.alreadyProcessed)
-        transactionStatusSubject.send(.unknown)
-
-        await waitForEventHandlingToFinish(task: task)
-
-        #expect(refreshUserDataCalls == 0)
-    }
-
     private func waitForEventHandlingToFinish(task: Task<Void, Never>) async {
         sessionStateSubject.send(completion: .finished)
-        transactionStatusSubject.send(completion: .finished)
         await task.value
     }
 }

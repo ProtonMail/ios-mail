@@ -25,7 +25,7 @@ final class EventLoopPollingSpy: EventLoopPolling {
 
     private(set) var forceEventLoopPollCalls = 0
 
-    func forceEventLoopPoll() async -> VoidEventResult {
+    func forceEventLoopPollAndWait() async -> VoidEventResult {
         forceEventLoopPollCalls += 1
 
         return stubbedResult

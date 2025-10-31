@@ -50,7 +50,7 @@ final class PurchaseActionPerformer {
 
             AppLogger.log(message: "Purchase successful", category: .payments)
 
-            await eventLoopPolling.forceEventLoopPoll().logError()
+            await eventLoopPolling.forceEventLoopPollAndWait().logError()
 
             dismiss()
         } catch {
