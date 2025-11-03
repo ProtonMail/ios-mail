@@ -51,6 +51,10 @@ public struct Shadow {
         self.blur = blur
         self.color = color
     }
+
+    public var innerShadowStyle: ShadowStyle {
+        .inner(color: color, radius: blur, x: x, y: y)
+    }
 }
 
 private extension Shadow {

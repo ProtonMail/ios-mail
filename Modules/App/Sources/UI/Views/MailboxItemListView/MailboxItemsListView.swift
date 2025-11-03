@@ -369,7 +369,7 @@ struct SwipeableView<Content: View>: View {
             .frame(maxWidth: .infinity, alignment: action.side.actionAligment)
             .padding(.horizontal, DS.Spacing.huge)
             .frame(maxHeight: .infinity)
-            .background(action.model.color)
+            .background(action.model.color.shadow(DS.Shadows.liftedFull.innerShadowStyle))
     }
 
     private func onDragChanged(_ value: DragGesture.Value) {
