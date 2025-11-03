@@ -110,7 +110,7 @@ final class SearchModel: ObservableObject, @unchecked Sendable {
             options: .init(keywords: query),
             callback: MessageScrollerLiveQueryCallbackkWrapper { [weak self] update in
                 Task {
-                    await self?.handleSearchScroller(update: update)
+                    await self?.trigger(update: update)
                 }
             }
         )
@@ -119,8 +119,7 @@ final class SearchModel: ObservableObject, @unchecked Sendable {
         case .ok(let searchScroller):
             self.searchScroller = searchScroller
             paginatedDataSource.fetchInitialPage()
-        // FIXME: - Fix spam / trash filter
-        //            await setUpSpamTrashToggleVisibility()
+            await setUpSpamTrashToggleVisibility()
         case .error(let error):
             AppLogger.log(error: error, category: .search)
         }
@@ -139,8 +138,7 @@ final class SearchModel: ObservableObject, @unchecked Sendable {
 
     private func trigger(update: MessageScrollerUpdate) async {
         await handleSearchScroller(update: update)
-        // FIXME: - Fix spam / trash filter
-        //        await updateSelectedMailboxIfNeeded()
+        await updateSelectedMailboxIfNeeded()
     }
 
     /// Updates `selectedMailbox` if the currently loaded `mailbox` has changed underneath.
