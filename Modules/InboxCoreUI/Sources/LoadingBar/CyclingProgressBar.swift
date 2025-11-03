@@ -25,7 +25,6 @@ struct CyclingProgressBar: View {
         let barHeight: CGFloat = 2
         let primaryColor = DS.Color.Loader.success
         let edgeColor = DS.Color.Loader.success.opacity(0)
-        let backgroundColor = DS.Color.Shade.shade10.opacity(0.91)
     }
 
     @State private var animationPhase: CGFloat
@@ -66,7 +65,6 @@ struct CyclingProgressBar: View {
                 .offset(x: xOffset)
         }
         .frame(height: viewState.barHeight)
-        .background(viewState.backgroundColor)
         .clipped()
         .onAppear {
             if isAnimationEnabled {
