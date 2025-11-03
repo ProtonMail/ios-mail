@@ -299,10 +299,11 @@ struct SwipeableView<Content: View>: View {
 
     @Binding private var isScrollingDisabled: Bool
 
-    @State private var swipeOffset: CGFloat = 0
+    @State private var swipeOffset: CGFloat = .zero
+    @State private var initialSwipeTriggerOffset: CGFloat = .zero
     @State private var activeAction: ActiveAction?
     @State private var axisLock: AxisLock = .none
-    @State private var rowWidth: CGFloat = 0
+    @State private var rowWidth: CGFloat = .zero
     @State private var isSwiping: Bool = false
     @State private var isFinishingSwipeWithAnimation = false
 
@@ -340,7 +341,7 @@ struct SwipeableView<Content: View>: View {
                 .disabled(isSwiping)
                 .overlay(
                     RoundedRectangle(cornerRadius: isSwiping ? DS.Spacing.small : .zero)
-                        .stroke(DS.Color.Border.light, lineWidth: isSwiping ? 2 : 0)
+                        .stroke(DS.Color.Border.light, lineWidth: isSwiping ? 2 : .zero)
                 )
                 .clipShape(RoundedRectangle(cornerRadius: isSwiping ? DS.Spacing.small : .zero))
                 .offset(x: swipeOffset)
@@ -393,15 +394,18 @@ struct SwipeableView<Content: View>: View {
 
         guard axisLock == .horizontal else { return }
 
-        if dx > 0 {
-            activeAction = action(for: .right)
-        } else if dx < 0 {
-            activeAction = action(for: .left)
+        isSwiping = true
+
+        if initialSwipeTriggerOffset == .zero {
+            initialSwipeTriggerOffset = dx
         }
 
-        if activeAction != nil {
-            swipeOffset = dx
-            isSwiping = true
+        swipeOffset = dx - initialSwipeTriggerOffset
+
+        if swipeOffset > .zero {
+            activeAction = action(for: .right)
+        } else if swipeOffset < .zero {
+            activeAction = action(for: .left)
         }
     }
 
@@ -417,11 +421,12 @@ struct SwipeableView<Content: View>: View {
             if let activeAction, activeAction.model.isDesctructive, didCrossThreshold {
                 swipeOffset = fullSwipeOffset(for: activeAction.side)
             } else {
-                swipeOffset = 0
+                swipeOffset = .zero
             }
             isSwiping = false
+            initialSwipeTriggerOffset = .zero
         } completion: {
-            swipeOffset = 0
+            swipeOffset = .zero
             activeAction = nil
             isFinishingSwipeWithAnimation = false
         }
