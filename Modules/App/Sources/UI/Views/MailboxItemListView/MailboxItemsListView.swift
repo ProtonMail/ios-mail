@@ -297,6 +297,8 @@ struct SwipeableView<Content: View>: View {
     @State private var rowWidth: CGFloat = 0
     @State var isSwiping: Bool = false
 
+    @State var endingAnimation = false
+
     private let triggerFactor: CGFloat = 0.20
 
     private var crossedThreshold: Bool {
@@ -359,6 +361,10 @@ struct SwipeableView<Content: View>: View {
     }
 
     private func onDragChanged(_ value: DragGesture.Value) {
+        guard !endingAnimation else {
+            return
+        }
+
         let lockSlop: CGFloat = 10
         let dx = value.translation.width
         let dy = value.translation.height
@@ -401,6 +407,9 @@ struct SwipeableView<Content: View>: View {
             case .right: onRightAction?()
             }
         }
+
+        endingAnimation = true
+
         withAnimation {
             if let activeAction, activeAction.model.isDesctructive, didCross {
                 swipeOffset = fullSwipeOffset(for: activeAction.side)
@@ -411,6 +420,7 @@ struct SwipeableView<Content: View>: View {
         } completion: {
             swipeOffset = 0
             activeAction = nil
+            endingAnimation = false
         }
     }
 
