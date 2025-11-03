@@ -26,6 +26,7 @@ import SwiftUI
 
 typealias Nested = NestedObservableObject
 
+@MainActor
 final class ComposerModel: ObservableObject {
     @Published private(set) var state: ComposerState
     @Published var bodyAction: ComposerBodyAction?
@@ -123,7 +124,6 @@ final class ComposerModel: ObservableObject {
         attachmentWatcher?.disconnect()
     }
 
-    @MainActor
     func onLoad() async {
         if draftOrigin == .cache {
             showToast(.information(message: L10n.Composer.draftLoadedOffline.string))
@@ -135,7 +135,6 @@ final class ComposerModel: ObservableObject {
         setInitialFocus()
     }
 
-    @MainActor
     private func setInitialFocus() {
         if state.toRecipients.recipients.isEmpty {
             startEditingRecipients(for: .to)
@@ -144,7 +143,6 @@ final class ComposerModel: ObservableObject {
         state.isInitialFocusInBody = true
     }
 
-    @MainActor
     func viewDidDisappear() async {
         AppLogger.log(message: "composer did disappear", category: .composer)
         await updateBodyDebounceTask?.executeImmediately()
@@ -153,7 +151,6 @@ final class ComposerModel: ObservableObject {
         }
     }
 
-    @MainActor
     func startEditingRecipients(for group: RecipientGroupType) {
         guard invalidAddressAlertStore.validateAndShowAlertIfNeeded() else { return }
         endEditingRecipients()
@@ -172,7 +169,6 @@ final class ComposerModel: ObservableObject {
         state = newState
     }
 
-    @MainActor
     func endEditingRecipients() {
         guard invalidAddressAlertStore.recipientAddressValidator.canResignFocus() else { return }
         addRecipientFromInput()
@@ -182,7 +178,6 @@ final class ComposerModel: ObservableObject {
             .copy(\.editingRecipientsGroup, to: nil)
     }
 
-    @MainActor
     func matchContact(group: RecipientGroupType, text: String) {
         state.overrideRecipientState(for: group) { recipientFieldState in recipientFieldState.copy(\.input, to: text) }
         guard let result = contactProvider.contactsResult, !result.contacts.isEmpty else { return }
@@ -200,14 +195,12 @@ final class ComposerModel: ObservableObject {
         }
     }
 
-    @MainActor
     func recipientToggleSelection(group: RecipientGroupType, index: Int) {
         state.updateRecipientState(for: group) { recipientFieldState in
             recipientFieldState.recipients[index].isSelected.toggle()
         }
     }
 
-    @MainActor
     func removeRecipientsThatAreSelected(group: RecipientGroupType) {
         let recipients: [RecipientUIModel] = {
             switch group {
@@ -220,7 +213,6 @@ final class ComposerModel: ObservableObject {
         removeRecipients(for: draft, group: group, recipients: selected)
     }
 
-    @MainActor
     func selectLastRecipient(group: RecipientGroupType) {
         state.updateRecipientState(for: group) { recipientFieldState in
             guard !recipientFieldState.recipients.isEmpty else { return }
@@ -228,7 +220,6 @@ final class ComposerModel: ObservableObject {
         }
     }
 
-    @MainActor
     func addRecipientFromInput() {
         guard
             invalidAddressAlertStore.validateAndShowAlertIfNeeded(),
@@ -241,7 +232,6 @@ final class ComposerModel: ObservableObject {
         addEntryInRecipients(for: draft, entry: singleRecipient, group: group)
     }
 
-    @MainActor
     func addContact(group: RecipientGroupType, contact: ComposerContact) {
         switch contact.type {
         case .single(let single):
@@ -257,7 +247,6 @@ final class ComposerModel: ObservableObject {
         }
     }
 
-    @MainActor
     func updateSubject(value: String) {
         switch draft.setSubject(subject: value) {
         case .ok:
@@ -268,7 +257,6 @@ final class ComposerModel: ObservableObject {
         }
     }
 
-    @MainActor
     func updateBody(value: String) {
         if !updateBodyWasCalled { AppLogger.log(message: "updateBody called for the first time", category: .composer) }
         updateBodyWasCalled = true
@@ -285,7 +273,6 @@ final class ComposerModel: ObservableObject {
         }
     }
 
-    @MainActor
     func reloadBodyAfterMemoryPressure() async {
         await reloadBody(clearImageCacheFirst: false)
     }
@@ -317,7 +304,6 @@ final class ComposerModel: ObservableObject {
         }
     }
 
-    @MainActor
     private func proceedAfterMessageExpirationValidation() async -> Bool {
         switch await messageExpirationRecipientsValidator.validateRecipientsIfMessageHasExpiration(draft: draft) {
         case .proceed:
@@ -330,7 +316,6 @@ final class ComposerModel: ObservableObject {
         }
     }
 
-    @MainActor
     func sendMessage(at date: Date? = nil, dismissAction: Dismissable) async {
         addRecipientFromInput()
         guard !invalidAddressAlertStore.isAlertShown else { return }
@@ -350,7 +335,6 @@ final class ComposerModel: ObservableObject {
         }
     }
 
-    @MainActor
     func addAttachments(selectedPhotosItems items: [PhotosPickerItemTransferable]) async {
         guard !items.isEmpty else { return }
         let result = await photosItemsHandler.addPickerPhotos(to: draft, photos: items)
@@ -364,7 +348,6 @@ final class ComposerModel: ObservableObject {
         }
     }
 
-    @MainActor
     func addAttachments(image: UIImage) async {
         do {
             switch draft.composerMode {
@@ -380,7 +363,6 @@ final class ComposerModel: ObservableObject {
         }
     }
 
-    @MainActor
     func transformInlineAttachmentToRegular(cid: String) async {
         switch await draft.attachmentList().swapAttachmentDisposition(contentId: cid) {
         case .ok:
@@ -404,7 +386,6 @@ final class ComposerModel: ObservableObject {
         }
     }
 
-    @MainActor
     func removeAttachment(cid: String) async {
         guard !inlineAttachmentsTransformed.contains(cid) else { return }
         switch await draft.attachmentList().removeWithCid(contentId: cid) {
@@ -416,7 +397,6 @@ final class ComposerModel: ObservableObject {
         }
     }
 
-    @MainActor
     func removeAttachments(for error: AttachmentErrorAlertModel) async {
         if case .uploading(let uploadAttachmentErrors) = error.origin {
             for error in uploadAttachmentErrors {
@@ -425,7 +405,6 @@ final class ComposerModel: ObservableObject {
         }
     }
 
-    @MainActor
     func setPasswordProtection(password: String, hint: String?) async {
         switch await draft.setPassword(password: password, hint: hint) {
         case .ok:
@@ -435,7 +414,6 @@ final class ComposerModel: ObservableObject {
         }
     }
 
-    @MainActor
     func removePasswordProtection() async {
         switch await draft.removePassword() {
         case .ok:
@@ -445,7 +423,6 @@ final class ComposerModel: ObservableObject {
         }
     }
 
-    @MainActor
     func setExpirationTime(_ time: DraftExpirationTime) async {
         switch await draft.setExpirationTime(expirationTime: time) {
         case .ok:
@@ -455,7 +432,6 @@ final class ComposerModel: ObservableObject {
         }
     }
 
-    @MainActor
     func discardDraft(dismissAction: Dismissable) async {
         // execute pending saves before any discard operation
         await updateBodyDebounceTask?.executeImmediately()
@@ -471,7 +447,6 @@ final class ComposerModel: ObservableObject {
         })
     }
 
-    @MainActor
     func dismissComposerManually(dismissAction: Dismissable) async {
         await updateBodyDebounceTask?.executeImmediately()
         let messageId = await draftMessageId()
@@ -485,7 +460,6 @@ extension ComposerModel: ChangeSenderHandlerProtocol {
         try await draft.listSenderAddresses().get()
     }
 
-    @MainActor
     func changeSenderAddress(email: String) async throws {
         guard !messageHasBeenSentOrScheduled else { return }
         await updateBodyDebounceTask?.executeImmediately()
@@ -595,7 +569,6 @@ extension ComposerModel {
         )
     }
 
-    @MainActor
     private func updateStateAttachmentUIModels() async {
         do {
             let draftAttachments = try await draft.attachmentList().attachments().get()
@@ -611,7 +584,6 @@ extension ComposerModel {
         }
     }
 
-    @MainActor
     private func reloadBody(clearImageCacheFirst: Bool) async {
         guard !messageHasBeenSentOrScheduled else { return }
         await updateBodyDebounceTask?.executeImmediately()
@@ -756,7 +728,6 @@ extension ComposerModel {
         Dispatcher.dispatchOnMain(.init(block: { [weak self] in self?.toast = toastToShow }))
     }
 
-    @MainActor
     private func dismissComposer(dismissAction: Dismissable, reason: ComposerDismissReason) {
         composerWillDismiss = true
         dismissAction()

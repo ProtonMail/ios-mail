@@ -18,6 +18,7 @@
 import proton_app_uniffi
 import SwiftUI
 
+@MainActor
 final class AttachmentAlertState: ObservableObject, @unchecked Sendable {
     @Published var isAlertPresented: Bool = false
     private(set) var presentedError: AttachmentErrorAlertModel? = nil
@@ -26,10 +27,8 @@ final class AttachmentAlertState: ObservableObject, @unchecked Sendable {
     init() {
         Task {
             await attachmentErrorAlertState.setOnErrorToPresent { [weak self] error in
-                DispatchQueue.main.async {
-                    self?.presentedError = error
-                    self?.isAlertPresented = true
-                }
+                self?.presentedError = error
+                self?.isAlertPresented = true
             }
         }
     }

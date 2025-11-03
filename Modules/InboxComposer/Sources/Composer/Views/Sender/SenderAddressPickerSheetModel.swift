@@ -19,6 +19,7 @@ import InboxCore
 import InboxCoreUI
 import SwiftUI
 
+@MainActor
 final class SenderAddressPickerSheetModel: ObservableObject {
     @Published var state: SenderAddressPickerSheetState
     private let handler: ChangeSenderHandlerProtocol
@@ -37,7 +38,6 @@ final class SenderAddressPickerSheetModel: ObservableObject {
         self.dismiss = dismiss
     }
 
-    @MainActor
     func handleAction(_ action: SenderAddressPickerSheetAction) async {
         do {
             switch action {

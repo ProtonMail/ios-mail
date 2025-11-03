@@ -20,6 +20,7 @@ import InboxCore
 import proton_app_uniffi
 import SwiftUI
 
+@MainActor
 final class ContactsStateStore: ObservableObject {
     enum Action {
         case createTapped
@@ -70,7 +71,6 @@ final class ContactsStateStore: ObservableObject {
         setUpNestedObservableObjectUpdates()
     }
 
-    @MainActor
     func handle(action: Action) async {
         switch action {
         case .createTapped:
@@ -131,7 +131,7 @@ final class ContactsStateStore: ObservableObject {
 
     private func startWatchingUpdates() async {
         contactsLiveQueryCallback.delegate = { [weak self] updatedItems in
-            await self?.updateState(with: updatedItems)
+            self?.updateState(with: updatedItems)
         }
 
         watchContactsConnection = try? await watchContacts(contactsLiveQueryCallback)
@@ -139,7 +139,7 @@ final class ContactsStateStore: ObservableObject {
 
     private func loadAllContacts() async {
         let contacts = await repository.allContacts()
-        await updateState(with: contacts)
+        updateState(with: contacts)
     }
 
     private func goToDetails(item: ContactItemType) {
@@ -151,7 +151,6 @@ final class ContactsStateStore: ObservableObject {
         }
     }
 
-    @MainActor
     private func updateState(with items: [GroupedContacts]) {
         state = state.copy(\.allItems, to: items)
     }

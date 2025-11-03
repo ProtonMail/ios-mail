@@ -17,53 +17,51 @@
 
 @testable import ProtonMail
 import SwiftUI
-import XCTest
+import Testing
 
-final class SenderImageLoaderTests: XCTestCase {
+@MainActor
+final class SenderImageLoaderTests {
     private var sut: SenderImageLoader!
-    private var mockCache: MemoryCache<String, UIImage>!
-    private var mockImageDataSource: MockImageDataSource!
+    private let mockCache = MemoryCache<String, UIImage>()
+    private let mockImageDataSource = MockImageDataSource()
     private var mockDependencies: SenderImageLoader.Dependencies {
         .init(imageDataSource: mockImageDataSource, cache: mockCache)
     }
     private let cachedImage = UIImage()
 
-    override func setUp() {
-        super.setUp()
-        mockCache = .init()
-        mockImageDataSource = MockImageDataSource()
-    }
-
     // MARK: Init
 
-    func testInit_withThereIsNoCachedImage_itShouldSetSenderImageAsEmpty() {
+    @Test
+    func init_withThereIsNoCachedImage_itShouldSetSenderImageAsEmpty() {
         let address = "test_address"
         sut = SenderImageLoader(address: address, dependencies: mockDependencies)
 
         switch sut.senderImage {
         case .empty:
-            XCTAssert(true)
+            #expect(true)
         case .image:
-            XCTFail("Loader should not load an image if none exists in the cache.")
+            Issue.record("Loader should not load an image if none exists in the cache.")
         }
     }
 
-    func testInit_whenThereIsCachedImage_itShouldSetSenderImageWithCachedImage() {
+    @Test
+    func init_whenThereIsCachedImage_itShouldSetSenderImageWithCachedImage() {
         let address = "test_address"
         mockDependencies.cache.setObject(cachedImage, for: address)
         sut = SenderImageLoader(address: address, dependencies: mockDependencies)
 
         switch sut.senderImage {
         case .image(let image):
-            XCTAssertEqual(image, cachedImage, "Loader should load the image from the cache.")
+            #expect(image == cachedImage, "Loader should load the image from the cache.")
         case .empty:
-            XCTFail("Loader should not be empty when there is a cached image.")
+            Issue.record("Loader should not be empty when there is a cached image.")
         }
     }
 
     // MARK: loadImage
 
-    func testLoadImage_whenDataSourceReturnsNil_itShouldSetSenderImageAsEmpty() async {
+    @Test
+    func loadImage_whenDataSourceReturnsNil_itShouldSetSenderImageAsEmpty() async {
         let params = SenderImageDataParameters()
         mockImageDataSource.imageToReturn = nil
 
@@ -72,13 +70,14 @@ final class SenderImageLoaderTests: XCTestCase {
 
         switch sut.senderImage {
         case .empty:
-            XCTAssert(true)
+            #expect(true)
         case .image:
-            XCTFail("Loader should not set an image if none is returned.")
+            Issue.record("Loader should not set an image if none is returned.")
         }
     }
 
-    func testLoadImage_whenDataSourceReturnsImage_itShouldSetSenderImageWithReturnedImage() async {
+    @Test
+    func loadImage_whenDataSourceReturnsImage_itShouldSetSenderImageWithReturnedImage() async {
         let params = SenderImageDataParameters()
         let expectedImage = UIImage()
         mockImageDataSource.imageToReturn = expectedImage
@@ -88,9 +87,9 @@ final class SenderImageLoaderTests: XCTestCase {
 
         switch sut.senderImage {
         case .image(let image):
-            XCTAssertEqual(image, expectedImage, "Loader should set the image received from the data source.")
+            #expect(image == expectedImage, "Loader should set the image received from the data source.")
         case .empty:
-            XCTFail("Loader should not be empty when a valid image is returned.")
+            Issue.record("Loader should not be empty when a valid image is returned.")
         }
     }
 }

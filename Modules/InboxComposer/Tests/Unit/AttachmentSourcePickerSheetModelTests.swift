@@ -18,6 +18,7 @@
 @testable import InboxComposer
 import Testing
 
+@MainActor
 final class AttachmentSourcePickerSheetModelTests {
     var sut: AttachmentSourcePickerSheetModel!
 

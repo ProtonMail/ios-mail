@@ -19,6 +19,7 @@ import InboxCore
 import proton_app_uniffi
 import SwiftUI
 
+@MainActor
 final class AttachmentViewLoader: @unchecked Sendable, ObservableObject {
     @Published private(set) var state: State
     private let mailbox: MailboxProtocol
@@ -40,7 +41,6 @@ final class AttachmentViewLoader: @unchecked Sendable, ObservableObject {
         }
     }
 
-    @MainActor
     private func updateState(_ newState: State) {
         queue.sync {
             state = newState

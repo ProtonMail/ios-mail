@@ -17,6 +17,7 @@
 
 import Combine
 
+@MainActor
 public final class Router<Route: Routable>: ObservableObject {
     @Published public var stack: [Route]
 

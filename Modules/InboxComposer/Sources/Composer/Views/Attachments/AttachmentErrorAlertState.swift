@@ -168,7 +168,7 @@ extension DraftAttachment {
 }
 
 #Preview {
-
+    @MainActor
     final class ContentState: ObservableObject, @unchecked Sendable {
         let errorState: AttachmentErrorAlertState = .init()
         @Published var isAlertPresented: Bool = false

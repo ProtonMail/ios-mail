@@ -44,6 +44,7 @@ struct AsyncSenderImageView<Content>: View where Content: View {
     }
 }
 
+@MainActor
 final class SenderImageLoader: ObservableObject {
     enum Image {
         case empty
@@ -62,7 +63,6 @@ final class SenderImageLoader: ObservableObject {
         }
     }
 
-    @MainActor
     func loadImage(for params: SenderImageDataParameters, colorScheme: ColorScheme) async {
         guard let image = await dependencies.imageDataSource.senderImage(for: params, colorScheme: colorScheme) else {
             senderImage = .empty

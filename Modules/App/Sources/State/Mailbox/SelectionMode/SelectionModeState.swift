@@ -107,7 +107,6 @@ final class SelectionModeStateModifier: @unchecked Sendable {
      Call this method to refresh the status of the selected items when the mailbox item collection changes.
      - Parameter newMailboxItems: collection of mailbox items that can affect the status of the selected items.
      */
-    @MainActor
     func refreshSelectedItemsStatus(newMailboxItems: [MailboxItemCellUIModel]) {
         let currentSelectedIds = state.selectedItems.map(\.id)
         let matchingItems =

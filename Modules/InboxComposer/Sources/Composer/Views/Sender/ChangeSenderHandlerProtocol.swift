@@ -44,6 +44,5 @@ struct MockChangeSenderHandler: ChangeSenderHandlerProtocol {
         stubbedAddresses
     }
 
-    @MainActor
     func changeSenderAddress(email: String) async throws {}
 }

@@ -19,6 +19,7 @@ import InboxCore
 import proton_app_uniffi
 import SwiftUI
 
+@MainActor
 final class ComposerScreenModel: ObservableObject {
     @Published private(set) var state: State
     @Published private(set) var draftError: DraftOpenError?
@@ -49,7 +50,6 @@ final class ComposerScreenModel: ObservableObject {
         }
     }
 
-    @MainActor
     func cancel() {
         isCancelled = true
     }

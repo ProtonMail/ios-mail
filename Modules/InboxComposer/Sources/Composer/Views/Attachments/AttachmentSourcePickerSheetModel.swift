@@ -19,6 +19,7 @@ import AVFoundation
 import InboxCoreUI
 import SwiftUI
 
+@MainActor
 final class AttachmentSourcePickerSheetModel: ObservableObject {
     private let cameraPermissionProvider: CameraPermissionProvider
     @Published var alertModel: AlertModel?
