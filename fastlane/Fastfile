@@ -69,7 +69,6 @@ platform :ios do
 
   def get_latest_build_number
     latest_testflight_build_number(
-      app_identifier: APP_IDENTIFIER,
       version: get_version_number(xcodeproj: XCODEPROJ, target: APP_TARGET),
       initial_build_number: 0
     )
@@ -99,7 +98,6 @@ platform :ios do
     select_xcode
 
     run_tests(
-      app_identifier: APP_IDENTIFIER,
       scheme: UNIT_TESTS_SCHEME,
       devices: UNIT_TESTS_DEVICE,
       clean: true,
@@ -163,7 +161,6 @@ platform :ios do
         prelaunch_simulator: true,
         reset_simulator: true,
         result_bundle: true,
-        app_identifier: "ch.protonmail.protonmail",
         testplan: PERFORMANCE_PLAN_NAME,
         xcargs: "-skipPackagePluginValidation"
       )
@@ -205,5 +202,10 @@ platform :ios do
     ensure
       tear_down_keychain
     end
+  end
+
+  lane :whats_new do
+    app_store_connect_api_key
+    set_changelog
   end
 end
