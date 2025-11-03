@@ -51,7 +51,7 @@ struct HomeScreenModalFactory {
         self.makeSubscriptionsScreen = { AvailablePlansViewFactory.make(mailUserSession: mailUserSession, presentationMode: .modal) }
     }
 
-    @MainActor @ViewBuilder
+    @ViewBuilder
     func makeModal(for state: HomeScreen.ModalState, draftPresenter: ContactsDraftPresenter) -> some View {
         switch state {
         case .contacts:

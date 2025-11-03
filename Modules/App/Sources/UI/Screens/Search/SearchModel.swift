@@ -265,13 +265,11 @@ final class SearchModel: ObservableObject, @unchecked Sendable {
 
 extension SearchModel {
 
-    @MainActor
     private func applySelectionStateChangeInstead(mailboxItem: MailboxItemCellUIModel) {
         let isCurrentlySelected = selectionMode.selectionState.selectedItems.contains(mailboxItem.toSelectedItem())
         onMailboxItemSelectionChange(item: mailboxItem, isSelected: !isCurrentlySelected)
     }
 
-    @MainActor
     func onMailboxItemTap(item: MailboxItemCellUIModel, draftPresenter: DraftPresenter) {
         guard !selectionMode.selectionState.hasItems else {
             applySelectionStateChangeInstead(mailboxItem: item)
@@ -284,13 +282,11 @@ extension SearchModel {
         }
     }
 
-    @MainActor
     func onLongPress(mailboxItem: MailboxItemCellUIModel) {
         guard !selectionMode.selectionState.hasItems else { return }
         onMailboxItemSelectionChange(item: mailboxItem, isSelected: true)
     }
 
-    @MainActor
     func onMailboxItemSelectionChange(item: MailboxItemCellUIModel, isSelected: Bool) {
         let selectedItem = item.toSelectedItem()
         if isSelected {
@@ -300,7 +296,6 @@ extension SearchModel {
         }
     }
 
-    @MainActor
     func onMailboxItemStarChange(item: MailboxItemCellUIModel, isStarred: Bool) {
         guard !selectionMode.selectionState.hasItems else {
             applySelectionStateChangeInstead(mailboxItem: item)
@@ -311,7 +306,6 @@ extension SearchModel {
         action([item.id], .message)
     }
 
-    @MainActor
     func onMailboxItemAttachmentTap(attachmentId: ID, for item: MailboxItemCellUIModel) {
         guard !selectionMode.selectionState.hasItems, let mailbox else {
             applySelectionStateChangeInstead(mailboxItem: item)

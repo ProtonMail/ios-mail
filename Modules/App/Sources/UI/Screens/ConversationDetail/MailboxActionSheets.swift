@@ -27,7 +27,6 @@ struct MailboxActionSheetsState: Copying {
 }
 
 extension View {
-    @MainActor
     func actionSheetsFlow(
         mailbox: @escaping () -> Mailbox,
         mailUserSession: MailUserSession,

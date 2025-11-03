@@ -153,7 +153,6 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate, ObservableObject 
         }
     }
 
-    @MainActor
     private func showLockScreen(lockScreenType: LockScreenState.LockScreenType) {
         appProtectionWindow?.isHidden = false
         appProtectionWindow?.makeKey()
@@ -176,7 +175,6 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate, ObservableObject 
         return controller
     }
 
-    @MainActor
     private func hideAppProtectionWindow() {
         guard let appProtectionWindow, !appProtectionWindow.isHidden else { return }
         overlayWindow?.makeKey()
@@ -190,7 +188,6 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate, ObservableObject 
             })
     }
 
-    @MainActor
     private func coverAppContent() {
         appProtectionWindow?.rootViewController = coverController
         appProtectionWindow?.isHidden = false

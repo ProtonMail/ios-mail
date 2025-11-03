@@ -70,7 +70,6 @@ final class HtmlBodyWebViewInterface: NSObject, HtmlBodyWebViewInterfaceProtocol
         Task { await logHtmlHealthCheck(tag: "loadMessageBody") }
     }
 
-    @MainActor
     func setFocus() async {
         await withCheckedContinuation { continuation in
             webView.evaluateJavaScript(HtmlBodyDocument.JSFunction.setFocus.callFunction) { _, error in
@@ -80,7 +79,6 @@ final class HtmlBodyWebViewInterface: NSObject, HtmlBodyWebViewInterfaceProtocol
         }
     }
 
-    @MainActor
     func readMesasgeBody() async -> String? {
         await withCheckedContinuation { continuation in
             webView.evaluateJavaScript(HtmlBodyDocument.JSFunction.getHtmlContent.callFunction) { result, error in
@@ -95,18 +93,15 @@ final class HtmlBodyWebViewInterface: NSObject, HtmlBodyWebViewInterfaceProtocol
         }
     }
 
-    @MainActor
     func insertText(_ text: String) async {
         await insertHtml(text, wrapInQuotes: false)
     }
 
-    @MainActor
     func insertImages(_ contentIds: [String]) async {
         let inlineImageHTML = InlineImageHTML(cids: contentIds).content
         await insertHtml(inlineImageHTML, wrapInQuotes: true)
     }
 
-    @MainActor
     private func insertHtml(_ html: String, wrapInQuotes: Bool) async {
         let function: String
         if wrapInQuotes {
@@ -123,7 +118,6 @@ final class HtmlBodyWebViewInterface: NSObject, HtmlBodyWebViewInterfaceProtocol
         }
     }
 
-    @MainActor
     func removeImage(containing cid: String) async {
         let function = "\(HtmlBodyDocument.JSFunction.removeImageWithCID.rawValue)('\(cid)');"
 
@@ -136,7 +130,6 @@ final class HtmlBodyWebViewInterface: NSObject, HtmlBodyWebViewInterfaceProtocol
     }
 
     /// Checks the correctness of the HTML and JS status.
-    @MainActor
     func logHtmlHealthCheck(tag: String) async {
         let prefix = "[body health check: \(tag)]"
         AppLogger.log(message: "\(prefix) start...", category: .composer)

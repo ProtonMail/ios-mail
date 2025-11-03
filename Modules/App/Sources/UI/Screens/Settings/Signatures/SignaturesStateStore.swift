@@ -20,7 +20,6 @@ import InboxCoreUI
 import proton_app_uniffi
 import SwiftUI
 
-@MainActor
 final class SignaturesStateStore: StateStore {
     @Published var state: SignaturesState
 

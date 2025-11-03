@@ -61,7 +61,6 @@ struct OneLineLabelsListView: View {
         case count(Int)
     }
 
-    @MainActor
     private func labelsFittingSpace(labels: [LabelUIModel], availableWidth: CGFloat) -> [Label] {
         let padding = 2 * horizontalPadding
 
@@ -84,7 +83,6 @@ struct OneLineLabelsListView: View {
         return labelsToDisplay
     }
 
-    @MainActor
     private func calculateLabel(_ text: String, font: UIFont) -> CGFloat {
         let label = UILabel()
         label.text = text

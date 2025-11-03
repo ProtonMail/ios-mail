@@ -23,10 +23,10 @@ protocol HtmlBodyWebViewInterfaceProtocol: AnyObject {
     var onEvent: ((HtmlBodyWebViewInterface.Event) -> Void)? { get set }
 
     func loadMessageBody(_ body: String, clearImageCacheFirst: Bool) async
-    @MainActor func setFocus() async
-    @MainActor func readMesasgeBody() async -> String?
-    @MainActor func insertText(_ text: String) async
-    @MainActor func insertImages(_ contentIds: [String]) async
-    @MainActor func removeImage(containing cid: String) async
-    @MainActor func logHtmlHealthCheck(tag: String) async
+    func setFocus() async
+    func readMesasgeBody() async -> String?
+    func insertText(_ text: String) async
+    func insertImages(_ contentIds: [String]) async
+    func removeImage(containing cid: String) async
+    func logHtmlHealthCheck(tag: String) async
 }

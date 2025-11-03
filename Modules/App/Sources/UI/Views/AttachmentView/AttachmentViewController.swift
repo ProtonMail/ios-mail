@@ -26,7 +26,6 @@ struct AttachmentViewController: UIViewControllerRepresentable {
 
     let url: URL
 
-    @MainActor
     func makeUIViewController(context: Context) -> UIViewControllerType {
         let controller = QLPreviewController()
         controller.dataSource = context.coordinator

@@ -109,7 +109,6 @@ final class MessageAddressActionViewStateStoreTests {
         #expect(toastStateStore.state.toasts == [])
     }
 
-    @MainActor
     func testOnTapBlockAlertAction_CancelActionTapped_ItDismissesAlertAndDoesNotCallBlock() async {
         await sut.handle(action: .onTap(.blockAddress))
         await sut.handle(action: .onBlockAlertAction(.cancel))

@@ -35,7 +35,7 @@ final class BiometricLockStoreTests {
     var screenOutput: [BiometricLockScreenOutput] = []
     private var laContextSpy = LAContextSpy()
 
-    @Test @MainActor
+    @Test
     func viewLoadsAndCannotEvaluatePolicy_ItDisplaysButtonAndDoesNotEmitOutput() async {
         laContextSpy.canEvaluatePolicyStub = false
         await sut.handle(action: .onLoad)
@@ -46,7 +46,7 @@ final class BiometricLockStoreTests {
         #expect(screenOutput == [])
     }
 
-    @Test @MainActor
+    @Test
     func viewLoadsAndPolicyEvaluationFails_ItDisplaysButtonAndDoesNotEmitOutput() async {
         laContextSpy.canEvaluatePolicyStub = true
         laContextSpy.evaluatePolicyStub = false
@@ -61,7 +61,7 @@ final class BiometricLockStoreTests {
         #expect(screenOutput == [])
     }
 
-    @Test @MainActor
+    @Test
     func viewLoadsAndPolicyEvaluationSuccess_ItEmitsOutput() async {
         laContextSpy.canEvaluatePolicyStub = true
         laContextSpy.evaluatePolicyStub = true
@@ -71,7 +71,7 @@ final class BiometricLockStoreTests {
         #expect(screenOutput == [.authenticated])
     }
 
-    @Test @MainActor
+    @Test
     func viewLoadsAndBiometryIsNotConfiguredOnDevice_ItDisplaysAlert() async {
         laContextSpy.canEvaluatePolicyStub = false
 
@@ -80,7 +80,7 @@ final class BiometricLockStoreTests {
         #expect(sut.state.alert == policyUnavailableAlert)
     }
 
-    @Test @MainActor
+    @Test
     func policyUnavailableAlert_OkActionIsTapped_ItDismissesAlert() async {
         laContextSpy.canEvaluatePolicyStub = false
 
@@ -90,7 +90,7 @@ final class BiometricLockStoreTests {
         #expect(sut.state.alert == nil)
     }
 
-    @Test @MainActor
+    @Test
     func policyUnavailableAlert_SignInAgainActionIsTapped_ItDismissesAlertAndEmitsLogOutOutput() async {
         laContextSpy.canEvaluatePolicyStub = false
 

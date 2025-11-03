@@ -535,7 +535,6 @@ final class ComposerModelTests: BaseTestCase {
         XCTAssertEqual(sut.state.toRecipients.recipients.first!.isValid, false)
     }
 
-    @MainActor
     func testComposerRecipientListCallbackUpdate_whenValidStateIsAddressDoesNotExist_itShouldShowErrorToast() async {
         let makeSingleRecipient: (ComposerRecipientValidState) -> ComposerRecipientSingle = { validState in
             ComposerRecipientSingle(displayName: "my friend", address: "friend@example.com", validState: validState)

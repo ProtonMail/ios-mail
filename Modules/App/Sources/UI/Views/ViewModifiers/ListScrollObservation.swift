@@ -19,7 +19,6 @@ import InboxCoreUI
 import SwiftUI
 import SwiftUIIntrospect
 
-@MainActor
 struct ListScrollObservation: ViewModifier {
     @StateObject private var model: ListScrollObservationModel
 
@@ -70,7 +69,6 @@ final class ListScrollObservationModel: ObservableObject {
 }
 
 extension View {
-    @MainActor
     func listScrollObservation(onEventAtTopChange: @escaping (Bool) -> Void) -> some View {
         modifier(ListScrollObservation(onEventAtTopChange: onEventAtTopChange))
     }

@@ -74,7 +74,6 @@ final class AppSettingsStateStore: StateStore, Sendable {
         }
     }
 
-    @MainActor
     func updateAppIcon(_ icon: AppIcon) async {
         guard appIconConfigurator.supportsAlternateIcons else {
             return
@@ -102,7 +101,6 @@ final class AppSettingsStateStore: StateStore, Sendable {
         await refreshStoredAppSettings()
     }
 
-    @MainActor
     private func refreshAllSettings() async {
         async let getAppSettings = appSettingsRepository.getAppSettings().get()
         async let getAreNotificationsEnabled = areNotificationsEnabled()
@@ -126,7 +124,6 @@ final class AppSettingsStateStore: StateStore, Sendable {
         }
     }
 
-    @MainActor
     private func refreshStoredAppSettings() async {
         do {
             let settings = try await appSettingsRepository.getAppSettings().get()
@@ -136,7 +133,6 @@ final class AppSettingsStateStore: StateStore, Sendable {
         }
     }
 
-    @MainActor
     private func refreshDeviceSettings() async {
         let areNotificationsEnabled = await areNotificationsEnabled()
         state =
@@ -145,7 +141,6 @@ final class AppSettingsStateStore: StateStore, Sendable {
             .copy(\.appLanguage, to: appLangaugeProvider.appLangauge)
     }
 
-    @MainActor
     func refreshSwipeToAdjacentSettings() async {
         do {
             let isSwipeToAdjacentEmailEnabled = try await customSettings.swipeToAdjacentConversation().get()

@@ -292,7 +292,6 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         messageAppearanceOverrideStore.isForcingLightMode(forMessageWithId: messageId)
     }
 
-    @MainActor
     func handle(
         action: MessageAction,
         messageID: ID,
@@ -404,7 +403,6 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         }
     }
 
-    @MainActor
     func handle(
         action: ConversationAction,
         toastStateStore: ToastStateStore,
@@ -461,7 +459,6 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         }
     }
 
-    @MainActor
     private func handle(
         action: PhishingConfirmationAlertAction,
         messageID: ID,
@@ -494,12 +491,10 @@ final class ConversationDetailModel: Sendable, ObservableObject {
             .markAsUnread(itemsWithIDs: [id], itemType: itemType)
     }
 
-    @MainActor
     private func hideAlert() {
         actionAlert = nil
     }
 
-    @MainActor
     private func handle(
         id: ID,
         mailboxItem: MailboxItem,
@@ -534,7 +529,6 @@ extension ConversationDetailModel {
         draftPresenter.openDraft(withId: id)
     }
 
-    @MainActor
     private func move(
         id: ID,
         mailboxItem: MailboxItem,

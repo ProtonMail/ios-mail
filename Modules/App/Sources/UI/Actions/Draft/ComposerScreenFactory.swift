@@ -20,8 +20,6 @@ import proton_app_uniffi
 
 @MainActor
 struct ComposerScreenFactory {
-
-    @MainActor
     static func makeComposer(
         userSession: MailUserSession,
         draftToPresent: DraftToPresent,

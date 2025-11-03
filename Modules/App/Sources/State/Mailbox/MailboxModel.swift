@@ -642,13 +642,11 @@ extension MailboxModel {
         state.navigationPath.append(item)
     }
 
-    @MainActor
     func onLongPress(mailboxItem: MailboxItemCellUIModel) {
         guard !selectionMode.selectionState.hasItems else { return }
         onMailboxItemSelectionChange(item: mailboxItem, isSelected: true)
     }
 
-    @MainActor
     func onMailboxItemSelectionChange(item: MailboxItemCellUIModel, isSelected: Bool) {
         guard !isOutbox else { return }
         if isSelected {

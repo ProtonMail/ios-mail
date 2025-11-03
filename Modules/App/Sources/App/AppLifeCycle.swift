@@ -87,7 +87,6 @@ extension AppLifeCycle {
 
 extension AppLifeCycle {
 
-    @MainActor
     private func applicationServicesInitialisation() {
         let testService = TestService()
         let networkMonitor = NetworkMonitoringService.shared

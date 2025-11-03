@@ -20,8 +20,6 @@ import SwiftUI
 
 @MainActor
 class WindowColorSchemeUpdater {
-
-    @MainActor
     let appState = AppAppearanceStore.shared
     var cancellables: Set<AnyCancellable> = .init()
 
