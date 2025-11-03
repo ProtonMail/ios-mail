@@ -339,6 +339,10 @@ struct SwipeableView<Content: View>: View {
             content()
                 .disabled(isSwiping)
                 .clipShape(RoundedRectangle(cornerRadius: isSwiping ? DS.Spacing.small : .zero))
+                .overlay(
+                    RoundedRectangle(cornerRadius: isSwiping ? DS.Spacing.small : .zero)
+                        .stroke(DS.Color.Border.light, lineWidth: isSwiping ? 1 : 0)
+                )
                 .offset(x: swipeOffset)
                 .animation(.linear(duration: animationDuration), value: isSwiping)
                 .sensoryFeedback(.impact, trigger: didCrossThreshold)
