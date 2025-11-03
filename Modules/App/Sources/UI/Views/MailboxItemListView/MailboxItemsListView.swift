@@ -394,18 +394,21 @@ struct SwipeableView<Content: View>: View {
 
         guard axisLock == .horizontal else { return }
 
-        isSwiping = true
-
         if initialSwipeTriggerOffset == .zero {
             initialSwipeTriggerOffset = dx
         }
 
-        swipeOffset = dx - initialSwipeTriggerOffset
+        let targetOffset = dx - initialSwipeTriggerOffset
 
-        if swipeOffset > .zero {
+        if targetOffset > .zero {
             activeAction = action(for: .right)
-        } else if swipeOffset < .zero {
+        } else if targetOffset < .zero {
             activeAction = action(for: .left)
+        }
+
+        if activeAction != nil {
+            swipeOffset = targetOffset
+            isSwiping = true
         }
     }
 
