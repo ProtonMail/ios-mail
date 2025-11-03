@@ -339,7 +339,7 @@ struct SwipeableView<Content: View>: View {
 
             content()
                 .clipShape(RoundedRectangle(cornerRadius: isSwiping ? 16 : 0))
-                .offset(x: swipeOffset, y: isSwiping ? -2 : 0)
+                .offset(x: swipeOffset)
                 .animation(.default, value: isSwiping)
                 .sensoryFeedback(.impact, trigger: crossedThreshold)
                 .contentShape(Rectangle())
