@@ -17,15 +17,22 @@
 
 import SwiftUI
 
+/// Presenter responsible for controlling the visibility of the loading bar.
+/// Works in conjunction with the loading bar view to provide smooth animations.
 public final class LoadingBarPresenter: ObservableObject {
     @Published public private(set) var isVisible: Bool = false
 
     public init() {}
 
+    /// Displays the loading bar immediately.
+    /// The loading bar will appear and start animating as soon as this method is called.
     public func show() {
         isVisible = true
     }
 
+    /// Hides the loading bar after the current animation cycle completes.
+    /// Instead of hiding immediately, this allows the animation to reach 100% before hiding,
+    /// ensuring a smooth visual experience for the user.
     public func hide() {
         isVisible = false
     }
