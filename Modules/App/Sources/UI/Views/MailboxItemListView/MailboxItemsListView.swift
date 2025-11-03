@@ -123,26 +123,15 @@ struct MailboxItemsListView<EmptyView: View>: View {
     private func cellView(index: Int, item: MailboxItemCellUIModel) -> some View {
         VStack {
             SwipeableView(
-                leftAction: .init(
-                    image: config.swipeActions.left.icon(isRead: item.isRead, isStarred: item.isStarred),
-                    color: config.swipeActions.left.color,
-                    isDesctructive: config.swipeActions.left.isDestructive
-                ),
-                rightAction: .init(
-                    image: config.swipeActions.right.icon(isRead: item.isRead, isStarred: item.isStarred),
-                    color: config.swipeActions.right.color,
-                    isDesctructive: config.swipeActions.right.isDestructive
-                ),
+                leftAction: config.swipeActions.left.swipeActionModel(for: item),
+                rightAction: config.swipeActions.right.swipeActionModel(for: item),
                 onLeftAction: {
-                    config.cellEventHandler?.onSwipeAction?(
-                        .init(action: config.swipeActions.left, itemID: item.conversationID, isItemRead: item.isRead, isItemStarred: item.isStarred)
-                    )
+                    config.cellEventHandler?.onSwipeAction?(config.swipeActions.left.swipeActionContext(for: item))
                 },
                 onRightAction: {
-                    config.cellEventHandler?.onSwipeAction?(
-                        .init(action: config.swipeActions.right, itemID: item.conversationID, isItemRead: item.isRead, isItemStarred: item.isStarred)
-                    )
-                }
+                    config.cellEventHandler?.onSwipeAction?(config.swipeActions.right.swipeActionContext(for: item))
+                },
+                isEnabled: !selectionState.hasItems
             ) {
                 MailboxItemCell(
                     uiModel: item,
@@ -153,14 +142,6 @@ struct MailboxItemsListView<EmptyView: View>: View {
                 .accessibilityElementGroupedVoiceOver(value: voiceOverValue(for: item))
                 .accessibilityIdentifier("\(MailboxListViewIdentifiers.listCell)\(index)")
             }
-
-            //            .mailboxSwipeActions(
-            //                swipeActions: config.swipeActions,
-            //                isSwipeEnabled: !selectionState.hasItems,
-            //                mailboxItem: item
-            //            ) { context in
-            //                config.cellEventHandler?.onSwipeAction?(context)
-            //            }
         }
         .listRowBackground(Color.clear)
         .listRowInsets(
@@ -304,10 +285,11 @@ struct SwipeableView<Content: View>: View {
     private enum AxisLock { case none, horizontal, vertical }
 
     private let content: () -> Content
-    private let leftAction: SwipeActionModel
-    private let rightAction: SwipeActionModel
-    private let onLeftAction: () -> Void
-    private let onRightAction: () -> Void
+    private let leftAction: SwipeActionModel?
+    private let rightAction: SwipeActionModel?
+    private let onLeftAction: (() -> Void)?
+    private let onRightAction: (() -> Void)?
+    private let isEnabled: Bool
 
     @State private var swipeOffset: CGFloat = 0
     @State private var activeAction: ActiveAction?
@@ -322,16 +304,18 @@ struct SwipeableView<Content: View>: View {
     }
 
     init(
-        leftAction: SwipeActionModel,
-        rightAction: SwipeActionModel,
-        onLeftAction: @escaping () -> Void,
-        onRightAction: @escaping () -> Void,
+        leftAction: SwipeActionModel?,
+        rightAction: SwipeActionModel?,
+        onLeftAction: (() -> Void)?,
+        onRightAction: (() -> Void)?,
+        isEnabled: Bool,
         content: @escaping () -> Content
     ) {
         self.leftAction = leftAction
         self.rightAction = rightAction
         self.onLeftAction = onLeftAction
         self.onRightAction = onRightAction
+        self.isEnabled = isEnabled
         self.content = content
     }
 
@@ -352,10 +336,11 @@ struct SwipeableView<Content: View>: View {
                     of: { geometry in geometry.size.width },
                     action: { value in rowWidth = value }
                 )
-                .simultaneousGesture(  // It has to be gesture for iOS under 18 and over simulatouslyGesture
+                .swipeActionGesture(
+                    isEnabled: isEnabled,
                     DragGesture(minimumDistance: 8)
                         .onChanged(onDragChanged)
-                        .onEnded(onDragEnded), including: .gesture
+                        .onEnded(onDragEnded)
                 )
         }
     }
@@ -390,13 +375,16 @@ struct SwipeableView<Content: View>: View {
         }
 
         guard axisLock == .horizontal else { return }
-        swipeOffset = dx
-        isSwiping = true
 
         if dx > 0 {
             activeAction = action(for: .right)
         } else if dx < 0 {
             activeAction = action(for: .left)
+        }
+
+        if activeAction != nil {
+            swipeOffset = dx
+            isSwiping = true
         }
     }
 
@@ -409,8 +397,8 @@ struct SwipeableView<Content: View>: View {
         if didCross {
             let side: ActionSide = swipeOffset >= 0 ? .right : .left
             switch side {
-            case .left: onLeftAction()
-            case .right: onRightAction()
+            case .left: onLeftAction?()
+            case .right: onRightAction?()
             }
         }
         withAnimation {
@@ -426,12 +414,20 @@ struct SwipeableView<Content: View>: View {
         }
     }
 
-    private func action(for side: ActionSide) -> ActiveAction {
+    private func action(for side: ActionSide) -> ActiveAction? {
         switch side {
         case .right:
-            .init(side: .right, model: rightAction)
+            if let rightAction {
+                return .init(side: .right, model: rightAction)
+            } else {
+                return nil
+            }
         case .left:
-            .init(side: .left, model: leftAction)
+            if let leftAction {
+                return .init(side: .left, model: leftAction)
+            } else {
+                return nil
+            }
         }
     }
 
@@ -456,4 +452,53 @@ extension AssignedSwipeAction {
         }
     }
 
+}
+
+extension AssignedSwipeAction {
+
+    func swipeActionModel(for item: MailboxItemCellUIModel) -> SwipeActionModel? {
+        switch self {
+        case .noAction:
+            nil
+        case .labelAs, .toggleStar, .toggleRead, .moveTo:
+            SwipeActionModel(
+                image: icon(isRead: item.isRead, isStarred: item.isStarred),
+                color: color,
+                isDesctructive: isDestructive
+            )
+        }
+    }
+
+    func swipeActionContext(for item: MailboxItemCellUIModel) -> SwipeActionContext {
+        .init(action: self, itemID: item.id, isItemRead: item.isRead, isItemStarred: item.isStarred)
+    }
+
+}
+
+private struct SwipeActionGesture<G: Gesture>: ViewModifier {
+    private let isEnabled: Bool
+    private let swipeGesture: G
+
+    init(isEnabled: Bool, swipeGesture: G) {
+        self.isEnabled = isEnabled
+        self.swipeGesture = swipeGesture
+    }
+
+    func body(content: Content) -> some View {
+        if isEnabled {
+            if #available(iOS 18, *) {
+                content.simultaneousGesture(swipeGesture)
+            } else {
+                content.gesture(swipeGesture)
+            }
+        } else {
+            content
+        }
+    }
+}
+
+private extension View {
+    func swipeActionGesture<G: Gesture>(isEnabled: Bool, _ gesture: G, ) -> some View {
+        modifier(SwipeActionGesture(isEnabled: isEnabled, swipeGesture: gesture))
+    }
 }
