@@ -19,6 +19,7 @@ import SwiftUI
 
 /// Presenter responsible for controlling the visibility of the loading bar.
 /// Works in conjunction with the loading bar view to provide smooth animations.
+@MainActor
 public final class LoadingBarPresenter: ObservableObject {
     @Published public private(set) var isVisible: Bool = false
 

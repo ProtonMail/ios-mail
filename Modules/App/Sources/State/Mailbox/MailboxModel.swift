@@ -41,7 +41,7 @@ final class MailboxModel: ObservableObject {
     @ObservedObject private var appRoute: AppRouteState
     @Published private(set) var mailbox: Mailbox?
     let draftPresenter: DraftPresenter
-    private let loadingBarPresenter: LoadingBarPresenter
+    let loadingBarPresenter = LoadingBarPresenter()
     let goToNextConversationNotifier = GoToNextPageNotifier()
 
     private var messageScroller: MessageScroller?
@@ -87,14 +87,12 @@ final class MailboxModel: ObservableObject {
         mailSettingsLiveQuery: MailSettingLiveQuerying,
         appRoute: AppRouteState,
         draftPresenter: DraftPresenter,
-        loadingBarPresenter: LoadingBarPresenter,
         dependencies: Dependencies = .init()
     ) {
         AppLogger.log(message: "MailboxModel init", category: .mailbox)
         self.mailSettingsLiveQuery = mailSettingsLiveQuery
         self.appRoute = appRoute
         self.draftPresenter = draftPresenter
-        self.loadingBarPresenter = loadingBarPresenter
         self.selectedMailbox = appRoute.route.selectedMailbox!
         self.dependencies = dependencies
         self.accountManagerCoordinator = AccountManagerCoordinator(

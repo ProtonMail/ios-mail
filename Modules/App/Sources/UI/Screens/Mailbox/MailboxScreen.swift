@@ -28,7 +28,6 @@ struct MailboxScreen: View {
     @EnvironmentObject private var toastStateStore: ToastStateStore
     @EnvironmentObject private var upsellCoordinator: UpsellCoordinator
     @Environment(\.upsellEligibility) private var upsellEligibility
-    @StateObject private var loadingBarPresenter: LoadingBarPresenter
     @StateObject private var mailboxModel: MailboxModel
     @State private var isComposeButtonExpanded: Bool = true
     @State private var isOnboardingPresented = false
@@ -49,14 +48,11 @@ struct MailboxScreen: View {
         draftPresenter: DraftPresenter,
         introductionPromptsDisabled: Bool = false
     ) {
-        let loadingBarPresenter = LoadingBarPresenter()
-        _loadingBarPresenter = .init(wrappedValue: loadingBarPresenter)
         _mailboxModel = StateObject(
             wrappedValue: MailboxModel(
                 mailSettingsLiveQuery: mailSettingsLiveQuery,
                 appRoute: appRoute,
-                draftPresenter: draftPresenter,
-                loadingBarPresenter: loadingBarPresenter
+                draftPresenter: draftPresenter
             )
         )
         self.notificationAuthorizationStore = notificationAuthorizationStore
@@ -107,7 +103,7 @@ struct MailboxScreen: View {
                     }
                 }
                 .fullScreenCover(isPresented: $mailboxModel.state.isSearchPresented) {
-                    SearchScreen(userSession: userSession, loadingBarPresenter: loadingBarPresenter)
+                    SearchScreen(userSession: userSession, loadingBarPresenter: mailboxModel.loadingBarPresenter)
                 }
                 .fullScreenCover(item: $mailboxModel.state.attachmentPresented) { config in
                     AttachmentView(config: config)
@@ -149,7 +145,7 @@ struct MailboxScreen: View {
         .environment(\.confirmLink, mailboxModel.state.confirmLink)
         .environment(\.goToNextPageNotifier, mailboxModel.goToNextConversationNotifier)
         .environment(\.proceedAfterMove, mailboxModel.proceedAfterMove)
-        .environmentObject(loadingBarPresenter)
+        .environmentObject(mailboxModel.loadingBarPresenter)
     }
 
     private func onboardingScreenDismissed() {
