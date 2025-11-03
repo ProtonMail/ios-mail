@@ -28,6 +28,7 @@ struct MailboxItemsListView<EmptyView: View>: View {
     @ObservedObject private(set) var selectionState: SelectionModeState
     private let mailUserSession: MailUserSession
     @Binding var emptyFolderBanner: EmptyFolderBanner?
+    @State var isScrollingDisabled = false
     let mailbox: Mailbox?
 
     // pull to refresh
@@ -88,6 +89,7 @@ struct MailboxItemsListView<EmptyView: View>: View {
                 }
             }
         )
+        .scrollDisabled(isScrollingDisabled)
         .listStyle(.plain)
         .introspect(.list, on: SupportedIntrospectionPlatforms.list) { collectionView in
             guard
@@ -131,7 +133,8 @@ struct MailboxItemsListView<EmptyView: View>: View {
                 onRightAction: {
                     config.cellEventHandler?.onSwipeAction?(config.swipeActions.right.swipeActionContext(for: item))
                 },
-                isEnabled: !selectionState.hasItems
+                isEnabled: !selectionState.hasItems,
+                isScrollingDisabled: $isScrollingDisabled
             ) {
                 MailboxItemCell(
                     uiModel: item,
@@ -257,19 +260,19 @@ private extension SelectionModeState {
 import SwiftUI
 import UIKit
 
-struct SwipeActionModel {
+struct SwipeActionModel: Equatable {
     let image: Image
     let color: Color
     let isDesctructive: Bool
 }
 
 struct SwipeableView<Content: View>: View {
-    struct ActiveAction {
+    private struct ActiveAction: Equatable {
         let side: ActionSide
         let model: SwipeActionModel
     }
 
-    enum ActionSide {
+    private enum ActionSide: Equatable {
         case right, left
 
         var actionAligment: Alignment {
@@ -282,7 +285,9 @@ struct SwipeableView<Content: View>: View {
         }
     }
 
-    private enum AxisLock { case none, horizontal, vertical }
+    private enum AxisLock: Equatable {
+        case none, horizontal, vertical
+    }
 
     private let content: () -> Content
     private let leftAction: SwipeActionModel?
@@ -291,17 +296,18 @@ struct SwipeableView<Content: View>: View {
     private let onRightAction: (() -> Void)?
     private let isEnabled: Bool
 
+    @Binding private var isScrollingDisabled: Bool
+
     @State private var swipeOffset: CGFloat = 0
     @State private var activeAction: ActiveAction?
     @State private var axisLock: AxisLock = .none
     @State private var rowWidth: CGFloat = 0
-    @State var isSwiping: Bool = false
-
-    @State var endingAnimation = false
+    @State private var isSwiping: Bool = false
+    @State private var isFinishingSwipeWithAnimation = false
 
     private let triggerFactor: CGFloat = 0.20
 
-    private var crossedThreshold: Bool {
+    private var didCrossThreshold: Bool {
         abs(swipeOffset) > rowWidth * triggerFactor
     }
 
@@ -311,6 +317,7 @@ struct SwipeableView<Content: View>: View {
         onLeftAction: (() -> Void)?,
         onRightAction: (() -> Void)?,
         isEnabled: Bool,
+        isScrollingDisabled: Binding<Bool>,
         content: @escaping () -> Content
     ) {
         self.leftAction = leftAction
@@ -318,6 +325,7 @@ struct SwipeableView<Content: View>: View {
         self.onLeftAction = onLeftAction
         self.onRightAction = onRightAction
         self.isEnabled = isEnabled
+        self._isScrollingDisabled = isScrollingDisabled
         self.content = content
     }
 
@@ -332,18 +340,21 @@ struct SwipeableView<Content: View>: View {
                 .clipShape(RoundedRectangle(cornerRadius: isSwiping ? DS.Spacing.small : .zero))
                 .offset(x: swipeOffset)
                 .animation(.default, value: isSwiping)
-                .sensoryFeedback(.impact, trigger: crossedThreshold)
+                .sensoryFeedback(.impact, trigger: didCrossThreshold)
                 .onGeometryChange(
                     for: CGFloat.self,
                     of: { geometry in geometry.size.width },
                     action: { value in rowWidth = value }
                 )
                 .swipeActionGesture(
-                    isEnabled: isEnabled,
-                    DragGesture(minimumDistance: 8)
+                    isEnabled: isEnabled && !isFinishingSwipeWithAnimation,
+                    DragGesture(minimumDistance: 4)
                         .onChanged(onDragChanged)
                         .onEnded(onDragEnded)
                 )
+                .onChange(of: isSwiping) { _, isSwiping in
+                    isScrollingDisabled = isSwiping
+                }
         }
     }
 
@@ -352,19 +363,15 @@ struct SwipeableView<Content: View>: View {
         action.model.image
             .foregroundStyle(DS.Color.Icon.inverted)
             .square(size: 16)
-            .scaleEffect(crossedThreshold ? 1.25 : 1)
-            .animation(.default, value: crossedThreshold)
+            .scaleEffect(didCrossThreshold ? 1.3 : 1)
+            .animation(.default, value: didCrossThreshold)
             .frame(maxWidth: .infinity, alignment: action.side.actionAligment)
-            .padding(.horizontal, 28)
+            .padding(.horizontal, DS.Spacing.huge)
             .frame(maxHeight: .infinity)
             .background(action.model.color)
     }
 
     private func onDragChanged(_ value: DragGesture.Value) {
-        guard !endingAnimation else {
-            return
-        }
-
         let lockSlop: CGFloat = 10
         let dx = value.translation.width
         let dy = value.translation.height
@@ -372,7 +379,6 @@ struct SwipeableView<Content: View>: View {
         if axisLock == .none {
             if abs(dx) > abs(dy) + lockSlop {
                 axisLock = .horizontal
-                activeAction = dx >= 0 ? action(for: .right) : action(for: .left)
             } else if abs(dy) > abs(dx) + lockSlop {
                 axisLock = .vertical
             } else {
@@ -399,19 +405,11 @@ struct SwipeableView<Content: View>: View {
 
         guard axisLock == .horizontal else { return }
 
-        let didCross = crossedThreshold
-        if didCross {
-            let side: ActionSide = swipeOffset >= 0 ? .right : .left
-            switch side {
-            case .left: onLeftAction?()
-            case .right: onRightAction?()
-            }
-        }
+        triggerCallbackIfNeeded()
 
-        endingAnimation = true
-
+        isFinishingSwipeWithAnimation = true
         withAnimation {
-            if let activeAction, activeAction.model.isDesctructive, didCross {
+            if let activeAction, activeAction.model.isDesctructive, didCrossThreshold {
                 swipeOffset = fullSwipeOffset(for: activeAction.side)
             } else {
                 swipeOffset = 0
@@ -420,24 +418,26 @@ struct SwipeableView<Content: View>: View {
         } completion: {
             swipeOffset = 0
             activeAction = nil
-            endingAnimation = false
+            isFinishingSwipeWithAnimation = false
+        }
+    }
+
+    private func triggerCallbackIfNeeded() {
+        guard let activeAction else { return }
+        switch activeAction.side {
+        case .left:
+            onLeftAction?()
+        case .right:
+            onRightAction?()
         }
     }
 
     private func action(for side: ActionSide) -> ActiveAction? {
         switch side {
         case .right:
-            if let rightAction {
-                return .init(side: .right, model: rightAction)
-            } else {
-                return nil
-            }
+            rightAction.map { .init(side: side, model: $0) }
         case .left:
-            if let leftAction {
-                return .init(side: .left, model: leftAction)
-            } else {
-                return nil
-            }
+            leftAction.map { .init(side: side, model: $0) }
         }
     }
 
