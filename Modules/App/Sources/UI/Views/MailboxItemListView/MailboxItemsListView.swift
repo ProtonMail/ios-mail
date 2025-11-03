@@ -290,16 +290,24 @@ struct SwipeableView<Content: View>: View {
 
     enum ActionSide {
         case right, left
-        var aligment: Alignment { self == .right ? .leading : .trailing }
+
+        var actionAligment: Alignment {
+            switch self {
+            case .right:
+                .leading
+            case .left:
+                .trailing
+            }
+        }
     }
 
     private enum AxisLock { case none, horizontal, vertical }
 
-    let content: () -> Content
-    let leftAction: SwipeActionModel
-    let rightAction: SwipeActionModel
-    let onLeftAction: () -> Void
-    let onRightAction: () -> Void
+    private let content: () -> Content
+    private let leftAction: SwipeActionModel
+    private let rightAction: SwipeActionModel
+    private let onLeftAction: () -> Void
+    private let onRightAction: () -> Void
 
     @State private var swipeOffset: CGFloat = 0
     @State private var activeAction: ActiveAction?
@@ -307,9 +315,7 @@ struct SwipeableView<Content: View>: View {
     @State private var rowWidth: CGFloat = 0
     @State var isSwiping: Bool = false
 
-    // Tuning
     private let triggerFactor: CGFloat = 0.20
-    private let lockSlop: CGFloat = 10
 
     private var crossedThreshold: Bool {
         abs(swipeOffset) > rowWidth * triggerFactor
@@ -333,43 +339,49 @@ struct SwipeableView<Content: View>: View {
         ZStack {
             if let activeAction {
                 actionView(activeAction)
-                    .frame(maxHeight: .infinity)
-                    .background(activeAction.model.color)
             }
 
             content()
-                .clipShape(RoundedRectangle(cornerRadius: isSwiping ? 16 : 0))
+                .disabled(isSwiping)
+                .clipShape(RoundedRectangle(cornerRadius: isSwiping ? DS.Spacing.small : .zero))
                 .offset(x: swipeOffset)
                 .animation(.default, value: isSwiping)
                 .sensoryFeedback(.impact, trigger: crossedThreshold)
-                .contentShape(Rectangle())
-
+                .onGeometryChange(
+                    for: CGFloat.self,
+                    of: { geometry in geometry.size.width },
+                    action: { value in rowWidth = value }
+                )
+                .simultaneousGesture(  // It has to be gesture for iOS under 18 and over simulatouslyGesture
+                    DragGesture(minimumDistance: 8)
+                        .onChanged(onDragChanged)
+                        .onEnded(onDragEnded), including: .gesture
+                )
         }
-        .onGeometryChange(
-            for: CGFloat.self,
-            of: { geometry in geometry.size.width },
-            action: { value in rowWidth = value }
-        )
-        .simultaneousGesture(  // It has to be gesture for iOS under 18 and over simulatouslyGesture
-            DragGesture(minimumDistance: 8)
-                .onChanged(onDragChanged)
-                .onEnded(onDragEnded), including: .gesture
-        )
     }
 
-    // MARK: - Gesture
+    @ViewBuilder
+    private func actionView(_ action: ActiveAction) -> some View {
+        action.model.image
+            .foregroundStyle(DS.Color.Icon.inverted)
+            .square(size: 16)
+            .scaleEffect(crossedThreshold ? 1.25 : 1)
+            .animation(.default, value: crossedThreshold)
+            .frame(maxWidth: .infinity, alignment: action.side.actionAligment)
+            .padding(.horizontal, 28)
+            .frame(maxHeight: .infinity)
+            .background(action.model.color)
+    }
 
     private func onDragChanged(_ value: DragGesture.Value) {
+        let lockSlop: CGFloat = 10
         let dx = value.translation.width
         let dy = value.translation.height
 
         if axisLock == .none {
             if abs(dx) > abs(dy) + lockSlop {
                 axisLock = .horizontal
-                activeAction =
-                    dx >= 0
-                    ? .init(side: .right, model: rightAction)
-                    : .init(side: .left, model: leftAction)
+                activeAction = dx >= 0 ? action(for: .right) : action(for: .left)
             } else if abs(dy) > abs(dx) + lockSlop {
                 axisLock = .vertical
             } else {
@@ -382,9 +394,9 @@ struct SwipeableView<Content: View>: View {
         isSwiping = true
 
         if dx > 0 {
-            activeAction = .init(side: .right, model: rightAction)
+            activeAction = action(for: .right)
         } else if dx < 0 {
-            activeAction = .init(side: .left, model: leftAction)
+            activeAction = action(for: .left)
         }
     }
 
@@ -403,7 +415,7 @@ struct SwipeableView<Content: View>: View {
         }
         withAnimation {
             if let activeAction, activeAction.model.isDesctructive, didCross {
-                swipeOffset = activeAction.side == .left ? -rowWidth : rowWidth
+                swipeOffset = fullSwipeOffset(for: activeAction.side)
             } else {
                 swipeOffset = 0
             }
@@ -414,17 +426,22 @@ struct SwipeableView<Content: View>: View {
         }
     }
 
-    // MARK: - UI
+    private func action(for side: ActionSide) -> ActiveAction {
+        switch side {
+        case .right:
+            .init(side: .right, model: rightAction)
+        case .left:
+            .init(side: .left, model: leftAction)
+        }
+    }
 
-    @ViewBuilder
-    private func actionView(_ action: ActiveAction) -> some View {
-        action.model.image
-            .foregroundStyle(DS.Color.Icon.inverted)
-            .square(size: 16)
-            .scaleEffect(crossedThreshold ? 1.3 : 1)
-            .animation(.default, value: crossedThreshold)
-            .frame(maxWidth: .infinity, alignment: action.side.aligment)
-            .padding(.horizontal, 28)
+    private func fullSwipeOffset(for side: ActionSide) -> CGFloat {
+        switch side {
+        case .right:
+            rowWidth
+        case .left:
+            -rowWidth
+        }
     }
 }
 
@@ -432,15 +449,9 @@ extension AssignedSwipeAction {
 
     var isDestructive: Bool {
         switch self {
-        case .noAction:
-            false
-        case .moveTo(let swipeActionMoveToTarget):
+        case .moveTo:
             true
-        case .labelAs:
-            false
-        case .toggleStar:
-            false
-        case .toggleRead:
+        case .labelAs, .noAction, .toggleStar, .toggleRead:
             false
         }
     }
