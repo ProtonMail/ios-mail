@@ -295,6 +295,7 @@ struct SwipeableView<Content: View>: View {
     private let onLeftAction: (() -> Void)?
     private let onRightAction: (() -> Void)?
     private let isEnabled: Bool
+    private let animationDuration = 0.15
 
     @Binding private var isScrollingDisabled: Bool
 
@@ -339,7 +340,7 @@ struct SwipeableView<Content: View>: View {
                 .disabled(isSwiping)
                 .clipShape(RoundedRectangle(cornerRadius: isSwiping ? DS.Spacing.small : .zero))
                 .offset(x: swipeOffset)
-                .animation(.default, value: isSwiping)
+                .animation(.linear(duration: animationDuration), value: isSwiping)
                 .sensoryFeedback(.impact, trigger: didCrossThreshold)
                 .onGeometryChange(
                     for: CGFloat.self,
@@ -364,7 +365,7 @@ struct SwipeableView<Content: View>: View {
             .foregroundStyle(DS.Color.Icon.inverted)
             .square(size: 16)
             .scaleEffect(didCrossThreshold ? 1.3 : 1)
-            .animation(.default, value: didCrossThreshold)
+            .animation(.linear(duration: animationDuration), value: didCrossThreshold)
             .frame(maxWidth: .infinity, alignment: action.side.actionAligment)
             .padding(.horizontal, DS.Spacing.huge)
             .frame(maxHeight: .infinity)
@@ -408,7 +409,7 @@ struct SwipeableView<Content: View>: View {
         triggerCallbackIfNeeded()
 
         isFinishingSwipeWithAnimation = true
-        withAnimation {
+        withAnimation(.linear(duration: animationDuration)) {
             if let activeAction, activeAction.model.isDesctructive, didCrossThreshold {
                 swipeOffset = fullSwipeOffset(for: activeAction.side)
             } else {
@@ -423,7 +424,7 @@ struct SwipeableView<Content: View>: View {
     }
 
     private func triggerCallbackIfNeeded() {
-        guard let activeAction else { return }
+        guard let activeAction, didCrossThreshold else { return }
         switch activeAction.side {
         case .left:
             onLeftAction?()
