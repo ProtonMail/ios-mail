@@ -44,9 +44,6 @@ packages:
   InboxTesting:
     path: Modules/InboxTesting
     group: Modules
-  Nimble:
-    url: https://github.com/Quick/Nimble
-    from: "13.3.0"
   PaymentsNG:
     path: ProtonPackages/et-protoncore/platform/apple/Payments/PaymentsNG
     group: ProtonPackages
@@ -256,7 +253,6 @@ targets:
       - target: ProtonMail
       - package: InboxSnapshotTesting
       - package: InboxTesting
-      - package: Nimble
       - package: ViewInspector
       - package: proton_app_uniffi
     settings:

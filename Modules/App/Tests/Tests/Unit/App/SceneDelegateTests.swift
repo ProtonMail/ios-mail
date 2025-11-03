@@ -18,7 +18,6 @@
 @testable import ProtonMail
 import InboxCoreUI
 import InboxTesting
-import Nimble
 import SwiftUI
 import XCTest
 
@@ -55,7 +54,7 @@ final class SceneDelegateTests: BaseTestCase {
 
         sut.scene(scene, willConnectTo: scene.session, options: try connectionOptions())
 
-        expect(self.sut.windowScene) === scene
+        XCTAssert(sut.windowScene === scene)
     }
 
     func testOverlayWindow_WhenSetToastStateStore_IsConfiguredCorrectly() throws {
@@ -66,13 +65,10 @@ final class SceneDelegateTests: BaseTestCase {
 
         let overlayWindow = try XCTUnwrap(sut.overlayWindow)
 
-        expect(overlayWindow).to(beAKindOf(PassThroughWindow.self))
-        expect(overlayWindow.rootViewController).to(
-            beAKindOf(
-                UIHostingController<ModifiedContent<ToastSceneView, _EnvironmentKeyWritingModifier<Optional<ToastStateStore>>>>.self
-            ))
-        expect(overlayWindow.rootViewController?.view.backgroundColor) == .clear
-        expect(overlayWindow.isHidden) == false
+        XCTAssert(overlayWindow is PassThroughWindow)
+        XCTAssert(overlayWindow.rootViewController is UIHostingController<ModifiedContent<ToastSceneView, _EnvironmentKeyWritingModifier<Optional<ToastStateStore>>>>)
+        XCTAssertEqual(overlayWindow.rootViewController?.view.backgroundColor, .clear)
+        XCTAssertFalse(overlayWindow.isHidden)
     }
 
     func testWindowScene_WhenAppProtectionIsSet_WhenUserEntersForegroundTwoTimes_ItUnlockAndLockTheApp() throws {
@@ -86,20 +82,18 @@ final class SceneDelegateTests: BaseTestCase {
 
         let appProtectionWindow = try XCTUnwrap(sut.appProtectionWindow)
 
-        expect(appProtectionWindow).toNot(beNil())
-        expect(appProtectionWindow.isHidden).to(beFalse())
-        expect(appProtectionWindow.rootViewController).toNot(beNil())
+        XCTAssertFalse(appProtectionWindow.isHidden)
+        XCTAssertNotNil(appProtectionWindow.rootViewController)
 
         sut.appProtectionStore.dismissLock()
 
-        expect(appProtectionWindow.isHidden).to(beTrue())
-        expect(appProtectionWindow.rootViewController).to(beNil())
+        XCTAssertTrue(appProtectionWindow.isHidden)
+        XCTAssertNil(appProtectionWindow.rootViewController)
 
         sut.sceneWillEnterForeground(scene)
 
-        expect(appProtectionWindow).toNot(beNil())
-        expect(appProtectionWindow.isHidden).to(beFalse())
-        expect(appProtectionWindow.rootViewController).toNot(beNil())
+        XCTAssertFalse(appProtectionWindow.isHidden)
+        XCTAssertNotNil(appProtectionWindow.rootViewController)
     }
 
     func testWindowScene_WhenUserEntersBackground_ItCoversAppContent() throws {
@@ -111,13 +105,9 @@ final class SceneDelegateTests: BaseTestCase {
 
         let appProtectionWindow = try XCTUnwrap(sut.appProtectionWindow)
 
-        expect(appProtectionWindow).toNot(beNil())
-        expect(appProtectionWindow.isHidden).to(beFalse())
-        expect(appProtectionWindow.rootViewController).toNot(beNil())
-        expect(appProtectionWindow.rootViewController).to(
-            beAKindOf(
-                UIHostingController<BlurredCoverView>.self
-            ))
+        XCTAssertFalse(appProtectionWindow.isHidden)
+        XCTAssertNotNil(appProtectionWindow.rootViewController)
+        XCTAssert(appProtectionWindow.rootViewController is UIHostingController<BlurredCoverView>)
     }
 
     // MARK: - Private
