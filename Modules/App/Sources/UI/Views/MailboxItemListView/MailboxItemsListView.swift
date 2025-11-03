@@ -148,14 +148,14 @@ struct MailboxItemsListView<EmptyView: View>: View {
         }
         .listRowBackground(Color.clear)
         .listRowInsets(
-            .init(top: DS.Spacing.tiny, leading: DS.Spacing.tiny, bottom: DS.Spacing.tiny, trailing: 0)
+            .init(top: DS.Spacing.tiny, leading: .zero, bottom: DS.Spacing.tiny, trailing: .zero)
         )
         .listRowSeparator(.hidden)
         .compositingGroup()
         .clipShape(
             .rect(
-                topLeadingRadius: 20,
-                bottomLeadingRadius: 20,
+                topLeadingRadius: config.selectionState.hasItems ? 20 : 0,
+                bottomLeadingRadius: config.selectionState.hasItems ? 20 : 0,
                 bottomTrailingRadius: 0,
                 topTrailingRadius: 0
             )
@@ -338,11 +338,11 @@ struct SwipeableView<Content: View>: View {
 
             content()
                 .disabled(isSwiping)
-                .clipShape(RoundedRectangle(cornerRadius: isSwiping ? DS.Spacing.small : .zero))
                 .overlay(
                     RoundedRectangle(cornerRadius: isSwiping ? DS.Spacing.small : .zero)
-                        .stroke(DS.Color.Border.light, lineWidth: isSwiping ? 1 : 0)
+                        .stroke(DS.Color.Border.light, lineWidth: isSwiping ? 2 : 0)
                 )
+                .clipShape(RoundedRectangle(cornerRadius: isSwiping ? DS.Spacing.small : .zero))
                 .offset(x: swipeOffset)
                 .animation(.linear(duration: animationDuration), value: isSwiping)
                 .sensoryFeedback(.impact, trigger: didCrossThreshold)
