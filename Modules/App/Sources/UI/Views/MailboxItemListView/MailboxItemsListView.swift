@@ -295,7 +295,7 @@ struct SwipeableView<Content: View>: View {
     private let onLeftAction: (() -> Void)?
     private let onRightAction: (() -> Void)?
     private let isEnabled: Bool
-    private let animationDuration = 0.15
+    private let animationDuration = 0.25
 
     @Binding private var isScrollingDisabled: Bool
 
@@ -420,7 +420,7 @@ struct SwipeableView<Content: View>: View {
         triggerCallbackIfNeeded()
 
         isFinishingSwipeWithAnimation = true
-        withAnimation(.linear(duration: animationDuration)) {
+        withAnimation(.easeOut(duration: animationDuration)) {
             if let activeAction, activeAction.model.isDesctructive, didCrossThreshold {
                 swipeOffset = fullSwipeOffset(for: activeAction.side)
             } else {
