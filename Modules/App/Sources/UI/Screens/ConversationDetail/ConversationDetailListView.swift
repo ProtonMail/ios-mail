@@ -22,6 +22,7 @@ import proton_app_uniffi
 import SwiftUI
 
 struct ConversationDetailListView: View {
+    @Environment(\.dynamicTypeSize) var dynamicTypeSize
     @EnvironmentObject var toastStateStore: ToastStateStore
     @ObservedObject private var model: ConversationDetailModel
     private let mailUserSession: MailUserSession
@@ -114,6 +115,12 @@ struct ConversationDetailListView: View {
                         .padding(.bottom, messages.count - 1 == index ? 0 : -DS.Spacing.extraLarge)
                 }
             }
+            /*
+             When dynamic type size is reduced, the web views do not shrink properly and instead they remain stretched to the size they previously occupied.
+             Also, the overall scroll position of the conversation is wrong.
+             The easiest - though not very elegant - way to solve this is to recreate the whole list.
+             */
+            .id(dynamicTypeSize)
             .onAppear {
                 if let scrollToMessage = model.scrollToMessage {
                     scrollView.scrollTo(scrollToMessage, anchor: .top)

@@ -26,7 +26,6 @@ extension EnvironmentValues {
 }
 
 struct MessageBodyReaderView: UIViewRepresentable {
-    @Environment(\.webViewPrintingRegistrar) var webViewPrintingRegistrar
     @Binding var bodyContentHeight: CGFloat
     let body: MessageBody.HTML
     let viewWidth: CGFloat
@@ -54,11 +53,23 @@ struct MessageBodyReaderView: UIViewRepresentable {
             config.userContentController.add(context.coordinator, name: handlerName.rawValue)
         }
 
-        let userScripts: [AppScript] = [
-            .adjustLayoutAndObserveHeight(viewWidth: viewWidth),
-            .handleEmptyBody,
+        for messageName in DynamicTypeSizeMessageHandler.MessageName.allCases {
+            config.userContentController.addScriptMessageHandler(
+                context.coordinator.dynamicTypeSizeMessageHandler,
+                contentWorld: .page,
+                name: messageName.rawValue
+            )
+        }
+
+        var userScripts: [AppScript] = [
             .redirectConsoleLogToAppLogger,
+            .handleEmptyBody,
+            .adjustLayoutAndObserveHeight(viewWidth: viewWidth),
         ]
+
+        if context.environment.dynamicTypeSize != .large {
+            userScripts.append(.dynamicTypeSize)
+        }
 
         userScripts
             .filter(\.isEnabled)
@@ -105,6 +116,21 @@ struct MessageBodyReaderView: UIViewRepresentable {
                         height: fit-content !important;
                     }
                 }
+
+                @media not print {
+                    body {
+                        font: -apple-system-body;
+                    }
+                }
+
+                @media print {
+                    [style*="--dts-font-size-scale-factor"] {
+                        --dts-font-size-scale-factor: 1 !important;
+                    }
+                    [style*="--dts-line-height-scale-factor"] {
+                        --dts-line-height-scale-factor: 1 !important;
+                    }
+                }
             </style>
             """
         let fixedBody = body.rawBody.replacingOccurrences(of: "</head>", with: "\(style)</head>")
@@ -121,6 +147,7 @@ extension MessageBodyReaderView {
 
     class Coordinator: NSObject, WKNavigationDelegate, WKScriptMessageHandler, WKUIDelegate {
         let parent: MessageBodyReaderView
+        let dynamicTypeSizeMessageHandler = DynamicTypeSizeMessageHandler()
         var urlOpener: URLOpenerProtocol?
         private var previouslyReceivedBody: MessageBody.HTML?
         private weak var webView: WKWebView?
@@ -291,9 +318,19 @@ extension AppScript {
             console.log = function(message) {
                 window.webkit.messageHandlers.\(HandlerName.consoleLog.rawValue).postMessage(message)
             };
+
+            console.error = function(message) {
+                window.webkit.messageHandlers.\(HandlerName.consoleLog.rawValue).postMessage(message)
+            };
             """,
         isEnabled: WKWebView.inspectabilityEnabled
     )
+
+    fileprivate static let dynamicTypeSize: Self = {
+        let scriptURL = Bundle.main.url(forResource: "DynamicTypeSize", withExtension: "js")!
+        let source = try! String(contentsOf: scriptURL, encoding: .utf8)
+        return .init(source: source)
+    }()
 }
 
 private enum HandlerName: String, CaseIterable {
