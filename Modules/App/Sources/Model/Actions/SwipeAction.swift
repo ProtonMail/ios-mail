@@ -42,12 +42,14 @@ extension AssignedSwipeAction {
         switch self {
         case .moveTo(.moveToSystemLabel(label: .trash, _)):
             DS.Color.Notification.error
-        case .labelAs, .noAction, .moveTo:
-            DS.Color.Icon.hint
-        case .toggleStar:
+        case .moveTo(.moveToSystemLabel(label: .spam, _)):
             DS.Color.Notification.warning
-        case .toggleRead:
-            DS.Color.Brand.norm
+        case .moveTo(.moveToSystemLabel(label: .archive, _)):
+            DS.Color.Notification.success
+        case .labelAs, .noAction, .moveTo, .toggleRead:
+            DS.Color.Brand.minus10
+        case .toggleStar:
+            DS.Color.Star.selected
         }
     }
 }
