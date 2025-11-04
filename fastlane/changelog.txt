@@ -1,2 +1,2 @@
-Stability improvements and bugfixes.
+Stability improvements and bug fixes.
 
