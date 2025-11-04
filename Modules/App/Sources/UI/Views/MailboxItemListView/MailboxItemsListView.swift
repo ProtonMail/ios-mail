@@ -346,7 +346,7 @@ struct SwipeableView<Content: View>: View {
                 .clipShape(RoundedRectangle(cornerRadius: isSwiping ? DS.Spacing.small : .zero))
                 .offset(x: swipeOffset)
                 .animation(.linear(duration: animationDuration), value: isSwiping)
-                .sensoryFeedback(.impact, trigger: didCrossThreshold)
+                .sensoryFeedback(.impact, trigger: didCrossThreshold, condition: { _, _ in !isFinishingSwipeWithAnimation })
                 .onGeometryChange(
                     for: CGFloat.self,
                     of: { geometry in geometry.size.width },
