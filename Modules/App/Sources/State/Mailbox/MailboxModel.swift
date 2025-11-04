@@ -41,6 +41,7 @@ final class MailboxModel: ObservableObject {
     @ObservedObject private var appRoute: AppRouteState
     @Published private(set) var mailbox: Mailbox?
     let draftPresenter: DraftPresenter
+    let loadingBarPresenter = LoadingBarPresenter()
     let goToNextConversationNotifier = GoToNextPageNotifier()
 
     private var messageScroller: MessageScroller?
@@ -291,8 +292,7 @@ extension MailboxModel {
                     callback: MessageScrollerLiveQueryCallbackkWrapper { [weak self] update in
                         Task {
                             await self?.handleMessageScroller(update: update)
-                            // FIXME: - Fix spam / trash filter
-                            //                            await self?.updateSelectedMailboxIfNeeded()
+                            await self?.updateSelectedMailboxIfNeeded()
                         }
                     }
                 ).get()
@@ -302,8 +302,7 @@ extension MailboxModel {
                     callback: ConversationScrollerLiveQueryCallbackkWrapper { [weak self] update in
                         Task {
                             await self?.handleConversationScroller(update: update)
-                            // FIXME: - Fix spam / trash filter
-                            //                            await self?.updateSelectedMailboxIfNeeded()
+                            await self?.updateSelectedMailboxIfNeeded()
                         }
                     }
                 ).get()
@@ -317,8 +316,7 @@ extension MailboxModel {
                 }
             }
             await unreadCountLiveQuery?.setUpLiveQuery()
-            // FIXME: - Fix spam / trash filter
-            //            try await setUpSpamTrashToggleVisibility()
+            try await setUpSpamTrashToggleVisibility()
         } catch {
             AppLogger.log(error: error, category: .mailbox)
             toast = .error(message: L10n.Mailbox.Error.mailboxErrorMessage.string, duration: .long)
@@ -371,9 +369,10 @@ extension MailboxModel {
             await handleConversationsList(update: listUpdate)
         case .status(let statusUpdate):
             switch statusUpdate {
-            case .fetchNewStart, .fetchNewEnd:
-                // FIXME: - Show / hide loading line animation
-                break
+            case .fetchNewStart:
+                loadingBarPresenter.show()
+            case .fetchNewEnd:
+                loadingBarPresenter.hide()
             }
         case .error(let error):
             AppLogger.log(error: error, category: .mailbox)
@@ -415,9 +414,10 @@ extension MailboxModel {
             await handleMessagesList(update: listUpdate)
         case .status(let statusUpdate):
             switch statusUpdate {
-            case .fetchNewStart, .fetchNewEnd:
-                // FIXME: - Show / hide loading line animation
-                break
+            case .fetchNewStart:
+                loadingBarPresenter.show()
+            case .fetchNewEnd:
+                loadingBarPresenter.hide()
             }
         case .error(let error):
             AppLogger.log(error: error, category: .mailbox)

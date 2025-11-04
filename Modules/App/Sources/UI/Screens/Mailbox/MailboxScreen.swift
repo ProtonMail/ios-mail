@@ -48,7 +48,7 @@ struct MailboxScreen: View {
         draftPresenter: DraftPresenter,
         introductionPromptsDisabled: Bool = false
     ) {
-        self._mailboxModel = StateObject(
+        _mailboxModel = StateObject(
             wrappedValue: MailboxModel(
                 mailSettingsLiveQuery: mailSettingsLiveQuery,
                 appRoute: appRoute,
@@ -103,7 +103,7 @@ struct MailboxScreen: View {
                     }
                 }
                 .fullScreenCover(isPresented: $mailboxModel.state.isSearchPresented) {
-                    SearchScreen(userSession: userSession)
+                    SearchScreen(userSession: userSession, loadingBarPresenter: mailboxModel.loadingBarPresenter)
                 }
                 .fullScreenCover(item: $mailboxModel.state.attachmentPresented) { config in
                     AttachmentView(config: config)
@@ -145,6 +145,7 @@ struct MailboxScreen: View {
         .environment(\.confirmLink, mailboxModel.state.confirmLink)
         .environment(\.goToNextPageNotifier, mailboxModel.goToNextConversationNotifier)
         .environment(\.proceedAfterMove, mailboxModel.proceedAfterMove)
+        .environmentObject(mailboxModel.loadingBarPresenter)
     }
 
     private func onboardingScreenDismissed() {

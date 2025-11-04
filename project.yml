@@ -44,9 +44,6 @@ packages:
   InboxTesting:
     path: Modules/InboxTesting
     group: Modules
-  Nimble:
-    url: https://github.com/Quick/Nimble
-    from: "13.3.0"
   PaymentsNG:
     path: ProtonPackages/et-protoncore/platform/apple/Payments/PaymentsNG
     group: ProtonPackages
@@ -95,7 +92,7 @@ settings:
     CODE_SIGN_STYLE: Manual
     CURRENT_PROJECT_VERSION: 1
     DEVELOPMENT_TEAM: 2SB5Z68H26
-    MARKETING_VERSION: 7.2.1
+    MARKETING_VERSION: 7.3.0
     SWIFT_STRICT_CONCURRENCY: complete
   configs:
     Debug:
@@ -256,7 +253,6 @@ targets:
       - target: ProtonMail
       - package: InboxSnapshotTesting
       - package: InboxTesting
-      - package: Nimble
       - package: ViewInspector
       - package: proton_app_uniffi
     settings:

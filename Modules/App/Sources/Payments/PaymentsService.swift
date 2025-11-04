@@ -23,36 +23,22 @@ import proton_app_uniffi
 @MainActor
 final class PaymentsService: ApplicationServiceSetUp {
     private let sessionState: AnyPublisher<SessionState, Never>
-    private let transactionStatus: AnyPublisher<TransactionType, Never>
     private let transactionsObserver: TransactionsObserverProviding
-    private let refreshUserData: () async -> Void
 
     init(
         sessionState: any Publisher<SessionState, Never>,
-        transactionStatus: any Publisher<TransactionType, Never>,
-        transactionsObserver: TransactionsObserverProviding,
-        refreshUserData: @escaping () async -> Void
+        transactionsObserver: TransactionsObserverProviding
     ) {
         self.sessionState = sessionState.eraseToAnyPublisher()
-        self.transactionStatus = transactionStatus.eraseToAnyPublisher()
         self.transactionsObserver = transactionsObserver
-        self.refreshUserData = refreshUserData
     }
 
     convenience init(appContext: AppContext) {
-        let transactionsObserver = TransactionsObserver.shared
-
-        self.init(
-            sessionState: appContext.$sessionState,
-            transactionStatus: transactionsObserver.$transactionStatus,
-            transactionsObserver: transactionsObserver,
-            refreshUserData: appContext.pollEventsAsync
-        )
+        self.init(sessionState: appContext.$sessionState, transactionsObserver: TransactionsObserver.shared)
     }
 
     func setUpService() {
         startListeningToUserSessionChanges()
-        startListeningToSuccessfulPurchases()
     }
 
     @discardableResult
@@ -77,17 +63,6 @@ final class PaymentsService: ApplicationServiceSetUp {
                         AppLogger.log(error: error, category: .payments)
                     }
                 }
-            }
-        }
-    }
-
-    @discardableResult
-    func startListeningToSuccessfulPurchases() -> Task<Void, Never> {
-        let refreshTriggers = transactionStatus.filter { $0 == .successful }.map { _ in }.valuesWithBuffering
-
-        return .init {
-            for await _ in refreshTriggers {
-                await refreshUserData()
             }
         }
     }

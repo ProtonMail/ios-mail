@@ -26,7 +26,7 @@ extension Bundle {
 
     /// Returns the version of the app without build number e.g. "7.0.1"
     public var bundleShortVersion: String {
-        forceCast(infoDictionary?["CFBundleShortVersionString"], String.self)
+        infoDictionary?["CFBundleShortVersionString"] as! String
     }
 
     /// Returns the build version of the app. If it's a DEBUG execution returns "debug"
@@ -34,7 +34,7 @@ extension Bundle {
         #if DEBUG
             return "debug"
         #else
-            forceCast(infoDictionary?["CFBundleVersion"], String.self)
+            infoDictionary?["CFBundleVersion"] as! String
         #endif
     }
 }

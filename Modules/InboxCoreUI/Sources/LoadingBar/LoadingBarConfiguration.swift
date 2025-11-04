@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Proton Technologies AG
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -15,17 +15,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+import SwiftUI
 
-@discardableResult
-func forceCast<Value, ExpectedType>(_ value: Value, _ type: ExpectedType.Type) -> ExpectedType {
-    guard let castedValue = value as? ExpectedType else {
-        let message = """
-            Could not cast value: <\(value)> of type: <\(Swift.type(of: value))> to expected type: <\(ExpectedType.self)>.
-            """
-        AppLogger.log(message: message)
-        fatalError(message)
-    }
-
-    return castedValue
+struct LoadingBarConfiguration {
+    /// Duration of a single animation cycle (seconds).
+    let cycleDuration: TimeInterval = 2.5
+    /// UX tolerance near the end of a cycle (seconds).
+    /// If stop occurs within this window, one extra cycle is added.
+    let tolerance: TimeInterval = 0.05
+    /// Numeric tolerance for detecting exact cycle boundaries (fractional).
+    let fractionalTolerance: Double = 1e-6
 }

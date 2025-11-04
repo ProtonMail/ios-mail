@@ -19,13 +19,13 @@
 import proton_app_uniffi
 
 protocol EventLoopPolling {
-    func forceEventLoopPoll() async -> VoidEventResult
+    func forceEventLoopPollAndWait() async -> VoidEventResult
 }
 
 extension MailUserSession: EventLoopPolling {}
 
 struct DummyEventLoopPolling: EventLoopPolling {
-    func forceEventLoopPoll() async -> VoidEventResult {
+    func forceEventLoopPollAndWait() async -> VoidEventResult {
         .ok
     }
 }

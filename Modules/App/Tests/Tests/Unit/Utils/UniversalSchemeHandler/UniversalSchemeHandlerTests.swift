@@ -17,13 +17,12 @@
 
 @testable import ProtonMail
 @testable import InboxCore
-@preconcurrency import Nimble
 import proton_app_uniffi
+import InboxTesting
 import Testing
 import WebKit
 
 @MainActor
-@Suite(.serialized)  // reason for serialized: https://github.com/Quick/Nimble/issues/1188
 final class UniversalSchemeHandlerTests {
     private let imageProxySpy = ImageProxySpy()
     private var urlSchemeTaskSpy: WKURLSchemeTaskSpy!
@@ -31,18 +30,18 @@ final class UniversalSchemeHandlerTests {
     private lazy var sut = UniversalSchemeHandler(imageProxy: imageProxySpy)
 
     @Test
-    func testFetchingEmbeddedImage_WhenImageIsMissing_ItReturnsError() async {
+    func testFetchingEmbeddedImage_WhenImageIsMissing_ItReturnsError() async throws {
         let cidValue = "abcdef"
         imageProxySpy.stubbedResult = .error(.unexpected(.unknown))
         urlSchemeTaskSpy = .init(request: .init(url: .cid(cidValue)))
-        sut.webView(WKWebView(), start: urlSchemeTaskSpy)
+        self.sut.webView(WKWebView(), start: urlSchemeTaskSpy!)
 
-        await expect(self.urlSchemeTaskSpy.didInvokeFailWithError.count).toEventually(equal(1))
+        try await #expect(waitUntil(property: \.didInvokeFailWithError, ofObjectChanges: urlSchemeTaskSpy).count == 1)
         #expect(urlSchemeTaskSpy.didInvokeFailWithError.compactMap(\.asProtonError) == [.unexpected(.unknown)])
     }
 
     @Test
-    func testFetchingEmbeddedImage_WhenImageIsLoaded_ItReturnsImage() async {
+    func testFetchingEmbeddedImage_WhenImageIsLoaded_ItReturnsImage() async throws {
         let cidValue = "abcdef"
         let url = URL.cid(cidValue)
         let image = AttachmentData.testData
@@ -50,7 +49,7 @@ final class UniversalSchemeHandlerTests {
         imageProxySpy.stubbedResult = .ok(image)
         sut.webView(WKWebView(), start: urlSchemeTaskSpy)
 
-        await expect(self.urlSchemeTaskSpy.didFinishInvokeCount).toEventually(equal(1))
+        try await #expect(waitUntil(property: \.didFinishInvokeCount, ofObjectChanges: urlSchemeTaskSpy) == 1)
         #expect(urlSchemeTaskSpy.didInvokeDidReceiveResponse.map(\.url) == [url])
         #expect(urlSchemeTaskSpy.didInvokeDidReceiveResponse.map(\.mimeType) == ["image/png"])
         #expect(urlSchemeTaskSpy.didInvokeDidReceiveResponse.map(\.expectedContentLength) == [Int64(image.data.count)])
@@ -84,8 +83,23 @@ final class UniversalSchemeHandlerTests {
         #expect(urlSchemeTaskSpy.didInvokeDidReceivedData == [])
         #expect(urlSchemeTaskSpy.didInvokeFailWithError.count == 0)
     }
+
+    private nonisolated func waitUntil<Object, Property>(property: KeyPath<Object, Property>, ofObjectChanges object: Object) async throws -> Property {
+        try await withTimeout {
+            await withCheckedContinuation { continuation in
+                withObservationTracking {
+                    _ = object[keyPath: property]
+                } onChange: {
+                    continuation.resume()
+                }
+            }
+        }
+
+        return object[keyPath: property]
+    }
 }
 
+@Observable
 private class WKURLSchemeTaskSpy: NSObject, WKURLSchemeTask {
 
     private(set) var didInvokeDidReceiveResponse: [URLResponse] = []
@@ -131,10 +145,6 @@ private extension Error {
 
     var asProtonError: ProtonError? {
         self as? ProtonError
-    }
-
-    var asHandlerError: UniversalSchemeHandler.HandlerError? {
-        self as? UniversalSchemeHandler.HandlerError
     }
 
 }

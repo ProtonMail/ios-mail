@@ -30,6 +30,7 @@ final class SearchModel: ObservableObject, @unchecked Sendable {
 
     private(set) var mailbox: Mailbox!
     private var searchScroller: SearchScroller?
+    private let loadingBarPresenter: LoadingBarPresenter
 
     lazy var paginatedDataSource = PaginatedListDataSource<MailboxItemCellUIModel>(
         fetchMore: { [weak self] isFirstPage in self?.fetchNextPage(isFirstPage: isFirstPage) }
@@ -39,10 +40,15 @@ final class SearchModel: ObservableObject, @unchecked Sendable {
     private lazy var starActionPerformer = StarActionPerformer(mailUserSession: dependencies.appContext.userSession)
     private var cancellables: Set<AnyCancellable> = .init()
 
-    init(searchScroller: SearchScroller? = nil, dependencies: Dependencies = .init()) {
+    init(
+        searchScroller: SearchScroller? = nil,
+        dependencies: Dependencies = .init(),
+        loadingBarPresenter: LoadingBarPresenter
+    ) {
         AppLogger.logTemporarily(message: "SearchModel init", category: .search)
         self.searchScroller = searchScroller
         self.dependencies = dependencies
+        self.loadingBarPresenter = loadingBarPresenter
         setUpBindings()
         initialiseMailbox()
     }
@@ -110,7 +116,7 @@ final class SearchModel: ObservableObject, @unchecked Sendable {
             options: .init(keywords: query),
             callback: MessageScrollerLiveQueryCallbackkWrapper { [weak self] update in
                 Task {
-                    await self?.handleSearchScroller(update: update)
+                    await self?.trigger(update: update)
                 }
             }
         )
@@ -119,8 +125,7 @@ final class SearchModel: ObservableObject, @unchecked Sendable {
         case .ok(let searchScroller):
             self.searchScroller = searchScroller
             paginatedDataSource.fetchInitialPage()
-        // FIXME: - Fix spam / trash filter
-        //            await setUpSpamTrashToggleVisibility()
+            await setUpSpamTrashToggleVisibility()
         case .error(let error):
             AppLogger.log(error: error, category: .search)
         }
@@ -139,8 +144,7 @@ final class SearchModel: ObservableObject, @unchecked Sendable {
 
     private func trigger(update: MessageScrollerUpdate) async {
         await handleSearchScroller(update: update)
-        // FIXME: - Fix spam / trash filter
-        //        await updateSelectedMailboxIfNeeded()
+        await updateSelectedMailboxIfNeeded()
     }
 
     /// Updates `selectedMailbox` if the currently loaded `mailbox` has changed underneath.
@@ -201,9 +205,10 @@ final class SearchModel: ObservableObject, @unchecked Sendable {
             await handleMessagesList(update: listUpdate)
         case .status(let statusUpdate):
             switch statusUpdate {
-            case .fetchNewStart, .fetchNewEnd:
-                // FIXME: - Show / hide loading line animation
-                break
+            case .fetchNewStart:
+                loadingBarPresenter.show()
+            case .fetchNewEnd:
+                loadingBarPresenter.hide()
             }
         case .error(let error):
             AppLogger.log(error: error, category: .mailbox)
