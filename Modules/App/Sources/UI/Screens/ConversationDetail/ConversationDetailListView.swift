@@ -156,7 +156,6 @@ struct ConversationDetailListView: View {
     private func expandedMessageCell(uiModel: ExpandedMessageCellUIModel) -> some View {
         ExpandedMessageCell(
             mailbox: model.mailbox.unsafelyUnwrapped,
-            mailUserSession: mailUserSession,
             uiModel: uiModel,
             draftPresenter: draftPresenter,
             messageAppearanceOverrideStore: model.messageAppearanceOverrideStore,

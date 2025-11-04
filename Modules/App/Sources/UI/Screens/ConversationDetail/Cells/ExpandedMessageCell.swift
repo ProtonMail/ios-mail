@@ -24,7 +24,6 @@ import SwiftUI
 
 struct ExpandedMessageCell: View {
     private let mailbox: Mailbox
-    private let mailUserSession: MailUserSession
     private let uiModel: ExpandedMessageCellUIModel
     private let draftPresenter: RecipientDraftPresenter
     private let messageAppearanceOverrideStore: MessageAppearanceOverrideStore
@@ -42,7 +41,6 @@ struct ExpandedMessageCell: View {
 
     init(
         mailbox: Mailbox,
-        mailUserSession: MailUserSession,
         uiModel: ExpandedMessageCellUIModel,
         draftPresenter: RecipientDraftPresenter,
         messageAppearanceOverrideStore: MessageAppearanceOverrideStore,
@@ -52,7 +50,6 @@ struct ExpandedMessageCell: View {
         htmlDisplayed: @escaping () -> Void
     ) {
         self.mailbox = mailbox
-        self.mailUserSession = mailUserSession
         self.uiModel = uiModel
         self.draftPresenter = draftPresenter
         self.messageAppearanceOverrideStore = messageAppearanceOverrideStore
@@ -67,7 +64,6 @@ struct ExpandedMessageCell: View {
             MessageDetailsView(
                 uiModel: uiModel.messageDetails,
                 mailbox: mailbox,
-                mailUserSession: mailUserSession,
                 messageAppearanceOverrideStore: messageAppearanceOverrideStore,
                 actionButtonsState: actionButtonsState,
                 onEvent: { event in
@@ -163,7 +159,6 @@ enum ExpandedMessageCellEvent {
     return VStack(spacing: 0) {
         ExpandedMessageCell(
             mailbox: .dummy,
-            mailUserSession: .dummy,
             uiModel: .init(
                 id: .init(value: 0),
                 unread: false,
@@ -178,7 +173,6 @@ enum ExpandedMessageCellEvent {
         )
         ExpandedMessageCell(
             mailbox: .dummy,
-            mailUserSession: .dummy,
             uiModel: .init(
                 id: .init(value: 1),
                 unread: false,

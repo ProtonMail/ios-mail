@@ -18,7 +18,6 @@
 import SwiftUI
 
 struct LayoutData: Equatable {
-    let size: CGSize
     let frameInCoordinateSpace: CGRect
 }
 
@@ -32,7 +31,6 @@ extension View {
                         .preference(
                             key: SizePreferenceKey.self,
                             value: LayoutData(
-                                size: geometryProxy.size,
                                 frameInCoordinateSpace: geometryProxy.frame(in: coordinateSpace),
                             )
                         )
@@ -43,6 +41,6 @@ extension View {
 }
 
 private struct SizePreferenceKey: PreferenceKey {
-    static let defaultValue = LayoutData(size: .zero, frameInCoordinateSpace: CGRect.zero)
+    static let defaultValue = LayoutData(frameInCoordinateSpace: CGRect.zero)
     static func reduce(value: inout LayoutData, nextValue: () -> LayoutData) {}
 }

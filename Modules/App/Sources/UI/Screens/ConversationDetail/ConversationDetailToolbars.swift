@@ -47,7 +47,6 @@ private struct ConversationDetailToolbars: ViewModifier {
             .conversationBottomToolbar(
                 actions: model.conversationToolbarActions,
                 mailbox: { model.mailbox.unsafelyUnwrapped },
-                mailUserSession: AppContext.shared.userSession,
                 messageAppearanceOverrideStore: model.messageAppearanceOverrideStore,
                 editToolbarTapped: { toolbarType in model.actionSheets.editToolbar = toolbarType },
                 messageActionSelected: { action in

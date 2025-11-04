@@ -24,7 +24,6 @@ public protocol WebViewMemoryPressureProtocol: AnyObject {
 }
 
 public final class WebViewMemoryPressureHandler: WebViewMemoryPressureProtocol {
-    private let notificationCenter: NotificationCenter
     private let loggerCategory: AppLogger.Category
     private var contentReload: (() -> Void)?
     private var pendingContentReload: Bool = false
@@ -32,7 +31,6 @@ public final class WebViewMemoryPressureHandler: WebViewMemoryPressureProtocol {
 
     public init(loggerCategory: AppLogger.Category, notificationCenter: NotificationCenter = .default) {
         self.loggerCategory = loggerCategory
-        self.notificationCenter = notificationCenter
         notificationCenter.publisher(for: UIApplication.willEnterForegroundNotification)
             .sink { [weak self] _ in self?.appWillEnterForeground() }
             .store(in: &cancellables)

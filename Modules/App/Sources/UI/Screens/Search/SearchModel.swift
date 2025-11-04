@@ -308,7 +308,7 @@ extension SearchModel {
         }
 
         let action = isStarred ? starActionPerformer.star : starActionPerformer.unstar
-        action([item.id], .message, nil)
+        action([item.id], .message)
     }
 
     @MainActor

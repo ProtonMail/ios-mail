@@ -33,7 +33,6 @@ struct MessageDetailsView: View {
     @State private(set) var isHeaderCollapsed: Bool = true
     let uiModel: MessageDetailsUIModel
     let mailbox: Mailbox
-    let mailUserSession: MailUserSession
     let messageAppearanceOverrideStore: MessageAppearanceOverrideStore
     let actionButtonsState: ActionButtonsState
     let onEvent: (MessageDetailsEvent) -> Void
@@ -472,7 +471,6 @@ extension Array where Element == MessageDetail.Recipient {
         isHeaderCollapsed: false,
         uiModel: model,
         mailbox: .dummy,
-        mailUserSession: .dummy,
         messageAppearanceOverrideStore: .init(),
         actionButtonsState: .enabled,
         onEvent: { _ in }

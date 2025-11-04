@@ -16,7 +16,6 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import InboxIAP
-import proton_app_uniffi
 
 extension UpsellConfiguration {
     static let mail: Self = .init(

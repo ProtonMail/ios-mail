@@ -18,7 +18,6 @@
 import Combine
 import Foundation
 import InboxCore
-import proton_app_uniffi
 
 @MainActor
 final class AppRouteState: ObservableObject, Sendable {
