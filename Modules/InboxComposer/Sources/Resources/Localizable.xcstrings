@@ -4121,6 +4121,12 @@
             "state" : "translated",
             "value" : "Proton Mail depolama alanınız dolu olduğu için ek dosya yüklenemiyor. Yer açın veya tarifenizi yükseltin."
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Неможливо вивантажити вкладення, оскільки ваше сховище Proton Mail заповнене. Звільніть місце або покращте свій тариф."
+          }
         }
       }
     },
@@ -9241,6 +9247,12 @@
             "state" : "translated",
             "value" : "İleti boyutu çok büyük. Lütfen ek dosyalarınızın boyutunu azaltın."
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Повідомлення занадто велике для надсилання. Зменште розмір ваших вкладень."
+          }
         }
       }
     },
@@ -10851,6 +10863,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alıcıların hiçbirinde varsayılan olarak geçerlilik süresi desteklenmiyor. Proton Mail kullanmayan alıcılarda geçerlilik süresini kullanabilmek için bir parola ekleyin."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Жоден з отримувачів типово не підтримує термін дії. Щоб увімкнути його для отримувачів, які не є користувачами Proton Mail, додайте пароль."
           }
         }
       }
@@ -12826,6 +12844,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ek dosya yüklenemedi. Lütfen yeniden deneyin."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не вдалося вивантажити вкладення. Спробуйте ще раз."
           }
         },
         "zh-Hans" : {
@@ -16880,6 +16904,12 @@
             "value" : "Ek dosya isteği güncellenemedi. Lütfen yeniden deneyin."
           }
         },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не вдалося оновити параметри вкладення, спробуйте ще раз"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -19496,7 +19526,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "У цяперашні час вы па-за сеткай. Гэты чарнавік можа не быць у актуальным стане."
+            "value" : "У цяперашні час вы па-за сеткай. Магчыма, што гэты чарнавік састарэў."
           }
         },
         "ca" : {

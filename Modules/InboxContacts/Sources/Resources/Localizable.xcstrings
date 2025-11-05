@@ -2855,6 +2855,12 @@
             "state" : "translated",
             "value" : "İnternet uygulamasına geç"
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Продовжити у вебзастосунку"
+          }
         }
       }
     },
@@ -3534,6 +3540,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Uygulamada kişileri ve grupları düzenleme özellikleri henüz hazır değil. Şimdilik, onları internet uygulamasında düzenleyebilirsiniz. Değişiklikler aygıtınızla eşitlenir."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Редагування контактів або груп у застосунку ще не готове. Наразі ви можете редагувати їх у вебзастосунку, і зміни синхронізуватимуться з вашим пристроєм."
           }
         }
       }
