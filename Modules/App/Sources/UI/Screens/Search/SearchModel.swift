@@ -151,16 +151,16 @@ final class SearchModel: ObservableObject, @unchecked Sendable {
     /// When this toggle changes, we determine the appropriate system label and labelId
     /// (`.allMail` or `.almostAllMail`) and update the selection accordingly.
     private func updateSelectedMailboxIfNeeded() async {
-        guard let systemFolder = selectedMailbox.systemFolder,
-            [SystemLabel.allMail, .almostAllMail].contains(systemFolder)
-        else { return }
-        let systemLabel = state.spamTrashToggleState.systemLabel
         guard
-            let labelId = try? await resolveSystemLabelId(
-                ctx: dependencies.appContext.userSession,
-                label: systemLabel
-            ).get()
-        else { return }
+            let systemFolder = selectedMailbox.systemFolder,
+            [SystemLabel.allMail, .almostAllMail].contains(systemFolder),
+            case let systemLabel = state.spamTrashToggleState.systemLabel,
+            let userSession = dependencies.appContext.sessionState.userSession,
+            let labelId = try? await resolveSystemLabelId(ctx: userSession, label: systemLabel).get()
+        else {
+            return
+        }
+
         selectedMailbox = .systemFolder(labelId: labelId, systemFolder: systemLabel)
     }
 
