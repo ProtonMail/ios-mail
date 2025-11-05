@@ -200,7 +200,6 @@ private extension SelectionModeState {
 }
 
 #Preview {
-
     @MainActor
     final class Model: ObservableObject {
         var currentPage = 0
@@ -261,247 +260,7 @@ private extension SelectionModeState {
     return Container()
 }
 
-import SwiftUI
-import UIKit
-
-struct AnimatableXTransformModifier: ViewModifier, Animatable {
-    var x: CGFloat
-
-    var animatableData: CGFloat {
-        get { x }
-        set { x = newValue }
-    }
-
-    func body(content: Content) -> some View {
-        content
-            .transformEffect(.init(translationX: x, y: 0))
-    }
-}
-
-extension View {
-    func animatableXTransform(x: CGFloat = 0) -> some View {
-        modifier(AnimatableXTransformModifier(x: x))
-    }
-}
-
-struct SwipeActionModel: Equatable {
-    let image: Image
-    let color: Color
-    let isDesctructive: Bool
-}
-
-struct SwipeableView<Content: View>: View {
-    private struct ActiveAction: Equatable {
-        let side: ActionSide
-        let model: SwipeActionModel
-    }
-
-    private enum ActionSide: Equatable {
-        case right, left
-
-        var actionAligment: Alignment {
-            switch self {
-            case .right:
-                .leading
-            case .left:
-                .trailing
-            }
-        }
-    }
-
-    private enum AxisLock: Equatable {
-        case none, horizontal, vertical
-    }
-
-    private let content: () -> Content
-    private let leftAction: SwipeActionModel?
-    private let rightAction: SwipeActionModel?
-    private let onLeftAction: (() -> Void)?
-    private let onRightAction: (() -> Void)?
-    private let isEnabled: Bool
-    private let animationDuration = 0.25
-
-    @Binding private var isScrollingDisabled: Bool
-
-    @State private var swipeOffset: CGFloat = .zero
-    @State private var initialSwipeTriggerOffset: CGFloat = .zero
-    @State private var activeAction: ActiveAction?
-    @State private var axisLock: AxisLock = .none
-    @State private var rowWidth: CGFloat = .zero
-    @State private var isSwiping: Bool = false
-    @State private var isFinishingSwipeWithAnimation = false
-
-    private let triggerFactor: CGFloat = 0.20
-
-    private var didCrossThreshold: Bool {
-        abs(swipeOffset) > rowWidth * triggerFactor
-    }
-
-    init(
-        leftAction: SwipeActionModel?,
-        rightAction: SwipeActionModel?,
-        onLeftAction: (() -> Void)?,
-        onRightAction: (() -> Void)?,
-        isEnabled: Bool,
-        isScrollingDisabled: Binding<Bool>,
-        content: @escaping () -> Content
-    ) {
-        self.leftAction = leftAction
-        self.rightAction = rightAction
-        self.onLeftAction = onLeftAction
-        self.onRightAction = onRightAction
-        self.isEnabled = isEnabled
-        self._isScrollingDisabled = isScrollingDisabled
-        self.content = content
-    }
-
-    var body: some View {
-        ZStack {
-            if let activeAction {
-                actionView(activeAction)
-            }
-
-            content()
-                .disabled(isSwiping)
-                .overlay(
-                    RoundedRectangle(cornerRadius: isSwiping ? DS.Spacing.small : .zero)
-                        .stroke(DS.Color.Border.light, lineWidth: isSwiping ? 2 : .zero)
-                )
-                .clipShape(RoundedRectangle(cornerRadius: isSwiping ? DS.Spacing.small : .zero))
-                .animatableXTransform(x: swipeOffset)
-                .animation(.linear(duration: animationDuration), value: isSwiping)
-                .sensoryFeedback(.impact, trigger: didCrossThreshold, condition: { _, _ in !isFinishingSwipeWithAnimation })
-                .onGeometryChange(
-                    for: CGFloat.self,
-                    of: { geometry in geometry.size.width },
-                    action: { value in rowWidth = value }
-                )
-                .swipeActionGesture(
-                    isEnabled: isEnabled && !isFinishingSwipeWithAnimation,
-                    DragGesture(minimumDistance: 4)
-                        .onChanged(onDragChanged)
-                        .onEnded(onDragEnded)
-                )
-                .onChange(of: isSwiping) { _, isSwiping in
-                    isScrollingDisabled = isSwiping
-                }
-        }
-    }
-
-    @ViewBuilder
-    private func actionView(_ action: ActiveAction) -> some View {
-        action.model.image
-            .foregroundStyle(DS.Color.Icon.inverted)
-            .square(size: 16)
-            .scaleEffect(didCrossThreshold ? 1.3 : 1)
-            .animation(.linear(duration: animationDuration), value: didCrossThreshold)
-            .frame(maxWidth: .infinity, alignment: action.side.actionAligment)
-            .padding(.horizontal, DS.Spacing.huge)
-            .frame(maxHeight: .infinity)
-            .background(action.model.color.shadow(DS.Shadows.liftedFull.innerShadowStyle))
-    }
-
-    private func onDragChanged(_ value: DragGesture.Value) {
-        let lockSlop: CGFloat = 10
-        let dx = value.translation.width
-        let dy = value.translation.height
-
-        if axisLock == .none {
-            if abs(dx) > abs(dy) + lockSlop {
-                axisLock = .horizontal
-            } else if abs(dy) > abs(dx) + lockSlop {
-                axisLock = .vertical
-            } else {
-                return
-            }
-        }
-
-        guard axisLock == .horizontal else { return }
-
-        if initialSwipeTriggerOffset == .zero {
-            initialSwipeTriggerOffset = dx
-        }
-
-        let targetOffset = dx - initialSwipeTriggerOffset
-
-        if targetOffset > .zero {
-            activeAction = action(for: .right)
-        } else if targetOffset < .zero {
-            activeAction = action(for: .left)
-        }
-
-        if activeAction != nil {
-            swipeOffset = targetOffset
-            isSwiping = true
-        }
-    }
-
-    private func onDragEnded(_ value: DragGesture.Value) {
-        defer { axisLock = .none }
-
-        guard axisLock == .horizontal else { return }
-
-        triggerCallbackIfNeeded()
-
-        isFinishingSwipeWithAnimation = true
-        withAnimation(.easeOut(duration: animationDuration)) {
-            if let activeAction, activeAction.model.isDesctructive, didCrossThreshold {
-                swipeOffset = fullSwipeOffset(for: activeAction.side)
-            } else {
-                swipeOffset = .zero
-            }
-            isSwiping = false
-            initialSwipeTriggerOffset = .zero
-        } completion: {
-            swipeOffset = .zero
-            activeAction = nil
-            isFinishingSwipeWithAnimation = false
-        }
-    }
-
-    private func triggerCallbackIfNeeded() {
-        guard let activeAction, didCrossThreshold else { return }
-        switch activeAction.side {
-        case .left:
-            onLeftAction?()
-        case .right:
-            onRightAction?()
-        }
-    }
-
-    private func action(for side: ActionSide) -> ActiveAction? {
-        switch side {
-        case .right:
-            rightAction.map { .init(side: side, model: $0) }
-        case .left:
-            leftAction.map { .init(side: side, model: $0) }
-        }
-    }
-
-    private func fullSwipeOffset(for side: ActionSide) -> CGFloat {
-        switch side {
-        case .right:
-            rowWidth
-        case .left:
-            -rowWidth
-        }
-    }
-}
-
-extension AssignedSwipeAction {
-
-    var isDestructive: Bool {
-        switch self {
-        case .moveTo:
-            true
-        case .labelAs, .noAction, .toggleStar, .toggleRead:
-            false
-        }
-    }
-
-}
-
-extension AssignedSwipeAction {
+private extension AssignedSwipeAction {
 
     func swipeActionModel(for item: MailboxItemCellUIModel) -> SwipeActionModel? {
         switch self {
@@ -522,30 +281,15 @@ extension AssignedSwipeAction {
 
 }
 
-private struct SwipeActionGesture<G: Gesture>: ViewModifier {
-    private let isEnabled: Bool
-    private let swipeGesture: G
+private extension AssignedSwipeAction {
 
-    init(isEnabled: Bool, swipeGesture: G) {
-        self.isEnabled = isEnabled
-        self.swipeGesture = swipeGesture
-    }
-
-    func body(content: Content) -> some View {
-        if isEnabled {
-            if #available(iOS 18, *) {
-                content.simultaneousGesture(swipeGesture)
-            } else {
-                content.gesture(swipeGesture)
-            }
-        } else {
-            content
+    var isDestructive: Bool {
+        switch self {
+        case .moveTo:
+            true
+        case .labelAs, .noAction, .toggleStar, .toggleRead:
+            false
         }
     }
-}
 
-private extension View {
-    func swipeActionGesture<G: Gesture>(isEnabled: Bool, _ gesture: G, ) -> some View {
-        modifier(SwipeActionGesture(isEnabled: isEnabled, swipeGesture: gesture))
-    }
 }
