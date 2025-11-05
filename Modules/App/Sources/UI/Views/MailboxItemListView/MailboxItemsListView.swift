@@ -133,7 +133,7 @@ struct MailboxItemsListView<EmptyView: View>: View {
                 onRightAction: {
                     config.cellEventHandler?.onSwipeAction?(config.swipeActions.right.swipeActionContext(for: item))
                 },
-                isEnabled: !selectionState.hasItems,
+                isEnabled: areSwipeActionsEnabled,
                 isScrollingDisabled: $isScrollingDisabled
             ) {
                 MailboxItemCell(
@@ -180,6 +180,10 @@ struct MailboxItemsListView<EmptyView: View>: View {
             \(attachments)
             """
         return value
+    }
+
+    private var areSwipeActionsEnabled: Bool {
+        selectionState.hasItems == false && config.isOutboxLocation == false
     }
 }
 
