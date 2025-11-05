@@ -260,6 +260,26 @@ private extension SelectionModeState {
 import SwiftUI
 import UIKit
 
+struct AnimatableXTransformModifier: ViewModifier, Animatable {
+    var x: CGFloat
+
+    var animatableData: CGFloat {
+        get { x }
+        set { x = newValue }
+    }
+
+    func body(content: Content) -> some View {
+        content
+            .transformEffect(.init(translationX: x, y: 0))
+    }
+}
+
+extension View {
+    func animatableXTransform(x: CGFloat = 0) -> some View {
+        modifier(AnimatableXTransformModifier(x: x))
+    }
+}
+
 struct SwipeActionModel: Equatable {
     let image: Image
     let color: Color
@@ -344,7 +364,7 @@ struct SwipeableView<Content: View>: View {
                         .stroke(DS.Color.Border.light, lineWidth: isSwiping ? 2 : .zero)
                 )
                 .clipShape(RoundedRectangle(cornerRadius: isSwiping ? DS.Spacing.small : .zero))
-                .offset(x: swipeOffset)
+                .animatableXTransform(x: swipeOffset)
                 .animation(.linear(duration: animationDuration), value: isSwiping)
                 .sensoryFeedback(.impact, trigger: didCrossThreshold, condition: { _, _ in !isFinishingSwipeWithAnimation })
                 .onGeometryChange(
