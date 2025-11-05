@@ -744,22 +744,10 @@ enum L10n {
             comment: "Conditions the password must meet"
         )
 
-        static let repeatPassword = LocalizedStringResource(
-            "Repeat password",
-            bundle: .atURL(Bundle.module.bundleURL),
-            comment: "Title of the text box to repeat the added password"
-        )
-
         static let passwordHint = LocalizedStringResource(
             "Password hint (Optional)",
             bundle: .atURL(Bundle.module.bundleURL),
             comment: "Title of the text box to add a hint to remember the password"
-        )
-
-        static let removePassword = LocalizedStringResource(
-            "Remove Password",
-            bundle: .atURL(Bundle.module.bundleURL),
-            comment: "Text for button that removes the password"
         )
     }
 }

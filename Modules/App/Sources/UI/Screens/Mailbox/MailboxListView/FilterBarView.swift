@@ -169,6 +169,15 @@ extension SpamTrashToggleState {
     var includeSpamTrash: IncludeSwitch {
         isSelected ? .withSpamAndTrash : .default
     }
+
+    var systemLabel: SystemLabel {
+        switch self {
+        case .visible(let isSelected):
+            isSelected ? .allMail : .almostAllMail
+        case .hidden:
+            .allMail
+        }
+    }
 }
 
 struct FilterBarState: Equatable {

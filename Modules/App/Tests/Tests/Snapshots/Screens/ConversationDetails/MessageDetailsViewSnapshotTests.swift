@@ -107,7 +107,6 @@ class MessageDetailsViewSnapshotTests {
             isHeaderCollapsed: collapsed,
             uiModel: model,
             mailbox: .dummy,
-            mailUserSession: .dummy,
             messageAppearanceOverrideStore: .init(),
             actionButtonsState: actionButtonsState,
             onEvent: { _ in }

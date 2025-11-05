@@ -28,11 +28,11 @@ final class UpsellEligibilityPublisher: ObservableObject {
 
     init(mailSession: MailSession, userSession: MailUserSession) {
         let callback = AsyncLiveQueryCallbackWrapper { [weak self] in
-            await self?.updateState(mailSession: mailSession, userSession: userSession)
+            await self?.updateState(userSession: userSession)
         }
 
         Task {
-            await updateState(mailSession: mailSession, userSession: userSession)
+            await updateState(userSession: userSession)
 
             do {
                 watchHandles = [
@@ -49,7 +49,7 @@ final class UpsellEligibilityPublisher: ObservableObject {
         state = constant
     }
 
-    private func updateState(mailSession: MailSession, userSession: MailUserSession) async {
+    private func updateState(userSession: MailUserSession) async {
         do {
             let upsellEligibility = try await userSession.upsellEligibility().get()
             state = await upsellEligibility.limitingBlackFridayToUSA()

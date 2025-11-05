@@ -58,6 +58,12 @@
             "value" : "%lld más"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "+%lld lisää"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -140,6 +146,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "+%lld diğer"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ще +%lld"
           }
         },
         "zh-Hans" : {
@@ -2198,6 +2210,12 @@
             "value" : "e-posta adresi"
           }
         },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "поштова адреса"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2547,6 +2565,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "ad"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "назва"
           }
         },
         "zh-Hans" : {

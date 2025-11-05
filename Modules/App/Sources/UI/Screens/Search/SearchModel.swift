@@ -116,7 +116,8 @@ final class SearchModel: ObservableObject, @unchecked Sendable {
             options: .init(keywords: query),
             callback: MessageScrollerLiveQueryCallbackkWrapper { [weak self] update in
                 Task {
-                    await self?.trigger(update: update)
+                    await self?.handleSearchScroller(update: update)
+                    await self?.updateSelectedMailboxIfNeeded()
                 }
             }
         )
@@ -142,26 +143,25 @@ final class SearchModel: ObservableObject, @unchecked Sendable {
         }
     }
 
-    private func trigger(update: MessageScrollerUpdate) async {
-        await handleSearchScroller(update: update)
-        await updateSelectedMailboxIfNeeded()
-    }
-
-    /// Updates `selectedMailbox` if the currently loaded `mailbox` has changed underneath.
+    /// Ensures `selectedMailbox` points to the correct system mailbox
+    /// based on the current **Include Spam/Trash** toggle.
     ///
-    /// The underlying mailbox can switch when the user toggles the **Include Spam/Trash**
-    /// filter. In that case, *All Mail* (includes spam/trash) and *Almost All Mail*
-    /// (excludes spam/trash) are represented by different locations/label IDs. When this
-    /// mismatch is detected, we resolve the corresponding system label (almostAllMail or allMail) and update the
-    /// selection accordingly.
+    /// Although the `Mailbox`'s `labelId` is now constant, the underlying mailbox it
+    /// represents can still differ depending on whether spam and trash are included.
+    /// When this toggle changes, we determine the appropriate system label and labelId
+    /// (`.allMail` or `.almostAllMail`) and update the selection accordingly.
     private func updateSelectedMailboxIfNeeded() async {
-        guard let mailbox, mailbox.labelId() != selectedMailbox.localId,
-            let systemLabel = try? await resolveSystemLabelById(
-                ctx: dependencies.appContext.userSession,
-                id: mailbox.labelId()
-            ).get()
-        else { return }
-        selectedMailbox = .systemFolder(labelId: mailbox.labelId(), systemFolder: systemLabel)
+        guard
+            let systemFolder = selectedMailbox.systemFolder,
+            [SystemLabel.allMail, .almostAllMail].contains(systemFolder),
+            case let systemLabel = state.spamTrashToggleState.systemLabel,
+            let userSession = dependencies.appContext.sessionState.userSession,
+            let labelId = try? await resolveSystemLabelId(ctx: userSession, label: systemLabel).get()
+        else {
+            return
+        }
+
+        selectedMailbox = .systemFolder(labelId: labelId, systemFolder: systemLabel)
     }
 
     private func setUpSpamTrashToggleVisibility() async {
@@ -308,7 +308,7 @@ extension SearchModel {
         }
 
         let action = isStarred ? starActionPerformer.star : starActionPerformer.unstar
-        action([item.id], .message, nil)
+        action([item.id], .message)
     }
 
     @MainActor

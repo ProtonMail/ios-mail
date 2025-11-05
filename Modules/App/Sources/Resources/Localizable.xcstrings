@@ -5221,6 +5221,12 @@
             "state" : "translated",
             "value" : "Bu aygıttan gönderirken e-posta imzanıza ek olarak görüntülenecek bir ek imza."
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Додатковий підпис, який з’являється на додаток до вашого поштового підпису під час надсилання з цього пристрою."
+          }
         }
       }
     },
@@ -5543,6 +5549,12 @@
             "state" : "translated",
             "value" : "Uygulama özelleştirmeleri"
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Персоналізація застосунку"
+          }
         }
       }
     },
@@ -5685,6 +5697,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Uygulama simgesi"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Піктограма застосунку"
           }
         },
         "zh-Hans" : {
@@ -8528,6 +8546,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hesaplayıcı"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Калькулятор"
           }
         },
         "zh-Hans" : {
@@ -13799,6 +13823,12 @@
             "state" : "translated",
             "value" : "Göndericinin engellemesi kaldırılamadı"
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не вдалося розблокувати відправника"
+          }
         }
       }
     },
@@ -18203,185 +18233,6 @@
         }
       }
     },
-    "Edit conversation toolbar" : {
-      "comment" : "Conversation toolbar edition screen title.",
-      "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Рэдагаваць панэль інструментаў размовы"
-          }
-        },
-        "ca" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Edita la barra d'eines de conversa"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Upravit panel nástrojů konverzace"
-          }
-        },
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Rediger samtaleværktøjslinje"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Unterhaltungs-Symbolleiste bearbeiten"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Επεξεργασία γραμμής εργαλείων συνομιλίας"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Edit conversation toolbar"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Editar la barra de herramientas de conversación"
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Editar barra de herramientas de conversación"
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Muokkaa keskustelun työkalupalkkia"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Modification de la barre d'outils de conversation"
-          }
-        },
-        "hu" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Beszélgetés eszköztárának szerkesztése"
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sunting toolbar percakapan"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Modifica la barra degli strumenti della conversazione"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "会話ツールバーを編集"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "საუბრის ინსტრუმენტების პანელის რედაქტირება"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "대화 도구 모음 편집"
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Rediger samtaleverktøylinje"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Gesprekswerkbalk bewerken"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Edytuj pasek narzędzi wątku"
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Editar barra de ferramentas da conversa"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Editar barra de ferramentas de conversa"
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Editare bară de unelte pentru conversație"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Изменить панель инструментов цепочки писем"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Upraviť panel nástrojov konverzácie"
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Uredi orodno vrstico pogovora"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Redigera konversationsverktygsfält"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Yazışma araç çubuğunu düzenle"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Редагувати панель інструментів розмови"
-          }
-        }
-      }
-    },
     "Edit draft" : {
       "comment" : "Alert confirmation button title for editing a scheduled message.",
       "localizations" : {
@@ -19543,6 +19394,12 @@
             "value" : "Firma de correo electrónico"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sähköpostin allekirjoitus"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -19613,6 +19470,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "E-posta imzası"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Поштовий підпис"
           }
         }
       }
@@ -20484,6 +20347,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Şifrelenmiş iletilerin, daha az istenmeyen e-postanın, kimlik avına karşı korumanın ve etkinlik izleyicilerini engellemenin tadını çıkarın. Gizliliğe hoş geldiniz."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Насолоджуйтесь зашифрованими повідомленнями, меншою кількістю спаму, захистом від шахрайства та блокуванням відстежувачів. Ласкаво просимо до приватності."
           }
         }
       }
@@ -23123,6 +22992,12 @@
             "value" : "Incluir Papelera/Spam"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sisällytä roskakori/roskaposti"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -23181,6 +23056,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Çöptekiler/İstenmeyenler katılsın"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Включити Смітник / Спам"
           }
         },
         "zh-Hans" : {
@@ -23867,6 +23748,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "E-posta eşitlemesinde sorun çıktı. Çözmek için oturumu kapatıp yeniden açın."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Виникла проблема із синхронізацією вашої пошти. Щоб її вирішити, вийдіть зі свого облікового запису та увійдіть знову."
           }
         },
         "zh-Hans" : {
@@ -28700,6 +28587,12 @@
             "state" : "translated",
             "value" : "İleti araç çubuğu"
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Панель інструментів повідомлення"
+          }
         }
       }
     },
@@ -29385,6 +29278,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Diğer seçenekler"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Додаткові параметри"
           }
         },
         "zh-Hans" : {
@@ -34822,6 +34721,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Birincil"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Основна"
           }
         },
         "zh-Hans" : {
@@ -40368,6 +40273,12 @@
             "value" : "Bu yazışmada çöp kutusunda olmayan iletileri görüntüler."
           }
         },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Показати не видалені повідомлення у цій розмові."
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -40491,6 +40402,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bu yazışmada çöp kutusundaki iletileri görüntüler."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Показати видалені повідомлення у цій розмові."
           }
         },
         "zh-Hans" : {
@@ -40939,6 +40856,12 @@
             "value" : "Firmas"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Allekirjoitukset"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -41015,6 +40938,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "İmzalar"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Підписи"
           }
         }
       }
@@ -47300,6 +47229,12 @@
             "state" : "translated",
             "value" : "Bu araç çubuğu, bir liste görünümünde birden fazla ileti seçildiğinde görüntülenir."
           }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ця панель інструментів з’являється, коли вибрано кілька повідомлень у поданні списку."
+          }
         }
       }
     },
@@ -47436,6 +47371,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bu araç çubuğu bir ileti açıkken görünür kalır."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ця панель інструментів залишається видимою, коли повідомлення відкрито."
           }
         }
       }
@@ -49608,6 +49549,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bu adresin engellemesini kaldır"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Розблокувати цю адресу"
           }
         }
       }
@@ -52964,6 +52911,12 @@
             "value" : "Hava durumu"
           }
         },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Погода"
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -54422,7 +54375,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ваш подпіс электроннай пошты, які аўтаматычна дадаецца да ўсіх лістоў, якія вы адпраўляеце."
+            "value" : "Ваш подпіс электроннай пошты дадаецца аўтаматычна да ўсіх адпраўленых лістоў."
           }
         },
         "ca" : {
@@ -54543,6 +54496,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Gönderdiğiniz tüm e-postalara otomatik olarak eklenecek e-posta imzanız."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ваш поштовий підпис, який автоматично додається до всіх листів, які ви надсилаєте."
           }
         }
       }

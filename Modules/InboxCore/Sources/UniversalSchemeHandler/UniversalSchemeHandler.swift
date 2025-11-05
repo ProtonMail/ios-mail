@@ -19,24 +19,24 @@ import proton_app_uniffi
 import TryCatch
 import WebKit
 
-public final class UniversalSchemeHandler: NSObject, WKURLSchemeHandler {
+final class UniversalSchemeHandler: NSObject, WKURLSchemeHandler {
     private let imageProxy: ImageProxy
     private var urlSchemeActiveTasks = Set<ObjectIdentifier>()
     private let queue = DispatchQueue(label: "\(Bundle.defaultIdentifier).\(UniversalSchemeHandler.self)")
 
-    public init(imageProxy: ImageProxy) {
+    init(imageProxy: ImageProxy) {
         self.imageProxy = imageProxy
     }
 
-    public enum HandlerError: Error, Equatable {
+    enum HandlerError: Error, Equatable {
         case missingURL
     }
 
-    public static let handlerSchemes: [String] = ["cid", "proton-http", "proton-https"]
+    static let handlerSchemes: [String] = ["cid", "proton-http", "proton-https"]
 
     // MARK: - WKURLSchemeHandler
 
-    public func webView(_ webView: WKWebView, start urlSchemeTask: WKURLSchemeTask) {
+    func webView(_ webView: WKWebView, start urlSchemeTask: WKURLSchemeTask) {
         queue.sync { _ = urlSchemeActiveTasks.insert(ObjectIdentifier(urlSchemeTask)) }
         let url = urlSchemeTask.request.url
         guard let url else {
@@ -47,7 +47,7 @@ public final class UniversalSchemeHandler: NSObject, WKURLSchemeHandler {
         finishTaskWithImage(url: url, urlSchemeTask: urlSchemeTask)
     }
 
-    public func webView(_ webView: WKWebView, stop urlSchemeTask: WKURLSchemeTask) {
+    func webView(_ webView: WKWebView, stop urlSchemeTask: WKURLSchemeTask) {
         AppLogger.log(message: "webView stop urlSchemeTask", category: .conversationDetail)
         queue.sync { _ = urlSchemeActiveTasks.remove(ObjectIdentifier(urlSchemeTask)) }
     }

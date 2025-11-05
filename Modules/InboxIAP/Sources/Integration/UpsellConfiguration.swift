@@ -16,17 +16,17 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import proton_app_uniffi
+
 public struct UpsellConfiguration: Sendable {
     public let regularPlan: String
     public let onboardingPlans: [String]
-    public let arePaymentsEnabled: Bool
-    public let apiDomain: String
+    public let apiEnvId: ApiEnvId
 
-    public init(regularPlan: String, onboardingPlans: [String], arePaymentsEnabled: Bool, apiDomain: String) {
+    public init(regularPlan: String, onboardingPlans: [String], apiEnvId: ApiEnvId) {
         self.regularPlan = regularPlan
         self.onboardingPlans = onboardingPlans
-        self.arePaymentsEnabled = arePaymentsEnabled
-        self.apiDomain = apiDomain
+        self.apiEnvId = apiEnvId
     }
 }
 
@@ -34,7 +34,6 @@ extension UpsellConfiguration {
     static let dummy = UpsellConfiguration(
         regularPlan: "mail2022",
         onboardingPlans: ["bundle2022", "mail2022"],
-        arePaymentsEnabled: true,
-        apiDomain: "example.com"
+        apiEnvId: .custom("https://example.com")
     )
 }

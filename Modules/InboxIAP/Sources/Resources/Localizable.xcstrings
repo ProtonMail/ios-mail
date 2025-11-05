@@ -3038,7 +3038,7 @@
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rabatter er basert på standard månedspris. Fornyes automatisk til %1$@ /%2$@ inntil abonnementet kanselleres."
+            "value" : "Rabatter er basert på standard månedspris. Fornyes automatisk til %1$@/%2$@ inntil abonnementet kanselleres."
           }
         },
         "nl" : {
@@ -3053,6 +3053,12 @@
             "value" : "Os descontos são baseados no preço mensal padrão. Renovação automática a %1$@ /%2$@ até você cancelar."
           }
         },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reducerile se bazează pe prețurile lunare standard. Se reînnoiește automat cu %1$@/%2$@ până la anulare."
+          }
+        },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3063,6 +3069,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "İndirimler standart aylık ücretlere göre belirlenir. İptal edilene kadar %1$@ / %2$@ ile otomatik olarak yenilenir."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Знижки базуються на стандартних місячних тарифах. Автоматично поновлюється за %1$@ / %2$@ до скасування."
           }
         }
       }
@@ -4443,6 +4455,12 @@
             "value" : "solo %@ /mes"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "vain %@ /kuukausi"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4464,13 +4482,19 @@
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "kun %@ /måned"
+            "value" : "kun %@/måned"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "somente %@ /mês"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "doar %@/lună"
           }
         },
         "sk" : {
@@ -4489,6 +4513,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "yalnızca %@ / ay"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "лише %@ / місяць"
           }
         }
       }

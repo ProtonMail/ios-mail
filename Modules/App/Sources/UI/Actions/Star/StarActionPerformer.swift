@@ -29,17 +29,15 @@ struct StarActionPerformer: Sendable {
         self.starActionPerformerActions = starActionPerformerActions
     }
 
-    func unstar(itemsWithIDs ids: [ID], itemType: MailboxItemType, completion: (() -> Void)? = nil) {
+    func unstar(itemsWithIDs ids: [ID], itemType: MailboxItemType) {
         Task {
             await unstar(itemsWithIDs: ids, itemType: itemType)
-            completion?()
         }
     }
 
-    func star(itemsWithIDs ids: [ID], itemType: MailboxItemType, completion: (() -> Void)? = nil) {
+    func star(itemsWithIDs ids: [ID], itemType: MailboxItemType) {
         Task {
             await star(itemsWithIDs: ids, itemType: itemType)
-            completion?()
         }
     }
 

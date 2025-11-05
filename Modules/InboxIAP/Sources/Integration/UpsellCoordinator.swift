@@ -33,7 +33,7 @@ public final class UpsellCoordinator: ObservableObject {
     public convenience init(mailUserSession: MailUserSession, configuration: UpsellConfiguration) {
         let plansComposer = PlansComposerRust(rustSession: mailUserSession)
         let plansManager = ProtonPlansManager(plansComposer: plansComposer, rustSession: mailUserSession)
-        let planPurchasing: PlanPurchasing = configuration.arePaymentsEnabled ? plansManager : DummyPlanPurchasing()
+        let planPurchasing: PlanPurchasing = configuration.apiEnvId.arePaymentsEnabled ? plansManager : DummyPlanPurchasing()
 
         self.init(
             eventLoopPolling: mailUserSession,

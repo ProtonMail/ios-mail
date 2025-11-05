@@ -58,6 +58,7 @@ struct PaginatedListView<
         case .data(let type):
             ZStack(alignment: .top) {
                 LoadingBar(isLoading: loadingBarPresenter.isVisible)
+                    .zIndex(1)
                 dataStateView.overlay {
                     if type == .noItems {
                         emptyListView()

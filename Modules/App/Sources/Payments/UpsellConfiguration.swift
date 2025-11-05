@@ -16,14 +16,12 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import InboxIAP
-import proton_app_uniffi
 
 extension UpsellConfiguration {
     static let mail: Self = .init(
         regularPlan: "mail2022",
         onboardingPlans: ["bundle2022", "mail2022"],
-        arePaymentsEnabled: ApiEnvId.current.arePaymentsEnabled,
-        apiDomain: ApiEnvId.current.domain
+        apiEnvId: .current
     )
 
     var humanReadableUpsoldPlanName: String {

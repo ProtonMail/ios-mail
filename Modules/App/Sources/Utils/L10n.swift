@@ -1103,10 +1103,6 @@ enum L10n {
                 "Edit message toolbar",
                 comment: "Message toolbar edition screen title."
             )
-            static let conversationToolbarEditionScreenTitle = LocalizedStringResource(
-                "Edit conversation toolbar",
-                comment: "Conversation toolbar edition screen title."
-            )
             static let chosenActionsSectionTitle = LocalizedStringResource(
                 "Chosen actions",
                 comment: "Title of a section with chosen toolbar actions."
