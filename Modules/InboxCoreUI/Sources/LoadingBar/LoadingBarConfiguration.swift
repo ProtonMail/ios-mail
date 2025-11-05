@@ -19,7 +19,7 @@ import SwiftUI
 
 struct LoadingBarConfiguration {
     /// Duration of a single animation cycle (seconds).
-    let cycleDuration: TimeInterval = 2.5
+    let cycleDuration: TimeInterval = 2
     /// UX tolerance near the end of a cycle (seconds).
     /// If stop occurs within this window, one extra cycle is added.
     let tolerance: TimeInterval = 0.05
