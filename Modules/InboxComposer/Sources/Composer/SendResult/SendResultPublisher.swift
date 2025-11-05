@@ -62,19 +62,16 @@ public final class SendResultPublisher: Sendable, ObservableObject {
             AppLogger.log(message: "send result received: \(result)", category: .send)
             let messageId = result.messageId
             switch result.origin {
-            // TODO: pending discussion about `DraftSendResult` scenarios
-            case .attachmentUpload:
-                break
-            case .save:
-                break
             case .saveBeforeSend:
-                break
+                if case .failure(let draftError) = result.error {
+                    publishDraftError(draftError, messageId: messageId)
+                }
             case .send:
                 switch result.error {
                 case .success(let secondsUntilCancel, _):
                     subject.send(.init(messageId: messageId, type: .sent(secondsToUndo: secondsUntilCancel)))
                 case .failure(let draftError):
-                    subject.send(.init(messageId: messageId, type: .error(draftError)))
+                    publishDraftError(draftError, messageId: messageId)
                 }
             case .scheduleSend:
                 switch result.error {
@@ -82,12 +79,17 @@ public final class SendResultPublisher: Sendable, ObservableObject {
                     let date = Date(timeIntervalSince1970: TimeInterval(deliveryTime))
                     subject.send(.init(messageId: messageId, type: .scheduled(deliveryTime: date)))
                 case .failure(let draftError):
-                    subject.send(.init(messageId: messageId, type: .error(draftError)))
+                    publishDraftError(draftError, messageId: messageId)
                 }
-            case .attachmentDispositionSwap:
+            case .attachmentUpload, .save, .attachmentDispositionSwap:
+                // These cases are aready handled while composing a message. We don't want duplicate toasts
                 break
             }
         }
+    }
+
+    private func publishDraftError(_ error: DraftSendFailure, messageId: ID) {
+        subject.send(.init(messageId: messageId, type: .error(error)))
     }
 }
 
