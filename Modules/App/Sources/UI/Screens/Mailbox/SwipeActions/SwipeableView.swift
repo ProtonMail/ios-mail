@@ -100,11 +100,7 @@ struct SwipeableView<Content: View>: View {
                 .animatableXTransform(x: swipeOffset)
                 .animation(.linear(duration: animationDuration), value: isSwiping)
                 .sensoryFeedback(.impact, trigger: didCrossActionThreshold, condition: { _, _ in !isFinishingSwipeWithAnimation })
-                .onGeometryChange(
-                    for: CGFloat.self,
-                    of: { geometry in geometry.size.width },
-                    action: { value in rowWidth = value }
-                )
+                .onGeometryChange(for: CGFloat.self, of: \.size.width, action: { value in rowWidth = value })
                 .swipeActionGesture(
                     isEnabled: isEnabled && !isFinishingSwipeWithAnimation,
                     DragGesture(minimumDistance: 4)
