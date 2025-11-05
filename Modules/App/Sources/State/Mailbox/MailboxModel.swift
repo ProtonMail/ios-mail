@@ -292,7 +292,6 @@ extension MailboxModel {
                     callback: MessageScrollerLiveQueryCallbackkWrapper { [weak self] update in
                         Task {
                             await self?.handleMessageScroller(update: update)
-                            await self?.updateSelectedMailboxIfNeeded()
                         }
                     }
                 ).get()
@@ -302,7 +301,6 @@ extension MailboxModel {
                     callback: ConversationScrollerLiveQueryCallbackkWrapper { [weak self] update in
                         Task {
                             await self?.handleConversationScroller(update: update)
-                            await self?.updateSelectedMailboxIfNeeded()
                         }
                     }
                 ).get()
@@ -453,21 +451,25 @@ extension MailboxModel {
         paginatedDataSource.handle(update: .init(isLastPage: isLastPage, value: updateType, completion: completion))
     }
 
-    /// Updates `selectedMailbox` if the currently loaded `mailbox` has changed underneath.
+    /// Ensures `selectedMailbox` points to the correct system mailbox
+    /// based on the current **Include Spam/Trash** toggle.
     ///
-    /// The underlying mailbox can switch when the user toggles the **Include Spam/Trash**
-    /// filter. In that case, *All Mail* (includes spam/trash) and *Almost All Mail*
-    /// (excludes spam/trash) are represented by different locations/label IDs. When this
-    /// mismatch is detected, we resolve the corresponding system label (almostAllMail or allMail) and update the
-    /// selection accordingly.
+    /// Although the `Mailbox`'s `labelId` is now constant, the underlying mailbox it
+    /// represents can still differ depending on whether spam and trash are included.
+    /// When this toggle changes, we determine the appropriate system label and labelId
+    /// (`.allMail` or `.almostAllMail`) and update the selection accordingly.
     private func updateSelectedMailboxIfNeeded() async {
-        guard let mailbox, mailbox.labelId() != selectedMailbox.localId,
-            let systemLabel = try? await resolveSystemLabelById(
+        guard let systemFolder = selectedMailbox.systemFolder,
+            [SystemLabel.allMail, .almostAllMail].contains(systemFolder)
+        else { return }
+        let systemLabel = state.filterBar.spamTrashToggleState.systemLabel
+        guard
+            let labelId = try? await resolveSystemLabelId(
                 ctx: dependencies.appContext.userSession,
-                id: mailbox.labelId()
+                label: systemLabel
             ).get()
         else { return }
-        selectedMailbox = .systemFolder(labelId: mailbox.labelId(), systemFolder: systemLabel)
+        selectedMailbox = .systemFolder(labelId: labelId, systemFolder: systemLabel)
     }
 
     // TODO: Remove once the SDK does not return network as a possible MailScrollerError
@@ -572,6 +574,10 @@ extension MailboxModel {
             _ = conversationScroller?.changeInclude(include: includeSpamTrash)
         } else {
             _ = messageScroller?.changeInclude(include: includeSpamTrash)
+        }
+
+        Task {
+            await updateSelectedMailboxIfNeeded()
         }
     }
 }
