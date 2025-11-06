@@ -24,6 +24,7 @@ import Foundation
  to differentiate entities that only observe the selection state from the
  ones that are also responsible for updating it.
  */
+@MainActor
 final class SelectionMode {
     let selectionState: SelectionModeState
     let selectionModifier: SelectionModeStateModifier
@@ -40,6 +41,7 @@ final class SelectionMode {
  The `SelectionModeState` object is a read only class for observation purposes only.
  This class is agnostic of Messages and Conversations and so it works for both.
  */
+@MainActor
 final class SelectionModeState: ObservableObject {
     var hasItems: Bool { !selectedItems.isEmpty || isSelectAllEnabled }
     var canSelectMoreItems: Bool { remainingSelectionLimit > 0 }
@@ -59,6 +61,7 @@ final class SelectionModeState: ObservableObject {
 /**
  Responsible for updating the `SelectionModeState`
  */
+@MainActor
 final class SelectionModeStateModifier: @unchecked Sendable {
     let state: SelectionModeState
 
