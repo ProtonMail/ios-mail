@@ -125,8 +125,8 @@ struct MailboxItemsListView<EmptyView: View>: View {
     private func cellView(index: Int, item: MailboxItemCellUIModel) -> some View {
         VStack {
             SwipeableView(
-                leftAction: config.swipeActions.left.swipeActionModel(for: item),
-                rightAction: config.swipeActions.right.swipeActionModel(for: item),
+                leftAction: swipeActionModel(config.swipeActions.left, item: item),
+                rightAction: swipeActionModel(config.swipeActions.right, item: item),
                 onLeftAction: {
                     config.cellEventHandler?.onSwipeAction?(config.swipeActions.left.swipeActionContext(for: item))
                 },
@@ -161,6 +161,19 @@ struct MailboxItemsListView<EmptyView: View>: View {
             )
         )
         .background(DS.Color.Background.norm)  // cell background color after clipping
+    }
+
+    private func swipeActionModel(_ action: AssignedSwipeAction, item: MailboxItemCellUIModel) -> SwipeActionModel? {
+        switch action {
+        case .noAction:
+            nil
+        case .labelAs, .toggleStar, .toggleRead, .moveTo:
+            SwipeActionModel(
+                image: action.icon(isRead: item.isRead, isStarred: item.isStarred),
+                color: action.color,
+                isDesctructive: action.isDestructive(isAllMailScreen: config.isAllMailScreen)
+            )
+        }
     }
 
     private func voiceOverValue(for item: MailboxItemCellUIModel) -> String {
@@ -249,7 +262,7 @@ private extension SelectionModeState {
                 dataSource: model.dataSource,
                 selectionState: selectionState,
                 itemTypeForActionBar: .conversation,
-                isOutboxLocation: false,
+                systemLabel: .inbox,
                 swipeActions: .init(
                     left: .toggleRead,
                     right: .moveTo(.moveToSystemLabel(label: .trash, id: .init(value: 0)))
@@ -262,7 +275,7 @@ private extension SelectionModeState {
 
 private extension AssignedSwipeAction {
 
-    func swipeActionModel(for item: MailboxItemCellUIModel) -> SwipeActionModel? {
+    func swipeActionModel(for item: MailboxItemCellUIModel, isAllMailScreen: Bool) -> SwipeActionModel? {
         switch self {
         case .noAction:
             nil
@@ -270,7 +283,7 @@ private extension AssignedSwipeAction {
             SwipeActionModel(
                 image: icon(isRead: item.isRead, isStarred: item.isStarred),
                 color: color,
-                isDesctructive: isDestructive
+                isDesctructive: isDestructive(isAllMailScreen: isAllMailScreen)
             )
         }
     }
@@ -283,10 +296,10 @@ private extension AssignedSwipeAction {
 
 private extension AssignedSwipeAction {
 
-    var isDestructive: Bool {
+    func isDestructive(isAllMailScreen: Bool) -> Bool {
         switch self {
         case .moveTo:
-            true
+            !isAllMailScreen
         case .labelAs, .noAction, .toggleStar, .toggleRead:
             false
         }

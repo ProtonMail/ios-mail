@@ -25,14 +25,27 @@ struct MailboxItemsListViewConfiguration {
     let selectionState: SelectionModeState
     /// Determines whether the actions are for messages or conversations
     let itemTypeForActionBar: MailboxItemType
-    /// Determines if it's Outbox location
-    let isOutboxLocation: Bool
+    /// If this is a system label (e.g. Mailbox, All Mail), the label is set;
+    /// otherwise (for example, a custom folder), it is `nil`.
+    let systemLabel: SystemLabel?
     /// Swipe actions to be applied to the cells.
     var swipeActions: AssignedSwipeActions = .init(left: .noAction, right: .noAction)
     /// Listener for events related to the list.
     var listEventHandler: MailboxItemsListEventHandler?
     /// Listener for events related to the cells of the list.
     var cellEventHandler: MailboxItemsCellEventHandler?
+}
+
+extension MailboxItemsListViewConfiguration {
+    /// Determines if it's Outbox location
+    var isOutboxLocation: Bool {
+        systemLabel == .outbox
+    }
+
+    /// Determines if it's AllMail or AlmostAllMail location
+    var isAllMailScreen: Bool {
+        [SystemLabel.allMail, .almostAllMail].contains(systemLabel)
+    }
 }
 
 struct MailboxItemsListEventHandler {

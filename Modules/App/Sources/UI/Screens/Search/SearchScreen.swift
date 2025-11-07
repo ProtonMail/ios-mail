@@ -94,7 +94,7 @@ struct SearchScreen: View {
             dataSource: model.paginatedDataSource,
             selectionState: model.selectionMode.selectionState,
             itemTypeForActionBar: .message,
-            isOutboxLocation: false,
+            systemLabel: model.selectedMailbox.systemFolder,
             listEventHandler: .init(
                 listAtTop: { value in isListAtTop = value },
                 pullToRefresh: nil
