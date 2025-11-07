@@ -52,7 +52,7 @@ public final class ShareScreenModel: ObservableObject {
             },
             makeNewDraft: {
                 try await DraftStubWriter().createDraftStub(basedOn: $1)
-                return try await newDraft(session: $0, createMode: .fromIosShareExtension).get()
+                return try await newDraft(session: $0, createMode: .fromIosShareExtension, imagePolicy: .safe).get()
             }
         )
     }

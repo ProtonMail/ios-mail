@@ -38,6 +38,7 @@ public final class MailSessionSpy: MailSessionProtocol {
     public var userSessions: [MailUserSession] = []
 
     private(set) public var changeAppSettingsInvocations: [AppSettingsDiff] = []
+    private(set) public var executeNotificationQuickActionInvocations: [(StoredSession, PushNotificationQuickAction)] = []
     private(set) public var registerDeviceCallCount = 0
     private(set) public var setPinCodeInvocations: [[UInt32]] = []
     private(set) public var setPrimaryAccountInvocations: [String] = []
@@ -88,6 +89,11 @@ public final class MailSessionSpy: MailSessionProtocol {
             stubbedAppSettings.useAlternativeRouting = changedSetting
         }
 
+        return .ok
+    }
+
+    public func executeNotificationQuickAction(session: StoredSession, action: PushNotificationQuickAction, timeLeftMs: UInt64?) async -> VoidActionResult {
+        executeNotificationQuickActionInvocations.append((session, action))
         return .ok
     }
 

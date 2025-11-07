@@ -21,4 +21,8 @@ public protocol ImageProxy: AnyObject, Sendable {
     func loadImage(url: String) async -> AttachmentDataResult
 }
 
-extension DecryptedMessage: @unchecked @retroactive Sendable, ImageProxy {}
+extension DecryptedMessage: ImageProxy {
+    public func loadImage(url: String) async -> AttachmentDataResult {
+        await loadImage(url: url, policy: .safe)
+    }
+}

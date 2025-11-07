@@ -314,7 +314,7 @@ extension DraftPresenterTests {
     ) -> DraftPresenter {
         DraftPresenter(
             userSession: .dummy,
-            draftProvider: .init(makeDraft: { session, createMode in stubbedNewDraftResult }),
+            draftProvider: .init(makeDraft: { _, _, _ in stubbedNewDraftResult }),
             undoSendProvider: .mockInstance(stubbedResult: stubbedUndoSendError),
             undoScheduleSendProvider: .mockInstance(stubbedResult: stubbedCancelScheduleResult)
         )

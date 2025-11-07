@@ -30,7 +30,6 @@ final class UserNotificationCenterDelegateTests {
     private let sessionStateSubject = CurrentValueSubject<SessionState, Never>(.noSession)
     private let urlOpener = URLOpenerSpy()
     private let userNotificationCenter = UserNotificationCenterSpy()
-    private let userSession = MailUserSessionSpy(id: "session-1")
 
     private lazy var sut = UserNotificationCenterDelegate(
         sessionStatePublisher: sessionStateSubject.eraseToAnyPublisher(),
@@ -47,10 +46,6 @@ final class UserNotificationCenterDelegateTests {
         mailSession.storedSessions = [
             .init(id: "session-1", userId: "user-1", state: .authenticated),
             .init(id: "session-2", userId: "user-2", state: .authenticated),
-        ]
-
-        mailSession.userSessions = [
-            userSession
         ]
 
         self.mailSession = mailSession
@@ -127,7 +122,11 @@ final class UserNotificationCenterDelegateTests {
 
         await sut.userNotificationCenter(.current(), didReceive: response)
 
-        #expect(userSession.executeNotificationQuickActionInvocations == [.markAsRead(remoteId: remoteId)])
+        #expect(mailSession.executeNotificationQuickActionInvocations.count == 1)
+
+        let invocation = try #require(mailSession.executeNotificationQuickActionInvocations.first)
+        #expect(invocation.0.sessionId() == "session-1")
+        #expect(invocation.1 == .markAsRead(remoteId: remoteId))
     }
 
     @Test

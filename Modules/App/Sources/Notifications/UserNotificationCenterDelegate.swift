@@ -123,21 +123,23 @@ final class UserNotificationCenterDelegate: NSObject, UNUserNotificationCenterDe
     }
 
     private func execute(action: NotificationQuickAction, onMessageWith remoteId: RemoteId, in session: StoredSession) async throws {
-        guard
-            let mailUserSession = try await getMailSession().initializedUserSessionFromStoredSession(session: session).get()
-        else {
-            return
-        }
-
         let executableAction = action.executableAction(remoteId: remoteId)
-        try await mailUserSession.executeNotificationQuickAction(action: executableAction).get()
+        let timeLeft = Measurement(value: UIApplication.shared.backgroundTimeRemaining, unit: UnitDuration.seconds)
+        AppLogger.log(message: "Time left to execute the action: \(timeLeft)", category: .notifications)
+        let timeLeftMs = convertToUniffiFriendlyValue(value: timeLeft)
+        try await getMailSession().executeNotificationQuickAction(session: session, action: executableAction, timeLeftMs: timeLeftMs).get()
+    }
+
+    private func convertToUniffiFriendlyValue(value: Measurement<UnitDuration>) -> UInt64? {
+        let rawValue = value.converted(to: .milliseconds).value
+        return rawValue.isFinite ? .init(rawValue) : nil
     }
 
     private func navigateToMessage(remoteId: RemoteId, session: StoredSession, subject: String) async throws {
         try await switchPrimaryAccount(to: session)
 
         guard let deepLink = makeDeepLink(basedOn: remoteId, subject: subject) else {
-            AppLogger.log(message: "Failed to navigate to message \(remoteId) (\(subject))")
+            AppLogger.log(message: "Failed to navigate to message \(remoteId) (\(subject))", category: .notifications)
             return
         }
 

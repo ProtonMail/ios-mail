@@ -763,5 +763,3 @@ extension ComposerModel {
         onDismiss(reason)
     }
 }
-
-extension Draft: @retroactive ImageProxy {}

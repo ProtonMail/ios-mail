@@ -23,8 +23,6 @@ public final class MailUserSessionSpy: MailUserSession, @unchecked Sendable {
     public var stubbedUserSettings: UserSettings?
     public var watchUserSettingsCallback: [AsyncLiveQueryCallback] = []
 
-    public private(set) var executeNotificationQuickActionInvocations: [PushNotificationQuickAction] = []
-
     private let id: String
 
     public init(id: String) {
@@ -44,11 +42,6 @@ public final class MailUserSessionSpy: MailUserSession, @unchecked Sendable {
 
     public override func user() async -> MailUserSessionUserResult {
         .ok(stubbedUser!)
-    }
-
-    public override func executeNotificationQuickAction(action: PushNotificationQuickAction) async -> VoidActionResult {
-        executeNotificationQuickActionInvocations.append(action)
-        return .ok
     }
 
     public override func newPasswordChangeFlow() async -> MailUserSessionNewPasswordChangeFlowResult {
