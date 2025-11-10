@@ -291,7 +291,7 @@ private extension AssignedSwipeAction {
         switch location {
         case let .moveToSystemLabel(targetSystemLabel, _):
             switch locationSystemLabel {
-            case .allMail:
+            case .allMail, .allSent, .allDrafts:
                 return false
             case .almostAllMail:
                 return [SystemLabel.spam, .trash].contains(targetSystemLabel)
