@@ -288,16 +288,16 @@ final class SearchModel: ObservableObject {
     }
 
     func onMailboxItemAction(_ context: SwipeActionContext, toastStateStore: ToastStateStore) {
-        guard let mailbox,
-            let output = swipeActionsHandler?.handle(
-                context,
-                toastStateStore: toastStateStore,
-                viewMode: .messages
-            )
-        else { return }
-        state.actionSheet = output
+        guard let output = swipeActionsHandler?.handle(context, toastStateStore: toastStateStore, viewMode: .messages) else {
+            return
+        }
 
-        // FIXME: - Display move to, label as sheets
+        switch output.sheetType {
+        case .labelAs:
+            state.labelAsSheetPresented = output
+        case .moveTo:
+            state.moveToSheetPresented = output
+        }
     }
 }
 
@@ -376,7 +376,8 @@ extension SearchModel {
         var navigationPath: NavigationPath = .init()
         var spamTrashToggleState: SpamTrashToggleState = .hidden
         var swipeActions: AssignedSwipeActions = .init(left: .noAction, right: .noAction)
-        var actionSheet: ActionSheetInput?
+        var labelAsSheetPresented: ActionSheetInput?
+        var moveToSheetPresented: ActionSheetInput?
     }
 }
 

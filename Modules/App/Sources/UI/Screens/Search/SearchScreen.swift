@@ -91,6 +91,17 @@ struct SearchScreen: View {
                     .frame(width: 0.95 * mainWindowSize.width, height: 46)
                 }
             }
+            .labelAsSheet(
+                mailbox: { model.mailbox },
+                mailUserSession: userSession,
+                input: $model.state.labelAsSheetPresented
+            )
+            .moveToSheet(
+                mailbox: { model.mailbox },
+                mailUserSession: userSession,
+                input: $model.state.moveToSheetPresented,
+                navigation: { _ in model.state.moveToSheetPresented = nil }
+            )
             .onLoad {
                 isTextFieldFocused = true
 
