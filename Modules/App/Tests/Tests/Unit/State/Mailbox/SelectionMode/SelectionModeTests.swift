@@ -267,6 +267,7 @@ extension SelectionModeTests {
             emails: "",
             subject: "",
             date: Date(),
+            exclusiveLocation: nil,
             locationIcon: nil,
             isRead: isRead,
             isStarred: isStarred,
