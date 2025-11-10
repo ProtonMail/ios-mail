@@ -42,10 +42,6 @@ extension MailboxItemsListViewConfiguration {
         systemLabel == .outbox
     }
 
-    /// Determines if it's AllMail or AlmostAllMail location
-    var isAllMailScreen: Bool {
-        [SystemLabel.allMail, .almostAllMail].contains(systemLabel)
-    }
 }
 
 struct MailboxItemsListEventHandler {
