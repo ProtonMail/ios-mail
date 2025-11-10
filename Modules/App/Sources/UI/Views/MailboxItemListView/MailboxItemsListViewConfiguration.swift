@@ -37,7 +37,7 @@ struct MailboxItemsListViewConfiguration {
 }
 
 extension MailboxItemsListViewConfiguration {
-    /// Determines if it's Outbox location
+
     var isOutboxLocation: Bool {
         systemLabel == .outbox
     }
