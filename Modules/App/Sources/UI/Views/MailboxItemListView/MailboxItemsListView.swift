@@ -125,8 +125,8 @@ struct MailboxItemsListView<EmptyView: View>: View {
     private func cellView(index: Int, item: MailboxItemCellUIModel) -> some View {
         VStack {
             SwipeableView(
-                leftAction: swipeActionModel(config.swipeActions.left, item: item),
-                rightAction: swipeActionModel(config.swipeActions.right, item: item),
+                leftAction: config.swipeActions.left.swipeActionModel(for: item, locationSystemLabel: config.systemLabel),
+                rightAction: config.swipeActions.right.swipeActionModel(for: item, locationSystemLabel: config.systemLabel),
                 onLeftAction: {
                     config.cellEventHandler?.onSwipeAction?(config.swipeActions.left.swipeActionContext(for: item))
                 },
@@ -161,19 +161,6 @@ struct MailboxItemsListView<EmptyView: View>: View {
             )
         )
         .background(DS.Color.Background.norm)  // cell background color after clipping
-    }
-
-    private func swipeActionModel(_ action: AssignedSwipeAction, item: MailboxItemCellUIModel) -> SwipeActionModel? {
-        switch action {
-        case .noAction:
-            nil
-        case .labelAs, .toggleStar, .toggleRead, .moveTo:
-            SwipeActionModel(
-                image: action.icon(isRead: item.isRead, isStarred: item.isStarred),
-                color: action.color,
-                isDesctructive: action.isDestructive(isAllMailScreen: config.isAllMailScreen)
-            )
-        }
     }
 
     private func voiceOverValue(for item: MailboxItemCellUIModel) -> String {
@@ -274,8 +261,7 @@ private extension SelectionModeState {
 }
 
 private extension AssignedSwipeAction {
-
-    func swipeActionModel(for item: MailboxItemCellUIModel, isAllMailScreen: Bool) -> SwipeActionModel? {
+    func swipeActionModel(for item: MailboxItemCellUIModel, locationSystemLabel: SystemLabel?) -> SwipeActionModel? {
         switch self {
         case .noAction:
             nil
@@ -283,7 +269,10 @@ private extension AssignedSwipeAction {
             SwipeActionModel(
                 image: icon(isRead: item.isRead, isStarred: item.isStarred),
                 color: color,
-                isDesctructive: isDestructive(isAllMailScreen: isAllMailScreen)
+                isDesctructive: isDestructive(
+                    locationSystemLabel: locationSystemLabel,
+                    itemSystemLabel: item.exclusiveLocation?.selectedMailbox.systemFolder
+                )
             )
         }
     }
@@ -291,18 +280,26 @@ private extension AssignedSwipeAction {
     func swipeActionContext(for item: MailboxItemCellUIModel) -> SwipeActionContext {
         .init(action: self, itemID: item.id, isItemRead: item.isRead, isItemStarred: item.isStarred)
     }
-
 }
 
 private extension AssignedSwipeAction {
+    func isDestructive(locationSystemLabel: SystemLabel?, itemSystemLabel: SystemLabel?) -> Bool {
+        guard case let .moveTo(location) = self else {
+            return false
+        }
 
-    func isDestructive(isAllMailScreen: Bool) -> Bool {
-        switch self {
-        case .moveTo:
-            !isAllMailScreen
-        case .labelAs, .noAction, .toggleStar, .toggleRead:
-            false
+        switch location {
+        case let .moveToSystemLabel(targetSystemLabel, _):
+            switch locationSystemLabel {
+            case .allMail:
+                return false
+            case .almostAllMail:
+                return [SystemLabel.spam, .trash].contains(targetSystemLabel)
+            default:
+                return targetSystemLabel != itemSystemLabel
+            }
+        case .moveToUnknownLabel:
+            return false
         }
     }
-
 }

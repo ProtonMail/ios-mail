@@ -41,6 +41,7 @@ extension Message {
             emails: emails,
             subject: subject,
             date: Date(timeIntervalSince1970: TimeInterval(time)),
+            exclusiveLocation: exclusiveLocation,
             locationIcon: showLocation ? exclusiveLocation?.mailboxLocationIcon : nil,
             isRead: !unread,
             isStarred: starred,

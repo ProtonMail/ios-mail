@@ -32,6 +32,7 @@ extension Conversation {
             emails: senders.addressUIRepresentation,
             subject: subject,
             date: Date(timeIntervalSince1970: TimeInterval(time)),
+            exclusiveLocation: exclusiveLocation,
             locationIcon: showLocation ? exclusiveLocation?.mailboxLocationIcon : nil,
             isRead: numUnread == 0,
             isStarred: isStarred,

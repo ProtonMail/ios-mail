@@ -35,7 +35,7 @@ final class MailboxModel: ObservableObject {
     @Published var toast: Toast?
     @Published var emptyFolderBanner: EmptyFolderBanner?
     let selectionMode: SelectionMode = .init()
-    private(set) var selectedMailbox: SelectedMailbox
+    @Published var selectedMailbox: SelectedMailbox
 
     private let mailSettingsLiveQuery: MailSettingLiveQuerying
     @ObservedObject private var appRoute: AppRouteState
