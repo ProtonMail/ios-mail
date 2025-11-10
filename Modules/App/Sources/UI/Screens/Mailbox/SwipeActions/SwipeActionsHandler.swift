@@ -56,7 +56,7 @@ struct SwipeActionsHandler {
         case .moveTo(.moveToSystemLabel(let label, let labelID)):
             move(itemIDs: ids, to: labelID, viewMode: viewMode, label: label, toastStateStore: toastStateStore)
         case .noAction:
-            return nil
+            break
         }
         return nil
     }
