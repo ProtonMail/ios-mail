@@ -62,7 +62,7 @@ final class SelectionModeState: ObservableObject {
  Responsible for updating the `SelectionModeState`
  */
 @MainActor
-final class SelectionModeStateModifier: @unchecked Sendable {
+final class SelectionModeStateModifier {
     let state: SelectionModeState
 
     init(state: SelectionModeState) {

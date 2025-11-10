@@ -169,18 +169,16 @@ extension DraftAttachment {
 
 #Preview {
     @MainActor
-    final class ContentState: ObservableObject, @unchecked Sendable {
+    final class ContentState: ObservableObject {
         let errorState: AttachmentErrorAlertState = .init()
         @Published var isAlertPresented: Bool = false
         var presentedError: AttachmentErrorAlertModel? = nil
 
         init() {
             Task {
-                await errorState.setOnErrorToPresent { error in
-                    DispatchQueue.main.async { [weak self] in
-                        self?.presentedError = error
-                        self?.isAlertPresented = true
-                    }
+                await errorState.setOnErrorToPresent { [weak self] error in
+                    self?.presentedError = error
+                    self?.isAlertPresented = true
                 }
             }
         }

@@ -20,7 +20,7 @@ import InboxCore
 import SwiftUI
 
 @MainActor
-final class PaginatedListDataSource<Item: Equatable & Sendable>: ObservableObject, @unchecked Sendable {
+final class PaginatedListDataSource<Item: Equatable & Sendable>: ObservableObject {
     typealias FetchMore = (_ isFetchingFirstPage: Bool) -> Void
 
     @Published private(set) var state: State

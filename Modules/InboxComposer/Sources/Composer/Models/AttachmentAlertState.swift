@@ -19,7 +19,7 @@ import proton_app_uniffi
 import SwiftUI
 
 @MainActor
-final class AttachmentAlertState: ObservableObject, @unchecked Sendable {
+final class AttachmentAlertState: ObservableObject {
     @Published var isAlertPresented: Bool = false
     private(set) var presentedError: AttachmentErrorAlertModel? = nil
     private let attachmentErrorAlertState: AttachmentErrorAlertState = .init()

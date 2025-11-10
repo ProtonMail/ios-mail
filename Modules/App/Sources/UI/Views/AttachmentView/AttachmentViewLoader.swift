@@ -20,7 +20,7 @@ import proton_app_uniffi
 import SwiftUI
 
 @MainActor
-final class AttachmentViewLoader: @unchecked Sendable, ObservableObject {
+final class AttachmentViewLoader: ObservableObject {
     @Published private(set) var state: State
     private let mailbox: MailboxProtocol
     private let queue: DispatchQueue = DispatchQueue(label: "\(Bundle.defaultIdentifier).AttachmentViewLoader")

@@ -23,7 +23,7 @@ import proton_app_uniffi
 import SwiftUI
 
 @MainActor
-final class SearchModel: ObservableObject, @unchecked Sendable {
+final class SearchModel: ObservableObject {
     @Published var state: State = .init()
     let selectionMode: SelectionMode = .init()
     lazy var selectedMailbox: SelectedMailbox = .systemFolder(labelId: mailbox.labelId(), systemFolder: .allMail)
