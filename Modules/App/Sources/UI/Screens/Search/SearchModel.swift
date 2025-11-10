@@ -16,7 +16,6 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Combine
-import Foundation
 import InboxCore
 import InboxCoreUI
 import proton_app_uniffi
@@ -39,16 +38,20 @@ final class SearchModel: ObservableObject {
     private let dependencies: Dependencies
     private lazy var starActionPerformer = StarActionPerformer(mailUserSession: dependencies.appContext.userSession)
     private var cancellables: Set<AnyCancellable> = .init()
+    private let mailSettingsLiveQuery: MailSettingLiveQuerying
+    private var swipeActionsHandler: SwipeActionsHandler?
 
     init(
         searchScroller: SearchScroller? = nil,
         dependencies: Dependencies = .init(),
-        loadingBarPresenter: LoadingBarPresenter
+        loadingBarPresenter: LoadingBarPresenter,
+        mailSettingsLiveQuery: MailSettingLiveQuerying
     ) {
         AppLogger.logTemporarily(message: "SearchModel init", category: .search)
         self.searchScroller = searchScroller
         self.dependencies = dependencies
         self.loadingBarPresenter = loadingBarPresenter
+        self.mailSettingsLiveQuery = mailSettingsLiveQuery
         setUpBindings()
         initialiseMailbox()
     }
@@ -67,13 +70,26 @@ final class SearchModel: ObservableObject {
                 self?.updateSelectionStateInDataSource(selectedItems: items)
             }
             .store(in: &cancellables)
+
+        Publishers.Merge(
+            mailSettingsLiveQuery.settingHasChanged(keyPath: \.swipeLeft),
+            mailSettingsLiveQuery.settingHasChanged(keyPath: \.swipeRight)
+        )
+        .sink { [weak self] _ in
+            Task {
+                await self?.prepareSwipeActions()
+            }
+        }
+        .store(in: &cancellables)
     }
 
     private func initialiseMailbox() {
         Task {
-            switch newAllMailMailbox(ctx: dependencies.appContext.userSession) {
+            let userSession = dependencies.appContext.userSession
+            switch newAllMailMailbox(ctx: userSession) {
             case .ok(let mailbox):
                 self.mailbox = mailbox
+                self.swipeActionsHandler = .init(userSession: userSession, mailbox: mailbox)
             case .error(let error):
                 AppLogger.log(error: error, category: .search)
             }
@@ -259,6 +275,30 @@ final class SearchModel: ObservableObject {
             }
         }.value
     }
+
+    func prepareSwipeActions() async {
+        guard let userSession = dependencies.appContext.sessionState.userSession else { return }
+
+        switch await assignedSwipeActions(currentFolder: selectedMailbox.localId, session: userSession) {
+        case .ok(let actions):
+            state.swipeActions = actions
+        case .error(let error):
+            AppLogger.log(error: error, category: .mailbox)
+        }
+    }
+
+    func onMailboxItemAction(_ context: SwipeActionContext, toastStateStore: ToastStateStore) {
+        guard let mailbox,
+            let output = swipeActionsHandler?.handle(
+                context,
+                toastStateStore: toastStateStore,
+                viewMode: .messages
+            )
+        else { return }
+        state.actionSheet = output
+
+        // FIXME: - Display move to, label as sheets
+    }
 }
 
 // MARK: View actions
@@ -335,6 +375,8 @@ extension SearchModel {
         var attachmentPresented: AttachmentViewConfig?
         var navigationPath: NavigationPath = .init()
         var spamTrashToggleState: SpamTrashToggleState = .hidden
+        var swipeActions: AssignedSwipeActions = .init(left: .noAction, right: .noAction)
+        var actionSheet: ActionSheetInput?
     }
 }
 

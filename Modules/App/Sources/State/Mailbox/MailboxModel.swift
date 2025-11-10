@@ -37,7 +37,7 @@ final class MailboxModel: ObservableObject {
     let selectionMode: SelectionMode = .init()
     @Published var selectedMailbox: SelectedMailbox
 
-    private let mailSettingsLiveQuery: MailSettingLiveQuerying
+    let mailSettingsLiveQuery: MailSettingLiveQuerying
     @ObservedObject private var appRoute: AppRouteState
     @Published private(set) var mailbox: Mailbox?
     let draftPresenter: DraftPresenter
@@ -53,8 +53,7 @@ final class MailboxModel: ObservableObject {
 
     let dependencies: Dependencies
     private lazy var starActionPerformer = StarActionPerformer(mailUserSession: dependencies.appContext.userSession)
-    private var moveToActionPerformer: MoveToActionPerformer?
-    private var readActionPerformer: ReadActionPerformer?
+    private var swipeActionsHandler: SwipeActionsHandler?
     private var cancellables = Set<AnyCancellable>()
 
     @NestedObservableObject var accountManagerCoordinator: AccountManagerCoordinator
@@ -282,8 +281,7 @@ extension MailboxModel {
                 ? try newInboxMailbox(ctx: userSession).get()
                 : try newMailbox(ctx: userSession, labelId: selectedMailbox.localId).get()
             self.mailbox = mailbox
-            self.moveToActionPerformer = .init(mailbox: mailbox, moveToActions: .productionInstance)
-            self.readActionPerformer = .init(mailbox: mailbox)
+            swipeActionsHandler = .init(userSession: userSession, mailbox: mailbox)
             emptyFolderBanner = await emptyFolderBanner(mailbox: mailbox)
 
             if mailbox.viewMode() == .messages {
@@ -677,29 +675,18 @@ extension MailboxModel {
     }
 
     func onMailboxItemAction(_ context: SwipeActionContext, toastStateStore: ToastStateStore) {
-        let ids: [ID] = [context.itemID]
-
-        switch context.action {
+        guard let mailbox,
+            let output = swipeActionsHandler?.handle(
+                context,
+                toastStateStore: toastStateStore,
+                viewMode: mailbox.viewMode()
+            )
+        else { return }
+        switch output.sheetType {
         case .labelAs:
-            state.labelAsSheetPresented = .init(sheetType: .labelAs, ids: ids, mailboxItem: viewMode.itemType.mailboxItem)
-        case .moveTo(.moveToUnknownLabel):
-            state.moveToSheetPresented = .init(sheetType: .moveTo, ids: ids, mailboxItem: viewMode.itemType.mailboxItem)
-        case .toggleRead:
-            if context.isItemRead {
-                markAsUnread(ids: ids)
-            } else {
-                markAsRead(ids: ids)
-            }
-        case .toggleStar:
-            if context.isItemStarred {
-                actionUnstar(ids: ids)
-            } else {
-                actionStar(ids: ids)
-            }
-        case .moveTo(.moveToSystemLabel(let label, let labelID)):
-            move(itemIDs: ids, to: labelID, label: label, toastStateStore: toastStateStore)
-        case .noAction:
-            break
+            state.labelAsSheetPresented = output
+        case .moveTo:
+            state.moveToSheetPresented = output
         }
     }
 }
@@ -707,13 +694,6 @@ extension MailboxModel {
 // MARK: conversation actions
 
 extension MailboxModel {
-    private func markAsRead(ids: [ID]) {
-        readActionPerformer?.markAsRead(itemsWithIDs: ids, itemType: viewMode.itemType)
-    }
-
-    private func markAsUnread(ids: [ID]) {
-        readActionPerformer?.markAsUnread(itemsWithIDs: ids, itemType: viewMode.itemType)
-    }
 
     private func actionStar(ids: [ID]) {
         starActionPerformer.star(itemsWithIDs: ids, itemType: viewMode.itemType)
@@ -721,41 +701,6 @@ extension MailboxModel {
 
     private func actionUnstar(ids: [ID]) {
         starActionPerformer.unstar(itemsWithIDs: ids, itemType: viewMode.itemType)
-    }
-
-    private func move(
-        itemIDs: [ID],
-        to destinationID: ID,
-        label: SystemLabel,
-        toastStateStore: ToastStateStore
-    ) {
-        let userSession = dependencies.appContext.userSession
-
-        Task { [weak self] in
-            guard let self else { return }
-            do {
-                let undo = try await moveToActionPerformer?.moveTo(
-                    destinationID: destinationID,
-                    itemsIDs: itemIDs,
-                    itemType: viewMode.itemType
-                )
-                let toastID = UUID()
-                let undoAction = undo.undoAction(userSession: userSession) {
-                    Dispatcher.dispatchOnMain(
-                        .init(block: {
-                            toastStateStore.dismiss(withID: toastID)
-                        }))
-                }
-                let toast: Toast = .moveTo(
-                    id: toastID,
-                    destinationName: label.humanReadable.string,
-                    undoAction: undoAction
-                )
-                toastStateStore.present(toast: toast)
-            } catch {
-                toastStateStore.present(toast: .error(message: error.localizedDescription))
-            }
-        }
     }
 }
 

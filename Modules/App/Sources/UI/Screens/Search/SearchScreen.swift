@@ -29,14 +29,23 @@ struct SearchScreen: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.mainWindowSize) private var mainWindowSize
     @EnvironmentObject private var composerCoordinator: ComposerCoordinator
+    @EnvironmentObject private var toastStateStore: ToastStateStore
     @State private(set) var resultsState: SearchScreenState = .initial
     @State private(set) var isListAtTop: Bool = true
     @StateObject private var model: SearchModel
     @FocusState var isTextFieldFocused: Bool
     private let userSession: MailUserSession
 
-    init(userSession: MailUserSession, loadingBarPresenter: LoadingBarPresenter) {
-        _model = StateObject(wrappedValue: .init(loadingBarPresenter: loadingBarPresenter))
+    init(
+        userSession: MailUserSession,
+        loadingBarPresenter: LoadingBarPresenter,
+        mailSettingsLiveQuery: MailSettingLiveQuerying
+    ) {
+        _model = StateObject(
+            wrappedValue: .init(
+                loadingBarPresenter: loadingBarPresenter,
+                mailSettingsLiveQuery: mailSettingsLiveQuery
+            ))
         self.userSession = userSession
     }
 
@@ -84,6 +93,10 @@ struct SearchScreen: View {
             }
             .onLoad {
                 isTextFieldFocused = true
+
+                Task {
+                    await model.prepareSwipeActions()
+                }
             }
         }
         .composer(screen: .search, coordinator: composerCoordinator)
@@ -95,11 +108,17 @@ struct SearchScreen: View {
             selectionState: model.selectionMode.selectionState,
             itemTypeForActionBar: .message,
             systemLabel: model.selectedMailbox.systemFolder,
+            swipeActions: model.state.swipeActions,
             listEventHandler: .init(
                 listAtTop: { value in isListAtTop = value },
-                pullToRefresh: nil
+                pullToRefresh: nil,
             ),
-            cellEventHandler: .init(onCellEvent: handleResultCellEvent)
+            cellEventHandler: .init(
+                onCellEvent: handleResultCellEvent,
+                onSwipeAction: { context in
+                    model.onMailboxItemAction(context, toastStateStore: toastStateStore)
+                }
+            )
         )
     }
 

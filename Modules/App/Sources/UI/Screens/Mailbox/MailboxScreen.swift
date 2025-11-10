@@ -103,7 +103,11 @@ struct MailboxScreen: View {
                     }
                 }
                 .fullScreenCover(isPresented: $mailboxModel.state.isSearchPresented) {
-                    SearchScreen(userSession: userSession, loadingBarPresenter: mailboxModel.loadingBarPresenter)
+                    SearchScreen(
+                        userSession: userSession,
+                        loadingBarPresenter: mailboxModel.loadingBarPresenter,
+                        mailSettingsLiveQuery: mailboxModel.mailSettingsLiveQuery
+                    )
                 }
                 .fullScreenCover(item: $mailboxModel.state.attachmentPresented) { config in
                     AttachmentView(config: config)
