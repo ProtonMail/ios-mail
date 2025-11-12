@@ -70,7 +70,7 @@ struct HomeScreen: View {
     ) {
         _appRoute = .init(wrappedValue: .initialState)
         _composerCoordinator = .init(wrappedValue: .init(userSession: userSession, toastStateStore: toastStateStore))
-        let upsellEligibilityPublisher = UpsellEligibilityPublisher(mailSession: appContext.mailSession, userSession: userSession)
+        let upsellEligibilityPublisher = UpsellEligibilityPublisher(userSession: userSession)
         _upsellEligibilityPublisher = .init(wrappedValue: upsellEligibilityPublisher)
         self.appContext = appContext
         self.userSession = userSession

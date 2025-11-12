@@ -24,9 +24,9 @@ import proton_app_uniffi
 final class UpsellEligibilityPublisher: ObservableObject {
     @Published private(set) var state: UpsellEligibility = .notEligible
 
-    private var watchHandles: [WatchHandle] = []
+    private var watchHandles: [Any] = []
 
-    init(mailSession: MailSession, userSession: MailUserSession) {
+    init(userSession: MailUserSession) {
         let callback = AsyncLiveQueryCallbackWrapper { [weak self] in
             await self?.updateState(userSession: userSession)
         }
@@ -37,7 +37,7 @@ final class UpsellEligibilityPublisher: ObservableObject {
             do {
                 watchHandles = [
                     try userSession.watchUpsellEligibility(callback: callback).get(),
-                    try await mailSession.watchFeatureFlagsAsync(callback: callback).get().handle,
+                    try userSession.watchFeatureFlagsStream().get().observe(callback: callback),
                 ]
             } catch {
                 AppLogger.log(error: error, category: .payments)
