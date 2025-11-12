@@ -115,6 +115,7 @@ final class UniversalSchemeHandler: NSObject, WKURLSchemeHandler {
     }
 }
 
+extension AttachmentDataError: @retroactive Error {}
 extension ProtonError: @retroactive Error {}
 
 private extension WKURLSchemeTask {

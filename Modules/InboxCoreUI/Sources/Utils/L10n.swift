@@ -52,6 +52,13 @@ enum L10n {
         }
     }
 
+    enum ImageProxy {
+        static let proxyFailed = LocalizedStringResource(
+            "Some images failed to load with tracker protection.",
+            comment: "Banner informing the user about an error."
+        )
+    }
+
     enum PINLock {
         static let title = LocalizedStringResource(
             "Enter PIN",

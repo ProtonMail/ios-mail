@@ -209,12 +209,8 @@ final class MockDraft: AppDraftProtocol, @unchecked Sendable {
         mockSubject
     }
 
-    func getEmbeddedAttachment(cid: String) async -> AttachmentDataResult {
-        .error(.network)
-    }
-
     func loadImage(url: String) async -> AttachmentDataResult {
-        .error(.network)
+        .error(.proxyFailed)
     }
 
     func isPasswordProtected() -> DraftIsPasswordProtectedResult {

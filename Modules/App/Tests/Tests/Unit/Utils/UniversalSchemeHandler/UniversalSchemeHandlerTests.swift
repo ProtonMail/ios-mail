@@ -32,12 +32,14 @@ final class UniversalSchemeHandlerTests {
     @Test
     func testFetchingEmbeddedImage_WhenImageIsMissing_ItReturnsError() async throws {
         let cidValue = "abcdef"
-        imageProxySpy.stubbedResult = .error(.unexpected(.unknown))
+        let stubbedError = AttachmentDataError.other(.unexpected(.unknown))
+
+        imageProxySpy.stubbedResult = .error(stubbedError)
         urlSchemeTaskSpy = .init(request: .init(url: .cid(cidValue)))
         self.sut.webView(WKWebView(), start: urlSchemeTaskSpy!)
 
         try await #expect(waitUntil(property: \.didInvokeFailWithError, ofObjectChanges: urlSchemeTaskSpy).count == 1)
-        #expect(urlSchemeTaskSpy.didInvokeFailWithError.compactMap(\.asProtonError) == [.unexpected(.unknown)])
+        #expect(urlSchemeTaskSpy.didInvokeFailWithError.compactMap(\.asAttachmentDataError) == [stubbedError])
     }
 
     @Test
@@ -143,8 +145,8 @@ private extension URL {
 
 private extension Error {
 
-    var asProtonError: ProtonError? {
-        self as? ProtonError
+    var asAttachmentDataError: AttachmentDataError? {
+        self as? AttachmentDataError
     }
 
 }
