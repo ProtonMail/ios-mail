@@ -5241,7 +5241,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Esteu fora de línia. La informació mostrada pot estar desfasada."
+            "value" : "Esteu fora de línia. La informació mostrada pot estar desactualitzada."
           }
         },
         "cs" : {
@@ -5420,7 +5420,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "La vostra adreça no es pot utilitzar per respondre. Actualitzeu la informació del vostre compte."
+            "value" : "L'adreça no es pot utilitzar per a respondre. Actualitzeu la informació del compte."
           }
         },
         "cs" : {

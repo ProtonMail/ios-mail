@@ -5156,6 +5156,12 @@
             "value" : "Une signature supplémentaire qui apparaît en plus de votre signature de message lors de l'envoi depuis cet appareil."
           }
         },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Egy extra aláírás, amely az alap e-mail aláírásán felül jelenik meg, amikor erről az eszközről küld e-mailt."
+          }
+        },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5484,6 +5490,12 @@
             "value" : "Personnalisations de l'application"
           }
         },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alkalmazás testreszabása"
+          }
+        },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5625,6 +5637,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Icône d'application"
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alkalmazásikon"
           }
         },
         "id" : {
@@ -8470,6 +8488,12 @@
             "value" : "Calculatrice"
           }
         },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Számológép"
+          }
+        },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
@@ -10406,7 +10430,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Accions escollides"
+            "value" : "Accions triades"
           }
         },
         "cs" : {
@@ -13764,6 +13788,12 @@
             "value" : "Le déblocage de l'expéditeur n'a pas abouti."
           }
         },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nem sikerült a feladó feloldása"
+          }
+        },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
@@ -13780,6 +13810,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "差出人のブロックを解除できませんでした"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "보낸 사람 차단 해제 불가"
           }
         },
         "nb" : {
@@ -19406,6 +19442,12 @@
             "value" : "Signature de message"
           }
         },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-mail aláírás"
+          }
+        },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
@@ -20232,7 +20274,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Gaudiu de missatges xifrats, menys correu brossa, protecció contra suplantacions d'identitat i rastrejadors bloquejats. Benvinguts a la privacitat."
+            "value" : "Gaudiu de missatges xifrats, menys correu brossa, protecció contra la pesca de credencials i bloqueig de rastrejadors. Benvinguts a la privacitat."
           }
         },
         "cs" : {
@@ -20281,6 +20323,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Profitez de messages chiffrés, de moins de spams, d'une protection contre l'hameçonnage et de traqueurs bloqués. Bienvenue dans le respect de la vie privée."
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Használja örömmel a titkosított üzeneteket, a hatékony levélszemét szűrést, az adathalászat elleni védelmet és a követők blokkolását. Üdvözöljük az adatvédelemben."
           }
         },
         "id" : {
@@ -22034,7 +22082,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Comenceu"
+            "value" : "Comença"
           }
         },
         "cs" : {
@@ -22947,7 +22995,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Inclou Paperera/Correu brossa"
+            "value" : "Inclou la paperera/correu brossa"
           }
         },
         "cs" : {
@@ -23004,6 +23052,12 @@
             "value" : "Inclure corbeille et indésirables/spam"
           }
         },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lomtárból és levélszemétből is"
+          }
+        },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
@@ -23020,6 +23074,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "ごみ箱/迷惑メールを含める"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "휴지통/스팸 포함"
           }
         },
         "nb" : {
@@ -23676,6 +23736,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Un problème est survenu avec la synchronisation de votre messagerie. Pour le résoudre, déconnectez-vous puis reconnectez-vous."
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hiba történt az e-mailek szinkronizálásakor. A megoldásához jelentkezzen ki, majd jelentkezzen be újra."
           }
         },
         "id" : {
@@ -28516,6 +28582,12 @@
             "value" : "Barre d'outils de message"
           }
         },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Üzenet eszköztár"
+          }
+        },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
@@ -29206,6 +29278,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Plus d'options"
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "További lehetőségek"
           }
         },
         "id" : {
@@ -34657,6 +34735,12 @@
             "value" : "Principale"
           }
         },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elsődleges"
+          }
+        },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
@@ -35501,7 +35585,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Llegiu, escriviu i gestioneu correus allà on us trobeu. Tot se sincronitzarà automàticament un cop torneu a estar en línia."
+            "value" : "Llegiu, escriviu i gestioneu correus electrònics allà on sigueu. Tot se sincronitza automàticament en el moment en què torneu a estar en línia."
           }
         },
         "cs" : {
@@ -40174,7 +40258,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mostrar els missatges no esborrats d'aquesta conversa."
+            "value" : "Mostra els missatges no esborrats en aquesta conversa."
           }
         },
         "cs" : {
@@ -40225,6 +40309,12 @@
             "value" : "Montrer les messages non supprimés dans cette conversation."
           }
         },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A nem a lomtárban lévő üzenetek megjelenítése ebben a beszélgetésben."
+          }
+        },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
@@ -40241,6 +40331,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "この会話内の削除済みではないメッセージを表示"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이 대화에서 휴지통에 없는 메시지 보기."
           }
         },
         "nb" : {
@@ -40299,7 +40395,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mostrar els missatges esborrats d'aquesta conversa."
+            "value" : "Mostra els missatges esborrats en aquesta conversa."
           }
         },
         "cs" : {
@@ -40350,6 +40446,12 @@
             "value" : "Montrer les messages mis à la corbeille dans cette conversation."
           }
         },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lomtárba helyezett üzenetek megjelenítése ebben a beszélgetésben."
+          }
+        },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
@@ -40366,6 +40468,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "この会話のごみ箱にあるメッセージを表示。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이 대화에서 휴지통에 들어간 메시지 보기."
           }
         },
         "nb" : {
@@ -40866,6 +40974,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Signatures"
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aláírások"
           }
         },
         "id" : {
@@ -47158,6 +47272,12 @@
             "value" : "Cette barre d'outils apparaît lorsque plusieurs messages sont sélectionnés dans la liste des messages."
           }
         },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ez az eszköztár akkor jelenik meg, ha több üzenet van kiválasztva egy lista nézetben."
+          }
+        },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
@@ -47299,6 +47419,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cette barre d'outils reste visible lorsqu'un message est ouvert."
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ez az eszköztár látható marad, amikor egy üzenet nyitva van."
           }
         },
         "id" : {
@@ -49440,7 +49566,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Desbloquegeu aquesta adreça"
+            "value" : "Desbloqueja aquesta adreça"
           }
         },
         "cs" : {
@@ -49491,6 +49617,12 @@
             "value" : "Débloquer cette adresse"
           }
         },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cím feloldása"
+          }
+        },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
@@ -49507,6 +49639,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "このアドレスのブロックを解除"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "주소 차단 해제"
           }
         },
         "nb" : {
@@ -52591,7 +52729,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Gairebé hi som. Gràcies per la vostra paciència!"
+            "value" : "Gairebé hi som. Gràcies per la paciència!"
           }
         },
         "cs" : {
@@ -52833,6 +52971,12 @@
             "value" : "Météo"
           }
         },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Időjárás"
+          }
+        },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
@@ -52937,7 +53081,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Us donem la benvinguda a Proton Mail, on la Privacitat està assegurada."
+            "value" : "Us donem la benvinguda al Proton Mail, on la privacitat és una prioritat"
           }
         },
         "cs" : {
@@ -54381,7 +54525,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "La vostra signatura de correu electrònic, que s'afegeix automàticament a tots els correus que envieu."
+            "value" : "La signatura de correu electrònic, que s'afegeix automàticament a tots els correus electrònics que envieu."
           }
         },
         "cs" : {
@@ -54430,6 +54574,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Votre signature de message, qui est automatiquement ajoutée à tous les messages que vous envoyez."
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Az e-mail aláírása, amelyet automatikusan hozzáadunk minden elküldött e-mailjéhez."
           }
         },
         "id" : {

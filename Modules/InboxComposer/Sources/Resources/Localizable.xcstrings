@@ -664,7 +664,7 @@
         "sl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Za uporabo %@ je zahtevan plačljiv paket"
+            "value" : "Za uporabo %@ je zahtevan plačljivi paket"
           }
         },
         "sv" : {
@@ -1266,7 +1266,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Afegiu-hi una contrasenya per utilitzar la caducitat"
+            "value" : "Afegiu una contrasenya per a utilitzar la caducitat"
           }
         },
         "cs" : {
@@ -4011,7 +4011,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "No es pot carregar l'adjunt perquè l'emmagatzematge de Proton Mail és ple. Allibereu espai o actualitzeu el vostre pla."
+            "value" : "No es pot carregar l'adjunt perquè l'emmagatzematge del Proton Mail està ple. Allibereu espai o actualitzeu el pla."
           }
         },
         "cs" : {
@@ -4056,6 +4056,12 @@
             "value" : "La pièce jointe n'a pas pu être importé, car votre espace de stockage Proton Mail est plein. Libérez de l'espace ou changez d'abonnement."
           }
         },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nem lehet mellékletet feltölteni, mert a Proton Mail tárhelye megtelt. Szabadítson fel helyet, vagy váltson nagyobb csomagra."
+          }
+        },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4072,6 +4078,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Proton Mailの容量がいっぱいのため、添付ファイルをアップロードできません。スペースを空けるか、プランをアップグレードしてください。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "귀하의 Proton Mail 저장공간이 가득 찼기 때문에 첨부 파일을 업로드할 수 없습니다. 공간을 확보하거나 요금제를 업그레이드하십시오."
           }
         },
         "nb" : {
@@ -4333,7 +4345,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aquesta adreça de correu electrònic està deshabilitada. Comproveu que sigui vàlida i activa."
+            "value" : "Adreça de correu electrònic desactivada. Comproveu que l'adreça és vàlida i activa."
           }
         },
         "cs" : {
@@ -5998,7 +6010,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "La data de caducitat no pot haver passat."
+            "value" : "La data de caducitat no pot ser en el passat."
           }
         },
         "cs" : {
@@ -8212,7 +8224,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hi ha hagut un problema amb aquesta adreça de correu electrònic. Comproveu-la o torneu-ho a provar més tard."
+            "value" : "Incidència amb aquesta adreça de correu electrònic. Comproveu l'adreça o torneu-ho a provar més tard."
           }
         },
         "cs" : {
@@ -8391,7 +8403,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "El cos del missatge no s'ha pogut recuperar. Tanqueu l'esborrany i torneu-lo a obrir."
+            "value" : "No s'ha recuperat el cos del missatge. Tanqueu i torneu a obrir l'esborrany."
           }
         },
         "cs" : {
@@ -9119,7 +9131,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "El missatge és massa gran per ser enviat. Reduïu-ne la mida dels adjunts."
+            "value" : "El missatge és massa gran per a ser enviat. Reduïu la mida dels adjunts."
           }
         },
         "cs" : {
@@ -9168,6 +9180,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Le message est trop volumineux pour être envoyé. Veuillez réduire la taille de vos pièces jointes."
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Üzenet túl nagy a küldéshez. Csökkentse a mellékletek méretét."
           }
         },
         "id" : {
@@ -10748,7 +10766,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Cap dels destinataris no admet la caducitat per defecte. Afegiu una contrasenya per activar la caducitat per als destinataris que no siguin de Proton Mail."
+            "value" : "Cap dels destinataris admet la caducitat per defecte. Afegiu una contrasenya per a activar la caducitat per als destinataris que no utilitzin el Proton Mail."
           }
         },
         "cs" : {
@@ -10797,6 +10815,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Aucun des destinataires ne prend en charge l'expiration par défaut. Ajoutez un mot de passe pour activer l'expiration pour les destinataires qui n'utilisent pas Proton Mail."
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Egyik címzett sem támogatja az időkorlátot. Adjon meg egy jelszót az időkorlát engedélyezéséhez a nem Proton Mail címzettek számára."
           }
         },
         "id" : {
@@ -12766,6 +12790,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Un problème est survenu lors de l'importation de la pièce jointe. Veuillez réessayer."
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nem sikerült feltölteni a mellékletet. Próbálja meg újra."
           }
         },
         "id" : {
@@ -14931,7 +14961,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Establiu una contrasenya per a xifrar aquest missatge per a usuaris que no són de Proton Mail."
+            "value" : "Establiu una contrasenya per a xifrar aquest missatge per a usuaris que no són del Proton Mail."
           }
         },
         "cs" : {
@@ -16850,6 +16880,12 @@
             "value" : "La disposition de la pièce jointe n'a pas pu être mise à jour, veuillez réessayer."
           }
         },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A melléklet állapotát nem sikerült frissíteni, próbálja újra."
+          }
+        },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
@@ -16866,6 +16902,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "添付ファイルの処理を更新できませんでした、もう一度お試しください"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "첨부 파일 상태를 업데이트하지 못했습니다. 다시 시도하세요."
           }
         },
         "nb" : {
@@ -18989,7 +19031,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "No hem pogut confirmar que tots els destinataris utilitzin Proton Mail. Només les adreces de Proton admeten la caducitat de missatges. En aquest cas, us suggerim que afegiu una contrasenya."
+            "value" : "No hem pogut confirmar que tots els destinataris utilitzin el Proton Mail. Només les adreces del Proton permeten la caducitat dels missatge. En aquest cas, suggerim afegir una contrasenya."
           }
         },
         "cs" : {

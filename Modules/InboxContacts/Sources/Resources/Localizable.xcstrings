@@ -1623,7 +1623,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "No s'ha trobat l'adjunt. Refresqueu la pàgina o la torneu-lo a penjar."
+            "value" : "No s'ha trobat l'adjunt. Actualitzeu la pàgina o torneu-lo a carregar."
           }
         },
         "cs" : {
@@ -2778,6 +2778,12 @@
             "value" : "Continuer sur le web"
           }
         },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folytatás a weben"
+          }
+        },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3468,6 +3474,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "La modification des contacts ou des groupes dans l'application n'est pas encore prête. Pour l'instant, vous pouvez les modifier dans l'application web et les modifications se synchroniseront sur votre appareil."
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Névjegyek vagy csoportok szerkesztése az alkalmazásban még nem lehetséges. Ezeket a webalkalmazásban szerkesztheti, és a változások szinkronizálódnak az eszközére."
           }
         },
         "id" : {

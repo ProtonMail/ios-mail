@@ -2191,7 +2191,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Продолжить использовать Free тариф"
+            "value" : "Продолжить с Free Plan"
           }
         },
         "sk" : {
@@ -2238,7 +2238,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Creeu tot el que necessiteu per mantenir-vos organitzat. Obteniu això i més amb %@."
+            "value" : "Creeu tot el que necessiteu per a mantenir-vos organitzat. Obteniu això i més amb %@."
           }
         },
         "cs" : {
@@ -2966,7 +2966,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Els descomptes es basen en el preu mensual estàndard. Es renovarà automàticament per %1$@ /%2$@ fins que ho cancel·leu."
+            "value" : "Els descomptes es basen en el preu mensual estàndard. Es renova automàticament a %1$@ /%2$@ fins que ho cancel·leu."
           }
         },
         "cs" : {
@@ -3033,6 +3033,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "割引は標準月額料金に基づいています。キャンセルされるまで%1$@ /%2$@にて自動更新されます。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "할인은 표준 월별 요금을 기준으로 합니다. 취소될 때까지 %1$@ /%2$@ 에 자동 갱신됩니다."
           }
         },
         "nb" : {
@@ -3473,7 +3479,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Obtingueu %@"
+            "value" : "Obtén %@"
           }
         },
         "cs" : {
@@ -3855,7 +3861,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Personalitzeu la vostra signatura mòbil. Gaudiu d'això i més amb %@."
+            "value" : "Personalitzeu la signatura mòbil. Gaudiu d'això i més amb %@."
           }
         },
         "cs" : {
@@ -4416,7 +4422,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "només %@ al mes"
+            "value" : "només %@/mes"
           }
         },
         "cs" : {
@@ -4477,6 +4483,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "月額%@のみ"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "단돈 월 %@"
           }
         },
         "nb" : {
