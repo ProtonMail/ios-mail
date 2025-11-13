@@ -38,7 +38,7 @@ final class UniversalSchemeHandlerTests {
         urlSchemeTaskSpy = .init(request: .init(url: .cid(cidValue)))
         self.sut.webView(WKWebView(), start: urlSchemeTaskSpy!)
 
-        try await #expect(waitUntil(property: \.didInvokeFailWithError, ofObjectChanges: urlSchemeTaskSpy).count == 1)
+        try await expectToEventually(self.urlSchemeTaskSpy.didInvokeFailWithError.count == 1)
         #expect(urlSchemeTaskSpy.didInvokeFailWithError.compactMap(\.asAttachmentDataError) == [stubbedError])
     }
 
@@ -51,7 +51,7 @@ final class UniversalSchemeHandlerTests {
         imageProxySpy.stubbedResult = .ok(image)
         sut.webView(WKWebView(), start: urlSchemeTaskSpy)
 
-        try await #expect(waitUntil(property: \.didFinishInvokeCount, ofObjectChanges: urlSchemeTaskSpy) == 1)
+        try await expectToEventually(self.urlSchemeTaskSpy.didFinishInvokeCount == 1)
         #expect(urlSchemeTaskSpy.didInvokeDidReceiveResponse.map(\.url) == [url])
         #expect(urlSchemeTaskSpy.didInvokeDidReceiveResponse.map(\.mimeType) == ["image/png"])
         #expect(urlSchemeTaskSpy.didInvokeDidReceiveResponse.map(\.expectedContentLength) == [Int64(image.data.count)])
@@ -85,23 +85,8 @@ final class UniversalSchemeHandlerTests {
         #expect(urlSchemeTaskSpy.didInvokeDidReceivedData == [])
         #expect(urlSchemeTaskSpy.didInvokeFailWithError.count == 0)
     }
-
-    private nonisolated func waitUntil<Object, Property>(property: KeyPath<Object, Property>, ofObjectChanges object: Object) async throws -> Property {
-        try await withTimeout {
-            await withCheckedContinuation { continuation in
-                withObservationTracking {
-                    _ = object[keyPath: property]
-                } onChange: {
-                    continuation.resume()
-                }
-            }
-        }
-
-        return object[keyPath: property]
-    }
 }
 
-@Observable
 private class WKURLSchemeTaskSpy: NSObject, WKURLSchemeTask {
 
     private(set) var didInvokeDidReceiveResponse: [URLResponse] = []
