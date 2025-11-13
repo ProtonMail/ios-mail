@@ -42,8 +42,7 @@ struct ConversationDetailScreen: View {
                 seed: seed,
                 draftPresenter: draftPresenter,
                 backOnlineActionExecutor: .init(mailUserSession: { mailUserSession }),
-                snoozeService: SnoozeService(mailUserSession: { mailUserSession }),
-                messageAppearanceOverrideStore: MessageAppearanceOverrideStore()
+                snoozeService: SnoozeService(mailUserSession: { mailUserSession })
             ))
         self.draftPresenter = draftPresenter
         self.mailUserSession = mailUserSession

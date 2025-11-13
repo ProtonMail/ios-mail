@@ -166,7 +166,6 @@ struct ConversationDetailListView: View {
             mailbox: model.mailbox.unsafelyUnwrapped,
             uiModel: uiModel,
             draftPresenter: draftPresenter,
-            messageAppearanceOverrideStore: model.messageAppearanceOverrideStore,
             areActionsHidden: model.areActionsHidden,
             attachmentIDToOpen: $model.attachmentIDToOpen,
             onEvent: { onExpandedMessageCellEvent($0, uiModel: uiModel) },

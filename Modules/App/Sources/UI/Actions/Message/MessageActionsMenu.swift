@@ -24,17 +24,16 @@ struct MessageActionsMenu<OpenMenuButtonContent: View>: View {
     private let state: MessageActionsMenuState
     private let mailbox: Mailbox
     private let service: AllAvailableMessageActionsForActionSheetService
-    private let messageAppearanceOverrideStore: MessageAppearanceOverrideStore
     private let actionTapped: (MessageAction) -> Void
     private let editToolbarTapped: () -> Void
     private let label: () -> OpenMenuButtonContent
 
     @Environment(\.colorScheme) var colorScheme
+    @Environment(\.messageAppearanceOverrideStore) var messageAppearanceOverrideStore
 
     init(
         state: MessageActionsMenuState,
         mailbox: Mailbox,
-        messageAppearanceOverrideStore: MessageAppearanceOverrideStore,
         service: @escaping AllAvailableMessageActionsForActionSheetService = allAvailableMessageActionsForActionSheet,
         actionTapped: @escaping (MessageAction) -> Void,
         editToolbarTapped: @escaping () -> Void,
@@ -44,7 +43,6 @@ struct MessageActionsMenu<OpenMenuButtonContent: View>: View {
         self.mailbox = mailbox
         self.service = service
         self.actionTapped = actionTapped
-        self.messageAppearanceOverrideStore = messageAppearanceOverrideStore
         self.editToolbarTapped = editToolbarTapped
         self.label = label
     }
@@ -54,7 +52,7 @@ struct MessageActionsMenu<OpenMenuButtonContent: View>: View {
             store: MessageActionsMenuStore(
                 state: state,
                 mailbox: mailbox,
-                messageAppearanceOverrideStore: messageAppearanceOverrideStore,
+                messageAppearanceOverrideStore: messageAppearanceOverrideStore!,
                 service: service,
                 actionTapped: actionTapped
             )

@@ -34,7 +34,6 @@ struct MessageDetailsView: View {
     @State private(set) var isHeaderCollapsed: Bool = true
     let uiModel: MessageDetailsUIModel
     let mailbox: Mailbox
-    let messageAppearanceOverrideStore: MessageAppearanceOverrideStore
     let actionButtonsState: ActionButtonsState
     let onEvent: (MessageDetailsEvent) -> Void
 
@@ -231,7 +230,6 @@ struct MessageDetailsView: View {
             MessageActionsMenu(
                 state: .initial(messageID: uiModel.id, showEditToolbar: false),
                 mailbox: mailbox,
-                messageAppearanceOverrideStore: messageAppearanceOverrideStore,
                 actionTapped: { action in onEvent(.onMessageAction(action)) },
                 editToolbarTapped: { onEvent(.onEditToolbar) }
             ) {
@@ -470,7 +468,6 @@ extension Array where Element == MessageDetail.Recipient {
         isHeaderCollapsed: false,
         uiModel: model,
         mailbox: .dummy,
-        messageAppearanceOverrideStore: .init(),
         actionButtonsState: .enabled,
         onEvent: { _ in }
     )
