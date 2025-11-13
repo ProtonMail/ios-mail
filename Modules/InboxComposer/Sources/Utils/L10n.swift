@@ -207,14 +207,14 @@ enum L10n {
         )
 
         static let singleAttachmentOverSizeLimitMessage = LocalizedStringResource(
-            "There is a 25 MB limit on attachments per email. Send them in separate emails or share them via Proton Drive.",
+            "There is a 25 MB limit on attachments per email, including inline images. Send them in separate emails or share them via Proton Drive.",
             bundle: .atURL(Bundle.module.bundleURL),
             comment: "Attachment failed because the total attachment size is over the limit"
         )
 
         static func multipleAttachmentOverSizeLimitMessage(count: Int) -> LocalizedStringResource {
             LocalizedStringResource(
-                "There is a 25 MB limit on attachments per email and \(count) attachments couldn't be added. Send them in separate emails or share them via Proton Drive.",
+                "There is a 25 MB limit on attachments per email, including inline images, and \(count) attachments couldn't be added. Send them in separate emails or share them via Proton Drive.",
                 bundle: .atURL(Bundle.module.bundleURL),
                 comment: "Attachment failed because the total attachment size is over the limit"
             )
@@ -227,7 +227,7 @@ enum L10n {
         )
 
         static let tooManyAttachmentsMessage = LocalizedStringResource(
-            "You have reached the limit of attachments, 1 or more attachments weren't able to be added. Send them in separate emails or share them via Proton Drive.",
+            "You have reached the limit of attachments, including inline images, 1 or more attachments weren't able to be added. Send them in separate emails or share them via Proton Drive.",
             bundle: .atURL(Bundle.module.bundleURL),
             comment: "Attachment failed because the total of number of attachments is over the limit"
         )
