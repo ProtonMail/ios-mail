@@ -70,10 +70,6 @@ struct ExpandedMessageCell: View {
                     switch event {
                     case .onTap:
                         onEvent(.onTap)
-                    case .onReply:
-                        onEvent(.onReply)
-                    case .onReplyAll:
-                        onEvent(.onReplyAll)
                     case .onMessageAction(let action):
                         onEvent(.onMessageAction(action))
                     case .onSenderTap:
@@ -103,11 +99,11 @@ struct ExpandedMessageCell: View {
                     onEvent: { event in
                         switch event {
                         case .reply:
-                            onEvent(.onReply)
+                            onEvent(.onMessageAction(.reply))
                         case .replyAll:
-                            onEvent(.onReplyAll)
+                            onEvent(.onMessageAction(.replyAll))
                         case .forward:
-                            onEvent(.onForward)
+                            onEvent(.onMessageAction(.forward))
                         }
                     }
                 )
@@ -133,10 +129,6 @@ struct ExpandedMessageCellUIModel: Identifiable, Equatable {
 
 enum ExpandedMessageCellEvent {
     case onTap
-
-    case onReply
-    case onReplyAll
-    case onForward
 
     case onSenderTap
     case onRecipientTap(MessageDetail.Recipient)

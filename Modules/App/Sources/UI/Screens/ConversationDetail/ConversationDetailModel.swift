@@ -240,18 +240,6 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         }
     }
 
-    func onReplyMessage(withId messageId: ID, toastStateStore: ToastStateStore) {
-        onReplyAction(messageId: messageId, action: .reply, toastStateStore: toastStateStore)
-    }
-
-    func onReplyAllMessage(withId messageId: ID, toastStateStore: ToastStateStore) {
-        onReplyAction(messageId: messageId, action: .replyAll, toastStateStore: toastStateStore)
-    }
-
-    func onForwardMessage(withId messageId: ID, toastStateStore: ToastStateStore) {
-        onReplyAction(messageId: messageId, action: .forward, toastStateStore: toastStateStore)
-    }
-
     func onEditScheduledMessage(withId messageId: ID, goBack: @escaping () -> Void, toastStateStore: ToastStateStore) {
         let alert: AlertModel = .editScheduleConfirmation(action: { [weak self] action in
             await self?.handle(action: action, messageId: messageId, toastStateStore: toastStateStore, goBack: goBack)
@@ -359,13 +347,13 @@ final class ConversationDetailModel: Sendable, ObservableObject {
             actionAlert = alert
         case .reply:
             actionSheets = .allSheetsDismissed
-            onReplyMessage(withId: messageID, toastStateStore: toastStateStore)
+            onReplyAction(messageId: messageID, action: .reply, toastStateStore: toastStateStore)
         case .replyAll:
             actionSheets = .allSheetsDismissed
-            onReplyAllMessage(withId: messageID, toastStateStore: toastStateStore)
+            onReplyAction(messageId: messageID, action: .replyAll, toastStateStore: toastStateStore)
         case .forward:
             actionSheets = .allSheetsDismissed
-            onForwardMessage(withId: messageID, toastStateStore: toastStateStore)
+            onReplyAction(messageId: messageID, action: .forward, toastStateStore: toastStateStore)
         case .viewHeaders, .viewHtml:
             toastStateStore.present(toast: .comingSoon)
         case .print:

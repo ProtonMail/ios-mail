@@ -179,12 +179,6 @@ struct ConversationDetailListView: View {
         switch event {
         case .onTap:
             model.onMessageTap(messageId: uiModel.id, isDraft: false)
-        case .onReply:
-            model.onReplyMessage(withId: uiModel.id, toastStateStore: toastStateStore)
-        case .onReplyAll:
-            model.onReplyAllMessage(withId: uiModel.id, toastStateStore: toastStateStore)
-        case .onForward:
-            model.onForwardMessage(withId: uiModel.id, toastStateStore: toastStateStore)
         case .onEditToolbar:
             editToolbar()
         case .onMessageAction(let action):

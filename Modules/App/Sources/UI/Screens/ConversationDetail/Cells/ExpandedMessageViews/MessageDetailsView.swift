@@ -224,7 +224,7 @@ struct MessageDetailsView: View {
     private var headerActionsView: some View {
         HStack(alignment: .top, spacing: DS.Spacing.small) {
             headerActionButton(
-                action: { onEvent(uiModel.isSingleRecipient ? .onReply : .onReplyAll) },
+                action: { onEvent(.onMessageAction(uiModel.isSingleRecipient ? .reply : .replyAll)) },
                 image: Image(symbol: uiModel.isSingleRecipient ? .reply : .replyAll)
             )
             MessageActionsMenu(
@@ -442,8 +442,6 @@ enum MessageDetail {
 
 enum MessageDetailsEvent {
     case onTap
-    case onReply
-    case onReplyAll
     case onMessageAction(MessageAction)
     case onEditToolbar
     case onSenderTap
