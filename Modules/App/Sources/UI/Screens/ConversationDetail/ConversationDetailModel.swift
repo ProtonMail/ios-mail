@@ -298,6 +298,10 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         toastStateStore: ToastStateStore,
         goBack: @MainActor @escaping () -> Void
     ) async {
+        let mailboxItem = MailboxItem.message(
+            isLastMessageInCurrentLocation: state.hasAtMostOneMessage(withSameLocationAs: messageID)
+        )
+
         switch action {
         case .markRead:
             await markAsRead(id: messageID, itemType: .message)
@@ -318,9 +322,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
                 to: .init(
                     sheetType: .labelAs,
                     ids: [messageID],
-                    mailboxItem: .message(
-                        isLastMessageInCurrentLocation: state.hasAtMostOneMessage(withSameLocationAs: messageID)
-                    )
+                    mailboxItem: mailboxItem
                 )
             )
         case .moveTo:
@@ -329,18 +331,14 @@ final class ConversationDetailModel: Sendable, ObservableObject {
                 to: .init(
                     sheetType: .moveTo,
                     ids: [messageID],
-                    mailboxItem: .message(
-                        isLastMessageInCurrentLocation: state.hasAtMostOneMessage(withSameLocationAs: messageID)
-                    )
+                    mailboxItem: mailboxItem
                 )
             )
         case .moveToSystemFolder(let systemFolder), .notSpam(let systemFolder):
             actionSheets = .allSheetsDismissed
             await move(
                 id: messageID,
-                mailboxItem: .message(
-                    isLastMessageInCurrentLocation: state.hasAtMostOneMessage(withSameLocationAs: messageID)
-                ),
+                mailboxItem: mailboxItem,
                 destination: systemFolder,
                 toastStateStore: toastStateStore,
                 goBack: goBack
@@ -352,9 +350,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
                     guard let self else { return }
                     await self.handle(
                         id: messageID,
-                        mailboxItem: .message(
-                            isLastMessageInCurrentLocation: state.hasAtMostOneMessage(withSameLocationAs: messageID)
-                        ),
+                        mailboxItem: mailboxItem,
                         action: action,
                         toastStateStore: toastStateStore, goBack: goBack
                     )
@@ -391,9 +387,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
                 await self.handle(
                     action: action,
                     messageID: messageID,
-                    mailboxItem: .message(
-                        isLastMessageInCurrentLocation: state.hasAtMostOneMessage(withSameLocationAs: messageID)
-                    ),
+                    mailboxItem: mailboxItem,
                     goBack: goBack
                 )
             })
@@ -1024,11 +1018,9 @@ private extension ConversationDetailModel.State {
         case .initial, .fetchingMessages, .noConnection:
             return false
         case .messagesReady(let messageListState):
-            let targetMessage =
-                messageListState.messages
-                .first(where: { $0.id == messageID })
-            return
-                messageListState.messages
+            let targetMessage = messageListState.messages.first(where: { $0.id == messageID })
+
+            return messageListState.messages
                 .filter { message in message.locationID == targetMessage?.locationID }
                 .count == 1
         }
