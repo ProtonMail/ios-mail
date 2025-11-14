@@ -20,7 +20,8 @@ import InboxCore
 import proton_app_uniffi
 import SwiftUI
 
-actor AttachmentErrorAlertState {
+@MainActor
+final class AttachmentErrorAlertState {
     private(set) var queue: OrderedSet<AttachmentErrorAlertModel> = []
     private var idsAlreadySeen: Set<String> = []
     private(set) var errorToPresent: AttachmentErrorAlertModel? = nil {

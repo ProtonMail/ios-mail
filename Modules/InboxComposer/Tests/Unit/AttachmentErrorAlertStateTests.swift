@@ -19,6 +19,7 @@
 import proton_app_uniffi
 import Testing
 
+@MainActor
 final class AttachmentErrorAlertStateTests {
     private var sut: AttachmentErrorAlertState!
     private static let timeStamp1: Int64 = 1743000520
@@ -40,39 +41,39 @@ final class AttachmentErrorAlertStateTests {
     // MARK: enqueueAdditionErrors
 
     @Test
-    func testEnqueueAdditionErrors_whenOneErrorPassed_itShouldPresentThePassedError() async {
+    func testEnqueueAdditionErrors_whenOneErrorPassed_itShouldPresentThePassedError() {
         let error = DraftAttachmentUploadError.reason(.messageAlreadySent)
 
-        await sut.enqueueAdditionErrors([error])
+        sut.enqueueAdditionErrors([error])
 
-        let errorToPresent = await sut.errorToPresent
-        let pendingErrorCount = await sut.queue.count
+        let errorToPresent = sut.errorToPresent
+        let pendingErrorCount = sut.queue.count
         #expect(errorToPresent?.title.string == L10n.AttachmentError.somethingWentWrongTitle.string)
         #expect(pendingErrorCount == 0)
     }
 
     @Test
-    func testEnqueueAdditionErrors_whenTwoErrorsPassed_itShouldEnqueueTheSecond() async {
+    func testEnqueueAdditionErrors_whenTwoErrorsPassed_itShouldEnqueueTheSecond() {
         let error1 = DraftAttachmentUploadError.reason(.attachmentTooLarge)
         let error2 = DraftAttachmentUploadError.reason(.tooManyAttachments)
 
-        await sut.enqueueAdditionErrors([error1, error2])
+        sut.enqueueAdditionErrors([error1, error2])
 
-        let errorToPresent = await sut.errorToPresent
-        let pendingErrorCount = await sut.queue.count
+        let errorToPresent = sut.errorToPresent
+        let pendingErrorCount = sut.queue.count
         #expect(errorToPresent?.title.string == L10n.AttachmentError.attachmentsOverSizeLimitTitle.string)
         #expect(pendingErrorCount == 1)
     }
 
     @Test
-    func testEnqueueAdditionErrors_whenSameErrorPassed_itShouldEnqueueTheSecondError() async {
+    func testEnqueueAdditionErrors_whenSameErrorPassed_itShouldEnqueueTheSecondError() {
         let error = DraftAttachmentUploadError.reason(.attachmentTooLarge)
 
-        await sut.enqueueAdditionErrors([error])
-        await sut.enqueueAdditionErrors([error])
+        sut.enqueueAdditionErrors([error])
+        sut.enqueueAdditionErrors([error])
 
-        let errorToPresent = await sut.errorToPresent
-        let pendingErrorCount = await sut.queue.count
+        let errorToPresent = sut.errorToPresent
+        let pendingErrorCount = sut.queue.count
         #expect(errorToPresent?.title.string == L10n.AttachmentError.attachmentsOverSizeLimitTitle.string)
         #expect(pendingErrorCount == 1)
     }
@@ -80,24 +81,24 @@ final class AttachmentErrorAlertStateTests {
     // MARK: enqueueAnyUploadError
 
     @Test
-    func testEnqueueAnyUploadError_whenNoErrorsPassed_itShouldNotEnqueueErrors() async {
-        await sut.enqueueAnyUploadError([
+    func testEnqueueAnyUploadError_whenNoErrorsPassed_itShouldNotEnqueueErrors() {
+        sut.enqueueAnyUploadError([
             DraftAttachment.makeMock(state: .uploaded, timestamp: 1),
             DraftAttachment.makeMock(state: .pending, timestamp: 2),
         ])
 
-        let errorToPresent = await sut.errorToPresent
-        let pendingErrorCount = await sut.queue.count
+        let errorToPresent = sut.errorToPresent
+        let pendingErrorCount = sut.queue.count
         #expect(errorToPresent == nil)
         #expect(pendingErrorCount == 0)
     }
 
     @Test
-    func testEnqueueAnyUploadError_whenMultipleErrorsOfTheSameType_itShouldAggregateTheErrors() async {
-        await sut.enqueueAnyUploadError([tooManyError1, tooManyError2])
+    func testEnqueueAnyUploadError_whenMultipleErrorsOfTheSameType_itShouldAggregateTheErrors() {
+        sut.enqueueAnyUploadError([tooManyError1, tooManyError2])
 
-        let errorToPresent = await sut.errorToPresent
-        let pendingErrorCount = await sut.queue.count
+        let errorToPresent = sut.errorToPresent
+        let pendingErrorCount = sut.queue.count
         #expect(errorToPresent?.title.string == L10n.AttachmentError.tooManyAttachmentsFromServerTitle.string)
         #expect(errorToPresent!.origin.isUploading == true)
         #expect(errorToPresent?.origin.errorCount == 2)
@@ -105,46 +106,46 @@ final class AttachmentErrorAlertStateTests {
     }
 
     @Test
-    func testEnqueueAnyUploadError_whenTwoErrorsOfDifferentTypes_itShouldEnqueueTheSecond() async {
-        await sut.enqueueAnyUploadError([tooLargeError1, tooManyError1])
+    func testEnqueueAnyUploadError_whenTwoErrorsOfDifferentTypes_itShouldEnqueueTheSecond() {
+        sut.enqueueAnyUploadError([tooLargeError1, tooManyError1])
 
-        let errorToPresent = await sut.errorToPresent
-        let pendingErrorCount = await sut.queue.count
+        let errorToPresent = sut.errorToPresent
+        let pendingErrorCount = sut.queue.count
         #expect(errorToPresent?.title.string == L10n.AttachmentError.attachmentsOverSizeLimitTitle.string)
         #expect(errorToPresent?.origin.errorCount == 1)
         #expect(pendingErrorCount == 1)
     }
 
     @Test
-    func testEnqueueAnyUploadError_whenErrorsOfDifferentTypesInConsecutiveCalls_itShouldEnqueueTheSecondError() async {
-        await sut.enqueueAnyUploadError([totalTooLargeError1])
-        await sut.enqueueAnyUploadError([tooManyError1])
+    func testEnqueueAnyUploadError_whenErrorsOfDifferentTypesInConsecutiveCalls_itShouldEnqueueTheSecondError() {
+        sut.enqueueAnyUploadError([totalTooLargeError1])
+        sut.enqueueAnyUploadError([tooManyError1])
 
-        let errorToPresent = await sut.errorToPresent
-        let pendingErrorCount = await sut.queue.count
+        let errorToPresent = sut.errorToPresent
+        let pendingErrorCount = sut.queue.count
         #expect(errorToPresent?.title.string == L10n.AttachmentError.attachmentsOverSizeLimitTitle.string)
         #expect(pendingErrorCount == 1)
     }
 
     @Test
-    func testEnqueueAnyUploadError_whenSameErrorPassedInConsecutoveCalls_itShouldEnqueueSecondTime() async {
-        await sut.enqueueAnyUploadError([tooManyError1])
-        await sut.enqueueAnyUploadError([tooManyError1])
+    func testEnqueueAnyUploadError_whenSameErrorPassedInConsecutoveCalls_itShouldEnqueueSecondTime() {
+        sut.enqueueAnyUploadError([tooManyError1])
+        sut.enqueueAnyUploadError([tooManyError1])
 
-        let errorToPresent = await sut.errorToPresent
-        let pendingErrorCount = await sut.queue.count
+        let errorToPresent = sut.errorToPresent
+        let pendingErrorCount = sut.queue.count
         #expect(errorToPresent?.title.string == L10n.AttachmentError.tooManyAttachmentsFromServerTitle.string)
         #expect(errorToPresent?.origin.errorCount == 1)
         #expect(pendingErrorCount == 0)
     }
 
     @Test
-    func testEnqueueAnyUploadError_whenErrorIsHandledInAggregation_itShouldNotBeEnqueuedIfPassedIndividually() async {
-        await sut.enqueueAnyUploadError([tooManyError1, tooManyError2])
-        await sut.enqueueAnyUploadError([tooManyError2])
+    func testEnqueueAnyUploadError_whenErrorIsHandledInAggregation_itShouldNotBeEnqueuedIfPassedIndividually() {
+        sut.enqueueAnyUploadError([tooManyError1, tooManyError2])
+        sut.enqueueAnyUploadError([tooManyError2])
 
-        let errorToPresent = await sut.errorToPresent
-        let pendingErrorCount = await sut.queue.count
+        let errorToPresent = sut.errorToPresent
+        let pendingErrorCount = sut.queue.count
         #expect(errorToPresent?.title.string == L10n.AttachmentError.tooManyAttachmentsFromServerTitle.string)
         #expect(errorToPresent?.origin.errorCount == 2)
         #expect(pendingErrorCount == 0)
@@ -153,14 +154,14 @@ final class AttachmentErrorAlertStateTests {
     // MARK: nextErrorToPresent
 
     @Test
-    func testNextErrorToPresent_whenThereIsAnErrorPresented_itShouldNotPresentTheNextOne() async {
-        await sut.enqueueAnyUploadError([tooLargeError1, tooManyError1])
-        let errorToPresent1 = await sut.errorToPresent
+    func testNextErrorToPresent_whenThereIsAnErrorPresented_itShouldNotPresentTheNextOne() {
+        sut.enqueueAnyUploadError([tooLargeError1, tooManyError1])
+        let errorToPresent1 = sut.errorToPresent
         #expect(errorToPresent1?.title.string == L10n.AttachmentError.attachmentsOverSizeLimitTitle.string)
 
-        await sut.nextErrorToPresent()
+        sut.nextErrorToPresent()
 
-        let errorToPresent2 = await sut.errorToPresent
+        let errorToPresent2 = sut.errorToPresent
         #expect(errorToPresent2?.title.string == L10n.AttachmentError.attachmentsOverSizeLimitTitle.string)
     }
 
@@ -168,24 +169,24 @@ final class AttachmentErrorAlertStateTests {
 
     @Test
     func testErrorDismissedShowNextError_whenThereIsAnErrorPresented_itShouldNotPresentTheNextOne() async {
-        await sut.enqueueAnyUploadError([tooLargeError1, tooManyError1])
-        let errorToPresent1 = await sut.errorToPresent
+        sut.enqueueAnyUploadError([tooLargeError1, tooManyError1])
+        let errorToPresent1 = sut.errorToPresent
         #expect(errorToPresent1?.title.string == L10n.AttachmentError.attachmentsOverSizeLimitTitle.string)
 
         await sut.errorDismissedShowNextError()
 
-        let errorToPresent2 = await sut.errorToPresent
+        let errorToPresent2 = sut.errorToPresent
         #expect(errorToPresent2?.title.string == L10n.AttachmentError.tooManyAttachmentsFromServerTitle.string)
     }
 
     // MARK: onErrorToPresent
 
     @Test
-    func testOnErrorToPresent_isCalled() async {
+    func testOnErrorToPresent_isCalled() {
         var onErrorToPresentWasCalled = false
-        await sut.setOnErrorToPresent({ _ in onErrorToPresentWasCalled = true })
+        sut.setOnErrorToPresent({ _ in onErrorToPresentWasCalled = true })
 
-        await sut.enqueueAnyUploadError([tooManyError1])
+        sut.enqueueAnyUploadError([tooManyError1])
 
         #expect(onErrorToPresentWasCalled == true)
     }

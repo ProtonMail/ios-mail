@@ -25,20 +25,18 @@ final class AttachmentAlertState: ObservableObject {
     private let attachmentErrorAlertState: AttachmentErrorAlertState = .init()
 
     init() {
-        Task {
-            await attachmentErrorAlertState.setOnErrorToPresent { [weak self] error in
-                self?.presentedError = error
-                self?.isAlertPresented = true
-            }
+        attachmentErrorAlertState.setOnErrorToPresent { [weak self] error in
+            self?.presentedError = error
+            self?.isAlertPresented = true
         }
     }
 
     func enqueueAlertsForFailedAttachmentAdditions(errors: [DraftAttachmentUploadError]) {
-        Task { await attachmentErrorAlertState.enqueueAdditionErrors(errors) }
+        attachmentErrorAlertState.enqueueAdditionErrors(errors)
     }
 
     func enqueueAlertsForFailedAttachmentUploads(attachments: [DraftAttachment]) {
-        Task { await attachmentErrorAlertState.enqueueAnyUploadError(attachments) }
+        attachmentErrorAlertState.enqueueAnyUploadError(attachments)
     }
 
     func errorDismissedShowNextError() {
