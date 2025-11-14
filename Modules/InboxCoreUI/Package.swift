@@ -16,7 +16,7 @@ let package = Package(
         .package(path: "../InboxSnapshotTesting"),
         .package(path: "../../ProtonPackages/proton_app_uniffi"),
         .package(path: "../../ProtonPackages/et-protoncore/platform/apple/ProtonCoreET"),
-        .package(url: "https://github.com/apple/swift-collections.git", exact: "1.1.2"),
+        .package(url: "https://github.com/apple/swift-collections.git", exact: "1.3.0"),
         .package(url: "https://github.com/airbnb/lottie-spm.git", from: "4.5.0"),
         .package(url: "https://github.com/siteline/swiftui-introspect", from: "1.3.0"),
     ],

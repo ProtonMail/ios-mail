@@ -19,6 +19,7 @@ import InboxCore
 import InboxCoreUI
 import InboxDesignSystem
 import proton_app_uniffi
+import ProtonUIFoundations
 import SwiftUI
 
 struct AppProtectionSelectionScreen: View {
@@ -51,7 +52,7 @@ struct AppProtectionSelectionScreen: View {
                     FormSection(footer: L10n.Settings.App.protectionSelectionListFooterInformation) {
                         FormList(
                             collection: state.availableAppProtectionMethods,
-                            separator: .normLeftPadding
+                            style: .separator(.normLeftPadding)
                         ) { viewModel in
                             FormSmallButton(
                                 title: viewModel.type.name,

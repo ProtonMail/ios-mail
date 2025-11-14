@@ -22,6 +22,7 @@ import InboxCoreUI
 import InboxKeychain
 import InboxTesting
 import proton_app_uniffi
+import ProtonUIFoundations
 import SwiftUI
 import ViewInspector
 import XCTest

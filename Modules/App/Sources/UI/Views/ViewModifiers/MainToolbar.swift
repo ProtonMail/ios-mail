@@ -20,6 +20,7 @@ import InboxCoreUI
 import InboxDesignSystem
 import InboxIAP
 import proton_app_uniffi
+import ProtonUIFoundations
 import SwiftUI
 
 struct MainToolbar<AvatarView: View>: ViewModifier {

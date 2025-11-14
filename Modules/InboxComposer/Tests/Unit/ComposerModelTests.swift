@@ -23,6 +23,7 @@ import typealias InboxCore.ID
 import InboxCoreUI
 import PhotosUI
 import proton_app_uniffi
+import ProtonUIFoundations
 import SwiftUI
 import XCTest
 

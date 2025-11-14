@@ -18,6 +18,7 @@
 @testable import ProtonMail
 import InboxCoreUI
 import InboxSnapshotTesting
+import ProtonUIFoundations
 import Testing
 
 @MainActor

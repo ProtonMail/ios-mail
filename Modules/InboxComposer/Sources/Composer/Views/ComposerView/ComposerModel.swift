@@ -22,6 +22,7 @@ import InboxContacts
 import PhotosUI
 import proton_app_uniffi
 import struct ProtonCoreUtilities.NestedObservableObject
+import ProtonUIFoundations
 import SwiftUI
 
 typealias Nested = NestedObservableObject

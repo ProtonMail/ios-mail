@@ -19,6 +19,7 @@
 import InboxCoreUI
 import InboxSnapshotTesting
 import proton_app_uniffi
+import ProtonUIFoundations
 import SwiftUI
 import Testing
 

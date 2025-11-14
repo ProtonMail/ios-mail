@@ -21,6 +21,7 @@ import InboxCoreUI
 import InboxDesignSystem
 import InboxRSVP
 import proton_app_uniffi
+import ProtonUIFoundations
 import SwiftUI
 
 struct MessageBodyView: View {

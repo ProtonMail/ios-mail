@@ -17,6 +17,7 @@
 
 import InboxCoreUI
 import InboxDesignSystem
+import ProtonUIFoundations
 import SwiftUI
 
 struct MessageActionButtonsView: View {
@@ -42,7 +43,7 @@ struct MessageActionButtonsView: View {
 }
 
 private struct MessageActionButtonView: View {
-    let symbol: DS.SFSymbol
+    let symbol: SFSymbol
     let text: LocalizedStringResource
     let isDisabled: Bool
     var onButtonTap: () -> Void

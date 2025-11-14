@@ -15,22 +15,35 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import Foundation
 import InboxCore
 import ProtonUIFoundations
-import UIKit
 
-public struct Clipboard {
-    private let toastStateStore: ToastStateStore
-    private let pasteboard: UIPasteboard
+extension Toast {
+    public static func informationUndo(
+        id: UUID = UUID(),
+        message: String,
+        duration: Duration,
+        undoAction: (() async -> Void)?
+    ) -> Self {
+        let button: Button? =
+            switch undoAction {
+            case .none:
+                .none
+            case .some(let action):
+                Button(
+                    type: .smallTrailing(content: .title(CommonL10n.undo.string)),
+                    action: action
+                )
+            }
 
-    public init(toastStateStore: ToastStateStore, pasteboard: UIPasteboard) {
-        self.toastStateStore = toastStateStore
-        self.pasteboard = pasteboard
-    }
-
-    @MainActor
-    public func copyToClipboard(value: String, forName name: LocalizedStringResource) {
-        pasteboard.string = value
-        toastStateStore.present(toast: .information(message: CommonL10n.copiedToClipboard(name: name.string).string))
+        return .init(
+            id: id,
+            title: .none,
+            message: message,
+            button: button,
+            style: .information,
+            duration: duration
+        )
     }
 }

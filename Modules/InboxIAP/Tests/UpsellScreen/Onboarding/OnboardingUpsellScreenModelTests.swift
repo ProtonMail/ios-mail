@@ -17,6 +17,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import InboxCoreUI
+import ProtonUIFoundations
 import Testing
 
 @testable import InboxIAP

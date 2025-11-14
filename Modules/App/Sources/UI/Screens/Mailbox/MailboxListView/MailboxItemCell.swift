@@ -17,6 +17,7 @@
 
 import InboxDesignSystem
 import proton_app_uniffi
+import ProtonUIFoundations
 import SwiftUI
 
 struct MailboxItemCell: View {
@@ -164,7 +165,7 @@ extension MailboxItemCell {
         }
     }
 
-    private func imageForReplyIcon(symbol: DS.SFSymbol) -> some View {
+    private func imageForReplyIcon(symbol: SFSymbol) -> some View {
         Image(symbol: symbol)
             .square(size: 20)
             .foregroundColor(DS.Color.Text.weak)

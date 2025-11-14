@@ -19,6 +19,7 @@
 @testable import InboxCore
 @testable import InboxCoreUI
 import proton_app_uniffi
+import ProtonUIFoundations
 import Testing
 
 @Suite(.serialized) @MainActor

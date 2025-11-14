@@ -19,6 +19,7 @@ import InboxCoreUI
 import InboxDesignSystem
 import PaymentsNG
 import proton_app_uniffi
+import ProtonUIFoundations
 import SwiftUI
 
 @MainActor

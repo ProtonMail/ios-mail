@@ -18,6 +18,7 @@
 import InboxCoreUI
 import InboxIAP
 import proton_app_uniffi
+import ProtonUIFoundations
 import SwiftUI
 
 struct ScheduleSendPickerSheet: View {

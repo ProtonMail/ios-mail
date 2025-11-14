@@ -14,9 +14,17 @@ let package = Package(
         .package(path: "../InboxKeychain"),
         .package(path: "../InboxSnapshotTesting"),
         .package(path: "../InboxTesting"),
+        .package(url: "https://gitlab.protontech.ch/apple/shared/ProtonUIFoundations.git", exact: "1.1.0"),
     ],
     targets: [
-        .target(name: "TestableShareExtension", dependencies: ["InboxComposer", "InboxKeychain"]),
+        .target(
+            name: "TestableShareExtension",
+            dependencies: [
+                "InboxComposer",
+                "InboxKeychain",
+                .product(name: "ProtonUIFoundations", package: "ProtonUIFoundations"),
+            ]
+        ),
         .testTarget(
             name: "ShareExtensionTests",
             dependencies: ["InboxSnapshotTesting", "InboxTesting", "TestableShareExtension"]

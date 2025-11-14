@@ -18,6 +18,7 @@
 import proton_app_uniffi
 import InboxCoreUI
 import InboxDesignSystem
+import ProtonUIFoundations
 import SwiftUI
 
 extension View {

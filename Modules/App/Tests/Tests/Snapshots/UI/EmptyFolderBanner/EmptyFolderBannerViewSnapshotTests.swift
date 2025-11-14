@@ -20,9 +20,10 @@ import InboxCoreUI
 import InboxDesignSystem
 import InboxIAP
 import InboxSnapshotTesting
-import Testing
 import proton_app_uniffi
+import ProtonUIFoundations
 import SwiftUI
+import Testing
 import XCTest
 
 @MainActor

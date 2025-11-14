@@ -20,6 +20,7 @@ import InboxCoreUI
 import InboxCore
 import SwiftUI
 import proton_app_uniffi
+import ProtonUIFoundations
 
 final class ReportProblemStateStore: StateStore {
     @Published var state: ReportProblemState

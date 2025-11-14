@@ -21,6 +21,7 @@ import InboxComposer
 import InboxCoreUI
 import InboxTesting
 import proton_app_uniffi
+import ProtonUIFoundations
 import XCTest
 
 final class SendResultPresenterTests: BaseTestCase, @unchecked Sendable {

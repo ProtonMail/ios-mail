@@ -22,6 +22,7 @@ import InboxCoreUI
 import enum InboxComposer.ComposerDismissReason
 import InboxIAP
 import proton_app_uniffi
+import ProtonUIFoundations
 import PaymentsNG
 import SwiftUI
 

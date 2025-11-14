@@ -16,19 +16,20 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import InboxDesignSystem
+import ProtonUIFoundations
 import SwiftUI
 
 struct EventDetailsRow: View {
     let icon: ImageResource
     let iconColor: Color
     let text: String
-    let trailingIconSymbol: DS.SFSymbol?
+    let trailingIconSymbol: SFSymbol?
 
     init(
         icon: ImageResource,
         iconColor: Color = DS.Color.Text.weak,
         text: String,
-        trailingIconSymbol: DS.SFSymbol? = .none
+        trailingIconSymbol: SFSymbol? = .none
     ) {
         self.icon = icon
         self.iconColor = iconColor

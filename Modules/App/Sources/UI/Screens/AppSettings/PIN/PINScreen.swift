@@ -19,6 +19,7 @@ import SwiftUI
 import InboxCore
 import InboxCoreUI
 import InboxDesignSystem
+import ProtonUIFoundations
 
 struct PINScreen: View {
     private let type: PINScreenType

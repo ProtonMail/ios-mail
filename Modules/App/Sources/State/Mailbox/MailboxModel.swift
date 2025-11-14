@@ -24,6 +24,7 @@ import Foundation
 import SwiftUI
 import proton_app_uniffi
 import ProtonCoreUtilities
+import ProtonUIFoundations
 import class UIKit.UIImage
 
 /**

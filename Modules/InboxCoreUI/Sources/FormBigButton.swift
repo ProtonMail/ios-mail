@@ -16,11 +16,12 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import InboxDesignSystem
+import ProtonUIFoundations
 import SwiftUI
 
 public struct FormBigButton: View {
     public enum AccessoryType {
-        case symbol(DS.SFSymbol)
+        case symbol(SFSymbol)
         case upsell
     }
 
@@ -43,7 +44,7 @@ public struct FormBigButton: View {
 
     public init(
         title: LocalizedStringResource,
-        symbol: DS.SFSymbol,
+        symbol: SFSymbol,
         value: String,
         action: @escaping () -> Void
     ) {

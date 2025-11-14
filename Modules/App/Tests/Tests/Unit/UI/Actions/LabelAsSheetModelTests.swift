@@ -17,9 +17,11 @@
 
 @testable import ProtonMail
 @testable import InboxCoreUI
+@testable import ProtonUIFoundations
 import InboxCore
 import InboxTesting
 import proton_app_uniffi
+import ProtonUIFoundations
 import Testing
 
 @MainActor

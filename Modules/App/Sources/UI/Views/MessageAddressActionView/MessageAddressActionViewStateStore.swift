@@ -18,6 +18,7 @@
 import InboxCore
 import InboxCoreUI
 import proton_app_uniffi
+import ProtonUIFoundations
 import SwiftUI
 
 final class MessageAddressActionViewStateStore: StateStore {

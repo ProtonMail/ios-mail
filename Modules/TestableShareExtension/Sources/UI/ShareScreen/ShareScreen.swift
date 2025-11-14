@@ -19,6 +19,7 @@
 import InboxComposer
 import InboxCoreUI
 import proton_app_uniffi
+import ProtonUIFoundations
 import SwiftUI
 
 public struct ShareScreen: View {

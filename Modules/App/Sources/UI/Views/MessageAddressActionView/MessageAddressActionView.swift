@@ -19,6 +19,7 @@ import InboxCore
 import InboxCoreUI
 import InboxDesignSystem
 import proton_app_uniffi
+import ProtonUIFoundations
 import SwiftUI
 
 struct MessageAddressActionView: View {

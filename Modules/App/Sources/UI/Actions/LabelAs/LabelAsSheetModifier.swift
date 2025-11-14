@@ -17,6 +17,7 @@
 
 import InboxCoreUI
 import proton_app_uniffi
+import ProtonUIFoundations
 import SwiftUI
 
 private struct LabelAsSheetModifier: ViewModifier {

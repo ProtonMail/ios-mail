@@ -15,11 +15,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import proton_app_uniffi
-import SwiftUI
 import InboxCore
 import InboxCoreUI
 import InboxDesignSystem
+import proton_app_uniffi
+import ProtonUIFoundations
+import SwiftUI
 
 struct CustomizeToolbarsScreen: View {
     @StateObject private var store: CustomizeToolbarsStore
@@ -77,7 +78,7 @@ struct CustomizeToolbarsScreen: View {
     }
 
     private func list(for items: [CustomizeToolbarsDisplayItem], editToolbarAction: @escaping () -> Void) -> some View {
-        FormList(collection: items, separator: .normLeftPadding) { item in
+        FormList(collection: items, style: .separator(.normLeftPadding)) { item in
             listItem(item, editToolbarAction: editToolbarAction)
         }
         .roundedRectangleStyle()
@@ -100,7 +101,7 @@ struct CustomizeToolbarsScreen: View {
                 HStack {
                     Text(L10n.Settings.CustomizeToolbars.editActions)
                     Spacer()
-                    Image(symbol: DS.SFSymbol.chevronRight)
+                    Image(symbol: .chevronRight)
                 }
                 .foregroundStyle(DS.Color.Text.accent)
                 .padding(.vertical, DS.Spacing.moderatelyLarge)

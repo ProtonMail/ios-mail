@@ -17,6 +17,7 @@
 
 import Combine
 import InboxCoreUI
+import ProtonUIFoundations
 import SwiftUI
 
 struct PaginatedListView<

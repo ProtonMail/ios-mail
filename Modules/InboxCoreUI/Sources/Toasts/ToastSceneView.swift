@@ -17,6 +17,7 @@
 
 import InboxCore
 import OrderedCollections
+import ProtonUIFoundations
 import SwiftUI
 
 public struct ToastSceneView: View {

@@ -20,6 +20,7 @@ import CoreGraphics
 import Foundation
 import InboxCoreUI
 import proton_app_uniffi
+import ProtonUIFoundations
 import Testing
 
 @testable import InboxIAP

@@ -18,8 +18,9 @@
 import Combine
 import InboxComposer
 import InboxCoreUI
-import SwiftUI
 import proton_app_uniffi
+import ProtonUIFoundations
+import SwiftUI
 
 @MainActor
 final class ComposerCoordinator: ObservableObject {

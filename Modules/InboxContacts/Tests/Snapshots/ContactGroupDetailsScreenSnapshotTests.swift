@@ -20,6 +20,7 @@ import InboxCore
 import InboxCoreUI
 import InboxSnapshotTesting
 import proton_app_uniffi
+import ProtonUIFoundations
 import SwiftUI
 import Testing
 
@@ -37,5 +38,4 @@ final class ContactGroupDetailsScreenSnapshotTests {
             .environmentObject(ToastStateStore(initialState: .initial))
             .environmentObject(Router<ContactsRoute>())
     }
-
 }

@@ -15,7 +15,6 @@ let package = Package(
         .package(path: "../InboxSnapshotTesting"),
         .package(path: "../../ProtonPackages/proton_app_uniffi"),
         .package(path: "../../ProtonPackages/et-protoncore/platform/apple/Payments/PaymentsNG"),
-        .package(url: "https://gitlab.protontech.ch/apple/shared/ProtonUIFoundations.git", from: "1.0.1"),
     ],
     targets: [
         .target(
@@ -24,7 +23,6 @@ let package = Package(
                 "InboxCoreUI",
                 "PaymentsNG",
                 "proton_app_uniffi",
-                .product(name: "ProtonUIFoundations", package: "ProtonUIFoundations"),
             ],
             resources: [
                 .process("Resources")

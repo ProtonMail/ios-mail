@@ -19,6 +19,7 @@
 import InboxCoreUI
 import InboxTesting
 import InboxSnapshotTesting
+import ProtonUIFoundations
 
 @MainActor
 final class ComposerScreenSnapshotTests: BaseTestCase {

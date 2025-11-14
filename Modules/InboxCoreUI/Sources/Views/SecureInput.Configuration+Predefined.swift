@@ -15,20 +15,26 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import InboxDesignSystem
+import ProtonUIFoundations
 import SwiftUI
+import UIKit
 
-extension View {
-    public func roundedRectangleStyle() -> some View {
-        modifier(RoundedRectangleStyleStyle())
-    }
-}
-
-private struct RoundedRectangleStyleStyle: ViewModifier {
-
-    func body(content: Content) -> some View {
-        content
-            .clipShape(RoundedRectangle(cornerRadius: DS.Radius.extraLarge))
+extension SecureInput.Configuration {
+    public static var `default`: Self {
+        .init(font: nil, alignment: .left, placeholder: nil, keyboardType: .default, allowedCharacters: nil)
     }
 
+    public static var pinSettingsInput: Self {
+        .init(font: nil, alignment: .left, placeholder: nil, keyboardType: .numberPad, allowedCharacters: CharacterSet.decimalDigits)
+    }
+
+    static var pinLock: Self {
+        .init(
+            font: .font(textStyle: .title3, weight: .semibold),
+            alignment: .center,
+            placeholder: L10n.PINLock.pinInputPlaceholder,
+            keyboardType: .numberPad,
+            allowedCharacters: CharacterSet.decimalDigits
+        )
+    }
 }

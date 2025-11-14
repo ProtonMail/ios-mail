@@ -18,6 +18,7 @@
 import InboxDesignSystem
 import InboxCore
 import InboxCoreUI
+import ProtonUIFoundations
 import SwiftUI
 
 struct SenderAddressPickerSheet: View {

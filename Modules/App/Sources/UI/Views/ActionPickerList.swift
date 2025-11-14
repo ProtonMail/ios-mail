@@ -17,6 +17,7 @@
 
 import InboxCoreUI
 import InboxDesignSystem
+import ProtonUIFoundations
 import SwiftUI
 
 protocol ActionPickerListElement: Equatable {

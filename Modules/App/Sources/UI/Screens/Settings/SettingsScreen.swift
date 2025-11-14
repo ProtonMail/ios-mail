@@ -136,7 +136,7 @@ struct SettingsScreen: View {
 
     private func accountSection() -> some View {
         FormSection {
-            FormList(collection: state.accountSettings, separator: .normLeftPadding) { preference in
+            FormList(collection: state.accountSettings, style: .separator(.normLeftPadding)) { preference in
                 settingsRow(
                     icon: preference.displayData.icon,
                     title: preference.displayData.title,
@@ -213,7 +213,7 @@ struct SettingsScreen: View {
 
     private func preferencesSection() -> some View {
         FormSection(header: L10n.Settings.preferences) {
-            FormList(collection: state.preferences, separator: .normLeftPadding) { preference in
+            FormList(collection: state.preferences, style: .separator(.normLeftPadding)) { preference in
                 settingsRow(
                     icon: preference.displayData.icon,
                     title: preference.displayData.title,

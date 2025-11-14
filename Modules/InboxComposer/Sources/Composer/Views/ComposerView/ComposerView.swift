@@ -20,6 +20,7 @@ import InboxCore
 import InboxCoreUI
 import InboxDesignSystem
 import PhotosUI
+import ProtonUIFoundations
 import SwiftUI
 
 struct ComposerView: View {

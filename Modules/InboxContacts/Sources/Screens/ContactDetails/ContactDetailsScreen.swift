@@ -19,6 +19,7 @@ import InboxCore
 import InboxCoreUI
 import InboxDesignSystem
 import proton_app_uniffi
+import ProtonUIFoundations
 import SwiftUI
 
 struct ContactDetailsScreen: View {
@@ -257,14 +258,6 @@ private extension ContactDetails {
 
     static func initial(with contact: ContactDetailsContext) -> Self {
         .init(contact: contact, details: .none)
-    }
-
-}
-
-private extension FormList {
-
-    init(collection: Collection, elementContent: @escaping (Collection.Element) -> ElementContent) {
-        self.init(collection: collection, separator: .invertedNoPadding, elementContent: elementContent)
     }
 
 }

@@ -19,6 +19,7 @@
 import Foundation
 import InboxCore
 import InboxCoreUI
+import ProtonUIFoundations
 
 @MainActor
 final class LegacyMigrationStateStore: ObservableObject {

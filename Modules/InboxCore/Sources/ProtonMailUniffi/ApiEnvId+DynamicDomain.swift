@@ -20,7 +20,7 @@ import proton_app_uniffi
 
 extension ApiEnvId {
     public init(dynamicDomain: String) {
-        let scientistSuffix = Self.scientist(.empty).domain
+        let scientistSuffix = Self.scientist("").domain
 
         switch dynamicDomain {
         case Self.prod.domain:

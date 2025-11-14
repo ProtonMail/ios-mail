@@ -16,7 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import InboxCore
-import InboxCoreUI
+import ProtonUIFoundations
 
 struct ComposerPasswordState: Copying {
     var password: String = ""

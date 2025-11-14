@@ -20,6 +20,7 @@
 
 import InboxCoreUI
 import PaymentsNG
+import ProtonUIFoundations
 import SwiftUI
 import Testing
 

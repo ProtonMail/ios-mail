@@ -17,7 +17,7 @@
 
 import Foundation
 import InboxCore
-import InboxCoreUI
+import ProtonUIFoundations
 
 extension Toast {
 

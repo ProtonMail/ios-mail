@@ -17,9 +17,10 @@
 
 import Dispatch
 import InboxCore
-@testable import InboxCoreUI
+import InboxCoreUI
 import InboxSnapshotTesting
 import InboxTesting
+@testable import ProtonUIFoundations
 import Testing
 
 @MainActor

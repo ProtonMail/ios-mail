@@ -17,8 +17,9 @@
 
 import InboxCore
 import InboxCoreUI
-import SwiftUI
 import proton_app_uniffi
+import ProtonUIFoundations
+import SwiftUI
 
 class SnoozeStore: StateStore {
     @Published var state: SnoozeState

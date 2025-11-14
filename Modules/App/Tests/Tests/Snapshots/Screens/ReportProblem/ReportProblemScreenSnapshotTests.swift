@@ -19,6 +19,7 @@
 import InboxCoreUI
 import InboxSnapshotTesting
 import InboxTesting
+import ProtonUIFoundations
 import XCTest
 
 @MainActor

@@ -21,6 +21,7 @@ import InboxCore
 import InboxCoreUI
 import InboxTesting
 import proton_app_uniffi
+import ProtonUIFoundations
 import Testing
 import UIKit
 

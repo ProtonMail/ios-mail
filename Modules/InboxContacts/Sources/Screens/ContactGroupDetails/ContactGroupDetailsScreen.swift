@@ -19,6 +19,7 @@ import InboxCore
 import InboxCoreUI
 import InboxDesignSystem
 import proton_app_uniffi
+import ProtonUIFoundations
 import SwiftUI
 
 struct ContactGroupDetailsScreen: View {
@@ -101,7 +102,7 @@ struct ContactGroupDetailsScreen: View {
     }
 
     private func items(state: ContactGroupItem, store: ContactGroupDetailsStateStore) -> some View {
-        FormList(collection: state.contactEmails, separator: .invertedNoPadding) { (item: ContactEmailItem) in
+        FormList(collection: state.contactEmails) { (item: ContactEmailItem) in
             ContactCellView(item: item).frame(height: 68)
                 .onTapGesture { store.handle(action: .contactItemTapped(item)) }
         }

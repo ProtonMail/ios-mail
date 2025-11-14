@@ -19,6 +19,7 @@ import InboxCore
 import InboxCoreUI
 import InboxDesignSystem
 import proton_app_uniffi
+import ProtonUIFoundations
 import SwiftUI
 
 struct AutoLockScreen: View {
@@ -45,7 +46,7 @@ struct AutoLockScreen: View {
             ScrollView {
                 FormList(
                     collection: state.allOptions,
-                    separator: .normLeftPadding
+                    style: .separator(.normLeftPadding)
                 ) { lockOption in
                     FormSmallButton(
                         title: lockOption.humanReadable,

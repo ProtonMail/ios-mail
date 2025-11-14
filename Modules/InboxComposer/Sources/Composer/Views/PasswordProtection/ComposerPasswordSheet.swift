@@ -18,6 +18,7 @@
 import InboxCore
 import InboxCoreUI
 import InboxDesignSystem
+import ProtonUIFoundations
 import SwiftUI
 
 struct ComposerPasswordSheet: View {

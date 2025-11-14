@@ -18,6 +18,7 @@
 import Foundation
 import InboxCoreUI
 import proton_app_uniffi
+import ProtonUIFoundations
 
 @MainActor
 struct SwipeActionsHandler {

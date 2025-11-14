@@ -18,6 +18,7 @@
 import InboxCore
 import InboxCoreUI
 import InboxDesignSystem
+import ProtonUIFoundations
 import SwiftUI
 
 struct ScheduleSendTimeOptionsView: View {
@@ -79,7 +80,7 @@ struct ScheduleSendTimeOptionsView: View {
 
     @ViewBuilder
     private func predefinedOption(
-        symbol: DS.SFSymbol,
+        symbol: SFSymbol,
         title: String,
         time: Date,
         onTap: @escaping (Date) async -> Void

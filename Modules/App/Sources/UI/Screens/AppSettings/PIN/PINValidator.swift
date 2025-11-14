@@ -17,6 +17,7 @@
 
 import InboxCore
 import InboxCoreUI
+import ProtonUIFoundations
 
 struct PINValidator {
     private let pinScreenType: PINScreenType

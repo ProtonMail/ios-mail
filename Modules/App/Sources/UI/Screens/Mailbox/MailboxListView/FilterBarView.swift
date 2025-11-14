@@ -15,8 +15,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import proton_app_uniffi
 import InboxDesignSystem
+import proton_app_uniffi
+import ProtonUIFoundations
 import SwiftUI
 
 struct FilterBarView: View {
@@ -116,7 +117,7 @@ enum UnreadCounterState: Equatable {
 
 enum SelectAllState: Equatable {
     struct ButtonStyle {
-        let icon: DS.SFSymbol
+        let icon: SFSymbol
         let iconColor: Color
         let text: LocalizedStringResource
         let textColor: Color
@@ -127,7 +128,7 @@ enum SelectAllState: Equatable {
     case selectionLimitReached
 
     var button: ButtonStyle {
-        let symbol: DS.SFSymbol
+        let symbol: SFSymbol
         let text: LocalizedStringResource
 
         switch self {

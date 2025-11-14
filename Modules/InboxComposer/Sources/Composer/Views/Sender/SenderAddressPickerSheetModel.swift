@@ -17,6 +17,7 @@
 
 import InboxCore
 import InboxCoreUI
+import ProtonUIFoundations
 import SwiftUI
 
 @MainActor

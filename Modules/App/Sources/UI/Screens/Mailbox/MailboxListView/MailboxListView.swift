@@ -18,6 +18,7 @@
 import InboxDesignSystem
 import InboxCoreUI
 import proton_app_uniffi
+import ProtonUIFoundations
 import SwiftUI
 
 struct MailboxListView: View {
