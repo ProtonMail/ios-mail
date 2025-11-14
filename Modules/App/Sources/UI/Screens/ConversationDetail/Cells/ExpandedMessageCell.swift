@@ -27,7 +27,7 @@ struct ExpandedMessageCell: View {
     private let mailbox: Mailbox
     private let uiModel: ExpandedMessageCellUIModel
     private let draftPresenter: RecipientDraftPresenter
-    private let onEvent: (ExpandedMessageCellEvent) -> Void
+    private let onEvent: (ExpandedMessageCellEvent) async -> Void
     private let htmlDisplayed: () -> Void
     private let areActionsHidden: Bool
     @Binding var attachmentIDToOpen: ID?
@@ -45,7 +45,7 @@ struct ExpandedMessageCell: View {
         draftPresenter: RecipientDraftPresenter,
         areActionsHidden: Bool,
         attachmentIDToOpen: Binding<ID?>,
-        onEvent: @escaping (ExpandedMessageCellEvent) -> Void,
+        onEvent: @escaping (ExpandedMessageCellEvent) async -> Void,
         htmlDisplayed: @escaping () -> Void
     ) {
         self.mailbox = mailbox
@@ -66,15 +66,15 @@ struct ExpandedMessageCell: View {
                 onEvent: { event in
                     switch event {
                     case .onTap:
-                        onEvent(.onTap)
+                        await onEvent(.onTap)
                     case .onMessageAction(let action):
-                        onEvent(.onMessageAction(action))
+                        await onEvent(.onMessageAction(action))
                     case .onSenderTap:
-                        onEvent(.onSenderTap)
+                        await onEvent(.onSenderTap)
                     case .onRecipientTap(let recipient):
-                        onEvent(.onRecipientTap(recipient))
+                        await onEvent(.onRecipientTap(recipient))
                     case .onEditToolbar:
-                        onEvent(.onEditToolbar)
+                        await onEvent(.onEditToolbar)
                     }
                 }
             )
@@ -85,8 +85,8 @@ struct ExpandedMessageCell: View {
                 mailbox: mailbox,
                 isBodyLoaded: $isBodyLoaded,
                 attachmentIDToOpen: $attachmentIDToOpen,
-                editScheduledMessage: { onEvent(.onEditScheduledMessage) },
-                unsnoozeConversation: { onEvent(.unsnoozeConversation) },
+                editScheduledMessage: { Task { await onEvent(.onEditScheduledMessage) } },
+                unsnoozeConversation: { Task { await onEvent(.unsnoozeConversation) } },
                 draftPresenter: draftPresenter
             )
             if !areActionsHidden {
@@ -94,13 +94,15 @@ struct ExpandedMessageCell: View {
                     isSingleRecipient: uiModel.messageDetails.isSingleRecipient,
                     isDisabled: !isBodyLoaded,
                     onEvent: { event in
-                        switch event {
-                        case .reply:
-                            onEvent(.onMessageAction(.reply))
-                        case .replyAll:
-                            onEvent(.onMessageAction(.replyAll))
-                        case .forward:
-                            onEvent(.onMessageAction(.forward))
+                        Task {
+                            switch event {
+                            case .reply:
+                                await onEvent(.onMessageAction(.reply))
+                            case .replyAll:
+                                await onEvent(.onMessageAction(.replyAll))
+                            case .forward:
+                                await onEvent(.onMessageAction(.forward))
+                            }
                         }
                     }
                 )

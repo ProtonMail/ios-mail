@@ -35,7 +35,7 @@ struct MessageDetailsView: View {
     let uiModel: MessageDetailsUIModel
     let mailbox: Mailbox
     let actionButtonsState: ActionButtonsState
-    let onEvent: (MessageDetailsEvent) -> Void
+    let onEvent: (MessageDetailsEvent) async -> Void
 
     private let detailedContentLeadingSpacing: CGFloat = DS.Spacing.jumbo + DS.Spacing.large
 
@@ -44,7 +44,7 @@ struct MessageDetailsView: View {
             headerView
                 .background(DS.Color.Background.norm)
                 .contentShape(Rectangle())
-                .onTapGesture { onEvent(.onTap) }
+                .onTapGesture { Task { await onEvent(.onTap) } }
                 .zIndex(1)
 
             detailedContent
@@ -58,7 +58,9 @@ struct MessageDetailsView: View {
 
     private var headerView: some View {
         HStack(alignment: .top, spacing: DS.Spacing.large) {
-            Button(action: { onEvent(.onSenderTap) }) {
+            let senderTapAction: () -> Void = { Task { await onEvent(.onSenderTap) } }
+
+            Button(action: senderTapAction) {
                 AvatarView(avatar: uiModel.avatar)
                     .clipShape(RoundedRectangle(cornerRadius: DS.Radius.large, style: .continuous))
             }
@@ -68,7 +70,7 @@ struct MessageDetailsView: View {
             HStack(alignment: .top, spacing: .zero) {
                 VStack(alignment: .leading, spacing: DS.Spacing.compact) {
                     senderView
-                    Button(action: { onEvent(.onSenderTap) }) {
+                    Button(action: senderTapAction) {
                         senderAddressView
                     }
                     .disabled(isHeaderCollapsed)
@@ -224,14 +226,14 @@ struct MessageDetailsView: View {
     private var headerActionsView: some View {
         HStack(alignment: .top, spacing: DS.Spacing.small) {
             headerActionButton(
-                action: { onEvent(.onMessageAction(uiModel.isSingleRecipient ? .reply : .replyAll)) },
+                action: { await onEvent(.onMessageAction(uiModel.isSingleRecipient ? .reply : .replyAll)) },
                 image: Image(symbol: uiModel.isSingleRecipient ? .reply : .replyAll)
             )
             MessageActionsMenu(
                 state: .initial(messageID: uiModel.id, showEditToolbar: false),
                 mailbox: mailbox,
-                actionTapped: { action in onEvent(.onMessageAction(action)) },
-                editToolbarTapped: { onEvent(.onEditToolbar) }
+                actionTapped: { action in await onEvent(.onMessageAction(action)) },
+                editToolbarTapped: { Task { await onEvent(.onEditToolbar) } }
             ) {
                 DS.Icon.icThreeDotsHorizontal.image
                     .square(size: 20)
@@ -248,8 +250,8 @@ struct MessageDetailsView: View {
         .foregroundColor(DS.Color.Icon.weak)
     }
 
-    private func headerActionButton(action: @escaping () -> Void, image: Image) -> some View {
-        Button(action: action) {
+    private func headerActionButton(action: @escaping () async -> Void, image: Image) -> some View {
+        Button(action: { Task { await action() } }) {
             image
                 .square(size: 20)
                 .foregroundStyle(actionButtonsState.isDisabled ? DS.Color.Icon.disabled : DS.Color.Icon.weak)
@@ -282,7 +284,9 @@ struct MessageDetailsView: View {
         index: Int
     ) -> some View {
         Button {
-            onEvent(.onRecipientTap(recipient))
+            Task {
+                await onEvent(.onRecipientTap(recipient))
+            }
         } label: {
             VStack(alignment: .leading, spacing: DS.Spacing.compact) {
                 recipientName(recipient: recipient, group: group, prefixed: prefixed)

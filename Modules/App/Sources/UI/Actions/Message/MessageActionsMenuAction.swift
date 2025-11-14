@@ -22,4 +22,11 @@ enum MessageActionsMenuAction {
     case onLoad
     case actionTapped(MessageAction)
     case colorSchemeChanged(ColorScheme)
+
+    var warrantsActionReload: Bool {
+        switch self {
+        case .onLoad, .actionTapped, .colorSchemeChanged:
+            true
+        }
+    }
 }

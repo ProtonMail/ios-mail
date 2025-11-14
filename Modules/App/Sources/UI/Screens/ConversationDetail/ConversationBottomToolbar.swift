@@ -26,7 +26,7 @@ extension View {
         actions: ConversationToolbarActions?,
         mailbox: @escaping () -> Mailbox,
         editToolbarTapped: @escaping (ToolbarType) -> Void,
-        messageActionSelected: @escaping (MessageAction) -> Void,
+        messageActionSelected: @escaping (MessageAction) async -> Void,
         conversationActionSelected: @escaping (ConversationAction) -> Void
     ) -> some View {
         modifier(
@@ -48,14 +48,14 @@ struct ConversationToolbarModifier: ViewModifier {
     private let actions: ConversationToolbarActions?
     private let mailbox: () -> Mailbox
     private let editToolbarTapped: (ToolbarType) -> Void
-    private let messageActionSelected: (MessageAction) -> Void
+    private let messageActionSelected: (MessageAction) async -> Void
     private let conversationActionSelected: (ConversationAction) -> Void
 
     init(
         actions: ConversationToolbarActions?,
         mailbox: @escaping () -> Mailbox,
         editToolbarTapped: @escaping (ToolbarType) -> Void,
-        messageActionSelected: @escaping (MessageAction) -> Void,
+        messageActionSelected: @escaping (MessageAction) async -> Void,
         conversationActionSelected: @escaping (ConversationAction) -> Void
     ) {
         self.actions = actions
@@ -119,7 +119,7 @@ struct ConversationToolbarModifier: ViewModifier {
 
     private func toolbarContent<MoreActionsMenu: View, Action: DisplayableAction>(
         actions: [Action],
-        selected: @escaping (Action) -> Void,
+        selected: @escaping (Action) async -> Void,
         moreActionsMenu: @escaping () -> MoreActionsMenu
     ) -> some View {
         HStack(alignment: .center) {
@@ -130,7 +130,7 @@ struct ConversationToolbarModifier: ViewModifier {
                 if action.isMoreAction {
                     moreActionsMenu()
                 } else {
-                    Button(action: { selected(action) }) {
+                    Button(action: { Task { await selected(action) } }) {
                         action.displayData.image
                             .foregroundStyle(DS.Color.Icon.weak)
                     }
