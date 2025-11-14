@@ -100,6 +100,8 @@ struct MainToolbar<AvatarView: View>: ViewModifier {
                                 onEvent(.onSearch)
                             }
                             avatarView()
+                                .popoverTip(WhatsNewTip())
+                                .tipViewStyle(WhatsNewTipStyle())
                         }
                     }
                 }
@@ -209,3 +211,87 @@ private struct MainToolbarIdentifiers {
         }
     }
 }
+
+import TipKit
+
+struct WhatsNewTip: Tip {
+    var title: Text {
+        Text("A New Home for Your Accounts")
+            .foregroundStyle(DS.Color.Text.norm)
+            .fontWeight(.semibold)
+            .font(.footnote)
+    }
+
+    var message: Text? {
+        Text("The account switcher has moved! You can now switch accounts, log out - all from one convenient place.")
+            .foregroundStyle(DS.Color.Text.weak)
+            .font(.footnote)
+    }
+}
+
+struct WhatsNewTipStyle: TipViewStyle {
+
+    func makeBody(configuration: Configuration) -> some View {
+        HStack(alignment: .top, spacing: 10) {
+            Image(symbol: DS.SFSymbol.sparkles)
+                .foregroundStyle(DS.Color.Icon.accent)
+                .square(size: 20)
+                .padding(6)
+                .background(DS.Color.InteractionBrandWeak.norm)
+                .overlay(RoundedRectangle(cornerRadius: DS.Radius.large))
+                .padding(6)
+            VStack(alignment: .leading, spacing: 4) {
+                configuration.title
+                if let message = configuration.message {
+                    message
+                }
+            }
+            Button(action: { configuration.tip.invalidate(reason: .tipClosed) }) {
+                ZStack {
+                    Color.gray
+                        .clipShape(.circle)
+                    Image(symbol: DS.SFSymbol.xmark)
+                        .foregroundStyle(DS.Color.Shade.shade60)
+                }
+                .square(size: 24)
+            }
+        }
+        .frame(maxWidth: 320)
+        .frame(height: 500)
+    }
+
+}
+
+//
+//struct WhatsNewTipView: View {
+////    @Environment(\.openURL) private var openURL
+//
+//    // Create an instance of your tip content.
+//    private var tip = WhatsNewTip()
+//
+//    var body: some View {
+//        VStack(spacing: 20) {
+//            Text("Use action buttons to link to more options. In this example, two actions buttons are provided. One takes the user to the Reset Password feature. The other sends them to an FAQ page.")
+//
+//            // Place your tip near the feature you want to highlight.
+//            TipView(tip, arrowEdge: .bottom) { action in
+//                // Define the closure that executes when someone presses the reset button.
+//                if action.id == "reset-password", let url = URL(string: "https://iforgot.apple.com") {
+//                    openURL(url) { accepted in
+//                        print(accepted ? "Success Reset" : "Failure")
+//                    }
+//                }
+//                // Define the closure that executes when someone presses the FAQ button.
+//                if action.id == "faq", let url = URL(string: "https://appleid.apple.com/faq") {
+//                    openURL(url) { accepted in
+//                        print(accepted ? "Success FAQ" : "Failure")
+//                    }
+//                }
+//            }
+//            Button("Login") {}
+//            Spacer()
+//        }
+//        .padding()
+//        .navigationTitle("Password reset")
+//    }
+//}

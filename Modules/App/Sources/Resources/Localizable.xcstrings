@@ -2387,6 +2387,9 @@
         }
       }
     },
+    "A New Home for Your Accounts" : {
+
+    },
     "A reply to your email? An important message? Get notified the moment they arrive." : {
       "comment" : "Body of the authorization prompt",
       "localizations" : {
@@ -44767,6 +44770,9 @@
           }
         }
       }
+    },
+    "The account switcher has moved! You can now switch accounts, log out - all from one convenient place." : {
+
     },
     "The Mail app crashes after loading for a few seconds." : {
       "comment" : "Placeholder of actual results text field.",

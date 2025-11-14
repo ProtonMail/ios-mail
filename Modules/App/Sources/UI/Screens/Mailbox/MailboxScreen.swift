@@ -221,6 +221,8 @@ struct MailboxScreen: View {
     }
 }
 
+import TipKit
+
 extension MailboxScreen {
 
     private func skipAnimationWhenViewRenders() async {
