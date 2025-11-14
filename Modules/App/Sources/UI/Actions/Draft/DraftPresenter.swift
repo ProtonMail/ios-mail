@@ -150,7 +150,7 @@ extension DraftPresenter {
         createMode: DraftCreateMode,
         updateDraft: ((Draft) -> Void)?
     ) async throws(DraftOpenError) {
-        switch await draftProvider.makeDraft(userSession, createMode, .safe) {
+        switch await draftProvider.makeDraft(userSession, createMode) {
         case .ok(let draft):
             updateDraft?(draft)
             draftToPresentSubject.send(.new(draft: draft))

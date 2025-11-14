@@ -19,7 +19,7 @@ import Foundation
 import proton_app_uniffi
 
 struct DraftProvider {
-    let makeDraft: (_ session: MailUserSession, _ createMode: DraftCreateMode, _ policy: ImagePolicy) async -> NewDraftResult
+    let makeDraft: (_ session: MailUserSession, _ createMode: DraftCreateMode) async -> NewDraftResult
 }
 
 extension DraftProvider {
@@ -29,6 +29,6 @@ extension DraftProvider {
     }
 
     static var dummy: Self {
-        .init(makeDraft: { _, _, _ in return NewDraftResult.ok(.init(noPointer: .init())) })
+        .init(makeDraft: { _, _ in return NewDraftResult.ok(.init(noPointer: .init())) })
     }
 }

@@ -72,6 +72,7 @@ extension AppDraftProtocol {
  This conformance allows us to use `Draft` as an `AppDraftProtocol`
  */
 extension Draft: AppDraftProtocol {
+
     public func attachmentList() -> AttachmentListProtocol {
         let list: AttachmentList = self.attachmentList()
         return list
@@ -90,5 +91,9 @@ extension Draft: AppDraftProtocol {
     public func bccRecipients() -> ComposerRecipientListProtocol {
         let list: ComposerRecipientList = self.bccRecipients()
         return list
+    }
+
+    public func loadImage(url: String) async -> AttachmentDataResult {
+        await loadImage(url: url, policy: .safe)
     }
 }
