@@ -17,6 +17,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import InboxComposer
+import InboxCore
 import InboxCoreUI
 import proton_app_uniffi
 import ProtonUIFoundations
@@ -61,7 +62,7 @@ public struct ShareScreen: View {
                 }
             )
             .overlay {
-                ToastSceneView()
+                ToastSceneView(dispatchAfter: Dispatcher.dispatchOnMainAfter)
             }
             .environmentObject(toastStateStore)
             .environmentObject(upsellCoordinator)

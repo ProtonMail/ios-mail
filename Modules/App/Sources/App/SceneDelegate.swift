@@ -195,7 +195,10 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate, ObservableObject 
     }
 
     private func overlayRootController(with toastStateStore: ToastStateStore) -> UIViewController {
-        let controller = UIHostingController(rootView: ToastSceneView().environmentObject(toastStateStore))
+        let controller = UIHostingController(
+            rootView: ToastSceneView(dispatchAfter: Dispatcher.dispatchOnMainAfter)
+                .environmentObject(toastStateStore)
+        )
         controller.view.backgroundColor = .clear
 
         return controller

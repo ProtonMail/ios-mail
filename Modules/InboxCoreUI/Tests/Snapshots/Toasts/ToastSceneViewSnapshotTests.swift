@@ -15,12 +15,13 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+@testable import ProtonUIFoundations
 import Dispatch
 import InboxCore
 import InboxCoreUI
 import InboxSnapshotTesting
 import InboxTesting
-@testable import ProtonUIFoundations
+import SwiftUICore
 import Testing
 
 @MainActor
@@ -29,14 +30,14 @@ final class ToastSceneViewSnapshotTests {
 
     @Test
     func testToastSceneViewWithoutToastsLayoutsCorrectly() {
-        let toastSceneView = ToastSceneView().environmentObject(store)
+        let toastSceneView = makeSUT()
 
         assertSnapshotsOnIPhoneX(of: toastSceneView)
     }
 
     @Test
     func testToastSceneViewWithOneToastPresentedTwiceLayoutsCorrectly() {
-        let toastSceneView = ToastSceneView().environmentObject(store)
+        let toastSceneView = makeSUT()
 
         store.present(toast: ToastViewPreviewProvider.smallSuccessLongTextWithButton)
         store.present(toast: ToastViewPreviewProvider.smallSuccessLongTextWithButton)
@@ -46,7 +47,7 @@ final class ToastSceneViewSnapshotTests {
 
     @Test
     func testToastSceneViewWithFourToastsLayoutsCorrectly() {
-        let toastSceneView = ToastSceneView().environmentObject(store)
+        let toastSceneView = makeSUT()
 
         let duplicatedToast = ToastViewPreviewProvider.bigWarningShortTextWithButton
 
@@ -67,7 +68,7 @@ final class ToastSceneViewSnapshotTests {
             workItems.append(workItem)
         }
 
-        let toastSceneView = ToastSceneView().environmentObject(store)
+        let toastSceneView = makeSUT()
 
         store.present(toast: ToastViewPreviewProvider.smallInformationLongTextWithButton)
         store.present(toast: ToastViewPreviewProvider.bigErrorShortTextWithButton)
@@ -86,5 +87,9 @@ final class ToastSceneViewSnapshotTests {
         store.dismiss(toast: ToastViewPreviewProvider.bigSuccessLongTextWithButton)
 
         assertSnapshotsOnIPhoneX(of: toastSceneView, named: "0_toasts_manual_dismissal")
+    }
+
+    private func makeSUT() -> some View {
+        ToastSceneView(dispatchAfter: Dispatcher.dispatchOnMainAfter).environmentObject(store)
     }
 }
