@@ -22,7 +22,6 @@ import proton_app_uniffi
 import SwiftUI
 
 struct ConversationDetailListView: View {
-    @Environment(\.dynamicTypeSize) var dynamicTypeSize
     @EnvironmentObject var toastStateStore: ToastStateStore
     @ObservedObject private var model: ConversationDetailModel
     private let mailUserSession: MailUserSession
@@ -34,6 +33,7 @@ struct ConversationDetailListView: View {
     @State private var senderActionTarget: ExpandedMessageCellUIModel?
     @State private var recipientActionTarget: MessageDetail.Recipient?
     @StateObject var messageBannersNotifier = RefreshMessageBannersNotifier()
+    @State private var contentSizeCategoryObserver = ContentSizeCategoryObserver()
 
     init(
         model: ConversationDetailModel,
@@ -120,7 +120,7 @@ struct ConversationDetailListView: View {
              Also, the overall scroll position of the conversation is wrong.
              The easiest - though not very elegant - way to solve this is to recreate the whole list.
              */
-            .id(dynamicTypeSize)
+            .id(contentSizeCategoryObserver.contentSizeCategory)
             .onAppear {
                 if let scrollToMessage = model.scrollToMessage {
                     scrollView.scrollTo(scrollToMessage, anchor: .top)
