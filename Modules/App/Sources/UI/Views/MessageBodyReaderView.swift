@@ -53,14 +53,6 @@ struct MessageBodyReaderView: UIViewRepresentable {
             config.userContentController.add(context.coordinator, name: handlerName.rawValue)
         }
 
-        for messageName in DynamicTypeSizeMessageHandler.MessageName.allCases {
-            config.userContentController.addScriptMessageHandler(
-                context.coordinator.dynamicTypeSizeMessageHandler,
-                contentWorld: .page,
-                name: messageName.rawValue
-            )
-        }
-
         var userScripts: [AppScript] = [
             .redirectConsoleLogToAppLogger,
             .handleEmptyBody,
@@ -96,6 +88,8 @@ struct MessageBodyReaderView: UIViewRepresentable {
     }
 
     func loadHTML(in webView: WKWebView) {
+        let scaleFactor = currentFontScaleFactor()
+
         let style = """
             <style>
                 body {
@@ -119,23 +113,25 @@ struct MessageBodyReaderView: UIViewRepresentable {
 
                 @media not print {
                     body {
-                        font: -apple-system-body;
+                        --dts-scale-factor: \(scaleFactor * 100)%;
                     }
                 }
 
                 @media print {
-                    [style*="--dts-font-size-scale-factor"] {
-                        --dts-font-size-scale-factor: 1 !important;
-                    }
-                    [style*="--dts-line-height-scale-factor"] {
-                        --dts-line-height-scale-factor: 1 !important;
-                    }
+                    --dts-scale-factor: 100%;
                 }
             </style>
             """
         let fixedBody = body.rawBody.replacingOccurrences(of: "</head>", with: "\(style)</head>")
 
         webView.loadHTMLString(fixedBody, baseURL: nil)
+    }
+
+    private func currentFontScaleFactor() -> CGFloat {
+        let unscaledTraits = UITraitCollection(preferredContentSizeCategory: .large)
+        let unscaledFont = UIFont.preferredFont(forTextStyle: .body, compatibleWith: unscaledTraits)
+        let scaledFont = UIFont.preferredFont(forTextStyle: .body)
+        return scaledFont.pointSize / unscaledFont.pointSize
     }
 
     func makeCoordinator() -> Coordinator {
@@ -147,7 +143,6 @@ extension MessageBodyReaderView {
 
     class Coordinator: NSObject, WKNavigationDelegate, WKScriptMessageHandler, WKUIDelegate {
         let parent: MessageBodyReaderView
-        let dynamicTypeSizeMessageHandler = DynamicTypeSizeMessageHandler()
         var urlOpener: URLOpenerProtocol?
         private var previouslyReceivedBody: MessageBody.HTML?
         private weak var webView: WKWebView?

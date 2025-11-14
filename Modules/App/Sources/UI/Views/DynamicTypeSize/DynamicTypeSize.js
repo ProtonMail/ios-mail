@@ -1,16 +1,50 @@
-const elements = document.querySelectorAll(`[style*="font-size"][style*="line-height"]`);
-
-for (const element of elements) {
+function enableDynamicTypeSize(element) {
     const currentStyle = element.getAttribute('style');
+    const styleProperties = decodeStyleProperties(currentStyle ?? '');
 
-    window.webkit.messageHandlers.scaleStyle.postMessage(currentStyle)
-        .then(updatedStyle => {
-            if (!updatedStyle) {
-                return;
-            }
+    styleProperties["-webkit-text-size-adjust"] = "var(--dts-scale-factor) !important"
+    styleProperties["line-height"] = "unset !important"
+    styleProperties["overflow-wrap"] = "anywhere !important"
+    styleProperties["text-wrap-mode"] = "wrap !important"
 
-            element.setAttribute("style", updatedStyle);
-        }).catch(error => {
-            console.log(error);
-        });
+    const updatedStyle = encodeStyleProperties(styleProperties);
+    element.setAttribute("style", updatedStyle); // do not use element.style.setProperty because it will break dark mode
+}
+
+function decodeStyleProperties(styleString) {
+    const keyValueStrings = styleString.split(";");
+
+    return keyValueStrings.reduce((styleObject, keyValueString) => {
+        const keyValueStringComponents = keyValueString.split(":");
+
+        if (keyValueStringComponents.length >= 2) {
+            const key = keyValueStringComponents[0].trim();
+            const value = keyValueStringComponents[1].trim();
+            styleObject[key] = value;
+        }
+
+        return styleObject;
+    }, {});
+}
+
+function encodeStyleProperties(styleProperties) {
+    return Object.entries(styleProperties).map(([key, value]) => `${key}: ${value}`).join(";");
+}
+
+const textElementFilter = {
+    acceptNode: function (element) {
+        const innerText = element.innerText || '';
+
+        if (innerText.trim().length === 0) {
+            return NodeFilter.FILTER_SKIP;
+        } else {
+            return NodeFilter.FILTER_ACCEPT;
+        }
+    }
+};
+
+const treeWalker = document.createTreeWalker(document.body, NodeFilter.SHOW_ELEMENT, textElementFilter);
+
+while (treeWalker.nextNode()) {
+    enableDynamicTypeSize(treeWalker.currentNode);
 }
