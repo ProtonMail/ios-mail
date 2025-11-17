@@ -2,10 +2,10 @@ function enableDynamicTypeSize(element) {
     const currentStyle = element.getAttribute('style');
     const styleProperties = decodeStyleProperties(currentStyle ?? '');
 
-    styleProperties["-webkit-text-size-adjust"] = "var(--dts-scale-factor) !important"
-    styleProperties["line-height"] = "unset !important"
-    styleProperties["overflow-wrap"] = "anywhere !important"
-    styleProperties["text-wrap-mode"] = "wrap !important"
+    styleProperties["-webkit-text-size-adjust"] = "var(--dts-scale-factor) !important";
+    styleProperties["line-height"] = "initial !important";
+    styleProperties["overflow-wrap"] = "anywhere !important";
+    styleProperties["text-wrap-mode"] = "wrap !important";
 
     const updatedStyle = encodeStyleProperties(styleProperties);
     element.setAttribute("style", updatedStyle); // do not use element.style.setProperty because it will break dark mode
