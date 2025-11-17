@@ -31,20 +31,32 @@ function encodeStyleProperties(styleProperties) {
     return Object.entries(styleProperties).map(([key, value]) => `${key}: ${value}`).join(";");
 }
 
-const textElementFilter = {
-    acceptNode: function (element) {
-        const innerText = element.innerText || '';
+function findUniqueElementsContainingNonEmptyTextNodes() {
+    const elements = new Set();
 
-        if (innerText.trim().length === 0) {
-            return NodeFilter.FILTER_SKIP;
-        } else {
-            return NodeFilter.FILTER_ACCEPT;
+    const filter = {
+        acceptNode: function (element) {
+            const textContent = element.textContent || '';
+
+            if (textContent.trim().length === 0) {
+                return NodeFilter.FILTER_SKIP;
+            } else {
+                return NodeFilter.FILTER_ACCEPT;
+            }
         }
+    };
+
+    const treeWalker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, filter);
+
+    while (treeWalker.nextNode()) {
+        elements.add(treeWalker.currentNode.parentNode);
     }
-};
 
-const treeWalker = document.createTreeWalker(document.body, NodeFilter.SHOW_ELEMENT, textElementFilter);
-
-while (treeWalker.nextNode()) {
-    enableDynamicTypeSize(treeWalker.currentNode);
+    return elements;
 }
+
+const elements = findUniqueElementsContainingNonEmptyTextNodes();
+
+elements.forEach(element => {
+    enableDynamicTypeSize(element);
+});
