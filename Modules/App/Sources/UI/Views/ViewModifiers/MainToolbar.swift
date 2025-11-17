@@ -217,81 +217,87 @@ import TipKit
 struct WhatsNewTip: Tip {
     var title: Text {
         Text("A New Home for Your Accounts")
-            .foregroundStyle(DS.Color.Text.norm)
-            .fontWeight(.semibold)
-            .font(.footnote)
     }
 
     var message: Text? {
         Text("The account switcher has moved! You can now switch accounts, log out - all from one convenient place.")
-            .foregroundStyle(DS.Color.Text.weak)
-            .font(.footnote)
+    }
+
+    var image: Image? {
+        Image(symbol: DS.SFSymbol.sparkles)
     }
 }
 
 struct WhatsNewTipStyle: TipViewStyle {
 
     func makeBody(configuration: Configuration) -> some View {
-        HStack(alignment: .top, spacing: 10) {
-            Image(symbol: DS.SFSymbol.sparkles)
-                .foregroundStyle(DS.Color.Icon.accent)
-                .square(size: 20)
-                .padding(6)
-                .background(DS.Color.InteractionBrandWeak.norm)
-                .overlay(RoundedRectangle(cornerRadius: DS.Radius.large))
-                .padding(6)
+        HStack(alignment: .top, spacing: 12) {
+            if let image = configuration.image {
+                image
+                    .resizable()
+                    .square(size: 20)
+                    .foregroundStyle(DS.Color.Icon.accent)
+                    .padding(6)
+                    .background(DS.Color.InteractionBrandWeak.norm)
+                    .clipShape(RoundedRectangle(cornerRadius: DS.Radius.large))
+            }
+
             VStack(alignment: .leading, spacing: 4) {
                 configuration.title
+                    .foregroundStyle(DS.Color.Text.norm)
+                    .fontWeight(.semibold)
+                    .font(.footnote)
+
                 if let message = configuration.message {
                     message
+                        .foregroundStyle(DS.Color.Text.weak)
+                        .font(.footnote)
+                        .frame(idealWidth: iOS18 ? 300 : .zero)
                 }
             }
-            Button(action: { configuration.tip.invalidate(reason: .tipClosed) }) {
-                ZStack {
-                    Color.gray
-                        .clipShape(.circle)
-                    Image(symbol: DS.SFSymbol.xmark)
-                        .foregroundStyle(DS.Color.Shade.shade60)
-                }
-                .square(size: 24)
-            }
+
+            CloseButton(
+                size: iOS18 ? 18 : 24,
+                action: {
+                    configuration.tip.invalidate(reason: .tipClosed)
+                })
         }
-        .frame(maxWidth: 320)
-        .frame(height: 500)
+        .padding(DS.Spacing.medium)
+        .background(DS.Color.Background.norm)
     }
 
 }
 
-//
-//struct WhatsNewTipView: View {
-////    @Environment(\.openURL) private var openURL
-//
-//    // Create an instance of your tip content.
-//    private var tip = WhatsNewTip()
-//
-//    var body: some View {
-//        VStack(spacing: 20) {
-//            Text("Use action buttons to link to more options. In this example, two actions buttons are provided. One takes the user to the Reset Password feature. The other sends them to an FAQ page.")
-//
-//            // Place your tip near the feature you want to highlight.
-//            TipView(tip, arrowEdge: .bottom) { action in
-//                // Define the closure that executes when someone presses the reset button.
-//                if action.id == "reset-password", let url = URL(string: "https://iforgot.apple.com") {
-//                    openURL(url) { accepted in
-//                        print(accepted ? "Success Reset" : "Failure")
-//                    }
-//                }
-//                // Define the closure that executes when someone presses the FAQ button.
-//                if action.id == "faq", let url = URL(string: "https://appleid.apple.com/faq") {
-//                    openURL(url) { accepted in
-//                        print(accepted ? "Success FAQ" : "Failure")
-//                    }
-//                }
-//            }
-//            Button("Login") {}
-//            Spacer()
-//        }
-//        .padding()
-//        .navigationTitle("Password reset")
-//    }
-//}
+public struct CloseButton: View {
+    let action: () -> Void
+    let size: CGFloat
+
+    public init(size: CGFloat = 24, action: @escaping () -> Void) {
+        self.size = size
+        self.action = action
+    }
+
+    public var body: some View {
+        Button(
+            action: action,
+            label: {
+                Image(symbol: .xmarkCircleFill)
+                    .font(.system(size: size))
+                    .symbolRenderingMode(.palette)
+                    .foregroundStyle(
+                        Color(UIColor.secondaryLabel),
+                        Color(UIColor.tertiarySystemFill)
+                    )
+            }
+        )
+    }
+}
+
+private var iOS18: Bool {
+    if #available(iOS 18, *) {
+        if #unavailable(iOS 26) {
+            return true
+        }
+    }
+    return false
+}
