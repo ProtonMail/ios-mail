@@ -129,27 +129,26 @@ struct ConversationToolbarModifier: ViewModifier {
         selected: @escaping (Action) -> Void,
         moreActionsMenu: @escaping () -> MoreActionsMenu
     ) -> some View {
-        ForEachEnumerated(actions, id: \.offset) { action, index in
-            if index == 0 {
+        HStack(alignment: .center) {
+            ForEachEnumerated(actions, id: \.offset) { action, index in
+                if index == 0 {
+                    Spacer()
+                }
+                if action.isMoreAction {
+                    moreActionsMenu()
+                } else {
+                    Button(action: { selected(action) }) {
+                        action.displayData.image
+                            .foregroundStyle(DS.Color.Icon.weak)
+                    }
+                }
                 Spacer()
             }
-            if action.isMoreAction {
-                moreActionsMenu()
-            } else {
-                Button(action: { selected(action) }) {
-                    action.displayData.image
-                        .foregroundStyle(DS.Color.Icon.weak)
-                }
-            }
-            Spacer()
         }
-        .background(
-            Color.clear
-                .onGeometryChange(for: CGFloat.self, of: \.size.height) { toolbarHeight in
-                    let bottomSafeAreaToRecreate = DS.Spacing.large
-                    toastStateStore.state.bottomBar.height = toolbarHeight + bottomSafeAreaToRecreate
-                }
-        )
+        .onGeometryChange(for: CGFloat.self, of: \.size.height) { toolbarHeight in
+            let bottomSafeAreaToRecreate = DS.Spacing.large
+            toastStateStore.state.bottomBar.height = toolbarHeight + bottomSafeAreaToRecreate
+        }
         .onAppear {
             toastStateStore.state.bottomBar.isVisible = true
         }
