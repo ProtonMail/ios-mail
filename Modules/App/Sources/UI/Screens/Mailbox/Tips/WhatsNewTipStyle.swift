@@ -29,12 +29,12 @@ struct WhatsNewTipStyle: TipViewStyle {
                     .resizable()
                     .square(size: 20)
                     .foregroundStyle(DS.Color.Icon.accent)
-                    .padding(6)
+                    .padding(DS.Spacing.compact)
                     .background(DS.Color.InteractionBrandWeak.norm)
                     .clipShape(RoundedRectangle(cornerRadius: DS.Radius.large))
             }
 
-            VStack(alignment: .leading, spacing: 4) {
+            VStack(alignment: .leading, spacing: DS.Spacing.compact) {
                 configuration.title
                     .foregroundStyle(DS.Color.Text.norm)
                     .fontWeight(.semibold)
