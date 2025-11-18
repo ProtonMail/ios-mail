@@ -23,7 +23,6 @@ import InboxDesignSystem
 import proton_app_uniffi
 import ProtonUIFoundations
 import SwiftUI
-
 import TipKit
 
 struct ProtonMailApp: App {
