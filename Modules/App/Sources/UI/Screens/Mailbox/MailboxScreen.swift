@@ -190,6 +190,10 @@ struct MailboxScreen: View {
         isOnboardingPresented = introductionProgress == .onboarding
         isNotificationPromptPresented = introductionProgress == .notifications
 
+        if introductionProgress == .finished {
+            NewAccountSwitcherTip.showNewAccountSwitcherTip.sendDonation()
+        }
+
         if case .upsell(let upsellType) = introductionProgress {
             do {
                 switch upsellType {
@@ -261,7 +265,11 @@ extension MailboxScreen {
             title: mailboxModel.state.mailboxTitle,
             selectionMode: mailboxModel.selectionMode.selectionState,
             onEvent: handleMainToolbarEvent,
-            avatarView: { mailboxModel.accountManagerCoordinator.avatarView() }
+            avatarView: {
+                mailboxModel.accountManagerCoordinator.avatarView()
+                    .popoverTip(NewAccountSwitcherTip())
+                    .tipViewStyle(WhatsNewTipStyle())
+            }
         )
         .accessibilityElement(children: .contain)
     }
