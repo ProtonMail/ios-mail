@@ -209,28 +209,3 @@ private struct MainToolbarIdentifiers {
         }
     }
 }
-
-public struct CloseButton: View {
-    let action: () -> Void
-    let size: CGFloat
-
-    public init(size: CGFloat = 24, action: @escaping () -> Void) {
-        self.size = size
-        self.action = action
-    }
-
-    public var body: some View {
-        Button(
-            action: action,
-            label: {
-                Image(symbol: .xmarkCircleFill)
-                    .font(.system(size: size))
-                    .symbolRenderingMode(.palette)
-                    .foregroundStyle(
-                        Color(UIColor.secondaryLabel),
-                        Color(UIColor.tertiarySystemFill)
-                    )
-            }
-        )
-    }
-}

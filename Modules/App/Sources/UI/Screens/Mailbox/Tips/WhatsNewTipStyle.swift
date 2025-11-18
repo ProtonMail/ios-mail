@@ -16,8 +16,9 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import InboxDesignSystem
-import TipKit
+import ProtonUIFoundations
 import SwiftUI
+import TipKit
 
 struct WhatsNewTipStyle: TipViewStyle {
 
