@@ -23,7 +23,7 @@ import TipKit
 struct WhatsNewTipStyle: TipViewStyle {
 
     func makeBody(configuration: Configuration) -> some View {
-        HStack(alignment: .top, spacing: 12) {
+        HStack(alignment: .top, spacing: DS.Spacing.medium) {
             if let image = configuration.image {
                 image
                     .resizable()
@@ -37,19 +37,18 @@ struct WhatsNewTipStyle: TipViewStyle {
             VStack(alignment: .leading, spacing: DS.Spacing.compact) {
                 configuration.title
                     .foregroundStyle(DS.Color.Text.norm)
-                    .fontWeight(.semibold)
-                    .font(.footnote)
+                    .font(.footnote.weight(.semibold))
 
                 if let message = configuration.message {
                     message
                         .foregroundStyle(DS.Color.Text.weak)
                         .font(.footnote)
-                        .frame(idealWidth: iOS18 ? 300 : .zero)
+                        .frame(idealWidth: isIOS18 ? 300 : .zero)
                 }
             }
 
             CloseButton(
-                size: iOS18 ? 18 : 24,
+                size: isIOS18 ? 18 : 24,
                 action: {
                     configuration.tip.invalidate(reason: .tipClosed)
                 })
@@ -60,7 +59,7 @@ struct WhatsNewTipStyle: TipViewStyle {
 
 }
 
-private var iOS18: Bool {
+private var isIOS18: Bool {
     if #available(iOS 18, *) {
         if #unavailable(iOS 26) {
             return true
