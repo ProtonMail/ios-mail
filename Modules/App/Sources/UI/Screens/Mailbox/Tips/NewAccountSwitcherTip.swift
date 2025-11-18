@@ -22,11 +22,11 @@ struct NewAccountSwitcherTip: Tip {
     static let showNewAccountSwitcherTip = Event(id: "showNewAccountSwitcherTip")
 
     var title: Text {
-        Text("A New Home for Your Accounts")
+        Text(L10n.NewAccountSwitcherTip.title)
     }
 
     var message: Text? {
-        Text("The account switcher has moved! You can now switch accounts, log out - all from one convenient place.")
+        Text(L10n.NewAccountSwitcherTip.message)
     }
 
     var image: Image? {

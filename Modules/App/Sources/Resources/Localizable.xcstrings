@@ -2388,7 +2388,7 @@
       }
     },
     "A New Home for Your Accounts" : {
-
+      "comment" : "Title of a one-time tip that informs the user about the new account switcher."
     },
     "A reply to your email? An important message? Get notified the moment they arrive." : {
       "comment" : "Body of the authorization prompt",
@@ -44772,7 +44772,7 @@
       }
     },
     "The account switcher has moved! You can now switch accounts, log out - all from one convenient place." : {
-
+      "comment" : "Message of a one-time tip that informs the user about the new account switcher."
     },
     "The Mail app crashes after loading for a few seconds." : {
       "comment" : "Placeholder of actual results text field.",
