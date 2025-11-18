@@ -62,7 +62,6 @@ struct ProtonMailApp: App {
         legacyMigrationStateStore = .init(toastStateStore: toastStateStore)
         DynamicFontSize.capSupportedSizeCategories()
 
-        try? Tips.resetDatastore()
         try? Tips.configure()
     }
 
