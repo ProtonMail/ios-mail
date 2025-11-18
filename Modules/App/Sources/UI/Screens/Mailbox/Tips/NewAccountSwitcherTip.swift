@@ -30,7 +30,7 @@ struct NewAccountSwitcherTip: Tip {
     }
 
     var image: Image? {
-        Image(symbol: DS.SFSymbol.sparkles)
+        Image(DS.Icon.icSparkles)
     }
 
     var options: [TipOption] {
