@@ -281,9 +281,17 @@ extension AppScript {
                 metaWidth.content = "width=device-width, initial-scale=" + ratio + ", maximum-scale=3.0, user-scalable=yes";
             }
 
-            function startSendingHeightToSwiftUI(ratio) {
+            function appendBottomMarker() {
+                const bottomMarker = document.createElement('div');
+                bottomMarker.id = 'proton-bottom-marker';
+                return document.body.appendChild(bottomMarker);
+            }
+
+            function startSendingHeightToSwiftUI(bottomMarker, ratio) {
                 const observer = new ResizeObserver(() => {
-                    var height = document.documentElement.scrollHeight * ratio;
+                    const bottomMarkerRect = bottomMarker.getBoundingClientRect();
+                    const bottommostPoint = window.scrollY + bottomMarkerRect.top + bottomMarkerRect.height;
+                    var height = bottommostPoint * ratio;
                     window.webkit.messageHandlers.\(HandlerName.heightChanged.rawValue).postMessage(height);
                 });
 
@@ -293,7 +301,8 @@ extension AppScript {
             executeOnceContentIsLaidOut(() => {
                 const ratio = document.body.offsetWidth / document.body.scrollWidth;
                 setViewportInitialScale(ratio);
-                startSendingHeightToSwiftUI(ratio);
+                const bottomMarker = appendBottomMarker();
+                startSendingHeightToSwiftUI(bottomMarker, ratio);
             });
             """
 
