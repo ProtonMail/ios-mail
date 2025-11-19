@@ -6744,7 +6744,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Z vaší knihovny fotografií"
+            "value" : "Z vaší knihovny fotek"
           }
         },
         "da" : {
@@ -16268,7 +16268,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pořídit novou fotografii"
+            "value" : "Pořídit novou fotku"
           }
         },
         "da" : {
@@ -17522,10 +17522,200 @@
       }
     },
     "There is a 25 MB limit on attachments per email, including inline images, and %lld attachments couldn't be added. Send them in separate emails or share them via Proton Drive." : {
-      "comment" : "Attachment failed because the total attachment size is over the limit"
+      "comment" : "Attachment failed because the total attachment size is over the limit",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Існуе абмежаванне ў 25 МБ для далучэнняў на ліст, уключаючы ўбудаваныя відарысы, а таму немагчыма дадаць %lld далучэнні(яў). Адпраўце іх асобнымі лістамі або абагуліце праз Proton Drive."
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hi ha un límit de 25 MB per als fitxers adjunts per correu electrònic, incloses les imatges inserides, i no s'han pogut afegir %lld fitxers adjunts. Envieu-los en correus electrònics separats o compartiu-los mitjançant Proton Drive."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Na přílohy v jednom e-mailu je stanoven limit 25 MB, včetně obrázků v textu, a %lld příloh nebylo možné přidat. Odešlejte je v samostatných e-mailech nebo je sdílejte prostřednictvím Proton Drive."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der er en grænse på 25 MB for vedhæftninger pr. e-mail, hvilket inkluderer indlejrede billeder, og %lld vedhæftninger kunne ikke tilføjes. Send dem i separate e-mails, eller del dem via Proton Drive."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Es gibt ein Limit von 25 MB für Anhänge pro E-Mail, einschließlich Inline-Bildern, und %lld Anhänge konnten nicht hinzugefügt werden. Sende sie in separaten E-Mails oder teile sie über Proton Drive."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Υπάρχει όριο 25 MB στα συνημμένα ανά μήνυμα ηλεκτρονικού ταχυδρομείου, συμπεριλαμβανομένων των ενσωματωμένων εικόνων, και δεν ήταν δυνατή η προσθήκη συνημμένων %lld. Στείλτε τα σε ξεχωριστά μηνύματα ηλεκτρονικού ταχυδρομείου ή μοιραστείτε τα μέσω του Proton Drive."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "There is a 25 MB limit on attachments per email, including inline images, and %lld attachments couldn't be added. Send them in separate emails or share them via Proton Drive."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hay un límite de 25 MB para los archivos adjuntos en el correo electrónico, incluidas las imágenes en línea, y no se pudieron añadir %lld archivos adjuntos. Envíalos en correos electrónicos separados o compártelos a través de Proton Drive."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hay un límite de 25 MB en los archivos adjuntos por correo electrónico, incluidas las imágenes incrustadas y %lld archivos adjuntos no se pudieron añadir. Envíelos en correos electrónicos separados o compártalos con Proton Drive."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "C'è un limite di 25 MB sugli allegati per email, includendo immagini inline, e non è stato possibile aggiungere %lld allegati. Inviali in email diverse o condividile via Proton Drive."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld添付ファイルを追加できません。添付ファイルの最大サイズはメール1通あたり25MBです（インライン画像含む）。複数のメールに分割するか、Proton Driveで共有してください。"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Det er en grense på 25 MB for vedlegg per e-post, inkludert innebygde bilder, og %lld vedlegg kunne ikke legges til. Send dem i separate e-poster eller del dem via Proton Drive."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Există o limită de 25 MiB per atașament per e-mail, inclusiv imaginile integrate. Nu au putut fi adăugate %lld atașamente. Trimiteți-le cu mesaje separate sau partajați-le cu Proton Drive."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Na prílohy v jednom emaile platí limit 25 MB, vrátane vložených obrázkov a %lld prílohy nebolo možné pridať. Pošlite ich v samostatných emailoch alebo zdieľajte prostredníctvom Proton Drive."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bir e-postadaki ek dosyaların toplamı, satır arasındaki görseller ile beraber en fazla 25 MB olabilir. Bu nedenle %lld dosya eklenemedi. Bu dosyaları farklı e-postalara ekleyerek gönderin ya da Proton Drive üzerinden paylaşın."
+          }
+        }
+      }
     },
     "There is a 25 MB limit on attachments per email, including inline images. Send them in separate emails or share them via Proton Drive." : {
-      "comment" : "Attachment failed because the total attachment size is over the limit"
+      "comment" : "Attachment failed because the total attachment size is over the limit",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Існуе абмежаванне ў 25 МБ для далучэнняў на ліст, уключаючы ўбудаваныя відарысы. Адпраўце іх асобнымі лістамі або абагуліце праз Proton Drive."
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hi ha un límit de 25 MB per als fitxers adjunts per correu electrònic, incloses les imatges inserides. Envieu-los en correus electrònics separats o compartiu-los mitjançant Proton Drive."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Na přílohy v jednom e-mailu je stanoven limit 25 MB, včetně obrázků v textu. Odešlete je v samostatných e-mailech nebo je sdílejte prostřednictvím Proton Drive."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Der er en grænse på 25 MB for vedhæftninger pr. e-mail, inklusive indlejrede billeder. Send dem i separate e-mails, eller del dem via Proton Drive."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Es gibt ein Limit von 25 MB für Anhänge pro E-Mail, einschließlich Inline-Bilder. Sende sie in separaten E-Mails oder teile sie über Proton Drive."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Υπάρχει όριο 25 MB στα συνημμένα ανά μήνυμα ηλεκτρονικού ταχυδρομείου, συμπεριλαμβανομένων των ενσωματωμένων εικόνων. Στείλτε τα σε ξεχωριστά μηνύματα ηλεκτρονικού ταχυδρομείου ή μοιραστείτε τα μέσω του Proton Drive."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "There is a 25 MB limit on attachments per email, including inline images. Send them in separate emails or share them via Proton Drive."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hay un límite de 25 MB para los archivos adjuntos en el correo electrónico, incluidas las imágenes en línea. Envíalos en correos electrónicos separados o compártelos a través de Proton Drive."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hay un límite de 25 MB en los archivos adjuntos por correo electrónico, incluidas las imágenes incrustadas. Envíelos en correos electrónicos separados o compártalos con Proton Drive."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Il y a une limite de 25 Mo pour les pièces jointes par e-mail, y compris les images dans le message. Envoyez-les dans des e-mails séparés ou partagez-les avec Proton Drive."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "C'è un limite di 25 MB sugli allegati per email, incluse le immagini inline. Inviali in email diverse o condividile via Proton Drive."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "メール1通あたりの添付ファイル（インライン画像を含む）は25MBまでです。別々のメールで送信するか、Proton Driveで共有してください。"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Det er en grense på 25 MB for vedlegg per e-post, inkludert innebygde bilder. Send dem i separate e-poster eller del dem via Proton Drive."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Există o limită de 25 MiB per atașament per e-mail, inclusiv imaginile integrate. Trimiteți-le cu mesaje separate sau partajați-le cu Proton Drive."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Na prílohy v jednom emaile, vrátane vložených obrázkov, platí limit 25 MB. Pošlite ich v samostatných emailoch alebo zdieľajte prostredníctvom Proton Drive."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bir e-postadaki ek dosyaların toplamı, satır arası görseller ile beraber en fazla 25 MB olabilir. Bu dosyaları farklı e-postalara ekleyerek gönderin ya da Proton Drive üzerinden paylaşın."
+          }
+        }
+      }
     },
     "There was a problem saving the draft" : {
       "comment" : "Error shown when the draft fails to save.",
@@ -18835,7 +19025,105 @@
       }
     },
     "You have reached the limit of attachments, including inline images, 1 or more attachments weren't able to be added. Send them in separate emails or share them via Proton Drive." : {
-      "comment" : "Attachment failed because the total of number of attachments is over the limit"
+      "comment" : "Attachment failed because the total of number of attachments is over the limit",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вы дасягнулі абмежавання далучэнняў, уключаючы ўбудаваныя відарысы. Не ўдалося дадаць 1 або больш далучэнняў. Адпраўце іх асобнымі лістамі або абагуліце праз Proton Drive."
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hi ha un límit de 25 MB per als fitxers adjunts per correu electrònic, incloses les imatges inserides. Envieu-los en correus electrònics separats o compartiu-los mitjançant Proton Drive."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dosáhli jste limitu počtu příloh, 1 nebo více příloh nebylo možné přidat. Odešlete je v samostatných e-mailech nebo je sdílejte prostřednictvím Proton Drive."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du har nået grænsen for vedhæftninger, inklusive indlejrede billeder, 1 eller flere vedhæftninger kunne ikke tilføjes. Send dem i separate e-mails eller del dem via Proton Drive."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du hast das Limit der Anhänge, einschließlich Inline-Bilder, erreicht, 1 oder mehrere Anhänge konnten nicht hinzugefügt werden. Sende sie in separaten E-Mails oder teile sie über Proton Drive."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Έχετε φτάσει το όριο των συνημμένων, συμπεριλαμβανομένων των ενσωματωμένων εικόνων, δεν ήταν δυνατή η προσθήκη 1 ή περισσότερων συνημμένων. Στείλτε τα σε ξεχωριστά μηνύματα ηλεκτρονικού ταχυδρομείου ή μοιραστείτε τα μέσω του Proton Drive."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You have reached the limit of attachments, including inline images, 1 or more attachments weren't able to be added. Send them in separate emails or share them via Proton Drive."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Has alcanzado el límite de archivos adjuntos, incluidas las imágenes en línea, y no se han podido añadir uno o varios archivos adjuntos. Envíalos en correos electrónicos separados o compártelos a través de Proton Drive."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alcanzó el límite de archivos adjuntos, incluidas las imágenes incrustadas y no se pudieron añadir uno o más archivos adjuntos. Envíelos en correos electrónicos separados o compártalos con Proton Drive."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vous avez atteint la limite de pièces jointes, y compris avec les images intégrées. Une ou plusieurs pièces jointes n'ont pas pu être ajoutées. Envoyez-les dans des e-mails séparés ou partagez-les avec Proton Drive."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hai raggiunto il limite di allegati, incluse le immagini inline; non è stato possibile aggiungere 1 o più allegati. Inviali in email separate o condividile via Proton Drive."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "添付ファイル（インライン画像を含む）の上限に達したため、 1つ以上の添付ファイルを追加できませんでした。 複数のメールに分割するか、Proton Driveで共有してください。"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du har nådd grensen for vedlegg, inkludert innebygde bilder. Ett eller flere vedlegg kunne ikke legges til. Send dem i separate e-poster eller del dem via Proton Drive."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ați atins limita de atașamente, inclusiv imaginile integrate. Unul sau mai multe atașamente nu s-au putut adăuga. Trimiteți-le cu mesaje separate sau partajați-le prin Proton Drive."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dosiahli ste limit príloh, vrátane vložených obrázkov, 1 alebo viac príloh nebolo možné pridať. Pošlite ich v samostatných emailoch alebo ich zdieľajte prostredníctvom služby Proton Drive."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Satır arası görseller ile beraber, ek dosya sınırına ulaştınız. 1 ya da birkaç dosya eklenemedi. Bunları farklı e-postalara ekleyerek gönderin ya da Proton Drive üzerinden paylaşın."
+          }
+        }
+      }
     },
     "You reached the limit of scheduled messages." : {
       "comment" : "Error in the context of scheduling a message.",
