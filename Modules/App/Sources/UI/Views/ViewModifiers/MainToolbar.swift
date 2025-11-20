@@ -131,7 +131,7 @@ extension View {
         title: LocalizedStringResource,
         selectionMode: SelectionModeState? = nil,
         onEvent: @escaping (MainToolbarEvent) -> Void,
-        avatarView: @escaping () -> some View
+        @ViewBuilder avatarView: @escaping () -> some View
     ) -> some View {
         let selectionMode = selectionMode ?? SelectionModeState()
         return modifier(

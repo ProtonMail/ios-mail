@@ -264,9 +264,13 @@ extension MailboxScreen {
             selectionMode: mailboxModel.selectionMode.selectionState,
             onEvent: handleMainToolbarEvent,
             avatarView: {
-                mailboxModel.accountManagerCoordinator.avatarView()
-                    .popoverTip(NewAccountSwitcherTip())
-                    .tipViewStyle(WhatsNewTipStyle())
+                if IOSVersion.isIOS18 {
+                    mailboxModel.accountManagerCoordinator.avatarView()
+                } else {
+                    mailboxModel.accountManagerCoordinator.avatarView()
+                        .popoverTip(NewAccountSwitcherTip())
+                        .tipViewStyle(WhatsNewTipStyle())
+                }
             }
         )
         .accessibilityElement(children: .contain)

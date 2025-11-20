@@ -43,12 +43,12 @@ struct WhatsNewTipStyle: TipViewStyle {
                     message
                         .foregroundStyle(DS.Color.Text.weak)
                         .font(.footnote)
-                        .frame(idealWidth: isIOS18 ? 300 : .zero)
+                        .frame(idealWidth: IOSVersion.isIOS18 ? 300 : .zero)
                 }
             }
 
             CloseButton(
-                size: isIOS18 ? 18 : 24,
+                size: IOSVersion.isIOS18 ? 18 : 24,
                 action: {
                     configuration.tip.invalidate(reason: .tipClosed)
                 })
@@ -57,13 +57,4 @@ struct WhatsNewTipStyle: TipViewStyle {
         .background(DS.Color.Background.norm)
     }
 
-}
-
-private var isIOS18: Bool {
-    if #available(iOS 18, *) {
-        if #unavailable(iOS 26) {
-            return true
-        }
-    }
-    return false
 }
