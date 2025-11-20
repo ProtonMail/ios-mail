@@ -18,7 +18,6 @@
 @preconcurrency import Combine
 import Foundation
 import InboxCore
-import InboxCoreUI
 import ProtonUIFoundations
 
 @MainActor

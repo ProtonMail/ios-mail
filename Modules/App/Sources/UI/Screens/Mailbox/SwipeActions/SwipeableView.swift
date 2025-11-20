@@ -161,7 +161,7 @@ struct SwipeableView<Content: View>: View {
         }
     }
 
-    private func onDragEnded(_ value: DragGesture.Value) {
+    private func onDragEnded(_: DragGesture.Value) {
         defer { axisLock = .none }
 
         guard axisLock == .horizontal else { return }

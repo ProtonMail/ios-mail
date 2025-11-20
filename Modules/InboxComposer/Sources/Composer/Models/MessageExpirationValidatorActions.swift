@@ -28,12 +28,6 @@ struct MessageExpirationValidatorActions {
             await productionValidateRecipientsIfMessageHasExpiration(draft: draft, alertBinding: alertBinding)
         })
     }
-
-    static func dummy(returning result: MessageExpiryValidationResult) -> Self {
-        .init(validate: { _, _ in
-            result
-        })
-    }
 }
 
 private extension MessageExpirationValidatorActions {
