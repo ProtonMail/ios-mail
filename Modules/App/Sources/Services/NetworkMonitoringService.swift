@@ -15,22 +15,17 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Combine
 import Network
+import proton_app_uniffi
 
 @MainActor
 final class NetworkMonitoringService: ApplicationServiceSetUp {
-    static let shared = NetworkMonitoringService()
-
+    private let mailSession: () -> MailSessionProtocol
     private let monitor = NWPathMonitor()
     private let queue = DispatchQueue(label: "NetworkMonitorQueue")
 
-    private let isConnectedSubject: CurrentValueSubject<Bool?, Never> = .init(nil)
-
-    /// Emits events when the status changes. Only returns `nil` before we receive
-    /// the first connection status value from the system.
-    var isConnected: AnyPublisher<Bool?, Never> {
-        isConnectedSubject.removeDuplicates().eraseToAnyPublisher()
+    init(mailSession: @escaping () -> MailSessionProtocol) {
+        self.mailSession = mailSession
     }
 
     func setUpService() {
@@ -38,12 +33,22 @@ final class NetworkMonitoringService: ApplicationServiceSetUp {
     }
 
     private func startMonitoring() {
-        monitor.pathUpdateHandler = { [weak self] path in
-            let isConnected = path.status == .satisfied
-            Task { @MainActor in
-                self?.isConnectedSubject.value = isConnected
-            }
+        let mailSession = mailSession()
+
+        monitor.pathUpdateHandler = { [weak mailSession] path in
+            mailSession?.updateOsNetworkStatus(osNetworkStatus: path.status.uniffiEquivalent)
         }
+
         monitor.start(queue: queue)
+    }
+}
+
+private extension NWPath.Status {
+    var uniffiEquivalent: OsNetworkStatus {
+        switch self {
+        case .satisfied: .online
+        case .unsatisfied, .requiresConnection: .offline
+        @unknown default: .offline
+        }
     }
 }
