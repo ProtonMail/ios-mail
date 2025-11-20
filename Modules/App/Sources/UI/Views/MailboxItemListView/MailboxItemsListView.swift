@@ -60,8 +60,6 @@ struct MailboxItemsListView<EmptyView: View>: View {
                     toastStateStore.state.bottomBar.isVisible = shouldShowToolbar
                 }
                 .animation(.none, value: selectionState.hasItems)
-                .toolbar(selectionState.hasItems ? .visible : .hidden, for: .bottomBar)
-                .animation(.default, value: selectionState.hasItems)
                 .listActionsToolbar(
                     initialState: .initial,
                     availableActions: .productionInstance,
@@ -69,6 +67,8 @@ struct MailboxItemsListView<EmptyView: View>: View {
                     mailUserSession: mailUserSession,
                     selectedItems: config.selectionState.selectedItemIDsReadOnlyBinding
                 )
+                .toolbar(selectionState.hasItems ? .visible : .hidden, for: .bottomBar)
+                .animation(.default, value: selectionState.hasItems)
                 .environmentObject(mailbox)
         } else {
             listView
