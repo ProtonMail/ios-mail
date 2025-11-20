@@ -16,8 +16,9 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import typealias InboxCore.ID
 import proton_app_uniffi
+
+import typealias InboxCore.ID
 
 extension SingleRecipientEntry {
 

@@ -15,11 +15,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-@testable import InboxRSVP
 import InboxCore
 import InboxDesignSystem
 import SwiftUI
 import Testing
+
+@testable import InboxRSVP
 
 struct EventMenuParticipantOptionTests {
     typealias Expected = (displayName: String, trailingIcon: ImageResource)

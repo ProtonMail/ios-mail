@@ -17,8 +17,8 @@
 
 import Collections
 import InboxCore
-import proton_app_uniffi
 import SwiftUI
+import proton_app_uniffi
 
 @MainActor
 final class AttachmentErrorAlertState {

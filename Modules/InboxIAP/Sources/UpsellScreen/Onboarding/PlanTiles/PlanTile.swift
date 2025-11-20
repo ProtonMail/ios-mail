@@ -19,8 +19,8 @@
 import InboxCoreUI
 import InboxDesignSystem
 import PaymentsNG
-import SwiftUI
 import ProtonUIFoundations
+import SwiftUI
 
 struct PlanTile: View {
     let model: PlanTileModel

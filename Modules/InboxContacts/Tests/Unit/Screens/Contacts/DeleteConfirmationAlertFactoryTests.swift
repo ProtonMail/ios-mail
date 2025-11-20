@@ -15,9 +15,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import XCTest
+
 @testable import InboxContacts
 @testable import proton_app_uniffi
-import XCTest
 
 final class DeleteConfirmationAlertFactoryTests: XCTestCase {
 

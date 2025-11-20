@@ -15,12 +15,13 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-@testable import ProtonMail
 import BackgroundTasks
 import Combine
 import InboxTesting
 import XCTest
 import proton_app_uniffi
+
+@testable import ProtonMail
 
 class RecurringBackgroundTaskSchedulerTests: BaseTestCase {
 

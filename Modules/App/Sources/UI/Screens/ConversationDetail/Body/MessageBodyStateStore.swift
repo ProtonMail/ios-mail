@@ -18,8 +18,8 @@
 import Foundation
 import InboxCore
 import InboxCoreUI
-import proton_app_uniffi
 import ProtonUIFoundations
+import proton_app_uniffi
 
 final class MessageBodyStateStore: StateStore {
     enum Action {

@@ -17,8 +17,8 @@
 
 import Foundation
 import InboxCore
-import proton_app_uniffi
 import UserNotifications
+import proton_app_uniffi
 
 struct AppIconBadgeService: Sendable {
     private let inboxUnreadCount: @Sendable () async throws -> UInt64

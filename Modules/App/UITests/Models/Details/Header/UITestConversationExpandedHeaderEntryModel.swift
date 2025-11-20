@@ -16,8 +16,8 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import XCTest
 import ProtonMail
+import XCTest
 
 struct UITestConversationExpandedHeaderEntryModel: ApplicationHolder {
     let index: Int

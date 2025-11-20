@@ -15,11 +15,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-@testable import InboxCoreUI
 import InboxCore
 import InboxTesting
 import LocalAuthentication
 import Testing
+
+@testable import InboxCoreUI
 
 @MainActor
 final class BiometricLockStoreTests {

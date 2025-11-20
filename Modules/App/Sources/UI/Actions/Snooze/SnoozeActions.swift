@@ -18,8 +18,8 @@
 import Foundation
 import InboxCore
 import InboxDesignSystem
-import proton_app_uniffi
 import SwiftUI
+import proton_app_uniffi
 
 extension SnoozeTime {
 

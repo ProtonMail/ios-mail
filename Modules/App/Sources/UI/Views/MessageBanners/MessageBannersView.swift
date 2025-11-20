@@ -16,13 +16,14 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Combine
-import struct InboxComposer.ScheduleSendDateFormatter
 import InboxCore
 import InboxCoreUI
 import InboxDesignSystem
 import OrderedCollections
-import proton_app_uniffi
 import SwiftUI
+import proton_app_uniffi
+
+import struct InboxComposer.ScheduleSendDateFormatter
 
 struct MessageBannersView: View {
     enum Action {

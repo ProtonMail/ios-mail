@@ -17,8 +17,8 @@
 
 import Foundation
 import InboxCore
-import proton_app_uniffi
 import WebKit
+import proton_app_uniffi
 
 final class HtmlBodyWebViewInterface: NSObject, HtmlBodyWebViewInterfaceProtocol {
 

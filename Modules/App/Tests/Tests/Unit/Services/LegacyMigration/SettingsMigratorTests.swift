@@ -15,13 +15,13 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-@testable import ProtonMail
-
 import InboxCore
 import InboxTesting
-import proton_app_uniffi
 import SwiftUI
 import Testing
+import proton_app_uniffi
+
+@testable import ProtonMail
 
 final class SettingsMigratorTests {
     private let legacyKeychain = LegacyKeychain.randomInstance()

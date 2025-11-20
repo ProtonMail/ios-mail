@@ -21,9 +21,9 @@ import AccountLogin
 import Foundation
 import InboxCore
 import InboxKeychain
-import proton_app_uniffi
 import Sentry
 import SwiftUI
+import proton_app_uniffi
 
 final class AppContext: Sendable, ObservableObject {
     static let shared: AppContext = .init()

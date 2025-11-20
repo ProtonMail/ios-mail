@@ -18,9 +18,9 @@
 import Combine
 import InboxCoreUI
 import InboxDesignSystem
-import proton_app_uniffi
 import ProtonUIFoundations
 import SwiftUI
+import proton_app_uniffi
 
 struct MailboxItemsListView<EmptyView: View>: View {
     @EnvironmentObject var toastStateStore: ToastStateStore

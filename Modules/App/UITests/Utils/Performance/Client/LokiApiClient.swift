@@ -15,10 +15,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
 import CryptoKit
-import XCTest
+import Foundation
 import Security
+import XCTest
 
 enum LokiPushError: Error {
     case invalidURL

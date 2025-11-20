@@ -19,9 +19,9 @@
 import InboxCore
 import InboxCoreUI
 import PaymentsNG
-import proton_app_uniffi
 import ProtonUIFoundations
 import SwiftUI
+import proton_app_uniffi
 
 @MainActor
 final class PurchaseActionPerformer {

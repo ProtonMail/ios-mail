@@ -17,9 +17,9 @@
 
 import InboxCore
 import InboxCoreUI
-import proton_app_uniffi
 import ProtonUIFoundations
 import SwiftUI
+import proton_app_uniffi
 
 final class MessageAddressActionViewStateStore: StateStore {
     enum Action {

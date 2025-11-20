@@ -17,8 +17,8 @@
 
 import Foundation
 import PaymentsNG
-import proton_app_uniffi
 import StoreKit
+import proton_app_uniffi
 
 final class UpsellScreenFactory {
     private let purchaseActionPerformer: PurchaseActionPerformer

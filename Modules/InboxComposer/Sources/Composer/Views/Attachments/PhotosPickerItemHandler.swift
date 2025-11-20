@@ -18,8 +18,9 @@
 import Foundation
 import InboxCore
 import PhotosUI
-import enum proton_app_uniffi.DraftAttachmentUploadError
 import SwiftUI
+
+import enum proton_app_uniffi.DraftAttachmentUploadError
 
 struct PhotosPickerItemHandler {
     static let unexpectedError = DraftAttachmentUploadError.other(.unexpected(.fileSystem))

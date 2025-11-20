@@ -20,10 +20,10 @@ import Combine
 import InboxCore
 import InboxCoreUI
 import InboxDesignSystem
-import proton_app_uniffi
 import ProtonUIFoundations
 import SwiftUI
 import TipKit
+import proton_app_uniffi
 
 struct ProtonMailApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate

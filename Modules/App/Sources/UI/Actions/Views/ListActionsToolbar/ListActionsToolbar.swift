@@ -17,9 +17,9 @@
 
 import InboxCoreUI
 import InboxDesignSystem
-import proton_app_uniffi
 import ProtonUIFoundations
 import SwiftUI
+import proton_app_uniffi
 
 extension View {
     /// Attaches the list actions toolbar to this view.

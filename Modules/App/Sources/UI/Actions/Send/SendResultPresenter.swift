@@ -17,10 +17,11 @@
 
 import Combine
 import Foundation
-import InboxCoreUI
 import InboxComposer
-import enum proton_app_uniffi.DraftSendFailure
+import InboxCoreUI
 import ProtonUIFoundations
+
+import enum proton_app_uniffi.DraftSendFailure
 
 /**
  This class handles all toast notifications related to sending a message, from the moment

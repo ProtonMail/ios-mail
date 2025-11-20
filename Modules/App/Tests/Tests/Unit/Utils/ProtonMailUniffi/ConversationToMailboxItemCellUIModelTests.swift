@@ -17,9 +17,10 @@
 
 import InboxDesignSystem
 import InboxTesting
-import proton_app_uniffi
-@testable import ProtonMail
 import XCTest
+import proton_app_uniffi
+
+@testable import ProtonMail
 
 final class ConversationToMailboxItemCellUIModelTests: XCTestCase {
 

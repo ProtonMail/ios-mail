@@ -18,8 +18,8 @@
 import InboxCoreUI
 import InboxDesignSystem
 import InboxIAP
-import proton_app_uniffi
 import SwiftUI
+import proton_app_uniffi
 
 struct SidebarScreen: View {
     private enum AxisLock {

@@ -20,8 +20,8 @@ import InboxComposer
 import InboxCore
 import InboxCoreUI
 import InboxIAP
-import proton_app_uniffi
 import SwiftUI
+import proton_app_uniffi
 
 @MainActor
 public final class ShareScreenModel: ObservableObject {

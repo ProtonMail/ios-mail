@@ -16,14 +16,15 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Contacts
+import InboxContacts
 import InboxCore
 import InboxCoreUI
-import InboxContacts
 import PhotosUI
-import proton_app_uniffi
-import struct ProtonCoreUtilities.NestedObservableObject
 import ProtonUIFoundations
 import SwiftUI
+import proton_app_uniffi
+
+import struct ProtonCoreUtilities.NestedObservableObject
 
 typealias Nested = NestedObservableObject
 

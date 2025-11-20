@@ -17,8 +17,8 @@
 
 import InboxCore
 import InboxCoreUI
-import proton_app_uniffi
 import SwiftUI
+import proton_app_uniffi
 
 struct MessageExpirationValidatorActions {
     let validate: @MainActor (_ draft: AppDraftProtocol, _ alertBinding: Binding<AlertModel?>) async -> MessageExpiryValidationResult

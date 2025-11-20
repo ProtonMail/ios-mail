@@ -17,8 +17,8 @@
 
 import Combine
 import InboxCore
-import proton_app_uniffi
 import SwiftUI
+import proton_app_uniffi
 
 enum SidebarAction {
     case viewAppear

@@ -17,8 +17,8 @@
 
 import InboxCoreUI
 import InboxDesignSystem
-import proton_app_uniffi
 import SwiftUI
+import proton_app_uniffi
 
 struct MessageBodyHTMLView: View {
     @Environment(\.mainWindowSize) var mainWindowSize

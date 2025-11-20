@@ -16,12 +16,13 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import CoreTransferable
-@testable import InboxComposer
 import InboxTesting
 import PhotosUI
-import proton_app_uniffi
 import SwiftUI
 import XCTest
+import proton_app_uniffi
+
+@testable import InboxComposer
 
 final class PhotosPickerItemHandlerTests: BaseTestCase {
     private var sut: PhotosPickerItemHandler!

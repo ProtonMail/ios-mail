@@ -18,9 +18,9 @@
 import InboxCore
 import InboxCoreUI
 import InboxDesignSystem
-import proton_app_uniffi
 import ProtonUIFoundations
 import SwiftUI
+import proton_app_uniffi
 
 struct AppProtectionSelectionScreen: View {
     private let state: AppProtectionSelectionState

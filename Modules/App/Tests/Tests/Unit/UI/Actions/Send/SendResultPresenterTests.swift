@@ -15,14 +15,15 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-@testable import ProtonMail
 import Combine
 import InboxComposer
 import InboxCoreUI
 import InboxTesting
-import proton_app_uniffi
 import ProtonUIFoundations
 import XCTest
+import proton_app_uniffi
+
+@testable import ProtonMail
 
 final class SendResultPresenterTests: BaseTestCase, @unchecked Sendable {
     private let regularDuration: Toast.Duration = .short

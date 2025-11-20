@@ -16,12 +16,13 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-@testable import InboxComposer
 import InboxCore
 @preconcurrency import InboxCoreUI
-import proton_app_uniffi
 import SwiftUI
 import Testing
+import proton_app_uniffi
+
+@testable import InboxComposer
 
 @MainActor
 final class MessageExpirationRecipientsValidatorTests {

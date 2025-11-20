@@ -18,9 +18,9 @@
 import Combine
 import InboxCore
 import InboxCoreUI
-import proton_app_uniffi
 import ProtonUIFoundations
 import SwiftUI
+import proton_app_uniffi
 
 final class SceneDelegate: UIResponder, UIWindowSceneDelegate, ObservableObject {
 

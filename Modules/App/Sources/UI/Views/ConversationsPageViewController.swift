@@ -18,8 +18,8 @@
 import InboxCore
 import InboxCoreUI
 import InboxDesignSystem
-import proton_app_uniffi
 import SwiftUI
+import proton_app_uniffi
 
 struct ConversationsPageViewController: View {
     @Environment(\.presentationMode) var presentationMode

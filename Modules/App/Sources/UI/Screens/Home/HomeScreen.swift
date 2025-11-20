@@ -19,12 +19,13 @@ import AccountLogin
 import Combine
 import InboxCore
 import InboxCoreUI
-import enum InboxComposer.ComposerDismissReason
 import InboxIAP
-import proton_app_uniffi
-import ProtonUIFoundations
 import PaymentsNG
+import ProtonUIFoundations
 import SwiftUI
+import proton_app_uniffi
+
+import enum InboxComposer.ComposerDismissReason
 
 struct HomeScreen: View {
 

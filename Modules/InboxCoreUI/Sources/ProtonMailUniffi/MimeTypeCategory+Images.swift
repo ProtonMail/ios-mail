@@ -17,6 +17,7 @@
 
 import InboxDesignSystem
 import proton_app_uniffi
+
 import struct DeveloperToolsSupport.ImageResource
 
 public extension MimeTypeCategory {

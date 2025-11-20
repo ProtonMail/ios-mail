@@ -16,9 +16,10 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import InboxDesignSystem
-import enum proton_app_uniffi.ComposerRecipient
-import struct SwiftUI.Color
 import UIKit
+
+import struct SwiftUI.Color
+import enum proton_app_uniffi.ComposerRecipient
 
 struct RecipientUIModel: Equatable {
     let composerRecipient: ComposerRecipient

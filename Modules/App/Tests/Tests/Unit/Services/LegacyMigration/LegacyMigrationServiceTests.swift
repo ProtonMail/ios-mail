@@ -17,8 +17,8 @@
 
 import InboxCore
 import InboxTesting
-import proton_app_uniffi
 import Testing
+import proton_app_uniffi
 
 @testable import ProtonMail
 

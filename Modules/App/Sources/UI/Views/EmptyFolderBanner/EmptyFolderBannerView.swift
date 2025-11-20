@@ -18,9 +18,9 @@
 import InboxCoreUI
 import InboxDesignSystem
 import InboxIAP
-import proton_app_uniffi
 import ProtonUIFoundations
 import SwiftUI
+import proton_app_uniffi
 
 struct EmptyFolderBannerView: View {
     @EnvironmentObject var toastStateStore: ToastStateStore

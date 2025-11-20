@@ -15,12 +15,13 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-@testable import ProtonMail
 import InboxComposer
 import InboxCore
 import InboxSnapshotTesting
 import InboxTesting
 import Testing
+
+@testable import ProtonMail
 
 @MainActor
 @Suite(.currentDate(.fixture("2025-02-07 09:32:00")))

@@ -17,10 +17,10 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import proton_app_uniffi
 import Testing
 import UIKit
 import UniformTypeIdentifiers
+import proton_app_uniffi
 
 @testable import InboxComposer
 @testable import TestableShareExtension

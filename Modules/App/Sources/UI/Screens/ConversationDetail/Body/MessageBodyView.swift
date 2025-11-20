@@ -15,14 +15,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import OrderedCollections
 import InboxCore
 import InboxCoreUI
 import InboxDesignSystem
 import InboxRSVP
-import proton_app_uniffi
+import OrderedCollections
 import ProtonUIFoundations
 import SwiftUI
+import proton_app_uniffi
 
 struct MessageBodyView: View {
     @Environment(\.messagePrinter) var messagePrinter: MessagePrinter

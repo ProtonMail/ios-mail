@@ -17,6 +17,7 @@
 
 import Foundation
 import proton_app_uniffi
+
 import struct SwiftUI.Color
 import class SwiftUI.UIImage
 

@@ -17,9 +17,9 @@
 
 import InboxCoreUI
 import InboxDesignSystem
-import proton_app_uniffi
 import ProtonUIFoundations
 import SwiftUI
+import proton_app_uniffi
 
 enum SearchScreenState {
     case initial

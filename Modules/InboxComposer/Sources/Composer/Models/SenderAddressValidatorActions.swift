@@ -16,8 +16,8 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import InboxCoreUI
-import proton_app_uniffi
 import SwiftUI
+import proton_app_uniffi
 
 struct SenderAddressValidatorActions {
     let validate: @MainActor (_ draft: AppDraftProtocol, _ alertBinding: Binding<AlertModel?>) async -> Void

@@ -16,13 +16,14 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import AccountManager
+import Combine
 import InboxCore
 import InboxCoreUI
 import InboxDesignSystem
 import InboxIAP
-import proton_app_uniffi
 import ProtonUIFoundations
 import SwiftUI
+import proton_app_uniffi
 
 struct MailboxScreen: View {
     @EnvironmentObject private var appUIStateStore: AppUIStateStore
@@ -363,8 +364,6 @@ extension MailboxScreen {
 private struct MailboxScreenIdentifiers {
     static let rootItem = "mailbox.rootItem"
 }
-
-import Combine
 
 class MailSettingsLiveQueryPreviewDummy: MailSettingLiveQuerying {
 

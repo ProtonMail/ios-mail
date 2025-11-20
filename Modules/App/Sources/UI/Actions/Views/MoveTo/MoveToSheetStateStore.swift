@@ -19,9 +19,9 @@ import Foundation
 import InboxCore
 import InboxCoreUI
 import InboxDesignSystem
-import proton_app_uniffi
 import ProtonUIFoundations
 import SwiftUI
+import proton_app_uniffi
 
 class MoveToSheetStateStore: StateStore {
     @Published var state: MoveToState

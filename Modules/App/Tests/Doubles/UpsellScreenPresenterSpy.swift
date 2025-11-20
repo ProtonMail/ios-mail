@@ -15,10 +15,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-@testable import ProtonMail
-@testable import InboxIAP
-
 import proton_app_uniffi
+
+@testable import InboxIAP
+@testable import ProtonMail
 
 class UpsellScreenPresenterSpy: UpsellScreenPresenter {
     var stubbedError: NSError?

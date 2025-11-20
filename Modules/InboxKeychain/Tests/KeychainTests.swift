@@ -20,6 +20,7 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import XCTest
+
 @testable import InboxKeychain
 
 // Tests imported and adapted from https://gitlab.protontech.ch/apple/shared/protoncore/-/blob/a4d22426ef8e737833357fcb4ecd3e82e2144bc6/libraries/Keymaker/Tests/KeychainTests.swift

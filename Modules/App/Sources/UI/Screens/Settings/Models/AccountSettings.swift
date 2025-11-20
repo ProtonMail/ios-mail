@@ -16,8 +16,8 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import InboxDesignSystem
-import SwiftUI
 import ProtonUIFoundations
+import SwiftUI
 
 enum AccountSettings: CaseIterable, Hashable {
     case qrLogin

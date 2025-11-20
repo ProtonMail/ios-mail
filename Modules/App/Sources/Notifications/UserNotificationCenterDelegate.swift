@@ -17,9 +17,9 @@
 
 import Combine
 import InboxCore
-import proton_app_uniffi
 import UIKit
 import UserNotifications
+import proton_app_uniffi
 
 @MainActor
 final class UserNotificationCenterDelegate: NSObject, UNUserNotificationCenterDelegate, ApplicationServiceSetUp {

@@ -17,15 +17,17 @@
 
 import Combine
 import Contacts
-@testable import InboxComposer
-@testable import InboxTesting
-import typealias InboxCore.ID
 import InboxCoreUI
 import PhotosUI
-import proton_app_uniffi
 import ProtonUIFoundations
 import SwiftUI
 import XCTest
+import proton_app_uniffi
+
+import typealias InboxCore.ID
+
+@testable import InboxComposer
+@testable import InboxTesting
 
 @MainActor
 final class ComposerModelTests: BaseTestCase {
