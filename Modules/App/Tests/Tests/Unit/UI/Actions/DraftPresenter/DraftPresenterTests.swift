@@ -190,36 +190,6 @@ final class DraftPresenterTests: BaseTestCase, @unchecked Sendable {
         XCTAssertEqual(capturedDraftToPresent.count, 0)
     }
 
-    // MARK: - Open new draft with mailto:
-
-    @MainActor
-    func testOpenDraftWithMailtoData_ItPopulatesAndOpensDraft() async throws {
-        let draftSpy = DraftSpy(noPointer: .init())
-        sut = makeSUT(stubbedNewDraftResult: .ok(draftSpy))
-
-        var capturedDraftToPresent: [DraftToPresent] = []
-        sut.draftToPresent.sink { capturedDraftToPresent.append($0) }.store(in: &cancellables)
-
-        let mailtoData = MailtoData(
-            to: ["john@example.com", "jane@example.com"],
-            cc: [],
-            bcc: ["assistant1@example.com", "assistant2@example.com"],
-            subject: "foo",
-            body: "bar"
-        )
-
-        try await sut.openNewDraft(with: mailtoData)
-
-        XCTAssertEqual(draftSpy.toRecipientsCalls.addSingleRecipientCalls.map(\.email), ["john@example.com", "jane@example.com"])
-        XCTAssertEqual(draftSpy.ccRecipientsCalls.addSingleRecipientCalls.count, 0)
-        XCTAssertEqual(draftSpy.bccRecipientsCalls.addSingleRecipientCalls.map(\.email), ["assistant1@example.com", "assistant2@example.com"])
-        XCTAssertEqual(draftSpy.subject(), "foo")
-        XCTAssertEqual(draftSpy.body(), "bar")
-
-        XCTAssertEqual(capturedDraftToPresent.count, 1)
-        XCTAssertEqual(capturedDraftToPresent.first, .new(draft: draftSpy))
-    }
-
     // MARK: handleReplyAction
 
     @MainActor

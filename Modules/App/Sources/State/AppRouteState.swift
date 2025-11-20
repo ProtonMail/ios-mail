@@ -44,7 +44,7 @@ extension AppRouteState {
 enum Route: Equatable, CustomStringConvertible {
     case mailbox(selectedMailbox: SelectedMailbox)
     case mailboxOpenMessage(seed: MailboxMessageSeed)
-    case mailto(MailtoData)
+    case mailto(URL)
     case composer(fromShareExtension: Bool)
     case search
 
