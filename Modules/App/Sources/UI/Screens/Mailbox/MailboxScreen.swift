@@ -191,6 +191,7 @@ struct MailboxScreen: View {
         isNotificationPromptPresented = introductionProgress == .notifications
 
         if introductionProgress == .finished {
+            try? await Task.sleep(for: .seconds(1))
             NewAccountSwitcherTip.showNewAccountSwitcherTip.sendDonation()
         }
 
