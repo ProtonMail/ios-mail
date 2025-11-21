@@ -56,9 +56,6 @@ struct MailboxItemsListView<EmptyView: View>: View {
     var body: some View {
         if let mailbox {
             listView
-                .onChange(of: selectionState.hasItems) { _, shouldShowToolbar in
-                    toastStateStore.state.bottomBar.isVisible = shouldShowToolbar
-                }
                 .animation(.none, value: selectionState.hasItems)
                 .listActionsToolbar(
                     initialState: .initial,

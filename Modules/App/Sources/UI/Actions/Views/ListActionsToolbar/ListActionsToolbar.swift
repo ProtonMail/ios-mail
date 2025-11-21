@@ -171,18 +171,12 @@ private struct ListActionBarViewModifier: ViewModifier {
 
     private func toolbarContent(state: State, store: Store) -> some ToolbarContent {
         ToolbarItemGroup(placement: .bottomBar) {
-            HStack {
-                ForEachEnumerated(state.bottomBarActions, id: \.element) { action, index in
-                    if index == 0 {
-                        Spacer()
-                    }
-                    toolbarItem(for: action, state: state, store: store)
+            ForEachEnumerated(state.bottomBarActions, id: \.element) { action, index in
+                if index == 0 {
                     Spacer()
                 }
-            }
-            .onGeometryChange(for: CGFloat.self, of: \.size.height) { toolbarHeight in
-                let bottomSafeAreaToRecreate = DS.Spacing.large
-                toastStateStore.state.bottomBar.height = toolbarHeight + bottomSafeAreaToRecreate
+                toolbarItem(for: action, state: state, store: store)
+                Spacer()
             }
         }
     }

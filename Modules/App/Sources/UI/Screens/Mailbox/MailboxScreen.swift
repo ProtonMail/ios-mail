@@ -253,6 +253,7 @@ extension MailboxScreen {
                         }
                     }
             }
+            .toastBottomSafeAreaTracker()
         }
         .background(DS.Color.Background.norm)  // sets also the color for the navigation bar
         .toolbarBackground(.hidden, for: .navigationBar)  // the purpose of this is to hide the toolbar shadow

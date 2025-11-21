@@ -73,6 +73,7 @@ struct ConversationToolbarModifier: ViewModifier {
 
     func body(content: Content) -> some View {
         content
+            .toastBottomSafeAreaTracker()
             .toolbar {
                 ToolbarItemGroup(placement: .bottomBar) {
                     if let actions {
@@ -129,31 +130,19 @@ struct ConversationToolbarModifier: ViewModifier {
         selected: @escaping (Action) -> Void,
         moreActionsMenu: @escaping () -> MoreActionsMenu
     ) -> some View {
-        HStack(alignment: .center) {
-            ForEachEnumerated(actions, id: \.offset) { action, index in
-                if index == 0 {
-                    Spacer()
-                }
-                if action.isMoreAction {
-                    moreActionsMenu()
-                } else {
-                    Button(action: { selected(action) }) {
-                        action.displayData.image
-                            .foregroundStyle(DS.Color.Icon.weak)
-                    }
-                }
+        ForEachEnumerated(actions, id: \.offset) { action, index in
+            if index == 0 {
                 Spacer()
             }
-        }
-        .onGeometryChange(for: CGFloat.self, of: \.size.height) { toolbarHeight in
-            let bottomSafeAreaToRecreate = DS.Spacing.large
-            toastStateStore.state.bottomBar.height = toolbarHeight + bottomSafeAreaToRecreate
-        }
-        .onAppear {
-            toastStateStore.state.bottomBar.isVisible = true
-        }
-        .onDisappear {
-            toastStateStore.state.bottomBar.isVisible = false
+            if action.isMoreAction {
+                moreActionsMenu()
+            } else {
+                Button(action: { selected(action) }) {
+                    action.displayData.image
+                        .foregroundStyle(DS.Color.Icon.weak)
+                }
+            }
+            Spacer()
         }
     }
 
