@@ -26,8 +26,8 @@ public struct RegularButtonStyle: ButtonStyle {
             .label
             .background(
                 configuration.isPressed
-                ? DS.Color.InteractionWeak.pressed
-                : DS.Color.BackgroundInverted.secondary
+                    ? DS.Color.InteractionWeak.pressed
+                    : DS.Color.BackgroundInverted.secondary
             )
     }
 }
