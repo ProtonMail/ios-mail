@@ -25,6 +25,7 @@ extension View {
     func conversationBottomToolbar(
         actions: ConversationToolbarActions?,
         mailbox: @escaping () -> Mailbox,
+        messageAppearanceOverrideStore: MessageAppearanceOverrideStore,
         editToolbarTapped: @escaping (ToolbarType) -> Void,
         messageActionSelected: @escaping (MessageAction) async -> Void,
         conversationActionSelected: @escaping (ConversationAction) -> Void
@@ -33,6 +34,7 @@ extension View {
             ConversationToolbarModifier(
                 actions: actions,
                 mailbox: mailbox,
+                messageAppearanceOverrideStore: messageAppearanceOverrideStore,
                 editToolbarTapped: editToolbarTapped,
                 messageActionSelected: messageActionSelected,
                 conversationActionSelected: conversationActionSelected
@@ -47,6 +49,7 @@ struct ConversationToolbarModifier: ViewModifier {
 
     private let actions: ConversationToolbarActions?
     private let mailbox: () -> Mailbox
+    private let messageAppearanceOverrideStore: MessageAppearanceOverrideStore
     private let editToolbarTapped: (ToolbarType) -> Void
     private let messageActionSelected: (MessageAction) async -> Void
     private let conversationActionSelected: (ConversationAction) -> Void
@@ -54,12 +57,14 @@ struct ConversationToolbarModifier: ViewModifier {
     init(
         actions: ConversationToolbarActions?,
         mailbox: @escaping () -> Mailbox,
+        messageAppearanceOverrideStore: MessageAppearanceOverrideStore,
         editToolbarTapped: @escaping (ToolbarType) -> Void,
         messageActionSelected: @escaping (MessageAction) async -> Void,
         conversationActionSelected: @escaping (ConversationAction) -> Void
     ) {
         self.actions = actions
         self.mailbox = mailbox
+        self.messageAppearanceOverrideStore = messageAppearanceOverrideStore
         self.editToolbarTapped = editToolbarTapped
         self.messageActionSelected = messageActionSelected
         self.conversationActionSelected = conversationActionSelected
@@ -94,6 +99,7 @@ struct ConversationToolbarModifier: ViewModifier {
             MessageActionsMenu(
                 state: .initial(messageID: messageID, showEditToolbar: true),
                 mailbox: mailbox(),
+                messageAppearanceOverrideStore: messageAppearanceOverrideStore,
                 actionTapped: messageActionSelected,
                 editToolbarTapped: { editToolbarTapped(.message) }
             ) {

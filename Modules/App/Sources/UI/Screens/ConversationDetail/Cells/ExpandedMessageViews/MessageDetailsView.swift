@@ -31,6 +31,7 @@ struct MessageDetailsView: View {
         var isHidden: Bool { self == .hidden }
     }
 
+    @Environment(\.messageAppearanceOverrideStore) var messageAppearanceOverrideStore
     @State private(set) var isHeaderCollapsed: Bool = true
     let uiModel: MessageDetailsUIModel
     let mailbox: Mailbox
@@ -232,6 +233,7 @@ struct MessageDetailsView: View {
             MessageActionsMenu(
                 state: .initial(messageID: uiModel.id, showEditToolbar: false),
                 mailbox: mailbox,
+                messageAppearanceOverrideStore: messageAppearanceOverrideStore!,
                 actionTapped: { action in await onEvent(.onMessageAction(action)) },
                 editToolbarTapped: { Task { await onEvent(.onEditToolbar) } }
             ) {
