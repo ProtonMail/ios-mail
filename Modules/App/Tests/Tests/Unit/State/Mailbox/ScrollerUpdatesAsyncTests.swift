@@ -16,9 +16,10 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import InboxTesting
-@testable import ProtonMail
-import proton_app_uniffi
 import Testing
+import proton_app_uniffi
+
+@testable import ProtonMail
 
 @MainActor
 final class ScrollerUpdatesAsyncTests {

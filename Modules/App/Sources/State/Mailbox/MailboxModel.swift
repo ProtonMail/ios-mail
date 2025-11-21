@@ -17,14 +17,15 @@
 
 import AccountManager
 @preconcurrency import Combine
+import Foundation
 import InboxCore
 import InboxCoreUI
 import InboxIAP
-import Foundation
-import SwiftUI
-import proton_app_uniffi
 import ProtonCoreUtilities
 import ProtonUIFoundations
+import SwiftUI
+import proton_app_uniffi
+
 import class UIKit.UIImage
 
 /**

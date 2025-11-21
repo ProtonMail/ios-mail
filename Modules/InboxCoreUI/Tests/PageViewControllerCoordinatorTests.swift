@@ -173,31 +173,3 @@ private final class MailboxCursorSpy: MailboxCursorProtocol {
         receivedMovements.append(.forward)
     }
 }
-
-private extension Conversation {
-    static func testData(conversationId: UInt64 = UInt64.random(in: 0..<100)) -> Self {
-        .init(
-            id: .init(value: conversationId),
-            attachmentsMetadata: [],
-            customLabels: [],
-            displaySnoozeReminder: false,
-            snoozedUntil: nil,
-            exclusiveLocation: .system(name: .inbox, id: .init(value: 41)),
-            expirationTime: 1625140800,
-            isStarred: true,
-            numAttachments: 0,
-            numMessages: 1,
-            numUnread: 1,
-            totalMessages: 1,
-            totalUnread: 1,
-            displayOrder: 0,
-            recipients: [],
-            senders: [],
-            size: 1_024,
-            subject: .empty,
-            time: 1622548800,
-            avatar: .init(text: .empty, color: .empty),
-            hiddenMessagesBanner: nil
-        )
-    }
-}

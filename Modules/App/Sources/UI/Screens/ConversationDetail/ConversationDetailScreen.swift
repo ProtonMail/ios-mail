@@ -185,7 +185,7 @@ struct ConversationDetailScreen: View {
                     emails: "",
                     subject: "Embarking on an Epic Adventure: Planning Our Team Expedition to Patagonia",
                     date: .now,
-                    exclusiveLocation: nil,
+                    location: nil,
                     locationIcon: nil,
                     isRead: true,
                     isStarred: true,

@@ -18,47 +18,34 @@
 
 import proton_app_uniffi
 
-extension Message {
+extension Conversation {
     public static func testData(
-        messageId: UInt64 = UInt64.random(in: 0..<100),
-        to: [MessageRecipient] = [],
-        cc: [MessageRecipient] = [],
-        bcc: [MessageRecipient] = [],
-        sender: MessageSender = .testData(name: "", address: "sender@example.com")
+        conversationId: UInt64 = UInt64.random(in: 0..<100),
+        senders: [MessageSender] = [.testData(name: "", address: "sender@example.com")],
+        recipients: [MessageRecipient] = [.testData(name: "", address: "recipient@example.com")]
     ) -> Self {
         .init(
-            id: .init(value: messageId),
-            conversationId: .init(value: 31),
-            addressId: .init(value: 32),
+            id: .init(value: conversationId),
             attachmentsMetadata: [],
-            bccList: bcc,
-            ccList: cc,
-            location: .system(name: .inbox, id: .init(value: 33)),
-            expirationTime: 1625140800,
-            flags: .init(value: 2),
-            isForwarded: true,
-            isReplied: true,
-            isRepliedAll: true,
-            numAttachments: 1,
-            displayOrder: 0,
-            sender: sender,
-            size: 1_024,
-            snoozedUntil: .none,
+            customLabels: [],
             displaySnoozeReminder: false,
+            snoozedUntil: nil,
+            locations: [.system(name: .inbox, id: .init(value: 41))],
+            expirationTime: 1625140800,
+            isStarred: true,
+            numAttachments: 0,
+            numMessages: 1,
+            numUnread: 1,
+            totalMessages: 1,
+            totalUnread: 1,
+            displayOrder: 0,
+            recipients: recipients,
+            senders: senders,
+            size: 1_024,
             subject: .notUsed,
             time: 1622548800,
-            toList: to,
-            unread: true,
-            customLabels: [],
-            starred: true,
             avatar: .init(text: .notUsed, color: .notUsed),
-            isDraft: false,
-            isScheduled: false,
-            canReply: true
+            hiddenMessagesBanner: nil
         )
     }
-}
-
-extension String {
-    static let notUsed = "__NOT_USED__"
 }
