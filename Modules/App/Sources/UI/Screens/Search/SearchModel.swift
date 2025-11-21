@@ -131,7 +131,7 @@ final class SearchModel: ObservableObject {
         let result = await scrollerSearch(
             mailbox: mailbox,
             options: .init(keywords: query),
-            callback: MessageScrollerLiveQueryCallbackkWrapper { [weak self] update in
+            callback: MessageScrollerLiveQueryCallbackWrapper { [weak self] update in
                 Task {
                     await self?.handleSearchScroller(update: update)
                     await self?.updateSelectedMailboxIfNeeded()

@@ -16,7 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import AccountManager
-import Combine
+@preconcurrency import Combine
 import InboxCore
 import InboxCoreUI
 import InboxIAP
@@ -51,6 +51,8 @@ final class MailboxModel: ObservableObject {
         fetchMore: { [weak self] isFirstPage in self?.fetchNextPage(isFirstPage: isFirstPage) }
     )
     private var unreadCountLiveQuery: UnreadItemsCountLiveQuery?
+
+    private let scrollerUpdates = ScrollerUpdatesAsync()
 
     let dependencies: Dependencies
     private lazy var starActionPerformer = StarActionPerformer(mailUserSession: dependencies.appContext.userSession)
@@ -194,6 +196,19 @@ extension MailboxModel {
         exitSelectAllModeWhenNewItemsAreFetched()
     }
 
+    private func observeScrollerUpdates(viewMode: ViewMode) async {
+        switch viewMode {
+        case .conversations:
+            await scrollerUpdates.observe(\.conversationStream) { [weak self] update in
+                await self?.handleConversationScroller(update: update)
+            }
+        case .messages:
+            await scrollerUpdates.observe(\.messageStream) { [weak self] update in
+                await self?.handleMessageScroller(update: update)
+            }
+        }
+    }
+
     private func replaceCurrentNavigationPath(with openedItem: MailboxMessageSeed) {
         Task {
             if !state.navigationPath.isEmpty {
@@ -285,22 +300,19 @@ extension MailboxModel {
             swipeActionsHandler = .init(userSession: userSession, mailbox: mailbox)
             emptyFolderBanner = await emptyFolderBanner(mailbox: mailbox)
 
+            await observeScrollerUpdates(viewMode: mailbox.viewMode())
             if mailbox.viewMode() == .messages {
                 messageScroller = try await scrollMessagesForLabel(
                     mailbox: mailbox,
-                    callback: MessageScrollerLiveQueryCallbackkWrapper { [weak self] update in
-                        Task {
-                            await self?.handleMessageScroller(update: update)
-                        }
+                    callback: MessageScrollerLiveQueryCallbackWrapper { [weak self] update in
+                        self?.scrollerUpdates.enqueueUpdate(update)
                     }
                 ).get()
             } else {
                 conversationScroller = try await scrollConversationsForLabel(
                     mailbox: mailbox,
-                    callback: ConversationScrollerLiveQueryCallbackkWrapper { [weak self] update in
-                        Task {
-                            await self?.handleConversationScroller(update: update)
-                        }
+                    callback: ConversationScrollerLiveQueryCallbackWrapper { [weak self] update in
+                        self?.scrollerUpdates.enqueueUpdate(update)
                     }
                 ).get()
             }
