@@ -136,7 +136,7 @@ struct ConversationToolbarModifier: ViewModifier {
             if action.isMoreAction {
                 moreActionsMenu()
             } else {
-                Button(action: { selected(action) }) {
+                Button(action: { Task { await selected(action) } }) {
                     action.displayData.image
                         .foregroundStyle(DS.Color.Icon.weak)
                 }
