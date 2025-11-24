@@ -17,7 +17,6 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import InboxCore
-import InboxCoreUI
 import PaymentsNG
 import ProtonUIFoundations
 import SwiftUI

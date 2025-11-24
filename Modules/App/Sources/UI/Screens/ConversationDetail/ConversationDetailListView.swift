@@ -166,31 +166,28 @@ struct ConversationDetailListView: View {
             mailbox: model.mailbox.unsafelyUnwrapped,
             uiModel: uiModel,
             draftPresenter: draftPresenter,
-            messageAppearanceOverrideStore: model.messageAppearanceOverrideStore,
             areActionsHidden: model.areActionsHidden,
             attachmentIDToOpen: $model.attachmentIDToOpen,
-            onEvent: { onExpandedMessageCellEvent($0, uiModel: uiModel) },
+            onEvent: { await onExpandedMessageCellEvent($0, uiModel: uiModel) },
             htmlDisplayed: { model.markMessageAsReadIfNeeded(metadata: uiModel.toActionMetadata()) }
         )
         .environment(\.forceLightModeInMessageBody, model.isForcingLightMode(forMessageWithId: uiModel.id))
         .environmentObject(messageBannersNotifier)
     }
 
-    private func onExpandedMessageCellEvent(_ event: ExpandedMessageCellEvent, uiModel: ExpandedMessageCellUIModel) -> Void {
+    private func onExpandedMessageCellEvent(_ event: ExpandedMessageCellEvent, uiModel: ExpandedMessageCellUIModel) async {
         switch event {
         case .onTap:
             model.onMessageTap(messageId: uiModel.id, isDraft: false)
         case .onEditToolbar:
             editToolbar()
         case .onMessageAction(let action):
-            Task {
-                await model.handle(
-                    action: action,
-                    messageID: uiModel.id,
-                    toastStateStore: toastStateStore,
-                    goBack: goBack
-                )
-            }
+            await model.handle(
+                action: action,
+                messageID: uiModel.id,
+                toastStateStore: toastStateStore,
+                goBack: goBack
+            )
         case .onSenderTap:
             senderActionTarget = uiModel
         case .onRecipientTap(let recipient):

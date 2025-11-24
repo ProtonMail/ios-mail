@@ -38,17 +38,9 @@ struct DeepLinkRouteCoderTests {
     }
 
     @Test
-    func handlingMailto() async throws {
+    func passesMailtoVerbatim() async throws {
         let deepLink = URL(string: "mailto:john@example.com,jane@example.com?subject=foo&body=bar&bcc=assistant1@example.com,assistant2@example.com")!
         let route: Route = try #require(sut.decode(deepLink: deepLink))
-
-        let expectedMailtoData = MailtoData(
-            to: ["john@example.com", "jane@example.com"],
-            cc: [],
-            bcc: ["assistant1@example.com", "assistant2@example.com"],
-            subject: "foo",
-            body: "bar"
-        )
-        #expect(route == .mailto(expectedMailtoData))
+        #expect(route == .mailto(deepLink))
     }
 }

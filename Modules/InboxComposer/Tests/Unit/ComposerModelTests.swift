@@ -1020,3 +1020,11 @@ extension DraftAttachment {
         return DraftAttachment(state: state, attachment: mockAttachment, stateModifiedTimestamp: 1742829536)
     }
 }
+
+private extension MessageExpirationValidatorActions {
+    static func dummy(returning result: MessageExpiryValidationResult) -> Self {
+        .init(validate: { _, _ in
+            result
+        })
+    }
+}

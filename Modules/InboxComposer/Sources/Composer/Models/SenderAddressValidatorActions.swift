@@ -27,10 +27,6 @@ struct SenderAddressValidatorActions {
             await productionValidateSenderAddress(draft: draft, alertBinding: alertBinding)
         })
     }
-
-    static func dummy() -> Self {
-        .init(validate: { _, _ in })
-    }
 }
 
 private extension SenderAddressValidatorActions {

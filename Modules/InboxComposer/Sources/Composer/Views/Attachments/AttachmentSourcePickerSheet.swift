@@ -89,19 +89,6 @@ struct AttachmentSourcePickerSheet: View {
     }
 }
 
-private struct RegularButtonStyle: ButtonStyle {
-
-    func makeBody(configuration: Self.Configuration) -> some View {
-        configuration
-            .label
-            .background(
-                configuration.isPressed
-                    ? DS.Color.InteractionWeak.pressed
-                    : DS.Color.BackgroundInverted.secondary
-            )
-    }
-}
-
 enum AttachmentSource: Int, Identifiable {
     case photoGallery
     case camera

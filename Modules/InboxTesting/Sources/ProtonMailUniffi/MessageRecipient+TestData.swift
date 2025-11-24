@@ -1,4 +1,5 @@
-// Copyright (c) 2024 Proton Technologies AG
+//
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -15,22 +16,15 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
-import ProtonUIFoundations
+import proton_app_uniffi
 
-extension Toast {
-
-    static func moveTo(id: UUID, destinationName: String, undoAction: (() async -> Void)?) -> Self {
-        .informationUndo(
-            id: id,
-            message: L10n.Toast.movedTo(destination: destinationName).string,
-            duration: .medium,
-            undoAction: undoAction
+public extension MessageRecipient {
+    static func testData(name: String, address: String) -> Self {
+        .init(
+            address: address,
+            isProton: .random(),
+            name: name,
+            group: nil
         )
     }
-
-    static func deleted() -> Toast {
-        .information(message: L10n.Toast.deleted.string)
-    }
-
 }

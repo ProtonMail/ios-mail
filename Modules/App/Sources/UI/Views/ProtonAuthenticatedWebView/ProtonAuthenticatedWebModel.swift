@@ -63,7 +63,19 @@ final class ProtonAuthenticatedWebModel: NSObject, ObservableObject {
     }
 
     func pollEvents() {
-        dependencies.appContext.pollEvents()
+        guard let userSession = dependencies.appContext.sessionState.userSession else {
+            AppLogger.log(message: "poll events called but no active session found", category: .userSessions)
+            return
+        }
+
+        Task {
+            do {
+                AppLogger.log(message: "poll events", category: .rustLibrary)
+                try await userSession.forceEventLoopPoll().get()
+            } catch {
+                AppLogger.log(error: error, category: .rustLibrary)
+            }
+        }
     }
 
     private func updateState(_ newState: State) {

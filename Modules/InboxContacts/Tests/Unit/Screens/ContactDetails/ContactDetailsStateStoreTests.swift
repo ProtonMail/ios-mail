@@ -57,12 +57,12 @@ final class ContactDetailsStateStoreTests {
     }
 
     @Test
-    func testInitialState_isSetCorrectly() {
+    func initialState_isSetCorrectly() {
         #expect(sut.state == initialState)
     }
 
     @Test
-    func testOnLoadAction_ItFetchesDetailsAndUpdatesState() async {
+    func onLoadAction_ItFetchesDetailsAndUpdatesState() async {
         let details = ContactDetailCard.testData(contact: contactItem, fields: .testItems)
 
         providerSpy.stubbedContactDetails[contactItem] = .init(
@@ -83,7 +83,7 @@ final class ContactDetailsStateStoreTests {
     }
 
     @Test
-    func testCallTappedAction_ItOpensURLWithTelPrefix() async {
+    func callTappedAction_ItOpensURLWithTelPrefix() async {
         let details = ContactDetailCard.testData(contact: contactItem, fields: .testItems)
 
         providerSpy.stubbedContactDetails[contactItem] = .init(
@@ -100,7 +100,7 @@ final class ContactDetailsStateStoreTests {
     }
 
     @Test
-    func testPhoneNumberTappedAction_ItOpensURLWithTelPrefix() async {
+    func phoneNumberTappedAction_ItOpensURLWithTelPrefix() async {
         let details = ContactDetailCard.testData(contact: contactItem, fields: .testItems)
 
         providerSpy.stubbedContactDetails[contactItem] = .init(
@@ -117,7 +117,7 @@ final class ContactDetailsStateStoreTests {
     }
 
     @Test
-    func testOpenURLAction_ItOpensURL() async {
+    func openURLAction_ItOpensURL() async {
         let details = ContactDetailCard.testData(contact: contactItem, fields: .testItems)
 
         providerSpy.stubbedContactDetails[contactItem] = .init(
@@ -134,7 +134,7 @@ final class ContactDetailsStateStoreTests {
     }
 
     @Test
-    func testOpenURLActionWithURLMissingScheme_ItNormalizesAndOpensURL() async {
+    func openURLActionWithURLMissingScheme_ItNormalizesAndOpensURL() async {
         let details = ContactDetailCard.testData(contact: contactItem, fields: .testItems)
 
         providerSpy.stubbedContactDetails[contactItem] = .init(
@@ -151,7 +151,7 @@ final class ContactDetailsStateStoreTests {
     }
 
     @Test
-    func testShareTappedAction_ItPresentsComingSoon() async {
+    func shareTappedAction_ItPresentsComingSoon() async {
         let details = ContactDetailCard.testData(contact: contactItem, fields: .testItems)
 
         providerSpy.stubbedContactDetails[contactItem] = .init(
@@ -186,7 +186,7 @@ final class ContactDetailsStateStoreTests {
     }
 
     @Test
-    func testEmailTappedAction_ItPresentsDraftWithGivenContact() async {
+    func emailTappedAction_ItPresentsDraftWithGivenContact() async {
         let details = ContactDetailCard.testData(contact: contactItem, fields: .testItems)
 
         providerSpy.stubbedContactDetails[contactItem] = .init(
@@ -204,7 +204,7 @@ final class ContactDetailsStateStoreTests {
     }
 
     @Test
-    func testEmailTappedAction_AndOpeningDraftFails_ItPresentsToastWithError() async {
+    func emailTappedAction_AndOpeningDraftFails_ItPresentsToastWithError() async {
         let expectedError: TestError = .test
         let details = ContactDetailCard.testData(contact: contactItem, fields: .testItems)
 
@@ -228,7 +228,7 @@ final class ContactDetailsStateStoreTests {
     // MARK: - `editTapped` action
 
     @Test
-    func testEditTappedAction_ItPresentsEditPromptSheet() async {
+    func editTappedAction_ItPresentsEditPromptSheet() async {
         let details = ContactDetailCard.testData(contact: contactItem, fields: .testItems)
 
         providerSpy.stubbedContactDetails[contactItem] = .init(
@@ -251,7 +251,7 @@ final class ContactDetailsStateStoreTests {
     // MARK: - Edit action
 
     @Test
-    func testEditTappedAction_WhenDismissTapped_ItDismissesEditPromptSheet() async {
+    func editTappedAction_WhenDismissTapped_ItDismissesEditPromptSheet() async {
         let details = ContactDetailCard.testData(contact: contactItem, fields: .testItems)
 
         providerSpy.stubbedContactDetails[contactItem] = .init(
@@ -273,7 +273,7 @@ final class ContactDetailsStateStoreTests {
     }
 
     @Test
-    func testEditTappedAction_WhenOpenSafariTapped_ItPresentsSafari() async {
+    func editTappedAction_WhenOpenSafariTapped_ItPresentsSafari() async {
         let details = ContactDetailCard.testData(contact: contactItem, fields: .testItems)
 
         providerSpy.stubbedContactDetails[contactItem] = .init(
@@ -295,7 +295,7 @@ final class ContactDetailsStateStoreTests {
     }
 
     @Test
-    func testDismissEditSheet_ItDismissesEditSheet() async {
+    func dismissEditSheet_ItDismissesEditSheet() async {
         let details = ContactDetailCard.testData(contact: contactItem, fields: .testItems)
 
         providerSpy.stubbedContactDetails[contactItem] = .init(

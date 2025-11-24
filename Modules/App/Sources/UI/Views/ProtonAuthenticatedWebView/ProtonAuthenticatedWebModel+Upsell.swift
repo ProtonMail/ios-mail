@@ -16,7 +16,6 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import InboxCore
-import InboxIAP
 import WebKit
 import proton_app_uniffi
 

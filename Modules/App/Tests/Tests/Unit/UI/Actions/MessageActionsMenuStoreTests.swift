@@ -48,10 +48,14 @@ class MessageActionsMenuStoreTests {
 
     @Test
     func onLoad_ItFetchesActions() async throws {
-        await sut.handle(action: .colorSchemeChanged(.dark))
         await sut.handle(action: .onLoad)
 
         #expect(serviceInvoked.count == 1)
+    }
+
+    @Test
+    func whenColorSchemeIsChanged_ItFetchesActions() async throws {
+        await sut.handle(action: .colorSchemeChanged(.dark))
 
         let serviceCall = try #require(serviceInvoked.first)
         #expect(serviceCall.theme == .init(colorScheme: .dark, isForcingLightMode: false))
@@ -68,7 +72,7 @@ class MessageActionsMenuStoreTests {
     }
 
     @Test
-    func actionIsSlected_ItEmitsCorrectAction() async {
+    func actionIsSelected_ItEmitsCorrectAction() async {
         await sut.handle(action: .actionTapped(.reply))
 
         #expect(actionSelectedInvoked == [.reply])

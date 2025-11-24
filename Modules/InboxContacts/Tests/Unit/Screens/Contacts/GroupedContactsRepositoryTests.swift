@@ -16,38 +16,27 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import InboxTesting
-import XCTest
+import Testing
 import proton_app_uniffi
 
 @testable import InboxContacts
 
-final class GroupedContactsRepositoryTests: BaseTestCase {
+final class GroupedContactsRepositoryTests {
+    private lazy var sut: GroupedContactsRepository = .init(
+        mailUserSession: MailUserSession(noPointer: .init()),
+        contactsProvider: .init(allContacts: { _ in .ok(self.stubbedContacts) })
+    )
+    private var stubbedContacts: [GroupedContacts] = []
 
-    var sut: GroupedContactsRepository!
-    var stubbedContacts: [GroupedContacts]!
-
-    override func setUp() {
-        super.setUp()
-        stubbedContacts = []
-
-        sut = .init(
-            mailUserSession: MailUserSession(noPointer: .init()),
-            contactsProvider: .init(allContacts: { _ in .ok(self.stubbedContacts) })
-        )
-    }
-
-    override func tearDown() {
-        sut = nil
-        super.tearDown()
-    }
-
-    func testAllContacts_ItReturns0Items() async {
+    @Test
+    func allContacts_ItReturns0Items() async {
         let items = await sut.allContacts()
 
-        XCTAssertEqual(items, [])
+        #expect(items == [])
     }
 
-    func testAllContacts_WhenThereAre2Items_ItReturns2Items() async {
+    @Test
+    func allContacts_WhenThereAre2Items_ItReturns2Items() async {
         let items: [GroupedContacts] = [
             .init(
                 groupedBy: "A",
@@ -68,7 +57,6 @@ final class GroupedContactsRepositoryTests: BaseTestCase {
 
         let contacts = await sut.allContacts()
 
-        XCTAssertEqual(contacts, items)
+        #expect(contacts == items)
     }
-
 }

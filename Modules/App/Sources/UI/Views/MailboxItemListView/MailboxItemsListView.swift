@@ -269,7 +269,7 @@ private extension AssignedSwipeAction {
                 color: color,
                 isDesctructive: isDestructive(
                     locationSystemLabel: locationSystemLabel,
-                    itemSystemLabel: item.exclusiveLocation?.selectedMailbox.systemFolder
+                    itemSystemLabel: item.location?.selectedMailbox.systemFolder
                 )
             )
         }

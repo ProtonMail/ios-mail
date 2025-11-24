@@ -15,33 +15,33 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import XCTest
+import Testing
 
 @testable import InboxContacts
 @testable import proton_app_uniffi
 
-final class DeleteConfirmationAlertFactoryTests: XCTestCase {
-
-    func testMakeAlertForContact_ItReturnsCorrectAlert() throws {
+struct DeleteConfirmationAlertFactoryTests {
+    @Test
+    func makeAlertForContact_ItReturnsCorrectAlert() throws {
         let itemToDelete: ContactItemType = .contact(.vip)
 
-        let alert = try XCTUnwrap(DeleteConfirmationAlertFactory.make(for: itemToDelete, action: { _ in }))
+        let alert = DeleteConfirmationAlertFactory.make(for: itemToDelete, action: { _ in })
 
-        XCTAssertEqual(alert.title, L10n.Contacts.DeletionAlert.title(name: ContactItem.vip.name))
-        XCTAssertEqual(alert.message, L10n.Contacts.DeletionAlert.Contact.message)
-        XCTAssertEqual(alert.actions.map(\.title.string), ["Delete", "Cancel"])
-        XCTAssertEqual(alert.actions.map(\.buttonRole), [.destructive, .cancel])
+        #expect(alert.title == L10n.Contacts.DeletionAlert.title(name: ContactItem.vip.name))
+        #expect(alert.message == L10n.Contacts.DeletionAlert.Contact.message)
+        #expect(alert.actions.map(\.title.string) == ["Delete", "Cancel"])
+        #expect(alert.actions.map(\.buttonRole) == [.destructive, .cancel])
     }
 
-    func testMakeAlertForContactGroup_ItReturnsCorrectAlert() throws {
+    @Test
+    func makeAlertForContactGroup_ItReturnsCorrectAlert() throws {
         let itemToDelete: ContactItemType = .group(.advisorsGroup)
 
-        let alert = try XCTUnwrap(DeleteConfirmationAlertFactory.make(for: itemToDelete, action: { _ in }))
+        let alert = DeleteConfirmationAlertFactory.make(for: itemToDelete, action: { _ in })
 
-        XCTAssertEqual(alert.title, L10n.Contacts.DeletionAlert.title(name: ContactGroupItem.advisorsGroup.name))
-        XCTAssertEqual(alert.message, L10n.Contacts.DeletionAlert.ContactGroup.message)
-        XCTAssertEqual(alert.actions.map(\.title.string), ["Delete", "Cancel"])
-        XCTAssertEqual(alert.actions.map(\.buttonRole), [.destructive, .cancel])
+        #expect(alert.title == L10n.Contacts.DeletionAlert.title(name: ContactGroupItem.advisorsGroup.name))
+        #expect(alert.message == L10n.Contacts.DeletionAlert.ContactGroup.message)
+        #expect(alert.actions.map(\.title.string) == ["Delete", "Cancel"])
+        #expect(alert.actions.map(\.buttonRole) == [.destructive, .cancel])
     }
-
 }

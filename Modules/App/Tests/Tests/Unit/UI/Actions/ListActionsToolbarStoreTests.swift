@@ -309,3 +309,26 @@ class ListActionsToolbarStoreTests {
     }
 
 }
+
+private extension AllListActions {
+
+    static var testData: Self {
+        .init(
+            hiddenListActions: [
+                .notSpam(.testInbox),
+                .permanentDelete,
+                .moveToSystemFolder(.init(localId: .init(value: 7), name: .archive)),
+            ],
+            visibleListActions: [.markRead, .star, .moveTo, .labelAs, .more]
+        )
+    }
+
+}
+
+extension MovableSystemFolderAction {
+
+    static var testInbox: Self {
+        .init(localId: .init(value: 999), name: .inbox)
+    }
+
+}

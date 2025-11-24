@@ -100,7 +100,7 @@ private extension MailboxItemCellUIModel {
             emails: isFromProton ? "Proton" : randomSender,
             subject: subject,
             date: Date(),
-            exclusiveLocation: nil,
+            location: nil,
             locationIcon: nil,
             isRead: Bool.random(),
             isStarred: Bool.random(),

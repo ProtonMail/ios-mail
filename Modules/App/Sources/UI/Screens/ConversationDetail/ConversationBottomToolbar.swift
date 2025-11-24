@@ -15,7 +15,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import InboxCoreUI
 import InboxDesignSystem
 import ProtonUIFoundations
 import SwiftUI
@@ -28,7 +27,7 @@ extension View {
         mailbox: @escaping () -> Mailbox,
         messageAppearanceOverrideStore: MessageAppearanceOverrideStore,
         editToolbarTapped: @escaping (ToolbarType) -> Void,
-        messageActionSelected: @escaping (MessageAction) -> Void,
+        messageActionSelected: @escaping (MessageAction) async -> Void,
         conversationActionSelected: @escaping (ConversationAction) -> Void
     ) -> some View {
         modifier(
@@ -52,7 +51,7 @@ struct ConversationToolbarModifier: ViewModifier {
     private let mailbox: () -> Mailbox
     private let messageAppearanceOverrideStore: MessageAppearanceOverrideStore
     private let editToolbarTapped: (ToolbarType) -> Void
-    private let messageActionSelected: (MessageAction) -> Void
+    private let messageActionSelected: (MessageAction) async -> Void
     private let conversationActionSelected: (ConversationAction) -> Void
 
     init(
@@ -60,7 +59,7 @@ struct ConversationToolbarModifier: ViewModifier {
         mailbox: @escaping () -> Mailbox,
         messageAppearanceOverrideStore: MessageAppearanceOverrideStore,
         editToolbarTapped: @escaping (ToolbarType) -> Void,
-        messageActionSelected: @escaping (MessageAction) -> Void,
+        messageActionSelected: @escaping (MessageAction) async -> Void,
         conversationActionSelected: @escaping (ConversationAction) -> Void
     ) {
         self.actions = actions
@@ -127,7 +126,7 @@ struct ConversationToolbarModifier: ViewModifier {
 
     private func toolbarContent<MoreActionsMenu: View, Action: DisplayableAction>(
         actions: [Action],
-        selected: @escaping (Action) -> Void,
+        selected: @escaping (Action) async -> Void,
         moreActionsMenu: @escaping () -> MoreActionsMenu
     ) -> some View {
         ForEachEnumerated(actions, id: \.offset) { action, index in

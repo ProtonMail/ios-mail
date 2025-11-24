@@ -944,6 +944,16 @@ public extension MailUserSessionGetPaymentsSubscriptionResult {
         }
     }
 }
+public extension MailUserSessionHasValidSenderAddressResult {
+    func get() throws(ProtonError) -> Bool {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension MailUserSessionImageForSenderResult {
     func get() throws(UserSessionError) -> String? {
         switch self {

@@ -56,6 +56,8 @@ struct MessageBodyReaderView: UIViewRepresentable {
         var userScripts: [AppScript] = [
             .redirectConsoleLogToAppLogger,
             .handleEmptyBody,
+            .stylePropertyCoding,
+            .stripUnwantedStyleProperties,
             .adjustLayoutAndObserveHeight(viewWidth: viewWidth),
         ]
 
@@ -101,8 +103,10 @@ struct MessageBodyReaderView: UIViewRepresentable {
                 }
 
                 table {
+                    float: none;
                     height: auto !important;
                     min-height: auto !important;
+                    width: 100% !important;
                 }
 
                 @supports (height: fit-content) {
@@ -277,9 +281,17 @@ extension AppScript {
                 metaWidth.content = "width=device-width, initial-scale=" + ratio + ", maximum-scale=3.0, user-scalable=yes";
             }
 
-            function startSendingHeightToSwiftUI(ratio) {
+            function appendBottomMarker() {
+                const bottomMarker = document.createElement('div');
+                bottomMarker.id = 'proton-bottom-marker';
+                return document.body.appendChild(bottomMarker);
+            }
+
+            function startSendingHeightToSwiftUI(bottomMarker, ratio) {
                 const observer = new ResizeObserver(() => {
-                    var height = document.documentElement.scrollHeight * ratio;
+                    const bottomMarkerRect = bottomMarker.getBoundingClientRect();
+                    const bottommostPoint = window.scrollY + bottomMarkerRect.top + bottomMarkerRect.height;
+                    var height = bottommostPoint * ratio;
                     window.webkit.messageHandlers.\(HandlerName.heightChanged.rawValue).postMessage(height);
                 });
 
@@ -289,7 +301,8 @@ extension AppScript {
             executeOnceContentIsLaidOut(() => {
                 const ratio = document.body.offsetWidth / document.body.scrollWidth;
                 setViewportInitialScale(ratio);
-                startSendingHeightToSwiftUI(ratio);
+                const bottomMarker = appendBottomMarker();
+                startSendingHeightToSwiftUI(bottomMarker, ratio);
             });
             """
 
@@ -322,10 +335,22 @@ extension AppScript {
     )
 
     fileprivate static let dynamicTypeSize: Self = {
-        let scriptURL = Bundle.main.url(forResource: "DynamicTypeSize", withExtension: "js")!
+        .loadScript(named: "DynamicTypeSize")
+    }()
+
+    fileprivate static let stripUnwantedStyleProperties: Self = {
+        .loadScript(named: "StripUnwantedStyleProperties")
+    }()
+
+    fileprivate static let stylePropertyCoding: Self = {
+        .loadScript(named: "StylePropertyCoding")
+    }()
+
+    private static func loadScript(named resourceName: String) -> Self {
+        let scriptURL = Bundle.main.url(forResource: resourceName, withExtension: "js")!
         let source = try! String(contentsOf: scriptURL, encoding: .utf8)
         return .init(source: source)
-    }()
+    }
 }
 
 private enum HandlerName: String, CaseIterable {

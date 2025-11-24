@@ -17,21 +17,19 @@
 
 import Contacts
 import InboxTesting
-import XCTest
+import Testing
 import proton_app_uniffi
 
 @testable import InboxContacts
 
-final class ContactSuggestionsRepositoryTests: BaseTestCase {
-
+final class ContactSuggestionsRepositoryTests {
     var sut: ContactSuggestionsRepository!
     var stubbedAllContacts: [ContactSuggestion]!
 
     private var contactStoreSpy: CNContactStoreSpy!
     private var allContactsCalls: [[DeviceContact]] = []
 
-    override func setUp() {
-        super.setUp()
+    init() {
         stubbedAllContacts = []
         contactStoreSpy = .init()
         sut = .init(
@@ -46,49 +44,48 @@ final class ContactSuggestionsRepositoryTests: BaseTestCase {
         )
     }
 
-    override func tearDown() {
-        allContactsCalls = []
-        contactStoreSpy = nil
-        stubbedAllContacts = nil
-        sut = nil
+    deinit {
         CNContactStoreSpy.cleanUp()
-        super.tearDown()
     }
 
+    @Test
     func testAllContacts_WhenPermissionsDenied_ItDoesNotRequestForDeviceContacts() async {
         CNContactStoreSpy.stubbedAuthorizationStatus = [.contacts: .denied]
 
         _ = await sut.allContacts()
 
-        XCTAssertEqual(contactStoreSpy.enumerateContactsCalls.count, 0)
+        #expect(contactStoreSpy.enumerateContactsCalls.count == 0)
     }
 
+    @Test
     func testAllContacts_WhenPermissionsRestricted_ItDoesNotRequestForDeviceContacts() async {
         CNContactStoreSpy.stubbedAuthorizationStatus = [.contacts: .restricted]
 
         _ = await sut.allContacts()
 
-        XCTAssertEqual(contactStoreSpy.enumerateContactsCalls.count, 0)
+        #expect(contactStoreSpy.enumerateContactsCalls.count == 0)
     }
 
     // MARK: - Permissions granted
 
+    @Test
     func testAllContacts_WhenPermissionsGranted_ItRequestForDeviceContacts() async {
         CNContactStoreSpy.stubbedAuthorizationStatus = [.contacts: .authorized]
 
         _ = await sut.allContacts()
 
-        XCTAssertEqual(contactStoreSpy.enumerateContactsCalls.count, 1)
-        XCTAssertEqual(contactStoreSpy.enumerateContactsCalls.last?.keysToFetch.count, 3)
-        XCTAssertEqual(
-            contactStoreSpy.enumerateContactsCalls.last?.keysToFetch.map(\.description),
-            [
+        #expect(contactStoreSpy.enumerateContactsCalls.count == 1)
+        #expect(contactStoreSpy.enumerateContactsCalls.last?.keysToFetch.count == 3)
+        #expect(
+            contactStoreSpy.enumerateContactsCalls.last?.keysToFetch.map(\.description) == [
                 CNContactGivenNameKey.description,
                 CNContactFamilyNameKey.description,
                 CNContactEmailAddressesKey.description,
-            ])
+            ]
+        )
     }
 
+    @Test
     func testAllContacts_WhenPermissionsGranted_ItRequestsForAllContactsWithDeviceContacts() async {
         CNContactStoreSpy.stubbedAuthorizationStatus = [.contacts: .authorized]
 
@@ -100,10 +97,9 @@ final class ContactSuggestionsRepositoryTests: BaseTestCase {
 
         _ = await sut.allContacts()
 
-        XCTAssertEqual(allContactsCalls.count, 1)
-        XCTAssertEqual(
-            allContactsCalls.last,
-            [
+        #expect(allContactsCalls.count == 1)
+        #expect(
+            allContactsCalls.last == [
                 .init(
                     key: "1",
                     name: "Jonathan Horovitz",
@@ -124,9 +120,11 @@ final class ContactSuggestionsRepositoryTests: BaseTestCase {
                     name: "l.ronan@example.com",
                     emails: ["l.ronan@example.com"]
                 ),
-            ])
+            ]
+        )
     }
 
+    @Test
     func testAllContacts_WhenPermissionsGranted_ItReturnsDeviceAndProtonContacts() async {
         CNContactStoreSpy.stubbedAuthorizationStatus = [.contacts: .authorized]
 
@@ -147,29 +145,31 @@ final class ContactSuggestionsRepositoryTests: BaseTestCase {
 
         let receivedContacts = await sut.allContacts()?.all() ?? []
 
-        XCTAssertEqual(receivedContacts.count, 6)
-        XCTAssertEqual(
-            receivedContacts,
-            [
+        #expect(receivedContacts.count == 6)
+        #expect(
+            receivedContacts == [
                 .group(.businessGroup),
                 .protonJohn,
                 .protonMark,
                 .deviceJonathanHorotvitz,
                 .deviceTravisHulkenberg,
                 .deviceMarcus,
-            ])
+            ]
+        )
     }
 
     // MARK: - Permissions not granted
 
+    @Test
     func testAllContacts_WhenPermissionsNotGranted_ItDoesNotRequestForDeviceContacts() async {
         CNContactStoreSpy.stubbedAuthorizationStatus = [.contacts: .denied]
 
         _ = await sut.allContacts()
 
-        XCTAssertEqual(contactStoreSpy.enumerateContactsCalls.count, 0)
+        #expect(contactStoreSpy.enumerateContactsCalls.count == 0)
     }
 
+    @Test
     func testAllContacts_WhenPermissionsNotGranted_ItRequestForAllContactsWithoutDeviceContacts() async {
         CNContactStoreSpy.stubbedAuthorizationStatus = [.contacts: .denied]
 
@@ -188,10 +188,11 @@ final class ContactSuggestionsRepositoryTests: BaseTestCase {
             .deviceTravisHulkenberg,
         ]
 
-        XCTAssertEqual(allContactsCalls.count, 1)
-        XCTAssertEqual(allContactsCalls.last, [])
+        #expect(allContactsCalls.count == 1)
+        #expect(allContactsCalls.last == [])
     }
 
+    @Test
     func testAllContacts_WhenPermissionsNotGranted_ItReturnsProtonContactsOnly() async {
         CNContactStoreSpy.stubbedAuthorizationStatus = [.contacts: .denied]
 
@@ -207,15 +208,14 @@ final class ContactSuggestionsRepositoryTests: BaseTestCase {
 
         let receivedContacts = await sut.allContacts()?.all() ?? []
 
-        XCTAssertEqual(receivedContacts.count, 2)
-        XCTAssertEqual(
-            receivedContacts,
-            [
+        #expect(receivedContacts.count == 2)
+        #expect(
+            receivedContacts == [
                 .protonJohn,
                 .protonMark,
-            ])
+            ]
+        )
     }
-
 }
 
 private class CNContactSpy: CNContact {

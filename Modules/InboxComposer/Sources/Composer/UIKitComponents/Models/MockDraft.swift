@@ -237,19 +237,6 @@ final class MockDraft: AppDraftProtocol, @unchecked Sendable {
     }
 }
 
-extension MockDraft {
-
-    func attachmentPathsFor(dispositon: Disposition) -> [String] {
-        let list = (attachmentList() as! MockAttachmentList)
-        switch dispositon {
-        case .attachment:
-            return list.capturedAddCalls.map(\.path)
-        case .inline:
-            return list.capturedAddInlineCalls.map(\.path)
-        }
-    }
-}
-
 extension AppDraftProtocol where Self == MockDraft {
     static var emptyMock: MockDraft { .emptyMockDraft }
 }
