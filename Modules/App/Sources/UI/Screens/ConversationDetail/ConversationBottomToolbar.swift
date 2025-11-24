@@ -73,7 +73,7 @@ struct ConversationToolbarModifier: ViewModifier {
 
     func body(content: Content) -> some View {
         content
-            .toastBottomSafeAreaTracker()
+            .trackBottomSafeAreaForToast()
             .toolbar {
                 ToolbarItemGroup(placement: .bottomBar) {
                     if let actions {
