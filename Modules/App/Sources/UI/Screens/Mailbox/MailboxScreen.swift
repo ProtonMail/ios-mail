@@ -297,10 +297,10 @@ extension MailboxScreen {
             mailboxModel.createDraft()
         }
         .padding(.trailing, DS.Spacing.large)
-        .padding(.bottom, DS.Spacing.large + toastStateStore.state.toastsHeight)
+        .padding(.bottom, DS.Spacing.large + toastStateStore.state.maxToastHeight)
         .opacity(mailboxModel.selectionMode.selectionState.hasItems ? 0 : 1)
         .animation(.selectModeAnimation, value: mailboxModel.selectionMode.selectionState.hasItems)
-        .animation(.toastAnimation, value: toastStateStore.state.toastsHeight)
+        .animation(.toastAnimation, value: toastStateStore.state.maxToastHeight)
     }
 
     @ViewBuilder
