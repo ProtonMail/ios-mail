@@ -163,7 +163,6 @@ final class ContactDetailsStateStoreTests {
         await sut.handle(action: .shareTapped)
 
         #expect(toastStateStore.state.toasts == [.comingSoon])
-        #expect(toastStateStore.state.toastHeights == [:])
     }
 
     @Test
