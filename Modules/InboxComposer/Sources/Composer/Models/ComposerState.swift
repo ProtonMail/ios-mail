@@ -30,7 +30,7 @@ struct ComposerState: Equatable, Copying {
     var senderEmail: String
     var subject: String
     var attachments: [DraftAttachmentUIModel]
-    var initialBody: String
+    let initialContent: ComposerContent
     var isInitialFocusInBody: Bool
 
     var editingRecipientsGroup: RecipientGroupType?
@@ -75,7 +75,7 @@ extension ComposerState {
             senderEmail: .empty,
             subject: .empty,
             attachments: [],
-            initialBody: .empty,
+            initialContent: .empty,
             isInitialFocusInBody: false,
             editingRecipientsGroup: nil,
             isAddingAttachmentsEnabled: isAddingAttachmentsEnabled,
@@ -83,6 +83,10 @@ extension ComposerState {
             expirationTime: .never
         )
     }
+}
+
+extension ComposerContent {
+    static let empty = Self(head: .empty, body: .empty)
 }
 
 private extension RecipientGroupType {

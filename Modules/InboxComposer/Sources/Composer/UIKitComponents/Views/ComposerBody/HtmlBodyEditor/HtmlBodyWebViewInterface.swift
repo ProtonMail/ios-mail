@@ -65,8 +65,8 @@ final class HtmlBodyWebViewInterface: NSObject, HtmlBodyWebViewInterfaceProtocol
         webView.configuration.userContentController.addUserScript(userScript)
     }
 
-    func loadMessageBody(_ body: String, clearImageCacheFirst: Bool) async {
-        let html = htmlDocument.html(bodyContent: body)
+    func loadMessageBody(_ content: ComposerContent, clearImageCacheFirst: Bool) async {
+        let html = htmlDocument.html(content: content)
 
         if clearImageCacheFirst {
             let cachedImageTypes: Set<String> = [WKWebsiteDataTypeMemoryCache]

@@ -19,6 +19,7 @@ import InboxCore
 import InboxDesignSystem
 import UIKit
 import WebKit
+import proton_app_uniffi
 
 final class HtmlBodyEditorController: UIViewController, BodyEditor {
     private let htmlInterface: HtmlBodyWebViewInterfaceProtocol
@@ -124,8 +125,8 @@ final class HtmlBodyEditorController: UIViewController, BodyEditor {
         Task { await initialFocusState.setFocusWhenLoaded() }
     }
 
-    func updateBody(_ body: String) async {
-        await htmlInterface.loadMessageBody(body, clearImageCacheFirst: false)
+    func updateBody(_ content: ComposerContent) async {
+        await htmlInterface.loadMessageBody(content, clearImageCacheFirst: false)
     }
 
     func handleBodyAction(_ action: ComposerBodyAction) {
@@ -136,8 +137,8 @@ final class HtmlBodyEditorController: UIViewController, BodyEditor {
             Task { await htmlInterface.insertImages(cids) }
         case .removeInlineImage(let cid):
             Task { await htmlInterface.removeImage(containing: cid) }
-        case .reloadBody(let html, let clearImageCacheFirst):
-            Task { await htmlInterface.loadMessageBody(html, clearImageCacheFirst: clearImageCacheFirst) }
+        case .reloadBody(let content, let clearImageCacheFirst):
+            Task { await htmlInterface.loadMessageBody(content, clearImageCacheFirst: clearImageCacheFirst) }
         }
     }
 

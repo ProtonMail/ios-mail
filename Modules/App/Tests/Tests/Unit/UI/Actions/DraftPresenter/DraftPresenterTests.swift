@@ -320,10 +320,6 @@ private class DraftSpy: Draft, @unchecked Sendable {
         setSubjectCalls.last ?? .empty
     }
 
-    override func body() -> String {
-        setBodyCalls.last ?? .empty
-    }
-
     override func setSubject(subject: String) -> VoidDraftSaveResult {
         setSubjectCalls.append(subject)
         return .ok

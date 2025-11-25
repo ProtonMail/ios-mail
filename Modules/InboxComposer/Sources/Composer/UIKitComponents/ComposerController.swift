@@ -143,7 +143,7 @@ final class ComposerController: UIViewController {
 
     private func setInitialStates(with state: ComposerState) {
         // FIXME: have a precached webview strategy
-        Task { await bodyEditor.updateBody(state.initialBody) }
+        Task { await bodyEditor.updateBody(state.initialContent) }
     }
 
     private func updateStatesOfSubviews(with state: ComposerState) {

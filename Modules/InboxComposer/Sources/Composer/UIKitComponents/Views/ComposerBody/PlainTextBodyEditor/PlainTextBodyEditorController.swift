@@ -17,6 +17,7 @@
 
 import InboxDesignSystem
 import UIKit
+import proton_app_uniffi
 
 final class PlainTextBodyEditorController: UIViewController, BodyEditor {
     private let textView = SubviewFactory.textView
@@ -59,16 +60,16 @@ final class PlainTextBodyEditorController: UIViewController, BodyEditor {
         textView.selectedRange = NSRange(location: 0, length: 0)
     }
 
-    func updateBody(_ body: String) {
-        textView.text = body
+    func updateBody(_ content: ComposerContent) {
+        textView.text = content.body
     }
 
     func handleBodyAction(_ action: ComposerBodyAction) {
         switch action {
         case .insertText, .insertInlineImages, .removeInlineImage:
             break
-        case .reloadBody(let body, _):
-            updateBody(body)
+        case .reloadBody(let content, _):
+            updateBody(content)
         }
     }
 }

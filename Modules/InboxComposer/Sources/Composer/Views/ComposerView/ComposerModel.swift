@@ -464,7 +464,7 @@ extension ComposerModel: ChangeSenderHandlerProtocol {
         case .ok:
             let attachments = try await draft.attachmentList().attachments().get().toDraftAttachmentUIModels()
             state = makeState(from: draft, attachments: attachments)
-            bodyAction = .reloadBody(html: state.initialBody, clearImageCacheFirst: false)
+            bodyAction = .reloadBody(content: state.initialContent, clearImageCacheFirst: false)
         case .error(let error):
             throw error
         }
@@ -507,7 +507,7 @@ extension ComposerModel {
             senderEmail: draft.sender(),
             subject: draft.subject(),
             attachments: attachments,
-            initialBody: draft.body(),
+            initialContent: draft.composerContent(),
             isInitialFocusInBody: false,
             isAddingAttachmentsEnabled: state.isAddingAttachmentsEnabled,
             isPasswordProtected: draftIsPasswordProtected(draft: draft),
@@ -583,7 +583,7 @@ extension ComposerModel {
     private func reloadBody(clearImageCacheFirst: Bool) async {
         guard !messageHasBeenSentOrScheduled else { return }
         await updateBodyDebounceTask?.executeImmediately()
-        bodyAction = .reloadBody(html: draft.body(), clearImageCacheFirst: clearImageCacheFirst)
+        bodyAction = .reloadBody(content: draft.composerContent(), clearImageCacheFirst: clearImageCacheFirst)
     }
 
     private func stateRecipientUIModels(for group: RecipientGroupType) -> [RecipientUIModel] {
@@ -728,5 +728,19 @@ extension ComposerModel {
         composerWillDismiss = true
         dismissAction()
         onDismiss(reason)
+    }
+}
+
+extension AppDraftProtocol {
+    func composerContent() -> ComposerContent {
+        // because we're not passing `supportsDarkModeViaMediaQuery: false`, we can pass whatever as `currentTheme` - it's ignored
+        let themeOpts = ThemeOpts(currentTheme: .darkMode)
+
+        do {
+            return try composerContent(themeOpts: themeOpts, editorId: HtmlBodyDocument.ID.editor).get()
+        } catch {
+            AppLogger.log(error: error, category: .composer)
+            return .empty
+        }
     }
 }

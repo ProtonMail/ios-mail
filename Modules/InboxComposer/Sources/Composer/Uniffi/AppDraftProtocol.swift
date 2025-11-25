@@ -42,7 +42,7 @@ public protocol AppDraftProtocol: ImageProxy {
     func listSenderAddresses() async -> DraftListSenderAddressesResult
     func changeSenderAddress(email: String) async -> DraftChangeSenderAddressResult
     func attachmentList() -> AttachmentListProtocol
-    func body() -> String
+    func composerContent(themeOpts: ThemeOpts, editorId: String) -> DraftComposerContentResult
     func scheduleSendOptions() -> DraftScheduleSendOptionsResult
     func schedule(timestamp: UInt64) async -> VoidDraftSendResult
     func send() async -> VoidDraftSendResult

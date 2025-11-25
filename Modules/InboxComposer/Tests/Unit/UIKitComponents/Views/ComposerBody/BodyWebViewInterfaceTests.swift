@@ -17,6 +17,7 @@
 
 import Testing
 import WebKit
+import proton_app_uniffi
 
 @testable import InboxComposer
 
@@ -25,7 +26,11 @@ final class BodyWebViewInterfaceTests {
     private let sut: HtmlBodyWebViewInterface
     private var mockWebsiteDataStore: MockWebsiteDataStore!
     private var delegate: WebViewDelegate!
-    private let dummyMessage = "<p>dummy message</p>"
+
+    private let dummyMessage = ComposerContent(
+        head: "<style>dummy style</style>",
+        body: "<p>dummy message</p>"
+    )
 
     init() {
         self.mockWebsiteDataStore = .init()
@@ -41,7 +46,7 @@ final class BodyWebViewInterfaceTests {
         await waitForWebViewDidFinish(sut.webView)
 
         let html = await sut.readMessageBody()
-        #expect(html == dummyMessage)
+        #expect(html == dummyMessage.body)
         #expect(mockWebsiteDataStore.removeDataCalled == false)
     }
 
@@ -51,7 +56,7 @@ final class BodyWebViewInterfaceTests {
         await waitForWebViewDidFinish(sut.webView)
 
         let html = await sut.readMessageBody()
-        #expect(html == dummyMessage)
+        #expect(html == dummyMessage.body)
         #expect(mockWebsiteDataStore.removeDataCalled == true)
     }
 
@@ -176,5 +181,11 @@ private final class MockWebsiteDataStore: WebsiteDataStoreType {
 
     func removeData(ofTypes websiteDataTypes: Set<String>, modifiedSince date: Date) async {
         removeDataCalled = true
+    }
+}
+
+private extension HtmlBodyWebViewInterface {
+    func loadMessageBody(_ body: String, clearImageCacheFirst: Bool) async {
+        await loadMessageBody(ComposerContent(head: .empty, body: body), clearImageCacheFirst: clearImageCacheFirst)
     }
 }
