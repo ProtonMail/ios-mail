@@ -44,8 +44,13 @@ struct DraftPresenter: ContactsDraftPresenter {
         self.undoScheduleSendProvider = undoScheduleSendProvider
     }
 
-    func openNewDraft() async throws(DraftOpenError) {
+    func openNewDraft() async throws {
         AppLogger.log(message: "open new draft", category: .composer)
+
+        guard try await userSession.hasValidSenderAddress().get() else {
+            throw ClientDraftError.validSenderAddressNotFound
+        }
+
         try await openNewDraft(createMode: .empty, updateDraft: .none)
     }
 
@@ -165,4 +170,15 @@ extension DraftPresenter {
         )
     }
 
+}
+
+private enum ClientDraftError: LocalizedError {
+    case validSenderAddressNotFound
+
+    var errorDescription: String? {
+        switch self {
+        case .validSenderAddressNotFound:
+            L10n.Draft.noAddressWithSendingPermissions.string
+        }
+    }
 }

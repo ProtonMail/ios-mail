@@ -31192,6 +31192,9 @@
         }
       }
     },
+    "No address with sending permissions" : {
+      "comment" : "Error toast shown when trying to open the composer without a valid sending address."
+    },
     "No matches" : {
       "comment" : "Search result is empty title",
       "localizations" : {

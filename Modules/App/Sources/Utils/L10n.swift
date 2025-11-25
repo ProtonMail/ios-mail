@@ -309,6 +309,13 @@ enum L10n {
         static let save = LocalizedStringResource("Save", comment: "`Save` action title.")
     }
 
+    enum Draft {
+        static let noAddressWithSendingPermissions = LocalizedStringResource(
+            "No address with sending permissions",
+            comment: "Error toast shown when trying to open the composer without a valid sending address."
+        )
+    }
+
     enum LegacyMigration {
         static let migrationFailed = LocalizedStringResource(
             "Issue updating your account. Please sign in again.",

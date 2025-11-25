@@ -77,7 +77,7 @@ final class DraftPresenterTests: BaseTestCase, @unchecked Sendable {
             try await sut.openNewDraft()
             XCTFail("Expected error")
         } catch {
-            XCTAssertEqual(error, .other(.network))
+            XCTAssertEqual(error as? DraftOpenError, .other(.network))
         }
         XCTAssertEqual(capturedDraftToPresent.count, 0)
     }
@@ -284,7 +284,7 @@ extension DraftPresenterTests {
         stubbedCancelScheduleResult: DraftCancelScheduleSendResult = .ok(.init(lastScheduledTime: 1747728129))
     ) -> DraftPresenter {
         DraftPresenter(
-            userSession: .dummy,
+            userSession: MailUserSessionSpy(id: ""),
             draftProvider: .init(makeDraft: { _, _ in stubbedNewDraftResult }),
             undoSendProvider: .mockInstance(stubbedResult: stubbedUndoSendError),
             undoScheduleSendProvider: .mockInstance(stubbedResult: stubbedCancelScheduleResult)
