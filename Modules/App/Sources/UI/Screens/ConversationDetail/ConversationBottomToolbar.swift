@@ -131,7 +131,7 @@ struct ConversationToolbarModifier: ViewModifier {
         moreActionsMenu: @escaping () -> MoreActionsMenu
     ) -> some View {
         Spacer()
-        ForEachEnumerated(actions, id: \.offset) { action, index in
+        ForEach(actions, id: \.self) { action in
             if action.isMoreAction {
                 moreActionsMenu()
             } else {
