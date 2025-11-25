@@ -124,15 +124,14 @@ struct ConversationToolbarModifier: ViewModifier {
         }
     }
 
+    @ViewBuilder
     private func toolbarContent<MoreActionsMenu: View, Action: DisplayableAction>(
         actions: [Action],
         selected: @escaping (Action) async -> Void,
         moreActionsMenu: @escaping () -> MoreActionsMenu
     ) -> some View {
+        Spacer()
         ForEachEnumerated(actions, id: \.offset) { action, index in
-            if index == 0 {
-                Spacer()
-            }
             if action.isMoreAction {
                 moreActionsMenu()
             } else {

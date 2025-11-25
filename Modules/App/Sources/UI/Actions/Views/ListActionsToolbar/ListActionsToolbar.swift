@@ -171,10 +171,8 @@ private struct ListActionBarViewModifier: ViewModifier {
 
     private func toolbarContent(state: State, store: Store) -> some ToolbarContent {
         ToolbarItemGroup(placement: .bottomBar) {
+            Spacer()
             ForEachEnumerated(state.bottomBarActions, id: \.element) { action, index in
-                if index == 0 {
-                    Spacer()
-                }
                 toolbarItem(for: action, state: state, store: store)
                 Spacer()
             }
