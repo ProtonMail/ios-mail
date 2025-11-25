@@ -41,13 +41,13 @@ class MessageBannersViewSnapshotTests {
     func testMessageBannersViewFirstVariantLayoutsCorrectly() {
         let bannersView = MessageBannersView(
             types: [
-                .blockedSender,
-                .phishingAttempt(auto: true),
-                .expiry(timestamp: 1_740_238_200),
-                .autoDelete(timestamp: 1_740_670_200),
-                .unsubscribeNewsletter(alreadyUnsubscribed: false),
-                .embeddedImages,
-                .scheduledSend(timestamp: tomorrowAt8AM),
+                .standard(.blockedSender),
+                .standard(.phishingAttempt(auto: true)),
+                .standard(.expiry(timestamp: 1_740_238_200)),
+                .standard(.autoDelete(timestamp: 1_740_670_200)),
+                .standard(.unsubscribeNewsletter(alreadyUnsubscribed: false)),
+                .standard(.embeddedImages),
+                .standard(.scheduledSend(timestamp: tomorrowAt8AM)),
             ],
             timer: Timer.self,
             scheduleSendDateFormatter: ScheduleSendDateFormatter(),
@@ -61,13 +61,13 @@ class MessageBannersViewSnapshotTests {
     func testMessageBannersViewSecondVariantLayoutsCorrectly() async throws {
         let bannersView = MessageBannersView(
             types: [
-                .blockedSender,
-                .spam(auto: true),
-                .expiry(timestamp: 1_738_920_762),
-                .scheduledSend(timestamp: 1_905_004_876),
-                .snoozed(timestamp: 1_740_238_200),
-                .remoteContent,
-                .unsubscribeNewsletter(alreadyUnsubscribed: true),
+                .standard(.blockedSender),
+                .standard(.spam(auto: true)),
+                .standard(.expiry(timestamp: 1_738_920_762)),
+                .standard(.scheduledSend(timestamp: 1_905_004_876)),
+                .standard(.snoozed(timestamp: 1_740_238_200)),
+                .standard(.remoteContent),
+                .standard(.unsubscribeNewsletter(alreadyUnsubscribed: true)),
             ],
             timer: Timer.self,
             scheduleSendDateFormatter: ScheduleSendDateFormatter(),

@@ -25,10 +25,18 @@ import proton_app_uniffi
 
 @MainActor
 final class UniversalSchemeHandlerTests {
+    private let sut: UniversalSchemeHandler
     private let imageProxySpy = ImageProxySpy()
     private var urlSchemeTaskSpy: WKURLSchemeTaskSpy!
+    private var proxyImageFailCallCount = 0
 
-    private lazy var sut = UniversalSchemeHandler(imageProxy: imageProxySpy)
+    init() {
+        sut = .init(imageProxy: imageProxySpy, imagePolicy: .safe)
+
+        sut.onProxyImageLoadFail = { [unowned self] in
+            proxyImageFailCallCount += 1
+        }
+    }
 
     @Test
     func testFetchingEmbeddedImage_WhenImageIsMissing_ItReturnsError() async throws {
@@ -41,6 +49,17 @@ final class UniversalSchemeHandlerTests {
 
         try await expectToEventually(self.urlSchemeTaskSpy.didInvokeFailWithError.count == 1)
         #expect(urlSchemeTaskSpy.didInvokeFailWithError.compactMap(\.asAttachmentDataError) == [stubbedError])
+    }
+
+    @Test
+    func testFetchingEmbeddedImage_WhenProxyFailsLoadingImage_ItCallsImageProxyError() async throws {
+        let cidValue = "abcdef"
+        imageProxySpy.stubbedResult = .error(.proxyFailed)
+        urlSchemeTaskSpy = .init(request: .init(url: .cid(cidValue)))
+        self.sut.webView(WKWebView(), start: urlSchemeTaskSpy!)
+
+        try await expectToEventually(self.proxyImageFailCallCount == 1)
+        #expect(urlSchemeTaskSpy.didInvokeFailWithError.count == 0)
     }
 
     @Test
@@ -85,6 +104,32 @@ final class UniversalSchemeHandlerTests {
         #expect(urlSchemeTaskSpy.didInvokeDidReceiveResponse == [])
         #expect(urlSchemeTaskSpy.didInvokeDidReceivedData == [])
         #expect(urlSchemeTaskSpy.didInvokeFailWithError.count == 0)
+    }
+
+    @Test
+    func testFetchingEmbeddedImage_ItCallsLoadImageWithSafePolicy() async throws {
+        let cidValue = "abcdef"
+        let image = AttachmentData.testData
+        imageProxySpy.stubbedResult = .ok(image)
+        urlSchemeTaskSpy = .init(request: .init(url: .cid(cidValue)))
+        sut.webView(WKWebView(), start: urlSchemeTaskSpy)
+
+        try await expectToEventually(!self.imageProxySpy.invokedLoadImageWithURLs.isEmpty)
+        #expect(imageProxySpy.invokedLoadImageWithURLs.first?.policy == .safe)
+    }
+
+    @Test
+    func testFetchingEmbeddedImage_WhenPolicyUpdatedToUnsafe_ItCallsLoadImageWithUnsafePolicy() async throws {
+        let cidValue = "abcdef"
+        let image = AttachmentData.testData
+        imageProxySpy.stubbedResult = .ok(image)
+        urlSchemeTaskSpy = .init(request: .init(url: .cid(cidValue)))
+
+        sut.updateImagePolicy(with: .unsafe)
+        sut.webView(WKWebView(), start: urlSchemeTaskSpy)
+
+        try await expectToEventually(!self.imageProxySpy.invokedLoadImageWithURLs.isEmpty)
+        #expect(imageProxySpy.invokedLoadImageWithURLs.first?.policy == .unsafe)
     }
 }
 

@@ -25059,6 +25059,9 @@
         }
       }
     },
+    "Load images" : {
+      "comment" : "Action to load image without proxy."
+    },
     "Loading your mailbox..." : {
       "comment" : "Text shown when user session is being initialized.",
       "localizations" : {
@@ -42675,6 +42678,9 @@
           }
         }
       }
+    },
+    "Some images failed to load with tracker protection." : {
+      "comment" : "Banner informing the user about an error loading images in a message."
     },
     "Spam" : {
       "comment" : "Menu title of all emails marked as spam in the sidebar.",

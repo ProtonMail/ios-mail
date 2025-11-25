@@ -17,15 +17,15 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import WebKit
+import proton_app_uniffi
 
 extension WKWebViewConfiguration {
-    public static func `default`(imageProxy: ImageProxy) -> WKWebViewConfiguration {
+
+    public static func `default`(handler: WKURLSchemeHandler, for schemes: [String]) -> WKWebViewConfiguration {
         let config = WKWebViewConfiguration()
         config.dataDetectorTypes = [.link]
 
-        let handler = UniversalSchemeHandler(imageProxy: imageProxy)
-
-        for scheme in UniversalSchemeHandler.handlerSchemes {
+        for scheme in schemes {
             config.setURLSchemeHandler(handler, forURLScheme: scheme)
         }
 

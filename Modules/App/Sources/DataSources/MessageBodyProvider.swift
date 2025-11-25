@@ -19,10 +19,10 @@ import InboxCore
 import proton_app_uniffi
 
 struct MessageBody: Sendable {
-    struct HTML: Sendable {
+    struct HTML: Equatable, Sendable {
         let rawBody: String
         let options: TransformOpts
-        let imageProxy: ImageProxy
+        let imagePolicy: ImagePolicy
     }
 
     let rsvpServiceProvider: RsvpEventServiceProvider?
@@ -33,7 +33,7 @@ struct MessageBody: Sendable {
 
 struct MessageBodyProvider {
     enum Result: Sendable {
-        case success(MessageBody)
+        case success(MessageBody, UniversalSchemeHandler)
         case error(Error)
         case noConnectionError
     }
@@ -44,23 +44,27 @@ struct MessageBodyProvider {
         _messageBody = { messageID in await wrapper.messageBody(mailbox, messageID) }
     }
 
-    func messageBody(forMessageID messageID: ID, with options: TransformOpts) async -> Result {
+    func messageBody(forMessageID messageID: ID, with options: TransformOpts, imagePolicy: ImagePolicy) async -> Result {
         do {
             let decryptedMessage = try await _messageBody(messageID).get()
             let rsvpServiceProvider = await decryptedMessage.identifyRsvp()
             let decryptedBody = try await decryptedMessage.body(opts: options).get()
+
             let html = MessageBody.HTML(
                 rawBody: decryptedBody.body,
                 options: decryptedBody.transformOpts,
-                imageProxy: decryptedMessage
+                imagePolicy: imagePolicy
             )
+
             let body = MessageBody(
                 rsvpServiceProvider: rsvpServiceProvider,
                 newsletterService: decryptedMessage,
                 banners: decryptedBody.bodyBanners,
                 html: html
             )
-            return .success(body)
+
+            let schemeHandler = await UniversalSchemeHandler(imageProxy: decryptedMessage, imagePolicy: imagePolicy)
+            return .success(body, schemeHandler)
         } catch ActionError.other(.network) {
             return .noConnectionError
         } catch {

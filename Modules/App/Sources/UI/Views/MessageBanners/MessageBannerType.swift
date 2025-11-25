@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Proton Technologies AG
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -17,17 +17,11 @@
 
 import proton_app_uniffi
 
-@testable import InboxCore
+enum MessageBannerType: Hashable {
+    case standard(MessageBanner)
+    case eventDriven(EventDrivenMessageBanner)
+}
 
-class ImageProxySpy: @unchecked Sendable, ImageProxy {
-    var stubbedResult: AttachmentDataResult!
-    private(set) var invokedLoadImageWithURLs: [(url: String, policy: ImagePolicy)] = []
-
-    // MARK: - ImageProxy
-
-    func loadImage(url: String, policy: ImagePolicy) async -> AttachmentDataResult {
-        invokedLoadImageWithURLs.append((url, policy))
-
-        return stubbedResult
-    }
+enum EventDrivenMessageBanner {
+    case proxyImageLoadFail
 }

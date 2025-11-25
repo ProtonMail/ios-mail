@@ -646,6 +646,17 @@ enum L10n {
         )
     }
 
+    enum MessageBannerEventDriven {
+        static let proxyImageFailedToLoadTitle = LocalizedStringResource(
+            "Some images failed to load with tracker protection.",
+            comment: "Banner informing the user about an error loading images in a message."
+        )
+        static let proxyImageFailedToLoadAction = LocalizedStringResource(
+            "Load images",
+            comment: "Action to load image without proxy."
+        )
+    }
+
     enum EmptyFolderBanner {
         enum Alert {
             static func emptyFolderTitle(folderName: String) -> LocalizedStringResource {

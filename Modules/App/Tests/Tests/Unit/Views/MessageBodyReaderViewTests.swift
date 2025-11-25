@@ -29,7 +29,8 @@ final class MessageBodyReaderViewTests {
 
     private lazy var sut = MessageBodyReaderView(
         bodyContentHeight: .constant(.zero),
-        body: .init(rawBody: "<html>dummy</html>", options: .init(), imageProxy: ImageProxySpy()),
+        body: .init(rawBody: "<html>dummy</html>", options: .init(), imagePolicy: .safe),
+        schemeHandler: .init(imageProxy: ImageProxySpy(), imagePolicy: .safe),
         viewWidth: .zero,
         confirmLink: true
     )

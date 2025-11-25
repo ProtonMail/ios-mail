@@ -19,24 +19,33 @@ import TryCatch
 import WebKit
 import proton_app_uniffi
 
-final class UniversalSchemeHandler: NSObject, WKURLSchemeHandler {
+public final class UniversalSchemeHandler: NSObject, WKURLSchemeHandler {
+    public var onProxyImageLoadFail: (() -> Void)?
+
     private let imageProxy: ImageProxy
     private var urlSchemeActiveTasks = Set<ObjectIdentifier>()
     private let queue = DispatchQueue(label: "\(Bundle.defaultIdentifier).\(UniversalSchemeHandler.self)")
 
-    init(imageProxy: ImageProxy) {
+    public private(set) var imagePolicy: ImagePolicy
+
+    public init(imageProxy: ImageProxy, imagePolicy: ImagePolicy) {
         self.imageProxy = imageProxy
+        self.imagePolicy = imagePolicy
     }
 
     enum HandlerError: Error, Equatable {
         case missingURL
     }
 
-    static let handlerSchemes: [String] = ["cid", "proton-http", "proton-https"]
+    public static let handlerSchemes: [String] = ["cid", "proton-http", "proton-https"]
+
+    public func updateImagePolicy(with policy: ImagePolicy) {
+        queue.sync { imagePolicy = policy }
+    }
 
     // MARK: - WKURLSchemeHandler
 
-    func webView(_ webView: WKWebView, start urlSchemeTask: WKURLSchemeTask) {
+    public func webView(_ webView: WKWebView, start urlSchemeTask: WKURLSchemeTask) {
         queue.sync { _ = urlSchemeActiveTasks.insert(ObjectIdentifier(urlSchemeTask)) }
         let url = urlSchemeTask.request.url
         guard let url else {
@@ -47,7 +56,7 @@ final class UniversalSchemeHandler: NSObject, WKURLSchemeHandler {
         finishTaskWithImage(url: url, urlSchemeTask: urlSchemeTask)
     }
 
-    func webView(_ webView: WKWebView, stop urlSchemeTask: WKURLSchemeTask) {
+    public func webView(_ webView: WKWebView, stop urlSchemeTask: WKURLSchemeTask) {
         AppLogger.log(message: "webView stop urlSchemeTask", category: .conversationDetail)
         queue.sync { _ = urlSchemeActiveTasks.remove(ObjectIdentifier(urlSchemeTask)) }
     }
@@ -73,7 +82,7 @@ final class UniversalSchemeHandler: NSObject, WKURLSchemeHandler {
         let taskId = ObjectIdentifier(urlSchemeTask)
 
         Task {
-            let result = await imageProxy.loadImage(url: url.absoluteString)
+            let result = await imageProxy.loadImage(url: url.absoluteString, policy: imagePolicy)
 
             guard try await performOnUrlSchemeActiveTasks({ activeTasks in activeTasks.contains(taskId) }) else {
                 AppLogger.log(message: "urlSchemeTask not active anymore", category: .conversationDetail)
@@ -81,11 +90,16 @@ final class UniversalSchemeHandler: NSObject, WKURLSchemeHandler {
             }
 
             switch result {
-            case .ok(let image):
-                handleAttachment(image, url: url, urlSchemeTask: urlSchemeTask)
-            case .error(let error):
-                AppLogger.log(error: error, category: .webView)
-                urlSchemeTask.markAsFailedCatchingExceptions(error)
+            case .ok(let attachmentData):
+                handleAttachment(attachmentData, url: url, urlSchemeTask: urlSchemeTask)
+            case .error(let attachmentDataError):
+                AppLogger.log(error: attachmentDataError, category: .webView)
+                switch attachmentDataError {
+                case .proxyFailed:
+                    onProxyImageLoadFail?()
+                case .other:
+                    urlSchemeTask.markAsFailedCatchingExceptions(attachmentDataError)
+                }
             }
 
             try await performOnUrlSchemeActiveTasks { activeTasks in _ = activeTasks.remove(taskId) }

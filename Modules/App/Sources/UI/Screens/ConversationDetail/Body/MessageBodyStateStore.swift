@@ -18,35 +18,47 @@
 import Foundation
 import InboxCore
 import InboxCoreUI
+import OrderedCollections
 import ProtonUIFoundations
 import proton_app_uniffi
 
 final class MessageBodyStateStore: StateStore {
     enum Action {
         case onLoad
+        case addEventBanner(EventDrivenMessageBanner)
         case displayEmbeddedImages
         case downloadRemoteContent
+        case reloadFailedProxyImages
         case markAsLegitimate
         case markAsLegitimateConfirmed(LegitMessageConfirmationAlertAction)
+        case refreshBanners
         case unblockSender(emailAddress: String)
         case unsubscribeNewsletter
         case unsubscribeNewsletterConfirmed(UnsubscribeNewsletterAlertAction)
-        case refreshBanners
     }
 
     struct State: Copying {
         enum Body {
             case fetching
-            case loaded(MessageBody)
+            case loaded(MessageBody, UniversalSchemeHandler)
             case error(Error)
             case noConnection
         }
 
         var body: Body
+        var eventBanners: OrderedSet<EventDrivenMessageBanner>
+        var imagePolicy: ImagePolicy
         var alert: AlertModel?
+
+        var allBanners: OrderedSet<MessageBannerType> {
+            guard case .loaded(let body, _) = body else { return [] }
+            let standard = body.banners.map { MessageBannerType.standard($0) }
+            let eventDriven = eventBanners.map { MessageBannerType.eventDriven($0) }
+            return OrderedSet(standard).union(eventDriven)
+        }
     }
 
-    @Published var state = State(body: .fetching, alert: .none)
+    @Published var state = State(body: .fetching, eventBanners: [], imagePolicy: .safe, alert: .none)
     private let messageID: ID
     private let provider: MessageBodyProvider
     private let legitMessageMarker: LegitMessageMarker
@@ -71,25 +83,40 @@ final class MessageBodyStateStore: StateStore {
 
     func handle(action: Action) async {
         switch action {
+        case .addEventBanner(let banner):
+            var newBanners = state.eventBanners
+            newBanners.append(banner)
+            state = state.copy(\.eventBanners, to: newBanners)
         case .onLoad:
             await loadMessageBody(with: .init())
         case .refreshBanners:
-            if case let .loaded(body) = state.body {
+            if case let .loaded(body, _) = state.body {
                 await loadMessageBody(with: body.html.options)
             }
         case .displayEmbeddedImages:
-            if case let .loaded(body) = state.body {
+            if case let .loaded(body, _) = state.body {
                 let updatedOptions = body.html.options
                     .copy(\.hideEmbeddedImages, to: false)
 
                 await loadMessageBody(with: updatedOptions)
             }
         case .downloadRemoteContent:
-            if case let .loaded(body) = state.body {
+            if case let .loaded(body, _) = state.body {
                 let updatedOptions = body.html.options
                     .copy(\.hideRemoteImages, to: false)
 
                 await loadMessageBody(with: updatedOptions)
+            }
+        case .reloadFailedProxyImages:
+            if case let .loaded(body, _) = state.body {
+                var newBanners = state.eventBanners
+                newBanners.remove(.proxyImageLoadFail)
+                state =
+                    state
+                    .copy(\.eventBanners, to: newBanners)
+                    .copy(\.imagePolicy, to: .unsafe)
+
+                await loadMessageBody(with: body.html.options)
             }
         case .markAsLegitimate:
             let alertModel: AlertModel = .legitMessageConfirmation { [weak self] action in
@@ -99,11 +126,11 @@ final class MessageBodyStateStore: StateStore {
         case .markAsLegitimateConfirmed(let action):
             state = state.copy(\.alert, to: nil)
 
-            if case let .loaded(body) = state.body, case .markAsLegitimate = action {
+            if case let .loaded(body, _) = state.body, case .markAsLegitimate = action {
                 await markAsLegitimate(with: body.html.options)
             }
         case .unblockSender(let emailAddress):
-            if case let .loaded(body) = state.body {
+            if case let .loaded(body, _) = state.body {
                 await unblockSender(emailAddress: emailAddress, with: body.html.options)
             }
         case .unsubscribeNewsletter:
@@ -114,7 +141,7 @@ final class MessageBodyStateStore: StateStore {
         case .unsubscribeNewsletterConfirmed(let action):
             state = state.copy(\.alert, to: nil)
 
-            if case let .loaded(body) = state.body, case .unsubscribe = action {
+            if case let .loaded(body, _) = state.body, case .unsubscribe = action {
                 await unsubscribeNewsletter(with: body.newsletterService, options: body.html.options)
             }
         }
@@ -123,9 +150,13 @@ final class MessageBodyStateStore: StateStore {
     // MARK: - Private
 
     private func loadMessageBody(with options: TransformOpts) async {
-        switch await provider.messageBody(forMessageID: messageID, with: options) {
-        case .success(let body):
-            state = state.copy(\.body, to: .loaded(body))
+        switch await provider.messageBody(forMessageID: messageID, with: options, imagePolicy: state.imagePolicy) {
+        case .success(let body, let schemeHandler):
+            schemeHandler.onProxyImageLoadFail = { [weak self] in
+                self?.handle(action: .addEventBanner(.proxyImageLoadFail))
+            }
+
+            state = state.copy(\.body, to: .loaded(body, schemeHandler))
         case .noConnectionError:
             state = state.copy(\.body, to: .noConnection)
             reloadContentWhenBackOnline(options: options)

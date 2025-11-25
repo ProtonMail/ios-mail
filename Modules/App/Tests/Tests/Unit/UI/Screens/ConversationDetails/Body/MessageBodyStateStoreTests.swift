@@ -37,18 +37,64 @@ final class MessageBodyStateStoreTests {
     private let wrapperSpy = RustWrappersSpy()
     private let backOnlineActionExecutorSpy = BackOnlineActionExecutorSpy()
 
+    private let initialOptions = TransformOpts()
+    private lazy var decryptedMessageSpy = DecryptedMessageSpy(stubbedOptions: initialOptions)
+
+    // MARK: - `addEventBanner` action
+
+    @Test
+    func testState_WhenAddEventBannerAction_ItAddsTheBannerToEventBanners() async {
+        wrapperSpy.stubbedMessageBodyResult = .ok(decryptedMessageSpy)
+        await sut.handle(action: .onLoad)
+        #expect(sut.state.eventBanners == [])
+
+        await sut.handle(action: .addEventBanner(.proxyImageLoadFail))
+
+        #expect(sut.state.eventBanners == [.proxyImageLoadFail])
+        #expect(
+            sut.state
+                == .init(
+                    body: .loaded(
+                        .init(
+                            rsvpServiceProvider: .none,
+                            newsletterService: decryptedMessageSpy,
+                            banners: [],
+                            html: .init(rawBody: "<html>dummy_with_custom_options</html>", options: initialOptions, imagePolicy: .safe)
+                        ),
+                        .init(imageProxy: decryptedMessageSpy, imagePolicy: .safe)
+                    ),
+                    eventBanners: [.proxyImageLoadFail],
+                    imagePolicy: .safe,
+                    alert: .none
+                ))
+    }
+
+    // MARK: - `reloadFailedProxyImages` action
+
+    @Test
+    func testState_WhenLoadFailedProxyImagesAction_ItRemovesBannerAndChangesToUnsafePolicy() async {
+        wrapperSpy.stubbedMessageBodyResult = .ok(decryptedMessageSpy)
+        await sut.handle(action: .onLoad)
+        await sut.handle(action: .addEventBanner(.proxyImageLoadFail))
+        #expect(sut.state.eventBanners == [.proxyImageLoadFail])
+        #expect(sut.state.imagePolicy == .safe)
+
+        await sut.handle(action: .reloadFailedProxyImages)
+
+        #expect(sut.state.eventBanners == [])
+        #expect(sut.state.imagePolicy == .unsafe)
+        #expect(decryptedMessageSpy.bodyWithOptionsCalls == [initialOptions, initialOptions])
+    }
+
     // MARK: - `onLoad` action
 
     @Test
     func testState_WhenOnLoadAndSucceedsFetchingBody_ItReturnsLoadedWithCorrectMessageBody() async {
-        let initialOptions = TransformOpts()
-        let decryptedMessageSpy = DecryptedMessageSpy(stubbedOptions: initialOptions)
-
         wrapperSpy.stubbedMessageBodyResult = .ok(decryptedMessageSpy)
 
         #expect(wrapperSpy.messageBodyCalls == [])
         #expect(decryptedMessageSpy.bodyWithOptionsCalls.count == 0)
-        #expect(sut.state == .init(body: .fetching, alert: .none))
+        #expect(sut.state == .init(body: .fetching, eventBanners: [], imagePolicy: .safe, alert: .none))
 
         await sut.handle(action: .onLoad)
 
@@ -70,10 +116,8 @@ final class MessageBodyStateStoreTests {
         await sut.handle(action: .onLoad)
 
         #expect(wrapperSpy.messageBodyCalls == [stubbedMessageID])
-        #expect(sut.state == .init(body: .noConnection, alert: .none))
+        #expect(sut.state == .init(body: .noConnection, eventBanners: [], imagePolicy: .safe, alert: .none))
 
-        let initialOptions = TransformOpts()
-        let decryptedMessageSpy = DecryptedMessageSpy(stubbedOptions: TransformOpts())
         wrapperSpy.stubbedMessageBodyResult = .ok(decryptedMessageSpy)
 
         #expect(backOnlineActionExecutorSpy.executeCalled.count == 1)
@@ -98,16 +142,13 @@ final class MessageBodyStateStoreTests {
         await sut.handle(action: .onLoad)
 
         #expect(wrapperSpy.messageBodyCalls == [stubbedMessageID])
-        #expect(sut.state == .init(body: .error(expectedError), alert: .none))
+        #expect(sut.state == .init(body: .error(expectedError), eventBanners: [], imagePolicy: .safe, alert: .none))
     }
 
     // MARK: - `refreshBanners` action
 
     @Test
     func testState_WhenRefreshBannersActionTriggered_ItFetchesBodyWithSameOptions() async {
-        let initialOptions = TransformOpts()
-        let decryptedMessageSpy = DecryptedMessageSpy(stubbedOptions: initialOptions)
-
         wrapperSpy.stubbedMessageBodyResult = .ok(decryptedMessageSpy)
 
         await sut.handle(action: .onLoad)
@@ -138,9 +179,6 @@ final class MessageBodyStateStoreTests {
 
     @Test
     func testState_WhenDisplayEmbeddedImagesActionTriggered_ItFetchesBodyWithModifiedOptions() async {
-        let initialOptions = TransformOpts()
-        let decryptedMessageSpy = DecryptedMessageSpy(stubbedOptions: initialOptions)
-
         wrapperSpy.stubbedMessageBodyResult = .ok(decryptedMessageSpy)
 
         await sut.handle(action: .onLoad)
@@ -173,9 +211,6 @@ final class MessageBodyStateStoreTests {
 
     @Test
     func testState_WhenDownloadRemoteContentActionTriggered_ItFetchesBodyWithModifiedOptions() async {
-        let initialOptions = TransformOpts()
-        let decryptedMessageSpy = DecryptedMessageSpy(stubbedOptions: initialOptions)
-
         wrapperSpy.stubbedMessageBodyResult = .ok(decryptedMessageSpy)
 
         await sut.handle(action: .onLoad)
@@ -207,9 +242,6 @@ final class MessageBodyStateStoreTests {
 
     @Test
     func testState_WhenMarkAsLegitimateActionTapped_ItPresentsConfirmationAlert() async {
-        let initialOptions = TransformOpts()
-        let decryptedMessageSpy = DecryptedMessageSpy(stubbedOptions: initialOptions)
-
         wrapperSpy.stubbedMessageBodyResult = .ok(decryptedMessageSpy)
         wrapperSpy.stubbedMarkMessageHamResult = .ok
 
@@ -243,9 +275,6 @@ final class MessageBodyStateStoreTests {
 
     @Test
     func testState_WhenMarkAsLegitimateConfirmedAndSucceeds_ItMarksMessageHamAndFetchesBodyAgain() async throws {
-        let initialOptions = TransformOpts()
-        let decryptedMessageSpy = DecryptedMessageSpy(stubbedOptions: initialOptions)
-
         wrapperSpy.stubbedMessageBodyResult = .ok(decryptedMessageSpy)
         wrapperSpy.stubbedMarkMessageHamResult = .ok
 
@@ -268,8 +297,6 @@ final class MessageBodyStateStoreTests {
 
     @Test
     func testState_WhenSpamMarkAsLegitimateConfirmedAndFails_ItDoesNotFetchBodyAndPresentsErrorToast() async throws {
-        let initialOptions = TransformOpts()
-        let decryptedMessageSpy = DecryptedMessageSpy(stubbedOptions: initialOptions)
         let expectedActionError: ActionError = .other(.network)
 
         wrapperSpy.stubbedMessageBodyResult = .ok(decryptedMessageSpy)
@@ -288,9 +315,6 @@ final class MessageBodyStateStoreTests {
 
     @Test
     func testState_WhenMarkAsLegitimateCancelled_ItDoesNotMarkMessageHam() async throws {
-        let initialOptions = TransformOpts()
-        let decryptedMessageSpy = DecryptedMessageSpy(stubbedOptions: initialOptions)
-
         wrapperSpy.stubbedMessageBodyResult = .ok(decryptedMessageSpy)
         wrapperSpy.stubbedMarkMessageHamResult = .ok
 
@@ -316,9 +340,6 @@ final class MessageBodyStateStoreTests {
 
     @Test
     func testState_WhenUnblockSenderActionSucceeds_ItUnblocksSenderAndFetchesBodyAgain() async {
-        let initialOptions = TransformOpts()
-        let decryptedMessageSpy = DecryptedMessageSpy(stubbedOptions: initialOptions)
-
         wrapperSpy.stubbedMessageBodyResult = .ok(decryptedMessageSpy)
         wrapperSpy.stubbedUnblockSenderResult = .ok
 
@@ -352,8 +373,6 @@ final class MessageBodyStateStoreTests {
 
     @Test
     func testState_WhenUnblockSenderActionFails_ItDoesNotFetchBodyAndPresentsErrorToast() async {
-        let initialOptions = TransformOpts()
-        let decryptedMessageSpy = DecryptedMessageSpy(stubbedOptions: initialOptions)
         let expectedActionError: ActionError = .other(.network)
 
         wrapperSpy.stubbedMessageBodyResult = .ok(decryptedMessageSpy)
@@ -385,8 +404,6 @@ final class MessageBodyStateStoreTests {
 
     @Test
     func testState_UnsubscribeNewsletterActionTapped_ItPresentsConfirmationAlert() async {
-        let initialOptions = TransformOpts()
-        let decryptedMessageSpy = DecryptedMessageSpy(stubbedOptions: initialOptions)
 
         wrapperSpy.stubbedMessageBodyResult = .ok(decryptedMessageSpy)
         decryptedMessageSpy.stubbedUnsubscribeFromNewsletterResult = .ok
@@ -408,9 +425,6 @@ final class MessageBodyStateStoreTests {
 
     @Test
     func testState_UnsubscribeNewsletterConfirmedAndSucceeds_ItUnsubscribesAndFetchesBodyAgain() async throws {
-        let initialOptions = TransformOpts()
-        let decryptedMessageSpy = DecryptedMessageSpy(stubbedOptions: initialOptions)
-
         wrapperSpy.stubbedMessageBodyResult = .ok(decryptedMessageSpy)
         decryptedMessageSpy.stubbedUnsubscribeFromNewsletterResult = .ok
 
@@ -438,8 +452,6 @@ final class MessageBodyStateStoreTests {
 
     @Test
     func testState_UnsubscribeNewsletterConfirmedAndFails_ItPresentsErrorToast() async throws {
-        let initialOptions = TransformOpts()
-        let decryptedMessageSpy = DecryptedMessageSpy(stubbedOptions: initialOptions)
         let expectedActionError: ActionError = .reason(.unknownMessage)
 
         wrapperSpy.stubbedMessageBodyResult = .ok(decryptedMessageSpy)
@@ -465,9 +477,6 @@ final class MessageBodyStateStoreTests {
 
     @Test
     func testState_WhenUnsubscribeNewsletterCancelled_ItDoesNotUnsubscribe() async throws {
-        let initialOptions = TransformOpts()
-        let decryptedMessageSpy = DecryptedMessageSpy(stubbedOptions: initialOptions)
-
         wrapperSpy.stubbedMessageBodyResult = .ok(decryptedMessageSpy)
         decryptedMessageSpy.stubbedUnsubscribeFromNewsletterResult = .ok
 
@@ -500,7 +509,7 @@ extension MessageBodyStateStore.State: @retroactive Equatable {
         switch (lhs.body, rhs.body) {
         case (.fetching, .fetching):
             return true
-        case (.loaded(let lhsBody), .loaded(let rhsBody)):
+        case (.loaded(let lhsBody, _), .loaded(let rhsBody, _)):
             return lhsBody == rhsBody
         case (.error(let lhsError), .error(let rhsError)):
             return lhsError.localizedDescription == rhsError.localizedDescription
@@ -518,8 +527,7 @@ extension MessageBody: @retroactive Equatable {
     public static func == (lhs: Self, rhs: Self) -> Bool {
         let areRsvpProviderEqual: Bool = lhs.rsvpServiceProvider === rhs.rsvpServiceProvider
         let areNewsletterServicesEqual = lhs.newsletterService === rhs.newsletterService
-        let areHTMLsEqual =
-            lhs.html.rawBody == rhs.html.rawBody && lhs.html.options == rhs.html.options && lhs.html.imageProxy === rhs.html.imageProxy
+        let areHTMLsEqual = lhs.html == rhs.html
         let areBannersEqual = lhs.banners == rhs.banners
 
         return areRsvpProviderEqual && areNewsletterServicesEqual && areHTMLsEqual && areBannersEqual
@@ -611,7 +619,7 @@ private extension MessageBodyStateStore.State {
 }
 
 private extension MessageBodyStateStore.State {
-
+    @MainActor
     static func noBannersAlert(
         rawBody: String,
         options: TransformOpts,
@@ -624,9 +632,12 @@ private extension MessageBodyStateStore.State {
                     rsvpServiceProvider: .none,
                     newsletterService: decryptedMessage,
                     banners: [],
-                    html: .init(rawBody: rawBody, options: options, imageProxy: decryptedMessage)
-                )
+                    html: .init(rawBody: rawBody, options: options, imagePolicy: .safe)
+                ),
+                .init(imageProxy: decryptedMessage, imagePolicy: .safe)
             ),
+            eventBanners: [],
+            imagePolicy: .safe,
             alert: alert
         )
     }

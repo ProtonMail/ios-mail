@@ -210,7 +210,7 @@ final class MockDraft: AppDraftProtocol, @unchecked Sendable {
         mockSubject
     }
 
-    func loadImage(url: String) async -> AttachmentDataResult {
+    func loadImage(url: String, policy: ImagePolicy) async -> AttachmentDataResult {
         .error(.proxyFailed)
     }
 

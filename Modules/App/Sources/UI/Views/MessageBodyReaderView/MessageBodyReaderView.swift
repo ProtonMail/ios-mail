@@ -19,6 +19,7 @@ import InboxCore
 import InboxDesignSystem
 import SwiftUI
 import WebKit
+import proton_app_uniffi
 
 extension EnvironmentValues {
     @Entry var forceLightModeInMessageBody: Bool = false
@@ -27,13 +28,28 @@ extension EnvironmentValues {
 
 struct MessageBodyReaderView: UIViewRepresentable {
     @Binding var bodyContentHeight: CGFloat
+    @State var schemeHandler: UniversalSchemeHandler
     let body: MessageBody.HTML
     let viewWidth: CGFloat
     let confirmLink: Bool
 
+    init(
+        bodyContentHeight: Binding<CGFloat>,
+        body: MessageBody.HTML,
+        schemeHandler: UniversalSchemeHandler,
+        viewWidth: CGFloat,
+        confirmLink: Bool
+    ) {
+        self._bodyContentHeight = .init(projectedValue: bodyContentHeight)
+        self.body = body
+        self.viewWidth = viewWidth
+        self.confirmLink = confirmLink
+        self.schemeHandler = schemeHandler
+    }
+
     func makeUIView(context: Context) -> WKWebView {
         let backgroundColor = UIColor(DS.Color.Background.norm)
-        let config = WKWebViewConfiguration.default(imageProxy: body.imageProxy)
+        let config = WKWebViewConfiguration.default(handler: schemeHandler, for: UniversalSchemeHandler.handlerSchemes)
         config.defaultWebpagePreferences.allowsContentJavaScript = false
 
         let webView = WKWebView(frame: .zero, configuration: config)
@@ -78,6 +94,7 @@ struct MessageBodyReaderView: UIViewRepresentable {
 
     func updateUIView(_ webView: WKWebView, context: Context) {
         if context.coordinator.receivedBodyDifferentFromBefore(latest: body) {
+            schemeHandler.updateImagePolicy(with: body.imagePolicy)
             loadHTML(in: webView)
         }
         webView.overrideUserInterfaceStyle = context.environment.forceLightModeInMessageBody ? .light : .unspecified
@@ -205,7 +222,7 @@ extension MessageBodyReaderView {
         }
 
         func receivedBodyDifferentFromBefore(latest body: MessageBody.HTML) -> Bool {
-            if previouslyReceivedBody?.rawBody == body.rawBody && previouslyReceivedBody?.options == body.options {
+            if previouslyReceivedBody == body {
                 return false
             } else {
                 previouslyReceivedBody = body
