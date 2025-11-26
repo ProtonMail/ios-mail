@@ -97,7 +97,7 @@ final class HtmlBodyEditorController: UIViewController, BodyEditor {
             case .onEditorChange:
                 Task { [weak self] in
                     guard let self else { return }
-                    guard let body = await htmlInterface.readMesasgeBody() else { return }
+                    guard let body = await htmlInterface.readMessageBody() else { return }
                     onEvent?(.onBodyChange(body: body))
                 }
             case .onCursorPositionChange(let position):

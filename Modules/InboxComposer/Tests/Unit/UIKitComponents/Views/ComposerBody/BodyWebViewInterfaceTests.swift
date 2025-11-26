@@ -40,7 +40,7 @@ final class BodyWebViewInterfaceTests {
         await sut.loadMessageBody(dummyMessage, clearImageCacheFirst: false)
         await waitForWebViewDidFinish(sut.webView)
 
-        let html = await sut.readMesasgeBody()
+        let html = await sut.readMessageBody()
         #expect(html == dummyMessage)
         #expect(mockWebsiteDataStore.removeDataCalled == false)
     }
@@ -50,7 +50,7 @@ final class BodyWebViewInterfaceTests {
         await sut.loadMessageBody(dummyMessage, clearImageCacheFirst: true)
         await waitForWebViewDidFinish(sut.webView)
 
-        let html = await sut.readMesasgeBody()
+        let html = await sut.readMessageBody()
         #expect(html == dummyMessage)
         #expect(mockWebsiteDataStore.removeDataCalled == true)
     }
@@ -64,7 +64,7 @@ final class BodyWebViewInterfaceTests {
 
         await sut.insertImages(["12345", "qwerty"])
 
-        let html = await sut.readMesasgeBody()
+        let html = await sut.readMessageBody()
         #expect(
             html == """
                 <img src="cid:12345"><br><img src="cid:qwerty"><br><p>initial message</p>
@@ -79,7 +79,7 @@ final class BodyWebViewInterfaceTests {
         try await setCursorAfter(text: "first part")
         await sut.insertImages(["12345"])
 
-        let html = await sut.readMesasgeBody()
+        let html = await sut.readMessageBody()
         #expect(html == "<p>first part</p><img src=\"cid:12345\"><br><p>second part</p>")
     }
 
@@ -92,7 +92,7 @@ final class BodyWebViewInterfaceTests {
 
         await sut.removeImage(containing: "12345")
 
-        let html = await sut.readMesasgeBody()
+        let html = await sut.readMessageBody()
         #expect(
             html == """
                 <p>hello<br></p>
@@ -106,7 +106,7 @@ final class BodyWebViewInterfaceTests {
 
         await sut.removeImage(containing: "12345")
 
-        let html = await sut.readMesasgeBody()
+        let html = await sut.readMessageBody()
         #expect(
             html == """
                 <p>hello<img src="cid:123456789"><br></p>
@@ -120,7 +120,7 @@ final class BodyWebViewInterfaceTests {
 
         await sut.removeImage(containing: "12567")
 
-        let html = await sut.readMesasgeBody()
+        let html = await sut.readMessageBody()
         #expect(
             html == """
                 <p>hello<img src="cid:12345"><br></p>

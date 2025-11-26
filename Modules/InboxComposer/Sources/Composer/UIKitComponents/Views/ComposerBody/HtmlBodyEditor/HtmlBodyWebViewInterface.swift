@@ -86,7 +86,7 @@ final class HtmlBodyWebViewInterface: NSObject, HtmlBodyWebViewInterfaceProtocol
         }
     }
 
-    func readMesasgeBody() async -> String? {
+    func readMessageBody() async -> String? {
         await withCheckedContinuation { continuation in
             webView.evaluateJavaScript(HtmlBodyDocument.JSFunction.getHtmlContent.callFunction) { result, error in
                 if let error { AppLogger.log(error: error, category: .composer) }

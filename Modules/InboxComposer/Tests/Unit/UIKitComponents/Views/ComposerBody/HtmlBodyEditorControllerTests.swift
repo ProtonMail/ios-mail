@@ -82,7 +82,7 @@ private final class MockHtmlBodyWebViewInterface: HtmlBodyWebViewInterfaceProtoc
 
     func setFocus() async {}
 
-    func readMesasgeBody() async -> String? { nil }
+    func readMessageBody() async -> String? { nil }
 
     func insertText(_ text: String) async {
         insertedTexts.append(text)

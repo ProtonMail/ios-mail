@@ -24,7 +24,7 @@ protocol HtmlBodyWebViewInterfaceProtocol: AnyObject {
 
     func loadMessageBody(_ body: String, clearImageCacheFirst: Bool) async
     func setFocus() async
-    func readMesasgeBody() async -> String?
+    func readMessageBody() async -> String?
     func insertText(_ text: String) async
     func insertImages(_ contentIds: [String]) async
     func removeImage(containing cid: String) async
