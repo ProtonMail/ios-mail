@@ -21,11 +21,12 @@ import proton_app_uniffi
 
 extension WKWebViewConfiguration {
 
-    public static func `default`(handler: WKURLSchemeHandler, for schemes: [String]) -> WKWebViewConfiguration {
+    public static func `default`(handler: WKURLSchemeHandler) -> WKWebViewConfiguration {
         let config = WKWebViewConfiguration()
+        config.defaultWebpagePreferences.allowsContentJavaScript = false
         config.dataDetectorTypes = [.link]
 
-        for scheme in schemes {
+        for scheme in UniversalSchemeHandler.handlerSchemes {
             config.setURLSchemeHandler(handler, forURLScheme: scheme)
         }
 

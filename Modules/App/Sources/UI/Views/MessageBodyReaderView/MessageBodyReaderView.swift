@@ -16,7 +16,6 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import InboxCore
-import InboxDesignSystem
 import SwiftUI
 import WebKit
 import proton_app_uniffi
@@ -48,21 +47,10 @@ struct MessageBodyReaderView: UIViewRepresentable {
     }
 
     func makeUIView(context: Context) -> WKWebView {
-        let backgroundColor = UIColor(DS.Color.Background.norm)
-        let config = WKWebViewConfiguration.default(handler: schemeHandler, for: UniversalSchemeHandler.handlerSchemes)
-        config.defaultWebpagePreferences.allowsContentJavaScript = false
-
-        let webView = WKWebView(frame: .zero, configuration: config)
+        let config = WKWebViewConfiguration.default(handler: schemeHandler)
+        let webView = WKWebView.default(configuration: config)
         webView.navigationDelegate = context.coordinator
         webView.uiDelegate = context.coordinator
-        webView.scrollView.isScrollEnabled = false
-        webView.scrollView.bounces = false
-
-        webView.isOpaque = false
-        webView.backgroundColor = backgroundColor
-        webView.scrollView.backgroundColor = backgroundColor
-        webView.scrollView.contentInsetAdjustmentBehavior = .never
-
         webView.isInspectable = WKWebView.inspectabilityEnabled
 
         for handlerName in HandlerName.allCases {

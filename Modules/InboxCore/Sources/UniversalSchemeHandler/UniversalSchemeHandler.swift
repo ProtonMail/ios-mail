@@ -37,7 +37,7 @@ public final class UniversalSchemeHandler: NSObject, WKURLSchemeHandler {
         case missingURL
     }
 
-    public static let handlerSchemes: [String] = ["cid", "proton-http", "proton-https"]
+    static let handlerSchemes: [String] = ["cid", "proton-http", "proton-https"]
 
     public func updateImagePolicy(with policy: ImagePolicy) {
         queue.sync { imagePolicy = policy }
