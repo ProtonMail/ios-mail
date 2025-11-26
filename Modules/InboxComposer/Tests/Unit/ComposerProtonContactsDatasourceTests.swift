@@ -31,7 +31,6 @@ final class ComposerProtonContactsDatasourceTests: XCTestCase {
         super.setUp()
         sut = ComposerProtonContactsDatasource(
             repository: .init(
-                permissionsHandler: CNContactStorePartialStub.self,
                 contactStore: CNContactStorePartialStub(),
                 allContactsProvider: .init(contactSuggestions: { deviceContacts, _ in
                     return .ok(ContactSuggestionsStub(all: .testData))

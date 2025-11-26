@@ -94,7 +94,6 @@ final class ComposerModel: ObservableObject {
         draftOrigin: DraftOrigin,
         contactProvider: ComposerContactProvider,
         onDismiss: @escaping (ComposerDismissReason) -> Void,
-        permissionsHandler: CNContactStoring.Type,
         contactStore: CNContactStoring,
         photosItemsHandler: PhotosPickerItemHandler,
         cameraImageHandler: CameraImageHandler,
@@ -107,7 +106,7 @@ final class ComposerModel: ObservableObject {
         self.draftOrigin = draftOrigin
         self.contactProvider = contactProvider
         self.onDismiss = onDismiss
-        self.permissionsHandler = .init(permissionsHandler: permissionsHandler, contactStore: contactStore)
+        self.permissionsHandler = .init(permissionsHandler: contactStore)
         self.state = .initial(composerMode: draft.composerMode, isAddingAttachmentsEnabled: isAddingAttachmentsEnabled)
         self.photosItemsHandler = photosItemsHandler
         self.cameraImageHandler = cameraImageHandler

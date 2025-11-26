@@ -33,7 +33,6 @@ final class ContactSuggestionsRepositoryTests {
         stubbedAllContacts = []
         contactStoreSpy = .init()
         sut = .init(
-            permissionsHandler: CNContactStoreSpy.self,
             contactStore: contactStoreSpy,
             allContactsProvider: .init(contactSuggestions: { contacts, _ in
                 self.allContactsCalls.append(contacts)
@@ -44,13 +43,9 @@ final class ContactSuggestionsRepositoryTests {
         )
     }
 
-    deinit {
-        CNContactStoreSpy.cleanUp()
-    }
-
     @Test
     func testAllContacts_WhenPermissionsDenied_ItDoesNotRequestForDeviceContacts() async {
-        CNContactStoreSpy.stubbedAuthorizationStatus = [.contacts: .denied]
+        contactStoreSpy.stubbedAuthorizationStatus = [.contacts: .denied]
 
         _ = await sut.allContacts()
 
@@ -59,7 +54,7 @@ final class ContactSuggestionsRepositoryTests {
 
     @Test
     func testAllContacts_WhenPermissionsRestricted_ItDoesNotRequestForDeviceContacts() async {
-        CNContactStoreSpy.stubbedAuthorizationStatus = [.contacts: .restricted]
+        contactStoreSpy.stubbedAuthorizationStatus = [.contacts: .restricted]
 
         _ = await sut.allContacts()
 
@@ -70,7 +65,7 @@ final class ContactSuggestionsRepositoryTests {
 
     @Test
     func testAllContacts_WhenPermissionsGranted_ItRequestForDeviceContacts() async {
-        CNContactStoreSpy.stubbedAuthorizationStatus = [.contacts: .authorized]
+        contactStoreSpy.stubbedAuthorizationStatus = [.contacts: .authorized]
 
         _ = await sut.allContacts()
 
@@ -85,9 +80,9 @@ final class ContactSuggestionsRepositoryTests {
         )
     }
 
-    @Test(.disabled("fails often on CI"))
+    @Test
     func testAllContacts_WhenPermissionsGranted_ItRequestsForAllContactsWithDeviceContacts() async {
-        CNContactStoreSpy.stubbedAuthorizationStatus = [.contacts: .authorized]
+        contactStoreSpy.stubbedAuthorizationStatus = [.contacts: .authorized]
 
         contactStoreSpy.stubbedEnumerateContacts = [
             .jonathanHorotvitz,
@@ -126,7 +121,7 @@ final class ContactSuggestionsRepositoryTests {
 
     @Test
     func testAllContacts_WhenPermissionsGranted_ItReturnsDeviceAndProtonContacts() async {
-        CNContactStoreSpy.stubbedAuthorizationStatus = [.contacts: .authorized]
+        contactStoreSpy.stubbedAuthorizationStatus = [.contacts: .authorized]
 
         contactStoreSpy.stubbedEnumerateContacts = [
             .jonathanHorotvitz,
@@ -162,16 +157,16 @@ final class ContactSuggestionsRepositoryTests {
 
     @Test
     func testAllContacts_WhenPermissionsNotGranted_ItDoesNotRequestForDeviceContacts() async {
-        CNContactStoreSpy.stubbedAuthorizationStatus = [.contacts: .denied]
+        contactStoreSpy.stubbedAuthorizationStatus = [.contacts: .denied]
 
         _ = await sut.allContacts()
 
         #expect(contactStoreSpy.enumerateContactsCalls.count == 0)
     }
 
-    @Test(.disabled("fails extremely often on CI"))
+    @Test
     func testAllContacts_WhenPermissionsNotGranted_ItRequestForAllContactsWithoutDeviceContacts() async {
-        CNContactStoreSpy.stubbedAuthorizationStatus = [.contacts: .denied]
+        contactStoreSpy.stubbedAuthorizationStatus = [.contacts: .denied]
 
         contactStoreSpy.stubbedEnumerateContacts = [
             .jonathanHorotvitz,
@@ -194,7 +189,7 @@ final class ContactSuggestionsRepositoryTests {
 
     @Test
     func testAllContacts_WhenPermissionsNotGranted_ItReturnsProtonContactsOnly() async {
-        CNContactStoreSpy.stubbedAuthorizationStatus = [.contacts: .denied]
+        contactStoreSpy.stubbedAuthorizationStatus = [.contacts: .denied]
 
         contactStoreSpy.stubbedEnumerateContacts = [
             .jonathanHorotvitz,

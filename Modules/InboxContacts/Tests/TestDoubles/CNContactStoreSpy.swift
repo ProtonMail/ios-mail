@@ -21,20 +21,16 @@ import Contacts
 
 class CNContactStoreSpy: CNContactStoring {
 
-    static var stubbedAuthorizationStatus: [CNEntityType: CNAuthorizationStatus] = .default
+    var stubbedAuthorizationStatus: [CNEntityType: CNAuthorizationStatus] = .default
 
     private(set) var requestAccessCalls: [(entityType: CNEntityType, completionHandler: (Bool, (any Error)?) -> Void)] = []
     private(set) var enumerateContactsCalls: [CNContactFetchRequest] = []
     var stubbedEnumerateContacts: [CNContact] = []
     var requestAccessCompletionBlockCalledImmediately: Bool = false
 
-    static func cleanUp() {
-        stubbedAuthorizationStatus = .default
-    }
-
     // MARK: - CNContactStoring
 
-    class func authorizationStatus(for entityType: CNEntityType) -> CNAuthorizationStatus {
+    func authorizationStatus(for entityType: CNEntityType) -> CNAuthorizationStatus {
         stubbedAuthorizationStatus[entityType].unsafelyUnwrapped
     }
 

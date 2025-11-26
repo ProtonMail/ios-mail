@@ -18,12 +18,10 @@
 import Contacts
 
 public struct ContactPermissionsHandler {
-    private let permissionsHandler: CNContactStoring.Type
-    private let contactStore: CNContactStoring
+    private let permissionsHandler: CNContactStoring
 
-    public init(permissionsHandler: CNContactStoring.Type, contactStore: CNContactStoring) {
+    public init(permissionsHandler: CNContactStoring) {
         self.permissionsHandler = permissionsHandler
-        self.contactStore = contactStore
     }
 
     @discardableResult
@@ -33,7 +31,7 @@ public struct ContactPermissionsHandler {
         switch status {
         case .notDetermined:
             return await withCheckedContinuation { continuation in
-                contactStore.requestAccess(for: .contacts) { granted, _ in
+                permissionsHandler.requestAccess(for: .contacts) { granted, _ in
                     continuation.resume(returning: granted)
                 }
             }

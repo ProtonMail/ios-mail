@@ -28,16 +28,12 @@ final class ContactPermissionsHandlerTests {
 
     init() {
         contactStoreSpy = .init()
-        sut = .init(permissionsHandler: CNContactStoreSpy.self, contactStore: contactStoreSpy)
-    }
-
-    deinit {
-        CNContactStoreSpy.cleanUp()
+        sut = .init(permissionsHandler: contactStoreSpy)
     }
 
     @Test
     func requestAccessIfNeeded_WhenPermissionsNotDetermined_ItRequestForPermissions() async {
-        CNContactStoreSpy.stubbedAuthorizationStatus = [.contacts: .notDetermined]
+        contactStoreSpy.stubbedAuthorizationStatus = [.contacts: .notDetermined]
 
         contactStoreSpy.requestAccessCompletionBlockCalledImmediately = true
 
@@ -50,7 +46,7 @@ final class ContactPermissionsHandlerTests {
 
     @Test
     func requestAccessIfNeeded_WhenPermissionsRestricted_ItDoesNotRequestForPermissions() async {
-        CNContactStoreSpy.stubbedAuthorizationStatus = [.contacts: .restricted]
+        contactStoreSpy.stubbedAuthorizationStatus = [.contacts: .restricted]
 
         let granted = await sut.requestAccessIfNeeded()
 
@@ -60,7 +56,7 @@ final class ContactPermissionsHandlerTests {
 
     @Test
     func requestAccessIfNeeded_WhenPermissionsDenied_ItDoesNotRequestForPermissions() async {
-        CNContactStoreSpy.stubbedAuthorizationStatus = [.contacts: .denied]
+        contactStoreSpy.stubbedAuthorizationStatus = [.contacts: .denied]
 
         let granted = await sut.requestAccessIfNeeded()
 
@@ -71,7 +67,7 @@ final class ContactPermissionsHandlerTests {
     @Test
     func requestAccessIfNeeded_WhenPermissionsLimited_ItDoesNotRequestForPermissions() async {
         if #available(iOS 18.0, *) {
-            CNContactStoreSpy.stubbedAuthorizationStatus = [.contacts: .limited]
+            contactStoreSpy.stubbedAuthorizationStatus = [.contacts: .limited]
 
             let granted = await sut.requestAccessIfNeeded()
 
@@ -82,7 +78,7 @@ final class ContactPermissionsHandlerTests {
 
     @Test
     func requestAccessIfNeeded_WhenPermissionsAuthorized_ItDoesNotRequestForPermissions() async {
-        CNContactStoreSpy.stubbedAuthorizationStatus = [.contacts: .authorized]
+        contactStoreSpy.stubbedAuthorizationStatus = [.contacts: .authorized]
 
         let granted = await sut.requestAccessIfNeeded()
 
