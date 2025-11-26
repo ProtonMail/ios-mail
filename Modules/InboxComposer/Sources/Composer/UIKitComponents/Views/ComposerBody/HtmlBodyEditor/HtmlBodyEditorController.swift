@@ -185,6 +185,7 @@ extension HtmlBodyEditorController {
                 handler: UniversalSchemeHandler.init(imageProxy: imageProxy, imagePolicy: .safe),
                 for: UniversalSchemeHandler.handlerSchemes
             )
+            config.defaultWebpagePreferences.allowsContentJavaScript = false
 
             // using a custom cache to be able to flush it when necessary (e.g. failed inline image upload)
             config.websiteDataStore = WKWebsiteDataStore.nonPersistent()

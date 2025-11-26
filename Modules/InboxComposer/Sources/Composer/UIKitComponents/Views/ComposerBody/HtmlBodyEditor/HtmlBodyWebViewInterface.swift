@@ -48,6 +48,7 @@ final class HtmlBodyWebViewInterface: NSObject, HtmlBodyWebViewInterfaceProtocol
         self.htmlDocument = HtmlBodyDocument()
         super.init()
         setUpCallbacks()
+        setUpHtmlScript()
     }
 
     private func setUpCallbacks() {
@@ -56,13 +57,19 @@ final class HtmlBodyWebViewInterface: NSObject, HtmlBodyWebViewInterfaceProtocol
         }
     }
 
+    private func setUpHtmlScript() {
+        let userScript = WKUserScript(
+            source: htmlDocument.script,
+            injectionTime: .atDocumentEnd,
+            forMainFrameOnly: true
+        )
+        webView.configuration.userContentController.addUserScript(userScript)
+    }
+
     func loadMessageBody(_ body: String, clearImageCacheFirst: Bool) async {
-        let nonce = generateCspNonce()
-        let html = htmlDocument.html(nonce: nonce, bodyContent: body)
+        let html = htmlDocument.html(bodyContent: body)
 
         if clearImageCacheFirst {
-            // Be selective in what needs to be cleared. Using `WKWebsiteDataStore.allWebsiteDataTypes()`
-            // could potentially bring issues (e.g. https://protonag.atlassian.net/browse/ET-5047)
             let cachedImageTypes: Set<String> = [WKWebsiteDataTypeMemoryCache]
             await websiteDataStore.removeData(ofTypes: cachedImageTypes, modifiedSince: .distantPast)
         }

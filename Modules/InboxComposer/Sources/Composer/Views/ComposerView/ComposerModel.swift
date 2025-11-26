@@ -82,7 +82,6 @@ final class ComposerModel: ObservableObject {
     private var updateBodyDebounceTask: DebouncedTask?
 
     private var inlineAttachmentsTransformed = Set<String>()
-    private var updateBodyWasCalled: Bool = false  // var for debugging purposes ET-5047
     private var messageHasBeenSentOrScheduled: Bool = false
     private var composerWillDismiss: Bool = false
 
@@ -260,8 +259,6 @@ final class ComposerModel: ObservableObject {
     }
 
     func updateBody(value: String) {
-        if !updateBodyWasCalled { AppLogger.log(message: "updateBody called for the first time", category: .composer) }
-        updateBodyWasCalled = true
         guard !messageHasBeenSentOrScheduled else { return }
         debounce { [weak self] in  // FIXME: Move debounce to SDK
             guard let self else { return }
