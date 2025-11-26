@@ -791,9 +791,7 @@ extension MailboxModel {
 
         var labelAsSheetPresented: ActionSheetInput?
         var moveToSheetPresented: ActionSheetInput?
-
         var upsellPresented: UpsellScreenModel?
-        var onboardingUpsellPresented: OnboardingUpsellScreenModel?
 
         var confirmLink: Bool = true
         var nextMessageOnMove: NextMessageOnMove?

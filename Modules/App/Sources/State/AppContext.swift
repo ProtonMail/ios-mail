@@ -51,12 +51,15 @@ final class AppContext: Sendable, ObservableObject {
         errorSubject.eraseToAnyPublisher()
     }
 
+    var userDefaults: UserDefaults {
+        dependencies.userDefaults
+    }
+
     private var _mailSession: MailSession!
     private let dependencies: AppContext.Dependencies
     private let errorSubject = PassthroughSubject<Error, Never>()
     private var cancellables = Set<AnyCancellable>()
 
-    private(set) var userDefaults: UserDefaults!
     private var userDefaultsCleaner: UserDefaultsCleaner!
 
     @Published private(set) var sessionState = SessionState.noSession
@@ -75,7 +78,6 @@ final class AppContext: Sendable, ObservableObject {
         let apiConfig = ApiConfig.current
         let appDetails = AppDetails.mail
 
-        userDefaults = dependencies.userDefaults
         userDefaultsCleaner = .init(userDefaults: userDefaults)
 
         let params = MailSessionParamsFactory.make(origin: .app, apiConfig: apiConfig)

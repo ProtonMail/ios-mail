@@ -59,7 +59,6 @@ struct HomeScreen: View {
     private let userSession: MailUserSession
     private let mailSettingsLiveQuery: MailSettingLiveQuerying
     private let makeSidebarScreen: (@escaping (SidebarItem) -> Void) -> SidebarScreen
-    private let userDefaults: UserDefaults
     private let modalFactory: HomeScreenModalFactory
     private let notificationAuthorizationStore: NotificationAuthorizationStore
 
@@ -89,13 +88,13 @@ struct HomeScreen: View {
         )
         let newUpsellCoordinator = UpsellCoordinator(mailUserSession: userSession, configuration: .mail)
         _upsellCoordinator = .init(wrappedValue: newUpsellCoordinator)
-        self.userDefaults = appContext.userDefaults
+
         self.modalFactory = HomeScreenModalFactory(
             mailUserSession: userSession,
             accountAuthCoordinator: appContext.accountAuthCoordinator,
             upsellCoordinator: newUpsellCoordinator
         )
-        notificationAuthorizationStore = .init(userDefaults: userDefaults)
+        notificationAuthorizationStore = .init(userDefaults: appContext.userDefaults)
         _userAnalyticsConfigurator = .init(wrappedValue: .init(mailUserSession: userSession, analytics: analytics))
     }
 
@@ -106,10 +105,14 @@ struct HomeScreen: View {
             MailboxScreen(
                 mailSettingsLiveQuery: mailSettingsLiveQuery,
                 appRoute: appRoute,
-                notificationAuthorizationStore: notificationAuthorizationStore,
                 userSession: userSession,
-                userDefaults: userDefaults,
                 draftPresenter: composerCoordinator.draftPresenter
+            )
+            .introductionViews(
+                dependencies: .init(
+                    notificationAuthorizationStore: notificationAuthorizationStore,
+                    userDefaults: appContext.userDefaults
+                )
             )
             .environmentObject(composerCoordinator)
 

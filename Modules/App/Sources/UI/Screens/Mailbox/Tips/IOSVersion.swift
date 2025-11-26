@@ -16,6 +16,14 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 enum IOSVersion {
+    static var isIOS17: Bool {
+        if #available(iOS 18, *) {
+            false
+        } else {
+            true
+        }
+    }
+
     static var isIOS18: Bool {
         if #available(iOS 18, *) {
             if #unavailable(iOS 26) {

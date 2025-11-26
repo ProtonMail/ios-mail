@@ -190,8 +190,6 @@ private struct RootView: View {
 }
 
 private struct SessionTransitionScreen: View {
-    private let dummyUserDefaults = UserDefaults(suiteName: "transition")!
-
     var body: some View {
         ZStack {
             fakeMailboxScreen
@@ -204,11 +202,8 @@ private struct SessionTransitionScreen: View {
         MailboxScreen(
             mailSettingsLiveQuery: MailSettingsLiveQueryPreviewDummy(),
             appRoute: .initialState,
-            notificationAuthorizationStore: .init(userDefaults: dummyUserDefaults),
             userSession: .dummy,
-            userDefaults: dummyUserDefaults,
-            draftPresenter: .dummy(),
-            introductionPromptsDisabled: true
+            draftPresenter: .dummy()
         )
         .blur(radius: 5)
         .allowsHitTesting(false)
