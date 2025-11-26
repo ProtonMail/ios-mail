@@ -28,7 +28,7 @@ final class ContactPermissionsHandlerTests {
 
     init() {
         contactStoreSpy = .init()
-        sut = .init(permissionsHandler: contactStoreSpy)
+        sut = .init(contactStore: contactStoreSpy)
     }
 
     @Test
