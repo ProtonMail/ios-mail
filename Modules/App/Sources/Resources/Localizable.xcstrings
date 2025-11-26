@@ -2444,16 +2444,34 @@
             "value" : "Un inicio nuevo para sus cuentas"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uusi koti tileillesi"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Un nouvel accueil pour vos comptes"
+            "value" : "Un nouveau foyer pour vos comptes"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Una Nuova Casa per i tuoi Account"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "アカウントの新しいホーム"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "내 계정을 위한 새로운 보금자리"
           }
         },
         "nb" : {
@@ -2474,6 +2492,12 @@
             "value" : "Uma nova casa para suas contas"
           }
         },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O nouă casă pentru conturile personale"
+          }
+        },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2490,6 +2514,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hesaplarınız için yeni bir görünüm"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "账号管理功能搬到了新位置"
           }
         }
       }
@@ -5257,10 +5287,16 @@
             "value" : "Una firma adicional que aparece además de su firma de correo electrónico al ser enviada desde este dispositivo."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ylimääräinen allekirjoitus joka lisätään sähköpostin allekirjoitukseesi, kun viesti lähetetään tältä laitteelta."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Une signature supplémentaire qui apparaît en plus de votre signature de message lors de l'envoi depuis cet appareil."
+            "value" : "Une signature supplémentaire qui apparaît en plus de votre signature e-mail lorsque vous envoyez depuis cet appareil."
           }
         },
         "hu" : {
@@ -5339,6 +5375,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Додатковий підпис, який з’являється на додаток до вашого поштового підпису під час надсилання з цього пристрою."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "从此设备发送邮件时，你的邮箱签名后会附加一条额外签名"
           }
         }
       }
@@ -5633,6 +5675,12 @@
             "value" : "Apptilpasninger"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "App aanpassingen"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5673,6 +5721,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Персоналізація застосунку"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "应用自定义"
           }
         }
       }
@@ -7578,7 +7632,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "自动删除功能已关闭。回收站和垃圾邮件中的邮件将一直保留，直到您手动删除它们。"
+            "value" : "自动删除功能已关闭。回收站和垃圾邮件中的邮件会一直保留，直到您手动进行删除。"
           }
         },
         "zh-Hant" : {
@@ -8148,6 +8202,12 @@
             "value" : "Прихована копія: "
           }
         },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "密件抄送: "
+          }
+        },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
@@ -8522,6 +8582,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Заблокувати цю адресу"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "屏蔽此地址"
           }
         }
       }
@@ -9060,6 +9126,12 @@
             "state" : "translated",
             "value" : "Неможливо скасувати заплановане надсилання. Повідомлення вже надіслано."
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "无法取消定时发送，邮件已发出"
+          }
         }
       }
     },
@@ -9238,6 +9310,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Неможливо скасувати заплановане надсилання. Повідомлення було відхилено або вже надіслано."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "无法取消定时发送，邮件已被丢弃或已发送"
           }
         }
       }
@@ -9418,6 +9496,12 @@
             "state" : "translated",
             "value" : "Неможливо скасувати заплановане надсилання. Повідомлення не було заплановано."
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "无法取消定时发送，该邮件未被设为定时发送"
+          }
         }
       }
     },
@@ -9596,6 +9680,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Неможливо скасувати надсилання. Повідомлення було відхилено або вже надіслано."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "无法撤回发送，邮件已被丢弃或已发送"
           }
         }
       }
@@ -9776,6 +9866,12 @@
             "state" : "translated",
             "value" : "Копія: "
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "抄送: "
+          }
         }
       }
     },
@@ -9954,6 +10050,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Змінити основний пароль"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "更改主密码"
           }
         }
       }
@@ -10700,6 +10802,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Вибрані дії"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已选操作"
           }
         }
       }
@@ -12540,6 +12648,28 @@
               }
             }
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%#@arg1@"
+          },
+          "substitutions" : {
+            "arg1" : {
+              "argNum" : 1,
+              "formatSpecifier" : "lld",
+              "variations" : {
+                "plural" : {
+                  "other" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "会话已归档。"
+                    }
+                  }
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -12718,6 +12848,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Панель інструментів розмови"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "会话工具栏"
           }
         }
       }
@@ -13471,6 +13607,12 @@
             "state" : "translated",
             "value" : "Не вдалося заблокувати відправника"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "无法屏蔽发件人"
+          }
         }
       }
     },
@@ -13649,6 +13791,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Не вдалося перемістити до теки. Теку, можливо, було видалено або переміщено."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "无法移动到文件夹。文件夹可能已被删除或移动。"
           }
         }
       }
@@ -13829,6 +13977,12 @@
             "state" : "translated",
             "value" : "Не вдалося роздрукувати запитаний електронний лист"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "无法打印请求的电子邮件"
+          }
         }
       }
     },
@@ -13889,10 +14043,16 @@
             "value" : "No se pudo desbloquear al remitente"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lähettäjän estoa ei pystytty poistamaan"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Le déblocage de l'expéditeur n'a pas abouti."
+            "value" : "Impossible de débloquer l'expéditeur"
           }
         },
         "hu" : {
@@ -13971,6 +14131,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Не вдалося розблокувати відправника"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "无法解除屏蔽发件人"
           }
         }
       }
@@ -15099,6 +15265,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Налаштувати панелі інструментів"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "自定义工具栏"
           }
         }
       }
@@ -18182,6 +18354,12 @@
             "state" : "translated",
             "value" : "Змінити дії"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "编辑操作"
+          }
         }
       }
     },
@@ -18209,7 +18387,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Redigér og omplanlæg"
+            "value" : "Rediger og omplanlæg"
           }
         },
         "de" : {
@@ -18400,7 +18578,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rediger kladde"
+            "value" : "Redigér kladde"
           }
         },
         "de" : {
@@ -18743,6 +18921,12 @@
             "state" : "translated",
             "value" : "Редагувати панель інструментів списку"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "编辑列表工具栏"
+          }
         }
       }
     },
@@ -18770,7 +18954,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rediger besked"
+            "value" : "Redigér besked"
           }
         },
         "de" : {
@@ -19107,6 +19291,12 @@
             "state" : "translated",
             "value" : "Редагувати панель інструментів повідомлення"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "编辑消息工具栏"
+          }
         }
       }
     },
@@ -19285,6 +19475,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Змінити панель інструментів"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "编辑工具栏"
           }
         }
       }
@@ -19546,7 +19742,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Signature de message"
+            "value" : "Signature d'e-mail"
           }
         },
         "hu" : {
@@ -19625,6 +19821,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Поштовий підпис"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "电子邮件签名"
           }
         }
       }
@@ -20426,6 +20628,12 @@
             "value" : "Disfrute de mensajes cifrados, menos spam, protección contra suplantaciones y rastreadores bloqueados. Le damos la bienvenida a la privacidad."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nauti salatuista viesteistä, vähemmästä roskapostista, kalastelusuojauksesta ja estetyistä seurauksia. Yksityisyys toivottaa sinut tervetulleeksi."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -20466,6 +20674,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kos deg over krypterte meldinger, færre søppelpost, beskyttelse mot nettfisking og blokkerte sporere. Velkommen til personvern."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geniet van versleutelde berichten, minder spam, bescherming tegen phishing, en geblokkeerde trackers. Welkom bij privacy."
           }
         },
         "pl" : {
@@ -22697,7 +22911,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "如果 Proton 网站被屏蔽，应用程序可以尝试其他网络路径来访问这些网站。它可以帮助绕过防火墙或连接问题。我们建议将其开启，以提高可靠性。"
+            "value" : "如果 Proton 站点被屏蔽，此功能可让应用尝试通过其他网络路径访问。此功能有助于绕过防火墙或连接问题，我们建议您保持其开启状态以提升可靠性。"
           }
         },
         "zh-Hant" : {
@@ -23961,7 +24175,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Problem med at opdatere Deres konto. Log venligst ind igen."
+            "value" : "Problem med at opdatere din konto. Log ind igen."
           }
         },
         "de" : {
@@ -25060,7 +25274,99 @@
       }
     },
     "Load images" : {
-      "comment" : "Action to load image without proxy."
+      "comment" : "Action to load image without proxy.",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Загрузка відарысаў"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Carrega les imatges"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Načíst obrázky"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Indlæs billeder"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bilder laden"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Φόρτωση εικόνων"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Load images"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cargar imágenes"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cargar imágenes"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lataa kuvat"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Charger les images"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Afbeeldingen laden."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Încărcare imagini"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ladda in bilder"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Görselleri yükle"
+          }
+        }
+      }
     },
     "Loading your mailbox..." : {
       "comment" : "Text shown when user session is being initialized.",
@@ -31196,7 +31502,99 @@
       }
     },
     "No address with sending permissions" : {
-      "comment" : "Error toast shown when trying to open the composer without a valid sending address."
+      "comment" : "Error toast shown when trying to open the composer without a valid sending address.",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Адсутнічае адрас з дазволамі на адпраўку"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No hi ha cap adreça amb permisos d'enviament"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Žádná adresa s oprávněním odesílat"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ingen adresse med tilladelser til afsendelse"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keine E-Mail-Adresse mit Sendeberechtigungen"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Δεν υπάρχει διεύθυνση με δικαιώματα αποστολής"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No address with sending permissions"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No hay dirección con permisos de envío"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No hay dirección con permisos de envío"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ei osoitetta, jolla on lähetysoikeudet"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aucune adresse ne dispose de permissions d’envoi."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geen adres met verzendmachtiging."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nicio adresă cu permisiuni de trimitere."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ingen adress med behörighet att skicka"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gönderme izni olan bir e-posta adresi yok"
+          }
+        }
+      }
     },
     "No matches" : {
       "comment" : "Search result is empty title",
@@ -32368,7 +32766,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Meddelelser"
+            "value" : "Notifikationer"
           }
         },
         "de" : {
@@ -34884,6 +35282,12 @@
             "value" : "Primær"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Primair"
+          }
+        },
         "pl" : {
           "stringUnit" : {
             "state" : "translated",
@@ -35752,7 +36156,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Lisez, écrivez et gérez des messages où que vous soyez. Tout se synchronise automatiquement dès que vous êtes de nouveau en ligne."
+            "value" : "Lisez, rédigez et gérez vos e-mails où que vous soyez. Tout se synchronise automatiquement dès que vous êtes de nouveau en ligne."
           }
         },
         "hu" : {
@@ -39781,7 +40185,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "正在发送.."
+            "value" : "正在发送..."
           }
         },
         "zh-Hant" : {
@@ -40416,10 +40820,16 @@
             "value" : "Mostrar mensajes de la papelera en esta conversación."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Näytä keskustelun ei roskakorissa olevat viestit."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Montrer les messages non supprimés dans cette conversation."
+            "value" : "Afficher les messages non supprimés dans cette conversation."
           }
         },
         "hu" : {
@@ -40458,6 +40868,12 @@
             "value" : "Vis meldinger som ikke er i søppelkurven i denne samtalen."
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toon niet-verwijderde berichten in dit gesprek."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -40474,6 +40890,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zobraziť správy, ktoré nie sú v koši, v tejto konverzácii."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Visa ej kastade meddelanden i denna konversation."
           }
         },
         "tr" : {
@@ -40553,10 +40975,16 @@
             "value" : "Mostrar mensajes de la papelera en esta conversación."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Näytä keskustelun roskakoriin siirretyt viestit."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Montrer les messages mis à la corbeille dans cette conversation."
+            "value" : "Afficher les messages mis à la corbeille dans cette conversation."
           }
         },
         "hu" : {
@@ -40593,6 +41021,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vis meldinger i papirkurven i denne samtalen."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toon berichten in de Prullenbak in dit gesprek."
           }
         },
         "pt-BR" : {
@@ -42680,7 +43114,99 @@
       }
     },
     "Some images failed to load with tracker protection." : {
-      "comment" : "Banner informing the user about an error loading images in a message."
+      "comment" : "Banner informing the user about an error loading images in a message.",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не ўдалося загрузіць некаторыя відарысы з абаронай ад сачэння."
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Algunes imatges no s'han pogut carregar amb protecció de rastrejadors."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Některé obrázky se nepodařilo načíst kvůli ochrany před sledovacími prvky."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nogle billeder kunne ikke indlæses med sporingsbeskyttelse."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Einige Bilder konnten mit Tracker-Schutz nicht geladen werden."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ορισμένες εικόνες απέτυχαν να φορτωθούν με προστασία ιχνηλάτη."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Some images failed to load with tracker protection."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Algunas imágenes no se cargaron por la protección contra rastreo."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Algunas imágenes no se cargaron por la protección contra rastreo."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Joidenkin kuvien lataus epäonnistui seurantasuojauksen vuoksi."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Certaines images n'ont pas pu être chargées avec la protection contre le suivi."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sommige afbeeldingen konden niet worden geladen door tracker bescherming."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Încărcarea unor imagini a eșuat cu protecția de urmărire activată."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Några bilder misslyckades att laddas in med spårningsskydd."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "İzleyici koruması nedeniyle bazı görseller yüklenemedi"
+          }
+        }
+      }
     },
     "Spam" : {
       "comment" : "Menu title of all emails marked as spam in the sidebar.",
@@ -44938,7 +45464,13 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "¡El selector de cuentas se ha movido! Ahora puede cambiar de cuenta, cerrar sesión - todo desde un mejor lugar."
+            "value" : "¡El selector de cuentas se ha movido! Ahora puede cambiar de cuenta y cerrar sesión todo desde un mejor lugar."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tilinn vaihtaja on siirtynyt. Voit nyt vaihtaa tiliä, kirjautua ulos - kaikki samasta kätevästä paikasta."
           }
         },
         "fr" : {
@@ -44947,10 +45479,22 @@
             "value" : "Le sélecteur de compte a été déplacé ! Vous pouvez maintenant changer de compte, vous déconnecter, le tout depuis un emplacement unique et pratique."
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Il selettore dell'account si è spostato! Ora puoi cambiare account, disconnetterti, tutto da un'unica comoda posizione."
+          }
+        },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "アカウント切替機能が移動しました！アカウントの切り替えやログアウトが、すべて一箇所で便利に行えるようになりました。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "계정 전환 버튼이 이동되었어요! 이제 편리한 하나의 장소에서 계정을 전환하고 로그아웃 해보세요."
           }
         },
         "nb" : {
@@ -44963,6 +45507,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Het wisselen van accounts is verplaatst! U kunt nu accounts wisselen, uitloggen - alles vanuit één handige plek."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "O seletor de contas mudou de lugar! Agora você pode alternar entre contas e encerrar sessão da sua conta, tudo em um único local conveniente."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Comutatorul de cont s-a mutat! Acum puteți schimba conturile, vă puteți deconecta – toate dintr-un singur loc convenabil."
           }
         },
         "sk" : {
@@ -45338,7 +45894,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "打开带有大附件的电子邮件时，邮箱程序将会崩溃。"
+            "value" : "应用程序在打开有大附件的电子邮件时崩溃。"
           }
         },
         "zh-Hant" : {
@@ -46460,7 +47016,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "此栏位必须输入超过10个字符"
+            "value" : "字段长度必须超过 10 个字符"
           }
         },
         "zh-Hant" : {
@@ -49822,6 +50378,12 @@
             "value" : "Desbloquear esta dirección"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Poista tämän osoitteen esto"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -51783,7 +52345,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "升级账户即可自动删除归入垃圾邮件或回收站超过 30 天的邮件。"
+            "value" : "升级账户即可自动删除归入垃圾邮件及回收站中超过 30 天的邮件。"
           }
         },
         "zh-Hant" : {
@@ -54372,7 +54934,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Du skal være online for at redigér planlagte beskeder"
+            "value" : "Du skal være online for at redigere planlagte beskeder"
           }
         },
         "de" : {
@@ -54779,6 +55341,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Su firma de correo se añadirá automaticamente a todos los correos electrónicos que envíe."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sähkopostiosoitteesi allekirjoituksesi, joka lisätään automaattisesti kaikkiin lähettämiisi sähköposteihin."
           }
         },
         "fr" : {

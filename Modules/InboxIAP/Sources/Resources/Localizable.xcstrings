@@ -1337,7 +1337,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bedste tilbud"
+            "value" : "Bedste værdi"
           }
         },
         "de" : {
@@ -2820,6 +2820,12 @@
             "value" : "Los descuentos se basan en el precio mensual estándar. Se renueva automáticamente por %1$@ /%2$@ hasta que se cancele."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alennukset perustuvat kuukausittaisiin standardihintoihin. Uudistuu %1$@ /%2$@ kunnes perutaan."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2878,6 +2884,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zľavy sú založené na štandardných mesačných cenách. Automaticky sa obnoví za %1$@/%2$@, kým nebude zrušené."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rabatter är baserade på ordinarie månadspriser. Förnyas automatiskt för %1$@ /%2$@ tills det avbryts."
           }
         },
         "tr" : {
@@ -4304,6 +4316,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "kun %@/måned"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "slechts %@ /maand"
           }
         },
         "pt-BR" : {
@@ -5854,7 +5872,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Posposeu-lo — i feu que es lliuri més tard.  Gaudiu d'això i més amb %@."
+            "value" : "Ajorneu-lo i entregueu-lo més tard. Gaudiu d'això i més amb %@."
           }
         },
         "cs" : {

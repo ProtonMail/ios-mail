@@ -4050,6 +4050,12 @@
             "value" : "No se puede cargar el adjunto porque el almacenamiento está lleno. Libere espacio o mejore su plan."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Liitettä ei pystytä lataamaan, koska Proton Mail -tallennustilasi on täynnä. Vapauta tilaa tai päivitä tilauksesi."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5831,7 +5837,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Redigér adgangskode"
+            "value" : "Rediger adgangskode"
           }
         },
         "de" : {
@@ -9176,6 +9182,12 @@
             "value" : "El mensaje es demasiado grande para enviarlo. Reduzca el tamaño de los archivos adjuntos."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Viesti on liian suuri lähetettäväksi. Vähennä liitteitesi kokoa."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -10811,6 +10823,12 @@
             "value" : "Ninguno de los destinatarios admite la expiración por defecto. Añada una contraseña para activar la expiración a todos los destinatarios que no son de Proton Mail."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yksikään vastaanottaja ei tue oletuksena viestien katoamista. Lisää salasana, jotta voit tehdä viestistä katoavan Proton Mailin ulkopuolisille vastaanottajille."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12198,7 +12216,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hi ha hagut un problema en xifrar el fitxer adjunt. Torneu-lo a pujar."
+            "value" : "Hi ha hagut un problema en xifrar el fitxer adjunt. Torneu-lo a carregar."
           }
         },
         "cs" : {
@@ -13833,7 +13851,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "L'hora d'enviament programada és en el passat. Aneu a Esborranys per enviar-lo o reprogramar-lo."
+            "value" : "L'hora d'enviament planificada és en el passat. Aneu als esborranys per a enviar-lo o replanificar-lo."
           }
         },
         "cs" : {
@@ -16874,6 +16892,12 @@
             "value" : "No se pudo actualizar la disposición del adjunto, intente de nuevo."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Liitettä ei voitu päivittää, yritä uudestaan"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -17533,7 +17557,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hi ha un límit de 25 MB per als fitxers adjunts per correu electrònic, incloses les imatges inserides, i no s'han pogut afegir %lld fitxers adjunts. Envieu-los en correus electrònics separats o compartiu-los mitjançant Proton Drive."
+            "value" : "Hi ha un límit de 25 MB per fitxers adjunts per correu electrònic, incloses les imatges inserides, i no s'han pogut afegir %lld fitxers adjunts. Envieu-los en correus electrònics separats o compartiu-los mitjançant Proton Drive."
           }
         },
         "cs" : {
@@ -17578,6 +17602,18 @@
             "value" : "Hay un límite de 25 MB en los archivos adjuntos por correo electrónico, incluidas las imágenes incrustadas y %lld archivos adjuntos no se pudieron añadir. Envíelos en correos electrónicos separados o compártalos con Proton Drive."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sähköpostiliitteiden enimmäiskoko on 25 Mt per viesti, sisältäen tekstinsisäiset kuvat, eikä %lld liitettä kyetty lisäämään. Lähetä ne erillisissä viesteissä tai jaa ne Proton Driven kautta."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Il y a une limite de 25 Mo pour les pièces jointes par e-mail, images comprises, et %lld pièces jointes n'ont pas pu être ajoutées. Envoyez-les dans des e-mails séparés ou partagez-les avec Proton Drive."
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -17588,6 +17624,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%lld添付ファイルを追加できません。添付ファイルの最大サイズはメール1通あたり25MBです（インライン画像含む）。複数のメールに分割するか、Proton Driveで共有してください。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "인라인 이미지를 포함한 이메일당 첨부 파일 용량은 25 MB로 제한되며, %lld개의 첨부 파일을 추가할 수 없었습니다. 별도의 이메일로 보내거나 Proton Drive를 통해 공유해 주세요."
           }
         },
         "nb" : {
@@ -17628,7 +17670,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hi ha un límit de 25 MB per als fitxers adjunts per correu electrònic, incloses les imatges inserides. Envieu-los en correus electrònics separats o compartiu-los mitjançant Proton Drive."
+            "value" : "Hi ha un límit de 25 MB per fitxers adjunts per correu electrònic, incloses les imatges inserides. Envieu-los en correus electrònics separats o compartiu-los mitjançant Proton Drive."
           }
         },
         "cs" : {
@@ -17673,6 +17715,12 @@
             "value" : "Hay un límite de 25 MB en los archivos adjuntos por correo electrónico, incluidas las imágenes incrustadas. Envíelos en correos electrónicos separados o compártalos con Proton Drive."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sähköpostiliitteiden enimmäiskoko on 25 Mt per viesti, sisältäen tekstinsisäiset kuvat. Lähetä ne erillisissä viesteissä tai jaa ne Proton Driven kautta."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -17689,6 +17737,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "メール1通あたりの添付ファイル（インライン画像を含む）は25MBまでです。別々のメールで送信するか、Proton Driveで共有してください。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이메일당 첨부 파일은 인라인 이미지를 포함하여 25 MB로 제한됩니다. 별도의 이메일로 보내거나 Proton Drive를 통해 공유해 주세요."
           }
         },
         "nb" : {
@@ -18201,7 +18255,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "받는 이:"
+            "value" : "받는사람:"
           }
         },
         "nb" : {
@@ -19036,7 +19090,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hi ha un límit de 25 MB per als fitxers adjunts per correu electrònic, incloses les imatges inserides. Envieu-los en correus electrònics separats o compartiu-los mitjançant Proton Drive."
+            "value" : "Heu arribat al límit d'adjunts, incloent-hi les imatges en línia, i no s'han pogut afegir 1 o més adjunts. Envieu-los en correus electrònics separats o compartiu-los a través del Proton Drive."
           }
         },
         "cs" : {
@@ -19081,6 +19135,12 @@
             "value" : "Alcanzó el límite de archivos adjuntos, incluidas las imágenes incrustadas y no se pudieron añadir uno o más archivos adjuntos. Envíelos en correos electrónicos separados o compártalos con Proton Drive."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Olet saauttanut liitteiden enimmäismäärän, sisältäen tekstinsisäiset kuvat, eikä yhtä tai useampaa kuvaa kyetty lisäämään. Lähetä ne erillisillä viesteissä tai jaa ne Proton Driven kautta."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -19097,6 +19157,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "添付ファイル（インライン画像を含む）の上限に達したため、 1つ以上の添付ファイルを追加できませんでした。 複数のメールに分割するか、Proton Driveで共有してください。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "인라인 이미지를 포함한 첨부 파일 개수 한도에 도달하여, 하나 이상의 첨부 파일을 추가할 수 없었습니다. 별도의 이메일로 보내거나 Proton Drive를 통해 공유하세요."
           }
         },
         "nb" : {
