@@ -19,7 +19,6 @@ import InboxDesignSystem
 import UIKit
 
 enum ComposerSubviewFactory {
-
     static var regularFieldStack: UIStackView {
         let view = UIStackView()
         view.translatesAutoresizingMaskIntoConstraints = false

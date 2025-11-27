@@ -21,7 +21,6 @@ import Testing
 @testable import InboxComposer
 
 struct DateRoundedUpTests {
-
     @Test
     func roundedUp_whenAppliesBuffer_andRounds_itReturnsCorrectResult() throws {
         let referenceDate = Date(timeIntervalSince1970: 1_700_000_000)  // Nov 14, 2023, 22:13:20 UTC

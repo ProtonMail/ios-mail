@@ -44,9 +44,7 @@ final class AppUIStateStore: ObservableObject {
 }
 
 extension AppUIStateStore.SidebarState {
-
     static var initial: Self {
         .init(zIndex: .zero, visibleWidth: .zero)
     }
-
 }

@@ -20,15 +20,12 @@ import InboxCoreUI
 import proton_app_uniffi
 
 extension AttachmentMetadata {
-
     func toAttachmentCapsuleUIModel() -> AttachmentCapsuleUIModel {
         .init(id: id, icon: mimeType.category.icon, name: name)
     }
-
 }
 
 extension Array where Element == AttachmentMetadata {
-
     func toAttachmentCapsuleUIModels() -> [AttachmentCapsuleUIModel] {
         filter(\.isListable).map { metadata in metadata.toAttachmentCapsuleUIModel() }
     }
@@ -36,5 +33,4 @@ extension Array where Element == AttachmentMetadata {
     var hasICS: Bool {
         contains { metadata in metadata.mimeType.category == .calendar }
     }
-
 }

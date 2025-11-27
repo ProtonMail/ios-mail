@@ -22,9 +22,7 @@ extension RsvpAttendee: @retroactive Copying {}
 extension RsvpEvent: @retroactive Copying {}
 
 extension RsvpEventService: @retroactive Equatable {
-
     public static func == (lhs: RsvpEventService, rhs: RsvpEventService) -> Bool {
         ObjectIdentifier(lhs) == ObjectIdentifier(rhs)
     }
-
 }

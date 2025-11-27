@@ -276,7 +276,6 @@ final class DraftPresenterTests: BaseTestCase, @unchecked Sendable {
 }
 
 extension DraftPresenterTests {
-
     @MainActor
     func makeSUT(
         stubbedNewDraftResult: NewDraftResult = .ok(.dummyDraft),
@@ -366,7 +365,6 @@ private class ComposerRecipientListSpy: ComposerRecipientList, @unchecked Sendab
 }
 
 extension DraftToPresent: @retroactive Equatable {
-
     public static func == (lhs: ProtonMail.DraftToPresent, rhs: ProtonMail.DraftToPresent) -> Bool {
         switch (lhs, rhs) {
         case (.new(let leftDraft), .new(let rightDraft)):
@@ -377,5 +375,4 @@ extension DraftToPresent: @retroactive Equatable {
             return false
         }
     }
-
 }

@@ -22,7 +22,6 @@ import proton_app_uniffi
 @testable import InboxComposer
 
 struct DraftExpirationTimeTests {
-
     @Test
     func isCustomDate_whenCustomCase_itShouldReturnTrue() {
         let timestamp = UnixTimestamp(Date().timeIntervalSince1970)

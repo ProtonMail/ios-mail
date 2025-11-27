@@ -138,7 +138,6 @@ public struct PINLockScreen: View {
         )
         .buttonStyle(BigButtonStyle())
     }
-
 }
 
 #Preview {

@@ -141,7 +141,6 @@ struct MessageBodyReaderView: UIViewRepresentable {
 }
 
 extension MessageBodyReaderView {
-
     class Coordinator: NSObject, WKNavigationDelegate, WKScriptMessageHandler, WKUIDelegate {
         let parent: MessageBodyReaderView
         var urlOpener: URLOpenerProtocol?

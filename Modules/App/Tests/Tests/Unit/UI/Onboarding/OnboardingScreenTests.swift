@@ -23,7 +23,6 @@ import XCTest
 
 @MainActor
 class OnboardingScreenTests: BaseTestCase {
-
     private var sut: OnboardingScreen!
     private var dismissSpy: DismissSpy!
 
@@ -136,11 +135,9 @@ class OnboardingScreenTests: BaseTestCase {
 
         wait(for: [expectation], timeout: 0.1)
     }
-
 }
 
 private extension InspectableView where View == ViewType.View<OnboardingScreen> {
-
     func simulateTapOnNext() throws {
         try find(button: L10n.Onboarding.nextButtonTitle.string).tap()
     }
@@ -153,5 +150,4 @@ private extension InspectableView where View == ViewType.View<OnboardingScreen> 
         let dotsIndexView = try find(OnboardingDotsIndexView.self)
         try dotsIndexView.find(viewWithId: index).callOnTapGesture()
     }
-
 }

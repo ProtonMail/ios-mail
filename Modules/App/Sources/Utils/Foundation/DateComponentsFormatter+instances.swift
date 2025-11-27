@@ -18,7 +18,6 @@
 import Foundation
 
 extension DateComponentsFormatter {
-
     static let remainingTimeFromNowFormatter: DateComponentsFormatter = {
         let formatter = DateComponentsFormatter()
         formatter.allowedUnits = [.year, .month, .day, .hour, .minute, .second]

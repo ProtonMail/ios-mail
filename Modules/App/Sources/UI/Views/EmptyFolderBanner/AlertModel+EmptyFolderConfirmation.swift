@@ -19,7 +19,6 @@ import InboxCoreUI
 import proton_app_uniffi
 
 extension AlertModel {
-
     static func emptyFolderConfirmation(
         folder: SpamOrTrash,
         action: @escaping (DeleteConfirmationAlertAction) async -> Void
@@ -34,5 +33,4 @@ extension AlertModel {
             actions: actions
         )
     }
-
 }

@@ -23,7 +23,6 @@ enum MailboxItemType {
 }
 
 extension MailboxItemType {
-
     var mailboxItem: MailboxItem {
         switch self {
         case .conversation:
@@ -32,5 +31,4 @@ extension MailboxItemType {
             .message(isLastMessageInCurrentLocation: false)
         }
     }
-
 }

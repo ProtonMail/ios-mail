@@ -25,7 +25,6 @@ import XCTest
 
 @MainActor
 class MailboxScreenTests: BaseTestCase {
-
     private var sut: MailboxScreen!
     private var userDefaults: UserDefaults!
 
@@ -118,11 +117,9 @@ class MailboxScreenTests: BaseTestCase {
 
         wait(for: [expectation], timeout: 0.1)
     }
-
 }
 
 private extension InspectableView where View == ViewType.View<MailboxScreen> {
-
     func onboardingScreen() throws -> InspectableView<ViewType.View<OnboardingScreen>> {
         try find(OnboardingScreen.self)
     }
@@ -130,5 +127,4 @@ private extension InspectableView where View == ViewType.View<MailboxScreen> {
     func onboardingSheet() throws -> InspectableView<ViewType.Sheet> {
         try navigationStack().zStack().sheet()
     }
-
 }

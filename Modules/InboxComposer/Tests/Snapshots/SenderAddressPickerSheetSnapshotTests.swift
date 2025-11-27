@@ -23,7 +23,6 @@ import InboxTesting
 
 @MainActor
 final class SenderAddressPickerSheetSnapshotTests: BaseTestCase {
-
     func testSenderAddressPickerSheet_itLayoutsCorrectOnIphoneX() throws {
         let mockHandler = MockChangeSenderHandler()
         let sut = SenderAddressPickerSheet(

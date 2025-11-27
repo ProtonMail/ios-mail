@@ -23,7 +23,6 @@ import Testing
 
 @MainActor
 final class OnboardingDotsIndexViewSnapshotTests {
-
     @Test
     func testOnboardingDotsIndexView_With5PagesAnd5thSelected_LayoutsCorrectly() {
         let sut = OnboardingDotsIndexView(pagesCount: 5, selectedPageIndex: 4)
@@ -44,13 +43,10 @@ final class OnboardingDotsIndexViewSnapshotTests {
 
         assertSelfSizingSnapshot(of: sut)
     }
-
 }
 
 private extension OnboardingDotsIndexView {
-
     init(pagesCount: Int, selectedPageIndex: Int) {
         self.init(pagesCount: pagesCount, selectedPageIndex: selectedPageIndex, onTap: { _ in })
     }
-
 }

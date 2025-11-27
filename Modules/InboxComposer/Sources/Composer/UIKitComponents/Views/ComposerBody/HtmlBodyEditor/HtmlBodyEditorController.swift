@@ -165,7 +165,6 @@ final class HtmlBodyEditorController: UIViewController, BodyEditor {
 }
 
 extension HtmlBodyEditorController: WKNavigationDelegate {
-
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         Task { await initialFocusState.bodyWasLoaded() }
         Task { await htmlInterface.logHtmlHealthCheck(tag: "webView.didFinish") }
@@ -177,9 +176,7 @@ extension HtmlBodyEditorController: WKNavigationDelegate {
 }
 
 extension HtmlBodyEditorController {
-
     enum SubviewFactory {
-
         static func webView(imageProxy: ImageProxy) -> WKWebView {
             let config = WKWebViewConfiguration.default(
                 handler: UniversalSchemeHandler.init(imageProxy: imageProxy, imagePolicy: .safe)
@@ -196,7 +193,6 @@ extension HtmlBodyEditorController {
 }
 
 private class WKWebViewWithNoAccessoryView: WKWebView {
-
     override var inputAccessoryView: UIView? {
         return nil
     }

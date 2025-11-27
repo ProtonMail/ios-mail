@@ -112,7 +112,6 @@ struct AppProtectionSelectionScreen: View {
             }
         )
     }
-
 }
 
 #Preview {
@@ -133,7 +132,6 @@ struct AppProtectionSelectionScreen: View {
 }
 
 private extension AppProtectionSelectionState {
-
     var shouldShowAutoLockButton: Bool {
         currentProtection != .none
     }
@@ -141,5 +139,4 @@ private extension AppProtectionSelectionState {
     var shouldShowChangePINButton: Bool {
         currentProtection == .pin
     }
-
 }

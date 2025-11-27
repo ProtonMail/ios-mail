@@ -20,7 +20,6 @@ import SwiftUI
 import UIKit
 
 enum ViewsFactory {
-
     static func label(text: String? = nil, font: UIFont, textColor: Color) -> UILabel {
         let label = UILabel()
         label.text = text
@@ -39,5 +38,4 @@ enum ViewsFactory {
 
         return stackView
     }
-
 }

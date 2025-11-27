@@ -19,7 +19,6 @@ import Foundation
 import XCTest
 
 final class WelcomeRobot: Robot {
-
     func verifyIsDisplayed() {
         let timeout: TimeInterval = 10
         XCTAssert(

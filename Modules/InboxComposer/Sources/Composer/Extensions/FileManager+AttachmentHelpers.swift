@@ -18,7 +18,6 @@
 import Foundation
 
 extension FileManager {
-
     /**
      Copies the given `file` to `destinationFolder`. If a file with the same name exists, it creates a unique file name using `uniqueFileNameURL(in folder:,baseName:,fileExtension:)`
      */

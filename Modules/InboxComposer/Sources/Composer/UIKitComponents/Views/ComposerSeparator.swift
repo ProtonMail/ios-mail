@@ -19,7 +19,6 @@ import InboxDesignSystem
 import UIKit
 
 final class ComposerSeparator: UIView {
-
     init() {
         super.init(frame: .zero)
         backgroundColor = DS.Color.Border.light.toDynamicUIColor

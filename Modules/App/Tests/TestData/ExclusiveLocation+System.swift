@@ -20,7 +20,6 @@ import proton_app_uniffi
 @testable import ProtonMail
 
 extension ExclusiveLocation {
-
     static func system(_ systemLabel: SystemLabel) -> Self {
         .system(name: systemLabel, id: .random())
     }

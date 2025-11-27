@@ -34,7 +34,6 @@ struct CreateFolderOrLabelScreen: View {
                 .accessibilityIdentifier(SidebarWebViewScreenIdentifiers.rootItem(forPage: .createFolderOrLabel))
         }
     }
-
 }
 
 private struct SidebarWebViewScreenIdentifiers {

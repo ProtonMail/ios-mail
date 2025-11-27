@@ -30,7 +30,6 @@ import proton_app_uniffi
 
 @MainActor
 class HomeScreenTests: BaseTestCase {
-
     private var sut: HomeScreen!
     private var userDefaults: UserDefaults!
 
@@ -133,11 +132,9 @@ class HomeScreenTests: BaseTestCase {
             .sidebarScreenWithInjectedEnvironmentObjects(appUIStateStore, toastStateStore)
             .inspect()
     }
-
 }
 
 private extension InspectableView where View == ViewType.View<HomeScreen> {
-
     func mailboxScreenWithInjectedEnvironmentObjects(
         _ appUIStateStore: AppUIStateStore,
         _ toastStateStore: ToastStateStore
@@ -165,11 +162,9 @@ private extension InspectableView where View == ViewType.View<HomeScreen> {
 
         return sidebarScreenView
     }
-
 }
 
 private extension InspectableView where View == ViewType.ClassifiedView {
-
     func simulateTapOnHamburgerMenu() throws {
         let hamburgerAnyView = try find(viewWithAccessibilityIdentifier: "main.toolbar.hamburgerButton")
         let hamburgerButton = try hamburgerAnyView.button()
@@ -182,11 +177,9 @@ private extension InspectableView where View == ViewType.ClassifiedView {
 
         try logoutButton.tap()
     }
-
 }
 
 private extension MailUserSession {
-
     static func testInstance() async throws -> MailUserSession {
         let appContext = AppContext.shared
 
@@ -241,5 +234,4 @@ private extension MailUserSession {
             throw error
         }
     }
-
 }

@@ -21,12 +21,10 @@ import Testing
 @testable import ProtonMail
 
 struct SnoozeDatePickerConfigurationTests {
-
     @Test(.currentDate(.fixture("2025-02-07 09:32:00")))
     func datePicker_ShouldStartFromCurrentDateRoundedUpToNextHalfHour() {
         let sut = SnoozeDatePickerConfiguration()
 
         #expect(sut.range.lowerBound == .fixture("2025-02-07 10:00:00"))
     }
-
 }

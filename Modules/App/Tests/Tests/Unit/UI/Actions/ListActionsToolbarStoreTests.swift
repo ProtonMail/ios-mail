@@ -25,7 +25,6 @@ import proton_app_uniffi
 
 @MainActor
 class ListActionsToolbarStoreTests {
-
     var sut: ListActionsToolbarStore!
     var invokedAvailableMessageActionsWithIDs: [[ID]]!
     var stubbedAvailableMessageActions: AllListActions!
@@ -307,11 +306,9 @@ class ListActionsToolbarStoreTests {
             toastStateStore: toastStateStore
         )
     }
-
 }
 
 private extension AllListActions {
-
     static var testData: Self {
         .init(
             hiddenListActions: [
@@ -322,13 +319,10 @@ private extension AllListActions {
             visibleListActions: [.markRead, .star, .moveTo, .labelAs, .more]
         )
     }
-
 }
 
 extension MovableSystemFolderAction {
-
     static var testInbox: Self {
         .init(localId: .init(value: 999), name: .inbox)
     }
-
 }

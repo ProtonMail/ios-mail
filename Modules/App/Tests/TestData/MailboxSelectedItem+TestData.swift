@@ -18,9 +18,7 @@
 @testable import ProtonMail
 
 extension MailboxSelectedItem {
-
     static func testData(id: UInt64, isRead: Bool = .random(), isStarred: Bool = .random()) -> Self {
         .init(id: .init(value: id), isRead: isRead, isStarred: isStarred)
     }
-
 }

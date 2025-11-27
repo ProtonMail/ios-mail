@@ -20,7 +20,6 @@ import proton_app_uniffi
 @testable import ProtonMail
 
 final class AppSettingsRepositorySpy: AppSettingsRepository {
-
     var stubbedAppSettings: AppSettings = .init(
         appearance: .lightMode,
         protection: .pin,
@@ -41,5 +40,4 @@ final class AppSettingsRepositorySpy: AppSettingsRepository {
 
         return .ok
     }
-
 }

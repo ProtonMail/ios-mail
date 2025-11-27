@@ -20,17 +20,13 @@ import proton_app_uniffi
 import struct SwiftUI.Color
 
 extension InlineCustomLabel {
-
     var toLabelUIModel: LabelUIModel {
         .init(labelId: id, text: name, color: Color(hex: color.value))
     }
-
 }
 
 extension Array where Element == InlineCustomLabel {
-
     func toMailboxLabelUIModel() -> MailboxLabelUIModel {
         .init(labelModels: map(\.toLabelUIModel))
     }
-
 }

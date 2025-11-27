@@ -16,7 +16,6 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 extension InstanceHelper {
-
     static func create<Object: AnyObject>(_ class: Object.Type, properties: [String: Any] = [:]) throws -> Object {
         guard let instance = InstanceHelper.createInstance(`class`, properties: properties) as? Object else {
             throw NSError(
@@ -28,5 +27,4 @@ extension InstanceHelper {
 
         return instance
     }
-
 }

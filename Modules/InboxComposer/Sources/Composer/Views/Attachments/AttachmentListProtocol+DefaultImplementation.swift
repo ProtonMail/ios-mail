@@ -18,9 +18,7 @@
 import proton_app_uniffi
 
 extension AttachmentListProtocol {
-
     func add(path: String) async -> AttachmentListAddResult {
         await add(path: path, filenameOverride: nil)
     }
-
 }

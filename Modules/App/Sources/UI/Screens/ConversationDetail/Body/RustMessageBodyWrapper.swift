@@ -34,7 +34,6 @@ struct RustMessageBodyWrapper {
 }
 
 extension RustMessageBodyWrapper {
-
     static func productionInstance() -> Self {
         .init(
             messageBody: { mailbox, id in await getMessageBody(mbox: mailbox, id: id) },
@@ -42,5 +41,4 @@ extension RustMessageBodyWrapper {
             unblockSender: { mailbox, email in await unblockAddress(mailbox: mailbox, email: email) }
         )
     }
-
 }

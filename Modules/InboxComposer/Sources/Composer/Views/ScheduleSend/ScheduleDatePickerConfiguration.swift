@@ -50,5 +50,4 @@ struct ScheduleDatePickerConfiguration: DatePickerViewConfiguration {
     func formatDate(_ date: Date) -> String {
         dateFormatter.string(from: date, format: .medium)
     }
-
 }

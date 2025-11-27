@@ -26,7 +26,6 @@ import XCTest
 // Tests imported and adapted from https://gitlab.protontech.ch/apple/shared/protoncore/-/blob/a4d22426ef8e737833357fcb4ecd3e82e2144bc6/libraries/Keymaker/Tests/KeychainTests.swift
 
 final class KeychainTests: XCTestCase {
-
     private var provider: SecItemMethodsProviderMock!
     private var out: Keychain!
 
@@ -60,7 +59,6 @@ final class KeychainTests: XCTestCase {
 
         // when
         XCTAssertThrowsError(try out.dataOrError(forKey: "any.key")) { error in
-
             // then
             guard case let Keychain.AccessError.readFailed(key, errorCode) = error else { XCTFail(); return }
             XCTAssertEqual(key, "any.key")
@@ -74,7 +72,6 @@ final class KeychainTests: XCTestCase {
 
         // when
         XCTAssertThrowsError(try out.stringOrError(forKey: "any.key")) { error in
-
             // then
             guard case let Keychain.AccessError.readFailed(key, errorCode) = error else { XCTFail(); return }
             XCTAssertEqual(key, "any.key")
@@ -98,7 +95,6 @@ final class KeychainTests: XCTestCase {
 
         // when
         XCTAssertThrowsError(try out.setOrError(Data(), forKey: "any.key")) { error in
-
             // then
             guard case let Keychain.AccessError.writeFailed(key, errorCode) = error else { XCTFail(); return }
             XCTAssertEqual(key, "any.key")
@@ -112,7 +108,6 @@ final class KeychainTests: XCTestCase {
 
         // when
         XCTAssertThrowsError(try out.setOrError(String(), forKey: "any.key")) { error in
-
             // then
             guard case let Keychain.AccessError.writeFailed(key, errorCode) = error else { XCTFail(); return }
             XCTAssertEqual(key, "any.key")
@@ -136,7 +131,6 @@ final class KeychainTests: XCTestCase {
 
         // when
         XCTAssertThrowsError(try out.setOrError(Data(), forKey: "any.key")) { error in
-
             // then
             guard case let Keychain.AccessError.updateFailed(key, errorCode) = error else { XCTFail(); return }
             XCTAssertEqual(key, "any.key")
@@ -150,7 +144,6 @@ final class KeychainTests: XCTestCase {
 
         // when
         XCTAssertThrowsError(try out.setOrError(String(), forKey: "any.key")) { error in
-
             // then
             guard case let Keychain.AccessError.updateFailed(key, errorCode) = error else { XCTFail(); return }
             XCTAssertEqual(key, "any.key")
@@ -174,7 +167,6 @@ final class KeychainTests: XCTestCase {
 
         // when
         XCTAssertThrowsError(try out.removeOrError(forKey: "any.key")) { error in
-
             // then
             guard case let Keychain.AccessError.deleteFailed(key, errorCode) = error else { XCTFail(); return }
             XCTAssertEqual(key, "any.key")
@@ -184,7 +176,6 @@ final class KeychainTests: XCTestCase {
 }
 
 extension KeychainTests {
-
     private func setUpSUT(
         dataToReturn: NSData = .init(),
         resultCopyMatching: OSStatus = noErr,

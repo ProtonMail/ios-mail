@@ -22,7 +22,6 @@ enum ToolbarType: Equatable {
 }
 
 extension ToolbarType: Identifiable {
-
     var id: String {
         switch self {
         case .list:
@@ -33,5 +32,4 @@ extension ToolbarType: Identifiable {
             "conversation"
         }
     }
-
 }

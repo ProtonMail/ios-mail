@@ -18,7 +18,6 @@
 import Foundation
 
 enum OneLineLabelsListViewPreviewDataProvider {
-
     static var labels: [[LabelUIModel]] {
         [
             ["Private", "Public", "Top Secret", "Top top top secret"],
@@ -28,13 +27,10 @@ enum OneLineLabelsListViewPreviewDataProvider {
             ["Aaaaaaaa", "Long long label long long long long long", "aaaaaaaaaaaaa"],
         ].map { $0.map(LabelUIModel.testData) }
     }
-
 }
 
 private extension LabelUIModel {
-
     static func testData(name: String) -> Self {
         .init(labelId: .random(), text: name, color: .red)
     }
-
 }

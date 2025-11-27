@@ -55,7 +55,6 @@ struct ComposerContact: Identifiable, Equatable {
 }
 
 extension ComposerContact {
-
     var singleContact: ComposerContactSingle? {
         switch type {
         case .single(let single): single

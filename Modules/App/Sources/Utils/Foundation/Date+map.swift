@@ -21,7 +21,6 @@ import InboxDesignSystem
 import struct SwiftUI.Color
 
 extension Date {
-
     var toExpirationDateUIModel: ExpirationDateUIModel? {
         guard self > .now else { return nil }
 

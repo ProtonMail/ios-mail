@@ -21,7 +21,6 @@ import proton_app_uniffi
 import typealias InboxCore.ID
 
 extension SingleRecipientEntry {
-
     func toComposerRecipientSingle() -> ComposerRecipientSingle {
         .init(displayName: name, address: email, validState: .valid)
     }

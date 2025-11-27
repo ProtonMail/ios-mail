@@ -112,15 +112,12 @@ struct EmptyFolderBannerView: View {
 }
 
 private extension View {
-
     func horizontalPadding() -> some View {
         padding([.leading, .trailing], DS.Spacing.large)
     }
-
 }
 
 private extension EmptyFolderBanner.ActionButton {
-
     var style: Banner.ButtonStyle {
         switch self {
         case .upgradePlan:
@@ -129,7 +126,6 @@ private extension EmptyFolderBanner.ActionButton {
             .regular
         }
     }
-
 }
 
 #Preview {
@@ -149,17 +145,13 @@ private extension EmptyFolderBanner.ActionButton {
 }
 
 private extension EmptyFolderBannerView {
-
     static func preview(model: EmptyFolderBanner) -> Self {
         .init(model: model, mailUserSession: .dummy, wrapper: .previewInstance())
     }
-
 }
 
 private extension EmptyFolderBanner.FolderDetails {
-
     static func preview(type: SpamOrTrash) -> Self {
         .init(labelID: .random(), type: type)
     }
-
 }

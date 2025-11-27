@@ -419,7 +419,6 @@ extension MessageDetailsUIModel {
 }
 
 enum MessageDetail {
-
     struct Sender: Hashable {
         let name: String
         let address: String
@@ -454,7 +453,6 @@ enum MessageDetailsEvent {
 }
 
 extension Array where Element == MessageDetail.Recipient {
-
     var recipientsUIRepresentation: String {
         let recipients = map(\.name).joined(separator: ", ")
         return L10n.MessageDetails.to.string + recipients
@@ -480,7 +478,6 @@ extension Array where Element == MessageDetail.Recipient {
 }
 
 enum MessageDetailsPreviewProvider {
-
     static var recipientsTo: [MessageDetail.Recipient] {
         [
             .init(
@@ -539,7 +536,6 @@ enum MessageDetailsPreviewProvider {
             showPaperClip: false
         )
     }
-
 }
 
 private struct MessageDetailsViewIdentifiers {

@@ -453,7 +453,6 @@ final class ComposerModel: ObservableObject {
 }
 
 extension ComposerModel: ChangeSenderHandlerProtocol {
-
     func listSenderAddresses() async throws -> DraftSenderAddressList {
         try await draft.listSenderAddresses().get()
     }
@@ -475,7 +474,6 @@ extension ComposerModel: ChangeSenderHandlerProtocol {
 // MARK: Private
 
 extension ComposerModel {
-
     private func draftMessageId() async -> Id? {
         try? await draft.messageId().get()
     }

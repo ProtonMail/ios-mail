@@ -204,9 +204,7 @@ struct SnoozeView: View {
 }
 
 private extension Array where Element == SnoozeTime {
-
     var predefined: Self {
         filter { $0 != .custom }
     }
-
 }

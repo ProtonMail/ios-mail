@@ -175,11 +175,9 @@ struct EditToolbarScreen: View {
         }
         .textCase(.none)
     }
-
 }
 
 private extension EditToolbarState {
-
     var availableActionsListDisabled: Bool {
         toolbarActions.current.selected.count >= 5
     }
@@ -187,11 +185,9 @@ private extension EditToolbarState {
     var selectedActionsListDisabled: Bool {
         toolbarActions.current.selected.count <= 1
     }
-
 }
 
 private extension ToolbarType {
-
     var screenTitle: LocalizedStringResource {
         switch self {
         case .list:
@@ -202,7 +198,6 @@ private extension ToolbarType {
             L10n.Settings.CustomizeToolbars.conversationToolbarSectionTitle
         }
     }
-
 }
 
 #if DEBUG

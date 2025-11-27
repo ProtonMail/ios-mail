@@ -19,7 +19,6 @@ import Foundation
 import XCTest
 
 class UITestSidebarListCreateLabelEntryModel: UITestSidebarListItemEntryBaseModel {
-
     // MARK: UI Elements
 
     override var rootItem: XCUIElement {

@@ -37,7 +37,6 @@ struct ActionButtonStyle: ButtonStyle {
 }
 
 extension ActionButtonStyle {
-
     static var answerButtonStyle: Self {
         .init(
             textColor: DS.Color.Text.inverted,
@@ -55,5 +54,4 @@ extension ActionButtonStyle {
             pressedBackgroundColor: DS.Color.InteractionWeak.pressed
         )
     }
-
 }

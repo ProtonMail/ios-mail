@@ -398,7 +398,6 @@ public protocol SecItemMethodsProvider {
 }
 
 private enum SystemSecurityFrameworkSecItemMethodsProvider: SecItemMethodsProvider {
-
     case instance
 
     func SecItemCopyMatching(_ query: CFDictionary, _ result: UnsafeMutablePointer<CFTypeRef?>?) -> OSStatus {

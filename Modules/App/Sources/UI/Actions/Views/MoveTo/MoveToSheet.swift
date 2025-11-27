@@ -129,11 +129,9 @@ struct MoveToSheet: View {
             }
         }
     }
-
 }
 
 private extension MoveToSystemFolder {
-
     var displayData: ActionSelectableButtonDisplayData {
         .init(
             id: id,
@@ -143,11 +141,9 @@ private extension MoveToSystemFolder {
             leadingSpacing: .zero
         )
     }
-
 }
 
 private extension Array where Element == MoveToCustomFolder {
-
     func displayData(spacing: CGFloat) -> [ActionSelectableButtonDisplayData] {
         flatMap { item in
             let displayData = ActionSelectableButtonDisplayData(
@@ -163,7 +159,6 @@ private extension Array where Element == MoveToCustomFolder {
             return [displayData] + item.children.displayData(spacing: spacing + DS.Spacing.large)
         }
     }
-
 }
 
 #Preview {

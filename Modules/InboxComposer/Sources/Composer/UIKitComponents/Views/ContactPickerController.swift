@@ -19,7 +19,6 @@ import InboxDesignSystem
 import UIKit
 
 final class ContactPickerController: UIViewController {
-
     enum Event {
         case onInputChange(text: String)
         case onContactSelected(contact: ComposerContact)
@@ -49,7 +48,6 @@ final class ContactPickerController: UIViewController {
         super.viewDidLoad()
         setUpUI()
         setUpConstraints()
-
     }
 
     private func setUpUI() {
@@ -129,7 +127,6 @@ final class ContactPickerController: UIViewController {
 }
 
 extension ContactPickerController: UITableViewDataSource {
-
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         contacts.count
     }
@@ -145,7 +142,6 @@ extension ContactPickerController: UITableViewDataSource {
 }
 
 extension ContactPickerController: UITableViewDelegate {
-
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         onEvent?(.onContactSelected(contact: contacts[indexPath.row]))
         tableView.cellForRow(at: indexPath)?.setSelected(false, animated: true)
@@ -153,7 +149,6 @@ extension ContactPickerController: UITableViewDelegate {
 }
 
 extension ContactPickerController {
-
     private enum SubviewFactory {
         static var title: UILabel {
             ComposerSubviewFactory.fieldTitle

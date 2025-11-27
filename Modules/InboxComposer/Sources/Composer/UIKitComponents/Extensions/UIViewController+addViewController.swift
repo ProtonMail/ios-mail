@@ -18,7 +18,6 @@
 import UIKit
 
 extension UIViewController {
-
     public func addViewController(_ childController: UIViewController, using embeddingMethod: (UIView) -> Void) {
         addChild(childController)
         embeddingMethod(childController.view)

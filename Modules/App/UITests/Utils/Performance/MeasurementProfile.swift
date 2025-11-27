@@ -22,7 +22,6 @@
 #endif
 
 public class MeasurementProfile: MeasurementProtocol {
-
     var workflow: String
     var measurements: [Measurement] = []
     var measuresList: [MeasureBlock] = []

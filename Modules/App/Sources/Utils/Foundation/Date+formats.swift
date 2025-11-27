@@ -19,7 +19,6 @@ import Foundation
 import InboxCore
 
 extension Date {
-
     /**
      Mailbox date format
     

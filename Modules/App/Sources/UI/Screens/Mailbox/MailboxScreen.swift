@@ -228,7 +228,6 @@ struct MailboxScreen: View {
 }
 
 extension MailboxScreen {
-
     private func skipAnimationWhenViewRenders() async {
         try? await Task.sleep(for: .seconds(0.1))
         animateComposeButtonSafeAreaChanges = true
@@ -367,7 +366,6 @@ private struct MailboxScreenIdentifiers {
 }
 
 class MailSettingsLiveQueryPreviewDummy: MailSettingLiveQuerying {
-
     // MARK: - MailSettingLiveQuerying
 
     var viewModeHasChanged: AnyPublisher<Void, Never> {

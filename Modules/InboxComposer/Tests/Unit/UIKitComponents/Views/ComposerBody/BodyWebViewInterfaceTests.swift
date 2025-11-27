@@ -131,7 +131,6 @@ final class BodyWebViewInterfaceTests {
 // MARK: Helpers
 
 private extension BodyWebViewInterfaceTests {
-
     private func waitForWebViewDidFinish(_ webView: WKWebView) async {
         await withCheckedContinuation { continuation in
             delegate = WebViewDelegate(continuation)

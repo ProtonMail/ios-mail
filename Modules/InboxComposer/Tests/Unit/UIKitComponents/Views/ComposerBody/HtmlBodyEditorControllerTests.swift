@@ -54,7 +54,6 @@ final class HtmlBodyEditorControllerTests {
 }
 
 extension HtmlBodyEditorControllerTests {
-
     private func makeSUT(htmlBodyWebViewInterface: HtmlBodyWebViewInterfaceProtocol) -> HtmlBodyEditorController {
         let mockMemory = MockMemoryPressureHandler()
         let sut = HtmlBodyEditorController(

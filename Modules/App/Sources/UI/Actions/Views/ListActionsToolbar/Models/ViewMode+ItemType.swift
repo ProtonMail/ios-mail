@@ -18,7 +18,6 @@
 import proton_app_uniffi
 
 extension ViewMode {
-
     var itemType: MailboxItemType {
         switch self {
         case .conversations:
@@ -27,5 +26,4 @@ extension ViewMode {
             return .message
         }
     }
-
 }

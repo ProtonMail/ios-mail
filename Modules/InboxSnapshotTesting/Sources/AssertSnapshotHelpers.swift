@@ -203,7 +203,6 @@ private func suffixedName(name: String?, withStyle style: UIUserInterfaceStyle) 
 }
 
 private extension UIUserInterfaceStyle {
-
     var humanReadable: String {
         switch self {
         case .dark:
@@ -216,7 +215,6 @@ private extension UIUserInterfaceStyle {
             return "unknown"
         }
     }
-
 }
 
 private extension UIView {
@@ -246,7 +244,6 @@ private extension UIView {
 }
 
 extension Array where Element == (String, ViewImageConfig) {
-
     public static var allPhones: [Element] {
         return [
             ("iPhoneSe", .iPhoneSe),
@@ -254,5 +251,4 @@ extension Array where Element == (String, ViewImageConfig) {
             ("iPhone13ProMax", .iPhone13ProMax),
         ]
     }
-
 }

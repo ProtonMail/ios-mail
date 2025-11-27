@@ -39,7 +39,6 @@ final class AttachmentSourcePickerSheetModelTests {
 }
 
 private extension CameraPermissionProvider {
-
     static var testAuthorized: Self {
         .init { _ in .authorized }
     }

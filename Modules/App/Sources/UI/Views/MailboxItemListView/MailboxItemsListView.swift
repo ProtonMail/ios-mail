@@ -190,11 +190,9 @@ private struct MailboxListViewIdentifiers {
 }
 
 private extension SelectionModeState {
-
     var selectedItemIDsReadOnlyBinding: Binding<Set<MailboxSelectedItem>> {
         .readonly(get: { [weak self] in self?.selectedItems ?? [] })
     }
-
 }
 
 #Preview {

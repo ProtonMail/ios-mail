@@ -53,9 +53,7 @@ class AutoLockStore: StateStore {
 }
 
 private extension AppSettingsDiff {
-
     static func diff(autoLock: AutoLock) -> Self {
         .init(appearance: nil, autoLock: autoLock, useCombineContacts: nil, useAlternativeRouting: nil)
     }
-
 }

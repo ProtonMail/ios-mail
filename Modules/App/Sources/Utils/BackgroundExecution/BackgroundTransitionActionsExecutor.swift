@@ -20,7 +20,6 @@ import UIKit
 import proton_app_uniffi
 
 class BackgroundTransitionActionsExecutor: ApplicationServiceDidEnterBackground, ApplicationServiceWillEnterForeground, @unchecked Sendable {
-
     typealias ActionQueueStatusProvider = @Sendable () -> ConnectionStatusProvider?
     typealias BackgroundTaskExecutorProvider = @Sendable () -> BackgroundTaskExecutor
 
@@ -175,11 +174,9 @@ class BackgroundTransitionActionsExecutor: ApplicationServiceDidEnterBackground,
             AppLogger.log(message: message, category: .thirtySecondsBackgroundTask)
         }
     }
-
 }
 
 private extension BackgroundExecutionStatus {
-
     var shouldCheckSendingStatus: Bool {
         switch self {
         case .abortedInBackground, .timedOut, .failed:
@@ -188,5 +185,4 @@ private extension BackgroundExecutionStatus {
             false
         }
     }
-
 }

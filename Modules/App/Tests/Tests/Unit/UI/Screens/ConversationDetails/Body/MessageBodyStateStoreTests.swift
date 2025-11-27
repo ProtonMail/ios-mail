@@ -404,7 +404,6 @@ final class MessageBodyStateStoreTests {
 
     @Test
     func testState_UnsubscribeNewsletterActionTapped_ItPresentsConfirmationAlert() async {
-
         wrapperSpy.stubbedMessageBodyResult = .ok(decryptedMessageSpy)
         decryptedMessageSpy.stubbedUnsubscribeFromNewsletterResult = .ok
 
@@ -500,7 +499,6 @@ final class MessageBodyStateStoreTests {
 }
 
 extension MessageBodyStateStore.State: @retroactive Equatable {
-
     public static func == (lhs: Self, rhs: Self) -> Bool {
         guard lhs.alert == rhs.alert else {
             return false
@@ -519,11 +517,9 @@ extension MessageBodyStateStore.State: @retroactive Equatable {
             return false
         }
     }
-
 }
 
 extension MessageBody: @retroactive Equatable {
-
     public static func == (lhs: Self, rhs: Self) -> Bool {
         let areRsvpProviderEqual: Bool = lhs.rsvpServiceProvider === rhs.rsvpServiceProvider
         let areNewsletterServicesEqual = lhs.newsletterService === rhs.newsletterService
@@ -532,7 +528,6 @@ extension MessageBody: @retroactive Equatable {
 
         return areRsvpProviderEqual && areNewsletterServicesEqual && areHTMLsEqual && areBannersEqual
     }
-
 }
 
 private final class DecryptedMessageSpy: DecryptedMessage, @unchecked Sendable {
@@ -607,7 +602,6 @@ private final class RustWrappersSpy: @unchecked Sendable {
 }
 
 private extension MessageBodyStateStore.State {
-
     func legitAlertAction(for action: LegitMessageConfirmationAlertAction) throws -> AlertAction {
         try #require(alert?.actions.findFirst(for: action.info.title, by: \.title))
     }
@@ -615,7 +609,6 @@ private extension MessageBodyStateStore.State {
     func unsubscribeAlertAction(for action: UnsubscribeNewsletterAlertAction) throws -> AlertAction {
         try #require(alert?.actions.findFirst(for: action.info.title, by: \.title))
     }
-
 }
 
 private extension MessageBodyStateStore.State {
@@ -641,7 +634,6 @@ private extension MessageBodyStateStore.State {
             alert: alert
         )
     }
-
 }
 
 private class BackOnlineActionExecutorSpy: BackOnlineActionExecuting {

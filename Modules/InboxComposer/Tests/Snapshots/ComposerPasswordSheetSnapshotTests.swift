@@ -23,7 +23,6 @@ import InboxTesting
 
 @MainActor
 final class ComposerPasswordSheetSnapshotTests: BaseTestCase {
-
     func testComposerPasswordSheet_itLayoutsCorrectOnIphoneX() throws {
         let composerPasswordSheet = ComposerPasswordSheet(
             state: .init(password: "12345678", hint: "My secret magic number"),

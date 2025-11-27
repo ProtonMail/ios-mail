@@ -20,7 +20,6 @@ import NIO
 import XCTest
 
 extension XCUIApplication {
-
     func setAppLaunchArguments() -> XCUIApplication {
         self.launchArguments += ["-uiTesting", "true"]
         self.launchArguments += ["-AppleLanguages", "[\"en\"]"]
@@ -30,7 +29,6 @@ extension XCUIApplication {
 }
 
 final class LoadingInboxTests: XCTestCase {
-
     private let app = XCUIApplication().setAppLaunchArguments()
 
     private lazy var measurementContext = MeasurementContext(MeasurementConfig.self)

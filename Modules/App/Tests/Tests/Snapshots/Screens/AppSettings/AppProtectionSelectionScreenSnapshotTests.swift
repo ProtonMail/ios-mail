@@ -24,7 +24,6 @@ import Testing
 
 @MainActor
 struct AppProtectionSelectionScreenSnapshotTests {
-
     @Test
     func appProtectionSelectionScreenLayoutsCorrectly() {
         let sut = AppProtectionSelectionScreen(
@@ -44,5 +43,4 @@ struct AppProtectionSelectionScreenSnapshotTests {
 
         assertSnapshotsOnIPhoneX(of: sut)
     }
-
 }

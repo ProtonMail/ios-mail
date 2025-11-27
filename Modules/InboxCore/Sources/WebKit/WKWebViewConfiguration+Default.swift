@@ -20,7 +20,6 @@ import WebKit
 import proton_app_uniffi
 
 extension WKWebViewConfiguration {
-
     public static func `default`(handler: WKURLSchemeHandler) -> WKWebViewConfiguration {
         let config = WKWebViewConfiguration()
         config.defaultWebpagePreferences.allowsContentJavaScript = false

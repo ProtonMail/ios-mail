@@ -19,7 +19,6 @@ import Foundation
 import XCTest
 
 extension SystemPreviewRobot {
-
     // MARK: UI Elements
 
     private var topLabel: XCUIElement {

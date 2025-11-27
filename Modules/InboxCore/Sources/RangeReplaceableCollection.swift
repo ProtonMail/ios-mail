@@ -16,7 +16,6 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 public extension RangeReplaceableCollection where Element: Equatable {
-
     func removing(_ item: Element) -> Self {
         var copy = self
         if let index = copy.firstIndex(of: item) {
@@ -36,5 +35,4 @@ public extension RangeReplaceableCollection where Element: Equatable {
         copy.append(item)
         return copy
     }
-
 }

@@ -24,11 +24,9 @@ struct GeneralActionsWrappers {
 }
 
 extension GeneralActionsWrappers {
-
     static var productionInstance: GeneralActionsWrappers {
         .init(markMessagePhishing: { mailbox, id in await reportPhishing(mailbox: mailbox, messageId: id) })
     }
-
 }
 
 struct GeneralActionsPerformer {

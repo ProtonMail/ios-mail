@@ -98,7 +98,6 @@ final class PaginatedListDataSource<Item: Equatable & Sendable>: ObservableObjec
 }
 
 extension PaginatedListDataSource {
-
     struct State: Equatable, Copying {
         var items: [Item] = []
         var isFetchingFirstPage = true

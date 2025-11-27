@@ -28,7 +28,6 @@ struct StarActionPerformerActions {
 }
 
 extension StarActionPerformerActions {
-
     static var productionInstance: StarActionPerformerActions {
         .init(
             starMessage: starMessages,
@@ -37,5 +36,4 @@ extension StarActionPerformerActions {
             unstarConversation: unstarConversations
         )
     }
-
 }

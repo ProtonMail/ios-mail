@@ -23,7 +23,6 @@ struct EditToolbarState: Copying {
 }
 
 extension EditToolbarState {
-
     static func initial(toolbarType: ToolbarType) -> Self {
         .init(
             toolbarType: toolbarType,
@@ -33,5 +32,4 @@ extension EditToolbarState {
             )
         )
     }
-
 }

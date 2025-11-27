@@ -22,7 +22,6 @@ import proton_app_uniffi
 @testable import InboxComposer
 
 final class HtmlSanitizerTests {
-
     @Test(
         "removes style attribute correctly",
         arguments: [

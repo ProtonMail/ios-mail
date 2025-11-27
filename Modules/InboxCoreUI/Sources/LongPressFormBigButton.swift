@@ -57,11 +57,9 @@ public struct LongPressFormBigButton<BottomContent: View>: View {
 }
 
 private extension View {
-
     func conditionalLongPress(onPressingChanged: ((Bool) -> Void)?) -> some View {
         modifier(ConditionalLongPress(onPressingChanged: onPressingChanged))
     }
-
 }
 
 private struct ConditionalLongPress: ViewModifier {
@@ -75,5 +73,4 @@ private struct ConditionalLongPress: ViewModifier {
             content
         }
     }
-
 }

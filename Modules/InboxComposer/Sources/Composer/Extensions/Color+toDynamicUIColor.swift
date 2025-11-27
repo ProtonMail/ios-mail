@@ -18,7 +18,6 @@
 import SwiftUI
 
 extension Color {
-
     /// Use in UIKit components inside `UIViewControllerRepresentable` to ensure dynamic colours updates
     var toDynamicUIColor: UIColor {
         UIColor { traits in

@@ -18,7 +18,6 @@
 import Foundation
 
 extension ConversationDetailRobot {
-
     // MARK: Assertions
 
     func verifyExpandedHeader(_ entry: UITestConversationExpandedHeaderEntry) {

@@ -19,7 +19,6 @@ import SwiftUI
 import proton_app_uniffi
 
 extension AccountDetails {
-
     var settings: AccountInfo {
         .init(
             name: name,
@@ -30,5 +29,4 @@ extension AccountDetails {
             )
         )
     }
-
 }

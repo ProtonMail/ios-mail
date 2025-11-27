@@ -48,7 +48,6 @@ struct HtmlBodyDocument {
             .replacingOccurrences(of: "{{proton-background-color-dark}}", with: darkBundle.background)
             .replacingOccurrences(of: "{{proton-text-color-dark}}", with: darkBundle.text)
             .replacingOccurrences(of: "{{proton-brand-color-dark}}", with: darkBundle.brand)
-
     }()
 
     func html(bodyContent: String) -> String {
@@ -59,7 +58,6 @@ struct HtmlBodyDocument {
 }
 
 extension HtmlBodyDocument {
-
     enum EventAttributeKey {
         static let height = "height"
         static let cursorPosition = "cursorPosition"
@@ -95,7 +93,6 @@ extension HtmlBodyDocument {
 // MARK: Private
 
 private extension HtmlBodyDocument {
-
     enum HtmlPlaceholder {
         static let body = "<!--INSERT_BODY-->"
         static let css = "<!--CSS-->"
@@ -109,7 +106,6 @@ private extension HtmlBodyDocument {
 // MARK: HTML
 
 private extension HtmlBodyDocument {
-
     var htmlTemplate: String {
         """
         <!DOCTYPE html>
@@ -149,7 +145,6 @@ private extension HtmlBodyDocument {
 // MARK: Scripts
 
 extension HtmlBodyDocument {
-
     var script: String {
         """
         "use strict";

@@ -19,7 +19,6 @@ import Foundation
 import XCTest
 
 final class MailboxSidebarTests: PMUIMockedNetworkTestCase {
-
     /// TestId 425682
     func testSidebarMenuOpening() async {
         await environment.mockServer.addRequestsWithDefaults(

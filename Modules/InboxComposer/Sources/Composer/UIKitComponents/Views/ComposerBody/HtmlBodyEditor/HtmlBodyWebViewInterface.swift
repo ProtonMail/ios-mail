@@ -21,7 +21,6 @@ import WebKit
 import proton_app_uniffi
 
 final class HtmlBodyWebViewInterface: NSObject, HtmlBodyWebViewInterfaceProtocol {
-
     enum Event {
         case onContentHeightChange(height: CGFloat)
         case onEditorFocus

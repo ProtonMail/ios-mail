@@ -19,7 +19,6 @@ import Foundation
 import proton_app_uniffi
 
 extension AutoLock {
-
     var humanReadable: LocalizedStringResource {
         switch self {
         case .always:
@@ -30,5 +29,4 @@ extension AutoLock {
             L10n.Settings.App.autoLockNever
         }
     }
-
 }

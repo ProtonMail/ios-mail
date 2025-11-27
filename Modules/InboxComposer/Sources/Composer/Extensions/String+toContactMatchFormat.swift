@@ -18,7 +18,6 @@
 import Foundation
 
 extension String {
-
     func toContactMatchFormat() -> String {
         self.lowercased()
     }

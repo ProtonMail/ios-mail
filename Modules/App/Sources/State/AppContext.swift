@@ -238,7 +238,6 @@ extension AppContext {
 }
 
 extension AppContext {
-
     struct Dependencies {
         let keychain: OsKeyChain = KeychainSDKWrapper()
         let userDefaults: UserDefaults = .appGroup
@@ -246,7 +245,6 @@ extension AppContext {
 }
 
 extension AppContext: ApplicationServiceSetUp {
-
     func setUpService() {
         do {
             try start()
@@ -257,7 +255,6 @@ extension AppContext: ApplicationServiceSetUp {
 }
 
 extension AppContext {
-
     func pollEventsAndWait() async {
         do {
             guard let userSession = sessionState.userSession else {

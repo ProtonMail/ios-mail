@@ -45,7 +45,6 @@ struct MailboxListView: View {
 }
 
 extension MailboxListView {
-
     private func mailboxItemListViewConfiguration() -> MailboxItemsListViewConfiguration {
         var config = MailboxItemsListViewConfiguration(
             dataSource: model.paginatedDataSource,
@@ -135,7 +134,6 @@ extension MailboxListView {
 }
 
 private extension SelectedMailbox {
-
     func emptyScreenVariant(isUnreadFilterOn: Bool) -> NoResultsView.Variant {
         switch self {
         case .inbox, .customLabel, .customFolder:
@@ -144,11 +142,9 @@ private extension SelectedMailbox {
             systemFolder.emptyScreenVariant(isUnreadFilterOn: isUnreadFilterOn)
         }
     }
-
 }
 
 private extension SystemLabel {
-
     func emptyScreenVariant(isUnreadFilterOn: Bool) -> NoResultsView.Variant {
         switch self {
         case .inbox, .allDrafts, .allSent, .sent, .trash, .spam, .allMail, .archive, .drafts, .starred, .scheduled,
@@ -159,5 +155,4 @@ private extension SystemLabel {
             .outbox
         }
     }
-
 }

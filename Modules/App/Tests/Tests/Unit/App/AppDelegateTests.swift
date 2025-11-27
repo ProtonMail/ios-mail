@@ -22,7 +22,6 @@ import UIKit
 
 @MainActor
 final class AppDelegateTests {
-
     @Test
     func testSceneConfiguration_WhenConnectingSceneSession_HasCustomSceneDelegateConfigured() throws {
         let sceneConfiguration = AppDelegate().application(
@@ -43,5 +42,4 @@ final class AppDelegateTests {
     private func connectionOptions() throws -> UIScene.ConnectionOptions {
         try InstanceHelper.create(UIScene.ConnectionOptions.self)
     }
-
 }

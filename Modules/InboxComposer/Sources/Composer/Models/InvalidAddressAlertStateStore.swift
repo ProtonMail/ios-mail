@@ -44,7 +44,6 @@ final class InvalidAddressAlertStateStore {
 }
 
 private extension AlertModel {
-
     static func invalidAddressFormat(action: @escaping () -> Void) -> Self {
         let actions: [AlertAction] = [.init(details: InvalidAddressFormatAlertAction.close, action: action)]
 

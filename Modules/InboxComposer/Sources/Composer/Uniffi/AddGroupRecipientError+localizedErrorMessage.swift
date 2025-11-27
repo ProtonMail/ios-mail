@@ -19,7 +19,6 @@ import Foundation
 import proton_app_uniffi
 
 extension AddGroupRecipientError {
-
     func localizedErrorMessage() -> String? {
         switch self {
         case .ok, .emptyGroupName:

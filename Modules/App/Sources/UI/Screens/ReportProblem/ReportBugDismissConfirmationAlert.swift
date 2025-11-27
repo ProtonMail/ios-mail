@@ -20,7 +20,6 @@ import InboxCoreUI
 import SwiftUI
 
 extension AlertModel {
-
     static func reportBugDismissConfirmationAlert(
         action: @escaping (ReportBugDismissConfirmationAlertAction) async -> Void
     ) -> Self {
@@ -34,7 +33,6 @@ extension AlertModel {
             actions: actions
         )
     }
-
 }
 
 enum ReportBugDismissConfirmationAlertAction: AlertActionInfo, CaseIterable {

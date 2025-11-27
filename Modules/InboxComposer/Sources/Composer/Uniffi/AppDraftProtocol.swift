@@ -27,7 +27,6 @@ import proton_app_uniffi
  to work with our own draft protocol
  */
 public protocol AppDraftProtocol: ImageProxy {
-
     /// These are the function we overwrite from the `DraftProtocol`. For every function
     /// returning `ComposerRecipientList`, we return `ComposerRecipientListProtocol`.
     func toRecipients() -> ComposerRecipientListProtocol
@@ -62,7 +61,6 @@ public protocol AppDraftProtocol: ImageProxy {
 }
 
 extension AppDraftProtocol {
-
     var composerMode: ComposerMode {
         mimeType() == .textPlain ? .plainText : .html
     }
@@ -72,7 +70,6 @@ extension AppDraftProtocol {
  This conformance allows us to use `Draft` as an `AppDraftProtocol`
  */
 extension Draft: AppDraftProtocol {
-
     public func attachmentList() -> AttachmentListProtocol {
         let list: AttachmentList = self.attachmentList()
         return list

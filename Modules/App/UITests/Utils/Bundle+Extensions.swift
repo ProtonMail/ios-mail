@@ -18,7 +18,6 @@
 import Foundation
 
 extension Bundle {
-
     /// Gets the JSON data from the `Bundle` and returns is as `Data?`.
     /// - Parameter fileName: The filename with the extension.
     /// - Returns: A `Data?` containing the file content. Value is `nil` in case an error occurs.

@@ -19,7 +19,6 @@ import InboxDesignSystem
 import UIKit
 
 final class SubjectFieldView: UIView {
-
     enum Event {
         case onStartEditing
         case onSubjectChange(String)
@@ -75,9 +74,7 @@ final class SubjectFieldView: UIView {
 }
 
 extension SubjectFieldView {
-
     private enum SubviewFactory {
-
         static var stack: UIStackView {
             ComposerSubviewFactory.regularFieldStack
         }

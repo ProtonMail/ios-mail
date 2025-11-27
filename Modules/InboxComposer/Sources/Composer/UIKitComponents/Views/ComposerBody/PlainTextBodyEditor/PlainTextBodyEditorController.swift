@@ -74,7 +74,6 @@ final class PlainTextBodyEditorController: UIViewController, BodyEditor {
 }
 
 extension PlainTextBodyEditorController: UITextViewDelegate {
-
     func textViewDidBeginEditing(_ textView: UITextView) {
         onEvent?(.onStartEditing)
     }
@@ -85,16 +84,13 @@ extension PlainTextBodyEditorController: UITextViewDelegate {
 }
 
 extension PlainTextBodyEditorController: ImagePasteDelegate {
-
     func didDetectImagePaste(image: UIImage) {
         onEvent?(.onImagePasted(image: image))
     }
 }
 
 extension PlainTextBodyEditorController {
-
     enum SubviewFactory {
-
         static var textView: PastingTextView {
             let view = PastingTextView()
             view.translatesAutoresizingMaskIntoConstraints = false

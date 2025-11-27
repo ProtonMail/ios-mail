@@ -19,7 +19,6 @@ import Foundation
 import XCTest
 
 extension ConversationDetailRobot {
-
     func tapCollapsedEntry(at index: Int) {
         let model = UITestConversationCollapsedItemEntryModel(
             index: index

@@ -26,7 +26,6 @@ struct AppProtectionSelectionState: Copying {
 }
 
 extension AppProtectionSelectionState {
-
     static var initial: Self {
         .init(
             currentProtection: .none,
@@ -35,5 +34,4 @@ extension AppProtectionSelectionState {
             presentedPINScreen: nil
         )
     }
-
 }

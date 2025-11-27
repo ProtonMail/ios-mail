@@ -19,7 +19,6 @@ import InboxDesignSystem
 import proton_app_uniffi
 
 extension Array where Element == SidebarOtherItem {
-
     static var staleItems: [Element] {
         var items: [Element] = []
 
@@ -61,11 +60,9 @@ extension Array where Element == SidebarOtherItem {
 
         return items
     }
-
 }
 
 extension SidebarOtherItem {
-
     static var createLabel: Self {
         .init(
             type: .createLabel,
@@ -92,5 +89,4 @@ extension SidebarOtherItem {
             isSelected: false
         )
     }
-
 }

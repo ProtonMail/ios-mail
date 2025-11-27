@@ -153,7 +153,6 @@ protocol PhotosPickerItemTransferable {
 extension PhotosPickerItem: PhotosPickerItemTransferable {}
 
 private extension URL {
-
     /// File of type HEIC. This type identifies pictures taken with the camera of the device
     var isHeicType: Bool {
         utType?.conforms(to: .heic) ?? false

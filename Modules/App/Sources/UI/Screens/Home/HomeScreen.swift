@@ -28,7 +28,6 @@ import proton_app_uniffi
 import enum InboxComposer.ComposerDismissReason
 
 struct HomeScreen: View {
-
     enum ModalState: Identifiable {
         case contacts
         case labelOrFolderCreation

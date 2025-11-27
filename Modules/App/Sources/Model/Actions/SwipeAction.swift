@@ -20,7 +20,6 @@ import SwiftUI
 import proton_app_uniffi
 
 extension AssignedSwipeAction {
-
     func icon(isRead: Bool, isStarred: Bool) -> Image {
         switch self {
         case .noAction:

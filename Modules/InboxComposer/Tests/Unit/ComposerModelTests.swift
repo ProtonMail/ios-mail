@@ -952,7 +952,6 @@ private extension ComposerModelTests {
 }
 
 extension ComposerContactProvider {
-
     static func testInstance(datasourceContacts: [ComposerContact] = []) -> ComposerContactProvider {
         .init(protonContactsDatasource: ComposerTestContactsDatasource(dummyContacts: datasourceContacts))
     }
@@ -974,7 +973,6 @@ struct ComposerTestContactsDatasource: ComposerContactsDatasource {
 }
 
 private extension ComposerContact {
-
     var toMatch: [String] {
         switch self.type {
         case .group(let group):
@@ -983,11 +981,9 @@ private extension ComposerContact {
             [singleItem.name.toContactMatchFormat(), singleItem.email.toContactMatchFormat()]
         }
     }
-
 }
 
 private extension ComposerContact {
-
     static func makeComposerContactSingle(name: String, email: String) -> ComposerContact {
         let type = ComposerContactType.single(.init(initials: "", name: name, email: email))
         return ComposerContact(id: "__NOT_USED__", type: type, avatarColor: .green)
@@ -999,7 +995,6 @@ private extension ComposerContact {
 }
 
 extension DraftAttachment {
-
     static func makeMockDraftAttachment(
         id: ID = .random(),
         name: String = "attachment",

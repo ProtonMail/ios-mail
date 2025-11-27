@@ -71,7 +71,6 @@ public final class UpsellCoordinator: ObservableObject {
 
         let webCheckout = WebCheckout(sessionForking: sessionForking, upsellConfiguration: configuration)
         upsellScreenFactory = .init(purchaseActionPerformer: purchaseActionPerformer, webCheckout: webCheckout)
-
     }
 
     public func prewarm() async {

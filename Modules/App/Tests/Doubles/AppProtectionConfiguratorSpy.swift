@@ -20,7 +20,6 @@ import proton_app_uniffi
 @testable import ProtonMail
 
 final class AppProtectionConfiguratorSpy: AppProtectionConfigurator, Sendable {
-
     var deletePinCodeResultStub = MailSessionDeletePinCodeResult.ok
     var setPinCodeResultStub = MailSessionSetPinCodeResult.ok
     var setBiometricsAppProtectionResultStub = MailSessionSetBiometricsAppProtectionResult.ok
@@ -56,5 +55,4 @@ final class AppProtectionConfiguratorSpy: AppProtectionConfigurator, Sendable {
 
         return mailSessionUnsetBiometricsAppProtectionResultStub
     }
-
 }

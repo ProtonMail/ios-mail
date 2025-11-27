@@ -66,7 +66,6 @@ enum ComposerMode {
 }
 
 extension ComposerState {
-
     static func initial(composerMode: ComposerMode, isAddingAttachmentsEnabled: Bool) -> Self {
         .init(
             composerMode: composerMode,
@@ -87,7 +86,6 @@ extension ComposerState {
 }
 
 private extension RecipientGroupType {
-
     var keyPath: WritableKeyPath<ComposerState, RecipientFieldState> {
         switch self {
         case .to: \.toRecipients

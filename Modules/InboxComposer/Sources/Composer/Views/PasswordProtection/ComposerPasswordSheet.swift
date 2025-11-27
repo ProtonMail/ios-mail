@@ -102,7 +102,6 @@ struct ComposerPasswordSheet: View {
 
                     Spacer()
                         .frame(maxHeight: .infinity)
-
                 }
                 .padding(.horizontal, DS.Spacing.extraLarge)
             }
