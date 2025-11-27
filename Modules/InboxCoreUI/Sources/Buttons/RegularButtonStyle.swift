@@ -19,23 +19,15 @@ import InboxDesignSystem
 import SwiftUI
 
 public struct RegularButtonStyle: ButtonStyle {
-    private let isEnabled: Bool
-
-    public init(isEnabled: Bool = true) {
-        self.isEnabled = isEnabled
-    }
+    public init() {}
 
     public func makeBody(configuration: Self.Configuration) -> some View {
-        if isEnabled {
-            configuration
-                .label
-                .background(
-                    configuration.isPressed
-                        ? DS.Color.InteractionWeak.pressed
-                        : DS.Color.BackgroundInverted.secondary
-                )
-        } else {
-            configuration.label
-        }
+        configuration
+            .label
+            .background(
+                configuration.isPressed
+                    ? DS.Color.InteractionWeak.pressed
+                    : DS.Color.BackgroundInverted.secondary
+            )
     }
 }

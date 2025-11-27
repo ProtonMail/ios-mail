@@ -32,13 +32,11 @@ open class BaseTestCase: XCTestCase {
         originalMainScheduler = Dispatcher.mainScheduler
         originalDispatchOnMain = Dispatcher.dispatchOnMain
         originalDispatchOnMainAfter = Dispatcher.dispatchOnMainAfter
-        originalGlobalQueue = Dispatcher.globalQueue
         original_swift_task_enqueueGlobal_hook = ConcurrencyEnvironment.swift_task_enqueueGlobal_hook
 
         Dispatcher.mainScheduler = AnyScheduler(DispatchQueueImmediateScheduler())
         Dispatcher.dispatchOnMain = { task in task.perform() }
         Dispatcher.dispatchOnMainAfter = { _, task in task.perform() }
-        Dispatcher.globalQueue = { _ in .init(DispatchQueueImmediateScheduler()) }
         ConcurrencyEnvironment.swift_task_enqueueGlobal_hook = { job, _ in
             TestExecutor.shared.enqueue(job)
         }
@@ -48,7 +46,6 @@ open class BaseTestCase: XCTestCase {
         Dispatcher.mainScheduler = originalMainScheduler
         Dispatcher.dispatchOnMain = originalDispatchOnMain
         Dispatcher.dispatchOnMainAfter = originalDispatchOnMainAfter
-        Dispatcher.globalQueue = originalGlobalQueue
         ConcurrencyEnvironment.swift_task_enqueueGlobal_hook = original_swift_task_enqueueGlobal_hook
 
         originalMainScheduler = nil

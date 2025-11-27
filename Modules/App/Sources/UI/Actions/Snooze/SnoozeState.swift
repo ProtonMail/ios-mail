@@ -17,8 +17,8 @@
 
 import InboxCore
 import InboxIAP
-import proton_app_uniffi
 import SwiftUI
+import proton_app_uniffi
 
 struct SnoozeState: Copying {
     let conversationIDs: [ID]

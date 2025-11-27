@@ -89,10 +89,10 @@ extension AppLifeCycle {
 
     private func applicationServicesInitialisation() {
         let testService = TestService()
-        let networkMonitor = NetworkMonitoringService.shared
         let appContext = AppContext.shared
         let appIconBadgeService = AppIconBadgeService(appContext: appContext)
         let legacyMigrationService = LegacyMigrationService.shared
+        let networkMonitor = NetworkMonitoringService { appContext.mailSession }
         let recurringBackgroundTaskService = RecurringBackgroundTaskService()
         let notificationAuthorizationService = NotificationAuthorizationService(
             remoteNotificationRegistrar: UIApplication.shared
@@ -120,8 +120,8 @@ extension AppLifeCycle {
         applicationServices = .init(
             setUpServices: [
                 testService,
-                networkMonitor,
                 appContext,
+                networkMonitor,
                 legacyMigrationService,
                 notificationAuthorizationService,
                 paymentsService,

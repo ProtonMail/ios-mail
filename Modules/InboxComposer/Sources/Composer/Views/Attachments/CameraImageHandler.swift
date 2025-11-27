@@ -17,8 +17,8 @@
 
 import InboxCore
 import Photos
-import proton_app_uniffi
 import UIKit
+import proton_app_uniffi
 
 struct CameraImageHandler {
     let fileManager = FileManager.default

@@ -19,16 +19,15 @@ import Collections
 import InboxCore
 import InboxCoreUI
 import InboxDesignSystem
-import proton_app_uniffi
 import ProtonUIFoundations
 import SwiftUI
+import proton_app_uniffi
 
 struct ExpandedMessageCell: View {
     private let mailbox: Mailbox
     private let uiModel: ExpandedMessageCellUIModel
     private let draftPresenter: RecipientDraftPresenter
-    private let messageAppearanceOverrideStore: MessageAppearanceOverrideStore
-    private let onEvent: (ExpandedMessageCellEvent) -> Void
+    private let onEvent: (ExpandedMessageCellEvent) async -> Void
     private let htmlDisplayed: () -> Void
     private let areActionsHidden: Bool
     @Binding var attachmentIDToOpen: ID?
@@ -44,16 +43,14 @@ struct ExpandedMessageCell: View {
         mailbox: Mailbox,
         uiModel: ExpandedMessageCellUIModel,
         draftPresenter: RecipientDraftPresenter,
-        messageAppearanceOverrideStore: MessageAppearanceOverrideStore,
         areActionsHidden: Bool,
         attachmentIDToOpen: Binding<ID?>,
-        onEvent: @escaping (ExpandedMessageCellEvent) -> Void,
+        onEvent: @escaping (ExpandedMessageCellEvent) async -> Void,
         htmlDisplayed: @escaping () -> Void
     ) {
         self.mailbox = mailbox
         self.uiModel = uiModel
         self.draftPresenter = draftPresenter
-        self.messageAppearanceOverrideStore = messageAppearanceOverrideStore
         self.areActionsHidden = areActionsHidden
         self._attachmentIDToOpen = attachmentIDToOpen
         self.onEvent = onEvent
@@ -65,20 +62,19 @@ struct ExpandedMessageCell: View {
             MessageDetailsView(
                 uiModel: uiModel.messageDetails,
                 mailbox: mailbox,
-                messageAppearanceOverrideStore: messageAppearanceOverrideStore,
                 actionButtonsState: actionButtonsState,
                 onEvent: { event in
                     switch event {
                     case .onTap:
-                        onEvent(.onTap)
+                        await onEvent(.onTap)
                     case .onMessageAction(let action):
-                        onEvent(.onMessageAction(action))
+                        await onEvent(.onMessageAction(action))
                     case .onSenderTap:
-                        onEvent(.onSenderTap)
+                        await onEvent(.onSenderTap)
                     case .onRecipientTap(let recipient):
-                        onEvent(.onRecipientTap(recipient))
+                        await onEvent(.onRecipientTap(recipient))
                     case .onEditToolbar:
-                        onEvent(.onEditToolbar)
+                        await onEvent(.onEditToolbar)
                     }
                 }
             )
@@ -89,8 +85,8 @@ struct ExpandedMessageCell: View {
                 mailbox: mailbox,
                 isBodyLoaded: $isBodyLoaded,
                 attachmentIDToOpen: $attachmentIDToOpen,
-                editScheduledMessage: { onEvent(.onEditScheduledMessage) },
-                unsnoozeConversation: { onEvent(.unsnoozeConversation) },
+                editScheduledMessage: { Task { await onEvent(.onEditScheduledMessage) } },
+                unsnoozeConversation: { Task { await onEvent(.unsnoozeConversation) } },
                 draftPresenter: draftPresenter
             )
             if !areActionsHidden {
@@ -98,13 +94,15 @@ struct ExpandedMessageCell: View {
                     isSingleRecipient: uiModel.messageDetails.isSingleRecipient,
                     isDisabled: !isBodyLoaded,
                     onEvent: { event in
-                        switch event {
-                        case .reply:
-                            onEvent(.onMessageAction(.reply))
-                        case .replyAll:
-                            onEvent(.onMessageAction(.replyAll))
-                        case .forward:
-                            onEvent(.onMessageAction(.forward))
+                        Task {
+                            switch event {
+                            case .reply:
+                                await onEvent(.onMessageAction(.reply))
+                            case .replyAll:
+                                await onEvent(.onMessageAction(.replyAll))
+                            case .forward:
+                                await onEvent(.onMessageAction(.forward))
+                            }
                         }
                     }
                 )
@@ -158,7 +156,6 @@ enum ExpandedMessageCellEvent {
                 messageDetails: messageDetails
             ),
             draftPresenter: DraftPresenter.dummy(),
-            messageAppearanceOverrideStore: .init(),
             areActionsHidden: false,
             attachmentIDToOpen: .constant(nil),
             onEvent: { _ in },
@@ -172,7 +169,6 @@ enum ExpandedMessageCellEvent {
                 messageDetails: messageDetails
             ),
             draftPresenter: DraftPresenter.dummy(),
-            messageAppearanceOverrideStore: .init(),
             areActionsHidden: false,
             attachmentIDToOpen: .constant(nil),
             onEvent: { _ in },

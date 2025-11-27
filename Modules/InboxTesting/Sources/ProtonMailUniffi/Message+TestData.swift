@@ -33,7 +33,7 @@ extension Message {
             attachmentsMetadata: [],
             bccList: bcc,
             ccList: cc,
-            exclusiveLocation: .system(name: .inbox, id: .init(value: 33)),
+            location: .system(name: .inbox, id: .init(value: 33)),
             expirationTime: 1625140800,
             flags: .init(value: 2),
             isForwarded: true,

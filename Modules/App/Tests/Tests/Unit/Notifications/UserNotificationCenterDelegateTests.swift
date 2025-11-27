@@ -17,9 +17,9 @@
 
 import Combine
 import InboxTesting
-import proton_app_uniffi
 import Testing
 import UIKit
+import proton_app_uniffi
 
 @testable import ProtonMail
 

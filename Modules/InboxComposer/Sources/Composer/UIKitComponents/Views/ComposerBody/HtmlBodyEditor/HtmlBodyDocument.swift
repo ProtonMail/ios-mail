@@ -51,14 +51,10 @@ struct HtmlBodyDocument {
 
     }()
 
-    /// - Parameters:
-    ///   - nonce: Security value for CSP that authorizes specific scripts to run.
-    func html(nonce: String, bodyContent: String) -> String {
+    func html(bodyContent: String) -> String {
         htmlTemplate
             .replacingOccurrences(of: HtmlPlaceholder.body, with: bodyContent)
             .replacingOccurrences(of: HtmlPlaceholder.css, with: css)
-            .replacingOccurrences(of: HtmlPlaceholder.cspNonce, with: nonce)
-            .replacingOccurrences(of: HtmlPlaceholder.script, with: script)
     }
 }
 
@@ -103,8 +99,6 @@ private extension HtmlBodyDocument {
     enum HtmlPlaceholder {
         static let body = "<!--INSERT_BODY-->"
         static let css = "<!--CSS-->"
-        static let cspNonce = "<!--CSP-NONCE-->"
-        static let script = "<!--JS_SCRIPT-->"
     }
 
     enum ID {
@@ -123,7 +117,6 @@ private extension HtmlBodyDocument {
             <head>
                 <title>Proton HTML Editor</title>
                 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes">
-                <meta http-equiv="Content-Security-Policy" content="script-src 'nonce-\(HtmlPlaceholder.cspNonce)'">
                 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
                 <style>
                     \(HtmlPlaceholder.css)
@@ -147,9 +140,6 @@ private extension HtmlBodyDocument {
                 </div>
                 <div id="editor_footer">
                 </div>
-                <script nonce="\(HtmlPlaceholder.cspNonce)">
-                    \(HtmlPlaceholder.script)
-                </script>
             </body>
         </html>
         """
@@ -158,7 +148,7 @@ private extension HtmlBodyDocument {
 
 // MARK: Scripts
 
-private extension HtmlBodyDocument {
+extension HtmlBodyDocument {
 
     var script: String {
         """

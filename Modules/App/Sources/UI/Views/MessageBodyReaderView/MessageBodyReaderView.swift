@@ -16,9 +16,9 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import InboxCore
-import InboxDesignSystem
 import SwiftUI
 import WebKit
+import proton_app_uniffi
 
 extension EnvironmentValues {
     @Entry var forceLightModeInMessageBody: Bool = false
@@ -27,26 +27,30 @@ extension EnvironmentValues {
 
 struct MessageBodyReaderView: UIViewRepresentable {
     @Binding var bodyContentHeight: CGFloat
+    @State var schemeHandler: UniversalSchemeHandler
     let body: MessageBody.HTML
     let viewWidth: CGFloat
     let confirmLink: Bool
 
-    func makeUIView(context: Context) -> WKWebView {
-        let backgroundColor = UIColor(DS.Color.Background.norm)
-        let config = WKWebViewConfiguration.default(imageProxy: body.imageProxy)
-        config.defaultWebpagePreferences.allowsContentJavaScript = false
+    init(
+        bodyContentHeight: Binding<CGFloat>,
+        body: MessageBody.HTML,
+        schemeHandler: UniversalSchemeHandler,
+        viewWidth: CGFloat,
+        confirmLink: Bool
+    ) {
+        self._bodyContentHeight = .init(projectedValue: bodyContentHeight)
+        self.body = body
+        self.viewWidth = viewWidth
+        self.confirmLink = confirmLink
+        self.schemeHandler = schemeHandler
+    }
 
-        let webView = WKWebView(frame: .zero, configuration: config)
+    func makeUIView(context: Context) -> WKWebView {
+        let config = WKWebViewConfiguration.default(handler: schemeHandler)
+        let webView = WKWebView.default(configuration: config)
         webView.navigationDelegate = context.coordinator
         webView.uiDelegate = context.coordinator
-        webView.scrollView.isScrollEnabled = false
-        webView.scrollView.bounces = false
-
-        webView.isOpaque = false
-        webView.backgroundColor = backgroundColor
-        webView.scrollView.backgroundColor = backgroundColor
-        webView.scrollView.contentInsetAdjustmentBehavior = .never
-
         webView.isInspectable = WKWebView.inspectabilityEnabled
 
         for handlerName in HandlerName.allCases {
@@ -56,6 +60,8 @@ struct MessageBodyReaderView: UIViewRepresentable {
         var userScripts: [AppScript] = [
             .redirectConsoleLogToAppLogger,
             .handleEmptyBody,
+            .stylePropertyCoding,
+            .stripUnwantedStyleProperties,
             .adjustLayoutAndObserveHeight(viewWidth: viewWidth),
         ]
 
@@ -76,6 +82,7 @@ struct MessageBodyReaderView: UIViewRepresentable {
 
     func updateUIView(_ webView: WKWebView, context: Context) {
         if context.coordinator.receivedBodyDifferentFromBefore(latest: body) {
+            schemeHandler.updateImagePolicy(with: body.imagePolicy)
             loadHTML(in: webView)
         }
         webView.overrideUserInterfaceStyle = context.environment.forceLightModeInMessageBody ? .light : .unspecified
@@ -101,8 +108,10 @@ struct MessageBodyReaderView: UIViewRepresentable {
                 }
 
                 table {
+                    float: none;
                     height: auto !important;
                     min-height: auto !important;
+                    width: 100% !important;
                 }
 
                 @supports (height: fit-content) {
@@ -201,7 +210,7 @@ extension MessageBodyReaderView {
         }
 
         func receivedBodyDifferentFromBefore(latest body: MessageBody.HTML) -> Bool {
-            if previouslyReceivedBody?.rawBody == body.rawBody && previouslyReceivedBody?.options == body.options {
+            if previouslyReceivedBody == body {
                 return false
             } else {
                 previouslyReceivedBody = body
@@ -277,9 +286,17 @@ extension AppScript {
                 metaWidth.content = "width=device-width, initial-scale=" + ratio + ", maximum-scale=3.0, user-scalable=yes";
             }
 
-            function startSendingHeightToSwiftUI(ratio) {
+            function appendBottomMarker() {
+                const bottomMarker = document.createElement('div');
+                bottomMarker.id = 'proton-bottom-marker';
+                return document.body.appendChild(bottomMarker);
+            }
+
+            function startSendingHeightToSwiftUI(bottomMarker, ratio) {
                 const observer = new ResizeObserver(() => {
-                    var height = document.documentElement.scrollHeight * ratio;
+                    const bottomMarkerRect = bottomMarker.getBoundingClientRect();
+                    const bottommostPoint = window.scrollY + bottomMarkerRect.top + bottomMarkerRect.height;
+                    var height = bottommostPoint * ratio;
                     window.webkit.messageHandlers.\(HandlerName.heightChanged.rawValue).postMessage(height);
                 });
 
@@ -289,7 +306,8 @@ extension AppScript {
             executeOnceContentIsLaidOut(() => {
                 const ratio = document.body.offsetWidth / document.body.scrollWidth;
                 setViewportInitialScale(ratio);
-                startSendingHeightToSwiftUI(ratio);
+                const bottomMarker = appendBottomMarker();
+                startSendingHeightToSwiftUI(bottomMarker, ratio);
             });
             """
 
@@ -322,10 +340,22 @@ extension AppScript {
     )
 
     fileprivate static let dynamicTypeSize: Self = {
-        let scriptURL = Bundle.main.url(forResource: "DynamicTypeSize", withExtension: "js")!
+        .loadScript(named: "DynamicTypeSize")
+    }()
+
+    fileprivate static let stripUnwantedStyleProperties: Self = {
+        .loadScript(named: "StripUnwantedStyleProperties")
+    }()
+
+    fileprivate static let stylePropertyCoding: Self = {
+        .loadScript(named: "StylePropertyCoding")
+    }()
+
+    private static func loadScript(named resourceName: String) -> Self {
+        let scriptURL = Bundle.main.url(forResource: resourceName, withExtension: "js")!
         let source = try! String(contentsOf: scriptURL, encoding: .utf8)
         return .init(source: source)
-    }()
+    }
 }
 
 private enum HandlerName: String, CaseIterable {

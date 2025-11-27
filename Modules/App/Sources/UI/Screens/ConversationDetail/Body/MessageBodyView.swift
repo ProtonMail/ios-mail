@@ -15,14 +15,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import OrderedCollections
 import InboxCore
 import InboxCoreUI
 import InboxDesignSystem
 import InboxRSVP
-import proton_app_uniffi
+import OrderedCollections
 import ProtonUIFoundations
 import SwiftUI
+import proton_app_uniffi
 
 struct MessageBodyView: View {
     @Environment(\.messagePrinter) var messagePrinter: MessagePrinter
@@ -38,6 +38,7 @@ struct MessageBodyView: View {
     @Binding var isBodyLoaded: Bool
     @Binding var attachmentIDToOpen: ID?
     @State var bodyContentHeight: CGFloat = .zero
+    @State var eventBanners: OrderedSet<EventDrivenMessageBanner> = []
 
     init(
         messageID: ID,
@@ -72,12 +73,12 @@ struct MessageBodyView: View {
             )
         ) { state, store in
             VStack(spacing: .zero) {
-                if case .loaded(let body) = state.body, let rsvpServiceProvider = body.rsvpServiceProvider {
+                if case .loaded(let body, _) = state.body, let rsvpServiceProvider = body.rsvpServiceProvider {
                     RSVPView(serviceProvider: rsvpServiceProvider, draftPresenter: draftPresenter)
                 }
-                if case .loaded(let body) = state.body, !body.banners.isEmpty {
+                if !state.allBanners.isEmpty {
                     MessageBannersView(
-                        types: OrderedSet(body.banners),
+                        types: state.allBanners,
                         timer: Timer.self,
                         action: { action in
                             switch action {
@@ -87,6 +88,8 @@ struct MessageBodyView: View {
                                 store.handle(action: .displayEmbeddedImages)
                             case .downloadRemoteContentTapped:
                                 store.handle(action: .downloadRemoteContent)
+                            case .loadImageWithoutProxyTapped:
+                                store.handle(action: .reloadFailedProxyImages)
                             case .markAsLegitimateTapped:
                                 store.handle(action: .markAsLegitimate)
                             case .unblockSenderTapped:

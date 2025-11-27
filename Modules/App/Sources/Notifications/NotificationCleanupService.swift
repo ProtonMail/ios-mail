@@ -16,8 +16,8 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import InboxCore
-import proton_app_uniffi
 @preconcurrency import UserNotifications
+import proton_app_uniffi
 
 final class NotificationCleanupService: ApplicationServiceWillResignActive {
     private struct RemovalCandidate {

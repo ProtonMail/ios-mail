@@ -15,13 +15,15 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-@testable import ProtonMail
-import InboxSnapshotTesting
 import InboxCoreUI
+import InboxIAP
+import InboxSnapshotTesting
 import InboxTesting
-import proton_app_uniffi
 import ProtonUIFoundations
 import Testing
+import proton_app_uniffi
+
+@testable import ProtonMail
 
 @MainActor
 @Suite(.calendarZurichEnUS, .currentDate(.fixture("2025-02-07 09:32:00")))
@@ -113,8 +115,6 @@ private extension SnoozeTime {
     }
 
 }
-
-import InboxIAP
 
 extension UpsellCoordinator {
 

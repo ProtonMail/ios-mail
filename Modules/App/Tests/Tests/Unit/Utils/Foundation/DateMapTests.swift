@@ -17,6 +17,7 @@
 
 import InboxDesignSystem
 import XCTest
+
 @testable import ProtonMail
 
 class DateMapTests: XCTestCase {

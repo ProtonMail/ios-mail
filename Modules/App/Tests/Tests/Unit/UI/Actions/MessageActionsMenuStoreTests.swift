@@ -15,9 +15,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-@testable import ProtonMail
-import proton_app_uniffi
 import Testing
+import proton_app_uniffi
+
+@testable import ProtonMail
 
 @MainActor
 class MessageActionsMenuStoreTests {
@@ -47,10 +48,14 @@ class MessageActionsMenuStoreTests {
 
     @Test
     func onLoad_ItFetchesActions() async throws {
-        await sut.handle(action: .colorSchemeChanged(.dark))
         await sut.handle(action: .onLoad)
 
         #expect(serviceInvoked.count == 1)
+    }
+
+    @Test
+    func whenColorSchemeIsChanged_ItFetchesActions() async throws {
+        await sut.handle(action: .colorSchemeChanged(.dark))
 
         let serviceCall = try #require(serviceInvoked.first)
         #expect(serviceCall.theme == .init(colorScheme: .dark, isForcingLightMode: false))
@@ -67,7 +72,7 @@ class MessageActionsMenuStoreTests {
     }
 
     @Test
-    func actionIsSlected_ItEmitsCorrectAction() async {
+    func actionIsSelected_ItEmitsCorrectAction() async {
         await sut.handle(action: .actionTapped(.reply))
 
         #expect(actionSelectedInvoked == [.reply])

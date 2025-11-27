@@ -16,26 +16,28 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Combine
-import struct InboxComposer.ScheduleSendDateFormatter
 import InboxCore
 import InboxCoreUI
 import InboxDesignSystem
 import OrderedCollections
-import proton_app_uniffi
 import SwiftUI
+import proton_app_uniffi
+
+import struct InboxComposer.ScheduleSendDateFormatter
 
 struct MessageBannersView: View {
     enum Action {
         case editScheduledMessageTapped
         case displayEmbeddedImagesTapped
         case downloadRemoteContentTapped
+        case loadImageWithoutProxyTapped
         case markAsLegitimateTapped
         case unblockSenderTapped
         case unsnoozeTapped
         case unsubscribeNewsletterTapped
     }
 
-    let types: OrderedSet<MessageBanner>
+    let types: OrderedSet<MessageBannerType>
     let timerPublisher: Publishers.Autoconnect<Timer.TimerPublisher>
     let scheduleSendDateFormatter: ScheduleSendDateFormatter
     let action: (Action) -> Void
@@ -43,7 +45,7 @@ struct MessageBannersView: View {
     @State private var currentDate: Date = DateEnvironment.currentDate()
 
     init(
-        types: OrderedSet<MessageBanner>,
+        types: OrderedSet<MessageBannerType>,
         timer: Timer.Type,
         scheduleSendDateFormatter: ScheduleSendDateFormatter = .init(),
         action: @escaping (Action) -> Void
@@ -63,129 +65,153 @@ struct MessageBannersView: View {
 
     // MARK: - Private
 
-    private func model(from types: OrderedSet<MessageBanner>, currentDate: Date) -> OrderedSet<Banner> {
+    private func model(from types: OrderedSet<MessageBannerType>, currentDate: Date) -> OrderedSet<Banner> {
         let banners: [Banner] = types.compactMap { type in
             switch type {
-            case .blockedSender:
-                let button = Banner.Button(title: L10n.MessageBanner.blockedSenderAction) {
-                    action(.unblockSenderTapped)
-                }
-
-                return oneLine(
-                    icon: DS.Icon.icCircleSlash,
-                    message: L10n.MessageBanner.blockedSenderTitle,
-                    size: .small(.button(button)),
-                    style: .regular
-                )
-            case .phishingAttempt:
-                let button = Banner.Button(title: L10n.Common.markAsLegitimate) {
-                    action(.markAsLegitimateTapped)
-                }
-
-                return oneLine(
-                    icon: DS.Icon.icHook,
-                    message: L10n.MessageBanner.phishingAttemptTitle,
-                    size: .large(.one(button)),
-                    style: .error
-                )
-            case .spam:
-                let button = Banner.Button(title: L10n.Common.markAsLegitimate) {
-                    action(.markAsLegitimateTapped)
-                }
-
-                return oneLine(
-                    icon: DS.Icon.icFire,
-                    message: L10n.MessageBanner.spamTitle,
-                    size: .large(.one(button)),
-                    style: .error
-                )
-            case .expiry(let timestamp):
-                let timestamp = Int(timestamp)
-                let duration = MessageExpiryDurationCalculator.duration(from: timestamp, currentDate: currentDate)
-                let formattedTime = MessageExpiryTimeFormatter.string(from: timestamp, currentDate: currentDate)
-
-                return smallNoButton(
-                    icon: DS.Icon.icTrashClock,
-                    message: L10n.MessageBanner.expiryTitle(formattedTime: formattedTime),
-                    style: duration.isOneMinuteOrMore ? .regular : .error
-                )
-            case .autoDelete(let timestamp):
-                let expirationDate = Date(timeIntervalSince1970: TimeInterval(timestamp))
-                let remainingTime = expirationDate.localisedRemainingTimeFromNow()
-
-                return smallNoButton(
-                    icon: DS.Icon.icTrashClock,
-                    message: L10n.MessageBanner.autoDeleteTitle(remainingTime: remainingTime),
-                    style: .regular
-                )
-            case .unsubscribeNewsletter(false):
-                let button = Banner.Button(title: L10n.MessageBanner.unsubscribeNewsletterAction) {
-                    action(.unsubscribeNewsletterTapped)
-                }
-
-                return oneLine(
-                    icon: DS.Icon.icEnvelopes,
-                    message: L10n.MessageBanner.unsubscribeNewsletterTitle,
-                    size: .small(.button(button)),
-                    style: .regular
-                )
-            case .unsubscribeNewsletter(true):
-                return smallNoButton(
-                    icon: DS.Icon.icEnvelopesCross,
-                    message: L10n.MessageBanner.unsubscribedNewsletterTitle,
-                    style: .regular
-                )
-            case .scheduledSend(let scheduledTime):
-                let formattedTime = scheduleSendDateFormatter.string(from: scheduledTime.date, format: .relativeOrShort)
-                let button = Banner.Button(title: L10n.MessageBanner.scheduledSendAction) {
-                    action(.editScheduledMessageTapped)
-                }
-
-                return .init(
-                    icon: DS.Icon.icClockPaperPlane,
-                    title: L10n.MessageBanner.scheduledSendTitle.string,
-                    subtitle: formattedTime,
-                    size: .large(.one(button)),
-                    style: .regular
-                )
-            case .snoozed(let timestamp):
-                let button = Banner.Button(title: L10n.MessageBanner.snoozedAction) {
-                    action(.unsnoozeTapped)
-                }
-
-                return oneLine(
-                    icon: DS.Icon.icClock,
-                    message: L10n.MessageBanner.snoozedTitle(formattedTime: timestamp.date.snoozeFormat()),
-                    size: .small(.button(button)),
-                    style: .regular
-                )
-            case .embeddedImages:
-                let button = Banner.Button(title: L10n.MessageBanner.embeddedImagesAction) {
-                    action(.displayEmbeddedImagesTapped)
-                }
-
-                return oneLine(
-                    icon: DS.Icon.icCogWheel,
-                    message: L10n.MessageBanner.embeddedImagesTitle,
-                    size: .small(.button(button)),
-                    style: .regular
-                )
-            case .remoteContent:
-                let button = Banner.Button(title: L10n.MessageBanner.remoteContentAction) {
-                    action(.downloadRemoteContentTapped)
-                }
-
-                return oneLine(
-                    icon: DS.Icon.icCogWheel,
-                    message: L10n.MessageBanner.remoteContentTitle,
-                    size: .small(.button(button)),
-                    style: .regular
-                )
-            case .unableToDecrypt:
-                return nil
+            case .standard(let messageBanner):
+                return model(for: messageBanner, currentDate: currentDate)
+            case .eventDriven(let eventDrivenBanner):
+                return model(for: eventDrivenBanner)
             }
         }
         return OrderedSet(banners)
+    }
+
+    private func model(for eventBanner: EventDrivenMessageBanner) -> Banner {
+        switch eventBanner {
+        case .proxyImageLoadFail:
+            let button = Banner.Button(title: L10n.MessageBannerEventDriven.proxyImageFailedToLoadAction) {
+                action(.loadImageWithoutProxyTapped)
+            }
+            return oneLine(
+                icon: DS.Icon.icCircleSlash,
+                message: L10n.MessageBannerEventDriven.proxyImageFailedToLoadTitle,
+                size: .small(.button(button)),
+                style: .regular
+            )
+        }
+    }
+
+    private func model(for banner: MessageBanner, currentDate: Date) -> Banner? {
+        switch banner {
+        case .blockedSender:
+            let button = Banner.Button(title: L10n.MessageBanner.blockedSenderAction) {
+                action(.unblockSenderTapped)
+            }
+
+            return oneLine(
+                icon: DS.Icon.icCircleSlash,
+                message: L10n.MessageBanner.blockedSenderTitle,
+                size: .small(.button(button)),
+                style: .regular
+            )
+        case .phishingAttempt:
+            let button = Banner.Button(title: L10n.Common.markAsLegitimate) {
+                action(.markAsLegitimateTapped)
+            }
+
+            return oneLine(
+                icon: DS.Icon.icHook,
+                message: L10n.MessageBanner.phishingAttemptTitle,
+                size: .large(.one(button)),
+                style: .error
+            )
+        case .spam:
+            let button = Banner.Button(title: L10n.Common.markAsLegitimate) {
+                action(.markAsLegitimateTapped)
+            }
+
+            return oneLine(
+                icon: DS.Icon.icFire,
+                message: L10n.MessageBanner.spamTitle,
+                size: .large(.one(button)),
+                style: .error
+            )
+        case .expiry(let timestamp):
+            let timestamp = Int(timestamp)
+            let duration = MessageExpiryDurationCalculator.duration(from: timestamp, currentDate: currentDate)
+            let formattedTime = MessageExpiryTimeFormatter.string(from: timestamp, currentDate: currentDate)
+
+            return smallNoButton(
+                icon: DS.Icon.icTrashClock,
+                message: L10n.MessageBanner.expiryTitle(formattedTime: formattedTime),
+                style: duration.isOneMinuteOrMore ? .regular : .error
+            )
+        case .autoDelete(let timestamp):
+            let expirationDate = Date(timeIntervalSince1970: TimeInterval(timestamp))
+            let remainingTime = expirationDate.localisedRemainingTimeFromNow()
+
+            return smallNoButton(
+                icon: DS.Icon.icTrashClock,
+                message: L10n.MessageBanner.autoDeleteTitle(remainingTime: remainingTime),
+                style: .regular
+            )
+        case .unsubscribeNewsletter(false):
+            let button = Banner.Button(title: L10n.MessageBanner.unsubscribeNewsletterAction) {
+                action(.unsubscribeNewsletterTapped)
+            }
+
+            return oneLine(
+                icon: DS.Icon.icEnvelopes,
+                message: L10n.MessageBanner.unsubscribeNewsletterTitle,
+                size: .small(.button(button)),
+                style: .regular
+            )
+        case .unsubscribeNewsletter(true):
+            return smallNoButton(
+                icon: DS.Icon.icEnvelopesCross,
+                message: L10n.MessageBanner.unsubscribedNewsletterTitle,
+                style: .regular
+            )
+        case .scheduledSend(let scheduledTime):
+            let formattedTime = scheduleSendDateFormatter.string(from: scheduledTime.date, format: .relativeOrShort)
+            let button = Banner.Button(title: L10n.MessageBanner.scheduledSendAction) {
+                action(.editScheduledMessageTapped)
+            }
+
+            return .init(
+                icon: DS.Icon.icClockPaperPlane,
+                title: L10n.MessageBanner.scheduledSendTitle.string,
+                subtitle: formattedTime,
+                size: .large(.one(button)),
+                style: .regular
+            )
+        case .snoozed(let timestamp):
+            let button = Banner.Button(title: L10n.MessageBanner.snoozedAction) {
+                action(.unsnoozeTapped)
+            }
+
+            return oneLine(
+                icon: DS.Icon.icClock,
+                message: L10n.MessageBanner.snoozedTitle(formattedTime: timestamp.date.snoozeFormat()),
+                size: .small(.button(button)),
+                style: .regular
+            )
+        case .embeddedImages:
+            let button = Banner.Button(title: L10n.MessageBanner.embeddedImagesAction) {
+                action(.displayEmbeddedImagesTapped)
+            }
+
+            return oneLine(
+                icon: DS.Icon.icCogWheel,
+                message: L10n.MessageBanner.embeddedImagesTitle,
+                size: .small(.button(button)),
+                style: .regular
+            )
+        case .remoteContent:
+            let button = Banner.Button(title: L10n.MessageBanner.remoteContentAction) {
+                action(.downloadRemoteContentTapped)
+            }
+
+            return oneLine(
+                icon: DS.Icon.icCogWheel,
+                message: L10n.MessageBanner.remoteContentTitle,
+                size: .small(.button(button)),
+                style: .regular
+            )
+        case .unableToDecrypt:
+            return nil
+        }
     }
 
     private func smallNoButton(

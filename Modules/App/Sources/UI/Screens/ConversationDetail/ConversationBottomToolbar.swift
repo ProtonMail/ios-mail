@@ -15,11 +15,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import proton_app_uniffi
-import InboxCoreUI
 import InboxDesignSystem
 import ProtonUIFoundations
 import SwiftUI
+import proton_app_uniffi
 
 extension View {
 
@@ -28,7 +27,7 @@ extension View {
         mailbox: @escaping () -> Mailbox,
         messageAppearanceOverrideStore: MessageAppearanceOverrideStore,
         editToolbarTapped: @escaping (ToolbarType) -> Void,
-        messageActionSelected: @escaping (MessageAction) -> Void,
+        messageActionSelected: @escaping (MessageAction) async -> Void,
         conversationActionSelected: @escaping (ConversationAction) -> Void
     ) -> some View {
         modifier(
@@ -52,7 +51,7 @@ struct ConversationToolbarModifier: ViewModifier {
     private let mailbox: () -> Mailbox
     private let messageAppearanceOverrideStore: MessageAppearanceOverrideStore
     private let editToolbarTapped: (ToolbarType) -> Void
-    private let messageActionSelected: (MessageAction) -> Void
+    private let messageActionSelected: (MessageAction) async -> Void
     private let conversationActionSelected: (ConversationAction) -> Void
 
     init(
@@ -60,7 +59,7 @@ struct ConversationToolbarModifier: ViewModifier {
         mailbox: @escaping () -> Mailbox,
         messageAppearanceOverrideStore: MessageAppearanceOverrideStore,
         editToolbarTapped: @escaping (ToolbarType) -> Void,
-        messageActionSelected: @escaping (MessageAction) -> Void,
+        messageActionSelected: @escaping (MessageAction) async -> Void,
         conversationActionSelected: @escaping (ConversationAction) -> Void
     ) {
         self.actions = actions
@@ -73,6 +72,7 @@ struct ConversationToolbarModifier: ViewModifier {
 
     func body(content: Content) -> some View {
         content
+            .trackBottomSafeAreaForToast()
             .toolbar {
                 ToolbarItemGroup(placement: .bottomBar) {
                     if let actions {
@@ -124,36 +124,23 @@ struct ConversationToolbarModifier: ViewModifier {
         }
     }
 
+    @ViewBuilder
     private func toolbarContent<MoreActionsMenu: View, Action: DisplayableAction>(
         actions: [Action],
-        selected: @escaping (Action) -> Void,
+        selected: @escaping (Action) async -> Void,
         moreActionsMenu: @escaping () -> MoreActionsMenu
     ) -> some View {
-        HStack(alignment: .center) {
-            ForEachEnumerated(actions, id: \.offset) { action, index in
-                if index == 0 {
-                    Spacer()
+        Spacer()
+        ForEach(actions, id: \.self) { action in
+            if action.isMoreAction {
+                moreActionsMenu()
+            } else {
+                Button(action: { Task { await selected(action) } }) {
+                    action.displayData.image
+                        .foregroundStyle(DS.Color.Icon.weak)
                 }
-                if action.isMoreAction {
-                    moreActionsMenu()
-                } else {
-                    Button(action: { selected(action) }) {
-                        action.displayData.image
-                            .foregroundStyle(DS.Color.Icon.weak)
-                    }
-                }
-                Spacer()
             }
-        }
-        .onGeometryChange(for: CGFloat.self, of: \.size.height) { toolbarHeight in
-            let bottomSafeAreaToRecreate = DS.Spacing.large
-            toastStateStore.state.bottomBar.height = toolbarHeight + bottomSafeAreaToRecreate
-        }
-        .onAppear {
-            toastStateStore.state.bottomBar.isVisible = true
-        }
-        .onDisappear {
-            toastStateStore.state.bottomBar.isVisible = false
+            Spacer()
         }
     }
 

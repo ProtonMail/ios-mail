@@ -16,8 +16,8 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import proton_app_uniffi
 import ProtonUIFoundations
+import proton_app_uniffi
 
 @MainActor
 struct DraftSavedToastCoordinator {

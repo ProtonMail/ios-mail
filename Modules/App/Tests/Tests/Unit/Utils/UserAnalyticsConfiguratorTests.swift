@@ -15,10 +15,11 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-@testable import ProtonMail
-import proton_app_uniffi
 import InboxTesting
 import Testing
+import proton_app_uniffi
+
+@testable import ProtonMail
 
 class UserAnalyticsConfiguratorTests {
     var sentryStartInvokeCount = 0

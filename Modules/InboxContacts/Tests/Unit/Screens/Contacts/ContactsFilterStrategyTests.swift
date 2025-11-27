@@ -15,13 +15,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-@testable import InboxContacts
+import Testing
 import proton_app_uniffi
-import XCTest
 
-final class ContactsFilterStrategyTests: XCTestCase {
+@testable import InboxContacts
 
-    func testFilter_ForEmptyStringSearchPhrase_ReturnsAllResults() {
+struct ContactsFilterStrategyTests {
+    @Test
+    func filter_ForEmptyStringSearchPhrase_ReturnsAllResults() {
         let groupedItems: [GroupedContacts] = [
             .init(
                 groupedBy: "#",
@@ -46,58 +47,11 @@ final class ContactsFilterStrategyTests: XCTestCase {
             ),
         ]
 
-        XCTAssertEqual(ContactsFilterStrategy.filter(searchPhrase: "", items: groupedItems), groupedItems)
+        #expect(ContactsFilterStrategy.filter(searchPhrase: "", items: groupedItems) == groupedItems)
     }
 
-    func testFilter_ForAndSearchPhrase_ReturnsOnlyMatchingResults() {
-        let groupedItems: [GroupedContacts] = [
-            .init(
-                groupedBy: "#",
-                items: [
-                    .contact(.vip)
-                ]
-            ),
-            .init(
-                groupedBy: "A",
-                items: [
-                    .contact(.alexAbrams),
-                    .contact(.aliceAdams),
-                    .group(.advisorsGroup),
-                    .contact(.andrewAllen),
-                    .contact(.amandaArcher),
-                ]
-            ),
-            .init(
-                groupedBy: "E",
-                items: [
-                    .contact(.evanAndrage),
-                    .contact(.elenaErickson),
-                ]
-            ),
-        ]
-
-        let expectedItems: [GroupedContacts] = [
-            .init(
-                groupedBy: "A",
-                items: [
-                    .contact(.alexAbrams),
-                    .group(.advisorsGroup),
-                    .contact(.andrewAllen),
-                    .contact(.amandaArcher),
-                ]
-            ),
-            .init(
-                groupedBy: "E",
-                items: [
-                    .contact(.evanAndrage)
-                ]
-            ),
-        ]
-
-        XCTAssertEqual(ContactsFilterStrategy.filter(searchPhrase: "And", items: groupedItems), expectedItems)
-    }
-
-    func testFilter_ForAndrSearchPhrase_ReturnsOnlyMatchingResults() {
+    @Test
+    func filter_ForAndSearchPhrase_ReturnsOnlyMatchingResults() {
         let groupedItems: [GroupedContacts] = [
             .init(
                 groupedBy: "#",
@@ -129,6 +83,55 @@ final class ContactsFilterStrategyTests: XCTestCase {
                 groupedBy: "A",
                 items: [
                     .contact(.alexAbrams),
+                    .group(.advisorsGroup),
+                    .contact(.andrewAllen),
+                    .contact(.amandaArcher),
+                ]
+            ),
+            .init(
+                groupedBy: "E",
+                items: [
+                    .contact(.evanAndrage)
+                ]
+            ),
+        ]
+
+        #expect(ContactsFilterStrategy.filter(searchPhrase: "And", items: groupedItems) == expectedItems)
+    }
+
+    @Test
+    func filter_ForAndrSearchPhrase_ReturnsOnlyMatchingResults() {
+        let groupedItems: [GroupedContacts] = [
+            .init(
+                groupedBy: "#",
+                items: [
+                    .contact(.vip)
+                ]
+            ),
+            .init(
+                groupedBy: "A",
+                items: [
+                    .contact(.alexAbrams),
+                    .contact(.aliceAdams),
+                    .group(.advisorsGroup),
+                    .contact(.andrewAllen),
+                    .contact(.amandaArcher),
+                ]
+            ),
+            .init(
+                groupedBy: "E",
+                items: [
+                    .contact(.evanAndrage),
+                    .contact(.elenaErickson),
+                ]
+            ),
+        ]
+
+        let expectedItems: [GroupedContacts] = [
+            .init(
+                groupedBy: "A",
+                items: [
+                    .contact(.alexAbrams),
                     .contact(.andrewAllen),
                 ]
             ),
@@ -140,7 +143,6 @@ final class ContactsFilterStrategyTests: XCTestCase {
             ),
         ]
 
-        XCTAssertEqual(ContactsFilterStrategy.filter(searchPhrase: "Andr", items: groupedItems), expectedItems)
+        #expect(ContactsFilterStrategy.filter(searchPhrase: "Andr", items: groupedItems) == expectedItems)
     }
-
 }

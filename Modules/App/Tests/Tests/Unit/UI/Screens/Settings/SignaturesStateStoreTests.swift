@@ -15,13 +15,13 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-@testable import ProtonMail
-
 import InboxCore
 import InboxCoreUI
-import proton_app_uniffi
 import ProtonUIFoundations
 import Testing
+import proton_app_uniffi
+
+@testable import ProtonMail
 
 @MainActor
 final class SignaturesStateStoreTests {

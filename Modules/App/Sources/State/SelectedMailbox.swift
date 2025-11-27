@@ -15,8 +15,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import proton_app_uniffi
 import UIKit
+import proton_app_uniffi
 
 enum SelectedMailbox: Equatable {
     /// The `inbox` case is a workaround to be able to launch the mailbox screen without having to wait

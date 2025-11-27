@@ -17,8 +17,8 @@
 
 import InboxCore
 import InboxKeychain
-import proton_app_uniffi
 import UserNotifications
+import proton_app_uniffi
 
 public struct TestableNotificationService {
     typealias DecryptRemoteNotification = (OsKeyChain, EncryptedPushNotification) async -> DecryptPushNotificationResult

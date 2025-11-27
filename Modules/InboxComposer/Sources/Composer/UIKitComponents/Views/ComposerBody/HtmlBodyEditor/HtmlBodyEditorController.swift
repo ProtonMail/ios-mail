@@ -97,7 +97,7 @@ final class HtmlBodyEditorController: UIViewController, BodyEditor {
             case .onEditorChange:
                 Task { [weak self] in
                     guard let self else { return }
-                    guard let body = await htmlInterface.readMesasgeBody() else { return }
+                    guard let body = await htmlInterface.readMessageBody() else { return }
                     onEvent?(.onBodyChange(body: body))
                 }
             case .onCursorPositionChange(let position):
@@ -181,21 +181,15 @@ extension HtmlBodyEditorController {
     enum SubviewFactory {
 
         static func webView(imageProxy: ImageProxy) -> WKWebView {
-            let config = WKWebViewConfiguration.default(imageProxy: imageProxy)
+            let config = WKWebViewConfiguration.default(
+                handler: UniversalSchemeHandler.init(imageProxy: imageProxy, imagePolicy: .safe)
+            )
 
             // using a custom cache to be able to flush it when necessary (e.g. failed inline image upload)
             config.websiteDataStore = WKWebsiteDataStore.nonPersistent()
 
-            let backgroundColor = DS.Color.Background.norm.toDynamicUIColor
-            let webView = WKWebViewWithNoAccessoryView(frame: .zero, configuration: config)
+            let webView = WKWebView.default(configuration: config)
             webView.translatesAutoresizingMaskIntoConstraints = false
-            webView.scrollView.isScrollEnabled = false
-            webView.scrollView.bounces = false
-
-            webView.isOpaque = false
-            webView.backgroundColor = backgroundColor
-            webView.scrollView.backgroundColor = backgroundColor
-            webView.scrollView.contentInsetAdjustmentBehavior = .never
             return webView
         }
     }

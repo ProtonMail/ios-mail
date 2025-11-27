@@ -15,10 +15,11 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-@testable import ProtonMail
 import InboxTesting
 import ViewInspector
 import XCTest
+
+@testable import ProtonMail
 
 @MainActor
 class OnboardingScreenTests: BaseTestCase {

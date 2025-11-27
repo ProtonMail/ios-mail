@@ -20,24 +20,21 @@ import proton_app_uniffi
 
 public struct ContactSuggestionsRepository {
     private let contactStore: CNContactStoring
-    private let permissionsHandler: CNContactStoring.Type
     private let allContacts: ([DeviceContact]) async -> ContactSuggestionsProtocol?
 
     public init(
-        permissionsHandler: CNContactStoring.Type,
         contactStore: CNContactStoring,
         allContactsProvider: AllContactsProvider,
         mailUserSession: MailUserSession
     ) {
         self.contactStore = contactStore
-        self.permissionsHandler = permissionsHandler
         self.allContacts = { deviceContacts in
             try? await allContactsProvider.contactSuggestions(deviceContacts, mailUserSession).get()
         }
     }
 
     public func allContacts() async -> ContactSuggestionsProtocol? {
-        let permissionsGranted = permissionsHandler.authorizationStatus(for: .contacts).granted
+        let permissionsGranted = contactStore.authorizationStatus(for: .contacts).granted
         let deviceContacts = permissionsGranted ? deviceContacts() : []
 
         return await allContacts(deviceContacts)

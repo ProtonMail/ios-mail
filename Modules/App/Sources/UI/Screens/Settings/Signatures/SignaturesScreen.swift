@@ -19,9 +19,9 @@ import InboxCore
 import InboxCoreUI
 import InboxDesignSystem
 import InboxIAP
-import proton_app_uniffi
 import ProtonUIFoundations
 import SwiftUI
+import proton_app_uniffi
 
 struct SignaturesScreen: View {
     @EnvironmentObject private var router: Router<SettingsRoute>

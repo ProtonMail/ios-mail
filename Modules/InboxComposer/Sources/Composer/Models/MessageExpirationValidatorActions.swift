@@ -17,8 +17,8 @@
 
 import InboxCore
 import InboxCoreUI
-import proton_app_uniffi
 import SwiftUI
+import proton_app_uniffi
 
 struct MessageExpirationValidatorActions {
     let validate: @MainActor (_ draft: AppDraftProtocol, _ alertBinding: Binding<AlertModel?>) async -> MessageExpiryValidationResult
@@ -26,12 +26,6 @@ struct MessageExpirationValidatorActions {
     static var productionInstance: Self {
         .init(validate: { draft, alertBinding in
             await productionValidateRecipientsIfMessageHasExpiration(draft: draft, alertBinding: alertBinding)
-        })
-    }
-
-    static func dummy(returning result: MessageExpiryValidationResult) -> Self {
-        .init(validate: { _, _ in
-            result
         })
     }
 }

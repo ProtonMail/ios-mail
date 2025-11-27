@@ -19,9 +19,9 @@
 import CoreGraphics
 import Foundation
 import InboxCoreUI
-import proton_app_uniffi
 import ProtonUIFoundations
 import Testing
+import proton_app_uniffi
 
 @testable import InboxIAP
 

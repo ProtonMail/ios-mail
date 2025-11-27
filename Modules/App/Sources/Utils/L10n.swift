@@ -309,6 +309,13 @@ enum L10n {
         static let save = LocalizedStringResource("Save", comment: "`Save` action title.")
     }
 
+    enum Draft {
+        static let noAddressWithSendingPermissions = LocalizedStringResource(
+            "No address with sending permissions",
+            comment: "Error toast shown when trying to open the composer without a valid sending address."
+        )
+    }
+
     enum LegacyMigration {
         static let migrationFailed = LocalizedStringResource(
             "Issue updating your account. Please sign in again.",
@@ -636,6 +643,17 @@ enum L10n {
         static let unsubscribedNewsletterTitle = LocalizedStringResource(
             "You are unsubscribed from this mailing list.",
             comment: "Banner indicating that the user is already unsubscribed from a mailing list."
+        )
+    }
+
+    enum MessageBannerEventDriven {
+        static let proxyImageFailedToLoadTitle = LocalizedStringResource(
+            "Some images failed to load with tracker protection.",
+            comment: "Banner informing the user about an error loading images in a message."
+        )
+        static let proxyImageFailedToLoadAction = LocalizedStringResource(
+            "Load images",
+            comment: "Action to load image without proxy."
         )
     }
 

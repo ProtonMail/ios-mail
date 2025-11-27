@@ -44,8 +44,13 @@ struct DraftPresenter: ContactsDraftPresenter {
         self.undoScheduleSendProvider = undoScheduleSendProvider
     }
 
-    func openNewDraft() async throws(DraftOpenError) {
+    func openNewDraft() async throws {
         AppLogger.log(message: "open new draft", category: .composer)
+
+        guard try await userSession.hasValidSenderAddress().get() else {
+            throw ClientDraftError.validSenderAddressNotFound
+        }
+
         try await openNewDraft(createMode: .empty, updateDraft: .none)
     }
 
@@ -78,46 +83,9 @@ struct DraftPresenter: ContactsDraftPresenter {
         }
     }
 
-    func openNewDraft(with mailtoData: MailtoData) async throws {
+    func openNewDraft(with mailtoURL: URL) async throws {
         AppLogger.log(message: "open new draft from mailto:", category: .composer)
-
-        let updateDraft: (Draft) -> Void = { draft in
-            addRecipients(from: mailtoData, under: \.to, to: draft.toRecipients)
-            addRecipients(from: mailtoData, under: \.cc, to: draft.ccRecipients)
-            addRecipients(from: mailtoData, under: \.bcc, to: draft.bccRecipients)
-
-            do {
-                if let subject = mailtoData.subject {
-                    try draft.setSubject(subject: subject).get()
-                }
-
-                if let body = mailtoData.body {
-                    try draft.setBody(body: body).get()
-                }
-            } catch {
-                AppLogger.log(error: error, category: .composer)
-            }
-        }
-
-        try await openNewDraft(createMode: .empty, updateDraft: updateDraft)
-    }
-
-    private func addRecipients(
-        from mailtoData: MailtoData,
-        under keyPath: KeyPath<MailtoData, [String]>,
-        to recipientList: () -> ComposerRecipientList
-    ) {
-        let rawValues = mailtoData[keyPath: keyPath]
-        let recipients = rawValues.map { email in SingleRecipientEntry(name: nil, email: email) }
-        let list = recipientList()
-
-        for recipient in recipients {
-            let result = list.addSingleRecipient(recipient: recipient)
-
-            if result != .ok {
-                AppLogger.log(message: "\(result)", category: .composer, isError: true)
-            }
-        }
+        try await openNewDraft(createMode: .mailto(mailtoURL.absoluteString), updateDraft: .none)
     }
 
     func openDraftForShareExtension() async throws {
@@ -202,4 +170,15 @@ extension DraftPresenter {
         )
     }
 
+}
+
+private enum ClientDraftError: LocalizedError {
+    case validSenderAddressNotFound
+
+    var errorDescription: String? {
+        switch self {
+        case .validSenderAddressNotFound:
+            L10n.Draft.noAddressWithSendingPermissions.string
+        }
+    }
 }

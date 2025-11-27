@@ -15,10 +15,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import proton_app_uniffi
 import InboxCore
 import InboxCoreUI
 import SwiftUI
+import proton_app_uniffi
 
 @MainActor
 class MessageActionsMenuStore: StateStore {
@@ -26,7 +26,7 @@ class MessageActionsMenuStore: StateStore {
 
     private let mailbox: Mailbox
     private let service: AllAvailableMessageActionsForActionSheetService
-    private let actionTapped: (MessageAction) -> Void
+    private let actionTapped: (MessageAction) async -> Void
     private let messageAppearanceOverrideStore: MessageAppearanceOverrideStore
 
     init(
@@ -34,7 +34,7 @@ class MessageActionsMenuStore: StateStore {
         mailbox: Mailbox,
         messageAppearanceOverrideStore: MessageAppearanceOverrideStore,
         service: @escaping AllAvailableMessageActionsForActionSheetService,
-        actionTapped: @escaping (MessageAction) -> Void,
+        actionTapped: @escaping (MessageAction) async -> Void,
     ) {
         self.state = state
         self.mailbox = mailbox
@@ -46,11 +46,15 @@ class MessageActionsMenuStore: StateStore {
     func handle(action: MessageActionsMenuAction) async {
         switch action {
         case .onLoad:
-            await loadActions()
+            break
         case .actionTapped(let action):
-            actionTapped(action)
+            await actionTapped(action)
         case .colorSchemeChanged(let colorScheme):
             state = state.copy(\.colorScheme, to: colorScheme)
+        }
+
+        if action.warrantsActionReload {
+            await loadActions()
         }
     }
 

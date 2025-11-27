@@ -46,7 +46,6 @@ struct ComposerView: View {
                 draftOrigin: draftOrigin,
                 contactProvider: contactProvider,
                 onDismiss: onDismiss,
-                permissionsHandler: CNContactStore.self,
                 contactStore: CNContactStore(),
                 photosItemsHandler: .init(),
                 cameraImageHandler: .init(),

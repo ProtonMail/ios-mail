@@ -15,8 +15,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-@testable import ProtonUIFoundations
 import InboxCore
+
+@testable import ProtonUIFoundations
 
 extension Toast {
     func simulateUndoAction() async {

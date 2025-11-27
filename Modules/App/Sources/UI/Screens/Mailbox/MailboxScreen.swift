@@ -16,13 +16,14 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import AccountManager
+import Combine
 import InboxCore
 import InboxCoreUI
 import InboxDesignSystem
 import InboxIAP
-import proton_app_uniffi
 import ProtonUIFoundations
 import SwiftUI
+import proton_app_uniffi
 
 struct MailboxScreen: View {
     @EnvironmentObject private var appUIStateStore: AppUIStateStore
@@ -274,6 +275,7 @@ extension MailboxScreen {
                 }
             }
         )
+        .trackBottomSafeAreaForToast()
         .accessibilityElement(children: .contain)
     }
 
@@ -295,10 +297,10 @@ extension MailboxScreen {
             mailboxModel.createDraft()
         }
         .padding(.trailing, DS.Spacing.large)
-        .padding(.bottom, DS.Spacing.large + toastStateStore.state.maxHeight)
+        .padding(.bottom, DS.Spacing.large + toastStateStore.state.maxToastHeight)
         .opacity(mailboxModel.selectionMode.selectionState.hasItems ? 0 : 1)
         .animation(.selectModeAnimation, value: mailboxModel.selectionMode.selectionState.hasItems)
-        .animation(.toastAnimation, value: toastStateStore.state.toastHeights)
+        .animation(.toastAnimation, value: toastStateStore.state.maxToastHeight)
     }
 
     @ViewBuilder
@@ -363,8 +365,6 @@ extension MailboxScreen {
 private struct MailboxScreenIdentifiers {
     static let rootItem = "mailbox.rootItem"
 }
-
-import Combine
 
 class MailSettingsLiveQueryPreviewDummy: MailSettingLiveQuerying {
 

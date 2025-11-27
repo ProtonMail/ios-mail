@@ -15,11 +15,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-@testable import InboxRSVP
 import InboxSnapshotTesting
 import SwiftUI
-import proton_app_uniffi
 import Testing
+import proton_app_uniffi
+
+@testable import InboxRSVP
 
 @MainActor
 @Suite(.calendarZurichEnUS, .calendarGMTEnUS, .currentDate(.fixture("2025-07-25 12:00:00")))

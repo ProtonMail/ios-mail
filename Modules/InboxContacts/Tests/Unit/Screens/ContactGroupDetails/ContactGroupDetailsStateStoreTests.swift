@@ -15,13 +15,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-@testable import InboxContacts
 import InboxCore
 import InboxCoreUI
 import InboxTesting
-import proton_app_uniffi
 import ProtonUIFoundations
 import Testing
+import proton_app_uniffi
+
+@testable import InboxContacts
 
 @MainActor
 final class ContactGroupDetailsStateStoreTests {
@@ -46,12 +47,12 @@ final class ContactGroupDetailsStateStoreTests {
     }
 
     @Test
-    func testInitialState_isSetCorrectly() {
+    func initialState_isSetCorrectly() {
         #expect(sut.state == initialState)
     }
 
     @Test
-    func testContactItemTappedAction_ItNavigatesToContactDetails() async throws {
+    func contactItemTappedAction_ItNavigatesToContactDetails() async throws {
         let emailItem: ContactEmailItem = try #require(ContactGroupItem.advisorsGroup.contactEmails.first)
 
         await sut.handle(action: .contactItemTapped(emailItem))
@@ -60,7 +61,7 @@ final class ContactGroupDetailsStateStoreTests {
     }
 
     @Test
-    func testSendGroupMessageTappedAction_ItPresentsDraftWithContactGroup() async {
+    func sendGroupMessageTappedAction_ItPresentsDraftWithContactGroup() async {
         await sut.handle(action: .sendGroupMessageTapped)
 
         #expect(draftPresenterSpy.openDraftGroupCalls.count == 1)
@@ -68,7 +69,7 @@ final class ContactGroupDetailsStateStoreTests {
     }
 
     @Test
-    func testSendGroupMessageTappedAction_AndOpeningDraftFails_ItPresentsToastWithError() async {
+    func sendGroupMessageTappedAction_AndOpeningDraftFails_ItPresentsToastWithError() async {
         let expectedError: TestError = .test
 
         draftPresenterSpy.stubbedOpenDraftGroupError = expectedError

@@ -92,8 +92,4 @@ extension Draft: AppDraftProtocol {
         let list: ComposerRecipientList = self.bccRecipients()
         return list
     }
-
-    public func loadImage(url: String) async -> AttachmentDataResult {
-        await loadImage(url: url, policy: .safe)
-    }
 }

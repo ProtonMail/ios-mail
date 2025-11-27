@@ -15,8 +15,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Combine
 import BackgroundTasks
+import Combine
 import InboxCore
 import proton_app_uniffi
 

@@ -15,10 +15,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import proton_app_uniffi
 import InboxCore
 import InboxCoreUI
 import SwiftUI
+import proton_app_uniffi
 
 final class AppSettingsStateStore: StateStore, Sendable {
     @Published var state: AppSettingsState

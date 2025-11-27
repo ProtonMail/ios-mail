@@ -15,11 +15,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-@testable import ProtonMail
 import InboxSnapshotTesting
 import InboxTesting
 import SwiftUI
 import Testing
+
+@testable import ProtonMail
 
 @MainActor
 @Suite(.calendarZurichEnUS)
@@ -107,7 +108,6 @@ class MessageDetailsViewSnapshotTests {
             isHeaderCollapsed: collapsed,
             uiModel: model,
             mailbox: .dummy,
-            messageAppearanceOverrideStore: .init(),
             actionButtonsState: actionButtonsState,
             onEvent: { _ in }
         )

@@ -18,11 +18,7 @@
 import proton_app_uniffi
 
 public protocol ImageProxy: AnyObject, Sendable {
-    func loadImage(url: String) async -> AttachmentDataResult
+    func loadImage(url: String, policy: ImagePolicy) async -> AttachmentDataResult
 }
 
-extension DecryptedMessage: ImageProxy {
-    public func loadImage(url: String) async -> AttachmentDataResult {
-        await loadImage(url: url, policy: .safe)
-    }
-}
+extension DecryptedMessage: ImageProxy {}

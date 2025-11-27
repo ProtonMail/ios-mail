@@ -16,8 +16,8 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import InboxCore
-import proton_app_uniffi
 import UIKit
+import proton_app_uniffi
 
 final class ShortcutItemsService: ApplicationServiceWillResignActive {
     typealias ActiveUserSession = () -> MailUserSession?

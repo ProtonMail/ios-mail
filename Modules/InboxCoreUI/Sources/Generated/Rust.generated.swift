@@ -4,16 +4,6 @@
 import Foundation
 import proton_app_uniffi
 
-public extension AttachmentDataResult {
-    func get() throws(AttachmentDataError) -> AttachmentData {
-        switch self {
-        case .ok(let value):
-            value
-        case .error(let error):
-            throw error
-        }
-    }
-}
 public extension AttachmentListRemoveResult {
     func get() throws(ProtonError) {
         switch self {
@@ -936,6 +926,16 @@ public extension MailUserSessionGetPaymentsStatusResult {
 }
 public extension MailUserSessionGetPaymentsSubscriptionResult {
     func get() throws(UserSessionError) -> Subscriptions {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension MailUserSessionHasValidSenderAddressResult {
+    func get() throws(ProtonError) -> Bool {
         switch self {
         case .ok(let value):
             value

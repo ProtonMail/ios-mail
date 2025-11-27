@@ -17,8 +17,8 @@
 
 import InboxCoreUI
 import InboxDesignSystem
-import proton_app_uniffi
 import SwiftUI
+import proton_app_uniffi
 
 struct ConversationDetailScreen: View {
     @StateObject private var model: ConversationDetailModel
@@ -42,8 +42,7 @@ struct ConversationDetailScreen: View {
                 seed: seed,
                 draftPresenter: draftPresenter,
                 backOnlineActionExecutor: .init(mailUserSession: { mailUserSession }),
-                snoozeService: SnoozeService(mailUserSession: { mailUserSession }),
-                messageAppearanceOverrideStore: MessageAppearanceOverrideStore()
+                snoozeService: SnoozeService(mailUserSession: { mailUserSession })
             ))
         self.draftPresenter = draftPresenter
         self.mailUserSession = mailUserSession
@@ -186,7 +185,7 @@ struct ConversationDetailScreen: View {
                     emails: "",
                     subject: "Embarking on an Epic Adventure: Planning Our Team Expedition to Patagonia",
                     date: .now,
-                    exclusiveLocation: nil,
+                    location: nil,
                     locationIcon: nil,
                     isRead: true,
                     isStarred: true,

@@ -18,7 +18,7 @@
 import Contacts
 
 public protocol CNContactStoring {
-    static func authorizationStatus(for entityType: CNEntityType) -> CNAuthorizationStatus
+    func authorizationStatus(for entityType: CNEntityType) -> CNAuthorizationStatus
 
     func requestAccess(for entityType: CNEntityType, completionHandler: @escaping (Bool, (any Error)?) -> Void)
     func enumerateContacts(
@@ -27,4 +27,10 @@ public protocol CNContactStoring {
     ) throws
 }
 
-extension CNContactStore: CNContactStoring {}
+extension CNContactStore: CNContactStoring {
+
+    public func authorizationStatus(for entityType: CNEntityType) -> CNAuthorizationStatus {
+        Self.authorizationStatus(for: entityType)
+    }
+
+}

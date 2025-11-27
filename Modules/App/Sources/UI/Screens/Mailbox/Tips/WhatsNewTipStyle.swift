@@ -28,9 +28,9 @@ struct WhatsNewTipStyle: TipViewStyle {
                 image
                     .resizable()
                     .square(size: 20)
-                    .foregroundStyle(DS.Color.Icon.accent)
+                    .foregroundStyle(DS.Color.Icon.inverted)
                     .padding(DS.Spacing.compact)
-                    .background(DS.Color.InteractionBrandWeak.norm)
+                    .background(DS.Color.Brand.minus10)
                     .clipShape(RoundedRectangle(cornerRadius: DS.Radius.large))
             }
 
@@ -54,7 +54,7 @@ struct WhatsNewTipStyle: TipViewStyle {
                 })
         }
         .padding(DS.Spacing.medium)
-        .background(DS.Color.Background.norm)
+        .background(DS.Color.BackgroundInverted.secondary)
     }
 
 }

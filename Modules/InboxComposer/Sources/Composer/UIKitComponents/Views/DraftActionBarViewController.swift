@@ -15,10 +15,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import InboxDesignSystem
 import InboxCore
-import proton_app_uniffi
+import InboxDesignSystem
 import UIKit
+import proton_app_uniffi
 
 final class DraftActionBarViewController: UIViewController {
     struct State {

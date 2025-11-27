@@ -19,8 +19,6 @@ import Foundation
 import proton_app_uniffi
 
 enum DeepLinkRouteCoder {
-    private static let queryItemValueSeparator = ","
-
     static func encode(route: Route) -> URL {
         var components = URLComponents()
         components.scheme = route.urlScheme.rawValue
@@ -68,30 +66,10 @@ enum DeepLinkRouteCoder {
 
         switch supportedScheme {
         case .mailto:
-            return decodeMailtoRoute(from: components)
+            return .mailto(deepLink)
         case .protonmail:
             return decodeProtonMailRoute(from: components)
         }
-    }
-
-    private static func decodeMailtoRoute(from components: URLComponents) -> Route {
-        let data = MailtoData(
-            to: components.path.components(separatedBy: queryItemValueSeparator),
-            cc: multipleValuesFromQueryItem(named: "cc", from: components),
-            bcc: multipleValuesFromQueryItem(named: "bcc", from: components),
-            subject: components.queryItem(named: "subject"),
-            body: components.queryItem(named: "body")
-        )
-
-        return .mailto(data)
-    }
-
-    private static func multipleValuesFromQueryItem(named name: String, from components: URLComponents) -> [String] {
-        guard let rawValue: String = components.queryItem(named: name) else {
-            return []
-        }
-
-        return rawValue.components(separatedBy: queryItemValueSeparator)
     }
 
     private static func decodeProtonMailRoute(from components: URLComponents) -> Route? {

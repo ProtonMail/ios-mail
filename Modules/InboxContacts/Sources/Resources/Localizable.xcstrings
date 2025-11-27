@@ -586,7 +586,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld 联系人"
+                  "value" : "%lld 个联系人"
                 }
               }
             }
@@ -3240,7 +3240,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Redigér"
+            "value" : "Rediger"
           }
         },
         "de" : {

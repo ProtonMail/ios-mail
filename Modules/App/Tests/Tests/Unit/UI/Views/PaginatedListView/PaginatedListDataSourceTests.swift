@@ -16,9 +16,10 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Combine
-import proton_app_uniffi
-@testable import ProtonMail
 import XCTest
+import proton_app_uniffi
+
+@testable import ProtonMail
 
 @MainActor
 final class PaginatedListDataSourceTests: XCTestCase {

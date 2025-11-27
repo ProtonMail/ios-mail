@@ -16,10 +16,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-@testable import InboxIAP
-
-import proton_app_uniffi
 import Testing
+import proton_app_uniffi
+
+@testable import InboxIAP
 
 final class TelemetryReporterTests {
     private let sut: TelemetryReporter

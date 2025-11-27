@@ -20,8 +20,8 @@ import InboxContacts
 import InboxCore
 import InboxIAP
 import PaymentsUI
-import proton_app_uniffi
 import SwiftUI
+import proton_app_uniffi
 
 @MainActor
 struct HomeScreenModalFactory {

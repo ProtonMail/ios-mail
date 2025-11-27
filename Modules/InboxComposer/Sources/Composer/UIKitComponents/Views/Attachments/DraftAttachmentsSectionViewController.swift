@@ -16,10 +16,10 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Collections
-import InboxDesignSystem
 import InboxCore
-import proton_app_uniffi
+import InboxDesignSystem
 import SwiftUI
+import proton_app_uniffi
 
 struct DraftAttachmentUIModel: Hashable {
     let attachment: AttachmentMetadata

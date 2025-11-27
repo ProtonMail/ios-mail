@@ -18,8 +18,8 @@
 import InboxCore
 import InboxCoreUI
 import InboxDesignSystem
-import proton_app_uniffi
 import SwiftUI
+import proton_app_uniffi
 
 public struct ErrorScreen: View {
     @Environment(\.openURL) private var openURL

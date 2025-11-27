@@ -15,10 +15,11 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import Foundation
 import InboxCore
 import InboxIAP
-import Foundation
 import proton_app_uniffi
+
 import enum SwiftUI.ColorScheme
 
 @MainActor
@@ -62,7 +63,19 @@ final class ProtonAuthenticatedWebModel: NSObject, ObservableObject {
     }
 
     func pollEvents() {
-        dependencies.appContext.pollEvents()
+        guard let userSession = dependencies.appContext.sessionState.userSession else {
+            AppLogger.log(message: "poll events called but no active session found", category: .userSessions)
+            return
+        }
+
+        Task {
+            do {
+                AppLogger.log(message: "poll events", category: .rustLibrary)
+                try await userSession.forceEventLoopPoll().get()
+            } catch {
+                AppLogger.log(error: error, category: .rustLibrary)
+            }
+        }
     }
 
     private func updateState(_ newState: State) {

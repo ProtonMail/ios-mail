@@ -15,10 +15,11 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-@testable import InboxCoreUI
 import InboxSnapshotTesting
 import SwiftUI
 import XCTest
+
+@testable import InboxCoreUI
 
 final class CyclingProgressBarSnapshotTests: XCTestCase {
     func testAllAnimationPhases() {

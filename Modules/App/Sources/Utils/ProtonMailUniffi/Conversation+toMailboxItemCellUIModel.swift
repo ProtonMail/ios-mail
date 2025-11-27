@@ -17,6 +17,7 @@
 
 import Foundation
 import proton_app_uniffi
+
 import struct SwiftUI.Color
 import class SwiftUI.UIImage
 
@@ -32,8 +33,8 @@ extension Conversation {
             emails: senders.addressUIRepresentation,
             subject: subject,
             date: Date(timeIntervalSince1970: TimeInterval(time)),
-            exclusiveLocation: exclusiveLocation,
-            locationIcon: showLocation ? exclusiveLocation?.mailboxLocationIcon : nil,
+            location: locations.first,
+            locationIcon: showLocation ? locations.first?.mailboxLocationIcon : nil,
             isRead: numUnread == 0,
             isStarred: isStarred,
             isSelected: selectedIds.contains(id),

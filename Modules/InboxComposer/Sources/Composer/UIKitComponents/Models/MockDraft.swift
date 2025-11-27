@@ -16,8 +16,9 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import typealias InboxCore.ID
 import proton_app_uniffi
+
+import typealias InboxCore.ID
 
 extension SingleRecipientEntry {
 
@@ -209,7 +210,7 @@ final class MockDraft: AppDraftProtocol, @unchecked Sendable {
         mockSubject
     }
 
-    func loadImage(url: String) async -> AttachmentDataResult {
+    func loadImage(url: String, policy: ImagePolicy) async -> AttachmentDataResult {
         .error(.proxyFailed)
     }
 
@@ -233,19 +234,6 @@ final class MockDraft: AppDraftProtocol, @unchecked Sendable {
 
     func discard() async -> VoidDraftDiscardResult {
         .ok
-    }
-}
-
-extension MockDraft {
-
-    func attachmentPathsFor(dispositon: Disposition) -> [String] {
-        let list = (attachmentList() as! MockAttachmentList)
-        switch dispositon {
-        case .attachment:
-            return list.capturedAddCalls.map(\.path)
-        case .inline:
-            return list.capturedAddInlineCalls.map(\.path)
-        }
     }
 }
 

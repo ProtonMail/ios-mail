@@ -15,11 +15,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-@testable import InboxContacts
-@testable import ProtonMail
 import SwiftUI
 import ViewInspector
 import XCTest
+
+@testable import InboxContacts
+@testable import ProtonMail
 
 @MainActor
 final class HomeScreenModalFactoryTests: XCTestCase {

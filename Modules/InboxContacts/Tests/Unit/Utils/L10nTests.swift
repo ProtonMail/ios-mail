@@ -15,15 +15,18 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-@testable import InboxContacts
-import XCTest
+import Testing
 
-final class L10nTests: XCTestCase {
+@testable import InboxContacts
+
+final class L10nTests {
+    @Test
     func testContactsGroupSubtitle_For1Member_ReturnsCorrectString() {
-        XCTAssertEqual(L10n.Contacts.groupSubtitle(membersCount: 1).string, "1 member")
+        #expect(L10n.Contacts.groupSubtitle(membersCount: 1).string == "1 member")
     }
 
+    @Test
     func testContactsGroupSubtitle_For2Members_ReturnsCorrectString() {
-        XCTAssertEqual(L10n.Contacts.groupSubtitle(membersCount: 2).string, "2 members")
+        #expect(L10n.Contacts.groupSubtitle(membersCount: 2).string == "2 members")
     }
 }

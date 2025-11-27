@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import proton_app_uniffi
+
 import struct SwiftUI.Color
 
 extension InlineCustomLabel {

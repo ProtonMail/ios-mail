@@ -19,9 +19,9 @@ import AccountManager
 import InboxCoreUI
 import InboxDesignSystem
 import InboxIAP
-import proton_app_uniffi
 import ProtonUIFoundations
 import SwiftUI
+import proton_app_uniffi
 
 struct MainToolbar<AvatarView: View>: ViewModifier {
     @EnvironmentObject private var toastStateStore: ToastStateStore

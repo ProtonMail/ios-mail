@@ -15,9 +15,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-@testable import InboxComposer
-import proton_app_uniffi
 import XCTest
+import proton_app_uniffi
+
+@testable import InboxComposer
 
 final class FilePickerItemHandlerTests: XCTestCase {
     var sut: FilePickerItemHandler!

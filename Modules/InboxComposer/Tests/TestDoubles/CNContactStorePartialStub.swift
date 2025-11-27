@@ -22,7 +22,7 @@ class CNContactStorePartialStub: CNContactStoring {
 
     // MARK: - CNContactStoring
 
-    class func authorizationStatus(for entityType: CNEntityType) -> CNAuthorizationStatus {
+    func authorizationStatus(for entityType: CNEntityType) -> CNAuthorizationStatus {
         .denied
     }
 

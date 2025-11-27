@@ -17,8 +17,8 @@
 
 import Foundation
 import InboxCore
-import proton_app_uniffi
 import StoreKit
+import proton_app_uniffi
 
 @MainActor
 final class UpsellEligibilityPublisher: ObservableObject {

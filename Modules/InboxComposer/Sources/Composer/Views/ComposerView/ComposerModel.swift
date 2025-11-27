@@ -16,14 +16,15 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Contacts
+import InboxContacts
 import InboxCore
 import InboxCoreUI
-import InboxContacts
 import PhotosUI
-import proton_app_uniffi
-import struct ProtonCoreUtilities.NestedObservableObject
 import ProtonUIFoundations
 import SwiftUI
+import proton_app_uniffi
+
+import struct ProtonCoreUtilities.NestedObservableObject
 
 typealias Nested = NestedObservableObject
 
@@ -81,7 +82,6 @@ final class ComposerModel: ObservableObject {
     private var updateBodyDebounceTask: DebouncedTask?
 
     private var inlineAttachmentsTransformed = Set<String>()
-    private var updateBodyWasCalled: Bool = false  // var for debugging purposes ET-5047
     private var messageHasBeenSentOrScheduled: Bool = false
     private var composerWillDismiss: Bool = false
 
@@ -94,7 +94,6 @@ final class ComposerModel: ObservableObject {
         draftOrigin: DraftOrigin,
         contactProvider: ComposerContactProvider,
         onDismiss: @escaping (ComposerDismissReason) -> Void,
-        permissionsHandler: CNContactStoring.Type,
         contactStore: CNContactStoring,
         photosItemsHandler: PhotosPickerItemHandler,
         cameraImageHandler: CameraImageHandler,
@@ -107,7 +106,7 @@ final class ComposerModel: ObservableObject {
         self.draftOrigin = draftOrigin
         self.contactProvider = contactProvider
         self.onDismiss = onDismiss
-        self.permissionsHandler = .init(permissionsHandler: permissionsHandler, contactStore: contactStore)
+        self.permissionsHandler = .init(contactStore: contactStore)
         self.state = .initial(composerMode: draft.composerMode, isAddingAttachmentsEnabled: isAddingAttachmentsEnabled)
         self.photosItemsHandler = photosItemsHandler
         self.cameraImageHandler = cameraImageHandler
@@ -259,8 +258,6 @@ final class ComposerModel: ObservableObject {
     }
 
     func updateBody(value: String) {
-        if !updateBodyWasCalled { AppLogger.log(message: "updateBody called for the first time", category: .composer) }
-        updateBodyWasCalled = true
         guard !messageHasBeenSentOrScheduled else { return }
         debounce { [weak self] in  // FIXME: Move debounce to SDK
             guard let self else { return }

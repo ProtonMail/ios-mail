@@ -16,9 +16,9 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import InboxDesignSystem
-import proton_app_uniffi
 import ProtonUIFoundations
 import SwiftUI
+import proton_app_uniffi
 
 struct MailboxItemCell: View {
     @Environment(\.sizeCategory) var sizeCategory
@@ -232,7 +232,7 @@ final class MailboxItemCellUIModel: Identifiable, Sendable {
     let emails: String
     let subject: String
     let date: Date
-    let exclusiveLocation: ExclusiveLocation?
+    let location: ExclusiveLocation?
     let locationIcon: Image?
     let isRead: Bool
     let isStarred: Bool
@@ -255,7 +255,7 @@ final class MailboxItemCellUIModel: Identifiable, Sendable {
         emails: String,
         subject: String,
         date: Date,
-        exclusiveLocation: ExclusiveLocation?,
+        location: ExclusiveLocation?,
         locationIcon: Image?,
         isRead: Bool,
         isStarred: Bool,
@@ -277,7 +277,7 @@ final class MailboxItemCellUIModel: Identifiable, Sendable {
         self.emails = emails
         self.subject = subject
         self.date = date
-        self.exclusiveLocation = exclusiveLocation
+        self.location = location
         self.locationIcon = locationIcon
         self.isRead = isRead
         self.isStarred = isStarred
@@ -360,7 +360,7 @@ enum MailboxItemCellEvent {
                 emails: "FedEx",
                 subject: "Your package",
                 date: Calendar.current.date(byAdding: .day, value: -1, to: Date())!,
-                exclusiveLocation: nil,
+                location: nil,
                 locationIcon: DS.Icon.icInbox.image,
                 isRead: false,
                 isStarred: true,
@@ -400,7 +400,7 @@ enum MailboxItemCellEvent {
                 emails: "Mary, Elijah Wood, wiseman@pm.me",
                 subject: "Summer holidays pictures and more!",
                 date: Calendar.current.date(byAdding: .year, value: -1, to: Date())!,
-                exclusiveLocation: nil,
+                location: nil,
                 locationIcon: nil,
                 isRead: true,
                 isStarred: true,

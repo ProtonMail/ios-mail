@@ -16,8 +16,8 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Combine
-import proton_app_uniffi
 import SwiftUI
+import proton_app_uniffi
 
 public struct PageViewController<Page: View>: UIViewControllerRepresentable {
     @Environment(\.presentationMode) var presentationMode

@@ -18,9 +18,9 @@
 import Combine
 import InboxCoreUI
 import InboxDesignSystem
-import proton_app_uniffi
 import ProtonUIFoundations
 import SwiftUI
+import proton_app_uniffi
 
 struct MailboxItemsListView<EmptyView: View>: View {
     @EnvironmentObject var toastStateStore: ToastStateStore
@@ -56,9 +56,6 @@ struct MailboxItemsListView<EmptyView: View>: View {
     var body: some View {
         if let mailbox {
             listView
-                .onChange(of: selectionState.hasItems) { _, shouldShowToolbar in
-                    toastStateStore.state.bottomBar.isVisible = shouldShowToolbar
-                }
                 .animation(.none, value: selectionState.hasItems)
                 .listActionsToolbar(
                     initialState: .initial,
@@ -272,7 +269,7 @@ private extension AssignedSwipeAction {
                 color: color,
                 isDesctructive: isDestructive(
                     locationSystemLabel: locationSystemLabel,
-                    itemSystemLabel: item.exclusiveLocation?.selectedMailbox.systemFolder
+                    itemSystemLabel: item.location?.selectedMailbox.systemFolder
                 )
             )
         }

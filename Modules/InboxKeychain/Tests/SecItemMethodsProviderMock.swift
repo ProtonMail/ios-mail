@@ -20,6 +20,7 @@
 //  along with ProtonCore.  If not, see <https://www.gnu.org/licenses/>.
 
 import Foundation
+
 @testable import InboxKeychain
 
 public final class SecItemMethodsProviderMock: SecItemMethodsProvider {

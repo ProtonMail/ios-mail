@@ -100,7 +100,6 @@ extension ContactSuggestionsRepository {
 
     public static func productionInstance(mailUserSession: MailUserSession) -> Self {
         .init(
-            permissionsHandler: CNContactStore.self,
             contactStore: CNContactStore(),
             allContactsProvider: .productionInstance(),
             mailUserSession: mailUserSession

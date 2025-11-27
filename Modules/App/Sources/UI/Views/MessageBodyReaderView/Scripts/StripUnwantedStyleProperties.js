@@ -15,10 +15,16 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-struct MailtoData: Equatable {
-    let to: [String]
-    let cc: [String]
-    let bcc: [String]
-    let subject: String?
-    let body: String?
+function stripUnwantedStyleProperties(element) {
+    updateStylePreservingFormatting(element, (styleProperties) => {
+        if (styleProperties["position"] === "absolute") {
+            delete styleProperties["position"];
+        }
+
+        styleProperties["height"] = styleProperties["height"]?.replace("100%", "unset");
+    });
 }
+
+const selectors = ['*[style*="position: absolute"]', '*[style*="height: 100%"]'];
+const elementsContainingForbiddenStyleProperties = document.querySelectorAll(selectors.join(", "));
+elementsContainingForbiddenStyleProperties.forEach(stripUnwantedStyleProperties);

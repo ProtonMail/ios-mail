@@ -17,9 +17,9 @@
 
 import InboxContacts
 import InboxCoreUI
-import proton_app_uniffi
-import UIKit
 import SwiftUI
+import UIKit
+import proton_app_uniffi
 
 struct ComposerContactsResult {
     let contacts: [ComposerContact]

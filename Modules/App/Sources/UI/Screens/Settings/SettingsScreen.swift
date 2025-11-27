@@ -19,11 +19,11 @@ import AccountLogin
 import AccountPassword
 import InboxCore
 import InboxCoreUI
-import InboxIAP
 import InboxDesignSystem
-import proton_app_uniffi
-import SwiftUI
+import InboxIAP
 import ProtonUIFoundations
+import SwiftUI
+import proton_app_uniffi
 
 struct SettingsScreen: View {
     @Environment(\.dismiss) private var dismiss

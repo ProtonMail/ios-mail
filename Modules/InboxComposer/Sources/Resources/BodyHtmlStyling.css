@@ -17,6 +17,15 @@
       --brand-color: {{proton-brand-color-dark}}
   }
   a:link { color: var(--brand-color); }
+
+  .protonmail_signature_block-user > div[style*="color: #fff"],
+  .protonmail_signature_block-user > div[style*="color: #ffffff"],
+  .protonmail_signature_block-user > div[style*="color: rgb(255, 255, 255)"],
+  .protonmail_signature_block-user > div[style*="color: white"] {
+    background-color: var(--bg-color) !important;
+    color: var(--text-color) !important;
+  }
+
 }
 
 article,aside,details,figcaption,figure,footer,header,hgroup,nav,section,summary {

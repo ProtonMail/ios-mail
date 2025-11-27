@@ -15,11 +15,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-@testable import ProtonMail
 import InboxDesignSystem
 import InboxSnapshotTesting
 import InboxTesting
 import Testing
+
+@testable import ProtonMail
 
 @MainActor
 final class MailboxItemCellSnapshotTests {
@@ -71,7 +72,7 @@ private extension MailboxItemCellUIModel {
             emails: "arya.lindt@example.com",
             subject: "Making the most of Safari",
             date: Date(timeIntervalSince1970: 1717485341),
-            exclusiveLocation: nil,
+            location: nil,
             locationIcon: type == .locationIcon ? DS.Icon.icInbox.image : nil,
             isRead: false,
             isStarred: false,
@@ -103,7 +104,7 @@ private extension MailboxItemCellUIModel {
             emails: "Travel",
             subject: "Your booking confirmation KL877N",
             date: Date(timeIntervalSince1970: 1717483827),
-            exclusiveLocation: nil,
+            location: nil,
             locationIcon: nil,
             isRead: true,
             isStarred: false,
@@ -141,7 +142,7 @@ private extension MailboxItemCellUIModel {
             emails: "Flights to Palo Alto - 20th of September, 2025",
             subject: "You're invited to flight KCY877N",
             date: Date(timeIntervalSince1970: 1717484927),
-            exclusiveLocation: nil,
+            location: nil,
             locationIcon: nil,
             isRead: true,
             isStarred: false,
@@ -173,7 +174,7 @@ private extension MailboxItemCellUIModel {
             emails: "Jane Doe, Mike, Laureen Smith",
             subject: "Photos from Portugal",
             date: Date(timeIntervalSince1970: 1717484830),
-            exclusiveLocation: nil,
+            location: nil,
             locationIcon: nil,
             isRead: true,
             isStarred: false,

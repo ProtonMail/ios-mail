@@ -17,8 +17,8 @@
 
 import InboxCore
 import InboxCoreUI
-import proton_app_uniffi
 import SwiftUI
+import proton_app_uniffi
 
 class AutoLockStore: StateStore {
     @Published var state: AutoLockState

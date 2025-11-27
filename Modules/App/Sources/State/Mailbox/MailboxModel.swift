@@ -16,15 +16,16 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import AccountManager
-import Combine
+@preconcurrency import Combine
+import Foundation
 import InboxCore
 import InboxCoreUI
 import InboxIAP
-import Foundation
-import SwiftUI
-import proton_app_uniffi
 import ProtonCoreUtilities
 import ProtonUIFoundations
+import SwiftUI
+import proton_app_uniffi
+
 import class UIKit.UIImage
 
 /**
@@ -51,6 +52,8 @@ final class MailboxModel: ObservableObject {
         fetchMore: { [weak self] isFirstPage in self?.fetchNextPage(isFirstPage: isFirstPage) }
     )
     private var unreadCountLiveQuery: UnreadItemsCountLiveQuery?
+
+    private let scrollerUpdates = ScrollerUpdatesAsync()
 
     let dependencies: Dependencies
     private lazy var starActionPerformer = StarActionPerformer(mailUserSession: dependencies.appContext.userSession)
@@ -146,8 +149,8 @@ extension MailboxModel {
                 } else {
                     createDraft()
                 }
-            case .mailto(let mailtoData):
-                createDraft(with: mailtoData)
+            case .mailto(let mailtoURL):
+                createDraft(with: mailtoURL)
             case .search:
                 state.isSearchPresented = true
             }
@@ -192,6 +195,19 @@ extension MailboxModel {
 
         observeSelectionChanges()
         exitSelectAllModeWhenNewItemsAreFetched()
+    }
+
+    private func observeScrollerUpdates(viewMode: ViewMode) async {
+        switch viewMode {
+        case .conversations:
+            await scrollerUpdates.observe(\.conversationStream) { [weak self] update in
+                await self?.handleConversationScroller(update: update)
+            }
+        case .messages:
+            await scrollerUpdates.observe(\.messageStream) { [weak self] update in
+                await self?.handleMessageScroller(update: update)
+            }
+        }
     }
 
     private func replaceCurrentNavigationPath(with openedItem: MailboxMessageSeed) {
@@ -285,22 +301,19 @@ extension MailboxModel {
             swipeActionsHandler = .init(userSession: userSession, mailbox: mailbox)
             emptyFolderBanner = await emptyFolderBanner(mailbox: mailbox)
 
+            await observeScrollerUpdates(viewMode: mailbox.viewMode())
             if mailbox.viewMode() == .messages {
                 messageScroller = try await scrollMessagesForLabel(
                     mailbox: mailbox,
-                    callback: MessageScrollerLiveQueryCallbackkWrapper { [weak self] update in
-                        Task {
-                            await self?.handleMessageScroller(update: update)
-                        }
+                    callback: MessageScrollerLiveQueryCallbackWrapper { [weak self] update in
+                        self?.scrollerUpdates.enqueueUpdate(update)
                     }
                 ).get()
             } else {
                 conversationScroller = try await scrollConversationsForLabel(
                     mailbox: mailbox,
-                    callback: ConversationScrollerLiveQueryCallbackkWrapper { [weak self] update in
-                        Task {
-                            await self?.handleConversationScroller(update: update)
-                        }
+                    callback: ConversationScrollerLiveQueryCallbackWrapper { [weak self] update in
+                        self?.scrollerUpdates.enqueueUpdate(update)
                     }
                 ).get()
             }
@@ -599,10 +612,10 @@ extension MailboxModel {
         draftPresenter.openDraft(withId: messageId)
     }
 
-    private func createDraft(with mailtoData: MailtoData) {
+    private func createDraft(with mailtoURL: URL) {
         Task {
             do {
-                try await draftPresenter.openNewDraft(with: mailtoData)
+                try await draftPresenter.openNewDraft(with: mailtoURL)
             } catch {
                 toast = .error(message: error.localizedDescription)
             }

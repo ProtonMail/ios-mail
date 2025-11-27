@@ -17,15 +17,17 @@
 
 import Combine
 import Contacts
-@testable import InboxComposer
-@testable import InboxTesting
-import typealias InboxCore.ID
 import InboxCoreUI
 import PhotosUI
-import proton_app_uniffi
 import ProtonUIFoundations
 import SwiftUI
 import XCTest
+import proton_app_uniffi
+
+import typealias InboxCore.ID
+
+@testable import InboxComposer
+@testable import InboxTesting
 
 @MainActor
 final class ComposerModelTests: BaseTestCase {
@@ -86,7 +88,6 @@ final class ComposerModelTests: BaseTestCase {
             draftOrigin: .new,
             contactProvider: testContactProvider,
             onDismiss: { _ in },
-            permissionsHandler: CNContactStorePartialStub.self,
             contactStore: CNContactStorePartialStub(),
             photosItemsHandler: testPhotosItemsHandler,
             cameraImageHandler: testCameraImageHandler,
@@ -907,7 +908,6 @@ private extension ComposerModelTests {
             draftOrigin: draftOrigin,
             contactProvider: contactProvider,
             onDismiss: { self.dismissReasonObserver.append($0) },
-            permissionsHandler: CNContactStorePartialStub.self,
             contactStore: CNContactStorePartialStub(),
             photosItemsHandler: testPhotosItemsHandler,
             cameraImageHandler: testCameraImageHandler,
@@ -1016,5 +1016,13 @@ extension DraftAttachment {
             isListable: false
         )
         return DraftAttachment(state: state, attachment: mockAttachment, stateModifiedTimestamp: 1742829536)
+    }
+}
+
+private extension MessageExpirationValidatorActions {
+    static func dummy(returning result: MessageExpiryValidationResult) -> Self {
+        .init(validate: { _, _ in
+            result
+        })
     }
 }

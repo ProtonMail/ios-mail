@@ -15,17 +15,18 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-@testable import ProtonMail
 import AccountLogin
 import InboxCore
 import InboxCoreUI
 import InboxKeychain
 import InboxTesting
-import proton_app_uniffi
 import ProtonUIFoundations
 import SwiftUI
 import ViewInspector
 import XCTest
+import proton_app_uniffi
+
+@testable import ProtonMail
 
 @MainActor
 class HomeScreenTests: BaseTestCase {

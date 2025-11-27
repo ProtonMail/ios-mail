@@ -40,6 +40,10 @@ public final class MailUserSessionSpy: MailUserSession, @unchecked Sendable {
         .ok(stubbedAccountDetails!)
     }
 
+    public override func hasValidSenderAddress() async -> MailUserSessionHasValidSenderAddressResult {
+        .ok(true)
+    }
+
     public override func user() async -> MailUserSessionUserResult {
         .ok(stubbedUser!)
     }

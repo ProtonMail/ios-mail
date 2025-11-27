@@ -17,9 +17,9 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import InboxComposer
-import proton_app_uniffi
 import UIKit
 import UniformTypeIdentifiers
+import proton_app_uniffi
 
 public final class DraftStubWriter: Sendable {
     typealias InitDraft = @Sendable () throws -> String

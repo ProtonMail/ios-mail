@@ -15,10 +15,11 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-@testable import InboxComposer
 import InboxCore
 import Testing
 import WebKit
+
+@testable import InboxComposer
 
 @MainActor
 final class HtmlBodyEditorControllerTests {
@@ -81,7 +82,7 @@ private final class MockHtmlBodyWebViewInterface: HtmlBodyWebViewInterfaceProtoc
 
     func setFocus() async {}
 
-    func readMesasgeBody() async -> String? { nil }
+    func readMessageBody() async -> String? { nil }
 
     func insertText(_ text: String) async {
         insertedTexts.append(text)

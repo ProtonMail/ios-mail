@@ -16,8 +16,9 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-@testable import ProtonMail
 import Testing
+
+@testable import ProtonMail
 
 @MainActor
 final class SelectionModeTests {
@@ -267,7 +268,7 @@ extension SelectionModeTests {
             emails: "",
             subject: "",
             date: Date(),
-            exclusiveLocation: nil,
+            location: nil,
             locationIcon: nil,
             isRead: isRead,
             isStarred: isStarred,

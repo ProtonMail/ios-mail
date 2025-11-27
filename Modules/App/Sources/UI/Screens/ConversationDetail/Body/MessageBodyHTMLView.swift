@@ -15,10 +15,11 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import InboxCore
 import InboxCoreUI
 import InboxDesignSystem
-import proton_app_uniffi
 import SwiftUI
+import proton_app_uniffi
 
 struct MessageBodyHTMLView: View {
     @Environment(\.mainWindowSize) var mainWindowSize
@@ -27,7 +28,6 @@ struct MessageBodyHTMLView: View {
     @Binding var bodyContentHeight: CGFloat
     @State var linkConfirmationAlert: AlertModel?
     @State var orientationChangeInProgress = false
-
     let messageBody: MessageBodyStateStore.State.Body
 
     /// This value is key to the conversation scrolling to the opened message. We don't
@@ -52,8 +52,8 @@ struct MessageBodyHTMLView: View {
         case .fetching:
             ProgressView()
                 .padding(.vertical, DS.Spacing.jumbo)
-        case .loaded(let body):
-            bodyReaderView(with: body.html)
+        case .loaded(let body, let schemeHandler):
+            bodyReaderView(with: body, schemeHandler: schemeHandler)
         case .error(let error):
             ErrorView(error: error)
         case .noConnection:
@@ -61,7 +61,7 @@ struct MessageBodyHTMLView: View {
         }
     }
 
-    private func bodyReaderView(with body: MessageBody.HTML) -> some View {
+    private func bodyReaderView(with body: MessageBody, schemeHandler: UniversalSchemeHandler) -> some View {
         ZStack {
             ProtonSpinner()
                 .frame(height: bodyContentHeight > 0 ? bodyContentHeight : loadingHtmlInitialHeight)
@@ -70,7 +70,8 @@ struct MessageBodyHTMLView: View {
                 if geometry.size.width > 0 {
                     MessageBodyReaderView(
                         bodyContentHeight: $bodyContentHeight,
-                        body: body,
+                        body: body.html,
+                        schemeHandler: schemeHandler,
                         viewWidth: geometry.size.width,
                         confirmLink: confirmLink
                     )

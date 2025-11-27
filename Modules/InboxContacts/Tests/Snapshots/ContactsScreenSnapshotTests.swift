@@ -15,37 +15,43 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-@testable import InboxContacts
 import InboxSnapshotTesting
+import Testing
 import proton_app_uniffi
-import XCTest
+
+@testable import InboxContacts
 
 @MainActor
-final class ContactsScreenSnapshotTests: XCTestCase {
+final class ContactsScreenSnapshotTests {
+    @Test
     func testContactsScreenWithContactsLayoutsCorrectOnIphoneX() async throws {
         let items = await allContacts()
 
         assertSnapshotsOnIPhoneX(of: makeSUT(items: items))
     }
 
+    @Test
     func testContactsScreenWithSearchPhraseMatching5ItemsLayoutsCorrectOnIphoneX() async throws {
         let items = await allContacts()
 
         assertSnapshotsOnIPhoneX(of: makeSUT(search: .active(query: "Ti"), items: items))
     }
 
+    @Test
     func testContactsScreenWithNonMatchingSearchPhraseLayoutsCorrectOnIphoneX() async throws {
         let items = await allContacts()
 
         assertSnapshotsOnIPhoneX(of: makeSUT(search: .active(query: "Tix"), items: items))
     }
 
+    @Test
     func testContactsScreenWithActiveSearchButEmptyPhraseLayoutsCorrectOnIphoneX() async throws {
         let items = await allContacts()
 
         assertSnapshotsOnIPhoneX(of: makeSUT(search: .active(query: ""), items: items))
     }
 
+    @Test
     func testContactsScreenInEmptyStateLayoutsCorrectOnIphoneX() {
         assertSnapshotsOnIPhoneX(of: makeSUT(items: []))
     }

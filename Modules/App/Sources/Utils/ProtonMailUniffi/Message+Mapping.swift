@@ -15,8 +15,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import proton_app_uniffi
 import SwiftUI
+import proton_app_uniffi
 
 extension Message {
 
@@ -41,8 +41,8 @@ extension Message {
             emails: emails,
             subject: subject,
             date: Date(timeIntervalSince1970: TimeInterval(time)),
-            exclusiveLocation: exclusiveLocation,
-            locationIcon: showLocation ? exclusiveLocation?.mailboxLocationIcon : nil,
+            location: location,
+            locationIcon: showLocation ? location?.mailboxLocationIcon : nil,
             isRead: !unread,
             isStarred: starred,
             isSelected: selectedIds.contains(id),
@@ -83,7 +83,7 @@ extension Message {
                 recipientsCc: ccList.map(\.toRecipient),
                 recipientsBcc: bccList.map(\.toRecipient),
                 date: Date(timeIntervalSince1970: TimeInterval(time)),
-                location: exclusiveLocation?.model,
+                location: location?.model,
                 labels: labels,
                 attachments: attachmentsMetadata.map(\.displayModel),
                 isStarred: starred,

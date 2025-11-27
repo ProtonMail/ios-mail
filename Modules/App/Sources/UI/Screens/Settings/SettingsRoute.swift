@@ -15,13 +15,13 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import InboxCore
-import InboxIAP
-import proton_app_uniffi
-import SwiftUI
-import Combine
 import AccountLogin
 import AccountPassword
+import Combine
+import InboxCore
+import InboxIAP
+import SwiftUI
+import proton_app_uniffi
 
 enum SettingsRoute: Routable {
     case webView(ProtonAuthenticatedWebPage)

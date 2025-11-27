@@ -18,8 +18,8 @@
 import DeveloperToolsSupport
 import Foundation
 import InboxDesignSystem
-import proton_app_uniffi
 import SwiftUI
+import proton_app_uniffi
 
 extension SystemLabel {
     var humanReadable: LocalizedStringResource {

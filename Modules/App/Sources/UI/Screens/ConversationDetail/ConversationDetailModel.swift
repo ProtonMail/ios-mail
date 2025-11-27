@@ -17,9 +17,9 @@
 
 import InboxCore
 import InboxCoreUI
-import proton_app_uniffi
 import ProtonUIFoundations
 import SwiftUI
+import proton_app_uniffi
 
 @MainActor
 final class ConversationDetailModel: Sendable, ObservableObject {
@@ -36,7 +36,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
     @Published var isHeaderVisible: Bool = false
     @Published private(set) var conversationItem: ConversationItem?
 
-    let messageAppearanceOverrideStore: MessageAppearanceOverrideStore
+    let messageAppearanceOverrideStore = MessageAppearanceOverrideStore()
     let messagePrinter: MessagePrinter
     private var colorScheme: ColorScheme = .light
 
@@ -110,8 +110,7 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         draftPresenter: DraftPresenter,
         dependencies: Dependencies = .init(),
         backOnlineActionExecutor: BackOnlineActionExecutor,
-        snoozeService: SnoozeServiceProtocol,
-        messageAppearanceOverrideStore: MessageAppearanceOverrideStore
+        snoozeService: SnoozeServiceProtocol
     ) {
         self.seed = seed
         self.isStarred = seed.isStarred
@@ -120,7 +119,6 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         self.dependencies = dependencies
         self.backOnlineActionExecutor = backOnlineActionExecutor
         self.snoozeService = snoozeService
-        self.messageAppearanceOverrideStore = messageAppearanceOverrideStore
         messagePrinter = .init(userSession: { dependencies.appContext.userSession })
     }
 
@@ -584,7 +582,7 @@ extension ConversationDetailModel {
             let message = try await fetchMessage(with: message.remoteId)
             return .init(
                 item: .pushNotification(messageID: message.id, conversationID: message.conversationId),
-                selectedMailbox: message.exclusiveLocation?.selectedMailbox ?? .inbox
+                selectedMailbox: message.location?.selectedMailbox ?? .inbox
             )
         }
     }
@@ -747,7 +745,7 @@ extension ConversationDetailModel {
                 .map { message in
                     .init(
                         id: message.id,
-                        locationID: message.exclusiveLocation?.model.id,
+                        locationID: message.location?.model.id,
                         type: .expanded(message.toExpandedMessageCellUIModel())
                     )
                 }
@@ -791,7 +789,7 @@ extension ConversationDetailModel {
                     }
                     return .init(
                         id: message.id,
-                        locationID: message.exclusiveLocation?.model.id,
+                        locationID: message.location?.model.id,
                         type: messageCellUIModelType
                     )
                 }

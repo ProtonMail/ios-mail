@@ -15,17 +15,17 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import proton_app_uniffi
 import InboxCore
 import InboxCoreUI
 import SwiftUI
+import proton_app_uniffi
 
 struct MessageActionsMenu<OpenMenuButtonContent: View>: View {
     private let state: MessageActionsMenuState
     private let mailbox: Mailbox
-    private let service: AllAvailableMessageActionsForActionSheetService
     private let messageAppearanceOverrideStore: MessageAppearanceOverrideStore
-    private let actionTapped: (MessageAction) -> Void
+    private let service: AllAvailableMessageActionsForActionSheetService
+    private let actionTapped: (MessageAction) async -> Void
     private let editToolbarTapped: () -> Void
     private let label: () -> OpenMenuButtonContent
 
@@ -36,15 +36,15 @@ struct MessageActionsMenu<OpenMenuButtonContent: View>: View {
         mailbox: Mailbox,
         messageAppearanceOverrideStore: MessageAppearanceOverrideStore,
         service: @escaping AllAvailableMessageActionsForActionSheetService = allAvailableMessageActionsForActionSheet,
-        actionTapped: @escaping (MessageAction) -> Void,
+        actionTapped: @escaping (MessageAction) async -> Void,
         editToolbarTapped: @escaping () -> Void,
         label: @escaping () -> OpenMenuButtonContent
     ) {
         self.state = state
         self.mailbox = mailbox
+        self.messageAppearanceOverrideStore = messageAppearanceOverrideStore
         self.service = service
         self.actionTapped = actionTapped
-        self.messageAppearanceOverrideStore = messageAppearanceOverrideStore
         self.editToolbarTapped = editToolbarTapped
         self.label = label
     }

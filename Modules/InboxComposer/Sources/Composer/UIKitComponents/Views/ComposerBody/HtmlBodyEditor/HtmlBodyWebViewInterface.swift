@@ -17,8 +17,8 @@
 
 import Foundation
 import InboxCore
-import proton_app_uniffi
 import WebKit
+import proton_app_uniffi
 
 final class HtmlBodyWebViewInterface: NSObject, HtmlBodyWebViewInterfaceProtocol {
 
@@ -48,6 +48,7 @@ final class HtmlBodyWebViewInterface: NSObject, HtmlBodyWebViewInterfaceProtocol
         self.htmlDocument = HtmlBodyDocument()
         super.init()
         setUpCallbacks()
+        setUpHtmlScript()
     }
 
     private func setUpCallbacks() {
@@ -56,13 +57,19 @@ final class HtmlBodyWebViewInterface: NSObject, HtmlBodyWebViewInterfaceProtocol
         }
     }
 
+    private func setUpHtmlScript() {
+        let userScript = WKUserScript(
+            source: htmlDocument.script,
+            injectionTime: .atDocumentEnd,
+            forMainFrameOnly: true
+        )
+        webView.configuration.userContentController.addUserScript(userScript)
+    }
+
     func loadMessageBody(_ body: String, clearImageCacheFirst: Bool) async {
-        let nonce = generateCspNonce()
-        let html = htmlDocument.html(nonce: nonce, bodyContent: body)
+        let html = htmlDocument.html(bodyContent: body)
 
         if clearImageCacheFirst {
-            // Be selective in what needs to be cleared. Using `WKWebsiteDataStore.allWebsiteDataTypes()`
-            // could potentially bring issues (e.g. https://protonag.atlassian.net/browse/ET-5047)
             let cachedImageTypes: Set<String> = [WKWebsiteDataTypeMemoryCache]
             await websiteDataStore.removeData(ofTypes: cachedImageTypes, modifiedSince: .distantPast)
         }
@@ -79,7 +86,7 @@ final class HtmlBodyWebViewInterface: NSObject, HtmlBodyWebViewInterfaceProtocol
         }
     }
 
-    func readMesasgeBody() async -> String? {
+    func readMessageBody() async -> String? {
         await withCheckedContinuation { continuation in
             webView.evaluateJavaScript(HtmlBodyDocument.JSFunction.getHtmlContent.callFunction) { result, error in
                 if let error { AppLogger.log(error: error, category: .composer) }

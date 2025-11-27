@@ -16,11 +16,13 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Combine
+import XCTest
+import proton_app_uniffi
+
+import struct SwiftUI.Color
+
 @testable import InboxComposer
 @testable import InboxContacts
-import proton_app_uniffi
-import struct SwiftUI.Color
-import XCTest
 
 final class ComposerProtonContactsDatasourceTests: XCTestCase {
     private var sut: ComposerProtonContactsDatasource!
@@ -29,7 +31,6 @@ final class ComposerProtonContactsDatasourceTests: XCTestCase {
         super.setUp()
         sut = ComposerProtonContactsDatasource(
             repository: .init(
-                permissionsHandler: CNContactStorePartialStub.self,
                 contactStore: CNContactStorePartialStub(),
                 allContactsProvider: .init(contactSuggestions: { deviceContacts, _ in
                     return .ok(ContactSuggestionsStub(all: .testData))

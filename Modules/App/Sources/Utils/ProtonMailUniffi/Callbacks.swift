@@ -17,7 +17,7 @@
 
 import proton_app_uniffi
 
-final class MessageScrollerLiveQueryCallbackkWrapper: Sendable, MessageScrollerLiveQueryCallback {
+final class MessageScrollerLiveQueryCallbackWrapper: Sendable, MessageScrollerLiveQueryCallback {
     let callback: @Sendable (MessageScrollerUpdate) -> Void
 
     init(callback: @escaping @Sendable (MessageScrollerUpdate) -> Void) {
@@ -29,7 +29,7 @@ final class MessageScrollerLiveQueryCallbackkWrapper: Sendable, MessageScrollerL
     }
 }
 
-final class ConversationScrollerLiveQueryCallbackkWrapper: Sendable, ConversationScrollerLiveQueryCallback {
+final class ConversationScrollerLiveQueryCallbackWrapper: Sendable, ConversationScrollerLiveQueryCallback {
     let callback: @Sendable (ConversationScrollerUpdate) -> Void
 
     init(callback: @escaping @Sendable (ConversationScrollerUpdate) -> Void) {

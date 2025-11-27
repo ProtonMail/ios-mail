@@ -19,17 +19,6 @@
 import Foundation
 import proton_app_uniffi
 
-extension AttachmentDataError: LocalizedError {
-    public var errorDescription: String? {
-        switch self {
-        case .proxyFailed:
-            L10n.ImageProxy.proxyFailed.string
-        case .other(let protonError):
-            protonError.localizedDescription
-        }
-    }
-}
-
 extension MailScrollerError: LocalizedError {
     public var errorDescription: String? {
         switch self {

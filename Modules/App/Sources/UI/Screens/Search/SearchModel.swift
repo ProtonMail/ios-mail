@@ -18,9 +18,9 @@
 import Combine
 import InboxCore
 import InboxCoreUI
-import proton_app_uniffi
 import ProtonUIFoundations
 import SwiftUI
+import proton_app_uniffi
 
 @MainActor
 final class SearchModel: ObservableObject {
@@ -131,7 +131,7 @@ final class SearchModel: ObservableObject {
         let result = await scrollerSearch(
             mailbox: mailbox,
             options: .init(keywords: query),
-            callback: MessageScrollerLiveQueryCallbackkWrapper { [weak self] update in
+            callback: MessageScrollerLiveQueryCallbackWrapper { [weak self] update in
                 Task {
                     await self?.handleSearchScroller(update: update)
                     await self?.updateSelectedMailboxIfNeeded()

@@ -23,10 +23,6 @@ public enum Dispatcher {
 
     public static nonisolated(unsafe) var mainScheduler: DispatchQueueScheduler = .init(DispatchQueue.main)
 
-    public static nonisolated(unsafe) var globalQueue: (DispatchQoS.QoSClass) -> DispatchQueueScheduler = {
-        .init(DispatchQueue.global(qos: $0))
-    }
-
     public static nonisolated(unsafe) var dispatchOnMain: (DispatchWorkItem) -> Void = Queue.main.async(execute:)
     public static nonisolated(unsafe) var dispatchOnMainAfter: DispatchAfterType = Queue.main.asyncAfter(deadline:execute:)
 }

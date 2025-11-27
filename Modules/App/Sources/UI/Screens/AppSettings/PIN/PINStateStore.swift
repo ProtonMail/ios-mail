@@ -15,9 +15,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import SwiftUI
 import InboxCore
 import InboxCoreUI
+import SwiftUI
 
 class PINStateStore: StateStore {
     @Published var state: PINScreenState

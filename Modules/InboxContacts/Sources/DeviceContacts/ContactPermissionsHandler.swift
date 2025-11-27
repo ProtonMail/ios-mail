@@ -18,17 +18,15 @@
 import Contacts
 
 public struct ContactPermissionsHandler {
-    private let permissionsHandler: CNContactStoring.Type
     private let contactStore: CNContactStoring
 
-    public init(permissionsHandler: CNContactStoring.Type, contactStore: CNContactStoring) {
-        self.permissionsHandler = permissionsHandler
+    public init(contactStore: CNContactStoring) {
         self.contactStore = contactStore
     }
 
     @discardableResult
     public func requestAccessIfNeeded() async -> Bool {
-        let status: CNAuthorizationStatus = permissionsHandler.authorizationStatus(for: .contacts)
+        let status: CNAuthorizationStatus = contactStore.authorizationStatus(for: .contacts)
 
         switch status {
         case .notDetermined:

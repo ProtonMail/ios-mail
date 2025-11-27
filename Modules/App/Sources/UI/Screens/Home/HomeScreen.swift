@@ -19,12 +19,13 @@ import AccountLogin
 import Combine
 import InboxCore
 import InboxCoreUI
-import enum InboxComposer.ComposerDismissReason
 import InboxIAP
-import proton_app_uniffi
-import ProtonUIFoundations
 import PaymentsNG
+import ProtonUIFoundations
 import SwiftUI
+import proton_app_uniffi
+
+import enum InboxComposer.ComposerDismissReason
 
 struct HomeScreen: View {
 
@@ -45,6 +46,7 @@ struct HomeScreen: View {
 
     @EnvironmentObject private var appUIStateStore: AppUIStateStore
     @EnvironmentObject private var toastStateStore: ToastStateStore
+    @Environment(\.mainWindowSize) var mainWindowSize
     @StateObject private var appRoute: AppRouteState
     @StateObject private var composerCoordinator: ComposerCoordinator
     @StateObject private var upsellEligibilityPublisher: UpsellEligibilityPublisher
@@ -220,14 +222,22 @@ struct HomeScreen: View {
             _ = try appContext.mailSession.exportLogs(filePath: sourceLogFile.path).get()
             var filesToShare: [URL] = [sourceLogFile]
 
-            Task {
-                if let transactionLog = await TransactionsObserver.shared.generateTransactionLog() {
-                    filesToShare.append(transactionLog)
-                }
-
-                let activityController = UIActivityViewController(activityItems: filesToShare, applicationActivities: nil)
-                UIApplication.shared.keyWindow?.rootViewController?.present(activityController, animated: true)
+            if let transactionLog = TransactionsObserver.shared.generateTransactionLog() {
+                filesToShare.append(transactionLog)
             }
+
+            let activityController = UIActivityViewController(activityItems: filesToShare, applicationActivities: nil)
+            let rootViewController = UIApplication.shared.keyWindow?.rootViewController
+
+            if let popoverPresentationController = activityController.popoverPresentationController {
+                popoverPresentationController.sourceView = rootViewController?.view
+                popoverPresentationController.sourceRect = .init(
+                    origin: .init(x: appUIStateStore.sidebarWidth, y: mainWindowSize.height / 2),
+                    size: .zero
+                )
+            }
+
+            rootViewController?.present(activityController, animated: true)
         } catch {
             toastStateStore.present(toast: .error(message: error.localizedDescription))
         }

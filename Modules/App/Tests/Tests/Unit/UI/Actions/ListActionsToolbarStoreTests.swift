@@ -15,12 +15,13 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-@testable import ProtonMail
 import InboxCoreUI
 import InboxTesting
-import proton_app_uniffi
 import ProtonUIFoundations
 import Testing
+import proton_app_uniffi
+
+@testable import ProtonMail
 
 @MainActor
 class ListActionsToolbarStoreTests {
@@ -305,6 +306,29 @@ class ListActionsToolbarStoreTests {
             mailbox: MailboxStub(viewMode: viewMode),
             toastStateStore: toastStateStore
         )
+    }
+
+}
+
+private extension AllListActions {
+
+    static var testData: Self {
+        .init(
+            hiddenListActions: [
+                .notSpam(.testInbox),
+                .permanentDelete,
+                .moveToSystemFolder(.init(localId: .init(value: 7), name: .archive)),
+            ],
+            visibleListActions: [.markRead, .star, .moveTo, .labelAs, .more]
+        )
+    }
+
+}
+
+extension MovableSystemFolderAction {
+
+    static var testInbox: Self {
+        .init(localId: .init(value: 999), name: .inbox)
     }
 
 }

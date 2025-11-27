@@ -17,10 +17,10 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import InboxSnapshotTesting
-import proton_app_uniffi
 import SnapshotTesting
 import SwiftUI
 import Testing
+import proton_app_uniffi
 
 @testable import InboxIAP
 

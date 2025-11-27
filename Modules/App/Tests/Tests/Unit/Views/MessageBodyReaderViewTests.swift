@@ -15,12 +15,13 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-@testable import ProtonMail
 import InboxCore
 import InboxTesting
 import SwiftUI
 import Testing
 import WebKit
+
+@testable import ProtonMail
 
 @MainActor
 final class MessageBodyReaderViewTests {
@@ -28,7 +29,8 @@ final class MessageBodyReaderViewTests {
 
     private lazy var sut = MessageBodyReaderView(
         bodyContentHeight: .constant(.zero),
-        body: .init(rawBody: "<html>dummy</html>", options: .init(), imageProxy: ImageProxySpy()),
+        body: .init(rawBody: "<html>dummy</html>", options: .init(), imagePolicy: .safe),
+        schemeHandler: .init(imageProxy: ImageProxySpy(), imagePolicy: .safe),
         viewWidth: .zero,
         confirmLink: true
     )

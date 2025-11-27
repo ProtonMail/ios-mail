@@ -17,8 +17,8 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import proton_app_uniffi
 import StoreKit
+import proton_app_uniffi
 
 enum L10n {
     static let autoRenewalNotice = LocalizedStringResource("Auto-renews at the same price and terms unless canceled", bundle: .module, comment: "Notice at the bottom")
@@ -26,7 +26,6 @@ enum L10n {
     static let chooseYourPlan = LocalizedStringResource("Choose your plan", bundle: .module, comment: "Displayed above the plans in the upsell modal")
     static let chooseSubscription = LocalizedStringResource("Choose subscription", bundle: .module, comment: "Displayed above the plans in the upsell modal")
     static let continueWithFreePlan = LocalizedStringResource("Continue with Free Plan", bundle: .module, comment: "The option to exit the upsell modal")
-    static let perMonth = LocalizedStringResource("/month", bundle: .module, comment: "Displayed next to the monthly price")
     static let showLess = LocalizedStringResource("Show less", bundle: .module, comment: "Button to collapse a list")
     static let showMore = LocalizedStringResource("Show more", bundle: .module, comment: "Button to expand a list")
 

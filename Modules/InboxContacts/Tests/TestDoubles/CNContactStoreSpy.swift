@@ -15,25 +15,22 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-@testable import InboxContacts
 import Contacts
+
+@testable import InboxContacts
 
 class CNContactStoreSpy: CNContactStoring {
 
-    static var stubbedAuthorizationStatus: [CNEntityType: CNAuthorizationStatus] = .default
+    var stubbedAuthorizationStatus: [CNEntityType: CNAuthorizationStatus] = .default
 
     private(set) var requestAccessCalls: [(entityType: CNEntityType, completionHandler: (Bool, (any Error)?) -> Void)] = []
     private(set) var enumerateContactsCalls: [CNContactFetchRequest] = []
     var stubbedEnumerateContacts: [CNContact] = []
     var requestAccessCompletionBlockCalledImmediately: Bool = false
 
-    static func cleanUp() {
-        stubbedAuthorizationStatus = .default
-    }
-
     // MARK: - CNContactStoring
 
-    class func authorizationStatus(for entityType: CNEntityType) -> CNAuthorizationStatus {
+    func authorizationStatus(for entityType: CNEntityType) -> CNAuthorizationStatus {
         stubbedAuthorizationStatus[entityType].unsafelyUnwrapped
     }
 

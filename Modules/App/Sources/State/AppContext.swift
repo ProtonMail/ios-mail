@@ -21,9 +21,9 @@ import AccountLogin
 import Foundation
 import InboxCore
 import InboxKeychain
-import proton_app_uniffi
 import Sentry
 import SwiftUI
+import proton_app_uniffi
 
 final class AppContext: Sendable, ObservableObject {
     static let shared: AppContext = .init()
@@ -89,8 +89,6 @@ final class AppContext: Sendable, ObservableObject {
             issueReporter: SentryIssueReporter()
         ).get()
 
-        observeNetworkChanges()
-
         excludeDirectoriesFromBackup(params: params)
 
         _mailSession.onExitForeground()
@@ -103,20 +101,6 @@ final class AppContext: Sendable, ObservableObject {
             sessionState = .restoring
             setupActiveUserSession(session: currentSession)
         }
-    }
-
-    @MainActor
-    private func observeNetworkChanges() {
-        NetworkMonitoringService
-            .shared
-            .isConnected
-            .sink { [weak self] receivedValue in
-                guard let isConnected = receivedValue else { return }
-                let status: OsNetworkStatus = isConnected ? .online : .offline
-                AppLogger.log(message: "NetworkMonitoringService \(status) passed to the SDK")
-                self?._mailSession.updateOsNetworkStatus(osNetworkStatus: status)
-            }
-            .store(in: &cancellables)
     }
 
     private func excludeDirectoriesFromBackup(params: MailSessionParams) {
@@ -273,25 +257,6 @@ extension AppContext: ApplicationServiceSetUp {
 }
 
 extension AppContext {
-
-    func pollEvents() {
-        Task { [weak self] in
-            await self?.pollEventsAsync()
-        }
-    }
-
-    func pollEventsAsync() async {
-        do {
-            guard let userSession = sessionState.userSession else {
-                AppLogger.log(message: "poll events called but no active session found", category: .userSessions)
-                return
-            }
-            AppLogger.log(message: "poll events", category: .rustLibrary)
-            try await userSession.forceEventLoopPoll().get()
-        } catch {
-            AppLogger.log(error: error, category: .rustLibrary)
-        }
-    }
 
     func pollEventsAndWait() async {
         do {

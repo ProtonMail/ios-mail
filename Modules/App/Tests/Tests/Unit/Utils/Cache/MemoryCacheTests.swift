@@ -15,8 +15,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-@testable import ProtonMail
 import XCTest
+
+@testable import ProtonMail
 
 final class MemoryCacheTests: XCTestCase {
     private var sut: MemoryCache<String, Int>!

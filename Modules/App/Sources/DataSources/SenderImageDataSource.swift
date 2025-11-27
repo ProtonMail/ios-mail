@@ -17,6 +17,7 @@
 
 import Foundation
 import InboxCore
+
 import enum SwiftUI.ColorScheme
 import class SwiftUI.UIImage
 import func proton_app_uniffi.mailSettings

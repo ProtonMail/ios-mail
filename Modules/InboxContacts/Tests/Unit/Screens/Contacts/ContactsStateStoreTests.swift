@@ -15,12 +15,13 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-@testable import InboxContacts
 import Foundation
 import InboxCore
 import InboxTesting
-import proton_app_uniffi
 import Testing
+import proton_app_uniffi
+
+@testable import InboxContacts
 
 @MainActor
 final class ContactsStateStoreTests {
@@ -31,13 +32,13 @@ final class ContactsStateStoreTests {
     private let deleterSpy: DeleterSpy = .init()
 
     @Test
-    func testInit_ItDoesNotStartWatchingContacts() {
+    func init_ItDoesNotStartWatchingContacts() {
         #expect(createdLiveQueryCallbackWrapper == nil)
         #expect(watchContactsCallback == nil)
     }
 
     @Test
-    func testState_ItHasCorrectInitialState() {
+    func state_ItHasCorrectInitialState() {
         let expectedState = ContactsScreenState(
             search: .init(query: "", isActive: false),
             allItems: [],
@@ -52,7 +53,7 @@ final class ContactsStateStoreTests {
     // MARK: - `onLoad` action
 
     @Test
-    func testOnLoadAction_ItStartsWatchingContactsUpdates() async throws {
+    func onLoadAction_ItStartsWatchingContactsUpdates() async throws {
         await sut.handle(action: .onLoad)
 
         let callbackWrapper = try #require(createdLiveQueryCallbackWrapper)
@@ -61,7 +62,7 @@ final class ContactsStateStoreTests {
     }
 
     @Test
-    func testOnLoadAction_ItLoadsAllContacts() async {
+    func onLoadAction_ItLoadsAllContacts() async {
         let groupedItems: [GroupedContacts] = [
             .init(
                 groupedBy: "#",
@@ -98,7 +99,7 @@ final class ContactsStateStoreTests {
     }
 
     @Test
-    func testOnLoadAction_WhenContainsSpecificSearchPhrase_ItDisplaysFilteredItemsInOneSection() async {
+    func onLoadAction_WhenContainsSpecificSearchPhrase_ItDisplaysFilteredItemsInOneSection() async {
         sut = makeSUT(search: .active(query: "Andr"))
 
         let groupedItems: [GroupedContacts] = [
@@ -154,7 +155,7 @@ final class ContactsStateStoreTests {
     }
 
     @Test
-    func testOnLoad_WhenSearchIsActiveButEmptySearchPhrase_ItDisplaysAllItemsInOneSection() async {
+    func onLoad_WhenSearchIsActiveButEmptySearchPhrase_ItDisplaysAllItemsInOneSection() async {
         sut = makeSUT(search: .active(query: ""))
 
         let groupedItems: [GroupedContacts] = [
@@ -202,7 +203,7 @@ final class ContactsStateStoreTests {
     // MARK: - `onDeleteItem` action
 
     @Test
-    func testOnDeleteItemActionForGroupItem_WhenSearchIsInactive_ItUpdatesStateCorrectlyAndTriggersContactGroupDeletions() async {
+    func onDeleteItemActionForGroupItem_WhenSearchIsInactive_ItUpdatesStateCorrectlyAndTriggersContactGroupDeletions() async {
         let itemToDelete: ContactItemType = .group(.advisorsGroup)
         let groupedItems: [GroupedContacts] = [
             .init(
@@ -273,7 +274,7 @@ final class ContactsStateStoreTests {
     }
 
     @Test
-    func testOnDeleteItemActionForContactItem_WhenSearchIsActive_ItUpdatesStateCorrectlyAndTriggersContactDeletion() async {
+    func onDeleteItemActionForContactItem_WhenSearchIsActive_ItUpdatesStateCorrectlyAndTriggersContactDeletion() async {
         sut = makeSUT(search: .active(query: ""))
 
         let itemToDelete: ContactItemType = .contact(.vip)
@@ -341,7 +342,7 @@ final class ContactsStateStoreTests {
     }
 
     @Test
-    func testOnDeleteItemActionForContactItem_AndContactDeletionFails_ItRevertsStateToTheOneBeforeDeletion() async {
+    func onDeleteItemActionForContactItem_AndContactDeletionFails_ItRevertsStateToTheOneBeforeDeletion() async {
         let itemToDelete: ContactItemType = .contact(.vip)
         let groupedItems: [GroupedContacts] = [
             .init(
@@ -387,7 +388,7 @@ final class ContactsStateStoreTests {
     }
 
     @Test
-    func testOnDeleteItemActionForContactGroupItem_AndContactGroupDeletionFails_ItRevertsStateToTheOneBeforeDeletion() async {
+    func onDeleteItemActionForContactGroupItem_AndContactGroupDeletionFails_ItRevertsStateToTheOneBeforeDeletion() async {
         let itemToDelete: ContactItemType = .group(.advisorsGroup)
         let groupedItems: [GroupedContacts] = [
             .init(
@@ -433,7 +434,7 @@ final class ContactsStateStoreTests {
     }
 
     @Test
-    func testOnDeleteItemActionForContactGroupItem_AndCancelsDeletion_ItDoesNotTriggerContactGroupDeletion() async {
+    func onDeleteItemActionForContactGroupItem_AndCancelsDeletion_ItDoesNotTriggerContactGroupDeletion() async {
         let itemToDelete: ContactItemType = .group(.advisorsGroup)
         let groupedItems: [GroupedContacts] = [
             .init(
@@ -477,7 +478,7 @@ final class ContactsStateStoreTests {
     // MARK: - `onTapItem` action
 
     @Test
-    func testOnTapItemAction_WhenTapOnContact_ItNavigatesToContactDetails() async {
+    func onTapItemAction_WhenTapOnContact_ItNavigatesToContactDetails() async {
         let groupedItems: [GroupedContacts] = [
             .init(
                 groupedBy: "#",
@@ -504,7 +505,7 @@ final class ContactsStateStoreTests {
     }
 
     @Test
-    func testOnTapItemAction_WhenTapOnContactGroup_ItNavigatesToContactGroupDetails() async {
+    func onTapItemAction_WhenTapOnContactGroup_ItNavigatesToContactGroupDetails() async {
         let groupedItems: [GroupedContacts] = [
             .init(
                 groupedBy: "#",
@@ -533,7 +534,7 @@ final class ContactsStateStoreTests {
     // MARK: - `goBack` action
 
     @Test
-    func testGoBack_ItCleansUpTheStack() async {
+    func goBack_ItCleansUpTheStack() async {
         let groupedItems: [GroupedContacts] = [
             .init(
                 groupedBy: "#",
@@ -554,7 +555,7 @@ final class ContactsStateStoreTests {
     // MARK: - `createTapped` action
 
     @Test
-    func testCreateTappedAction_ItDisplaysCreateContactSheet() async {
+    func createTappedAction_ItDisplaysCreateContactSheet() async {
         await sut.handle(action: .onLoad)
         await sut.handle(action: .createTapped)
 
@@ -564,7 +565,7 @@ final class ContactsStateStoreTests {
     // MARK: - `createSheetAction` action
 
     @Test
-    func testCreateSheetAction_WhenOpenWebView_ItClosesSheetAndSetsCreateContactState() async {
+    func createSheetAction_WhenOpenWebView_ItClosesSheetAndSetsCreateContactState() async {
         await sut.handle(action: .onLoad)
         await sut.handle(action: .createTapped)
         await sut.handle(action: .createSheetAction(.openSafari))
@@ -576,7 +577,7 @@ final class ContactsStateStoreTests {
     }
 
     @Test
-    func testCreateSheetAction_WhenDismiss_ItClosesSheetAndDoesNotSetCreateContactState() async {
+    func createSheetAction_WhenDismiss_ItClosesSheetAndDoesNotSetCreateContactState() async {
         await sut.handle(action: .onLoad)
         await sut.handle(action: .createTapped)
         await sut.handle(action: .createSheetAction(.dismiss))
@@ -588,7 +589,7 @@ final class ContactsStateStoreTests {
     // MARK: - `dismissCreateSheet` action
 
     @Test
-    func testDismissCreateSheetAction_ItResetsCreateContactState() async {
+    func dismissCreateSheetAction_ItResetsCreateContactState() async {
         await sut.handle(action: .onLoad)
         await sut.handle(action: .createTapped)
         await sut.handle(action: .createSheetAction(.openSafari))

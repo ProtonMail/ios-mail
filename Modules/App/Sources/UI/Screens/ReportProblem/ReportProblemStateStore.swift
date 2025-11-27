@@ -16,11 +16,11 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Combine
-import InboxCoreUI
 import InboxCore
+import InboxCoreUI
+import ProtonUIFoundations
 import SwiftUI
 import proton_app_uniffi
-import ProtonUIFoundations
 
 final class ReportProblemStateStore: StateStore {
     @Published var state: ReportProblemState
