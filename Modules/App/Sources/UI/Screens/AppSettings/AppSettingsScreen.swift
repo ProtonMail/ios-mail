@@ -37,7 +37,7 @@ struct AppSettingsScreen: View {
     ) {
         _store = .init(
             wrappedValue: .init(
-                state: state ?? .initial(appIconName: appIconConfigurator.alternateIconName),
+                state: state ?? .initial(isDiscreetAppIconEnabled: appIconConfigurator.isCustomIconSet),
                 appSettingsRepository: appSettingsRepository,
                 customSettings: customSettings,
                 appIconConfigurator: appIconConfigurator
@@ -79,8 +79,8 @@ struct AppSettingsScreen: View {
                                     FormBigButton(
                                         title: L10n.Settings.AppIcon.buttonTitle,
                                         symbol: .chevronRight,
-                                        value: store.state.appIcon.title.string,
                                         action: {}
+                                        value: store.state.appIconName,
                                     )
                                 }
                             }
@@ -197,7 +197,10 @@ struct AppSettingsScreen: View {
 
 #Preview {
     NavigationStack {
-        AppSettingsScreen(state: .initial(appIconName: .none), customSettings: CustomSettings(noPointer: .init()))
+        AppSettingsScreen(
+            state: .initial(isDiscreetAppIconEnabled: false),
+            customSettings: CustomSettings(noPointer: .init())
+        )
     }
 }
 
@@ -236,4 +239,12 @@ private extension AppProtection {
             L10n.Settings.App.pinCode
         }
     }
+}
+
+private extension AppIconConfigurable {
+
+    var isCustomIconSet: Bool {
+        alternateIconName != nil
+    }
+
 }

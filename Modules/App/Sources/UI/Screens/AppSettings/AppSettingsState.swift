@@ -23,13 +23,14 @@ struct AppSettingsState: Copying, Equatable {
     var areNotificationsEnabled: Bool
     var appLanguage: String
     var storedAppSettings: AppSettings
-    var appIcon: AppIcon
+    var isDiscreetAppIconEnabled: Bool
     var isAppearanceMenuShown: Bool
     var isSwipeToAdjacentConversationEnabled: Bool
 }
 
 extension AppSettingsState {
-    static func initial(appIconName: String?) -> Self {
+
+    static func initial(isDiscreetAppIconEnabled: Bool) -> Self {
         .init(
             areNotificationsEnabled: false,
             appLanguage: .empty,
@@ -40,7 +41,7 @@ extension AppSettingsState {
                 useCombineContacts: false,
                 useAlternativeRouting: true
             ),
-            appIcon: AppIcon(rawValue: appIconName),
+            isDiscreetAppIconEnabled: isDiscreetAppIconEnabled,
             isAppearanceMenuShown: false,
             isSwipeToAdjacentConversationEnabled: false
         )

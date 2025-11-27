@@ -69,18 +69,7 @@ final class AppSettingsStateStore: StateStore, Sendable {
         case .swipeToAdjacentConversationChanged(let value):
             _ = await customSettings.setSwipeToAdjacentConversation(enabled: value)
             await refreshSwipeToAdjacentSettings()
-        case .appIconSelected(let appIcon):
-            await updateAppIcon(appIcon)
         }
-    }
-
-    func updateAppIcon(_ icon: AppIcon) async {
-        guard appIconConfigurator.supportsAlternateIcons else {
-            return
-        }
-
-        try? await appIconConfigurator.setAlternateIconName(icon.alternateIconName)
-        state = state.copy(\.appIcon, to: AppIcon(rawValue: icon.alternateIconName))
     }
 
     // MARK: - Private
