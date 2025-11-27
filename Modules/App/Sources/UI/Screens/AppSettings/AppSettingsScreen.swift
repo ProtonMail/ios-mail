@@ -76,7 +76,12 @@ struct AppSettingsScreen: View {
                                     action: { router.go(to: .appProtection) }
                                 )
                                 if appIconConfigurator.supportsAlternateIcons {
-                                    appIconButton
+                                    FormBigButton(
+                                        title: L10n.Settings.AppIcon.buttonTitle,
+                                        symbol: .chevronRight,
+                                        value: store.state.appIcon.title.string,
+                                        action: {}
+                                    )
                                 }
                             }
                             FormSection(footer: L10n.Settings.App.combinedContactsInfo) {
@@ -163,30 +168,6 @@ struct AppSettingsScreen: View {
                     symbol: .chevronUpChevronDown,
                     value: store.state.storedAppSettings.appearance.humanReadable.string,
                     action: { store.handle(action: .appearanceTapped) }
-                )
-            }
-        )
-    }
-
-    @ViewBuilder
-    private var appIconButton: some View {
-        Menu(
-            content: {
-                ForEach(AppIcon.allCases.filter { icon in store.state.appIcon != icon }, id: \.self) { icon in
-                    Button(action: { store.handle(action: .appIconSelected(icon)) }) {
-                        HStack(spacing: DS.Spacing.medium) {
-                            Text(icon.title)
-                            Image(icon.preview)
-                        }
-                    }
-                }
-            },
-            label: {
-                FormBigButton(
-                    title: L10n.Settings.AppIcon.buttonTitle,
-                    symbol: .chevronUpChevronDown,
-                    value: store.state.appIcon.title.string,
-                    action: {}
                 )
             }
         )
