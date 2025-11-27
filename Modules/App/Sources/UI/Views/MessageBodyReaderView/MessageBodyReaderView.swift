@@ -286,8 +286,9 @@ extension AppScript {
             function startSendingHeightToSwiftUI(bottomMarker, ratio) {
                 const observer = new ResizeObserver(() => {
                     const bottomMarkerRect = bottomMarker.getBoundingClientRect();
-                    const bottommostPoint = window.scrollY + bottomMarkerRect.top + bottomMarkerRect.height;
-                    var height = bottommostPoint * ratio;
+                    const bottomPadding = Number.parseFloat(window.getComputedStyle(document.documentElement, null).paddingBottom);
+                    const bottommostPoint = window.scrollY + bottomMarkerRect.top + bottomMarkerRect.height + bottomPadding;
+                    const height = bottommostPoint * ratio;
                     window.webkit.messageHandlers.\(HandlerName.heightChanged.rawValue).postMessage(height);
                 });
 
