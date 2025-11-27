@@ -99,35 +99,27 @@ struct MessageBodyReaderView: UIViewRepresentable {
 
         let style = """
             <style>
-                body {
-                    width: 100% !important;
-                }
-
-                p,pre {
-                    margin: 1em 0;
-                }
-
-                table {
-                    float: none;
-                    height: auto !important;
-                    min-height: auto !important;
-                    width: 100% !important;
-                }
-
-                @supports (height: fit-content) {
-                    html {
-                        height: fit-content !important;
-                    }
-                }
-
                 @media not print {
+                    html, body {
+                        /* Android is currently testing this, we should probably upstream it to Rust once they approve */
+                        height: auto !important;
+                    }
+
+                    table {
+                        /* This does not make sense on mobile */
+                        float: none;
+                    }
+
                     body {
+                        /* Dynamic type size */
                         --dts-scale-factor: \(scaleFactor * 100)%;
                     }
                 }
 
                 @media print {
-                    --dts-scale-factor: 100%;
+                    body {
+                        --dts-scale-factor: 100%;
+                    }
                 }
             </style>
             """
