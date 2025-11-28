@@ -43,9 +43,12 @@ struct MessageDetailsView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: isHeaderCollapsed ? DS.Spacing.standard : 0) {
             headerView
-                .background(DS.Color.Background.norm)
+                .background {
+                    // Tap gesture on the background layer fixes a tap-through bug in iOS 17
+                    DS.Color.Background.norm
+                        .onTapGesture { Task { await onEvent(.onTap) } }
+                }
                 .contentShape(Rectangle())
-                .onTapGesture { Task { await onEvent(.onTap) } }
                 .zIndex(1)
 
             detailedContent
