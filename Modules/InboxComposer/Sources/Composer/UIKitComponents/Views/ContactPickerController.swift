@@ -17,11 +17,13 @@
 
 import InboxDesignSystem
 import UIKit
+import proton_app_uniffi
 
 final class ContactPickerController: UIViewController {
     enum Event {
         case onInputChange(text: String)
         case onContactSelected(contact: ComposerContact)
+        case onReturnKeyPressedForValidAddress
     }
 
     private let label = SubviewFactory.title
@@ -60,6 +62,7 @@ final class ContactPickerController: UIViewController {
         tableView.registerCell(ContactPickerCell.self)
         tableView.dataSource = self
         tableView.delegate = self
+        textField.delegate = self
     }
 
     private func setUpConstraints() {
@@ -145,6 +148,18 @@ extension ContactPickerController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         onEvent?(.onContactSelected(contact: contacts[indexPath.row]))
         tableView.cellForRow(at: indexPath)?.setSelected(false, animated: true)
+    }
+}
+
+extension ContactPickerController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        if let text = textField.text?.trimmingCharacters(in: .whitespaces),
+            !text.isEmpty,
+            isValidEmailAddress(address: text)
+        {
+            onEvent?(.onReturnKeyPressedForValidAddress)
+        }
+        return true
     }
 }
 
