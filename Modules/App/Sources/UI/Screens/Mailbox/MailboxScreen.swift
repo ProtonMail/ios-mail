@@ -63,8 +63,6 @@ struct MailboxScreen: View {
         self.introductionPromptsDisabled = introductionPromptsDisabled
     }
 
-    var didAppear: ((Self) -> Void)?
-
     // MARK: - View
 
     var body: some View {
@@ -146,7 +144,6 @@ struct MailboxScreen: View {
                 }
             }
             Dispatcher.dispatchOnMainAfter(.now() + .milliseconds(500), workItem)
-            didAppear?(self)
         }
         .environment(\.confirmLink, mailboxModel.state.confirmLink)
         .environment(\.goToNextPageNotifier, mailboxModel.goToNextConversationNotifier)
@@ -342,23 +339,6 @@ extension MailboxScreen {
         case upsell(UpsellType)
         case finished
     }
-}
-
-#Preview {
-    let appUIStateStore = AppUIStateStore()
-    let toastStateStore = ToastStateStore(initialState: .initial)
-    let userDefaults = UserDefaults(suiteName: "mailbox_preview")!
-
-    MailboxScreen(
-        mailSettingsLiveQuery: MailSettingsLiveQueryPreviewDummy(),
-        appRoute: .initialState,
-        notificationAuthorizationStore: .init(userDefaults: userDefaults),
-        userSession: .dummy,
-        userDefaults: userDefaults,
-        draftPresenter: .dummy()
-    )
-    .environmentObject(appUIStateStore)
-    .environmentObject(toastStateStore)
 }
 
 private struct MailboxScreenIdentifiers {

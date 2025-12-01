@@ -99,8 +99,6 @@ struct HomeScreen: View {
         _userAnalyticsConfigurator = .init(wrappedValue: .init(mailUserSession: userSession, analytics: analytics))
     }
 
-    var didAppear: ((Self) -> Void)?
-
     // MARK: - View
 
     var body: some View {
@@ -172,7 +170,6 @@ struct HomeScreen: View {
                 userDidRespond: userDidRespondToAuthorizationRequest
             )
         }
-        .onAppear { didAppear?(self) }
         .onOpenURL(perform: handleDeepLink)
         .onLoad {
             Task {
