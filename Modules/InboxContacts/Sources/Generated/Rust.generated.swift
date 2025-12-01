@@ -264,6 +264,16 @@ public extension MailUserSessionGetAttachmentResult {
         }
     }
 }
+public extension MailUserSessionOverrideUserFeatureFlagResult {
+    func get() throws(ActionError) {
+        switch self {
+        case .ok:
+            break
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension MailboxGetAttachmentResult {
     func get() throws(ActionError) -> DecryptedAttachment {
         switch self {

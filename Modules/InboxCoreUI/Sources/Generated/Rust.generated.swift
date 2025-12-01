@@ -224,6 +224,16 @@ public extension CustomSettingsSwipeToAdjacentConversationResult {
         }
     }
 }
+public extension DraftComposerContentResult {
+    func get() throws(ProtonError) -> ComposerContent {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension DraftExpirationTimeResult {
     func get() throws(ProtonError) -> DraftExpirationTime {
         switch self {
@@ -236,16 +246,6 @@ public extension DraftExpirationTimeResult {
 }
 public extension DraftGetPasswordResult {
     func get() throws(ProtonError) -> DraftPassword? {
-        switch self {
-        case .ok(let value):
-            value
-        case .error(let error):
-            throw error
-        }
-    }
-}
-public extension DraftHtmlForComposerResult {
-    func get() throws(ProtonError) -> HtmlForComposer {
         switch self {
         case .ok(let value):
             value
@@ -954,6 +954,16 @@ public extension MailUserSessionImageForSenderResult {
         }
     }
 }
+public extension MailUserSessionIsFeatureEnabledResult {
+    func get() throws(ProtonError) -> Bool? {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension MailUserSessionMovableFoldersResult {
     func get() throws(UserSessionError) -> [SidebarCustomFolder] {
         switch self {
@@ -1056,6 +1066,16 @@ public extension MailUserSessionUserSettingsResult {
 }
 public extension MailUserSessionWatchAddressesResult {
     func get() throws(ProtonError) -> WatchHandle {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension MailUserSessionWatchFeatureFlagsStreamResult {
+    func get() throws(ProtonError) -> WatchUserFeatureFlagsStream {
         switch self {
         case .ok(let value):
             value
@@ -1469,6 +1489,26 @@ public extension WatchMailSettingsResult {
         switch self {
         case .ok(let value):
             value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension WatchUserFeatureFlagsStreamNextAsyncResult {
+    func get() throws(ProtonError) {
+        switch self {
+        case .ok:
+            break
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension WatchUserFeatureFlagsStreamNextSyncResult {
+    func get() throws(ProtonError) {
+        switch self {
+        case .ok:
+            break
         case .error(let error):
             throw error
         }
