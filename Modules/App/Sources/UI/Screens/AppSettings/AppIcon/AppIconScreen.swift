@@ -63,11 +63,12 @@ struct AppIconScreen: View {
                 .frame(maxWidth: .infinity)
                 .background(DS.Color.BackgroundInverted.secondary)
                 .roundedRectangleStyle()
+                .animation(.none, value: store.state.isDiscreetAppIconOn)
 
                 if store.state.isDiscreetAppIconOn {
                     FormSection {
                         LazyVGrid(columns: Array(repeating: .init(), count: 4)) {
-                            ForEach(AppIcon.allCases, id: \.self) { icon in
+                            ForEach(AppIcon.alternateIcons, id: \.self) { icon in
                                 Button(action: { store.handle(action: .iconTapped(icon: icon)) }) {
                                     let viewModel = store.state.viewModel(for: icon)
                                     Image(icon.preview)

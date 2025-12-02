@@ -51,7 +51,7 @@ class AppIconStateStoreTests {
         await sut.handle(action: .discreetAppIconSwitched(isEnabled: true))
 
         let newIcon = AppIcon.alternateIcons.first!
-        #expect(sut.state.appIcon == newIcon)
+        #expect(sut.state == AppIconState(appIcon: newIcon, isDiscreetAppIconOn: true))
         #expect(appIconConfiguratorSpy.setAlternateIconNameCalls == [newIcon.alternateIconName])
     }
 
@@ -61,7 +61,7 @@ class AppIconStateStoreTests {
 
         await sut.handle(action: .discreetAppIconSwitched(isEnabled: false))
 
-        #expect(sut.state.appIcon == .default)
+        #expect(sut.state == AppIconState(appIcon: .default, isDiscreetAppIconOn: false))
         #expect(appIconConfiguratorSpy.setAlternateIconNameCalls == [nil])
     }
 

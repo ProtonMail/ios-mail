@@ -17,7 +17,7 @@
 
 import InboxCore
 
-struct AppIconState: Copying {
+struct AppIconState: Copying, Equatable {
     var appIcon: AppIcon
     var isDiscreetAppIconOn: Bool
 }

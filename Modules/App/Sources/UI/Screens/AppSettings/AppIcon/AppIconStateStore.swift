@@ -34,6 +34,7 @@ class AppIconStateStore: StateStore {
             await changeIcon(to: icon)
         case .discreetAppIconSwitched(let isEnabled):
             let icon = (isEnabled ? AppIcon.alternateIcons.first : nil) ?? .default
+            state.isDiscreetAppIconOn = isEnabled
             await changeIcon(to: icon)
         }
     }
