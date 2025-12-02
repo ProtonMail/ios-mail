@@ -924,6 +924,14 @@ enum L10n {
                 "Keep the default Proton Mail icon, or disguise it with a more discreet one for extra privacy. Notifications will always show the Proton Mail name and icon. [Learn more...](https://www.example.com)",
                 comment: "Description text explaining the app icon feature and privacy implications."
             )
+            static let discreet = LocalizedStringResource(
+                "Discreet",
+                comment: "Label shown when a discreet app icon is selected."
+            )
+            static let defaultIcon = LocalizedStringResource(
+                "Default",
+                comment: "Label shown when the default app icon is selected."
+            )
         }
 
         enum App {

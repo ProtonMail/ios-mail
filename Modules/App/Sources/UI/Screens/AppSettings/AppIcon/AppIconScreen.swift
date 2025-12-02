@@ -57,14 +57,14 @@ struct AppIconScreen: View {
                         .frame(height: 1)
                         .padding(.leading, DS.Spacing.large)
 
-                    FormSwitchView(title: L10n.Settings.AppIcon.discreetToggle, isOn: $store.state.isDiscretAppIconOn)
+                    FormSwitchView(title: L10n.Settings.AppIcon.discreetToggle, isOn: isDiscreetAppIconOn)
                         .padding(.bottom, DS.Spacing.compact)
                 }
                 .frame(maxWidth: .infinity)
                 .background(DS.Color.Background.norm)
                 .roundedRectangleStyle()
 
-                if store.state.isDiscretAppIconOn {
+                if store.state.isDiscreetAppIconOn {
                     FormSection {
                         LazyVGrid(columns: Array(repeating: .init(), count: 4)) {
                             ForEach(AppIcon.allCases, id: \.self) { icon in
@@ -85,7 +85,6 @@ struct AppIconScreen: View {
                                 }
                             }
                         }
-
                     }
                     .padding(.horizontal, DS.Spacing.standard)
                     .padding(.bottom, DS.Spacing.large)
@@ -94,7 +93,7 @@ struct AppIconScreen: View {
                     .transition(.opacity)
                 }
             }
-            .animation(.default, value: store.state.isDiscretAppIconOn)
+            .animation(.default, value: store.state.isDiscreetAppIconOn)
             .padding(.horizontal, DS.Spacing.large)
             .padding(.bottom, DS.Spacing.extraLarge)
         }
@@ -102,6 +101,12 @@ struct AppIconScreen: View {
         .background(DS.Color.BackgroundInverted.norm)
     }
 
+    private var isDiscreetAppIconOn: Binding<Bool> {
+        .init(
+            get: { store.state.isDiscreetAppIconOn },
+            set: { newValue in store.handle(action: .discreetAppIconSwitched(isEnabled: newValue)) }
+        )
+    }
 }
 
 #Preview {

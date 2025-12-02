@@ -79,7 +79,7 @@ struct AppSettingsScreen: View {
                                     FormBigButton(
                                         title: L10n.Settings.AppIcon.buttonTitle,
                                         symbol: .chevronRight,
-                                        value: store.state.appIconName,
+                                        value: store.state.appIconVariant.string,
                                         action: { router.go(to: .appIcon) }
                                     )
                                 }
@@ -242,9 +242,7 @@ private extension AppProtection {
 }
 
 private extension AppIconConfigurable {
-
     var isCustomIconSet: Bool {
         alternateIconName != nil
     }
-
 }

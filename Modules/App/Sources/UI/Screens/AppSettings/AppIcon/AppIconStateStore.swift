@@ -15,7 +15,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import InboxCore
+import Combine
+import InboxCoreUI
 
 class AppIconStateStore: StateStore {
     @Published var state: AppIconState
@@ -32,7 +33,7 @@ class AppIconStateStore: StateStore {
             guard icon != state.appIcon else { return }
             await changeIcon(to: icon)
         case .discreetAppIconSwitched(let isEnabled):
-            let icon = (isEnabled ? AppIcon.allCases.first : nil) ?? .default
+            let icon = (isEnabled ? AppIcon.alternateIcons.first : nil) ?? .default
             await changeIcon(to: icon)
         }
     }

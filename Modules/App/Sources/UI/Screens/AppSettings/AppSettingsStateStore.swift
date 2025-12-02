@@ -108,6 +108,7 @@ final class AppSettingsStateStore: StateStore, Sendable {
                 .copy(\.areNotificationsEnabled, to: areNotificationsEnabled)
                 .copy(\.appLanguage, to: appLangaugeProvider.appLangauge)
                 .copy(\.isSwipeToAdjacentConversationEnabled, to: isSwipeToAdjacentEnabled)
+                .copy(\.isDiscreetAppIconEnabled, to: appIconConfigurator.alternateIconName != nil)
         } catch {
             AppLogger.log(error: error, category: .appSettings)
         }

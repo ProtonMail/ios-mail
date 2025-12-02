@@ -23,6 +23,10 @@ enum AppIcon: CaseIterable, Hashable {
     case weather
     case calculator
 
+    static var alternateIcons: [AppIcon] {
+        allCases.filter { icon in icon != .default }
+    }
+
     init(rawValue: String?) {
         switch rawValue {
         case Self.appIconNotes: self = .notes

@@ -29,7 +29,6 @@ struct AppSettingsState: Copying, Equatable {
 }
 
 extension AppSettingsState {
-
     static func initial(isDiscreetAppIconEnabled: Bool) -> Self {
         .init(
             areNotificationsEnabled: false,
@@ -49,5 +48,9 @@ extension AppSettingsState {
 
     var areNotificationsEnabledHumanReadable: LocalizedStringResource {
         areNotificationsEnabled ? CommonL10n.on : CommonL10n.off
+    }
+
+    var appIconVariant: LocalizedStringResource {
+        isDiscreetAppIconEnabled ? L10n.Settings.AppIcon.discreet : L10n.Settings.AppIcon.defaultIcon
     }
 }

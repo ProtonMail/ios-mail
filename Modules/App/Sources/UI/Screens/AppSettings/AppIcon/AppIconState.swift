@@ -19,11 +19,11 @@ import InboxCore
 
 struct AppIconState: Copying {
     var appIcon: AppIcon
-    var isDiscretAppIconOn: Bool
+    var isDiscreetAppIconOn: Bool
 }
 
 extension AppIconState {
     static func initial(appIcon: AppIcon) -> Self {
-        .init(appIcon: appIcon, isDiscretAppIconOn: true)
+        .init(appIcon: appIcon, isDiscreetAppIconOn: true)
     }
 }
