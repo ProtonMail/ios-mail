@@ -21,48 +21,6 @@ import InboxDesignSystem
 import ProtonUIFoundations
 import SwiftUI
 
-struct AppIconState: Copying {
-    var appIcon: AppIcon
-    var isDiscretAppIconOn: Bool
-}
-
-extension AppIconState {
-    static func initial(appIcon: AppIcon) -> Self {
-        .init(appIcon: appIcon, isDiscretAppIconOn: true)
-    }
-}
-
-enum AppIconScreenAction {
-    case iconTapped(icon: AppIcon)
-    case discreetAppIconSwitched(isEnbaled: Bool)
-}
-
-class AppIconStateStore: StateStore {
-    @Published var state: AppIconState
-    private let appIconConfigurator: AppIconConfigurable
-
-    init(state: AppIconState, appIconConfigurator: AppIconConfigurable) {
-        self.state = state
-        self.appIconConfigurator = appIconConfigurator
-    }
-
-    func handle(action: AppIconScreenAction) async {
-        switch action {
-        case .iconTapped(let icon):
-            guard icon != state.appIcon else { return }
-            await changeIcon(to: icon)
-        case .discreetAppIconSwitched(let isEnabled):
-            let icon = (isEnabled ? AppIcon.allCases.first : nil) ?? .default
-            await changeIcon(to: icon)
-        }
-    }
-
-    private func changeIcon(to appIcon: AppIcon) async {
-        state = state.copy(\.appIcon, to: appIcon)
-        try? await appIconConfigurator.setAlternateIconName(appIcon.alternateIconName)
-    }
-}
-
 struct AppIconScreen: View {
     @StateObject var store: AppIconStateStore
 
@@ -109,7 +67,7 @@ struct AppIconScreen: View {
                 if store.state.isDiscretAppIconOn {
                     FormSection {
                         LazyVGrid(columns: Array(repeating: .init(), count: 4)) {
-                            ForEach(icons, id: \.self) { icon in
+                            ForEach(AppIcon.allCases, id: \.self) { icon in
                                 Button(action: { store.handle(action: .iconTapped(icon: icon)) }) {
                                     let viewModel = store.state.viewModel(for: icon)
                                     Image(icon.preview)
@@ -160,23 +118,13 @@ private extension AppIconConfigurable {
     }
 }
 
-let icons: [AppIcon] = [
-    .default, .calculator, .notes, .weather,
-]
-
-extension View {
-    func clippedRoundedBorder(cornerRadius: CGFloat, lineColor: Color, lineWidth: CGFloat = 1) -> some View {
-        modifier(ClippedRoundedBorder(cornerRadius: cornerRadius, lineColor: lineColor, lineWidth: lineWidth))
-    }
-}
-
-struct AppIconItemViewModel {
+private struct AppIconItemViewModel {
     let overlayLineWidth: CGFloat
     let borderLineColor: Color
     let borderLineWidth: CGFloat
 }
 
-extension AppIconState {
+private extension AppIconState {
     func viewModel(for icon: AppIcon) -> AppIconItemViewModel {
         let isSelected = appIcon == icon
         return AppIconItemViewModel(
@@ -185,23 +133,4 @@ extension AppIconState {
             borderLineWidth: isSelected ? 3 : 1
         )
     }
-}
-
-struct ClippedRoundedBorder: ViewModifier {
-    private let cornerRadius: CGFloat
-    private let lineColor: Color
-    private let lineWidth: CGFloat
-
-    init(cornerRadius: CGFloat, lineColor: Color, lineWidth: CGFloat) {
-        self.cornerRadius = cornerRadius
-        self.lineWidth = lineWidth
-        self.lineColor = lineColor
-    }
-
-    func body(content: Content) -> some View {
-        content
-            .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
-            .overlay(RoundedRectangle(cornerRadius: cornerRadius).stroke(lineColor, lineWidth: lineWidth))
-    }
-
 }
