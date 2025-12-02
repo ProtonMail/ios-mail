@@ -1504,27 +1504,7 @@ public extension WatchUserFeatureFlagsStreamNextAsyncResult {
         }
     }
 }
-public extension WatchUserFeatureFlagsStreamNextSyncResult {
-    func get() throws(ProtonError) {
-        switch self {
-        case .ok:
-            break
-        case .error(let error):
-            throw error
-        }
-    }
-}
 public extension WatchUserStreamNextAsyncResult {
-    func get() throws(ProtonError) {
-        switch self {
-        case .ok:
-            break
-        case .error(let error):
-            throw error
-        }
-    }
-}
-public extension WatchUserStreamNextSyncResult {
     func get() throws(ProtonError) {
         switch self {
         case .ok:
