@@ -83,16 +83,14 @@ struct AppIconScreen: View {
                             .resizable()
                             .square(size: 60)
                             .clippedRoundedBorder(cornerRadius: DS.Radius.extraLarge, lineColor: DS.Color.Border.norm)
-                        Text("App icon")
+                        Text(L10n.Settings.AppIcon.title)
                             .font(.title3.bold())
                             .foregroundStyle(DS.Color.Text.norm)
-                        Text(
-                            "Keep the default Proton Mail icon, or disguise it with a more discreet one for extra privacy. Notifications will always show the Proton Mail name and icon. [Learn more...](https://www.example.com)"
-                        )
-                        .font(.footnote)
-                        .tint(DS.Color.Text.accent)
-                        .multilineTextAlignment(.center)
-                        .padding(.horizontal, DS.Spacing.large)
+                        Text(L10n.Settings.AppIcon.description)
+                            .font(.footnote)
+                            .tint(DS.Color.Text.accent)
+                            .multilineTextAlignment(.center)
+                            .padding(.horizontal, DS.Spacing.large)
                     }
                     .padding(.vertical, DS.Spacing.extraLarge)
                     .padding(.horizontal, DS.Spacing.large)
@@ -101,7 +99,7 @@ struct AppIconScreen: View {
                         .frame(height: 1)
                         .padding(.leading, DS.Spacing.large)
 
-                    FormSwitchView(title: "Discreet app icon", isOn: $store.state.isDiscretAppIconOn)
+                    FormSwitchView(title: L10n.Settings.AppIcon.discreetToggle, isOn: $store.state.isDiscretAppIconOn)
                         .padding(.bottom, DS.Spacing.compact)
                 }
                 .frame(maxWidth: .infinity)
