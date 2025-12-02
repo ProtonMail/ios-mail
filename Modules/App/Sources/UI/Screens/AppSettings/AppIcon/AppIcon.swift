@@ -32,15 +32,6 @@ enum AppIcon: CaseIterable, Hashable {
         }
     }
 
-    var title: LocalizedStringResource {
-        switch self {
-        case .default: return L10n.Settings.AppIcon.primary
-        case .notes: return L10n.Settings.AppIcon.notes
-        case .weather: return L10n.Settings.AppIcon.weather
-        case .calculator: return L10n.Settings.AppIcon.calculator
-        }
-    }
-
     var alternateIconName: String? {
         switch self {
         case .default: nil
