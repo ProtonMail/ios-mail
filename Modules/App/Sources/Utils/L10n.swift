@@ -912,22 +912,6 @@ enum L10n {
                 "App Icon",
                 comment: "Title of the button that allows the user to change the app’s icon."
             )
-            static let primary = LocalizedStringResource(
-                "Primary",
-                comment: "Name of the default (primary) app icon shown in the app icon picker."
-            )
-            static let notes = LocalizedStringResource(
-                "Notes",
-                comment: "Name of the alternate 'Notes' app icon shown in the app icon picker."
-            )
-            static let weather = LocalizedStringResource(
-                "Weather",
-                comment: "Name of the alternate 'Weather' app icon shown in the app icon picker."
-            )
-            static let calculator = LocalizedStringResource(
-                "Calculator",
-                comment: "Name of the alternate 'Calculator' app icon shown in the app icon picker."
-            )
         }
 
         enum App {
