@@ -24,6 +24,6 @@ struct AppIconState: Copying {
 
 extension AppIconState {
     static func initial(appIcon: AppIcon) -> Self {
-        .init(appIcon: appIcon, isDiscreetAppIconOn: true)
+        .init(appIcon: appIcon, isDiscreetAppIconOn: appIcon != .default)
     }
 }

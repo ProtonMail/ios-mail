@@ -61,7 +61,7 @@ struct AppIconScreen: View {
                         .padding(.bottom, DS.Spacing.compact)
                 }
                 .frame(maxWidth: .infinity)
-                .background(DS.Color.Background.norm)
+                .background(DS.Color.BackgroundInverted.secondary)
                 .roundedRectangleStyle()
 
                 if store.state.isDiscreetAppIconOn {
@@ -88,7 +88,7 @@ struct AppIconScreen: View {
                     }
                     .padding(.horizontal, DS.Spacing.standard)
                     .padding(.bottom, DS.Spacing.large)
-                    .background(DS.Color.Background.norm)
+                    .background(DS.Color.BackgroundInverted.secondary)
                     .roundedRectangleStyle()
                     .transition(.opacity)
                 }
