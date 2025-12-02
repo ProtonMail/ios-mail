@@ -19,5 +19,5 @@ import InboxCore
 
 enum AppIconScreenAction {
     case iconTapped(icon: AppIcon)
-    case discreetAppIconSwitched(isEnbaled: Bool)
+    case discreetAppIconSwitched(isEnabled: Bool)
 }
