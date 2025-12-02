@@ -79,8 +79,8 @@ struct AppSettingsScreen: View {
                                     FormBigButton(
                                         title: L10n.Settings.AppIcon.buttonTitle,
                                         symbol: .chevronRight,
-                                        action: {}
                                         value: store.state.appIconName,
+                                        action: { router.go(to: .appIcon) }
                                     )
                                 }
                             }
