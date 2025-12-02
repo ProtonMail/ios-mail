@@ -5755,8 +5755,11 @@
         }
       }
     },
+    "App icon" : {
+      "comment" : "Title shown on the app icon selection screen."
+    },
     "App Icon" : {
-      "comment" : "Title of the button that allows the user to change the app’s icon.",
+      "comment" : "Title of the button that allows the user to change the app's icon.",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -8624,6 +8627,7 @@
     },
     "Calculator" : {
       "comment" : "Name of the alternate 'Calculator' app icon shown in the app icon picker.",
+      "extractionState" : "stale",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -15508,6 +15512,9 @@
         }
       }
     },
+    "Default" : {
+      "comment" : "Label shown when the default app icon is selected."
+    },
     "Delete %lld messages" : {
       "comment" : "Title of alert displayed after delete permanently action tap.",
       "localizations" : {
@@ -16703,6 +16710,12 @@
           }
         }
       }
+    },
+    "Discreet" : {
+      "comment" : "Label shown when a discreet app icon is selected."
+    },
+    "Discreet app icon" : {
+      "comment" : "Toggle label for enabling/disabling discreet app icon feature."
     },
     "Display" : {
       "comment" : "Action to display embedded images.",
@@ -24407,6 +24420,9 @@
           }
         }
       }
+    },
+    "Keep the default Proton Mail icon, or disguise it with a more discreet one for extra privacy. Notifications will always show the Proton Mail name and icon. [Learn more...](https://www.example.com)" : {
+      "comment" : "Description text explaining the app icon feature and privacy implications."
     },
     "Label as…" : {
       "comment" : "Action title for labeling message/conversation in the action sheet.",
@@ -32530,6 +32546,7 @@
     },
     "Notes" : {
       "comment" : "Name of the alternate 'Notes' app icon shown in the app icon picker.",
+      "extractionState" : "stale",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -35347,6 +35364,7 @@
     },
     "Primary" : {
       "comment" : "Name of the default (primary) app icon shown in the app icon picker.",
+      "extractionState" : "stale",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -53965,6 +53983,7 @@
     },
     "Weather" : {
       "comment" : "Name of the alternate 'Weather' app icon shown in the app icon picker.",
+      "extractionState" : "stale",
       "localizations" : {
         "be" : {
           "stringUnit" : {
