@@ -80,8 +80,7 @@ struct AppSettingsScreenSnapshotTests {
                 matching: UIHostingController(rootView: sut).view,
                 styles: [userInterfaceStyle],
                 preferredHeight: 1000,
-                named: testCase.name,
-                record: true
+                named: testCase.name
             )
         }
     }
