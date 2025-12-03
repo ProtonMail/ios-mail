@@ -67,7 +67,7 @@ struct AppIconScreen: View {
 
                 if store.state.isDiscreetAppIconOn {
                     FormSection {
-                        LazyVGrid(columns: Array(repeating: .init(), count: 4)) {
+                        LazyVGrid(columns: Array(repeating: .init(), count: 4), spacing: DS.Spacing.huge) {
                             ForEach(AppIcon.alternateIcons, id: \.self) { icon in
                                 Button(action: { store.handle(action: .iconTapped(icon: icon)) }) {
                                     let viewModel = store.state.viewModel(for: icon)
@@ -76,7 +76,7 @@ struct AppIconScreen: View {
                                         .square(size: 60)
                                         .overlay {
                                             RoundedRectangle(cornerRadius: DS.Radius.extraLarge)
-                                                .stroke(DS.Color.Background.norm, lineWidth: viewModel.overlayLineWidth)
+                                                .stroke(DS.Color.BackgroundInverted.secondary, lineWidth: viewModel.overlayLineWidth)
                                         }
                                         .clippedRoundedBorder(
                                             cornerRadius: DS.Radius.extraLarge,
