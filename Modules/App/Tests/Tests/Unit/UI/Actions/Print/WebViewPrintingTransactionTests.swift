@@ -25,7 +25,7 @@ final class WebViewPrintingTransactionTests {
     @Test
     func insertsHeaderOnlyForTheDurationOfTheTransaction() async throws {
         let webView = WKWebView()
-        let transaction = WebViewPrintingTransaction(message: .testData(), webView: webView)
+        let transaction = WebViewPrintingTransaction(message: .testData(), attachments: [], webView: webView)
 
         webView.loadHTMLString("<div>Hello, world!</div>", baseURL: nil)
         let expectedContentBefore = "<html><head></head><body><div>Hello, world!</div></body></html>"

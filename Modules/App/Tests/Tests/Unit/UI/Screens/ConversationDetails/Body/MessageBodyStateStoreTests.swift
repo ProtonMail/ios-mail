@@ -59,6 +59,7 @@ final class MessageBodyStateStoreTests {
                             rsvpServiceProvider: .none,
                             newsletterService: decryptedMessageSpy,
                             banners: [],
+                            attachments: [],
                             html: .init(rawBody: "<html>dummy_with_custom_options</html>", options: initialOptions, imagePolicy: .safe)
                         ),
                         .init(imageProxy: decryptedMessageSpy, imagePolicy: .safe)
@@ -625,6 +626,7 @@ private extension MessageBodyStateStore.State {
                     rsvpServiceProvider: .none,
                     newsletterService: decryptedMessage,
                     banners: [],
+                    attachments: [],
                     html: .init(rawBody: rawBody, options: options, imagePolicy: .safe)
                 ),
                 .init(imageProxy: decryptedMessage, imagePolicy: .safe)

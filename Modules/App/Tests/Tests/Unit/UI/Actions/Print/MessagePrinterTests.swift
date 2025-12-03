@@ -29,12 +29,17 @@ final class MessagePrinterTests {
         },
         presentPrintInteractionController: { [unowned self] _ in
             presentPrintInteractionControllerCalls += 1
+        },
+        attachmentsProvider: { [unowned self] messageID in
+            attachmentsProviderCalledWithMessageID.append(messageID)
+            return []
         }
     )
 
     private let messageID = ID(integerLiteral: 1)
-    private var stubbedMessage: Message? = .testData()
+    private var stubbedMessage: Message? = .testData(messageId: 1)
     private var presentPrintInteractionControllerCalls = 0
+    private var attachmentsProviderCalledWithMessageID: [ID] = []
 
     @Test
     func givenWebViewIsRegisteredAndMessageIsFound_printsItsContent() async throws {
@@ -44,6 +49,7 @@ final class MessagePrinterTests {
         try await sut.printMessage(messageID: messageID)
 
         #expect(presentPrintInteractionControllerCalls == 1)
+        #expect(attachmentsProviderCalledWithMessageID == [messageID])
     }
 
     @Test

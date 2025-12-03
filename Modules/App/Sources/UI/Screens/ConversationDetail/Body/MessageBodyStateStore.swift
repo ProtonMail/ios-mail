@@ -216,9 +216,3 @@ final class MessageBodyStateStore: StateStore {
         }
     }
 }
-
-extension AttachmentMetadata {
-    var displayModel: AttachmentDisplayModel {
-        .init(id: id, mimeType: mimeType, name: name, size: size)
-    }
-}

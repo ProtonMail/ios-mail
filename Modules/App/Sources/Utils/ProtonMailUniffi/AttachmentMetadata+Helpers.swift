@@ -23,6 +23,10 @@ extension AttachmentMetadata {
     func toAttachmentCapsuleUIModel() -> AttachmentCapsuleUIModel {
         .init(id: id, icon: mimeType.category.icon, name: name)
     }
+
+    var displayModel: AttachmentDisplayModel {
+        .init(id: id, mimeType: mimeType, name: name, size: size)
+    }
 }
 
 extension Array where Element == AttachmentMetadata {
