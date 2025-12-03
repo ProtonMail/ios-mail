@@ -407,7 +407,6 @@ struct MessageDetailsUIModel: Hashable {
     let date: Date
     let location: MessageDetail.Location?
     let labels: [LabelUIModel]
-    let attachments: [AttachmentDisplayModel]
     let isStarred: Bool
     let showPaperClip: Bool
 }
@@ -531,7 +530,6 @@ enum MessageDetailsPreviewProvider {
             date: Date(timeIntervalSince1970: 1724347300),
             location: location?.model,
             labels: labels,
-            attachments: .previewData,
             isStarred: false,
             showPaperClip: false
         )

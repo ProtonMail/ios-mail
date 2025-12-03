@@ -84,7 +84,6 @@ extension Message {
                 date: Date(timeIntervalSince1970: TimeInterval(time)),
                 location: location?.model,
                 labels: labels,
-                attachments: attachmentsMetadata.map(\.displayModel),
                 isStarred: starred,
                 showPaperClip: showPaperClip
             )
@@ -122,11 +121,5 @@ extension Message {
         let avatarInformation = avatarInformationFromMessageRecipients(addressList: allRecipients)
 
         return .init(info: avatarInformation.info, type: .other)
-    }
-}
-
-private extension AttachmentMetadata {
-    var displayModel: AttachmentDisplayModel {
-        .init(id: id, mimeType: mimeType, name: name, size: size)
     }
 }

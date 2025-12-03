@@ -56,6 +56,11 @@ final class MessageBodyStateStore: StateStore {
             let eventDriven = eventBanners.map { MessageBannerType.eventDriven($0) }
             return OrderedSet(standard).union(eventDriven)
         }
+
+        var attachments: [AttachmentDisplayModel] {
+            guard case .loaded(let body, _) = body else { return [] }
+            return body.attachments.map(\.displayModel)
+        }
     }
 
     @Published var state = State(body: .fetching, eventBanners: [], imagePolicy: .safe, alert: .none)
@@ -209,5 +214,11 @@ final class MessageBodyStateStore: StateStore {
         case .error(let error):
             toastStateStore.present(toast: .error(message: error.localizedDescription))
         }
+    }
+}
+
+extension AttachmentMetadata {
+    var displayModel: AttachmentDisplayModel {
+        .init(id: id, mimeType: mimeType, name: name, size: size)
     }
 }
