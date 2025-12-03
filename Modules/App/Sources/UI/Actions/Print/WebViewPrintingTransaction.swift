@@ -22,13 +22,15 @@ import proton_app_uniffi
 @MainActor
 final class WebViewPrintingTransaction {
     private let message: Message
+    private let attachments: [AttachmentMetadata]
     private let webView: WKWebView
 
     private let a4PaperWidth = 595
     private let printableRectMargin = 18
 
-    init(message: Message, webView: WKWebView) {
+    init(message: Message, attachments: [AttachmentMetadata], webView: WKWebView) {
         self.message = message
+        self.attachments = attachments
         self.webView = webView
     }
 
@@ -36,7 +38,7 @@ final class WebViewPrintingTransaction {
         let headerImage = renderHeaderImage(
             subject: message.subject,
             messageDetails: message.toExpandedMessageCellUIModel().messageDetails,
-            attachments: message.attachmentsMetadata.map(\.displayModel)
+            attachments: attachments.map(\.displayModel)
         )
 
         let injectedHeaderUUID = try await inject(headerImage: headerImage, into: webView)

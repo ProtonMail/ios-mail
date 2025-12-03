@@ -22,25 +22,32 @@ import proton_app_uniffi
 final class MessagePrinter {
     typealias FindMessage = (ID) async throws -> Message?
     typealias PresentPrintInteractionController = (WebViewPrintingTransaction) async throws(PrintError) -> Void
+    typealias AttachmentsProvider = (_ messageID: ID) async throws -> [AttachmentMetadata]
 
     private let message: FindMessage
     private let presentPrintInteractionController: PresentPrintInteractionController
+    private let attachmentsProvider: AttachmentsProvider
 
     private let webViews = NSMapTable<NSString, WKWebView>.strongToWeakObjects()
 
-    convenience init(userSession: @escaping () -> MailUserSession) {
+    convenience init(userSession: @escaping () -> MailUserSession, mailbox: @escaping () -> Mailbox) {
         self.init(
             message: { try await proton_app_uniffi.message(session: userSession(), id: $0).get() },
-            presentPrintInteractionController: PrintInteractionControllerPresenter.present
+            presentPrintInteractionController: PrintInteractionControllerPresenter.present,
+            attachmentsProvider: { messageID in
+                try await getMessageBody(mbox: mailbox(), id: messageID).get().attachments()
+            }
         )
     }
 
     init(
         message: @escaping FindMessage,
-        presentPrintInteractionController: @escaping PresentPrintInteractionController
+        presentPrintInteractionController: @escaping PresentPrintInteractionController,
+        attachmentsProvider: @escaping AttachmentsProvider
     ) {
         self.message = message
         self.presentPrintInteractionController = presentPrintInteractionController
+        self.attachmentsProvider = attachmentsProvider
     }
 
     func register(webView: WKWebView, for messageID: ID) {
@@ -59,7 +66,9 @@ final class MessagePrinter {
             throw PrintError.messageNotFound
         }
 
-        let transaction = WebViewPrintingTransaction(message: message, webView: webView)
+        let attachments = try await attachmentsProvider(messageID)
+
+        let transaction = WebViewPrintingTransaction(message: message, attachments: attachments, webView: webView)
         try await presentPrintInteractionController(transaction)
     }
 

@@ -37,7 +37,10 @@ final class ConversationDetailModel: Sendable, ObservableObject {
     @Published private(set) var conversationItem: ConversationItem?
 
     let messageAppearanceOverrideStore = MessageAppearanceOverrideStore()
-    let messagePrinter: MessagePrinter
+    private(set) lazy var messagePrinter = MessagePrinter(
+        userSession: { [unowned self] in userSession },
+        mailbox: { [unowned self] in mailbox! }
+    )
     private var colorScheme: ColorScheme = .light
 
     enum InitialConversationItem {
@@ -119,7 +122,6 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         self.dependencies = dependencies
         self.backOnlineActionExecutor = backOnlineActionExecutor
         self.snoozeService = snoozeService
-        messagePrinter = .init(userSession: { dependencies.appContext.userSession })
     }
 
     func fetchInitialData() async {
