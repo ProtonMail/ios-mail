@@ -309,6 +309,12 @@
             "value" : "%@ je zakázaný. Nemôže odosielať správy."
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ je onemogočen. Ne more pošiljati sporočil"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -896,7 +902,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vedhæft fil"
+            "value" : "Vedhæft fil(er)"
           }
         },
         "de" : {
@@ -1636,7 +1642,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Adresse er deaktiveret"
+            "value" : "Adressen er deaktiveret"
           }
         },
         "de" : {
@@ -1827,7 +1833,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Adresse ikke tilgængelig"
+            "value" : "Adressen er ikke tilgængelig"
           }
         },
         "de" : {
@@ -2185,7 +2191,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Adressen blev ikke fundet. Tilføj igen, eller genåbn kladden."
+            "value" : "Adressen blev ikke fundet. Tilføj igen, eller genåbn udkastet."
           }
         },
         "de" : {
@@ -2364,7 +2370,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Adressen genkendes ikke. Kontrollér venligst adressen."
+            "value" : "Adressen genkendes ikke. Kontrollér adressen."
           }
         },
         "de" : {
@@ -3104,7 +3110,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vedhæftet fil mangler. Upload den venligst igen."
+            "value" : "Vedhæftet fil mangler. Upload den igen."
           }
         },
         "de" : {
@@ -4128,6 +4134,12 @@
             "value" : "Prílohu nie je možné nahrať, pretože vaše Proton Mail úložisko je plné. Uvoľnite miesto alebo si zvýšte úroveň vášho plánu."
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Priponke ni mogoče naložiti, ker je vaša shramba za Proton Mail polna. Sprostite prostor ali nadgradite svoj paket."
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5109,7 +5121,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kladde ikke fundet. Du har muligvis kasseret den."
+            "value" : "Udkastet blev ikke fundet. Du har muligvis kasseret det."
           }
         },
         "de" : {
@@ -5288,7 +5300,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kladde ikke fundet. Du har muligvis allerede sendt den."
+            "value" : "Udkastet blev ikke fundet. Du har muligvis allerede sendt det"
           }
         },
         "de" : {
@@ -5658,7 +5670,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kladde blev ikke kasseret. Prøv at kassere den igen."
+            "value" : "Udkastet blev ikke kasseret. Prøv at kassere det igen."
           }
         },
         "de" : {
@@ -7878,7 +7890,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ugyldig e-mailadresse. Kontrollér venligst adressen."
+            "value" : "Ugyldig e-mailadresse. Kontrollér adressen."
           }
         },
         "de" : {
@@ -8421,7 +8433,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Brødteksten i beskeden blev ikke hentet. Luk, og genåbn kladden."
+            "value" : "Brødteksten i beskeden blev ikke hentet. Luk, og genåbn udkastet."
           }
         },
         "de" : {
@@ -8791,7 +8803,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Beskedens udløbstid er for tidlig."
+            "value" : "Beskedens udløbstid er for tæt på."
           }
         },
         "de" : {
@@ -9871,7 +9883,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Beskeden blev allerede sendt"
+            "value" : "Beskeden er allerede sendt"
           }
         },
         "de" : {
@@ -10899,6 +10911,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Žiaden z príjemcov predvolene nepodporuje exspiráciu. Pridajte heslo, aby ste povolili exspiráciu pre príjemcov, ktorí nepoužívajú Proton Mail."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Noben od prejemnikov privzeto ne podpira poteka veljavnosti. Dodajte geslo, da omogočite potek veljavnosti za prejemnike, ki ne uporabljajo Proton Maila."
           }
         },
         "tr" : {
@@ -12228,7 +12246,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Problem med at kryptere vedhæftet fil. Upload den venligst igen."
+            "value" : "Problem med at kryptere vedhæftet fil. Upload den igen."
           }
         },
         "de" : {
@@ -12407,7 +12425,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Problem med at udføre handlingen. Prøv venligst igen."
+            "value" : "Problem med at udføre handlingen. Prøv igen."
           }
         },
         "de" : {
@@ -12586,7 +12604,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Problem med at sende besked. Prøv venligst igen."
+            "value" : "Problem med at sende besked. Prøv igen."
           }
         },
         "de" : {
@@ -13123,7 +13141,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Fjernet dobbelt modtager: %@"
+            "value" : "Fjernet dubleret modtager: %@"
           }
         },
         "de" : {
@@ -13863,7 +13881,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Planlagt afsendelsestidspunkt ligger i fortiden. Gå til Kladder for at sende eller omplanlægge den."
+            "value" : "Planlagt afsendelsestidspunkt ligger i fortiden. Gå til Udkast for at sende eller omplanlægge den."
           }
         },
         "de" : {
@@ -16859,7 +16877,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vedhæftningsdispositionen kunne ikke opdateres, prøv igen"
+            "value" : "Vedhæftningsdispositionen kunne ikke opdateres. Prøv igen"
           }
         },
         "de" : {
@@ -16964,6 +16982,12 @@
             "value" : "Prílohu sa nepodarilo aktualizovať, skúste to znova, prosím."
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Priponke ni bilo mogoče posodobiti. Poskusite znova."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -17008,7 +17032,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kladden blev ikke fundet"
+            "value" : "Udkastet blev ikke fundet"
           }
         },
         "de" : {
@@ -17193,7 +17217,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Denne besked er ikke en kladde"
+            "value" : "Denne besked er ikke et udkast"
           }
         },
         "de" : {
@@ -17569,7 +17593,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Der er en grænse på 25 MB for vedhæftninger pr. e-mail, hvilket inkluderer indlejrede billeder, og %lld vedhæftninger kunne ikke tilføjes. Send dem i separate e-mails, eller del dem via Proton Drive."
+            "value" : "En grænse på 25 MB for vedhæftninger pr. e-mail, som inkluderer indlejrede billeder, bevirker at %lld vedhæftninger ikke kunne tilføjes. Send dem i separate e-mails, eller del dem via Proton Drive."
           }
         },
         "de" : {
@@ -17650,10 +17674,22 @@
             "value" : "Na prílohy v jednom emaile platí limit 25 MB, vrátane vložených obrázkov a %lld prílohy nebolo možné pridať. Pošlite ich v samostatných emailoch alebo zdieľajte prostredníctvom Proton Drive."
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Velikost priponk na posamezno e-pošto, vključno z vdelanimi slikami, je omejena na 25 MB in %lld priponk ni bilo mogoče dodati. Pošljite jih v ločenih e-poštnih sporočilih ali pa jih delite prek storitve Proton Drive."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bir e-postadaki ek dosyaların toplamı, satır arasındaki görseller ile beraber en fazla 25 MB olabilir. Bu nedenle %lld dosya eklenemedi. Bu dosyaları farklı e-postalara ekleyerek gönderin ya da Proton Drive üzerinden paylaşın."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "На вкладення в кожному листі встановлено обмеження 25 МБ, включаючи вбудовані зображення, і %lld вкладень не можна додати. Надішліть їх окремими листами або поділіться через Proton Drive."
           }
         }
       }
@@ -17682,7 +17718,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Der er en grænse på 25 MB for vedhæftninger pr. e-mail, inklusive indlejrede billeder. Send dem i separate e-mails, eller del dem via Proton Drive."
+            "value" : "Der er en grænse på 25 MB for vedhæftninger pr. e-mail, inklusive indlejrede billeder. Send dem i separate e-mails eller del dem via Proton Drive."
           }
         },
         "de" : {
@@ -17763,10 +17799,22 @@
             "value" : "Na prílohy v jednom emaile, vrátane vložených obrázkov, platí limit 25 MB. Pošlite ich v samostatných emailoch alebo zdieľajte prostredníctvom Proton Drive."
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Velikost priponk na posamezno e-pošto je omejena na 25 MB, vključno z vdelanimi slikami. Pošljite jih v ločenih e-poštnih sporočilih ali pa jih delite prek storitve Proton Drive."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bir e-postadaki ek dosyaların toplamı, satır arası görseller ile beraber en fazla 25 MB olabilir. Bu dosyaları farklı e-postalara ekleyerek gönderin ya da Proton Drive üzerinden paylaşın."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Існує обмеження 25 МБ на вкладення для кожного листа, включно з вбудованими зображеннями. Надішліть їх в окремих листах або поділіться ними через Proton Drive."
           }
         }
       }
@@ -17795,7 +17843,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Der opstod et problem med at gemme kladden"
+            "value" : "Der opstod et problem med at gemme udkastet"
           }
         },
         "de" : {
@@ -19183,10 +19231,22 @@
             "value" : "Dosiahli ste limit príloh, vrátane vložených obrázkov, 1 alebo viac príloh nebolo možné pridať. Pošlite ich v samostatných emailoch alebo ich zdieľajte prostredníctvom služby Proton Drive."
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dosegli ste omejitev števila priponk, vključno z vdelanimi slikami, zato ene ali več priponk ni bilo mogoče dodati. Pošljite jih v ločenih e-poštnih sporočilih ali jih delite prek storitve Proton Drive."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Satır arası görseller ile beraber, ek dosya sınırına ulaştınız. 1 ya da birkaç dosya eklenemedi. Bunları farklı e-postalara ekleyerek gönderin ya da Proton Drive üzerinden paylaşın."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ви досягли ліміту вкладень, включаючи вбудовані зображення. Одне або більше вкладень не вдалося додати. Надішліть їх окремими листами або поділіться через Proton Drive."
           }
         }
       }
@@ -19585,7 +19645,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Din kladde vil ikke blive gemt."
+            "value" : "Dit udkast vil ikke blive gemt."
           }
         },
         "de" : {

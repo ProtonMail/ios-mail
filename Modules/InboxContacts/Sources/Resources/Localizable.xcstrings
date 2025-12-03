@@ -1635,7 +1635,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vedhæftning ikke fundet. Opfrisk siden, eller upload den igen."
+            "value" : "Vedhæftning ikke fundet. Opfrisk siden eller upload den igen."
           }
         },
         "de" : {
@@ -2894,7 +2894,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Oprettelse af kontakter eller grupper i appen er endnu ikke klar. Du kan foreløbig oprette dem i webappen, og de synkroniseres til din enhed."
+            "value" : "Oprettelse af kontakter eller grupper i appen er endnu ikke klar. Du kan foreløbig oprette dem i webappen og de vil blive synkroniseret til din enhed."
           }
         },
         "de" : {
@@ -3003,6 +3003,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vytváranie kontaktov alebo skupín v aplikácii ešte nie je dostupné. Nateraz ich môžete vytvoriť vo webovej aplikácii a synchronizujú sa do vášho zariadenia."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ustvarjanje stikov ali skupin v aplikaciji še ni pripravljeno. Zaenkrat jih lahko ustvarite v spletni različici, od koder se bodo sinhronizirali na vašo napravo."
           }
         },
         "sv" : {
@@ -3540,6 +3546,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Úprava kontaktov alebo skupín v aplikácii ešte nie je pripravená. Zatiaľ ich môžete upraviť vo webovej aplikácii a zmeny sa synchronizujú s vaším zariadením."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Urejanje stikov ali skupin v aplikaciji še ni pripravljeno. Zaenkrat jih lahko uredite v spletni različici, od koder se bodo spremembe sinhronizirale na vašo napravo."
           }
         },
         "sv" : {
@@ -8122,7 +8134,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Denne gruppe vil blive slettet fra din kontaktliste."
+            "value" : "Denne gruppe slettes fra din kontaktliste."
           }
         },
         "de" : {
@@ -8313,7 +8325,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Denne kontakt vil blive slettet fra din kontaktliste."
+            "value" : "Denne kontakt slettes fra din kontaktliste."
           }
         },
         "de" : {
