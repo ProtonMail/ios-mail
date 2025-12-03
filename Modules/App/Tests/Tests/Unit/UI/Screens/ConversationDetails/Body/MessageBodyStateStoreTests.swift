@@ -574,6 +574,10 @@ private final class DecryptedMessageSpy: DecryptedMessage, @unchecked Sendable {
 
         return stubbedUnsubscribeFromNewsletterResult
     }
+
+    override func attachments() -> [AttachmentMetadata] {
+        return []
+    }
 }
 
 private final class RustWrappersSpy: @unchecked Sendable {
