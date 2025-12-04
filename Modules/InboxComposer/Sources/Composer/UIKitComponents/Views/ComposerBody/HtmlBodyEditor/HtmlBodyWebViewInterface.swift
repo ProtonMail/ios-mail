@@ -29,7 +29,7 @@ final class HtmlBodyWebViewInterface: NSObject, HtmlBodyWebViewInterfaceProtocol
         case onInlineImageRemoved(cid: String)
         case onInlineImageTapped(cid: String, imageRect: CGRect)
         case onImagePasted(image: Data)
-        case onTextPasted(text: String)
+        case onTextPasted(text: String, mimeType: MessageMimeType)
     }
 
     let webView: WKWebView
@@ -178,8 +178,7 @@ final class HtmlBodyWebViewInterface: NSObject, HtmlBodyWebViewInterfaceProtocol
 
     func handleScriptMessage(_ message: WKScriptMessage) {
         let userInfo = message.body as! [String: Any]
-        let messageHandler = userInfo["messageHandler"] as! String
-        let jsEvent = HtmlBodyDocument.JSEvent(rawValue: messageHandler)!
+        let jsEvent = HtmlBodyDocument.JSEvent(rawValue: message.name)!
 
         switch jsEvent {
         case .bodyResize:
@@ -210,8 +209,8 @@ final class HtmlBodyWebViewInterface: NSObject, HtmlBodyWebViewInterfaceProtocol
             guard let data = readImageData(from: userInfo) else { return }
             onEvent?(.onImagePasted(image: data))
         case .textPasted:
-            guard let text = readText(from: userInfo) else { return }
-            onEvent?(.onTextPasted(text: text))
+            guard let (text, mimeType) = readText(from: userInfo) else { return }
+            onEvent?(.onTextPasted(text: text, mimeType: mimeType))
         }
     }
 
@@ -236,12 +235,16 @@ final class HtmlBodyWebViewInterface: NSObject, HtmlBodyWebViewInterfaceProtocol
         return data
     }
 
-    private func readText(from dict: [String: Any]) -> String? {
-        guard let text = dict[HtmlBodyDocument.EventAttributeKey.text] as? String else {
+    private func readText(from dict: [String: Any]) -> (String, MessageMimeType)? {
+        guard
+            let text = dict[HtmlBodyDocument.EventAttributeKey.text] as? String,
+            let rawMimeType = dict[HtmlBodyDocument.EventAttributeKey.mimeType] as? String,
+            let mimeType = MessageMimeType(rawValue: rawMimeType)
+        else {
             AppLogger.log(message: "no text retrieved", category: .composer, isError: true)
             return nil
         }
-        return text
+        return (text, mimeType)
     }
 }
 
@@ -256,5 +259,18 @@ private class WeakScriptMessageHandler: NSObject, WKScriptMessageHandler {
 
     func userContentController(_ userContentController: WKUserContentController, didReceive message: WKScriptMessage) {
         target?.handleScriptMessage(message)
+    }
+}
+
+private extension MessageMimeType {
+    init?(rawValue: String) {
+        switch rawValue {
+        case "text/plain":
+            self = .textPlain
+        case "text/html":
+            self = .textHtml
+        default:
+            return nil
+        }
     }
 }

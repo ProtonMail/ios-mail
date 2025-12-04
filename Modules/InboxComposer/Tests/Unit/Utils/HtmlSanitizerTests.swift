@@ -23,59 +23,6 @@ import proton_app_uniffi
 
 final class HtmlSanitizerTests {
     @Test(
-        "removes style attribute correctly",
-        arguments: [
-            (
-                "when empty html",
-                "",
-                ""
-            ),
-            (
-                "when no style attributes",
-                "<p>Hello</p>",
-                "<p>Hello</p>"
-            ),
-            (
-                "when single style attribute",
-                "<p style=\"color:red;\">Hello</p>",
-                "<p >Hello</p>"
-            ),
-            (
-                "when multiple style attributes",
-                "<div style=\"margin:10px;\"><span style=\"color:blue;\">Text</span></div>",
-                "<div ><span >Text</span></div>"
-            ),
-            (
-                "when style in uppercase",
-                "<p STYLE=\"color:red;\">Hello</p>",
-                "<p >Hello</p>"
-            ),
-            (
-                "when more complex CSS",
-                "<p style=\"color:red; font-size:14px; background:#fff;\">Hello</p>",
-                "<p >Hello</p>"
-            ),
-            (
-                "when multiple different attributes",
-                "<p class=\"text\" style=\"color:red;\" id=\"p1\">Hello</p>",
-                "<p class=\"text\"  id=\"p1\">Hello</p>"
-            ),
-            (
-                "when attribute with style in its name, it keeps it",
-                "<p data-style=\"foo:bar;\" style=\"color:red;\">Hello</p>",
-                "<p data-style=\"foo:bar;\" >Hello</p>"
-            ),
-            (
-                "when img tag has a style attribute",
-                "<div style=\"background:red;\"><p>Here is an image: <img src=\"image.png\" style=\"width:100px; height:auto;\" alt=\"image\"></p></div>",
-                "<div ><p>Here is an image: <img src=\"image.png\"  alt=\"image\"></p></div>"
-            ),
-        ])
-    func removeStyleAttribute(context: String, input: String, expected: String) {
-        #expect(HtmlSanitizer.removeStyleAttribute(html: input) == expected, Comment(rawValue: context))
-    }
-
-    @Test(
         "applies JS string literal escaping rules",
         arguments: [
             (

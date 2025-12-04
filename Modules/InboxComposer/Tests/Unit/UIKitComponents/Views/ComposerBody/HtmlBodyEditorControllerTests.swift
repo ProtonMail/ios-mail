@@ -49,10 +49,10 @@ final class HtmlBodyEditorControllerTests {
     func onEventTextPasted_sanitizesAndCallsInsertText() async {
         triggerViewDidLoad()
         let raw = "<span style=\"color:red;\">Hello</span>"
-        mockInterface.onEvent?(.onTextPasted(text: raw))
+        mockInterface.onEvent?(.onTextPasted(text: raw, mimeType: .textHtml))
 
         await Task.yield()
-        #expect(mockInterface.insertedTexts == ["\"<span >Hello<\\/span>\""])
+        #expect(mockInterface.insertedTexts == [#""<span>Hello<\/span>""#])
     }
 }
 

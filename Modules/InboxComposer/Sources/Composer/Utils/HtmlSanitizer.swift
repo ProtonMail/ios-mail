@@ -26,14 +26,4 @@ struct HtmlSanitizer {
         let sanitized = String(data: jsonEncodedText, encoding: .utf8)!
         return sanitized
     }
-
-    static func removeStyleAttribute(html: String) -> String {
-        let regex = try! NSRegularExpression(
-            pattern: #"(?<![\w-])style\s*=\s*(?:"[^"]*"|'[^']*')"#,
-            options: .caseInsensitive
-        )
-        let range = NSRange(location: 0, length: html.utf16.count)
-        let sanitizedString = regex.stringByReplacingMatches(in: html, options: [], range: range, withTemplate: "")
-        return sanitizedString
-    }
 }

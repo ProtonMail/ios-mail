@@ -113,10 +113,10 @@ final class HtmlBodyEditorController: UIViewController, BodyEditor {
                     return
                 }
                 onEvent?(.onImagePasted(image: image))
-            case .onTextPasted(let text):
-                let styleStrippedText = HtmlSanitizer.removeStyleAttribute(html: text)
-                let sanitisedText = HtmlSanitizer.applyStringLiteralEscapingRules(html: styleStrippedText)
-                handleBodyAction(.insertText(text: sanitisedText))
+            case .onTextPasted(let text, let mimeType):
+                let sanitizedText = sanitizePastedContent(content: text, mimeType: mimeType)
+                let escapedSanitizedText = HtmlSanitizer.applyStringLiteralEscapingRules(html: sanitizedText)
+                handleBodyAction(.insertText(text: escapedSanitizedText))
             }
         }
     }
