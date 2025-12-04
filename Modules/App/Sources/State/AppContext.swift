@@ -97,6 +97,9 @@ final class AppContext: Sendable, ObservableObject {
         AppLogger.log(message: "MailSession init | \(AppVersionProvider().fullVersion) | \(apiConfig.envId.domain)", category: .rustLibrary)
 
         accountAuthCoordinator = AccountAuthCoordinator(productName: appDetails.product, appContext: _mailSession)
+        accountAuthCoordinator.logFileUrlProvider = { [mailSession] in
+            try LogFileProvider.file(mailSession: mailSession)
+        }
         setupAccountBindings()
 
         if let currentSession = accountAuthCoordinator.primaryAccountSignedInSession() {

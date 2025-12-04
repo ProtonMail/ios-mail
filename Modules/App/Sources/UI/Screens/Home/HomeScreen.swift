@@ -216,9 +216,7 @@ struct HomeScreen: View {
 
     private func presentShareFileController() {
         do {
-            let logFolder = FileManager.default.sharedCacheDirectory
-            let sourceLogFile = logFolder.appending(path: "proton-mail-ios.log")
-            _ = try appContext.mailSession.exportLogs(filePath: sourceLogFile.path).get()
+            let sourceLogFile = try LogFileProvider.file(mailSession: appContext.mailSession)
             var filesToShare: [URL] = [sourceLogFile]
 
             if let transactionLog = TransactionsObserver.shared.generateTransactionLog() {
