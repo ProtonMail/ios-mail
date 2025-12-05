@@ -19,8 +19,8 @@ import SwiftUI
 
 enum AppIcon: CaseIterable, Hashable {
     case `default`
-    case notes
     case weather
+    case notes
     case calculator
 
     static var alternateIcons: [AppIcon] {

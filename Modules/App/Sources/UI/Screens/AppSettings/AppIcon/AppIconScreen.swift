@@ -36,7 +36,7 @@ struct AppIconScreen: View {
         ScrollView {
             VStack(spacing: DS.Spacing.extraLarge) {
                 FormSection {
-                    VStack(spacing: DS.Spacing.standard) {
+                    VStack(alignment: .leading, spacing: .zero) {
                         Image(store.state.appIcon.preview)
                             .resizable()
                             .square(size: 60)
@@ -44,13 +44,15 @@ struct AppIconScreen: View {
                         Text(L10n.Settings.AppIcon.title)
                             .font(.title3.bold())
                             .foregroundStyle(DS.Color.Text.norm)
+                            .padding(.top, DS.Spacing.moderatelyLarge)
                         Text(L10n.Settings.AppIcon.description)
-                            .font(.footnote)
+                            .font(.subheadline)
+                            .foregroundStyle(DS.Color.Text.weak)
                             .tint(DS.Color.Text.accent)
-                            .multilineTextAlignment(.center)
-                            .padding(.horizontal, DS.Spacing.large)
+                            .multilineTextAlignment(.leading)
+                            .padding(.top, DS.Spacing.compact)
                     }
-                    .padding(.vertical, DS.Spacing.extraLarge)
+                    .padding(.bottom, DS.Spacing.extraLarge)
                     .padding(.horizontal, DS.Spacing.large)
 
                     DS.Color.Border.norm
@@ -67,7 +69,7 @@ struct AppIconScreen: View {
 
                 if store.state.isDiscreetAppIconOn {
                     FormSection {
-                        LazyVGrid(columns: Array(repeating: .init(), count: 4), spacing: DS.Spacing.huge) {
+                        HStack(alignment: .center, spacing: DS.Spacing.jumbo) {
                             ForEach(AppIcon.alternateIcons, id: \.self) { icon in
                                 Button(action: { store.handle(action: .iconTapped(icon: icon)) }) {
                                     let viewModel = store.state.viewModel(for: icon)
@@ -86,11 +88,11 @@ struct AppIconScreen: View {
                                 }
                             }
                         }
+                        .frame(maxWidth: .infinity)
+                        .padding(.all, DS.Spacing.extraLarge)
+                        .background(DS.Color.BackgroundInverted.secondary)
+                        .roundedRectangleStyle()
                     }
-                    .padding(.horizontal, DS.Spacing.standard)
-                    .padding(.bottom, DS.Spacing.large)
-                    .background(DS.Color.BackgroundInverted.secondary)
-                    .roundedRectangleStyle()
                     .transition(.opacity)
                 }
             }
