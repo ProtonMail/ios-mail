@@ -42,15 +42,7 @@ struct MessageDetailsView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: isHeaderCollapsed ? DS.Spacing.standard : 0) {
-            headerView
-                .background {
-                    // Tap gesture on the background layer fixes a tap-through bug in iOS 17
-                    DS.Color.Background.norm
-                        .onTapGesture { Task { await onEvent(.onTap) } }
-                }
-                .contentShape(Rectangle())
-                .zIndex(1)
-
+            headerViewWithTapGesture
             detailedContent
         }
         .background(DS.Color.Background.norm)
@@ -59,6 +51,26 @@ struct MessageDetailsView: View {
     }
 
     // MARK: - Private
+
+    @ViewBuilder
+    private var headerViewWithTapGesture: some View {
+        if #available(iOS 18, *) {
+            headerView
+                .background(DS.Color.Background.norm)
+                .contentShape(Rectangle())
+                .onTapGesture { Task { await onEvent(.onTap) } }
+                .zIndex(1)
+        } else {
+            // iOS 17: Tap gesture on the background layer fixes a tap-through bug
+            headerView
+                .background {
+                    DS.Color.Background.norm
+                        .onTapGesture { Task { await onEvent(.onTap) } }
+                }
+                .contentShape(Rectangle())
+                .zIndex(1)
+        }
+    }
 
     private var headerView: some View {
         HStack(alignment: .top, spacing: DS.Spacing.large) {
