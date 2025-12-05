@@ -59,7 +59,7 @@ final class UniversalSchemeHandlerTests {
         self.sut.webView(WKWebView(), start: urlSchemeTaskSpy!)
 
         try await expectToEventually(self.proxyImageFailCallCount == 1)
-        #expect(urlSchemeTaskSpy.didInvokeFailWithError.count == 0)
+        #expect(urlSchemeTaskSpy.didInvokeFailWithError.count == 1)
     }
 
     @Test

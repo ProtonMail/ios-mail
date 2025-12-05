@@ -94,11 +94,10 @@ public final class UniversalSchemeHandler: NSObject, WKURLSchemeHandler {
                 handleAttachment(attachmentData, url: url, urlSchemeTask: urlSchemeTask)
             case .error(let attachmentDataError):
                 AppLogger.log(error: attachmentDataError, category: .webView)
-                switch attachmentDataError {
-                case .proxyFailed:
+                urlSchemeTask.markAsFailedCatchingExceptions(attachmentDataError)
+
+                if attachmentDataError == .proxyFailed {
                     onProxyImageLoadFail?()
-                case .other:
-                    urlSchemeTask.markAsFailedCatchingExceptions(attachmentDataError)
                 }
             }
 
