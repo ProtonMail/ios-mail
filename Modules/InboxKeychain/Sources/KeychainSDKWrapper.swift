@@ -19,11 +19,9 @@ import Foundation
 import InboxCore
 import proton_app_uniffi
 
-/**
- This is a wrapper to make the Keychain accessible from the SDK. Notice that even though the protocol does not
- mention the expected type of error to be thrown due to the Swift language limitations, we should
- use `OsKeyChainError`.
- */
+/// This is a wrapper to make the Keychain accessible from the SDK. Notice that even though the protocol does not
+/// mention the expected type of error to be thrown due to the Swift language limitations, we should
+/// use `OsKeyChainError`.
 public final class KeychainSDKWrapper: OsKeyChain, @unchecked Sendable {
     private let keychain: Keychain
 

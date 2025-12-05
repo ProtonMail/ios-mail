@@ -28,9 +28,7 @@ import proton_app_uniffi
 
 import class UIKit.UIImage
 
-/**
- Source of truth for the Mailbox view showing mailbox items (conversations or messages).
- */
+/// Source of truth for the Mailbox view showing mailbox items (conversations or messages).
 @MainActor
 final class MailboxModel: ObservableObject {
     @Published var state: State = .init()

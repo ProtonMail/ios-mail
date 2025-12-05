@@ -19,13 +19,11 @@ import Foundation
 import InboxCore
 import proton_app_uniffi
 
-/**
- This protocol is created on the client side to use it insead of the SDK's `DraftProtocol`
-
- The reason is `DraftProtocol` created by uniffi does not use the `ComponentRecipientListProtocol` in
- its function definitions. Given that we can't instantiate `ComponentRecipientList` objects, we are forced
- to work with our own draft protocol
- */
+/// This protocol is created on the client side to use it insead of the SDK's `DraftProtocol`
+///
+/// The reason is `DraftProtocol` created by uniffi does not use the `ComponentRecipientListProtocol` in
+/// its function definitions. Given that we can't instantiate `ComponentRecipientList` objects, we are forced
+/// to work with our own draft protocol
 public protocol AppDraftProtocol: ImageProxy {
     /// These are the function we overwrite from the `DraftProtocol`. For every function
     /// returning `ComposerRecipientList`, we return `ComposerRecipientListProtocol`.
@@ -66,9 +64,7 @@ extension AppDraftProtocol {
     }
 }
 
-/**
- This conformance allows us to use `Draft` as an `AppDraftProtocol`
- */
+/// This conformance allows us to use `Draft` as an `AppDraftProtocol`
 extension Draft: AppDraftProtocol {
     public func attachmentList() -> AttachmentListProtocol {
         let list: AttachmentList = self.attachmentList()

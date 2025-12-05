@@ -22,11 +22,9 @@ import ProtonUIFoundations
 
 import enum proton_app_uniffi.DraftSendFailure
 
-/**
- This class handles all toast notifications related to sending a message, from the moment
- the user presses send. More specifically it manages the toast presentation and dismissal for each
- message being sent.
-*/
+/// This class handles all toast notifications related to sending a message, from the moment
+/// the user presses send. More specifically it manages the toast presentation and dismissal for each
+/// message being sent.
 final class SendResultPresenter {
     private typealias MessageID = ID
     private let regularDuration: Toast.Duration = .short

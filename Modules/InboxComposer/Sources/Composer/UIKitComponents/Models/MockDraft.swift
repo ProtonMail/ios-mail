@@ -190,16 +190,14 @@ extension AppDraftProtocol where Self == MockDraft {
     static var emptyMock: MockDraft { .emptyMockDraft }
 }
 
-/**
- `MockComposerRecipientList` implments the logic it is expected from the SDK's `ComposerRecipientList` object. The
- UI state of the recpient lists is partially hold in the SDK. This is because recipients do not have an identifier and some operations
- need to happen based on the index of the elements.
-
- The reason have some logic in this mock object are:
- 1. Avoid executing any HTTP request involved
- 2. The `ComposerModel` logic relies on the updated `ComposerRecipientList` state during certain operations
- to update the ComposerState
- */
+/// `MockComposerRecipientList` implments the logic it is expected from the SDK's `ComposerRecipientList` object. The
+/// UI state of the recpient lists is partially hold in the SDK. This is because recipients do not have an identifier and some operations
+/// need to happen based on the index of the elements.
+///
+/// The reason have some logic in this mock object are:
+/// 1. Avoid executing any HTTP request involved
+/// 2. The `ComposerModel` logic relies on the updated `ComposerRecipientList` state during certain operations
+/// to update the ComposerState
 final class MockComposerRecipientList: ComposerRecipientListProtocol, @unchecked Sendable {
     var addedRecipients: [ComposerRecipient] = []
     private(set) var callback: ComposerRecipientValidationCallback?

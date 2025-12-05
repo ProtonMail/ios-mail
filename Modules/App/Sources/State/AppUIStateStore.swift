@@ -17,9 +17,7 @@
 
 import Foundation
 
-/**
- Keeps the state for UI components
- */
+/// Keeps the state for UI components
 final class AppUIStateStore: ObservableObject {
     struct SidebarState {
         var zIndex: Double

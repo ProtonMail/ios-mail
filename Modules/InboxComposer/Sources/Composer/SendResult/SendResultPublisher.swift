@@ -20,10 +20,8 @@ import Foundation
 import InboxCore
 import proton_app_uniffi
 
-/**
- `SendResultPublisher` observes any send result published from the SDK and republishes
- the result mapped to `SendResultInfo`.
-*/
+/// `SendResultPublisher` observes any send result published from the SDK and republishes
+/// the result mapped to `SendResultInfo`.
 @MainActor
 public final class SendResultPublisher: Sendable, ObservableObject {
     private let subject = PassthroughSubject<SendResultInfo, Never>()
