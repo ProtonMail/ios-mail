@@ -466,9 +466,3 @@ extension HtmlBodyDocument {
         """
     }
 }
-
-private extension Color {
-    func hexString(in environment: EnvironmentValues) -> String {
-        Color(resolve(in: environment).cgColor).toHex()!
-    }
-}

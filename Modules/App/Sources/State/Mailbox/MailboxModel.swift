@@ -806,6 +806,6 @@ extension MailboxModel {
 
 extension MailboxItemCellUIModel {
     func toSelectedItem() -> MailboxSelectedItem {
-        .init(id: id, isRead: isRead, isStarred: isStarred)
+        .init(id: id)
     }
 }

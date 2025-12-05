@@ -17,7 +17,6 @@
 
 import AccountManager
 import Combine
-import InboxCore
 import InboxCoreUI
 import InboxDesignSystem
 import InboxIAP
