@@ -53,7 +53,6 @@ struct SettingsState: Copying {
 }
 
 extension SettingsState {
-
     static var initial: Self {
         .init(
             accountInfo: nil,
@@ -63,13 +62,10 @@ extension SettingsState {
             hasMailboxPassword: false
         )
     }
-
 }
 
 private extension Array where Element == AccountSettings {
-
     static var stale: [Element] {
         [.changePassword, .securityKeys]
     }
-
 }

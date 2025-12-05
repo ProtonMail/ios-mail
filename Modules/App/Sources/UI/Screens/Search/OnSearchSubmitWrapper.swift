@@ -63,7 +63,6 @@ struct OnSearchSubmitWrapper: ViewModifier {
 }
 
 extension View {
-
     func onSubmitWrapper(query: Binding<String>, onQuerySubmmitted: @escaping (String) -> Void) -> some View {
         modifier(OnSearchSubmitWrapper(query: query, onQuerySubmmitted: onQuerySubmmitted))
     }

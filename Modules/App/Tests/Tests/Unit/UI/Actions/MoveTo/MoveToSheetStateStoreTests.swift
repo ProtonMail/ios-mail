@@ -25,7 +25,6 @@ import proton_app_uniffi
 
 @MainActor
 final class MoveToSheetStateStoreTests {
-
     var invokedAvailableActionsWithMessagesIDs: [ID]!
     var invokedAvailableActionsWithConversationIDs: [ID]!
     var invokedNavigation: [MoveToSheetNavigation]!
@@ -173,5 +172,4 @@ final class MoveToSheetStateStoreTests {
             mailUserSession: .dummy
         )
     }
-
 }

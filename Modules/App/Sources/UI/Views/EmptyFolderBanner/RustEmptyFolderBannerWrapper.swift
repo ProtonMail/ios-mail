@@ -26,7 +26,6 @@ struct RustEmptyFolderBannerWrapper {
 }
 
 extension RustEmptyFolderBannerWrapper {
-
     static func productionInstance() -> Self {
         .init(deleteAllMessages: { mailUserSession, labelID in
             await deleteAllMessagesInLabel(session: mailUserSession, labelId: labelID)
@@ -36,5 +35,4 @@ extension RustEmptyFolderBannerWrapper {
     static func previewInstance() -> Self {
         .init(deleteAllMessages: { _, _ in .ok })
     }
-
 }

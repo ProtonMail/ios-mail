@@ -23,7 +23,6 @@ import SwiftUI
 @testable import ProtonMail
 
 class SendingTagSnapshotTests: BaseTestCase {
-
     func testSendingTagVariants() {
         let view = ForEach(SendingTag.Variant.allCases, id: \.self) { variant in
             SendingTag(variant: variant)
@@ -31,5 +30,4 @@ class SendingTagSnapshotTests: BaseTestCase {
 
         assertSnapshotsOnIPhoneX(of: view, drawHierarchyInKeyWindow: true)
     }
-
 }

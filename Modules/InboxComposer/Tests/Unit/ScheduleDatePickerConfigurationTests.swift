@@ -21,7 +21,6 @@ import Testing
 @testable import InboxComposer
 
 struct ScheduleDatePickerConfigurationTests {
-
     // MARK: range.lowerBound
 
     @Test

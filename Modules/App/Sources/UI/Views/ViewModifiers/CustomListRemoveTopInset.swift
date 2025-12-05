@@ -19,7 +19,6 @@ import InboxCoreUI
 import SwiftUI
 
 struct CustomListRemoveTopInset: ViewModifier {
-
     func body(content: Content) -> some View {
         content
             .introspect(.list, on: SupportedIntrospectionPlatforms.list) { collectionView in
@@ -30,7 +29,6 @@ struct CustomListRemoveTopInset: ViewModifier {
 }
 
 extension View {
-
     func customListRemoveTopInset() -> some View {
         modifier(CustomListRemoveTopInset())
     }

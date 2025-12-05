@@ -70,11 +70,9 @@ final class MessageMappingTests: XCTestCase {
         let result = message.toMailboxItemCellUIModel(showLocation: false)
         XCTAssertNil(result.locationIcon)
     }
-
 }
 
 private extension Message {
-
     func toMailboxItemCellUIModel(showLocation: Bool) -> MailboxItemCellUIModel {
         toMailboxItemCellUIModel(selectedIds: [], displaySenderEmail: Bool.random(), showLocation: showLocation)
     }
@@ -82,7 +80,6 @@ private extension Message {
     func toMailboxItemCellUIModel(displaySenderEmail: Bool) -> MailboxItemCellUIModel {
         toMailboxItemCellUIModel(selectedIds: [], displaySenderEmail: displaySenderEmail, showLocation: Bool.random())
     }
-
 }
 
 extension String {

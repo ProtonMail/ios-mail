@@ -18,7 +18,6 @@
 import proton_app_uniffi
 
 extension ViewMode: CustomStringConvertible {
-
     public var description: String {
         switch self {
         case .conversations:

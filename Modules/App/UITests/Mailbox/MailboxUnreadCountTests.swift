@@ -18,7 +18,6 @@
 import Foundation
 
 final class MailboxUnreadCountTests: PMUIMockedNetworkTestCase {
-
     override var loginType: UITestLoginType {
         UITestLoginType.Mocked.Free.ChirpyFlamingo
     }

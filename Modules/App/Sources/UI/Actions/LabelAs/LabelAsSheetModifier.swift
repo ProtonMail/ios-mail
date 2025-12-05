@@ -55,7 +55,6 @@ private struct LabelAsSheetModifier: ViewModifier {
         }
         return LabelAsSheet(model: model)
     }
-
 }
 
 extension View {

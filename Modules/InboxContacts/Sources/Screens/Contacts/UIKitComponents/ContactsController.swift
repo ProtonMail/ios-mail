@@ -22,7 +22,6 @@ import proton_app_uniffi
 typealias ContactItemAction = (ContactItemType) -> Void
 
 final class ContactsController: UITableViewController {
-
     var groupedContacts: [GroupedContacts] {
         didSet {
             if oldValue != groupedContacts {
@@ -134,5 +133,4 @@ final class ContactsController: UITableViewController {
     private func setUpEmptyState(with contacts: [GroupedContacts]) {
         tableView.backgroundView = contacts.isEmpty ? NoContactsPlaceholderView() : nil
     }
-
 }

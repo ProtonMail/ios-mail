@@ -24,7 +24,6 @@ import Testing
 
 @MainActor
 final class MoveToSheetSnapshotTests {
-
     @Test
     func actionSheetLayoutsCorrectly() async {
         let sut = MoveToSheet(
@@ -38,5 +37,4 @@ final class MoveToSheetSnapshotTests {
         ).environmentObject(ToastStateStore(initialState: .initial))
         assertSnapshotsOnIPhoneX(of: sut, named: "move_to_sheet")
     }
-
 }

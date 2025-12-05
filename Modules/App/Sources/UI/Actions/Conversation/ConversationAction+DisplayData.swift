@@ -18,7 +18,6 @@
 import proton_app_uniffi
 
 extension ConversationAction: DisplayableAction {
-
     var displayData: ActionDisplayData {
         switch self {
         case .labelAs:

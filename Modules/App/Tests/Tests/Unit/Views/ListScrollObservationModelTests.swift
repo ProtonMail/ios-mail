@@ -20,7 +20,6 @@ import XCTest
 @testable import ProtonMail
 
 final class ListScrollObservationModelTests: XCTestCase {
-
     private var onEventAtTopChangeCount: Int!
     private var onEventAtTopChangeValue: Bool!
 

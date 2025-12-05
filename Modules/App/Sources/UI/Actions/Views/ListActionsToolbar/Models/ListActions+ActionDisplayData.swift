@@ -20,7 +20,6 @@ import SwiftUI
 import proton_app_uniffi
 
 extension ListActions {
-
     var displayData: ActionDisplayData {
         switch self {
         case .labelAs:
@@ -56,7 +55,6 @@ extension ListActions {
             .init(title: L10n.Action.snooze, imageResource: DS.Icon.icClock)
         }
     }
-
 }
 
 extension LocalizedStringResource {

@@ -29,7 +29,6 @@ struct AppSettingsState: Copying, Equatable {
 }
 
 extension AppSettingsState {
-
     static func initial(appIconName: String?) -> Self {
         .init(
             areNotificationsEnabled: false,
@@ -50,5 +49,4 @@ extension AppSettingsState {
     var areNotificationsEnabledHumanReadable: LocalizedStringResource {
         areNotificationsEnabled ? CommonL10n.on : CommonL10n.off
     }
-
 }

@@ -18,7 +18,6 @@
 import UIKit
 
 final class PassThroughWindow: UIWindow {
-
     override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
         guard let hitView = super.hitTest(point, with: event), let rootView = rootViewController?.view else {
             return nil
@@ -36,5 +35,4 @@ final class PassThroughWindow: UIWindow {
             return hitView == rootView ? nil : hitView
         }
     }
-
 }

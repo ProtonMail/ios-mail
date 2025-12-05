@@ -174,29 +174,6 @@ private extension UpsellType {
     }
 }
 
-#Preview {
-    let appUIStateStore = AppUIStateStore()
-    let toastStateStore = ToastStateStore(initialState: .initial)
-    let userDefaults = UserDefaults(suiteName: "preview").unsafelyUnwrapped
-
-    MailboxScreen(
-        mailSettingsLiveQuery: MailSettingsLiveQueryPreviewDummy(),
-        appRoute: .initialState,
-        notificationAuthorizationStore: .init(userDefaults: userDefaults),
-        userSession: .dummy,
-        userDefaults: userDefaults,
-        draftPresenter: .dummy()
-    )
-    .mainToolbar(
-        title: "Inbox",
-        selectionMode: .init(),
-        onEvent: { _ in },
-        avatarView: { EmptyView() }
-    )
-    .environmentObject(appUIStateStore)
-    .environmentObject(toastStateStore)
-}
-
 private struct MainToolbarIdentifiers {
     static let titleText = "main.toolbar.titleText"
 

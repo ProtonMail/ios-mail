@@ -18,41 +18,34 @@
 import Combine
 import SwiftUI
 
-public struct LoadingBar: View {
+public struct LoadingBar<Content: View>: View {
     private let isLoading: Bool
     private let configuration: LoadingBarConfiguration
+    private let content: () -> Content
     @StateObject private var stateStore: LoadingBarStateStore
-    @State private var timer: Publishers.Autoconnect<Timer.TimerPublisher>
 
-    public init(isLoading: Bool) {
+    public init(isLoading: Bool, @ViewBuilder content: @escaping () -> Content) {
         let configuration = LoadingBarConfiguration()
         self.isLoading = isLoading
         self.configuration = configuration
+        self.content = content
         _stateStore = .init(wrappedValue: .init(configuration: configuration))
-        _timer = .init(
-            wrappedValue:
-                Timer
-                .publish(every: configuration.cycleDuration, on: .main, in: .common)
-                .autoconnect()
-        )
     }
 
     // MARK: - View
 
     public var body: some View {
-        Group {
+        ZStack(alignment: .top) {
+            content()
             if stateStore.isLoading {
-                CyclingProgressBar(configuration: configuration)
-                    .transition(.opacity)
-                    .onReceive(timer) { _ in
-                        stateStore.handle(action: .cycleCompleted)
-                    }
+                CyclingProgressBar(configuration: configuration) {
+                    stateStore.handle(action: .cycleCompleted)
+                }
             }
         }
-        .onChange(of: isLoading) { _, newValue in
+        .onChange(of: isLoading, initial: true) { _, newValue in
             let action: LoadingBarStateStore.Action = newValue ? .startLoading : .stopLoading
             stateStore.handle(action: action)
         }
-        .animation(.easeInOut, value: stateStore.isLoading)
     }
 }

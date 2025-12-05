@@ -21,7 +21,6 @@ import WebKit
 import proton_app_uniffi
 
 final class HtmlBodyWebViewInterface: NSObject, HtmlBodyWebViewInterfaceProtocol {
-
     enum Event {
         case onContentHeightChange(height: CGFloat)
         case onEditorFocus
@@ -66,8 +65,8 @@ final class HtmlBodyWebViewInterface: NSObject, HtmlBodyWebViewInterfaceProtocol
         webView.configuration.userContentController.addUserScript(userScript)
     }
 
-    func loadMessageBody(_ body: String, clearImageCacheFirst: Bool) async {
-        let html = htmlDocument.html(bodyContent: body)
+    func loadMessageBody(_ content: ComposerContent, clearImageCacheFirst: Bool) async {
+        let html = htmlDocument.html(content: content)
 
         if clearImageCacheFirst {
             let cachedImageTypes: Set<String> = [WKWebsiteDataTypeMemoryCache]
@@ -86,7 +85,7 @@ final class HtmlBodyWebViewInterface: NSObject, HtmlBodyWebViewInterfaceProtocol
         }
     }
 
-    func readMesasgeBody() async -> String? {
+    func readMessageBody() async -> String? {
         await withCheckedContinuation { continuation in
             webView.evaluateJavaScript(HtmlBodyDocument.JSFunction.getHtmlContent.callFunction) { result, error in
                 if let error { AppLogger.log(error: error, category: .composer) }

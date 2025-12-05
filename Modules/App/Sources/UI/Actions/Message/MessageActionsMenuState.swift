@@ -27,7 +27,6 @@ struct MessageActionsMenuState: Copying, Equatable {
 }
 
 extension MessageActionsMenuState {
-
     static func initial(messageID: ID, showEditToolbar: Bool) -> Self {
         .init(
             messageID: messageID,
@@ -41,5 +40,4 @@ extension MessageActionsMenuState {
             colorScheme: .light
         )
     }
-
 }

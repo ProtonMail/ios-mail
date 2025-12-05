@@ -20,7 +20,6 @@ import proton_app_uniffi
 @testable import InboxContacts
 
 extension ContactItem {
-
     static func testData(id: Id) -> Self {
         .init(
             id: id,
@@ -132,5 +131,4 @@ extension ContactItem {
             ]
         )
     }
-
 }

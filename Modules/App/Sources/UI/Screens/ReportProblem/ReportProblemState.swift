@@ -32,7 +32,6 @@ struct ReportProblemState: Copying {
 }
 
 extension ReportProblemState {
-
     static var initial: Self {
         .init(
             summary: .empty,
@@ -46,5 +45,4 @@ extension ReportProblemState {
             alert: nil
         )
     }
-
 }

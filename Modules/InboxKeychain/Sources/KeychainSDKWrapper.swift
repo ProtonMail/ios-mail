@@ -62,7 +62,6 @@ public final class KeychainSDKWrapper: OsKeyChain, @unchecked Sendable {
 // MARK: - Private
 
 extension KeychainSDKWrapper {
-
     private func osKeyChainError(error: Error, function: String = #function) -> OsKeyChainError {
         AppLogger.log(message: "KeychainSDKWrapper \(function): \(String(describing: error))", isError: true)
         return OsKeyChainError.Os(String(describing: error))

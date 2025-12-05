@@ -21,7 +21,6 @@ import InboxTesting
 @testable import InboxCoreUI
 
 class BiometricScreenSnapshotTests: BaseTestCase {
-
     func testBiometricScreenLayoutsCorrectly() {
         assertSnapshotsOnIPhoneX(of: BiometricLockScreen { _ in }, named: "without_button")
         assertSnapshotsOnIPhoneX(
@@ -29,5 +28,4 @@ class BiometricScreenSnapshotTests: BaseTestCase {
             named: "with_button"
         )
     }
-
 }

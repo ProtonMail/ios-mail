@@ -19,7 +19,6 @@ import Foundation
 import XCTest
 
 class UITestSidebarListCreateFolderEntryModel: UITestSidebarListItemEntryBaseModel {
-
     // MARK: UI Elements
 
     override var rootItem: XCUIElement {

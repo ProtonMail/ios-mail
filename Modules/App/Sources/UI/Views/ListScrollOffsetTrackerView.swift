@@ -20,7 +20,6 @@ import SwiftUI
 /// When added at the top of a List content, it tracks the position of this view to return events
 /// related to the scroll offset.
 struct ListScrollOffsetTrackerView: View {
-
     enum ScrollEvent {
         case onChangeOffset(value: CGFloat)
     }

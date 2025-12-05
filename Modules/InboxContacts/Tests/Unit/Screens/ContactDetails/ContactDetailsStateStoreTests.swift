@@ -324,7 +324,6 @@ private class ContactDetailsProviderSpy {
 }
 
 private extension Array where Element == ContactField {
-
     static var testItems: [ContactField] {
         [
             .emails([
@@ -340,7 +339,6 @@ private extension Array where Element == ContactField {
             .languages(["english", "german"]),
         ]
     }
-
 }
 
 private extension String {

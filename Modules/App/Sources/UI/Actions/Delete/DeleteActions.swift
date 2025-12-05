@@ -25,12 +25,10 @@ struct DeleteActions {
 }
 
 extension DeleteActions {
-
     static var productionInstance: Self {
         .init(
             message: deleteMessages,
             conversation: deleteConversations
         )
     }
-
 }

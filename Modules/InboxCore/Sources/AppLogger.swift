@@ -125,7 +125,6 @@ public final class AppLogger: @unchecked Sendable {
 }
 
 extension AppLogger {
-
     public enum Category {
         case appLifeCycle
         case appRoute

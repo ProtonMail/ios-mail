@@ -88,14 +88,12 @@ final class SendResultPresenter {
     func undoScheduleSendActionForTestingPurposes() -> (ID) async -> Void {
         self.undoScheduleSendAction
     }
-
 }
 
 // MARK: Private methods
 
 @MainActor
 extension SendResultPresenter {
-
     private func undoSendAction(for messageId: MessageID) async {
         do {
             removeAndDismissToastReference(for: messageId)

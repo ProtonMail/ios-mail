@@ -26,7 +26,6 @@ protocol UITestBottomSheetEntryModel {
 }
 
 extension UITestBottomSheetEntryModel {
-
     // MARK: UI Elements
 
     var rootElement: XCUIElement {

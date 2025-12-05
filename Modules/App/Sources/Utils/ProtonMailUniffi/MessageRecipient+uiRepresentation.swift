@@ -18,7 +18,6 @@
 import proton_app_uniffi
 
 extension MessageRecipient {
-
     var uiRepresentation: String {
         !name.isEmpty ? name : address
     }

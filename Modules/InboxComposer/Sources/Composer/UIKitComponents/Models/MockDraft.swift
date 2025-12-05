@@ -21,7 +21,6 @@ import proton_app_uniffi
 import typealias InboxCore.ID
 
 extension SingleRecipientEntry {
-
     func toComposerRecipientSingle() -> ComposerRecipientSingle {
         .init(displayName: name, address: email, validState: .valid)
     }
@@ -31,7 +30,7 @@ final class MockDraft: AppDraftProtocol, @unchecked Sendable {
     static let defaultMessageId: Id = 12345
     static private var defaultSender: String { "old_sender@example.com" }
     static private var defaultSubject: String { "Test Subject" }
-    static private var defaultBody: String { "Test Body" }
+    static private var defaultContent: ComposerContent { .init(head: "Test Head", body: "Test Body") }
     static private var defaultRecipients: [ComposerRecipient] {
         [ComposerRecipient.single(.init(displayName: "", address: "inbox1@pm.me", validState: .valid))]
     }
@@ -48,7 +47,7 @@ final class MockDraft: AppDraftProtocol, @unchecked Sendable {
         return [DraftAttachment(state: .uploaded, attachment: mockAttachment, stateModifiedTimestamp: 1742829536)]
     }
 
-    var mockBody: String
+    var mockContent: ComposerContent
     var mockSender: String
     var mockSubject: String
     var mockToRecipientList: MockComposerRecipientList
@@ -74,7 +73,7 @@ final class MockDraft: AppDraftProtocol, @unchecked Sendable {
     private(set) var scheduleSendWasCalledWithTime: UInt64 = 0
 
     init(
-        mockBody: String,
+        mockContent: ComposerContent,
         mockSender: String,
         mockSubject: String,
         mockToRecipientList: MockComposerRecipientList,
@@ -82,7 +81,7 @@ final class MockDraft: AppDraftProtocol, @unchecked Sendable {
         mockBccRecipientList: MockComposerRecipientList,
         mockAttachmentList: MockAttachmentList,
     ) {
-        self.mockBody = mockBody
+        self.mockContent = mockContent
         self.mockSender = mockSender
         self.mockSubject = mockSubject
         self.mockToRecipientList = mockToRecipientList
@@ -93,7 +92,7 @@ final class MockDraft: AppDraftProtocol, @unchecked Sendable {
 
     static var emptyMockDraft: MockDraft {
         .init(
-            mockBody: .empty,
+            mockContent: .empty,
             mockSender: .empty,
             mockSubject: .empty,
             mockToRecipientList: MockComposerRecipientList(),
@@ -107,7 +106,7 @@ final class MockDraft: AppDraftProtocol, @unchecked Sendable {
         let attachmentList = MockAttachmentList()
         attachmentList.mockAttachments = defaultAttachments
         return MockDraft(
-            mockBody: defaultBody,
+            mockContent: defaultContent,
             mockSender: defaultSender,
             mockSubject: defaultSubject,
             mockToRecipientList: .init(addedRecipients: defaultRecipients),
@@ -160,6 +159,10 @@ final class MockDraft: AppDraftProtocol, @unchecked Sendable {
         mockAttachmentList
     }
 
+    func composerContent(themeOpts: ThemeOpts, editorId: String) -> DraftComposerContentResult {
+        .ok(mockContent)
+    }
+
     func toRecipients() -> ComposerRecipientListProtocol {
         mockToRecipientList
     }
@@ -170,10 +173,6 @@ final class MockDraft: AppDraftProtocol, @unchecked Sendable {
 
     func bccRecipients() -> ComposerRecipientListProtocol {
         mockBccRecipientList
-    }
-
-    func body() -> String {
-        mockBody
     }
 
     func scheduleSendOptions() -> DraftScheduleSendOptionsResult {
@@ -197,7 +196,7 @@ final class MockDraft: AppDraftProtocol, @unchecked Sendable {
     }
 
     func setBody(body: String) -> VoidDraftSaveResult {
-        mockBody = body
+        mockContent.body = body
         return .ok
     }
 

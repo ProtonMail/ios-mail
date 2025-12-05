@@ -19,7 +19,6 @@ import Foundation
 import XCTest
 
 extension ConversationDetailRobot {
-
     // MARK: UI Elements
 
     private var backButton: XCUIElement {

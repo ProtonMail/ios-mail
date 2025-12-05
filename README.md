@@ -28,6 +28,64 @@ xcodebuild -resolvePackageDependencies -project ProtonMail.xcodeproj
 
 ## Debug helpers
 
+### LLDB/RustRover debugging setup
+
+The app uses a Rust framework built from $RUST_REPO_DIR. To debug Rust code with full breakpoint and variable inspection support:
+
+#### 1. Build Debug Framework
+
+```bash
+cd $RUST_REPO_DIR
+rust-build/build_ios_framework_uniffi.sh proton-mail-uniffi ./mail/mail-uniffi/uniffi.toml "./tmp/ios-framework-debug" ios-debug
+```
+
+> For build profile comparison (debug vs release), see [rust-build/README.md](https://gitlab.protontech.ch/proton/mobile/backend/proton-rust/-/blob/main/rust-build/README.md)
+
+#### 2. Choose Your Debugger
+
+**Option A: LLDB (Xcode Console)**
+
+1. Launch app from Xcode (Cmd+R)
+2. The build phase automatically configures LLDB source mapping
+3. Set breakpoints in LLDB console:
+   ```lldb
+   (lldb) breakpoint set --name your_rust_function_name
+   (lldb) breakpoint set --file src/lib.rs --line 42
+   (lldb) continue
+   ```
+4. When breakpoint hits:
+   ```lldb
+   (lldb) frame variable     # show local variables
+   (lldb) print var_name     # print specific variable
+   (lldb) step              # step into
+   (lldb) next              # step over
+   ```
+
+**Option B: RustRover/IDE (GUI Debugger)**
+
+For full IDE debugging with visual breakpoints and variable panels:
+
+1. Disable Xcode debugger:
+   - Product → Scheme → Edit Scheme (Cmd+<)
+   - Run → Info tab
+   - Uncheck "Debug executable"
+   - *(Only one debugger can attach at a time)*
+
+2. Launch iOS app from Xcode (Cmd+R)
+
+3. In RustRover:
+   - Run → Attach to Process (or Cmd+Shift+A)
+   - Search for "ProtonMail"
+   - Click "Attach"
+
+4. Set breakpoints by clicking the left margin in Rust source files
+
+5. Debug with full GUI:
+   - Variables panel
+   - Stack trace navigation
+   - Step into/over/out buttons
+   - Expression evaluation
+
 ### How to Access the Rust-Core SQLite Databases in the Simulator
 
 1. Locate the simulator files by navigating to `~/Library/Developer/CoreSimulator/Devices/<simulator device id>`.

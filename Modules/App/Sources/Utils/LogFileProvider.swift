@@ -15,13 +15,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-enum IOSVersion {
-    static var isIOS18: Bool {
-        if #available(iOS 18, *) {
-            if #unavailable(iOS 26) {
-                return true
-            }
-        }
-        return false
+import Foundation
+import proton_app_uniffi
+
+struct LogFileProvider {
+    static func file(mailSession: MailSession) throws -> URL {
+        let logFolder = FileManager.default.sharedCacheDirectory
+        let sourceLogFile = logFolder.appending(path: "proton-mail-ios.log")
+        _ = try mailSession.exportLogs(filePath: sourceLogFile.path).get()
+        return sourceLogFile
     }
 }

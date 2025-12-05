@@ -29,7 +29,6 @@ enum LokiPushError: Error {
 @available(iOS 15.0, *)
 @available(macOS 12.0, *)
 class LokiClient {
-
     init() {
         self.session = URLSession(configuration: .default, delegate: CustomSessionDelegate(), delegateQueue: nil)
     }
@@ -54,7 +53,6 @@ class LokiClient {
 
     // Helper function to load the PKCS#12 file with a passphrase
     private func loadIdentity() -> SecIdentity? {
-
         let testBundle = Bundle(for: type(of: self))
         let certFileURL = testBundle.url(forResource: MeasurementConfig.lokiCertificate, withExtension: "p12")
         let p12Data = try! Data(contentsOf: certFileURL!)

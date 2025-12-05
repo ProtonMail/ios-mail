@@ -83,7 +83,6 @@ final class SenderImageAPIDataSource: Sendable, SenderImageDataSource {
 }
 
 extension SenderImageAPIDataSource {
-
     struct Dependencies {
         let appContext: AppContext = .shared
         let cache: MemoryCache<String, UIImage> = Caches.senderImageCache

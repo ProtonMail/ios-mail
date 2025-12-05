@@ -57,9 +57,7 @@ struct PaginatedListView<
         case .fetchingInitialPage:
             MailboxSkeletonView()
         case .data(let type):
-            ZStack(alignment: .top) {
-                LoadingBar(isLoading: loadingBarPresenter.isVisible)
-                    .zIndex(1)
+            LoadingBar(isLoading: loadingBarPresenter.isVisible) {
                 dataStateView.overlay {
                     if type == .noItems {
                         emptyListView()

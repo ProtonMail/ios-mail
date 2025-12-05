@@ -100,7 +100,6 @@ enum AttachmentSource: Int, Identifiable {
 }
 
 private extension AttachmentSource {
-
     var image: ImageResource {
         switch self {
         case .photoGallery:

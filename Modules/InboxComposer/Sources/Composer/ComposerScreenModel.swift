@@ -61,7 +61,6 @@ final class ComposerScreenModel: ObservableObject {
 }
 
 private extension DraftSyncStatus {
-
     func toDraftOrigin() -> DraftOrigin {
         switch self {
         case .cached:

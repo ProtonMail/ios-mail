@@ -18,7 +18,6 @@
 import XCTest
 
 extension OnboardingRobot {
-
     private var actionButton: XCUIElement {
         rootElement.buttons[Identifiers.actionButton]
     }

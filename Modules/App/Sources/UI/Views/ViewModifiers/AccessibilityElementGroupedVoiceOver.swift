@@ -42,7 +42,6 @@ struct AccessibilityElementGroupedVoiceOver: ViewModifier {
 }
 
 extension View {
-
     func accessibilityElementGroupedVoiceOver(
         value: String,
         uiTestSupport: AccessibilityChildBehavior = .contain

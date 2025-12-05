@@ -20,7 +20,6 @@ import proton_app_uniffi
 @testable import InboxContacts
 
 extension ContactsScreen {
-
     static func testInstance(
         search: ContactsScreenState.Search = .initial,
         items: [GroupedContacts]
@@ -40,5 +39,4 @@ extension ContactsScreen {
             draftPresenter: ContactsDraftPresenterDummy()
         )
     }
-
 }

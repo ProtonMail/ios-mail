@@ -20,7 +20,6 @@ import proton_app_uniffi
 @testable import ProtonMail
 
 class BackgroundTaskExecutorSpy: BackgroundTaskExecutor {
-
     var backgroundExecutionFinishedWithSuccess = true
     var executionCompletedWithResult: BackgroundExecutionResult?
     var backgroundExecutionHandleStub = BackgroundExecutionHandleStub()
@@ -39,5 +38,4 @@ class BackgroundTaskExecutorSpy: BackgroundTaskExecutor {
 
         return .ok(backgroundExecutionHandleStub)
     }
-
 }

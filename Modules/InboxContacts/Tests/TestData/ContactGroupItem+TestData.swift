@@ -20,7 +20,6 @@ import proton_app_uniffi
 @testable import InboxContacts
 
 extension ContactGroupItem {
-
     static var advisorsGroup: Self {
         .init(
             id: 3,
@@ -44,5 +43,4 @@ extension ContactGroupItem {
             ]
         )
     }
-
 }

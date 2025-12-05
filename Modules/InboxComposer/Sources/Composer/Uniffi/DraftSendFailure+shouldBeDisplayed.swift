@@ -18,7 +18,6 @@
 import proton_app_uniffi
 
 extension DraftSendFailure {
-
     public var shouldBeDisplayed: Bool {
         switch self {
         case .send(let reason):

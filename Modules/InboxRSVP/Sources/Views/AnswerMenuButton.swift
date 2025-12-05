@@ -73,9 +73,7 @@ struct AnswerMenuButton: View {
 }
 
 private extension Array {
-
     func removing(_ shouldBeExcluded: (Self.Element) throws -> Bool) rethrows -> [Self.Element] {
         try filter { item in try !shouldBeExcluded(item) }
     }
-
 }

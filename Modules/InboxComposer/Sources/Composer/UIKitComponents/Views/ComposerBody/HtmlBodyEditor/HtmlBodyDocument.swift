@@ -17,49 +17,24 @@
 
 import Foundation
 import InboxCoreUI
-import InboxDesignSystem
 import SwiftUI
+import proton_app_uniffi
 
 struct HtmlBodyDocument {
-    private typealias ColorBundle = (background: String, text: String, brand: String)
-
-    private static func colorBundle(for colorScheme: ColorScheme) -> ColorBundle {
-        var env = EnvironmentValues()
-        env.colorScheme = colorScheme
-        let backgroundColor = DS.Color.Background.norm.hexString(in: env)
-        let textColor = DS.Color.Text.norm.hexString(in: env)
-        let brandColor = DS.Color.Brand.norm.hexString(in: env)
-        return (background: backgroundColor, text: textColor, brand: brandColor)
-    }
-
     private let css: String = {
         let fileURL = Bundle.module.url(forResource: "BodyHtmlStyling", withExtension: "css")!
-        let content = try! String(contentsOf: fileURL)
-
-        let lightBundle = colorBundle(for: .light)
-        let darkBundle = colorBundle(for: .dark)
-
-        return
-            content
-            .replacingOccurrences(of: "\n", with: "")
-            .replacingOccurrences(of: "{{proton-background-color}}", with: lightBundle.background)
-            .replacingOccurrences(of: "{{proton-text-color}}", with: lightBundle.text)
-            .replacingOccurrences(of: "{{proton-brand-color}}", with: lightBundle.brand)
-            .replacingOccurrences(of: "{{proton-background-color-dark}}", with: darkBundle.background)
-            .replacingOccurrences(of: "{{proton-text-color-dark}}", with: darkBundle.text)
-            .replacingOccurrences(of: "{{proton-brand-color-dark}}", with: darkBundle.brand)
-
+        return try! String(contentsOf: fileURL)
     }()
 
-    func html(bodyContent: String) -> String {
+    func html(content: ComposerContent) -> String {
         htmlTemplate
-            .replacingOccurrences(of: HtmlPlaceholder.body, with: bodyContent)
+            .replacingOccurrences(of: HtmlPlaceholder.body, with: content.body)
             .replacingOccurrences(of: HtmlPlaceholder.css, with: css)
+            .replacingOccurrences(of: HtmlPlaceholder.sdkHeadContent, with: content.head)
     }
 }
 
 extension HtmlBodyDocument {
-
     enum EventAttributeKey {
         static let height = "height"
         static let cursorPosition = "cursorPosition"
@@ -92,24 +67,25 @@ extension HtmlBodyDocument {
     }
 }
 
+extension HtmlBodyDocument {
+    enum ID {
+        static let editor = "editor"
+    }
+}
+
 // MARK: Private
 
 private extension HtmlBodyDocument {
-
     enum HtmlPlaceholder {
         static let body = "<!--INSERT_BODY-->"
         static let css = "<!--CSS-->"
-    }
-
-    enum ID {
-        static let editor = "editor"
+        static let sdkHeadContent = "<!--SDK_HEAD_CONTENT-->"
     }
 }
 
 // MARK: HTML
 
 private extension HtmlBodyDocument {
-
     var htmlTemplate: String {
         """
         <!DOCTYPE html>
@@ -118,6 +94,7 @@ private extension HtmlBodyDocument {
                 <title>Proton HTML Editor</title>
                 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes">
                 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+                \(HtmlPlaceholder.sdkHeadContent)
                 <style>
                     \(HtmlPlaceholder.css)
                     /* In the editor, disable drag and drop and contextual menus for images */
@@ -149,7 +126,6 @@ private extension HtmlBodyDocument {
 // MARK: Scripts
 
 extension HtmlBodyDocument {
-
     var script: String {
         """
         "use strict";

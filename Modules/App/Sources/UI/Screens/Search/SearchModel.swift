@@ -305,7 +305,6 @@ final class SearchModel: ObservableObject {
 // MARK: View actions
 
 extension SearchModel {
-
     private func applySelectionStateChangeInstead(mailboxItem: MailboxItemCellUIModel) {
         let isCurrentlySelected = selectionMode.selectionState.selectedItems.contains(mailboxItem.toSelectedItem())
         onMailboxItemSelectionChange(item: mailboxItem, isSelected: !isCurrentlySelected)
@@ -353,7 +352,6 @@ extension SearchModel {
             return
         }
         state.attachmentPresented = AttachmentViewConfig(id: attachmentId, mailbox: mailbox)
-
     }
 }
 
@@ -371,7 +369,6 @@ extension SearchModel {
 }
 
 extension SearchModel {
-
     struct State {
         var attachmentPresented: AttachmentViewConfig?
         var navigationPath: NavigationPath = .init()
@@ -383,7 +380,6 @@ extension SearchModel {
 }
 
 extension SearchModel {
-
     struct Dependencies: Sendable {
         let appContext: AppContext = .shared
     }

@@ -28,9 +28,7 @@ public protocol CNContactStoring {
 }
 
 extension CNContactStore: CNContactStoring {
-
     public func authorizationStatus(for entityType: CNEntityType) -> CNAuthorizationStatus {
         Self.authorizationStatus(for: entityType)
     }
-
 }

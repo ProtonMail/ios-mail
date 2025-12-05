@@ -21,7 +21,6 @@ import proton_app_uniffi
 import struct DeveloperToolsSupport.ImageResource
 
 public extension MimeTypeCategory {
-
     var icon: ImageResource {
         switch self {
         case .audio:
@@ -99,5 +98,4 @@ public extension MimeTypeCategory {
             DS.Icon.icFileTypeWord
         }
     }
-
 }

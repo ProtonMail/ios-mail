@@ -19,7 +19,6 @@ import InboxDesignSystem
 import UIKit
 
 final class RecipientsFieldController: UIViewController {
-
     enum Event {
         case onFieldTap
         case onInputChange(text: String)
@@ -152,7 +151,6 @@ final class RecipientsFieldController: UIViewController {
 
 extension RecipientsFieldController {
     private enum SubviewFactory {
-
         static var title: UILabel {
             ComposerSubviewFactory.fieldTitle
         }

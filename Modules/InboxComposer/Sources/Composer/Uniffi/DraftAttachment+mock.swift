@@ -18,7 +18,6 @@
 import proton_app_uniffi
 
 extension DraftAttachment {
-
     static func makeMock(
         id: UInt64 = .random(in: 0..<UInt64.max),
         state: DraftAttachmentState,

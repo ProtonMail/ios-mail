@@ -20,7 +20,6 @@ import SwiftUI
 import UIKit
 
 final class ContactLabelsView: UIView {
-
     let titleLabel: UILabel = ViewsFactory.label(
         font: .font(textStyle: .body, weight: .regular), textColor: DS.Color.Text.weak
     )
@@ -62,5 +61,4 @@ final class ContactLabelsView: UIView {
             stackView.trailingAnchor.constraint(equalTo: trailingAnchor),
         ])
     }
-
 }

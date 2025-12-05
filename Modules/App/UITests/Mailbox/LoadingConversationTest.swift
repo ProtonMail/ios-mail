@@ -20,7 +20,6 @@ import NIO
 import XCTest
 
 final class LoadingConversationTest: XCTestCase {
-
     private let app = XCUIApplication().setAppLaunchArguments()
 
     private lazy var measurementContext = MeasurementContext(MeasurementConfig.self)

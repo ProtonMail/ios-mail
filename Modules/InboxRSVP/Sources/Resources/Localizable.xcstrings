@@ -4155,7 +4155,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vi kunne ikke indlæse\noplysningerne. Prøv venligst igen."
+            "value" : "Vi kunne ikke indlæse\noplysningerne. Prøv igen."
           }
         },
         "de" : {
@@ -5432,7 +5432,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Din adresse kan ikke bruges til at svare. Opdatér venligst dine kontooplysninger."
+            "value" : "Din adresse kan ikke bruges til at svare. Opdatér dine kontooplysninger."
           }
         },
         "de" : {

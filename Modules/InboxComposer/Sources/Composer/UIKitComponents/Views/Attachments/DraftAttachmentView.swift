@@ -20,7 +20,6 @@ import InboxDesignSystem
 import UIKit
 
 final class DraftAttachmentView: TapHighlightView {
-
     enum Event {
         case onViewTap
         case onButtonTap
@@ -116,9 +115,7 @@ final class DraftAttachmentView: TapHighlightView {
 }
 
 extension DraftAttachmentView {
-
     private enum SubviewFactory {
-
         static var stack: UIStackView {
             let view = UIStackView()
             view.translatesAutoresizingMaskIntoConstraints = false

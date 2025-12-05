@@ -22,7 +22,6 @@ import Testing
 @testable import ProtonMail
 
 class ProtonMailAppTests {
-
     var startInvokeCount = 0
     var stubbedOptions = Options()
     lazy var start: ((Options) -> Void) -> Void = { [unowned self] optionsConfiguration in
@@ -49,7 +48,6 @@ class ProtonMailAppTests {
         #expect(startInvokeCount == 0)
         #expect(stubbedOptions.dsn == nil)
     }
-
 }
 
 private struct AnalyticsEnabledTrait: TestTrait, TestScoping {

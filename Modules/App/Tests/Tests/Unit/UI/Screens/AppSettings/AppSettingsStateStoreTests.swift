@@ -238,7 +238,6 @@ class AppSettingsStateStoreTests {
 extension AppSettings: @retroactive Copying {}
 
 private extension AppSettingsDiff {
-
     static func diff(
         appearance: AppAppearance? = nil,
         useCombineContacts: Bool? = nil,
@@ -251,5 +250,4 @@ private extension AppSettingsDiff {
             useAlternativeRouting: useAlternativeRouting
         )
     }
-
 }

@@ -31,12 +31,10 @@ public struct SentryAnalytics {
 }
 
 extension SentryAnalytics {
-
     public static var production: SentryAnalytics {
         .init(
             start: SentrySDK.start,
             stop: SentrySDK.close
         )
     }
-
 }

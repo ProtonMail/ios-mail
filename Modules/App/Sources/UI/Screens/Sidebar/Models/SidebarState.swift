@@ -28,7 +28,6 @@ struct SidebarState: Copying {
 }
 
 extension SidebarState {
-
     var items: [SidebarItem] {
         let upsellItems: [SidebarItem] = [upsell].compactMap(\.self)
         let systemItems = system.map(SidebarItem.system)
@@ -50,21 +49,16 @@ extension SidebarState {
             createFolder: .createFolder
         )
     }
-
 }
 
 private extension SidebarFolder {
-
     var folderWithChildren: [SidebarFolder] {
         [self] + childFolders.flatMap(\.folderWithChildren)
     }
-
 }
 
 private extension Array where Element == SidebarFolder {
-
     var allFolders: [SidebarFolder] {
         flatMap(\.folderWithChildren)
     }
-
 }

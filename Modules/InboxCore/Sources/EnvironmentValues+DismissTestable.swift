@@ -18,7 +18,6 @@
 import SwiftUI
 
 extension EnvironmentValues {
-
     public var dismissTestable: Dismissable {
         get { isTestingTarget ? self[DismissKey.self] : dismiss }
         set { self[DismissKey.self] = newValue }
@@ -29,7 +28,6 @@ extension EnvironmentValues {
     private var isTestingTarget: Bool {
         NSClassFromString("XCTest") != nil
     }
-
 }
 
 public protocol Dismissable {

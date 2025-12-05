@@ -19,7 +19,6 @@ import Foundation
 import XCTest
 
 final class LoginFlowFreeUserTest: PMUIUnmockedNetworkTestCase {
-
     override var loginType: UITestLoginType {
         UITestLoginType.Unmocked.Black.Free.Free
     }

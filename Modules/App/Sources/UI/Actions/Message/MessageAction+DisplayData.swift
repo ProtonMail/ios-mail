@@ -18,7 +18,6 @@
 import proton_app_uniffi
 
 extension MessageAction: DisplayableAction {
-
     var displayData: ActionDisplayData {
         switch self {
         case .markRead:
@@ -78,5 +77,4 @@ extension MessageAction: DisplayableAction {
             false
         }
     }
-
 }

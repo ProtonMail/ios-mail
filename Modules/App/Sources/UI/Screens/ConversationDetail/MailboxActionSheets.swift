@@ -90,13 +90,10 @@ private struct MailboxActionSheets: ViewModifier {
     private var snoozeBinding: Binding<ID?> {
         .init(get: { state.snooze }, set: { id in state = state.copy(\.snooze, to: id) })
     }
-
 }
 
 extension MailboxActionSheetsState {
-
     static var allSheetsDismissed: Self {
         .init()
     }
-
 }

@@ -302,11 +302,9 @@ struct SettingsScreen: View {
         }
         .buttonStyle(DefaultPressedButtonStyle())
     }
-
 }
 
 private extension SettingsPreference {
-
     var webPage: ProtonAuthenticatedWebPage? {
         switch self {
         case .email:
@@ -321,7 +319,6 @@ private extension SettingsPreference {
             return nil
         }
     }
-
 }
 
 #if DEBUG

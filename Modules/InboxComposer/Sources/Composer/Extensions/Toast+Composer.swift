@@ -20,7 +20,6 @@ import InboxCore
 import ProtonUIFoundations
 
 public extension Toast {
-
     static func draftSaved(messageId: ID, undoAction: @escaping (_ messageId: ID) async -> Void) -> Toast {
         let discardButton = Toast.Button(
             type: .smallTrailing(content: .title(L10n.Composer.discard.string)),

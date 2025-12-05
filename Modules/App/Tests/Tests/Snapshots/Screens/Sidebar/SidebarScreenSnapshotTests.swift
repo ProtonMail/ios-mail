@@ -25,7 +25,6 @@ import proton_app_uniffi
 
 @MainActor
 final class SidebarScreenSnapshotTests {
-
     private let bundleStub = BundleStub(infoDictionary: .infoDictionaryWithAppVersion)
 
     private let state = SidebarState(
@@ -75,16 +74,13 @@ final class SidebarScreenSnapshotTests {
 
         assertSnapshotsOnIPhoneX(of: sidebarScreen, styles: [style])
     }
-
 }
 
 private extension Dictionary where Key == String, Value == Any {
-
     static var infoDictionaryWithAppVersion: Self {
         [
             "CFBundleVersion": "20",
             "CFBundleShortVersionString": "0.1.0",
         ]
     }
-
 }

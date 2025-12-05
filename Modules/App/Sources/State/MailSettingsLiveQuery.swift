@@ -35,7 +35,6 @@ extension MailSettingLiveQuerying {
 }
 
 final class MailSettingsLiveQuery: MailSettingLiveQuerying {
-
     private let userSession: MailUserSession
     private var watchHandle: WatchHandle?
     private let settingsSubject: CurrentValueSubject<MailSettings, Never>
@@ -99,7 +98,6 @@ final class MailSettingsLiveQuery: MailSettingLiveQuerying {
 }
 
 extension MailSettings {
-
     /// These default values are only a backup value in case the function to read the user settings throws an error
     static func defaults() -> MailSettings {
         .init(

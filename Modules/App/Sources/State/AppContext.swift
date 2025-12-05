@@ -51,12 +51,15 @@ final class AppContext: Sendable, ObservableObject {
         errorSubject.eraseToAnyPublisher()
     }
 
+    var userDefaults: UserDefaults {
+        dependencies.userDefaults
+    }
+
     private var _mailSession: MailSession!
     private let dependencies: AppContext.Dependencies
     private let errorSubject = PassthroughSubject<Error, Never>()
     private var cancellables = Set<AnyCancellable>()
 
-    private(set) var userDefaults: UserDefaults!
     private var userDefaultsCleaner: UserDefaultsCleaner!
 
     @Published private(set) var sessionState = SessionState.noSession
@@ -75,7 +78,6 @@ final class AppContext: Sendable, ObservableObject {
         let apiConfig = ApiConfig.current
         let appDetails = AppDetails.mail
 
-        userDefaults = dependencies.userDefaults
         userDefaultsCleaner = .init(userDefaults: userDefaults)
 
         let params = MailSessionParamsFactory.make(origin: .app, apiConfig: apiConfig)
@@ -95,6 +97,9 @@ final class AppContext: Sendable, ObservableObject {
         AppLogger.log(message: "MailSession init | \(AppVersionProvider().fullVersion) | \(apiConfig.envId.domain)", category: .rustLibrary)
 
         accountAuthCoordinator = AccountAuthCoordinator(productName: appDetails.product, appContext: _mailSession)
+        accountAuthCoordinator.logFileUrlProvider = { [mailSession] in
+            try LogFileProvider.file(mailSession: mailSession)
+        }
         setupAccountBindings()
 
         if let currentSession = accountAuthCoordinator.primaryAccountSignedInSession() {
@@ -238,7 +243,6 @@ extension AppContext {
 }
 
 extension AppContext {
-
     struct Dependencies {
         let keychain: OsKeyChain = KeychainSDKWrapper()
         let userDefaults: UserDefaults = .appGroup
@@ -246,7 +250,6 @@ extension AppContext {
 }
 
 extension AppContext: ApplicationServiceSetUp {
-
     func setUpService() {
         do {
             try start()
@@ -257,7 +260,6 @@ extension AppContext: ApplicationServiceSetUp {
 }
 
 extension AppContext {
-
     func pollEventsAndWait() async {
         do {
             guard let userSession = sessionState.userSession else {

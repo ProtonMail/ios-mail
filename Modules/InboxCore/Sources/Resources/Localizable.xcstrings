@@ -106,6 +106,12 @@
             "value" : "+%lld meer"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "+%lld więcej"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -755,7 +761,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Forsæt"
+            "value" : "Fortsæt"
           }
         },
         "de" : {

@@ -258,7 +258,6 @@ final class SelectionModeTests {
 }
 
 extension SelectionModeTests {
-
     private func makeMailboxItemCellUIModel(id: UInt64, isRead: Bool, isStarred: Bool) -> MailboxItemCellUIModel {
         MailboxItemCellUIModel(
             id: .init(value: id),

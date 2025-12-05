@@ -16,7 +16,6 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import InboxCore
-import InboxDesignSystem
 import SwiftUI
 import WebKit
 import proton_app_uniffi
@@ -48,21 +47,10 @@ struct MessageBodyReaderView: UIViewRepresentable {
     }
 
     func makeUIView(context: Context) -> WKWebView {
-        let backgroundColor = UIColor(DS.Color.Background.norm)
-        let config = WKWebViewConfiguration.default(handler: schemeHandler, for: UniversalSchemeHandler.handlerSchemes)
-        config.defaultWebpagePreferences.allowsContentJavaScript = false
-
-        let webView = WKWebView(frame: .zero, configuration: config)
+        let config = WKWebViewConfiguration.default(handler: schemeHandler)
+        let webView = WKWebView.default(configuration: config)
         webView.navigationDelegate = context.coordinator
         webView.uiDelegate = context.coordinator
-        webView.scrollView.isScrollEnabled = false
-        webView.scrollView.bounces = false
-
-        webView.isOpaque = false
-        webView.backgroundColor = backgroundColor
-        webView.scrollView.backgroundColor = backgroundColor
-        webView.scrollView.contentInsetAdjustmentBehavior = .never
-
         webView.isInspectable = WKWebView.inspectabilityEnabled
 
         for handlerName in HandlerName.allCases {
@@ -111,35 +99,27 @@ struct MessageBodyReaderView: UIViewRepresentable {
 
         let style = """
             <style>
-                body {
-                    width: 100% !important;
-                }
-
-                p,pre {
-                    margin: 1em 0;
-                }
-
-                table {
-                    float: none;
-                    height: auto !important;
-                    min-height: auto !important;
-                    width: 100% !important;
-                }
-
-                @supports (height: fit-content) {
-                    html {
-                        height: fit-content !important;
-                    }
-                }
-
                 @media not print {
+                    html, body {
+                        /* Android is currently testing this, we should probably upstream it to Rust once they approve */
+                        height: auto !important;
+                    }
+
+                    table {
+                        /* This does not make sense on mobile */
+                        float: none;
+                    }
+
                     body {
+                        /* Dynamic type size */
                         --dts-scale-factor: \(scaleFactor * 100)%;
                     }
                 }
 
                 @media print {
-                    --dts-scale-factor: 100%;
+                    body {
+                        --dts-scale-factor: 100%;
+                    }
                 }
             </style>
             """
@@ -161,7 +141,6 @@ struct MessageBodyReaderView: UIViewRepresentable {
 }
 
 extension MessageBodyReaderView {
-
     class Coordinator: NSObject, WKNavigationDelegate, WKScriptMessageHandler, WKUIDelegate {
         let parent: MessageBodyReaderView
         var urlOpener: URLOpenerProtocol?

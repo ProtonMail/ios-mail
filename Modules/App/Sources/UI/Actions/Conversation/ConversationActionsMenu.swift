@@ -53,7 +53,6 @@ struct ConversationActionsMenu<OpenMenuButtonContent: View>: View {
                     }
                     verticalSection(actions: actions.moveActions)
                     verticalSection(actions: actions.conversationActions)
-
                 } else {
                     Text(String.empty.notLocalized)
                 }

@@ -18,7 +18,6 @@
 import Foundation
 
 public class DurationMeasurement: Measurement {
-
     private var startTime: TimeInterval = 0.0
     private var stopTime: TimeInterval = 0.0
     private var elapsedTime: TimeInterval {

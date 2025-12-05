@@ -87,7 +87,6 @@ final class EmptyFolderBannerStateStore: StateStore {
 }
 
 private extension EmptyFolderBanner {
-
     var state: EmptyFolderBannerStateStore.State {
         switch userState {
         case .autoDeleteUpsell:
@@ -103,13 +102,10 @@ private extension EmptyFolderBanner {
             .paidNoAlert(icon: DS.Icon.icTrash, title: L10n.EmptyFolderBanner.paidUserAutoDeleteOffTitle)
         }
     }
-
 }
 
 private extension EmptyFolderBannerStateStore.State {
-
     static func paidNoAlert(icon: ImageResource, title: LocalizedStringResource) -> Self {
         .init(icon: icon, title: title.string, buttons: [.emptyLocation], alert: .none)
     }
-
 }

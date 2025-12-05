@@ -18,7 +18,6 @@
 import Foundation
 
 final class SubscriptionPaidUserTests: PMUIUnmockedNetworkTestCase {
-
     override var loginType: UITestLoginType {
         UITestLoginType.Unmocked.Black.Paid.Plus
     }

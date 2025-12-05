@@ -44,7 +44,6 @@ struct MailboxItemCell: View {
 }
 
 extension MailboxItemCell {
-
     private var avatarView: some View {
         AvatarCheckboxView(
             isSelected: uiModel.isSelected,

@@ -21,7 +21,6 @@ import proton_app_uniffi
 @testable import InboxComposer
 
 final class AddGroupRecipientErrorTests {
-
     @Test
     func testLocalizedErrorMessage_itReturnsCorrectMessage() throws {
         var sut = AddGroupRecipientError.duplicate([])

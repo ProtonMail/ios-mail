@@ -22,7 +22,6 @@ struct LayoutData: Equatable {
 }
 
 extension View {
-
     func readLayoutData(coordinateSpace: CoordinateSpace, onChange: @escaping (LayoutData) -> Void) -> some View {
         self
             .background(

@@ -23,7 +23,6 @@ struct ScheduleSendOptionsProvider {
 }
 
 extension ScheduleSendOptionsProvider {
-
     static func dummy(
         isCustomAvailable: Bool,
         stubTomorrowTime: UInt64? = nil,

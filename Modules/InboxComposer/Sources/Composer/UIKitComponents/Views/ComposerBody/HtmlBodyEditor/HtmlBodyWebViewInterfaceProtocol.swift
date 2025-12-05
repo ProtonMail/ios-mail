@@ -16,15 +16,16 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import WebKit
+import proton_app_uniffi
 
 @MainActor
 protocol HtmlBodyWebViewInterfaceProtocol: AnyObject {
     var webView: WKWebView { get }
     var onEvent: ((HtmlBodyWebViewInterface.Event) -> Void)? { get set }
 
-    func loadMessageBody(_ body: String, clearImageCacheFirst: Bool) async
+    func loadMessageBody(_ content: ComposerContent, clearImageCacheFirst: Bool) async
     func setFocus() async
-    func readMesasgeBody() async -> String?
+    func readMessageBody() async -> String?
     func insertText(_ text: String) async
     func insertImages(_ contentIds: [String]) async
     func removeImage(containing cid: String) async

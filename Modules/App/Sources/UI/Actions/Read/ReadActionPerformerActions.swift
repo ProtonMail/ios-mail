@@ -28,7 +28,6 @@ struct ReadActionPerformerActions {
 }
 
 extension ReadActionPerformerActions {
-
     static var productionInstance: Self {
         .init(
             markMessageAsRead: markMessagesRead,
@@ -37,5 +36,4 @@ extension ReadActionPerformerActions {
             markConversationAsUnread: markConversationsAsUnread
         )
     }
-
 }

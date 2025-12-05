@@ -45,7 +45,6 @@ actor RequestsHandlerActor {
 }
 
 extension RequestsHandlerActor {
-
     fileprivate func findMatchingRequest(clientRequest: HTTPRequestHead) -> NetworkRequest? {
         return
             mockedRequests
@@ -69,7 +68,6 @@ extension RequestsHandlerActor {
 }
 
 extension HTTPRequestHead {
-
     fileprivate func withStrippedQueryParams() -> Self {
         return HTTPRequestHead(
             version: self.version,

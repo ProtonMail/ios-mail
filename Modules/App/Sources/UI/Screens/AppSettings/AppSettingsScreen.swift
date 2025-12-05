@@ -221,7 +221,6 @@ struct AppSettingsScreen: View {
 }
 
 private extension AppAppearance {
-
     var humanReadable: LocalizedStringResource {
         switch self {
         case .system:
@@ -236,11 +235,9 @@ private extension AppAppearance {
     static var allCases: [Self] {
         [.system, .darkMode, .lightMode]
     }
-
 }
 
 private extension AppProtection {
-
     var humanReadable: LocalizedStringResource {
         switch self {
         case .none:
@@ -258,5 +255,4 @@ private extension AppProtection {
             L10n.Settings.App.pinCode
         }
     }
-
 }

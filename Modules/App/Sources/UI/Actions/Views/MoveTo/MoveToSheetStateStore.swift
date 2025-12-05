@@ -112,7 +112,6 @@ class MoveToSheetStateStore: StateStore {
 }
 
 extension MoveAction {
-
     var moveToSystemFolder: MoveToSystemFolder? {
         guard case .systemFolder(let model) = self else {
             return nil
@@ -126,11 +125,9 @@ extension MoveAction {
         }
         return model.moveToCustomFolder
     }
-
 }
 
 private extension CustomFolderAction {
-
     var moveToCustomFolder: MoveToCustomFolder {
         .init(
             id: localId,
@@ -139,5 +136,4 @@ private extension CustomFolderAction {
             children: children.map(\.moveToCustomFolder)
         )
     }
-
 }

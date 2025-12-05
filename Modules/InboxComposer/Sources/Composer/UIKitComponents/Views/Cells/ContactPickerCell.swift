@@ -81,9 +81,7 @@ final class ContactPickerCell: UITableViewCell {
 }
 
 extension ContactPickerCell {
-
     enum SubviewFactory {
-
         static var avatarView: UIView {
             let view = UIView()
             view.translatesAutoresizingMaskIntoConstraints = false
@@ -154,7 +152,6 @@ private final class LabelsView: UIView {
 }
 
 private extension LabelsView {
-
     private enum SubviewFactory {
         static var titleLabel: UILabel {
             let view = UILabel()

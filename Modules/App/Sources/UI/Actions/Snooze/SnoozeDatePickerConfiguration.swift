@@ -21,7 +21,6 @@ import InboxCore
 import InboxCoreUI
 
 struct SnoozeDatePickerConfiguration: DatePickerViewConfiguration {
-
     // MARK: - DatePickerViewConfiguration
 
     let title: LocalizedStringResource = L10n.Snooze.customSnoozeSheetTitle
@@ -40,16 +39,13 @@ struct SnoozeDatePickerConfiguration: DatePickerViewConfiguration {
     // MARK: - Private
 
     private let formatter = ScheduleSendDateFormatter()
-
 }
 
 private extension Date {
-
     static var currentDateRoundedUpToNextHalfHour: Date {
         let interval: TimeInterval = 30 * 60
         let time = DateEnvironment.currentDate().timeIntervalSinceReferenceDate
         let roundedTime = ceil(time / interval) * interval
         return Date(timeIntervalSinceReferenceDate: roundedTime)
     }
-
 }

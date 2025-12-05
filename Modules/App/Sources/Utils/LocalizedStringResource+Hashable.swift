@@ -18,9 +18,7 @@
 import Foundation
 
 extension LocalizedStringResource: Hashable {
-
     public func hash(into hasher: inout Hasher) {
         hasher.combine(key)
     }
-
 }

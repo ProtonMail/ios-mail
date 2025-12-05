@@ -19,7 +19,6 @@ import SwiftUI
 import proton_app_uniffi
 
 extension PMCustomLabel {
-
     var sidebarLabel: SidebarLabel {
         .init(
             labelID: id,
@@ -29,11 +28,9 @@ extension PMCustomLabel {
             isSelected: false
         )
     }
-
 }
 
 extension PMSystemLabel {
-
     var sidebarSystemFolder: SystemFolder? {
         guard case .system(let systemFolder) = description, let systemFolder else {
             return nil
@@ -46,5 +43,4 @@ extension PMSystemLabel {
             isSelected: false
         )
     }
-
 }

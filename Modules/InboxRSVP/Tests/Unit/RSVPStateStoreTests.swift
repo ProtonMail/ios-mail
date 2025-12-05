@@ -421,7 +421,6 @@ private class RsvpEventServiceSpy: RsvpEventService, @unchecked Sendable {
 }
 
 private extension RsvpEventGetResult {
-
     var event: RsvpEvent? {
         switch self {
         case .ok(let details):
@@ -430,11 +429,9 @@ private extension RsvpEventGetResult {
             nil
         }
     }
-
 }
 
 private extension RsvpEvent {
-
     static func bestEvent(
         id: String? = .none,
         startsAt: UnixTimestamp = .zero,
@@ -451,5 +448,4 @@ private extension RsvpEvent {
             state: .answerableInvite(progress: .pending, attendance: .optional)
         )
     }
-
 }

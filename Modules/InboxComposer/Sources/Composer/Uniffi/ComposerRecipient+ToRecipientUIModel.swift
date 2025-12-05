@@ -50,7 +50,6 @@ extension ComposerRecipient {
 }
 
 private extension ComposerRecipientValidState {
-
     var isValid: Bool {
         switch self {
         case .valid: true
@@ -61,7 +60,6 @@ private extension ComposerRecipientValidState {
 }
 
 extension Array where Element == ComposerRecipient {
-
     func allSingleRecipients() -> [ComposerRecipientSingle] {
         compactMap(\.singleRecipient)
     }

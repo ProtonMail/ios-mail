@@ -19,9 +19,7 @@ import Lottie
 import SwiftUI
 
 public extension LottieView where Placeholder == EmptyView {
-
     func playbackInLoopMode() -> Self {
         playbackMode(.playing(.fromProgress(0, toProgress: 1, loopMode: .loop)))
     }
-
 }

@@ -28,7 +28,6 @@ final class AppLifeCycle: NSObject, @unchecked Sendable {
 // MARK: App Delegate
 
 extension AppLifeCycle: UIApplicationDelegate {
-
     func application(
         _ application: UIApplication,
         didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?
@@ -50,7 +49,6 @@ extension AppLifeCycle: UIApplicationDelegate {
 // MARK: Scene
 
 extension AppLifeCycle {
-
     func sceneWillEnterForeground() {
         AppLogger.log(message: "\(#function)", category: .appLifeCycle)
         applicationServices.willEnterForeground()
@@ -80,13 +78,11 @@ extension AppLifeCycle {
         AppLogger.log(message: "Opening \(deepLink)", category: .appLifeCycle)
         return await scene.open(deepLink, options: nil)
     }
-
 }
 
 // MARK: Private
 
 extension AppLifeCycle {
-
     private func applicationServicesInitialisation() {
         let testService = TestService()
         let appContext = AppContext.shared

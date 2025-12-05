@@ -18,7 +18,6 @@
 import proton_app_uniffi
 
 extension DraftSendError {
-
     public var shouldBeDisplayed: Bool {
         switch self {
         case .reason(let reason):
@@ -30,7 +29,6 @@ extension DraftSendError {
 }
 
 extension DraftSendErrorReason {
-
     public var shouldBeDisplayed: Bool {
         switch self {
         case .messageAlreadySent, .alreadySent:
