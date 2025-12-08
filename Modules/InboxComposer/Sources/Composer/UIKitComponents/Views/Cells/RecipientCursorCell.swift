@@ -22,7 +22,6 @@ import SwiftUI
 import UIKit
 
 final class RecipientCursorCell: UICollectionViewCell {
-
     enum Event {
         case onTextChanged(text: String)
         case onReturnKeyPressed
@@ -94,11 +93,9 @@ final class RecipientCursorCell: UICollectionViewCell {
         textField.text = input
         configure(maxWidth: maxWidth)
     }
-
 }
 
 extension RecipientCursorCell: UITextFieldDelegate {
-
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         if let text = textField.text, !text.isEmpty {
             onEvent?(.onReturnKeyPressed)

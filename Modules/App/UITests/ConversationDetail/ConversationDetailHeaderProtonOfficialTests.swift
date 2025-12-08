@@ -18,7 +18,6 @@
 import Foundation
 
 final class ConversationDetailHeaderProtonOfficialTests: PMUIMockedNetworkTestCase {
-
     override var loginType: UITestLoginType {
         UITestLoginType.Mocked.Paid.YoungBee
     }

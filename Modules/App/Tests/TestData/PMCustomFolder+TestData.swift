@@ -20,7 +20,6 @@ import proton_app_uniffi
 @testable import ProtonMail
 
 extension PMCustomFolder {
-
     static var topSecretFolder: Self {
         .testData(id: 5, name: "Top Secret", color: "#F78400", children: [.hiddenFolder], unread: 9999)
     }
@@ -57,5 +56,4 @@ extension PMCustomFolder {
             unread: unread
         )
     }
-
 }

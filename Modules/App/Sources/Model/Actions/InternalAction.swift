@@ -42,7 +42,6 @@ enum InternalAction {
 }
 
 extension InternalAction: DisplayableAction {
-
     var displayData: ActionDisplayData {
         .init(title: name, image: icon)
     }
@@ -54,5 +53,4 @@ extension InternalAction: DisplayableAction {
             false
         }
     }
-
 }

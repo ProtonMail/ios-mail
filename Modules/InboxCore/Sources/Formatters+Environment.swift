@@ -18,7 +18,6 @@
 import Foundation
 
 extension DateFormatter {
-
     public static func fromEnvironmentCalendar() -> Self {
         let formatter = Self()
         formatter.locale = DateEnvironment.calendar.locale
@@ -32,5 +31,4 @@ extension DateFormatter {
         formatter.timeZone = DateEnvironment.calendarGMT.timeZone
         return formatter
     }
-
 }

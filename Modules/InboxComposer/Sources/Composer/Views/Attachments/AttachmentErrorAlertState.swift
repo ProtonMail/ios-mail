@@ -66,7 +66,6 @@ final class AttachmentErrorAlertState {
 }
 
 extension AttachmentErrorAlertState {
-
     /// Groups together `DraftAttachmentUploadError` by error type to reduce the total number of alerts.
     private func aggregateAddingAttachmentErrors(_ errors: [DraftAttachmentUploadError]) -> [AttachmentErrorAlertModel] {
         var overSizeLimitCount = 0
@@ -162,7 +161,6 @@ extension AttachmentErrorAlertState {
 }
 
 extension DraftAttachment {
-
     var toUploadAttachmentError: UploadAttachmentError {
         UploadAttachmentError(attachment: attachment, errorTimeStamp: stateModifiedTimestamp)
     }

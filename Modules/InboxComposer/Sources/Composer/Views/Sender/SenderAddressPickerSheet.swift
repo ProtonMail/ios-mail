@@ -89,7 +89,6 @@ struct SenderAddressPickerSheet: View {
 }
 
 #Preview {
-
     SenderAddressPickerSheet(
         model: .init(
             state: .init(),

@@ -22,7 +22,6 @@ import SwiftUI
 import proton_app_uniffi
 
 extension SnoozeTime {
-
     var title: LocalizedStringResource {
         switch self {
         case .tomorrow:
@@ -63,7 +62,6 @@ extension SnoozeTime {
             L10n.Snooze.customButtonSubtitle.string
         }
     }
-
 }
 
 private enum SnoozeFormatter {

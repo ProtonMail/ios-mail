@@ -18,7 +18,6 @@
 import proton_app_uniffi
 
 class StartAutoLockCountdownService: ApplicationServiceDidEnterBackground {
-
     private let mailSession: () -> MailSession
 
     init(mailSession: @escaping () -> MailSession) {
@@ -28,5 +27,4 @@ class StartAutoLockCountdownService: ApplicationServiceDidEnterBackground {
     func didEnterBackground() {
         mailSession().startAutoLockCountdown()
     }
-
 }

@@ -20,7 +20,6 @@ import proton_app_uniffi
 @testable import InboxRSVP
 
 extension RsvpEvent {
-
     static func testData(
         id: String? = .none,
         summary: String? = .none,
@@ -47,5 +46,4 @@ extension RsvpEvent {
             state: state
         )
     }
-
 }

@@ -20,7 +20,6 @@ import proton_app_uniffi
 @testable import ProtonMail
 
 class ActionQueueStatusProviderSpy: ConnectionStatusProvider {
-
     var connectionStatusStub: ConnectionStatus = .online
     var draftSendResultUnseenResultStub: DraftSendResultUnseenResult = .ok([])
 
@@ -29,5 +28,4 @@ class ActionQueueStatusProviderSpy: ConnectionStatusProvider {
     func connectionStatus() async -> MailUserSessionConnectionStatusResult {
         .ok(connectionStatusStub)
     }
-
 }

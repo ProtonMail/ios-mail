@@ -20,7 +20,6 @@ import UIKit
 extension UITableViewCell: Reusable {}
 
 extension UITableView {
-
     public func registerCell<T: UITableViewCell>(_ cellType: T.Type) {
         register(cellType, forCellReuseIdentifier: cellType.reuseIdentifier)
     }

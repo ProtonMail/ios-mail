@@ -45,7 +45,7 @@ final class ComposerModelTests: BaseTestCase {
     let dummyInvalidAddress = "invalid_address_format@example"
     let singleRecipient1 = ComposerRecipient.single(.init(displayName: "", address: "inbox1@pm.me", validState: .valid))
     let singleRecipient2 = ComposerRecipient.single(.init(displayName: "", address: "inbox2@pm.me", validState: .valid))
-    let dummyBody = "<html>dummy body</html>"
+    let dummyContent = ComposerContent(head: "<style>dummy style</style>", body: "<body>dummy body</body>")
     var cancellables: Set<AnyCancellable>!
 
     override func setUpWithError() throws {
@@ -481,8 +481,8 @@ final class ComposerModelTests: BaseTestCase {
         let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: .mockInstance)
 
         try await sut.changeSenderAddress(email: newAddress)
-        let html = mockDraft.body()
-        XCTAssertEqual(sut.bodyAction, ComposerBodyAction.reloadBody(html: html, clearImageCacheFirst: false))
+        let content = mockDraft.composerContent()
+        XCTAssertEqual(sut.bodyAction, ComposerBodyAction.reloadBody(content: content, clearImageCacheFirst: false))
     }
 
     func testChangeSenderAddress_whenFailure_itDoesNotSetBodyActionToReloadBody() async {
@@ -499,20 +499,20 @@ final class ComposerModelTests: BaseTestCase {
     func testChangeSenderAddress_whenSuccess_newStateIsCreatedFromExistingDraft() async throws {
         let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: .mockInstance)
 
-        let newBody = "new body"
+        let newHTML = ComposerContent(head: "new head", body: "new body")
         let newAttachments: [DraftAttachment] = [
             .makeMockDraftAttachment(state: .uploaded),
             .makeMockDraftAttachment(state: .uploading),
         ]
         let newSender = "new_sender@example.com"
 
-        mockDraft.mockBody = newBody
+        mockDraft.mockContent = newHTML
         mockDraft.mockAttachmentList.mockAttachments = newAttachments
         try await sut.changeSenderAddress(email: newSender)
 
         XCTAssertEqual(sut.state.senderEmail, newSender)
         XCTAssertEqual(sut.state.subject, mockDraft.subject())
-        XCTAssertEqual(sut.state.initialBody, newBody)
+        XCTAssertEqual(sut.state.initialContent, newHTML)
         XCTAssertEqual(sut.state.toRecipients.recipients, [RecipientUIModel(composerRecipient: singleRecipient1)])
         XCTAssertEqual(sut.state.attachments, newAttachments.map { $0.toDraftAttachmentUIModel() })
     }
@@ -691,7 +691,7 @@ final class ComposerModelTests: BaseTestCase {
         let attachmentId: ID = 12345
         let draftAttachment: DraftAttachment = .makeMockDraftAttachment(id: attachmentId, state: .uploaded, disposition: .attachment)
         let mockDraft: MockDraft = .makeWithAttachments([draftAttachment])
-        mockDraft.mockBody = dummyBody
+        mockDraft.mockContent = dummyContent
         let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: .mockInstance)
 
         await sut.removeAttachment(attachment: draftAttachment.attachment)
@@ -704,13 +704,13 @@ final class ComposerModelTests: BaseTestCase {
         let attachmentId: ID = 12345
         let draftAttachment: DraftAttachment = .makeMockDraftAttachment(id: attachmentId, state: .uploaded, disposition: .inline)
         let mockDraft: MockDraft = .makeWithAttachments([draftAttachment])
-        mockDraft.mockBody = dummyBody
+        mockDraft.mockContent = dummyContent
         let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: .mockInstance)
 
         await sut.removeAttachment(attachment: draftAttachment.attachment)
 
         XCTAssertEqual(mockDraft.mockAttachmentList.capturedRemoveIdCalls.first, attachmentId)
-        XCTAssertEqual(sut.bodyAction, ComposerBodyAction.reloadBody(html: dummyBody, clearImageCacheFirst: true))
+        XCTAssertEqual(sut.bodyAction, ComposerBodyAction.reloadBody(content: dummyContent, clearImageCacheFirst: true))
     }
 
     // MARK: removeAttachment(cid:)
@@ -759,10 +759,10 @@ final class ComposerModelTests: BaseTestCase {
     // MARK: reloadBodyAfterMemoryPressure
 
     func testReloadBodyAfterMemoryPressure_itShouldSetBodyAction() async {
-        mockDraft.mockBody = "<html>test body</html>"
+        mockDraft.mockContent.body = "<html>test body</html>"
         let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: .mockInstance)
         await sut.reloadBodyAfterMemoryPressure()
-        XCTAssertEqual(sut.bodyAction, ComposerBodyAction.reloadBody(html: "<html>test body</html>", clearImageCacheFirst: false))
+        XCTAssertEqual(sut.bodyAction, ComposerBodyAction.reloadBody(content: mockDraft.mockContent, clearImageCacheFirst: false))
     }
 
     // MARK: sendMessage
@@ -952,7 +952,6 @@ private extension ComposerModelTests {
 }
 
 extension ComposerContactProvider {
-
     static func testInstance(datasourceContacts: [ComposerContact] = []) -> ComposerContactProvider {
         .init(protonContactsDatasource: ComposerTestContactsDatasource(dummyContacts: datasourceContacts))
     }
@@ -974,7 +973,6 @@ struct ComposerTestContactsDatasource: ComposerContactsDatasource {
 }
 
 private extension ComposerContact {
-
     var toMatch: [String] {
         switch self.type {
         case .group(let group):
@@ -983,11 +981,9 @@ private extension ComposerContact {
             [singleItem.name.toContactMatchFormat(), singleItem.email.toContactMatchFormat()]
         }
     }
-
 }
 
 private extension ComposerContact {
-
     static func makeComposerContactSingle(name: String, email: String) -> ComposerContact {
         let type = ComposerContactType.single(.init(initials: "", name: name, email: email))
         return ComposerContact(id: "__NOT_USED__", type: type, avatarColor: .green)
@@ -999,7 +995,6 @@ private extension ComposerContact {
 }
 
 extension DraftAttachment {
-
     static func makeMockDraftAttachment(
         id: ID = .random(),
         name: String = "attachment",
@@ -1024,5 +1019,57 @@ private extension MessageExpirationValidatorActions {
         .init(validate: { _, _ in
             result
         })
+    }
+}
+
+private extension MockDraft {
+    static private var defaultSender: String { "old_sender@example.com" }
+    static private var defaultSubject: String { "Test Subject" }
+    static private var defaultContent: ComposerContent { .init(head: "Test Head", body: "Test Body") }
+    static private var defaultRecipients: [ComposerRecipient] {
+        [ComposerRecipient.single(.init(displayName: "", address: "inbox1@pm.me", validState: .valid))]
+    }
+    static private var defaultAttachments: [DraftAttachment] {
+        let mockMimeType = AttachmentMimeType(mime: "pdf", category: .pdf)
+        let mockAttachment = AttachmentMetadata(
+            id: .random(),
+            disposition: .attachment,
+            mimeType: mockMimeType,
+            name: "attachment_1",
+            size: 123456,
+            isListable: false
+        )
+        return [DraftAttachment(state: .uploaded, attachment: mockAttachment, stateModifiedTimestamp: 1742829536)]
+    }
+
+    static var defaultMockDraft: MockDraft {
+        let attachmentList = MockAttachmentList()
+        attachmentList.mockAttachments = defaultAttachments
+        return MockDraft(
+            mockContent: defaultContent,
+            mockSender: defaultSender,
+            mockSubject: defaultSubject,
+            mockToRecipientList: .init(addedRecipients: defaultRecipients),
+            mockCcRecipientList: .init(),
+            mockBccRecipientList: .init(),
+            mockAttachmentList: attachmentList
+        )
+    }
+    static func makeWithRecipients(_ recipients: [ComposerRecipient], group: RecipientGroupType) -> MockDraft {
+        let draft: MockDraft = .emptyMockDraft
+        switch group {
+        case .to: draft.mockToRecipientList = .init(addedRecipients: recipients)
+        case .cc: draft.mockCcRecipientList = .init(addedRecipients: recipients)
+        case .bcc: draft.mockBccRecipientList = .init(addedRecipients: recipients)
+        }
+        return draft
+    }
+
+    static func makeWithAttachments(_ attachments: [DraftAttachment]) -> MockDraft {
+        let draft: MockDraft = .emptyMockDraft
+        let mockAttachmentList = MockAttachmentList()
+        mockAttachmentList.mockAttachments = attachments
+        draft.mockAttachmentList = mockAttachmentList
+        return draft
     }
 }

@@ -88,7 +88,6 @@ struct SettingsViewFactory {
 }
 
 private extension ProtonAuthenticatedWebPage {
-
     var title: LocalizedStringResource {
         switch self {
         case .accountSettings:
@@ -105,5 +104,4 @@ private extension ProtonAuthenticatedWebPage {
             L10n.Settings.foldersAndLabels
         }
     }
-
 }

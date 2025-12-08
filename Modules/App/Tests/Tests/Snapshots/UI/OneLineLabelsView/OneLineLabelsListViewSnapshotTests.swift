@@ -23,7 +23,6 @@ import Testing
 
 @MainActor
 final class OneLineLabelsListViewSnapshotTests {
-
     @Test
     func testLabelsLayoutCorrectly() {
         let view = VStack {
@@ -34,5 +33,4 @@ final class OneLineLabelsListViewSnapshotTests {
         }
         assertSnapshotsOnIPhoneX(of: view)
     }
-
 }

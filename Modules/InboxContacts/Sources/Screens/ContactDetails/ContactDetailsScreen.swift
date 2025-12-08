@@ -255,15 +255,12 @@ struct ContactDetailsScreen: View {
 }
 
 private extension ContactDetails {
-
     static func initial(with contact: ContactDetailsContext) -> Self {
         .init(contact: contact, details: .none)
     }
-
 }
 
 private extension VCardUrlValue {
-
     var urlString: String? {
         switch self {
         case .http(let string):
@@ -272,7 +269,6 @@ private extension VCardUrlValue {
             nil
         }
     }
-
 }
 
 #Preview {

@@ -23,7 +23,6 @@ import SwiftUI
 import proton_app_uniffi
 
 final class SceneDelegate: UIResponder, UIWindowSceneDelegate, ObservableObject {
-
     typealias TransitionAnimation =
         @MainActor (
             _ view: UIView,
@@ -209,5 +208,4 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate, ObservableObject 
         controller.view.backgroundColor = .clear
         return controller
     }
-
 }

@@ -19,7 +19,6 @@ import Foundation
 import Lottie
 
 extension LottieAnimationView {
-
     public static var protonSpinner: LottieAnimationView {
         LottieAnimationView(name: LottieAnimationName.spinner, bundle: Bundle.module)
     }

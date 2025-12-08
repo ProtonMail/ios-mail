@@ -1,4 +1,5 @@
-// Copyright (c) 2024 Proton Technologies AG
+//
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -15,12 +16,16 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-@testable import ProtonMail
+import proton_app_uniffi
 
-extension MailboxSelectedItem {
-
-    static func testData(id: UInt64, isRead: Bool = .random(), isStarred: Bool = .random()) -> Self {
-        .init(id: .init(value: id), isRead: isRead, isStarred: isStarred)
+extension WatchUserFeatureFlagsStream: StreamProtocol {
+    func nextAsync() async throws {
+        try await nextAsync().get()
     }
+}
 
+extension WatchUserStream: StreamProtocol {
+    func nextAsync() async throws {
+        try await nextAsync().get()
+    }
 }

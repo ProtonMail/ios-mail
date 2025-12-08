@@ -20,7 +20,6 @@ import LocalAuthentication
 import SwiftUI
 
 extension AlertModel {
-
     static func policyUnavailableAlert(
         action: @escaping (PolicyUnavailableAlertAction) async -> Void,
         laContext: @escaping () -> LAContext
@@ -44,7 +43,6 @@ extension AlertModel {
             actions: [signInAgain, ok]
         )
     }
-
 }
 
 enum PolicyUnavailableAlertAction: AlertActionInfo {

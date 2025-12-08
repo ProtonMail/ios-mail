@@ -160,11 +160,9 @@ final class EmptyFolderBannerStateStoreTests {
 }
 
 private extension EmptyFolderBannerStateStore.State {
-
     func alertAction(for action: DeleteConfirmationAlertAction) throws -> AlertAction {
         try #require(alert?.actions.findFirst(for: action.info.title, by: \.title))
     }
-
 }
 
 private class RustWrappersSpy {

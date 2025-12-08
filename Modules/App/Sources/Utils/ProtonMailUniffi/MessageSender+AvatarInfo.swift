@@ -18,9 +18,7 @@
 import proton_app_uniffi
 
 extension MessageSender {
-
     var avatarInfo: AvatarInfo {
         avatarInformationFromMessageSender(address: self).info
     }
-
 }

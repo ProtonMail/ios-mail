@@ -119,7 +119,6 @@ struct SearchToolbarView: View {
 }
 
 private extension SearchToolbarView {
-
     enum Layout {
         static let searchBarHeight: CGFloat = 40
         static var searchBarCornerRadius: CGFloat {

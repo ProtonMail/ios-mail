@@ -24,7 +24,6 @@ import Testing
 
 @MainActor
 struct AutoLockScreenSnapshotTests {
-
     @Test
     func appLockScreenLayoutsCorrectly() {
         let sut = NavigationStack {
@@ -36,5 +35,4 @@ struct AutoLockScreenSnapshotTests {
         }
         assertSnapshotsOnIPhoneX(of: sut)
     }
-
 }

@@ -422,7 +422,6 @@ struct MessageDetailsUIModel: Hashable {
     let date: Date
     let location: MessageDetail.Location?
     let labels: [LabelUIModel]
-    let attachments: [AttachmentDisplayModel]
     let isStarred: Bool
     let showPaperClip: Bool
 }
@@ -434,7 +433,6 @@ extension MessageDetailsUIModel {
 }
 
 enum MessageDetail {
-
     struct Sender: Hashable {
         let name: String
         let address: String
@@ -469,7 +467,6 @@ enum MessageDetailsEvent {
 }
 
 extension Array where Element == MessageDetail.Recipient {
-
     var recipientsUIRepresentation: String {
         let recipients = map(\.name).joined(separator: ", ")
         return L10n.MessageDetails.to.string + recipients
@@ -495,7 +492,6 @@ extension Array where Element == MessageDetail.Recipient {
 }
 
 enum MessageDetailsPreviewProvider {
-
     static var recipientsTo: [MessageDetail.Recipient] {
         [
             .init(
@@ -549,12 +545,10 @@ enum MessageDetailsPreviewProvider {
             date: Date(timeIntervalSince1970: 1724347300),
             location: location?.model,
             labels: labels,
-            attachments: .previewData,
             isStarred: false,
             showPaperClip: false
         )
     }
-
 }
 
 private struct MessageDetailsViewIdentifiers {

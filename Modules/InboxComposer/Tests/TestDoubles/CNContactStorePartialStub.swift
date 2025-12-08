@@ -19,7 +19,6 @@ import Contacts
 import InboxContacts
 
 class CNContactStorePartialStub: CNContactStoring {
-
     // MARK: - CNContactStoring
 
     func authorizationStatus(for entityType: CNEntityType) -> CNAuthorizationStatus {
@@ -36,5 +35,4 @@ class CNContactStorePartialStub: CNContactStoring {
     ) throws {
         fatalError("Not implemented")
     }
-
 }

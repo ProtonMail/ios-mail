@@ -21,6 +21,7 @@ import SwiftUI
 
 struct PrintHeaderView: View {
     let subject: String
+    let attachments: [AttachmentDisplayModel]
     let messageDetails: MessageDetailsUIModel
 
     private var participantGroups: [LabeledParticipantGroup] {
@@ -49,7 +50,7 @@ struct PrintHeaderView: View {
 
             Divider()
 
-            if !messageDetails.attachments.isEmpty {
+            if !attachments.isEmpty {
                 attachmentRow
             }
         }
@@ -95,7 +96,7 @@ struct PrintHeaderView: View {
 
     private var attachmentRow: some View {
         MessageBodyAttachmentsView(
-            state: .init(attachments: messageDetails.attachments, listState: .long(isAttachmentsListOpen: false)),
+            state: .init(attachments: attachments, listState: .long(isAttachmentsListOpen: false)),
             attachmentIDToOpen: .constant(nil)
         )
     }
@@ -132,5 +133,9 @@ extension MessageDetail.Sender: Participant {}
         ]
     )
 
-    PrintHeaderView(subject: "Some very very long subject that will totally get carried to a new line", messageDetails: messageDetails)
+    PrintHeaderView(
+        subject: "Some very very long subject that will totally get carried to a new line",
+        attachments: [],
+        messageDetails: messageDetails
+    )
 }

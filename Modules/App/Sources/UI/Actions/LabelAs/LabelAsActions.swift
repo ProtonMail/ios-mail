@@ -31,7 +31,6 @@ struct LabelAsActions {
 }
 
 extension LabelAsActions {
-
     static var productionInstance: Self {
         .init(
             labelMessagesAs: proton_app_uniffi.labelMessagesAs,
@@ -45,13 +44,10 @@ extension LabelAsActions {
             labelConversationsAs: { _, _, _, _, _ in .ok(.init(inputLabelIsEmpty: false, undo: .dummy)) }
         )
     }
-
 }
 
 extension Undo {
-
     static var dummy: Undo {
         Undo(noPointer: .init())
     }
-
 }

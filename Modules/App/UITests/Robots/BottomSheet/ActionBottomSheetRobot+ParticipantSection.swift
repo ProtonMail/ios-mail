@@ -19,7 +19,6 @@ import Foundation
 import XCTest
 
 extension ActionBottomSheetRobot {
-
     private var avatarText: XCUIElement {
         rootElement.staticTexts[Identifiers.avatarText]
     }

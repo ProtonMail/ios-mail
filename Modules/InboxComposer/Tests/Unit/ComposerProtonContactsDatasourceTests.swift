@@ -99,7 +99,6 @@ final class ComposerProtonContactsDatasourceTests: XCTestCase {
 }
 
 private extension Array where Element == ContactSuggestion {
-
     static var testData: Self {
         [
             .init(
@@ -138,18 +137,15 @@ private extension Array where Element == ContactSuggestion {
             ),
         ]
     }
-
 }
 
 private extension MailUserSession {
-
     static func empty() -> MailUserSession {
         MailUserSession(noPointer: .init())
     }
 }
 
 private class ContactSuggestionsStub: ContactSuggestions, @unchecked Sendable {
-
     private let _all: [ContactSuggestion]
 
     init(all: [ContactSuggestion]) {
@@ -164,19 +160,15 @@ private class ContactSuggestionsStub: ContactSuggestions, @unchecked Sendable {
     override func all() -> [ContactSuggestion] {
         _all
     }
-
 }
 
 private extension ComposerContact {
-
     var name: String {
         type.name
     }
-
 }
 
 private extension ComposerContactType {
-
     var isGroup: Bool {
         switch self {
         case .single: false
@@ -190,11 +182,9 @@ private extension ComposerContactType {
         case .group(let group): group.name
         }
     }
-
 }
 
 private extension ContactItem {
-
     init(id: UInt64, email: String) {
         let item = ContactEmailItem(id: id, email: email)
         self.init(
@@ -204,5 +194,4 @@ private extension ContactItem {
             emails: [item]
         )
     }
-
 }

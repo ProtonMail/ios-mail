@@ -18,7 +18,6 @@
 import Foundation
 
 public final class MeasurementConfig {
-
     public static var buildCommitShortSha: String = ProcessInfo.processInfo.environment["CI_COMMIT_SHA"] ?? "unknown"
     public static var ciJobId: String = ProcessInfo.processInfo.environment["CI_JOB_ID"] ?? "unknown"
     public static var version: String = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "unknown"

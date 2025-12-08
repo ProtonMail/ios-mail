@@ -132,9 +132,7 @@ final class RecipientsViewController: UIViewController {
 }
 
 extension RecipientsViewController {
-
     private enum SubviewFactory {
-
         static var recipientsStack: UIStackView {
             let view = UIStackView()
             view.translatesAutoresizingMaskIntoConstraints = false
@@ -160,7 +158,6 @@ extension RecipientsViewController {
 }
 
 private extension RecipientControllerStateType {
-
     var isFocusedState: Bool {
         switch self {
         case .collapsed, .expanded:

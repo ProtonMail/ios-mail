@@ -34,11 +34,9 @@ final class AppRouteState: ObservableObject, Sendable {
 }
 
 extension AppRouteState {
-
     static var initialState: Self {
         .init(route: .mailbox(selectedMailbox: .inbox))
     }
-
 }
 
 enum Route: Equatable, CustomStringConvertible {

@@ -25,12 +25,10 @@ extension View {
 }
 
 private struct InjectDateEnvironmentsModifier: ViewModifier {
-
     func body(content: Content) -> some View {
         content
             .environment(\.calendar, DateEnvironment.calendar)
             .environment(\.locale, DateEnvironment.calendar.locale.unsafelyUnwrapped)
             .environment(\.timeZone, DateEnvironment.calendar.timeZone)
     }
-
 }

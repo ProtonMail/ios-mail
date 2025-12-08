@@ -24,7 +24,6 @@ import Testing
 
 @MainActor
 struct PINScreenSnapshotTests {
-
     @Test(arguments: [
         PINScreenType.verify(reason: .changePIN),
         .verify(reason: .disablePIN),
@@ -45,11 +44,9 @@ struct PINScreenSnapshotTests {
         }
         assertSnapshotsOnIPhoneX(of: sut, named: type.testName)
     }
-
 }
 
 private extension PINScreenType {
-
     var testName: String {
         switch self {
         case .confirm(_, let reason):
@@ -75,5 +72,4 @@ private extension PINScreenType {
             }
         }
     }
-
 }

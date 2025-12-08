@@ -18,12 +18,10 @@
 import Foundation
 
 extension Collection where Element: Equatable {
-
     public func findFirst<Property: Equatable>(
         for value: Property,
         by keyPath: KeyPath<Element, Property>
     ) -> Element? {
         first { $0[keyPath: keyPath] == value }
     }
-
 }

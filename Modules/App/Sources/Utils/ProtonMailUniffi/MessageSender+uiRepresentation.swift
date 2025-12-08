@@ -18,16 +18,13 @@
 import proton_app_uniffi
 
 extension MessageSender {
-
     var uiRepresentation: String {
         !name.isEmpty ? name : address
     }
 }
 
 extension Array where Element == MessageSender {
-
     var addressUIRepresentation: String {
         map(\.uiRepresentation).joined(separator: ", ")
     }
-
 }

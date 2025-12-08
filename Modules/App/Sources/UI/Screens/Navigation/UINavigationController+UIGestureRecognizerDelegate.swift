@@ -17,16 +17,14 @@
 
 import UIKit
 
-/**
- Hiding native back bar button item in SwiftUI disables native swipe-back
- gesture which is a default gesture in iOS.
-
- To keep the gesture it's necessary to extend `UINavigationController`
- and set interactivePopGestureRecognizer's delegate which is used under
- the hood by the SwiftUI for navigation.
-
- More context: https://stackoverflow.com/a/41248703
- */
+/// Hiding native back bar button item in SwiftUI disables native swipe-back
+/// gesture which is a default gesture in iOS.
+///
+/// To keep the gesture it's necessary to extend `UINavigationController`
+/// and set interactivePopGestureRecognizer's delegate which is used under
+/// the hood by the SwiftUI for navigation.
+///
+/// More context: https://stackoverflow.com/a/41248703
 extension UINavigationController: UIGestureRecognizerDelegate {
     override open func viewDidLoad() {
         super.viewDidLoad()

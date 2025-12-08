@@ -100,7 +100,6 @@ final class LockScreenStoreTests {
 
         #expect(mailSession.signOutAllCallCount == 1)
     }
-
 }
 
 private class BiometricAuthorizationNotifierSpy: BiometricAuthorizationNotifier, @unchecked Sendable {

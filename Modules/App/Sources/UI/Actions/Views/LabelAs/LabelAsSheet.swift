@@ -127,9 +127,7 @@ struct LabelAsSheet: View {
 }
 
 private extension LabelDisplayModel {
-
     var displayData: ActionSelectableButtonDisplayData {
         .init(id: id, visualAsset: .color(color), title: title, isSelected: isSelected, leadingSpacing: .zero)
     }
-
 }

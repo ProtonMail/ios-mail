@@ -19,7 +19,6 @@ import InboxDesignSystem
 import UIKit
 
 extension UICollectionViewLayout {
-
     static var allRecipientsLayoutItemInset: NSDirectionalEdgeInsets {
         .init(top: DS.Spacing.small, leading: 0, bottom: DS.Spacing.small, trailing: 0)
     }

@@ -18,7 +18,6 @@
 import Foundation
 
 extension Date {
-
     public static func fixture(_ stringDate: String) -> Date {
         let formatter = DateFormatter()
         formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
@@ -31,5 +30,4 @@ extension Date {
 
         return date
     }
-
 }

@@ -20,7 +20,6 @@ import SwiftUI
 public extension DS.Icon {
     static let icArchiveBox = ImageResource.icArchiveBox
     static let icArrowUpFromSquare = ImageResource.icArrowUpFromSquare
-    static let icArrowRotateRight = ImageResource.icArrowRotateRight
     static let icBug = ImageResource.icBug
     static let icCalendarToday = ImageResource.icCalendarToday
     static let icCalendarGrid = ImageResource.icCalendarGrid

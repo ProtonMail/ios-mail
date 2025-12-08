@@ -20,7 +20,6 @@ import Lottie
 import SwiftUI
 
 public struct ProtonSpinner: View {
-
     public init() {}
 
     public var body: some View {

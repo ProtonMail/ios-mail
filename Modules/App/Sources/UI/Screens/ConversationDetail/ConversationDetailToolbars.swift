@@ -123,10 +123,8 @@ private struct ConversationDetailToolbars: ViewModifier {
     }
 }
 
-/**
- With the combination of a white background toolbar and clipping the content to the scrollview area
- we manage to have a nice UI transition from the mailbox to an expanded message that we have to scroll to.
- */
+/// With the combination of a white background toolbar and clipping the content to the scrollview area
+/// we manage to have a nice UI transition from the mailbox to an expanded message that we have to scroll to.
 private struct ModifiersForSmoothScreenTransition: ViewModifier {
     func body(content: Content) -> some View {
         content

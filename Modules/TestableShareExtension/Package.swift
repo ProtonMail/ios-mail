@@ -14,7 +14,7 @@ let package = Package(
         .package(path: "../InboxKeychain"),
         .package(path: "../InboxSnapshotTesting"),
         .package(path: "../InboxTesting"),
-        .package(url: "https://gitlab.protontech.ch/apple/shared/ProtonUIFoundations.git", exact: "1.4.1"),
+        .package(url: "https://gitlab.protontech.ch/apple/shared/ProtonUIFoundations.git", from: "1.4.2"),
     ],
     targets: [
         .target(

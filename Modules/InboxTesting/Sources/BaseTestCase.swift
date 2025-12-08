@@ -19,7 +19,6 @@ import InboxCore
 import XCTest
 
 open class BaseTestCase: XCTestCase {
-
     private var originalMainScheduler: DispatchQueueScheduler!
     private var originalDispatchOnMain: ((DispatchWorkItem) -> Void)!
     private var originalDispatchOnMainAfter: Dispatcher.DispatchAfterType!
@@ -56,7 +55,6 @@ open class BaseTestCase: XCTestCase {
 
         super.tearDown()
     }
-
 }
 
 private final class TestExecutor: SerialExecutor {

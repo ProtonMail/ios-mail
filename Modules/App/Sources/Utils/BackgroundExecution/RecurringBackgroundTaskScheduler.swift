@@ -150,7 +150,6 @@ class RecurringBackgroundTaskScheduler: @unchecked Sendable {
                 receiveValue: { _ in }
             )
     }
-
 }
 
 private func log(_ message: String) {

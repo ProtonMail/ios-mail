@@ -20,7 +20,6 @@ import InboxCoreUI
 import SwiftUI
 
 extension AlertModel {
-
     static func editScheduleConfirmation(action: @escaping @MainActor (EditScheduleAlertAction) async -> Void) -> Self {
         .init(
             title: L10n.Action.Send.editScheduledAlertTitle,
@@ -63,5 +62,4 @@ extension AlertModel {
             .init(details: actionType, action: { await action(actionType) })
         }
     }
-
 }

@@ -17,7 +17,6 @@
 
 import AccountManager
 import Combine
-import InboxCore
 import InboxCoreUI
 import InboxDesignSystem
 import InboxIAP
@@ -28,27 +27,17 @@ import proton_app_uniffi
 struct MailboxScreen: View {
     @EnvironmentObject private var appUIStateStore: AppUIStateStore
     @EnvironmentObject private var toastStateStore: ToastStateStore
-    @EnvironmentObject private var upsellCoordinator: UpsellCoordinator
-    @Environment(\.upsellEligibility) private var upsellEligibility
     @StateObject private var mailboxModel: MailboxModel
     @State private var isComposeButtonExpanded: Bool = true
-    @State private var isOnboardingPresented = false
-    @State private var isNotificationPromptPresented = false
     @State private var isAccountManagerPresented = false
     @State private var animateComposeButtonSafeAreaChanges = false
     private let userSession: MailUserSession
-    private let notificationAuthorizationStore: NotificationAuthorizationStore
-    private let userDefaults: UserDefaults
-    private let introductionPromptsDisabled: Bool
 
     init(
         mailSettingsLiveQuery: MailSettingLiveQuerying,
         appRoute: AppRouteState,
-        notificationAuthorizationStore: NotificationAuthorizationStore,
         userSession: MailUserSession,
-        userDefaults: UserDefaults,
-        draftPresenter: DraftPresenter,
-        introductionPromptsDisabled: Bool = false
+        draftPresenter: DraftPresenter
     ) {
         _mailboxModel = StateObject(
             wrappedValue: MailboxModel(
@@ -57,33 +46,14 @@ struct MailboxScreen: View {
                 draftPresenter: draftPresenter
             )
         )
-        self.notificationAuthorizationStore = notificationAuthorizationStore
         self.userSession = userSession
-        self.userDefaults = userDefaults
-        self.introductionPromptsDisabled = introductionPromptsDisabled
     }
-
-    var didAppear: ((Self) -> Void)?
 
     // MARK: - View
 
     var body: some View {
         NavigationStack(path: $mailboxModel.state.navigationPath) {
             mailboxScreen
-                .sheetTestable(
-                    isPresented: $isOnboardingPresented,
-                    onDismiss: { onboardingScreenDismissed() },
-                    content: { OnboardingScreen() }
-                )
-                .sheetTestable(
-                    isPresented: $isNotificationPromptPresented,
-                    content: {
-                        NotificationAuthorizationPrompt(
-                            trigger: .onboardingFinished,
-                            userDidRespond: userDidRespondToAuthorizationRequest
-                        )
-                    }
-                )
                 .labelAsSheet(
                     mailbox: { mailboxModel.mailbox.unsafelyUnwrapped },
                     mailUserSession: userSession,
@@ -97,13 +67,6 @@ struct MailboxScreen: View {
                         mailboxModel.state.moveToSheetPresented = nil
                     }
                 )
-                .onChange(of: upsellEligibility) { _, newValue in
-                    if case .eligible = newValue {
-                        Task {
-                            await presentAppropriateIntroductoryView()
-                        }
-                    }
-                }
                 .fullScreenCover(isPresented: $mailboxModel.state.isSearchPresented) {
                     SearchScreen(
                         userSession: userSession,
@@ -117,16 +80,8 @@ struct MailboxScreen: View {
                 }
                 .sheet(
                     item: $mailboxModel.state.upsellPresented,
-                    onDismiss: upsellDismissed,
                     content: { upsellScreenModel in
                         UpsellScreen(model: upsellScreenModel)
-                    }
-                )
-                .sheet(
-                    item: $mailboxModel.state.onboardingUpsellPresented,
-                    onDismiss: upsellDismissed,
-                    content: { upsellScreenModel in
-                        OnboardingUpsellScreen(model: upsellScreenModel)
                     }
                 )
                 .navigationDestination(for: MailboxItemCellUIModel.self) { uiModel in
@@ -139,96 +94,14 @@ struct MailboxScreen: View {
         .onChange(of: mailboxModel.toast) { showToast($1) }
         .accessibilityIdentifier(MailboxScreenIdentifiers.rootItem)
         .accessibilityElement(children: .contain)
-        .onAppear {
-            let workItem = DispatchWorkItem {
-                Task {
-                    await presentAppropriateIntroductoryView()
-                }
-            }
-            Dispatcher.dispatchOnMainAfter(.now() + .milliseconds(500), workItem)
-            didAppear?(self)
-        }
         .environment(\.confirmLink, mailboxModel.state.confirmLink)
         .environment(\.goToNextPageNotifier, mailboxModel.goToNextConversationNotifier)
         .environment(\.proceedAfterMove, mailboxModel.proceedAfterMove)
         .environmentObject(mailboxModel.loadingBarPresenter)
     }
-
-    private func onboardingScreenDismissed() {
-        userDefaults[.hasSeenAlphaOnboarding] = true
-
-        Task {
-            await presentAppropriateIntroductoryView()
-        }
-    }
-
-    private func upsellDismissed() {
-        if case .eligible(let upsellType) = upsellEligibility {
-            userDefaults[.hasSeenOnboardingUpsell(ofType: upsellType)] = true
-        }
-
-        // ensure that the standard onboarding upsell will never be shown even if a promo upsell has been shown in its place
-        userDefaults[.hasSeenOnboardingUpsell(ofType: .standard)] = true
-
-        Task {
-            await presentAppropriateIntroductoryView()
-        }
-    }
-
-    private func userDidRespondToAuthorizationRequest(accepted: Bool) {
-        Task {
-            await notificationAuthorizationStore.userDidRespondToAuthorizationRequest(accepted: accepted)
-            await presentAppropriateIntroductoryView()
-        }
-    }
-
-    private func presentAppropriateIntroductoryView() async {
-        guard !introductionPromptsDisabled else {
-            return
-        }
-
-        let introductionProgress = await calculateIntroductionProgress()
-        isOnboardingPresented = introductionProgress == .onboarding
-        isNotificationPromptPresented = introductionProgress == .notifications
-
-        if introductionProgress == .finished {
-            try? await Task.sleep(for: .seconds(1))
-            NewAccountSwitcherTip.showNewAccountSwitcherTip.sendDonation()
-        }
-
-        if case .upsell(let upsellType) = introductionProgress {
-            do {
-                switch upsellType {
-                case .standard:
-                    mailboxModel.state.onboardingUpsellPresented = try await upsellCoordinator.presentOnboardingUpsellScreen()
-                case .blackFriday:
-                    mailboxModel.state.upsellPresented = try await upsellCoordinator.presentUpsellScreen(
-                        entryPoint: .postOnboarding,
-                        upsellType: upsellType
-                    )
-                }
-            } catch {
-                AppLogger.log(error: error, category: .payments)
-                upsellDismissed()
-            }
-        }
-    }
-
-    private func calculateIntroductionProgress() async -> IntroductionProgress {
-        if !userDefaults[.hasSeenAlphaOnboarding] {
-            return .onboarding
-        } else if await notificationAuthorizationStore.shouldRequestAuthorization(trigger: .onboardingFinished) {
-            return .notifications
-        } else if case .eligible(let upsellType) = upsellEligibility, !userDefaults[.hasSeenOnboardingUpsell(ofType: upsellType)] {
-            return .upsell(upsellType)
-        } else {
-            return .finished
-        }
-    }
 }
 
 extension MailboxScreen {
-
     private func skipAnimationWhenViewRenders() async {
         try? await Task.sleep(for: .seconds(0.1))
         animateComposeButtonSafeAreaChanges = true
@@ -336,38 +209,11 @@ extension MailboxScreen {
     }
 }
 
-extension MailboxScreen {
-    enum IntroductionProgress: Equatable {
-        case onboarding
-        case notifications
-        case upsell(UpsellType)
-        case finished
-    }
-}
-
-#Preview {
-    let appUIStateStore = AppUIStateStore()
-    let toastStateStore = ToastStateStore(initialState: .initial)
-    let userDefaults = UserDefaults(suiteName: "mailbox_preview")!
-
-    MailboxScreen(
-        mailSettingsLiveQuery: MailSettingsLiveQueryPreviewDummy(),
-        appRoute: .initialState,
-        notificationAuthorizationStore: .init(userDefaults: userDefaults),
-        userSession: .dummy,
-        userDefaults: userDefaults,
-        draftPresenter: .dummy()
-    )
-    .environmentObject(appUIStateStore)
-    .environmentObject(toastStateStore)
-}
-
 private struct MailboxScreenIdentifiers {
     static let rootItem = "mailbox.rootItem"
 }
 
 class MailSettingsLiveQueryPreviewDummy: MailSettingLiveQuerying {
-
     // MARK: - MailSettingLiveQuerying
 
     var viewModeHasChanged: AnyPublisher<Void, Never> {

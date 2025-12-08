@@ -19,7 +19,6 @@ import InboxDesignSystem
 import SwiftUI
 
 extension Image {
-
     @MainActor
     static func protonLogo(size: CGFloat) -> some View {
         Image(DS.Images.protonMail)
@@ -28,5 +27,4 @@ extension Image {
             .shadow(Shadow(x: 0, y: 0, blur: 8, color: DS.Color.Global.black.opacity(0.06)), isVisible: true)
             .shadow(Shadow(x: 0, y: 0, blur: 50, color: DS.Color.Global.black.opacity(0.10)), isVisible: true)
     }
-
 }

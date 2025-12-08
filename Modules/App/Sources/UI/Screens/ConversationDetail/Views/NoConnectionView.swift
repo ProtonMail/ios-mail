@@ -19,7 +19,6 @@ import InboxDesignSystem
 import SwiftUI
 
 struct NoConnectionView: View {
-
     var body: some View {
         VStack(spacing: .zero) {
             Image(DS.Images.noConnection)

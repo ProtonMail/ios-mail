@@ -31,7 +31,6 @@ struct SnoozeState: Copying {
 }
 
 extension SnoozeState {
-
     static func initial(
         screen: SnoozeView.Screen,
         labelId: ID,
@@ -47,5 +46,4 @@ extension SnoozeState {
             presentUpsellScreen: nil
         )
     }
-
 }

@@ -21,11 +21,9 @@ import InboxCore
 import InboxKeychain
 import proton_app_uniffi
 
-/**
- The purpose of this class is to guarantee that MailSession and the primary MailUserSession are:
- - only created once
- - retained for the entire lifetime of the Share extension
- */
+/// The purpose of this class is to guarantee that MailSession and the primary MailUserSession are:
+/// - only created once
+/// - retained for the entire lifetime of the Share extension
 final class SessionHolder {
     typealias MakeMailSession = (
         MailSessionParams,

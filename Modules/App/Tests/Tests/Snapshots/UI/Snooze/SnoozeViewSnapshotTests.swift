@@ -28,7 +28,6 @@ import proton_app_uniffi
 @MainActor
 @Suite(.calendarZurichEnUS, .currentDate(.fixture("2025-02-07 09:32:00")))
 struct SnoozeViewSnapshotTests {
-
     struct TestCase {
         let actions: SnoozeActions
         let screen: SnoozeView.Screen
@@ -87,15 +86,12 @@ struct SnoozeViewSnapshotTests {
 }
 
 private extension SnoozeActions {
-
     static func testData(options: [SnoozeTime] = [], showUnsnooze: Bool = false) -> Self {
         .init(options: options, showUnsnooze: showUnsnooze)
     }
-
 }
 
 private extension SnoozeTime {
-
     private static let timestamp: UInt64 = 1752697012
 
     static var tomorrow: Self {
@@ -113,16 +109,13 @@ private extension SnoozeTime {
     static var laterThisWeek: Self {
         .laterThisWeek(timestamp)
     }
-
 }
 
 extension UpsellCoordinator {
-
     static var dummy: UpsellCoordinator {
         UpsellCoordinator(
             mailUserSession: .dummy,
             configuration: .mail
         )
     }
-
 }

@@ -20,9 +20,7 @@ import proton_app_uniffi
 public typealias ID = proton_app_uniffi.Id
 
 public extension ID {
-
     static func random() -> ID {
         .init(value: UInt64.random(in: (0..<UInt64.max)))
     }
-
 }

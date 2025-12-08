@@ -42,7 +42,6 @@ struct ComposerProtonContactsDatasource: ComposerContactsDatasource {
 }
 
 private extension ContactSuggestion {
-
     var toComposerContact: ComposerContact? {
         switch kind {
         case .contactGroup(let contacts):
@@ -62,5 +61,4 @@ private extension ContactSuggestion {
     private func composerContact(type: ComposerContactType) -> ComposerContact {
         .init(id: key, type: type, avatarColor: Color(UIColor(hex: avatarInformation.color)))
     }
-
 }

@@ -23,7 +23,6 @@ import proton_app_uniffi
 
 @MainActor
 struct CustomizeToolbarsScreenSnapshotTests {
-
     @Test
     func customizeToolbarsScreenLayoutsCorrectly() {
         let sut = CustomizeToolbarsScreen(
@@ -40,7 +39,6 @@ struct CustomizeToolbarsScreenSnapshotTests {
 
         assertSnapshotsOnIPhoneX(of: sut)
     }
-
 }
 
 final class ViewModeProviderStub: ViewModeProvider {
@@ -54,7 +52,6 @@ final class ViewModeProviderStub: ViewModeProvider {
 }
 
 final class CustomizeToolbarServiceSpy: CustomizeToolbarServiceProtocol {
-
     // MARK: - Stubs
 
     var getListToolbarActionsStub: [MobileAction] = []

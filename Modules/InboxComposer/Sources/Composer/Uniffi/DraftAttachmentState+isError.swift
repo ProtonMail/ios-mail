@@ -18,7 +18,6 @@
 import proton_app_uniffi
 
 extension DraftAttachmentState {
-
     var isError: Bool {
         attachmentUploadError != nil
     }

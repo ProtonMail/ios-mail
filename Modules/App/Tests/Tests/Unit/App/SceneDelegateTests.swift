@@ -25,7 +25,6 @@ import XCTest
 
 @MainActor
 final class SceneDelegateTests: BaseTestCase {
-
     private var sut: SceneDelegate!
     var mailSessionSpy: MailSessionSpy!
     var shouldAutoLockStub: Bool = true
@@ -127,5 +126,4 @@ final class SceneDelegateTests: BaseTestCase {
     private func connectionOptions() throws -> UIScene.ConnectionOptions {
         try InstanceHelper.create(UIScene.ConnectionOptions.self)
     }
-
 }

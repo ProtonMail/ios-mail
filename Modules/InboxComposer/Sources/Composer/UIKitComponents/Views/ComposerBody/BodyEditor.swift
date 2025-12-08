@@ -16,11 +16,12 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import UIKit
+import proton_app_uniffi
 
 protocol BodyEditor: UIViewController {
     var onEvent: ((BodyEditorEvent) -> Void)? { get set }
 
     func setBodyInitialFocus()
-    func updateBody(_ body: String) async
+    func updateBody(_ content: ComposerContent) async
     func handleBodyAction(_ action: ComposerBodyAction)
 }

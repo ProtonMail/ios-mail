@@ -19,7 +19,6 @@ import SwiftUI
 import proton_app_uniffi
 
 enum MoveToSheetPreviewProvider {
-
     static var availableMoveToActions: AvailableMoveToActions {
         .init(
             message: { _, _ in
@@ -81,5 +80,4 @@ enum MoveToSheetPreviewProvider {
             ]
         )
     }
-
 }

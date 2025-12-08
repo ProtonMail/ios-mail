@@ -116,7 +116,6 @@ final class SenderAddressValidatorTests {
 }
 
 private extension SenderAddressValidatorTests {
-
     private func mockDraft(addressValidationResult: DraftAddressValidationResult?) -> MockDraft {
         let mockDraft = MockDraft.emptyMockDraft
         mockDraft.mockDraftAddressValidationResult = addressValidationResult

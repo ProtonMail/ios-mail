@@ -65,11 +65,9 @@ class PINLockStateStore: StateStore {
             break
         }
     }
-
 }
 
 extension AlertModel {
-
     static func logOutConfirmation(action: @escaping (LogOutConformationAction) async -> Void) -> Self {
         let actions: [AlertAction] = LogOutConformationAction.allCases.map { actionType in
             .init(details: actionType, action: { await action(actionType) })
@@ -81,11 +79,9 @@ extension AlertModel {
             actions: actions
         )
     }
-
 }
 
 private extension PINAuthenticationError {
-
     var isCustom: Bool {
         switch self {
         case .custom:
@@ -94,5 +90,4 @@ private extension PINAuthenticationError {
             false
         }
     }
-
 }

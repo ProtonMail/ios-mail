@@ -18,7 +18,6 @@
 import Foundation
 
 extension MailboxRobot {
-
     // MARK: Actions
 
     func scrollDown() {

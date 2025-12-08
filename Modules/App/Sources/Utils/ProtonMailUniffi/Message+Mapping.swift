@@ -19,7 +19,6 @@ import SwiftUI
 import proton_app_uniffi
 
 extension Message {
-
     var allRecipients: [MessageRecipient] {
         toList + ccList + bccList
     }
@@ -85,7 +84,6 @@ extension Message {
                 date: Date(timeIntervalSince1970: TimeInterval(time)),
                 location: location?.model,
                 labels: labels,
-                attachments: attachmentsMetadata.map(\.displayModel),
                 isStarred: starred,
                 showPaperClip: showPaperClip
             )
@@ -124,13 +122,4 @@ extension Message {
 
         return .init(info: avatarInformation.info, type: .other)
     }
-
-}
-
-private extension AttachmentMetadata {
-
-    var displayModel: AttachmentDisplayModel {
-        .init(id: id, mimeType: mimeType, name: name, size: size)
-    }
-
 }

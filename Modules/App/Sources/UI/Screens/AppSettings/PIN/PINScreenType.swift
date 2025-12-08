@@ -68,7 +68,6 @@ enum PINScreenType: Hashable, Identifiable {
 }
 
 private extension PINScreenType.Configuration {
-
     static func verify(trailingButtonTitle: LocalizedStringResource) -> Self {
         .init(
             pinInputTitle: L10n.Settings.App.verifyPINInputTitle,
@@ -76,5 +75,4 @@ private extension PINScreenType.Configuration {
             bottomButtonTitle: trailingButtonTitle
         )
     }
-
 }

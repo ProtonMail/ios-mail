@@ -18,7 +18,6 @@
 import Foundation
 
 struct HtmlSanitizer {
-
     /// Escapes characters that can trigger WebKit JS SyntaxError
     static func applyStringLiteralEscapingRules(html: String) -> String {
         // We use JSONEncoder as a trick to ensure all problematic

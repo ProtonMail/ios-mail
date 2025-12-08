@@ -20,7 +20,6 @@ import SwiftUI
 /// The default list separator aligns with the image trailing position. Us this modifier to remove the
 /// leading inset of the list separator to align it with the list leading position.
 struct CustomListLeadingSeparator: ViewModifier {
-
     func body(content: Content) -> some View {
         content
             .alignmentGuide(.listRowSeparatorLeading) { viewDimensions in

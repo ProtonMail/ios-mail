@@ -22,7 +22,6 @@ import XCTest
 @testable import ProtonUIFoundations
 
 class ToastViewSnapshotTests: BaseTestCase {
-
     func testSmallWarningToastShortTextNoActionLayoutsCorrecttly() {
         let toastView = ToastView(model: ToastViewPreviewProvider.smallWarningShortTextNoAction, didSwipeDown: {})
         assertSnapshotsOnIPhoneX(of: toastView)
@@ -57,5 +56,4 @@ class ToastViewSnapshotTests: BaseTestCase {
         let toastView = ToastView(model: ToastViewPreviewProvider.bigSuccessLongTextWithButton, didSwipeDown: {})
         assertSnapshotsOnIPhoneX(of: toastView)
     }
-
 }

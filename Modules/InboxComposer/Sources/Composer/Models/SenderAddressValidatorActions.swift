@@ -30,7 +30,6 @@ struct SenderAddressValidatorActions {
 }
 
 private extension SenderAddressValidatorActions {
-
     @MainActor
     static func productionValidateSenderAddress(
         draft: AppDraftProtocol,

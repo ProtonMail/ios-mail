@@ -89,7 +89,6 @@ final class RecipientsFieldExpandedController: UIViewController {
 // MARK: Private functions
 
 extension RecipientsFieldExpandedController {
-
     private func onContentSizeChange(collectionView: UICollectionView) {
         let contentHeight = collectionView.collectionViewLayout.collectionViewContentSize.height
         heightConstraint.constant = max(contentHeight, RecipientsFieldExpandedLayout.minCellHeight)
@@ -109,7 +108,6 @@ extension RecipientsFieldExpandedController {
 // MARK: UICollectionViewDataSource
 
 extension RecipientsFieldExpandedController: UICollectionViewDataSource {
-
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         cellUIModels.count
     }
@@ -126,9 +124,7 @@ extension RecipientsFieldExpandedController: UICollectionViewDataSource {
 }
 
 extension RecipientsFieldExpandedController {
-
     private enum SubviewFactory {
-
         static var collectionView: UICollectionView {
             let view = UICollectionView(frame: .zero, collectionViewLayout: .allRecipientsLayout)
             view.translatesAutoresizingMaskIntoConstraints = false

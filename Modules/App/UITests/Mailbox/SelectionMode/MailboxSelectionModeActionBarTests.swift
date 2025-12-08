@@ -19,7 +19,6 @@ import Foundation
 import XCTest
 
 final class MailboxSelectionModeActionBarTests: PMUIMockedNetworkTestCase {
-
     /// TestId 426597
     func testSelectionModeShowsActionBar() async {
         await environment.mockServer.addRequestsWithDefaults(

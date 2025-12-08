@@ -18,7 +18,6 @@
 import Foundation
 
 extension UserDefaults {
-
     static func testInstance(inFile fileName: StaticString = #file) -> UserDefaults {
         .init(suiteName: suiteName(inFile: fileName)).unsafelyUnwrapped
     }
@@ -28,7 +27,6 @@ extension UserDefaults {
         defaults.removePersistentDomain(forName: suiteName(inFile: fileName))
         return defaults
     }
-
 }
 
 private func suiteName(inFile fileName: StaticString = #file) -> String {

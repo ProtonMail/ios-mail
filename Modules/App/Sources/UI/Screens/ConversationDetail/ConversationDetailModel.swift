@@ -37,7 +37,10 @@ final class ConversationDetailModel: Sendable, ObservableObject {
     @Published private(set) var conversationItem: ConversationItem?
 
     let messageAppearanceOverrideStore = MessageAppearanceOverrideStore()
-    let messagePrinter: MessagePrinter
+    private(set) lazy var messagePrinter = MessagePrinter(
+        userSession: { [unowned self] in userSession },
+        mailbox: { [unowned self] in mailbox! }
+    )
     private var colorScheme: ColorScheme = .light
 
     enum InitialConversationItem {
@@ -119,7 +122,6 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         self.dependencies = dependencies
         self.backOnlineActionExecutor = backOnlineActionExecutor
         self.snoozeService = snoozeService
-        messagePrinter = .init(userSession: { dependencies.appContext.userSession })
     }
 
     func fetchInitialData() async {
@@ -499,7 +501,6 @@ final class ConversationDetailModel: Sendable, ObservableObject {
 }
 
 extension ConversationDetailModel {
-
     private func reloadContentWhenBackOnline() {
         backOnlineActionExecutor.execute { [weak self] in
             await self?.fetchInitialData()
@@ -923,7 +924,6 @@ extension ConversationDetailModel {
 }
 
 extension ConversationDetailModel {
-
     struct Dependencies {
         let appContext: AppContext
 
@@ -975,7 +975,6 @@ private extension MailboxActionSheetsState {
 }
 
 private extension MessageCellUIModel {
-
     var isDraft: Bool {
         switch type {
         case .collapsed(let model):
@@ -984,22 +983,18 @@ private extension MessageCellUIModel {
             false
         }
     }
-
 }
 
 @MainActor
 enum SnoozeErrorPresenter {
-
     static func presentIfNeeded(error: SnoozeError, toastStateStore: ToastStateStore) {
         if case .reason(let snoozeErrorReason) = error {
             toastStateStore.present(toast: .error(message: snoozeErrorReason.errorMessage.string))
         }
     }
-
 }
 
 private extension ConversationDetailModel.State {
-
     func hasAtMostOneMessage(withSameLocationAs messageID: ID?) -> Bool {
         switch self {
         case .initial, .fetchingMessages, .noConnection:
@@ -1012,20 +1007,16 @@ private extension ConversationDetailModel.State {
                 .count == 1
         }
     }
-
 }
 
 private extension MessageAppearanceOverrideStore {
-
     func themeOpts(messageID: ID, colorScheme: ColorScheme) -> ThemeOpts {
         let isForcingLightMode = isForcingLightMode(forMessageWithId: messageID)
         return .init(colorScheme: colorScheme, isForcingLightMode: isForcingLightMode)
     }
-
 }
 
 private extension ConversationDetailSeed {
-
     var isAllMail: Bool {
         switch self {
         case .mailboxItem(_, .systemFolder(_, .allMail)):
@@ -1036,5 +1027,4 @@ private extension ConversationDetailSeed {
             false
         }
     }
-
 }

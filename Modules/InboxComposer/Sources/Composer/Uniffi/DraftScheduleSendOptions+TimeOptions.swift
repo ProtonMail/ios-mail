@@ -19,7 +19,6 @@ import Foundation
 import proton_app_uniffi
 
 extension DraftScheduleSendOptions {
-
     func toScheduleSendTimeOptions(lastScheduleSendTime: UInt64?) -> ScheduleSendTimeOptions {
         .init(
             tomorrow: tomorrowTime.date,

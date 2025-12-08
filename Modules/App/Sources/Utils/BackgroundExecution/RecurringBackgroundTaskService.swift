@@ -16,7 +16,6 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 class RecurringBackgroundTaskService: ApplicationServiceSetUp {
-
     private let recurringBackgroundTaskScheduler = RecurringBackgroundTaskScheduler(
         backgroundTaskExecutorProvider: { AppContext.shared.mailSession }
     )
@@ -24,5 +23,4 @@ class RecurringBackgroundTaskService: ApplicationServiceSetUp {
     func setUpService() {
         recurringBackgroundTaskScheduler.register()
     }
-
 }

@@ -71,7 +71,6 @@ public struct ContactSuggestionsRepository {
 }
 
 private extension CNAuthorizationStatus {
-
     var granted: Bool {
         switch self {
         case .notDetermined, .restricted, .denied:
@@ -82,5 +81,4 @@ private extension CNAuthorizationStatus {
             false
         }
     }
-
 }

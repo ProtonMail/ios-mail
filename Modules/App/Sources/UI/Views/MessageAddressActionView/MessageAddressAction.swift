@@ -20,9 +20,7 @@ import Foundation
 import InboxDesignSystem
 import SwiftUI
 
-/**
- List of all actions that can take place over an email address (e.g. the sender or a recipient of a message
- */
+/// List of all actions that can take place over an email address (e.g. the sender or a recipient of a message
 enum MessageAddressAction: ActionPickerListElement {
     case newMessage
     case call

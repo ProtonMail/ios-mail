@@ -19,7 +19,6 @@ import Foundation
 import XCTest
 
 extension ActionBottomSheetRobot {
-
     // MARK: UI Elements
 
     private var replyButton: XCUIElement {

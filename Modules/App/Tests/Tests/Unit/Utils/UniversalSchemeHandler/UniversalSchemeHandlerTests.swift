@@ -59,7 +59,7 @@ final class UniversalSchemeHandlerTests {
         self.sut.webView(WKWebView(), start: urlSchemeTaskSpy!)
 
         try await expectToEventually(self.proxyImageFailCallCount == 1)
-        #expect(urlSchemeTaskSpy.didInvokeFailWithError.count == 0)
+        #expect(urlSchemeTaskSpy.didInvokeFailWithError.count == 1)
     }
 
     @Test
@@ -134,7 +134,6 @@ final class UniversalSchemeHandlerTests {
 }
 
 private class WKURLSchemeTaskSpy: NSObject, WKURLSchemeTask {
-
     private(set) var didInvokeDidReceiveResponse: [URLResponse] = []
     private(set) var didInvokeDidReceivedData: [Data] = []
     private(set) var didInvokeFailWithError: [Error] = []
@@ -163,32 +162,25 @@ private class WKURLSchemeTaskSpy: NSObject, WKURLSchemeTask {
     func didFailWithError(_ error: Error) {
         didInvokeFailWithError.append(error)
     }
-
 }
 
 private extension URL {
-
     static func cid(_ value: String) -> URL {
         .init(string: "cid:\(value)").unsafelyUnwrapped
     }
-
 }
 
 private extension Error {
-
     var asAttachmentDataError: AttachmentDataError? {
         self as? AttachmentDataError
     }
-
 }
 
 private extension AttachmentData {
-
     static var testData: Self {
         .init(
             data: UIImage(resource: .protonLogo).pngData().unsafelyUnwrapped,
             mime: "image/png"
         )
     }
-
 }

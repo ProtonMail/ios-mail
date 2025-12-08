@@ -20,7 +20,6 @@ import Contacts
 @testable import InboxContacts
 
 class CNContactStoreSpy: CNContactStoring {
-
     var stubbedAuthorizationStatus: [CNEntityType: CNAuthorizationStatus] = .default
 
     private(set) var requestAccessCalls: [(entityType: CNEntityType, completionHandler: (Bool, (any Error)?) -> Void)] = []
@@ -53,13 +52,10 @@ class CNContactStoreSpy: CNContactStoring {
             block(contact, ok)
         }
     }
-
 }
 
 extension Dictionary where Key == CNEntityType, Value == CNAuthorizationStatus {
-
     static var `default`: Self {
         [.contacts: .notDetermined]
     }
-
 }

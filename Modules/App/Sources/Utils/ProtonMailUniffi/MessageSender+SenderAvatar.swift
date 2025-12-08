@@ -18,7 +18,6 @@
 import proton_app_uniffi
 
 extension MessageSender {
-
     var senderAvatar: AvatarUIModel {
         let type: AvatarViewType = .sender(
             .init(

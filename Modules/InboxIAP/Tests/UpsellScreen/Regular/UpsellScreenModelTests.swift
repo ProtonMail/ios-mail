@@ -75,7 +75,6 @@ final class UpsellScreenModelTests {
                     openURL: { webCheckoutURL in
                         #expect(webCheckoutURL == expectedWebCheckoutURL)
                         openURLCalled()
-
                     },
                     dismiss: { dismissCalled() }
                 )

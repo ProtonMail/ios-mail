@@ -21,7 +21,6 @@ import SwiftUI
 import TipKit
 
 struct WhatsNewTipStyle: TipViewStyle {
-
     func makeBody(configuration: Configuration) -> some View {
         HStack(alignment: .top, spacing: DS.Spacing.medium) {
             if let image = configuration.image {
@@ -56,5 +55,4 @@ struct WhatsNewTipStyle: TipViewStyle {
         .padding(DS.Spacing.medium)
         .background(DS.Color.BackgroundInverted.secondary)
     }
-
 }
