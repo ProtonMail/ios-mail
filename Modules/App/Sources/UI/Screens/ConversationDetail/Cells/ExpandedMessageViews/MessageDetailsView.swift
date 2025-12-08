@@ -557,16 +557,6 @@ private struct MessageDetailsViewIdentifiers {
     static let messageDate = "detail.header.date"
     static let senderAddress = "detail.header.sender.address"
     static let recipientsSummary = "detail.header.recipients.summary"
-    static let threeDotsButton = "detail.header.button.actions"
-
-    static let expandedHeaderRootItem = "detail.header.expanded.root"
-    static let expandedHeaderSenderLabel = "detail.header.expanded.sender.label"
-    static let expandedHeaderSenderName = "detail.header.expanded.sender.name"
-    static let expandedHeaderSenderAddress = "detail.header.expanded.sender.address"
-
-    static func expandedHeaderRecipientLabel(group: RecipientGroup) -> String {
-        "details.header.expanded.\(group.accessibilityValue).label"
-    }
 
     static func expandedHeaderRecipientName(group: RecipientGroup, index: Int) -> String {
         "details.header.expanded.\(group.accessibilityValue).name#\(index)"
@@ -576,6 +566,5 @@ private struct MessageDetailsViewIdentifiers {
         "details.header.expanded.\(group.accessibilityValue).value#\(index)"
     }
 
-    static let expandedHeaderDateLabel = "detail.header.expanded.date.label"
     static let expandedHeaderDateValue = "detail.header.expanded.date.value"
 }

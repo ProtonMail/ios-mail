@@ -17,7 +17,6 @@
 
 import InboxCoreUI
 import SwiftUI
-import proton_app_uniffi
 
 enum MessageExpiryValidationResult: Equatable {
     case proceed

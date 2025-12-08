@@ -193,12 +193,6 @@ extension HtmlBodyEditorController {
     }
 }
 
-private class WKWebViewWithNoAccessoryView: WKWebView {
-    override var inputAccessoryView: UIView? {
-        return nil
-    }
-}
-
 private final actor BodyInitialFocusState {
     enum State {
         case bodyNotLoaded

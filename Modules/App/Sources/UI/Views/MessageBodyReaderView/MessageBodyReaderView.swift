@@ -18,7 +18,6 @@
 import InboxCore
 import SwiftUI
 import WebKit
-import proton_app_uniffi
 
 extension EnvironmentValues {
     @Entry var forceLightModeInMessageBody: Bool = false
