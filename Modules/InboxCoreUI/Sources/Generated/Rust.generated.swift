@@ -1084,16 +1084,6 @@ public extension MailUserSessionWatchFeatureFlagsStreamResult {
         }
     }
 }
-public extension MailUserSessionWatchLabelsResult {
-    func get() throws(ProtonError) -> WatchHandle {
-        switch self {
-        case .ok(let value):
-            value
-        case .error(let error):
-            throw error
-        }
-    }
-}
 public extension MailUserSessionWatchUpsellEligibilityResult {
     func get() throws(ProtonError) -> WatchHandle {
         switch self {

@@ -164,16 +164,6 @@ public extension ConversationResult {
         }
     }
 }
-public extension ConversationsForLabelResult {
-    func get() throws(ActionError) -> [Conversation] {
-        switch self {
-        case .ok(let value):
-            value
-        case .error(let error):
-            throw error
-        }
-    }
-}
 public extension DecryptPushNotificationResult {
     func get() throws(ActionError) -> DecryptedPushNotification {
         switch self {
@@ -234,16 +224,6 @@ public extension LabelMessagesAsResult {
         }
     }
 }
-public extension LoadConversationResult {
-    func get() throws(ActionError) -> Conversation? {
-        switch self {
-        case .ok(let value):
-            value
-        case .error(let error):
-            throw error
-        }
-    }
-}
 public extension MailSessionRegisterDeviceTaskResult {
     func get() throws(ActionError) -> RegisterDeviceTaskHandle {
         switch self {
@@ -286,26 +266,6 @@ public extension MailboxGetAttachmentResult {
 }
 public extension MessageResult {
     func get() throws(ActionError) -> Message? {
-        switch self {
-        case .ok(let value):
-            value
-        case .error(let error):
-            throw error
-        }
-    }
-}
-public extension MessagesForConversationResult {
-    func get() throws(ActionError) -> [Message] {
-        switch self {
-        case .ok(let value):
-            value
-        case .error(let error):
-            throw error
-        }
-    }
-}
-public extension MessagesForLabelResult {
-    func get() throws(ActionError) -> [Message] {
         switch self {
         case .ok(let value):
             value
@@ -474,16 +434,6 @@ public extension ScrollerSearchResult {
         }
     }
 }
-public extension SearchForMessagesResult {
-    func get() throws(ActionError) -> [Message] {
-        switch self {
-        case .ok(let value):
-            value
-        case .error(let error):
-            throw error
-        }
-    }
-}
 public extension SidebarAllCustomFoldersResult {
     func get() throws(ActionError) -> [SidebarCustomFolder] {
         switch self {
@@ -644,16 +594,6 @@ public extension SignupFlowSubmitRecoveryPhoneResult {
         }
     }
 }
-public extension TestStubMessageBodyResult {
-    func get() throws(ActionError) -> DecryptedMessage {
-        switch self {
-        case .ok(let value):
-            value
-        case .error(let error):
-            throw error
-        }
-    }
-}
 public extension UndoUndoResult {
     func get() throws(ActionError) {
         switch self {
@@ -669,36 +609,6 @@ public extension VoidActionResult {
         switch self {
         case .ok:
             break
-        case .error(let error):
-            throw error
-        }
-    }
-}
-public extension WatchAvailableLabelAsActionsForConversationsResult {
-    func get() throws(ActionError) -> WatchedLabelAs {
-        switch self {
-        case .ok(let value):
-            value
-        case .error(let error):
-            throw error
-        }
-    }
-}
-public extension WatchAvailableLabelAsActionsForMessagesResult {
-    func get() throws(ActionError) -> WatchedLabelAs {
-        switch self {
-        case .ok(let value):
-            value
-        case .error(let error):
-            throw error
-        }
-    }
-}
-public extension WatchAvailableMoveToActionsResult {
-    func get() throws(ActionError) -> WatchHandle {
-        switch self {
-        case .ok(let value):
-            value
         case .error(let error):
             throw error
         }
@@ -724,28 +634,8 @@ public extension WatchConversationResult {
         }
     }
 }
-public extension WatchConversationsForLabelResult {
-    func get() throws(ActionError) -> WatchedConversations {
-        switch self {
-        case .ok(let value):
-            value
-        case .error(let error):
-            throw error
-        }
-    }
-}
 public extension WatchMessageResult {
     func get() throws(ActionError) -> WatchedMessage? {
-        switch self {
-        case .ok(let value):
-            value
-        case .error(let error):
-            throw error
-        }
-    }
-}
-public extension WatchMessagesForLabelResult {
-    func get() throws(ActionError) -> WatchedMessages {
         switch self {
         case .ok(let value):
             value
