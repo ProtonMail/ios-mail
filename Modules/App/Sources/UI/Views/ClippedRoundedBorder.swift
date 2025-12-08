@@ -23,16 +23,10 @@ extension View {
     }
 }
 
-struct ClippedRoundedBorder: ViewModifier {
-    private let cornerRadius: CGFloat
-    private let lineColor: Color
-    private let lineWidth: CGFloat
-
-    init(cornerRadius: CGFloat, lineColor: Color, lineWidth: CGFloat) {
-        self.cornerRadius = cornerRadius
-        self.lineWidth = lineWidth
-        self.lineColor = lineColor
-    }
+private struct ClippedRoundedBorder: ViewModifier {
+    let cornerRadius: CGFloat
+    let lineColor: Color
+    let lineWidth: CGFloat
 
     func body(content: Content) -> some View {
         content

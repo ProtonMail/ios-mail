@@ -29,7 +29,8 @@ struct AppIconScreen: View {
             wrappedValue: .init(
                 state: .initial(appIcon: appIconConfigurator.currentIcon),
                 appIconConfigurator: appIconConfigurator
-            ))
+            )
+        )
     }
 
     var body: some View {
