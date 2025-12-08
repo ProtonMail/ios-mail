@@ -684,8 +684,7 @@ extension ConversationDetailModel {
         case .mailboxItem(let item, _):
             switch item.type {
             case .conversation:
-                logMessageIdToOpen()
-                messageID = messagesLiveQuery?.messageIdToOpen
+                messageID = messagesLiveQuery?.focusedMessageId
             case .message:
                 messageID = item.id
             }
@@ -699,16 +698,6 @@ extension ConversationDetailModel {
             }
         }
         return messageID
-    }
-
-    private func logMessageIdToOpen() {
-        let value: String
-        if let messageIdToOpen = messagesLiveQuery?.messageIdToOpen {
-            value = String(messageIdToOpen.value)
-        } else {
-            value = "n/a"
-        }
-        AppLogger.logTemporarily(message: "messageIdToOpen = \(value)", category: .conversationDetail)
     }
 
     private struct LiveQueryValues {
