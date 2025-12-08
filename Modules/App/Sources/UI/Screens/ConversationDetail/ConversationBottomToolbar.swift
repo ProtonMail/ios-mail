@@ -43,8 +43,6 @@ extension View {
 }
 
 struct ConversationToolbarModifier: ViewModifier {
-    @EnvironmentObject private var toastStateStore: ToastStateStore
-
     private let actions: ConversationToolbarActions?
     private let mailbox: () -> Mailbox
     private let messageAppearanceOverrideStore: MessageAppearanceOverrideStore

@@ -173,7 +173,6 @@ extension IntroductionViewModifier {
     struct ViewState {
         var isOnboardingPresented = false
         var isNotificationPromptPresented = false
-        var notificationPresented: NotificationAuthorizationRequestTrigger?
         var upsellPresented: UpsellScreenModel?
         var onboardingUpsellPresented: OnboardingUpsellScreenModel?
     }

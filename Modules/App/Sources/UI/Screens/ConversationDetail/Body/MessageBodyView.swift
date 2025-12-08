@@ -37,7 +37,6 @@ struct MessageBodyView: View {
     @Binding var isBodyLoaded: Bool
     @Binding var attachmentIDToOpen: ID?
     @State var bodyContentHeight: CGFloat = .zero
-    @State var eventBanners: OrderedSet<EventDrivenMessageBanner> = []
 
     init(
         messageID: ID,

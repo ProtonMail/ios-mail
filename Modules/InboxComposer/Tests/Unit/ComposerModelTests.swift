@@ -1021,3 +1021,55 @@ private extension MessageExpirationValidatorActions {
         })
     }
 }
+
+private extension MockDraft {
+    static private var defaultSender: String { "old_sender@example.com" }
+    static private var defaultSubject: String { "Test Subject" }
+    static private var defaultContent: ComposerContent { .init(head: "Test Head", body: "Test Body") }
+    static private var defaultRecipients: [ComposerRecipient] {
+        [ComposerRecipient.single(.init(displayName: "", address: "inbox1@pm.me", validState: .valid))]
+    }
+    static private var defaultAttachments: [DraftAttachment] {
+        let mockMimeType = AttachmentMimeType(mime: "pdf", category: .pdf)
+        let mockAttachment = AttachmentMetadata(
+            id: .random(),
+            disposition: .attachment,
+            mimeType: mockMimeType,
+            name: "attachment_1",
+            size: 123456,
+            isListable: false
+        )
+        return [DraftAttachment(state: .uploaded, attachment: mockAttachment, stateModifiedTimestamp: 1742829536)]
+    }
+
+    static var defaultMockDraft: MockDraft {
+        let attachmentList = MockAttachmentList()
+        attachmentList.mockAttachments = defaultAttachments
+        return MockDraft(
+            mockContent: defaultContent,
+            mockSender: defaultSender,
+            mockSubject: defaultSubject,
+            mockToRecipientList: .init(addedRecipients: defaultRecipients),
+            mockCcRecipientList: .init(),
+            mockBccRecipientList: .init(),
+            mockAttachmentList: attachmentList
+        )
+    }
+    static func makeWithRecipients(_ recipients: [ComposerRecipient], group: RecipientGroupType) -> MockDraft {
+        let draft: MockDraft = .emptyMockDraft
+        switch group {
+        case .to: draft.mockToRecipientList = .init(addedRecipients: recipients)
+        case .cc: draft.mockCcRecipientList = .init(addedRecipients: recipients)
+        case .bcc: draft.mockBccRecipientList = .init(addedRecipients: recipients)
+        }
+        return draft
+    }
+
+    static func makeWithAttachments(_ attachments: [DraftAttachment]) -> MockDraft {
+        let draft: MockDraft = .emptyMockDraft
+        let mockAttachmentList = MockAttachmentList()
+        mockAttachmentList.mockAttachments = attachments
+        draft.mockAttachmentList = mockAttachmentList
+        return draft
+    }
+}

@@ -18,7 +18,6 @@
 import Combine
 import Foundation
 import InboxComposer
-import InboxCoreUI
 import ProtonUIFoundations
 
 import enum proton_app_uniffi.DraftSendFailure
