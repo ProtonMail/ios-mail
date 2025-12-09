@@ -26,6 +26,7 @@ import ProtonUIFoundations
 import SwiftUI
 import proton_app_uniffi
 
+import struct StoreKit.RequestReviewAction
 import class UIKit.UIImage
 
 /// Source of truth for the Mailbox view showing mailbox items (conversations or messages).
@@ -43,6 +44,7 @@ final class MailboxModel: ObservableObject {
     let draftPresenter: DraftPresenter
     let loadingBarPresenter = LoadingBarPresenter()
     let goToNextConversationNotifier = GoToNextPageNotifier()
+    private let ratingBooster: RatingBooster
 
     private var messageScroller: MessageScroller?
     private var conversationScroller: ConversationScroller?
@@ -84,8 +86,11 @@ final class MailboxModel: ObservableObject {
         return mailboxOfSpecificSystemFolder || selectedMailbox.isCustomLabel
     }
 
+    static let estimatedBackNavigationDuration = Duration.seconds(0.25)
+
     init(
         mailSettingsLiveQuery: MailSettingLiveQuerying,
+        userSession: MailUserSession,
         appRoute: AppRouteState,
         draftPresenter: DraftPresenter,
         dependencies: Dependencies = .init()
@@ -96,10 +101,13 @@ final class MailboxModel: ObservableObject {
         self.draftPresenter = draftPresenter
         self.selectedMailbox = appRoute.route.selectedMailbox!
         self.dependencies = dependencies
+
         self.accountManagerCoordinator = AccountManagerCoordinator(
             appContext: dependencies.appContext.mailSession,
             accountAuthCoordinator: dependencies.appContext.accountAuthCoordinator
         )
+
+        ratingBooster = .init(userSession: userSession)
 
         setUpBindings()
     }
@@ -211,7 +219,7 @@ extension MailboxModel {
         Task {
             if !state.navigationPath.isEmpty {
                 state.navigationPath.removeLast(state.navigationPath.count)
-                try await Task.sleep(for: .seconds(0.25))
+                try await Task.sleep(for: Self.estimatedBackNavigationDuration)
             }
 
             state.navigationPath.append(openedItem)
@@ -772,6 +780,30 @@ extension MailboxModel {
     private func goBackToMailbox() {
         guard !state.navigationPath.isEmpty else { return }
         state.navigationPath.removeLast()
+    }
+}
+
+// MARK: Rating Booster
+
+extension MailboxModel {
+    func setupRatingBooster(requestReview: RequestReviewAction, toastStateStore: ToastStateStore) {
+        ratingBooster.requestReview = {
+            #if QA
+                toastStateStore.present(toast: .information(message: "Requesting review now"))
+            #else
+                requestReview()
+            #endif
+        }
+    }
+
+    func navigationPathChanged(_: NavigationPath, newValue: NavigationPath) {
+        Task {
+            do {
+                try await ratingBooster.feed(navigationPath: newValue)
+            } catch {
+                AppLogger.log(error: error)
+            }
+        }
     }
 }
 

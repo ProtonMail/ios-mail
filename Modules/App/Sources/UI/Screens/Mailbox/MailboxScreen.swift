@@ -27,6 +27,7 @@ import proton_app_uniffi
 struct MailboxScreen: View {
     @EnvironmentObject private var appUIStateStore: AppUIStateStore
     @EnvironmentObject private var toastStateStore: ToastStateStore
+    @Environment(\.requestReview) private var requestReview
     @StateObject private var mailboxModel: MailboxModel
     @State private var isComposeButtonExpanded: Bool = true
     @State private var isAccountManagerPresented = false
@@ -42,6 +43,7 @@ struct MailboxScreen: View {
         _mailboxModel = StateObject(
             wrappedValue: MailboxModel(
                 mailSettingsLiveQuery: mailSettingsLiveQuery,
+                userSession: userSession,
                 appRoute: appRoute,
                 draftPresenter: draftPresenter
             )
@@ -91,6 +93,10 @@ struct MailboxScreen: View {
                     messageSeedDestination(seed: seed)
                 }
         }
+        .onLoad {
+            mailboxModel.setupRatingBooster(requestReview: requestReview, toastStateStore: toastStateStore)
+        }
+        .onChange(of: mailboxModel.state.navigationPath, initial: true, mailboxModel.navigationPathChanged)
         .onChange(of: mailboxModel.toast) { showToast($1) }
         .accessibilityIdentifier(MailboxScreenIdentifiers.rootItem)
         .accessibilityElement(children: .contain)

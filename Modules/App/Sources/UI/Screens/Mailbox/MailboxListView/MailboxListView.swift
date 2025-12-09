@@ -126,6 +126,7 @@ extension MailboxListView {
         isListAtTop: .constant(true),
         model: .init(
             mailSettingsLiveQuery: MailSettingsLiveQueryPreviewDummy(),
+            userSession: .dummy,
             appRoute: route,
             draftPresenter: .dummy()
         ),
