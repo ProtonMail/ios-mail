@@ -103,9 +103,8 @@ struct SwipeableView<Content: View>: View {
                 .onGeometryChange(for: CGFloat.self, of: \.size.width, action: { value in rowWidth = value })
                 .swipeActionGesture(
                     isEnabled: isEnabled && !isFinishingSwipeWithAnimation,
-                    DragGesture(minimumDistance: 4)
-                        .onChanged(onDragChanged)
-                        .onEnded(onDragEnded)
+                    onChanged: onDragChanged,
+                    onEnded: onDragEnded
                 )
                 .onChange(of: isSwiping) { _, isSwiping in
                     isScrollingDisabled = isSwiping
@@ -126,10 +125,10 @@ struct SwipeableView<Content: View>: View {
             .background(action.model.color.shadow(DS.Shadows.liftedFull.innerShadowStyle))
     }
 
-    private func onDragChanged(_ value: DragGesture.Value) {
+    private func onDragChanged(_ translation: CGPoint) {
         let lockSlop: CGFloat = 10
-        let dx = value.translation.width
-        let dy = value.translation.height
+        let dx = translation.x
+        let dy = translation.y
 
         if axisLock == .none {
             if abs(dx) > abs(dy) + lockSlop {
@@ -161,7 +160,7 @@ struct SwipeableView<Content: View>: View {
         }
     }
 
-    private func onDragEnded(_: DragGesture.Value) {
+    private func onDragEnded() {
         defer { axisLock = .none }
 
         guard axisLock == .horizontal else { return }
@@ -213,24 +212,32 @@ struct SwipeableView<Content: View>: View {
     }
 }
 
-private struct SwipeActionGesture<SwipeGesture: Gesture>: ViewModifier {
+private struct SwipeActionGesture: ViewModifier {
     private let isEnabled: Bool
-    private let swipeGesture: SwipeGesture
+    private let onChanged: (CGPoint) -> Void
+    private let onEnded: () -> Void
 
-    init(isEnabled: Bool, swipeGesture: SwipeGesture) {
+    init(isEnabled: Bool, onChanged: @escaping (CGPoint) -> Void, onEnded: @escaping () -> Void) {
         self.isEnabled = isEnabled
-        self.swipeGesture = swipeGesture
+        self.onChanged = onChanged
+        self.onEnded = onEnded
     }
 
     func body(content: Content) -> some View {
-        if isEnabled {
-            if #available(iOS 18, *) {
-                content.simultaneousGesture(swipeGesture)
+        if #available(iOS 18, *) {
+            if isEnabled {
+                content.gesture(PanGestureRecognizer(onChanged: onChanged, onEnded: onEnded))
             } else {
-                content.gesture(swipeGesture)
+                content
             }
         } else {
-            content
+            content.gesture(
+                DragGesture(minimumDistance: 4)
+                    .map(\.translation)
+                    .onChanged { translation in onChanged(.init(x: translation.width, y: translation.height)) }
+                    .onEnded { _ in onEnded() },
+                isEnabled: isEnabled
+            )
         }
     }
 }
@@ -250,8 +257,8 @@ private struct AnimatableXTransformModifier: ViewModifier, Animatable {
 }
 
 private extension View {
-    func swipeActionGesture<SwipeGesture: Gesture>(isEnabled: Bool, _ gesture: SwipeGesture) -> some View {
-        modifier(SwipeActionGesture(isEnabled: isEnabled, swipeGesture: gesture))
+    func swipeActionGesture(isEnabled: Bool, onChanged: @escaping (CGPoint) -> Void, onEnded: @escaping () -> Void) -> some View {
+        modifier(SwipeActionGesture(isEnabled: isEnabled, onChanged: onChanged, onEnded: onEnded))
     }
 
     func animatableXTransform(x: CGFloat = 0) -> some View {

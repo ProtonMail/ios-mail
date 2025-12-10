@@ -7,7 +7,7 @@ Copyright (c) 2024 Proton Technologies AG
   - https://gitlab.protontech.ch/apple/inbox/mail
   - https://gitlab.protontech.ch/apple/shared/et-protoncore
   - https://gitlab.protontech.ch/apple/shared/ProtonUIFoundations
-2. Install Xcode (>=16.3)
+2. Install Xcode (>=26.2)
 3. Clone the repository
 4. Add a `.env` file with necessary secrets. The file is stored in a shared Pass vault. Request access to the team.
 5. Run `./scripts/setup.sh` to generate the xcodeproj file.
@@ -24,7 +24,7 @@ xcodebuild -resolvePackageDependencies -project ProtonMail.xcodeproj
 ## UI Tests setup instructions
 1. Clone the mocks repository locally https://gitlab.protontech.ch/android/mail/mail-apps-network-mocks. It's recommended to clone the mocks repository into the same parent directory as this project.
 2. From the Mail iOS App project root, run `./scripts/uitests/setup-mock-network-assets.sh setup-local`
-3. Follow the instructions and regenerate the project with `xcodegen`. 
+3. Follow the instructions and regenerate the project with `xcodegen`.
 
 ## Debug helpers
 

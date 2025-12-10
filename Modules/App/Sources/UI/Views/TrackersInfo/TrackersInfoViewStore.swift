@@ -18,7 +18,6 @@
 import Foundation
 import InboxCoreUI
 import SwiftUI
-import SwiftUICore
 
 @MainActor
 final class TrackersInfoViewStore: StateStore {
