@@ -1138,6 +1138,12 @@
             "state" : "translated",
             "value" : "Необхідно, щоб зберігати файли у вашій програмі «Фото»."
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "需要将文件保存到您的相册中。"
+          }
         }
       }
     }

@@ -1343,6 +1343,12 @@
             "state" : "translated",
             "value" : "Неправильний PIN-код. Спробуйте ще раз."
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "PIN 不正确。请重试。"
+          }
         }
       }
     },

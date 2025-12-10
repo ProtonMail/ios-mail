@@ -165,6 +165,12 @@
             "state" : "translated",
             "value" : "%@ не може бути використано для надсилання повідомлень"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ 无法用于发送邮件"
+          }
         }
       }
     },
@@ -331,6 +337,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ вимкнено. Воно не може надсилати повідомлення"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ 已被禁用，无法发送邮件"
           }
         }
       }
@@ -689,6 +701,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Для використання %@ потрібен платний тарифний план"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "需要订阅付费计划才能使用 %@"
           }
         }
       }
@@ -1436,6 +1454,12 @@
             "state" : "translated",
             "value" : "Додайте пароль, щоб використовувати термін дії"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "添加密码以设置邮件有效期"
+          }
         }
       }
     },
@@ -1614,6 +1638,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Цю адресу не можна використовувати для надсилання повідомлень"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "地址无法用于发送邮件"
           }
         }
       }
@@ -1972,6 +2002,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Адреса недоступна"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "地址不可用"
           }
         }
       }
@@ -2343,6 +2379,12 @@
             "state" : "translated",
             "value" : "Адресу не знайдено. Додайте її ще раз або повторно відкрийте чернетку."
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "地址未找到，请重新添加或再次打开草稿。"
+          }
         }
       }
     },
@@ -2521,6 +2563,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Адресу не розпізнано. Перевірте адресу."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "无法识别地址，请检查地址。"
           }
         }
       }
@@ -3083,6 +3131,12 @@
             "state" : "translated",
             "value" : "Через 3 дні"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "3 天后"
+          }
         }
       }
     },
@@ -3261,6 +3315,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Вкладення відсутнє. Завантажте його ще раз."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "附件缺失，请重新上传。"
           }
         }
       }
@@ -3817,6 +3877,12 @@
             "state" : "translated",
             "value" : "Вкладення завеликі. Розмір вкладення не має перевищувати 25 МБ."
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "附件过大，附件请保持在 25MB 以下。"
+          }
         }
       }
     },
@@ -4156,6 +4222,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Неможливо вивантажити вкладення, оскільки ваше сховище Proton Mail заповнене. Звільніть місце або покращте свій тариф."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "无法上传附件，因为您的 Proton Mail 存储空间已满，请清理空间或升级套餐。"
           }
         }
       }
@@ -4526,6 +4598,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Вимкнена адреса електронної пошти. Переконайтеся, що адреса дійсна та активна."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "该邮箱地址被禁用，请确认地址有效且处于活动状态。"
           }
         }
       }
@@ -5273,6 +5351,12 @@
             "state" : "translated",
             "value" : "Чернетку не знайдено. Можливо, ви її відхилили."
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "草稿未找到，您可能已将其丢弃。"
+          }
         }
       }
     },
@@ -5451,6 +5535,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Чернетку не знайдено. Можливо, ви її вже надіслали."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "草稿未找到，您可能已将其发送。"
           }
         }
       }
@@ -5822,6 +5912,12 @@
             "state" : "translated",
             "value" : "Чернетку не відхилено. Спробуйте відхилити її ще раз."
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "草稿未被丢弃，请再试一次。"
+          }
         }
       }
     },
@@ -6192,6 +6288,12 @@
             "state" : "translated",
             "value" : "Термін дії не може бути в минулому."
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "过期时间不能早于当前时间。"
+          }
         }
       }
     },
@@ -6371,6 +6473,12 @@
             "state" : "translated",
             "value" : "Термін дії занадто далекий у майбутньому."
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "过期时间设置得过远。"
+          }
         }
       }
     },
@@ -6549,6 +6657,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Не вдалося розшифрувати зовнішній пароль шифрування"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "无法解密外部加密密码"
           }
         }
       }
@@ -7493,6 +7607,12 @@
             "state" : "translated",
             "value" : "Як працює термін дії?"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "过期功能是如何工作的？"
+          }
         }
       }
     },
@@ -7863,6 +7983,12 @@
             "state" : "translated",
             "value" : "Недійсна адреса електронної пошти. Перевірте адресу та спробуйте ще раз."
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "无效的邮箱地址，请检查后重试。"
+          }
         }
       }
     },
@@ -8041,6 +8167,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Недійсна адреса електронної пошти. Перевірте адресу."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "无效的邮箱地址，请检查地址。"
           }
         }
       }
@@ -8406,6 +8538,12 @@
             "state" : "translated",
             "value" : "Проблема з цією адресою електронної пошти. Перевірте адресу або спробуйте пізніше."
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "该邮箱地址存在问题，请检查地址或稍后再试。"
+          }
         }
       }
     },
@@ -8584,6 +8722,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Текст повідомлення не отримано. Закрийте та повторно відкрийте чернетку."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "未能获取邮件正文，请关闭并重新打开草稿。"
           }
         }
       }
@@ -8955,6 +9099,12 @@
             "state" : "translated",
             "value" : "Термін дії повідомлення надто короткий."
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "邮件过期时间设置过短。"
+          }
         }
       }
     },
@@ -9134,6 +9284,12 @@
             "state" : "translated",
             "value" : "Термін дії повідомлення"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "邮件已过期"
+          }
         }
       }
     },
@@ -9294,6 +9450,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Повідомлення занадто велике для надсилання. Зменште розмір ваших вкладень."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "邮件过大无法发送，请减小附件大小。"
           }
         }
       }
@@ -9473,6 +9635,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Повідомлення не знайдено. Можливо, ви його надіслали або відхилили."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "邮件未找到，您可能已发送或丢弃了它。"
           }
         }
       }
@@ -10035,6 +10203,12 @@
             "state" : "translated",
             "value" : "Повідомлення вже надіслано"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "邮件已发送"
+          }
         }
       }
     },
@@ -10213,6 +10387,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Повідомлення не знайдено на сервері"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "服务器上未找到该邮件"
           }
         }
       }
@@ -10584,6 +10764,12 @@
             "state" : "translated",
             "value" : "Повинно бути від 8 до 21 символів"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "密码长度必须为 8—21 个字符"
+          }
         }
       }
     },
@@ -10930,6 +11116,12 @@
             "state" : "translated",
             "value" : "Жоден з отримувачів типово не підтримує термін дії. Щоб увімкнути його для отримувачів, які не є користувачами Proton Mail, додайте пароль."
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "默认情况下，收件人均不支持邮件过期功能。如需对非 Proton Mail 用户设置过期时间，请添加密码。"
+          }
         }
       }
     },
@@ -11108,6 +11300,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "У конкретну дату"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "在指定日期"
           }
         }
       }
@@ -11288,6 +11486,12 @@
             "state" : "translated",
             "value" : "Підказка для пароля (необов'язково)"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "密码提示（选填）"
+          }
         }
       }
     },
@@ -11466,6 +11670,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Пароль занадто короткий."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "密码过短。"
           }
         }
       }
@@ -12398,6 +12608,12 @@
             "state" : "translated",
             "value" : "Проблема з шифруванням вкладення. Завантажте його ще раз."
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "加密附件失败，请重新上传。"
+          }
         }
       }
     },
@@ -12577,6 +12793,12 @@
             "state" : "translated",
             "value" : "Проблема з виконанням цієї дії. Повторіть спробу."
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "执行该操作失败，请重试。"
+          }
         }
       }
     },
@@ -12755,6 +12977,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Проблема з надсиланням повідомлення. Повторіть спробу."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "发送邮件失败，请重试。"
           }
         }
       }
@@ -13484,6 +13712,12 @@
             "state" : "translated",
             "value" : "Вилучено дублікати одержувачів: %@"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已移除重复收件人：%@"
+          }
         }
       }
     },
@@ -13663,6 +13897,12 @@
             "state" : "translated",
             "value" : "Повторна спроба неможлива. Вкладення завантажується або вже завантажене."
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "无法重试，附件正在上传或已上传。"
+          }
         }
       }
     },
@@ -13804,7 +14044,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Trimitere programată"
+            "value" : "Planificare trimitere"
           }
         },
         "ru" : {
@@ -13995,7 +14235,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ora de trimitere programată este în trecut. Accesați „Ciorne” pentru a-l trimite sau a-l reprograma."
+            "value" : "Ora de trimitere planificată este în trecut. Accesați „Ciorne” pentru a-l trimite sau a-l replanifica."
           }
         },
         "ru" : {
@@ -14032,6 +14272,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Запланований час надсилання вже минув. Перейдіть до чернеток, щоб надіслати або перепланувати повідомлення."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已过预定的发送时间，请前往草稿箱发送或设置新时间。"
           }
         }
       }
@@ -14174,7 +14420,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Se programează mesajul..."
+            "value" : "Se planifică mesajul..."
           }
         },
         "ru" : {
@@ -15161,6 +15407,12 @@
             "state" : "translated",
             "value" : "Встановіть пароль для шифрування цього повідомлення для користувачів, які не використовують Proton Mail."
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "设置密码以加密此消息供非 Proton Mail 用户使用。"
+          }
         }
       }
     },
@@ -15339,6 +15591,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Встановити термін дії повідомлення"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "设置邮件过期时间"
           }
         }
       }
@@ -15709,6 +15967,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Деякі одержувачі (%@) не підтримують термін дії за замовчуванням. Додайте пароль, щоб увімкнути термін дії для одержувачів, які не використовують Proton Mail."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "默认情况下，部分收件人（%@）不支持邮件过期功能。如需对非 Proton Mail 用户设置过期时间，请添加密码。"
           }
         }
       }
@@ -17638,6 +17902,12 @@
             "value" : "Il y a une limite de 25 Mo pour les pièces jointes par e-mail, images comprises, et %lld pièces jointes n'ont pas pu être ajoutées. Envoyez-les dans des e-mails séparés ou partagez-les avec Proton Drive."
           }
         },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Az e-mailek mellékleteinek mérete legfeljebb 25 MB lehet, beleértve a beágyazott képeket is, és a %lld mellékletek nem adhatók hozzá. Küldje el őket külön e-mailekben, vagy ossza meg őket a Proton Drive segítségével."
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -17690,6 +17960,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "На вкладення в кожному листі встановлено обмеження 25 МБ, включаючи вбудовані зображення, і %lld вкладень не можна додати. Надішліть їх окремими листами або поділіться через Proton Drive."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "每封邮件的附件大小限制为 25 MB，当前有 %lld 个附件无法添加。您可以将这些文件分开发送，或通过 Proton Drive 进行分享。"
           }
         }
       }
@@ -17763,6 +18039,12 @@
             "value" : "Il y a une limite de 25 Mo pour les pièces jointes par e-mail, y compris les images dans le message. Envoyez-les dans des e-mails séparés ou partagez-les avec Proton Drive."
           }
         },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Az e-mailek mellékletei, beleértve a beágyazott képeket is, 25 MB-osak lehetnek. Küldje el őket külön e-mailekben, vagy ossza meg őket a Proton Drive segítségével."
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -17815,6 +18097,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Існує обмеження 25 МБ на вкладення для кожного листа, включно з вбудованими зображеннями. Надішліть їх в окремих листах або поділіться ними через Proton Drive."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "每封邮件的附件大小限制为 25 MB。您可以将这些文件分开发送，或通过 Proton Drive 进行分享。"
           }
         }
       }
@@ -18944,6 +19232,12 @@
             "state" : "translated",
             "value" : "Забагато вкладень. Надішліть їх у кількох листах."
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "附件过多，请分成多封邮件发送。"
+          }
         }
       }
     },
@@ -19123,6 +19417,12 @@
             "state" : "translated",
             "value" : "Не вдалося підтвердити, що всі одержувачі використовують Proton Mail. Лише адреси Proton підтримують термін дії повідомлення. У цьому випадку радимо натомість додати пароль."
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "无法确认所有收件人均使用 Proton Mail，只有 Proton 的邮箱地址支持邮件过期功能。因此，我们建议改为添加密码。"
+          }
         }
       }
     },
@@ -19195,6 +19495,12 @@
             "value" : "Vous avez atteint la limite de pièces jointes, y compris avec les images intégrées. Une ou plusieurs pièces jointes n'ont pas pu être ajoutées. Envoyez-les dans des e-mails séparés ou partagez-les avec Proton Drive."
           }
         },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Elérte a mellékletek, beleértve a beágyazott képeket is, maximális számát, ezért 1 vagy több melléklet nem kerülhetett hozzáadásra. Küldje el őket külön e-mailekben, vagy ossza meg őket a Proton Drive segítségével."
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -19247,6 +19553,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ви досягли ліміту вкладень, включаючи вбудовані зображення. Одне або більше вкладень не вдалося додати. Надішліть їх окремими листами або поділіться через Proton Drive."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "你已达到附件数量上限（包括内联图片），1 个或多个附件未能添加。请分成多封邮件发送或使用 Proton Drive 分享。"
           }
         }
       }
@@ -19389,7 +19701,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ați atins limita de mesaje programate."
+            "value" : "Ați atins limita de mesaje planificate."
           }
         },
         "ru" : {
@@ -19426,6 +19738,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ви досягли ліміту запланованих повідомлень."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "您已达到定时邮件的上限。"
           }
         }
       }

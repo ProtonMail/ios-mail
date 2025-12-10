@@ -367,6 +367,12 @@
             "state" : "translated",
             "value" : "%lld"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld"
+          }
         }
       }
     },
@@ -1674,6 +1680,12 @@
             "state" : "translated",
             "value" : "Оберіть передплату"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "选择套餐"
+          }
         }
       }
     },
@@ -2830,6 +2842,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Les réductions sont établies à partir de la tarification mensuelle standard. Il se renouvelle automatiquement à %1$@ / %2$@ jusqu'à annulation."
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A kedvezmények a normál havi árakon alapulnak. A szolgáltatás %1$@ /%2$@ áron automatikusan megújul, amíg le nem mondják."
           }
         },
         "id" : {
@@ -4300,6 +4318,12 @@
             "value" : "seulement %@ /mois"
           }
         },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "csak %@ /hó"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5258,7 +5282,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Programați acum, trimiteți mai târziu"
+            "value" : "Planificați acum, trimiteți mai târziu"
           }
         },
         "ru" : {

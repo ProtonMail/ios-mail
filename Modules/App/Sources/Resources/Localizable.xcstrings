@@ -2456,6 +2456,12 @@
             "value" : "Un nouveau foyer pour vos comptes"
           }
         },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Új hely a fiókjainak"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5756,7 +5762,129 @@
       }
     },
     "App icon" : {
-      "comment" : "Title shown on the app icon selection screen."
+      "comment" : "Title shown on the app icon selection screen.",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Значок праграмы"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Icona de l'aplicació"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ikona aplikace"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "App-ikon"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "App-Symbol"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Εικονίδιο εφαρμογής"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "App icon"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Icono de la aplicación"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ícono de la aplicación"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sovelluksen kuvake"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Icône de l'application"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "デフォルトのアプリアイコン"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "앱 아이콘"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "App-icoon"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ícone do aplicativo"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pictogramă aplicație"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ikona aplikácie"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ikona aplikacije"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Appikon"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uygulama simgesi"
+          }
+        }
+      }
     },
     "App Icon" : {
       "comment" : "Title of the button that allows the user to change the app's icon.",
@@ -9128,7 +9256,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nu se poate anula trimiterea programată. Mesajul a fost deja trimis."
+            "value" : "Nu se poate anula trimiterea planificată. Mesajul a fost deja trimis."
           }
         },
         "ru" : {
@@ -9313,7 +9441,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nu se poate anula trimiterea programată. Mesajul a fost înlăturat sau deja trimis."
+            "value" : "Nu se poate anula trimiterea planificată. Mesajul a fost înlăturat sau deja trimis."
           }
         },
         "ru" : {
@@ -9498,7 +9626,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nu se poate anula trimiterea programată. Mesajul nu a fost programat."
+            "value" : "Nu se poate anula trimiterea planificată. Mesajul nu a fost planificat."
           }
         },
         "ru" : {
@@ -15513,7 +15641,195 @@
       }
     },
     "Default" : {
-      "comment" : "Label shown when the default app icon is selected."
+      "comment" : "Label shown when the default app icon is selected.",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Прадвызначаны"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Per defecte"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Výchozí"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Standard"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Standard"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Προεπιλεγμένο"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Default"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Por defecto"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Por defecto"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oletus"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Par défaut"
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alapértelmezett"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bawaan"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Predefinito"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "既定"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ნაგულისხმევი"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "기본"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Standard"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Standaard"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Domyślny"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Predefinição"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Padrão"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Implicit"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "По умолчанию"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Predvolená"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Privzeto"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Standard"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Varsayılan"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Типовий"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "默认"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "預設值"
+          }
+        }
+      }
     },
     "Delete %lld messages" : {
       "comment" : "Title of alert displayed after delete permanently action tap.",
@@ -16712,10 +17028,254 @@
       }
     },
     "Discreet" : {
-      "comment" : "Label shown when a discreet app icon is selected."
+      "comment" : "Label shown when a discreet app icon is selected.",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Непрыкметны"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Discreta"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diskrétní"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diskret"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unauffällig"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Διακριτικό"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Discreet"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Discreto"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Discreto"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Huomaamaton"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Discret"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "目立ちにくい"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "숨김"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Onopvallend"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Discreto"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Discretă"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nenápadná"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diskretna"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diskret"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Göze çarpmayan"
+          }
+        }
+      }
     },
     "Discreet app icon" : {
-      "comment" : "Toggle label for enabling/disabling discreet app icon feature."
+      "comment" : "Toggle label for enabling/disabling discreet app icon feature.",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Непрыкметны значок праграмы"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Icona d'aplicació discreta"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diskrétní ikona aplikace"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diskret app-ikon"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unauffälliges App-Symbol"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Διακριτικό εικονίδιο εφαρμογής"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Discreet app icon"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ícono discreto de la aplicación"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ícono discreto de la aplicación"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Huomaamaton sovelluskuvake"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Icône d'application discrète"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "目立たないアプリアイコン"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "숨겨진 앱 아이콘"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Onopvallend app-icoon"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ícone discreto do aplicativo"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pictogramă discretă aplicație"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nenápadná ikona aplikácie"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diskretna ikona aplikacije"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diskret appikon"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Göze çarpmayan uygulama simgesi"
+          }
+        }
+      }
     },
     "Display" : {
       "comment" : "Action to display embedded images.",
@@ -18556,7 +19116,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Editare și reprogramare"
+            "value" : "Editare și replanificare"
           }
         },
         "ru" : {
@@ -20068,6 +20628,12 @@
             "state" : "translated",
             "value" : "Електронні листи від %@ більше не доставлятимуться і будуть остаточно видалені. Ви можете керувати заблокованими адресами електронної пошти в налаштуваннях."
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "将永久屏蔽并删除来自 %@ 的电子邮件。您可以在设置中管理被阻止的电子邮件地址。"
+          }
         }
       }
     },
@@ -20789,6 +21355,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Насолоджуйтесь зашифрованими повідомленнями, меншою кількістю спаму, захистом від шахрайства та блокуванням відстежувачів. Ласкаво просимо до приватності."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "在这里，加密传输已成常态，垃圾邮件大幅减少，钓鱼攻击无处遁形，追踪程序自动拦截。欢迎来到真正私密的空间。"
           }
         }
       }
@@ -21888,6 +22460,12 @@
             "state" : "translated",
             "value" : "Фокус у вас під рукою"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "高效聚焦，一触即达"
+          }
         }
       }
     },
@@ -22621,6 +23199,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Розпочати"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "立即体验"
           }
         }
       }
@@ -23714,6 +24298,12 @@
             "state" : "translated",
             "value" : "Неправильний PIN-код. Спробуйте ще раз."
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "PIN 不正确。请重试。"
+          }
         }
       }
     },
@@ -23893,6 +24483,12 @@
             "state" : "translated",
             "value" : "Проблема із завантаженням вашого вмісту. Спробуйте оновити сторінку або увійдіть ще раз."
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "加载内容时出现问题，请尝试刷新或重新登录。"
+          }
         }
       }
     },
@@ -24071,6 +24667,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Проблема із синхронізацією вашого вмісту. Перевірте з’єднання або увійдіть знову."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "同步内容时出现问题，请检查您的连接或重新登录。"
           }
         }
       }
@@ -24418,11 +25020,127 @@
             "state" : "translated",
             "value" : "Проблема з оновленням вашого облікового запису. Будь ласка, увійдіть знову."
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "更新账户时出现问题，请重新登录。"
+          }
         }
       }
     },
     "Keep the default Proton Mail icon, or disguise it with a more discreet one for extra privacy. Notifications will always show the Proton Mail name and icon. [Learn more...](https://proton.me/support/disguise-app-icon)" : {
-      "comment" : "Description text explaining the app icon feature and privacy implications."
+      "comment" : "Description text explaining the app icon feature and privacy implications.",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Пакіньце прадвызначаны значок Proton Mail або замаскіруйце яго больш непрыкметным для дадатковай прыватнасці. Апавяшчэнні заўсёды будуць паказваць назву і значок Proton Mail. [Даведацца больш...](https://proton.me/support/disguise-app-icon)"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conserveu la icona per defecte de Proton Mail, o dissimuleu-la amb una de més discreta per a una privacitat addicional. Les notificacions sempre mostraran el nom i la icona de Proton Mail. [Per saber-ne més...](https://proton.me/support/disguise-app-icon)"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ponechte výchozí ikonu aplikace Proton Mail nebo ji zamaskujte diskrétnější ikonou pro větší soukromí. Upozornění budou vždy zobrazovat název a ikonu Proton Mail. [Více informací...](https://proton.me/support/disguise-app-icon)"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Behold Proton Mails standardikon eller skift den ud med et mere diskret ikon for ekstra privatlivsbeskyttelse. Notifikationer vil altid vise Proton Mail-navnet og det tilhørende ikon. [Få mere at vide...](https://proton.me/support/disguise-app-icon)"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Behalten Sie das Standard-Symbol von Proton Mail bei oder ersetzen Sie es durch ein unauffälligeres Symbol, um Ihre Privatsphäre zusätzlich zu schützen. In Benachrichtigungen werden immer der Name und das Symbol von Proton Mail angezeigt. [Weitere Informationen ...](https://proton.me/support/disguise-app-icon)"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Διατηρήστε το προεπιλεγμένο εικονίδιο του Proton Mail, ή μεταμφιέστε το με ένα πιο διακριτικό για επιπλέον ιδιωτικότητα. Οι ειδοποιήσεις θα εμφανίζουν πάντα το όνομα και το εικονίδιο του Proton Mail. [Μάθετε περισσότερα...](https://proton.me/support/disguise-app-icon)"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keep the default Proton Mail icon, or disguise it with a more discreet one for extra privacy. Notifications will always show the Proton Mail name and icon. [Learn more...](https://proton.me/support/disguise-app-icon)"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mantén el icono predeterminado de Proton Mail, o camúflalo con uno más discreto para mayor privacidad. Las notificaciones siempre mostrarán el nombre y el icono de Proton Mail [Más información...](https://proton.me/support/disguise-app-icon)"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mantenga el icono predeterminado de Proton Mail, o camúflelo con uno más discreto para mayor privacidad. Las notificaciones siempre mostrarán el nombre y el icono de Proton Mail [Más información...](https://proton.me/support/disguise-app-icon)"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pidä Proton Mailin oletuskuvake tai vaihda se huomaamattomampaan kuvakkeeseen yksityisyyden suojaamiseksi. Ilmoitukset näyttävät aina Proton Mailin nimen ja kuvakkeen. [Lue lisää...]https://proton.me/support/disguise-app-icon"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conservez l'icône Proton Mail par défaut, ou déguisez-la avec une icône plus discrète pour plus de confidentialité. Les notifications afficheront toujours le nom et l'icône de Proton Mail. [En savoir plus...](https://proton.me/support/disguise-app-icon)"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "デフォルトのProton Mailアイコンを使用するか、プライバシー強化のために、より控えめなアイコンに変更することができます。通知には、常にProton Mailの名称とアイコンが表示されます。[より詳しく](https://proton.me/support/disguise-app-icon)"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "기본 Proton Mail 아이콘을 유지하거나, 추가 개인정보 보호를 위해 다른 숨김 아이콘으로 변경할 수 있습니다. 알림에는 항상 Proton Mail 이름과 아이콘이 보입니다. [더 알아보기...](https://proton.me/support/disguise-app-icon)"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mantenha o ícone padrão do Proton Mail ou disfarce-o com um mais discreto para privacidade extra. As notificações sempre mostrarão o nome e o ícone do Proton Mail. [Saiba mais...](https://proton.me/support/disguise-app-icon)"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Păstrați pictograma implicită Proton Mail sau camuflați-o cu una mai discretă pentru confidențialitate sporită. Notificările vor afișa întotdeauna numele și pictograma Proton Mail. [Detalii...](https://proton.me/support/disguise-app-icon)"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ponechajte predvolenú ikonu Proton Mail alebo ju zamaskujte diskrétnejšou pre väčšie súkromie. Notifikácie vždy zobrazia názov a ikonu Proton Mail. [Zistiť viac...](https://proton.me/support/disguise-app-icon)"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Obdržite privzeto ikono Proton Mail ali ga za dodatno zasebnost prikrijte z diskretnejšo. V obvestilih bosta vedno prikazana ime in ikona Proton Mail. [Več o tem ...](https://proton.me/support/disguise-app-icon)"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Varsayılan Proton Mail simgesini kullanmayı sürdürün ya da daha fazla gizlilik sağlamak için onu göze çarpmayan bir simgeyle değiştirin. Bildirimlerde her zaman Proton Mail adı ve simgesi görüntülenir. [Ayrıntılı bilgi alın...](https://proton.me/support/disguise-app-icon)"
+          }
+        }
+      }
     },
     "Label as…" : {
       "comment" : "Action title for labeling message/conversation in the action sheet.",
@@ -25364,6 +26082,12 @@
             "state" : "translated",
             "value" : "Панель інструментів списку"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "列表工具栏"
+          }
         }
       }
     },
@@ -25436,6 +26160,24 @@
             "value" : "Charger les images"
           }
         },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Képek betöltése"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Carica immagini"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "画像を読み込む"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -25494,6 +26236,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Завантажити зображення"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "加载图片"
           }
         }
       }
@@ -26025,6 +26773,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Підписку на розсилку скасовано"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "邮件列表已取消订阅"
           }
         },
         "zh-Hant" : {
@@ -29068,6 +29822,28 @@
               }
             }
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%#@arg1@"
+          },
+          "substitutions" : {
+            "arg1" : {
+              "argNum" : 1,
+              "formatSpecifier" : "lld",
+              "variations" : {
+                "plural" : {
+                  "other" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "邮件已归档。"
+                    }
+                  }
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -29222,6 +29998,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Панель інструментів повідомлення"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "邮件工具栏"
           }
         }
       }
@@ -29765,6 +30547,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Мобільний підпис"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "移动设备标识"
           }
         }
       }
@@ -31718,6 +32506,24 @@
             "value" : "Aucune adresse ne dispose de permissions d’envoi."
           }
         },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nincs email cím, küldési jogosultságokkal"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nessun indirizzo con autorizzazioni di invio"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "送信権限を持つアドレスがありません"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -31776,6 +32582,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Немає адреси з правами на відправлення"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "没有发送权限的地址"
           }
         }
       }
@@ -34804,6 +35616,12 @@
             "state" : "translated",
             "value" : "PIN-код не може перевищувати 21 цифру"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "PIN 不能超过 21 位数字"
+          }
         }
       }
     },
@@ -34982,6 +35800,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "PIN-код має містити від 4 до 21 цифри й складатися лише з чисел"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "PIN 必须为 4—21 位，且只能包含数字。"
           }
         }
       }
@@ -36439,6 +37263,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Читайте, пишіть та керуйте електронними листами, де б ви не були. Все синхронізується автоматично, щойно ви знову під'єднаєтеся до Інтернету."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "无论身处何地，皆可阅读、撰写与管理邮件。一旦重连网络，一切内容自动同步更新。"
           }
         }
       }
@@ -37950,6 +38780,12 @@
             "state" : "translated",
             "value" : "Скинути до початкових"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "重置为原始设置"
+          }
         }
       }
     },
@@ -38128,6 +38964,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Відновлює дії на панелі інструментів для перегляду повідомлень до їхніх початкових типових налаштувань."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "将邮件视图的工具栏操作恢复为原始默认设置。"
           }
         }
       }
@@ -38461,7 +39303,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Programate"
+            "value" : "Planificat"
           }
         },
         "ru" : {
@@ -40200,6 +41042,12 @@
             "state" : "translated",
             "value" : "Відправника заблоковано"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "发件人已屏蔽"
+          }
         }
       }
     },
@@ -41828,6 +42676,12 @@
             "state" : "translated",
             "value" : "Підписи"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "签名"
+          }
         }
       }
     },
@@ -42198,6 +43052,12 @@
             "state" : "translated",
             "value" : "Відкладення не можна застосувати до повідомлень у цьому розташуванні."
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "无法延后此位置的邮件。"
+          }
         }
       }
     },
@@ -42567,6 +43427,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Час відкладення не може бути в минулому."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "延后时间不能早于当前时间。"
           }
         }
       }
@@ -43404,6 +44270,24 @@
             "value" : "Certaines images n'ont pas pu être chargées avec la protection contre le suivi."
           }
         },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Néhány kép betöltése nem sikerült a követési védelemmel."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Impossibile caricare alcune immagini con la protezione di tracciamento."
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "トラッカー防止によって一部の画像は読み込めませんでした。"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -43462,6 +44346,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Деякі зображення не вдалося завантажити через захист від відстежувачів."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "由于追踪保护功能，部分图片未能加载。"
           }
         }
       }
@@ -44006,6 +44896,12 @@
             "state" : "translated",
             "value" : "Витрачайте менше часу на сортування і більше часу на роботу. Ваша тека «Вхідні» розроблена так, щоб полегшити навігацію, тому ви можете швидше знайти те, що вам потрібно."
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "少一分整理，多一分行动。收件箱经精心设计，浏览更轻松，助您快速抵达重要信息。"
+          }
         }
       }
     },
@@ -44548,6 +45444,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Залишайтеся на зв'язку, навіть офлайн"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "离线无忧，随时相连"
           }
         }
       }
@@ -45749,6 +46651,12 @@
             "value" : "Le sélecteur de compte a été déplacé ! Vous pouvez maintenant changer de compte, vous déconnecter, le tout depuis un emplacement unique et pratique."
           }
         },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A fiókváltó elhelyezkedése megváltozott! Mostantól egy kényelmes helyen válthat fiókot és jelentkezhet ki."
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -45813,6 +46721,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Перемикач облікових записів переміщено! Тепер ви можете перемикати облікові записи, виходити з них; все з одного зручного місця."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "账户切换器搬家啦！现在您可以在一个统一入口切换账户或退出登录。"
           }
         }
       }
@@ -46744,6 +47658,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Панель інструментів може містити від 1 до 5 дій. Ви не можете вилучити останню дію."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "工具栏可以有 1—5 个操作，您不能移除最后一个剩余操作。"
           }
         }
       }
@@ -47829,7 +48749,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Acest mesaj va fi mutat în ciorne astfel încât să îl puteți edita. Va trebui să reprogramați când va fi trimis."
+            "value" : "Acest mesaj va fi mutat în ciorne astfel încât să îl puteți edita. Va trebui să replanificați când va fi trimis."
           }
         },
         "ru" : {
@@ -48410,6 +49330,12 @@
             "state" : "translated",
             "value" : "Ця панель інструментів з’являється, коли вибрано кілька повідомлень у поданні списку."
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "此工具栏会在列表视图中选择多封邮件时显示。"
+          }
         }
       }
     },
@@ -48564,6 +49490,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ця панель інструментів залишається видимою, коли повідомлення відкрито."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "该工具栏在消息打开时保持可见。"
           }
         }
       }
@@ -49126,6 +50058,12 @@
             "state" : "translated",
             "value" : "Кому: "
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "收件人："
+          }
         }
       }
     },
@@ -49681,6 +50619,12 @@
             "state" : "translated",
             "value" : "Занадто пізно скасовувати надсилання. Повідомлення було надіслано."
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已无法撤消，邮件已发送。"
+          }
         }
       }
     },
@@ -49860,6 +50804,12 @@
             "state" : "translated",
             "value" : "Забагато спроб занадто швидко. Зачекайте, перш ніж спробувати знову."
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "尝试过于频繁，请稍后再试。"
+          }
         }
       }
     },
@@ -50038,6 +50988,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Забагато неправильних спроб. Зачекайте, перш ніж спробувати знову."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "错误尝试次数过多，请稍后再试。"
           }
         }
       }
@@ -50772,6 +51728,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Розблокувати цю адресу"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "取消屏蔽此地址"
           }
         }
       }
@@ -52288,6 +53250,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Покращте, щоб отримати доступ"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "升级即可访问"
           }
         }
       }
@@ -54313,6 +55281,12 @@
             "state" : "translated",
             "value" : "Ласкаво просимо до Proton Mail, де приватність є стандартом"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "欢迎来到 Proton Mail，隐私从此触手可及"
+          }
         }
       }
     },
@@ -54850,6 +55824,12 @@
             "state" : "translated",
             "value" : "Ви відписалися від цього списку розсилки."
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "您已取消订阅此邮件列表。"
+          }
         }
       }
     },
@@ -55367,7 +56347,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Trebuie să aveți conexiune pentru a edita mesaje programate."
+            "value" : "Trebuie să aveți conexiune pentru a edita mesajele planificate."
           }
         },
         "ru" : {
@@ -55762,6 +56742,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ваш поштовий підпис, який автоматично додається до всіх листів, які ви надсилаєте."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "您的电子邮件签名会自动添加到您发送的所有邮件中。"
           }
         }
       }

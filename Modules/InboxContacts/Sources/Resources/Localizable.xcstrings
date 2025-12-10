@@ -1787,6 +1787,12 @@
             "state" : "translated",
             "value" : "Вкладення не знайдено. Оновіть сторінку або завантажте його знову."
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "未找到附件，请刷新页面或再次上传。"
+          }
         }
       }
     },
@@ -1947,6 +1953,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Доступно у веб"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "仅可在网页中可用"
           }
         }
       }
@@ -2867,6 +2879,12 @@
             "state" : "translated",
             "value" : "Продовжити у вебзастосунку"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "在网页上继续"
+          }
         }
       }
     },
@@ -3027,6 +3045,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Створення контактів або груп у додатку ще не готове. Наразі ви можете створювати їх у веб додатку, і вони синхронізуються з вашим пристроєм."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "暂不支持在应用中创建联系人或群组。目前您可以通过网络应用进行创建，并同步到您的设备。"
           }
         }
       }
@@ -3570,6 +3594,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Редагування контактів або груп у застосунку ще не готове. Наразі ви можете редагувати їх у вебзастосунку, і зміни синхронізуватимуться з вашим пристроєм."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "暂不支持在应用中编辑联系人或群组。目前您可以通过网络应用进行创建，并同步到您的设备。"
           }
         }
       }
@@ -4699,6 +4729,12 @@
             "state" : "translated",
             "value" : "Мітка не існує. Ви можете створити її як нову мітку."
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "标签不存在，您可以将其创建为新标签。"
+          }
         }
       }
     },
@@ -5635,6 +5671,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Повідомлення не знайдено"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "未找到邮件"
           }
         }
       }
