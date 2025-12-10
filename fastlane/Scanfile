@@ -1,6 +1,7 @@
 app_name("ProtonMail")
 cloned_source_packages_path("ci-cache/spm")
-deployment_target_version("18.4")
+deployment_target_version("26.2")
 derived_data_path("fastlane/test_output/DerivedData")
+device("iPhone 17 Pro")
 disable_package_automatic_updates(true)
 xcodebuild_formatter("mint run xcbeautify")
