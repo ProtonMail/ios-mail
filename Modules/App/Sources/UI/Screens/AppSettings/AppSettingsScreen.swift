@@ -37,7 +37,7 @@ struct AppSettingsScreen: View {
     ) {
         _store = .init(
             wrappedValue: .init(
-                state: state ?? .initial(isDiscreetAppIconEnabled: appIconConfigurator.isCustomIconSet),
+                state: state ?? .initial(appIconName: appIconConfigurator.alternateIconName),
                 appSettingsRepository: appSettingsRepository,
                 customSettings: customSettings,
                 appIconConfigurator: appIconConfigurator
@@ -76,12 +76,7 @@ struct AppSettingsScreen: View {
                                     action: { router.go(to: .appProtection) }
                                 )
                                 if appIconConfigurator.supportsAlternateIcons {
-                                    FormBigButton(
-                                        title: L10n.Settings.AppIcon.buttonTitle,
-                                        symbol: .chevronRight,
-                                        value: store.state.appIconVariant.string,
-                                        action: { router.go(to: .appIcon) }
-                                    )
+                                    appIconButton
                                 }
                             }
                             FormSection(footer: L10n.Settings.App.combinedContactsInfo) {
@@ -173,6 +168,30 @@ struct AppSettingsScreen: View {
         )
     }
 
+    @ViewBuilder
+    private var appIconButton: some View {
+        Menu(
+            content: {
+                ForEach(AppIcon.allCases.filter { icon in store.state.appIcon != icon }, id: \.self) { icon in
+                    Button(action: { store.handle(action: .appIconSelected(icon)) }) {
+                        HStack(spacing: DS.Spacing.medium) {
+                            Text(icon.title)
+                            Image(icon.preview)
+                        }
+                    }
+                }
+            },
+            label: {
+                FormBigButton(
+                    title: L10n.Settings.AppIcon.buttonTitle,
+                    symbol: .chevronUpChevronDown,
+                    value: store.state.appIcon.title.string,
+                    action: {}
+                )
+            }
+        )
+    }
+
     private var useCombinedContacts: Binding<Bool> {
         .init(
             get: { store.state.storedAppSettings.useCombineContacts },
@@ -197,10 +216,7 @@ struct AppSettingsScreen: View {
 
 #Preview {
     NavigationStack {
-        AppSettingsScreen(
-            state: .initial(isDiscreetAppIconEnabled: false),
-            customSettings: CustomSettings(noPointer: .init())
-        )
+        AppSettingsScreen(state: .initial(appIconName: .none), customSettings: CustomSettings(noPointer: .init()))
     }
 }
 
@@ -238,11 +254,5 @@ private extension AppProtection {
         case .pin:
             L10n.Settings.App.pinCode
         }
-    }
-}
-
-private extension AppIconConfigurable {
-    var isCustomIconSet: Bool {
-        alternateIconName != nil
     }
 }

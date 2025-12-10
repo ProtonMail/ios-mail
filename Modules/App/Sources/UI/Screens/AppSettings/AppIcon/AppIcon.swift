@@ -19,13 +19,9 @@ import SwiftUI
 
 enum AppIcon: CaseIterable, Hashable {
     case `default`
-    case weather
     case notes
+    case weather
     case calculator
-
-    static var alternateIcons: [AppIcon] {
-        allCases.filter { icon in icon != .default }
-    }
 
     init(rawValue: String?) {
         switch rawValue {
@@ -33,6 +29,15 @@ enum AppIcon: CaseIterable, Hashable {
         case Self.appIconWeather: self = .weather
         case Self.appIconCalculator: self = .calculator
         default: self = .default
+        }
+    }
+
+    var title: LocalizedStringResource {
+        switch self {
+        case .default: return L10n.Settings.AppIcon.primary
+        case .notes: return L10n.Settings.AppIcon.notes
+        case .weather: return L10n.Settings.AppIcon.weather
+        case .calculator: return L10n.Settings.AppIcon.calculator
         }
     }
 
@@ -47,10 +52,10 @@ enum AppIcon: CaseIterable, Hashable {
 
     var preview: ImageResource {
         switch self {
-        case .default: ImageResource.appIconPreview
-        case .weather: ImageResource.appIconWeatherPreview
-        case .notes: ImageResource.appIconNotesPreview
-        case .calculator: ImageResource.appIconCalculatorPreview
+        case .default: return ImageResource.appIconPreview
+        case .weather: return ImageResource.appIconWeatherPreview
+        case .notes: return ImageResource.appIconNotesPreview
+        case .calculator: return ImageResource.appIconCalculatorPreview
         }
     }
 

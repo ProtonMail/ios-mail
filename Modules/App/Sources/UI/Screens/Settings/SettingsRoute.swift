@@ -25,7 +25,6 @@ import proton_app_uniffi
 
 enum SettingsRoute: Routable {
     case webView(ProtonAuthenticatedWebPage)
-    case appIcon
     case appSettings
     case appProtection
     case autoLock
@@ -61,8 +60,6 @@ struct SettingsViewFactory {
                 .navigationBarTitleDisplayMode(.inline)
                 .navigationTitle(webPage.title.string)
                 .navigationBarBackButtonHidden(true)
-        case .appIcon:
-            AppIconScreen()
         case .appSettings:
             AppSettingsScreen(customSettings: customSettings(ctx: mailUserSession))
         case .appProtection:

@@ -25,31 +25,15 @@ import proton_app_uniffi
 @MainActor
 struct AppSettingsScreenSnapshotTests {
     struct TestCase {
-        let name: String
-        let isDiscreetAppIconEnabled: Bool
+        let appIcon: AppIcon
         let supportsAlternateIcons: Bool
         let isSwipeToAdjacentConversationEnabled: Bool
     }
 
     @Test(arguments: [
-        TestCase(
-            name: "discreetModeDisabled",
-            isDiscreetAppIconEnabled: false,
-            supportsAlternateIcons: true,
-            isSwipeToAdjacentConversationEnabled: false
-        ),
-        TestCase(
-            name: "discreetModeEnabled",
-            isDiscreetAppIconEnabled: true,
-            supportsAlternateIcons: true,
-            isSwipeToAdjacentConversationEnabled: false
-        ),
-        TestCase(
-            name: "alternateIconsNotSupported",
-            isDiscreetAppIconEnabled: false,
-            supportsAlternateIcons: false,
-            isSwipeToAdjacentConversationEnabled: true
-        ),
+        TestCase(appIcon: .default, supportsAlternateIcons: true, isSwipeToAdjacentConversationEnabled: false),
+        TestCase(appIcon: .notes, supportsAlternateIcons: true, isSwipeToAdjacentConversationEnabled: false),
+        TestCase(appIcon: .default, supportsAlternateIcons: false, isSwipeToAdjacentConversationEnabled: true),
     ])
     func testAppSettingsLayoutCorrectly(testCase: TestCase) {
         let appIconConfigurator = AppIconConfiguratorSpy()
@@ -66,7 +50,7 @@ struct AppSettingsScreenSnapshotTests {
                     useCombineContacts: false,
                     useAlternativeRouting: true
                 ),
-                isDiscreetAppIconEnabled: testCase.isDiscreetAppIconEnabled,
+                appIcon: testCase.appIcon,
                 isAppearanceMenuShown: false,
                 isSwipeToAdjacentConversationEnabled: testCase.isSwipeToAdjacentConversationEnabled
             ),
@@ -80,7 +64,7 @@ struct AppSettingsScreenSnapshotTests {
                 matching: UIHostingController(rootView: sut).view,
                 styles: [userInterfaceStyle],
                 preferredHeight: 1000,
-                named: testCase.name
+                named: "\(testCase.appIcon.title.string)_\(testCase.supportsAlternateIcons)"
             )
         }
     }
