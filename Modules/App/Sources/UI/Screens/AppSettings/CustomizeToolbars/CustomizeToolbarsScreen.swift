@@ -116,15 +116,12 @@ private enum CustomizeToolbarsDisplayItem {
 }
 
 private extension CustomizeToolbarActions {
-
     var displayItems: [CustomizeToolbarsDisplayItem] {
         selected.map(CustomizeToolbarsDisplayItem.action) + [.editActions]
     }
-
 }
 
 private extension ToolbarWithActions {
-
     var header: LocalizedStringResource {
         switch self {
         case .list:
@@ -144,11 +141,9 @@ private extension ToolbarWithActions {
             L10n.Settings.CustomizeToolbars.conversationToolbarSectionFooter
         }
     }
-
 }
 
 private extension ToolbarWithActions {
-
     var toolbarType: ToolbarType {
         switch self {
         case .list:
@@ -159,5 +154,4 @@ private extension ToolbarWithActions {
             .conversation
         }
     }
-
 }

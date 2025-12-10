@@ -276,7 +276,6 @@ final class DraftPresenterTests: BaseTestCase, @unchecked Sendable {
 }
 
 extension DraftPresenterTests {
-
     @MainActor
     func makeSUT(
         stubbedNewDraftResult: NewDraftResult = .ok(.dummyDraft),
@@ -321,10 +320,6 @@ private class DraftSpy: Draft, @unchecked Sendable {
         setSubjectCalls.last ?? .empty
     }
 
-    override func body() -> String {
-        setBodyCalls.last ?? .empty
-    }
-
     override func setSubject(subject: String) -> VoidDraftSaveResult {
         setSubjectCalls.append(subject)
         return .ok
@@ -366,7 +361,6 @@ private class ComposerRecipientListSpy: ComposerRecipientList, @unchecked Sendab
 }
 
 extension DraftToPresent: @retroactive Equatable {
-
     public static func == (lhs: ProtonMail.DraftToPresent, rhs: ProtonMail.DraftToPresent) -> Bool {
         switch (lhs, rhs) {
         case (.new(let leftDraft), .new(let rightDraft)):
@@ -377,5 +371,4 @@ extension DraftToPresent: @retroactive Equatable {
             return false
         }
     }
-
 }

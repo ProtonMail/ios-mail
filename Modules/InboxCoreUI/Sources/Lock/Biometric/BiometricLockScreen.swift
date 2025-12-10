@@ -59,7 +59,6 @@ public struct BiometricLockScreen: View {
             store.handle(action: .onLoad)
         }
     }
-
 }
 
 #Preview {

@@ -64,9 +64,7 @@ final class ExtraRecipientsCountView: UIView {
 }
 
 extension ExtraRecipientsCountView {
-
     private enum SubviewFactory {
-
         static var extraRecipients: UILabel {
             let view = UILabel()
             view.translatesAutoresizingMaskIntoConstraints = false

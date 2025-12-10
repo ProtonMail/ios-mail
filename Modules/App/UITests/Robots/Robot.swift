@@ -19,7 +19,6 @@ import Foundation
 import XCTest
 
 protocol Robot: ApplicationHolder {
-
     var rootElement: XCUIElement { get }
     func verifyShown() -> Self
     func verifyHidden()

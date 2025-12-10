@@ -19,7 +19,6 @@ import InboxCoreUI
 import UIKit
 
 final class RecipientsFieldEditingController: UIViewController {
-
     enum Event {
         case onInputChange(text: String)
         case onRecipientSelected(index: Int)
@@ -119,7 +118,6 @@ final class RecipientsFieldEditingController: UIViewController {
 // MARK: Private functions
 
 extension RecipientsFieldEditingController {
-
     private func onContentSizeChage(collectionView: UICollectionView) {
         let contentHeight = collectionView.collectionViewLayout.collectionViewContentSize.height
         heightConstraint.constant = max(contentHeight, RecipientsFieldExpandedLayout.minCellHeight)
@@ -183,7 +181,6 @@ extension RecipientsFieldEditingController {
 // MARK: UICollectionViewDataSource
 
 extension RecipientsFieldEditingController: UICollectionViewDataSource {
-
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return cellUIModels.count
     }
@@ -240,7 +237,6 @@ extension RecipientsFieldEditingController: UICollectionViewDataSource {
 // MARK: UICollectionViewDelegate
 
 extension RecipientsFieldEditingController: UICollectionViewDelegate {
-
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let cellModel = cellUIModels[indexPath.row]
         switch cellModel {
@@ -260,7 +256,6 @@ extension RecipientsFieldEditingController: UICollectionViewDelegate {
  the use of a text field.
  */
 extension RecipientsFieldEditingController: UIKeyInput {
-
     override var canBecomeFirstResponder: Bool {
         return true
     }
@@ -275,9 +270,7 @@ extension RecipientsFieldEditingController: UIKeyInput {
 }
 
 extension RecipientsFieldEditingController {
-
     private enum SubviewFactory {
-
         static var collectionView: UICollectionView {
             let view = UICollectionView(frame: .zero, collectionViewLayout: .allRecipientsLayout)
             view.translatesAutoresizingMaskIntoConstraints = false

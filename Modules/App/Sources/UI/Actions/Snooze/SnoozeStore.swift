@@ -130,7 +130,6 @@ class SnoozeStore: StateStore {
             toastStateStore.present(toast: .error(message: snoozeErrorReason.errorMessage.string))
         }
     }
-
 }
 
 extension Toast {
@@ -147,7 +146,6 @@ extension Toast {
 }
 
 extension SnoozeView.Screen {
-
     var detent: PresentationDetent {
         switch self {
         case .custom:
@@ -160,7 +158,6 @@ extension SnoozeView.Screen {
     var allowedDetents: Set<PresentationDetent> {
         Set(Self.allCases.map(\.detent))
     }
-
 }
 
 private enum OSWeekStart: Int {
@@ -174,7 +171,6 @@ private enum OSWeekStart: Int {
 }
 
 private extension Calendar {
-
     var nonDefaultWeekStart: NonDefaultWeekStart {
         switch OSWeekStart(rawValue: firstWeekday)! {
         case .monday: .monday
@@ -184,7 +180,6 @@ private extension Calendar {
             .sunday
         }
     }
-
 }
 
 private extension SnoozeTime {

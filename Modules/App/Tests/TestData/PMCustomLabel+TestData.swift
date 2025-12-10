@@ -20,7 +20,6 @@ import proton_app_uniffi
 @testable import ProtonMail
 
 extension PMCustomLabel {
-
     static let importantLabel: Self = .testData(id: 3, name: "Important", color: "#1DA583")
     static let topSecretLabel: Self = .testData(id: 4, name: "Top Secret", color: "#179FD9")
 
@@ -43,5 +42,4 @@ extension PMCustomLabel {
             unread: 0
         )
     }
-
 }

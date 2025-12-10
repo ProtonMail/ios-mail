@@ -23,7 +23,6 @@ import proton_app_uniffi
 
 @MainActor
 final class SidebarModelTests {
-
     private lazy var sut = SidebarModel(state: .initial, sidebar: sidebarSpy, upsellEligibilityPublisher: .init(constant: .eligible(.standard)))
     private let sidebarSpy = SidebarSpy()
 
@@ -139,15 +138,12 @@ final class SidebarModelTests {
     private func getFolder(with name: String) throws -> SidebarFolder {
         try XCTUnwrap(sut.state.find(folderWithName: name, in: sut.state.folders))
     }
-
 }
 
 extension SidebarState {
-
     func find(folderWithName name: String, in folders: [SidebarFolder]) -> SidebarFolder? {
         folders.compactMap { folder in
             folder.name == name ? folder : find(folderWithName: name, in: folder.childFolders)
         }.first
     }
-
 }

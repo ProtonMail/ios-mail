@@ -108,7 +108,6 @@ enum EventDateFormatter {
 }
 
 extension Calendar {
-
     func nextDay(after date: Date) -> Date? {
         self.date(byAdding: .day, value: 1, to: date)
     }
@@ -116,5 +115,4 @@ extension Calendar {
     func previousDay(before date: Date) -> Date? {
         self.date(byAdding: .day, value: -1, to: date)
     }
-
 }

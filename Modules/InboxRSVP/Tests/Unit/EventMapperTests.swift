@@ -167,9 +167,7 @@ final class EventMapperTests {
 }
 
 private extension LocalizedStringResource {
-
     static var empty: Self {
         "".notLocalized.stringResource
     }
-
 }

@@ -18,9 +18,7 @@
 import proton_app_uniffi
 
 extension MessageRecipient {
-
     var toRecipient: MessageDetail.Recipient {
         .init(name: uiRepresentation, address: address, avatarInfo: avatarInfo)
     }
-
 }

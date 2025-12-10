@@ -191,7 +191,6 @@ final class MessageExpirationRecipientsValidatorTests {
 }
 
 private extension MessageExpirationRecipientsValidatorTests {
-
     private func mockDraft(
         expirationTimeResult: DraftExpirationTimeResult,
         validationResult: DraftValidateRecipientsExpirationFeatureResult = .ok(.init(supported: [], unsupported: [], unknown: []))

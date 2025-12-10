@@ -72,7 +72,6 @@ final class RecipientUIModelArrayTests {
 }
 
 private extension ComposerRecipientSingle {
-
     var toRecipientUIModel: RecipientUIModel {
         RecipientUIModel(composerRecipient: .single(self))
     }

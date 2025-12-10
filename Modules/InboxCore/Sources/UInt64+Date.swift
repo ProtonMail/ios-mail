@@ -18,7 +18,6 @@
 import Foundation
 
 extension UInt64 {
-
     public var date: Date {
         Date(timeIntervalSince1970: TimeInterval(self))
     }

@@ -30,7 +30,6 @@ struct ContactDetailsProvider {
 }
 
 extension ContactDetailsProvider {
-
     static func productionInstance(mailUserSession: MailUserSession) -> Self {
         .init(contactDetails: { contact in
             let details = try? await getContactDetails(session: mailUserSession, contactId: contact.id).get()
@@ -94,5 +93,4 @@ extension ContactDetailsProvider {
             )
         })
     }
-
 }

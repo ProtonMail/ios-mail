@@ -18,7 +18,6 @@
 import Foundation
 
 final class MailboxComposeFloatingButtonTest: PMUIMockedNetworkTestCase {
-
     override var loginType: UITestLoginType {
         UITestLoginType.Mocked.Free.ChirpyFlamingo
     }

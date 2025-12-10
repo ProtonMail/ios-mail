@@ -18,7 +18,6 @@
 import proton_app_uniffi
 
 extension Array where Element == DraftAttachment {
-
     func toDraftAttachmentUIModels() -> [DraftAttachmentUIModel] {
         self.filter { $0.attachment.disposition == .attachment }.map { $0.toDraftAttachmentUIModel() }
     }

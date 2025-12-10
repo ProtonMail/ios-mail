@@ -21,7 +21,6 @@ import SwiftUI
 import UIKit
 
 final class ContactCell: UITableViewCell {
-
     let avatarLabel: UILabel = {
         let label = UILabel()
         label.font = .font(textStyle: .footnote, weight: .semibold)

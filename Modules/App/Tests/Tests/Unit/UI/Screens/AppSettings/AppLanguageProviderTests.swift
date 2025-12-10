@@ -20,7 +20,6 @@ import Testing
 @testable import ProtonMail
 
 class AppLanguageProviderTests {
-
     var sut: AppLangaugeProvider!
     private var bundleStub: BundleStub!
 
@@ -45,5 +44,4 @@ class AppLanguageProviderTests {
         bundleStub.preferredLocalizationsStub = ["pl"]
         #expect(sut.appLangauge == "Polish")
     }
-
 }

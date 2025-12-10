@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Proton Technologies AG
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -15,12 +15,22 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-@testable import ProtonMail
+import SwiftUI
 
-extension MailboxSelectedItem {
-
-    static func testData(id: UInt64, isRead: Bool = .random(), isStarred: Bool = .random()) -> Self {
-        .init(id: .init(value: id), isRead: isRead, isStarred: isStarred)
+extension View {
+    func clippedRoundedBorder(cornerRadius: CGFloat, lineColor: Color, lineWidth: CGFloat = 1) -> some View {
+        modifier(ClippedRoundedBorder(cornerRadius: cornerRadius, lineColor: lineColor, lineWidth: lineWidth))
     }
+}
 
+private struct ClippedRoundedBorder: ViewModifier {
+    let cornerRadius: CGFloat
+    let lineColor: Color
+    let lineWidth: CGFloat
+
+    func body(content: Content) -> some View {
+        content
+            .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
+            .overlay(RoundedRectangle(cornerRadius: cornerRadius).stroke(lineColor, lineWidth: lineWidth))
+    }
 }

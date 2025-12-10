@@ -113,7 +113,6 @@ struct DraftPresenter: ContactsDraftPresenter {
 }
 
 extension DraftPresenter {
-
     private func openNewDraft(
         createMode: DraftCreateMode,
         updateDraft: ((Draft) -> Void)?
@@ -135,7 +134,6 @@ extension DraftPresenter {
 
         try await openNewDraft(createMode: .empty, updateDraft: updateDraft)
     }
-
 }
 
 private extension ReplyAction {
@@ -157,7 +155,6 @@ private extension ReplyAction {
 }
 
 extension DraftPresenter {
-
     static func dummy(
         undoSendProvider: UndoSendProvider = .mockInstance,
         undoScheduleSendProvider: UndoScheduleSendProvider = .mockInstance
@@ -169,7 +166,6 @@ extension DraftPresenter {
             undoScheduleSendProvider: undoScheduleSendProvider
         )
     }
-
 }
 
 private enum ClientDraftError: LocalizedError {

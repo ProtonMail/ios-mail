@@ -73,7 +73,6 @@ final class SenderImageLoader: ObservableObject {
 }
 
 extension SenderImageLoader {
-
     struct Dependencies {
         let imageDataSource: SenderImageDataSource
         let cache: MemoryCache<String, UIImage>

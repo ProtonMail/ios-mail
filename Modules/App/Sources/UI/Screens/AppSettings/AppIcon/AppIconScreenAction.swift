@@ -15,13 +15,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-enum IOSVersion {
-    static var isIOS18: Bool {
-        if #available(iOS 18, *) {
-            if #unavailable(iOS 26) {
-                return true
-            }
-        }
-        return false
-    }
+import InboxCore
+
+enum AppIconScreenAction {
+    case iconTapped(icon: AppIcon)
+    case discreetAppIconSwitched(isEnabled: Bool)
 }

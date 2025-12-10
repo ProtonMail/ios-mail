@@ -17,17 +17,15 @@
 
 import SwiftUI
 
-/**
- This wrapper is to fix an issue with the native `.onSubmit` modifier which retains the callback
- causing a retain cycle.
-
- Inside the `onSubmit` closure, any reference to annottated SwiftUI variables
- like @State, @StateObject, @Binding, ... will be retained and won't be deallocated even when
- the keyboard is dismissed.
-
- The current solution uses a wrapper class informed with the relevant data to be referenced as weak
- in the capture list of the native `.onSubmit` modifier.
- */
+/// This wrapper is to fix an issue with the native `.onSubmit` modifier which retains the callback
+/// causing a retain cycle.
+///
+/// Inside the `onSubmit` closure, any reference to annottated SwiftUI variables
+/// like @State, @StateObject, @Binding, ... will be retained and won't be deallocated even when
+/// the keyboard is dismissed.
+///
+/// The current solution uses a wrapper class informed with the relevant data to be referenced as weak
+/// in the capture list of the native `.onSubmit` modifier.
 struct OnSearchSubmitWrapper: ViewModifier {
     final class CallbackWrapper {
         var query: String
@@ -63,7 +61,6 @@ struct OnSearchSubmitWrapper: ViewModifier {
 }
 
 extension View {
-
     func onSubmitWrapper(query: Binding<String>, onQuerySubmmitted: @escaping (String) -> Void) -> some View {
         modifier(OnSearchSubmitWrapper(query: query, onQuerySubmmitted: onQuerySubmmitted))
     }

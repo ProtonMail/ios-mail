@@ -18,7 +18,6 @@
 import InboxComposer
 
 extension ComposerDismissReason {
-
     var sendResultToastType: SendResultInfo.ToastType? {
         switch self {
         case .messageScheduled:

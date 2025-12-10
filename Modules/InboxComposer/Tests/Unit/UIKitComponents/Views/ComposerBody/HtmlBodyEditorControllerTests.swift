@@ -18,6 +18,7 @@
 import InboxCore
 import Testing
 import WebKit
+import proton_app_uniffi
 
 @testable import InboxComposer
 
@@ -36,8 +37,10 @@ final class HtmlBodyEditorControllerTests {
     @Test
     func updateBody_itShouldCallLoadMessageBody() async {
         triggerViewDidLoad()
-        await sut.updateBody("hello")
-        #expect(mockInterface.loadedBody == "hello")
+
+        let content = ComposerContent(head: "hello", body: "world")
+        await sut.updateBody(content)
+        #expect(mockInterface.loadedContent == content)
     }
 
     // MARK: HtmlBodyWebViewInterfaceProtocol onEvent(.onTextPasted)
@@ -46,15 +49,14 @@ final class HtmlBodyEditorControllerTests {
     func onEventTextPasted_sanitizesAndCallsInsertText() async {
         triggerViewDidLoad()
         let raw = "<span style=\"color:red;\">Hello</span>"
-        mockInterface.onEvent?(.onTextPasted(text: raw))
+        mockInterface.onEvent?(.onTextPasted(text: raw, mimeType: .textHtml))
 
         await Task.yield()
-        #expect(mockInterface.insertedTexts == ["\"<span >Hello<\\/span>\""])
+        #expect(mockInterface.insertedTexts == [#""<span>Hello<\/span>""#])
     }
 }
 
 extension HtmlBodyEditorControllerTests {
-
     private func makeSUT(htmlBodyWebViewInterface: HtmlBodyWebViewInterfaceProtocol) -> HtmlBodyEditorController {
         let mockMemory = MockMemoryPressureHandler()
         let sut = HtmlBodyEditorController(
@@ -73,16 +75,16 @@ private final class MockHtmlBodyWebViewInterface: HtmlBodyWebViewInterfaceProtoc
     let webView: WKWebView = WKWebView()
     var onEvent: ((HtmlBodyWebViewInterface.Event) -> Void)?
 
-    private(set) var loadedBody: String = ""
+    private(set) var loadedContent: ComposerContent = .empty
     private(set) var insertedTexts: [String] = []
 
-    func loadMessageBody(_ body: String, clearImageCacheFirst: Bool) {
-        loadedBody = body
+    func loadMessageBody(_ content: ComposerContent, clearImageCacheFirst: Bool) {
+        loadedContent = content
     }
 
     func setFocus() async {}
 
-    func readMesasgeBody() async -> String? { nil }
+    func readMessageBody() async -> String? { nil }
 
     func insertText(_ text: String) async {
         insertedTexts.append(text)

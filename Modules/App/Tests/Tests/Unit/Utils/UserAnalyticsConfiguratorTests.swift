@@ -73,7 +73,6 @@ class UserAnalyticsConfiguratorTests {
 }
 
 private extension UserSettings {
-
     static func settings(crashReports: Bool, telemetry: Bool) -> UserSettings {
         .init(
             crashReports: crashReports,
@@ -100,5 +99,4 @@ private extension UserSettings {
             welcome: false
         )
     }
-
 }

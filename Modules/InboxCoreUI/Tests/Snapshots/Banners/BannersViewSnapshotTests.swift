@@ -23,7 +23,6 @@ import XCTest
 @testable import InboxCoreUI
 
 class BannersViewSnapshotTests: BaseTestCase {
-
     func testBannersViewLayoutsCorrectly() {
         let bannersView = BannersView(model: [
             .init(
@@ -97,5 +96,4 @@ class BannersViewSnapshotTests: BaseTestCase {
 
         assertSnapshotsOnIPhoneX(of: bannersView)
     }
-
 }

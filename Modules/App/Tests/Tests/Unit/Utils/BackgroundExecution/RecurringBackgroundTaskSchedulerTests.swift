@@ -24,7 +24,6 @@ import proton_app_uniffi
 @testable import ProtonMail
 
 class RecurringBackgroundTaskSchedulerTests: BaseTestCase {
-
     var sut: RecurringBackgroundTaskScheduler!
     var invokedRegister: [(identifier: String, handler: (BackgroundTask) -> Void)]!
     var invokedTimerFactoryWithInterval: [TimeInterval] = []
@@ -192,11 +191,9 @@ class RecurringBackgroundTaskSchedulerTests: BaseTestCase {
         taskRegistration.handler(task)
         timerSubject.send()
     }
-
 }
 
 private class BackgroundTaskSchedulerSpy: BackgroundTaskScheduler {
-
     var pendingTaskRequestsStub: [BGTaskRequest] = []
     private(set) var invokedCancel: [String] = []
     private(set) var invokedSubmit: [BGTaskRequest] = []
@@ -217,7 +214,6 @@ private class BackgroundTaskSchedulerSpy: BackgroundTaskScheduler {
 }
 
 private class BackgroundTaskSpy: BackgroundTask {
-
     var didCompleteWithSuccess: Bool = false
 
     // MARK: - BackgroundTask
@@ -227,11 +223,9 @@ private class BackgroundTaskSpy: BackgroundTask {
     func setTaskCompleted(success: Bool) {
         didCompleteWithSuccess = success
     }
-
 }
 
 class BackgroundExecutionHandleStub: BackgroundExecutionHandle, @unchecked Sendable {
-
     private(set) var abortCalls: [Bool] = []
 
     init() {
@@ -247,5 +241,4 @@ class BackgroundExecutionHandleStub: BackgroundExecutionHandle, @unchecked Senda
     override func abort(inForeground: Bool) async {
         abortCalls.append(inForeground)
     }
-
 }

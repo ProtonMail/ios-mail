@@ -154,9 +154,7 @@ private extension LabelAsSheetState {
 }
 
 extension LabelAsAction {
-
     var displayModel: LabelDisplayModel {
         .init(id: labelId, color: Color(hex: color.value), title: name, isSelected: isSelected)
     }
-
 }

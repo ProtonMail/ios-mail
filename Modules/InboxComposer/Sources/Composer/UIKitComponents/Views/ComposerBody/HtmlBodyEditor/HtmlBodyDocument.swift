@@ -16,56 +16,31 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-import InboxCoreUI
-import InboxDesignSystem
 import SwiftUI
+import proton_app_uniffi
 
 struct HtmlBodyDocument {
-    private typealias ColorBundle = (background: String, text: String, brand: String)
-
-    private static func colorBundle(for colorScheme: ColorScheme) -> ColorBundle {
-        var env = EnvironmentValues()
-        env.colorScheme = colorScheme
-        let backgroundColor = DS.Color.Background.norm.hexString(in: env)
-        let textColor = DS.Color.Text.norm.hexString(in: env)
-        let brandColor = DS.Color.Brand.norm.hexString(in: env)
-        return (background: backgroundColor, text: textColor, brand: brandColor)
-    }
-
     private let css: String = {
         let fileURL = Bundle.module.url(forResource: "BodyHtmlStyling", withExtension: "css")!
-        let content = try! String(contentsOf: fileURL)
-
-        let lightBundle = colorBundle(for: .light)
-        let darkBundle = colorBundle(for: .dark)
-
-        return
-            content
-            .replacingOccurrences(of: "\n", with: "")
-            .replacingOccurrences(of: "{{proton-background-color}}", with: lightBundle.background)
-            .replacingOccurrences(of: "{{proton-text-color}}", with: lightBundle.text)
-            .replacingOccurrences(of: "{{proton-brand-color}}", with: lightBundle.brand)
-            .replacingOccurrences(of: "{{proton-background-color-dark}}", with: darkBundle.background)
-            .replacingOccurrences(of: "{{proton-text-color-dark}}", with: darkBundle.text)
-            .replacingOccurrences(of: "{{proton-brand-color-dark}}", with: darkBundle.brand)
-
+        return try! String(contentsOf: fileURL)
     }()
 
-    func html(bodyContent: String) -> String {
+    func html(content: ComposerContent) -> String {
         htmlTemplate
-            .replacingOccurrences(of: HtmlPlaceholder.body, with: bodyContent)
+            .replacingOccurrences(of: HtmlPlaceholder.body, with: content.body)
             .replacingOccurrences(of: HtmlPlaceholder.css, with: css)
+            .replacingOccurrences(of: HtmlPlaceholder.sdkHeadContent, with: content.head)
     }
 }
 
 extension HtmlBodyDocument {
-
     enum EventAttributeKey {
         static let height = "height"
         static let cursorPosition = "cursorPosition"
         static let cursorPositionX = "x"
         static let cursorPositionY = "y"
         static let imageData = "imageData"
+        static let mimeType = "mimeType"
         static let text = "text"
     }
 
@@ -92,24 +67,25 @@ extension HtmlBodyDocument {
     }
 }
 
+extension HtmlBodyDocument {
+    enum ID {
+        static let editor = "editor"
+    }
+}
+
 // MARK: Private
 
 private extension HtmlBodyDocument {
-
     enum HtmlPlaceholder {
         static let body = "<!--INSERT_BODY-->"
         static let css = "<!--CSS-->"
-    }
-
-    enum ID {
-        static let editor = "editor"
+        static let sdkHeadContent = "<!--SDK_HEAD_CONTENT-->"
     }
 }
 
 // MARK: HTML
 
 private extension HtmlBodyDocument {
-
     var htmlTemplate: String {
         """
         <!DOCTYPE html>
@@ -118,6 +94,7 @@ private extension HtmlBodyDocument {
                 <title>Proton HTML Editor</title>
                 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, shrink-to-fit=yes">
                 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+                \(HtmlPlaceholder.sdkHeadContent)
                 <style>
                     \(HtmlPlaceholder.css)
                     /* In the editor, disable drag and drop and contextual menus for images */
@@ -149,7 +126,6 @@ private extension HtmlBodyDocument {
 // MARK: Scripts
 
 extension HtmlBodyDocument {
-
     var script: String {
         """
         "use strict";
@@ -162,11 +138,11 @@ extension HtmlBodyDocument {
         // --------------------
 
         document.getElementById('\(ID.editor)').addEventListener('focus', function(){
-            window.webkit.messageHandlers.\(JSEvent.focus).postMessage({ "messageHandler": "\(JSEvent.focus)" });
+            window.webkit.messageHandlers.\(JSEvent.focus).postMessage({});
         });
 
         document.getElementById('\(ID.editor)').addEventListener('input', function(event){
-            window.webkit.messageHandlers.\(JSEvent.editorChanged).postMessage({ "messageHandler": "\(JSEvent.editorChanged)" });
+            window.webkit.messageHandlers.\(JSEvent.editorChanged).postMessage({});
 
             handleUpdateCursorPosition(event);
         });
@@ -185,7 +161,6 @@ extension HtmlBodyDocument {
                             if (src && src.startsWith('cid:')) {
                                 const cid = src.substring(4);
                                 window.webkit.messageHandlers.\(JSEvent.inlineImageRemoved).postMessage({
-                                    "messageHandler": "\(JSEvent.inlineImageRemoved)",
                                     "cid": cid
                                 });
                             }
@@ -204,13 +179,12 @@ extension HtmlBodyDocument {
                     const rect = img.getBoundingClientRect();
                     const width  = rect.width;
                     const height = rect.height;
-                    const x = rect.left + window.scrollX;  
-                    const y = rect.top  + window.scrollY;  
+                    const x = rect.left + window.scrollX;
+                    const y = rect.top  + window.scrollY;
 
                     const cid = src.substring(4);
 
                     window.webkit.messageHandlers.\(JSEvent.inlineImageTapped).postMessage({
-                        "messageHandler": "\(JSEvent.inlineImageTapped)",
                         "cid": cid,
                         "x": x,
                         "y": y,
@@ -253,8 +227,8 @@ extension HtmlBodyDocument {
                 handleTextPaste(chosenTextItem);
             }
 
-            // Pasting could push some content above the visible area of the editor, to avoid 
-            // this we reset scrolling attributes. 
+            // Pasting could push some content above the visible area of the editor, to avoid
+            // this we reset scrolling attributes.
             setTimeout(() => {
                 resetAllScrollPositions();
                 notifyHeightChange();
@@ -269,7 +243,6 @@ extension HtmlBodyDocument {
 
                 const base64data = event.target.result.split(',')[1];
                 window.webkit.messageHandlers.\(JSEvent.imagePasted).postMessage({
-                    "messageHandler": "\(JSEvent.imagePasted)",
                     "\(EventAttributeKey.imageData)": base64data
                 });
             };
@@ -279,8 +252,8 @@ extension HtmlBodyDocument {
         function handleTextPaste(item) {
             item.getAsString((text) => {
                 window.webkit.messageHandlers.\(JSEvent.textPasted).postMessage({
-                    "messageHandler": "\(JSEvent.textPasted)",
-                    "\(EventAttributeKey.text)": text
+                    "\(EventAttributeKey.text)": text,
+                    "\(EventAttributeKey.mimeType)": item.type
                 });
             });
         }
@@ -327,11 +300,11 @@ extension HtmlBodyDocument {
             const images = editor.getElementsByTagName('img');
             const exactCidPattern = 'cid:' + cid + '(?![0-9a-zA-Z])'; // Matches exact CID
             const cidRegex = new RegExp(exactCidPattern);
-            
+
             for (let i = images.length - 1; i >= 0; i--) {
                 const img = images[i];
                 const attributes = img.attributes;
-                
+
                 for (let j = 0; j < attributes.length; j++) {
                     const attr = attributes[j];
                     if (cidRegex.test(attr.value)) {
@@ -340,7 +313,7 @@ extension HtmlBodyDocument {
                     }
                 }
             }
-            
+
             editor.dispatchEvent(new Event('input'));
         };
 
@@ -354,9 +327,8 @@ extension HtmlBodyDocument {
             // editor.offsetHeight: The visible height of the editor component as currently rendered
             // we want offsetHeight when the content is shorter than the actual component
             const height = Math.max(editor.scrollHeight, editor.offsetHeight);
-            
+
             window.webkit.messageHandlers.\(JSEvent.bodyResize).postMessage({
-                "messageHandler": "\(JSEvent.bodyResize)",
                 "\(EventAttributeKey.height)": height
             });
         }
@@ -397,19 +369,19 @@ extension HtmlBodyDocument {
             // Create a temporary span with a zero-width character
             const span = document.createElement('span');
             span.appendChild(document.createTextNode('\\u200b'));
-            
+
             // Insert the span
             range.insertNode(span);
-            
+
             // Get position
             let rect = span.getBoundingClientRect();
-            
+
             // If we got a zero position and we're at the start/end of a node,
             // try to get position from adjacent content
             if (rect.y === 0) {
                 const previousNode = node.previousSibling;
                 const nextNode = node.nextSibling;
-                
+
                 if (offset === 0 && previousNode) {
                     // Try to get position from end of previous node
                     rect = previousNode.getBoundingClientRect();
@@ -421,19 +393,19 @@ extension HtmlBodyDocument {
                     rect = nextNode.getBoundingClientRect();
                 }
             }
-            
+
             // Remove the span but keep the selection
             const parent = span.parentNode;
             const next = span.nextSibling;
             parent.removeChild(span);
-            
+
             // Restore selection
             const newRange = document.createRange();
             newRange.setStart(next || parent, 0);
             newRange.collapse(true);
             selection.removeAllRanges();
             selection.addRange(newRange);
-            
+
             // Only return position if we actually found one
             return rect.y === 0 ? null : {x: rect.x, y: rect.y};
         }
@@ -441,10 +413,9 @@ extension HtmlBodyDocument {
         function updateCursorPosition() {
             const position = getCursorCoordinates();
             if (!position) return;
-            
+
             if (position) {
                 window.webkit.messageHandlers.\(JSEvent.cursorPositionChanged).postMessage({
-                    "messageHandler": "\(JSEvent.cursorPositionChanged)",
                     "\(EventAttributeKey.cursorPosition)": {
                         "\(EventAttributeKey.cursorPositionX)": position.x,
                         "\(EventAttributeKey.cursorPositionY)": position.y
@@ -488,11 +459,5 @@ extension HtmlBodyDocument {
 
         const debouncedUpdateCursorPosition = debounce(updateCursorPosition, 100);
         """
-    }
-}
-
-private extension Color {
-    func hexString(in environment: EnvironmentValues) -> String {
-        Color(resolve(in: environment).cgColor).toHex()!
     }
 }

@@ -20,11 +20,9 @@ import Foundation
 import InboxDesignSystem
 import SwiftUI
 
-/**
- List of all the actions that can take place over a message or a conversation.
-
- The purpose of this enum is to declare icons and strings related to an action only once.
- */
+/// List of all the actions that can take place over a message or a conversation.
+///
+/// The purpose of this enum is to declare icons and strings related to an action only once.
 enum Action: ActionPickerListElement {
     case deletePermanently
     case forward

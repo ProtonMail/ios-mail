@@ -17,9 +17,7 @@
 
 import Foundation
 
-/**
- Keeps the state for UI components
- */
+/// Keeps the state for UI components
 final class AppUIStateStore: ObservableObject {
     struct SidebarState {
         var zIndex: Double
@@ -44,9 +42,7 @@ final class AppUIStateStore: ObservableObject {
 }
 
 extension AppUIStateStore.SidebarState {
-
     static var initial: Self {
         .init(zIndex: .zero, visibleWidth: .zero)
     }
-
 }

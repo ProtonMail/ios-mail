@@ -17,6 +17,7 @@
 
 import Testing
 import WebKit
+import proton_app_uniffi
 
 @testable import InboxComposer
 
@@ -25,7 +26,11 @@ final class BodyWebViewInterfaceTests {
     private let sut: HtmlBodyWebViewInterface
     private var mockWebsiteDataStore: MockWebsiteDataStore!
     private var delegate: WebViewDelegate!
-    private let dummyMessage = "<p>dummy message</p>"
+
+    private let dummyMessage = ComposerContent(
+        head: "<style>dummy style</style>",
+        body: "<p>dummy message</p>"
+    )
 
     init() {
         self.mockWebsiteDataStore = .init()
@@ -40,8 +45,8 @@ final class BodyWebViewInterfaceTests {
         await sut.loadMessageBody(dummyMessage, clearImageCacheFirst: false)
         await waitForWebViewDidFinish(sut.webView)
 
-        let html = await sut.readMesasgeBody()
-        #expect(html == dummyMessage)
+        let html = await sut.readMessageBody()
+        #expect(html == dummyMessage.body)
         #expect(mockWebsiteDataStore.removeDataCalled == false)
     }
 
@@ -50,8 +55,8 @@ final class BodyWebViewInterfaceTests {
         await sut.loadMessageBody(dummyMessage, clearImageCacheFirst: true)
         await waitForWebViewDidFinish(sut.webView)
 
-        let html = await sut.readMesasgeBody()
-        #expect(html == dummyMessage)
+        let html = await sut.readMessageBody()
+        #expect(html == dummyMessage.body)
         #expect(mockWebsiteDataStore.removeDataCalled == true)
     }
 
@@ -64,7 +69,7 @@ final class BodyWebViewInterfaceTests {
 
         await sut.insertImages(["12345", "qwerty"])
 
-        let html = await sut.readMesasgeBody()
+        let html = await sut.readMessageBody()
         #expect(
             html == """
                 <img src="cid:12345"><br><img src="cid:qwerty"><br><p>initial message</p>
@@ -79,7 +84,7 @@ final class BodyWebViewInterfaceTests {
         try await setCursorAfter(text: "first part")
         await sut.insertImages(["12345"])
 
-        let html = await sut.readMesasgeBody()
+        let html = await sut.readMessageBody()
         #expect(html == "<p>first part</p><img src=\"cid:12345\"><br><p>second part</p>")
     }
 
@@ -92,7 +97,7 @@ final class BodyWebViewInterfaceTests {
 
         await sut.removeImage(containing: "12345")
 
-        let html = await sut.readMesasgeBody()
+        let html = await sut.readMessageBody()
         #expect(
             html == """
                 <p>hello<br></p>
@@ -106,7 +111,7 @@ final class BodyWebViewInterfaceTests {
 
         await sut.removeImage(containing: "12345")
 
-        let html = await sut.readMesasgeBody()
+        let html = await sut.readMessageBody()
         #expect(
             html == """
                 <p>hello<img src="cid:123456789"><br></p>
@@ -120,7 +125,7 @@ final class BodyWebViewInterfaceTests {
 
         await sut.removeImage(containing: "12567")
 
-        let html = await sut.readMesasgeBody()
+        let html = await sut.readMessageBody()
         #expect(
             html == """
                 <p>hello<img src="cid:12345"><br></p>
@@ -131,7 +136,6 @@ final class BodyWebViewInterfaceTests {
 // MARK: Helpers
 
 private extension BodyWebViewInterfaceTests {
-
     private func waitForWebViewDidFinish(_ webView: WKWebView) async {
         await withCheckedContinuation { continuation in
             delegate = WebViewDelegate(continuation)
@@ -177,5 +181,11 @@ private final class MockWebsiteDataStore: WebsiteDataStoreType {
 
     func removeData(ofTypes websiteDataTypes: Set<String>, modifiedSince date: Date) async {
         removeDataCalled = true
+    }
+}
+
+private extension HtmlBodyWebViewInterface {
+    func loadMessageBody(_ body: String, clearImageCacheFirst: Bool) async {
+        await loadMessageBody(ComposerContent(head: .empty, body: body), clearImageCacheFirst: clearImageCacheFirst)
     }
 }

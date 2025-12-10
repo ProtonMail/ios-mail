@@ -18,7 +18,6 @@
 import proton_app_uniffi
 
 class ForegroundWorkService: ApplicationServiceWillEnterForeground, ApplicationServiceDidEnterBackground {
-
     private let mailSession: () -> MailSessionProtocol
 
     init(mailSession: @escaping () -> MailSessionProtocol) {
@@ -36,5 +35,4 @@ class ForegroundWorkService: ApplicationServiceWillEnterForeground, ApplicationS
     func didEnterBackground() {
         mailSession().onExitForeground()
     }
-
 }

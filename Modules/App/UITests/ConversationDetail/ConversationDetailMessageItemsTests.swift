@@ -18,7 +18,6 @@
 import Foundation
 
 final class ConversationDetailMessageItemsTests: PMUIMockedNetworkTestCase {
-
     override var loginType: UITestLoginType {
         UITestLoginType.Mocked.Paid.YoungBee
     }

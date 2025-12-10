@@ -18,7 +18,6 @@
 import Foundation
 
 public extension DS.Spacing {
-
     /// 2px
     static let tiny: CGFloat = 2
     /// 4px
@@ -41,5 +40,4 @@ public extension DS.Spacing {
     static let huge: CGFloat = 32
     /// 40px
     static let jumbo: CGFloat = 40
-
 }

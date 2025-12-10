@@ -21,7 +21,6 @@ import proton_app_uniffi
 @testable import InboxComposer
 
 final class DraftAttachmentArrayTests {
-
     @Test
     func testToDraftAttachmentUIModels_itShouldFilterOutInlineDispositionAttachments() throws {
         let sut: [DraftAttachment] = [

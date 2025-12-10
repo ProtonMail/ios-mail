@@ -19,7 +19,6 @@ import Foundation
 import XCTest
 
 extension LabelAsBottomSheetRobot {
-
     // MARK: UI Elements
 
     private var labelsList: XCUIElement {

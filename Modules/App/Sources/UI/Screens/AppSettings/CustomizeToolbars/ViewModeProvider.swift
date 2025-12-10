@@ -22,9 +22,7 @@ protocol ViewModeProvider: Sendable {
 }
 
 extension MailUserSession: ViewModeProvider {
-
     func viewMode() async throws -> ViewMode {
         try await mailSettings(ctx: self).get().viewMode
     }
-
 }

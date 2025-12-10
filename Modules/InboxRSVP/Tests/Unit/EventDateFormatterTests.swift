@@ -119,7 +119,6 @@ final class EventDateFormatterTests {
 }
 
 private extension Date {
-
     static func yesterday() -> Date {
         calendar.previousDay(before: today())!
     }
@@ -139,5 +138,4 @@ private extension Date {
     private static var calendar: Calendar {
         DateEnvironment.calendarGMT
     }
-
 }

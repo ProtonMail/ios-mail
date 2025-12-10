@@ -31,7 +31,6 @@ struct MessageExpirationValidatorActions {
 }
 
 private extension MessageExpirationValidatorActions {
-
     @MainActor
     static func productionValidateRecipientsIfMessageHasExpiration(
         draft: AppDraftProtocol,

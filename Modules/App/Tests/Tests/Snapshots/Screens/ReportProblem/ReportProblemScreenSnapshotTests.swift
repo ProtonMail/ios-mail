@@ -25,7 +25,6 @@ import XCTest
 
 @MainActor
 class ReportProblemScreenSnapshotTests: BaseTestCase {
-
     func testReportProblemScreenLayoutsCorrectly() {
         let sut = ReportProblemScreen(reportProblemService: ReportProblemServiceSpy())
             .environmentObject(ToastStateStore(initialState: .initial))
@@ -40,5 +39,4 @@ class ReportProblemScreenSnapshotTests: BaseTestCase {
 
         assertSnapshotsOnIPhoneX(of: sut)
     }
-
 }

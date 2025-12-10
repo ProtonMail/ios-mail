@@ -30,7 +30,6 @@ extension DraftAttachmentUploadError: LocalizedError {
 }
 
 private extension DraftAttachmentUploadErrorReason {
-
     var errorMessage: LocalizedStringResource {
         switch self {
         case .attachmentTooLarge, .totalAttachmentSizeTooLarge:
@@ -56,7 +55,6 @@ private extension DraftAttachmentUploadErrorReason {
 }
 
 extension DraftAttachmentDispositionSwapError: LocalizedError {
-
     public var errorDescription: String? {
         switch self {
         case .reason(let reason):
@@ -68,7 +66,6 @@ extension DraftAttachmentDispositionSwapError: LocalizedError {
 }
 
 extension DraftAttachmentDispositionSwapErrorReason {
-
     public var errorMessage: LocalizedStringResource {
         switch self {
         case .invalidState,
@@ -221,7 +218,6 @@ extension DraftSendError: LocalizedError {
 }
 
 extension DraftSendFailure: LocalizedError {
-
     public var errorDescription: String? {
         switch self {
         case .save(let draftSaveErrorReason):
@@ -276,7 +272,6 @@ private extension DraftSendErrorReason {
 }
 
 extension DraftSenderAddressChangeError: LocalizedError {
-
     public var errorDescription: String? {
         switch self {
         case .reason(let reason):
@@ -288,7 +283,6 @@ extension DraftSenderAddressChangeError: LocalizedError {
 }
 
 private extension DraftSenderAddressChangeErrorReason {
-
     var errorMessage: LocalizedStringResource {
         switch self {
         case .addressEmailNotFound:

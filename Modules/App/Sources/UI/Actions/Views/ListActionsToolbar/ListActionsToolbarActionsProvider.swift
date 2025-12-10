@@ -37,14 +37,12 @@ struct AvailableListToolbarActions {
 }
 
 extension AvailableListToolbarActions {
-
     static var productionInstance: Self {
         .init(
             message: allAvailableListActionsForMessages,
             conversation: allAvailableListActionsForConversations
         )
     }
-
 }
 
 typealias MessageListActionsToolbarActionsProvider = (Mailbox, [Id]) async -> AllAvailableListActionsForMessagesResult

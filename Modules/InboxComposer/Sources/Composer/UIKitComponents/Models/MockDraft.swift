@@ -21,7 +21,6 @@ import proton_app_uniffi
 import typealias InboxCore.ID
 
 extension SingleRecipientEntry {
-
     func toComposerRecipientSingle() -> ComposerRecipientSingle {
         .init(displayName: name, address: email, validState: .valid)
     }
@@ -29,26 +28,8 @@ extension SingleRecipientEntry {
 
 final class MockDraft: AppDraftProtocol, @unchecked Sendable {
     static let defaultMessageId: Id = 12345
-    static private var defaultSender: String { "old_sender@example.com" }
-    static private var defaultSubject: String { "Test Subject" }
-    static private var defaultBody: String { "Test Body" }
-    static private var defaultRecipients: [ComposerRecipient] {
-        [ComposerRecipient.single(.init(displayName: "", address: "inbox1@pm.me", validState: .valid))]
-    }
-    static private var defaultAttachments: [DraftAttachment] {
-        let mockMimeType = AttachmentMimeType(mime: "pdf", category: .pdf)
-        let mockAttachment = AttachmentMetadata(
-            id: .random(),
-            disposition: .attachment,
-            mimeType: mockMimeType,
-            name: "attachment_1",
-            size: 123456,
-            isListable: false
-        )
-        return [DraftAttachment(state: .uploaded, attachment: mockAttachment, stateModifiedTimestamp: 1742829536)]
-    }
 
-    var mockBody: String
+    var mockContent: ComposerContent
     var mockSender: String
     var mockSubject: String
     var mockToRecipientList: MockComposerRecipientList
@@ -74,7 +55,7 @@ final class MockDraft: AppDraftProtocol, @unchecked Sendable {
     private(set) var scheduleSendWasCalledWithTime: UInt64 = 0
 
     init(
-        mockBody: String,
+        mockContent: ComposerContent,
         mockSender: String,
         mockSubject: String,
         mockToRecipientList: MockComposerRecipientList,
@@ -82,7 +63,7 @@ final class MockDraft: AppDraftProtocol, @unchecked Sendable {
         mockBccRecipientList: MockComposerRecipientList,
         mockAttachmentList: MockAttachmentList,
     ) {
-        self.mockBody = mockBody
+        self.mockContent = mockContent
         self.mockSender = mockSender
         self.mockSubject = mockSubject
         self.mockToRecipientList = mockToRecipientList
@@ -93,7 +74,7 @@ final class MockDraft: AppDraftProtocol, @unchecked Sendable {
 
     static var emptyMockDraft: MockDraft {
         .init(
-            mockBody: .empty,
+            mockContent: .empty,
             mockSender: .empty,
             mockSubject: .empty,
             mockToRecipientList: MockComposerRecipientList(),
@@ -101,38 +82,6 @@ final class MockDraft: AppDraftProtocol, @unchecked Sendable {
             mockBccRecipientList: MockComposerRecipientList(),
             mockAttachmentList: MockAttachmentList()
         )
-    }
-
-    static var defaultMockDraft: MockDraft {
-        let attachmentList = MockAttachmentList()
-        attachmentList.mockAttachments = defaultAttachments
-        return MockDraft(
-            mockBody: defaultBody,
-            mockSender: defaultSender,
-            mockSubject: defaultSubject,
-            mockToRecipientList: .init(addedRecipients: defaultRecipients),
-            mockCcRecipientList: .init(),
-            mockBccRecipientList: .init(),
-            mockAttachmentList: attachmentList
-        )
-    }
-
-    static func makeWithRecipients(_ recipients: [ComposerRecipient], group: RecipientGroupType) -> MockDraft {
-        let draft: MockDraft = .emptyMockDraft
-        switch group {
-        case .to: draft.mockToRecipientList = .init(addedRecipients: recipients)
-        case .cc: draft.mockCcRecipientList = .init(addedRecipients: recipients)
-        case .bcc: draft.mockBccRecipientList = .init(addedRecipients: recipients)
-        }
-        return draft
-    }
-
-    static func makeWithAttachments(_ attachments: [DraftAttachment]) -> MockDraft {
-        let draft: MockDraft = .emptyMockDraft
-        let mockAttachmentList = MockAttachmentList()
-        mockAttachmentList.mockAttachments = attachments
-        draft.mockAttachmentList = mockAttachmentList
-        return draft
     }
 
     func messageId() async -> DraftMessageIdResult { mockDraftMessageIdResult }
@@ -160,6 +109,10 @@ final class MockDraft: AppDraftProtocol, @unchecked Sendable {
         mockAttachmentList
     }
 
+    func composerContent(themeOpts: ThemeOpts, editorId: String) -> DraftComposerContentResult {
+        .ok(mockContent)
+    }
+
     func toRecipients() -> ComposerRecipientListProtocol {
         mockToRecipientList
     }
@@ -170,10 +123,6 @@ final class MockDraft: AppDraftProtocol, @unchecked Sendable {
 
     func bccRecipients() -> ComposerRecipientListProtocol {
         mockBccRecipientList
-    }
-
-    func body() -> String {
-        mockBody
     }
 
     func scheduleSendOptions() -> DraftScheduleSendOptionsResult {
@@ -197,7 +146,7 @@ final class MockDraft: AppDraftProtocol, @unchecked Sendable {
     }
 
     func setBody(body: String) -> VoidDraftSaveResult {
-        mockBody = body
+        mockContent.body = body
         return .ok
     }
 
@@ -241,16 +190,14 @@ extension AppDraftProtocol where Self == MockDraft {
     static var emptyMock: MockDraft { .emptyMockDraft }
 }
 
-/**
- `MockComposerRecipientList` implments the logic it is expected from the SDK's `ComposerRecipientList` object. The
- UI state of the recpient lists is partially hold in the SDK. This is because recipients do not have an identifier and some operations
- need to happen based on the index of the elements.
-
- The reason have some logic in this mock object are:
- 1. Avoid executing any HTTP request involved
- 2. The `ComposerModel` logic relies on the updated `ComposerRecipientList` state during certain operations
- to update the ComposerState
- */
+/// `MockComposerRecipientList` implments the logic it is expected from the SDK's `ComposerRecipientList` object. The
+/// UI state of the recpient lists is partially hold in the SDK. This is because recipients do not have an identifier and some operations
+/// need to happen based on the index of the elements.
+///
+/// The reason have some logic in this mock object are:
+/// 1. Avoid executing any HTTP request involved
+/// 2. The `ComposerModel` logic relies on the updated `ComposerRecipientList` state during certain operations
+/// to update the ComposerState
 final class MockComposerRecipientList: ComposerRecipientListProtocol, @unchecked Sendable {
     var addedRecipients: [ComposerRecipient] = []
     private(set) var callback: ComposerRecipientValidationCallback?

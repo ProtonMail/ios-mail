@@ -19,7 +19,6 @@ import InboxCoreUI
 import proton_app_uniffi
 
 class PINVerifierSpy: PINVerifier, @unchecked Sendable {
-
     var verifyPinCodeStub: MailSessionVerifyPinCodeResult = .ok
     var remainingPinAttemptsStub: MailSessionRemainingPinAttemptsResult = .ok(10)
 
@@ -34,5 +33,4 @@ class PINVerifierSpy: PINVerifier, @unchecked Sendable {
 
         return remainingPinAttemptsStub
     }
-
 }

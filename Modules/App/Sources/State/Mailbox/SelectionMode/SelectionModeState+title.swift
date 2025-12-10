@@ -18,7 +18,6 @@
 import Foundation
 
 extension SelectionModeState {
-
     var title: LocalizedStringResource {
         let selectedItemsCount = selectedItems.count
         return L10n.Mailbox.selected(emailsCount: selectedItemsCount)

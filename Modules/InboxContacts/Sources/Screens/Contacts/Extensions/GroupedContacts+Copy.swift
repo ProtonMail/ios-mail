@@ -18,9 +18,7 @@
 import proton_app_uniffi
 
 extension GroupedContacts {
-
     func copy(items: [ContactItemType]) -> Self {
         .init(groupedBy: groupedBy, items: items)
     }
-
 }

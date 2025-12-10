@@ -20,7 +20,6 @@ import InboxDesignSystem
 import UIKit
 
 final class ComposerController: UIViewController {
-
     enum Event {
         case viewDidDisappear
         case recipientFieldEvent(RecipientsFieldController.Event, RecipientGroupType)
@@ -144,7 +143,7 @@ final class ComposerController: UIViewController {
 
     private func setInitialStates(with state: ComposerState) {
         // FIXME: have a precached webview strategy
-        Task { await bodyEditor.updateBody(state.initialBody) }
+        Task { await bodyEditor.updateBody(state.initialContent) }
     }
 
     private func updateStatesOfSubviews(with state: ComposerState) {
@@ -203,7 +202,6 @@ enum BodyEvent {
 }
 
 private extension BodyEditorEvent {
-
     var toBodyEvent: BodyEvent? {
         switch self {
         case .onStartEditing:
@@ -227,9 +225,7 @@ private extension BodyEditorEvent {
 }
 
 private extension ComposerController {
-
     private enum SubviewFactory {
-
         static var scrollView: UIScrollView {
             let view = UIScrollView()
             view.translatesAutoresizingMaskIntoConstraints = false
@@ -249,7 +245,6 @@ private extension ComposerController {
 }
 
 private extension ComposerState {
-
     func toDraftActionBarState() -> DraftActionBarViewController.State {
         DraftActionBarViewController.State(
             isAddingAttachmentsEnabled: isAddingAttachmentsEnabled,

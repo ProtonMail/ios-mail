@@ -23,9 +23,7 @@ struct BiometricLockState: Equatable, Copying {
 }
 
 extension BiometricLockState {
-
     static var initial: Self {
         .init(displayUnlockButton: false)
     }
-
 }

@@ -49,7 +49,6 @@ struct SendingTag: View {
                 .stroke(variant.configuration.color, lineWidth: 1)
         }
     }
-
 }
 
 #Preview {

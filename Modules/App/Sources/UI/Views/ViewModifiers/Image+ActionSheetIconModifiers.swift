@@ -20,12 +20,10 @@ import InboxDesignSystem
 import SwiftUI
 
 extension Image {
-
     func actionSheetSmallIconModifier() -> some View {
         self
             .resizable()
             .square(size: 20)
             .foregroundStyle(DS.Color.Icon.norm)
     }
-
 }

@@ -18,7 +18,6 @@
 import Foundation
 
 final class SubscriptionNavigationTests: PMUIUnmockedNetworkTestCase {
-
     override var loginType: UITestLoginType {
         UITestLoginType.Unmocked.Black.Free.Free
     }

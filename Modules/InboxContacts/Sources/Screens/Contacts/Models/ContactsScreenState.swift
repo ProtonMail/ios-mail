@@ -45,7 +45,6 @@ public struct ContactsScreenState: Copying, Equatable {
 }
 
 extension ContactsScreenState {
-
     public static var initial: Self {
         .init(
             search: .initial,
@@ -55,13 +54,10 @@ extension ContactsScreenState {
             createContactURL: .none
         )
     }
-
 }
 
 extension ContactsScreenState.Search {
-
     static var initial: Self {
         .init(query: "", isActive: false)
     }
-
 }

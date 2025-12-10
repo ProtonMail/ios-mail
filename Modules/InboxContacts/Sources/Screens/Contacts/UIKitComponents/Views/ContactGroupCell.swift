@@ -21,7 +21,6 @@ import SwiftUI
 import UIKit
 
 final class ContactGroupCell: UITableViewCell {
-
     let iconBackgroundView: UIView = {
         let view = UIView()
         view.layer.cornerRadius = ContactConstant.avatarRadius
@@ -83,5 +82,4 @@ final class ContactGroupCell: UITableViewCell {
             iconImageView.heightAnchor.constraint(equalTo: iconImageView.widthAnchor),
         ])
     }
-
 }

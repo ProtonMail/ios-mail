@@ -42,11 +42,9 @@ struct ConversationToolbar<TrailingButton: View>: ViewModifier {
                 }
             }
     }
-
 }
 
 extension View {
-
     func conversationTopToolbar(
         title: AttributedString,
         trailingButton: @escaping () -> some View

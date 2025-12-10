@@ -422,7 +422,6 @@ struct MessageDetailsUIModel: Hashable {
     let date: Date
     let location: MessageDetail.Location?
     let labels: [LabelUIModel]
-    let attachments: [AttachmentDisplayModel]
     let isStarred: Bool
     let showPaperClip: Bool
 }
@@ -434,7 +433,6 @@ extension MessageDetailsUIModel {
 }
 
 enum MessageDetail {
-
     struct Sender: Hashable {
         let name: String
         let address: String
@@ -469,7 +467,6 @@ enum MessageDetailsEvent {
 }
 
 extension Array where Element == MessageDetail.Recipient {
-
     var recipientsUIRepresentation: String {
         let recipients = map(\.name).joined(separator: ", ")
         return L10n.MessageDetails.to.string + recipients
@@ -495,7 +492,6 @@ extension Array where Element == MessageDetail.Recipient {
 }
 
 enum MessageDetailsPreviewProvider {
-
     static var recipientsTo: [MessageDetail.Recipient] {
         [
             .init(
@@ -549,12 +545,10 @@ enum MessageDetailsPreviewProvider {
             date: Date(timeIntervalSince1970: 1724347300),
             location: location?.model,
             labels: labels,
-            attachments: .previewData,
             isStarred: false,
             showPaperClip: false
         )
     }
-
 }
 
 private struct MessageDetailsViewIdentifiers {
@@ -563,16 +557,6 @@ private struct MessageDetailsViewIdentifiers {
     static let messageDate = "detail.header.date"
     static let senderAddress = "detail.header.sender.address"
     static let recipientsSummary = "detail.header.recipients.summary"
-    static let threeDotsButton = "detail.header.button.actions"
-
-    static let expandedHeaderRootItem = "detail.header.expanded.root"
-    static let expandedHeaderSenderLabel = "detail.header.expanded.sender.label"
-    static let expandedHeaderSenderName = "detail.header.expanded.sender.name"
-    static let expandedHeaderSenderAddress = "detail.header.expanded.sender.address"
-
-    static func expandedHeaderRecipientLabel(group: RecipientGroup) -> String {
-        "details.header.expanded.\(group.accessibilityValue).label"
-    }
 
     static func expandedHeaderRecipientName(group: RecipientGroup, index: Int) -> String {
         "details.header.expanded.\(group.accessibilityValue).name#\(index)"
@@ -582,6 +566,5 @@ private struct MessageDetailsViewIdentifiers {
         "details.header.expanded.\(group.accessibilityValue).value#\(index)"
     }
 
-    static let expandedHeaderDateLabel = "detail.header.expanded.date.label"
     static let expandedHeaderDateValue = "detail.header.expanded.date.value"
 }

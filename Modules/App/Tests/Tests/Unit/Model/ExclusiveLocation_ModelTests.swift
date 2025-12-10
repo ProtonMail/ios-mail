@@ -24,7 +24,6 @@ import proton_app_uniffi
 @testable import ProtonMail
 
 final class ExclusiveLocation_ModelTests: BaseTestCase {
-
     struct TestCase {
         let given: ExclusiveLocation
         let expected: MessageDetail.Location
@@ -76,5 +75,4 @@ final class ExclusiveLocation_ModelTests: BaseTestCase {
             XCTAssertEqual(testCase.given.model, testCase.expected)
         }
     }
-
 }

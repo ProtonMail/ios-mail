@@ -20,7 +20,6 @@ import SwiftUI
 import proton_app_uniffi
 
 extension IsSelected {
-
     var image: ImageResource? {
         switch self {
         case .selected:
@@ -31,5 +30,4 @@ extension IsSelected {
             nil
         }
     }
-
 }

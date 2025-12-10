@@ -20,7 +20,6 @@ import UIKit
 @testable import ProtonMail
 
 class BackgroundTransitionTaskSchedulerSpy: BackgroundTransitionTaskScheduler {
-
     var stubbedBackgroundTaskIdentifier = UIBackgroundTaskIdentifier(rawValue: 10)
     private(set) var invokedBeginBackgroundTask: [(taskName: String?, handler: (@MainActor @Sendable () -> Void)?)] = []
     private(set) var invokedEndBackgroundTask: [UIBackgroundTaskIdentifier] = []
@@ -39,5 +38,4 @@ class BackgroundTransitionTaskSchedulerSpy: BackgroundTransitionTaskScheduler {
     func endBackgroundTask(_ identifier: UIBackgroundTaskIdentifier) {
         invokedEndBackgroundTask.append(identifier)
     }
-
 }

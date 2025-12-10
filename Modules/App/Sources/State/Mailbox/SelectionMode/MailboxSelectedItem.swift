@@ -19,6 +19,4 @@ import Foundation
 
 struct MailboxSelectedItem: Hashable {
     let id: ID
-    let isRead: Bool
-    let isStarred: Bool
 }

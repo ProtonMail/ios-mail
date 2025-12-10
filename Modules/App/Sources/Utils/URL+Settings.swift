@@ -18,9 +18,7 @@
 import UIKit
 
 extension URL {
-
     static var settings: URL {
         URL(string: UIApplication.openSettingsURLString).unsafelyUnwrapped
     }
-
 }

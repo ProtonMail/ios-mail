@@ -23,7 +23,6 @@ import proton_app_uniffi
 @testable import ProtonMail
 
 final class ConversationToMailboxItemCellUIModelTests: XCTestCase {
-
     func testToMailboxItemCellUIModel_whenSelectedItems_itReturnsTheMessagesAsSelectedIfItMacthes() {
         let conversation = Conversation.testData(conversationId: 40)
 
@@ -45,5 +44,4 @@ final class ConversationToMailboxItemCellUIModelTests: XCTestCase {
         let result = conversation.toMailboxItemCellUIModel(selectedIds: [], showLocation: false)
         XCTAssertNil(result.locationIcon)
     }
-
 }

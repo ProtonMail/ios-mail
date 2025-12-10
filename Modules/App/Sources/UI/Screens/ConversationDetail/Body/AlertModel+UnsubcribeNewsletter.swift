@@ -18,7 +18,6 @@
 import InboxCoreUI
 
 extension AlertModel {
-
     static func unsubcribeNewsletter(
         action: @escaping @MainActor @Sendable (UnsubscribeNewsletterAlertAction) async -> Void
     ) -> Self {
@@ -32,5 +31,4 @@ extension AlertModel {
             actions: actions
         )
     }
-
 }

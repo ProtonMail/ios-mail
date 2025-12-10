@@ -111,15 +111,12 @@ enum ContactFormatter {
 }
 
 private extension Array where Element == VcardPropType {
-
     func humanReadable(fallback: String) -> String {
         first?.humanReadable.string ?? fallback
     }
-
 }
 
 private extension GenderKind {
-
     var humanReadable: LocalizedStringResource {
         switch self {
         case .male:
@@ -138,11 +135,9 @@ private extension GenderKind {
             string.firstUppercased.stringResource
         }
     }
-
 }
 
 private extension VcardPropType {
-
     var humanReadable: LocalizedStringResource {
         switch self {
         case .home:
@@ -167,24 +162,19 @@ private extension VcardPropType {
             string.firstUppercased.stringResource
         }
     }
-
 }
 
 private extension String {
-
     var firstUppercased: String {
         prefix(1).uppercased() + dropFirst()
     }
-
 }
 
 private extension VCardUrlValue {
-
     var value: String {
         switch self {
         case .http(let string), .notHttp(let string), .text(let string):
             string
         }
     }
-
 }

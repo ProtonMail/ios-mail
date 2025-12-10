@@ -35,7 +35,6 @@ public protocol DatePickerViewConfiguration {
 }
 
 extension DatePickerViewConfiguration {
-
     public var resolvedInitialDate: Date {
         guard let initialSelectedDate, range.contains(initialSelectedDate) else { return range.lowerBound }
         return initialSelectedDate

@@ -19,6 +19,7 @@ import InboxCore
 import InboxDesignSystem
 import UIKit
 import WebKit
+import proton_app_uniffi
 
 final class HtmlBodyEditorController: UIViewController, BodyEditor {
     private let htmlInterface: HtmlBodyWebViewInterfaceProtocol
@@ -97,7 +98,7 @@ final class HtmlBodyEditorController: UIViewController, BodyEditor {
             case .onEditorChange:
                 Task { [weak self] in
                     guard let self else { return }
-                    guard let body = await htmlInterface.readMesasgeBody() else { return }
+                    guard let body = await htmlInterface.readMessageBody() else { return }
                     onEvent?(.onBodyChange(body: body))
                 }
             case .onCursorPositionChange(let position):
@@ -112,10 +113,10 @@ final class HtmlBodyEditorController: UIViewController, BodyEditor {
                     return
                 }
                 onEvent?(.onImagePasted(image: image))
-            case .onTextPasted(let text):
-                let styleStrippedText = HtmlSanitizer.removeStyleAttribute(html: text)
-                let sanitisedText = HtmlSanitizer.applyStringLiteralEscapingRules(html: styleStrippedText)
-                handleBodyAction(.insertText(text: sanitisedText))
+            case .onTextPasted(let text, let mimeType):
+                let sanitizedText = sanitizePastedContent(content: text, mimeType: mimeType)
+                let escapedSanitizedText = HtmlSanitizer.applyStringLiteralEscapingRules(html: sanitizedText)
+                handleBodyAction(.insertText(text: escapedSanitizedText))
             }
         }
     }
@@ -124,8 +125,8 @@ final class HtmlBodyEditorController: UIViewController, BodyEditor {
         Task { await initialFocusState.setFocusWhenLoaded() }
     }
 
-    func updateBody(_ body: String) async {
-        await htmlInterface.loadMessageBody(body, clearImageCacheFirst: false)
+    func updateBody(_ content: ComposerContent) async {
+        await htmlInterface.loadMessageBody(content, clearImageCacheFirst: false)
     }
 
     func handleBodyAction(_ action: ComposerBodyAction) {
@@ -136,8 +137,8 @@ final class HtmlBodyEditorController: UIViewController, BodyEditor {
             Task { await htmlInterface.insertImages(cids) }
         case .removeInlineImage(let cid):
             Task { await htmlInterface.removeImage(containing: cid) }
-        case .reloadBody(let html, let clearImageCacheFirst):
-            Task { await htmlInterface.loadMessageBody(html, clearImageCacheFirst: clearImageCacheFirst) }
+        case .reloadBody(let content, let clearImageCacheFirst):
+            Task { await htmlInterface.loadMessageBody(content, clearImageCacheFirst: clearImageCacheFirst) }
         }
     }
 
@@ -165,7 +166,6 @@ final class HtmlBodyEditorController: UIViewController, BodyEditor {
 }
 
 extension HtmlBodyEditorController: WKNavigationDelegate {
-
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         Task { await initialFocusState.bodyWasLoaded() }
         Task { await htmlInterface.logHtmlHealthCheck(tag: "webView.didFinish") }
@@ -177,38 +177,19 @@ extension HtmlBodyEditorController: WKNavigationDelegate {
 }
 
 extension HtmlBodyEditorController {
-
     enum SubviewFactory {
-
         static func webView(imageProxy: ImageProxy) -> WKWebView {
             let config = WKWebViewConfiguration.default(
-                handler: UniversalSchemeHandler.init(imageProxy: imageProxy, imagePolicy: .safe),
-                for: UniversalSchemeHandler.handlerSchemes
+                handler: UniversalSchemeHandler.init(imageProxy: imageProxy, imagePolicy: .safe)
             )
-            config.defaultWebpagePreferences.allowsContentJavaScript = false
 
             // using a custom cache to be able to flush it when necessary (e.g. failed inline image upload)
             config.websiteDataStore = WKWebsiteDataStore.nonPersistent()
 
-            let backgroundColor = DS.Color.Background.norm.toDynamicUIColor
-            let webView = WKWebViewWithNoAccessoryView(frame: .zero, configuration: config)
+            let webView = WKWebView.default(configuration: config)
             webView.translatesAutoresizingMaskIntoConstraints = false
-            webView.scrollView.isScrollEnabled = false
-            webView.scrollView.bounces = false
-
-            webView.isOpaque = false
-            webView.backgroundColor = backgroundColor
-            webView.scrollView.backgroundColor = backgroundColor
-            webView.scrollView.contentInsetAdjustmentBehavior = .never
             return webView
         }
-    }
-}
-
-private class WKWebViewWithNoAccessoryView: WKWebView {
-
-    override var inputAccessoryView: UIView? {
-        return nil
     }
 }
 

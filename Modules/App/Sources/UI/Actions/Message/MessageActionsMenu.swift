@@ -121,9 +121,7 @@ struct MessageActionsMenu<OpenMenuButtonContent: View>: View {
 }
 
 extension MessageActionSheet {
-
     var isEmpty: Bool {
         replyActions.isEmpty && generalActions.isEmpty && messageActions.isEmpty && moveActions.isEmpty
     }
-
 }

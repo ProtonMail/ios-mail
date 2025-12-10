@@ -101,5 +101,4 @@ final class DebouncedTaskTests: XCTestCase {
 
         wait(for: [expectation], timeout: duration)
     }
-
 }

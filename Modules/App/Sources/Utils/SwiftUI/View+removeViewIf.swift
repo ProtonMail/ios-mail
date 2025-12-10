@@ -18,7 +18,6 @@
 import SwiftUI
 
 extension View {
-
     /**
      Remove the view of the view hierarchy based on a condition.
     
@@ -39,5 +38,4 @@ extension View {
             self
         }
     }
-
 }

@@ -31,7 +31,6 @@ extension MailScrollerError: LocalizedError {
 }
 
 extension MailScrollerErrorReason {
-
     var errorMessage: String {
         switch self {
         case .notSynced:

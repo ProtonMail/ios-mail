@@ -72,7 +72,6 @@ struct SnoozeUpgradeButton: View {
                 .foregroundStyle(DS.Color.Text.weak)
         }
     }
-
 }
 
 private struct UpgradeButtonStyle: ButtonStyle {

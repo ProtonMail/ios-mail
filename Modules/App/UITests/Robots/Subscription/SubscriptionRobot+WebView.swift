@@ -19,7 +19,6 @@ import Foundation
 import XCTest
 
 extension SubscriptionRobot {
-
     // MARK: UI Elements
 
     private var defaultTimeout: TimeInterval { 30 }

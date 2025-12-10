@@ -4,6 +4,8 @@
 	},
 	"lineLength": 200,
 	"rules": {
-		"OrderedImports": true
+		"NoEmptyLinesOpeningClosingBraces": true,
+		"OrderedImports": true,
+		"UseTripleSlashForDocumentationComments": true
 	}
 }

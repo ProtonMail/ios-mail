@@ -18,9 +18,7 @@
 @testable import InboxContacts
 
 extension ContactsScreenState.Search {
-
     static func active(query: String) -> Self {
         .init(query: query, isActive: true)
     }
-
 }

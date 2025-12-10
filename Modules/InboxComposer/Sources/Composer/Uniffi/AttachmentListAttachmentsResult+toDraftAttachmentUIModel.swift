@@ -18,7 +18,6 @@
 import proton_app_uniffi
 
 extension DraftAttachment {
-
     func toDraftAttachmentUIModel() -> DraftAttachmentUIModel {
         .init(attachment: attachment, state: state)
     }

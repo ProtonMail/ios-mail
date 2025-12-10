@@ -19,7 +19,6 @@ import SwiftUI
 import proton_app_uniffi
 
 extension PMCustomFolder {
-
     var sidebarFolder: SidebarFolder {
         .init(
             folderID: id,
@@ -32,5 +31,4 @@ extension PMCustomFolder {
             isSelected: false
         )
     }
-
 }

@@ -2504,6 +2504,12 @@
             "value" : "Nový domov pre vaše účty"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Novo mesto za vaše račune"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2514,6 +2520,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hesaplarınız için yeni bir görünüm"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Новий дім для ваших облікових записів"
           }
         },
         "zh-Hans" : {
@@ -5359,6 +5371,12 @@
             "value" : "Dodatočný podpis, ktorý sa zobrazuje okrem vášho emailového podpisu pri odosielaní z tohto zariadenia."
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dodaten podpis, ki se prikaže poleg vašega e-poštnega podpisa ob pošiljanju iz te naprave."
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5705,6 +5723,12 @@
             "value" : "Prispôsobenie aplikácie"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prilagoditve aplikacije"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5731,8 +5755,11 @@
         }
       }
     },
+    "App icon" : {
+      "comment" : "Title shown on the app icon selection screen."
+    },
     "App Icon" : {
-      "comment" : "Title of the button that allows the user to change the app’s icon.",
+      "comment" : "Title of the button that allows the user to change the app's icon.",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -5864,6 +5891,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ikona aplikácie"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ikona aplikacije"
           }
         },
         "sv" : {
@@ -8594,6 +8627,7 @@
     },
     "Calculator" : {
       "comment" : "Name of the alternate 'Calculator' app icon shown in the app icon picker.",
+      "extractionState" : "stale",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -8731,6 +8765,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kalkulačka"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Računalo"
           }
         },
         "sv" : {
@@ -13825,7 +13865,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kunne ikke udskrive den anmodede e-mail"
+            "value" : "Kunne ikke udskrive den ønskede e-mail"
           }
         },
         "de" : {
@@ -14113,6 +14153,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Odosielateľa sa nepodarilo odblokovať"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pošiljatelja ni bilo mogoče odblokirati."
           }
         },
         "sv" : {
@@ -15466,6 +15512,9 @@
         }
       }
     },
+    "Default" : {
+      "comment" : "Label shown when the default app icon is selected."
+    },
     "Delete %lld messages" : {
       "comment" : "Title of alert displayed after delete permanently action tap.",
       "localizations" : {
@@ -16661,6 +16710,12 @@
           }
         }
       }
+    },
+    "Discreet" : {
+      "comment" : "Label shown when a discreet app icon is selected."
+    },
+    "Discreet app icon" : {
+      "comment" : "Toggle label for enabling/disabling discreet app icon feature."
     },
     "Display" : {
       "comment" : "Action to display embedded images.",
@@ -18578,7 +18633,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Redigér kladde"
+            "value" : "Redigér udkast"
           }
         },
         "de" : {
@@ -19805,6 +19860,12 @@
             "value" : "Podpis v emailoch"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-poštni podpis"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -19855,7 +19916,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "E-mails fra %@ vil ikke længere blive leveret og vil blive slettet permanent. De kan administrere blokerede e-mailadresser i indstillingerne."
+            "value" : "E-mails fra %@ vil ikke længere blive leveret og vil blive slettet permanent. Du kan administrere blokerede e-mailadresser i indstillingerne."
           }
         },
         "de" : {
@@ -20595,7 +20656,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nyd godt af krypterede beskeder, mindre spam, beskyttelse mod phishing og blokerede trackere. Velkommen til privatliv."
+            "value" : "Nyd godt af krypterede beskeder, mindre spam, beskyttelse mod phishing og blokerede trackere. Velkommen til privatlivsbeskyttelse."
           }
         },
         "de" : {
@@ -20704,6 +20765,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Užite si zašifrované správy, menej spamu, ochranu pred phishingom a zablokované sledovače. Vitajte v súkromí."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uživajte v šifriranih sporočilih, manj neželene pošte, zaščiti pred lažnim predstavljanjem in blokiranih sledilnikih. Dobrodošli v zasebnost."
           }
         },
         "sv" : {
@@ -21804,6 +21871,12 @@
             "value" : "Sústredenie na dosah ruky"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pomembno na dosegu roke"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -22524,6 +22597,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Začíname"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Začnite"
           }
         },
         "sv" : {
@@ -23427,6 +23506,12 @@
             "value" : "Zahrnúť Kôš/Spam"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vključi smeti/neželeno pošto"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -23477,7 +23562,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Forkert PIN. Prøv venligst igen."
+            "value" : "Forkert PIN. Prøv igen."
           }
         },
         "de" : {
@@ -23656,7 +23741,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Problem med at indlæse Deres indhold. Prøv venligst at opfriske, eller log ind igen."
+            "value" : "Problem med at indlæse dit indhold. Prøv at opfriske eller log ind igen."
           }
         },
         "de" : {
@@ -23835,7 +23920,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Problem med at synkronisere Deres indhold. Tjek Deres forbindelse, eller log ind igen."
+            "value" : "Problem med at synkronisere dit indhold. Tjek din forbindelse eller log ind igen."
           }
         },
         "de" : {
@@ -24014,7 +24099,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Problem med synkronisering af din e-mail. For at løse problemet skal du logge ud og logge ind igen."
+            "value" : "Problem med synkronisering af din e-mail. For at løse problemet skal du logge ud og så logge ind igen."
           }
         },
         "de" : {
@@ -24123,6 +24208,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Problém so synchronizáciou emailov. Na jeho vyriešenie sa odhláste a znovu prihláste."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Težava pri sinhronizaciji vaše e-pošte. Za rešitev se odjavite in se ponovno prijavite."
           }
         },
         "sv" : {
@@ -24329,6 +24420,9 @@
           }
         }
       }
+    },
+    "Keep the default Proton Mail icon, or disguise it with a more discreet one for extra privacy. Notifications will always show the Proton Mail name and icon. [Learn more...](https://proton.me/support/disguise-app-icon)" : {
+      "comment" : "Description text explaining the app icon feature and privacy implications."
     },
     "Label as…" : {
       "comment" : "Action title for labeling message/conversation in the action sheet.",
@@ -25279,13 +25373,13 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Загрузка відарысаў"
+            "value" : "Загрузіць відарысы"
           }
         },
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Carrega les imatges"
+            "value" : "Carregueu les imatges"
           }
         },
         "cs" : {
@@ -25342,16 +25436,46 @@
             "value" : "Charger les images"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이미지 불러오기"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Last inn bilder"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Afbeeldingen laden."
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Carregar imagens"
+          }
+        },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Încărcare imagini"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Načítať obrázky"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Naloži slike"
           }
         },
         "sv" : {
@@ -25364,6 +25488,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Görselleri yükle"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Завантажити зображення"
           }
         }
       }
@@ -25871,6 +26001,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Odhlásené z mailingového zoznamu"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Poštna lista je bila odjavljena."
           }
         },
         "sv" : {
@@ -28177,7 +28313,7 @@
                   "other" : {
                     "stringUnit" : {
                       "state" : "translated",
-                      "value" : "Beskeder flyttet til Arkiv."
+                      "value" : "Beskeder flyttet til arkiv."
                     }
                   }
                 }
@@ -29064,6 +29200,12 @@
             "value" : "Panel nástrojov správy"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Orodna vrstica sporočila"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -29760,6 +29902,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ďalšie možnosti"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Več možnosti"
           }
         },
         "sv" : {
@@ -31525,7 +31673,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ingen adresse med tilladelser til afsendelse"
+            "value" : "Ingen adresse med sendetilladelse"
           }
         },
         "de" : {
@@ -31570,16 +31718,46 @@
             "value" : "Aucune adresse ne dispose de permissions d’envoi."
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "발신 권한이 있는 주소가 없음"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ingen adresse med tillatelser for sending"
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Geen adres met verzendmachtiging."
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nenhum endereço com permissões de envio"
+          }
+        },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nicio adresă cu permisiuni de trimitere."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Žiadna adresa s oprávneniami na odosielanie"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ni naslova z dovoljenji za pošiljanje"
           }
         },
         "sv" : {
@@ -31592,6 +31770,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Gönderme izni olan bir e-posta adresi yok"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Немає адреси з правами на відправлення"
           }
         }
       }
@@ -31620,7 +31804,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ingen resultater"
+            "value" : "Ingen sammenfald"
           }
         },
         "de" : {
@@ -32362,6 +32546,7 @@
     },
     "Notes" : {
       "comment" : "Name of the alternate 'Notes' app icon shown in the app icon picker.",
+      "extractionState" : "stale",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -35179,6 +35364,7 @@
     },
     "Primary" : {
       "comment" : "Name of the default (primary) app icon shown in the app icon picker.",
+      "extractionState" : "stale",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -35310,6 +35496,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Predvolená"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Primarno"
           }
         },
         "sv" : {
@@ -36223,6 +36415,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Čítajte, píšte a spravujte emaily kdekoľvek sa nachádzate. Všetko sa automaticky synchronizuje v momente, keď sa opäť pripojíte k internetu."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Berite, pišite in upravljajte e-pošto, kjer koli že ste. Vse se samodejno sinhronizira v trenutku, ko ste spet povezani."
           }
         },
         "sv" : {
@@ -37779,7 +37977,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Genopretter værktøjslinjens handlinger for beskedvisningen til deres oprindelige standardindstillinger."
+            "value" : "Værktøjslinjens handlinger for beskedvisningen genoprettes til deres oprindelige standardindstillinger."
           }
         },
         "de" : {
@@ -40892,6 +41090,12 @@
             "value" : "Zobraziť správy, ktoré nie sú v koši, v tejto konverzácii."
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pokaži sporočila, ki niso v smetnjaku, v tem pogovoru."
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -41045,6 +41249,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zobraziť správy z Koša v tejto konverzácii."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pokaži sporočila, ki so v smetnjaku, v tem pogovoru."
           }
         },
         "sv" : {
@@ -41565,6 +41775,12 @@
             "value" : "Handtekeningen"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Podpisy"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -41587,6 +41803,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Podpisy"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Podpisi"
           }
         },
         "sv" : {
@@ -43125,19 +43347,19 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Algunes imatges no s'han pogut carregar amb protecció de rastrejadors."
+            "value" : "No s'han pogut carregar algunes imatges amb la protecció contra els rastrejadors."
           }
         },
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Některé obrázky se nepodařilo načíst kvůli ochrany před sledovacími prvky."
+            "value" : "Některé obrázky se nepodařilo načíst kvůli ochraně před sledovacími prvky."
           }
         },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nogle billeder kunne ikke indlæses med sporingsbeskyttelse."
+            "value" : "Nogle billeder med sporingsbeskyttelse kunne ikke indlæses."
           }
         },
         "de" : {
@@ -43182,16 +43404,46 @@
             "value" : "Certaines images n'ont pas pu être chargées avec la protection contre le suivi."
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "트래킹 보호로 인하여 일부 이미지를 불러올 수 없습니다."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Noen bilder kunne ikke lastes inn med sporingsbeskyttelse."
+          }
+        },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sommige afbeeldingen konden niet worden geladen door tracker bescherming."
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Algumas imagens falharam ao carregar com proteção contra rastreadores."
+          }
+        },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Încărcarea unor imagini a eșuat cu protecția de urmărire activată."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Niektoré obrázky sa nepodarilo načítať s ochranou proti sledovaniu."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nekaterih slik ni bilo mogoče naložiti zaradi zaščite pred sledilniki."
           }
         },
         "sv" : {
@@ -43204,6 +43456,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "İzleyici koruması nedeniyle bazı görseller yüklenemedi"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Деякі зображення не вдалося завантажити через захист від відстежувачів."
           }
         }
       }
@@ -43725,6 +43983,12 @@
             "value" : "Venujte menej času triedeniu a viac času práci. Vaša doručená pošta je navrhnutá tak, aby sa v nej ľahšie orientovalo, takže sa môžete rýchlejšie dostať k tomu, čo je dôležité."
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Porabite manj časa za razvrščanje in več časa za delo. Vaša mapa Prejeto je zasnovana tako, da je lahko dostopna in da lahko hitreje pridete do tega, kar potrebujete."
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -44151,7 +44415,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Forbliv forbundet, selv offline"
+            "value" : "Forbliv forbundet, selv når du er offline"
           }
         },
         "de" : {
@@ -44260,6 +44524,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zostaňte v kontakte, aj keď ste offline"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ostanite povezani, celo brez povezave"
           }
         },
         "sv" : {
@@ -45527,10 +45797,22 @@
             "value" : "Prepínač účtov sa presunul! Teraz môžete prepínať účty, odhlásiť sa - všetko z jedného pohodlného miesta."
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Preklopnik računov smo premaknili! Zdaj lahko preklapljate med računi, se odjavite – vse z enega priročnega mesta."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hesap değiştirici yer değiştirdi! Artık tek bir yerden hesaplarınız arasında geçiş yapabilir ve oturumu kapatabilirsiniz."
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Перемикач облікових записів переміщено! Тепер ви можете перемикати облікові записи, виходити з них; все з одного зручного місця."
           }
         }
       }
@@ -46311,7 +46593,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Værktøjslinjen kan have 1-5 handlinger. De kan ikke fjerne den sidste tilbageværende handling."
+            "value" : "Værktøjslinjen kan have 1-5 handlinger. Du kan ikke fjerne den sidste tilbageværende handling."
           }
         },
         "de" : {
@@ -48105,6 +48387,12 @@
             "value" : "Tento panel nástrojov sa zobrazí, keď je v zobrazení zoznamu vybraných viacero správ."
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ta orodna vrstica se prikaže, ko je v pogledu seznama izbranih več sporočil."
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -48252,6 +48540,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tento panel nástrojov zostáva viditeľný, keď je správa otvorená."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ta orodna vrstica ostane vidna, ko je sporočilo odprto."
           }
         },
         "sv" : {
@@ -49414,7 +49708,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "For mange forsøg for hurtigt. Vent venligst, før De prøver igen."
+            "value" : "For mange forsøg for hurtigt. Vent før du prøver igen."
           }
         },
         "de" : {
@@ -49593,7 +49887,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "For mange forkerte forsøg. Vent venligst, før De prøver igen."
+            "value" : "For mange forkerte forsøg. Vent før du prøver igen."
           }
         },
         "de" : {
@@ -49963,7 +50257,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Slå funktionen til for at autoudfylde e-mailadresser vha. kontakter fra alle dine indloggede konti."
+            "value" : "Slå funktionen til for at autoudfylde e-mailadresser via kontakter fra alle dine indloggede konti."
           }
         },
         "de" : {
@@ -50432,6 +50726,12 @@
             "value" : "Deblokkeer dit adres"
           }
         },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Odblokuj adres"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -50448,6 +50748,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Odblokovať túto adresu"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Odblokiraj ta naslov"
           }
         },
         "sv" : {
@@ -53144,7 +53450,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vi beklager. Dette kan have været en fejl fra vores side. Bekræft venligst, om du ønsker at markere denne e-mail som legitim."
+            "value" : "Vi beklager. Dette kan have været en fejl fra vores side. Bekræft om du ønsker at markere denne e-mail som legitim."
           }
         },
         "de" : {
@@ -53329,7 +53635,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Der opstod en fejl under forberedelsen af postkassen. Del gerne loggerne med vores supportmedarbejdere, så de kan se nærmere på problemet."
+            "value" : "Der opstod en fejl under forberedelsen af postkassen. Del gerne log-filerne med vores supportmedarbejdere, så de kan se nærmere på problemet."
           }
         },
         "de" : {
@@ -53677,6 +53983,7 @@
     },
     "Weather" : {
       "comment" : "Name of the alternate 'Weather' app icon shown in the app icon picker.",
+      "extractionState" : "stale",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -53816,6 +54123,12 @@
             "value" : "Počasie"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vreme"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -53866,7 +54179,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Velkommen til Proton Mail, hvor privatliv er standard"
+            "value" : "Velkommen til Proton Mail, hvor privatlivsbeskyttelse er standard"
           }
         },
         "de" : {
@@ -53975,6 +54288,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vitajte v Proton Mail, kde je súkromie štandardom"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dobrodošli v Proton Mail, kjer je zasebnost privzeta"
           }
         },
         "sv" : {
@@ -54506,6 +54825,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Odhlásili ste sa z tohto mailingového zoznamu."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Odjavili ste se s tega e-poštnega seznama."
           }
         },
         "sv" : {
@@ -55413,6 +55738,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Váš podpis v emailoch, ktorý sa automaticky pridáva do všetkých odosielaných emailov."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vaš e-poštni podpis, ki se samodejno doda vsem e-poštnim sporočilom, ki jih pošljete."
           }
         },
         "sv" : {

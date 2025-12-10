@@ -18,7 +18,6 @@
 @testable import ProtonMail
 
 class DeleteActionsSpy {
-
     private(set) var deletedMessagesWithIDs: [ID] = []
     private(set) var deletedConversationsWithIDs: [ID] = []
 
@@ -32,11 +31,9 @@ class DeleteActionsSpy {
             return .ok
         }
     )
-
 }
 
 class ReadActionPerformerActionsSpy {
-
     private(set) var markMessageAsReadInvoked: [ID] = []
     private(set) var markConversationAsReadInvoked: [ID] = []
     private(set) var markMessageAsUnreadInvoked: [ID] = []
@@ -60,5 +57,4 @@ class ReadActionPerformerActionsSpy {
             return .ok
         }
     )
-
 }

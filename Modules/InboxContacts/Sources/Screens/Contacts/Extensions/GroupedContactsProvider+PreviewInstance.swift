@@ -18,7 +18,6 @@
 import proton_app_uniffi
 
 extension GroupedContactsProvider {
-
     static func previewInstance() -> Self {
         .init(allContacts: { _ in .ok(stubbedContacts) })
     }
@@ -810,7 +809,6 @@ extension GroupedContactsProvider {
             ),
         ]
     }
-
 }
 
 extension Id: @retroactive ExpressibleByIntegerLiteral {
@@ -820,7 +818,6 @@ extension Id: @retroactive ExpressibleByIntegerLiteral {
 }
 
 extension ContactEmailItem {
-
     public init(id: UInt64, email: String, name: String = "") {
         self.init(
             contactId: Id(value: id),
@@ -831,7 +828,6 @@ extension ContactEmailItem {
             avatarInformation: .init(text: initials(from: name), color: color(for: name))
         )
     }
-
 }
 
 private func initials(from name: String) -> String {

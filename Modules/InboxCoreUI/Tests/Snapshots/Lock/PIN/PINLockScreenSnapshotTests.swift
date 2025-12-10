@@ -22,7 +22,6 @@ import InboxTesting
 
 @MainActor
 class PINLockScreenSnapshotTests: BaseTestCase {
-
     func testPINLockScreenLayoutsCorrectly() {
         assertSnapshotsOnIPhoneX(
             of: PINLockScreen(state: .init(isLogoutButtonVisible: true, pin: .empty), error: .constant(nil)) { _ in },
@@ -45,5 +44,4 @@ class PINLockScreenSnapshotTests: BaseTestCase {
             named: "error_message"
         )
     }
-
 }

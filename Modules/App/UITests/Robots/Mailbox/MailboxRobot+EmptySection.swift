@@ -19,7 +19,6 @@ import Foundation
 import XCTest
 
 extension MailboxRobot {
-
     // MARK: UI Elements
 
     private var container: XCUIElement {

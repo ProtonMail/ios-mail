@@ -16,9 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 extension Action {
-
     var displayData: ActionDisplayData {
         .init(title: name, image: icon)
     }
-
 }

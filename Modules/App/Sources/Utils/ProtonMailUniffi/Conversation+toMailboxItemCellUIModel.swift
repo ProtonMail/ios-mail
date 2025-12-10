@@ -22,9 +22,7 @@ import struct SwiftUI.Color
 import class SwiftUI.UIImage
 
 extension Conversation {
-
     func toMailboxItemCellUIModel(selectedIds: Set<Id>, showLocation: Bool) -> MailboxItemCellUIModel {
-
         return MailboxItemCellUIModel(
             id: id,
             conversationID: id,

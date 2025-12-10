@@ -18,7 +18,6 @@
 import proton_app_uniffi
 
 extension MobileAction {
-
     var displayData: ActionDisplayData {
         action.displayData
     }
@@ -57,5 +56,4 @@ extension MobileAction {
             Action.viewHTML
         }
     }
-
 }

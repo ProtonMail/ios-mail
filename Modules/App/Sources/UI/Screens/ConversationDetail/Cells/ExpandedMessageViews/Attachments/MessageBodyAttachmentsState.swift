@@ -28,12 +28,10 @@ struct MessageBodyAttachmentsState: Copying {
 }
 
 extension MessageBodyAttachmentsState {
-
     static func state(attachments: [AttachmentDisplayModel]) -> Self {
         .init(
             attachments: attachments,
             listState: attachments.count > 3 ? .long(isAttachmentsListOpen: false) : .short
         )
     }
-
 }

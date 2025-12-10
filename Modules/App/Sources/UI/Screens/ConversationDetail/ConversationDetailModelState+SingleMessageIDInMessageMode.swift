@@ -16,7 +16,6 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 extension ConversationDetailModel.State {
-
     var singleMessageIDInMessageMode: ID? {
         switch self {
         case .initial, .fetchingMessages, .noConnection:
@@ -25,5 +24,4 @@ extension ConversationDetailModel.State {
             messageListState.messages.first?.id
         }
     }
-
 }

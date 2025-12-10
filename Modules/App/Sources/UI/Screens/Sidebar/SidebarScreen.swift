@@ -439,7 +439,6 @@ struct SidebarScreenIdentifiers {
 }
 
 private extension SidebarItem {
-
     var hideSidebar: Bool {
         switch self {
         case .upsell, .system, .label, .folder:
@@ -448,11 +447,9 @@ private extension SidebarItem {
             item.hideSidebar
         }
     }
-
 }
 
 private extension SidebarOtherItem {
-
     var hideSidebar: Bool {
         switch type {
         case .createFolder, .createLabel, .settings:
@@ -461,7 +458,6 @@ private extension SidebarOtherItem {
             false
         }
     }
-
 }
 
 private extension UpsellType {

@@ -60,5 +60,4 @@ public class DispatchQueueImmediateScheduler: Scheduler {
 
     private let _now: () -> DispatchQueue.SchedulerTimeType
     private let _minimumTolerance: () -> DispatchQueue.SchedulerTimeType.Stride
-
 }

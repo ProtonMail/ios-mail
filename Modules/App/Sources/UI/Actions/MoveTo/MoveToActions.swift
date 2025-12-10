@@ -34,7 +34,6 @@ struct MoveToActions {
 }
 
 extension MoveToActions {
-
     static var productionInstance: Self {
         .init(
             moveMessagesTo: { mailbox, destinationID, itemsIDs in
@@ -52,11 +51,9 @@ extension MoveToActions {
             moveConversationsTo: { _, _, _ in .ok(nil) }
         )
     }
-
 }
 
 private extension MoveMessagesResult {
-
     var actionResult: MoveActionResult {
         switch self {
         case .ok(let undo):
@@ -65,11 +62,9 @@ private extension MoveMessagesResult {
             .error(actionError)
         }
     }
-
 }
 
 private extension MoveConversationsResult {
-
     var actionResult: MoveActionResult {
         switch self {
         case .ok(let undo):
@@ -78,5 +73,4 @@ private extension MoveConversationsResult {
             .error(actionError)
         }
     }
-
 }

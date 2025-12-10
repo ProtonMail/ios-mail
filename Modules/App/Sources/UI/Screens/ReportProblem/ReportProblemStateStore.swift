@@ -37,7 +37,6 @@ final class ReportProblemStateStore: StateStore {
         deviceInfo: BasicDeviceInfo = UIDevice.current,
         dismiss: @escaping () -> Void
     ) {
-
         self.state = state
         self.reportProblemService = reportProblemService
         self.toastStateStore = toastStateStore
@@ -127,9 +126,7 @@ final class ReportProblemStateStore: StateStore {
 }
 
 private extension FormTextInput.ValidationStatus {
-
     static var summaryLessThen10Characters: Self {
         .failure(L10n.ReportProblem.summaryValidationError.string)
     }
-
 }

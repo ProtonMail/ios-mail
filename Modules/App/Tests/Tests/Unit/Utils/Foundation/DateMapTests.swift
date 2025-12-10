@@ -21,7 +21,6 @@ import XCTest
 @testable import ProtonMail
 
 class DateMapTests: XCTestCase {
-
     func test_toExpirationDateUIModel_whenDateInThePast_itReturnsNil() {
         let pastDate = Date().addingTimeInterval(-1)
 

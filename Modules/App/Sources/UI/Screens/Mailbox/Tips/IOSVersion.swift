@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Proton Technologies AG
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -15,24 +15,21 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import SwiftUI
-
-extension View {
-    func sheetTestable<Sheet>(
-        isPresented: Binding<Bool>,
-        onDismiss: (() -> Void)? = nil,
-        @ViewBuilder content: @escaping () -> Sheet
-    ) -> some View where Sheet: View {
-        modifier(InspectableSheet(isPresented: isPresented, onDismiss: onDismiss, popupBuilder: content))
+enum IOSVersion {
+    static var isIOS17: Bool {
+        if #available(iOS 18, *) {
+            false
+        } else {
+            true
+        }
     }
-}
 
-struct InspectableSheet<Sheet>: ViewModifier where Sheet: View {
-    let isPresented: Binding<Bool>
-    let onDismiss: (() -> Void)?
-    let popupBuilder: () -> Sheet
-
-    func body(content: Self.Content) -> some View {
-        content.sheet(isPresented: isPresented, onDismiss: onDismiss, content: popupBuilder)
+    static var isIOS18: Bool {
+        if #available(iOS 18, *) {
+            if #unavailable(iOS 26) {
+                return true
+            }
+        }
+        return false
     }
 }

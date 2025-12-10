@@ -24,11 +24,9 @@ public enum DateEnvironment {
 }
 
 private extension Calendar {
-
     static var gmt: Calendar {
         var calendar = DateEnvironment.calendar
         calendar.timeZone = .gmt
         return calendar
     }
-
 }

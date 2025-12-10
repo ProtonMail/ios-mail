@@ -81,7 +81,6 @@ struct ExpandedMessageCell: View {
             MessageBodyView(
                 messageID: uiModel.id,
                 emailAddress: uiModel.messageDetails.sender.address,
-                attachments: uiModel.messageDetails.attachments,
                 mailbox: mailbox,
                 isBodyLoaded: $isBodyLoaded,
                 attachmentIDToOpen: $attachmentIDToOpen,

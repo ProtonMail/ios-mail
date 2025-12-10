@@ -110,6 +110,8 @@ struct ComposerView: View {
                         model.matchContact(group: group, text: text)
                     case .onContactSelected(let contact):
                         model.addContact(group: group, contact: contact)
+                    case .onReturnKeyPressedForValidAddress:
+                        model.addRecipientFromInput()
                     }
 
                 case .fromFieldEvent(let event):

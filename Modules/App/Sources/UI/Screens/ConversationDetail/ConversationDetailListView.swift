@@ -213,17 +213,13 @@ private struct ConversationDetailListViewIdentifiers {
 }
 
 private extension ExpandedMessageCellUIModel {
-
     func toActionMetadata() -> MarkMessageAsReadMetadata {
         .init(messageID: id, unread: unread)
     }
-
 }
 
 private extension GeometryProxy {
-
     var cardNeedsVerticalBorders: Bool {
         safeAreaInsets.trailing != 0 || safeAreaInsets.leading != 0
     }
-
 }

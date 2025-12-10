@@ -1191,7 +1191,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Forkert PIN. Prøv venligst igen."
+            "value" : "Forkert PIN. Prøv igen."
           }
         },
         "de" : {

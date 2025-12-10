@@ -22,20 +22,23 @@ import proton_app_uniffi
 @MainActor
 final class WebViewPrintingTransaction {
     private let message: Message
+    private let attachments: [AttachmentMetadata]
     private let webView: WKWebView
 
     private let a4PaperWidth = 595
     private let printableRectMargin = 18
 
-    init(message: Message, webView: WKWebView) {
+    init(message: Message, attachments: [AttachmentMetadata], webView: WKWebView) {
         self.message = message
+        self.attachments = attachments
         self.webView = webView
     }
 
     func perform<Output: Sendable>(block: (Message, WKWebView) async throws(PrintError) -> Output) async throws(PrintError) -> Output {
         let headerImage = renderHeaderImage(
             subject: message.subject,
-            messageDetails: message.toExpandedMessageCellUIModel().messageDetails
+            messageDetails: message.toExpandedMessageCellUIModel().messageDetails,
+            attachments: attachments.map(\.displayModel)
         )
 
         let injectedHeaderUUID = try await inject(headerImage: headerImage, into: webView)
@@ -53,8 +56,12 @@ final class WebViewPrintingTransaction {
         return try blockResult.get()
     }
 
-    private func renderHeaderImage(subject: String, messageDetails: MessageDetailsUIModel) -> UIImage {
-        let header = PrintHeaderView(subject: subject, messageDetails: messageDetails)
+    private func renderHeaderImage(
+        subject: String,
+        messageDetails: MessageDetailsUIModel,
+        attachments: [AttachmentDisplayModel]
+    ) -> UIImage {
+        let header = PrintHeaderView(subject: subject, attachments: attachments, messageDetails: messageDetails)
         let imageRenderer = ImageRenderer(content: header)
         imageRenderer.scale = UIScreen.main.nativeScale
         imageRenderer.proposedSize.width = .init(a4PaperWidth - 2 * printableRectMargin)
