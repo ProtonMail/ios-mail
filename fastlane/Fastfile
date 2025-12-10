@@ -12,8 +12,6 @@ XCODEPROJ = "ProtonMail.xcodeproj"
 APP_TARGET = "ProtonMail"
 UNIT_TESTS_SCHEME = "AllUnitAndSnapshotTests"
 UI_TESTS_SCHEME = "ProtonMailUITest"
-UI_TESTS_DEVICE = "iPhone 16 Pro"
-UNIT_TESTS_DEVICE = "iPhone 16 Pro"
 XCODEGEN_CONFIGURATION_FILE_PATH = "../project.yml"
 
 CONCURRENT_WORKERS=2
@@ -26,7 +24,7 @@ ENV["FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT"] = "120"
 
 platform :ios do
   def select_xcode
-    xcodes(version: '16.3', select_for_current_build_only: true)
+    xcodes(version: '26.2', select_for_current_build_only: true)
   end
 
   def set_up_keychain
@@ -99,7 +97,6 @@ platform :ios do
 
     run_tests(
       scheme: UNIT_TESTS_SCHEME,
-      devices: UNIT_TESTS_DEVICE,
       clean: true,
       reinstall_app: true,
       result_bundle: true,
@@ -117,7 +114,6 @@ platform :ios do
   lane :uitests_smoke do
       run_tests(
         scheme: UI_TESTS_SCHEME,
-        devices: UI_TESTS_DEVICE,
         max_concurrent_simulators: MAX_CONCURRENT_SIMULATORS,
         concurrent_workers: CONCURRENT_WORKERS,
         include_simulator_logs: true,
@@ -133,7 +129,6 @@ platform :ios do
     lane :uitests_full_regression do
       run_tests(
         scheme: UI_TESTS_SCHEME,
-        devices: UI_TESTS_DEVICE,
         max_concurrent_simulators: MAX_CONCURRENT_SIMULATORS,
         concurrent_workers: CONCURRENT_WORKERS,
         include_simulator_logs: true,
@@ -154,7 +149,6 @@ platform :ios do
 
       run_tests(
         scheme: UI_TESTS_SCHEME,
-        devices: UI_TESTS_DEVICE,
         max_concurrent_simulators: 1,
         concurrent_workers: 1,
         include_simulator_logs: true,
