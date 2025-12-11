@@ -248,7 +248,11 @@ struct HomeScreen: View {
         if let route = DeepLinkRouteCoder.decode(deepLink: deepLink) {
             modalState = nil
             appUIStateStore.toggleSidebar(isOpen: false)
-            appRoute.updateRoute(to: route)
+
+            Task {
+                await ensurePresentedViewsAreDismissed()
+                appRoute.updateRoute(to: route)
+            }
         }
     }
 
@@ -258,5 +262,17 @@ struct HomeScreen: View {
         }
 
         return ObjectIdentifier(activeSession) == ObjectIdentifier(userSession)
+    }
+
+    private func ensurePresentedViewsAreDismissed() async {
+        await UIApplication.shared.keyWindow?.rootViewController?.presentedViewController?.dismissAndWait(animated: true)
+    }
+}
+
+private extension UIViewController {
+    func dismissAndWait(animated: Bool) async {
+        await withCheckedContinuation { continuation in
+            dismiss(animated: animated, completion: continuation.resume)
+        }
     }
 }

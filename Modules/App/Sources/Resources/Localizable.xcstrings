@@ -5763,6 +5763,7 @@
     },
     "App icon" : {
       "comment" : "Title shown on the app icon selection screen.",
+      "extractionState" : "stale",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -15641,6 +15642,7 @@
     },
     "Default" : {
       "comment" : "Label shown when the default app icon is selected.",
+      "extractionState" : "stale",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -17028,6 +17030,7 @@
     },
     "Discreet" : {
       "comment" : "Label shown when a discreet app icon is selected.",
+      "extractionState" : "stale",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -17153,6 +17156,7 @@
     },
     "Discreet app icon" : {
       "comment" : "Toggle label for enabling/disabling discreet app icon feature.",
+      "extractionState" : "stale",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -25030,6 +25034,7 @@
     },
     "Keep the default Proton Mail icon, or disguise it with a more discreet one for extra privacy. Notifications will always show the Proton Mail name and icon. [Learn more...](https://proton.me/support/disguise-app-icon)" : {
       "comment" : "Description text explaining the app icon feature and privacy implications.",
+      "extractionState" : "stale",
       "localizations" : {
         "be" : {
           "stringUnit" : {
