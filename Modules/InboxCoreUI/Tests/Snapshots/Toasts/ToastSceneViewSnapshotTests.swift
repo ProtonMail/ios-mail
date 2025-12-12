@@ -20,7 +20,7 @@ import InboxCore
 import InboxCoreUI
 import InboxSnapshotTesting
 import InboxTesting
-import SwiftUICore
+import SwiftUI
 import Testing
 
 @testable import ProtonUIFoundations

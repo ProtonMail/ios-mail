@@ -70,6 +70,7 @@
       }
     },
     {
+      "parallelizable" : false,
       "target" : {
         "containerPath" : "container:ProtonMail.xcodeproj",
         "identifier" : "32A3C5CC30BF3A6DEA4DD3E5",
