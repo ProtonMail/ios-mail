@@ -20,6 +20,7 @@ import UserNotifications
 
 @testable import ProtonMail
 
+@MainActor
 final class NotificationAuthorizationStoreTests {
     private let sut: NotificationAuthorizationStore
     private let userDefaults: UserDefaults
@@ -28,7 +29,7 @@ final class NotificationAuthorizationStoreTests {
 
     init() {
         userDefaults = .init(suiteName: userDefaultsSuiteName).unsafelyUnwrapped
-        sut = .init(userDefaults: userDefaults, userNotificationCenter: userNotificationCenter)
+        sut = .init(userDefaults: userDefaults) { [userNotificationCenter] in userNotificationCenter }
     }
 
     deinit {

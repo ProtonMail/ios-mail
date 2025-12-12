@@ -57,11 +57,6 @@ open class Keychain {
 
     private let secItemMethodsProvider: SecItemMethodsProvider
 
-    internal func switchAccessibilitySettings(_ accessibility: Accessibility, authenticationPolicy: AccessControl) {
-        self.accessibility = accessibility
-        self.authenticationPolicy = authenticationPolicy
-    }
-
     public init(service: String, accessGroup: String, secItemMethodsProvider: SecItemMethodsProvider? = nil) {
         self.service = service
         self.accessGroup = accessGroup

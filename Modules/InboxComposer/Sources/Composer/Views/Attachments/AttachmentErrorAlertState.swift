@@ -174,11 +174,9 @@ extension DraftAttachment {
         var presentedError: AttachmentErrorAlertModel? = nil
 
         init() {
-            Task {
-                await errorState.setOnErrorToPresent { [weak self] error in
-                    self?.presentedError = error
-                    self?.isAlertPresented = true
-                }
+            errorState.setOnErrorToPresent { [weak self] error in
+                self?.presentedError = error
+                self?.isAlertPresented = true
             }
         }
     }
@@ -193,14 +191,12 @@ extension DraftAttachment {
         var body: some View {
             VStack {
                 Button("Show Alert".notLocalized) {
-                    Task {
-                        await state.errorState.enqueueAnyUploadError([
-                            DraftAttachment.makeMock(state: .uploaded, timestamp: 1),
-                            DraftAttachment.makeMock(state: .error(.upload(.reason(.attachmentTooLarge))), timestamp: 2),
-                            DraftAttachment.makeMock(state: .error(.upload(.other(.network))), timestamp: 3),
-                            DraftAttachment.makeMock(state: .error(.upload(.reason(.attachmentTooLarge))), timestamp: 4),
-                        ])
-                    }
+                    state.errorState.enqueueAnyUploadError([
+                        DraftAttachment.makeMock(state: .uploaded, timestamp: 1),
+                        DraftAttachment.makeMock(state: .error(.upload(.reason(.attachmentTooLarge))), timestamp: 2),
+                        DraftAttachment.makeMock(state: .error(.upload(.other(.network))), timestamp: 3),
+                        DraftAttachment.makeMock(state: .error(.upload(.reason(.attachmentTooLarge))), timestamp: 4),
+                    ])
                 }
             }
             .alert(

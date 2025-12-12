@@ -15,11 +15,11 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import InboxCoreUI
 import InboxDesignSystem
 import SwiftUI
 
 extension Image {
+    @MainActor
     func actionSheetSmallIconModifier() -> some View {
         self
             .resizable()
