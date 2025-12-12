@@ -5888,7 +5888,7 @@
       }
     },
     "App Icon" : {
-      "comment" : "Title of the button that allows the user to change the app’s icon.",
+      "comment" : "Title of the button that allows the user to change the app's icon.",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -8756,6 +8756,7 @@
     },
     "Calculator" : {
       "comment" : "Name of the alternate 'Calculator' app icon shown in the app icon picker.",
+      "extractionState" : "stale",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -33362,6 +33363,7 @@
     },
     "Notes" : {
       "comment" : "Name of the alternate 'Notes' app icon shown in the app icon picker.",
+      "extractionState" : "stale",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -36191,6 +36193,7 @@
     },
     "Primary" : {
       "comment" : "Name of the default (primary) app icon shown in the app icon picker.",
+      "extractionState" : "stale",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -54953,6 +54956,7 @@
     },
     "Weather" : {
       "comment" : "Name of the alternate 'Weather' app icon shown in the app icon picker.",
+      "extractionState" : "stale",
       "localizations" : {
         "be" : {
           "stringUnit" : {

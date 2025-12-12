@@ -15,16 +15,15 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import proton_app_uniffi
+import InboxCore
 
-enum AppSettingsAction {
-    case notificationButtonTapped
-    case languageButtonTapped
-    case onAppear
-    case enterForeground
-    case appearanceTapped
-    case appearanceSelected(AppAppearance)
-    case combinedContactsChanged(Bool)
-    case alternativeRoutingChanged(Bool)
-    case swipeToAdjacentConversationChanged(Bool)
+struct AppIconState: Copying, Equatable {
+    var appIcon: AppIcon
+    var isDiscreetAppIconOn: Bool
+}
+
+extension AppIconState {
+    static func initial(appIcon: AppIcon) -> Self {
+        .init(appIcon: appIcon, isDiscreetAppIconOn: appIcon != .default)
+    }
 }

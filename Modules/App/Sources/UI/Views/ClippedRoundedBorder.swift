@@ -15,16 +15,22 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import proton_app_uniffi
+import SwiftUI
 
-enum AppSettingsAction {
-    case notificationButtonTapped
-    case languageButtonTapped
-    case onAppear
-    case enterForeground
-    case appearanceTapped
-    case appearanceSelected(AppAppearance)
-    case combinedContactsChanged(Bool)
-    case alternativeRoutingChanged(Bool)
-    case swipeToAdjacentConversationChanged(Bool)
+extension View {
+    func clippedRoundedBorder(cornerRadius: CGFloat, lineColor: Color, lineWidth: CGFloat = 1) -> some View {
+        modifier(ClippedRoundedBorder(cornerRadius: cornerRadius, lineColor: lineColor, lineWidth: lineWidth))
+    }
+}
+
+private struct ClippedRoundedBorder: ViewModifier {
+    let cornerRadius: CGFloat
+    let lineColor: Color
+    let lineWidth: CGFloat
+
+    func body(content: Content) -> some View {
+        content
+            .clipShape(RoundedRectangle(cornerRadius: cornerRadius))
+            .overlay(RoundedRectangle(cornerRadius: cornerRadius).stroke(lineColor, lineWidth: lineWidth))
+    }
 }
