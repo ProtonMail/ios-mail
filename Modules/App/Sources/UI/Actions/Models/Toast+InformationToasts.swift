@@ -19,7 +19,6 @@ import Foundation
 import ProtonUIFoundations
 
 extension Toast {
-
     static func moveTo(id: UUID, destinationName: String, undoAction: (() async -> Void)?) -> Self {
         .informationUndo(
             id: id,
@@ -32,5 +31,4 @@ extension Toast {
     static func deleted() -> Toast {
         .information(message: L10n.Toast.deleted.string)
     }
-
 }

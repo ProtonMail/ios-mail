@@ -18,7 +18,6 @@
 import SwiftUI
 
 public extension DS.Shadows {
-
     static let softFull = Shadow.make(x: .zero, y: .zero, color: .shadowWeak)
     static let softTop = Shadow.make(x: .zero, y: -4, color: .shadowWeak)
     static let softBottom = Shadow.make(x: .zero, y: 4, color: .shadowWeak)
@@ -36,7 +35,6 @@ public extension DS.Shadows {
     static let liftedBottom = Shadow.make(x: .zero, y: 4, color: .shadowStrong)
     static let liftedLeft = Shadow.make(x: -4, y: .zero, color: .shadowStrong)
     static let liftedRight = Shadow.make(x: 4, y: .zero, color: .shadowStrong)
-
 }
 
 public struct Shadow {
@@ -58,14 +56,12 @@ public struct Shadow {
 }
 
 private extension Shadow {
-
     static func make(x: CGFloat, y: CGFloat, color: Color) -> Shadow {
         .init(x: x, y: y, blur: blur, color: color)
     }
 
     /// Figma blur is 10, but in the app a blur of 5 produces a visually equivalent effect.
     private static let blur: CGFloat = 5
-
 }
 
 private extension Color {

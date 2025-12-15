@@ -34,6 +34,7 @@ struct PrintHeaderViewSnapshotTests {
 
         let sut = PrintHeaderView(
             subject: "Some very very long subject that will totally get carried to a new line",
+            attachments: .previewData,
             messageDetails: messageDetails
         )
 

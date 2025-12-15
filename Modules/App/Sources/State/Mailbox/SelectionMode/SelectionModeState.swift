@@ -17,13 +17,11 @@
 
 import Foundation
 
-/**
- This class wraps the mailbox item selection state and its modifier.
-
- The reason to keep the writing logic in a separate object is to be able
- to differentiate entities that only observe the selection state from the
- ones that are also responsible for updating it.
- */
+/// This class wraps the mailbox item selection state and its modifier.
+///
+/// The reason to keep the writing logic in a separate object is to be able
+/// to differentiate entities that only observe the selection state from the
+/// ones that are also responsible for updating it.
 @MainActor
 final class SelectionMode {
     let selectionState: SelectionModeState
@@ -35,12 +33,10 @@ final class SelectionMode {
     }
 }
 
-/**
- Keeps the state of the items selected in a Mailbox.
-
- The `SelectionModeState` object is a read only class for observation purposes only.
- This class is agnostic of Messages and Conversations and so it works for both.
- */
+/// Keeps the state of the items selected in a Mailbox.
+///
+/// The `SelectionModeState` object is a read only class for observation purposes only.
+/// This class is agnostic of Messages and Conversations and so it works for both.
 @MainActor
 final class SelectionModeState: ObservableObject {
     var hasItems: Bool { !selectedItems.isEmpty || isSelectAllEnabled }
@@ -58,9 +54,7 @@ final class SelectionModeState: ObservableObject {
     }
 }
 
-/**
- Responsible for updating the `SelectionModeState`
- */
+/// Responsible for updating the `SelectionModeState`
 @MainActor
 final class SelectionModeStateModifier {
     let state: SelectionModeState

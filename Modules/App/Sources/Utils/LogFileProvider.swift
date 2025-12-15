@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Proton Technologies AG
+// Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -15,8 +15,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import ViewInspector
+import Foundation
+import proton_app_uniffi
 
-@testable import ProtonMail
-
-extension InspectableSheet: PopupPresenter {}
+struct LogFileProvider {
+    static func file(mailSession: MailSession) throws -> URL {
+        let logFolder = FileManager.default.sharedCacheDirectory
+        let sourceLogFile = logFolder.appending(path: "proton-mail-ios.log")
+        _ = try mailSession.exportLogs(filePath: sourceLogFile.path).get()
+        return sourceLogFile
+    }
+}

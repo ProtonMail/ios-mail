@@ -18,7 +18,6 @@
 import Foundation
 
 struct UITestBottomSheetDefaultEntries {
-
     struct MessageActions {
         static let defaultInboxList = [
             UITestBottomSheetDynamicEntry(section: 0, index: 0, text: "Mark as unread"),

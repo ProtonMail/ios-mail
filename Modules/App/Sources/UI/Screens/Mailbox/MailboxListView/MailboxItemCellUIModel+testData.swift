@@ -28,7 +28,6 @@ extension MailboxItemCellUIModel {
 }
 
 private extension MailboxItemCellUIModel {
-
     static var randomColor: Color {
         [.green, .red, .green, .orange].randomElement()!
     }
@@ -172,5 +171,4 @@ private extension MailboxItemCellUIModel {
         "Thanks for Being a Loyal Customer – Enjoy 10% Off",
         "Only a Few Hours Left – Final Sale Ends Soon!",
     ]
-
 }

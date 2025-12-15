@@ -22,7 +22,6 @@ import InboxTesting
 
 @MainActor
 class LabelAsActionSheetSnapshotTests: BaseTestCase {
-
     func testActionSheetLayoutsCorrectly() {
         let model = LabelAsSheetPreviewProvider.testData()
         model.state = .init(
@@ -32,5 +31,4 @@ class LabelAsActionSheetSnapshotTests: BaseTestCase {
         )
         assertSnapshotsOnIPhoneX(of: LabelAsSheet(model: model))
     }
-
 }

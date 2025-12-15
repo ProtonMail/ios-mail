@@ -37,7 +37,7 @@ public final class UniversalSchemeHandler: NSObject, WKURLSchemeHandler {
         case missingURL
     }
 
-    public static let handlerSchemes: [String] = ["cid", "proton-http", "proton-https"]
+    static let handlerSchemes: [String] = ["cid", "proton-http", "proton-https"]
 
     public func updateImagePolicy(with policy: ImagePolicy) {
         queue.sync { imagePolicy = policy }
@@ -94,11 +94,10 @@ public final class UniversalSchemeHandler: NSObject, WKURLSchemeHandler {
                 handleAttachment(attachmentData, url: url, urlSchemeTask: urlSchemeTask)
             case .error(let attachmentDataError):
                 AppLogger.log(error: attachmentDataError, category: .webView)
-                switch attachmentDataError {
-                case .proxyFailed:
+                urlSchemeTask.markAsFailedCatchingExceptions(attachmentDataError)
+
+                if attachmentDataError == .proxyFailed {
                     onProxyImageLoadFail?()
-                case .other:
-                    urlSchemeTask.markAsFailedCatchingExceptions(attachmentDataError)
                 }
             }
 

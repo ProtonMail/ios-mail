@@ -96,7 +96,6 @@ public struct ComposerScreen: View {
 }
 
 extension ComposerScreen {
-
     public struct Dependencies {
         let contactProvider: ComposerContactProvider
         let userSession: MailUserSession

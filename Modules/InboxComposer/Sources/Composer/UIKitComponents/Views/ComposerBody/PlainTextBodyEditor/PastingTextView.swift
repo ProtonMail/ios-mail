@@ -31,6 +31,5 @@ final class PastingTextView: UITextView {
 }
 
 protocol ImagePasteDelegate: AnyObject {
-
     func didDetectImagePaste(image: UIImage)
 }

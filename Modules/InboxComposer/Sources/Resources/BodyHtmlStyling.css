@@ -3,31 +3,6 @@
     Proton AG
 */
 
-:root {
-  color-scheme: light dark;
-  --text-color: {{proton-text-color}};
-  --bg-color: {{proton-background-color}};
-  --brand-color: {{proton-brand-color}};
-}
-
-@media screen and (prefers-color-scheme: dark) {
-  :root {
-      --text-color: {{proton-text-color-dark}};
-      --bg-color: {{proton-background-color-dark}};
-      --brand-color: {{proton-brand-color-dark}}
-  }
-  a:link { color: var(--brand-color); }
-
-  .protonmail_signature_block-user > div[style*="color: #fff"],
-  .protonmail_signature_block-user > div[style*="color: #ffffff"],
-  .protonmail_signature_block-user > div[style*="color: rgb(255, 255, 255)"],
-  .protonmail_signature_block-user > div[style*="color: white"] {
-    background-color: var(--bg-color) !important;
-    color: var(--text-color) !important;
-  }
-
-}
-
 article,aside,details,figcaption,figure,footer,header,hgroup,nav,section,summary {
     display: block;
 }
@@ -62,14 +37,7 @@ body {
     box-sizing: border-box;
     padding: 0rem;
     word-break: break-word;
-    color: var(--text-color);
-    background: var(--bg-color);
 }
-
-/*div,*/
-/*span {*/
-/*    font-size: 1em !important;*/
-/*}*/
 
 div {
     outline: none
@@ -97,10 +65,6 @@ a:focus {
 
 a:active,a:hover {
     outline: 0;
-}
-
-a:link {
-    color: var(--brand-color);
 }
 
 h1 {
@@ -149,11 +113,6 @@ dfn {
     font-style: italic;
 }
 
-mark {
-    background: #ff0;
-    color: #000;
-}
-
 p,pre {
     margin: 1em 0;
 }
@@ -172,11 +131,6 @@ pre {
 * {
     caret-color: auto !important;
     unicode-bidi: plaintext;
-    /* debug only */
-/*    margin: 0 !important;*/
-/*    position: static !important;*/
-/*    float: none !important;*/
-    /* end debug */
 }
 
 q {
@@ -259,16 +213,7 @@ legend {
     white-space: normal;
 }
 
-
-.pm_font_larger {
-    font-size: 1.8em;
-}
-
 body > #editor {
     /*  temp solve the click range too small when no signature  */
     min-height: 60px;
-}
-
-#editor > #protonmail_mobile_signature_block {
-    min-height: 40px;
 }

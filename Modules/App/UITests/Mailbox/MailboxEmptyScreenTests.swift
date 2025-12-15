@@ -18,7 +18,6 @@
 import Foundation
 
 final class MailboxEmptyScreenTests: PMUIMockedNetworkTestCase {
-
     /// TestId 426599
     func testEmptyStateInConversationMode() async {
         await environment.mockServer.addRequestsWithDefaults(

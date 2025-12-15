@@ -27,7 +27,6 @@ struct DraftAttachmentUIModel: Hashable {
 }
 
 final class DraftAttachmentsSectionViewController: UIViewController {
-
     enum Event {
         case onTap(uiModel: DraftAttachmentUIModel)
         case onRemove(uiModel: DraftAttachmentUIModel)
@@ -106,9 +105,7 @@ final class DraftAttachmentsSectionViewController: UIViewController {
 }
 
 extension DraftAttachmentsSectionViewController {
-
     private enum SubviewFactory {
-
         static var stack: UIStackView {
             let view = UIStackView()
             view.translatesAutoresizingMaskIntoConstraints = false

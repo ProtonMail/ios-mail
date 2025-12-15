@@ -195,9 +195,7 @@ final class DraftActionBarViewController: UIViewController {
 }
 
 extension DraftActionBarViewController {
-
     private enum SubviewFactory {
-
         static var topBorder: UIView {
             let view = UIView()
             view.backgroundColor = DS.Color.Border.light.toDynamicUIColor
@@ -234,7 +232,6 @@ extension DraftActionBarViewController {
 }
 
 private extension DraftExpirationTime {
-
     var customDateString: String? {
         if let customDate {
             let formatter = DateFormatter()
@@ -247,7 +244,6 @@ private extension DraftExpirationTime {
 }
 
 private extension UIButton {
-
     func configWithImage(image: UIImage) -> Self {
         translatesAutoresizingMaskIntoConstraints = false
         contentMode = .scaleAspectFit

@@ -239,7 +239,6 @@ private struct ConversationDetailScreenIdentifiers {
 }
 
 extension ConversationDetailSeed {
-
     var isOutbox: Bool {
         switch self {
         case .mailboxItem(_, let selectedMailbox):
@@ -248,5 +247,4 @@ extension ConversationDetailSeed {
             false
         }
     }
-
 }

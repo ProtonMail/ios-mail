@@ -18,7 +18,6 @@
 import Foundation
 
 extension Array where Element == AttachmentDisplayModel {
-
     static var previewData: Self {
         [
             .init(
@@ -47,5 +46,4 @@ extension Array where Element == AttachmentDisplayModel {
             ),
         ]
     }
-
 }

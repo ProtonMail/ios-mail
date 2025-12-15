@@ -23,7 +23,6 @@ struct DraftProvider {
 }
 
 extension DraftProvider {
-
     static var productionInstance: Self {
         .init(makeDraft: newDraft)
     }

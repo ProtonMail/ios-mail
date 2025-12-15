@@ -19,7 +19,6 @@ import InboxDesignSystem
 import UIKit
 
 final class FromFieldView: UIView {
-
     enum Event {
         case onFieldTap
     }
@@ -109,9 +108,7 @@ final class FromFieldView: UIView {
 }
 
 extension FromFieldView {
-
     private enum SubviewFactory {
-
         static var stack: UIStackView {
             ComposerSubviewFactory.regularFieldStack
         }

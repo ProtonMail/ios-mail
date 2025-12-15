@@ -18,7 +18,6 @@
 import proton_app_uniffi
 
 extension DraftSaveErrorReason {
-
     public var shouldBeDisplayed: Bool {
         switch self {
         case .messageAlreadySent:

@@ -1635,7 +1635,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vedhæftning ikke fundet. Opfrisk siden, eller upload den igen."
+            "value" : "Vedhæftning ikke fundet. Opfrisk siden eller upload den igen."
           }
         },
         "de" : {
@@ -1786,6 +1786,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Вкладення не знайдено. Оновіть сторінку або завантажте його знову."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "未找到附件，请刷新页面或再次上传。"
           }
         }
       }
@@ -1947,6 +1953,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Доступно у веб"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "仅可在网页中可用"
           }
         }
       }
@@ -2867,6 +2879,12 @@
             "state" : "translated",
             "value" : "Продовжити у вебзастосунку"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "在网页上继续"
+          }
         }
       }
     },
@@ -2894,7 +2912,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Oprettelse af kontakter eller grupper i appen er endnu ikke klar. Du kan foreløbig oprette dem i webappen, og de synkroniseres til din enhed."
+            "value" : "Oprettelse af kontakter eller grupper i appen er endnu ikke klar. Du kan foreløbig oprette dem i webappen og de vil blive synkroniseret til din enhed."
           }
         },
         "de" : {
@@ -3005,6 +3023,12 @@
             "value" : "Vytváranie kontaktov alebo skupín v aplikácii ešte nie je dostupné. Nateraz ich môžete vytvoriť vo webovej aplikácii a synchronizujú sa do vášho zariadenia."
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ustvarjanje stikov ali skupin v aplikaciji še ni pripravljeno. Zaenkrat jih lahko ustvarite v spletni različici, od koder se bodo sinhronizirali na vašo napravo."
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3021,6 +3045,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Створення контактів або груп у додатку ще не готове. Наразі ви можете створювати їх у веб додатку, і вони синхронізуються з вашим пристроєм."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "暂不支持在应用中创建联系人或群组。目前您可以通过网络应用进行创建，并同步到您的设备。"
           }
         }
       }
@@ -3542,6 +3572,12 @@
             "value" : "Úprava kontaktov alebo skupín v aplikácii ešte nie je pripravená. Zatiaľ ich môžete upraviť vo webovej aplikácii a zmeny sa synchronizujú s vaším zariadením."
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Urejanje stikov ali skupin v aplikaciji še ni pripravljeno. Zaenkrat jih lahko uredite v spletni različici, od koder se bodo spremembe sinhronizirale na vašo napravo."
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3558,6 +3594,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Редагування контактів або груп у застосунку ще не готове. Наразі ви можете редагувати їх у вебзастосунку, і зміни синхронізуватимуться з вашим пристроєм."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "暂不支持在应用中编辑联系人或群组。目前您可以通过网络应用进行创建，并同步到您的设备。"
           }
         }
       }
@@ -4687,6 +4729,12 @@
             "state" : "translated",
             "value" : "Мітка не існує. Ви можете створити її як нову мітку."
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "标签不存在，您可以将其创建为新标签。"
+          }
         }
       }
     },
@@ -5623,6 +5671,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Повідомлення не знайдено"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "未找到邮件"
           }
         }
       }
@@ -8122,7 +8176,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Denne gruppe vil blive slettet fra din kontaktliste."
+            "value" : "Denne gruppe slettes fra din kontaktliste."
           }
         },
         "de" : {
@@ -8313,7 +8367,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Denne kontakt vil blive slettet fra din kontaktliste."
+            "value" : "Denne kontakt slettes fra din kontaktliste."
           }
         },
         "de" : {

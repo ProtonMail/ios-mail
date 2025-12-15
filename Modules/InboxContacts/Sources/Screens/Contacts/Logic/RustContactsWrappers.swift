@@ -28,7 +28,6 @@ struct RustContactsWrappers {
 }
 
 extension RustContactsWrappers {
-
     static func productionInstance(
         contactsProvider: GroupedContactsProvider,
         contactsWatcher: ContactsWatcher
@@ -73,31 +72,24 @@ public struct ContactsWatcher {
 }
 
 extension GroupedContactsProvider {
-
     public static func productionInstance() -> Self {
         .init(allContacts: contactList(session:))
     }
-
 }
 
 extension ContactsWatcher {
-
     public static func productionInstance() -> Self {
         .init(watch: watchContactList(session:callback:))
     }
-
 }
 
 extension AllContactsProvider {
-
     public static func productionInstance() -> Self {
         .init(contactSuggestions: contactSuggestions(deviceContacts:session:))
     }
-
 }
 
 extension ContactSuggestionsRepository {
-
     public static func productionInstance(mailUserSession: MailUserSession) -> Self {
         .init(
             contactStore: CNContactStore(),
@@ -105,5 +97,4 @@ extension ContactSuggestionsRepository {
             mailUserSession: mailUserSession
         )
     }
-
 }

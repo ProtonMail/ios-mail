@@ -15,8 +15,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import proton_app_uniffi
-
 struct ContactDetailsItem: Hashable {
     let label: String
     let value: String

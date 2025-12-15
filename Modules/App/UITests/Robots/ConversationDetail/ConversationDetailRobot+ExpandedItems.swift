@@ -18,7 +18,6 @@
 import Foundation
 
 extension ConversationDetailRobot {
-
     // MARK: Actions
 
     func tapThreeDots(at index: Int) {

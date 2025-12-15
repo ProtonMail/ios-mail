@@ -28,7 +28,6 @@ import proton_app_uniffi
 import enum InboxComposer.ComposerDismissReason
 
 struct HomeScreen: View {
-
     enum ModalState: Identifiable {
         case contacts
         case labelOrFolderCreation
@@ -60,7 +59,6 @@ struct HomeScreen: View {
     private let userSession: MailUserSession
     private let mailSettingsLiveQuery: MailSettingLiveQuerying
     private let makeSidebarScreen: (@escaping (SidebarItem) -> Void) -> SidebarScreen
-    private let userDefaults: UserDefaults
     private let modalFactory: HomeScreenModalFactory
     private let notificationAuthorizationStore: NotificationAuthorizationStore
 
@@ -72,7 +70,7 @@ struct HomeScreen: View {
     ) {
         _appRoute = .init(wrappedValue: .initialState)
         _composerCoordinator = .init(wrappedValue: .init(userSession: userSession, toastStateStore: toastStateStore))
-        let upsellEligibilityPublisher = UpsellEligibilityPublisher(mailSession: appContext.mailSession, userSession: userSession)
+        let upsellEligibilityPublisher = UpsellEligibilityPublisher(userSession: userSession)
         _upsellEligibilityPublisher = .init(wrappedValue: upsellEligibilityPublisher)
         self.appContext = appContext
         self.userSession = userSession
@@ -90,17 +88,15 @@ struct HomeScreen: View {
         )
         let newUpsellCoordinator = UpsellCoordinator(mailUserSession: userSession, configuration: .mail)
         _upsellCoordinator = .init(wrappedValue: newUpsellCoordinator)
-        self.userDefaults = appContext.userDefaults
+
         self.modalFactory = HomeScreenModalFactory(
             mailUserSession: userSession,
             accountAuthCoordinator: appContext.accountAuthCoordinator,
             upsellCoordinator: newUpsellCoordinator
         )
-        notificationAuthorizationStore = .init(userDefaults: userDefaults)
+        notificationAuthorizationStore = .init(userDefaults: appContext.userDefaults)
         _userAnalyticsConfigurator = .init(wrappedValue: .init(mailUserSession: userSession, analytics: analytics))
     }
-
-    var didAppear: ((Self) -> Void)?
 
     // MARK: - View
 
@@ -109,10 +105,14 @@ struct HomeScreen: View {
             MailboxScreen(
                 mailSettingsLiveQuery: mailSettingsLiveQuery,
                 appRoute: appRoute,
-                notificationAuthorizationStore: notificationAuthorizationStore,
                 userSession: userSession,
-                userDefaults: userDefaults,
                 draftPresenter: composerCoordinator.draftPresenter
+            )
+            .introductionViews(
+                dependencies: .init(
+                    notificationAuthorizationStore: notificationAuthorizationStore,
+                    userDefaults: appContext.userDefaults
+                )
             )
             .environmentObject(composerCoordinator)
 
@@ -173,7 +173,6 @@ struct HomeScreen: View {
                 userDidRespond: userDidRespondToAuthorizationRequest
             )
         }
-        .onAppear { didAppear?(self) }
         .onOpenURL(perform: handleDeepLink)
         .onLoad {
             Task {
@@ -217,9 +216,7 @@ struct HomeScreen: View {
 
     private func presentShareFileController() {
         do {
-            let logFolder = FileManager.default.sharedCacheDirectory
-            let sourceLogFile = logFolder.appending(path: "proton-mail-ios.log")
-            _ = try appContext.mailSession.exportLogs(filePath: sourceLogFile.path).get()
+            let sourceLogFile = try LogFileProvider.file(mailSession: appContext.mailSession)
             var filesToShare: [URL] = [sourceLogFile]
 
             if let transactionLog = TransactionsObserver.shared.generateTransactionLog() {
@@ -251,7 +248,11 @@ struct HomeScreen: View {
         if let route = DeepLinkRouteCoder.decode(deepLink: deepLink) {
             modalState = nil
             appUIStateStore.toggleSidebar(isOpen: false)
-            appRoute.updateRoute(to: route)
+
+            Task {
+                await ensurePresentedViewsAreDismissed()
+                appRoute.updateRoute(to: route)
+            }
         }
     }
 
@@ -261,5 +262,17 @@ struct HomeScreen: View {
         }
 
         return ObjectIdentifier(activeSession) == ObjectIdentifier(userSession)
+    }
+
+    private func ensurePresentedViewsAreDismissed() async {
+        await UIApplication.shared.keyWindow?.rootViewController?.presentedViewController?.dismissAndWait(animated: true)
+    }
+}
+
+private extension UIViewController {
+    func dismissAndWait(animated: Bool) async {
+        await withCheckedContinuation { continuation in
+            dismiss(animated: animated, completion: continuation.resume)
+        }
     }
 }

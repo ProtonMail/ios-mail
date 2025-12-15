@@ -19,7 +19,6 @@ import InboxDesignSystem
 import UIKit
 
 final class NoContactsPlaceholderView: UIView {
-
     private let iconImageView: UIImageView = {
         let imageView = UIImageView(image: UIImage(resource: DS.Images.noContacts))
         imageView.contentMode = .scaleAspectFit
@@ -77,5 +76,4 @@ final class NoContactsPlaceholderView: UIView {
             stackView.trailingAnchor.constraint(equalTo: trailingAnchor),
         ])
     }
-
 }

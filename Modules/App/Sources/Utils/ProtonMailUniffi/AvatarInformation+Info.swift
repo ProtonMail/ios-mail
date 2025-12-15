@@ -18,9 +18,7 @@
 import proton_app_uniffi
 
 extension AvatarInformation {
-
     var info: AvatarInfo {
         .init(initials: text, color: .init(hex: color))
     }
-
 }

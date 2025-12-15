@@ -24,7 +24,6 @@ import Testing
 
 @MainActor
 final class BiometricLockStoreTests {
-
     lazy var sut: BiometricLockStore = .init(
         state: .initial,
         method: .builtIn { [unowned self] in laContextSpy },
@@ -110,5 +109,4 @@ final class BiometricLockStoreTests {
             laContext: { [unowned self] in self.laContextSpy }
         )
     }
-
 }

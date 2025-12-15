@@ -20,7 +20,6 @@ import proton_app_uniffi
 @testable import ProtonMail
 
 extension PMSystemLabel {
-
     static let inbox: Self = .testData(id: 1, systemLabel: .inbox, name: "Inbox")
     static let sent: Self = .testData(id: 2, systemLabel: .sent, name: "Sent")
     static let outbox: Self = .testData(id: 3, systemLabel: .outbox, name: "Outbox")
@@ -43,5 +42,4 @@ extension PMSystemLabel {
             unread: 0
         )
     }
-
 }

@@ -32,11 +32,9 @@ class WindowColorSchemeUpdater {
             })
             .store(in: &cancellables)
     }
-
 }
 
 private extension Optional where Wrapped == ColorScheme {
-
     var userInterfaceStyle: UIUserInterfaceStyle {
         switch self {
         case .some(.light):
@@ -47,5 +45,4 @@ private extension Optional where Wrapped == ColorScheme {
             .unspecified
         }
     }
-
 }

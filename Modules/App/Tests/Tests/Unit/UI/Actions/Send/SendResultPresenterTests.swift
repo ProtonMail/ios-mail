@@ -299,7 +299,6 @@ final class SendResultPresenterTests: BaseTestCase, @unchecked Sendable {
 }
 
 private extension SendResultPresenterTests {
-
     @MainActor
     func makeSut(draftPresenter: DraftPresenter = .dummy()) -> SendResultPresenter {
         let sut = SendResultPresenter(draftPresenter: draftPresenter)
@@ -311,7 +310,6 @@ private extension SendResultPresenterTests {
 }
 
 private extension SendResultToastAction {
-
     var isPresent: Bool {
         switch self {
         case .present: true
@@ -343,7 +341,6 @@ private extension SendResultToastAction {
 }
 
 private extension Array where Element == SendResultToastAction {
-
     func isSame(as other: [SendResultToastAction]) -> Bool {
         guard self.count == other.count else { return false }
 
@@ -357,7 +354,6 @@ private extension Array where Element == SendResultToastAction {
 }
 
 private extension DraftToPresent {
-
     var messageIdToOpen: ID? {
         switch self {
         case .new:

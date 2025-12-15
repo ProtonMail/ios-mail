@@ -30,7 +30,6 @@ struct MessageBodyView: View {
     @EnvironmentObject var refreshBannersListener: RefreshMessageBannersNotifier
     let messageID: ID
     let emailAddress: String
-    let attachments: [AttachmentDisplayModel]
     let mailbox: Mailbox
     let editScheduledMessage: () -> Void
     let unsnoozeConversation: () -> Void
@@ -38,12 +37,10 @@ struct MessageBodyView: View {
     @Binding var isBodyLoaded: Bool
     @Binding var attachmentIDToOpen: ID?
     @State var bodyContentHeight: CGFloat = .zero
-    @State var eventBanners: OrderedSet<EventDrivenMessageBanner> = []
 
     init(
         messageID: ID,
         emailAddress: String,
-        attachments: [AttachmentDisplayModel],
         mailbox: Mailbox,
         isBodyLoaded: Binding<Bool>,
         attachmentIDToOpen: Binding<ID?>,
@@ -53,7 +50,6 @@ struct MessageBodyView: View {
     ) {
         self.messageID = messageID
         self.emailAddress = emailAddress
-        self.attachments = attachments
         self.mailbox = mailbox
         self._isBodyLoaded = isBodyLoaded
         self._attachmentIDToOpen = attachmentIDToOpen
@@ -102,8 +98,8 @@ struct MessageBodyView: View {
                         }
                     )
                 }
-                if !attachments.isEmpty {
-                    MessageBodyAttachmentsView(attachments: attachments, attachmentIDToOpen: $attachmentIDToOpen)
+                if !state.attachments.isEmpty {
+                    MessageBodyAttachmentsView(attachments: state.attachments, attachmentIDToOpen: $attachmentIDToOpen)
                         .padding(.top, DS.Spacing.extraLarge)
                         .padding([.horizontal, .bottom], DS.Spacing.large)
                 }

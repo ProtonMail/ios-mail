@@ -22,7 +22,6 @@ import Foundation
 /// IMPORTANT: Remember about setting bundle for each key: `bundle: .atURL(Bundle.module.bundleURL)`.
 enum L10n {
     enum Composer {
-
         static let draftLoadedOffline = LocalizedStringResource(
             "You're currently offline. This draft may not be up-to-date.",
             bundle: .atURL(Bundle.module.bundleURL),
@@ -199,7 +198,6 @@ enum L10n {
     }
 
     enum AttachmentError {
-
         static let attachmentsOverSizeLimitTitle = LocalizedStringResource(
             "Attachments too big",
             bundle: .atURL(Bundle.module.bundleURL),
@@ -264,7 +262,6 @@ enum L10n {
     }
 
     enum Alert {
-
         static let gotIt = LocalizedStringResource(
             "Got it",
             bundle: .atURL(Bundle.module.bundleURL),
@@ -273,7 +270,6 @@ enum L10n {
     }
 
     enum Contacts {
-
         static func groupSubtitle(membersCount: Int) -> LocalizedStringResource {
             LocalizedStringResource(
                 "\(membersCount) members",
@@ -397,7 +393,6 @@ enum L10n {
             "Attachments too large. Keep attachment size under 25 MB.",
             comment: "Error in the context of saving a draft."
         )
-
     }
 
     enum DraftSendError {
@@ -584,7 +579,6 @@ enum L10n {
     }
 
     enum ScheduleSend {
-
         static let customTitle = LocalizedStringResource(
             "Custom",
             bundle: .atURL(Bundle.module.bundleURL),
@@ -713,7 +707,6 @@ enum L10n {
     }
 
     enum PasswordProtection {
-
         static let title = LocalizedStringResource(
             "Set Password",
             bundle: .atURL(Bundle.module.bundleURL),

@@ -251,7 +251,6 @@ private class CNContactSpy: CNContact {
 }
 
 private extension CNContact {
-
     static var jonathanHorotvitz: CNContact {
         CNContactSpy(
             id: "1",
@@ -290,7 +289,6 @@ private extension CNContact {
 }
 
 private extension ContactSuggestion {
-
     static func group(_ groupItem: ContactGroupItem) -> Self {
         .init(
             key: "\(groupItem.id.value)",
@@ -344,11 +342,9 @@ private extension ContactSuggestion {
             kind: .deviceContact(.init(email: email))
         )
     }
-
 }
 
 private class ContactSuggestionsStub: ContactSuggestions, @unchecked Sendable {
-
     private let _all: [ContactSuggestion]
 
     init(all: [ContactSuggestion]) {
@@ -367,5 +363,4 @@ private class ContactSuggestionsStub: ContactSuggestions, @unchecked Sendable {
     override func filtered(query: String) -> [ContactSuggestion] {
         return []
     }
-
 }

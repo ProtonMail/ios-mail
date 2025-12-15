@@ -110,7 +110,6 @@ final class MessageBodyReaderViewTests {
 }
 
 extension MessageBodyReaderViewTests {
-
     private func makeMessageBodyReaderViewCoordinator(
         notificationCenter: NotificationCenter,
         webViewSpy: WKWebViewSpy

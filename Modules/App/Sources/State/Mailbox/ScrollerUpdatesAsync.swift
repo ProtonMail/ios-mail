@@ -22,7 +22,6 @@ import proton_app_uniffi
 /// and provides streams to consume the updates in the MainActor async context.
 @MainActor
 final class ScrollerUpdatesAsync {
-
     nonisolated private let messagePublisher = PassthroughSubject<MessageScrollerUpdate, Never>()
     nonisolated private let conversationPublisher = PassthroughSubject<ConversationScrollerUpdate, Never>()
 

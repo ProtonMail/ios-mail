@@ -20,7 +20,6 @@ import InboxCoreUI
 import Testing
 
 struct DatePickerViewConfigurationTests {
-
     struct MockConfig: DatePickerViewConfiguration {
         var title: LocalizedStringResource = "Title"
         var selectTitle: LocalizedStringResource = "Select"

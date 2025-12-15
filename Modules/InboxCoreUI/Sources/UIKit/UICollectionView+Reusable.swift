@@ -20,7 +20,6 @@ import UIKit
 extension UICollectionViewCell: Reusable {}
 
 extension UICollectionView {
-
     public func register<T: UICollectionViewCell>(cellType: T.Type) {
         register(cellType, forCellWithReuseIdentifier: cellType.reuseIdentifier)
     }

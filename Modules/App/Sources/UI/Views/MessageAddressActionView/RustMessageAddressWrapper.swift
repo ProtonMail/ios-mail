@@ -31,7 +31,6 @@ struct RustMessageAddressWrapper {
 }
 
 extension RustMessageAddressWrapper {
-
     static func productionInstance() -> Self {
         .init(
             block: { session, email in await blockAddress(session: session, email: email) },
@@ -47,5 +46,4 @@ extension RustMessageAddressWrapper {
             }
         )
     }
-
 }

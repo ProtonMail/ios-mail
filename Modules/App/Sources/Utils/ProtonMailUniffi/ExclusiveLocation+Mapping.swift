@@ -20,7 +20,6 @@ import SwiftUI
 import proton_app_uniffi
 
 extension ExclusiveLocation {
-
     var selectedMailbox: SelectedMailbox {
         switch self {
         case .system(let name, let id):
@@ -52,5 +51,4 @@ extension ExclusiveLocation {
             )
         }
     }
-
 }

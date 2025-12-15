@@ -26,11 +26,10 @@ import ProtonUIFoundations
 import SwiftUI
 import proton_app_uniffi
 
+import struct StoreKit.RequestReviewAction
 import class UIKit.UIImage
 
-/**
- Source of truth for the Mailbox view showing mailbox items (conversations or messages).
- */
+/// Source of truth for the Mailbox view showing mailbox items (conversations or messages).
 @MainActor
 final class MailboxModel: ObservableObject {
     @Published var state: State = .init()
@@ -45,6 +44,7 @@ final class MailboxModel: ObservableObject {
     let draftPresenter: DraftPresenter
     let loadingBarPresenter = LoadingBarPresenter()
     let goToNextConversationNotifier = GoToNextPageNotifier()
+    private let ratingBooster: RatingBooster
 
     private var messageScroller: MessageScroller?
     private var conversationScroller: ConversationScroller?
@@ -86,8 +86,11 @@ final class MailboxModel: ObservableObject {
         return mailboxOfSpecificSystemFolder || selectedMailbox.isCustomLabel
     }
 
+    static let estimatedBackNavigationDuration = Duration.seconds(0.25)
+
     init(
         mailSettingsLiveQuery: MailSettingLiveQuerying,
+        userSession: MailUserSession,
         appRoute: AppRouteState,
         draftPresenter: DraftPresenter,
         dependencies: Dependencies = .init()
@@ -98,10 +101,13 @@ final class MailboxModel: ObservableObject {
         self.draftPresenter = draftPresenter
         self.selectedMailbox = appRoute.route.selectedMailbox!
         self.dependencies = dependencies
+
         self.accountManagerCoordinator = AccountManagerCoordinator(
             appContext: dependencies.appContext.mailSession,
             accountAuthCoordinator: dependencies.appContext.accountAuthCoordinator
         )
+
+        ratingBooster = .init(userSession: userSession)
 
         setUpBindings()
     }
@@ -121,7 +127,6 @@ final class MailboxModel: ObservableObject {
 // MARK: Bindings
 
 extension MailboxModel {
-
     private func setUpBindings() {
         appRoute.$route.sink { [weak self] route in
             guard let self else { return }
@@ -214,7 +219,7 @@ extension MailboxModel {
         Task {
             if !state.navigationPath.isEmpty {
                 state.navigationPath.removeLast(state.navigationPath.count)
-                try await Task.sleep(for: .seconds(0.25))
+                try await Task.sleep(for: Self.estimatedBackNavigationDuration)
             }
 
             state.navigationPath.append(openedItem)
@@ -268,7 +273,6 @@ extension MailboxModel {
 // MARK: Private
 
 extension MailboxModel {
-
     private func updateMailboxTitle() {
         state.mailboxTitle =
             selectionMode.selectionState.hasItems
@@ -561,7 +565,6 @@ extension MailboxModel {
 // MARK: Pull to refresh
 
 extension MailboxModel {
-
     func onPullToRefresh() async {
         await dependencies.appContext.pollEventsAndWait()
     }
@@ -570,7 +573,6 @@ extension MailboxModel {
 // MARK: Filtering
 
 extension MailboxModel {
-
     func onUnreadFilterChange() {
         AppLogger.log(message: "unread filter has changed to \(unreadFilter)", category: .mailbox)
         if viewMode == .conversations {
@@ -597,7 +599,6 @@ extension MailboxModel {
 // MARK: Compose
 
 extension MailboxModel {
-
     func createDraft() {
         Task {
             do {
@@ -636,7 +637,6 @@ extension MailboxModel {
 // MARK: View actions
 
 extension MailboxModel {
-
     private func applySelectionStateChangeInstead(mailboxItem: MailboxItemCellUIModel) {
         let isCurrentlySelected = selectionMode.selectionState.selectedItems.contains(mailboxItem.toSelectedItem())
         onMailboxItemSelectionChange(item: mailboxItem, isSelected: !isCurrentlySelected)
@@ -708,7 +708,6 @@ extension MailboxModel {
 // MARK: conversation actions
 
 extension MailboxModel {
-
     private func actionStar(ids: [ID]) {
         starActionPerformer.star(itemsWithIDs: ids, itemType: viewMode.itemType)
     }
@@ -721,7 +720,6 @@ extension MailboxModel {
 // MARK: Select All
 
 extension MailboxModel {
-
     private var unselectedItems: [MailboxSelectedItem] {
         paginatedDataSource.state.items
             .map { $0.toSelectedItem() }
@@ -785,8 +783,31 @@ extension MailboxModel {
     }
 }
 
-extension MailboxModel {
+// MARK: Rating Booster
 
+extension MailboxModel {
+    func setupRatingBooster(requestReview: RequestReviewAction, toastStateStore: ToastStateStore) {
+        ratingBooster.requestReview = {
+            #if QA
+                toastStateStore.present(toast: .information(message: "Requesting review now"))
+            #else
+                requestReview()
+            #endif
+        }
+    }
+
+    func navigationPathChanged(_: NavigationPath, newValue: NavigationPath) {
+        Task {
+            do {
+                try await ratingBooster.feed(navigationPath: newValue)
+            } catch {
+                AppLogger.log(error: error)
+            }
+        }
+    }
+}
+
+extension MailboxModel {
     struct State {
         var mailboxTitle: LocalizedStringResource = "".notLocalized.stringResource
         var filterBar: FilterBarState = .init()
@@ -800,9 +821,7 @@ extension MailboxModel {
 
         var labelAsSheetPresented: ActionSheetInput?
         var moveToSheetPresented: ActionSheetInput?
-
         var upsellPresented: UpsellScreenModel?
-        var onboardingUpsellPresented: OnboardingUpsellScreenModel?
 
         var confirmLink: Bool = true
         var nextMessageOnMove: NextMessageOnMove?
@@ -810,7 +829,6 @@ extension MailboxModel {
 }
 
 extension MailboxModel {
-
     struct Dependencies {
         let appContext: AppContext = .shared
     }
@@ -818,6 +836,6 @@ extension MailboxModel {
 
 extension MailboxItemCellUIModel {
     func toSelectedItem() -> MailboxSelectedItem {
-        .init(id: id, isRead: isRead, isStarred: isStarred)
+        .init(id: id)
     }
 }

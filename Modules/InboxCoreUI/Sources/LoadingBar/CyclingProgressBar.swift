@@ -27,22 +27,28 @@ struct CyclingProgressBar: View {
         let edgeColor = DS.Color.Loader.success.opacity(0)
     }
 
-    @State private var animationPhase: CGFloat
-    private let isAnimationEnabled: Bool
-
     private let configuration: LoadingBarConfiguration
+    private let onCycleCompleted: (() -> Void)
+    /// Only for snapshot testing purposes to disable animation and allow manual control of animation phase
+    private let isAnimationEnabled: Bool
     private let viewState = ViewState()
 
-    init(configuration: LoadingBarConfiguration) {
+    @State private var animationPhase: CGFloat
+    @State private var isAnimating: Bool = false
+
+    init(configuration: LoadingBarConfiguration, onCycleCompleted: @escaping (() -> Void)) {
         self.configuration = configuration
+        self.onCycleCompleted = onCycleCompleted
+        self.isAnimationEnabled = true
         _animationPhase = State(initialValue: 0)
-        isAnimationEnabled = true
     }
 
+    /// Only for snapshot testing purposes to disable animation and control the animation phase
     init(animationPhase: CGFloat) {
         self.configuration = .init()
+        self.onCycleCompleted = {}
+        self.isAnimationEnabled = false
         _animationPhase = State(initialValue: animationPhase)
-        isAnimationEnabled = false
     }
 
     // MARK: - View
@@ -65,13 +71,35 @@ struct CyclingProgressBar: View {
                 .offset(x: xOffset)
         }
         .frame(height: viewState.barHeight)
-        .clipped()
-        .onAppear {
-            if isAnimationEnabled {
-                withAnimation(.linear(duration: configuration.cycleDuration).repeatForever(autoreverses: false)) {
-                    animationPhase = 1.0
-                }
-            }
+        .onAppear { startAnimatingIfNeeded() }
+        .onDisappear { stopAnimating() }
+    }
+
+    // MARK: - Private
+
+    private func startAnimatingIfNeeded() {
+        guard isAnimationEnabled, !isAnimating else { return }
+
+        isAnimating = true
+
+        startAnimationCycle()
+    }
+
+    private func stopAnimating() {
+        isAnimating = false
+    }
+
+    private func startAnimationCycle() {
+        guard isAnimating else { return }
+
+        animationPhase = 0
+
+        withAnimation(.linear(duration: configuration.cycleDuration)) {
+            animationPhase = 1.0
+        } completion: {
+            guard isAnimating else { return }
+            onCycleCompleted()
+            startAnimationCycle()
         }
     }
 }
@@ -85,7 +113,7 @@ private struct CyclingProgressBar_Preview: View {
                 .font(.headline)
                 .padding(.top, 60)
             if visible {
-                CyclingProgressBar(configuration: .init())
+                CyclingProgressBar(configuration: .init(), onCycleCompleted: {})
             }
 
             Spacer()

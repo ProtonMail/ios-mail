@@ -19,7 +19,6 @@ import Foundation
 import proton_app_uniffi
 
 extension DraftExpirationTime {
-
     var isCustomDate: Bool {
         if case .custom = self { return true }
         return false

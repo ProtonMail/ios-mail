@@ -54,7 +54,6 @@ struct CustomizeToolbarRepository: Sendable {
 }
 
 private extension CustomizeToolbarServiceProtocol {
-
     func allActions(for toolbar: ToolbarType) -> [MobileAction] {
         switch toolbar {
         case .list:
@@ -87,5 +86,4 @@ private extension CustomizeToolbarServiceProtocol {
             updateConversationToolbarActions
         }
     }
-
 }

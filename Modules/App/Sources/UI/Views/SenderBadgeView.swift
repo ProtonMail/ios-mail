@@ -19,7 +19,6 @@ import InboxDesignSystem
 import SwiftUI
 
 struct ProtonOfficialBadgeView: View {
-
     var body: some View {
         SenderBadgeView(
             color: DS.Color.Brand.minus30,

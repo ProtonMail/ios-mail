@@ -26,7 +26,6 @@ import XCTest
 
 @MainActor
 class SettingsScreenSnapshotTests: BaseTestCase {
-
     func testSettingsScreenLayoutsCorrectOnIphoneX() {
         let store = AppAppearanceStore(mailSession: { MailSession(noPointer: .init()) })
         let mailUserSession = MailUserSessionSpy(id: "")
@@ -45,11 +44,9 @@ class SettingsScreenSnapshotTests: BaseTestCase {
 
         assertSnapshotsOnIPhoneX(of: sut.environmentObject(store), precision: 0.98)
     }
-
 }
 
 extension AccountDetails {
-
     static var testData: Self {
         AccountDetails(
             name: "Mocked name",
@@ -57,11 +54,9 @@ extension AccountDetails {
             avatarInformation: .init(text: "T", color: DS.Color.Brand.norm.toHex()!)
         )
     }
-
 }
 
 extension User {
-
     static var testData: Self {
         User(
             createTime: 0,
@@ -94,13 +89,10 @@ extension User {
             userType: .proton
         )
     }
-
 }
 
 extension StorageInfo {
-
     static var testData: Self {
         StorageInfo(usedSpace: 107_374_182, maxSpace: 1_073_741_824)
     }
-
 }

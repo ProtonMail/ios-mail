@@ -18,9 +18,7 @@
 import SwiftUI
 
 extension ImageResource {
-
     public var image: Image {
         Image(self)
     }
-
 }

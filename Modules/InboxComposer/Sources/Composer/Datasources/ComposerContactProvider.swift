@@ -56,7 +56,6 @@ public final class ComposerContactProvider {
 }
 
 public extension ComposerContactProvider {
-
     static var mockInstance: ComposerContactProvider {
         .init(protonContactsDatasource: ComposerMockContactsDatasource())
     }

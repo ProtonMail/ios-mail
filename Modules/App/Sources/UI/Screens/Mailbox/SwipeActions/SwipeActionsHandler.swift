@@ -90,5 +90,4 @@ struct SwipeActionsHandler {
             }
         }
     }
-
 }

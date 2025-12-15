@@ -83,7 +83,6 @@ enum RecipientType {
 }
 
 extension Array where Element == RecipientUIModel {
-
     var noneIsSelected: Bool {
         filter(\.isSelected).isEmpty
     }

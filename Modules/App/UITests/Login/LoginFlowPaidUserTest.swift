@@ -18,7 +18,6 @@
 import Foundation
 
 final class LoginFlowPaidUserTest: PMUIUnmockedNetworkTestCase {
-
     /// TestId 428585
     func testLoginFlowPaidUser() {
         navigator.navigateTo(UITestDestination.inbox)

@@ -22,7 +22,6 @@ enum PreviewData {
 }
 
 extension LabelUIModel {
-
     static func random(num: Int) -> [LabelUIModel] {
         (0..<num).map { _ in
             LabelUIModel(

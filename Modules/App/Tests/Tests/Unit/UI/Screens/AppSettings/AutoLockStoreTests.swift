@@ -23,7 +23,6 @@ import proton_app_uniffi
 
 @MainActor
 class AutoLockStoreTests {
-
     let appSettingsRepositorySpy = AppSettingsRepositorySpy()
     let router = Router<SettingsRoute>()
     lazy var sut = AutoLockStore(
@@ -55,5 +54,4 @@ class AutoLockStoreTests {
         #expect(sut.state.selectedOption == .minutes(10))
         #expect(router.stack == [.appProtection])
     }
-
 }

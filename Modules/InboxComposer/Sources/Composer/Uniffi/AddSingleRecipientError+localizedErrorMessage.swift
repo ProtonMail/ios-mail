@@ -19,7 +19,6 @@ import Foundation
 import proton_app_uniffi
 
 extension AddSingleRecipientError {
-
     func localizedErrorMessage(entry: SingleRecipientEntry) -> String {
         switch self {
         case .ok:

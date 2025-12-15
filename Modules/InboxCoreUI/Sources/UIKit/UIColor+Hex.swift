@@ -19,9 +19,7 @@ import SwiftUI
 import UIKit
 
 public extension UIColor {
-
     convenience init(hex: String) {
         self.init(Color(hex: hex))
     }
-
 }

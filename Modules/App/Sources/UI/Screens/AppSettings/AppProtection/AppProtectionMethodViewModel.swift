@@ -44,7 +44,6 @@ struct AppProtectionMethodViewModel: Equatable {
 }
 
 extension AppProtectionMethodViewModel.MethodType {
-
     var appProtection: AppProtection {
         switch self {
         case .none:
@@ -55,5 +54,4 @@ extension AppProtectionMethodViewModel.MethodType {
             .biometrics
         }
     }
-
 }

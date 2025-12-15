@@ -70,6 +70,12 @@
             "value" : "+%lld de plus"
           }
         },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld további"
+          }
+        },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
@@ -104,6 +110,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "+%lld meer"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "+%lld więcej"
           }
         },
         "pt-BR" : {
@@ -755,7 +767,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Forsæt"
+            "value" : "Fortsæt"
           }
         },
         "de" : {
@@ -2126,6 +2138,12 @@
             "value" : "Adresse e-mail"
           }
         },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "e-mail cím"
+          }
+        },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2481,6 +2499,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "nom"
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "név"
           }
         },
         "id" : {

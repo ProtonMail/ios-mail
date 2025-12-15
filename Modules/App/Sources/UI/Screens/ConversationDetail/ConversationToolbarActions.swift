@@ -23,7 +23,6 @@ enum ConversationToolbarActions {
 }
 
 extension ConversationToolbarActions {
-
     var isEmpty: Bool {
         switch self {
         case .message(let actions, _):
@@ -32,5 +31,4 @@ extension ConversationToolbarActions {
             actions.visibleListActions.isEmpty
         }
     }
-
 }

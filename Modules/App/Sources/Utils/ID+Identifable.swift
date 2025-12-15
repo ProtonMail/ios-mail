@@ -18,9 +18,7 @@
 import proton_app_uniffi
 
 extension ID: Identifiable {
-
     public var id: UInt64 {
         value
     }
-
 }

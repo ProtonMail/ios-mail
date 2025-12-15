@@ -19,7 +19,6 @@ import Foundation
 import proton_app_uniffi
 
 extension PinAuthError: LocalizedError {
-
     public var errorDescription: String? {
         switch self {
         case .reason(let errorReason):
@@ -35,5 +34,4 @@ extension PinAuthError: LocalizedError {
             protonError.localizedDescription
         }
     }
-
 }

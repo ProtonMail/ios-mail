@@ -23,6 +23,8 @@ public final class MailUserSessionSpy: MailUserSession, @unchecked Sendable {
     public var stubbedUserSettings: UserSettings?
     public var watchUserSettingsCallback: [AsyncLiveQueryCallback] = []
 
+    public var enabledFeatures: Set<String> = []
+
     private let id: String
 
     public init(id: String) {
@@ -42,6 +44,20 @@ public final class MailUserSessionSpy: MailUserSession, @unchecked Sendable {
 
     public override func hasValidSenderAddress() async -> MailUserSessionHasValidSenderAddressResult {
         .ok(true)
+    }
+
+    public override func isFeatureEnabled(featureId: String) async -> MailUserSessionIsFeatureEnabledResult {
+        .ok(enabledFeatures.contains(featureId))
+    }
+
+    public override func overrideUserFeatureFlag(flagName: String, newValue: Bool) async -> MailUserSessionOverrideUserFeatureFlagResult {
+        if newValue {
+            enabledFeatures.insert(flagName)
+        } else {
+            enabledFeatures.remove(flagName)
+        }
+
+        return .ok
     }
 
     public override func user() async -> MailUserSessionUserResult {

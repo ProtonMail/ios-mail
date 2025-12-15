@@ -22,7 +22,6 @@ import UIKit
 
 @MainActor
 final class PassThroughWindowTests {
-
     private let sut: PassThroughWindow
 
     init() {
@@ -65,5 +64,4 @@ final class PassThroughWindowTests {
 
         #expect(hitView == subview)
     }
-
 }

@@ -21,7 +21,6 @@ import proton_app_uniffi
 @testable import ProtonMail
 
 final class UnreadCountFormatterTests: XCTestCase {
-
     struct TestCase {
         struct Given {
             let count: UInt64
@@ -74,5 +73,4 @@ final class UnreadCountFormatterTests: XCTestCase {
             }
         }
     }
-
 }

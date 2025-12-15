@@ -91,13 +91,10 @@ class PINLockStateStoreTests {
         #expect(sut.state.error == .tooFrequentAttempts)
         #expect(sut.state.pin == .init(digits: [1, 2]))
     }
-
 }
 
 private extension PINLockState {
-
     func alertAction(for string: LocalizedStringResource) throws -> AlertAction {
         try #require(alert?.actions.findFirst(for: string, by: \.title))
     }
-
 }

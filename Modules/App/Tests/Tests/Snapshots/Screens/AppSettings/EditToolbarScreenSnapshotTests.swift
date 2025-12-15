@@ -23,7 +23,6 @@ import Testing
 
 @MainActor
 struct EditToolbarScreenSnapshotTests {
-
     @Test
     func editToolbarScreenScreenLayoutsCorrectly() {
         let sut = EditToolbarScreen(
@@ -43,5 +42,4 @@ struct EditToolbarScreenSnapshotTests {
 
         assertSnapshotsOnIPhoneX(of: sut, drawHierarchyInKeyWindow: true)
     }
-
 }

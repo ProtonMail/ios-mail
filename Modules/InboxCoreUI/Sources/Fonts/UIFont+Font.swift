@@ -18,7 +18,6 @@
 import UIKit
 
 extension UIFont {
-
     public static func font(textStyle: TextStyle, weight: Weight) -> Self {
         let preferredFont = UIFont.preferredFont(forTextStyle: textStyle)
 
@@ -32,5 +31,4 @@ extension UIFont {
 
         return .init(descriptor: updatedDescriptor, size: .zero)
     }
-
 }

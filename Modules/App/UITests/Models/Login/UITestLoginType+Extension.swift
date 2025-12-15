@@ -23,7 +23,6 @@ enum UITestLoginType {
 }
 
 extension UITestLoginType {
-
     enum Unmocked {
         enum Black {
             enum Free {

@@ -21,7 +21,6 @@ import SwiftUI
 import proton_app_uniffi
 
 extension View {
-
     func conversationBottomToolbar(
         actions: ConversationToolbarActions?,
         mailbox: @escaping () -> Mailbox,
@@ -41,12 +40,9 @@ extension View {
             )
         )
     }
-
 }
 
 struct ConversationToolbarModifier: ViewModifier {
-    @EnvironmentObject private var toastStateStore: ToastStateStore
-
     private let actions: ConversationToolbarActions?
     private let mailbox: () -> Mailbox
     private let messageAppearanceOverrideStore: MessageAppearanceOverrideStore
@@ -143,5 +139,4 @@ struct ConversationToolbarModifier: ViewModifier {
             Spacer()
         }
     }
-
 }

@@ -22,7 +22,6 @@ public typealias DispatchQueueScheduler = AnyScheduler<DispatchQueue.SchedulerTi
 
 public class AnyScheduler<SchedulerTimeType>: Scheduler
 where SchedulerTimeType: Strideable, SchedulerTimeType.Stride: SchedulerTimeIntervalConvertible {
-
     public typealias SchedulerOptions = Never
 
     public init<S: Scheduler>(_ scheduler: S) where S.SchedulerTimeType == SchedulerTimeType {
@@ -83,5 +82,4 @@ where SchedulerTimeType: Strideable, SchedulerTimeType.Stride: SchedulerTimeInte
             SchedulerTimeType.Stride,
             @escaping () -> Void
         ) -> Cancellable
-
 }

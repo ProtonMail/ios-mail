@@ -235,7 +235,6 @@ final class SidebarModel: Sendable, ObservableObject {
 
 @MainActor
 private final class SidebarModelsObservation<Model: Sendable>: Sendable {
-
     private let sidebar: SidebarProtocol
     private let updatedData: @Sendable () async -> Result<[Model], ActionError>
     private let dataUpdate: @MainActor ([Model]) -> Void
@@ -288,11 +287,9 @@ private final class SidebarModelsObservation<Model: Sendable>: Sendable {
             dataUpdate(newData)
         }
     }
-
 }
 
 private extension SidebarFolder {
-
     func copy(childFolders: [SidebarFolder]) -> SidebarFolder {
         .init(
             folderID: folderID,
@@ -305,5 +302,4 @@ private extension SidebarFolder {
             isSelected: isSelected
         )
     }
-
 }

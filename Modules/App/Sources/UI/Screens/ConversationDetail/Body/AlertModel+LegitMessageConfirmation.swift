@@ -18,7 +18,6 @@
 import InboxCoreUI
 
 extension AlertModel {
-
     static func legitMessageConfirmation(
         action: @escaping @MainActor @Sendable (LegitMessageConfirmationAlertAction) async -> Void
     ) -> Self {
@@ -32,5 +31,4 @@ extension AlertModel {
             actions: actions
         )
     }
-
 }

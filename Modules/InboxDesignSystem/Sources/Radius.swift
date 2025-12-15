@@ -18,7 +18,6 @@
 import Foundation
 
 public extension DS.Radius {
-
     /// 4px
     static let small: CGFloat = 4
     /// 8px
@@ -33,5 +32,4 @@ public extension DS.Radius {
     static let massive: CGFloat = 24
     /// 32px
     static let giant: CGFloat = 32
-
 }

@@ -89,7 +89,6 @@ final class ProtonAuthenticatedWebModel: NSObject, ObservableObject {
 }
 
 extension ProtonAuthenticatedWebModel {
-
     enum State {
         case forkingSession
         case urlReady(url: URL)
@@ -98,7 +97,6 @@ extension ProtonAuthenticatedWebModel {
 }
 
 extension ProtonAuthenticatedWebModel {
-
     struct Dependencies {
         let appContext: AppContext
 

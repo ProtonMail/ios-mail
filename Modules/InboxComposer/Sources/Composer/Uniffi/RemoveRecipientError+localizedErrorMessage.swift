@@ -19,7 +19,6 @@ import Foundation
 import proton_app_uniffi
 
 extension RemoveRecipientError {
-
     func localizedErrorMessage() -> LocalizedStringResource {
         switch self {
         case .ok:

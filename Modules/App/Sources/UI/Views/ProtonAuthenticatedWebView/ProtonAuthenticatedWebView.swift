@@ -44,7 +44,6 @@ struct ProtonAuthenticatedWebView: View {
 }
 
 extension ProtonAuthenticatedWebView {
-
     @ViewBuilder
     private var viewForState: some View {
         switch model.state {

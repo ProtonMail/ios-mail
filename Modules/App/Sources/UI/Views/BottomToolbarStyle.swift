@@ -19,19 +19,15 @@ import InboxDesignSystem
 import SwiftUI
 
 extension View {
-
     func bottomToolbarStyle() -> some View {
         modifier(BottomToolbarStyle())
     }
-
 }
 
 struct BottomToolbarStyle: ViewModifier {
-
     func body(content: Content) -> some View {
         content
             .toolbarBackground(.visible, for: .bottomBar)
             .toolbarBackground(DS.Color.BackgroundInverted.secondary, for: .bottomBar)
     }
-
 }

@@ -80,7 +80,6 @@ final class RecipientChipView: UIView {
 }
 
 extension RecipientChipView {
-
     private enum SubviewFactory {
         static var icon: UIImageView {
             let view = UIImageView()

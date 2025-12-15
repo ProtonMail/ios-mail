@@ -18,11 +18,9 @@
 public protocol Copying {}
 
 extension Copying {
-
     public func copy<Value>(_ path: WritableKeyPath<Self, Value>, to value: Value) -> Self {
         var clone = self
         clone[keyPath: path] = value
         return clone
     }
-
 }

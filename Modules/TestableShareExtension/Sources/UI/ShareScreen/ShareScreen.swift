@@ -21,7 +21,6 @@ import InboxCore
 import InboxCoreUI
 import ProtonUIFoundations
 import SwiftUI
-import proton_app_uniffi
 
 public struct ShareScreen: View {
     @ObservedObject private var model: ShareScreenModel

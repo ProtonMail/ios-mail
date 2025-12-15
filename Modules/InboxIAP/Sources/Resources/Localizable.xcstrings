@@ -367,6 +367,12 @@
             "state" : "translated",
             "value" : "%lld"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld"
+          }
         }
       }
     },
@@ -1674,6 +1680,12 @@
             "state" : "translated",
             "value" : "Оберіть передплату"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "选择套餐"
+          }
         }
       }
     },
@@ -2059,7 +2071,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Opret alt, De skal bruge for at forblive organiseret. Få dette og mere med %@."
+            "value" : "Opret alt, du skal bruge for at forblive organiseret. Få dette og mere med %@."
           }
         },
         "de" : {
@@ -2429,7 +2441,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tilpas, hvornår en e-mail skal sendes. Nyd dette og mere med %@."
+            "value" : "Tilpas, hvornår en e-mail skal sendes. Nyd dette og meget mere med %@."
           }
         },
         "de" : {
@@ -2832,6 +2844,12 @@
             "value" : "Les réductions sont établies à partir de la tarification mensuelle standard. Il se renouvelle automatiquement à %1$@ / %2$@ jusqu'à annulation."
           }
         },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A kedvezmények a normál havi árakon alapulnak. A szolgáltatás %1$@ /%2$@ áron automatikusan megújul, amíg le nem mondják."
+          }
+        },
         "id" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2884,6 +2902,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zľavy sú založené na štandardných mesačných cenách. Automaticky sa obnoví za %1$@/%2$@, kým nebude zrušené."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Popusti temeljijo na standardni mesečni ceni. Naročnina se samodejno podaljša po ceni %1$@ /%2$@ do preklica."
           }
         },
         "sv" : {
@@ -3694,7 +3718,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Gør Deres mobilsignatur til Deres egen. Nyd dette og mere med %@."
+            "value" : "Gør din mobilsignatur til din egen. Nyd dette og mere med %@."
           }
         },
         "de" : {
@@ -4294,6 +4318,12 @@
             "value" : "seulement %@ /mois"
           }
         },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "csak %@ /hó"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4340,6 +4370,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "len %@ / mesiac"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "samo %@ /mesec"
           }
         },
         "sv" : {
@@ -5246,7 +5282,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Programați acum, trimiteți mai târziu"
+            "value" : "Planificați acum, trimiteți mai târziu"
           }
         },
         "ru" : {
@@ -5884,7 +5920,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Udsæt den — og få den leveret senere. Nyd dette og mere med %@."
+            "value" : "Udsæt den - og få den leveret senere. Nyd dette og mere med %@."
           }
         },
         "de" : {
@@ -6254,7 +6290,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Den anmodede plan kunne ikke findes."
+            "value" : "Det ønskede abonnement kunne ikke findes."
           }
         },
         "de" : {
@@ -6433,7 +6469,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "For at få mere lagerplads og premium-funktioner."
+            "value" : "For at give adgang til mere lagerplads og premium-funktioner."
           }
         },
         "de" : {

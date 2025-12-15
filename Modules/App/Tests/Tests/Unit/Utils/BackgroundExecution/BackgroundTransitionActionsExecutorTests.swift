@@ -22,7 +22,6 @@ import proton_app_uniffi
 @testable import ProtonMail
 
 class BackgroundTransitionActionsExecutorTests: BaseTestCase {
-
     var sut: BackgroundTransitionActionsExecutor!
     var backgroundTransitionTaskSchedulerSpy: BackgroundTransitionTaskSchedulerSpy!
     var backgroundTaskExecutorSpy: BackgroundTaskExecutorSpy!
@@ -106,11 +105,9 @@ class BackgroundTransitionActionsExecutorTests: BaseTestCase {
         XCTAssertEqual(notificationSchedulerSpy.invokedAdd.count, 0)
         XCTAssertEqual(backgroundTransitionTaskSchedulerSpy.invokedEndBackgroundTask.count, 1)
     }
-
 }
 
 private extension DraftSendResult {
-
     static var success: Self {
         .init(
             messageId: .random(),
@@ -119,11 +116,9 @@ private extension DraftSendResult {
             origin: .save
         )
     }
-
 }
 
 private class NotificationSchedulerSpy: NotificationScheduler {
-
     private(set) var invokedAdd: [UNNotificationRequest] = []
 
     // MARK: - NotificationScheduler
@@ -131,5 +126,4 @@ private class NotificationSchedulerSpy: NotificationScheduler {
     func add(_ request: UNNotificationRequest) async throws {
         invokedAdd.append(request)
     }
-
 }

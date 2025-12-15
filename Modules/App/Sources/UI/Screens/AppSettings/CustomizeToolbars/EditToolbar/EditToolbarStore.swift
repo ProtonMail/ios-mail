@@ -94,7 +94,6 @@ class EditToolbarStore: StateStore {
 }
 
 private extension ToolbarType {
-
     var actionsKeyPath: KeyPath<ToolbarsActions, AllCustomizeToolbarActions> {
         switch self {
         case .list:
@@ -105,5 +104,4 @@ private extension ToolbarType {
             \.conversation
         }
     }
-
 }

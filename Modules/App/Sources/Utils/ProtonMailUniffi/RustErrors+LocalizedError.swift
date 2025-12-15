@@ -28,7 +28,6 @@ extension EventError: LocalizedError {
 }
 
 extension DraftUndoSendError: LocalizedError {
-
     public var errorDescription: String? {
         switch self {
         case .reason(let reason):
@@ -40,7 +39,6 @@ extension DraftUndoSendError: LocalizedError {
 }
 
 private extension DraftUndoSendErrorReason {
-
     var errorMessage: LocalizedStringResource {
         switch self {
         case .messageCanNotBeUndoSent, .sendCanNoLongerBeUndone:
@@ -52,7 +50,6 @@ private extension DraftUndoSendErrorReason {
 }
 
 extension DraftCancelScheduleSendError: LocalizedError {
-
     public var errorDescription: String? {
         switch self {
         case .reason(let reason):
@@ -64,7 +61,6 @@ extension DraftCancelScheduleSendError: LocalizedError {
 }
 
 extension DraftCancelScheduleSendErrorReason {
-
     var errorMessage: LocalizedStringResource {
         switch self {
         case .messageDoesNotExist:
@@ -102,7 +98,6 @@ private extension PinSetErrorReason {
 }
 
 extension SnoozeError: LocalizedError {
-
     public var errorDescription: String? {
         switch self {
         case .reason(let snoozeErrorReason):
@@ -111,11 +106,9 @@ extension SnoozeError: LocalizedError {
             protonError.localizedDescription
         }
     }
-
 }
 
 extension SnoozeErrorReason {
-
     var errorMessage: LocalizedStringResource {
         switch self {
         case .snoozeTimeInThePast:
@@ -124,5 +117,4 @@ extension SnoozeErrorReason {
             L10n.Snooze.invalidSnoozeLocation
         }
     }
-
 }

@@ -20,7 +20,6 @@ import proton_app_uniffi
 @testable import InboxContacts
 
 extension ContactDetailCard {
-
     static func testData(contact: ContactDetailsContext, fields: [ContactField]) -> Self {
         .init(
             id: contact.id,
@@ -30,5 +29,4 @@ extension ContactDetailCard {
             fields: fields
         )
     }
-
 }

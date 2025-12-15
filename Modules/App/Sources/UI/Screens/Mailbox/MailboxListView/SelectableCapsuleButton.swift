@@ -63,5 +63,4 @@ struct SelectableCapsuleButton<Label: View>: View {
         }
         .animation(.easeOut(duration: 0.2), value: isSelected)
     }
-
 }

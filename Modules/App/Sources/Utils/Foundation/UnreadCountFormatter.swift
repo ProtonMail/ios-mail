@@ -28,9 +28,7 @@ enum UnreadCountFormatter {
 }
 
 private extension UnsignedInteger {
-
     func toBadgeCapped(at max: Self) -> String {
         self > max ? "\(max)+" : "\(self)"
     }
-
 }
