@@ -139,7 +139,7 @@ targets:
           script: |
             if [ $ACTION == "build" ]; then
               cd "$SRCROOT"
-              xcrun swift-format format -r Modules -p -i
+              xcrun swift-format format -r Modules -i
             fi
           settingsTarget: ProtonMail
         - name: Sourcery
@@ -238,6 +238,10 @@ targets:
       - package: Scrypt
       - target: ShareExtension
       - package: SwiftUIIntrospect
+    preBuildScripts:
+      - name: swift-format
+        script: xcrun swift-format lint -r Modules
+        basedOnDependencyAnalysis: false
 
   ProtonMailTest:
     type: bundle.unit-test
