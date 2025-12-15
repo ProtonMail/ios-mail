@@ -279,7 +279,7 @@ extension AppScript {
             function appendBottomMarker() {
                 const bottomMarker = document.createElement('div');
                 bottomMarker.id = 'proton-bottom-marker';
-                bottomMarker.style = 'display: initial !important;';
+                bottomMarker.style = 'display: block !important;';
                 return document.body.appendChild(bottomMarker);
             }
 
