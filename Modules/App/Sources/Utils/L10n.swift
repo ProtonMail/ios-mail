@@ -921,7 +921,7 @@ enum L10n {
                 comment: "Toggle label for enabling/disabling discreet app icon feature."
             )
             static let description = LocalizedStringResource(
-                "Keep the default Proton Mail icon, or disguise it with a more discreet one for extra privacy. Notifications will always show the Proton Mail name and icon. [Learn more...](https://proton.me/support/disguise-app-icon)",
+                "Keep the default Proton Mail icon, or disguise it with a more discreet one for extra privacy. Notifications will always show the Proton Mail name and icon. [Learn more…](https://proton.me/support/disguise-app-icon)",
                 comment: "Description text explaining the app icon feature and privacy implications."
             )
             static let discreet = LocalizedStringResource(
