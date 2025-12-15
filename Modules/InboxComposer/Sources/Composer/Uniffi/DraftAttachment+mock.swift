@@ -31,7 +31,7 @@ extension DraftAttachment {
     }
 
     static func makeMockMetadata(attachmentId: Id) -> AttachmentMetadata {
-        return .init(
+        .init(
             id: attachmentId,
             disposition: .attachment,
             mimeType: .init(mime: "", category: .pdf),

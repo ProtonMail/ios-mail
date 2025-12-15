@@ -36,7 +36,7 @@ struct AsyncSenderImageView<Content>: View where Content: View {
 
     var body: some View {
         content(loader.senderImage)
-            .onAppear() {
+            .onAppear {
                 Task {
                     await loader.loadImage(for: senderImageParams, colorScheme: colorScheme)
                 }

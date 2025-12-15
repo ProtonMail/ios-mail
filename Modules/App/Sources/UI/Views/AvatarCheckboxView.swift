@@ -54,7 +54,7 @@ struct AvatarCheckboxView: View {
 }
 
 #Preview {
-    return VStack {
+    VStack {
         AvatarCheckboxView(
             isSelected: true,
             avatar: .init(

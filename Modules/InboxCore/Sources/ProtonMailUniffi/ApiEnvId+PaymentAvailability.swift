@@ -22,7 +22,7 @@ import proton_app_uniffi
 extension ApiEnvId {
     /// Payments are not available for sandbox users in production environment.
     public var arePaymentsEnabled: Bool {
-        return !(isAppInstalledThroughTestFlight && self == .prod)
+        !(isAppInstalledThroughTestFlight && self == .prod)
     }
 
     private var isAppInstalledThroughTestFlight: Bool {

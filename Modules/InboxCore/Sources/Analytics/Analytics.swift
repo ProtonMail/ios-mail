@@ -169,6 +169,6 @@ extension Array {
 
 extension Int {
     var digitCount: Int {
-        return String(abs(self)).count
+        String(abs(self)).count
     }
 }

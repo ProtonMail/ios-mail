@@ -67,7 +67,7 @@ private extension MailboxItemCellUIModel {
         )
 
         static func randomAvatar() -> AvatarUIModel {
-            return [j, l, s].randomElement()!
+            [j, l, s].randomElement()!
         }
     }
 

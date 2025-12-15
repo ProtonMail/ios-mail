@@ -44,14 +44,14 @@ public final class SecItemMethodsProviderMock: SecItemMethodsProvider {
     }
 
     public func SecItemAdd(_ attributes: CFDictionary, _ result: UnsafeMutablePointer<CFTypeRef?>?) -> OSStatus {
-        return resultAdd
+        resultAdd
     }
 
     public func SecItemUpdate(_ query: CFDictionary, _ attributesToUpdate: CFDictionary) -> OSStatus {
-        return resultUpdate
+        resultUpdate
     }
 
     public func SecItemDelete(_ query: CFDictionary) -> OSStatus {
-        return resultDelete
+        resultDelete
     }
 }

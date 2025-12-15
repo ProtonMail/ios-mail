@@ -38,7 +38,7 @@ public struct BadgesView: View {
                     BadgeView(text: model.text, color: model.color)
                         .padding([.horizontal, .vertical], DS.Spacing.tiny)
                         .alignmentGuide(.leading) { viewDimensions in
-                            if (abs(xPos - viewDimensions.width) > geometry.size.width) {
+                            if abs(xPos - viewDimensions.width) > geometry.size.width {
                                 xPos = 0
                                 yPos -= viewDimensions.height
                             }

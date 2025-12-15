@@ -20,7 +20,7 @@ import UIKit
 extension UIApplication {
     var keyWindow: UIWindow? {
         // Get connected scenes
-        return self.connectedScenes
+        self.connectedScenes
             // Keep only active scenes, onscreen and visible to the user
             .filter { $0.activationState == .foregroundActive }
             // Keep only the first `UIWindowScene`

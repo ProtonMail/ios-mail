@@ -126,7 +126,7 @@ open class Keychain {
     ///   - forKey: key under which the value is stored in keychain
     @available(*, deprecated, message: "Please use the throwing alternative: dataOrError(forKey:) and handle the error")
     public func data(forKey key: String, attributes: [CFString: Any]? = nil) -> Data? {
-        return self.getData(forKey: key, attributes: attributes)
+        self.getData(forKey: key, attributes: attributes)
     }
 
     /// Fetches the value from the keychain.

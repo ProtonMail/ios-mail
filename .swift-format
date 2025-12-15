@@ -5,6 +5,10 @@
 	"lineLength": 200,
 	"rules": {
 		"NoEmptyLinesOpeningClosingBraces": true,
+		"NoEmptyTrailingClosureParentheses": true,
+		"NoParensAroundConditions": true,
+		"NoVoidReturnOnFunctionSignature": true,
+		"OmitExplicitReturns": true,
 		"OrderedImports": true,
 		"UseTripleSlashForDocumentationComments": true
 	}

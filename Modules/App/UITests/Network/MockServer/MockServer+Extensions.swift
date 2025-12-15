@@ -26,7 +26,7 @@ final class MockServer: Sendable {
     private let eventLoopGroup = MultiThreadedEventLoopGroup(numberOfThreads: System.coreCount)
 
     private var serverBootstrap: ServerBootstrap {
-        return ServerBootstrap(group: eventLoopGroup)
+        ServerBootstrap(group: eventLoopGroup)
             .serverChannelOption(ChannelOptions.backlog, value: 256)
             .serverChannelOption(
                 ChannelOptions.socket(SocketOptionLevel(SOL_SOCKET), SO_REUSEADDR),
