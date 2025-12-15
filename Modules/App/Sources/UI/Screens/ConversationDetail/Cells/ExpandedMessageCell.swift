@@ -173,5 +173,6 @@ enum ExpandedMessageCellEvent {
             onEvent: { _ in },
             htmlDisplayed: {}
         )
-    }.environmentObject(ToastStateStore(initialState: .initial))
+    }
+    .environmentObject(ToastStateStore(initialState: .initial))
 }

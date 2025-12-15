@@ -64,7 +64,8 @@ final class SpinnerButton: UIButton {
             startAngle: 0,
             endAngle: CGFloat.pi * 3 / 2,
             clockwise: true
-        ).cgPath
+        )
+        .cgPath
 
         progressLayer.position = CGPoint(x: bounds.midX, y: bounds.midY)
         progressLayer.path = circlePath

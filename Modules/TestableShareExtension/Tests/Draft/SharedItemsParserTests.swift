@@ -111,10 +111,11 @@ final class SharedItemsParserTests {
         ]
 
         if fromWithinPage {
-            extensionItem.attachments!.insert(
-                .init(item: "irrelevant" as NSSecureCoding, typeIdentifier: UTType.plainText.identifier),
-                at: 0
-            )
+            extensionItem.attachments!
+                .insert(
+                    .init(item: "irrelevant" as NSSecureCoding, typeIdentifier: UTType.plainText.identifier),
+                    at: 0
+                )
         }
 
         return [extensionItem]

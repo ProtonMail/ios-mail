@@ -56,14 +56,15 @@ enum EventDateFormatter {
                     return relativeFormatter.string(from: relativeDate)
                 }
 
-                var allDayStyle = Date.FormatStyle(
-                    date: .abbreviated,
-                    time: .omitted,
-                    locale: calendar.locale!,
-                    calendar: calendar,
-                    timeZone: calendar.timeZone
-                )
-                .weekday()
+                var allDayStyle =
+                    Date.FormatStyle(
+                        date: .abbreviated,
+                        time: .omitted,
+                        locale: calendar.locale!,
+                        calendar: calendar,
+                        timeZone: calendar.timeZone
+                    )
+                    .weekday()
 
                 if calendar.isDate(fromDate, equalTo: now, toGranularity: .year) {
                     if #available(iOS 18, *) {
@@ -74,25 +75,27 @@ enum EventDateFormatter {
                 return fromDate.formatted(allDayStyle)
             }
 
-            let allDayIntervalStyle = Date.IntervalFormatStyle(
-                date: .abbreviated,
-                time: .omitted,
-                locale: calendar.locale!,
-                calendar: calendar,
-                timeZone: calendar.timeZone
-            )
-            .weekday()
+            let allDayIntervalStyle =
+                Date.IntervalFormatStyle(
+                    date: .abbreviated,
+                    time: .omitted,
+                    locale: calendar.locale!,
+                    calendar: calendar,
+                    timeZone: calendar.timeZone
+                )
+                .weekday()
 
             return allDayIntervalStyle.format(fromDate..<adjustedToDate)
         case .dateTime:
             let calendar = DateEnvironment.calendar
-            let dateTimeStyle = Date.IntervalFormatStyle(
-                date: .abbreviated,
-                time: .shortened,
-                locale: calendar.locale!,
-                timeZone: calendar.timeZone
-            )
-            .weekday()
+            let dateTimeStyle =
+                Date.IntervalFormatStyle(
+                    date: .abbreviated,
+                    time: .shortened,
+                    locale: calendar.locale!,
+                    timeZone: calendar.timeZone
+                )
+                .weekday()
 
             return dateTimeStyle.format(fromDate..<toDate)
         }

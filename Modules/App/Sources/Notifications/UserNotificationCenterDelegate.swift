@@ -153,10 +153,8 @@ final class UserNotificationCenterDelegate: NSObject, UNUserNotificationCenterDe
     }
 
     private func waitUntilSessionBecomesActive(sessionId: String) async {
-        for await sessionState in sessionStatePublisher.values {
-            if (try? sessionState.userSession?.sessionId().get()) == sessionId {
-                break
-            }
+        for await sessionState in sessionStatePublisher.values where (try? sessionState.userSession?.sessionId().get()) == sessionId {
+            break
         }
     }
 

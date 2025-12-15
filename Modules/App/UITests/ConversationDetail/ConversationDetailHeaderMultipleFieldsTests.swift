@@ -58,7 +58,7 @@ final class ConversationDetailHeaderMultipleFieldsTests: PMUIMockedNetworkTestCa
             index: 0,
             senderName: "Test Free Account",
             senderAddress: "notsofree@proton.black",
-            timestamp: 1718884640,
+            timestamp: 1_718_884_640,
             toRecipients: [
                 UITestHeaderRecipientEntry(index: 0, name: "plus@proton.black", address: "plus@proton.black")
             ],
@@ -71,7 +71,7 @@ final class ConversationDetailHeaderMultipleFieldsTests: PMUIMockedNetworkTestCa
             index: 1,
             senderName: "Young Bee",
             senderAddress: "youngbee@proton.black",
-            timestamp: 1718885017,
+            timestamp: 1_718_885_017,
             toRecipients: [
                 UITestHeaderRecipientEntry(index: 0, name: "Test Free Account", address: "notsofree@proton.black")
             ],
@@ -84,7 +84,7 @@ final class ConversationDetailHeaderMultipleFieldsTests: PMUIMockedNetworkTestCa
             index: 2,
             senderName: "Young Bee",
             senderAddress: "youngbee@proton.black",
-            timestamp: 1718976443,
+            timestamp: 1_718_976_443,
             toRecipients: [
                 UITestHeaderRecipientEntry(index: 0, name: "Test Free Account", address: "notsofree@proton.black"),
                 UITestHeaderRecipientEntry(index: 1, name: "notsofree+1@proton.black", address: "notsofree+1@proton.black"),

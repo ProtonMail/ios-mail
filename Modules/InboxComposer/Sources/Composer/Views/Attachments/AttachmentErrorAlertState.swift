@@ -92,7 +92,7 @@ extension AttachmentErrorAlertState {
             }
         }
 
-        var result = [AttachmentErrorAlertModel]()
+        var result: [AttachmentErrorAlertModel] = []
         if overSizeLimitCount > 0 {
             result.append(.overSizeLimit(origin: .adding(.defaultAddAttachmentError(count: overSizeLimitCount))))
         }
@@ -110,10 +110,10 @@ extension AttachmentErrorAlertState {
 
     /// Groups together `DraftAttachment` by error type to reduce the total number of alerts.
     private func aggregateUploadingAttachmentErrors(_ attachments: [DraftAttachment]) -> [AttachmentErrorAlertModel] {
-        var overSizeFailures = [DraftAttachment]()
-        var tooManyAttachmentsFailures = [DraftAttachment]()
-        var storageQuotaExceededFailures = [DraftAttachment]()
-        var otherFailures = [DraftAttachment]()
+        var overSizeFailures: [DraftAttachment] = []
+        var tooManyAttachmentsFailures: [DraftAttachment] = []
+        var storageQuotaExceededFailures: [DraftAttachment] = []
+        var otherFailures: [DraftAttachment] = []
 
         for attachment in attachments {
             guard let error = attachment.state.attachmentUploadError else { continue }
@@ -136,7 +136,7 @@ extension AttachmentErrorAlertState {
             }
         }
 
-        var result = [AttachmentErrorAlertModel]()
+        var result: [AttachmentErrorAlertModel] = []
         if !overSizeFailures.isEmpty, let uploadingError = mapUnseenToUploadingErrorOrigin(overSizeFailures) {
             result.append(.overSizeLimit(origin: uploadingError))
         }

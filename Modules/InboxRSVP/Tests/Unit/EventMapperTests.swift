@@ -26,8 +26,8 @@ import proton_app_uniffi
 final class EventMapperTests {
     @Test(
         arguments: [
-            (summary: Optional<String>("Amazing Apple event!"), expected: "Amazing Apple event!"),
-            (summary: Optional<String>(nil), expected: L10n.noEventTitlePlacholder.string),
+            (summary: String?("Amazing Apple event!"), expected: "Amazing Apple event!"),
+            (summary: String?(nil), expected: L10n.noEventTitlePlacholder.string),
         ]
     )
     func testTitleMapping(summary: String?, expectedTitle: String) {
@@ -39,7 +39,7 @@ final class EventMapperTests {
 
     @Test(
         arguments: zip(
-            Array<RsvpEvent>([
+            [RsvpEvent]([
                 RsvpEvent.testData(
                     userAttendeeIdx: 1,
                     state: .answerableInvite(progress: .pending, attendance: .optional)
@@ -89,7 +89,7 @@ final class EventMapperTests {
                 RsvpState.cancelledReminder,
             ],
             [
-                Optional<Event.Banner>(nil),
+                Event.Banner?(nil),
                 Event.Banner(style: .now, regularText: L10n.Header.happening, boldText: L10n.Header.now),
                 .init(style: .ended, regularText: L10n.Header.event, boldText: L10n.Header.ended),
                 nil,
@@ -134,8 +134,8 @@ final class EventMapperTests {
 
     @Test(arguments: [
         (
-            userAttendeeIndex: Optional<UInt32>(1),
-            expected: Array<Event.Participant>([
+            userAttendeeIndex: UInt32?(1),
+            expected: [Event.Participant]([
                 .init(email: "alice@proton.me", displayName: "Alice Sherington • alice@proton.me", status: .yes),
                 .init(email: "bob@outlook.com", displayName: "You • bob@outlook.com", status: .no, ),
                 .init(email: "cyril@gmail.com", displayName: "cyril@gmail.com", status: .maybe, ),
@@ -144,7 +144,7 @@ final class EventMapperTests {
         ),
         (
             userAttendeeIndex: Optional<UInt32>.none,
-            expected: Array<Event.Participant>([
+            expected: [Event.Participant]([
                 .init(email: "alice@proton.me", displayName: "Alice Sherington • alice@proton.me", status: .yes),
                 .init(email: "bob@outlook.com", displayName: "Bob Charlton • bob@outlook.com", status: .no),
                 .init(email: "cyril@gmail.com", displayName: "cyril@gmail.com", status: .maybe, ),

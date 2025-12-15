@@ -46,18 +46,19 @@ final class ShareViewController: UINavigationController {
     }
 
     private func setUpBindings(observing model: ShareScreenModel) {
-        model.$alert.sink { [weak self] message in
-            guard let self else { return }
+        model.$alert
+            .sink { [weak self] message in
+                guard let self else { return }
 
-            if presentedViewController != nil {
-                dismiss(animated: true)
-            }
+                if presentedViewController != nil {
+                    dismiss(animated: true)
+                }
 
-            if let message {
-                let alert = UIAlertController(title: message, message: nil, preferredStyle: .alert)
-                present(alert, animated: true)
+                if let message {
+                    let alert = UIAlertController(title: message, message: nil, preferredStyle: .alert)
+                    present(alert, animated: true)
+                }
             }
-        }
-        .store(in: &cancellables)
+            .store(in: &cancellables)
     }
 }

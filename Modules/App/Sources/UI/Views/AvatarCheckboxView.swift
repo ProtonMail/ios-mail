@@ -39,7 +39,8 @@ struct AvatarCheckboxView: View {
                                 .padding(10)
                                 .accessibilityIdentifier(AvatarCheckboxViewIdentifiers.avatarChecked)
                         }
-                }.accessibilityElement(children: .contain)
+                }
+                .accessibilityElement(children: .contain)
             } else {
                 AvatarView(avatar: avatar)
             }

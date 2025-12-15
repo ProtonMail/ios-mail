@@ -37,13 +37,13 @@ open class Keychain {
 
         public var errorDescription: String? {
             switch self {
-            case let .readFailed(key, code):
+            case .readFailed(let key, let code):
                 return "Keychain.AccessError.readFailed(\(key), \(code))"
-            case let .writeFailed(key, code):
+            case .writeFailed(let key, let code):
                 return "Keychain.AccessError.writeFailed(\(key), \(code))"
-            case let .updateFailed(key, code):
+            case .updateFailed(let key, let code):
                 return "Keychain.AccessError.updateFailed(\(key), \(code))"
-            case let .deleteFailed(key, code):
+            case .deleteFailed(let key, let code):
                 return "Keychain.AccessError.deleteFailed(\(key), \(code))"
             }
         }

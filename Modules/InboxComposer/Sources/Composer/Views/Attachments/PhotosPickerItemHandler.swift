@@ -30,8 +30,8 @@ struct PhotosPickerItemHandler {
         to draft: AppDraftProtocol,
         photos: [PhotosPickerItemTransferable]
     ) async -> PhotosPickerItemHandlerResult {
-        var successfulContentIds = [String]()
-        var allErrors = [DraftAttachmentUploadError]()
+        var successfulContentIds: [String] = []
+        var allErrors: [DraftAttachmentUploadError] = []
         let uploadFolder: URL = URL(fileURLWithPath: draft.attachmentList().attachmentUploadDirectory())
         for await result in saveToFile(items: photos, destinationFolder: uploadFolder) {
             switch result {

@@ -31,7 +31,7 @@ struct FilePickerItemHandler {
         let uploadFolder: URL = URL(fileURLWithPath: draft.attachmentList().attachmentUploadDirectory())
         switch selectionResult {
         case .success(let urls):
-            var allErrors = [DraftAttachmentUploadError]()
+            var allErrors: [DraftAttachmentUploadError] = []
             for await result in copyFilePickerItems(files: urls, destinationFolder: uploadFolder) {
                 switch result {
                 case .success(let file):

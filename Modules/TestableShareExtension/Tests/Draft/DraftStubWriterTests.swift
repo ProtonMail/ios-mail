@@ -74,9 +74,10 @@ final class DraftStubWriterTests {
 
     @Test
     func movesNonInlineAttachmentsToTemporaryDirectoryBeforeAdding() async throws {
-        let sourceURLs = (0..<3).map { index in
-            attachmentSourceDir.appending(path: "data-\(index).txt")
-        }
+        let sourceURLs = (0..<3)
+            .map { index in
+                attachmentSourceDir.appending(path: "data-\(index).txt")
+            }
 
         let sharedContent = SharedContent(
             subject: nil,
@@ -100,9 +101,10 @@ final class DraftStubWriterTests {
 
     @Test
     func movesInlineAttachmentsToTemporaryDirectoryBeforeAdding() async throws {
-        let sourceURLs = (0..<3).map { index in
-            attachmentSourceDir.appending(path: "image-\(index).png")
-        }
+        let sourceURLs = (0..<3)
+            .map { index in
+                attachmentSourceDir.appending(path: "image-\(index).png")
+            }
 
         let sharedContent = SharedContent(
             subject: nil,
@@ -126,9 +128,10 @@ final class DraftStubWriterTests {
 
     @Test
     func extractsImagesFromScreenshotPlists() async throws {
-        let sourceURLs = (0..<3).map { index in
-            attachmentSourceDir.appending(path: "image-\(index).png")
-        }
+        let sourceURLs = (0..<3)
+            .map { index in
+                attachmentSourceDir.appending(path: "image-\(index).png")
+            }
 
         let sharedContent = SharedContent(
             subject: nil,

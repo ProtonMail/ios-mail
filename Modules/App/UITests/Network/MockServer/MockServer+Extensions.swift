@@ -33,14 +33,17 @@ final class MockServer: Sendable {
                 value: 1
             )
             .childChannelInitializer { channel in
-                channel.pipeline.configureHTTPServerPipeline(
-                    withPipeliningAssistance: false,
-                    withErrorHandling: false
-                ).flatMap { _ in
-                    channel.pipeline.addHandler(BackPressureHandler()).flatMap { item in
-                        channel.pipeline.addHandler(self.requestsHandler)
+                channel.pipeline
+                    .configureHTTPServerPipeline(
+                        withPipeliningAssistance: false,
+                        withErrorHandling: false
+                    )
+                    .flatMap { _ in
+                        channel.pipeline.addHandler(BackPressureHandler())
+                            .flatMap { item in
+                                channel.pipeline.addHandler(self.requestsHandler)
+                            }
                     }
-                }
             }
             .childChannelOption(ChannelOptions.socket(IPPROTO_TCP, TCP_NODELAY), value: 1)
             .childChannelOption(

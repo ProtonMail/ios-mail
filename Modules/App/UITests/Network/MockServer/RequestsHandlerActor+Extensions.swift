@@ -52,9 +52,10 @@ extension RequestsHandlerActor {
             .first { mockRequest in
                 switch true {
                 case mockRequest.ignoreQueryParams && mockRequest.wildcardMatch:
-                    return clientRequest.withStrippedQueryParams().wildcardMatches(
-                        mockRequest.remoteRequest
-                    )
+                    return clientRequest.withStrippedQueryParams()
+                        .wildcardMatches(
+                            mockRequest.remoteRequest
+                        )
                 case mockRequest.ignoreQueryParams:
                     return clientRequest.stripPathQueryParams() == mockRequest.remoteRequest.path
                 case mockRequest.wildcardMatch:

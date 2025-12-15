@@ -139,7 +139,7 @@ struct MessageBodyAttachmentsView: View {
 private extension Array where Element == AttachmentDisplayModel {
     var totalSize: Int64 {
         reduce(0) { result, next in
-            return result + Int64(next.size)
+            result + Int64(next.size)
         }
     }
 }

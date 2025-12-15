@@ -192,7 +192,7 @@ private extension View {
         )
 
         ScheduleSendTimeOptionsView(
-            predefinedTimeOptions: options(true, 1904565584),
+            predefinedTimeOptions: options(true, 1_904_565_584),
             isCustomOptionAvailable: true,
             dateFormatter: .init(),
             onTimeSelected: { _ in },

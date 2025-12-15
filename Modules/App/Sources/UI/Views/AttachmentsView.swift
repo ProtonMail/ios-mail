@@ -160,7 +160,7 @@ private struct AttachmentCapsuleStyle: ButtonStyle {
     }
 }
 
-fileprivate enum Layout {
+private enum Layout {
     static let spacingBetweenCapsules = DS.Spacing.tiny
     static let extraAttachmentsViewWidth = 42.0
     static let capsuleHPadding = DS.Spacing.standard

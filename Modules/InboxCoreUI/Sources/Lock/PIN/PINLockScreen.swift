@@ -121,7 +121,8 @@ public struct PINLockScreen: View {
                     .foregroundStyle(DS.Color.Text.weak)
                     .transition(.identity)
             }
-        }.animation(.easeInOut(duration: 0.2), value: store.state.error)
+        }
+        .animation(.easeInOut(duration: 0.2), value: store.state.error)
     }
 
     private var pinBinding: Binding<String> {

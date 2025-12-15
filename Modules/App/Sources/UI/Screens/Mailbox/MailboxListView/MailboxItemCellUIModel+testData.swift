@@ -44,7 +44,8 @@ private extension MailboxItemCellUIModel {
                         AttachmentCapsuleUIModel(id: .init(value: 1), icon: DS.Icon.icFileTypeIconPdf, name: "#34JE3KLP.pdf"),
                         AttachmentCapsuleUIModel(id: .init(value: 2), icon: DS.Icon.icFileTypeIconWord, name: "meeting_minutes.doc"),
                         AttachmentCapsuleUIModel(id: .init(value: 1), icon: DS.Icon.icFileTypeIconExcel, name: "ARR_Q2.xls"),
-                    ].randomElement()!
+                    ]
+                    .randomElement()!
                 ]
             } else {
                 []

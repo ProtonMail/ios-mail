@@ -58,8 +58,8 @@ final class ComposerModel: ObservableObject {
     )
     lazy var invalidAddressAlertStore = InvalidAddressAlertStateStore(
         validator: .init(
-            readState: { [weak self] in return self?.state },
-            composerWillDismiss: { [weak self] in return self?.composerWillDismiss ?? false }
+            readState: { [weak self] in self?.state },
+            composerWillDismiss: { [weak self] in self?.composerWillDismiss ?? false }
         ),
         alertBinding: alertBinding
     )
@@ -160,11 +160,12 @@ final class ComposerModel: ObservableObject {
             recipientFieldState.copy(\.controllerState, to: .editing)
         }
         newState = newState.copy(\.editingRecipientsGroup, to: group)
-        RecipientGroupType.allCases(excluding: group).forEach { group in
-            newState.overrideRecipientState(for: group) { recipientFieldState in
-                recipientFieldState.copy(\.controllerState, to: .expanded)
+        RecipientGroupType.allCases(excluding: group)
+            .forEach { group in
+                newState.overrideRecipientState(for: group) { recipientFieldState in
+                    recipientFieldState.copy(\.controllerState, to: .expanded)
+                }
             }
-        }
 
         state = newState
     }
@@ -521,9 +522,10 @@ extension ComposerModel {
         selecting selectedIndexes: Set<Int> = []
     ) -> [RecipientUIModel] {
         let recipientList = recipientList(from: draft, group: group)
-        return recipientList.recipients().enumerated().map { index, recipient in
-            RecipientUIModel(composerRecipient: recipient, isSelected: selectedIndexes.contains(index))
-        }
+        return recipientList.recipients().enumerated()
+            .map { index, recipient in
+                RecipientUIModel(composerRecipient: recipient, isSelected: selectedIndexes.contains(index))
+            }
     }
 
     private func setUpCallbacks() {

@@ -244,7 +244,7 @@ final class SearchModel: ObservableObject {
         case .append(let messages):
             let items = await mailboxItems(messages: messages)
             updateType = .append(items: items)
-        case let .replaceRange(from, to, messages):
+        case .replaceRange(let from, let to, let messages):
             let items = await mailboxItems(messages: messages)
             updateType = .replaceRange(from: Int(from), to: Int(to), items: items)
             completion = { [weak self] in self?.updateSelectedItemsAfterDestructiveUpdate() }
@@ -274,7 +274,8 @@ final class SearchModel: ObservableObject {
                     showLocation: true
                 )
             }
-        }.value
+        }
+        .value
     }
 
     func prepareSwipeActions() async {

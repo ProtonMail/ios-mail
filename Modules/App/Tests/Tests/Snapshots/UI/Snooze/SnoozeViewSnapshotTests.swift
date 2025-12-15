@@ -92,7 +92,7 @@ private extension SnoozeActions {
 }
 
 private extension SnoozeTime {
-    private static let timestamp: UInt64 = 1752697012
+    private static let timestamp: UInt64 = 1_752_697_012
 
     static var tomorrow: Self {
         .tomorrow(timestamp)

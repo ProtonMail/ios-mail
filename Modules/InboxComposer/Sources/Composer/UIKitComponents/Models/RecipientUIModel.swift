@@ -95,7 +95,7 @@ extension Array where Element == RecipientUIModel {
         func extractAddressesThatDoNotExist(from array: [RecipientUIModel]) -> Set<String> {
             Set(
                 array.compactMap { model in
-                    if case let .single(singleRecipient) = model.composerRecipient,
+                    if case .single(let singleRecipient) = model.composerRecipient,
                         case .invalid(.doesNotExist) = singleRecipient.validState
                     {
                         return singleRecipient.address

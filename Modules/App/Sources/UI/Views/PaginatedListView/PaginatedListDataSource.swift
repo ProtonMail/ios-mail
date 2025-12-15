@@ -57,13 +57,13 @@ final class PaginatedListDataSource<Item: Equatable>: ObservableObject {
         switch update.value {
         case .append(let items):
             newState.items.append(contentsOf: items)
-        case let .replaceRange(from, to, items):
+        case .replaceRange(let from, let to, let items):
             guard isSafeIndex(from), isSafeIndex(to) else { break }
             newState.items.replaceSubrange(from..<to, with: items)
-        case let .replaceFrom(index, items):
+        case .replaceFrom(let index, let items):
             guard isSafeIndex(index) else { break }
             newState.items.replaceSubrange(index..<newState.items.endIndex, with: items)
-        case let .replaceBefore(index, items):
+        case .replaceBefore(let index, let items):
             guard isSafeIndex(index) else { break }
             newState.items.replaceSubrange(newState.items.startIndex..<index, with: items)
         case .none, .error:
