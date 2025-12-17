@@ -368,6 +368,12 @@
             "state" : "translated",
             "value" : " завершено"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : " 结束"
+          }
         }
       }
     },
@@ -546,6 +552,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : " зараз"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : " 现在"
           }
         }
       }
@@ -1107,6 +1119,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ (Організатор)"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@（组织者）"
           }
         }
       }
@@ -2426,6 +2444,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Відбувається"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "进行中"
           }
         }
       }
@@ -4307,6 +4331,12 @@
             "state" : "translated",
             "value" : "Не вдалося завантажити інформацію.\nБудь ласка, спробуйте ще раз."
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "无法加载信息。\n请重试。"
+          }
         }
       }
     },
@@ -4868,6 +4898,12 @@
             "state" : "translated",
             "value" : "Ви • %@"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "你 • %@"
+          }
         }
       }
     },
@@ -5226,6 +5262,12 @@
             "state" : "translated",
             "value" : "Ви не можете відповідати на запрошення на події, якщо ви не внесені до списку учасників на цей час."
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "当前未在参与者列表中时，您无法回复事件邀请。"
+          }
         }
       }
     },
@@ -5405,6 +5447,12 @@
             "state" : "translated",
             "value" : "Ви не в мережі. Відображена інформація може бути застарілою."
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "您处于离线状态。显示的信息可能已过时。"
+          }
         }
       }
     },
@@ -5583,6 +5631,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Вашу адресу не можна використовувати для відповіді. Будь ласка, оновіть інформацію свого облікового запису."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "您的地址无法用于回复。请更新您的账户信息。"
           }
         }
       }

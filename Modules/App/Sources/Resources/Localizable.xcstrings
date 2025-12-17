@@ -5830,6 +5830,12 @@
             "value" : "Icône de l'application"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Icona dell'app"
+          }
+        },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5840,6 +5846,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "앱 아이콘"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "App-ikon"
           }
         },
         "nl" : {
@@ -5882,6 +5894,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Uygulama simgesi"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "应用图标"
           }
         }
       }
@@ -16922,6 +16940,12 @@
             "value" : "Discret"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Discrezione"
+          }
+        },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
@@ -16932,6 +16956,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "숨김"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diskret"
           }
         },
         "nl" : {
@@ -16975,6 +17005,12 @@
             "state" : "translated",
             "value" : "Göze çarpmayan"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "隐秘"
+          }
         }
       }
     },
@@ -16990,7 +17026,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Icona d'aplicació discreta"
+            "value" : "Icona de l'aplicació discreta"
           }
         },
         "cs" : {
@@ -17047,6 +17083,12 @@
             "value" : "Icône d'application discrète"
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Icona discreta"
+          }
+        },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
@@ -17057,6 +17099,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "숨겨진 앱 아이콘"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diskret app-ikon"
           }
         },
         "nl" : {
@@ -17099,6 +17147,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Göze çarpmayan uygulama simgesi"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "其他类型应用的图标"
           }
         }
       }
@@ -23898,6 +23952,12 @@
             "value" : "Inkluder papirkurv/søppelpost"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prullenbak/spam opnemen"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -24856,7 +24916,123 @@
       }
     },
     "Keep the default Proton Mail icon, or disguise it with a more discreet one for extra privacy. Notifications will always show the Proton Mail name and icon. [Learn more…](https://proton.me/support/disguise-app-icon)" : {
-      "comment" : "Description text explaining the app icon feature and privacy implications."
+      "comment" : "Description text explaining the app icon feature and privacy implications.",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Пакіньце прадвызначаны значок Proton Mail або замаскіруйце яго больш непрыкметным для дадатковай прыватнасці. Апавяшчэнні заўсёды будуць паказваць назву і значок Proton Mail. [Даведацца больш...](https://proton.me/support/disguise-app-icon)"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mantingueu la icona per defecte de Proton Mail, o dissimuleu-la amb una de més discreta per a més privacitat. Les notificacions sempre mostraran el nom i la icona de Proton Mail. [Per saber-ne més...](https://proton.me/support/disguise-app-icon)"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ponechte výchozí ikonu aplikace Proton Mail nebo ji zamaskujte diskrétnější ikonou pro větší soukromí. Upozornění budou vždy zobrazovat název a ikonu Proton Mail. [Více informací…](https://proton.me/support/disguise-app-icon)"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Behold Proton Mails standardikon eller udskift den med en mere diskret ikon for ekstra privatlivsbeskyttelse. Notifikationer vil altid vise Proton Mail-navnet og den tilhørende ikon. [Få mere at vide...](https://proton.me/support/disguise-app-icon)"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Behalte das Standard-Symbol von Proton Mail bei oder ersetze es durch ein unauffälligeres Symbol für mehr Privatsphäre. Benachrichtigungen zeigen immer den Namen und das Symbol von Proton Mail. [Mehr erfahren …](https://proton.me/support/disguise-app-icon)"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Διατηρήστε το προεπιλεγμένο εικονίδιο του Proton Mail, ή μεταμφιέστε το με ένα πιο διακριτικό για επιπλέον ιδιωτικότητα. Οι ειδοποιήσεις θα εμφανίζουν πάντα το όνομα και το εικονίδιο του Proton Mail. [Μάθετε περισσότερα...…](https://proton.me/support/disguise-app-icon)"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keep the default Proton Mail icon, or disguise it with a more discreet one for extra privacy. Notifications will always show the Proton Mail name and icon. [Learn more…](https://proton.me/support/disguise-app-icon)"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mantén el icono predeterminado de Proton Mail o disfrázalo con uno más discreto para mayor privacidad. Las notificaciones siempre mostrarán el nombre y el icono de Proton Mail. [Más información…](https://proton.me/support/disguise-app-icon)"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mantenga el ícono predeterminado de Proton Mail, o disfráselo con uno más discreto para mayor privacidad. Las notificaciones siempre mostrarán el nombre y el ícono de Proton Mail [Más información…](https://proton.me/support/disguise-app-icon)"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pidä Proton Mailin oletuskuvake tai vaihda se huomaamattomampaan kuvakkeeseen yksityisyyden suojaamiseksi. Ilmoitukset näyttävät aina Proton Mailin nimen ja kuvakkeen. [Lue lisää...](https://proton.me/support/disguise-app-icon)"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conservez l'icône Proton Mail par défaut, ou remplacez-la par une icône plus discrète pour plus de confidentialité. Les notifications afficheront toujours le nom et l'icône de Proton Mail. [En savoir plus…](https://proton.me/support/disguise-app-icon)"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mantieni l'icona predefinita di Proton Mail, oppure camuffala con una più discreta per una maggiore privacy. Le notifiche mostreranno sempre il nome e l'icona di Proton Mail. [Scopri di più...](https://proton.me/support/disguise-app-icon)"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "デフォルトのProton Mailアイコンを使用するか、プライバシー強化のために、より控えめなアイコンに変更することができます。通知には、常にProton Mailの名称とアイコンが表示されます。[より詳しく…](https://proton.me/support/disguise-app-icon)"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Behold standard Proton Mail-ikonet, eller skjul det med et mer diskret ikon for ekstra personvern. Varsler vil alltid vise Proton Mail-navnet og -ikonet. [Lær mer…](https://proton.me/support/disguise-app-icon)"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Behoud het standaard Proton Mail-pictogram, of verberg het met een discreter pictogram voor extra privacy. Meldingen zullen altijd de naam en het pictogram van Proton Mail tonen. [Meer informatie...](https://proton.me/support/disguise-app-icon)"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Păstrați pictograma implicită Proton Mail sau camuflați-o cu una mai discretă pentru confidențialitate sporită. Notificările vor afișa întotdeauna numele și pictograma Proton Mail. [Detalii…](https://proton.me/support/disguise-app-icon)"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ponechajte predvolenú ikonu Proton Mail alebo ju zamaskujte diskrétnejšou pre väčšie súkromie. Notifikácie vždy zobrazia názov a ikonu Proton Mail. [Zistiť viac…](https://proton.me/support/disguise-app-icon)"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Obdržite privzeto ikono Proton Mail ali ga za dodatno zasebnost prikrijte z diskretnejšo. V obvestilih bosta vedno prikazana ime in ikona Proton Mail. [Več o tem …](https://proton.me/support/disguise-app-icon)"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Varsayılan Proton Mail simgesini kullanmayı sürdürün ya da daha fazla gizlilik sağlamak için onu göze çarpmayan bir simgeyle değiştirin. Bildirimlerde her zaman Proton Mail adı ve simgesi görüntülenir. [Ayrıntılı bilgi alın...](https://proton.me/support/disguise-app-icon)"
+          }
+        }
+      }
     },
     "Label as…" : {
       "comment" : "Action title for labeling message/conversation in the action sheet.",
@@ -25819,7 +25995,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Carregueu les imatges"
+            "value" : "Carrega les imatges"
           }
         },
         "cs" : {
@@ -43569,7 +43745,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "No s'han pogut carregar algunes imatges amb la protecció contra els rastrejadors."
+            "value" : "Algunes imatges no s'han pogut carregar amb la protecció contra els rastrejadors."
           }
         },
         "cs" : {
