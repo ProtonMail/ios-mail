@@ -34,13 +34,18 @@ struct ConversationDetailScreen: View {
         seed: ConversationDetailSeed,
         draftPresenter: DraftPresenter,
         mailUserSession: MailUserSession,
+        messageQuickLook: MessageQuickLook,
         onLoad: @escaping (ConversationDetailModel) -> Void,
         onDidAppear: @escaping (ConversationDetailModel) -> Void
     ) {
         self._model = StateObject(
             wrappedValue: .init(
                 seed: seed,
-                draftPresenter: draftPresenter,
+                dependencies: .init(
+                    draftPresenter: draftPresenter,
+                    messageQuickLook: messageQuickLook,
+                    userSession: mailUserSession
+                ),
                 backOnlineActionExecutor: .init(mailUserSession: { mailUserSession }),
                 snoozeService: SnoozeService(mailUserSession: { mailUserSession })
             ))
@@ -211,6 +216,7 @@ struct ConversationDetailScreen: View {
             ),
             draftPresenter: .dummy(),
             mailUserSession: .dummy,
+            messageQuickLook: .init(),
             onLoad: { _ in },
             onDidAppear: { _ in }
         )
@@ -227,6 +233,7 @@ struct ConversationDetailScreen: View {
                 )),
             draftPresenter: .dummy(),
             mailUserSession: .dummy,
+            messageQuickLook: .init(),
             onLoad: { _ in },
             onDidAppear: { _ in }
         )

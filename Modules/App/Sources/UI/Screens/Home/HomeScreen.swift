@@ -49,6 +49,7 @@ struct HomeScreen: View {
     @StateObject private var appRoute: AppRouteState
     @StateObject private var composerCoordinator: ComposerCoordinator
     @StateObject private var upsellEligibilityPublisher: UpsellEligibilityPublisher
+    @State private var messageQuickLook = MessageQuickLook()
     @State private var modalState: ModalState?
     @State private var isNotificationPromptPresented = false
     @StateObject private var eventLoopErrorCoordinator: EventLoopErrorCoordinator
@@ -115,6 +116,7 @@ struct HomeScreen: View {
                 )
             )
             .environmentObject(composerCoordinator)
+            .environment(messageQuickLook)
 
             makeSidebarScreen { selectedItem in
                 switch selectedItem {
@@ -173,6 +175,7 @@ struct HomeScreen: View {
                 userDidRespond: userDidRespondToAuthorizationRequest
             )
         }
+        .quickLookPreview($messageQuickLook.shortLivedURL)
         .onOpenURL(perform: handleDeepLink)
         .onLoad {
             Task {
@@ -248,6 +251,7 @@ struct HomeScreen: View {
         if let route = DeepLinkRouteCoder.decode(deepLink: deepLink) {
             modalState = nil
             appUIStateStore.toggleSidebar(isOpen: false)
+            messageQuickLook.dismiss()
 
             Task {
                 await ensurePresentedViewsAreDismissed()

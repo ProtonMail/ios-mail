@@ -23,6 +23,7 @@ import proton_app_uniffi
 
 struct ConversationsPageViewController: View {
     @Environment(\.presentationMode) var presentationMode
+    @Environment(MessageQuickLook.self) private var messageQuickLook
 
     let startingItem: ConversationDetailSeed
     let makeMailboxCursor: (ID) async -> MailboxCursorProtocol?
@@ -98,6 +99,7 @@ struct ConversationsPageViewController: View {
             seed: seed,
             draftPresenter: draftPresenter,
             mailUserSession: userSession,
+            messageQuickLook: messageQuickLook,
             onLoad: { if activeModel == nil { activeModel = $0 } },
             onDidAppear: { newActiveModel in
                 activeModel = newActiveModel
