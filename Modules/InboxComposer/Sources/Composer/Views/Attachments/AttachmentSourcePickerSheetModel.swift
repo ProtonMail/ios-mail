@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import AVFoundation
+import InboxCore
 import InboxCoreUI
 import SwiftUI
 
@@ -53,7 +54,7 @@ final class AttachmentSourcePickerSheetModel: ObservableObject {
 }
 
 private struct CameraPermissionInfo: AlertActionInfo {
-    let info: (title: LocalizedStringResource, buttonRole: ButtonRole?) = (L10n.Alert.gotIt, .cancel)
+    let info: (title: LocalizedStringResource, buttonRole: ButtonRole?) = (CommonL10n.gotIt, .cancel)
 }
 
 struct CameraPermissionProvider {

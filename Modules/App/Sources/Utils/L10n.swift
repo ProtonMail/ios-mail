@@ -720,10 +720,41 @@ enum L10n {
             "To: ...",
             comment: "Placeholder for a draft in the conversation view when the draft has no recipients."
         )
+        static let noTrackersDetected = LocalizedStringResource(
+            "No trackers detected",
+            comment: "Message details view when no trackers are detected."
+        )
+        static let trackerProtection = LocalizedStringResource(
+            "Tracker protection:",
+            comment: "Message details title for tracker info row."
+        )
+        static func trackersBlocked(count: Int) -> LocalizedStringResource {
+            .init(
+                "\(count) trackers blocked",
+                comment: "Message details number of trackers blocked."
+            )
+        }
+        static func linksCleaned(count: Int) -> LocalizedStringResource {
+            .init(
+                "\(count) links cleaned",
+                comment: "Message details number of links cleaned."
+            )
+        }
         static let hideDetails = LocalizedStringResource(
             "Hide details",
             comment: "Title of the button that hide details of a message."
         )
+    }
+
+    enum TrackingInfo {
+        static let description = LocalizedStringResource(
+            "If you receive an email containing spy pixels (trackers) or tracking links, you’ll see the shield icon in email details. [Learn more…](https://proton.me/support/email-tracker-protection)",
+            comment: "Description text explaining the tracking protection."
+        )
+
+        static let original = LocalizedStringResource("Original", comment: "Subtitle for the original link before cleaning.")
+
+        static let cleaned = LocalizedStringResource("Cleaned", comment: "Subtitle for link after cleaning.")
     }
 
     enum Folders {

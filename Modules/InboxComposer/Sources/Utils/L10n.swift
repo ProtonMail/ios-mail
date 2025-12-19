@@ -261,14 +261,6 @@ enum L10n {
         )
     }
 
-    enum Alert {
-        static let gotIt = LocalizedStringResource(
-            "Got it",
-            bundle: .atURL(Bundle.module.bundleURL),
-            comment: "Attachment error ok button"
-        )
-    }
-
     enum Contacts {
         static func groupSubtitle(membersCount: Int) -> LocalizedStringResource {
             LocalizedStringResource(

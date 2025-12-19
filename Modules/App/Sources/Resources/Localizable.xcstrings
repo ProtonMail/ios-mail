@@ -1197,6 +1197,29 @@
         }
       }
     },
+    "%lld links cleaned" : {
+      "comment" : "Message details number of links cleaned.",
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld link cleaned"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld links cleaned"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "%lld messages" : {
       "comment" : "Number of messages in a conversation.",
       "localizations" : {
@@ -2007,6 +2030,29 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "已選取 %lld"
+          }
+        }
+      }
+    },
+    "%lld trackers blocked" : {
+      "comment" : "Message details number of trackers blocked.",
+      "localizations" : {
+        "en" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld tracker blocked"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld trackers blocked"
+                }
+              }
+            }
           }
         }
       }
@@ -10823,6 +10869,9 @@
           }
         }
       }
+    },
+    "Cleaned" : {
+      "comment" : "Subtitle for link after cleaning."
     },
     "Combined contacts" : {
       "comment" : "Combined Contacts setting title in app settings.",
@@ -23465,6 +23514,9 @@
         }
       }
     },
+    "If you receive an email containing spy pixels (trackers) or tracking links, you’ll see the shield icon in email details. [Learn more…](https://proton.me/support/email-tracker-protection)" : {
+      "comment" : "Description text explaining the tracking protection."
+    },
     "Immediately" : {
       "comment" : "Auto option.",
       "localizations" : {
@@ -32866,6 +32918,9 @@
         }
       }
     },
+    "No trackers detected" : {
+      "comment" : "Message details view when no trackers are detected."
+    },
     "No unread messages" : {
       "comment" : "Mailbox empty state title when unread filter is enabled.",
       "localizations" : {
@@ -34381,6 +34436,9 @@
           }
         }
       }
+    },
+    "Original" : {
+      "comment" : "Subtitle for the original link before cleaning."
     },
     "Our system flagged this message as a phishing attempt. Please check to ensure that it is legitimate." : {
       "comment" : "Banner warning the user that the system detected a possible phishing attempt.",
@@ -50529,6 +50587,9 @@
           }
         }
       }
+    },
+    "Tracker protection:" : {
+      "comment" : "Message details title for tracker info row."
     },
     "Trash" : {
       "comment" : "Menu title of all deleted emails in the sidebar.",

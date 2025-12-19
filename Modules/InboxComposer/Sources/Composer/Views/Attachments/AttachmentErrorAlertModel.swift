@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import InboxCore
 import proton_app_uniffi
 
 enum AttachmentErrorAlertModel: Hashable {
@@ -132,7 +133,7 @@ enum AttachmentErrorActions: String, Identifiable, Hashable {
     var title: String {
         switch self {
         case .gotIt, .gotItRemovingFromDraft:
-            L10n.Alert.gotIt.string
+            CommonL10n.gotIt.string
         }
     }
 
