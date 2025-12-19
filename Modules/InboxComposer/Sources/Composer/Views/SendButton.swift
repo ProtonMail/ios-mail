@@ -48,7 +48,7 @@ private struct SendButtonStyle: ButtonStyle {
     }
 
     func makeBody(configuration: Self.Configuration) -> some View {
-        return configuration
+        configuration
             .label
             .padding(.horizontal, DS.Spacing.large)
             .padding(.vertical, DS.Spacing.standard)

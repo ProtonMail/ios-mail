@@ -51,7 +51,8 @@ struct OneLineLabelsListView: View {
                     }
                 }
             }
-        }.frame(height: height)
+        }
+        .frame(height: height)
     }
 
     // MARK: - Private
@@ -99,5 +100,6 @@ struct OneLineLabelsListView: View {
             OneLineLabelsListView(labels: labels)
         }
         Spacer()
-    }.padding()
+    }
+    .padding()
 }

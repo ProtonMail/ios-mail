@@ -35,9 +35,9 @@ final class AttachmentViewLoader: ObservableObject {
         case .ok(let result):
             let url = URL(fileURLWithPath: result.dataPath)
 
-            await updateState(.attachmentReady(url))
+            updateState(.attachmentReady(url))
         case .error(let error):
-            await updateState(.error(error))
+            updateState(.error(error))
         }
     }
 

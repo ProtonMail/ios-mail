@@ -22,6 +22,6 @@ enum NetworkMockPriority: Int, Comparable, Sendable {
     case high
 
     static func < (a: NetworkMockPriority, b: NetworkMockPriority) -> Bool {
-        return a.rawValue < b.rawValue
+        a.rawValue < b.rawValue
     }
 }

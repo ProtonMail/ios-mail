@@ -105,7 +105,8 @@ final class SidebarModelTests {
     func test_WhenCustomFolderIsExpandedAndCollapsed_ItExpandsAndCollapsesTheFolder() throws {
         let parentFolder = try XCTUnwrap(
             sidebarSpy.stubbedCustomFolders.first(where: { !$0.children.isEmpty })
-        ).sidebarFolder
+        )
+        .sidebarFolder
 
         XCTAssertEqual(sidebarSpy.expandFolderInvoked, [])
         XCTAssertEqual(sidebarSpy.collapseFolderInvoked, [])
@@ -144,6 +145,7 @@ extension SidebarState {
     func find(folderWithName name: String, in folders: [SidebarFolder]) -> SidebarFolder? {
         folders.compactMap { folder in
             folder.name == name ? folder : find(folderWithName: name, in: folder.childFolders)
-        }.first
+        }
+        .first
     }
 }

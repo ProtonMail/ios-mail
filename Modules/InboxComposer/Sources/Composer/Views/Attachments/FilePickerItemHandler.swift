@@ -31,7 +31,7 @@ struct FilePickerItemHandler {
         let uploadFolder: URL = URL(fileURLWithPath: draft.attachmentList().attachmentUploadDirectory())
         switch selectionResult {
         case .success(let urls):
-            var allErrors = [DraftAttachmentUploadError]()
+            var allErrors: [DraftAttachmentUploadError] = []
             for await result in copyFilePickerItems(files: urls, destinationFolder: uploadFolder) {
                 switch result {
                 case .success(let file):
@@ -51,7 +51,7 @@ struct FilePickerItemHandler {
     }
 
     private func copyFilePickerItems(files: [URL], destinationFolder: URL) -> AsyncStream<Result<URL, Error>> {
-        return AsyncStream { continuation in
+        AsyncStream { continuation in
             Task {
                 for file in files {
                     do {

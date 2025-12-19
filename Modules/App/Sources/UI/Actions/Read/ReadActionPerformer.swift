@@ -29,17 +29,15 @@ struct ReadActionPerformer: Sendable {
         self.readActionPerformerActions = readActionPerformerActions
     }
 
-    func markAsRead(itemsWithIDs ids: [ID], itemType: MailboxItemType, completion: (() -> Void)? = nil) {
+    func markAsRead(itemsWithIDs ids: [ID], itemType: MailboxItemType) {
         Task {
             await markAsRead(itemsWithIDs: ids, itemType: itemType)
-            completion?()
         }
     }
 
-    func markAsUnread(itemsWithIDs ids: [ID], itemType: MailboxItemType, completion: (() -> Void)? = nil) {
+    func markAsUnread(itemsWithIDs ids: [ID], itemType: MailboxItemType) {
         Task {
             await markAsUnread(itemsWithIDs: ids, itemType: itemType)
-            completion?()
         }
     }
 

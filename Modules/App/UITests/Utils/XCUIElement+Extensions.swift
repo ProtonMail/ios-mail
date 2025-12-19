@@ -21,7 +21,7 @@ import XCTest
 extension XCUIElement {
     @discardableResult
     func waitUntilShown(timeout: TimeInterval = 10) -> Bool {
-        return self.waitForExistence(timeout: timeout)
+        self.waitForExistence(timeout: timeout)
     }
 
     func waitUntilGone(timeout: TimeInterval = 10) -> Bool {

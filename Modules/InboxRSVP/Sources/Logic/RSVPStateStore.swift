@@ -69,11 +69,11 @@ final class RSVPStateStore: StateStore {
         case .onLoad, .retry:
             await loadEventDetails()
         case .answer(let status):
-            if case let .loaded(service, event) = internalState {
+            if case .loaded(let service, let event) = internalState {
                 await answer(with: status, event: event, service: service)
             }
         case .calendarIconTapped:
-            if case let .loaded(_, event) = internalState {
+            if case .loaded(_, let event) = internalState {
                 tryToOpenEventInCalendarApp(with: event)
             }
         case .copyAddress(let email):

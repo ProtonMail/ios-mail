@@ -21,7 +21,7 @@ public class DurationMeasurement: Measurement {
     private var startTime: TimeInterval = 0.0
     private var stopTime: TimeInterval = 0.0
     private var elapsedTime: TimeInterval {
-        return stopTime - startTime
+        stopTime - startTime
     }
 
     public init(startTime: TimeInterval = Date().timeIntervalSince1970, stopTime: TimeInterval = Date().timeIntervalSince1970) {

@@ -35,7 +35,7 @@ struct EditingRecipientAddressValidator {
     }
 
     func validateFormatAddress() -> Bool {
-        return isInputValidFormatAddress()
+        isInputValidFormatAddress()
     }
 
     private func isInputValidFormatAddress() -> Bool {

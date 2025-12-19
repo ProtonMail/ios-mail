@@ -21,8 +21,8 @@ import SwiftUI
 /// Keeps `maxElements` in memory. When the limit is reached evicts from the cache the oldest element
 final class MemoryCache<Key: Hashable & Sendable, Value: Sendable>: @unchecked Sendable {
     private let maxElements: Int
-    private var dictionary = [Key: Value]()
-    private var fifoQueue = [Key]()
+    private var dictionary: [Key: Value] = [:]
+    private var fifoQueue: [Key] = []
 
     private let queue = DispatchQueue(label: "\(Bundle.defaultIdentifier).MemoryCache", attributes: .concurrent)
 

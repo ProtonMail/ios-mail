@@ -361,6 +361,6 @@ private class ContactSuggestionsStub: ContactSuggestions, @unchecked Sendable {
     }
 
     override func filtered(query: String) -> [ContactSuggestion] {
-        return []
+        []
     }
 }

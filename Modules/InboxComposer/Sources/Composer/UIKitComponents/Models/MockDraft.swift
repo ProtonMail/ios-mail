@@ -244,30 +244,32 @@ final class MockComposerRecipientList: ComposerRecipientListProtocol, @unchecked
 }
 
 final class MockAttachmentList: AttachmentListProtocol, @unchecked Sendable {
-    var mockAttachments = [DraftAttachment]()
+    var mockAttachments: [DraftAttachment] = []
     var attachmentUploadDirectoryURL: URL = URL(fileURLWithPath: .empty)
     var capturedAddCalls: [(path: String, filenameOverride: String?)] = []
     var capturedAddInlineCalls: [(path: String, filenameOverride: String?)] = []
     var capturedSwapInlineCalls: [String] = []
     var capturedRemoveIdCalls: [ID] = []
     var capturedRemoveContentIdCalls: [String] = []
-    var mockAttachmentListAddResult = [(lastPathComponent: String, result: AttachmentListAddResult)]()
-    var mockAttachmentListAddInlineResult = [(lastPathComponent: String, result: AttachmentListAddInlineResult)]()
+    var mockAttachmentListAddResult: [(lastPathComponent: String, result: AttachmentListAddResult)] = []
+    var mockAttachmentListAddInlineResult: [(lastPathComponent: String, result: AttachmentListAddInlineResult)] = []
     var mockAttachmentSwapWithCidResult: VoidDraftAttachmentDispositionSwapResult = .ok
-    var mockAttachmentListRemoveWithCidResult = [(cid: String, result: AttachmentListRemoveWithCidResult)]()
+    var mockAttachmentListRemoveWithCidResult: [(cid: String, result: AttachmentListRemoveWithCidResult)] = []
 
     func add(path: String, filenameOverride: String?) async -> AttachmentListAddResult {
         capturedAddCalls.append((path, filenameOverride))
         return mockAttachmentListAddResult.first(where: {
             $0.lastPathComponent == path.suffix($0.lastPathComponent.count)
-        })?.result ?? AttachmentListAddResult.ok
+        })?
+        .result ?? AttachmentListAddResult.ok
     }
 
     func addInline(path: String, filenameOverride: String?) async -> AttachmentListAddInlineResult {
         capturedAddInlineCalls.append((path, filenameOverride))
         return mockAttachmentListAddInlineResult.first(where: {
             $0.lastPathComponent == path.suffix($0.lastPathComponent.count)
-        })?.result ?? AttachmentListAddInlineResult.ok("12345")
+        })?
+        .result ?? AttachmentListAddInlineResult.ok("12345")
     }
 
     func attachmentUploadDirectory() -> String {
@@ -287,7 +289,8 @@ final class MockAttachmentList: AttachmentListProtocol, @unchecked Sendable {
         capturedRemoveContentIdCalls.append(contentId)
         return mockAttachmentListRemoveWithCidResult.first(where: {
             $0.cid == contentId
-        })?.result ?? AttachmentListRemoveWithCidResult.ok
+        })?
+        .result ?? AttachmentListRemoveWithCidResult.ok
     }
 
     func retry(attachmentId: Id) async -> AttachmentListRetryResult {

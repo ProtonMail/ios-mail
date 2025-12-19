@@ -92,7 +92,8 @@ struct ConversationActionsMenu<OpenMenuButtonContent: View>: View {
             actions = try await allAvailableConversationActionsForActionSheet(
                 mailbox: mailbox,
                 conversationId: conversationID
-            ).get()
+            )
+            .get()
         } catch {
             AppLogger.log(error: error, category: .conversationDetail)
         }

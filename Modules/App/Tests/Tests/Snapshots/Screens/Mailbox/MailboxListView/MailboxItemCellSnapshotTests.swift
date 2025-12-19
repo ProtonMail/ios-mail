@@ -59,7 +59,7 @@ private extension MailboxItemCellUIModel {
     }
 
     static func makeSimpleMessage(type: SimpleMessageType) -> MailboxItemCellUIModel {
-        let snoozeTime = Date(timeIntervalSince1970: 1878451200)
+        let snoozeTime = Date(timeIntervalSince1970: 1_878_451_200)
         let expirationTime = Date(timeIntervalSince1970: Date.now.timeIntervalSince1970 + 3600 * 24 * 365 * 2)
         return MailboxItemCellUIModel(
             id: .random(),
@@ -71,7 +71,7 @@ private extension MailboxItemCellUIModel {
             ),
             emails: "arya.lindt@example.com",
             subject: "Making the most of Safari",
-            date: Date(timeIntervalSince1970: 1717485341),
+            date: Date(timeIntervalSince1970: 1_717_485_341),
             location: nil,
             locationIcon: type == .locationIcon ? DS.Icon.icInbox.image : nil,
             isRead: false,
@@ -103,7 +103,7 @@ private extension MailboxItemCellUIModel {
             ),
             emails: "Travel",
             subject: "Your booking confirmation KL877N",
-            date: Date(timeIntervalSince1970: 1717483827),
+            date: Date(timeIntervalSince1970: 1_717_483_827),
             location: nil,
             locationIcon: nil,
             isRead: true,
@@ -141,7 +141,7 @@ private extension MailboxItemCellUIModel {
             ),
             emails: "Flights to Palo Alto - 20th of September, 2025",
             subject: "You're invited to flight KCY877N",
-            date: Date(timeIntervalSince1970: 1717484927),
+            date: Date(timeIntervalSince1970: 1_717_484_927),
             location: nil,
             locationIcon: nil,
             isRead: true,
@@ -173,7 +173,7 @@ private extension MailboxItemCellUIModel {
             ),
             emails: "Jane Doe, Mike, Laureen Smith",
             subject: "Photos from Portugal",
-            date: Date(timeIntervalSince1970: 1717484830),
+            date: Date(timeIntervalSince1970: 1_717_484_830),
             location: nil,
             locationIcon: nil,
             isRead: true,

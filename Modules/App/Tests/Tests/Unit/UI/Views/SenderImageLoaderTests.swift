@@ -99,6 +99,6 @@ private final class MockImageDataSource: SenderImageDataSource {
     var imageToReturn: UIImage?
 
     func senderImage(for params: SenderImageDataParameters, colorScheme: ColorScheme) async -> UIImage? {
-        return imageToReturn
+        imageToReturn
     }
 }

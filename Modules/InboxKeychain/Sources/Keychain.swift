@@ -37,13 +37,13 @@ open class Keychain {
 
         public var errorDescription: String? {
             switch self {
-            case let .readFailed(key, code):
+            case .readFailed(let key, let code):
                 return "Keychain.AccessError.readFailed(\(key), \(code))"
-            case let .writeFailed(key, code):
+            case .writeFailed(let key, let code):
                 return "Keychain.AccessError.writeFailed(\(key), \(code))"
-            case let .updateFailed(key, code):
+            case .updateFailed(let key, let code):
                 return "Keychain.AccessError.updateFailed(\(key), \(code))"
-            case let .deleteFailed(key, code):
+            case .deleteFailed(let key, let code):
                 return "Keychain.AccessError.deleteFailed(\(key), \(code))"
             }
         }
@@ -56,11 +56,6 @@ open class Keychain {
     internal let keychainQueue = DispatchQueue(label: "me.proton.account.keychain.queue", attributes: .concurrent)
 
     private let secItemMethodsProvider: SecItemMethodsProvider
-
-    internal func switchAccessibilitySettings(_ accessibility: Accessibility, authenticationPolicy: AccessControl) {
-        self.accessibility = accessibility
-        self.authenticationPolicy = authenticationPolicy
-    }
 
     public init(service: String, accessGroup: String, secItemMethodsProvider: SecItemMethodsProvider? = nil) {
         self.service = service
@@ -131,7 +126,7 @@ open class Keychain {
     ///   - forKey: key under which the value is stored in keychain
     @available(*, deprecated, message: "Please use the throwing alternative: dataOrError(forKey:) and handle the error")
     public func data(forKey key: String, attributes: [CFString: Any]? = nil) -> Data? {
-        return self.getData(forKey: key, attributes: attributes)
+        self.getData(forKey: key, attributes: attributes)
     }
 
     /// Fetches the value from the keychain.

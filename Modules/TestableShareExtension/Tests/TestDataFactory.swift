@@ -21,20 +21,21 @@ import UniformTypeIdentifiers
 
 enum TestDataFactory {
     static func makeItemProviders(types: [UTType], count: UInt) -> [NSItemProvider] {
-        (0..<count).map { index in
-            let itemProvider = NSItemProvider()
+        (0..<count)
+            .map { index in
+                let itemProvider = NSItemProvider()
 
-            for type in types {
-                let url = URL(fileURLWithPath: "attachments/\(index)-\(type.identifier)")
+                for type in types {
+                    let url = URL(fileURLWithPath: "attachments/\(index)-\(type.identifier)")
 
-                itemProvider.registerFileRepresentation(for: type) { completion in
-                    completion(url, true, nil)
-                    return nil
+                    itemProvider.registerFileRepresentation(for: type) { completion in
+                        completion(url, true, nil)
+                        return nil
+                    }
                 }
-            }
 
-            return itemProvider
-        }
+                return itemProvider
+            }
     }
 
     static func stubShortLivedData(in urls: [URL]) throws -> [NSItemProvider] {

@@ -39,7 +39,8 @@ struct AvatarCheckboxView: View {
                                 .padding(10)
                                 .accessibilityIdentifier(AvatarCheckboxViewIdentifiers.avatarChecked)
                         }
-                }.accessibilityElement(children: .contain)
+                }
+                .accessibilityElement(children: .contain)
             } else {
                 AvatarView(avatar: avatar)
             }
@@ -54,7 +55,7 @@ struct AvatarCheckboxView: View {
 }
 
 #Preview {
-    return VStack {
+    VStack {
         AvatarCheckboxView(
             isSelected: true,
             avatar: .init(

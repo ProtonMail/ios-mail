@@ -17,11 +17,11 @@
 
 import UIKit
 
+@MainActor
 protocol AppIconConfigurable {
     var alternateIconName: String? { get }
     var supportsAlternateIcons: Bool { get }
 
-    @MainActor
     func setAlternateIconName(_ alternateIconName: String?) async throws
 }
 

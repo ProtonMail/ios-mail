@@ -57,7 +57,7 @@ private struct ComposeButtonStyle: ButtonStyle {
     var animation: Animation
 
     func makeBody(configuration: Self.Configuration) -> some View {
-        return configuration
+        configuration
             .label
             .padding(.all, DS.Spacing.moderatelyLarge)
             .background(configuration.isPressed ? DS.Color.InteractionFab.pressed : DS.Color.InteractionFab.norm)

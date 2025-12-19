@@ -542,7 +542,7 @@ enum MessageDetailsPreviewProvider {
             recipientsTo: recipientsTo,
             recipientsCc: recipientsCc,
             recipientsBcc: recipientsBcc,
-            date: Date(timeIntervalSince1970: 1724347300),
+            date: Date(timeIntervalSince1970: 1_724_347_300),
             location: location?.model,
             labels: labels,
             isStarred: false,

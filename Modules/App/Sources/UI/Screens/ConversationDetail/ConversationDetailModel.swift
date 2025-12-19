@@ -79,7 +79,6 @@ final class ConversationDetailModel: Sendable, ObservableObject {
     private var singleMessageLiveQuery: WatchedMessage?
 
     private var expandedMessages: Set<ID>
-    private let draftPresenter: DraftPresenter
     private let dependencies: Dependencies
     private let backOnlineActionExecutor: BackOnlineActionExecutor
     private let snoozeService: SnoozeServiceProtocol
@@ -105,20 +104,18 @@ final class ConversationDetailModel: Sendable, ObservableObject {
     private lazy var starActionPerformer = StarActionPerformer(mailUserSession: userSession)
 
     private var userSession: MailUserSession {
-        dependencies.appContext.userSession
+        dependencies.userSession
     }
 
     init(
         seed: ConversationDetailSeed,
-        draftPresenter: DraftPresenter,
-        dependencies: Dependencies = .init(),
+        dependencies: Dependencies,
         backOnlineActionExecutor: BackOnlineActionExecutor,
         snoozeService: SnoozeServiceProtocol
     ) {
         self.seed = seed
         self.isStarred = seed.isStarred
         self.expandedMessages = .init()
-        self.draftPresenter = draftPresenter
         self.dependencies = dependencies
         self.backOnlineActionExecutor = backOnlineActionExecutor
         self.snoozeService = snoozeService
@@ -355,8 +352,10 @@ final class ConversationDetailModel: Sendable, ObservableObject {
         case .forward:
             actionSheets = .allSheetsDismissed
             onReplyAction(messageId: messageID, action: .forward, toastStateStore: toastStateStore)
-        case .viewHeaders, .viewHtml:
-            toastStateStore.present(toast: .comingSoon)
+        case .viewHeaders:
+            await presentQuickLook(id: messageID, type: .headers, toastStateStore: toastStateStore)
+        case .viewHtml:
+            await presentQuickLook(id: messageID, type: .body, toastStateStore: toastStateStore)
         case .print:
             do {
                 try await messagePrinter.printMessage(messageID: messageID)
@@ -420,12 +419,13 @@ final class ConversationDetailModel: Sendable, ObservableObject {
             let alert: AlertModel = .deleteConfirmation(
                 itemsCount: 1,
                 action: { [weak self] action in
-                    await self?.handle(
-                        id: conversationID,
-                        mailboxItem: .conversation,
-                        action: action,
-                        toastStateStore: toastStateStore, goBack: goBack
-                    )
+                    await self?
+                        .handle(
+                            id: conversationID,
+                            mailboxItem: .conversation,
+                            action: action,
+                            toastStateStore: toastStateStore, goBack: goBack
+                        )
                 }
             )
             actionAlert = alert
@@ -498,6 +498,15 @@ final class ConversationDetailModel: Sendable, ObservableObject {
             }
         }
     }
+
+    private func presentQuickLook(id: ID, type: MessageQuickLookType, toastStateStore: ToastStateStore) async {
+        do {
+            try await dependencies.messageQuickLook.present(messageID: id, mailbox: mailbox!, type: type)
+        } catch {
+            AppLogger.log(error: error)
+            toastStateStore.present(toast: .error(message: error.localizedDescription))
+        }
+    }
 }
 
 extension ConversationDetailModel {
@@ -508,7 +517,7 @@ extension ConversationDetailModel {
     }
 
     private func openDraft(with id: ID) {
-        draftPresenter.openDraft(withId: id)
+        dependencies.draftPresenter.openDraft(withId: id)
     }
 
     private func move(
@@ -553,10 +562,6 @@ extension ConversationDetailModel {
     }
 
     private func initialiseMailbox(basedOn selectedMailbox: SelectedMailbox) async throws -> Mailbox {
-        guard let userSession = dependencies.appContext.sessionState.userSession else {
-            throw ConversationModelError.noActiveSessionFound
-        }
-
         switch selectedMailbox {
         case .inbox:
             return try newInboxMailbox(ctx: userSession).get()
@@ -589,10 +594,6 @@ extension ConversationDetailModel {
     }
 
     private func fetchMessage(with remoteId: RemoteId) async throws -> Message {
-        guard let userSession = dependencies.appContext.sessionState.userSession else {
-            throw ConversationModelError.noActiveSessionFound
-        }
-
         let localId = try await resolveMessageId(session: userSession, remoteId: remoteId).get()
 
         if let message = try await message(session: userSession, id: localId).get() {
@@ -758,7 +759,8 @@ extension ConversationDetailModel {
                 mailbox: mailbox,
                 id: conversationID,
                 showAll: showAllMessages
-            ).get()
+            )
+            .get()
             let hiddenMessagesBanner = conversationAndMessages?.conversation.hiddenMessagesBanner
             let isStarred = conversationAndMessages?.conversation.isStarred ?? false
             let messages = conversationAndMessages?.messages ?? []
@@ -799,7 +801,7 @@ extension ConversationDetailModel {
     private func onReplyAction(messageId: ID, action: ReplyAction, toastStateStore: ToastStateStore) {
         Task {
             do {
-                try await draftPresenter.handleReplyAction(for: messageId, action: action)
+                try await dependencies.draftPresenter.handleReplyAction(for: messageId, action: action)
             } catch {
                 toastStateStore.present(toast: .error(message: error.localizedDescription))
             }
@@ -815,7 +817,7 @@ extension ConversationDetailModel {
         editScheduledMessageConfirmationAlert = nil
         if action == .edit {
             do {
-                try await self.draftPresenter.cancelScheduledMessageAndOpenDraft(for: messageId)
+                try await dependencies.draftPresenter.cancelScheduledMessageAndOpenDraft(for: messageId)
                 goBack()
             } catch {
                 switch error {
@@ -846,7 +848,8 @@ extension ConversationDetailModel {
                 let actions = try await allAvailableConversationActionsForConversation(
                     mailbox: mailbox,
                     conversationId: conversationItem.id
-                ).get()
+                )
+                .get()
                 self.conversationToolbarActions = .conversation(actions: actions, conversationID: conversationItem.id)
             } catch {
                 AppLogger.log(error: error, category: .conversationDetail)
@@ -861,7 +864,8 @@ extension ConversationDetailModel {
                     mailbox: mailbox,
                     theme: theme,
                     messageId: conversationItem.id
-                ).get()
+                )
+                .get()
                 self.conversationToolbarActions = .message(actions: actions, messageID: conversationItem.id)
             } catch {
                 AppLogger.log(error: error, category: .conversationDetail)
@@ -914,13 +918,9 @@ extension ConversationDetailModel {
 
 extension ConversationDetailModel {
     struct Dependencies {
-        let appContext: AppContext
-
-        init(
-            appContext: AppContext = .shared,
-        ) {
-            self.appContext = appContext
-        }
+        let draftPresenter: DraftPresenter
+        let messageQuickLook: MessageQuickLook
+        let userSession: MailUserSession
     }
 }
 
@@ -953,7 +953,6 @@ enum MessageCellUIModelType: Equatable {
 }
 
 enum ConversationModelError: Error {
-    case noActiveSessionFound
     case noMessageFound(messageID: ID)
 }
 

@@ -43,7 +43,7 @@ final class DebouncedTaskTests: XCTestCase {
     // MARK: Execute Immediately
 
     func testExecuteImmediately_itShouldExecuteTheTask() async {
-        var result = [Int]()
+        var result: [Int] = []
         sut = .init(duration: .seconds(10), block: { result.append(1) }, onBlockCompletion: {})
 
         await sut.executeImmediately()
@@ -51,7 +51,7 @@ final class DebouncedTaskTests: XCTestCase {
     }
 
     func testExecuteImmediately_itShouldCancelTheDebouncedOpertionToAvoidRunningItTwice() async {
-        var result = [Int]()
+        var result: [Int] = []
         let duration = Duration.milliseconds(10)
         sut = .init(duration: duration, block: { result.append(1) }, onBlockCompletion: {})
 
@@ -63,7 +63,7 @@ final class DebouncedTaskTests: XCTestCase {
     }
 
     func testExecuteImmediately_itShouldCallOnBlockCompletion() async {
-        var result = [Int]()
+        var result: [Int] = []
         var completionCalled = false
         let duration = Duration.milliseconds(10)
         sut = .init(

@@ -37,7 +37,7 @@ struct UndoScheduleSendProvider {
     }
 
     static func mockInstance(
-        stubbedResult: DraftCancelScheduleSendResult = .ok(.init(lastScheduledTime: 1747728129))
+        stubbedResult: DraftCancelScheduleSendResult = .ok(.init(lastScheduledTime: 1_747_728_129))
     ) -> UndoScheduleSendProvider {
         .init(undoScheduleSend: { _ in stubbedResult })
     }

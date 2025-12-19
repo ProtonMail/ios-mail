@@ -84,10 +84,12 @@ class SnoozeStore: StateStore {
 
     private func loadSnoozeData() async {
         do {
-            let snoozeActions = try await snoozeService.availableSnoozeActions(
-                for: state.conversationIDs,
-                systemCalendarWeekStart: DateEnvironment.calendar.nonDefaultWeekStart
-            ).get()
+            let snoozeActions =
+                try await snoozeService.availableSnoozeActions(
+                    for: state.conversationIDs,
+                    systemCalendarWeekStart: DateEnvironment.calendar.nonDefaultWeekStart
+                )
+                .get()
 
             state = state.copy(\.snoozeActions, to: snoozeActions)
         } catch {
@@ -98,11 +100,13 @@ class SnoozeStore: StateStore {
 
     private func snoozeConversations(snoozeTime: UnixTimestamp) async {
         do {
-            _ = try await snoozeService.snooze(
-                conversation: state.conversationIDs,
-                labelId: state.labelId,
-                timestamp: snoozeTime
-            ).get()
+            _ =
+                try await snoozeService.snooze(
+                    conversation: state.conversationIDs,
+                    labelId: state.labelId,
+                    timestamp: snoozeTime
+                )
+                .get()
             toastStateStore.present(toast: .snooze(snoozeDate: snoozeTime.date))
             dismiss()
         } catch {
@@ -113,10 +117,12 @@ class SnoozeStore: StateStore {
 
     private func unsnoozeConversations() async {
         do {
-            _ = try await snoozeService.unsnooze(
-                conversation: state.conversationIDs,
-                labelId: state.labelId
-            ).get()
+            _ =
+                try await snoozeService.unsnooze(
+                    conversation: state.conversationIDs,
+                    labelId: state.labelId
+                )
+                .get()
             toastStateStore.present(toast: .unsnooze)
             dismiss()
         } catch {

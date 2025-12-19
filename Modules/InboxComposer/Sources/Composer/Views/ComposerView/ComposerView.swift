@@ -88,7 +88,7 @@ struct ComposerView: View {
                 case .viewDidDisappear:
                     Task { await model.viewDidDisappear() }
 
-                case let .recipientFieldEvent(recipientFieldEvent, group):
+                case .recipientFieldEvent(let recipientFieldEvent, let group):
                     switch recipientFieldEvent {
                     case .onFieldTap:
                         model.startEditingRecipients(for: group)
@@ -104,7 +104,7 @@ struct ComposerView: View {
                         model.removeRecipientsThatAreSelected(group: group)
                     }
 
-                case let .contactPickerEvent(event, group):
+                case .contactPickerEvent(let event, let group):
                     switch event {
                     case .onInputChange(let text):
                         model.matchContact(group: group, text: text)

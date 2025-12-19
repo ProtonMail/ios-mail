@@ -31,7 +31,7 @@ extension Conversation {
             displaySnoozeReminder: false,
             snoozedUntil: nil,
             locations: [.system(name: .inbox, id: .init(value: 41))],
-            expirationTime: 1625140800,
+            expirationTime: 1_625_140_800,
             isStarred: true,
             numAttachments: 0,
             numMessages: 1,
@@ -43,7 +43,7 @@ extension Conversation {
             senders: senders,
             size: 1_024,
             subject: .notUsed,
-            time: 1622548800,
+            time: 1_622_548_800,
             avatar: .init(text: .notUsed, color: .notUsed),
             hiddenMessagesBanner: nil
         )

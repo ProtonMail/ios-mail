@@ -81,7 +81,8 @@ struct AppProtectionSelectionScreen: View {
                             ) {
                                 store.handle(action: .autoLockTapped)
                             }
-                        }.animation(.easeInOut, value: state.shouldShowAutoLockButton)
+                        }
+                        .animation(.easeInOut, value: state.shouldShowAutoLockButton)
                     }
                     Spacer()
                 }

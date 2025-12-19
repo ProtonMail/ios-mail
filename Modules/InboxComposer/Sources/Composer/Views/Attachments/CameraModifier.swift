@@ -24,7 +24,7 @@ private struct CameraModifier: ViewModifier {
     func body(content: Content) -> some View {
         content
             .fullScreenCover(isPresented: $isPresented) {
-                CameraView() { image in
+                CameraView { image in
                     Task { await onPhotoTaken(image) }
                 }
                 .edgesIgnoringSafeArea(.all)

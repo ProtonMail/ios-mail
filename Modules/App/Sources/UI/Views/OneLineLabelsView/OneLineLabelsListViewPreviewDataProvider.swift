@@ -25,7 +25,8 @@ enum OneLineLabelsListViewPreviewDataProvider {
             ["😈"],
             ["Long long long long long long long long long long long long long long"],
             ["Aaaaaaaa", "Long long label long long long long long", "aaaaaaaaaaaaa"],
-        ].map { $0.map(LabelUIModel.testData) }
+        ]
+        .map { $0.map(LabelUIModel.testData) }
     }
 }
 

@@ -22,7 +22,7 @@ public final class AppLogger: @unchecked Sendable {
     private static let shared = AppLogger()
     private let serialQueue = DispatchQueue(label: "\(Bundle.defaultIdentifier).AppLogger")
 
-    private var loggers = [String: Any]()
+    private var loggers: [String: Any] = [:]
     private var bundleId: String {
         Bundle.main.bundleIdentifier ?? Bundle.defaultIdentifier
     }

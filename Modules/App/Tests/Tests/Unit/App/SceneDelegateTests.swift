@@ -67,7 +67,7 @@ final class SceneDelegateTests: BaseTestCase {
         let overlayWindow = try XCTUnwrap(sut.overlayWindow)
 
         XCTAssert(overlayWindow is PassThroughWindow)
-        XCTAssert(overlayWindow.rootViewController is UIHostingController<ModifiedContent<ToastSceneView, _EnvironmentKeyWritingModifier<Optional<ToastStateStore>>>>)
+        XCTAssert(overlayWindow.rootViewController is UIHostingController<ModifiedContent<ToastSceneView, _EnvironmentKeyWritingModifier<ToastStateStore?>>>)
         XCTAssertEqual(overlayWindow.rootViewController?.view.backgroundColor, .clear)
         XCTAssertFalse(overlayWindow.isHidden)
     }

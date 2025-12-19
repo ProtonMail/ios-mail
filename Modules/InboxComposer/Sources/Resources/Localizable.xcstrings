@@ -17222,6 +17222,12 @@
             "value" : "Visningsstilen for vedlegget kunne ikke oppdateres. Prøv på nytt."
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De dispositie van de bijlage kon niet worden bijgewerkt, probeer het opnieuw."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -17932,6 +17938,12 @@
             "value" : "Det er en grense på 25 MB for vedlegg per e-post, inkludert innebygde bilder, og %lld vedlegg kunne ikke legges til. Send dem i separate e-poster eller del dem via Proton Drive."
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Er is een limiet van 25 MB voor bijlagen per e-mail, inclusief inline afbeeldingen, en %lld bijlagen konden niet worden toegevoegd. Verstuur ze in afzonderlijke e-mails of deel ze via Proton Drive."
+          }
+        },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
@@ -18067,6 +18079,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Det er en grense på 25 MB for vedlegg per e-post, inkludert innebygde bilder. Send dem i separate e-poster eller del dem via Proton Drive."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Er is een limiet van 25 MB voor bijlagen per e-mail, inclusief inline afbeeldingen. Verzend ze in aparte e-mails of deel ze via Proton Drive."
           }
         },
         "ro" : {
@@ -19523,6 +19541,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Du har nådd grensen for vedlegg, inkludert innebygde bilder. Ett eller flere vedlegg kunne ikke legges til. Send dem i separate e-poster eller del dem via Proton Drive."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "U heeft het maximale aantal bijlagen, inclusief inline afbeeldingen, bereikt. Eén of meer bijlagen konden niet worden toegevoegd. Verzend ze in aparte e-mails of deel ze via Proton Drive."
           }
         },
         "ro" : {

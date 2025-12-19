@@ -89,7 +89,8 @@ final class AppContext: Sendable, ObservableObject {
             hvNotifier: accountChallengeCoordinator,
             deviceInfoProvider: ChallengePayloadProvider(),
             issueReporter: SentryIssueReporter()
-        ).get()
+        )
+        .get()
 
         excludeDirectoriesFromBackup(params: params)
 

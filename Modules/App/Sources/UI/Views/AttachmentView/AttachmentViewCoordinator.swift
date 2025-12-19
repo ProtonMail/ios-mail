@@ -25,7 +25,7 @@ final class AttachmentViewCoordinator: QLPreviewControllerDataSource {
     }
 
     func numberOfPreviewItems(in controller: QLPreviewController) -> Int {
-        return 1
+        1
     }
 
     func previewController(_ controller: QLPreviewController, previewItemAt index: Int) -> QLPreviewItem {

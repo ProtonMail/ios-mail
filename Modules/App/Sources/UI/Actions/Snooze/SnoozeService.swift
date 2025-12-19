@@ -17,7 +17,7 @@
 
 import proton_app_uniffi
 
-protocol SnoozeServiceProtocol: Sendable {
+protocol SnoozeServiceProtocol {
     func availableSnoozeActions(for conversation: [Id], systemCalendarWeekStart: NonDefaultWeekStart) async -> AvailableSnoozeActionsForConversationResult
     func snooze(conversation ids: [Id], labelId: Id, timestamp: UnixTimestamp) async -> SnoozeConversationsResult
     func unsnooze(conversation ids: [Id], labelId: Id) async -> UnsnoozeConversationsResult
