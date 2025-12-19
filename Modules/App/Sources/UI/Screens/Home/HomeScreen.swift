@@ -116,7 +116,7 @@ struct HomeScreen: View {
             )
             .environmentObject(composerCoordinator)
 
-            makeSidebarScreen() { selectedItem in
+            makeSidebarScreen { selectedItem in
                 switch selectedItem {
                 case .upsell(let upsellType):
                     presentUpsellScreen(ofType: upsellType)

@@ -20,8 +20,10 @@ struct InlineImageHTML {
     let content: String
 
     init(cids: [String]) {
-        content = cids.map { cid in
-            #"<img src="cid:\#(cid)" style="max-width: 100%;"><br>"#
-        }.joined()
+        content =
+            cids.map { cid in
+                #"<img src="cid:\#(cid)" style="max-width: 100%;"><br>"#
+            }
+            .joined()
     }
 }

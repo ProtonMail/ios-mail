@@ -94,9 +94,11 @@ class BackgroundTransitionActionsExecutor: ApplicationServiceDidEnterBackground,
             Self.log("Internet connection on start: \(hasAccessToInternetOnStart == true ? "Online" : "Offline")")
 
             do {
-                backgroundExecutionHandle = try backgroundTaskExecutorProvider().startBackgroundExecution(
-                    callback: callback
-                ).get()
+                backgroundExecutionHandle = try backgroundTaskExecutorProvider()
+                    .startBackgroundExecution(
+                        callback: callback
+                    )
+                    .get()
                 Self.log("Handle is returned, background actions in progress")
                 Self.log("Handle present: \(self.backgroundExecutionHandle != nil)?")
             } catch {

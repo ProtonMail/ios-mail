@@ -238,7 +238,7 @@ private struct SwipeActionGesture<SwipeGesture: Gesture>: ViewModifier {
 private struct AnimatableXTransformModifier: ViewModifier, Animatable {
     var x: CGFloat
 
-    var animatableData: CGFloat {
+    nonisolated var animatableData: CGFloat {
         get { x }
         set { x = newValue }
     }

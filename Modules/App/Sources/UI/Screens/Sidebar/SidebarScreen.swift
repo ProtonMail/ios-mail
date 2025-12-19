@@ -116,7 +116,8 @@ struct SidebarScreen: View {
                 .padding(.vertical, DS.Spacing.small)
                 .onTapGesture(count: 5) { screenModel.handle(action: .logoTappedFiveTimes) }
             separator
-        }.background(
+        }
+        .background(
             GeometryReader { geometry in
                 BlurredBackground(fallbackBackgroundColor: DS.Color.Sidebar.background)
                     .edgesIgnoringSafeArea(.all)
@@ -225,11 +226,13 @@ struct SidebarScreen: View {
                         .padding(.vertical, DS.Spacing.medium)
                     separator
                     appVersionNote
-                }.onChange(of: appUIStateStore.sidebarState.isOpen) { _, isSidebarOpen in
+                }
+                .onChange(of: appUIStateStore.sidebarState.isOpen) { _, isSidebarOpen in
                     if isSidebarOpen, let first = screenModel.state.items.first {
                         proxy.scrollTo(first.id, anchor: .zero)
                     }
-                }.accessibilityElement(children: .contain)
+                }
+                .accessibilityElement(children: .contain)
             }
             .scrollDisabled(gestureState.lockedAxis == .horizontal || lastCommittedAxis == .horizontal)
             .frame(maxWidth: .infinity)

@@ -23,20 +23,21 @@ enum NotificationAuthorizationRequestTrigger: CaseIterable {
     case messageSent
 }
 
+@MainActor
 final class NotificationAuthorizationStore {
     private let userDefaults: UserDefaults
-    private let userNotificationCenter: UserNotificationCenter
+    private let userNotificationCenter: () -> UserNotificationCenter
 
     init(
         userDefaults: UserDefaults,
-        userNotificationCenter: UserNotificationCenter = UNUserNotificationCenter.current()
+        userNotificationCenter: @escaping () -> UserNotificationCenter = UNUserNotificationCenter.current
     ) {
         self.userDefaults = userDefaults
         self.userNotificationCenter = userNotificationCenter
     }
 
     func shouldRequestAuthorization(trigger: NotificationAuthorizationRequestTrigger) async -> Bool {
-        let authorizationStatus = await userNotificationCenter.authorizationStatus()
+        let authorizationStatus = await userNotificationCenter().authorizationStatus()
 
         guard authorizationStatus == .notDetermined else {
             return false
@@ -62,7 +63,7 @@ final class NotificationAuthorizationStore {
 
     private func requestNotificationAuthorization() async {
         do {
-            _ = try await userNotificationCenter.requestAuthorization(options: [.alert, .badge, .sound])
+            _ = try await userNotificationCenter().requestAuthorization(options: [.alert, .badge, .sound])
         } catch {
             AppLogger.log(error: error, category: .notifications)
         }

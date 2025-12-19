@@ -46,7 +46,7 @@ enum EventMapper {
     private static func answerButtonsState(from state: RsvpState, attendeeIndex: UInt32?) -> Event.AnswerButtonsState {
         let buttonsState: Event.AnswerButtonsState
 
-        if case let .answerableInvite(_, attendance) = state, let attendeeIndex {
+        if case .answerableInvite(_, let attendance) = state, let attendeeIndex {
             buttonsState = .visible(attendance: attendance, attendeeIndex: Int(attendeeIndex))
         } else {
             buttonsState = .hidden
@@ -57,7 +57,7 @@ enum EventMapper {
 
     private static func banner(from state: RsvpState) -> Event.Banner? {
         switch state {
-        case let .answerableInvite(progress, _), let .reminder(progress):
+        case .answerableInvite(let progress, _), .reminder(let progress):
             switch progress {
             case .pending:
                 return nil
@@ -102,12 +102,13 @@ enum EventMapper {
     }
 
     private static func participants(attendees: [RsvpAttendee], userIndex: UInt32?) -> [Event.Participant] {
-        attendees.enumerated().map { index, attendee in
-            let isCurrentUser = isCurrentUser(attendeeIndex: index, userAttendeeIndex: userIndex)
-            let displayName = isCurrentUser ? userDisplayName(from: attendee) : otherAttendeeDisplayName(from: attendee)
+        attendees.enumerated()
+            .map { index, attendee in
+                let isCurrentUser = isCurrentUser(attendeeIndex: index, userAttendeeIndex: userIndex)
+                let displayName = isCurrentUser ? userDisplayName(from: attendee) : otherAttendeeDisplayName(from: attendee)
 
-            return .init(email: attendee.email, displayName: displayName, status: attendee.status)
-        }
+                return .init(email: attendee.email, displayName: displayName, status: attendee.status)
+            }
     }
 
     private static func isCurrentUser(attendeeIndex: Int, userAttendeeIndex: UInt32?) -> Bool {

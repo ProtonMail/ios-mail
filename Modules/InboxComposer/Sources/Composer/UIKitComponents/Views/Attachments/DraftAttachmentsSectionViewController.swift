@@ -140,10 +140,10 @@ extension DraftAttachmentsSectionViewController {
         }
 
         static let uiModels: [DraftAttachmentUIModel] = [
-            Model.makeUIModel(id: 1, name: "meeting_minutes_for_last_friday.pdf", cat: .pdf, size: 36123512, state: .uploading),
+            Model.makeUIModel(id: 1, name: "meeting_minutes_for_last_friday.pdf", cat: .pdf, size: 36_123_512, state: .uploading),
             Model.makeUIModel(id: 2, name: "budget.xls", cat: .excel, size: 263478, state: .uploaded),
-            Model.makeUIModel(id: 3, name: "photo_1.jpg", cat: .image, size: 7824333, state: .offline),
-            Model.makeUIModel(id: 4, name: "photo_2_this_one_a_bit_closer.jpg", cat: .image, size: 6123512, state: .uploaded),
+            Model.makeUIModel(id: 3, name: "photo_1.jpg", cat: .image, size: 7_824_333, state: .offline),
+            Model.makeUIModel(id: 4, name: "photo_2_this_one_a_bit_closer.jpg", cat: .image, size: 6_123_512, state: .uploaded),
         ]
     }
 

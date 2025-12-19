@@ -27,5 +27,4 @@ enum AppSettingsAction {
     case combinedContactsChanged(Bool)
     case alternativeRoutingChanged(Bool)
     case swipeToAdjacentConversationChanged(Bool)
-    case appIconSelected(AppIcon)
 }

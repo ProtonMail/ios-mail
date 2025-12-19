@@ -128,39 +128,40 @@ final class MailboxModel: ObservableObject {
 
 extension MailboxModel {
     private func setUpBindings() {
-        appRoute.$route.sink { [weak self] route in
-            guard let self else { return }
+        appRoute.$route
+            .sink { [weak self] route in
+                guard let self else { return }
 
-            switch route {
-            case .mailbox(selectedMailbox: let newSelectedMailbox):
-                guard newSelectedMailbox != selectedMailbox else {
-                    return
-                }
+                switch route {
+                case .mailbox(selectedMailbox: let newSelectedMailbox):
+                    guard newSelectedMailbox != selectedMailbox else {
+                        return
+                    }
 
-                Task {
-                    self.selectionMode.selectionModifier.exitSelectionMode()
-                    self.selectedMailbox = newSelectedMailbox
-                    await self.updateMailboxAndScroller()
-                    await self.prepareSwipeActions()
-                }
-            case .mailboxOpenMessage(seed: let openedItem):
-                state.isSearchPresented = false
-                replaceCurrentNavigationPath(with: openedItem)
-            case .composer(let fromShareExtension):
-                state.isSearchPresented = false
+                    Task {
+                        self.selectionMode.selectionModifier.exitSelectionMode()
+                        self.selectedMailbox = newSelectedMailbox
+                        await self.updateMailboxAndScroller()
+                        await self.prepareSwipeActions()
+                    }
+                case .mailboxOpenMessage(seed: let openedItem):
+                    state.isSearchPresented = false
+                    replaceCurrentNavigationPath(with: openedItem)
+                case .composer(let fromShareExtension):
+                    state.isSearchPresented = false
 
-                if fromShareExtension {
-                    openDraftForShareExtension()
-                } else {
-                    createDraft()
+                    if fromShareExtension {
+                        openDraftForShareExtension()
+                    } else {
+                        createDraft()
+                    }
+                case .mailto(let mailtoURL):
+                    createDraft(with: mailtoURL)
+                case .search:
+                    state.isSearchPresented = true
                 }
-            case .mailto(let mailtoURL):
-                createDraft(with: mailtoURL)
-            case .search:
-                state.isSearchPresented = true
             }
-        }
-        .store(in: &cancellables)
+            .store(in: &cancellables)
 
         Publishers.Merge(
             mailSettingsLiveQuery.settingHasChanged(keyPath: \.swipeLeft),
@@ -312,14 +313,16 @@ extension MailboxModel {
                     callback: MessageScrollerLiveQueryCallbackWrapper { [weak self] update in
                         self?.scrollerUpdates.enqueueUpdate(update)
                     }
-                ).get()
+                )
+                .get()
             } else {
                 conversationScroller = try await scrollConversationsForLabel(
                     mailbox: mailbox,
                     callback: ConversationScrollerLiveQueryCallbackWrapper { [weak self] update in
                         self?.scrollerUpdates.enqueueUpdate(update)
                     }
-                ).get()
+                )
+                .get()
             }
             paginatedDataSource.fetchInitialPage()
 
@@ -406,7 +409,7 @@ extension MailboxModel {
         case .append(let conversations):
             let items = await mailboxItems(conversations: conversations)
             updateType = .append(items: items)
-        case let .replaceRange(from, to, conversations):
+        case .replaceRange(let from, let to, let conversations):
             let items = await mailboxItems(conversations: conversations)
             updateType = .replaceRange(from: Int(from), to: Int(to), items: items)
             completion = { [weak self] in self?.updateSelectedItemsAfterDestructiveUpdate() }
@@ -451,7 +454,7 @@ extension MailboxModel {
         case .append(let messages):
             let items = await mailboxItems(messages: messages)
             updateType = .append(items: items)
-        case let .replaceRange(from, to, messages):
+        case .replaceRange(let from, let to, let messages):
             let items = await mailboxItems(messages: messages)
             updateType = .replaceRange(from: Int(from), to: Int(to), items: items)
             completion = { [weak self] in self?.updateSelectedItemsAfterDestructiveUpdate() }
@@ -547,7 +550,8 @@ extension MailboxModel {
                     showLocation: showLocation
                 )
             }
-        }.value
+        }
+        .value
     }
 
     private func mailboxItems(conversations: [Conversation]) async -> [MailboxItemCellUIModel] {
@@ -558,7 +562,8 @@ extension MailboxModel {
             conversations.map { conversation in
                 conversation.toMailboxItemCellUIModel(selectedIds: selectedIds, showLocation: showLocation)
             }
-        }.value
+        }
+        .value
     }
 }
 
@@ -690,11 +695,12 @@ extension MailboxModel {
 
     func onMailboxItemAction(_ context: SwipeActionContext, toastStateStore: ToastStateStore) {
         guard let mailbox,
-            let output = swipeActionsHandler?.handle(
-                context,
-                toastStateStore: toastStateStore,
-                viewMode: mailbox.viewMode()
-            )
+            let output = swipeActionsHandler?
+                .handle(
+                    context,
+                    toastStateStore: toastStateStore,
+                    viewMode: mailbox.viewMode()
+                )
         else { return }
         switch output.sheetType {
         case .labelAs:

@@ -31,7 +31,7 @@ final class ListScrollObservationModelTests: XCTestCase {
 
     private func createSUT() -> ListScrollObservationModel {
         // Initially isAtTop is true
-        return ListScrollObservationModel { [weak self] isAtTop in
+        ListScrollObservationModel { [weak self] isAtTop in
             self?.onEventAtTopChangeCount += 1
             self?.onEventAtTopChangeValue = isAtTop
         }

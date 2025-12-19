@@ -92,7 +92,7 @@ extension AttachmentErrorAlertState {
             }
         }
 
-        var result = [AttachmentErrorAlertModel]()
+        var result: [AttachmentErrorAlertModel] = []
         if overSizeLimitCount > 0 {
             result.append(.overSizeLimit(origin: .adding(.defaultAddAttachmentError(count: overSizeLimitCount))))
         }
@@ -110,10 +110,10 @@ extension AttachmentErrorAlertState {
 
     /// Groups together `DraftAttachment` by error type to reduce the total number of alerts.
     private func aggregateUploadingAttachmentErrors(_ attachments: [DraftAttachment]) -> [AttachmentErrorAlertModel] {
-        var overSizeFailures = [DraftAttachment]()
-        var tooManyAttachmentsFailures = [DraftAttachment]()
-        var storageQuotaExceededFailures = [DraftAttachment]()
-        var otherFailures = [DraftAttachment]()
+        var overSizeFailures: [DraftAttachment] = []
+        var tooManyAttachmentsFailures: [DraftAttachment] = []
+        var storageQuotaExceededFailures: [DraftAttachment] = []
+        var otherFailures: [DraftAttachment] = []
 
         for attachment in attachments {
             guard let error = attachment.state.attachmentUploadError else { continue }
@@ -136,7 +136,7 @@ extension AttachmentErrorAlertState {
             }
         }
 
-        var result = [AttachmentErrorAlertModel]()
+        var result: [AttachmentErrorAlertModel] = []
         if !overSizeFailures.isEmpty, let uploadingError = mapUnseenToUploadingErrorOrigin(overSizeFailures) {
             result.append(.overSizeLimit(origin: uploadingError))
         }
@@ -174,11 +174,9 @@ extension DraftAttachment {
         var presentedError: AttachmentErrorAlertModel? = nil
 
         init() {
-            Task {
-                await errorState.setOnErrorToPresent { [weak self] error in
-                    self?.presentedError = error
-                    self?.isAlertPresented = true
-                }
+            errorState.setOnErrorToPresent { [weak self] error in
+                self?.presentedError = error
+                self?.isAlertPresented = true
             }
         }
     }
@@ -193,14 +191,12 @@ extension DraftAttachment {
         var body: some View {
             VStack {
                 Button("Show Alert".notLocalized) {
-                    Task {
-                        await state.errorState.enqueueAnyUploadError([
-                            DraftAttachment.makeMock(state: .uploaded, timestamp: 1),
-                            DraftAttachment.makeMock(state: .error(.upload(.reason(.attachmentTooLarge))), timestamp: 2),
-                            DraftAttachment.makeMock(state: .error(.upload(.other(.network))), timestamp: 3),
-                            DraftAttachment.makeMock(state: .error(.upload(.reason(.attachmentTooLarge))), timestamp: 4),
-                        ])
-                    }
+                    state.errorState.enqueueAnyUploadError([
+                        DraftAttachment.makeMock(state: .uploaded, timestamp: 1),
+                        DraftAttachment.makeMock(state: .error(.upload(.reason(.attachmentTooLarge))), timestamp: 2),
+                        DraftAttachment.makeMock(state: .error(.upload(.other(.network))), timestamp: 3),
+                        DraftAttachment.makeMock(state: .error(.upload(.reason(.attachmentTooLarge))), timestamp: 4),
+                    ])
                 }
             }
             .alert(

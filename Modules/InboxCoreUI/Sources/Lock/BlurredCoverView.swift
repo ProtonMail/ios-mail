@@ -35,6 +35,7 @@ public struct BlurredCoverView: View {
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
             .background(.ultraThinMaterial)
-        }.ignoresSafeArea()
+        }
+        .ignoresSafeArea()
     }
 }

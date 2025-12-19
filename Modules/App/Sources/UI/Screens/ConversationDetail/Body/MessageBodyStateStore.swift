@@ -95,25 +95,25 @@ final class MessageBodyStateStore: StateStore {
         case .onLoad:
             await loadMessageBody(with: .init())
         case .refreshBanners:
-            if case let .loaded(body, _) = state.body {
+            if case .loaded(let body, _) = state.body {
                 await loadMessageBody(with: body.html.options)
             }
         case .displayEmbeddedImages:
-            if case let .loaded(body, _) = state.body {
+            if case .loaded(let body, _) = state.body {
                 let updatedOptions = body.html.options
                     .copy(\.hideEmbeddedImages, to: false)
 
                 await loadMessageBody(with: updatedOptions)
             }
         case .downloadRemoteContent:
-            if case let .loaded(body, _) = state.body {
+            if case .loaded(let body, _) = state.body {
                 let updatedOptions = body.html.options
                     .copy(\.hideRemoteImages, to: false)
 
                 await loadMessageBody(with: updatedOptions)
             }
         case .reloadFailedProxyImages:
-            if case let .loaded(body, _) = state.body {
+            if case .loaded(let body, _) = state.body {
                 var newBanners = state.eventBanners
                 newBanners.remove(.proxyImageLoadFail)
                 state =
@@ -131,11 +131,11 @@ final class MessageBodyStateStore: StateStore {
         case .markAsLegitimateConfirmed(let action):
             state = state.copy(\.alert, to: nil)
 
-            if case let .loaded(body, _) = state.body, case .markAsLegitimate = action {
+            if case .loaded(let body, _) = state.body, case .markAsLegitimate = action {
                 await markAsLegitimate(with: body.html.options)
             }
         case .unblockSender(let emailAddress):
-            if case let .loaded(body, _) = state.body {
+            if case .loaded(let body, _) = state.body {
                 await unblockSender(emailAddress: emailAddress, with: body.html.options)
             }
         case .unsubscribeNewsletter:
@@ -146,7 +146,7 @@ final class MessageBodyStateStore: StateStore {
         case .unsubscribeNewsletterConfirmed(let action):
             state = state.copy(\.alert, to: nil)
 
-            if case let .loaded(body, _) = state.body, case .unsubscribe = action {
+            if case .loaded(let body, _) = state.body, case .unsubscribe = action {
                 await unsubscribeNewsletter(with: body.newsletterService, options: body.html.options)
             }
         }

@@ -21,7 +21,7 @@ import Testing
 
 struct MessageExpiryTimeFormatterTests {
     enum Timestamp: Int {
-        case _2025_02_22_15_30_00 = 1740238200
+        case _2025_02_22_15_30_00 = 1_740_238_200
     }
 
     @Test(

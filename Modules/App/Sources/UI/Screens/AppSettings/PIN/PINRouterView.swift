@@ -35,7 +35,8 @@ struct PINRouterView: View {
                     view(route: route)
                         .navigationBarBackButtonHidden()
                 }
-        }.environmentObject(router)
+        }
+        .environmentObject(router)
     }
 
     private var navigationPath: Binding<[PINRoute]> {

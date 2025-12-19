@@ -420,12 +420,13 @@ final class ConversationDetailModel: Sendable, ObservableObject {
             let alert: AlertModel = .deleteConfirmation(
                 itemsCount: 1,
                 action: { [weak self] action in
-                    await self?.handle(
-                        id: conversationID,
-                        mailboxItem: .conversation,
-                        action: action,
-                        toastStateStore: toastStateStore, goBack: goBack
-                    )
+                    await self?
+                        .handle(
+                            id: conversationID,
+                            mailboxItem: .conversation,
+                            action: action,
+                            toastStateStore: toastStateStore, goBack: goBack
+                        )
                 }
             )
             actionAlert = alert
@@ -758,7 +759,8 @@ extension ConversationDetailModel {
                 mailbox: mailbox,
                 id: conversationID,
                 showAll: showAllMessages
-            ).get()
+            )
+            .get()
             let hiddenMessagesBanner = conversationAndMessages?.conversation.hiddenMessagesBanner
             let isStarred = conversationAndMessages?.conversation.isStarred ?? false
             let messages = conversationAndMessages?.messages ?? []
@@ -846,7 +848,8 @@ extension ConversationDetailModel {
                 let actions = try await allAvailableConversationActionsForConversation(
                     mailbox: mailbox,
                     conversationId: conversationItem.id
-                ).get()
+                )
+                .get()
                 self.conversationToolbarActions = .conversation(actions: actions, conversationID: conversationItem.id)
             } catch {
                 AppLogger.log(error: error, category: .conversationDetail)
@@ -861,7 +864,8 @@ extension ConversationDetailModel {
                     mailbox: mailbox,
                     theme: theme,
                     messageId: conversationItem.id
-                ).get()
+                )
+                .get()
                 self.conversationToolbarActions = .message(actions: actions, messageID: conversationItem.id)
             } catch {
                 AppLogger.log(error: error, category: .conversationDetail)

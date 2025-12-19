@@ -41,7 +41,7 @@ final class DeepLinkingShareViewController: UINavigationController {
         }
     }
 
-    private nonisolated func createDraftStub(basedOn context: NSExtensionContext) async throws -> Void {
+    private nonisolated func createDraftStub(basedOn context: NSExtensionContext) async throws {
         let extensionItems = context.inputItems.map { $0 as! NSExtensionItem }
         let sharedContent = try await SharedItemsParser.parse(extensionItems: extensionItems)
         try await draftStubWriter.createDraftStub(basedOn: sharedContent)

@@ -910,23 +910,27 @@ enum L10n {
         enum AppIcon {
             static let buttonTitle = LocalizedStringResource(
                 "App Icon",
-                comment: "Title of the button that allows the user to change the app’s icon."
+                comment: "Title of the button that allows the user to change the app's icon."
             )
-            static let primary = LocalizedStringResource(
-                "Primary",
-                comment: "Name of the default (primary) app icon shown in the app icon picker."
+            static let title = LocalizedStringResource(
+                "App icon",
+                comment: "Title shown on the app icon selection screen."
             )
-            static let notes = LocalizedStringResource(
-                "Notes",
-                comment: "Name of the alternate 'Notes' app icon shown in the app icon picker."
+            static let discreetToggle = LocalizedStringResource(
+                "Discreet app icon",
+                comment: "Toggle label for enabling/disabling discreet app icon feature."
             )
-            static let weather = LocalizedStringResource(
-                "Weather",
-                comment: "Name of the alternate 'Weather' app icon shown in the app icon picker."
+            static let description = LocalizedStringResource(
+                "Keep the default Proton Mail icon, or disguise it with a more discreet one for extra privacy. Notifications will always show the Proton Mail name and icon. [Learn more…](https://proton.me/support/disguise-app-icon)",
+                comment: "Description text explaining the app icon feature and privacy implications."
             )
-            static let calculator = LocalizedStringResource(
-                "Calculator",
-                comment: "Name of the alternate 'Calculator' app icon shown in the app icon picker."
+            static let discreet = LocalizedStringResource(
+                "Discreet",
+                comment: "Label shown when a discreet app icon is selected."
+            )
+            static let defaultIcon = LocalizedStringResource(
+                "Default",
+                comment: "Label shown when the default app icon is selected."
             )
         }
 

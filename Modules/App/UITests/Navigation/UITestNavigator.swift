@@ -39,7 +39,7 @@ struct UITestNavigator: ApplicationHolder {
 
         MailboxRobot { $0.verifyShown() }
 
-        if (skipOnboarding) {
+        if skipOnboarding {
             dismissOnboarding()
         }
 
@@ -116,6 +116,6 @@ struct UITestNavigator: ApplicationHolder {
 
 extension UITestEnvironment {
     fileprivate var mockServerPort: Int? {
-        return (self as? UITestMockedEnvironment)?.socketAddress?.port
+        (self as? UITestMockedEnvironment)?.socketAddress?.port
     }
 }

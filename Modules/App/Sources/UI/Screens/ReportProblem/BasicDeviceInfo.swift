@@ -17,7 +17,7 @@
 
 import UIKit
 
-/// FIXME: this might turn out to be a subset of DeviceInfo provided by Rust - either reuse that or remove this comment
+@MainActor
 protocol BasicDeviceInfo {
     var model: String { get }
     var systemName: String { get }

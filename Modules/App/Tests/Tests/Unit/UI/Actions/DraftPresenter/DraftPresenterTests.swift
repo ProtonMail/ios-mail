@@ -280,7 +280,7 @@ extension DraftPresenterTests {
     func makeSUT(
         stubbedNewDraftResult: NewDraftResult = .ok(.dummyDraft),
         stubbedUndoSendError: DraftUndoSendError? = nil,
-        stubbedCancelScheduleResult: DraftCancelScheduleSendResult = .ok(.init(lastScheduledTime: 1747728129))
+        stubbedCancelScheduleResult: DraftCancelScheduleSendResult = .ok(.init(lastScheduledTime: 1_747_728_129))
     ) -> DraftPresenter {
         DraftPresenter(
             userSession: MailUserSessionSpy(id: ""),

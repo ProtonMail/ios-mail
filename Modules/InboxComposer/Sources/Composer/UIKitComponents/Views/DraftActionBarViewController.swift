@@ -105,12 +105,13 @@ final class DraftActionBarViewController: UIViewController {
             topBorder.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             topBorder.topAnchor.constraint(equalTo: view.topAnchor),
         ])
-        [attachmentButton, passwordButton, discardButton].forEach { button in
-            NSLayoutConstraint.activate([
-                button.widthAnchor.constraint(equalToConstant: buttonSize),
-                button.heightAnchor.constraint(equalTo: button.widthAnchor),
-            ])
-        }
+        [attachmentButton, passwordButton, discardButton]
+            .forEach { button in
+                NSLayoutConstraint.activate([
+                    button.widthAnchor.constraint(equalToConstant: buttonSize),
+                    button.heightAnchor.constraint(equalTo: button.widthAnchor),
+                ])
+            }
     }
 
     private func applyState() {

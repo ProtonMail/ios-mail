@@ -182,7 +182,7 @@ extension RecipientsFieldEditingController {
 
 extension RecipientsFieldEditingController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return cellUIModels.count
+        cellUIModels.count
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -257,7 +257,7 @@ extension RecipientsFieldEditingController: UICollectionViewDelegate {
  */
 extension RecipientsFieldEditingController: UIKeyInput {
     override var canBecomeFirstResponder: Bool {
-        return true
+        true
     }
 
     var hasText: Bool { false }

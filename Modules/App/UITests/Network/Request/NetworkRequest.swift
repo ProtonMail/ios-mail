@@ -20,7 +20,7 @@ import NIOHTTP1
 
 struct NetworkRequest: Equatable, Sendable {
     static func == (lhs: NetworkRequest, rhs: NetworkRequest) -> Bool {
-        return lhs.remoteRequest == rhs.remoteRequest
+        lhs.remoteRequest == rhs.remoteRequest
             && lhs.localPath == rhs.localPath
             && lhs.status == rhs.status
             && lhs.latency == rhs.latency

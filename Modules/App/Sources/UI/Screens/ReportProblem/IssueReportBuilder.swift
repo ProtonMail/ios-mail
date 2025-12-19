@@ -35,6 +35,7 @@ struct IssueReportBuilder {
         self.deviceInfo = deviceInfo
     }
 
+    @MainActor
     func build(with formInfo: FormInfo) -> IssueReport {
         .init(
             operatingSystem: "\(deviceInfo.systemName) - \(deviceInfo.model)",

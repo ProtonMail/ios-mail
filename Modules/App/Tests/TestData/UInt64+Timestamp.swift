@@ -18,6 +18,6 @@
 extension UInt64 {
     // Timestamp 1753883097 = 2025-05-31 01:24:57 UTC
     static var timestamp: UInt64 {
-        1753883097
+        1_753_883_097
     }
 }

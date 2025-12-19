@@ -30,7 +30,7 @@ class UITestVisibilityHelper: ApplicationHolder {
     func findElement(element: XCUIElement, parent: XCUIElement, maxAttempts: Int = 5) -> Bool {
         for _ in 1...maxAttempts {
             let visibility = evaluateElementVisibility(element: element)
-            if (!visibility.isWithinSafeBounds) {
+            if !visibility.isWithinSafeBounds {
                 switch visibility.adjustDirection {
                 case .upwards:
                     parent.swipeUp(velocity: .slow)
@@ -52,12 +52,12 @@ class UITestVisibilityHelper: ApplicationHolder {
         let applicationFrame = application.windows.element(boundBy: 0).frame.size
         let elementFrameMinY = element.frame.minY
 
-        if (elementFrameMinY <= topSafeInsetSize) {
+        if elementFrameMinY <= topSafeInsetSize {
             return UITestVisibilityResult(isWithinSafeBounds: false, adjustDirection: .downwards)
         }
 
         let deltaBottom = applicationFrame.height - elementFrameMinY
-        if (deltaBottom <= bottomSafeInsetSize) {
+        if deltaBottom <= bottomSafeInsetSize {
             return UITestVisibilityResult(isWithinSafeBounds: false, adjustDirection: .upwards)
         }
 

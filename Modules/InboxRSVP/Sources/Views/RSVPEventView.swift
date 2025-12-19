@@ -50,7 +50,7 @@ struct RSVPEventView: View {
             VStack(alignment: .leading, spacing: DS.Spacing.large) {
                 eventHeader
                     .padding(.horizontal, DS.Spacing.extraLarge)
-                if case let .visible(_, userParticipantIndex) = event.answerButtons {
+                if case .visible(_, let userParticipantIndex) = event.answerButtons {
                     answerSection(userParticipantIndex: userParticipantIndex)
                         .padding(.bottom, DS.Spacing.small)
                         .padding(.horizontal, DS.Spacing.extraLarge)
@@ -165,8 +165,8 @@ private extension RsvpAttendeeStatus {
         location: "Huddle Room",
         description: "A brief check-in.",
         recurrence: nil,
-        startsAt: 1754042400,  // Aug 1, 2025 10:00 AM UTC
-        endsAt: 1754044200,  // Aug 1, 2025 10:30 AM UTC
+        startsAt: 1_754_042_400,  // Aug 1, 2025 10:00 AM UTC
+        endsAt: 1_754_044_200,  // Aug 1, 2025 10:30 AM UTC
         occurrence: .dateTime,
         organizer: RsvpOrganizer(name: .none, email: "organizer1@example.com"),
         attendees: [

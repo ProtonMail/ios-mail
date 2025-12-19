@@ -576,7 +576,7 @@ private final class DecryptedMessageSpy: DecryptedMessage, @unchecked Sendable {
     }
 
     override func attachments() -> [AttachmentMetadata] {
-        return []
+        []
     }
 }
 

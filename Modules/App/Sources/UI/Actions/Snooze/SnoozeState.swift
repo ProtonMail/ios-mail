@@ -36,7 +36,7 @@ extension SnoozeState {
         labelId: ID,
         conversationIDs: [ID]
     ) -> Self {
-        return .init(
+        .init(
             conversationIDs: conversationIDs,
             labelId: labelId,
             screen: screen,

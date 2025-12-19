@@ -46,7 +46,8 @@ public struct LockScreen: View {
                 error: $store.state.pinAuthenticationError
             ) { output in
                 store.handle(action: .pin(output))
-            }.onLoad {
+            }
+            .onLoad {
                 store.handle(action: .pinScreenLoaded)
             }
         case .biometric:

@@ -74,7 +74,8 @@ private extension MainKeyUnlockerTests {
         .init(
             base64Encoded:
                 "dAcGOBeHqCMJvQPyOOy303bveHdY+QmCt8RpD6xX8u6+7PLF3pnUXhn91fIb2UND5P7Se8wKkKboY9a9ayFOJMm9uviXe6jCnT9C9Mh8rT3Bn04ctKPIg1YwZXCQwz80kQ/y/tW8wWACS4xRJ70v2MG5nh9jCGsi2nZ3PfFuX4545dfK0H6K0IpdwYYaZqWT6WJrGr6x+QGkJZZc6qfzLvZ7O7lmenuzc2u/fS7+fRouUROQW/2O7bo="
-        ).unsafelyUnwrapped
+        )
+        .unsafelyUnwrapped
     }
 
     var pinProtectionSalt: Data {

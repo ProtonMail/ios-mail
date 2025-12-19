@@ -35,7 +35,7 @@ final class ConversationDetailHeaderMainTests: PMUIMockedNetworkTestCase {
         index: 0,
         senderName: "Not Proton",
         senderAddress: "no-reply@not.proton.black",
-        timestamp: 1716199297,
+        timestamp: 1_716_199_297,
         toRecipients: [UITestHeaderRecipientEntry(index: 0, name: "youngbee@proton.black", address: "youngbee@proton.black")]
     )
 

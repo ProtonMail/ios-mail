@@ -58,12 +58,13 @@ final class ContactPickerCell: UITableViewCell {
             checked.heightAnchor.constraint(equalToConstant: 24),
         ])
 
-        [initials, groupIcon].forEach {
-            NSLayoutConstraint.activate([
-                $0.centerXAnchor.constraint(equalTo: avatarView.centerXAnchor),
-                $0.centerYAnchor.constraint(equalTo: avatarView.centerYAnchor),
-            ])
-        }
+        [initials, groupIcon]
+            .forEach {
+                NSLayoutConstraint.activate([
+                    $0.centerXAnchor.constraint(equalTo: avatarView.centerXAnchor),
+                    $0.centerYAnchor.constraint(equalTo: avatarView.centerYAnchor),
+                ])
+            }
     }
 
     func configure(uiModel: ComposerContactUIModel) {
