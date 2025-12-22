@@ -245,7 +245,7 @@ private extension UIView {
 
 extension Array where Element == (String, ViewImageConfig) {
     public static var allPhones: [Element] {
-        return [
+        [
             ("iPhoneSe", .iPhoneSe),
             ("iPhoneX", .iPhoneX),
             ("iPhone13ProMax", .iPhone13ProMax),

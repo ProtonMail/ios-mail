@@ -26,21 +26,24 @@ final class MockServer: Sendable {
     private let eventLoopGroup = MultiThreadedEventLoopGroup(numberOfThreads: System.coreCount)
 
     private var serverBootstrap: ServerBootstrap {
-        return ServerBootstrap(group: eventLoopGroup)
+        ServerBootstrap(group: eventLoopGroup)
             .serverChannelOption(ChannelOptions.backlog, value: 256)
             .serverChannelOption(
                 ChannelOptions.socket(SocketOptionLevel(SOL_SOCKET), SO_REUSEADDR),
                 value: 1
             )
             .childChannelInitializer { channel in
-                channel.pipeline.configureHTTPServerPipeline(
-                    withPipeliningAssistance: false,
-                    withErrorHandling: false
-                ).flatMap { _ in
-                    channel.pipeline.addHandler(BackPressureHandler()).flatMap { item in
-                        channel.pipeline.addHandler(self.requestsHandler)
+                channel.pipeline
+                    .configureHTTPServerPipeline(
+                        withPipeliningAssistance: false,
+                        withErrorHandling: false
+                    )
+                    .flatMap { _ in
+                        channel.pipeline.addHandler(BackPressureHandler())
+                            .flatMap { item in
+                                channel.pipeline.addHandler(self.requestsHandler)
+                            }
                     }
-                }
             }
             .childChannelOption(ChannelOptions.socket(IPPROTO_TCP, TCP_NODELAY), value: 1)
             .childChannelOption(

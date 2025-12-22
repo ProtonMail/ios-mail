@@ -41,6 +41,6 @@ public extension WKWebView {
 
 private class WKWebViewWithNoAccessoryView: WKWebView {
     override var inputAccessoryView: UIView? {
-        return nil
+        nil
     }
 }

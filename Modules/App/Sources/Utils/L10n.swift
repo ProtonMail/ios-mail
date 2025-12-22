@@ -720,10 +720,41 @@ enum L10n {
             "To: ...",
             comment: "Placeholder for a draft in the conversation view when the draft has no recipients."
         )
+        static let noTrackersDetected = LocalizedStringResource(
+            "No trackers detected",
+            comment: "Message details view when no trackers are detected."
+        )
+        static let trackerProtection = LocalizedStringResource(
+            "Tracker protection:",
+            comment: "Message details title for tracker info row."
+        )
+        static func trackersBlocked(count: Int) -> LocalizedStringResource {
+            .init(
+                "\(count) trackers blocked",
+                comment: "Message details number of trackers blocked."
+            )
+        }
+        static func linksCleaned(count: Int) -> LocalizedStringResource {
+            .init(
+                "\(count) links cleaned",
+                comment: "Message details number of links cleaned."
+            )
+        }
         static let hideDetails = LocalizedStringResource(
             "Hide details",
             comment: "Title of the button that hide details of a message."
         )
+    }
+
+    enum TrackingInfo {
+        static let description = LocalizedStringResource(
+            "If you receive an email containing spy pixels (trackers) or tracking links, you’ll see the shield icon in email details. [Learn more…](https://proton.me/support/email-tracker-protection)",
+            comment: "Description text explaining the tracking protection."
+        )
+
+        static let original = LocalizedStringResource("Original", comment: "Subtitle for the original link before cleaning.")
+
+        static let cleaned = LocalizedStringResource("Cleaned", comment: "Subtitle for link after cleaning.")
     }
 
     enum Folders {
@@ -910,23 +941,27 @@ enum L10n {
         enum AppIcon {
             static let buttonTitle = LocalizedStringResource(
                 "App Icon",
-                comment: "Title of the button that allows the user to change the app’s icon."
+                comment: "Title of the button that allows the user to change the app's icon."
             )
-            static let primary = LocalizedStringResource(
-                "Primary",
-                comment: "Name of the default (primary) app icon shown in the app icon picker."
+            static let title = LocalizedStringResource(
+                "App icon",
+                comment: "Title shown on the app icon selection screen."
             )
-            static let notes = LocalizedStringResource(
-                "Notes",
-                comment: "Name of the alternate 'Notes' app icon shown in the app icon picker."
+            static let discreetToggle = LocalizedStringResource(
+                "Discreet app icon",
+                comment: "Toggle label for enabling/disabling discreet app icon feature."
             )
-            static let weather = LocalizedStringResource(
-                "Weather",
-                comment: "Name of the alternate 'Weather' app icon shown in the app icon picker."
+            static let description = LocalizedStringResource(
+                "Keep the default Proton Mail icon, or disguise it with a more discreet one for extra privacy. Notifications will always show the Proton Mail name and icon. [Learn more…](https://proton.me/support/disguise-app-icon)",
+                comment: "Description text explaining the app icon feature and privacy implications."
             )
-            static let calculator = LocalizedStringResource(
-                "Calculator",
-                comment: "Name of the alternate 'Calculator' app icon shown in the app icon picker."
+            static let discreet = LocalizedStringResource(
+                "Discreet",
+                comment: "Label shown when a discreet app icon is selected."
+            )
+            static let defaultIcon = LocalizedStringResource(
+                "Default",
+                comment: "Label shown when the default app icon is selected."
             )
         }
 

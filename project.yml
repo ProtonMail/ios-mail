@@ -92,7 +92,7 @@ settings:
     CODE_SIGN_STYLE: Manual
     CURRENT_PROJECT_VERSION: 1
     DEVELOPMENT_TEAM: 2SB5Z68H26
-    MARKETING_VERSION: 7.6.2
+    MARKETING_VERSION: 7.7.0
     SWIFT_STRICT_CONCURRENCY: complete
   configs:
     Debug:
@@ -139,7 +139,7 @@ targets:
           script: |
             if [ $ACTION == "build" ]; then
               cd "$SRCROOT"
-              xcrun swift-format format -r Modules -p -i
+              xcrun swift-format format -r Modules -i
             fi
           settingsTarget: ProtonMail
         - name: Sourcery
@@ -238,6 +238,10 @@ targets:
       - package: Scrypt
       - target: ShareExtension
       - package: SwiftUIIntrospect
+    preBuildScripts:
+      - name: swift-format
+        script: xcrun swift-format lint -r Modules
+        basedOnDependencyAnalysis: false
 
   ProtonMailTest:
     type: bundle.unit-test

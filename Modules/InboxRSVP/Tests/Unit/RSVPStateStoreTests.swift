@@ -228,7 +228,7 @@ final class RSVPStateStoreTests {
     func calendarIconTappedAction_WhenHasEventInformation_ItOpensCalendarAppWithEventDetails() async {
         let expectedEvent: RsvpEvent = .bestEvent(
             id: "event_id_9",
-            startsAt: 1672531200,
+            startsAt: 1_672_531_200,
             calendar: .init(id: "calendar_id_42", name: "Work", color: .empty)
         )
 
@@ -252,7 +252,7 @@ final class RSVPStateStoreTests {
     func calendarIconTappedAction_WhenHasEventInformationButAppVersionIsToOld_ItTriesToOpenCalendarAppAndFallbacksToAppStore() async {
         let expectedEvent: RsvpEvent = .bestEvent(
             id: "event_id_3",
-            startsAt: 1609459200,
+            startsAt: 1_609_459_200,
             calendar: .init(id: "calendar_id_19", name: "Work", color: .empty)
         )
 

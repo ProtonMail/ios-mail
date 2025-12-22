@@ -25,6 +25,6 @@ enum RequestMethod: String, Sendable {
     case delete = "DELETE"
 
     static func == (_ left: RequestMethod, _ right: HTTPMethod) -> Bool {
-        return left.rawValue == right.rawValue
+        left.rawValue == right.rawValue
     }
 }

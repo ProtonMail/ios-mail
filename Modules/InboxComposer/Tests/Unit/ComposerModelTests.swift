@@ -797,7 +797,7 @@ final class ComposerModelTests: BaseTestCase {
         let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: .mockInstance)
         let dismissSpy = DismissSpy()
 
-        let scheduleTime: UInt64 = 1905427712
+        let scheduleTime: UInt64 = 1_905_427_712
         await sut.sendMessage(at: scheduleTime.date, dismissAction: dismissSpy)
 
         XCTAssertTrue(mockDraft.scheduleSendWasCalled)
@@ -813,7 +813,7 @@ final class ComposerModelTests: BaseTestCase {
         let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: .mockInstance)
         let dismissSpy = DismissSpy()
 
-        let scheduleTime: UInt64 = 1905427712
+        let scheduleTime: UInt64 = 1_905_427_712
         await sut.sendMessage(at: scheduleTime.date, dismissAction: dismissSpy)
 
         XCTAssertTrue(mockDraft.scheduleSendWasCalled)
@@ -943,11 +943,12 @@ private extension ComposerModelTests {
     }
 
     func fulfill(_ expectation: XCTestExpectation, in sut: ComposerModel, when condition: @escaping (ComposerState) -> Bool) {
-        sut.$state.sink { state in
-            guard condition(state) else { return }
-            expectation.fulfill()
-        }
-        .store(in: &cancellables)
+        sut.$state
+            .sink { state in
+                guard condition(state) else { return }
+                expectation.fulfill()
+            }
+            .store(in: &cancellables)
     }
 }
 
@@ -1010,7 +1011,7 @@ extension DraftAttachment {
             size: 123456,
             isListable: false
         )
-        return DraftAttachment(state: state, attachment: mockAttachment, stateModifiedTimestamp: 1742829536)
+        return DraftAttachment(state: state, attachment: mockAttachment, stateModifiedTimestamp: 1_742_829_536)
     }
 }
 
@@ -1039,7 +1040,7 @@ private extension MockDraft {
             size: 123456,
             isListable: false
         )
-        return [DraftAttachment(state: .uploaded, attachment: mockAttachment, stateModifiedTimestamp: 1742829536)]
+        return [DraftAttachment(state: .uploaded, attachment: mockAttachment, stateModifiedTimestamp: 1_742_829_536)]
     }
 
     static var defaultMockDraft: MockDraft {

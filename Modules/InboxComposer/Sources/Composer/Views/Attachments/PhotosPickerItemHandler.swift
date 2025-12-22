@@ -30,8 +30,8 @@ struct PhotosPickerItemHandler {
         to draft: AppDraftProtocol,
         photos: [PhotosPickerItemTransferable]
     ) async -> PhotosPickerItemHandlerResult {
-        var successfulContentIds = [String]()
-        var allErrors = [DraftAttachmentUploadError]()
+        var successfulContentIds: [String] = []
+        var allErrors: [DraftAttachmentUploadError] = []
         let uploadFolder: URL = URL(fileURLWithPath: draft.attachmentList().attachmentUploadDirectory())
         for await result in saveToFile(items: photos, destinationFolder: uploadFolder) {
             switch result {
@@ -70,7 +70,7 @@ struct PhotosPickerItemHandler {
      Returns an asynchronous sequence that publishes a result for each item without waiting for the rest to complete.
      */
     private func saveToFile(items: [PhotosPickerItemTransferable], destinationFolder: URL) -> AsyncStream<Result<URL, Error>> {
-        return AsyncStream { continuation in
+        AsyncStream { continuation in
             Task {
                 await withTaskGroup(of: Result<URL, Error>.self) { group in
                     for item in items {

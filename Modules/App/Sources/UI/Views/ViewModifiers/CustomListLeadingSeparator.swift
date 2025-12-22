@@ -23,7 +23,7 @@ struct CustomListLeadingSeparator: ViewModifier {
     func body(content: Content) -> some View {
         content
             .alignmentGuide(.listRowSeparatorLeading) { viewDimensions in
-                return -20.0
+                -20.0
             }
     }
 }

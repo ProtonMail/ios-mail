@@ -41,7 +41,7 @@ struct SignaturesScreen: View {
     }
 
     var body: some View {
-        return StoreView(
+        StoreView(
             store: SignaturesStateStore(
                 state: initialState,
                 customSettings: customSettings,

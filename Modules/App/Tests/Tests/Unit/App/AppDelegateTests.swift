@@ -24,11 +24,12 @@ import UIKit
 final class AppDelegateTests {
     @Test
     func testSceneConfiguration_WhenConnectingSceneSession_HasCustomSceneDelegateConfigured() throws {
-        let sceneConfiguration = AppDelegate().application(
-            .shared,
-            configurationForConnecting: try scene(),
-            options: try connectionOptions()
-        )
+        let sceneConfiguration = AppDelegate()
+            .application(
+                .shared,
+                configurationForConnecting: try scene(),
+                options: try connectionOptions()
+            )
 
         #expect(sceneConfiguration.delegateClass === SceneDelegate.self)
     }

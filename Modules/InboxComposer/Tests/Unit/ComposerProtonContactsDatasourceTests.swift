@@ -33,7 +33,7 @@ final class ComposerProtonContactsDatasourceTests: XCTestCase {
             repository: .init(
                 contactStore: CNContactStorePartialStub(),
                 allContactsProvider: .init(contactSuggestions: { deviceContacts, _ in
-                    return .ok(ContactSuggestionsStub(all: .testData))
+                    .ok(ContactSuggestionsStub(all: .testData))
                 }),
                 mailUserSession: .empty()
             )

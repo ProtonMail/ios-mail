@@ -63,8 +63,9 @@ private struct TransparentBlur: UIViewRepresentable {
 
 private class TransparentBlurView: UIVisualEffectView {
     override func layoutSublayers(of layer: CALayer) {
-        layer.sublayers?.first?.filters?.removeAll(where: { filter in
-            String(describing: filter) != "gaussianBlur"
-        })
+        layer.sublayers?.first?.filters?
+            .removeAll(where: { filter in
+                String(describing: filter) != "gaussianBlur"
+            })
     }
 }

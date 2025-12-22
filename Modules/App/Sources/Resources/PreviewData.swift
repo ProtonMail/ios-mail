@@ -23,12 +23,13 @@ enum PreviewData {
 
 extension LabelUIModel {
     static func random(num: Int) -> [LabelUIModel] {
-        (0..<num).map { _ in
-            LabelUIModel(
-                labelId: .random(),
-                text: ["a", "b", "c"].randomElement()!,
-                color: [Color.blue, .red, .green].randomElement()!
-            )
-        }
+        (0..<num)
+            .map { _ in
+                LabelUIModel(
+                    labelId: .random(),
+                    text: ["a", "b", "c"].randomElement()!,
+                    color: [Color.blue, .red, .green].randomElement()!
+                )
+            }
     }
 }

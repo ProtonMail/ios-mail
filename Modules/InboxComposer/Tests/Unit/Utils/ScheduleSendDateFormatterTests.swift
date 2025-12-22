@@ -37,7 +37,7 @@ final class ScheduleSendDateFormatterTests {
             .tomorrowTime
             .date
     }
-    private var distantFuture: Date { Date(timeIntervalSince1970: 1889427600) }
+    private var distantFuture: Date { Date(timeIntervalSince1970: 1_889_427_600) }
 
     // MARK: Format.short
 

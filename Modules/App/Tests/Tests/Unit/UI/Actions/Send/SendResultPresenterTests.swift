@@ -344,10 +344,8 @@ private extension Array where Element == SendResultToastAction {
     func isSame(as other: [SendResultToastAction]) -> Bool {
         guard self.count == other.count else { return false }
 
-        for (action1, action2) in zip(self, other) {
-            if !action1.isSame(as: action2) {
-                return false
-            }
+        for (action1, action2) in zip(self, other) where !action1.isSame(as: action2) {
+            return false
         }
         return true
     }

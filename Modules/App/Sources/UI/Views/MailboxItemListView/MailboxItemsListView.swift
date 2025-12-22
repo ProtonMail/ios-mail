@@ -279,12 +279,12 @@ private extension AssignedSwipeAction {
 
 private extension AssignedSwipeAction {
     func isDestructive(locationSystemLabel: SystemLabel?, itemSystemLabel: SystemLabel?) -> Bool {
-        guard case let .moveTo(location) = self else {
+        guard case .moveTo(let location) = self else {
             return false
         }
 
         switch location {
-        case let .moveToSystemLabel(targetSystemLabel, _):
+        case .moveToSystemLabel(let targetSystemLabel, _):
             switch locationSystemLabel {
             case .allMail, .allSent, .allDrafts:
                 return false

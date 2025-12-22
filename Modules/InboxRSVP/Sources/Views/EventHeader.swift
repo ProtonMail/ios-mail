@@ -36,7 +36,7 @@ struct EventHeader: View {
                     .fontWeight(.medium)
                     .foregroundStyle(DS.Color.Text.norm)
                     .minimumScaleFactor(0.75)
-                if case let .visible(attendance, _) = answerButtons, attendance == .optional {
+                if case .visible(let attendance, _) = answerButtons, attendance == .optional {
                     Text(L10n.attendanceOptional)
                         .font(.footnote)
                         .fontWeight(.regular)

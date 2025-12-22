@@ -29,11 +29,13 @@ final class ScheduleSendSheetSnapshotTests {
 
     @Test
     func testScheduleSend_whenFreeUser_itLayoutsCorrectOnIphoneX() throws {
-        let options: DraftScheduleSendOptions = try ScheduleSendOptionsProvider.dummy(
-            isCustomAvailable: false,
-            stubTomorrowTime: 1810210838,
-            stubMondayTime: 1810729238
-        ).scheduleSendOptions().get()
+        let options: DraftScheduleSendOptions =
+            try ScheduleSendOptionsProvider.dummy(
+                isCustomAvailable: false,
+                stubTomorrowTime: 1_810_210_838,
+                stubMondayTime: 1_810_729_238
+            )
+            .scheduleSendOptions().get()
         let scheduleSend = ScheduleSendPickerSheet(
             predefinedTimeOptions: options.toScheduleSendTimeOptions(lastScheduleSendTime: nil),
             isCustomOptionAvailable: options.isCustomOptionAvailable,
@@ -45,11 +47,13 @@ final class ScheduleSendSheetSnapshotTests {
 
     @Test
     func testScheduleSend_whenPaidUser_itLayoutsCorrectOnIphoneX() throws {
-        let options: DraftScheduleSendOptions = try ScheduleSendOptionsProvider.dummy(
-            isCustomAvailable: true,
-            stubTomorrowTime: 1810210838,
-            stubMondayTime: 1810729238
-        ).scheduleSendOptions().get()
+        let options: DraftScheduleSendOptions =
+            try ScheduleSendOptionsProvider.dummy(
+                isCustomAvailable: true,
+                stubTomorrowTime: 1_810_210_838,
+                stubMondayTime: 1_810_729_238
+            )
+            .scheduleSendOptions().get()
         let scheduleSend = ScheduleSendPickerSheet(
             predefinedTimeOptions: options.toScheduleSendTimeOptions(lastScheduleSendTime: nil),
             isCustomOptionAvailable: options.isCustomOptionAvailable,
@@ -61,13 +65,15 @@ final class ScheduleSendSheetSnapshotTests {
 
     @Test
     func testScheduleSend_whenPaidUser_andPreviouslySetTime_itLayoutsCorrectOnIphoneX() throws {
-        let options: DraftScheduleSendOptions = try ScheduleSendOptionsProvider.dummy(
-            isCustomAvailable: true,
-            stubTomorrowTime: 1810210838,
-            stubMondayTime: 1810729238
-        ).scheduleSendOptions().get()
+        let options: DraftScheduleSendOptions =
+            try ScheduleSendOptionsProvider.dummy(
+                isCustomAvailable: true,
+                stubTomorrowTime: 1_810_210_838,
+                stubMondayTime: 1_810_729_238
+            )
+            .scheduleSendOptions().get()
         let scheduleSend = ScheduleSendPickerSheet(
-            predefinedTimeOptions: options.toScheduleSendTimeOptions(lastScheduleSendTime: 1810483200),
+            predefinedTimeOptions: options.toScheduleSendTimeOptions(lastScheduleSendTime: 1_810_483_200),
             isCustomOptionAvailable: options.isCustomOptionAvailable,
             dateFormatter: dateFormatter,
             onTimeSelected: { _ in }

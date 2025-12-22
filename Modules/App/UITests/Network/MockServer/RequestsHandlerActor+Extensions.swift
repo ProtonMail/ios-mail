@@ -28,7 +28,7 @@ actor RequestsHandlerActor {
     }
 
     func matchClientRequestHeader(_ clientRequest: HTTPRequestHead) -> NetworkRequest? {
-        return findMatchingRequest(clientRequest: clientRequest)
+        findMatchingRequest(clientRequest: clientRequest)
     }
 
     func remove(_ request: NetworkRequest) {
@@ -46,16 +46,16 @@ actor RequestsHandlerActor {
 
 extension RequestsHandlerActor {
     fileprivate func findMatchingRequest(clientRequest: HTTPRequestHead) -> NetworkRequest? {
-        return
-            mockedRequests
+        mockedRequests
             .filter { $0.remoteRequest.method == clientRequest.method }
             .sorted { $0.priority > $1.priority }
             .first { mockRequest in
                 switch true {
                 case mockRequest.ignoreQueryParams && mockRequest.wildcardMatch:
-                    return clientRequest.withStrippedQueryParams().wildcardMatches(
-                        mockRequest.remoteRequest
-                    )
+                    return clientRequest.withStrippedQueryParams()
+                        .wildcardMatches(
+                            mockRequest.remoteRequest
+                        )
                 case mockRequest.ignoreQueryParams:
                     return clientRequest.stripPathQueryParams() == mockRequest.remoteRequest.path
                 case mockRequest.wildcardMatch:
@@ -69,7 +69,7 @@ extension RequestsHandlerActor {
 
 extension HTTPRequestHead {
     fileprivate func withStrippedQueryParams() -> Self {
-        return HTTPRequestHead(
+        HTTPRequestHead(
             version: self.version,
             method: self.method,
             uri: self.stripPathQueryParams()
@@ -77,7 +77,7 @@ extension HTTPRequestHead {
     }
 
     fileprivate func stripPathQueryParams() -> String {
-        return self.uri.components(separatedBy: "?").first ?? self.uri
+        self.uri.components(separatedBy: "?").first ?? self.uri
     }
 
     fileprivate func wildcardMatches(_ request: RemoteRequest) -> Bool {

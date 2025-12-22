@@ -43,7 +43,8 @@ struct LabelAsActionPerformer {
             input.selectedLabelsIDs,
             input.partiallySelectedLabelsIDs,
             input.archive
-        ).get()
+        )
+        .get()
 
         return output
     }

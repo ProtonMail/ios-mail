@@ -26,7 +26,7 @@ struct MessageActionButtonsView: View {
     var onEvent: (ReplyAction) -> Void
 
     var body: some View {
-        HStack() {
+        HStack {
             MessageActionButtonView(symbol: .reply, text: L10n.Action.reply, isDisabled: isDisabled) {
                 onEvent(.reply)
             }

@@ -121,11 +121,13 @@ extension RequestsHandler {
                 promise: nil
             )
 
-            context.channel.writeAndFlush(
-                self.wrapOutboundOut(HTTPServerResponsePart.end(nil))
-            ).whenComplete { _ in
-                /* no op */
-            }
+            context.channel
+                .writeAndFlush(
+                    self.wrapOutboundOut(HTTPServerResponsePart.end(nil))
+                )
+                .whenComplete { _ in
+                    /* no op */
+                }
         }
     }
 }

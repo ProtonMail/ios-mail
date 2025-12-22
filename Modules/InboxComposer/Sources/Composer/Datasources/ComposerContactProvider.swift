@@ -44,7 +44,7 @@ public final class ComposerContactProvider {
         task?.cancel()
         task = Task {
             let textForMatching = text.toContactMatchFormat()
-            var matchingContacts = [ComposerContact]()
+            var matchingContacts: [ComposerContact] = []
 
             if let contactsResult {
                 matchingContacts = contactsResult.filter(textForMatching)

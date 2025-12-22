@@ -2044,6 +2044,12 @@
             "state" : "translated",
             "value" : "Залишити Free план"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "继续使用免费套餐"
+          }
         }
       }
     },
@@ -2222,6 +2228,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Створюйте все необхідне для організації. Отримайте це та багато іншого з %@."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "创建您保持井井有条所需的一切。通过 %@ 获得此功能及更多。"
           }
         }
       }
@@ -2593,6 +2605,12 @@
             "state" : "translated",
             "value" : "Налаштуйте час надсилання е-пошти. Насолоджуйтеся цією та іншими можливостями з %@."
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "自定义电子邮件的发送时间。使用%@，轻松享受此功能及更多便利。"
+          }
         }
       }
     },
@@ -2772,6 +2790,12 @@
             "state" : "translated",
             "value" : "Видаляє спам і сміття через 30 днів. Отримайте це та багато іншого з %@."
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "30 天后删除滥发邮件和废件箱。%@ 提供此功能及更多功能。"
+          }
         }
       }
     },
@@ -2926,6 +2950,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Знижки базуються на стандартних місячних тарифах. Автоматично поновлюється за %1$@ / %2$@ до скасування."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "优惠基于标准月度定价。自动续订，费用为 %1$@ /%2$@，直至取消。"
           }
         }
       }
@@ -3870,6 +3900,12 @@
             "state" : "translated",
             "value" : "Персоналізуйте свій мобільний підпис. Насолоджуйтеся цією та іншими можливостями з %@."
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "让您的移动签名独具个性。使用 %@，轻松享受此功能及更多便利。"
+          }
         }
       }
     },
@@ -4395,6 +4431,12 @@
             "state" : "translated",
             "value" : "лише %@ / місяць"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "仅 %@ /月"
+          }
         }
       }
     },
@@ -4573,6 +4615,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Сплачуйте щорічно та заощаджуйте %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "按年付费，可节省 %@"
           }
         }
       }
@@ -5511,6 +5559,12 @@
             "state" : "translated",
             "value" : "Легко надсилайте групові е-листи. Насолоджуйтеся цією та іншими можливостями з %@."
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "轻松发送群组电子邮件。使用%@，轻松享受此功能及更多便利。"
+          }
         }
       }
     },
@@ -6072,6 +6126,12 @@
             "state" : "translated",
             "value" : "Відкладіть його — і воно буде доставлено пізніше. Насолоджуйтеся цією та іншими можливостями з %@."
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "延后寄送，稍后再送达。%@ 让您尽享更多便利。"
+          }
         }
       }
     },
@@ -6441,6 +6501,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Запитаний план не знайдено."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "找不到请求的套餐。"
           }
         }
       }
@@ -7384,6 +7450,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Щорічний (знижка %lld%%)"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "年度（%lld%% 折扣）"
           }
         }
       }

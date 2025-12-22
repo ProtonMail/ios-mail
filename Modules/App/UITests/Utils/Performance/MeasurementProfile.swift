@@ -112,8 +112,8 @@ public class MeasurementProfile: MeasurementProtocol {
     }
 
     func getProfileMetricsStreams() -> [[String: Any]] {
-        return measuresList.compactMap { measure in
-            return measure.getMeasureStream()
+        measuresList.compactMap { measure in
+            measure.getMeasureStream()
         }
     }
 }

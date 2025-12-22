@@ -104,9 +104,9 @@ struct MessageBodyReaderView: UIViewRepresentable {
                         height: auto !important;
                     }
 
-                    table {
+                    * {
                         /* This does not make sense on mobile */
-                        float: none;
+                        float: none !important;
                     }
 
                     body {

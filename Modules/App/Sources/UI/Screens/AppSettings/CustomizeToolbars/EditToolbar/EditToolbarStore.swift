@@ -67,9 +67,10 @@ class EditToolbarStore: StateStore {
                     to: .init(selected: selectedList, unselected: unselectedList))
         case .onLoad:
             do {
-                let actions = try await customizeToolbarRepository.fetchActions()[
-                    keyPath: state.toolbarType.actionsKeyPath
-                ]
+                let actions =
+                    try await customizeToolbarRepository.fetchActions()[
+                        keyPath: state.toolbarType.actionsKeyPath
+                    ]
                 state = state.copy(\.toolbarActions, to: actions)
             } catch {
                 AppLogger.log(error: error, category: .customizeToolbar)

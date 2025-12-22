@@ -7240,197 +7240,6 @@
         }
       }
     },
-    "Got it" : {
-      "comment" : "Attachment error ok button",
-      "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Зразумела"
-          }
-        },
-        "ca" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "D'acord"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Rozumím"
-          }
-        },
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Forstået"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Verstanden"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Το κατάλαβα"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Got it"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Entendido"
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Entendido"
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Selvä"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "J'ai compris"
-          }
-        },
-        "hu" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Értem."
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dimengerti"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ho capito"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "はい"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "გავიგე"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "알겠습니다"
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Skjønner"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Begrepen"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ok"
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Entendido"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Entendi"
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Am înțeles"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Понятно"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Rozumiem"
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Razumem"
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Förstått"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Anladım"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Зрозуміло"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "知道了"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "瞭解"
-          }
-        }
-      }
-    },
     "How expiration works?" : {
       "comment" : "subtitle for the learn more option in the message expiration menu",
       "localizations" : {
@@ -17222,6 +17031,12 @@
             "value" : "Visningsstilen for vedlegget kunne ikke oppdateres. Prøv på nytt."
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "De dispositie van de bijlage kon niet worden bijgewerkt, probeer het opnieuw."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -17932,6 +17747,12 @@
             "value" : "Det er en grense på 25 MB for vedlegg per e-post, inkludert innebygde bilder, og %lld vedlegg kunne ikke legges til. Send dem i separate e-poster eller del dem via Proton Drive."
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Er is een limiet van 25 MB voor bijlagen per e-mail, inclusief inline afbeeldingen, en %lld bijlagen konden niet worden toegevoegd. Verstuur ze in afzonderlijke e-mails of deel ze via Proton Drive."
+          }
+        },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
@@ -18067,6 +17888,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Det er en grense på 25 MB for vedlegg per e-post, inkludert innebygde bilder. Send dem i separate e-poster eller del dem via Proton Drive."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Er is een limiet van 25 MB voor bijlagen per e-mail, inclusief inline afbeeldingen. Verzend ze in aparte e-mails of deel ze via Proton Drive."
           }
         },
         "ro" : {
@@ -19523,6 +19350,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Du har nådd grensen for vedlegg, inkludert innebygde bilder. Ett eller flere vedlegg kunne ikke legges til. Send dem i separate e-poster eller del dem via Proton Drive."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "U heeft het maximale aantal bijlagen, inclusief inline afbeeldingen, bereikt. Eén of meer bijlagen konden niet worden toegevoegd. Verzend ze in aparte e-mails of deel ze via Proton Drive."
           }
         },
         "ro" : {

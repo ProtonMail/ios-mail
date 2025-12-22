@@ -20,6 +20,7 @@ import SwiftUI
 public extension DS.Icon {
     static let icArchiveBox = ImageResource.icArchiveBox
     static let icArrowUpFromSquare = ImageResource.icArrowUpFromSquare
+    static let icArrowOutSquare = ImageResource.icArrowOutSquare
     static let icBug = ImageResource.icBug
     static let icCalendarToday = ImageResource.icCalendarToday
     static let icCalendarGrid = ImageResource.icCalendarGrid
@@ -30,6 +31,7 @@ public extension DS.Icon {
     static let icChevronTinyDown = ImageResource.icChevronTinyDown
     static let icChevronTinyUp = ImageResource.icChevronTinyUp
     static let icChevronDownFilled = ImageResource.icChevronDownFilled
+    static let icChevronRightFilled = ImageResource.icChevronRightFilled
     static let icChevronUpFilled = ImageResource.icChevronUpFilled
     static let icCircleFilled = ImageResource.icCircleFilled
     static let icClock = ImageResource.icClock
@@ -62,6 +64,7 @@ public extension DS.Icon {
     static let icPlus = ImageResource.icPlus
     static let icSliders = ImageResource.icSliders
     static let icShield2Bolt = ImageResource.icShield2Bolt
+    static let icShield2CheckFilled = ImageResource.icShield2CheckFilled
     static let icSpam = ImageResource.icSpam
     static let icSparkles = ImageResource.icSparkles
     static let icSunLeftHalfFilled = ImageResource.icSunLeftHalfFilled

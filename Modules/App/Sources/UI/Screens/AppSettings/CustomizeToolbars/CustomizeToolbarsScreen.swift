@@ -52,7 +52,8 @@ struct CustomizeToolbarsScreen: View {
             }
             .padding(.horizontal, DS.Spacing.large)
             .padding(.bottom, DS.Spacing.extraLarge)
-        }.onAppear {
+        }
+        .onAppear {
             store.handle(action: .onAppear)
         }
         .onChange(
