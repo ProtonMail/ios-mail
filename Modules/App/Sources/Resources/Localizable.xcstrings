@@ -25,7 +25,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "(Kladde)"
+            "value" : "(Udkast)"
           }
         },
         "de" : {
@@ -449,43 +449,19 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$@ des %2$@"
-          }
-        },
-        "hu" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$@ / %2$@"
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$@ dari %2$@"
+            "value" : "%1$@ sur %2$@"
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%1$@ di %2$@"
+            "value" : "%1$@ / %2$@"
           }
         },
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%2$@ の中の%1$@"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$@ %2$@-დან"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%2$@ 중 %1$@"
+            "value" : "%1$@/%2$@"
           }
         },
         "nb" : {
@@ -498,18 +474,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%1$@ van %2$@"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$@ z %2$@"
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$@ de %2$@"
           }
         },
         "pt-BR" : {
@@ -536,12 +500,6 @@
             "value" : "%1$@ z %2$@"
           }
         },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$@ od %2$@"
-          }
-        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -552,24 +510,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%1$@ / %2$@"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%1$@ з %2$@"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "共 %2$@，已使用 %1$@"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%2$@ 中的 %1$@"
           }
         }
       }
@@ -583,25 +523,25 @@
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld далучэнні"
+                  "value" : "%lld далучэннямі"
                 }
               },
               "many" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld далучэнняў"
+                  "value" : "%lld далучэннямі"
                 }
               },
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld далучэнне"
+                  "value" : "%lld далучэннем"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld далучэнняў"
+                  "value" : "%lld далучэннямі"
                 }
               }
             }
@@ -613,13 +553,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld adjunt"
+                  "value" : "%lld fitxer adjunt"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld adjunts"
+                  "value" : "%lld fitxers adjunts"
                 }
               }
             }
@@ -799,36 +739,6 @@
             }
           }
         },
-        "hu" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld melléklet"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld mellékletek"
-                }
-              }
-            }
-          }
-        },
-        "id" : {
-          "variations" : {
-            "plural" : {
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld lampiran"
-                }
-              }
-            }
-          }
-        },
         "it" : {
           "variations" : {
             "plural" : {
@@ -853,37 +763,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld個の添付ファイル"
-                }
-              }
-            }
-          }
-        },
-        "ka" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld მიმაგრებული ფაილი"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld მიმაგრებული ფაილი"
-                }
-              }
-            }
-          }
-        },
-        "ko" : {
-          "variations" : {
-            "plural" : {
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld 첨부파일"
+                  "value" : "%lld 個の添付ファイル"
                 }
               }
             }
@@ -925,54 +805,6 @@
             }
           }
         },
-        "pl" : {
-          "variations" : {
-            "plural" : {
-              "few" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld załączniki"
-                }
-              },
-              "many" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld załączników"
-                }
-              },
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld załącznik"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld załączników"
-                }
-              }
-            }
-          }
-        },
-        "pt" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld anexo"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld anexos"
-                }
-              }
-            }
-          }
-        },
         "pt-BR" : {
           "variations" : {
             "plural" : {
@@ -997,19 +829,19 @@
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Fișiere atașate: %lld"
+                  "value" : "Atașamente: %lld"
                 }
               },
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Fișiere atașate: %lld"
+                  "value" : "Atașamente: %lld"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Fișiere atașate: %lld"
+                  "value" : "Atașamente: %lld"
                 }
               }
             }
@@ -1039,7 +871,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld вложений"
+                  "value" : "%lld вложения"
                 }
               }
             }
@@ -1070,36 +902,6 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld príloh"
-                }
-              }
-            }
-          }
-        },
-        "sl" : {
-          "variations" : {
-            "plural" : {
-              "few" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld priponke"
-                }
-              },
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld priponka"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld priponk"
-                }
-              },
-              "two" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld priponki"
                 }
               }
             }
@@ -1140,66 +942,144 @@
               }
             }
           }
-        },
-        "uk" : {
-          "variations" : {
-            "plural" : {
-              "few" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld вкладення"
-                }
-              },
-              "many" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld вкладень"
-                }
-              },
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld вкладення"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld вкладень"
-                }
-              }
-            }
-          }
-        },
-        "zh-Hans" : {
-          "variations" : {
-            "plural" : {
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld 个附件"
-                }
-              }
-            }
-          }
-        },
-        "zh-Hant" : {
-          "variations" : {
-            "plural" : {
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld 個附件"
-                }
-              }
-            }
-          }
         }
       }
     },
     "%lld links cleaned" : {
       "comment" : "Message details number of links cleaned.",
       "localizations" : {
+        "be" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Ачышчана %lld спасылкі"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Ачышчана %lld спасылак"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Ачышчана %lld спасылка"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Ачышчана %lld спасылак"
+                }
+              }
+            }
+          }
+        },
+        "ca" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "S'ha eliminat %lld enllaç"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "S'han eliminat %lld enllaços"
+                }
+              }
+            }
+          }
+        },
+        "cs" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld odkazy vyčištěny"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld odkazů vyčištěno"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld odkaz vyčištěn"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld odkazů vyčištěno"
+                }
+              }
+            }
+          }
+        },
+        "da" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld link renset"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld links renset"
+                }
+              }
+            }
+          }
+        },
+        "de" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Link bereinigt"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Links bereinigt"
+                }
+              }
+            }
+          }
+        },
+        "el" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld σύνδεσμος καθαρίστηκε"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld σύνδεσμοι καθαρίστηκαν"
+                }
+              }
+            }
+          }
+        },
         "en" : {
           "variations" : {
             "plural" : {
@@ -1217,6 +1097,264 @@
               }
             }
           }
+        },
+        "es" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld enlace saneado"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld enlaces saneados"
+                }
+              }
+            }
+          }
+        },
+        "es-419" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld enlace limpiado"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld enlaces limpiados"
+                }
+              }
+            }
+          }
+        },
+        "fi" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld linkki puhdistettu"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld linkkiä puhdistettu"
+                }
+              }
+            }
+          }
+        },
+        "fr" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld lien a été nettoyé"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Les liens ont été supprimés"
+                }
+              }
+            }
+          }
+        },
+        "it" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld link pulito"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld link puliti"
+                }
+              }
+            }
+          }
+        },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld 件のリンクがクリアされました"
+                }
+              }
+            }
+          }
+        },
+        "nb" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld kobling renset"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld koblinger renset"
+                }
+              }
+            }
+          }
+        },
+        "pt-BR" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld link limpo"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld links limpos"
+                }
+              }
+            }
+          }
+        },
+        "ro" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Legături web curățate: %lld"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Legături web curățate: %lld"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Legături web curățate: %lld"
+                }
+              }
+            }
+          }
+        },
+        "ru" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld ссылки очищено"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld ссылок очищено"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld ссылка очищена"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld очищенных ссылок"
+                }
+              }
+            }
+          }
+        },
+        "sk" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld odkazy očistené"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld odkazov očistených"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld odkaz očistený"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld odkazov očistených"
+                }
+              }
+            }
+          }
+        },
+        "sv" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld länk rensad"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld länkar rensade"
+                }
+              }
+            }
+          }
+        },
+        "tr" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld bağlantı temizlendi"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld bağlantı temizlendi"
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -1229,25 +1367,25 @@
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld паведамленні"
+                  "value" : "%lld паведамленнямі"
                 }
               },
               "many" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld паведамленняў"
+                  "value" : "%lld паведамленнямі"
                 }
               },
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld паведамленне"
+                  "value" : "%lld паведамленнем"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld паведамленняў"
+                  "value" : "%lld паведамленнямі"
                 }
               }
             }
@@ -1445,36 +1583,6 @@
             }
           }
         },
-        "hu" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld üzenet"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld üzenet(ek)"
-                }
-              }
-            }
-          }
-        },
-        "id" : {
-          "variations" : {
-            "plural" : {
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld pesan"
-                }
-              }
-            }
-          }
-        },
         "it" : {
           "variations" : {
             "plural" : {
@@ -1505,36 +1613,6 @@
             }
           }
         },
-        "ka" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld შეტყობინება"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld შეტყობინება"
-                }
-              }
-            }
-          }
-        },
-        "ko" : {
-          "variations" : {
-            "plural" : {
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld 메시지"
-                }
-              }
-            }
-          }
-        },
         "nb" : {
           "variations" : {
             "plural" : {
@@ -1548,72 +1626,6 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld meldinger"
-                }
-              }
-            }
-          }
-        },
-        "nl" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld bericht"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld berichten"
-                }
-              }
-            }
-          }
-        },
-        "pl" : {
-          "variations" : {
-            "plural" : {
-              "few" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld wiadomości"
-                }
-              },
-              "many" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld wiadomości"
-                }
-              },
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld wiadomość"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld wiadomości"
-                }
-              }
-            }
-          }
-        },
-        "pt" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld mensagem"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld mensagens"
                 }
               }
             }
@@ -1721,36 +1733,6 @@
             }
           }
         },
-        "sl" : {
-          "variations" : {
-            "plural" : {
-              "few" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld sporočila"
-                }
-              },
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld sporočilo"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld sporočil"
-                }
-              },
-              "two" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld sporočili"
-                }
-              }
-            }
-          }
-        },
         "sv" : {
           "variations" : {
             "plural" : {
@@ -1786,60 +1768,6 @@
               }
             }
           }
-        },
-        "uk" : {
-          "variations" : {
-            "plural" : {
-              "few" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld повідомлення"
-                }
-              },
-              "many" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld повідомлень"
-                }
-              },
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld повідомлення"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld повідомлень"
-                }
-              }
-            }
-          }
-        },
-        "zh-Hans" : {
-          "variations" : {
-            "plural" : {
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld 封邮件"
-                }
-              }
-            }
-          }
-        },
-        "zh-Hant" : {
-          "variations" : {
-            "plural" : {
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld 封郵件"
-                }
-              }
-            }
-          }
         }
       }
     },
@@ -1861,13 +1789,13 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld vybráno"
+            "value" : "Vybráno: %lld"
           }
         },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld valgt"
+            "value" : "%lld valgte"
           }
         },
         "de" : {
@@ -1879,7 +1807,7 @@
         "el" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld Επιλεγμένο/α"
+            "value" : "%lld Επιλεγμένο"
           }
         },
         "en" : {
@@ -1903,31 +1831,19 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld valittu"
+            "value" : "%lld Valittu"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld sélectionnés"
-          }
-        },
-        "hu" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld Kijelölve"
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld Terpilih"
+            "value" : "%lld Sélectionnés"
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld elementi selezionati"
+            "value" : "%lld Selezionato"
           }
         },
         "ja" : {
@@ -1936,46 +1852,16 @@
             "value" : "%lld 件選択済み"
           }
         },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "მონიშნულია %lld"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld개 선택됨"
-          }
-        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%lld valgt"
           }
         },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld Geselecteerd"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld"
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld selecionados"
-          }
-        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld Selecionado"
+            "value" : "%lld selecionado"
           }
         },
         "ro" : {
@@ -1987,7 +1873,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld Выбрано"
+            "value" : "%lld выбрано"
           }
         },
         "sk" : {
@@ -1996,16 +1882,10 @@
             "value" : "%lld vybraný"
           }
         },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld izbrano"
-          }
-        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld vald"
+            "value" : "%lld valt"
           }
         },
         "tr" : {
@@ -2013,30 +1893,144 @@
             "state" : "translated",
             "value" : "%lld seçilmiş"
           }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Вибрано %lld"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "已选择 %lld 项"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "已選取 %lld"
-          }
         }
       }
     },
     "%lld trackers blocked" : {
       "comment" : "Message details number of trackers blocked.",
       "localizations" : {
+        "be" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Заблакіравана %lld праграмы сачэння"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Заблакіравана %lld праграм сачэння"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Заблакіравана %lld праграма сачэння"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Заблакіравана %lld праграм сачэння"
+                }
+              }
+            }
+          }
+        },
+        "ca" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "S'ha bloquejat %lld rastrejador"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "S'han bloquejat %lld rastrejadors"
+                }
+              }
+            }
+          }
+        },
+        "cs" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld sledovací prvky zablokovány"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld sledovacích prvků zablokováno"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld sledovací prvek zablokován"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld sledovacích prvků zablokováno"
+                }
+              }
+            }
+          }
+        },
+        "da" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld tracker blokeret"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld trackere blokeret"
+                }
+              }
+            }
+          }
+        },
+        "de" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Tracker blockiert"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld Tracker blockiert"
+                }
+              }
+            }
+          }
+        },
+        "el" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld ιχνηλάτης εμποδίστηκε"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld ιχνηλάτες εμποδίστηκαν"
+                }
+              }
+            }
+          }
+        },
         "en" : {
           "variations" : {
             "plural" : {
@@ -2050,6 +2044,264 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld trackers blocked"
+                }
+              }
+            }
+          }
+        },
+        "es" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld rastreador bloqueado"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld rastreadores bloqueados"
+                }
+              }
+            }
+          }
+        },
+        "es-419" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld rastreador bloqueado"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld rastreadores bloqueados"
+                }
+              }
+            }
+          }
+        },
+        "fi" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld seuranta estetty"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld seurantaa estetty"
+                }
+              }
+            }
+          }
+        },
+        "fr" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld traqueur bloqué"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld traqueurs bloqués"
+                }
+              }
+            }
+          }
+        },
+        "it" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld tracker bloccato"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld tracker bloccati"
+                }
+              }
+            }
+          }
+        },
+        "ja" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld 件のトラッカーをブロックしました"
+                }
+              }
+            }
+          }
+        },
+        "nb" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld sporer blokkert"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld sporere blokkert"
+                }
+              }
+            }
+          }
+        },
+        "pt-BR" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld rastreador bloqueado"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld rastreadores bloqueados"
+                }
+              }
+            }
+          }
+        },
+        "ro" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Unelte de urmărire blocate: %lld"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Unelte de urmărire blocate: %lld"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Unelte de urmărire blocate: %lld"
+                }
+              }
+            }
+          }
+        },
+        "ru" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld трекера заблокировано"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld трекеров заблокировано"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld трекер заблокирован"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld трекера заблокировано"
+                }
+              }
+            }
+          }
+        },
+        "sk" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld sledovače zablokované"
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld sledovačov zablokovaných"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld sledovač zablokovaný"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld sledovačov zablokovaných"
+                }
+              }
+            }
+          }
+        },
+        "sv" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld spårare blockerad"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld spårare blockerade"
+                }
+              }
+            }
+          }
+        },
+        "tr" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld izleyici engellendi"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld izleyici engellendi"
                 }
               }
             }
@@ -2548,6 +2800,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "O nouă casă pentru conturile personale"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Новый дом для ваших аккаунтов"
           }
         },
         "sk" : {
@@ -3570,13 +3828,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Després de %u minut"
+                  "value" : "Passat %u minut"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Després de %u minuts"
+                  "value" : "Passats %u minuts"
                 }
               }
             }
@@ -3756,36 +4014,6 @@
             }
           }
         },
-        "hu" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%u perc után"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%u perc után"
-                }
-              }
-            }
-          }
-        },
-        "id" : {
-          "variations" : {
-            "plural" : {
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Setelah %u menit"
-                }
-              }
-            }
-          }
-        },
         "it" : {
           "variations" : {
             "plural" : {
@@ -3816,36 +4044,6 @@
             }
           }
         },
-        "ka" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%u წუთის შემდეგ"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%u წუთის შემდეგ"
-                }
-              }
-            }
-          }
-        },
-        "ko" : {
-          "variations" : {
-            "plural" : {
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%u분 후"
-                }
-              }
-            }
-          }
-        },
         "nb" : {
           "variations" : {
             "plural" : {
@@ -3859,72 +4057,6 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "Etter %u minutter"
-                }
-              }
-            }
-          }
-        },
-        "nl" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Na %u minuut"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Na %u minuten"
-                }
-              }
-            }
-          }
-        },
-        "pl" : {
-          "variations" : {
-            "plural" : {
-              "few" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Po %u minutach"
-                }
-              },
-              "many" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Po %u minutach"
-                }
-              },
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Po %u minucie"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Po %u minutach"
-                }
-              }
-            }
-          }
-        },
-        "pt" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Após %u minuto"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Após %u minutos"
                 }
               }
             }
@@ -3996,7 +4128,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Через %u минут"
+                  "value" : "Через %u минуты"
                 }
               }
             }
@@ -4027,36 +4159,6 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "Po %u minútach"
-                }
-              }
-            }
-          }
-        },
-        "sl" : {
-          "variations" : {
-            "plural" : {
-              "few" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Po %u minutah"
-                }
-              },
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Po %u minuti"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Po %u minutah"
-                }
-              },
-              "two" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Po %u minutah"
                 }
               }
             }
@@ -4093,60 +4195,6 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%u dakika sonra"
-                }
-              }
-            }
-          }
-        },
-        "uk" : {
-          "variations" : {
-            "plural" : {
-              "few" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Через %u хвилини"
-                }
-              },
-              "many" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Через %u хвилин"
-                }
-              },
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Через %u хвилину"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "Через %u хвилин"
-                }
-              }
-            }
-          }
-        },
-        "zh-Hans" : {
-          "variations" : {
-            "plural" : {
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%u 分钟后"
-                }
-              }
-            }
-          }
-        },
-        "zh-Hant" : {
-          "variations" : {
-            "plural" : {
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%u 分鐘之後"
                 }
               }
             }
@@ -7510,7 +7558,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Voleu suprimir permanentment tots els missatges de la carpeta %@? Aquesta acció no es pot desfer."
+            "value" : "Segur que voleu suprimir permanentment tots els missatges de la carpeta %@? Aquesta acció no es podrà desfer."
           }
         },
         "cs" : {
@@ -7522,13 +7570,13 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Er du sikker på, at du permanent vil slette alle beskeder i mappen %@? Denne handling kan ikke fortrydes."
+            "value" : "Er du sikker på, at du permanent vil slette alle beskeder i mappen %@? Du kan ikke fortryde det."
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Möchtest du wirklich alle Nachrichten im Ordner %@ endgültig löschen? Diese Aktion kann nicht widerrufen werden."
+            "value" : "Möchtest du wirklich alle Nachrichten im Ordner %@ dauerhaft löschen? Diese Aktion kann nicht widerrufen werden."
           }
         },
         "el" : {
@@ -7564,19 +7612,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Êtes-vous sûr(e) de vouloir supprimer définitivement tous les messages dans le fichier %@ ? Cette action est irréversible."
-          }
-        },
-        "hu" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Biztosan véglegesen törli az összes üzenetet a(z) %@ mappában? Ez a művelet nem vonható vissza."
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Apakah Anda yakin ingin menghapus seluruh pesan dalam folder %@ secara permanen? Tindakan ini tidak dapat diurungkan."
+            "value" : "Voulez-vous vraiment supprimer définitivement tous les messages dans le dossier %@ ? Cette action est irréversible."
           }
         },
         "it" : {
@@ -7591,34 +7627,10 @@
             "value" : "%@フォルダー内のすべてのメッセージを完全に削除してよろしいですか？この操作は取り消しできません。"
           }
         },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "\"%@\" 폴더안에 있는 모든 메세지를 영구적으로 삭제하시겠습니까? 이 작업은 되돌리거나 취소할 수 없습니다."
-          }
-        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Er du sikker på at du vil slette alle meldingene i %@-mappen for godt? Denne handlingen kan ikke angres."
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Weet u zeker dat u alle berichten in de map %@ definitief wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt."
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Czy na pewno chcesz trwale usunąć wszystkie wiadomości w folderze %@? Nie możesz cofnąć tej akcji."
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tem a certeza de que pretende eliminar permanentemente todas as mensagens na pasta %@? Esta ação não pode ser desfeita."
           }
         },
         "pt-BR" : {
@@ -7636,19 +7648,13 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Вы уверены, что хотите безвозвратно удалить все сообщения в папке «%@»? Это действие нельзя будет отменить."
+            "value" : "Вы уверены, что хотите безвозвратно удалить все сообщения в папке %@? Это действие нельзя будет отменить."
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Skutočne chcete natrvalo vymazať všetky správy v priečinku %@? Túto akciu nemožno vrátiť späť."
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ali ste prepričani, da želite trajno izbrisati vsa sporočila v mapi %@? Tega dejanja ni mogoče razveljaviti."
           }
         },
         "sv" : {
@@ -7661,24 +7667,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ klasöründeki tüm iletileri kalıcı olarak silmek istediğinize emin misiniz? Bu işlem geri alınamaz."
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ви впевнені, що хочете назавжди видалити всі повідомлення в теці «%@»? Цю дію не можна скасувати."
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "您确定要永久删除 %@ 文件夹中的所有消息吗？此操作不能撤消。"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "您確定要永久刪除 %@ 資料夾中的所有訊息嗎？此動作無法復原。"
           }
         }
       }
@@ -10871,7 +10859,129 @@
       }
     },
     "Cleaned" : {
-      "comment" : "Subtitle for link after cleaning."
+      "comment" : "Subtitle for link after cleaning.",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ачышчана"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "S'ha netejat"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vyčištěno"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Renset"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bereinigt"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Καθαρίστηκαν"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cleaned"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Saneado"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Limpiado"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Puhdistettu"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Supprimé"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ripulito"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "クリア済み"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Renset"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Limpo"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Curățat"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Очищено"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Očistené"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rensad"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Temizlendi"
+          }
+        }
+      }
     },
     "Combined contacts" : {
       "comment" : "Combined Contacts setting title in app settings.",
@@ -11934,34 +12044,6 @@
             }
           }
         },
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%#@arg1@"
-          },
-          "substitutions" : {
-            "arg1" : {
-              "argNum" : 1,
-              "formatSpecifier" : "lld",
-              "variations" : {
-                "plural" : {
-                  "one" : {
-                    "stringUnit" : {
-                      "state" : "translated",
-                      "value" : "Samtale flyttet til Arkiv."
-                    }
-                  },
-                  "other" : {
-                    "stringUnit" : {
-                      "state" : "translated",
-                      "value" : "Samtaler flyttet til Arkiv."
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12133,7 +12215,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%#@arg1@."
+            "value" : "%#@arg1@"
           },
           "substitutions" : {
             "arg1" : {
@@ -12151,56 +12233,6 @@
                     "stringUnit" : {
                       "state" : "translated",
                       "value" : "Les conversations ont été déplacées dans les Archives."
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "hu" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%#@arg1@"
-          },
-          "substitutions" : {
-            "arg1" : {
-              "argNum" : 1,
-              "formatSpecifier" : "lld",
-              "variations" : {
-                "plural" : {
-                  "one" : {
-                    "stringUnit" : {
-                      "state" : "translated",
-                      "value" : "Beszélgetés áthelyezve az archívumba."
-                    }
-                  },
-                  "other" : {
-                    "stringUnit" : {
-                      "state" : "translated",
-                      "value" : "Beszélgetések áthelyezve az Archívumba."
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%#@arg1@"
-          },
-          "substitutions" : {
-            "arg1" : {
-              "argNum" : 1,
-              "formatSpecifier" : "lld",
-              "variations" : {
-                "plural" : {
-                  "other" : {
-                    "stringUnit" : {
-                      "state" : "translated",
-                      "value" : "Percakapan dipindahkan ke Arsip."
                     }
                   }
                 }
@@ -12236,78 +12268,6 @@
             }
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%#@arg1@"
-          },
-          "substitutions" : {
-            "arg1" : {
-              "argNum" : 1,
-              "formatSpecifier" : "lld",
-              "variations" : {
-                "plural" : {
-                  "other" : {
-                    "stringUnit" : {
-                      "state" : "translated",
-                      "value" : "会話はアーカイブに移動されました。"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%#@arg1@"
-          },
-          "substitutions" : {
-            "arg1" : {
-              "argNum" : 1,
-              "formatSpecifier" : "lld",
-              "variations" : {
-                "plural" : {
-                  "one" : {
-                    "stringUnit" : {
-                      "state" : "translated",
-                      "value" : "საუბარი გადატანილია არქივში."
-                    }
-                  },
-                  "other" : {
-                    "stringUnit" : {
-                      "state" : "translated",
-                      "value" : "საუბრები გადატანილია არქივში."
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%#@arg1@"
-          },
-          "substitutions" : {
-            "arg1" : {
-              "argNum" : 1,
-              "formatSpecifier" : "lld",
-              "variations" : {
-                "plural" : {
-                  "other" : {
-                    "stringUnit" : {
-                      "state" : "translated",
-                      "value" : "대화가 보관함으로 이동했습니다."
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12329,102 +12289,6 @@
                     "stringUnit" : {
                       "state" : "translated",
                       "value" : "Samtaler flyttet til arkiv."
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%#@arg1@"
-          },
-          "substitutions" : {
-            "arg1" : {
-              "argNum" : 1,
-              "formatSpecifier" : "lld",
-              "variations" : {
-                "plural" : {
-                  "one" : {
-                    "stringUnit" : {
-                      "state" : "translated",
-                      "value" : "Gesprek verplaatst naar archief."
-                    }
-                  },
-                  "other" : {
-                    "stringUnit" : {
-                      "state" : "translated",
-                      "value" : "Gesprekken verplaatst naar Archief."
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%#@arg1@"
-          },
-          "substitutions" : {
-            "arg1" : {
-              "argNum" : 1,
-              "formatSpecifier" : "lld",
-              "variations" : {
-                "plural" : {
-                  "few" : {
-                    "stringUnit" : {
-                      "state" : "translated",
-                      "value" : "Wątki przeniesione do archiwum."
-                    }
-                  },
-                  "many" : {
-                    "stringUnit" : {
-                      "state" : "translated",
-                      "value" : "Wątki przeniesione do archiwum."
-                    }
-                  },
-                  "one" : {
-                    "stringUnit" : {
-                      "state" : "translated",
-                      "value" : "Wątek przeniesiony do archiwum."
-                    }
-                  },
-                  "other" : {
-                    "stringUnit" : {
-                      "state" : "translated",
-                      "value" : "Wątki przeniesione do archiwum."
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%#@arg1@"
-          },
-          "substitutions" : {
-            "arg1" : {
-              "argNum" : 1,
-              "formatSpecifier" : "lld",
-              "variations" : {
-                "plural" : {
-                  "one" : {
-                    "stringUnit" : {
-                      "state" : "translated",
-                      "value" : "Conversa movida para Arquivo."
-                    }
-                  },
-                  "other" : {
-                    "stringUnit" : {
-                      "state" : "translated",
-                      "value" : "Conversas movidas para Arquivo."
                     }
                   }
                 }
@@ -12574,46 +12438,6 @@
             }
           }
         },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%#@arg1@"
-          },
-          "substitutions" : {
-            "arg1" : {
-              "argNum" : 1,
-              "formatSpecifier" : "lld",
-              "variations" : {
-                "plural" : {
-                  "few" : {
-                    "stringUnit" : {
-                      "state" : "translated",
-                      "value" : "Pogovori so premaknjeni v arhiv."
-                    }
-                  },
-                  "one" : {
-                    "stringUnit" : {
-                      "state" : "translated",
-                      "value" : "Pogovor je premaknjen v arhiv."
-                    }
-                  },
-                  "other" : {
-                    "stringUnit" : {
-                      "state" : "translated",
-                      "value" : "Pogovorov je premaknjenih v arhiv."
-                    }
-                  },
-                  "two" : {
-                    "stringUnit" : {
-                      "state" : "translated",
-                      "value" : "Pogovora sta premaknjena v arhiv."
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12663,68 +12487,6 @@
                     "stringUnit" : {
                       "state" : "translated",
                       "value" : "Yazışmalar arşivlendi."
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%#@arg1@"
-          },
-          "substitutions" : {
-            "arg1" : {
-              "argNum" : 1,
-              "formatSpecifier" : "lld",
-              "variations" : {
-                "plural" : {
-                  "few" : {
-                    "stringUnit" : {
-                      "state" : "translated",
-                      "value" : "Розмови переміщено до Архіву."
-                    }
-                  },
-                  "many" : {
-                    "stringUnit" : {
-                      "state" : "translated",
-                      "value" : "Розмов переміщено до Архіву."
-                    }
-                  },
-                  "one" : {
-                    "stringUnit" : {
-                      "state" : "translated",
-                      "value" : "Розмову переміщено до архіву."
-                    }
-                  },
-                  "other" : {
-                    "stringUnit" : {
-                      "state" : "translated",
-                      "value" : "Розмови переміщено до Архіву."
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%#@arg1@"
-          },
-          "substitutions" : {
-            "arg1" : {
-              "argNum" : 1,
-              "formatSpecifier" : "lld",
-              "variations" : {
-                "plural" : {
-                  "other" : {
-                    "stringUnit" : {
-                      "state" : "translated",
-                      "value" : "会话已归档。"
                     }
                   }
                 }
@@ -18555,7 +18317,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kladder"
+            "value" : "Udkast"
           }
         },
         "de" : {
@@ -20393,19 +20155,19 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Els correus electrònics de %@ ja no s'entregaran i s'eliminaran permanentment. Podeu gestionar les adreces de correu bloquejades a les preferències."
+            "value" : "Els correus electrònics de %@ ja no s'entregaran i se suprimiran permanentment. Podeu gestionar les adreces de correu bloquejades a les preferències."
           }
         },
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "E-maily od %@ již nebudou doručovány a budou trvale smazány. Zablokované e-mailové adresy můžete spravovat v nastavení."
+            "value" : "E-maily od %@ již nebudou doručovány a budou trvale smazány. Blokované e-mailové adresy můžete spravovat v nastavení."
           }
         },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "E-mails fra %@ vil ikke længere blive leveret og vil blive slettet permanent. Du kan administrere blokerede e-mailadresser i indstillingerne."
+            "value" : "E-mails fra %@ vil ikke længere blive leveret og vil blive permanent slettet. Du kan administrere blokerede e-mailadresser i indstillingerne."
           }
         },
         "de" : {
@@ -20441,25 +20203,13 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sähköpostit lähettäjältä %@ ei enää toimiteta, ja ne poistetaan pysyvästi. Hallinnoi estettyjä sähköpostiosoitteita asetuksissa."
+            "value" : "Sähköposteja osoitteesta %@ ei enää toimiteta ja ne poistetaan pysyvästi. Voit hallinnoida estettyjä osoitteita asetuksissa."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Les messages de %@ ne seront plus distribués et seront définitivement supprimés. Vous pouvez gérer les adresses e-mail bloquées dans les paramètres."
-          }
-        },
-        "hu" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "A(z) %@ címről érkező e-mailek a továbbiakban nem lesznek kézbesítve, és véglegesen törlésre kerülnek. A letiltott e-mail-címeket a beállításokban kezelheti."
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Email dari %@ tidak akan lagi dikirimkan dan akan dihapus secara permanen. Anda dapat mengelola alamat email yang diblokir di pengaturan."
           }
         },
         "it" : {
@@ -20471,43 +20221,13 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ からのメールは配信されなくなり、完全に削除されます。ブロックしたメールアドレスは設定で管理できます。"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ელფოსტები %@-დან აღარ იქნება მიწოდებული და სამუდამოდ წაიშლება. დაბლოკილი ელფოსტის მისამართების მართვა პარამეტრებში შეგიძლიათ."
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@에서 보낸 이메일은 더 이상 전송되지 않으며 영구적으로 삭제됩니다. 설정에서 차단된 이메일 주소를 관리할 수 있습니다."
+            "value" : "%@ からのメールは今後配信されず、完全に削除されます。設定でブロックされたメールアドレスを管理できます。"
           }
         },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "E-poster fra %@ vil ikke lenger bli levert og vil bli slettet permanent. Du kan administrere blokkerte e-postadresser i innstillingene."
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "E-mails van %@ worden niet langer afgeleverd en worden permanent verwijderd. U kunt geblokkeerde e-mailadressen beheren in de instellingen."
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Wiadomości e-mail od %@ nie będą już dostarczane i zostaną trwale usunięte. Możesz zarządzać zablokowanymi adresami e-mail w ustawieniach."
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Os e-mails de %@ deixarão de ser entregues e serão eliminados permanentemente. Pode gerir os endereços de e-mail bloqueados nas definições."
           }
         },
         "pt-BR" : {
@@ -20519,7 +20239,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "E-mailurile de la %@ nu vor mai fi livrate și vor fi șterse definitiv. Puteți gestiona adresele de e-mail blocate în setări."
+            "value" : "Mesajele de la %@ nu vor mai fi livrate și vor fi șterse definitiv. Puteți gestiona adresele de e-mail blocate în setări."
           }
         },
         "ru" : {
@@ -20534,34 +20254,16 @@
             "value" : "Emaily od %@ už nebudú doručované a budú trvalo vymazané. Zablokované emailové adresy môžete spravovať v nastaveniach."
           }
         },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "E-pošta od %@ ne bo več dostavljena in bo trajno izbrisana. Blokirane e-poštne naslove lahko upravljate v nastavitvah."
-          }
-        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "E-postmeddelanden från %@ kommer inte längre att levereras och kommer att tas bort permanent. Du kan hantera blockerade e-postadresser i inställningarna."
+            "value" : "E-post från %@ kommer inte längre att levereras och kommer att tas bort permanent. Du kan hantera blockerade e-postadresser i inställningarna."
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ adresinden gelen e-postalar artık teslim edilmeyecek ve kalıcı olarak silinecek. Engellenen e-posta adreslerini ayarlar bölümünden yönetebilirsiniz."
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Електронні листи від %@ більше не доставлятимуться і будуть остаточно видалені. Ви можете керувати заблокованими адресами електронної пошти в налаштуваннях."
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "将永久屏蔽并删除来自 %@ 的电子邮件。您可以在设置中管理被阻止的电子邮件地址。"
           }
         }
       }
@@ -20578,7 +20280,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Buida la carpeta %@"
+            "value" : "Buideu la carpeta %@"
           }
         },
         "cs" : {
@@ -20635,18 +20337,6 @@
             "value" : "Vider le dossier %@"
           }
         },
-        "hu" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ mappa kiürítése"
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kosongkan Folder %@"
-          }
-        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -20659,34 +20349,10 @@
             "value" : "%@ フォルダを空にする"
           }
         },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ 폴더 비우기"
-          }
-        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tøm %@-mappe"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Leeg %@ map"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Opróżnij %@"
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Esvaziar a pasta %@"
+            "value" : "Tøm %@-mappen"
           }
         },
         "pt-BR" : {
@@ -20704,7 +20370,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Очистить папку «%@»"
+            "value" : "Очистить папку %@"
           }
         },
         "sk" : {
@@ -20713,40 +20379,16 @@
             "value" : "Vyprázdniť priečinok %@"
           }
         },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Izprazni mapo %@"
-          }
-        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Töm %@-mapp"
+            "value" : "Töm mapp %@"
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ klasörünü boşalt"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Тека «%@» порожня"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "清空 %@ 文件夹"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "清空 %@ 資料夾"
           }
         }
       }
@@ -20757,13 +20399,13 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ачысціць %@"
+            "value" : "Ачысціць папку %@"
           }
         },
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Buida %@ ara"
+            "value" : "Buideu la carpeta %@ ara"
           }
         },
         "cs" : {
@@ -20820,18 +20462,6 @@
             "value" : "Vider %@ maintenant"
           }
         },
-        "hu" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ ürítése most"
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kosongkan %@ sekarang"
-          }
-        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -20844,34 +20474,10 @@
             "value" : "%@を今すぐ空にする"
           }
         },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "지금 %@ 비우기"
-          }
-        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tøm %@ nå"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Leeg %@ nu"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Opróżnij %@"
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Esvaziar %@ agora"
           }
         },
         "pt-BR" : {
@@ -20883,25 +20489,19 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Golire %@"
+            "value" : "Golire %@ acum"
           }
         },
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Очистить «%@» сейчас"
+            "value" : "Очистить %@ сейчас"
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vyprázdniť %@ hneď"
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Izprazni %@ zdaj"
           }
         },
         "sv" : {
@@ -20914,24 +20514,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ klasörünü boşalt"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Очистити %@"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "立即清空 %@"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "立即清空 %@"
           }
         }
       }
@@ -21670,13 +21252,13 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Дзейнічае да %@"
+            "value" : "Дзейнічаюць да %@"
           }
         },
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Caduca en %@"
+            "value" : "Caduca d'aquí a %@"
           }
         },
         "cs" : {
@@ -21688,13 +21270,13 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Udløber om %@"
+            "value" : "Udløber om %@."
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Läuft ab in %@"
+            "value" : "Gültig bis %@"
           }
         },
         "el" : {
@@ -21724,25 +21306,13 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Erääntymiseen: %@"
+            "value" : "Erääntyy %@"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Expire dans %@"
-          }
-        },
-        "hu" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Lejár: %@"
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kedaluwarsa dalam %@"
           }
         },
         "it" : {
@@ -21754,43 +21324,13 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ で期限切れになります"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ვადა %@"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@에 만료"
+            "value" : "有効期限%@"
           }
         },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Utløper om %@"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Verloopt over %@"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Wygasa za %@"
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Expira em %@"
           }
         },
         "pt-BR" : {
@@ -21817,12 +21357,6 @@
             "value" : "Vyprší o %@"
           }
         },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Poteče čez %@"
-          }
-        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -21833,24 +21367,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ sonra geçerlilik süresi dolacak"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Завершується через %@"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "于 %@ 过期"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "於 %@ 到期"
           }
         }
       }
@@ -23515,7 +23031,111 @@
       }
     },
     "If you receive an email containing spy pixels (trackers) or tracking links, you’ll see the shield icon in email details. [Learn more…](https://proton.me/support/email-tracker-protection)" : {
-      "comment" : "Description text explaining the tracking protection."
+      "comment" : "Description text explaining the tracking protection.",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вы ўбачыце значок са шчытком у падрабязнасцях ліста пры атрыманні ліста, які змяшчае шпіёнскія пікселі (праграмы сачэння) або спасылкі адсочвання. [Даведацца больш…](https://proton.me/support/email-tracker-protection)"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Si rebeu un correu que conté píxels espia (rastrejadors) o enllaços de seguiment, veureu la icona de l'escut als detalls del correu.[Per saber-ne més...](https://proton.me/support/email-tracker-protection)"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pokud obdržíte e-mail obsahující špionážní pixely (sledovací prvky) nebo sledovací odkazy, v podrobnostech e-mailu se zobrazí ikona štítu. [Další informace…](https://proton.me/support/email-tracker-protection)"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wenn du eine E-Mail mit Zählpixeln (Trackern) oder Tracking-Links bekommst, siehst du ein Schild-Symbol in den E-Mail-Details. [Mehr erfahren …](https://proton.me/support/email-tracker-protection)"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Εάν λάβετε ένα μήνυμα ηλεκτρονικού ταχυδρομείου που περιέχει pixels παρακολούθησης (ιχνηλάτες) ή συνδέσμους παρακολούθησης, θα δείτε το εικονίδιο ασπίδας στις λεπτομέρειες του μηνύματος ηλεκτρονικού ταχυδρομείου. [Μάθετε περισσότερα…](https://proton.me/support/email-tracker-protection)"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "If you receive an email containing spy pixels (trackers) or tracking links, you’ll see the shield icon in email details. [Learn more…](https://proton.me/support/email-tracker-protection)"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Si recibes un correo electrónico con píxeles espía (rastreadores) o enlaces de rastreo, verás el icono del escudo en los detalles del correo electrónico. [Más información…](https://proton.me/support/email-tracker-protection)"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Si recibe un correo electrónico con píxeles espía (rastreadores) o enlaces de rastreo, verá el icono del escudo en los detalles del correo electrónico. [Más información…](https://proton.me/support/email-tracker-protection)"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Jos saat sähköpostiviestin, joka sisältää vakoilupikseleitä (seurantoja) tai seurantalinkkejä, näet suojakuvakkeen sähköpostin tiedoissa. [Lisätietoja…](https://proton.me/support/email-tracker-protection)"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Si vous recevez un e-mail contenant des pixels espions (traqueurs) ou des liens de suivi, vous verrez  l'icône en forme de bouclier  dans les détails de l'e-mail. [En savoir plus...] (https://proton.me/support/email-tracker-protection)"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se ricevi un'email che contiene spy pixel (tracker) o link di tracciamento, vedrai l'icona dello scudo nei dettagli dell'email. [Scopri di più…](https://proton.me/support/email-tracker-protection)"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : " スパイピクセル（トラッカー） や トラッキングリンクを含むメールを受信した場合、メールの詳細に シールドアイコン が表示されます。[さらに詳しく…]（https://proton.me/support/email-tracker-protection）"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hvis du mottar en e-post som inneholder spionpiksler (sporere) eller sporingskoblinger, vil du se skjoldikonet i e-postdetaljer. [Lær mer…](https://proton.me/support/email-tracker-protection)"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dacă primiți un e-mail care conține pixeli spion (de urmărire) sau legături web de urmărire, veți vedea pictograma scut în detaliile e-mailului. [Detalii…](https://proton.me/support/email-tracker-protection)"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Если вы получите электронное письмо, содержащее шпионские пиксели (трекеры) или отслеживающие ссылки, вы увидите значок щита в информации об электронном письме. [Подробнее…](https://proton.me/support/email-tracker-protection)"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ak dostanete email obsahujúci špehovacie pixely (sledovače) alebo sledovacie odkazy, uvidíte ikonu štítu v podrobnostiach emailu. [Zistiť viac…](https://proton.me/support/email-tracker-protection)"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Casus pikseller (izleyiciler) veya izleme bağlantıları bulunan bir e-posta alırsanız e-posta ayrıntılarında kalkan simgesi görürsünüz. [Ayrıntılı bilgi alın…](https://proton.me/support/email-tracker-protection)"
+          }
+        }
+      }
     },
     "Immediately" : {
       "comment" : "Auto option.",
@@ -24979,7 +24599,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mantingueu la icona per defecte de Proton Mail, o dissimuleu-la amb una de més discreta per a més privacitat. Les notificacions sempre mostraran el nom i la icona de Proton Mail. [Per saber-ne més...](https://proton.me/support/disguise-app-icon)"
+            "value" : "Mantingueu la icona per defecte del Proton Mail, o dissimuleu-la amb una de més discreta per a més privacitat. Les notificacions sempre mostraran el nom i la icona del Proton Mail. [Més informació...](https://proton.me/support/disguise-app-icon)"
           }
         },
         "cs" : {
@@ -25058,6 +24678,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Behoud het standaard Proton Mail-pictogram, of verberg het met een discreter pictogram voor extra privacy. Meldingen zullen altijd de naam en het pictogram van Proton Mail tonen. [Meer informatie...](https://proton.me/support/disguise-app-icon)"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mantenha o ícone padrão do Proton Mail ou disfarce-o com um mais discreto para privacidade extra. As notificações sempre mostrarão o nome e o ícone do Proton Mail. [Saiba mais...](https://proton.me/support/disguise-app-icon)"
           }
         },
         "ro" : {
@@ -26927,25 +26553,25 @@
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld далучэнні"
+                  "value" : "%lld далучэннямі"
                 }
               },
               "many" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld далучэнняў"
+                  "value" : "%lld далучэннямі"
                 }
               },
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld далучэнне"
+                  "value" : "%lld далучэннем"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld далучэнняў"
+                  "value" : "%lld далучэннямі"
                 }
               }
             }
@@ -26957,13 +26583,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld adjunt"
+                  "value" : "%lld fitxer adjunt"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld adjunts"
+                  "value" : "%lld fitxers adjunts"
                 }
               }
             }
@@ -27143,49 +26769,19 @@
             }
           }
         },
-        "hu" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld melléklet"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld melléklet"
-                }
-              }
-            }
-          }
-        },
-        "id" : {
-          "variations" : {
-            "plural" : {
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld lampiran"
-                }
-              }
-            }
-          }
-        },
         "it" : {
           "variations" : {
             "plural" : {
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld file allegato"
+                  "value" : "%lld allegato"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld file allegati"
+                  "value" : "%lld allegati"
                 }
               }
             }
@@ -27198,36 +26794,6 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld 個の添付ファイル"
-                }
-              }
-            }
-          }
-        },
-        "ka" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld მიმაგრებული ფაილი"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld მიმაგრებული ფაილი"
-                }
-              }
-            }
-          }
-        },
-        "ko" : {
-          "variations" : {
-            "plural" : {
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "첨부 파일 %lld개"
                 }
               }
             }
@@ -27246,72 +26812,6 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld vedlegg"
-                }
-              }
-            }
-          }
-        },
-        "nl" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld bijlage"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld bijlagen"
-                }
-              }
-            }
-          }
-        },
-        "pl" : {
-          "variations" : {
-            "plural" : {
-              "few" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld załączniki"
-                }
-              },
-              "many" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld załączników"
-                }
-              },
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld załącznik"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld załączników"
-                }
-              }
-            }
-          }
-        },
-        "pt" : {
-          "variations" : {
-            "plural" : {
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld anexo"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld anexos"
                 }
               }
             }
@@ -27341,19 +26841,19 @@
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Fișiere atașate: %lld"
+                  "value" : "%lld fișiere atașate"
                 }
               },
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Fișiere atașate: %lld"
+                  "value" : "%lld fișier atașat"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Fișiere atașate: %lld"
+                  "value" : "%lld de fișiere atașate"
                 }
               }
             }
@@ -27383,7 +26883,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld вложений"
+                  "value" : "%lld вложения"
                 }
               }
             }
@@ -27414,36 +26914,6 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld príloh"
-                }
-              }
-            }
-          }
-        },
-        "sl" : {
-          "variations" : {
-            "plural" : {
-              "few" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld priloge"
-                }
-              },
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld priloga"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld prilog"
-                }
-              },
-              "two" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld prilogi"
                 }
               }
             }
@@ -27480,60 +26950,6 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld ek dosya"
-                }
-              }
-            }
-          }
-        },
-        "uk" : {
-          "variations" : {
-            "plural" : {
-              "few" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld вкладення"
-                }
-              },
-              "many" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld вкладень"
-                }
-              },
-              "one" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld вкладення"
-                }
-              },
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld вкладень"
-                }
-              }
-            }
-          }
-        },
-        "zh-Hans" : {
-          "variations" : {
-            "plural" : {
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld 个附件"
-                }
-              }
-            }
-          }
-        },
-        "zh-Hant" : {
-          "variations" : {
-            "plural" : {
-              "other" : {
-                "stringUnit" : {
-                  "state" : "translated",
-                  "value" : "%lld 個附件"
                 }
               }
             }
@@ -28991,34 +28407,6 @@
             }
           }
         },
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%#@arg1@"
-          },
-          "substitutions" : {
-            "arg1" : {
-              "argNum" : 1,
-              "formatSpecifier" : "lld",
-              "variations" : {
-                "plural" : {
-                  "one" : {
-                    "stringUnit" : {
-                      "state" : "translated",
-                      "value" : "Besked flyttet til arkiv."
-                    }
-                  },
-                  "other" : {
-                    "stringUnit" : {
-                      "state" : "translated",
-                      "value" : "Beskeder flyttet til arkiv."
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -29190,7 +28578,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%#@arg1@."
+            "value" : "%#@arg1@"
           },
           "substitutions" : {
             "arg1" : {
@@ -29208,56 +28596,6 @@
                     "stringUnit" : {
                       "state" : "translated",
                       "value" : "Les messages ont été déplacés dans les Archives."
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "hu" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%#@arg1@"
-          },
-          "substitutions" : {
-            "arg1" : {
-              "argNum" : 1,
-              "formatSpecifier" : "lld",
-              "variations" : {
-                "plural" : {
-                  "one" : {
-                    "stringUnit" : {
-                      "state" : "translated",
-                      "value" : "Üzenet áthelyezve az archívumba."
-                    }
-                  },
-                  "other" : {
-                    "stringUnit" : {
-                      "state" : "translated",
-                      "value" : "Üzenetek áthelyezve az Archívumba."
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%#@arg1@"
-          },
-          "substitutions" : {
-            "arg1" : {
-              "argNum" : 1,
-              "formatSpecifier" : "lld",
-              "variations" : {
-                "plural" : {
-                  "other" : {
-                    "stringUnit" : {
-                      "state" : "translated",
-                      "value" : "Pesan dipindahkan ke Arsip."
                     }
                   }
                 }
@@ -29293,78 +28631,6 @@
             }
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%#@arg1@"
-          },
-          "substitutions" : {
-            "arg1" : {
-              "argNum" : 1,
-              "formatSpecifier" : "lld",
-              "variations" : {
-                "plural" : {
-                  "other" : {
-                    "stringUnit" : {
-                      "state" : "translated",
-                      "value" : "メッセージをアーカイブに移動しました。"
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%#@arg1@"
-          },
-          "substitutions" : {
-            "arg1" : {
-              "argNum" : 1,
-              "formatSpecifier" : "lld",
-              "variations" : {
-                "plural" : {
-                  "one" : {
-                    "stringUnit" : {
-                      "state" : "translated",
-                      "value" : "შეტყობინება გადატანილია არქივში."
-                    }
-                  },
-                  "other" : {
-                    "stringUnit" : {
-                      "state" : "translated",
-                      "value" : "წერილები გადატანილია არქივში."
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%#@arg1@"
-          },
-          "substitutions" : {
-            "arg1" : {
-              "argNum" : 1,
-              "formatSpecifier" : "lld",
-              "variations" : {
-                "plural" : {
-                  "other" : {
-                    "stringUnit" : {
-                      "state" : "translated",
-                      "value" : "메시지가 보관함으로 이동했습니다."
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -29386,102 +28652,6 @@
                     "stringUnit" : {
                       "state" : "translated",
                       "value" : "Meldinger flyttet til arkiv."
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%#@arg1@"
-          },
-          "substitutions" : {
-            "arg1" : {
-              "argNum" : 1,
-              "formatSpecifier" : "lld",
-              "variations" : {
-                "plural" : {
-                  "one" : {
-                    "stringUnit" : {
-                      "state" : "translated",
-                      "value" : "Bericht verplaatst naar archief."
-                    }
-                  },
-                  "other" : {
-                    "stringUnit" : {
-                      "state" : "translated",
-                      "value" : "Berichten verplaatst naar Archief."
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%#@arg1@"
-          },
-          "substitutions" : {
-            "arg1" : {
-              "argNum" : 1,
-              "formatSpecifier" : "lld",
-              "variations" : {
-                "plural" : {
-                  "few" : {
-                    "stringUnit" : {
-                      "state" : "translated",
-                      "value" : "Wiadomości przeniesione do archiwum."
-                    }
-                  },
-                  "many" : {
-                    "stringUnit" : {
-                      "state" : "translated",
-                      "value" : "Wiadomości przeniesione do archiwum."
-                    }
-                  },
-                  "one" : {
-                    "stringUnit" : {
-                      "state" : "translated",
-                      "value" : "Wiadomość przeniesiona do archiwum."
-                    }
-                  },
-                  "other" : {
-                    "stringUnit" : {
-                      "state" : "translated",
-                      "value" : "Wiadomości przeniesione do archiwum."
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%#@arg1@"
-          },
-          "substitutions" : {
-            "arg1" : {
-              "argNum" : 1,
-              "formatSpecifier" : "lld",
-              "variations" : {
-                "plural" : {
-                  "one" : {
-                    "stringUnit" : {
-                      "state" : "translated",
-                      "value" : "Mensagem movida para a pasta Arquivo."
-                    }
-                  },
-                  "other" : {
-                    "stringUnit" : {
-                      "state" : "translated",
-                      "value" : "Mensagens movidas para o Arquivo."
                     }
                   }
                 }
@@ -29631,46 +28801,6 @@
             }
           }
         },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%#@arg1@"
-          },
-          "substitutions" : {
-            "arg1" : {
-              "argNum" : 1,
-              "formatSpecifier" : "lld",
-              "variations" : {
-                "plural" : {
-                  "few" : {
-                    "stringUnit" : {
-                      "state" : "translated",
-                      "value" : "Sporočila so premaknjena v arhiv."
-                    }
-                  },
-                  "one" : {
-                    "stringUnit" : {
-                      "state" : "translated",
-                      "value" : "Sporočilo je premaknjeno v arhiv."
-                    }
-                  },
-                  "other" : {
-                    "stringUnit" : {
-                      "state" : "translated",
-                      "value" : "Sporočil je premaknjenih v arhiv."
-                    }
-                  },
-                  "two" : {
-                    "stringUnit" : {
-                      "state" : "translated",
-                      "value" : "Sporočili sta premaknjeni v arhiv."
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -29720,68 +28850,6 @@
                     "stringUnit" : {
                       "state" : "translated",
                       "value" : "İletiler arşivlendi."
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%#@arg1@"
-          },
-          "substitutions" : {
-            "arg1" : {
-              "argNum" : 1,
-              "formatSpecifier" : "lld",
-              "variations" : {
-                "plural" : {
-                  "few" : {
-                    "stringUnit" : {
-                      "state" : "translated",
-                      "value" : "Повідомлення переміщено до Архіву."
-                    }
-                  },
-                  "many" : {
-                    "stringUnit" : {
-                      "state" : "translated",
-                      "value" : "Повідомлень переміщено до Архіву."
-                    }
-                  },
-                  "one" : {
-                    "stringUnit" : {
-                      "state" : "translated",
-                      "value" : "Повідомлення переміщено до архіву."
-                    }
-                  },
-                  "other" : {
-                    "stringUnit" : {
-                      "state" : "translated",
-                      "value" : "Повідомлення переміщено до Архіву."
-                    }
-                  }
-                }
-              }
-            }
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%#@arg1@"
-          },
-          "substitutions" : {
-            "arg1" : {
-              "argNum" : 1,
-              "formatSpecifier" : "lld",
-              "variations" : {
-                "plural" : {
-                  "other" : {
-                    "stringUnit" : {
-                      "state" : "translated",
-                      "value" : "邮件已归档。"
                     }
                   }
                 }
@@ -31462,7 +30530,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Verschieben nach %@."
+            "value" : "Verschoben nach %@."
           }
         },
         "el" : {
@@ -31501,18 +30569,6 @@
             "value" : "Déplacé vers %@."
           }
         },
-        "hu" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Áthelyezve %@."
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pesan dipindahkan ke %@."
-          }
-        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -31525,40 +30581,10 @@
             "value" : "%@に移動しました。"
           }
         },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "გადატანილია %@-ში."
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@(으)로 이동됨."
-          }
-        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Flyttet til %@."
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Verplaatst naar %@."
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Przeniesiono do %@."
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Movido para %@."
           }
         },
         "pt-BR" : {
@@ -31585,12 +30611,6 @@
             "value" : "Presunuté do %@."
           }
         },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Premaknjeno v %@."
-          }
-        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -31601,24 +30621,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ içine taşındı."
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Переміщено до %@."
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "已移至 %@。"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "已移動至 %@。"
           }
         }
       }
@@ -32919,7 +31921,129 @@
       }
     },
     "No trackers detected" : {
-      "comment" : "Message details view when no trackers are detected."
+      "comment" : "Message details view when no trackers are detected.",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Праграмы сачэння не выяўлены"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No s'ha detectat cap rastrejador"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nebyly zjištěny žádné sledovací prvky"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ingen trackere registreret"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keine Tracker erkannt"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Δεν εντοπίστηκαν ιχνηλάτες"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No trackers detected"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se han detectado rastreadores"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se han detectado rastreadores"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seurantoja ei havaittu"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aucun traqueur détecté"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nessun tracker rilevato"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "トラッカーは検出されませんでした"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ingen sporere oppdaget"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nenhum rastreador detetado"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nu s-au detectat unelte de urmărire."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Трекеры не обнаружены"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Neboli zistené žiadne sledovače"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inga spårare upptäckta"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Herhangi bir izleyici bulunamadı"
+          }
+        }
+      }
     },
     "No unread messages" : {
       "comment" : "Mailbox empty state title when unread filter is enabled.",
@@ -34438,7 +33562,129 @@
       }
     },
     "Original" : {
-      "comment" : "Subtitle for the original link before cleaning."
+      "comment" : "Subtitle for the original link before cleaning.",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Арыгінальныя"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Original"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Původní"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Original"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Original"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Αρχικό"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Original"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Original"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Original"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alkuperäinen"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Original"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Originale"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "オリジナル"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Original"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Original"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Original"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Оригинал"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pôvodný"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Original"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Özgün"
+          }
+        }
+      }
     },
     "Our system flagged this message as a phishing attempt. Please check to ensure that it is legitimate." : {
       "comment" : "Banner warning the user that the system detected a possible phishing attempt.",
@@ -43427,7 +42673,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Odloženo do %@"
+            "value" : "Odloženo až do %@"
           }
         },
         "da" : {
@@ -43439,7 +42685,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Später lesen um %@"
+            "value" : "Später lesen um %@ festgelegt"
           }
         },
         "el" : {
@@ -43457,7 +42703,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pospuesto hasta %@"
+            "value" : "Pausado hasta %@"
           }
         },
         "es-419" : {
@@ -43475,13 +42721,13 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mis en attente jusqu'au %@"
+            "value" : "Mise en attente jusqu'au %@"
           }
         },
         "hu" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Halasztva eddig: %@"
+            "value" : "Elhalasztva eddig: %@"
           }
         },
         "id" : {
@@ -48028,13 +47274,13 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tato zpráva bude automaticky smazána za %@"
+            "value" : "Tato zpráva bude automaticky smazána %@"
           }
         },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Denne besked vil slettes automatisk om %@"
+            "value" : "Denne besked slettes automatisk om %@"
           }
         },
         "de" : {
@@ -48079,18 +47325,6 @@
             "value" : "Ce message sera supprimé automatiquement dans %@."
           }
         },
-        "hu" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ez az üzenet automatikusan törlődik %@ múlva"
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pesan ini akan terhapus otomatis dalam %@"
-          }
-        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -48103,40 +47337,10 @@
             "value" : "このメールは %@後に自動削除されます"
           }
         },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ეს შეტყობინება თვითგანადგურდება %@-ზში"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "이 메시지는 %@에 자동으로 삭제됩니다."
-          }
-        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Denne meldingen slettes automatisk om %@"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dit bericht wordt automatisch verwijderd over %@"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Wiadomość zostanie automatycznie usunięta za %@"
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Esta mensagem será eliminada automaticamente em %@"
           }
         },
         "pt-BR" : {
@@ -48163,12 +47367,6 @@
             "value" : "Táto správa sa automaticky odstráni o %@"
           }
         },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "To sporočilo bo samodejno izbrisano čez %@"
-          }
-        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -48178,25 +47376,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bu ileti %@ sonra otomatik olarak silinecek."
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Це повідомлення автоматично видалиться через %@"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "此邮件将在 %@ 内自动删除"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "此訊息將在 %@ 後自動刪除"
+            "value" : "Bu ileti %@ sonra otomatik olarak silinecek"
           }
         }
       }
@@ -48225,7 +47405,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Denne besked vil blive flyttet til kladder, så du kan redigere den. Du skal omplanlægge, hvornår den skal sendes."
+            "value" : "Denne besked vil blive flyttet til udkast, så du kan redigere den. Du skal omplanlægge, hvornår den skal sendes."
           }
         },
         "de" : {
@@ -48583,7 +47763,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Тэрмін дзеяння гэтага паведамлення міне ў %@"
+            "value" : "Тэрмін дзеяння гэтага паведамлення міне праз %@"
           }
         },
         "ca" : {
@@ -48601,13 +47781,13 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Denne besked vil udløbe om %@"
+            "value" : "Denne besked udløber om %@"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Diese Nachricht läuft in %@ ab"
+            "value" : "Diese Nachricht verfällt in %@."
           }
         },
         "el" : {
@@ -48637,25 +47817,13 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Viesti on asetettu tuhoutumaan kun on kulunut %@"
+            "value" : "Viesti erääntyy %@"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ce message expirera dans %@."
-          }
-        },
-        "hu" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ez az üzenet lejár %@ múlva"
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pesan ini akan kedaluwarsa dalam %@"
           }
         },
         "it" : {
@@ -48670,40 +47838,10 @@
             "value" : "このメッセージは %@後に失効します"
           }
         },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ამ შეტყობინებას ვადა გაუვა %@-ში"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "메시지가 %@에 만료됨"
-          }
-        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Denne meldingen vil utløpe om %@."
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dit bericht vervalt over %@"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Wiadomość wygaśnie za %@"
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Esta mensagem expirará em %@"
+            "value" : "Denne meldingen utløper om %@."
           }
         },
         "pt-BR" : {
@@ -48721,19 +47859,13 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Срок действия этого сообщения истекает через %@"
+            "value" : "Срок этого сообщения истекает через %@"
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Táto správa vyprší za %@"
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "To sporočilo bo poteklo v %@."
           }
         },
         "sv" : {
@@ -48746,24 +47878,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bu iletinin süresi %@ sonra dolacak"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Термін дії цього повідомлення завершиться через %@"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "此邮件将在 %@ 后过期"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "此郵件的有效期限尚餘 %@"
           }
         }
       }
@@ -50589,7 +49703,129 @@
       }
     },
     "Tracker protection:" : {
-      "comment" : "Message details title for tracker info row."
+      "comment" : "Message details title for tracker info row.",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Абарона ад праграм сачэння:"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Protecció contra rastrejadors:"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ochrana před sledovacími prvky:"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tracker-beskyttelse:"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tracker-Schutz:"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Προστασία από ιχνηλάτες:"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tracker protection:"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Protección contra rastreadores:"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Protección contra rastreadores:"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seurannan suojaus:"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Protection contre les traqueurs :"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Protezione tracker:"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "トラッカー防止数:"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sporingsbeskyttelse:"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proteção contra rastreadores:"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Protecție împotriva urmăririi:"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Защита от трекеров:"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ochrana pred sledovačmi:"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spårningsskydd:"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "İzleyici koruması:"
+          }
+        }
+      }
     },
     "Trash" : {
       "comment" : "Menu title of all deleted emails in the sidebar.",
@@ -52507,7 +51743,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Umsteigen auf %@"
+            "value" : "Upgrade auf %@"
           }
         },
         "el" : {

@@ -13,7 +13,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ no es pot utilitzar per enviar missatges"
+            "value" : "No es pot fer servir %@ per enviar missatges"
           }
         },
         "cs" : {
@@ -31,7 +31,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ kann nicht zum Senden von Nachrichten verwendet werden"
+            "value" : "%@ kann nicht zum Senden von Nachrichten verwendet werden."
           }
         },
         "el" : {
@@ -55,31 +55,19 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ no puede usarse para enviar mensajes"
+            "value" : "%@ no puede utilizarse para enviar mensajes"
           }
         },
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ ei voi käyttää viestien lähettämiseen"
+            "value" : "%@ ei voida käyttää viestien lähettämiseen"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ ne peut pas être utilisée pour envoyer des messages"
-          }
-        },
-        "hu" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ nem használható üzenetek küldéséhez"
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ tidak dapat digunaakn untuk mengirim pesan"
           }
         },
         "it" : {
@@ -94,28 +82,10 @@
             "value" : "%@ はメッセージの送信に使用できません"
           }
         },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ 는 메시지 보내기에 사용할 수 없습니다."
-          }
-        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ kan ikke brukes til å sende meldinger"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ kan niet worden gebruikt om berichten te verzenden"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Adres %@ nie może zostać użyty do wysyłania wiadomości"
           }
         },
         "pt-BR" : {
@@ -142,12 +112,6 @@
             "value" : "%@ nemôže byť použité na odosielanie správ"
           }
         },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Z naslova %@ ni mogoče pošiljati sporočil"
-          }
-        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -158,18 +122,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ ileti göndermek için kullanılamaz"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ не може бути використано для надсилання повідомлень"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ 无法用于发送邮件"
           }
         }
       }
@@ -186,7 +138,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ està desactivat. No es poden enviar missatges"
+            "value" : "%@ està desactivat. No pot enviar missatges"
           }
         },
         "cs" : {
@@ -228,7 +180,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ está deshabilitada. No puede enviar mensajes."
+            "value" : "%@ está deshabilitado. No puede enviar mensajes"
           }
         },
         "fi" : {
@@ -243,18 +195,6 @@
             "value" : "%@ est désactivée. Elle ne peut pas envoyer de messages"
           }
         },
-        "hu" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ le van tiltva. Nem tud üzeneteket küldeni."
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ dinonaktifkan. Alamat ini tidak dapat mengirim pesan."
-          }
-        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -267,28 +207,10 @@
             "value" : "%@ は無効になっています。メッセージを送信できません。"
           }
         },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ 는 비활성화상태입니다. 메시지를 보낼 수 없습니다."
-          }
-        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ er deaktivert. Den kan ikke sende meldinger"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ is uitgeschakeld. Het kan geen berichten verzenden."
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Adres %@ jest wyłączony, więc nie może wysyłać wiadomości"
           }
         },
         "pt-BR" : {
@@ -306,19 +228,13 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ отключён. Отправка сообщений невозможна"
+            "value" : "%@ отключен. Он не может отправлять сообщения"
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ je zakázaný. Nemôže odosielať správy."
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ je onemogočen. Ne more pošiljati sporočil"
           }
         },
         "sv" : {
@@ -332,18 +248,6 @@
             "state" : "translated",
             "value" : "%@ kullanımdan kaldırılmış. İleti gönderemez"
           }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ вимкнено. Воно не може надсилати повідомлення"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ 已被禁用，无法发送邮件"
-          }
         }
       }
     },
@@ -353,7 +257,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Удзельнікаў: %lld"
+            "value" : "%lld удзельнікаў"
           }
         },
         "ca" : {
@@ -416,18 +320,6 @@
             "value" : "%lld membres"
           }
         },
-        "hu" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld tagok"
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld anggota"
-          }
-        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -437,43 +329,13 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld人のメンバー"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld წევრი"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld명 구성원"
+            "value" : "%lld 人のメンバー"
           }
         },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%lld medlemmer"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld leden"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld członków"
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld membros"
           }
         },
         "pt-BR" : {
@@ -491,19 +353,13 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld участников"
+            "value" : "участники: %lld"
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%lld členov"
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld članov"
           }
         },
         "sv" : {
@@ -516,24 +372,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%lld üye"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld учасників"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld 位成员"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld 位成員"
           }
         }
       }
@@ -550,7 +388,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Es requereix un pla de pagament per a utilitzar %@"
+            "value" : "Per fer servir %@ cal un pla de pagament"
           }
         },
         "cs" : {
@@ -607,18 +445,6 @@
             "value" : "Un abonnement payant est nécessaire pour utiliser %@"
           }
         },
-        "hu" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "A(z) %@ használatához előfizetéses csomag szükséges."
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Paket berbayar dibutuhkan untuk menggunakan %@"
-          }
-        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -631,28 +457,10 @@
             "value" : "%@を使用するには有料プランが必要です"
           }
         },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ 사용을 위해 유료플랜이 필요합니다."
-          }
-        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "En betalt plan kreves for å bruke %@"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Een betaald abonnement is vereist om %@ te gebruiken."
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Aby użyć adresu %@, wymagany jest płatny plan"
           }
         },
         "pt-BR" : {
@@ -679,12 +487,6 @@
             "value" : "Na používanie %@ je potrebný platený plán."
           }
         },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Za uporabo %@ je zahtevan plačljivi paket"
-          }
-        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -694,19 +496,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ Kullanmak için ücretli bir tarifeye abone olmalısınız"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Для використання %@ потрібен платний тарифний план"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "需要订阅付费计划才能使用 %@"
+            "value" : "%@ kullanmak için ücretli bir tarifeye abone olmalısınız"
           }
         }
       }
@@ -5569,7 +5359,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kladde gemt"
+            "value" : "Udkast gemt"
           }
         },
         "de" : {
@@ -10914,6 +10704,12 @@
             "value" : "Noben od prejemnikov privzeto ne podpira poteka veljavnosti. Dodajte geslo, da omogočite potek veljavnosti za prejemnike, ki ne uporabljajo Proton Maila."
           }
         },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ingen av mottagarna stöder utgångstid som standard. Lägg till ett lösenord för att aktivera utgångstid för mottagare som inte använder Proton Mail."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -13166,7 +12962,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "S'ha eliminat el destinatari duplicat: %@"
+            "value" : "S'ha esborrat el destinatari duplicat: %@"
           }
         },
         "cs" : {
@@ -13202,7 +12998,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Destinatario duplicado eliminado: %@"
+            "value" : "Se eliminó el destinatario duplicado: %@"
           }
         },
         "es-419" : {
@@ -13220,19 +13016,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Le destinataire dupliqué a été retiré : %@"
-          }
-        },
-        "hu" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kettőzött címzett eltávolítva: %@"
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Penerima duplikat dihapus: %@"
+            "value" : "Le destinataire en double a été retiré : %@"
           }
         },
         "it" : {
@@ -13247,40 +13031,10 @@
             "value" : "重複していた宛先を削除しました: %@"
           }
         },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "წაშლილია %@ გამეორებადი მიმღები"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "중복된 수신자를 삭제했습니다: %@"
-          }
-        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Fjernet duplisert mottaker: %@"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dubbele ontvanger verwijderd: %@"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Zduplikowany odbiorca %@ został usunięty"
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Destinatário duplicado eliminado: %@"
           }
         },
         "pt-BR" : {
@@ -13298,19 +13052,13 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Удалено дубликатов получателя: %@"
+            "value" : "Удалены дубликаты получателя: %@"
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Odstránený duplicitný príjemca: %@"
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Odstranjen podvojen prejemnik: %@"
           }
         },
         "sv" : {
@@ -13323,24 +13071,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Yinelenen alıcı kaldırıldı: %@"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Видалено дублікат отримувача: %@"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "已删除重复收件人：%@"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "已移除重複的收件者：%@"
           }
         }
       }
@@ -13393,7 +13123,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Destinatarios duplicados eliminados: %@"
+            "value" : "Se eliminaron los destinatarios duplicados: %@"
           }
         },
         "es-419" : {
@@ -13405,25 +13135,13 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Poistettiin päällekkäiset vastaanottajat: %@"
+            "value" : "Vastaanottajien kaksoiskappaleet poistettiin: %@"
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Destinataires en double supprimés : %@"
-          }
-        },
-        "hu" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Többszörös címzettek eltávolítva: %@"
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Penerima duplikat dihapus: %@"
+            "value" : "Les destinataires en double ont été retirés : %@"
           }
         },
         "it" : {
@@ -13438,40 +13156,10 @@
             "value" : "重複した受信者を削除しました: %@"
           }
         },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "წაიშალა დუბლირებული მიმღებები: %@"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "중복된 수신인을 삭제했습니다: %@"
-          }
-        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Fjernet dupliserte mottakere: %@"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dubbele ontvangers verwijderd: %@"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Usunięto zduplikowanych odbiorców: %@"
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Destinatários duplicados removidos: %@"
           }
         },
         "pt-BR" : {
@@ -13483,7 +13171,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "S-au eliminat destinatarii duplicați: %@"
+            "value" : "Destinatari duplicați eliminați: %@"
           }
         },
         "ru" : {
@@ -13498,12 +13186,6 @@
             "value" : "Odstránení duplicitní príjemcovia: %@"
           }
         },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Odstranjeni podvojeni prejemniki: %@"
-          }
-        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -13514,18 +13196,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Yinelenen alıcılar kaldırıldı: %@"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Вилучено дублікати одержувачів: %@"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "已移除重复收件人：%@"
           }
         }
       }
@@ -15613,7 +15283,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alguns destinataris (%@) no admeten la caducitat per defecte. Afegiu una contrasenya per a habilitar la caducitat per als destinataris que no són de Proton Mail."
+            "value" : "Alguns destinataris (%@) no admeten la caducitat per defecte. Afegiu una contrasenya per habilitar la caducitat per als destinataris que no utilitzin Proton Mail."
           }
         },
         "cs" : {
@@ -15649,7 +15319,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Algunos destinatarios (%@) no admiten la expiración por defecto. Añade una contraseña para activar la expiración para los destinatarios que no son de Proton Mail."
+            "value" : "Algunos destinatarios (%@) no admiten la caducidad de forma predeterminada. Añade una contraseña para activarla para los destinatarios que no son de Proton Mail."
           }
         },
         "es-419" : {
@@ -15661,25 +15331,13 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Jotkut vastaanottajat (%@) eivät oletusarvoisesti tue vanhenemistoimintoa. Lisää salasana, jotta voit ottaa vanhenemistoiminnon käyttöön muille kuin Proton Mailin vastaanottajille."
+            "value" : "Jotkut vastaanottajat (%@) eivät oletuksena tue viestien erääntymistä. Lisää salasana ottaaksesi erääntyminen käyttöön Proton Mailin ulkopuolisille vastaanottajille."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Certains destinataires (%@) ne prennent pas en charge l'expiration par défaut. Ajoutez un mot de passe pour activer l'expiration pour les destinataires qui n'utilisent pas Proton Mail."
-          }
-        },
-        "hu" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Néhány címzett (%@) alapértelmezetten nem támogatja a lejárati időt. Adjon meg jelszót, hogy engedélyezze a lejárati időt a nem Proton Mail-címzettek számára."
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Beberapa penerima (%@) tidak mendukung kedaluwarsa secara bawaan. Tambahkan kata sandi untuk mengaktifkan kedaluwarsa bagi penerima non-Proton Mail."
+            "value" : "Certains destinataires (%@) ne prennent pas en charge la date d'expiration par défaut. Ajoutez un mot de passe pour activer les dates d'expiration pour les destinataires qui n'utilisent pas Proton Mail."
           }
         },
         "it" : {
@@ -15694,40 +15352,10 @@
             "value" : "一部の受信者 (%@) は、デフォルトでは有効期限をサポートしていません。Proton Mail以外の受信者の有効期限を有効にするには、パスワードを追加してください。"
           }
         },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ზოგიერთ მიმღებს (%@) არ აქვს ვადის გასვლის მხარდაჭერა ნაგულისხმევად. დაამატეთ პაროლი, რომ ჩართოთ ვადის გასვლა Proton Mail-ის არამომხმარებლებისთვის."
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "일부 수신인(%@)은 기본적으로 만료 기능을 지원하지 않습니다. Proton Mail을 사용하지 않는 수신인을 위해 만료 기능을 활성화하려면 비밀번호를 추가하세요."
-          }
-        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Noen mottakere (%@) støtter ikke utløpstid som standard. Legg til et passord for å aktivere utløpstid for mottakere som ikke er Proton Mail."
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sommige ontvangers (%@) ondersteunen standaard geen vervaltijd. Voeg een wachtwoord toe om vervaltijd in te schakelen voor ontvangers die geen Proton Mail hebben."
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Niektórzy odbiorcy (%@) domyślnie nie obsługują wygasania. Dodaj hasło, aby włączyć wygasanie dla odbiorców spoza Proton Mail."
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Alguns destinatários (%@) não suportam a expiração por predefinição. Adicione uma palavra-passe para ativar a expiração para destinatários não pertencentes ao Proton Mail."
           }
         },
         "pt-BR" : {
@@ -15751,37 +15379,19 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Niektorí príjemcovia (%@) predvolene nepodporujú exspiráciu. Pridajte heslo, aby ste povolili exspiráciu pre príjemcov, ktorí nepoužívajú Proton Mail."
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Nekateri prejemniki (%@) privzeto ne podpirajo poteka veljavnosti. Dodajte geslo, da omogočite potek veljavnosti za prejemnike, ki ne uporabljajo Proton Maila."
+            "value" : "Niektorí príjemcovia (%@) štandardne nepodporujú platnosť. Pridajte heslo, aby ste povolili platnosť pre príjemcov, ktorí nepoužívajú Proton Mail."
           }
         },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vissa mottagare (%@) har inte stöd för utgångsdatum som standard. Lägg till ett lösenord för att aktivera utgångsdatum för mottagare som inte har Proton Mail."
+            "value" : "Vissa mottagare (%@) stöder inte utgångstid som standard. Lägg till ett lösenord för att aktivera utgångstid för användare som inte använder Proton Mail."
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bazı alıcılarda (%@) varsayılan olarak geçerlilik süresi desteklenmiyor. Proton Mail kullanmayan alıcılarda geçerlilik süresini kullanabilmek için bir parola ekleyin."
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Деякі одержувачі (%@) не підтримують термін дії за замовчуванням. Додайте пароль, щоб увімкнути термін дії для одержувачів, які не використовують Proton Mail."
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "默认情况下，部分收件人（%@）不支持邮件过期功能。如需对非 Proton Mail 用户设置过期时间，请添加密码。"
           }
         }
       }
@@ -17660,7 +17270,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hi ha un límit de 25 MB per fitxers adjunts per correu electrònic, incloses les imatges inserides, i no s'han pogut afegir %lld fitxers adjunts. Envieu-los en correus electrònics separats o compartiu-los mitjançant Proton Drive."
+            "value" : "Hi ha un límit de 25 MB per als fitxers adjunts de cada correu electrònic, incloent-hi les imatges en línia, i no s'han pogut afegir %lld fitxers adjunts. Envieu-los en correus electrònics separats o compartiu-los mitjançant Proton Drive."
           }
         },
         "cs" : {
@@ -17672,13 +17282,13 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "En grænse på 25 MB for vedhæftninger pr. e-mail, som inkluderer indlejrede billeder, bevirker at %lld vedhæftninger ikke kunne tilføjes. Send dem i separate e-mails, eller del dem via Proton Drive."
+            "value" : "En grænse på 25 MB for vedhæftninger pr. e-mail, som inkluderer indlejrede billeder, bevirker at %lld vedhæftninger ikke kunne tilføjes. Send dem i separate e-mails eller del dem via Proton Drive."
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Es gibt ein Limit von 25 MB für Anhänge pro E-Mail, einschließlich Inline-Bildern, und %lld Anhänge konnten nicht hinzugefügt werden. Sende sie in separaten E-Mails oder teile sie über Proton Drive."
+            "value" : "Es gibt eine Beschränkung von 25 MB für Anhänge pro E-Mail, einschließlich eingebetteten Bildern, und %lld Anhänge konnten nicht hinzugefügt werden. Sende sie in separaten E-Mails oder teile sie über Proton Drive."
           }
         },
         "el" : {
@@ -17696,7 +17306,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hay un límite de 25 MB para los archivos adjuntos en el correo electrónico, incluidas las imágenes en línea, y no se pudieron añadir %lld archivos adjuntos. Envíalos en correos electrónicos separados o compártelos a través de Proton Drive."
+            "value" : "Hay un límite de 25 MB para los archivos adjuntos por correo, incluidas las imágenes integradas, y no se han podido añadir %lld archivos. Envíalos en correos separados o compártelos a través de Proton Drive."
           }
         },
         "es-419" : {
@@ -17717,12 +17327,6 @@
             "value" : "Il y a une limite de 25 Mo pour les pièces jointes par e-mail, images comprises, et %lld pièces jointes n'ont pas pu être ajoutées. Envoyez-les dans des e-mails séparés ou partagez-les avec Proton Drive."
           }
         },
-        "hu" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Az e-mailek mellékleteinek mérete legfeljebb 25 MB lehet, beleértve a beágyazott képeket is, és a %lld mellékletek nem adhatók hozzá. Küldje el őket külön e-mailekben, vagy ossza meg őket a Proton Drive segítségével."
-          }
-        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -17732,13 +17336,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld添付ファイルを追加できません。添付ファイルの最大サイズはメール1通あたり25MBです（インライン画像含む）。複数のメールに分割するか、Proton Driveで共有してください。"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "인라인 이미지를 포함한 이메일당 첨부 파일 용량은 25 MB로 제한되며, %lld개의 첨부 파일을 추가할 수 없었습니다. 별도의 이메일로 보내거나 Proton Drive를 통해 공유해 주세요."
+            "value" : "%lld個の添付ファイルを追加できませんでした。メール1通あたりの添付ファイルには、インライン画像を含め25 MBの制限があります。それらを複数のメールに分けて送信するか、Proton Drive経由で共有してください。"
           }
         },
         "nb" : {
@@ -17747,16 +17345,16 @@
             "value" : "Det er en grense på 25 MB for vedlegg per e-post, inkludert innebygde bilder, og %lld vedlegg kunne ikke legges til. Send dem i separate e-poster eller del dem via Proton Drive."
           }
         },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Er is een limiet van 25 MB voor bijlagen per e-mail, inclusief inline afbeeldingen, en %lld bijlagen konden niet worden toegevoegd. Verstuur ze in afzonderlijke e-mails of deel ze via Proton Drive."
-          }
-        },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Există o limită de 25 MiB per atașament per e-mail, inclusiv imaginile integrate. Nu au putut fi adăugate %lld atașamente. Trimiteți-le cu mesaje separate sau partajați-le cu Proton Drive."
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Существует ограничение в 25 МБ на вложения в одно сообщение электронной почты, не удалось добавить вложения: %lld. Отправьте их в отдельных письмах или поделитесь ими через Proton Drive."
           }
         },
         "sk" : {
@@ -17765,28 +17363,10 @@
             "value" : "Na prílohy v jednom emaile platí limit 25 MB, vrátane vložených obrázkov a %lld prílohy nebolo možné pridať. Pošlite ich v samostatných emailoch alebo zdieľajte prostredníctvom Proton Drive."
           }
         },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Velikost priponk na posamezno e-pošto, vključno z vdelanimi slikami, je omejena na 25 MB in %lld priponk ni bilo mogoče dodati. Pošljite jih v ločenih e-poštnih sporočilih ali pa jih delite prek storitve Proton Drive."
-          }
-        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bir e-postadaki ek dosyaların toplamı, satır arasındaki görseller ile beraber en fazla 25 MB olabilir. Bu nedenle %lld dosya eklenemedi. Bu dosyaları farklı e-postalara ekleyerek gönderin ya da Proton Drive üzerinden paylaşın."
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "На вкладення в кожному листі встановлено обмеження 25 МБ, включаючи вбудовані зображення, і %lld вкладень не можна додати. Надішліть їх окремими листами або поділіться через Proton Drive."
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "每封邮件的附件大小限制为 25 MB，当前有 %lld 个附件无法添加。您可以将这些文件分开发送，或通过 Proton Drive 进行分享。"
           }
         }
       }
@@ -17803,7 +17383,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hi ha un límit de 25 MB per fitxers adjunts per correu electrònic, incloses les imatges inserides. Envieu-los en correus electrònics separats o compartiu-los mitjançant Proton Drive."
+            "value" : "Hi ha un límit de 25 MB per als fitxers adjunts de cada correu electrònic, incloses les imatges. Envieu-los en correus electrònics separats o compartiu-los a través del Proton Drive."
           }
         },
         "cs" : {
@@ -17857,7 +17437,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Il y a une limite de 25 Mo pour les pièces jointes par e-mail, y compris les images dans le message. Envoyez-les dans des e-mails séparés ou partagez-les avec Proton Drive."
+            "value" : "Les pièces jointes sont limitées à 25 Mo par message, images comprises. Envoyez-les dans des messages séparés ou partagez-les avec Proton Drive."
           }
         },
         "hu" : {
@@ -18137,7 +17717,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aquest missatge s'enviarà el %@."
+            "value" : "Aquest missatge s'enviarà el %@"
           }
         },
         "cs" : {
@@ -18149,7 +17729,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Denne besked vil blive sendt %@"
+            "value" : "Denne besked vil blive sendt den %@"
           }
         },
         "de" : {
@@ -18179,7 +17759,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Este mensaje se enviará el %@"
+            "value" : "Se enviará este mensaje el %@"
           }
         },
         "fi" : {
@@ -18191,19 +17771,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ce message sera envoyé le %@."
-          }
-        },
-        "hu" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ez az üzenet el lesz küldve %@"
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pesan ini akan dikirm pada %@"
+            "value" : "Ce message sera envoyé le %@"
           }
         },
         "it" : {
@@ -18218,52 +17786,22 @@
             "value" : "このメッセージは %@ に送信されます"
           }
         },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "შეტყობინება გაიგზავნება: %@"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "메시지가 %@에 전송됩니다"
-          }
-        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Denne meldingen vil bli sendt %@."
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dit bericht zal worden verzonden op %@ om"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Wiadomość zostanie wysłana w dniu: %@"
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Esta mensagem será enviada a %@."
+            "value" : "Denne meldingen vil bli sendt %@"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "A mensagem será enviada em %@."
+            "value" : "Esta mensagem será enviada em %@"
           }
         },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Acest mesaj va fi trimis la data de %@"
+            "value" : "Acest mesaj va fi trimis %@"
           }
         },
         "ru" : {
@@ -18278,40 +17816,16 @@
             "value" : "Táto správa bude odoslaná %@"
           }
         },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "To sporočilo bo poslano %@"
-          }
-        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Detta meddelande kommer att skickas %@"
+            "value" : "Detta meddelande kommer att skickas den %@"
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bu ileti %@ zamanında gönderilecek."
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Це повідомлення буде надіслано %@"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "邮件将于 %@ 发送"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "此郵件將在 %@ 時送出"
+            "value" : "Bu ileti %@ zamanında gönderilecek"
           }
         }
       }
@@ -19265,7 +18779,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Heu arribat al límit d'adjunts, incloent-hi les imatges en línia, i no s'han pogut afegir 1 o més adjunts. Envieu-los en correus electrònics separats o compartiu-los a través del Proton Drive."
+            "value" : "Heu arribat al límit de fitxers adjunts, incloses les imatges i no s'han pogut afegir 1 o més fitxers adjunts. Envieu-los en correus electrònics separats o compartiu-los a través del Proton Drive."
           }
         },
         "cs" : {

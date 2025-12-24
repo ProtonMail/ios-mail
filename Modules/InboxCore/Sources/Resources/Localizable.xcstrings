@@ -13,7 +13,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld més"
+            "value" : "+%lld més"
           }
         },
         "cs" : {
@@ -31,7 +31,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "und %lld weitere"
+            "value" : "+%lld weitere"
           }
         },
         "el" : {
@@ -55,7 +55,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld más"
+            "value" : "+%lld más"
           }
         },
         "fi" : {
@@ -70,18 +70,6 @@
             "value" : "+%lld de plus"
           }
         },
-        "hu" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld további"
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "+%lld lainnya"
-          }
-        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -94,34 +82,16 @@
             "value" : "+%lld 以上"
           }
         },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "그 외 %lld개"
-          }
-        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld til"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "+%lld meer"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "+%lld więcej"
+            "value" : "+%lld til"
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld a mais"
+            "value" : "+%lld mais"
           }
         },
         "ro" : {
@@ -142,12 +112,6 @@
             "value" : "+%lld ďalších"
           }
         },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "in še %lld"
-          }
-        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -157,19 +121,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "+%lld diğer"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ще +%lld"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "+还有 %lld 个"
+            "value" : "+%lld daha"
           }
         }
       }
@@ -982,7 +934,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Se ha copiado %@ al portapapeles"
+            "value" : "Se copió %@ al portapapeles"
           }
         },
         "es-419" : {
@@ -1000,19 +952,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Copié %@ dans le presse-papiers"
-          }
-        },
-        "hu" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ a vágólapra másolva"
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ disalin ke papan klip"
+            "value" : "%@ a été copié dans le presse-papiers"
           }
         },
         "it" : {
@@ -1027,40 +967,10 @@
             "value" : "%@をクリップボードにコピーしました"
           }
         },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ დაკოპირებულია გაცვლის ბუფერში"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@이(가) 클립보드에 복사됨."
-          }
-        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kopierte %@ til utklippstavlen"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ gekopieerd naar het klembord"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Skopiowano %@ do schowka"
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Copiado %@ para a área de transferência"
           }
         },
         "pt-BR" : {
@@ -1072,7 +982,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "S-a copiat %@ în memorie."
+            "value" : "S-a copiat %@ în memorie"
           }
         },
         "ru" : {
@@ -1084,13 +994,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Skopírované do schránky: %@"
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Skopirano v odložišče: %@"
+            "value" : "%@ skopírované do schránky"
           }
         },
         "sv" : {
@@ -1103,18 +1007,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ panoya kopyalandı"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Скопійовано %@ в буфер обміну"
-          }
-        },
-        "zh-Hans" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "已将 %@ 复制到剪贴板"
           }
         }
       }
@@ -2243,7 +2135,194 @@
       }
     },
     "Got it" : {
-
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Зразумела"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "D'acord"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rozumím"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Forstået"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verstanden"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Το κατάλαβα"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Got it"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Entendido"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Entendido"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Selvä"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "J'ai compris"
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Értem."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dimengerti"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ho capito"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "はい"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "გავიგე"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "알겠습니다"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skjønner"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Begrepen"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ok"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Entendido"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Entendi"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Am înțeles"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Понятно"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rozumiem"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Razumem"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Förstått"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anladım"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Зрозуміло"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "知道了"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "瞭解"
+          }
+        }
+      }
     },
     "Learn more" : {
       "localizations" : {
