@@ -23,22 +23,20 @@ final class PassThroughWindow: UIWindow {
             return nil
         }
 
+        rootView.layoutSubviews()
+
         if #available(iOS 26, *) {
             if rootView.layer.hitTest(point)?.name == nil {
                 return hitView
             } else {
                 return nil
             }
-        } else if #available(iOS 18, *) {
-            for subview in rootView.subviews.reversed() {
-                let convertedPoint = subview.convert(point, from: rootView)
-                if subview.hitTest(convertedPoint, with: event) != nil {
-                    return hitView
-                }
+        } else {
+            let pointInRoot = rootView.convert(point, from: self)
+            for subview in rootView.subviews where subview.frame.contains(pointInRoot) {
+                return subview
             }
             return nil
-        } else {
-            return hitView == rootView ? nil : hitView
         }
     }
 }
