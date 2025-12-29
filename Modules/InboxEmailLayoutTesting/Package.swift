@@ -10,9 +10,13 @@ let package = Package(
     products: [
         .library(name: "InboxEmailLayoutTesting", targets: ["InboxEmailLayoutTesting"])
     ],
+    dependencies: [
+        .package(path: "../../ProtonPackages/proton_app_uniffi")
+    ],
     targets: [
         .target(
-            name: "InboxEmailLayoutTesting"
+            name: "InboxEmailLayoutTesting",
+            dependencies: ["proton_app_uniffi"],
         ),
         .testTarget(
             name: "InboxEmailLayoutTestingTests",
