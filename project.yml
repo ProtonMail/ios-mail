@@ -29,6 +29,9 @@ packages:
   InboxDesignSystem:
     path: Modules/InboxDesignSystem
     group: Modules
+  InboxEmailLayoutTesting:
+    path: Modules/InboxEmailLayoutTesting
+    group: Modules
   InboxIAP:
     path: Modules/InboxIAP
     group: Modules
