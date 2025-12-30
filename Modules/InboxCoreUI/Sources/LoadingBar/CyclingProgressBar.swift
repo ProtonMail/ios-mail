@@ -99,7 +99,34 @@ struct CyclingProgressBar: View {
         } completion: {
             guard isAnimating else { return }
             onCycleCompleted()
+            continueAnimationCycle()
+        }
+    }
+
+    /// When using `withAnimation`, if there is no visible content to animate,
+    /// SwiftUI may trigger the completion closure immediately, without waiting
+    /// for the animation duration.
+    ///
+    /// In this case, the completion handler starts the same animation cycle again,
+    /// which results in an endless loop of immediate animation completions and
+    /// restarts.
+    ///
+    /// This behavior occurs only on iOS 17 and only when another view is presented
+    /// over the mailbox, making the cycling progress bar not visible. Since the
+    /// progress bar is not rendered in this state, the animation should not be
+    /// triggered at all, but this is how iOS 17 behaves.
+    ///
+    /// The issue is resolved by dispatching the next animation cycle asynchronously
+    /// using `DispatchQueue.main.async`, which ensures that the animation restart
+    /// does not occur within the same animation transaction, preventing the
+    /// immediate completion loop.
+    private func continueAnimationCycle() {
+        if #available(iOS 18, *) {
             startAnimationCycle()
+        } else {
+            DispatchQueue.main.async {
+                startAnimationCycle()
+            }
         }
     }
 }
