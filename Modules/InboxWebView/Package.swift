@@ -4,11 +4,11 @@
 import PackageDescription
 
 let package = Package(
-    name: "InboxEmailLayoutTesting",
+    name: "InboxWebView",
     defaultLocalization: "en",
     platforms: [.iOS(.v17)],
     products: [
-        .library(name: "InboxEmailLayoutTesting", targets: ["InboxEmailLayoutTesting"])
+        .library(name: "InboxWebView", targets: ["InboxWebView"])
     ],
     dependencies: [
         .package(path: "../../ProtonPackages/proton_app_uniffi"),
@@ -16,13 +16,13 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "InboxEmailLayoutTesting",
+            name: "InboxWebView",
             dependencies: ["proton_app_uniffi"],
         ),
         .testTarget(
-            name: "InboxEmailLayoutTestingTests",
+            name: "InboxWebViewTests",
             dependencies: [
-                .target(name: "InboxEmailLayoutTesting"),
+                .target(name: "InboxWebView"),
                 .product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
             ],
             resources: [

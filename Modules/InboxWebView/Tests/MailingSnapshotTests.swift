@@ -21,7 +21,7 @@ import WebKit
 import XCTest
 import proton_app_uniffi
 
-@testable import InboxEmailLayoutTesting
+@testable import InboxWebView
 
 @MainActor
 final class MailingSnapshotTests: XCTestCase {
