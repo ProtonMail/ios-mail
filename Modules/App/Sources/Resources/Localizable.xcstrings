@@ -871,7 +871,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld вложения"
+                  "value" : "%lld вложений"
                 }
               }
             }
@@ -1213,6 +1213,24 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld koblinger renset"
+                }
+              }
+            }
+          }
+        },
+        "nl" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld link opgeschoond"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld links opgeschoond"
                 }
               }
             }
@@ -1631,6 +1649,24 @@
             }
           }
         },
+        "nl" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld bericht"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld berichten"
+                }
+              }
+            }
+          }
+        },
         "pt-BR" : {
           "variations" : {
             "plural" : {
@@ -1697,7 +1733,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld сообщения"
+                  "value" : "%lld сообщений"
                 }
               }
             }
@@ -1795,7 +1831,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld valgte"
+            "value" : "%lld valgt"
           }
         },
         "de" : {
@@ -1856,6 +1892,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%lld valgt"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld Geselecteerd"
           }
         },
         "pt-BR" : {
@@ -2164,6 +2206,24 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld sporere blokkert"
+                }
+              }
+            }
+          }
+        },
+        "nl" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld tracker geblokkeerd"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld trackers geblokkeerd"
                 }
               }
             }
@@ -4062,6 +4122,24 @@
             }
           }
         },
+        "nl" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Na %u minuut"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Na %u minuten"
+                }
+              }
+            }
+          }
+        },
         "pt-BR" : {
           "variations" : {
             "plural" : {
@@ -4128,7 +4206,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Через %u минуты"
+                  "value" : "Через %u минут"
                 }
               }
             }
@@ -7600,7 +7678,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "¿Realmente quiere eliminar permanentemente todos los mensajes de la carpeta %@? Esta acción no se puede deshacer."
+            "value" : "¿Realmente desea eliminar permanentemente todos los mensajes de la carpeta %@? Esta acción no se puede deshacer."
           }
         },
         "fi" : {
@@ -7631,6 +7709,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Er du sikker på at du vil slette alle meldingene i %@-mappen for godt? Denne handlingen kan ikke angres."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Weet u zeker dat u alle berichten in de map %@ definitief wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt."
           }
         },
         "pt-BR" : {
@@ -10945,6 +11029,12 @@
             "value" : "Renset"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opgeschoond"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12044,6 +12134,34 @@
             }
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%#@arg1@"
+          },
+          "substitutions" : {
+            "arg1" : {
+              "argNum" : 1,
+              "formatSpecifier" : "lld",
+              "variations" : {
+                "plural" : {
+                  "one" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "Samtale flyttet til Arkiv."
+                    }
+                  },
+                  "other" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "Samtaler flyttet til Arkiv."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12289,6 +12407,34 @@
                     "stringUnit" : {
                       "state" : "translated",
                       "value" : "Samtaler flyttet til arkiv."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%#@arg1@"
+          },
+          "substitutions" : {
+            "arg1" : {
+              "argNum" : 1,
+              "formatSpecifier" : "lld",
+              "variations" : {
+                "plural" : {
+                  "one" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "Gesprek verplaatst naar archief."
+                    }
+                  },
+                  "other" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "Gesprekken verplaatst naar Archief."
                     }
                   }
                 }
@@ -18884,7 +19030,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Redigér udkast"
+            "value" : "Redigér kladde"
           }
         },
         "de" : {
@@ -20230,6 +20376,12 @@
             "value" : "E-poster fra %@ vil ikke lenger bli levert og vil bli slettet permanent. Du kan administrere blokkerte e-postadresser i innstillingene."
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-mails van %@ worden niet langer afgeleverd en worden permanent verwijderd. U kunt geblokkeerde e-mailadressen beheren in de instellingen."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -20355,6 +20507,12 @@
             "value" : "Tøm %@-mappen"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Leeg %@ map"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -20478,6 +20636,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tøm %@ nå"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Leeg %@ nu"
           }
         },
         "pt-BR" : {
@@ -21331,6 +21495,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Utløper om %@"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verloopt over %@"
           }
         },
         "pt-BR" : {
@@ -23051,6 +23221,12 @@
             "value" : "Pokud obdržíte e-mail obsahující špionážní pixely (sledovací prvky) nebo sledovací odkazy, v podrobnostech e-mailu se zobrazí ikona štítu. [Další informace…](https://proton.me/support/email-tracker-protection)"
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hvis du modtager en e-mail, der indeholder sporingspixels (trackere) eller sporingslinks, vil du se   skjoldikonen i e-mail-detaljerne. [Få mere at vide…](https://proton.me/support/email-tracker-protection)"
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -23078,7 +23254,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Si recibe un correo electrónico con píxeles espía (rastreadores) o enlaces de rastreo, verá el icono del escudo en los detalles del correo electrónico. [Más información…](https://proton.me/support/email-tracker-protection)"
+            "value" : "Si recibe un correo electrónico con píxeles espía (rastreadores) o enlaces de rastreo, verá el ícono del escudo en los detalles del correo electrónico. [Más información…](https://proton.me/support/email-tracker-protection)"
           }
         },
         "fi" : {
@@ -23109,6 +23285,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Hvis du mottar en e-post som inneholder spionpiksler (sporere) eller sporingskoblinger, vil du se skjoldikonet i e-postdetaljer. [Lær mer…](https://proton.me/support/email-tracker-protection)"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Als u een e-mail ontvangt met spionage pixels (trackers) of tracking links, ziet u het schildpictogram in de e-mailgegevens. [Meer informatie...](https://proton.me/support/email-tracker-protection)"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se você receber um e-mail contendo pixels espiões (rastreadores) ou links de rastreamento, você verá o ícone de escudo nos detalhes do e-mail. [Saiba mais…](https://proton.me/support/email-tracker-protection)"
           }
         },
         "ro" : {
@@ -26817,6 +27005,24 @@
             }
           }
         },
+        "nl" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld bijlage"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld bijlagen"
+                }
+              }
+            }
+          }
+        },
         "pt-BR" : {
           "variations" : {
             "plural" : {
@@ -26883,7 +27089,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld вложения"
+                  "value" : "%lld вложений"
                 }
               }
             }
@@ -28407,6 +28613,34 @@
             }
           }
         },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%#@arg1@"
+          },
+          "substitutions" : {
+            "arg1" : {
+              "argNum" : 1,
+              "formatSpecifier" : "lld",
+              "variations" : {
+                "plural" : {
+                  "one" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "Besked flyttet til arkiv."
+                    }
+                  },
+                  "other" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "Beskeder flyttet til arkiv."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
@@ -28652,6 +28886,34 @@
                     "stringUnit" : {
                       "state" : "translated",
                       "value" : "Meldinger flyttet til arkiv."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%#@arg1@"
+          },
+          "substitutions" : {
+            "arg1" : {
+              "argNum" : 1,
+              "formatSpecifier" : "lld",
+              "variations" : {
+                "plural" : {
+                  "one" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "Bericht verplaatst naar archief."
+                    }
+                  },
+                  "other" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "Berichten verplaatst naar Archief."
                     }
                   }
                 }
@@ -30587,6 +30849,12 @@
             "value" : "Flyttet til %@."
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verplaatst naar %@."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -32005,6 +32273,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ingen sporere oppdaget"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geen trackers gedetecteerd"
           }
         },
         "pt-BR" : {
@@ -33646,6 +33920,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Original"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Origineel"
           }
         },
         "pt-BR" : {
@@ -43873,7 +44153,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Favorito"
+            "value" : "Favoritar"
           }
         },
         "ro" : {
@@ -47343,6 +47623,12 @@
             "value" : "Denne meldingen slettes automatisk om %@"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dit bericht wordt automatisch verwijderd over %@"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -47842,6 +48128,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Denne meldingen utløper om %@."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dit bericht verloopt over %@"
           }
         },
         "pt-BR" : {
@@ -49789,6 +50081,12 @@
             "value" : "Sporingsbeskyttelse:"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tracker bescherming:"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -51463,7 +51761,7 @@
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Remover estrela"
+            "value" : "Remover favorito"
           }
         },
         "ro" : {

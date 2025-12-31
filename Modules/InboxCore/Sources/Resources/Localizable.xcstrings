@@ -88,6 +88,12 @@
             "value" : "+%lld til"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "+%lld meer"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -971,6 +977,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Kopierte %@ til utklippstavlen"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ gekopieerd naar het klembord"
           }
         },
         "pt-BR" : {

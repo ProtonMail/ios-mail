@@ -88,6 +88,12 @@
             "value" : "%@ kan ikke brukes til å sende meldinger"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ kan niet worden gebruikt om berichten te verzenden"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -211,6 +217,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ er deaktivert. Den kan ikke sende meldinger"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ is uitgeschakeld. Het kan geen berichten verzenden."
           }
         },
         "pt-BR" : {
@@ -338,6 +350,12 @@
             "value" : "%lld medlemmer"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld leden"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -461,6 +479,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "En betalt plan kreves for å bruke %@"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Een betaald abonnement is vereist om %@ te gebruiken."
           }
         },
         "pt-BR" : {
@@ -13037,6 +13061,12 @@
             "value" : "Fjernet duplisert mottaker: %@"
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dubbele ontvanger verwijderd: %@"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -13160,6 +13190,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Fjernet dupliserte mottakere: %@"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dubbele ontvangers verwijderd: %@"
           }
         },
         "pt-BR" : {
@@ -15358,6 +15394,12 @@
             "value" : "Noen mottakere (%@) støtter ikke utløpstid som standard. Legg til et passord for å aktivere utløpstid for mottakere som ikke er Proton Mail."
           }
         },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sommige ontvangers (%@) ondersteunen standaard geen vervaltijd. Voeg een wachtwoord toe om vervaltijd in te schakelen voor ontvangers die geen Proton Mail hebben."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -17276,7 +17318,7 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Na přílohy v jednom e-mailu je stanoven limit 25 MB, včetně obrázků v textu, a %lld příloh nebylo možné přidat. Odešlejte je v samostatných e-mailech nebo je sdílejte prostřednictvím Proton Drive."
+            "value" : "Na přílohy v jednom e-mailu je stanoven limit 25 MB, včetně obrázků v textu, a %lld příloh nebylo možné přidat. Odešlete je v samostatných e-mailech nebo je sdílejte prostřednictvím Proton Drive."
           }
         },
         "da" : {
@@ -17343,6 +17385,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Det er en grense på 25 MB for vedlegg per e-post, inkludert innebygde bilder, og %lld vedlegg kunne ikke legges til. Send dem i separate e-poster eller del dem via Proton Drive."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Er is een limiet van 25 MB voor bijlagen per e-mail, inclusief inline afbeeldingen, en %lld bijlagen konden niet worden toegevoegd. Verstuur ze in afzonderlijke e-mails of deel ze via Proton Drive."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Há um limite de 25 MB para anexos por e-mail, incluindo imagens incorporadas, e %lld anexos não puderam ser adicionados. Envie-os em e-mails separados ou compartilhe-os via Proton Drive."
           }
         },
         "ro" : {
@@ -17474,6 +17528,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Er is een limiet van 25 MB voor bijlagen per e-mail, inclusief inline afbeeldingen. Verzend ze in aparte e-mails of deel ze via Proton Drive."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Há um limite de 25 MB para anexos por e-mail, incluindo imagens incorporadas. Envie-os em e-mails separados ou compartilhe-os via Proton Drive."
           }
         },
         "ro" : {
@@ -17790,6 +17850,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Denne meldingen vil bli sendt %@"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dit bericht zal worden verzonden op %@"
           }
         },
         "pt-BR" : {
