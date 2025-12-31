@@ -11,7 +11,8 @@ let package = Package(
         .library(name: "InboxEmailLayoutTesting", targets: ["InboxEmailLayoutTesting"])
     ],
     dependencies: [
-        .package(path: "../../ProtonPackages/proton_app_uniffi")
+        .package(path: "../../ProtonPackages/proton_app_uniffi"),
+        .package(url: "https://github.com/pointfreeco/swift-snapshot-testing", from: "1.18.0"),
     ],
     targets: [
         .target(
@@ -20,7 +21,13 @@ let package = Package(
         ),
         .testTarget(
             name: "InboxEmailLayoutTestingTests",
-            dependencies: ["InboxEmailLayoutTesting"]
+            dependencies: [
+                .target(name: "InboxEmailLayoutTesting"),
+                .product(name: "SnapshotTesting", package: "swift-snapshot-testing"),
+            ],
+            resources: [
+                .process("TestAssets")
+            ]
         ),
     ]
 )
