@@ -19,6 +19,17 @@ import Combine
 import SwiftUI
 import proton_app_uniffi
 
+class CustomPageViewController: UIPageViewController {
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        for viewController in children {
+            viewController.beginAppearanceTransition(true, animated: animated)
+            viewController.endAppearanceTransition()
+        }
+    }
+}
+
 public struct PageViewController<Page: View>: UIViewControllerRepresentable {
     @Environment(\.presentationMode) var presentationMode
 
@@ -40,7 +51,7 @@ public struct PageViewController<Page: View>: UIViewControllerRepresentable {
     }
 
     public func makeUIViewController(context: Context) -> UIPageViewController {
-        let pageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal)
+        let pageViewController = CustomPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal)
         pageViewController.delegate = context.coordinator
 
         let page = startingPage()
