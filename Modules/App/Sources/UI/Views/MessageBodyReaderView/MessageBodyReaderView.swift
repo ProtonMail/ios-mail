@@ -113,6 +113,10 @@ struct MessageBodyReaderView: UIViewRepresentable {
                         /* Dynamic type size */
                         --dts-scale-factor: \(scaleFactor * 100)%;
                     }
+
+                    body[style*="display: table"] {
+                        display: block !important;
+                    }
                 }
 
                 @media print {
