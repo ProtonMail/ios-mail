@@ -7648,7 +7648,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Er du sikker på, at du permanent vil slette alle beskeder i mappen %@? Du kan ikke fortryde det."
+            "value" : "Er du sikker på, at du vil slette alle beskeder i mappen %@ permanent? Denne handling kan ikke fortrydes."
           }
         },
         "de" : {
@@ -19030,7 +19030,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Redigér kladde"
+            "value" : "Redigér udkast"
           }
         },
         "de" : {
@@ -23224,7 +23224,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hvis du modtager en e-mail, der indeholder sporingspixels (trackere) eller sporingslinks, vil du se   skjoldikonen i e-mail-detaljerne. [Få mere at vide…](https://proton.me/support/email-tracker-protection)"
+            "value" : "Hvis du modtager en e-mail, der indholder sporingspixels (trackere) eller sporingslinks, vil du se  skjoldikonet i e-mail-detaljerne. [Få mere at vide…](https://proton.me/support/email-tracker-protection)"
           }
         },
         "de" : {

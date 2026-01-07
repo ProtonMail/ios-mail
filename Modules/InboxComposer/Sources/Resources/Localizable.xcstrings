@@ -8940,7 +8940,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Besked er for stor til at sende. Reducér venligst størrelsen på dine vedhæftninger."
+            "value" : "Beskeden er for stor til at blive sendt. Reducér størrelsen på dine vedhæftninger."
           }
         },
         "de" : {
