@@ -207,7 +207,6 @@ targets:
         UIApplicationSupportsIndirectInputEvents: YES
         UIApplicationSceneManifest:
           UIApplicationSupportsMultipleScenes: YES
-        UIDesignRequiresCompatibility: YES
         UILaunchScreen:
           UILaunchScreen: []
         UISupportedInterfaceOrientations:
