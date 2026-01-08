@@ -112,6 +112,11 @@ public extension DS.Color {
         public static let success = Color(.loaderSuccess)
     }
 
+    enum Lock {
+        public static let blue = Color(.lockBlue)
+        public static let green = Color(.lockGreen)
+    }
+
     enum Notification {
         public static let error = Color(.notificationError)
         public static let error100 = Color(.notificationError100)
