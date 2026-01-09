@@ -51,8 +51,6 @@ public extension DS.Icon {
     static let icHourglass = ImageResource.icHourglass
     static let icImage = ImageResource.ic
     static let icInbox = ImageResource.icInbox
-    static let icLock = ImageResource.icLock
-    static let icLockFilled = ImageResource.icLockFilled
     static let icMagicWand = ImageResource.icMagicWand
     static let icMapPin = ImageResource.icMapPin
     static let icMobile = ImageResource.icMobile
@@ -167,4 +165,17 @@ public extension DS.Icon {
     static let icQuestionCircle = ImageResource.icQuestionCircle
     static let icCrossCircle = ImageResource.icCrossCircle
     static let icUser = ImageResource.icUser
+}
+
+// MARK: Locks
+
+public extension DS.Icon {
+    static let icLock = ImageResource.icLock
+    static let icLockCheckFilled = ImageResource.icLockCheckFilled
+    static let icLockExclamationFilled = ImageResource.icLockExclamationFilled
+    static let icLockFilled = ImageResource.icLockFilled
+    static let icLockOpenCheckFilled = ImageResource.icLockOpenCheckFilled
+    static let icLockOpenExclamationFilled = ImageResource.icLockOpenExclamationFilled
+    static let icLockOpenPenFilled = ImageResource.icLockOpenPenFilled
+    static let icLockPenFilled = ImageResource.icLockPenFilled
 }

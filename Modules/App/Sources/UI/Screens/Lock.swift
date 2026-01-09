@@ -31,3 +31,28 @@ extension PrivacyLockColor {
         }
     }
 }
+
+extension PrivacyLockIcon {
+
+    var uiIcon: ImageResource? {
+        switch self {
+        case .none:
+            nil
+        case .closedLock:
+            DS.Icon.icLockFilled
+        case .closedLockWithTick:
+            DS.Icon.icLockCheckFilled
+        case .closedLockWithPen:
+            DS.Icon.icLockPenFilled
+        case .closedLockWarning:
+            DS.Icon.icLockExclamationFilled
+        case .openLockWithPen:
+            DS.Icon.icLockOpenPenFilled
+        case .openLockWithTick:
+            DS.Icon.icLockOpenCheckFilled
+        case .openLockWarning:
+            DS.Icon.icLockOpenExclamationFilled
+        }
+    }
+
+}
