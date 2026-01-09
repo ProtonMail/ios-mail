@@ -33,7 +33,6 @@ extension PrivacyLockColor {
 }
 
 extension PrivacyLockIcon {
-
     var uiIcon: ImageResource? {
         switch self {
         case .none:
@@ -54,5 +53,21 @@ extension PrivacyLockIcon {
             DS.Icon.icLockOpenExclamationFilled
         }
     }
+}
 
+extension PrivacyLockTooltip {
+    // FIXME: - Add correct text
+    var title: String {
+        "Stored with zero-access encryption".notLocalized
+    }
+
+    // FIXME: - Add correct text
+    var description: String {
+        """
+        This message is stored on our servers with zero‑access encryption. Neither Proton nor anyone else can read it.
+
+        However, a sender or recipient not using Proton Mail may have a non-encrypted copy stored on their email server. 
+        """
+        .notLocalized
+    }
 }
