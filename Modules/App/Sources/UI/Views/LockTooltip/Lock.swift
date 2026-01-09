@@ -33,10 +33,10 @@ extension PrivacyLockColor {
 }
 
 extension PrivacyLockIcon {
-    var uiIcon: ImageResource? {
+    var uiIcon: ImageResource {
         switch self {
         case .none:
-            nil
+            fatalError()
         case .closedLock:
             DS.Icon.icLockFilled
         case .closedLockWithTick:
@@ -66,7 +66,7 @@ extension PrivacyLockTooltip {
         """
         This message is stored on our servers with zero‑access encryption. Neither Proton nor anyone else can read it.
 
-        However, a sender or recipient not using Proton Mail may have a non-encrypted copy stored on their email server. 
+        However, a sender or recipient not using Proton Mail may have a non-encrypted copy stored on their email server.
         """
         .notLocalized
     }
