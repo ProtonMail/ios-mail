@@ -324,6 +324,16 @@ public extension GetContactDetailsResult {
         }
     }
 }
+public extension GetTrackerInfoForMessageResult {
+    func get() throws(UserSessionError) -> TrackerInfo? {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension IosShareExtInitDraftResult {
     func get() throws(ProtonError) -> String {
         switch self {
@@ -1476,6 +1486,26 @@ public extension VoidSessionResult {
 }
 public extension WatchMailSettingsResult {
     func get() throws(UserSessionError) -> SettingsWatcher {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension WatchTrackerInfoStreamNextAsyncResult {
+    func get() throws(ProtonError) {
+        switch self {
+        case .ok:
+            break
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension WatchTrackerInfoStreamResult {
+    func get() throws(UserSessionError) -> WatchTrackerInfoStream {
         switch self {
         case .ok(let value):
             value

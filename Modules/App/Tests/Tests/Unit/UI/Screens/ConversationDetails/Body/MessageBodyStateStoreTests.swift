@@ -558,8 +558,6 @@ private final class DecryptedMessageSpy: DecryptedMessage, @unchecked Sendable {
                 hadBlockquote: true,
                 tagsStripped: 0,
                 utmStripped: 0,
-                remoteImagesDisabled: 0,
-                embeddedImagesDisabled: 0,
                 transformOpts: opts,
                 bodyBanners: []
             ))
