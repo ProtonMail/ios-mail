@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import InboxCore
 import InboxCoreUI
 import InboxDesignSystem
 import ProtonUIFoundations
@@ -36,6 +37,7 @@ struct MessageDetailsView: View {
     let uiModel: MessageDetailsUIModel
     let mailbox: Mailbox
     let actionButtonsState: ActionButtonsState
+    let privacyLock: PrivacyLock?
     let onEvent: (MessageDetailsEvent) async -> Void
 
     private let detailedContentLeadingSpacing: CGFloat = DS.Spacing.jumbo + DS.Spacing.large
@@ -140,6 +142,8 @@ struct MessageDetailsView: View {
         .padding(.leading, detailedContentLeadingSpacing)
     }
 
+    @State private var privacyLockTooltip: PrivacyLockTooltipContext? = nil
+
     private var expandedHeaderView: some View {
         VStack(alignment: .leading, spacing: DS.Spacing.large) {
             recipientRow(.to, recipients: uiModel.recipientsToExcludingFirst)
@@ -149,10 +153,31 @@ struct MessageDetailsView: View {
             recipientRow(.bcc, recipients: uiModel.recipientsBcc)
                 .removeViewIf(uiModel.recipientsBcc.isEmpty)
 
-            VStack(alignment: .leading, spacing: DS.Spacing.standard) {
-                dateRow
-                locationRow
+            if let privacyLock {
+                HStack(alignment: .top, spacing: DS.Spacing.compact) {
+                    privacyLock.icon.uiIcon.image
+                        .resizable()
+                        .square(size: 14)
+                        .foregroundStyle(privacyLock.color.uiColor)
+
+                    VStack(alignment: .leading, spacing: DS.Spacing.small) {
+                        Text(privacyLock.tooltip.title)
+                            .font(.footnote)
+                            .foregroundStyle(DS.Color.Text.norm)
+                        Button(action: { privacyLockTooltip = .init(privacyLock: privacyLock) }) {
+                            Text(CommonL10n.learnMore)
+                                .font(.footnote)
+                                .foregroundStyle(DS.Color.Text.accent)
+                        }
+                    }
+                }
+                .popover(item: $privacyLockTooltip) { lock in
+                    LockTooltipView(lock: lock.privacyLock)
+                }
             }
+
+            dateRow
+            locationRow
         }
         .padding(.top, uiModel.recipientsToExcludingFirst.isEmpty ? DS.Spacing.large : DS.Spacing.compact)
         .transition(.move(edge: .top).combined(with: .opacity))
@@ -487,6 +512,7 @@ extension Array where Element == MessageDetail.Recipient {
         uiModel: model,
         mailbox: .dummy,
         actionButtonsState: .enabled,
+        privacyLock: nil,
         onEvent: { _ in }
     )
 }
@@ -567,4 +593,9 @@ private struct MessageDetailsViewIdentifiers {
     }
 
     static let expandedHeaderDateValue = "detail.header.expanded.date.value"
+}
+
+private struct PrivacyLockTooltipContext: Identifiable {
+    let id = UUID()
+    let privacyLock: PrivacyLock
 }

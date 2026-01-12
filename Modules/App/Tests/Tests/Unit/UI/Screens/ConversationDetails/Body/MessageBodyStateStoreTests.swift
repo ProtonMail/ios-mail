@@ -58,6 +58,7 @@ final class MessageBodyStateStoreTests {
                         .init(
                             rsvpServiceProvider: .none,
                             newsletterService: decryptedMessageSpy,
+                            messageEncryptionInfoService: decryptedMessageSpy,
                             banners: [],
                             attachments: [],
                             html: .init(rawBody: "<html>dummy_with_custom_options</html>", options: initialOptions, imagePolicy: .safe)
@@ -627,6 +628,7 @@ private extension MessageBodyStateStore.State {
                 .init(
                     rsvpServiceProvider: .none,
                     newsletterService: decryptedMessage,
+                    messageEncryptionInfoService: decryptedMessage,
                     banners: [],
                     attachments: [],
                     html: .init(rawBody: rawBody, options: options, imagePolicy: .safe)

@@ -31,6 +31,7 @@ struct ExpandedMessageCell: View {
     private let htmlDisplayed: () -> Void
     private let areActionsHidden: Bool
     @Binding var attachmentIDToOpen: ID?
+    @State private var messageEncryptionInfoStore = MessageEncryptionInfoStore()
     @State private var isBodyLoaded: Bool = false
     @State private var viewDidAppear = false
 
@@ -63,6 +64,7 @@ struct ExpandedMessageCell: View {
                 uiModel: uiModel.messageDetails,
                 mailbox: mailbox,
                 actionButtonsState: actionButtonsState,
+                privacyLock: messageEncryptionInfoStore.privacyLock,
                 onEvent: { event in
                     switch event {
                     case .onTap:
@@ -86,7 +88,8 @@ struct ExpandedMessageCell: View {
                 attachmentIDToOpen: $attachmentIDToOpen,
                 editScheduledMessage: { Task { await onEvent(.onEditScheduledMessage) } },
                 unsnoozeConversation: { Task { await onEvent(.unsnoozeConversation) } },
-                draftPresenter: draftPresenter
+                draftPresenter: draftPresenter,
+                messageEncryptionInfoStore: messageEncryptionInfoStore
             )
             if !areActionsHidden {
                 MessageActionButtonsView(

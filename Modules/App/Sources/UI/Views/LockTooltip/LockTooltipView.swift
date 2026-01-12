@@ -21,17 +21,16 @@ import InboxDesignSystem
 import SwiftUI
 import proton_app_uniffi
 
-// Consider pop-over instead of sheet
 struct LockTooltipView: View {
     let lock: PrivacyLock
-    @State var contentHeight: CGFloat = .zero
+    @Environment(\.dismiss) var dismiss
 
     init(lock: PrivacyLock) {
         self.lock = lock
     }
 
     var body: some View {
-        ClosableScreen {
+        VStack(spacing: .zero) {
             ScrollView {
                 VStack(alignment: .leading, spacing: .zero) {
                     Image(lock.icon.uiIcon)
@@ -50,18 +49,27 @@ struct LockTooltipView: View {
                         .foregroundStyle(DS.Color.Text.weak)
                         .tint(DS.Color.Text.accent)
                         .padding(.top, DS.Spacing.medium)
-                    Button(action: {}) {
-                        Text(CommonL10n.gotIt)
-                    }
-                    .buttonStyle(BigButtonStyle())
-                    .padding(.top, DS.Spacing.huge)
                 }
-                .padding(.top, DS.Spacing.mediumLight)
-                .padding(.horizontal, DS.Spacing.extraLarge)
-                .padding(.bottom, DS.Spacing.huge)
             }
+            .scrollClipDisabled()
+            .padding(.horizontal, DS.Spacing.extraLarge)
+
+            ZStack {
+                LinearGradient.fading
+                    .edgesIgnoringSafeArea(.all)
+
+                Button(action: { dismiss.callAsFunction() }) {
+                    Text(CommonL10n.gotIt)
+                }
+                .buttonStyle(BigButtonStyle())
+                .padding(.bottom, DS.Spacing.standard)
+                .padding(.horizontal, DS.Spacing.extraLarge)
+                .padding(.top, DS.Spacing.extraLarge)
+            }
+            .fixedSize(horizontal: false, vertical: true)
         }
-        .presentationDetents([.medium])
+        .padding(.top, DS.Spacing.huge)
+        .presentationDetents([.medium, .large])
         .background(DS.Color.Background.norm)
     }
 }
@@ -70,5 +78,15 @@ struct LockTooltipView: View {
     VStack {
         LockTooltipView(lock: .init(icon: .closedLock, color: .green, tooltip: .receiveE2e))
         Spacer()
+    }
+}
+
+extension LinearGradient {
+    static var fading: Self {
+        .init(
+            colors: [DS.Color.Background.norm.opacity(0.2), DS.Color.Background.norm],
+            startPoint: .top,
+            endPoint: .bottom
+        )
     }
 }

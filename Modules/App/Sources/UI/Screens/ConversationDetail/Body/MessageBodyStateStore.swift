@@ -70,13 +70,15 @@ final class MessageBodyStateStore: StateStore {
     private let senderUnblocker: SenderUnblocker
     private let toastStateStore: ToastStateStore
     private let backOnlineActionExecutor: BackOnlineActionExecuting
+    private let messageEncryptionInfoStore: MessageEncryptionInfoStore
 
     init(
         messageID: ID,
         mailbox: Mailbox,
         wrapper: RustMessageBodyWrapper,
         toastStateStore: ToastStateStore,
-        backOnlineActionExecutor: BackOnlineActionExecuting
+        backOnlineActionExecutor: BackOnlineActionExecuting,
+        messageEncryptionInfoStore: MessageEncryptionInfoStore
     ) {
         self.messageID = messageID
         self.provider = .init(mailbox: mailbox, wrapper: wrapper)
@@ -84,6 +86,7 @@ final class MessageBodyStateStore: StateStore {
         self.senderUnblocker = .init(mailbox: mailbox, wrapper: wrapper)
         self.toastStateStore = toastStateStore
         self.backOnlineActionExecutor = backOnlineActionExecutor
+        self.messageEncryptionInfoStore = messageEncryptionInfoStore
     }
 
     func handle(action: Action) async {
@@ -162,12 +165,17 @@ final class MessageBodyStateStore: StateStore {
             }
 
             state = state.copy(\.body, to: .loaded(body, schemeHandler))
+            await loadPrivacyLock(messageEncryptionInfoService: body.messageEncryptionInfoService)
         case .noConnectionError:
             state = state.copy(\.body, to: .noConnection)
             reloadContentWhenBackOnline(options: options)
         case .error(let error):
             state = state.copy(\.body, to: .error(error))
         }
+    }
+
+    private func loadPrivacyLock(messageEncryptionInfoService: MessageEncryptionInfoService) async {
+        messageEncryptionInfoStore.privacyLock = await messageEncryptionInfoService.privacyLock()
     }
 
     private func reloadContentWhenBackOnline(options: TransformOpts) {

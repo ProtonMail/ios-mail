@@ -64,9 +64,9 @@ extension PrivacyLockTooltip {
     // FIXME: - Add correct text
     var description: String {
         """
-        This message is stored on our servers with zero‑access encryption. Neither Proton nor anyone else can read it.
+        This message is protected by PGP end‑to‑end encryption. It is encrypted on the sender’s device and can only be decrypted by the recipient.
 
-        However, a sender or recipient not using Proton Mail may have a non-encrypted copy stored on their email server.
+        However, the sender verification failed. Please confirm the authenticity of the message with your contact. 
         """
         .notLocalized
     }

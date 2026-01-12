@@ -15,8 +15,31 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import Combine
 import InboxCore
+import Observation
 import proton_app_uniffi
+
+protocol MessageEncryptionInfoService: AnyObject, Sendable {
+    func privacyLock() async -> PrivacyLock?
+}
+
+@MainActor
+@Observable
+class MessageEncryptionInfoStore {
+    var privacyLock: PrivacyLock?
+}
+
+extension DecryptedMessage: MessageEncryptionInfoService {
+    func privacyLock() async -> PrivacyLock? {
+        let privacyLock: PrivacyLock = await privacyLock()
+        if privacyLock.icon == .none {
+            return nil
+        } else {
+            return privacyLock
+        }
+    }
+}
 
 struct MessageBody: Sendable {
     struct HTML: Equatable, Sendable {
@@ -27,6 +50,7 @@ struct MessageBody: Sendable {
 
     let rsvpServiceProvider: RsvpEventServiceProvider?
     let newsletterService: UnsubscribeNewsletter
+    let messageEncryptionInfoService: MessageEncryptionInfoService
     let banners: [MessageBanner]
     let attachments: [AttachmentMetadata]
     let html: HTML
@@ -60,6 +84,7 @@ struct MessageBodyProvider {
             let body = MessageBody(
                 rsvpServiceProvider: rsvpServiceProvider,
                 newsletterService: decryptedMessage,
+                messageEncryptionInfoService: decryptedMessage,
                 banners: decryptedBody.bodyBanners,
                 attachments: decryptedMessage.attachments(),
                 html: html

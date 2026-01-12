@@ -34,6 +34,7 @@ struct MessageBodyView: View {
     let editScheduledMessage: () -> Void
     let unsnoozeConversation: () -> Void
     let draftPresenter: RecipientDraftPresenter
+    let messageEncryptionInfoStore: MessageEncryptionInfoStore
     @Binding var isBodyLoaded: Bool
     @Binding var attachmentIDToOpen: ID?
     @State var bodyContentHeight: CGFloat = .zero
@@ -46,7 +47,8 @@ struct MessageBodyView: View {
         attachmentIDToOpen: Binding<ID?>,
         editScheduledMessage: @escaping () -> Void,
         unsnoozeConversation: @escaping () -> Void,
-        draftPresenter: RecipientDraftPresenter
+        draftPresenter: RecipientDraftPresenter,
+        messageEncryptionInfoStore: MessageEncryptionInfoStore
     ) {
         self.messageID = messageID
         self.emailAddress = emailAddress
@@ -56,6 +58,7 @@ struct MessageBodyView: View {
         self.editScheduledMessage = editScheduledMessage
         self.unsnoozeConversation = unsnoozeConversation
         self.draftPresenter = draftPresenter
+        self.messageEncryptionInfoStore = messageEncryptionInfoStore
     }
 
     var body: some View {
@@ -65,7 +68,8 @@ struct MessageBodyView: View {
                 mailbox: mailbox,
                 wrapper: .productionInstance(),
                 toastStateStore: toastStateStore,
-                backOnlineActionExecutor: BackOnlineActionExecutor(mailUserSession: { AppContext.shared.userSession })
+                backOnlineActionExecutor: BackOnlineActionExecutor(mailUserSession: { AppContext.shared.userSession }),
+                messageEncryptionInfoStore: messageEncryptionInfoStore
             )
         ) { state, store in
             VStack(spacing: .zero) {
