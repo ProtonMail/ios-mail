@@ -45,7 +45,6 @@ struct LockTooltipView: View {
                         .foregroundStyle(DS.Color.Text.norm)
                         .padding(.top, DS.Spacing.large)
                     Text(lock.tooltip.description)
-                        .font(.subheadline)
                         .foregroundStyle(DS.Color.Text.weak)
                         .tint(DS.Color.Text.accent)
                         .padding(.top, DS.Spacing.medium)
