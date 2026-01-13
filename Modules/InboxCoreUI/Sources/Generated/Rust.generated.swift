@@ -324,8 +324,8 @@ public extension GetContactDetailsResult {
         }
     }
 }
-public extension GetTrackerInfoForMessageResult {
-    func get() throws(UserSessionError) -> TrackerInfo? {
+public extension GetPrivacyInfoForMessageResult {
+    func get() throws(UserSessionError) -> PrivacyInfo {
         switch self {
         case .ok(let value):
             value
@@ -1494,18 +1494,18 @@ public extension WatchMailSettingsResult {
         }
     }
 }
-public extension WatchTrackerInfoStreamNextAsyncResult {
-    func get() throws(ProtonError) {
+public extension WatchPrivacyInfoStreamNextAsyncResult {
+    func get() throws(ProtonError) -> PrivacyInfo {
         switch self {
-        case .ok:
-            break
+        case .ok(let value):
+            value
         case .error(let error):
             throw error
         }
     }
 }
-public extension WatchTrackerInfoStreamResult {
-    func get() throws(UserSessionError) -> WatchTrackerInfoStream {
+public extension WatchPrivacyInfoStreamResult {
+    func get() throws(UserSessionError) -> WatchPrivacyInfoStream {
         switch self {
         case .ok(let value):
             value
