@@ -34,6 +34,7 @@ struct MessageDetailsView: View {
 
     @Environment(\.messageAppearanceOverrideStore) var messageAppearanceOverrideStore
     @State private(set) var isHeaderCollapsed: Bool = true
+    @State private var privacyLockTooltip: PrivacyLockTooltipContext? = nil
     let uiModel: MessageDetailsUIModel
     let mailbox: Mailbox
     let actionButtonsState: ActionButtonsState
@@ -142,8 +143,6 @@ struct MessageDetailsView: View {
         .padding(.leading, detailedContentLeadingSpacing)
     }
 
-    @State private var privacyLockTooltip: PrivacyLockTooltipContext? = nil
-
     private var expandedHeaderView: some View {
         VStack(alignment: .leading, spacing: DS.Spacing.large) {
             recipientRow(.to, recipients: uiModel.recipientsToExcludingFirst)
@@ -154,23 +153,12 @@ struct MessageDetailsView: View {
                 .removeViewIf(uiModel.recipientsBcc.isEmpty)
 
             if let privacyLock {
-                HStack(alignment: .top, spacing: DS.Spacing.compact) {
-                    privacyLock.icon.uiIcon.image
-                        .resizable()
-                        .square(size: 14)
-                        .foregroundStyle(privacyLock.color.uiColor)
-
-                    VStack(alignment: .leading, spacing: DS.Spacing.small) {
-                        Text(privacyLock.tooltip.title)
-                            .font(.footnote)
-                            .foregroundStyle(DS.Color.Text.norm)
-                        Button(action: { privacyLockTooltip = .init(privacyLock: privacyLock) }) {
-                            Text(CommonL10n.learnMore)
-                                .font(.footnote)
-                                .foregroundStyle(DS.Color.Text.accent)
-                        }
-                    }
-                }
+                infoRowWithLearnMore(
+                    title: privacyLock.tooltip.title,
+                    icon: privacyLock.icon.uiIcon,
+                    iconColor: privacyLock.color.uiColor,
+                    action: { privacyLockTooltip = .init(privacyLock: privacyLock) }
+                )
                 .popover(item: $privacyLockTooltip) { lock in
                     LockTooltipView(lock: lock.privacyLock)
                 }
@@ -398,6 +386,31 @@ struct MessageDetailsView: View {
                 badges: uiModel.labels.map { label in Badge(text: label.text, color: label.color) }
             )
             Spacer()
+        }
+    }
+
+    private func infoRowWithLearnMore(
+        title: String,
+        icon: ImageResource,
+        iconColor: Color,
+        action: @escaping () -> Void
+    ) -> some View {
+        HStack(alignment: .top, spacing: DS.Spacing.compact) {
+            Image(icon)
+                .resizable()
+                .square(size: 14)
+                .foregroundStyle(iconColor)
+
+            VStack(alignment: .leading, spacing: DS.Spacing.small) {
+                Text(title)
+                    .font(.footnote)
+                    .foregroundStyle(DS.Color.Text.norm)
+                Button(action: action) {
+                    Text(CommonL10n.learnMore)
+                        .font(.footnote)
+                        .foregroundStyle(DS.Color.Text.accent)
+                }
+            }
         }
     }
 }

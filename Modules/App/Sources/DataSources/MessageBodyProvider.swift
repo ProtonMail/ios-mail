@@ -17,17 +17,10 @@
 
 import Combine
 import InboxCore
-import Observation
 import proton_app_uniffi
 
 protocol MessageEncryptionInfoService: AnyObject, Sendable {
     func privacyLock() async -> PrivacyLock?
-}
-
-@MainActor
-@Observable
-class MessageEncryptionInfoStore {
-    var privacyLock: PrivacyLock?
 }
 
 extension DecryptedMessage: MessageEncryptionInfoService {
