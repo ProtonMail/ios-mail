@@ -823,6 +823,118 @@ enum L10n {
         )
     }
 
+    enum PrivacyLockTooltip {
+        enum Title {
+            static let endToEndEncrypted = LocalizedStringResource(
+                "End-to-end encrypted",
+                comment: "Title indicating email is end-to-end encrypted."
+            )
+            static let endToEndEncryptedFromVerifiedSender = LocalizedStringResource(
+                "End-to-end encrypted from verified sender",
+                comment: "Title indicating email is end-to-end encrypted from a verified sender."
+            )
+            static let endToEndEncryptedToVerifiedRecipient = LocalizedStringResource(
+                "End-to-end encrypted to verified recipient",
+                comment: "Title indicating email is end-to-end encrypted to a verified recipient."
+            )
+            static let endToEndEncryptedToVerifiedRecipients = LocalizedStringResource(
+                "End-to-end encrypted to verified recipients",
+                comment: "Title indicating email is end-to-end encrypted to verified recipients."
+            )
+            static let endToEndEncryptedWithFailedVerification = LocalizedStringResource(
+                "End-to-end encrypted with failed verification",
+                comment: "Title indicating email is end-to-end encrypted but verification failed."
+            )
+            static let pgpEndToEndEncrypted = LocalizedStringResource(
+                "PGP end-to-end encrypted",
+                comment: "Title indicating email is PGP end-to-end encrypted."
+            )
+            static let pgpEndToEndEncryptedToVerifiedRecipient = LocalizedStringResource(
+                "PGP end-to-end encrypted to verified recipient",
+                comment: "Title indicating email is PGP end-to-end encrypted to a verified recipient."
+            )
+            static let pgpSignedEmail = LocalizedStringResource(
+                "PGP-signed email",
+                comment: "Title indicating email is PGP-signed."
+            )
+            static let pgpSignedEmailWithFailedVerification = LocalizedStringResource(
+                "PGP-signed email with failed verification",
+                comment: "Title indicating email is PGP-signed but verification failed."
+            )
+            static let pgpSignedMessageFromVerifiedSender = LocalizedStringResource(
+                "PGP-signed message from verified sender",
+                comment: "Title indicating message is PGP-signed from a verified sender."
+            )
+            static let zeroAccessEncrypted = LocalizedStringResource(
+                "Zero-access encrypted",
+                comment: "Title indicating email is zero-access encrypted."
+            )
+            static let zeroAccessEncryptedWithVerifiedRecipient = LocalizedStringResource(
+                "Zero-access encrypted with verified recipient",
+                comment: "Title indicating email is zero-access encrypted with a verified recipient."
+            )
+            static let zeroAccessEncryptedWithVerifiedRecipients = LocalizedStringResource(
+                "Zero-access encrypted with verified recipients",
+                comment: "Title indicating email is zero-access encrypted with verified recipients."
+            )
+        }
+
+        enum Description {
+            static let atLeastOneRecipientDisabledE2e = LocalizedStringResource(
+                "At least one recipient has disabled end-to-end encryption on their account. The email is stored on Proton servers with [zero-access encryption](https://proton.me/blog/zero-access-encryption). Neither Proton nor anyone else can read it.",
+                comment: "Description explaining that at least one recipient has disabled end-to-end encryption."
+            )
+            static let emailsExchangedBetweenProtonUsers = LocalizedStringResource(
+                "Emails exchanged between Proton users are always end-to-end encrypted.",
+                comment: "Additional description explaining that emails between Proton users are always end-to-end encrypted."
+            )
+            static let recipientIsVerifiedContact = LocalizedStringResource(
+                "The recipient is a [verified contact](https://proton.me/support/verified-contacts) whose encryption keys you have trusted.",
+                comment: "Additional description explaining the recipient is a verified contact."
+            )
+            static let recipientsAreVerifiedContacts = LocalizedStringResource(
+                "The recipients are [verified contacts](https://proton.me/support/verified-contacts) whose encryption keys you have trusted.",
+                comment: "Additional description explaining the recipients are verified contacts."
+            )
+            static let senderIsVerifiedContact = LocalizedStringResource(
+                "The sender is a [verified contact](https://proton.me/support/verified-contacts) whose encryption keys you have trusted.",
+                comment: "Additional description explaining the sender is a verified contact."
+            )
+            static let senderVerificationFailed = LocalizedStringResource(
+                "The [sender verification failed](https://proton.me/support/sender-verification-failed). Please confirm the authenticity of the email with your contact.",
+                comment: "Additional description explaining sender verification failed."
+            )
+            static let senderVerificationFailedNoSignature = LocalizedStringResource(
+                "The [sender verification failed](https://proton.me/support/sender-verification-failed) because it was not signed. Please confirm the authenticity of the email with your contact.",
+                comment: "Additional description explaining sender verification failed because email was not signed."
+            )
+            static let senderOrRecipientNotUsingProtonMail = LocalizedStringResource(
+                "However, a sender or recipient not using Proton Mail may have a non-encrypted copy stored on their email server.",
+                comment: "Additional description noting that non-Proton Mail users may have unencrypted copies."
+            )
+            static let theEmailIsStoredWithZeroAccessEncryption = LocalizedStringResource(
+                "The email is stored on Proton servers with [zero-access encryption](https://proton.me/blog/zero-access-encryption). Neither Proton nor anyone else can read it.",
+                comment: "Description explaining the email is stored with zero-access encryption."
+            )
+            static let thisEmailIsEndToEndEncrypted = LocalizedStringResource(
+                "This email is [end-to-end encrypted](https://proton.me/blog/what-is-end-to-end-encryption) on the sender's device and can only be decrypted by the recipient. Proton can't see the contents of the email at any time.",
+                comment: "Description explaining what end-to-end encryption means for this email."
+            )
+            static let thisEmailIsStoredWithZeroAccessEncryption = LocalizedStringResource(
+                "This email is stored on Proton servers with [zero-access encryption](https://proton.me/blog/zero-access-encryption). Neither Proton nor anyone else can read it.",
+                comment: "Description explaining email is stored with zero-access encryption."
+            )
+            static let thisRecipientDisabledE2e = LocalizedStringResource(
+                "This recipient has disabled end-to-end encryption on their account. The email is stored on Proton servers with [zero-access encryption](https://proton.me/blog/zero-access-encryption). Neither Proton nor anyone else can read it.",
+                comment: "Description explaining that the recipient has disabled end-to-end encryption."
+            )
+            static let youHaveDigitallySigned = LocalizedStringResource(
+                "You have [digitally signed](https://proton.me/support/proton-mail-digital-signatures) this email, proving to the recipient that your email is genuine and hasn't been tampered with.",
+                comment: "Description explaining that you have digitally signed this email."
+            )
+        }
+    }
+
     enum ReportProblem {
         static let mainTitle = LocalizedStringResource(
             "Report a problem",

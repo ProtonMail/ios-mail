@@ -40,11 +40,11 @@ struct LockTooltipView: View {
                         .padding(.all, DS.Spacing.large)
                         .background(DS.Color.Background.deep)
                         .clipShape(RoundedRectangle(cornerRadius: DS.Radius.extraLarge))
-                    Text(lock.tooltip.title)
+                    Text(lock.tooltip.displayData.title)
                         .font(.title2.weight(.semibold))
                         .foregroundStyle(DS.Color.Text.norm)
                         .padding(.top, DS.Spacing.large)
-                    Text(lock.tooltip.description)
+                    Text(lock.tooltip.displayData.joinedDescription)
                         .foregroundStyle(DS.Color.Text.weak)
                         .tint(DS.Color.Text.accent)
                         .padding(.top, DS.Spacing.medium)
@@ -80,12 +80,22 @@ struct LockTooltipView: View {
     }
 }
 
-extension LinearGradient {
+private extension LinearGradient {
     static var fading: Self {
         .init(
             colors: [DS.Color.Background.norm.opacity(0.2), DS.Color.Background.norm],
             startPoint: .top,
             endPoint: .bottom
         )
+    }
+}
+
+private extension PrivacyLockTooltipDisplayData {
+    var joinedDescription: String {
+        if let additionalDescription {
+            "\(description)\n\n\(additionalDescription)".notLocalized
+        } else {
+            description.string
+        }
     }
 }
