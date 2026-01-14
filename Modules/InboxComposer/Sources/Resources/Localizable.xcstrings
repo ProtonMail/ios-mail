@@ -13,7 +13,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "No es pot fer servir %@ per enviar missatges"
+            "value" : "%@ no es pot utilitzar per a enviar missatges"
           }
         },
         "cs" : {
@@ -118,6 +118,12 @@
             "value" : "%@ nemôže byť použité na odosielanie správ"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Z naslova %@ ni mogoče pošiljati sporočil"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -144,7 +150,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ està desactivat. No pot enviar missatges"
+            "value" : "%@ està desactivat. No es poden enviar missatges"
           }
         },
         "cs" : {
@@ -247,6 +253,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ je zakázaný. Nemôže odosielať správy."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ je onemogočen. Z njega ni mogoče pošiljati sporočil"
           }
         },
         "sv" : {
@@ -380,6 +392,12 @@
             "value" : "%lld členov"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Članov: %lld"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -406,7 +424,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Per fer servir %@ cal un pla de pagament"
+            "value" : "Es requereix un pla de pagament per a utilitzar %@"
           }
         },
         "cs" : {
@@ -509,6 +527,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Na používanie %@ je potrebný platený plán."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Za uporabo %@ je zahtevan plačljiv paket"
           }
         },
         "sv" : {
@@ -4052,7 +4076,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Карыстальніцкае"
+            "value" : "Карыстальніцкі"
           }
         },
         "ca" : {
@@ -10719,7 +10743,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Žiaden z príjemcov predvolene nepodporuje exspiráciu. Pridajte heslo, aby ste povolili exspiráciu pre príjemcov, ktorí nepoužívajú Proton Mail."
+            "value" : "Žiadny z príjemcov v predvolenom nastavení nepodporuje vypršanie platnosti. Pridajte heslo, aby ste povolili vypršanie platnosti pre príjemcov, ktorí nepoužívajú Proton Mail."
           }
         },
         "sl" : {
@@ -13091,6 +13115,12 @@
             "value" : "Odstránený duplicitný príjemca: %@"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Odstranjen podvojen prejemnik: %@"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -13220,6 +13250,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Odstránení duplicitní príjemcovia: %@"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Odstranjeni podvojeni prejemniki: %@"
           }
         },
         "sv" : {
@@ -15424,6 +15460,12 @@
             "value" : "Niektorí príjemcovia (%@) štandardne nepodporujú platnosť. Pridajte heslo, aby ste povolili platnosť pre príjemcov, ktorí nepoužívajú Proton Mail."
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nekateri prejemniki (%@) privzeto ne podpirajo poteka veljavnosti. Dodajte geslo, da omogočite potek veljavnosti za prejemnike, ki ne uporabljajo Proton Maila."
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -17417,6 +17459,12 @@
             "value" : "Na prílohy v jednom emaile platí limit 25 MB, vrátane vložených obrázkov a %lld prílohy nebolo možné pridať. Pošlite ich v samostatných emailoch alebo zdieľajte prostredníctvom Proton Drive."
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Velikost priponk na sporočilo, vključno z vdelanimi slikami, je omejena na 25 MB, zato %lld priponk ni bilo mogoče dodati. Pošljite jih v ločenih e-poštnih sporočilih ali pa jih delite prek storitve Proton Drive."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -17880,6 +17928,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Táto správa bude odoslaná %@"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "To sporočilo bo poslano %@"
           }
         },
         "sv" : {

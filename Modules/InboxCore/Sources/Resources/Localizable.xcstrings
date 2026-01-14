@@ -118,6 +118,12 @@
             "value" : "+%lld ďalších"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "in še %lld"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1007,6 +1013,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ skopírované do schránky"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopirano v odložišče: %@"
           }
         },
         "sv" : {
