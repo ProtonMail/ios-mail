@@ -19,14 +19,13 @@ import InboxDesignSystem
 import SwiftUI
 
 struct FadingEffect: ViewModifier {
-    @State var move = false
-    let color = DS.Color.Global.white
+    @State var isAnimating = false
 
     func body(content: Content) -> some View {
         content
-            .opacity(move ? 0.4 : 1)
-            .animation(.linear(duration: 0.35).delay(0.6).repeatForever(autoreverses: true), value: move)
-            .onLoad { move = true }
+            .opacity(isAnimating ? 0.4 : 1)
+            .animation(.linear(duration: 0.35).delay(0.6).repeatForever(autoreverses: true), value: isAnimating)
+            .onLoad { isAnimating = true }
     }
 }
 
