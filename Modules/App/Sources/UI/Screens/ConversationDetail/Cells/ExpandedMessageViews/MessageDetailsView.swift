@@ -514,26 +514,6 @@ extension Array where Element == MessageDetail.Recipient {
     )
 }
 
-extension PrivacyLock: InfoRowWithLearnMoreViewModel {
-    var displayIcon: ImageResource {
-        icon.displayIcon
-    }
-
-    var iconColor: Color {
-        color.displayColor
-    }
-
-    var title: LocalizedStringResource {
-        tooltip.title
-    }
-}
-
-protocol InfoRowWithLearnMoreViewModel: Equatable {
-    var displayIcon: ImageResource { get }
-    var iconColor: Color { get }
-    var title: LocalizedStringResource { get }
-}
-
 enum MessageDetailsPreviewProvider {
     static var recipientsTo: [MessageDetail.Recipient] {
         [
