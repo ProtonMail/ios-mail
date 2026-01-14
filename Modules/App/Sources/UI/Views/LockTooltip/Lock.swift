@@ -35,8 +35,6 @@ extension PrivacyLockColor {
 extension PrivacyLockIcon {
     var displayIcon: ImageResource {
         switch self {
-        case .none:
-            fatalError()
         case .closedLock:
             DS.Icon.icLockFilled
         case .closedLockWithTick:

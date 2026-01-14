@@ -20,3 +20,5 @@ import proton_app_uniffi
 protocol MessageEncryptionInfoService: AnyObject, Sendable {
     func privacyLock() async -> PrivacyLock?
 }
+
+extension DecryptedMessage: MessageEncryptionInfoService {}
