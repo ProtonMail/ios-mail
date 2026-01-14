@@ -152,35 +152,33 @@ struct MessageDetailsView: View {
             recipientRow(.bcc, recipients: uiModel.recipientsBcc)
                 .removeViewIf(uiModel.recipientsBcc.isEmpty)
 
-//            privacyLockInfo
+            privacyLockInfoRow
 
             dateRow
             locationRow
         }
-        //        .animation(.default, value: privacyLock)
+        .animation(.default, value: privacyLock)
         .padding(.top, uiModel.recipientsToExcludingFirst.isEmpty ? DS.Spacing.large : DS.Spacing.compact)
         .transition(.move(edge: .top).combined(with: .opacity))
     }
 
-//    @State var privacyLock: Loadable<PrivacyLock> = Loadable.loading
-
-//    @ViewBuilder
-//    private var privacyLockInfo: some View {
-//        if let privacyLock = privacyLock.loadedValue {
-//            InfoRowWithLearnMore(
-//                title: privacyLock.tooltip.title,
-//                icon: privacyLock.icon.displayIcon,
-//                iconColor: privacyLock.color.displayColor,
-//                action: { privacyLockTooltip = .init(privacyLock: privacyLock) }
-//            )
-//            .transition(.opacity)
-//        } else if privacyLock.isLoading {
-//            InfoRowWithLearnMore.placeholder
-//                .redacted(true)
-//                .fadingEffect()
-//                .transition(.opacity)
-//        }
-//    }
+    @ViewBuilder
+    private var privacyLockInfoRow: some View {
+        if let privacyLock = privacyLock.loadedValue {
+            InfoRowWithLearnMore(
+                title: privacyLock.tooltip.title.string,
+                icon: privacyLock.icon.displayIcon,
+                iconColor: privacyLock.color.displayColor,
+                action: { privacyLockTooltip = .init(privacyLock: privacyLock) }
+            )
+            .transition(.opacity)
+        } else if privacyLock.isLoading {
+            InfoRowWithLearnMore.placeholder
+                .redacted(true)
+                .fadingEffect()
+                .transition(.opacity)
+        }
+    }
 
     private var hideDetailsButton: some View {
         Button(action: {
