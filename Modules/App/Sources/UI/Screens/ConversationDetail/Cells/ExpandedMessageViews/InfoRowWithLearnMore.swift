@@ -62,6 +62,16 @@ extension InfoRowWithLearnMore {
 
 private extension String {
     static func randomPlaceholder(length: Int) -> String {
-        String(Array(repeating: " ", count: length)).notLocalized
+        String(Array(repeating: .enSpace, count: length)).notLocalized
+    }
+}
+
+private extension Character {
+    /// Unicode EN SPACE character (U+2002).
+    ///
+    /// Wider and more consistent than a regular space,
+    /// useful for placeholder and redacted text.
+    static var enSpace: Character {
+        "\u{2002}"
     }
 }

@@ -17,7 +17,7 @@
 
 enum Loadable<Value: Equatable>: Equatable {
     case loading
-    case loaded(Value)
+    case loaded(Value?)
 
     var isLoading: Bool {
         guard case .loading = self else { return false }
