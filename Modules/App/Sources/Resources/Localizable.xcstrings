@@ -500,6 +500,12 @@
             "value" : "%1$@ z %2$@"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ od %2$@"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -907,6 +913,36 @@
             }
           }
         },
+        "sl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld priponke"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld priponka"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld priponk"
+                }
+              },
+              "two" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld priponki"
+                }
+              }
+            }
+          }
+        },
         "sv" : {
           "variations" : {
             "plural" : {
@@ -984,13 +1020,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "S'ha eliminat %lld enllaç"
+                  "value" : "S'ha netejat %lld enllaç"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "S'han eliminat %lld enllaços"
+                  "value" : "S'han netejat %lld enllaços"
                 }
               }
             }
@@ -1333,6 +1369,36 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld odkazov očistených"
+                }
+              }
+            }
+          }
+        },
+        "sl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld očiščene povezave"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld očiščena povezava"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld očiščenih povezav"
+                }
+              },
+              "two" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld očiščeni povezavi"
                 }
               }
             }
@@ -1769,6 +1835,36 @@
             }
           }
         },
+        "sl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld sporočila"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld sporočilo"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld sporočil"
+                }
+              },
+              "two" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld sporočili"
+                }
+              }
+            }
+          }
+        },
         "sv" : {
           "variations" : {
             "plural" : {
@@ -1922,6 +2018,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%lld vybraný"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Izbrano: %lld"
           }
         },
         "sv" : {
@@ -2326,6 +2428,36 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld sledovačov zablokovaných"
+                }
+              }
+            }
+          }
+        },
+        "sl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld blokirani sledilci"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld blokiran sledilec"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld blokiranih sledilcev"
+                }
+              },
+              "two" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld blokirana sledilca"
                 }
               }
             }
@@ -3888,13 +4020,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Passat %u minut"
+                  "value" : "Després d'%u minut"
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Passats %u minuts"
+                  "value" : "Després de %u minuts"
                 }
               }
             }
@@ -4237,6 +4369,36 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "Po %u minútach"
+                }
+              }
+            }
+          }
+        },
+        "sl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Po %u minutah"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Po %u minuti"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Po %u minutah"
+                }
+              },
+              "two" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Po %u minutah"
                 }
               }
             }
@@ -7741,6 +7903,12 @@
             "value" : "Skutočne chcete natrvalo vymazať všetky správy v priečinku %@? Túto akciu nemožno vrátiť späť."
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ali ste prepričani, da želite trajno izbrisati vsa sporočila v mapi %@? Tega dejanja ni mogoče razveljaviti."
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -11008,7 +11176,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Supprimé"
+            "value" : "Nettoyé"
           }
         },
         "it" : {
@@ -11057,6 +11225,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Očistené"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Očiščeno"
           }
         },
         "sv" : {
@@ -14880,7 +15054,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Карыстальніцкае"
+            "value" : "Карыстальніцкі"
           }
         },
         "ca" : {
@@ -20406,6 +20580,12 @@
             "value" : "Emaily od %@ už nebudú doručované a budú trvalo vymazané. Zablokované emailové adresy môžete spravovať v nastaveniach."
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sporočila pošiljatelja %@ ne bodo več dostavljena in bodo trajno izbrisana. Blokirane e-poštne naslove lahko upravljate v nastavitvah."
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -20537,6 +20717,12 @@
             "value" : "Vyprázdniť priečinok %@"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Izprazni mapo %@"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -20563,7 +20749,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Buideu la carpeta %@ ara"
+            "value" : "Buideu %@ ara"
           }
         },
         "cs" : {
@@ -20666,6 +20852,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vyprázdniť %@ hneď"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Izprazni mapo %@ zdaj"
           }
         },
         "sv" : {
@@ -21422,7 +21614,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Caduca d'aquí a %@"
+            "value" : "Caduca en %@"
           }
         },
         "cs" : {
@@ -21525,6 +21717,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vyprší o %@"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Poteče čez %@"
           }
         },
         "sv" : {
@@ -23315,6 +23513,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ak dostanete email obsahujúci špehovacie pixely (sledovače) alebo sledovacie odkazy, uvidíte ikonu štítu v podrobnostiach emailu. [Zistiť viac…](https://proton.me/support/email-tracker-protection)"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Če prejmete e-poštno sporočilo, ki vsebuje vohunske slikovne pike (sledilce) ali povezave za sledenje, je med podrobnostmi sporočila prikazana ikona ščita. [Več o tem …](https://proton.me/support/email-tracker-protection)"
           }
         },
         "tr" : {
@@ -27125,6 +27329,36 @@
             }
           }
         },
+        "sl" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld priponke"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld priponka"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld priponk"
+                }
+              },
+              "two" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld priponki"
+                }
+              }
+            }
+          }
+        },
         "sv" : {
           "variations" : {
             "plural" : {
@@ -30879,6 +31113,12 @@
             "value" : "Presunuté do %@."
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Premaknjeno v mapo %@."
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -32303,6 +32543,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Neboli zistené žiadne sledovače"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ni zaznanih sledilcev"
           }
         },
         "sv" : {
@@ -33950,6 +34196,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pôvodný"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Izvirnik"
           }
         },
         "sv" : {
@@ -47659,6 +47911,12 @@
             "value" : "Táto správa sa automaticky odstráni o %@"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "To sporočilo bo samodejno izbrisano čez %@"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -48164,6 +48422,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Táto správa vyprší za %@"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "To sporočilo bo poteklo čez %@"
           }
         },
         "sv" : {
@@ -48699,7 +48963,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Гэта прывядзе да скасавання вашай падпіскі на спіс рассылкі. Адпраўнік атрымае апавяшчэнне аб неабходнасці спыніць адпраўку лістоў на гэты адрас."
+            "value" : "Гэта дзеянне прывядзе да скасавання вашай падпіскі на спіс рассылкі. Адпраўнік атрымае апавяшчэнне аб неабходнасці спыніць адпраўку лістоў на гэты адрас."
           }
         },
         "ca" : {
@@ -50115,6 +50379,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ochrana pred sledovačmi:"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zaščita pred sledilci:"
           }
         },
         "sv" : {

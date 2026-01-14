@@ -15,11 +15,19 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Observation
-import proton_app_uniffi
+enum Loadable<Value: Equatable>: Equatable {
+    case loading
+    case loaded(Value)
 
-@MainActor
-@Observable
-final class MessageEncryptionInfoStore {
-    var privacyLockState: Loadable<PrivacyLock> = .loading
+    var isLoading: Bool {
+        guard case .loading = self else { return false }
+        return true
+    }
+
+    var loadedValue: Value? {
+        guard case .loaded(let value) = self else {
+            return nil
+        }
+        return value
+    }
 }

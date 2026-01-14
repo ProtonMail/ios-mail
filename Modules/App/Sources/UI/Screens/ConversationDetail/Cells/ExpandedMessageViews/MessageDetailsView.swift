@@ -38,7 +38,7 @@ struct MessageDetailsView: View {
     let uiModel: MessageDetailsUIModel
     let mailbox: Mailbox
     let actionButtonsState: ActionButtonsState
-    let privacyLock: Loadable<PrivacyLock?>
+    let privacyLock: Loadable<PrivacyLock>
     let onEvent: (MessageDetailsEvent) async -> Void
 
     private let detailedContentLeadingSpacing: CGFloat = DS.Spacing.jumbo + DS.Spacing.large
@@ -152,36 +152,35 @@ struct MessageDetailsView: View {
             recipientRow(.bcc, recipients: uiModel.recipientsBcc)
                 .removeViewIf(uiModel.recipientsBcc.isEmpty)
 
-            privacyLockInfo
+//            privacyLockInfo
 
             dateRow
             locationRow
         }
-        .animation(.default, value: privacyLock)
+        //        .animation(.default, value: privacyLock)
         .padding(.top, uiModel.recipientsToExcludingFirst.isEmpty ? DS.Spacing.large : DS.Spacing.compact)
         .transition(.move(edge: .top).combined(with: .opacity))
     }
 
-    @ViewBuilder
-    private var privacyLockInfo: some View {
-        //        if let privacyLock = privacyLock.lock {
-        //            InfoRowWithLearnMore(
-        //                title: privacyLock.tooltip.title,
-        //                icon: privacyLock.icon.displayIcon,
-        //                iconColor: privacyLock.color.displayColor,
-        //                action: { privacyLockTooltip = .init(privacyLock: privacyLock) }
-        //            )
-        //            .popover(item: $privacyLockTooltip) { lock in
-        //                LockTooltipView(lock: lock.privacyLock)
-        //            }
-        //            .transition(.opacity)
-        //        } else if privacyLock.isLoading {
-        InfoRowWithLearnMore.placeholder
-            .redacted(true)
-            .fadingEffect()
-            .transition(.opacity)
-        //        }
-    }
+//    @State var privacyLock: Loadable<PrivacyLock> = Loadable.loading
+
+//    @ViewBuilder
+//    private var privacyLockInfo: some View {
+//        if let privacyLock = privacyLock.loadedValue {
+//            InfoRowWithLearnMore(
+//                title: privacyLock.tooltip.title,
+//                icon: privacyLock.icon.displayIcon,
+//                iconColor: privacyLock.color.displayColor,
+//                action: { privacyLockTooltip = .init(privacyLock: privacyLock) }
+//            )
+//            .transition(.opacity)
+//        } else if privacyLock.isLoading {
+//            InfoRowWithLearnMore.placeholder
+//                .redacted(true)
+//                .fadingEffect()
+//                .transition(.opacity)
+//        }
+//    }
 
     private var hideDetailsButton: some View {
         Button(action: {
@@ -402,47 +401,6 @@ struct MessageDetailsView: View {
     }
 }
 
-private struct InfoRowWithLearnMore: View {
-    let title: LocalizedStringResource
-    let icon: ImageResource
-    let iconColor: Color
-    let action: () -> Void
-
-    var body: some View {
-        HStack(alignment: .top, spacing: DS.Spacing.compact) {
-            Image(icon)
-                .resizable()
-                .square(size: 14)
-                .foregroundStyle(iconColor)
-                .redactable()
-
-            VStack(alignment: .leading, spacing: DS.Spacing.small) {
-                Text(title)
-                    .font(.footnote)
-                    .foregroundStyle(DS.Color.Text.norm)
-                    .redactable()
-                Button(action: action) {
-                    Text(CommonL10n.learnMore)
-                        .font(.footnote)
-                        .foregroundStyle(DS.Color.Text.accent)
-                        .redactable()
-                }
-            }
-        }
-    }
-}
-
-extension InfoRowWithLearnMore {
-    static var placeholder: some View {
-        Self.init(
-            title: PrivacyLockTooltip.receiveE2e.title,
-            icon: PrivacyLockIcon.closedLock.displayIcon,
-            iconColor: PrivacyLockColor.blue.displayColor,
-            action: {}
-        )
-    }
-}
-
 private enum RecipientGroup {
     case to
     case cc
@@ -576,32 +534,6 @@ protocol InfoRowWithLearnMoreViewModel: Equatable {
     var displayIcon: ImageResource { get }
     var iconColor: Color { get }
     var title: LocalizedStringResource { get }
-}
-
-struct LoadableInfoRowWithLearnMore<Resource: InfoRowWithLearnMoreViewModel>: View {
-    let state: Loadable<Resource>
-    let learnMoreAction: () -> Void
-
-    var body: some View {
-        ZStack(alignment: .top) {
-            switch state {
-            case .loading:
-                InfoRowWithLearnMore.placeholder
-                    .redacted(true)
-                    .fadingEffect()
-                    .transition(.opacity)
-
-            case .loaded(let resource):
-                InfoRowWithLearnMore(
-                    title: resource.title,
-                    icon: resource.displayIcon,
-                    iconColor: resource.iconColor,
-                    action: learnMoreAction
-                )
-                .transition(.opacity)
-            }
-        }
-    }
 }
 
 enum MessageDetailsPreviewProvider {

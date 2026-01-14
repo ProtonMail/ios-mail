@@ -558,7 +558,6 @@ private final class DecryptedMessageSpy: DecryptedMessage, @unchecked Sendable {
                 body: "<html>dummy_with_custom_options</html>",
                 hadBlockquote: true,
                 tagsStripped: 0,
-                utmStripped: 0,
                 transformOpts: opts,
                 bodyBanners: []
             ))
