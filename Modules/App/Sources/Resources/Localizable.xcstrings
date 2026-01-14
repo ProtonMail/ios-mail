@@ -44755,6 +44755,9 @@
         }
       }
     },
+    "Stored with zero-access encryption encryption" : {
+
+    },
     "Submit" : {
       "comment" : "Title of the button used to submit the form.",
       "localizations" : {
@@ -47535,6 +47538,9 @@
           }
         }
       }
+    },
+    "This message is protected by PGP end‑to‑end encryption. It is encrypted on the sender’s device and can only be decrypted by the recipient.\n\nHowever, the sender verification failed. Please confirm the authenticity of the message with your contact. " : {
+
     },
     "This message will auto-delete in %@" : {
       "comment" : "Banner indicating when a message will automatically be deleted.",

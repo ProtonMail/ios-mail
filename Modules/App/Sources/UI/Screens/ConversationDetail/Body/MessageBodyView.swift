@@ -24,7 +24,7 @@ import ProtonUIFoundations
 import SwiftUI
 import proton_app_uniffi
 
-struct MessageBodyView: View {
+struct MessageBodyView: View {  //
     @Environment(\.messagePrinter) var messagePrinter: MessagePrinter
     @EnvironmentObject var toastStateStore: ToastStateStore
     @EnvironmentObject var refreshBannersListener: RefreshMessageBannersNotifier

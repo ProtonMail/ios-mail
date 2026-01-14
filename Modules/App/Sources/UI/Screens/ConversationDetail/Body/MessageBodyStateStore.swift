@@ -175,7 +175,8 @@ final class MessageBodyStateStore: StateStore {
     }
 
     private func loadPrivacyLock(messageEncryptionInfoService: MessageEncryptionInfoService) async {
-        messageEncryptionInfoStore.privacyLock = await messageEncryptionInfoService.privacyLock()
+        let privacyLock = await messageEncryptionInfoService.privacyLock()
+        messageEncryptionInfoStore.privacyLockState = .loaded(privacyLock)
     }
 
     private func reloadContentWhenBackOnline(options: TransformOpts) {

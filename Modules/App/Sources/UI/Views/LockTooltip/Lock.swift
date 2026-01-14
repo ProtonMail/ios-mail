@@ -20,7 +20,7 @@ import SwiftUI
 import proton_app_uniffi
 
 extension PrivacyLockColor {
-    var uiColor: Color {
+    var displayColor: Color {
         switch self {
         case .black:
             DS.Color.Global.black
@@ -33,7 +33,7 @@ extension PrivacyLockColor {
 }
 
 extension PrivacyLockIcon {
-    var uiIcon: ImageResource {
+    var displayIcon: ImageResource {
         switch self {
         case .none:
             fatalError()
@@ -57,17 +57,16 @@ extension PrivacyLockIcon {
 
 extension PrivacyLockTooltip {
     // FIXME: - Add correct text
-    var title: String {
-        "Stored with zero-access encryption".notLocalized
+    var title: LocalizedStringResource {
+        "Stored with zero-access encryption encryption"
     }
 
     // FIXME: - Add correct text
-    var description: String {
+    var description: LocalizedStringResource {
         """
         This message is protected by PGP end‑to‑end encryption. It is encrypted on the sender’s device and can only be decrypted by the recipient.
 
         However, the sender verification failed. Please confirm the authenticity of the message with your contact. 
         """
-        .notLocalized
     }
 }

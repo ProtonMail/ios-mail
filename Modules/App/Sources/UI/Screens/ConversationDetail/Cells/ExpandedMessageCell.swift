@@ -64,7 +64,7 @@ struct ExpandedMessageCell: View {
                 uiModel: uiModel.messageDetails,
                 mailbox: mailbox,
                 actionButtonsState: actionButtonsState,
-                privacyLock: messageEncryptionInfoStore.privacyLock,
+                privacyLock: messageEncryptionInfoStore.privacyLockState,
                 onEvent: { event in
                     switch event {
                     case .onTap:

@@ -33,9 +33,9 @@ struct LockTooltipView: View {
         VStack(spacing: .zero) {
             ScrollView {
                 VStack(alignment: .leading, spacing: .zero) {
-                    Image(lock.icon.uiIcon)
+                    Image(lock.icon.displayIcon)
                         .resizable()
-                        .foregroundStyle(lock.color.uiColor)
+                        .foregroundStyle(lock.color.displayColor)
                         .square(size: 32)
                         .padding(.all, DS.Spacing.large)
                         .background(DS.Color.Background.deep)

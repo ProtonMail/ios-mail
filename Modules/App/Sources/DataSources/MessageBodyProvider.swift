@@ -19,10 +19,7 @@ import Combine
 import InboxCore
 import proton_app_uniffi
 
-protocol MessageEncryptionInfoService: AnyObject, Sendable {
-    func privacyLock() async -> PrivacyLock?
-}
-
+// FIXME: - Temporary, waiting for Rust API
 extension DecryptedMessage: MessageEncryptionInfoService {
     func privacyLock() async -> PrivacyLock? {
         let privacyLock: PrivacyLock = await privacyLock()
