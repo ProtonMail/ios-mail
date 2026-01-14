@@ -52,10 +52,16 @@ struct InfoRowWithLearnMore: View {
 extension InfoRowWithLearnMore {
     static var placeholder: some View {
         Self.init(
-            title: "PGP end-to-end encrypted".notLocalized,
+            title: .randomPlaceholder(length: 24),
             icon: DS.Icon.icLock,
             iconColor: .black,
             action: {}
         )
+    }
+}
+
+private extension String {
+    static func randomPlaceholder(length: Int) -> String {
+        String(Array(repeating: " ", count: length)).notLocalized
     }
 }
