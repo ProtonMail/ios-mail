@@ -7923,9 +7923,6 @@
         }
       }
     },
-    "At least one recipient has disabled end-to-end encryption on their account. The email is stored on Proton servers with [zero-access encryption](https://proton.me/blog/zero-access-encryption). Neither Proton nor anyone else can read it." : {
-      "comment" : "Description explaining that at least one recipient has disabled end-to-end encryption."
-    },
     "Auto-delete is turned off. Messages in trash and spam will remain until you delete them manually." : {
       "comment" : "Empty Spam/Trash Banner: Title for paid users with auto-delete turned off.",
       "localizations" : {
@@ -46899,13 +46896,13 @@
         }
       }
     },
-    "The recipient is a [verified contact](https://proton.me/support/verified-contacts) whose encryption keys you have trusted." : {
+    "The recipient is a [verified contact](https://proton.me/support/address-verification) whose encryption keys you have trusted." : {
       "comment" : "Additional description explaining the recipient is a verified contact."
     },
-    "The recipients are [verified contacts](https://proton.me/support/verified-contacts) whose encryption keys you have trusted." : {
+    "The recipients are [verified contacts](https://proton.me/support/address-verification) whose encryption keys you have trusted." : {
       "comment" : "Additional description explaining the recipients are verified contacts."
     },
-    "The sender is a [verified contact](https://proton.me/support/verified-contacts) whose encryption keys you have trusted." : {
+    "The sender is a [verified contact](https://proton.me/support/address-verification) whose encryption keys you have trusted." : {
       "comment" : "Additional description explaining the sender is a verified contact."
     },
     "The toolbar can have 1–5 actions. You can’t remove the last remaining action." : {
@@ -48501,7 +48498,7 @@
         }
       }
     },
-    "This recipient has disabled end-to-end encryption on their account. The email is stored on Proton servers with [zero-access encryption](https://proton.me/blog/zero-access-encryption). Neither Proton nor anyone else can read it." : {
+    "This recipient has disabled end-to-end encryption on their account." : {
       "comment" : "Description explaining that the recipient has disabled end-to-end encryption."
     },
     "This toolbar appears when multiple messages are selected in a list view." : {

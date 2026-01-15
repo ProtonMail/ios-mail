@@ -70,8 +70,7 @@ struct LockTooltipView: View {
                 }
                 .buttonStyle(BigButtonStyle())
                 .padding(.bottom, DS.Spacing.standard)
-                .padding(.horizontal, DS.Spacing.extraLarge)
-                .padding(.top, DS.Spacing.extraLarge)
+                .padding([.horizontal, .top], DS.Spacing.extraLarge)
             }
             .fixedSize(horizontal: false, vertical: true)
         }
