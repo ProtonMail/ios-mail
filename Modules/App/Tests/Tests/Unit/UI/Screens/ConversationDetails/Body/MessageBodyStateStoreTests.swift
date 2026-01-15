@@ -30,7 +30,8 @@ final class MessageBodyStateStoreTests {
         mailbox: .dummy,
         wrapper: wrapperSpy.testingInstance,
         toastStateStore: toastStateStore,
-        backOnlineActionExecutor: backOnlineActionExecutorSpy
+        backOnlineActionExecutor: backOnlineActionExecutorSpy,
+        messageEncryptionInfoStore: .init()
     )
     private let stubbedMessageID = ID(value: 42)
     private let toastStateStore = ToastStateStore(initialState: .initial)

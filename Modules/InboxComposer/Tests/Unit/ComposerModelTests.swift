@@ -43,8 +43,20 @@ final class ComposerModelTests: BaseTestCase {
     let dummyAddress1 = "test1@example.com"
     let dummyValidAddress = "valid_address_format@example.com"
     let dummyInvalidAddress = "invalid_address_format@example"
-    let singleRecipient1 = ComposerRecipient.single(.init(displayName: "", address: "inbox1@pm.me", validState: .valid))
-    let singleRecipient2 = ComposerRecipient.single(.init(displayName: "", address: "inbox2@pm.me", validState: .valid))
+    let singleRecipient1 = ComposerRecipient.single(
+        .init(
+            displayName: "",
+            address: "inbox1@pm.me",
+            validState: .valid,
+            privacyLock: nil
+        ))
+    let singleRecipient2 = ComposerRecipient.single(
+        .init(
+            displayName: "",
+            address: "inbox2@pm.me",
+            validState: .valid,
+            privacyLock: nil
+        ))
     let dummyContent = ComposerContent(head: "<style>dummy style</style>", body: "<body>dummy body</body>")
     var cancellables: Set<AnyCancellable>!
 
@@ -521,7 +533,12 @@ final class ComposerModelTests: BaseTestCase {
 
     func testComposerRecipientListCallbackUpdate_whenValidStateHasChanged_itShouldUpdateTheRecipientState() async {
         let makeSingleRecipient: (ComposerRecipientValidState) -> ComposerRecipientSingle = { validState in
-            ComposerRecipientSingle(displayName: "my friend", address: "friend@example.com", validState: validState)
+            ComposerRecipientSingle(
+                displayName: "my friend",
+                address: "friend@example.com",
+                validState: validState,
+                privacyLock: nil
+            )
         }
         let singleRecipientValid = ComposerRecipient.single(makeSingleRecipient(.valid))
         let singleRecipientInvalid = ComposerRecipient.single(makeSingleRecipient(.invalid(.unknown)))
@@ -539,7 +556,12 @@ final class ComposerModelTests: BaseTestCase {
 
     func testComposerRecipientListCallbackUpdate_whenValidStateIsAddressDoesNotExist_itShouldShowErrorToast() async {
         let makeSingleRecipient: (ComposerRecipientValidState) -> ComposerRecipientSingle = { validState in
-            ComposerRecipientSingle(displayName: "my friend", address: "friend@example.com", validState: validState)
+            ComposerRecipientSingle(
+                displayName: "my friend",
+                address: "friend@example.com",
+                validState: validState,
+                privacyLock: nil
+            )
         }
         let singleRecipientValid = ComposerRecipient.single(makeSingleRecipient(.valid))
         let singleRecipientInvalid = ComposerRecipient.single(makeSingleRecipient(.invalid(.doesNotExist)))
@@ -833,7 +855,13 @@ final class ComposerModelTests: BaseTestCase {
 
         await sut.sendMessage(dismissAction: dismissSpy)
 
-        let expectedRecipient = ComposerRecipient.single(.init(displayName: nil, address: validHangingInput, validState: .valid))
+        let expectedRecipient = ComposerRecipient.single(
+            .init(
+                displayName: nil,
+                address: validHangingInput,
+                validState: .valid,
+                privacyLock: nil
+            ))
         XCTAssertEqual(draft.mockToRecipientList.addedRecipients, [expectedRecipient])
     }
 
@@ -1028,7 +1056,7 @@ private extension MockDraft {
     static private var defaultSubject: String { "Test Subject" }
     static private var defaultContent: ComposerContent { .init(head: "Test Head", body: "Test Body") }
     static private var defaultRecipients: [ComposerRecipient] {
-        [ComposerRecipient.single(.init(displayName: "", address: "inbox1@pm.me", validState: .valid))]
+        [ComposerRecipient.single(.init(displayName: "", address: "inbox1@pm.me", validState: .valid, privacyLock: nil))]
     }
     static private var defaultAttachments: [DraftAttachment] {
         let mockMimeType = AttachmentMimeType(mime: "pdf", category: .pdf)

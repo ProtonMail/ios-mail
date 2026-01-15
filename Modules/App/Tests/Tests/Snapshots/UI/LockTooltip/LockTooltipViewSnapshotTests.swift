@@ -24,6 +24,13 @@ import Testing
 struct LockTooltipViewSnapshotTests {
     @Test
     func snapshotAllVariants() {
-        assertSnapshotsOnIPhoneX(of: LockTooltipView(lock: .init(icon: .closedLock, color: .green, tooltip: .receiveE2e)))
+        assertSnapshotsOnIPhoneX(
+            of: LockTooltipView(
+                lock: .init(
+                    icon: .closedLock,
+                    color: .green,
+                    tooltip: .receiveSignOnlyVerifiedRecipient
+                )
+            ))
     }
 }

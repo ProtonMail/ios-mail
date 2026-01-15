@@ -28,8 +28,18 @@ final class RecipientUIModelArrayTests {
     private var invalidRecipient2UnknownError: RecipientUIModel!
 
     init() {
-        let singleRecipient1 = ComposerRecipientSingle(displayName: "Alice", address: "alice@example.com", validState: .valid)
-        let singleRecipient2 = ComposerRecipientSingle(displayName: "Bob", address: "bob@example.com", validState: .valid)
+        let singleRecipient1 = ComposerRecipientSingle(
+            displayName: "Alice",
+            address: "alice@example.com",
+            validState: .valid,
+            privacyLock: nil
+        )
+        let singleRecipient2 = ComposerRecipientSingle(
+            displayName: "Bob",
+            address: "bob@example.com",
+            validState: .valid,
+            privacyLock: nil
+        )
 
         validRecipient1 = singleRecipient1.toRecipientUIModel
         validRecipient2 = singleRecipient2.toRecipientUIModel

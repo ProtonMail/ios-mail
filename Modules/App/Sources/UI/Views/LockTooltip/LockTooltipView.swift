@@ -44,10 +44,18 @@ struct LockTooltipView: View {
                         .font(.title2.weight(.semibold))
                         .foregroundStyle(DS.Color.Text.norm)
                         .padding(.top, DS.Spacing.large)
-                    Text(lock.tooltip.displayData.joinedDescription)
-                        .foregroundStyle(DS.Color.Text.weak)
-                        .tint(DS.Color.Text.accent)
-                        .padding(.top, DS.Spacing.medium)
+                    VStack(alignment: .leading, spacing: DS.Spacing.huge) {
+                        Text(lock.tooltip.displayData.description)
+                            .foregroundStyle(DS.Color.Text.weak)
+                            .tint(DS.Color.Text.accent)
+                            .padding(.top, DS.Spacing.medium)
+                        if let additionalDescription = lock.tooltip.displayData.additionalDescription {
+                            Text(additionalDescription)
+                                .foregroundStyle(DS.Color.Text.weak)
+                                .tint(DS.Color.Text.accent)
+                                .padding(.top, DS.Spacing.medium)
+                        }
+                    }
                 }
             }
             .scrollClipDisabled()
@@ -87,15 +95,5 @@ private extension LinearGradient {
             startPoint: .top,
             endPoint: .bottom
         )
-    }
-}
-
-private extension PrivacyLockTooltipDisplayData {
-    var joinedDescription: String {
-        if let additionalDescription {
-            "\(description)\n\n\(additionalDescription)".notLocalized
-        } else {
-            description.string
-        }
     }
 }
