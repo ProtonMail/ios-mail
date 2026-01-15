@@ -45,17 +45,12 @@ struct LockTooltipView: View {
                         .foregroundStyle(DS.Color.Text.norm)
                         .padding(.top, DS.Spacing.large)
                     VStack(alignment: .leading, spacing: DS.Spacing.huge) {
-                        Text(lock.tooltip.displayData.description)
-                            .foregroundStyle(DS.Color.Text.weak)
-                            .tint(DS.Color.Text.accent)
-                            .padding(.top, DS.Spacing.medium)
+                        descriptionLabel(lock.tooltip.displayData.description)
                         if let additionalDescription = lock.tooltip.displayData.additionalDescription {
-                            Text(additionalDescription)
-                                .foregroundStyle(DS.Color.Text.weak)
-                                .tint(DS.Color.Text.accent)
-                                .padding(.top, DS.Spacing.medium)
+                            descriptionLabel(additionalDescription)
                         }
                     }
+                    .padding(.top, DS.Spacing.medium)
                 }
             }
             .scrollClipDisabled()
@@ -77,6 +72,12 @@ struct LockTooltipView: View {
         .padding(.top, DS.Spacing.huge)
         .presentationDetents([.medium, .large])
         .background(DS.Color.Background.norm)
+    }
+
+    private func descriptionLabel(_ text: LocalizedStringResource) -> some View {
+        Text(text)
+            .foregroundStyle(DS.Color.Text.weak)
+            .tint(DS.Color.Text.accent)
     }
 }
 
