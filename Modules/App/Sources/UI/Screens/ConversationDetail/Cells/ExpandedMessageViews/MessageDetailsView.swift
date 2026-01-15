@@ -153,6 +153,9 @@ struct MessageDetailsView: View {
                 .removeViewIf(uiModel.recipientsBcc.isEmpty)
 
             privacyLockInfoRow
+                .popover(item: $privacyLockTooltip) { context in
+                    LockTooltipView(lock: context.privacyLock)
+                }
 
             dateRow
             locationRow
