@@ -52,9 +52,9 @@ struct LockTooltipView: View {
                     }
                     .padding(.top, DS.Spacing.medium)
                 }
+                .padding(.horizontal, DS.Spacing.extraLarge)
             }
             .scrollClipDisabled()
-            .padding(.horizontal, DS.Spacing.extraLarge)
 
             ZStack {
                 LinearGradient.fading
@@ -64,7 +64,7 @@ struct LockTooltipView: View {
                     Text(CommonL10n.gotIt)
                 }
                 .buttonStyle(BigButtonStyle())
-                .padding(.bottom, DS.Spacing.standard)
+                .padding(.bottom, DS.Spacing.huge)
                 .padding([.horizontal, .top], DS.Spacing.extraLarge)
             }
             .fixedSize(horizontal: false, vertical: true)
