@@ -52,7 +52,7 @@ extension PrivacyLockTooltip {
             .init(
                 title: L10n.PrivacyLockTooltip.Title.zeroAccessEncrypted,
                 description: L10n.PrivacyLockTooltip.Description.thisRecipientDisabledE2e,
-                additionalDescription: L10n.PrivacyLockTooltip.Description.senderOrRecipientNotUsingProtonMail
+                additionalDescription: L10n.PrivacyLockTooltip.Description.thisEmailIsStoredWithZeroAccessEncryption
             )
         case .zeroAccess:
             .init(
@@ -63,7 +63,7 @@ extension PrivacyLockTooltip {
         case .zeroAccessSentByProton:
             .init(
                 title: L10n.PrivacyLockTooltip.Title.zeroAccessEncrypted,
-                description: L10n.PrivacyLockTooltip.Description.atLeastOneRecipientDisabledE2e,
+                description: L10n.PrivacyLockTooltip.Description.thisEmailIsStoredWithZeroAccessEncryption,
                 additionalDescription: L10n.PrivacyLockTooltip.Description.senderOrRecipientNotUsingProtonMail
             )
         case .receiveE2e:

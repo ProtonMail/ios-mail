@@ -880,24 +880,20 @@ enum L10n {
         }
 
         enum Description {
-            static let atLeastOneRecipientDisabledE2e = LocalizedStringResource(
-                "At least one recipient has disabled end-to-end encryption on their account. The email is stored on Proton servers with [zero-access encryption](https://proton.me/blog/zero-access-encryption). Neither Proton nor anyone else can read it.",
-                comment: "Description explaining that at least one recipient has disabled end-to-end encryption."
-            )
             static let emailsExchangedBetweenProtonUsers = LocalizedStringResource(
                 "Emails exchanged between Proton users are always end-to-end encrypted.",
                 comment: "Additional description explaining that emails between Proton users are always end-to-end encrypted."
             )
             static let recipientIsVerifiedContact = LocalizedStringResource(
-                "The recipient is a [verified contact](https://proton.me/support/verified-contacts) whose encryption keys you have trusted.",
+                "The recipient is a [verified contact](https://proton.me/support/address-verification) whose encryption keys you have trusted.",
                 comment: "Additional description explaining the recipient is a verified contact."
             )
             static let recipientsAreVerifiedContacts = LocalizedStringResource(
-                "The recipients are [verified contacts](https://proton.me/support/verified-contacts) whose encryption keys you have trusted.",
+                "The recipients are [verified contacts](https://proton.me/support/address-verification) whose encryption keys you have trusted.",
                 comment: "Additional description explaining the recipients are verified contacts."
             )
             static let senderIsVerifiedContact = LocalizedStringResource(
-                "The sender is a [verified contact](https://proton.me/support/verified-contacts) whose encryption keys you have trusted.",
+                "The sender is a [verified contact](https://proton.me/support/address-verification) whose encryption keys you have trusted.",
                 comment: "Additional description explaining the sender is a verified contact."
             )
             static let senderVerificationFailed = LocalizedStringResource(
@@ -925,7 +921,7 @@ enum L10n {
                 comment: "Description explaining email is stored with zero-access encryption."
             )
             static let thisRecipientDisabledE2e = LocalizedStringResource(
-                "This recipient has disabled end-to-end encryption on their account. The email is stored on Proton servers with [zero-access encryption](https://proton.me/blog/zero-access-encryption). Neither Proton nor anyone else can read it.",
+                "This recipient has disabled end-to-end encryption on their account.",
                 comment: "Description explaining that the recipient has disabled end-to-end encryption."
             )
             static let youHaveDigitallySigned = LocalizedStringResource(
