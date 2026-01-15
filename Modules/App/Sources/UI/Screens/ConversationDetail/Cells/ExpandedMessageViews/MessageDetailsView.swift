@@ -167,7 +167,10 @@ struct MessageDetailsView: View {
         if let privacyLock = privacyLock.loadedValue {
             InfoRowWithLearnMore(
                 title: privacyLock.tooltip.displayData.title.string,
-                icon: privacyLock.icon.displayIcon,
+                iconView: {
+                    Image(privacyLock.icon.displayIcon)
+                        .size(.footnote)
+                },
                 iconColor: privacyLock.color.displayColor,
                 action: { privacyLockTooltip = .init(privacyLock: privacyLock) }
             )

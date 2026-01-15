@@ -19,20 +19,18 @@ import InboxCore
 import InboxDesignSystem
 import SwiftUI
 
-struct InfoRowWithLearnMore: View {
+struct InfoRowWithLearnMore<IconView: View>: View {
     let title: String
-    let icon: ImageResource
+    @ViewBuilder let iconView: IconView
     let iconColor: Color
     let action: () -> Void
 
     var body: some View {
         HStack(alignment: .top, spacing: DS.Spacing.compact) {
-            Image(icon)
-                .resizable()
-                .square(size: 14)
+            iconView
+                //                .font(.footnote)
                 .foregroundStyle(iconColor)
                 .redactable()
-
             VStack(alignment: .leading, spacing: DS.Spacing.small) {
                 Text(title)
                     .font(.footnote)
@@ -42,18 +40,17 @@ struct InfoRowWithLearnMore: View {
                     Text(CommonL10n.learnMore)
                         .font(.footnote)
                         .foregroundStyle(DS.Color.Text.accent)
-                        .redactable()
                 }
             }
         }
     }
 }
 
-extension InfoRowWithLearnMore {
+extension InfoRowWithLearnMore where IconView == Image {
     static var placeholder: some View {
         Self.init(
             title: .randomPlaceholder(length: 24),
-            icon: DS.Icon.icLock,
+            iconView: { Image(symbol: .lock) },
             iconColor: .black,
             action: {}
         )

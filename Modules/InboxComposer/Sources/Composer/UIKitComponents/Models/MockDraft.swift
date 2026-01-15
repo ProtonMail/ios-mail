@@ -22,7 +22,7 @@ import typealias InboxCore.ID
 
 extension SingleRecipientEntry {
     func toComposerRecipientSingle() -> ComposerRecipientSingle {
-        .init(displayName: name, address: email, validState: .valid, privacyLock: nil)  // FIXME: - Tmp
+        .init(displayName: name, address: email, validState: .valid, privacyLock: nil)
     }
 }
 
