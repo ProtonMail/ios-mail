@@ -40,6 +40,7 @@ struct InfoRowWithLearnMore<IconView: View>: View {
                     Text(CommonL10n.learnMore)
                         .font(.footnote)
                         .foregroundStyle(DS.Color.Text.accent)
+                        .redactable()
                 }
             }
         }

@@ -109,7 +109,7 @@ class MessageDetailsViewSnapshotTests {
             uiModel: model,
             mailbox: .dummy,
             actionButtonsState: actionButtonsState,
-            privacyLock: .loading,
+            privacyLock: .loaded(.init(icon: .closedLock, color: .green, tooltip: .receiveE2e)),
             onEvent: { _ in }
         )
         .environment(\.messageAppearanceOverrideStore, MessageAppearanceOverrideStore())
