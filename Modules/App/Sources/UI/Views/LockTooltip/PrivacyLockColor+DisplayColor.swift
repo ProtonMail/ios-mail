@@ -23,7 +23,7 @@ extension PrivacyLockColor {
     var displayColor: Color {
         switch self {
         case .black:
-            DS.Color.Global.black
+            DS.Color.Icon.norm
         case .green:
             DS.Color.Lock.green
         case .blue:
