@@ -25,13 +25,14 @@ import proton_app_uniffi
 
 @Suite(.serialized) @MainActor
 final class MessageBodyStateStoreTests {
+    private let messageEncryptionInfoStore = MessageEncryptionInfoStore()
     private lazy var sut = MessageBodyStateStore(
         messageID: stubbedMessageID,
         mailbox: .dummy,
         wrapper: wrapperSpy.testingInstance,
         toastStateStore: toastStateStore,
         backOnlineActionExecutor: backOnlineActionExecutorSpy,
-        messageEncryptionInfoStore: .init()
+        messageEncryptionInfoStore: messageEncryptionInfoStore
     )
     private let stubbedMessageID = ID(value: 42)
     private let toastStateStore = ToastStateStore(initialState: .initial)
@@ -92,12 +93,13 @@ final class MessageBodyStateStoreTests {
     // MARK: - `onLoad` action
 
     @Test
-    func testState_WhenOnLoadAndSucceedsFetchingBody_ItReturnsLoadedWithCorrectMessageBody() async {
+    func testState_WhenOnLoadAndSucceedsFetchingBody_ItReturnsLoadedWithCorrectMessageBodyAndLoadsPrivacyLock() async {
         wrapperSpy.stubbedMessageBodyResult = .ok(decryptedMessageSpy)
 
         #expect(wrapperSpy.messageBodyCalls == [])
         #expect(decryptedMessageSpy.bodyWithOptionsCalls.count == 0)
         #expect(sut.state == .init(body: .fetching, eventBanners: [], imagePolicy: .safe, alert: .none))
+        #expect(messageEncryptionInfoStore.privacyLockState == .loading)
 
         await sut.handle(action: .onLoad)
 
@@ -110,6 +112,7 @@ final class MessageBodyStateStoreTests {
                     options: initialOptions,
                     decryptedMessage: decryptedMessageSpy
                 ))
+        expectPrivacyLockLoaded(callCount: 1)
     }
 
     @Test
@@ -151,7 +154,7 @@ final class MessageBodyStateStoreTests {
     // MARK: - `refreshBanners` action
 
     @Test
-    func testState_WhenRefreshBannersActionTriggered_ItFetchesBodyWithSameOptions() async {
+    func testState_WhenRefreshBannersActionTriggered_ItFetchesBodyWithSameOptionsAndLoadsPrivacyLock() async {
         wrapperSpy.stubbedMessageBodyResult = .ok(decryptedMessageSpy)
 
         await sut.handle(action: .onLoad)
@@ -165,6 +168,7 @@ final class MessageBodyStateStoreTests {
                     options: initialOptions,
                     decryptedMessage: decryptedMessageSpy
                 ))
+        expectPrivacyLockLoaded(callCount: 1)
 
         await sut.handle(action: .refreshBanners)
 
@@ -176,12 +180,13 @@ final class MessageBodyStateStoreTests {
                     options: initialOptions,
                     decryptedMessage: decryptedMessageSpy
                 ))
+        expectPrivacyLockLoaded(callCount: 2)
     }
 
     // MARK: - `displayEmbeddedImagesTapped` action
 
     @Test
-    func testState_WhenDisplayEmbeddedImagesActionTriggered_ItFetchesBodyWithModifiedOptions() async {
+    func testState_WhenDisplayEmbeddedImagesActionTriggered_ItFetchesBodyWithModifiedOptionsAndLoadsPrivacyLock() async {
         wrapperSpy.stubbedMessageBodyResult = .ok(decryptedMessageSpy)
 
         await sut.handle(action: .onLoad)
@@ -195,6 +200,7 @@ final class MessageBodyStateStoreTests {
                     options: initialOptions,
                     decryptedMessage: decryptedMessageSpy
                 ))
+        expectPrivacyLockLoaded(callCount: 1)
 
         await sut.handle(action: .displayEmbeddedImages)
 
@@ -208,12 +214,13 @@ final class MessageBodyStateStoreTests {
                     options: updatedOptions,
                     decryptedMessage: decryptedMessageSpy
                 ))
+        expectPrivacyLockLoaded(callCount: 2)
     }
 
     // MARK: - `downloadRemoteContentTapped` action
 
     @Test
-    func testState_WhenDownloadRemoteContentActionTriggered_ItFetchesBodyWithModifiedOptions() async {
+    func testState_WhenDownloadRemoteContentActionTriggered_ItFetchesBodyWithModifiedOptionsAndLoadsPrivacyLock() async {
         wrapperSpy.stubbedMessageBodyResult = .ok(decryptedMessageSpy)
 
         await sut.handle(action: .onLoad)
@@ -226,6 +233,7 @@ final class MessageBodyStateStoreTests {
                     options: initialOptions,
                     decryptedMessage: decryptedMessageSpy
                 ))
+        expectPrivacyLockLoaded(callCount: 1)
 
         await sut.handle(action: .downloadRemoteContent)
 
@@ -239,6 +247,7 @@ final class MessageBodyStateStoreTests {
                     options: updatedOptions,
                     decryptedMessage: decryptedMessageSpy
                 ))
+        expectPrivacyLockLoaded(callCount: 2)
     }
 
     // MARK: - `markAsLegitimate` action
@@ -277,11 +286,13 @@ final class MessageBodyStateStoreTests {
     }
 
     @Test
-    func testState_WhenMarkAsLegitimateConfirmedAndSucceeds_ItMarksMessageHamAndFetchesBodyAgain() async throws {
+    func testState_WhenMarkAsLegitimateConfirmedAndSucceeds_ItMarksMessageHamAndFetchesBodyAgainAndLoadsPrivacyLock() async throws {
         wrapperSpy.stubbedMessageBodyResult = .ok(decryptedMessageSpy)
         wrapperSpy.stubbedMarkMessageHamResult = .ok
 
         await sut.handle(action: .onLoad)
+        expectPrivacyLockLoaded(callCount: 1)
+
         await sut.handle(action: .markAsLegitimate)
 
         let markAsLegitimateAction = try sut.state.legitAlertAction(for: .markAsLegitimate)
@@ -296,6 +307,7 @@ final class MessageBodyStateStoreTests {
                     options: initialOptions,
                     decryptedMessage: decryptedMessageSpy
                 ))
+        expectPrivacyLockLoaded(callCount: 2)
     }
 
     @Test
@@ -342,7 +354,7 @@ final class MessageBodyStateStoreTests {
     // MARK: - `unblockSender` action
 
     @Test
-    func testState_WhenUnblockSenderActionSucceeds_ItUnblocksSenderAndFetchesBodyAgain() async {
+    func testState_WhenUnblockSenderActionSucceeds_ItUnblocksSenderAndFetchesBodyAgainAndLoadsPrivacyLock() async {
         wrapperSpy.stubbedMessageBodyResult = .ok(decryptedMessageSpy)
         wrapperSpy.stubbedUnblockSenderResult = .ok
 
@@ -359,6 +371,7 @@ final class MessageBodyStateStoreTests {
                     options: updatedOptions,
                     decryptedMessage: decryptedMessageSpy
                 ))
+        expectPrivacyLockLoaded(callCount: 2)
 
         let emailAddress = "john.doe@pm.me"
         await sut.handle(action: .unblockSender(emailAddress: emailAddress))
@@ -372,6 +385,7 @@ final class MessageBodyStateStoreTests {
                     options: updatedOptions,
                     decryptedMessage: decryptedMessageSpy
                 ))
+        expectPrivacyLockLoaded(callCount: 3)
     }
 
     @Test
@@ -426,11 +440,13 @@ final class MessageBodyStateStoreTests {
     }
 
     @Test
-    func testState_UnsubscribeNewsletterConfirmedAndSucceeds_ItUnsubscribesAndFetchesBodyAgain() async throws {
+    func testState_UnsubscribeNewsletterConfirmedAndSucceeds_ItUnsubscribesAndFetchesBodyAgainAndLoadsPrivacyLock() async throws {
         wrapperSpy.stubbedMessageBodyResult = .ok(decryptedMessageSpy)
         decryptedMessageSpy.stubbedUnsubscribeFromNewsletterResult = .ok
 
         await sut.handle(action: .onLoad)
+        expectPrivacyLockLoaded(callCount: 1)
+
         await sut.handle(action: .unsubscribeNewsletter)
 
         let unsubscribeAction = try sut.state.unsubscribeAlertAction(for: .unsubscribe)
@@ -450,6 +466,7 @@ final class MessageBodyStateStoreTests {
                 .information(message: L10n.MessageBanner.UnsubscribeNewsletter.Toast.success.string)
             ]
         )
+        expectPrivacyLockLoaded(callCount: 2)
     }
 
     @Test
@@ -499,6 +516,16 @@ final class MessageBodyStateStoreTests {
                 ))
         #expect(toastStateStore.state.toasts == [])
     }
+
+    // MARK: - Helper methods
+
+    private func expectPrivacyLockLoaded(callCount: Int, sourceLocation: SourceLocation = #_sourceLocation) {
+        #expect(decryptedMessageSpy.privacyLockCallsCount == callCount, sourceLocation: sourceLocation)
+        #expect(
+            messageEncryptionInfoStore.privacyLockState == .loaded(decryptedMessageSpy.stubbedPrivacyLock),
+            sourceLocation: sourceLocation
+        )
+    }
 }
 
 extension MessageBodyStateStore.State: @retroactive Equatable {
@@ -536,6 +563,7 @@ extension MessageBody: @retroactive Equatable {
 private final class DecryptedMessageSpy: DecryptedMessage, @unchecked Sendable {
     private let stubbedOptions: TransformOpts
     var stubbedUnsubscribeFromNewsletterResult: VoidActionResult = .ok
+    var stubbedPrivacyLock: PrivacyLock?
 
     init(stubbedOptions: TransformOpts) {
         self.stubbedOptions = stubbedOptions
@@ -548,6 +576,7 @@ private final class DecryptedMessageSpy: DecryptedMessage, @unchecked Sendable {
 
     private(set) var bodyWithOptionsCalls: [TransformOpts] = []
     private(set) var unsubscribeFromNewsletterCallsCount: Int = 0
+    private(set) var privacyLockCallsCount: Int = 0
 
     // MARK: - DecryptedMessage
 
@@ -576,6 +605,11 @@ private final class DecryptedMessageSpy: DecryptedMessage, @unchecked Sendable {
 
     override func attachments() -> [AttachmentMetadata] {
         []
+    }
+
+    override func privacyLock() async -> PrivacyLock? {
+        privacyLockCallsCount += 1
+        return stubbedPrivacyLock
     }
 }
 

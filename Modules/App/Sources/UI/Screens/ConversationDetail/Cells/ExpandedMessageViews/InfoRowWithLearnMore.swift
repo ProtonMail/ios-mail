@@ -28,7 +28,7 @@ struct InfoRowWithLearnMore<IconView: View>: View {
     var body: some View {
         HStack(alignment: .top, spacing: DS.Spacing.compact) {
             iconView
-                //                .font(.footnote)
+                .font(.footnote)
                 .foregroundStyle(iconColor)
                 .redactable()
             VStack(alignment: .leading, spacing: DS.Spacing.small) {
