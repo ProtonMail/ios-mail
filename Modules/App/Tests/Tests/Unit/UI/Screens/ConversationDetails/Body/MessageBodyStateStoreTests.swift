@@ -154,7 +154,7 @@ final class MessageBodyStateStoreTests {
     // MARK: - `refreshBanners` action
 
     @Test
-    func testState_WhenRefreshBannersActionTriggered_ItFetchesBodyWithSameOptionsAndLoadsPrivacyLock() async {
+    func testState_WhenRefreshBannersActionTriggered_ItFetchesBodyWithSameOptions() async {
         wrapperSpy.stubbedMessageBodyResult = .ok(decryptedMessageSpy)
 
         await sut.handle(action: .onLoad)
@@ -180,13 +180,13 @@ final class MessageBodyStateStoreTests {
                     options: initialOptions,
                     decryptedMessage: decryptedMessageSpy
                 ))
-        expectPrivacyLockLoaded(callCount: 2)
+        expectPrivacyLockLoaded(callCount: 1)
     }
 
     // MARK: - `displayEmbeddedImagesTapped` action
 
     @Test
-    func testState_WhenDisplayEmbeddedImagesActionTriggered_ItFetchesBodyWithModifiedOptionsAndLoadsPrivacyLock() async {
+    func testState_WhenDisplayEmbeddedImagesActionTriggered_ItFetchesBodyWithModifiedOptions() async {
         wrapperSpy.stubbedMessageBodyResult = .ok(decryptedMessageSpy)
 
         await sut.handle(action: .onLoad)
@@ -214,13 +214,13 @@ final class MessageBodyStateStoreTests {
                     options: updatedOptions,
                     decryptedMessage: decryptedMessageSpy
                 ))
-        expectPrivacyLockLoaded(callCount: 2)
+        expectPrivacyLockLoaded(callCount: 1)
     }
 
     // MARK: - `downloadRemoteContentTapped` action
 
     @Test
-    func testState_WhenDownloadRemoteContentActionTriggered_ItFetchesBodyWithModifiedOptionsAndLoadsPrivacyLock() async {
+    func testState_WhenDownloadRemoteContentActionTriggered_ItFetchesBodyWithModifiedOptions() async {
         wrapperSpy.stubbedMessageBodyResult = .ok(decryptedMessageSpy)
 
         await sut.handle(action: .onLoad)
@@ -247,7 +247,7 @@ final class MessageBodyStateStoreTests {
                     options: updatedOptions,
                     decryptedMessage: decryptedMessageSpy
                 ))
-        expectPrivacyLockLoaded(callCount: 2)
+        expectPrivacyLockLoaded(callCount: 1)
     }
 
     // MARK: - `markAsLegitimate` action
@@ -286,7 +286,7 @@ final class MessageBodyStateStoreTests {
     }
 
     @Test
-    func testState_WhenMarkAsLegitimateConfirmedAndSucceeds_ItMarksMessageHamAndFetchesBodyAgainAndLoadsPrivacyLock() async throws {
+    func testState_WhenMarkAsLegitimateConfirmedAndSucceeds_ItMarksMessageHamAndFetchesBodyAgain() async throws {
         wrapperSpy.stubbedMessageBodyResult = .ok(decryptedMessageSpy)
         wrapperSpy.stubbedMarkMessageHamResult = .ok
 
@@ -307,7 +307,7 @@ final class MessageBodyStateStoreTests {
                     options: initialOptions,
                     decryptedMessage: decryptedMessageSpy
                 ))
-        expectPrivacyLockLoaded(callCount: 2)
+        expectPrivacyLockLoaded(callCount: 1)
     }
 
     @Test
@@ -354,7 +354,7 @@ final class MessageBodyStateStoreTests {
     // MARK: - `unblockSender` action
 
     @Test
-    func testState_WhenUnblockSenderActionSucceeds_ItUnblocksSenderAndFetchesBodyAgainAndLoadsPrivacyLock() async {
+    func testState_WhenUnblockSenderActionSucceeds_ItUnblocksSenderAndFetchesBodyAgain() async {
         wrapperSpy.stubbedMessageBodyResult = .ok(decryptedMessageSpy)
         wrapperSpy.stubbedUnblockSenderResult = .ok
 
@@ -371,7 +371,6 @@ final class MessageBodyStateStoreTests {
                     options: updatedOptions,
                     decryptedMessage: decryptedMessageSpy
                 ))
-        expectPrivacyLockLoaded(callCount: 2)
 
         let emailAddress = "john.doe@pm.me"
         await sut.handle(action: .unblockSender(emailAddress: emailAddress))
@@ -385,7 +384,6 @@ final class MessageBodyStateStoreTests {
                     options: updatedOptions,
                     decryptedMessage: decryptedMessageSpy
                 ))
-        expectPrivacyLockLoaded(callCount: 3)
     }
 
     @Test
@@ -440,12 +438,11 @@ final class MessageBodyStateStoreTests {
     }
 
     @Test
-    func testState_UnsubscribeNewsletterConfirmedAndSucceeds_ItUnsubscribesAndFetchesBodyAgainAndLoadsPrivacyLock() async throws {
+    func testState_UnsubscribeNewsletterConfirmedAndSucceeds_ItUnsubscribesAndFetchesBodyAgain() async throws {
         wrapperSpy.stubbedMessageBodyResult = .ok(decryptedMessageSpy)
         decryptedMessageSpy.stubbedUnsubscribeFromNewsletterResult = .ok
 
         await sut.handle(action: .onLoad)
-        expectPrivacyLockLoaded(callCount: 1)
 
         await sut.handle(action: .unsubscribeNewsletter)
 
@@ -466,7 +463,6 @@ final class MessageBodyStateStoreTests {
                 .information(message: L10n.MessageBanner.UnsubscribeNewsletter.Toast.success.string)
             ]
         )
-        expectPrivacyLockLoaded(callCount: 2)
     }
 
     @Test
@@ -563,7 +559,7 @@ extension MessageBody: @retroactive Equatable {
 private final class DecryptedMessageSpy: DecryptedMessage, @unchecked Sendable {
     private let stubbedOptions: TransformOpts
     var stubbedUnsubscribeFromNewsletterResult: VoidActionResult = .ok
-    var stubbedPrivacyLock: PrivacyLock?
+    var stubbedPrivacyLock: PrivacyLock? = .init(icon: .closedLock, color: .blue, tooltip: .receiveE2e)
 
     init(stubbedOptions: TransformOpts) {
         self.stubbedOptions = stubbedOptions

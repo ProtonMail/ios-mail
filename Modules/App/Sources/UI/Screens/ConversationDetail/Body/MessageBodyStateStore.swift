@@ -165,7 +165,9 @@ final class MessageBodyStateStore: StateStore {
             }
 
             state = state.copy(\.body, to: .loaded(body, schemeHandler))
-            await loadPrivacyLock(messageEncryptionInfoService: body.messageEncryptionInfoService)
+            if messageEncryptionInfoStore.privacyLockState.loadedValue == nil {
+                await loadPrivacyLock(messageEncryptionInfoService: body.messageEncryptionInfoService)
+            }
         case .noConnectionError:
             state = state.copy(\.body, to: .noConnection)
             reloadContentWhenBackOnline(options: options)
