@@ -28,8 +28,6 @@ struct PrivacyLockTooltipDisplayData {
 extension PrivacyLockTooltip {
     var displayData: PrivacyLockTooltipDisplayData {
         switch self {
-        case .none:  // FIXME: - It'll be removed from Rust
-            .init(title: .empty, description: .empty, additionalDescription: nil)
         case .sendE2e:
             .init(
                 title: L10n.PrivacyLockTooltip.Title.endToEndEncrypted,
