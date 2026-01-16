@@ -15,8 +15,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import InboxCoreUI
 import InboxDesignSystem
 import UIKit
+import proton_app_uniffi
 
 import struct SwiftUI.Color
 import enum proton_app_uniffi.ComposerRecipient
@@ -51,7 +53,12 @@ struct RecipientUIModel: Equatable {
         guard isValid else { return UIImage(resource: DS.Icon.icExclamationCircle) }
         switch type {
         case .single:
-            return isEncrypted ? UIImage(resource: DS.Icon.icLockFilled) : nil
+            if let privacyLock = composerRecipient.singleRecipient?.privacyLock {
+                return UIImage(resource: privacyLock.icon.displayIcon)
+                    .withTintColor(UIColor(privacyLock.color.displayColor))
+            } else {
+                return nil
+            }
         case .group:
             return UIImage(resource: DS.Icon.icUsersFilled)
         }

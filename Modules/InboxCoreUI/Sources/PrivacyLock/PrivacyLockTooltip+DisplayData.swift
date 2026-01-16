@@ -19,13 +19,13 @@ import InboxDesignSystem
 import SwiftUI
 import proton_app_uniffi
 
-struct PrivacyLockTooltipDisplayData {
-    let title: LocalizedStringResource
-    let description: LocalizedStringResource
-    let additionalDescription: LocalizedStringResource?
+public struct PrivacyLockTooltipDisplayData {
+    public let title: LocalizedStringResource
+    public let description: LocalizedStringResource
+    public let additionalDescription: LocalizedStringResource?
 }
 
-extension PrivacyLockTooltip {
+public extension PrivacyLockTooltip {
     var displayData: PrivacyLockTooltipDisplayData {
         switch self {
         case .sendE2e:

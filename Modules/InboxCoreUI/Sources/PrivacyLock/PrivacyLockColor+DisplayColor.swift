@@ -19,7 +19,7 @@ import InboxDesignSystem
 import SwiftUI
 import proton_app_uniffi
 
-extension PrivacyLockColor {
+public extension PrivacyLockColor {
     var displayColor: Color {
         switch self {
         case .black:

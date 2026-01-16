@@ -19,7 +19,7 @@ import InboxDesignSystem
 import SwiftUI
 import proton_app_uniffi
 
-extension PrivacyLockIcon {
+public extension PrivacyLockIcon {
     var displayIcon: ImageResource {
         switch self {
         case .closedLock:
