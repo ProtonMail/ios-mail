@@ -52,7 +52,6 @@ struct RecipientUIModel: Equatable {
         case .single:
             if let privacyLock = composerRecipient.singleRecipient?.privacyLock {
                 return UIImage(resource: privacyLock.icon.displayIcon)
-                    .withTintColor(UIColor(privacyLock.color.displayColor))
             } else {
                 return nil
             }
@@ -61,10 +60,14 @@ struct RecipientUIModel: Equatable {
         }
     }
 
-    // FIXME: WIP - pending lock icon colors states and color definition
     var iconTintColor: UIColor {
         guard isValid else { return DS.Color.Notification.error.toDynamicUIColor }
-        if type == .group {
+        switch type {
+        case .single:
+            if let privacyLock = composerRecipient.singleRecipient?.privacyLock {
+                return privacyLock.color.displayColor.toDynamicUIColor
+            }
+        case .group:
             return DS.Color.Notification.success.toDynamicUIColor
         }
         return UIColor(Color(hex: "#239ECE"))
