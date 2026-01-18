@@ -41,9 +41,6 @@ struct RecipientUIModel: Equatable {
     var isValid: Bool {
         composerRecipient.isValid
     }
-    var isEncrypted: Bool {
-        .productStillToComeWithFinalDecision
-    }
 
     var backgroundColor: UIColor {
         isSelected ? DS.Color.InteractionWeak.pressed.toDynamicUIColor : DS.Color.Background.norm.toDynamicUIColor
