@@ -406,18 +406,18 @@ extension MailboxModel {
         switch update {
         case .none:
             updateType = .none
-        case .append(let conversations):
+        case .append(_, let conversations):
             let items = await mailboxItems(conversations: conversations)
             updateType = .append(items: items)
-        case .replaceRange(let from, let to, let conversations):
+        case .replaceRange(_, let from, let to, let conversations):
             let items = await mailboxItems(conversations: conversations)
             updateType = .replaceRange(from: Int(from), to: Int(to), items: items)
             completion = { [weak self] in self?.updateSelectedItemsAfterDestructiveUpdate() }
-        case .replaceFrom(let index, let conversations):
+        case .replaceFrom(_, let index, let conversations):
             let items = await mailboxItems(conversations: conversations)
             updateType = .replaceFrom(index: Int(index), items: items)
             completion = { [weak self] in self?.updateSelectedItemsAfterDestructiveUpdate() }
-        case .replaceBefore(let index, let conversations):
+        case .replaceBefore(_, let index, let conversations):
             let items = await mailboxItems(conversations: conversations)
             updateType = .replaceBefore(index: Int(index), items: items)
             completion = { [weak self] in self?.updateSelectedItemsAfterDestructiveUpdate() }
@@ -451,18 +451,18 @@ extension MailboxModel {
         switch update {
         case .none:
             updateType = .none
-        case .append(let messages):
+        case .append(_, let messages):
             let items = await mailboxItems(messages: messages)
             updateType = .append(items: items)
-        case .replaceRange(let from, let to, let messages):
+        case .replaceRange(_, let from, let to, let messages):
             let items = await mailboxItems(messages: messages)
             updateType = .replaceRange(from: Int(from), to: Int(to), items: items)
             completion = { [weak self] in self?.updateSelectedItemsAfterDestructiveUpdate() }
-        case .replaceFrom(let index, let messages):
+        case .replaceFrom(_, let index, let messages):
             let items = await mailboxItems(messages: messages)
             updateType = .replaceFrom(index: Int(index), items: items)
             completion = { [weak self] in self?.updateSelectedItemsAfterDestructiveUpdate() }
-        case .replaceBefore(let index, let messages):
+        case .replaceBefore(_, let index, let messages):
             let items = await mailboxItems(messages: messages)
             updateType = .replaceBefore(index: Int(index), items: items)
             completion = { [weak self] in self?.updateSelectedItemsAfterDestructiveUpdate() }
