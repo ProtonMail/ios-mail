@@ -270,6 +270,59 @@ final class ComposerModelTests: BaseTestCase {
         XCTAssertTrue(sut.state.toRecipients.recipients.last!.isSelected)
     }
 
+    // MARK: copyRecipient
+
+    func testCopyRecipient_whenRecipientIsSingle_itShouldCopyAddressToPasteboard() {
+        let mockPasteboard = UIPasteboard(name: .init("test-pasteboard-\(UUID().uuidString)"), create: true)!
+        let mockDraft: MockDraft = .makeWithRecipients([singleRecipient1, singleRecipient2], group: .to)
+        let sut = makeSut(
+            draft: mockDraft,
+            draftOrigin: .new,
+            contactProvider: testContactProvider,
+            pasteboard: mockPasteboard
+        )
+
+        sut.copyRecipient(group: .to, index: 0)
+
+        XCTAssertEqual(mockPasteboard.string, "inbox1@pm.me")
+    }
+
+    func testCopyRecipient_whenIndexIsOutOfBounds_itShouldNotCrash() {
+        let mockPasteboard = UIPasteboard(name: .init("test-pasteboard-\(UUID().uuidString)"), create: true)!
+        let mockDraft: MockDraft = .makeWithRecipients([singleRecipient1], group: .to)
+        let sut = makeSut(
+            draft: mockDraft,
+            draftOrigin: .new,
+            contactProvider: testContactProvider,
+            pasteboard: mockPasteboard
+        )
+
+        sut.copyRecipient(group: .to, index: 10)
+
+        XCTAssertNil(mockPasteboard.string)
+    }
+
+    // MARK: removeRecipient
+
+    func testRemoveRecipient_whenIndexIsValid_itShouldRemoveTheRecipient() {
+        let mockDraft: MockDraft = .makeWithRecipients([singleRecipient1, singleRecipient2], group: .to)
+        let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: testContactProvider)
+
+        sut.removeRecipient(group: .to, index: 0)
+
+        XCTAssertEqual(sut.state.toRecipients.recipients.count, 1)
+        XCTAssertEqual(sut.state.toRecipients.recipients[0].composerRecipient.singleRecipient?.address, "inbox2@pm.me")
+    }
+
+    func testRemoveRecipient_whenIndexIsOutOfBounds_itShouldNotCrash() {
+        let mockDraft: MockDraft = .makeWithRecipients([singleRecipient1], group: .to)
+        let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: testContactProvider)
+
+        sut.removeRecipient(group: .to, index: 10)
+
+        XCTAssertEqual(sut.state.toRecipients.recipients.count, 1)
+    }
+
     // MARK: addRecipientFromInput
 
     func testaddRecipientFromInput_whenInputIsValid_itShouldAddTheRecipient() async {
@@ -929,7 +982,8 @@ private extension ComposerModelTests {
         draftOrigin: DraftOrigin,
         contactProvider: ComposerContactProvider,
         expirationValidationActions: MessageExpirationValidatorActions = .productionInstance,
-        senderAddressValidatorActions: SenderAddressValidatorActions = .productionInstance
+        senderAddressValidatorActions: SenderAddressValidatorActions = .productionInstance,
+        pasteboard: UIPasteboard = .general
     ) -> ComposerModel {
         ComposerModel(
             draft: draft,
@@ -942,7 +996,8 @@ private extension ComposerModelTests {
             fileItemsHandler: testFilesItemsHandler,
             isAddingAttachmentsEnabled: true,
             expirationValidationActions: expirationValidationActions,
-            senderAddressValidatorActions: senderAddressValidatorActions
+            senderAddressValidatorActions: senderAddressValidatorActions,
+            pasteboard: pasteboard
         )
     }
 

@@ -4070,6 +4070,9 @@
         }
       }
     },
+    "Copy" : {
+      "comment" : "Recipient context menu action to copy email address"
+    },
     "Custom" : {
       "comment" : "Schedule send custom time option tile",
       "localizations" : {
@@ -12808,7 +12811,7 @@
       }
     },
     "Remove" : {
-      "comment" : "Confirmation for the remove attachment action in a Draft.",
+      "comment" : "Confirmation for the remove attachment action in a Draft.\nRecipient context menu action to remove recipient",
       "localizations" : {
         "be" : {
           "stringUnit" : {

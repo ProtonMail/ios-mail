@@ -21,7 +21,11 @@ import UIKit
 
 final class RecipientCell: UICollectionViewCell {
     private let recipientView = RecipientChipView()
+    private let button = UIButton(type: .custom)
     private var widthConstraint: NSLayoutConstraint?
+
+    var onCopy: (() -> Void)?
+    var onRemove: (() -> Void)?
 
     private var recipient: RecipientUIModel? {
         didSet {
@@ -38,7 +42,10 @@ final class RecipientCell: UICollectionViewCell {
     required init?(coder: NSCoder) { nil }
 
     private func setUpView() {
-        contentView.addSubview(recipientView)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.showsMenuAsPrimaryAction = true
+        button.addSubview(recipientView)
+        contentView.addSubview(button)
     }
 
     private func setUpConstraints() {
@@ -47,10 +54,15 @@ final class RecipientCell: UICollectionViewCell {
         widthConstraint?.isActive = true
 
         NSLayoutConstraint.activate([
-            recipientView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            recipientView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            recipientView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            recipientView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+            button.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            button.topAnchor.constraint(equalTo: contentView.topAnchor),
+            button.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            button.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
+
+            recipientView.leadingAnchor.constraint(equalTo: button.leadingAnchor),
+            recipientView.topAnchor.constraint(equalTo: button.topAnchor),
+            recipientView.trailingAnchor.constraint(equalTo: button.trailingAnchor),
+            recipientView.bottomAnchor.constraint(equalTo: button.bottomAnchor),
         ])
     }
 
@@ -61,5 +73,38 @@ final class RecipientCell: UICollectionViewCell {
     func configure(with recipient: RecipientUIModel, maxWidth: CGFloat) {
         self.recipient = recipient
         configure(maxWidth: maxWidth)
+    }
+
+    private func configureContextMenu(with recipient: RecipientUIModel) {
+        let remove = UIAction.remove(action: { [weak self] _ in self?.onRemove?() })
+        var actions: [UIAction] = []
+        switch recipient.type {
+        case .single:
+            let copy = UIAction.copy(action: { [weak self] _ in self?.onCopy?() })
+            actions = [copy, remove]
+        case .group:
+            actions = [remove]
+        }
+
+        button.menu = UIMenu(children: actions)
+    }
+}
+
+private extension UIAction {
+    static func copy(action: @escaping (UIAction) -> Void) -> UIAction {
+        UIAction(
+            title: L10n.Composer.recipientMenuCopy.string,
+            image: UIImage(systemName: "doc.on.doc"),  // FIXME: - Use correct icon
+            handler: action
+        )
+    }
+
+    static func remove(action: @escaping (UIAction) -> Void) -> UIAction {
+        UIAction(
+            title: L10n.Composer.recipientMenuRemove.string,
+            image: UIImage(systemName: "trash"),  // FIXME: - Use correct icon
+            attributes: .destructive,
+            handler: action
+        )
     }
 }

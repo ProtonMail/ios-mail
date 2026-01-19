@@ -22,6 +22,8 @@ final class RecipientsFieldEditingController: UIViewController {
     enum Event {
         case onInputChange(text: String)
         case onRecipientSelected(index: Int)
+        case onRecipientCopy(index: Int)
+        case onRecipientRemove(index: Int)
         case onReturnKeyPressed
         case onDeleteKeyPressedInsideEmptyInputField
         case onDeleteKeyPressedOutsideInputField
@@ -230,6 +232,12 @@ extension RecipientsFieldEditingController: UICollectionViewDataSource {
     ) -> RecipientCell {
         let recipientCell: RecipientCell = collectionView.dequeueReusableCell(for: indexPath)
         recipientCell.configure(with: recipient, maxWidth: collectionContentWidth())
+        recipientCell.onCopy = { [weak self] in
+            self?.onEvent?(.onRecipientCopy(index: indexPath.row))
+        }
+        recipientCell.onRemove = { [weak self] in
+            self?.onEvent?(.onRecipientRemove(index: indexPath.row))
+        }
         return recipientCell
     }
 }
@@ -244,7 +252,7 @@ extension RecipientsFieldEditingController: UICollectionViewDelegate {
             guard let cursorCell = collectionView.cellForItem(at: indexPath) as? RecipientCursorCell else { return }
             cursorCell.setFocus()
         case .recipient:
-            onEvent?(.onRecipientSelected(index: indexPath.row))
+            break
         }
     }
 }

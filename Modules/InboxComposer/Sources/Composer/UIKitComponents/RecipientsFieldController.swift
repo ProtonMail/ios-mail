@@ -23,6 +23,8 @@ final class RecipientsFieldController: UIViewController {
         case onFieldTap
         case onInputChange(text: String)
         case onRecipientSelected(index: Int)
+        case onRecipientCopy(index: Int)
+        case onRecipientRemove(index: Int)
         case onReturnKeyPressed
         case onDeleteKeyPressedInsideEmptyInputField
         case onDeleteKeyPressedOutsideInputField
@@ -80,6 +82,10 @@ final class RecipientsFieldController: UIViewController {
                 self?.onEvent?(.onInputChange(text: text))
             case .onRecipientSelected(let index):
                 self?.onEvent?(.onRecipientSelected(index: index))
+            case .onRecipientCopy(let index):
+                self?.onEvent?(.onRecipientCopy(index: index))
+            case .onRecipientRemove(let index):
+                self?.onEvent?(.onRecipientRemove(index: index))
             case .onReturnKeyPressed:
                 self?.onEvent?(.onReturnKeyPressed)
             case .onDeleteKeyPressedInsideEmptyInputField:

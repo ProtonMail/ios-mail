@@ -47,6 +47,7 @@ final class ComposerModel: ObservableObject {
     private let scheduleSendOptionsProvider: ScheduleSendOptionsProvider
     private let expirationValidationActions: MessageExpirationValidatorActions
     private let senderAddressValidatorActions: SenderAddressValidatorActions
+    private let pasteboard: UIPasteboard
 
     private lazy var senderAddressValidator = SenderAddressValidator(
         alertBinding: alertBinding,
@@ -100,7 +101,8 @@ final class ComposerModel: ObservableObject {
         fileItemsHandler: FilePickerItemHandler,
         isAddingAttachmentsEnabled: Bool,
         expirationValidationActions: MessageExpirationValidatorActions = .productionInstance,
-        senderAddressValidatorActions: SenderAddressValidatorActions = .productionInstance
+        senderAddressValidatorActions: SenderAddressValidatorActions = .productionInstance,
+        pasteboard: UIPasteboard = .general
     ) {
         self.draft = draft
         self.draftOrigin = draftOrigin
@@ -115,6 +117,7 @@ final class ComposerModel: ObservableObject {
         self.scheduleSendOptionsProvider = .init(scheduleSendOptions: draft.scheduleSendOptions)
         self.expirationValidationActions = expirationValidationActions
         self.senderAddressValidatorActions = senderAddressValidatorActions
+        self.pasteboard = pasteboard
         self.state = makeState(from: draft)
 
         setUpCallbacks()
@@ -219,6 +222,33 @@ final class ComposerModel: ObservableObject {
             guard !recipientFieldState.recipients.isEmpty else { return }
             recipientFieldState.recipients[recipientFieldState.recipients.count - 1].isSelected = true
         }
+    }
+
+    func copyRecipient(group: RecipientGroupType, index: Int) {
+        let recipients: [RecipientUIModel] = {
+            switch group {
+            case .to: state.toRecipients.recipients
+            case .cc: state.ccRecipients.recipients
+            case .bcc: state.bccRecipients.recipients
+            }
+        }()
+        guard index < recipients.count else { return }
+        let recipient = recipients[index]
+        guard case .single(let singleRecipient) = recipient.composerRecipient else { return }
+        pasteboard.string = singleRecipient.address
+    }
+
+    func removeRecipient(group: RecipientGroupType, index: Int) {
+        let recipients: [RecipientUIModel] = {
+            switch group {
+            case .to: state.toRecipients.recipients
+            case .cc: state.ccRecipients.recipients
+            case .bcc: state.bccRecipients.recipients
+            }
+        }()
+        guard index < recipients.count else { return }
+        let recipient = recipients[index]
+        removeRecipients(for: draft, group: group, recipients: [recipient])
     }
 
     func addRecipientFromInput() {

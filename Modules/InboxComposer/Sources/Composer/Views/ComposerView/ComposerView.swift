@@ -96,6 +96,10 @@ struct ComposerView: View {
                         model.matchContact(group: group, text: text)
                     case .onRecipientSelected(let index):
                         model.recipientToggleSelection(group: group, index: index)
+                    case .onRecipientCopy(let index):
+                        model.copyRecipient(group: group, index: index)
+                    case .onRecipientRemove(let index):
+                        model.removeRecipient(group: group, index: index)
                     case .onReturnKeyPressed:
                         model.addRecipientFromInput()
                     case .onDeleteKeyPressedInsideEmptyInputField:

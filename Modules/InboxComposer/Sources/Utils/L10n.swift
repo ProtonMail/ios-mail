@@ -113,6 +113,18 @@ enum L10n {
             bundle: .atURL(Bundle.module.bundleURL),
             comment: "Title for the sender picker action sheet."
         )
+
+        static let recipientMenuCopy = LocalizedStringResource(
+            "Copy",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Recipient context menu action to copy email address"
+        )
+
+        static let recipientMenuRemove = LocalizedStringResource(
+            "Remove",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Recipient context menu action to remove recipient"
+        )
     }
 
     enum SenderValidation {
