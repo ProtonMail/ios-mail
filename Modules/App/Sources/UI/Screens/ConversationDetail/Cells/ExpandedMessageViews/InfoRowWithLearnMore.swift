@@ -23,6 +23,7 @@ struct InfoRowWithLearnMore<IconView: View>: View {
     let title: String
     @ViewBuilder let iconView: IconView
     let iconColor: Color
+    let redactIcon: Bool
     let action: () -> Void
 
     var body: some View {
@@ -30,11 +31,14 @@ struct InfoRowWithLearnMore<IconView: View>: View {
             iconView
                 .font(.footnote)
                 .foregroundStyle(iconColor)
-                .redactable()
+                .if(redactIcon) { view in
+                    view.redactable()
+                }
             VStack(alignment: .leading, spacing: DS.Spacing.small) {
                 Text(title)
                     .font(.footnote)
                     .foregroundStyle(DS.Color.Text.norm)
+                    .fixedSize(horizontal: false, vertical: true)
                     .redactable()
                 Button(action: action) {
                     Text(CommonL10n.learnMore)
@@ -53,12 +57,13 @@ extension InfoRowWithLearnMore where IconView == Image {
             title: .randomPlaceholder(length: 24),
             iconView: { Image(symbol: .lock) },
             iconColor: .black,
+            redactIcon: true,
             action: {}
         )
     }
 }
 
-private extension String {
+extension String {
     static func randomPlaceholder(length: Int) -> String {
         String(Array(repeating: .enSpace, count: length)).notLocalized
     }

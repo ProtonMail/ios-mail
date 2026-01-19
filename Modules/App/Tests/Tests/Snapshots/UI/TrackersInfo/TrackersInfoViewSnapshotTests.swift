@@ -19,6 +19,7 @@ import InboxSnapshotTesting
 import InboxTesting
 import SwiftUI
 import Testing
+import proton_app_uniffi
 
 @testable import ProtonMail
 

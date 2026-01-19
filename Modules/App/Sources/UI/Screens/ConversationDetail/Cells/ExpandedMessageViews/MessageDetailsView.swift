@@ -36,6 +36,7 @@ struct MessageDetailsView: View {
     @State private(set) var isHeaderCollapsed: Bool = true
     @State private var privacyLockTooltip: PrivacyLockTooltipContext? = nil
     let uiModel: MessageDetailsUIModel
+    let trackers: Loadable<TrackersUIModel>
     let mailbox: Mailbox
     let actionButtonsState: ActionButtonsState
     let privacyLock: Loadable<PrivacyLock>
@@ -158,6 +159,7 @@ struct MessageDetailsView: View {
                         .frame(idealWidth: 400)
                 }
 
+            trackersRow
             dateRow
             locationRow
         }
@@ -176,6 +178,7 @@ struct MessageDetailsView: View {
                         .size(.footnote)
                 },
                 iconColor: privacyLock.color.displayColor,
+                redactIcon: true,
                 action: { privacyLockTooltip = .init(privacyLock: privacyLock) }
             )
             .transition(.opacity)
@@ -366,6 +369,25 @@ struct MessageDetailsView: View {
         }
     }
 
+    @ViewBuilder
+    private var trackersRow: some View {
+        InfoRowWithLearnMore(
+            title: trackers.loadedValue?.fullTitle ?? .randomPlaceholder(length: 24),
+            iconView: {
+                Image(symbol: .checkmarkShieldFill)
+                    .size(.footnote)
+            },
+            iconColor: DS.Color.Text.norm,
+            redactIcon: false,
+            action: { Task { await onEvent(.onTrackersTap) } }
+        )
+        .if(trackers.isLoading) { view in
+            view.redacted(true)
+                .fadingEffect()
+                .transition(.opacity)
+        }
+    }
+
     private var dateRow: some View {
         HStack(alignment: .center, spacing: DS.Spacing.small) {
             Image(DS.Images.calendarToday)
@@ -493,6 +515,7 @@ enum MessageDetailsEvent {
     case onEditToolbar
     case onSenderTap
     case onRecipientTap(MessageDetail.Recipient)
+    case onTrackersTap
 }
 
 extension Array where Element == MessageDetail.Recipient {
@@ -514,6 +537,7 @@ extension Array where Element == MessageDetail.Recipient {
     MessageDetailsView(
         isHeaderCollapsed: false,
         uiModel: model,
+        trackers: .loaded(MessageDetailsPreviewProvider.testTrackers),
         mailbox: .dummy,
         actionButtonsState: .enabled,
         privacyLock: .loading,
@@ -579,6 +603,18 @@ enum MessageDetailsPreviewProvider {
             showPaperClip: false
         )
     }
+
+    static var testTrackers: TrackersUIModel {
+        .init(
+            blockedTrackers: [
+                TrackerDomain(name: "example.com", urls: ["https://example.com/1"])
+            ],
+            cleanedLinks: [
+                CleanedLink(original: "https://example.com?utm=1", cleaned: "https://example.com"),
+                CleanedLink(original: "https://example.com?utm=2", cleaned: "https://example.com"),
+            ]
+        )
+    }
 }
 
 private struct MessageDetailsViewIdentifiers {
@@ -602,4 +638,31 @@ private struct MessageDetailsViewIdentifiers {
 private struct PrivacyLockTooltipContext: Identifiable {
     let id = UUID()
     let privacyLock: PrivacyLock
+}
+
+private extension TrackersUIModel {
+    var title: LocalizedStringResource {
+        blockedTrackers.isEmpty ? L10n.MessageDetails.noTrackersDetected : L10n.MessageDetails.trackerProtection
+    }
+
+    var count: String {
+        var values: [String] = []
+
+        if totalTrackersCount > 0 {
+            values.append(L10n.MessageDetails.trackersBlocked(count: totalTrackersCount).string)
+        }
+        if totalLinksCount > 0 {
+            values.append(L10n.MessageDetails.linksCleaned(count: totalLinksCount).string)
+        }
+        let formatter = ListFormatter()
+        return formatter.string(from: values) ?? .empty
+    }
+
+    var fullTitle: String {
+        if isEmpty {
+            return title.string
+        } else {
+            return title.string + "\n" + count
+        }
+    }
 }
