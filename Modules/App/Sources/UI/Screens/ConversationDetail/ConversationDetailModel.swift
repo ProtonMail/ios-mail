@@ -734,10 +734,11 @@ extension ConversationDetailModel {
             let singleMessage: [MessageCellUIModel] = [message]
                 .compactMap { $0 }
                 .map { message in
-                    .init(
+                    let expandedModel = message.toExpandedMessageCellUIModel()
+                    return .init(
                         id: message.id,
                         locationID: message.location?.model.id,
-                        type: .expanded(message.toExpandedMessageCellUIModel())
+                        type: .expanded(expandedModel)
                     )
                 }
             return .init(messages: singleMessage, isStarred: isStarred, hiddenMessagesBanner: nil)
@@ -775,7 +776,8 @@ extension ConversationDetailModel {
                     let showExpanded = !message.isDraft && (expandedMessages.contains(message.id) || index == lastNonDraftMessageIndex)
 
                     if showExpanded {
-                        messageCellUIModelType = .expanded(message.toExpandedMessageCellUIModel())
+                        let expandedModel = message.toExpandedMessageCellUIModel()
+                        messageCellUIModelType = .expanded(expandedModel)
                     } else {
                         messageCellUIModelType = .collapsed(message.toCollapsedMessageCellUIModel())
                     }

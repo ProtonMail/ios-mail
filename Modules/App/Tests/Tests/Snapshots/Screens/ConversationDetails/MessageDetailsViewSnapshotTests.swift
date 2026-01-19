@@ -107,6 +107,7 @@ class MessageDetailsViewSnapshotTests {
         MessageDetailsView(
             isHeaderCollapsed: collapsed,
             uiModel: model,
+            trackers: .loaded(MessageDetailsPreviewProvider.testTrackers),
             mailbox: .dummy,
             actionButtonsState: actionButtonsState,
             onEvent: { _ in }

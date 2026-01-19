@@ -27,12 +27,14 @@ struct ExpandedMessageCell: View {
     private let mailbox: Mailbox
     private let uiModel: ExpandedMessageCellUIModel
     private let draftPresenter: RecipientDraftPresenter
+    private let privacyInfoStreamProvider: WatchPrivacyInfoStreamProvider
     private let onEvent: (ExpandedMessageCellEvent) async -> Void
     private let htmlDisplayed: () -> Void
     private let areActionsHidden: Bool
     @Binding var attachmentIDToOpen: ID?
     @State private var isBodyLoaded: Bool = false
     @State private var viewDidAppear = false
+    @StateObject private var privacyInfoStore: PrivacyInfoStateStore
 
     private var actionButtonsState: MessageDetailsView.ActionButtonsState {
         guard !areActionsHidden else { return .hidden }
@@ -43,6 +45,7 @@ struct ExpandedMessageCell: View {
         mailbox: Mailbox,
         uiModel: ExpandedMessageCellUIModel,
         draftPresenter: RecipientDraftPresenter,
+        privacyInfoStreamProvider: WatchPrivacyInfoStreamProvider,
         areActionsHidden: Bool,
         attachmentIDToOpen: Binding<ID?>,
         onEvent: @escaping (ExpandedMessageCellEvent) async -> Void,
@@ -51,16 +54,24 @@ struct ExpandedMessageCell: View {
         self.mailbox = mailbox
         self.uiModel = uiModel
         self.draftPresenter = draftPresenter
+        self.privacyInfoStreamProvider = privacyInfoStreamProvider
         self.areActionsHidden = areActionsHidden
         self._attachmentIDToOpen = attachmentIDToOpen
         self.onEvent = onEvent
         self.htmlDisplayed = htmlDisplayed
+        self._privacyInfoStore = StateObject(
+            wrappedValue: PrivacyInfoStateStore(
+                messageID: uiModel.id,
+                privacyInfoStreamProvider: privacyInfoStreamProvider
+            )
+        )
     }
 
     var body: some View {
         VStack(spacing: .zero) {
             MessageDetailsView(
                 uiModel: uiModel.messageDetails,
+                trackers: privacyInfoStore.state,
                 mailbox: mailbox,
                 actionButtonsState: actionButtonsState,
                 onEvent: { event in
@@ -73,6 +84,8 @@ struct ExpandedMessageCell: View {
                         await onEvent(.onSenderTap)
                     case .onRecipientTap(let recipient):
                         await onEvent(.onRecipientTap(recipient))
+                    case .onTrackersTap:
+                        await onEvent(.onTrackersTap(privacyInfoStore.state.loadedValue))
                     case .onEditToolbar:
                         await onEvent(.onEditToolbar)
                     }
@@ -116,13 +129,16 @@ struct ExpandedMessageCell: View {
         .onChange(of: isBodyLoaded && viewDidAppear) {
             htmlDisplayed()
         }
+        .task {
+            await privacyInfoStore.handle(action: .loadInfo)
+        }
     }
 }
 
 struct ExpandedMessageCellUIModel: Identifiable, Equatable {
     let id: ID
     let unread: Bool
-    let messageDetails: MessageDetailsUIModel
+    var messageDetails: MessageDetailsUIModel
 }
 
 enum ExpandedMessageCellEvent {
@@ -130,6 +146,7 @@ enum ExpandedMessageCellEvent {
 
     case onSenderTap
     case onRecipientTap(MessageDetail.Recipient)
+    case onTrackersTap(TrackersUIModel?)
 
     case onEditScheduledMessage
     case unsnoozeConversation
@@ -146,7 +163,7 @@ enum ExpandedMessageCellEvent {
         ]
     )
 
-    return VStack(spacing: 0) {
+    VStack(spacing: 0) {
         ExpandedMessageCell(
             mailbox: .dummy,
             uiModel: .init(
@@ -155,6 +172,7 @@ enum ExpandedMessageCellEvent {
                 messageDetails: messageDetails
             ),
             draftPresenter: DraftPresenter.dummy(),
+            privacyInfoStreamProvider: .dummy,
             areActionsHidden: false,
             attachmentIDToOpen: .constant(nil),
             onEvent: { _ in },
@@ -168,6 +186,7 @@ enum ExpandedMessageCellEvent {
                 messageDetails: messageDetails
             ),
             draftPresenter: DraftPresenter.dummy(),
+            privacyInfoStreamProvider: .dummy,
             areActionsHidden: false,
             attachmentIDToOpen: .constant(nil),
             onEvent: { _ in },
@@ -175,4 +194,21 @@ enum ExpandedMessageCellEvent {
         )
     }
     .environmentObject(ToastStateStore(initialState: .initial))
+}
+
+extension WatchPrivacyInfoStreamProvider {
+    static var dummy: Self {
+        .init(
+            userSession: .dummy,
+            actions: .init { _, _ in
+                DummyPrivacyStream()
+            }
+        )
+    }
+}
+
+private struct DummyPrivacyStream: AsyncWatchingStream {
+    var value: Any { PrivacyInfo(trackers: nil, utmLinks: nil) }
+    func next() async throws -> Any { PrivacyInfo(trackers: nil, utmLinks: nil) }
+    func stop() {}
 }
