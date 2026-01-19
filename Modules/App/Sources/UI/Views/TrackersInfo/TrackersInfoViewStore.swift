@@ -64,7 +64,7 @@ final class TrackersInfoViewStore: StateStore {
         self.dismiss = dismiss
     }
 
-    func handle(action: Action) async {
+    func handle(action: Action) {
         switch action {
         case .onSectionTap(let section):
             withAnimation(.easeInOut(duration: 0.3)) {
@@ -80,7 +80,7 @@ final class TrackersInfoViewStore: StateStore {
             state.presentedBlockedTracker = (domain, url)
 
         case .onBlockedTrackerAlertDismiss:
-            state.isBlockedTrackerPresented = false
+            state.presentedBlockedTracker = ("", "")
 
         case .onLinkTap(let url):
             guard let url = URL(string: url) else { return }

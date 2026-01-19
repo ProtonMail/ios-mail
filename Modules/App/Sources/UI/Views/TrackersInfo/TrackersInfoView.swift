@@ -19,6 +19,7 @@ import InboxCore
 import InboxCoreUI
 import InboxDesignSystem
 import SwiftUI
+import proton_app_uniffi
 
 struct TrackersInfoView: View {
     @Environment(\.openURL) var openURL
@@ -66,7 +67,7 @@ struct TrackersInfoView: View {
 private extension TrackersInfoView {
     func header() -> some View {
         VStack(alignment: .leading) {
-            Image(DS.Icon.icShield2CheckFilled)
+            Image(symbol: .checkmarkShieldFill)
                 .resizable()
                 .square(size: 32)
                 .tint(DS.Color.Icon.norm)
@@ -222,6 +223,7 @@ private extension TrackersInfoView {
                 .padding(.leading, DS.Spacing.large)
 
             linkCellRow(title: L10n.TrackingInfo.cleaned, showArrow: true, url: link.cleaned) {
+                onUrlTap(link.cleaned)
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)

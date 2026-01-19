@@ -26,6 +26,7 @@ struct ConversationDetailListView: View {
     @EnvironmentObject var toastStateStore: ToastStateStore
     @ObservedObject private var model: ConversationDetailModel
     private let mailUserSession: MailUserSession
+    private let privacyInfoStreamProvider: WatchPrivacyInfoStreamProvider
     private let draftPresenter: RecipientDraftPresenter
     private let editToolbar: () -> Void
     private let goBack: () -> Void
@@ -33,18 +34,21 @@ struct ConversationDetailListView: View {
     /// These attributes trigger the different action sheets
     @State private var senderActionTarget: ExpandedMessageCellUIModel?
     @State private var recipientActionTarget: MessageDetail.Recipient?
+    @State private var trackersInfoTarget: TrackersUIModel?
     @StateObject var messageBannersNotifier = RefreshMessageBannersNotifier()
     @State private var contentSizeCategoryObserver = ContentSizeCategoryObserver()
 
     init(
         model: ConversationDetailModel,
         mailUserSession: MailUserSession,
+        privacyInfoStreamProvider: WatchPrivacyInfoStreamProvider,
         draftPresenter: RecipientDraftPresenter,
         editToolbar: @escaping () -> Void,
         goBack: @escaping () -> Void
     ) {
         self.model = model
         self.mailUserSession = mailUserSession
+        self.privacyInfoStreamProvider = privacyInfoStreamProvider
         self.draftPresenter = draftPresenter
         self.editToolbar = editToolbar
         self.goBack = goBack
@@ -66,6 +70,7 @@ struct ConversationDetailListView: View {
         }
         .sheet(item: $senderActionTarget, content: senderActionSheet)
         .sheet(item: $recipientActionTarget, content: recipientActionSheet)
+        .sheet(item: $trackersInfoTarget, content: trackersInfoSheet)
         .alert(model: $model.editScheduledMessageConfirmationAlert)
     }
 
@@ -95,6 +100,10 @@ struct ConversationDetailListView: View {
         )
         .pickerViewStyle([.height(390)])
         .environmentObject(messageBannersNotifier)
+    }
+
+    private func trackersInfoSheet(target: TrackersUIModel) -> some View {
+        TrackersInfoView(state: .init(trackers: target))
     }
 
     private func messageList(messages: [MessageCellUIModel]) -> some View {
@@ -166,6 +175,7 @@ struct ConversationDetailListView: View {
             mailbox: model.mailbox.unsafelyUnwrapped,
             uiModel: uiModel,
             draftPresenter: draftPresenter,
+            privacyInfoStreamProvider: privacyInfoStreamProvider,
             areActionsHidden: model.areActionsHidden,
             attachmentIDToOpen: $model.attachmentIDToOpen,
             onEvent: { await onExpandedMessageCellEvent($0, uiModel: uiModel) },
@@ -192,6 +202,8 @@ struct ConversationDetailListView: View {
             senderActionTarget = uiModel
         case .onRecipientTap(let recipient):
             recipientActionTarget = recipient
+        case .onTrackersTap(let trackers):
+            trackersInfoTarget = trackers
         case .onEditScheduledMessage:
             model.onEditScheduledMessage(withId: uiModel.id, goBack: goBack, toastStateStore: toastStateStore)
         case .unsnoozeConversation:

@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import proton_app_uniffi
 
 struct TrackersUIModel: Identifiable, Hashable {
     let id = UUID()
@@ -33,14 +34,24 @@ struct TrackersUIModel: Identifiable, Hashable {
     var totalLinksCount: Int {
         cleanedLinks.count
     }
-}
 
-struct TrackerDomain: Hashable {
-    let name: String
-    let urls: [String]
+    static var empty: TrackersUIModel {
+        .init(blockedTrackers: [], cleanedLinks: [])
+    }
 }
 
 struct CleanedLink: Hashable {
     let original: String
     let cleaned: String
+}
+
+// MARK: - PrivacyInfo to UI Model conversion
+
+extension PrivacyInfo {
+    func toUIModel() -> TrackersUIModel {
+        .init(
+            blockedTrackers: trackers?.trackers ?? [],
+            cleanedLinks: utmLinks?.links.map { CleanedLink(original: $0.originalUrl, cleaned: $0.cleanedUrl) } ?? []
+        )
+    }
 }

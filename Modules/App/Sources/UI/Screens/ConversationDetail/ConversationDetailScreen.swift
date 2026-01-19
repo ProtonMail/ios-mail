@@ -116,9 +116,14 @@ struct ConversationDetailScreen: View {
                     if let hiddenMessageBanner {
                         BannerView(model: hiddenMessageBanner)
                     }
+                    let privacyInfoStreamProvider = WatchPrivacyInfoStreamProvider(
+                        userSession: mailUserSession,
+                        actions: .productionInstance
+                    )
                     ConversationDetailListView(
                         model: model,
                         mailUserSession: mailUserSession,
+                        privacyInfoStreamProvider: privacyInfoStreamProvider,
                         draftPresenter: draftPresenter,
                         editToolbar: {},
                         goBack: proceedAfterMove
