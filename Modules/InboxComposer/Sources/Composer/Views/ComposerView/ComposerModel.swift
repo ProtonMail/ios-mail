@@ -35,6 +35,7 @@ final class ComposerModel: ObservableObject {
     @Published var modalAction: ComposerViewModalState?
     @Nested var attachmentAlertState: AttachmentAlertState
     @Published var toast: Toast?
+    @Published var privacyLockTooltip: RecipientPrivacyLockContext?
 
     private let draft: AppDraftProtocol
     private let draftOrigin: DraftOrigin
@@ -249,6 +250,10 @@ final class ComposerModel: ObservableObject {
         guard index < recipients.count else { return }
         let recipient = recipients[index]
         removeRecipients(for: draft, group: group, recipients: [recipient])
+    }
+
+    func showPrivacyInfo(privacyLock: PrivacyLock) {
+        privacyLockTooltip = RecipientPrivacyLockContext(privacyLock: privacyLock)
     }
 
     func addRecipientFromInput() {
@@ -761,6 +766,11 @@ extension ComposerModel {
         dismissAction()
         onDismiss(reason)
     }
+}
+
+struct RecipientPrivacyLockContext: Identifiable {
+    let id = UUID()
+    let privacyLock: PrivacyLock
 }
 
 extension AppDraftProtocol {

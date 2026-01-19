@@ -16,20 +16,19 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import InboxCore
-import InboxCoreUI
 import InboxDesignSystem
 import SwiftUI
 import proton_app_uniffi
 
-struct LockTooltipView: View {
+public struct LockTooltipView: View {
     let lock: PrivacyLock
     @Environment(\.dismiss) var dismiss
 
-    init(lock: PrivacyLock) {
+    public init(lock: PrivacyLock) {
         self.lock = lock
     }
 
-    var body: some View {
+    public var body: some View {
         VStack(spacing: .zero) {
             ScrollView {
                 VStack(alignment: .leading, spacing: .zero) {
@@ -70,7 +69,6 @@ struct LockTooltipView: View {
             .fixedSize(horizontal: false, vertical: true)
         }
         .padding(.top, DS.Spacing.huge)
-        .presentationDetents([.medium, .large])
         .background(DS.Color.Background.norm)
     }
 

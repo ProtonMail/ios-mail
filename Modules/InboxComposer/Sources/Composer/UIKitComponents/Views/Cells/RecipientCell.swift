@@ -18,6 +18,7 @@
 import InboxCoreUI
 import SwiftUI
 import UIKit
+import proton_app_uniffi
 
 final class RecipientCell: UICollectionViewCell {
     private let recipientView = RecipientChipView()
@@ -26,6 +27,7 @@ final class RecipientCell: UICollectionViewCell {
 
     var onCopy: (() -> Void)?
     var onRemove: (() -> Void)?
+    var onShowPrivacyInfo: ((PrivacyLock) -> Void)?
 
     private var recipient: RecipientUIModel? {
         didSet {
@@ -73,20 +75,29 @@ final class RecipientCell: UICollectionViewCell {
     func configure(with recipient: RecipientUIModel, maxWidth: CGFloat) {
         self.recipient = recipient
         configure(maxWidth: maxWidth)
+        configureContextMenu(with: recipient)
     }
 
     private func configureContextMenu(with recipient: RecipientUIModel) {
         let remove = UIAction.remove(action: { [weak self] _ in self?.onRemove?() })
-        var actions: [UIAction] = []
-        switch recipient.type {
-        case .single:
+        let menuElements: [UIMenuElement]
+        switch recipient.composerRecipient {
+        case .single(let singleRecipient):
             let copy = UIAction.copy(action: { [weak self] _ in self?.onCopy?() })
-            actions = [copy, remove]
+            let topSection = UIMenu(options: .displayInline, children: [copy, remove])
+            if let privacyLock = singleRecipient.privacyLock {
+                let privacyInfo = UIAction.privacyInfo(action: { [weak self] _ in
+                    self?.onShowPrivacyInfo?(privacyLock)
+                })
+                let bottomSection = UIMenu(options: .displayInline, children: [privacyInfo])
+                menuElements = [topSection, bottomSection]
+            } else {
+                menuElements = [topSection]
+            }
         case .group:
-            actions = [remove]
+            menuElements = [remove]
         }
-
-        button.menu = UIMenu(children: actions)
+        button.menu = UIMenu(children: menuElements)
     }
 }
 
@@ -104,6 +115,14 @@ private extension UIAction {
             title: L10n.Composer.recipientMenuRemove.string,
             image: UIImage(systemName: "trash"),  // FIXME: - Use correct icon
             attributes: .destructive,
+            handler: action
+        )
+    }
+
+    static func privacyInfo(action: @escaping (UIAction) -> Void) -> UIAction {
+        UIAction(
+            title: L10n.Composer.recipientMenuPrivacyInfo.string,
+            image: UIImage(systemName: "info.circle"),  // FIXME: - Use correct icon
             handler: action
         )
     }

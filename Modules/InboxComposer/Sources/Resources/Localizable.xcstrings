@@ -5953,6 +5953,9 @@
         }
       }
     },
+    "Encryption Info" : {
+      "comment" : "Recipient context menu action to show encryption/privacy information"
+    },
     "Expiration time can't be in the past." : {
       "comment" : "Error in the context of setting a custom message expiration date in the composer.",
       "localizations" : {
@@ -7080,6 +7083,9 @@
           }
         }
       }
+    },
+    "Got it" : {
+
     },
     "How expiration works?" : {
       "comment" : "subtitle for the learn more option in the message expiration menu",

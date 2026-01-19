@@ -17,6 +17,7 @@
 
 import InboxCoreUI
 import UIKit
+import proton_app_uniffi
 
 final class RecipientsFieldEditingController: UIViewController {
     enum Event {
@@ -24,6 +25,7 @@ final class RecipientsFieldEditingController: UIViewController {
         case onRecipientSelected(index: Int)
         case onRecipientCopy(index: Int)
         case onRecipientRemove(index: Int)
+        case onRecipientShowPrivacyInfo(privacyLock: PrivacyLock)
         case onReturnKeyPressed
         case onDeleteKeyPressedInsideEmptyInputField
         case onDeleteKeyPressedOutsideInputField
@@ -237,6 +239,9 @@ extension RecipientsFieldEditingController: UICollectionViewDataSource {
         }
         recipientCell.onRemove = { [weak self] in
             self?.onEvent?(.onRecipientRemove(index: indexPath.row))
+        }
+        recipientCell.onShowPrivacyInfo = { [weak self] privacyLock in
+            self?.onEvent?(.onRecipientShowPrivacyInfo(privacyLock: privacyLock))
         }
         return recipientCell
     }

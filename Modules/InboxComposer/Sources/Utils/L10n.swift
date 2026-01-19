@@ -125,6 +125,12 @@ enum L10n {
             bundle: .atURL(Bundle.module.bundleURL),
             comment: "Recipient context menu action to remove recipient"
         )
+
+        static let recipientMenuPrivacyInfo = LocalizedStringResource(
+            "Encryption Info",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Recipient context menu action to show encryption/privacy information"
+        )
     }
 
     enum SenderValidation {

@@ -17,6 +17,7 @@
 
 import InboxDesignSystem
 import UIKit
+import proton_app_uniffi
 
 final class RecipientsFieldController: UIViewController {
     enum Event {
@@ -25,6 +26,7 @@ final class RecipientsFieldController: UIViewController {
         case onRecipientSelected(index: Int)
         case onRecipientCopy(index: Int)
         case onRecipientRemove(index: Int)
+        case onRecipientShowPrivacyInfo(privacyLock: PrivacyLock)
         case onReturnKeyPressed
         case onDeleteKeyPressedInsideEmptyInputField
         case onDeleteKeyPressedOutsideInputField
@@ -86,6 +88,8 @@ final class RecipientsFieldController: UIViewController {
                 self?.onEvent?(.onRecipientCopy(index: index))
             case .onRecipientRemove(let index):
                 self?.onEvent?(.onRecipientRemove(index: index))
+            case .onRecipientShowPrivacyInfo(let privacyLock):
+                self?.onEvent?(.onRecipientShowPrivacyInfo(privacyLock: privacyLock))
             case .onReturnKeyPressed:
                 self?.onEvent?(.onReturnKeyPressed)
             case .onDeleteKeyPressedInsideEmptyInputField:

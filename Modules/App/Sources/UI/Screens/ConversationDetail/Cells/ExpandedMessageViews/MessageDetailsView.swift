@@ -155,6 +155,7 @@ struct MessageDetailsView: View {
             privacyLockInfoRow
                 .popover(item: $privacyLockTooltip) { context in
                     LockTooltipView(lock: context.privacyLock)
+                        .presentationDetents([.medium, .large])
                         .frame(idealWidth: 400)
                 }
 

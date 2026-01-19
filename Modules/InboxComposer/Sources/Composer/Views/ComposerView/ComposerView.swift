@@ -22,6 +22,7 @@ import InboxDesignSystem
 import PhotosUI
 import ProtonUIFoundations
 import SwiftUI
+import proton_app_uniffi
 
 struct ComposerView: View {
     @Environment(\.dismissTestable) var dismiss: Dismissable
@@ -100,6 +101,8 @@ struct ComposerView: View {
                         model.copyRecipient(group: group, index: index)
                     case .onRecipientRemove(let index):
                         model.removeRecipient(group: group, index: index)
+                    case .onRecipientShowPrivacyInfo(let privacyLock):
+                        model.showPrivacyInfo(privacyLock: privacyLock)
                     case .onReturnKeyPressed:
                         model.addRecipientFromInput()
                     case .onDeleteKeyPressedInsideEmptyInputField:
@@ -192,6 +195,10 @@ struct ComposerView: View {
                 }
             }
             .sheet(item: $modalState, additionallyObserving: $model.modalAction, content: modalFactory)
+            .sheet(item: $model.privacyLockTooltip) { context in
+                LockTooltipView(lock: context.privacyLock)
+                    .presentationDetents([.large])
+            }
             .onChange(of: model.toast) { _, newValue in
                 guard let newValue else { return }
                 toastStateStore.present(toast: newValue)
