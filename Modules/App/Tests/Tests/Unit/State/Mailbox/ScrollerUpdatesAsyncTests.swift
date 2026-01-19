@@ -28,8 +28,8 @@ final class ScrollerUpdatesAsyncTests {
     private var receivedMessageUpdates: [MessageScrollerUpdate]
     private var receivedConversationUpdates: [ConversationScrollerUpdate]
 
-    private let dummyMessageUpdate = MessageScrollerUpdate.list(.none)
-    private let dummyConversationUpdate = ConversationScrollerUpdate.list(.replaceFrom(idx: 0, items: []))
+    private let dummyMessageUpdate = MessageScrollerUpdate.list(.none(scrollerId: .empty))
+    private let dummyConversationUpdate = ConversationScrollerUpdate.list(.replaceFrom(scrollerId: .empty, idx: 0, items: []))
 
     init() {
         self.sut = .init()
@@ -88,7 +88,7 @@ final class ScrollerUpdatesAsyncTests {
             self.receivedConversationUpdates.append(update)
         }
 
-        let update = ConversationScrollerUpdate.list(.replaceBefore(idx: 0, items: []))
+        let update = ConversationScrollerUpdate.list(.replaceBefore(scrollerId: .empty, idx: 0, items: []))
         sut.enqueueUpdate(update)
 
         try await expectToEventually(self.receivedConversationUpdates == [update])
