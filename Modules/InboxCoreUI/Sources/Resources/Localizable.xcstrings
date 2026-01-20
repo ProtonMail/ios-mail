@@ -1188,9 +1188,6 @@
         }
       }
     },
-    "Hide" : {
-
-    },
     "However, a sender or recipient not using Proton Mail may have a non-encrypted copy stored on their email server." : {
       "comment" : "Additional description noting that non-Proton Mail users may have unencrypted copies."
     },
@@ -2324,9 +2321,6 @@
           }
         }
       }
-    },
-    "Show" : {
-
     },
     "Sign in again" : {
       "comment" : "Alert action title. The alert is dispalyed when biometric is set as lock protection method, but it's not configured on the device.",

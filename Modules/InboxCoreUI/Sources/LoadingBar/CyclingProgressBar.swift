@@ -136,7 +136,7 @@ private struct CyclingProgressBar_Preview: View {
 
     var body: some View {
         VStack(alignment: .center, spacing: 20) {
-            Text("Cycling progress bar (\(visible ? "visible" : "hidden"))")
+            Text("Cycling progress bar (\(visible ? "visible" : "hidden"))".notLocalized)
                 .font(.headline)
                 .padding(.top, 60)
             if visible {
@@ -147,7 +147,7 @@ private struct CyclingProgressBar_Preview: View {
             Button {
                 visible.toggle()
             } label: {
-                Text(visible ? "Hide" : "Show")
+                Text(visible ? "Hide".notLocalized : "Show".notLocalized)
                     .font(.headline)
                     .padding(20)
                     .frame(width: 150)
