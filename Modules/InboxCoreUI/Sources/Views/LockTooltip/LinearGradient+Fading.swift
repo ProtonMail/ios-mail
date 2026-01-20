@@ -15,29 +15,15 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import InboxCore
 import InboxDesignSystem
 import SwiftUI
 
-public struct PrivacyInfoSheet<Content: View>: View {
-    private let content: () -> Content
-    private let dismiss: () -> Void
-
-    public init(content: @escaping () -> Content, dismiss: @escaping () -> Void) {
-        self.content = content
-        self.dismiss = dismiss
-    }
-
-    public var body: some View {
-        VStack(spacing: .zero) {
-            ScrollWithBottomButton {
-                content()
-            } dismiss: {
-                dismiss()
-            }
-        }
-        .padding(.top, DS.Spacing.huge)
-        .background(DS.Color.BackgroundInverted.norm)
-        .presentationDragIndicator(.visible)
+extension LinearGradient {
+    static var fading: Self {
+        .init(
+            colors: [DS.Color.BackgroundInverted.norm.opacity(0.2), DS.Color.BackgroundInverted.norm],
+            startPoint: .top,
+            endPoint: .bottom
+        )
     }
 }

@@ -31,6 +31,7 @@ public extension DS.Images {
     static let protonMail = ImageResource.protonMail
     static let protonCalendar = ImageResource.protonCalendar
     static let lock = ImageResource.lock
+    static let whatsNewCelebration = ImageResource.whatsNewCelebration
 
     enum Upsell {
         public static let logoAutoDelete = ImageResource.upsellLogoAutoDelete

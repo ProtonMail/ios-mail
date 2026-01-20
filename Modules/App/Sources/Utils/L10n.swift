@@ -1374,5 +1374,54 @@ enum L10n {
             .init("\(count) messages", comment: "Number of messages in a conversation.")
         }
     }
+
+    enum WhatsNew {
+        static let title = LocalizedStringResource(
+            "What's new",
+            comment: "Title displayed in WhatsNew screen."
+        )
+        static func version(version: String) -> LocalizedStringResource {
+            .init(
+                "Version \(version)",
+                comment: "Version label in WhatsNew screen. Parameter is the version number."
+            )
+        }
+
+        enum Features {
+            static let discreetIconName = LocalizedStringResource(
+                "Discreet icon",
+                comment: "Feature name in WhatsNew screen."
+            )
+            static let discreetIconDescription = LocalizedStringResource(
+                "Keep the default Proton Mail icon or disguise it with a generic one for greater privacy.",
+                comment: "Feature description for Discreet icon in WhatsNew screen."
+            )
+            static let trackingProtectionName = LocalizedStringResource(
+                "Tracking protection",
+                comment: "Feature name in WhatsNew screen."
+            )
+            static let trackingProtectionDescription = LocalizedStringResource(
+                "See who tried to monitor you with hidden pixels and tracking links, and how many attempts were blocked.",
+                comment: "Feature description for Tracking protection in WhatsNew screen."
+            )
+            static let encryptionLocksName = LocalizedStringResource(
+                "Encryption locks",
+                comment: "Feature name in WhatsNew screen."
+            )
+            static let encryptionLocksDescription = LocalizedStringResource(
+                "Use the lock icons to identify and verify the type of encryption protecting your messages.",
+                comment: "Feature description for Encryption locks in WhatsNew screen."
+            )
+            static let viewHeadersAndHTMLName = LocalizedStringResource(
+                "View headers and HTML",
+                comment: "Feature name in WhatsNew screen."
+            )
+            static let viewHeadersAndHTMLDescription = LocalizedStringResource(
+                "Inspect suspicious messages to confirm their authenticity and uncover any hidden tracking elements.",
+                comment: "Feature description for View headers and HTML in WhatsNew screen."
+            )
+        }
+    }
+
     static let official = LocalizedStringResource("Official", comment: "Proton official badge title.")
 }

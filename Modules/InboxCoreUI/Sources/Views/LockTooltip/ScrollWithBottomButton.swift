@@ -19,7 +19,7 @@ import InboxCore
 import InboxDesignSystem
 import SwiftUI
 
-public struct PrivacyInfoSheet<Content: View>: View {
+public struct ScrollWithBottomButton<Content: View>: View {
     private let content: () -> Content
     private let dismiss: () -> Void
 
@@ -30,14 +30,23 @@ public struct PrivacyInfoSheet<Content: View>: View {
 
     public var body: some View {
         VStack(spacing: .zero) {
-            ScrollWithBottomButton {
+            ScrollView {
                 content()
-            } dismiss: {
-                dismiss()
+                    .padding(.horizontal, DS.Spacing.extraLarge)
             }
+            .scrollClipDisabled()
+
+            ZStack {
+                LinearGradient.fading
+                    .edgesIgnoringSafeArea(.all)
+
+                Button(action: { dismiss() }) {
+                    Text(CommonL10n.gotIt)
+                }
+                .buttonStyle(BigButtonStyle())
+                .padding(DS.Spacing.extraLarge)
+            }
+            .fixedSize(horizontal: false, vertical: true)
         }
-        .padding(.top, DS.Spacing.huge)
-        .background(DS.Color.BackgroundInverted.norm)
-        .presentationDragIndicator(.visible)
     }
 }

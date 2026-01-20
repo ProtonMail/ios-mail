@@ -17127,6 +17127,9 @@
         }
       }
     },
+    "Discreet icon" : {
+      "comment" : "Feature name in WhatsNew screen."
+    },
     "Display" : {
       "comment" : "Action to display embedded images.",
       "localizations" : {
@@ -20904,6 +20907,9 @@
         }
       }
     },
+    "Encryption locks" : {
+      "comment" : "Feature name in WhatsNew screen."
+    },
     "Enjoy encrypted messages, less spam, protection from phishing, and blocked trackers. Welcome to privacy." : {
       "comment" : "Subtitle of the first onboarding page explaining Proton Mail's benefits.",
       "localizations" : {
@@ -23965,6 +23971,9 @@
         }
       }
     },
+    "Inspect suspicious messages to confirm their authenticity and uncover any hidden tracking elements." : {
+      "comment" : "Feature description for View headers and HTML in WhatsNew screen."
+    },
     "Issue loading your content. Please try refreshing or sign in again." : {
       "comment" : "Loading items in your mailbox returns an error.",
       "localizations" : {
@@ -24686,6 +24695,9 @@
           }
         }
       }
+    },
+    "Keep the default Proton Mail icon or disguise it with a generic one for greater privacy." : {
+      "comment" : "Feature description for Discreet icon in WhatsNew screen."
     },
     "Keep the default Proton Mail icon, or disguise it with a more discreet one for extra privacy. Notifications will always show the Proton Mail name and icon. [Learn more…](https://proton.me/support/disguise-app-icon)" : {
       "comment" : "Description text explaining the app icon feature and privacy implications.",
@@ -39369,6 +39381,9 @@
         }
       }
     },
+    "See who tried to monitor you with hidden pixels and tracking links, and how many attempts were blocked." : {
+      "comment" : "Feature description for Tracking protection in WhatsNew screen."
+    },
     "Seems like you are all caught up for now" : {
       "comment" : "Mailbox empty state message.",
       "localizations" : {
@@ -45658,9 +45673,6 @@
         }
       }
     },
-    "The email is stored on Proton servers with [zero-access encryption](https://proton.me/blog/zero-access-encryption). Neither Proton nor anyone else can read it." : {
-      "comment" : "Description explaining the email is stored with zero-access encryption."
-    },
     "The Mail app crashes after loading for a few seconds." : {
       "comment" : "Placeholder of actual results text field.",
       "localizations" : {
@@ -49957,6 +49969,9 @@
         }
       }
     },
+    "Tracking protection" : {
+      "comment" : "Feature name in WhatsNew screen."
+    },
     "Trash" : {
       "comment" : "Menu title of all deleted emails in the sidebar.",
       "localizations" : {
@@ -52589,6 +52604,12 @@
         }
       }
     },
+    "Use the lock icons to identify and verify the type of encryption protecting your messages." : {
+      "comment" : "Feature description for Encryption locks in WhatsNew screen."
+    },
+    "Version %@" : {
+      "comment" : "Version label in WhatsNew screen. Parameter is the version number."
+    },
     "View headers" : {
       "comment" : "Action title for viewing given message's headers in the action sheet.",
       "localizations" : {
@@ -52779,6 +52800,9 @@
           }
         }
       }
+    },
+    "View headers and HTML" : {
+      "comment" : "Feature name in WhatsNew screen."
     },
     "View HTML" : {
       "comment" : "Action title for viewing given message's HTML in the action sheet.",
@@ -54077,6 +54101,9 @@
           }
         }
       }
+    },
+    "What's new" : {
+      "comment" : "Title displayed in WhatsNew screen."
     },
     "You are about to launch the web browser and navigate to" : {
       "comment" : "Prompts the user to confirm before a link is opened - the sentence is cut on purpose, and the link follows.",

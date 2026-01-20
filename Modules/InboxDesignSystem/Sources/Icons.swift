@@ -57,12 +57,14 @@ public extension DS.Icon {
     static let icMobile = ImageResource.icMobile
     static let icMoon = ImageResource.icMoon
     static let icMinus = ImageResource.icMinus
+    static let icPalette = ImageResource.icPalette
     static let icPaperClip = ImageResource.icPaperClip
     static let icPaperPlane = ImageResource.icPaperPlane
     static let icPencil = ImageResource.icPencil
     static let icPlus = ImageResource.icPlus
     static let icSliders = ImageResource.icSliders
     static let icShield2Bolt = ImageResource.icShield2Bolt
+    static let icShieldCheck = ImageResource.icShieldCheck
     static let icSpam = ImageResource.icSpam
     static let icSparkles = ImageResource.icSparkles
     static let icSunLeftHalfFilled = ImageResource.icSunLeftHalfFilled
