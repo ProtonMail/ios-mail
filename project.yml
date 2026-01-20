@@ -145,6 +145,7 @@ targets:
           settingsTarget: ProtonMail
     sources:
       - path: Modules/App/Sources
+      - path: Settings.bundle
     settings:
       base:
         ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
@@ -236,6 +237,9 @@ targets:
     preBuildScripts:
       - name: swift-format
         script: xcrun swift-format lint -r Modules
+        basedOnDependencyAnalysis: false
+      - name: Update Licenses
+        script: /opt/homebrew/bin/mint run LicensePlist license-plist --output-path Settings.bundle
         basedOnDependencyAnalysis: false
 
   ProtonMailTest:
