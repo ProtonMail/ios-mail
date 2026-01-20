@@ -22,7 +22,6 @@ import InboxCoreUI
 import InboxDesignSystem
 import ProtonUIFoundations
 import SwiftUI
-import TipKit
 import proton_app_uniffi
 
 struct ProtonMailApp: App {
@@ -60,8 +59,6 @@ struct ProtonMailApp: App {
     init() {
         legacyMigrationStateStore = .init(toastStateStore: toastStateStore)
         DynamicFontSize.capSupportedSizeCategories()
-
-        try? Tips.configure()
     }
 
     func configureAnalyticsIfNeeded(analytics: Analytics) async {
