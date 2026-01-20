@@ -22,7 +22,6 @@ import proton_app_uniffi
 final class RecipientsFieldEditingController: UIViewController {
     enum Event {
         case onInputChange(text: String)
-        case onRecipientSelected(index: Int)
         case onRecipientCopy(index: Int)
         case onRecipientRemove(index: Int)
         case onRecipientShowPrivacyInfo(privacyLock: PrivacyLock)

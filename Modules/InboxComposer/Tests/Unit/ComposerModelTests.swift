@@ -227,31 +227,6 @@ final class ComposerModelTests: BaseTestCase {
         XCTAssertNil(sut.state.alert)
     }
 
-    // MARK: recipientToggleSelection
-
-    func testRecipientToggleSelection_whenGroupIsTo_itShouldUpdateSelectedStatus() {
-        let mockDraft: MockDraft = .makeWithRecipients([singleRecipient1, singleRecipient2], group: .to)
-        let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: testContactProvider)
-
-        sut.recipientToggleSelection(group: .to, index: 0)
-        XCTAssertTrue(sut.state.toRecipients.recipients[0].isSelected)
-
-        sut.recipientToggleSelection(group: .to, index: 0)
-        XCTAssertFalse(sut.state.toRecipients.recipients[0].isSelected)
-    }
-
-    // MARK: removeRecipientsThatAreSelected
-
-    func testRemoveRecipientsThatAreSelectedRecipients_itShouldRemoveSelectedItems() {
-        let mockDraft: MockDraft = .makeWithRecipients([singleRecipient1, singleRecipient2], group: .to)
-        let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: testContactProvider)
-        sut.recipientToggleSelection(group: .to, index: 0)
-        XCTAssertTrue(sut.state.toRecipients.recipients[0].isSelected)
-
-        sut.removeRecipientsThatAreSelected(group: .to)
-        XCTAssertEqual(sut.state.toRecipients.recipients, [RecipientUIModel(composerRecipient: singleRecipient2, isSelected: false)])
-    }
-
     // MARK: selectLastRecipient
 
     func testSelectLastRecipient_whenLastRecipientIsNotSelected_itSholdUpdateItsSelectedStatus() {
@@ -627,17 +602,6 @@ final class ComposerModelTests: BaseTestCase {
         mockDraft.mockToRecipientList.callback?.onUpdate()
 
         XCTAssertEqual(sut.toast, .error(message: L10n.ComposerError.addressDoesNotExist.string))
-    }
-
-    func testComposerRecipientListCallbackUpdate_whenComposerRecipientIsSelected_itShouldKeepTheSelection() async {
-        let mockDraft: MockDraft = .makeWithRecipients([singleRecipient1], group: .to)
-        let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: testContactProvider)
-        sut.recipientToggleSelection(group: .to, index: 0)
-        XCTAssertEqual(sut.state.toRecipients.recipients.first!.isSelected, true)
-
-        mockDraft.mockToRecipientList.callback?.onUpdate()
-
-        XCTAssertEqual(sut.state.toRecipients.recipients.first!.isSelected, true)
     }
 
     // MARK: addAttachments

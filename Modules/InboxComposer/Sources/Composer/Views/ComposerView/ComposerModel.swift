@@ -200,12 +200,6 @@ final class ComposerModel: ObservableObject {
         }
     }
 
-    func recipientToggleSelection(group: RecipientGroupType, index: Int) {
-        state.updateRecipientState(for: group) { recipientFieldState in
-            recipientFieldState.recipients[index].isSelected.toggle()
-        }
-    }
-
     func removeRecipientsThatAreSelected(group: RecipientGroupType) {
         let recipients: [RecipientUIModel] = {
             switch group {
@@ -226,13 +220,7 @@ final class ComposerModel: ObservableObject {
     }
 
     func copyRecipient(group: RecipientGroupType, index: Int) {
-        let recipients: [RecipientUIModel] = {
-            switch group {
-            case .to: state.toRecipients.recipients
-            case .cc: state.ccRecipients.recipients
-            case .bcc: state.bccRecipients.recipients
-            }
-        }()
+        let recipients = recipientUIModels(from: draft, for: group)
         guard index < recipients.count else { return }
         let recipient = recipients[index]
         guard case .single(let singleRecipient) = recipient.composerRecipient else { return }
@@ -240,13 +228,7 @@ final class ComposerModel: ObservableObject {
     }
 
     func removeRecipient(group: RecipientGroupType, index: Int) {
-        let recipients: [RecipientUIModel] = {
-            switch group {
-            case .to: state.toRecipients.recipients
-            case .cc: state.ccRecipients.recipients
-            case .bcc: state.bccRecipients.recipients
-            }
-        }()
+        let recipients = recipientUIModels(from: draft, for: group)
         guard index < recipients.count else { return }
         let recipient = recipients[index]
         removeRecipients(for: draft, group: group, recipients: [recipient])

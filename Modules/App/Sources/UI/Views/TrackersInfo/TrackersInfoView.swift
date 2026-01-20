@@ -200,7 +200,6 @@ private extension TrackersInfoView {
             }
         }
         .clipped()
-        .disabled(state.trackers.cleanedLinks.isEmpty)
     }
 
     func linkCell(link: CleanedLink, onUrlTap: @escaping ((String) -> Void)) -> some View {

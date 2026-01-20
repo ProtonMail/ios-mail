@@ -95,8 +95,6 @@ struct ComposerView: View {
                         model.startEditingRecipients(for: group)
                     case .onInputChange(let text):
                         model.matchContact(group: group, text: text)
-                    case .onRecipientSelected(let index):
-                        model.recipientToggleSelection(group: group, index: index)
                     case .onRecipientCopy(let index):
                         model.copyRecipient(group: group, index: index)
                     case .onRecipientRemove(let index):

@@ -23,7 +23,6 @@ final class RecipientsFieldController: UIViewController {
     enum Event {
         case onFieldTap
         case onInputChange(text: String)
-        case onRecipientSelected(index: Int)
         case onRecipientCopy(index: Int)
         case onRecipientRemove(index: Int)
         case onRecipientShowPrivacyInfo(privacyLock: PrivacyLock)
@@ -82,8 +81,6 @@ final class RecipientsFieldController: UIViewController {
             switch event {
             case .onInputChange(let text):
                 self?.onEvent?(.onInputChange(text: text))
-            case .onRecipientSelected(let index):
-                self?.onEvent?(.onRecipientSelected(index: index))
             case .onRecipientCopy(let index):
                 self?.onEvent?(.onRecipientCopy(index: index))
             case .onRecipientRemove(let index):
