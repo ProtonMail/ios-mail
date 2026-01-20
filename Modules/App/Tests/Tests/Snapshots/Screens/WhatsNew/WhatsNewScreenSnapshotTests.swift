@@ -15,15 +15,27 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import InboxDesignSystem
-import SwiftUI
+import InboxSnapshotTesting
+import InboxTesting
+import Testing
+import UIKit
 
-extension LinearGradient {
-    static var fading: Self {
-        .init(
-            colors: [DS.Color.BackgroundInverted.norm.opacity(0.1), DS.Color.BackgroundInverted.norm],
-            startPoint: .top,
-            endPoint: .bottom
+@testable import ProtonMail
+
+@MainActor
+struct WhatsNewScreenSnapshotTests {
+    @Test
+    func snapshotWhatsNewScreen() {
+        assertSnapshotsOnIPhoneX(
+            of: WhatsNewScreen(bundle: BundleStub(infoDictionary: .infoDictionaryWithAppVersion))
         )
+    }
+}
+
+private extension Dictionary where Key == String, Value == Any {
+    static var infoDictionaryWithAppVersion: Self {
+        [
+            "CFBundleShortVersionString": "7.0.0"
+        ]
     }
 }
