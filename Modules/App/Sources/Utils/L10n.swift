@@ -1375,15 +1375,4 @@ enum L10n {
         }
     }
     static let official = LocalizedStringResource("Official", comment: "Proton official badge title.")
-
-    enum NewAccountSwitcherTip {
-        static let title = LocalizedStringResource(
-            "A New Home for Your Accounts",
-            comment: "Title of a one-time tip that informs the user about the new account switcher."
-        )
-        static let message = LocalizedStringResource(
-            "The account switcher has moved! You can now switch accounts, log out - all from one convenient place.",
-            comment: "Message of a one-time tip that informs the user about the new account switcher."
-        )
-    }
 }

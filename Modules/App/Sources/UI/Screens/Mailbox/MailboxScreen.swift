@@ -145,13 +145,7 @@ extension MailboxScreen {
             selectionMode: mailboxModel.selectionMode.selectionState,
             onEvent: handleMainToolbarEvent,
             avatarView: {
-                if IOSVersion.isIOS18 {
-                    mailboxModel.accountManagerCoordinator.avatarView()
-                } else {
-                    mailboxModel.accountManagerCoordinator.avatarView()
-                        .popoverTip(NewAccountSwitcherTip())
-                        .tipViewStyle(WhatsNewTipStyle())
-                }
+                mailboxModel.accountManagerCoordinator.avatarView()
             }
         )
         .trackBottomSafeAreaForToast()

@@ -84,8 +84,6 @@ struct IntroductionViewModifier: ViewModifier {
             .notifications
         } else if case .eligible(let upsellType) = upsellEligibility, !dependencies.userDefaults[.hasSeenOnboardingUpsell(ofType: upsellType)] {
             .upsell(upsellType)
-        } else if NewAccountSwitcherTip.showNewAccountSwitcherTip.donations.isEmpty {
-            .tips
         } else {
             .finished
         }
@@ -116,12 +114,6 @@ struct IntroductionViewModifier: ViewModifier {
                 AppLogger.log(error: error, category: .payments)
                 upsellDismissed()
             }
-        case .tips:
-            if IOSVersion.isIOS17 {
-                try? await Task.sleep(for: .seconds(1))
-            }
-
-            NewAccountSwitcherTip.showNewAccountSwitcherTip.sendDonation()
         case .finished:
             break
         }
@@ -166,7 +158,6 @@ extension IntroductionViewModifier {
         case onboarding
         case notifications
         case upsell(UpsellType)
-        case tips
         case finished
     }
 
