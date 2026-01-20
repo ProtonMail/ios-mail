@@ -38,24 +38,6 @@ extension MailboxRobot {
     func openSidebarMenu() {
         hamburgerButton.tap()
     }
-
-    func tapBackButton() {
-        backButton.tap()
-    }
-
-    // MARK: Assertions
-
-    func verifySelectionState(withCount count: Int) {
-        XCTAssertTrue(backButton.exists)
-        XCTAssertFalse(hamburgerButton.exists)
-        XCTAssertEqual(toolbarTitle.label, "\(count) Selected")
-    }
-
-    func verifyMailboxTitle(folder: UITestFolder) {
-        XCTAssertFalse(backButton.exists)
-        XCTAssertTrue(hamburgerButton.exists)
-        XCTAssertEqual(toolbarTitle.label, folder.value)
-    }
 }
 
 private struct Identifiers {

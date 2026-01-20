@@ -59,12 +59,6 @@ packages:
   Scrypt:
     url: https://github.com/greymass/swift-scrypt.git
     revision: "be61ddc3c1efb9cb35de251afa88f4897c6cc255"
-  SwiftNIO:
-    url: https://github.com/apple/swift-nio.git
-    from: "2.64.0"
-  SwiftNIOHTTP2:
-    url: https://github.com/apple/swift-nio-http2.git
-    from: "1.30.0"
   SwiftUIIntrospect:
     url: https://github.com/siteline/swiftui-introspect
     from: "1.4.0-beta.4"
@@ -269,17 +263,8 @@ targets:
       path: Modules/App/UITests/SupportingFiles/Info.plist
     sources:
       - path: Modules/App/UITests
-      - path: Modules/App/UITests/NetworkMocks
-        type: resources
     dependencies:
       - target: ProtonMail
-      - package: SwiftNIO
-        product: NIOCore
-        product: NIOHTTP1
-      - package: SwiftNIOHTTP2
-        product: NIOHTTP2
-      - package: Scrypt
-      - package: TryCatch
     scheme: ProtonMailUITest
 
   NotificationService:
@@ -330,10 +315,8 @@ schemes:
       targets:
         - ProtonMailUITest
       testPlans:
-        - path: Modules/App/UITests/Plans/SmokeTests.xctestplan
-          defaultPlan: true
-        - path: Modules/App/UITests/Plans/RegressionTests.xctestplan
         - path: Modules/App/UITests/Plans/PerformanceTests.xctestplan
+          defaultPlan: true
       gatherCoverageData: true
       parallelizable: true
       randomExecutionOrder: true
