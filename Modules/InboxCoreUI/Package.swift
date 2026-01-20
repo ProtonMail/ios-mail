@@ -5,6 +5,7 @@ import PackageDescription
 
 let package = Package(
     name: "InboxCoreUI",
+    defaultLocalization: "en",
     platforms: [.iOS(.v17)],
     products: [
         .library(name: "InboxCoreUI", targets: ["InboxCoreUI"])

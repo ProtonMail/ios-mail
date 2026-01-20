@@ -791,6 +791,12 @@
         }
       }
     },
+    "Cycling progress bar (%@)" : {
+
+    },
+    "Emails exchanged between Proton users are always end-to-end encrypted." : {
+      "comment" : "Additional description explaining that emails between Proton users are always end-to-end encrypted."
+    },
     "Enable access" : {
       "comment" : "Alert title. The alert is dispalyed when biometric is set as lock protection method, but it's not configured on the device.",
       "localizations" : {
@@ -975,6 +981,21 @@
           }
         }
       }
+    },
+    "End-to-end encrypted" : {
+      "comment" : "Title indicating email is end-to-end encrypted."
+    },
+    "End-to-end encrypted from verified sender" : {
+      "comment" : "Title indicating email is end-to-end encrypted from a verified sender."
+    },
+    "End-to-end encrypted to verified recipient" : {
+      "comment" : "Title indicating email is end-to-end encrypted to a verified recipient."
+    },
+    "End-to-end encrypted to verified recipients" : {
+      "comment" : "Title indicating email is end-to-end encrypted to verified recipients."
+    },
+    "End-to-end encrypted with failed verification" : {
+      "comment" : "Title indicating email is end-to-end encrypted but verification failed."
     },
     "Enter PIN" : {
       "comment" : "Title of the pin lock screen.",
@@ -1167,6 +1188,12 @@
         }
       }
     },
+    "Hide" : {
+
+    },
+    "However, a sender or recipient not using Proton Mail may have a non-encrypted copy stored on their email server." : {
+      "comment" : "Additional description noting that non-Proton Mail users may have unencrypted copies."
+    },
     "Incorrect PIN. Please try again." : {
       "comment" : "Error message when a user enters an invalid PIN",
       "localizations" : {
@@ -1351,6 +1378,21 @@
           }
         }
       }
+    },
+    "PGP end-to-end encrypted" : {
+      "comment" : "Title indicating email is PGP end-to-end encrypted."
+    },
+    "PGP end-to-end encrypted to verified recipient" : {
+      "comment" : "Title indicating email is PGP end-to-end encrypted to a verified recipient."
+    },
+    "PGP-signed email" : {
+      "comment" : "Title indicating email is PGP-signed."
+    },
+    "PGP-signed email with failed verification" : {
+      "comment" : "Title indicating email is PGP-signed but verification failed."
+    },
+    "PGP-signed message from verified sender" : {
+      "comment" : "Title indicating message is PGP-signed from a verified sender."
     },
     "PIN and Biometry are disabled on your device. Enable them in Settings or sign in to unlock this app." : {
       "comment" : "Default version alert message. The alert is dispalyed when biometric is set as lock protection method, but it's not configured on the device.",
@@ -2283,6 +2325,9 @@
         }
       }
     },
+    "Show" : {
+
+    },
     "Sign in again" : {
       "comment" : "Alert action title. The alert is dispalyed when biometric is set as lock protection method, but it's not configured on the device.",
       "localizations" : {
@@ -2850,6 +2895,36 @@
         }
       }
     },
+    "The [sender verification failed](https://proton.me/support/sender-verification-failed) because it was not signed. Please confirm the authenticity of the email with your contact." : {
+      "comment" : "Additional description explaining sender verification failed because email was not signed."
+    },
+    "The [sender verification failed](https://proton.me/support/sender-verification-failed). Please confirm the authenticity of the email with your contact." : {
+      "comment" : "Additional description explaining sender verification failed."
+    },
+    "The email is stored on Proton servers with [zero-access encryption](https://proton.me/blog/zero-access-encryption). Neither Proton nor anyone else can read it." : {
+      "comment" : "Description explaining the email is stored with zero-access encryption."
+    },
+    "The recipient is a [verified contact](https://proton.me/support/address-verification) whose encryption keys you have trusted." : {
+      "comment" : "Additional description explaining the recipient is a verified contact."
+    },
+    "The recipients are [verified contacts](https://proton.me/support/address-verification) whose encryption keys you have trusted." : {
+      "comment" : "Additional description explaining the recipients are verified contacts."
+    },
+    "The sender is a [verified contact](https://proton.me/support/address-verification) whose encryption keys you have trusted." : {
+      "comment" : "Additional description explaining the sender is a verified contact."
+    },
+    "This email is [end-to-end encrypted](https://proton.me/blog/what-is-end-to-end-encryption) on the sender's device and can only be decrypted by the recipient. Proton can't see the contents of the email at any time." : {
+      "comment" : "Description explaining what end-to-end encryption means for this email."
+    },
+    "This email is stored on Proton servers with [zero-access encryption](https://proton.me/blog/zero-access-encryption). Neither Proton nor anyone else can read it." : {
+      "comment" : "Description explaining email is stored with zero-access encryption."
+    },
+    "This recipient has disabled end-to-end encryption on their account." : {
+      "comment" : "Description explaining that the recipient has disabled end-to-end encryption."
+    },
+    "Too many attempts too quickly. Please wait before trying again." : {
+      "comment" : "Displayed when the user tries to validate their PIN too frequently."
+    },
     "Unlock Proton Mail" : {
       "comment" : "Title of a button that triggers biometric authorization on the lock screen.",
       "localizations" : {
@@ -3034,6 +3109,21 @@
           }
         }
       }
+    },
+    "You have [digitally signed](https://proton.me/support/proton-mail-digital-signatures) this email, proving to the recipient that your email is genuine and hasn't been tampered with." : {
+      "comment" : "Description explaining that you have digitally signed this email."
+    },
+    "You're about to be signed out of all your accounts on this device. Do you want to continue?" : {
+      "comment" : "Message of the sign out confirmation alert."
+    },
+    "Zero-access encrypted" : {
+      "comment" : "Title indicating email is zero-access encrypted."
+    },
+    "Zero-access encrypted with verified recipient" : {
+      "comment" : "Title indicating email is zero-access encrypted with a verified recipient."
+    },
+    "Zero-access encrypted with verified recipients" : {
+      "comment" : "Title indicating email is zero-access encrypted with verified recipients."
     }
   },
   "version" : "1.0"
