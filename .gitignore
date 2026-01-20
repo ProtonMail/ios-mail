@@ -69,8 +69,7 @@ Carthage/
 
 tmp/
 
-# UITest Mocks
-Modules/App/UITests/NetworkMocks/*
+# UITest Performance Tests
 Modules/App/UITests/Mailbox/certificate_ios_sdk.p12
 Modules/App/UITests/Loki.plist
 

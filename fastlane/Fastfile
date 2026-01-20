@@ -14,10 +14,6 @@ UNIT_TESTS_SCHEME = "AllUnitAndSnapshotTests"
 UI_TESTS_SCHEME = "ProtonMailUITest"
 XCODEGEN_CONFIGURATION_FILE_PATH = "../project.yml"
 
-CONCURRENT_WORKERS=2
-MAX_CONCURRENT_SIMULATORS=2
-SMOKE_PLAN_NAME="SmokeTests"
-REGRESSION_PLAN_NAME="RegressionTests"
 PERFORMANCE_PLAN_NAME="PerformanceTests"
 
 ENV["FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT"] = "120"
@@ -102,42 +98,6 @@ platform :ios do
       result_bundle: true,
       xcargs: "-skipPackagePluginValidation"
     )
-  end
-
-  desc "Setup UI Tests assets"
-    lane :setup_uitests_assets do
-    sh("../scripts/uitests/setup-mock-network-assets.sh setup-remote")
-    sh("cd .. && mint run xcodegen") # We need to do it another time to include UI tests assets.
-  end
-
-  desc "Run UI Smoke Tests"
-  lane :uitests_smoke do
-      run_tests(
-        scheme: UI_TESTS_SCHEME,
-        max_concurrent_simulators: MAX_CONCURRENT_SIMULATORS,
-        concurrent_workers: CONCURRENT_WORKERS,
-        include_simulator_logs: true,
-        prelaunch_simulator: true,
-        reset_simulator: true,
-        result_bundle: true,
-        testplan: SMOKE_PLAN_NAME,
-        xcargs: "-skipPackagePluginValidation"
-      )
-  end
-
-  desc "Run UI Full Regression Tests"
-    lane :uitests_full_regression do
-      run_tests(
-        scheme: UI_TESTS_SCHEME,
-        max_concurrent_simulators: MAX_CONCURRENT_SIMULATORS,
-        concurrent_workers: CONCURRENT_WORKERS,
-        include_simulator_logs: true,
-        prelaunch_simulator: true,
-        reset_simulator: true,
-        result_bundle: true,
-        testplan: REGRESSION_PLAN_NAME,
-        xcargs: "-skipPackagePluginValidation"
-      )
   end
 
   desc "Run UI Performance Tests"
