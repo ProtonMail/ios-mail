@@ -51,6 +51,7 @@ public extension DS.Icon {
     static let icHourglass = ImageResource.icHourglass
     static let icImage = ImageResource.ic
     static let icInbox = ImageResource.icInbox
+    static let icInfoCircle = ImageResource.icInfoCircle
     static let icMagicWand = ImageResource.icMagicWand
     static let icMapPin = ImageResource.icMapPin
     static let icMobile = ImageResource.icMobile

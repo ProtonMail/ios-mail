@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import InboxCoreUI
+import InboxDesignSystem
 import SwiftUI
 import UIKit
 import proton_app_uniffi
@@ -105,7 +106,7 @@ private extension UIAction {
     static func copy(action: @escaping (UIAction) -> Void) -> UIAction {
         UIAction(
             title: L10n.Composer.recipientMenuCopy.string,
-            image: UIImage(systemName: "doc.on.doc"),  // FIXME: - Use correct icon
+            image: UIImage(resource: DS.Icon.icSquares),
             handler: action
         )
     }
@@ -113,7 +114,7 @@ private extension UIAction {
     static func remove(action: @escaping (UIAction) -> Void) -> UIAction {
         UIAction(
             title: L10n.Composer.recipientMenuRemove.string,
-            image: UIImage(systemName: "trash"),  // FIXME: - Use correct icon
+            image: UIImage(resource: DS.Icon.icTrash),
             attributes: .destructive,
             handler: action
         )
@@ -122,7 +123,7 @@ private extension UIAction {
     static func privacyInfo(action: @escaping (UIAction) -> Void) -> UIAction {
         UIAction(
             title: L10n.Composer.recipientMenuPrivacyInfo.string,
-            image: UIImage(systemName: "info.circle"),  // FIXME: - Use correct icon
+            image: UIImage(resource: DS.Icon.icInfoCircle),
             handler: action
         )
     }
