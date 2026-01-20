@@ -748,7 +748,7 @@ enum L10n {
 
     enum TrackingInfo {
         static let description = LocalizedStringResource(
-            "If you receive an email containing spy pixels (trackers) or tracking links, you’ll see the shield icon in email details. [Learn more…](https://proton.me/support/email-tracker-protection)",
+            "We actively protect you from tracking. Here you can view the spy pixels we blocked and the tracking links we cleaned in this message. [Learn more](https://proton.me/support/email-tracker-protection)",
             comment: "Description text explaining the tracking protection."
         )
 

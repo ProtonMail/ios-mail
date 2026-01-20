@@ -34,31 +34,20 @@ struct TrackersInfoView: View {
                 dismiss: dismiss
             )
         ) { state, store in
-            ClosableScreen {
-                ScrollView {
-                    VStack(alignment: .leading, spacing: DS.Spacing.large) {
-                        header()
+            PrivacyInfoSheet {
+                VStack(alignment: .leading, spacing: DS.Spacing.large) {
+                    header()
 
-                        if state.trackers.totalTrackersCount > 0 {
-                            trackersSection(state: state, store: store)
-                        }
-
-                        if state.trackers.totalLinksCount > 0 {
-                            linksSection(state: state, store: store)
-                        }
-
-                        Button(action: { store.handle(action: .onGotItTap) }) {
-                            Text(CommonL10n.gotIt)
-                        }
-                        .buttonStyle(BigButtonStyle())
-                        .padding(.top, DS.Spacing.large)
-
-                        Spacer()
+                    if store.state.trackers.areTrackersPresented {
+                        trackersSection(state: state, store: store)
                     }
-                    .frame(maxWidth: .infinity)
-                    .padding(.horizontal, DS.Spacing.extraLarge)
+
+                    if store.state.trackers.areLinksPresented {
+                        linksSection(state: state, store: store)
+                    }
                 }
-                .background(DS.Color.BackgroundInverted.norm)
+            } dismiss: {
+                store.handle(action: .onGotItTap)
             }
         }
     }
@@ -66,28 +55,28 @@ struct TrackersInfoView: View {
 
 private extension TrackersInfoView {
     func header() -> some View {
-        VStack(alignment: .leading) {
+        VStack(alignment: .leading, spacing: .zero) {
             Image(symbol: .checkmarkShieldFill)
                 .resizable()
+                .scaledToFit()
                 .square(size: 32)
                 .tint(DS.Color.Icon.norm)
-                .padding(DS.Spacing.extraLarge)
-                .background {
-                    RoundedRectangle(cornerRadius: DS.Radius.extraLarge)
-                        .fill(DS.Color.Background.deep)
-                }
+                .padding(DS.Spacing.large)
+                .background(DS.Color.Background.deep)
+                .clipShape(RoundedRectangle(cornerRadius: DS.Radius.extraLarge))
 
             Text(L10n.MessageDetails.trackerProtection)
                 .font(.title2)
                 .fontWeight(.semibold)
                 .foregroundStyle(DS.Color.Text.norm)
+                .padding(.top, DS.Spacing.large)
 
             Text(L10n.TrackingInfo.description)
-                .font(.subheadline)
                 .foregroundStyle(DS.Color.Text.weak)
                 .tint(DS.Color.Text.accent)
-                .padding(.top, -DS.Spacing.compact)
+                .padding(.top, DS.Spacing.medium)
         }
+        .padding(.bottom, DS.Spacing.standard)
     }
 
     func sectionSummary(title: String, isExpanded: Bool, action: @escaping () -> Void) -> some View {
@@ -137,6 +126,7 @@ private extension TrackersInfoView {
                 .transition(.move(edge: .top).combined(with: .opacity))
             }
         }
+        .disabled(state.trackers.blockedTrackers.isEmpty)
         .alert(
             state.presentedBlockedTracker.domain,
             isPresented: Binding(
@@ -210,6 +200,7 @@ private extension TrackersInfoView {
             }
         }
         .clipped()
+        .disabled(state.trackers.cleanedLinks.isEmpty)
     }
 
     func linkCell(link: CleanedLink, onUrlTap: @escaping ((String) -> Void)) -> some View {

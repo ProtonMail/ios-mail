@@ -7084,9 +7084,6 @@
         }
       }
     },
-    "Got it" : {
-
-    },
     "How expiration works?" : {
       "comment" : "subtitle for the learn more option in the message expiration menu",
       "localizations" : {

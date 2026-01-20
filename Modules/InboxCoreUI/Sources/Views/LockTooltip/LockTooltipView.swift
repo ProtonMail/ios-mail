@@ -29,47 +29,30 @@ public struct LockTooltipView: View {
     }
 
     public var body: some View {
-        VStack(spacing: .zero) {
-            ScrollView {
-                VStack(alignment: .leading, spacing: .zero) {
-                    Image(lock.icon.displayIcon)
-                        .resizable()
-                        .foregroundStyle(lock.color.displayColor)
-                        .square(size: 32)
-                        .padding(.all, DS.Spacing.large)
-                        .background(DS.Color.Background.deep)
-                        .clipShape(RoundedRectangle(cornerRadius: DS.Radius.extraLarge))
-                    Text(lock.tooltip.displayData.title)
-                        .font(.title2.weight(.semibold))
-                        .foregroundStyle(DS.Color.Text.norm)
-                        .padding(.top, DS.Spacing.large)
-                    VStack(alignment: .leading, spacing: DS.Spacing.huge) {
-                        descriptionLabel(lock.tooltip.displayData.description)
-                        if let additionalDescription = lock.tooltip.displayData.additionalDescription {
-                            descriptionLabel(additionalDescription)
-                        }
+        PrivacyInfoSheet {
+            VStack(alignment: .leading, spacing: .zero) {
+                Image(lock.icon.displayIcon)
+                    .resizable()
+                    .foregroundStyle(lock.color.displayColor)
+                    .square(size: 32)
+                    .padding(.all, DS.Spacing.large)
+                    .background(DS.Color.Background.deep)
+                    .clipShape(RoundedRectangle(cornerRadius: DS.Radius.extraLarge))
+                Text(lock.tooltip.displayData.title)
+                    .font(.title2.weight(.semibold))
+                    .foregroundStyle(DS.Color.Text.norm)
+                    .padding(.top, DS.Spacing.large)
+                VStack(alignment: .leading, spacing: DS.Spacing.huge) {
+                    descriptionLabel(lock.tooltip.displayData.description)
+                    if let additionalDescription = lock.tooltip.displayData.additionalDescription {
+                        descriptionLabel(additionalDescription)
                     }
-                    .padding(.top, DS.Spacing.medium)
                 }
-                .padding(.horizontal, DS.Spacing.extraLarge)
+                .padding(.top, DS.Spacing.medium)
             }
-            .scrollClipDisabled()
-
-            ZStack {
-                LinearGradient.fading
-                    .edgesIgnoringSafeArea(.all)
-
-                Button(action: { dismiss.callAsFunction() }) {
-                    Text(CommonL10n.gotIt)
-                }
-                .buttonStyle(BigButtonStyle())
-                .padding(.bottom, DS.Spacing.huge)
-                .padding([.horizontal, .top], DS.Spacing.extraLarge)
-            }
-            .fixedSize(horizontal: false, vertical: true)
+        } dismiss: {
+            dismiss.callAsFunction()
         }
-        .padding(.top, DS.Spacing.huge)
-        .background(DS.Color.Background.norm)
     }
 
     private func descriptionLabel(_ text: LocalizedStringResource) -> some View {
@@ -83,15 +66,5 @@ public struct LockTooltipView: View {
     VStack {
         LockTooltipView(lock: .init(icon: .closedLock, color: .green, tooltip: .receiveE2e))
         Spacer()
-    }
-}
-
-private extension LinearGradient {
-    static var fading: Self {
-        .init(
-            colors: [DS.Color.Background.norm.opacity(0.2), DS.Color.Background.norm],
-            startPoint: .top,
-            endPoint: .bottom
-        )
     }
 }

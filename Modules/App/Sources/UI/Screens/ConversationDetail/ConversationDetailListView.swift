@@ -37,6 +37,7 @@ struct ConversationDetailListView: View {
     @State private var trackersInfoTarget: TrackersUIModel?
     @StateObject var messageBannersNotifier = RefreshMessageBannersNotifier()
     @State private var contentSizeCategoryObserver = ContentSizeCategoryObserver()
+    @State private var selectedTrackersInfoDetent: PresentationDetent = .medium
 
     init(
         model: ConversationDetailModel,
@@ -104,6 +105,7 @@ struct ConversationDetailListView: View {
 
     private func trackersInfoSheet(target: TrackersUIModel) -> some View {
         TrackersInfoView(state: .init(trackers: target))
+            .presentationDetents([.medium, .large], selection: $selectedTrackersInfoDetent)
     }
 
     private func messageList(messages: [MessageCellUIModel]) -> some View {

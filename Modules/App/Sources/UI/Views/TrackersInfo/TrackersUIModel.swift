@@ -35,6 +35,14 @@ struct TrackersUIModel: Identifiable, Hashable {
         cleanedLinks.count
     }
 
+    var areTrackersPresented: Bool {
+        blockedTrackers.count > 0 || (blockedTrackers.isEmpty && cleanedLinks.isEmpty)
+    }
+
+    var areLinksPresented: Bool {
+        cleanedLinks.count > 0
+    }
+
     static var empty: TrackersUIModel {
         .init(blockedTrackers: [], cleanedLinks: [])
     }

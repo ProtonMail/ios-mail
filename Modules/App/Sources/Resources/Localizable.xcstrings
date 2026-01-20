@@ -23398,137 +23398,6 @@
         }
       }
     },
-    "If you receive an email containing spy pixels (trackers) or tracking links, you’ll see the shield icon in email details. [Learn more…](https://proton.me/support/email-tracker-protection)" : {
-      "comment" : "Description text explaining the tracking protection.",
-      "localizations" : {
-        "be" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Вы ўбачыце значок са шчытком у падрабязнасцях ліста пры атрыманні ліста, які змяшчае шпіёнскія пікселі (праграмы сачэння) або спасылкі адсочвання. [Даведацца больш…](https://proton.me/support/email-tracker-protection)"
-          }
-        },
-        "ca" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Si rebeu un correu que conté píxels espia (rastrejadors) o enllaços de seguiment, veureu la icona de l'escut als detalls del correu.[Per saber-ne més...](https://proton.me/support/email-tracker-protection)"
-          }
-        },
-        "cs" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pokud obdržíte e-mail obsahující špionážní pixely (sledovací prvky) nebo sledovací odkazy, v podrobnostech e-mailu se zobrazí ikona štítu. [Další informace…](https://proton.me/support/email-tracker-protection)"
-          }
-        },
-        "da" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Hvis du modtager en e-mail, der indholder sporingspixels (trackere) eller sporingslinks, vil du se  skjoldikonet i e-mail-detaljerne. [Få mere at vide…](https://proton.me/support/email-tracker-protection)"
-          }
-        },
-        "de" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Wenn du eine E-Mail mit Zählpixeln (Trackern) oder Tracking-Links bekommst, siehst du ein Schild-Symbol in den E-Mail-Details. [Mehr erfahren …](https://proton.me/support/email-tracker-protection)"
-          }
-        },
-        "el" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Εάν λάβετε ένα μήνυμα ηλεκτρονικού ταχυδρομείου που περιέχει pixels παρακολούθησης (ιχνηλάτες) ή συνδέσμους παρακολούθησης, θα δείτε το εικονίδιο ασπίδας στις λεπτομέρειες του μηνύματος ηλεκτρονικού ταχυδρομείου. [Μάθετε περισσότερα…](https://proton.me/support/email-tracker-protection)"
-          }
-        },
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "If you receive an email containing spy pixels (trackers) or tracking links, you’ll see the shield icon in email details. [Learn more…](https://proton.me/support/email-tracker-protection)"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Si recibes un correo electrónico con píxeles espía (rastreadores) o enlaces de rastreo, verás el icono del escudo en los detalles del correo electrónico. [Más información…](https://proton.me/support/email-tracker-protection)"
-          }
-        },
-        "es-419" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Si recibe un correo electrónico con píxeles espía (rastreadores) o enlaces de rastreo, verá el ícono del escudo en los detalles del correo electrónico. [Más información…](https://proton.me/support/email-tracker-protection)"
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Jos saat sähköpostiviestin, joka sisältää vakoilupikseleitä (seurantoja) tai seurantalinkkejä, näet suojakuvakkeen sähköpostin tiedoissa. [Lisätietoja…](https://proton.me/support/email-tracker-protection)"
-          }
-        },
-        "fr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Si vous recevez un e-mail contenant des pixels espions (traqueurs) ou des liens de suivi, vous verrez  l'icône en forme de bouclier  dans les détails de l'e-mail. [En savoir plus...] (https://proton.me/support/email-tracker-protection)"
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Se ricevi un'email che contiene spy pixel (tracker) o link di tracciamento, vedrai l'icona dello scudo nei dettagli dell'email. [Scopri di più…](https://proton.me/support/email-tracker-protection)"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : " スパイピクセル（トラッカー） や トラッキングリンクを含むメールを受信した場合、メールの詳細に シールドアイコン が表示されます。[さらに詳しく…]（https://proton.me/support/email-tracker-protection）"
-          }
-        },
-        "nb" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Hvis du mottar en e-post som inneholder spionpiksler (sporere) eller sporingskoblinger, vil du se skjoldikonet i e-postdetaljer. [Lær mer…](https://proton.me/support/email-tracker-protection)"
-          }
-        },
-        "nl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Als u een e-mail ontvangt met spionage pixels (trackers) of tracking links, ziet u het schildpictogram in de e-mailgegevens. [Meer informatie...](https://proton.me/support/email-tracker-protection)"
-          }
-        },
-        "pt-BR" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Se você receber um e-mail contendo pixels espiões (rastreadores) ou links de rastreamento, você verá o ícone de escudo nos detalhes do e-mail. [Saiba mais…](https://proton.me/support/email-tracker-protection)"
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dacă primiți un e-mail care conține pixeli spion (de urmărire) sau legături web de urmărire, veți vedea pictograma scut în detaliile e-mailului. [Detalii…](https://proton.me/support/email-tracker-protection)"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Если вы получите электронное письмо, содержащее шпионские пиксели (трекеры) или отслеживающие ссылки, вы увидите значок щита в информации об электронном письме. [Подробнее…](https://proton.me/support/email-tracker-protection)"
-          }
-        },
-        "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ak dostanete email obsahujúci špehovacie pixely (sledovače) alebo sledovacie odkazy, uvidíte ikonu štítu v podrobnostiach emailu. [Zistiť viac…](https://proton.me/support/email-tracker-protection)"
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Če prejmete e-poštno sporočilo, ki vsebuje vohunske slikovne pike (sledilce) ali povezave za sledenje, je med podrobnostmi sporočila prikazana ikona ščita. [Več o tem …](https://proton.me/support/email-tracker-protection)"
-          }
-        },
-        "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Casus pikseller (izleyiciler) veya izleme bağlantıları bulunan bir e-posta alırsanız e-posta ayrıntılarında kalkan simgesi görürsünüz. [Ayrıntılı bilgi alın…](https://proton.me/support/email-tracker-protection)"
-          }
-        }
-      }
-    },
     "Immediately" : {
       "comment" : "Auto option.",
       "localizations" : {
@@ -53790,6 +53659,9 @@
           }
         }
       }
+    },
+    "We actively protect you from tracking. Here you can view the spy pixels we blocked and the tracking links we cleaned in this message. [Learn more](https://proton.me/support/email-tracker-protection)" : {
+      "comment" : "Description text explaining the tracking protection."
     },
     "We apologize. This might have been a mistake from our side. Please confirm if you want to mark this email as legitimate." : {
       "comment" : "Message shown in the alert explaining the reason for the 'Mark as legitimate' action.",

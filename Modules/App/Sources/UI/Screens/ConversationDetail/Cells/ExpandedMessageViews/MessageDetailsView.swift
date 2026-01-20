@@ -165,6 +165,7 @@ struct MessageDetailsView: View {
             locationRow
         }
         .animation(.default, value: privacyLock)
+        .animation(.default, value: trackers.isLoading)
         .padding(.top, uiModel.recipientsToExcludingFirst.isEmpty ? DS.Spacing.large : DS.Spacing.compact)
         .transition(.move(edge: .top).combined(with: .opacity))
     }
@@ -179,7 +180,6 @@ struct MessageDetailsView: View {
                         .size(.footnote)
                 },
                 iconColor: privacyLock.color.displayColor,
-                redactIcon: true,
                 action: { privacyLockTooltip = .init(privacyLock: privacyLock) }
             )
             .transition(.opacity)
@@ -379,7 +379,6 @@ struct MessageDetailsView: View {
                     .size(.footnote)
             },
             iconColor: DS.Color.Text.norm,
-            redactIcon: false,
             action: { Task { await onEvent(.onTrackersTap) } }
         )
         .if(trackers.isLoading) { view in
