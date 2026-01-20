@@ -197,7 +197,7 @@ struct ComposerView: View {
             .sheet(item: $modalState, additionallyObserving: $model.modalAction, content: modalFactory)
             .sheet(item: $model.privacyLockTooltip) { context in
                 LockTooltipView(lock: context.privacyLock)
-                    .presentationDetents([.large])
+                    .adaptiveSheetDetents()
             }
             .onChange(of: model.toast) { _, newValue in
                 guard let newValue else { return }
