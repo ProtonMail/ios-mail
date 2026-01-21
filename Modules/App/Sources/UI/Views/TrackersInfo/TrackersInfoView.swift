@@ -56,7 +56,7 @@ struct TrackersInfoView: View {
 private extension TrackersInfoView {
     func header() -> some View {
         VStack(alignment: .leading, spacing: .zero) {
-            Image(symbol: .checkmarkShieldFill)
+            DS.Icon.icShield2CheckFilled.image
                 .resizable()
                 .scaledToFit()
                 .square(size: 32)

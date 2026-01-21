@@ -375,10 +375,10 @@ struct MessageDetailsView: View {
         InfoRowWithLearnMore(
             title: trackers.loadedValue?.fullTitle ?? .randomPlaceholder(length: 24),
             iconView: {
-                Image(DS.Icon.icShieldCheck)
+                Image(DS.Icon.icShield2CheckFilled)
                     .size(.footnote)
             },
-            iconColor: DS.Color.Text.norm,
+            iconColor: DS.Color.Icon.norm,
             action: { Task { await onEvent(.onTrackersTap) } }
         )
         .if(trackers.isLoading) { view in
