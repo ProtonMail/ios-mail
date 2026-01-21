@@ -1,89 +1,46 @@
-Mail iOS App for the Engineering Transformation project
-=======================
-Copyright (c) 2024 Proton Technologies AG
+# Proton Mail iOS
 
-## Setup instructions
-1. Make sure you have access to the following repositories, if you don't ask the team:
-  - https://gitlab.protontech.ch/apple/inbox/mail
-  - https://gitlab.protontech.ch/apple/shared/et-protoncore
-  - https://gitlab.protontech.ch/apple/shared/ProtonUIFoundations
-2. Install Xcode (>=26.2)
-3. Clone the repository
-4. Add a `.env` file with necessary secrets. The file is stored in a shared Pass vault. Request access to the team.
-5. Run `./scripts/setup.sh` to generate the xcodeproj file.
-6. Open `ProtonMail.xcodeproj`
+**Proton Mail iOS** is the Proton Mail iOS client for encrypted email.
 
-## Troubleshooting
+## Important Notice
 
-1. Once you open Xcode, if dependencies fail to resolve close Xcode and resolve them from the Terminal:
+> **This project cannot currently be built directly from the GitHub repository.**
+>
+> The application depends on the Proton Mail SDK, which is open sourced in a separate repository. However, the SDK integration currently relies on an internal distribution system that is not publicly accessible.
+>
+> We are open sourcing this project in its current state to provide transparency into our development process, even though it cannot be built externally at this time. We are working toward making the full stack buildable from open-source components.
 
-```
-xcodebuild -resolvePackageDependencies -project ProtonMail.xcodeproj
-```
+## About
 
-## Debug helpers
+This repository contains the iOS application code for Proton Mail's Engineering Transformation initiative. The project is built using:
 
-### LLDB/RustRover debugging setup
+- **Swift** for iOS application development
+- **SwiftUI** for modern user interface components
+- **Rust** for core business logic and cross-platform functionality
+- **Swift Package Manager** for dependency management
 
-The app uses a Rust framework built from $RUST_REPO_DIR. To debug Rust code with full breakpoint and variable inspection support:
+## Architecture
 
-#### 1. Build Debug Framework
+The application follows a layered architecture where the iOS client provides the user interface and platform-specific integrations, while the core business logic resides in the Proton Mail SDK written in Rust. This SDK-based approach enables:
 
-```bash
-cd $RUST_REPO_DIR
-rust-build/build_ios_framework_uniffi.sh proton-mail-uniffi ./mail/mail-uniffi/uniffi.toml "./tmp/ios-framework-debug" ios-debug
-```
+- **Cross-platform consistency**: Business logic is shared across iOS and Android
+- **Security**: Core encryption and security operations are implemented in Rust
+- **Performance**: Critical operations benefit from Rust's efficiency
+- **Maintainability**: Business logic is centralized in the SDK rather than duplicated across platform clients
 
-> For build profile comparison (debug vs release), see [rust-build/README.md](https://gitlab.protontech.ch/proton/mobile/backend/proton-rust/-/blob/main/rust-build/README.md)
+The iOS application communicates with the Rust SDK through Swift bindings, handling UI rendering, navigation, and iOS-specific features while delegating email processing, encryption, and business rules to the SDK layer.
 
-#### 2. Choose Your Debugger
+## Contributions
 
-**Option A: LLDB (Xcode Console)**
+We are not currently accepting contributions through the GitHub repository.
 
-1. Launch app from Xcode (Cmd+R)
-2. The build phase automatically configures LLDB source mapping
-3. Set breakpoints in LLDB console:
-   ```lldb
-   (lldb) breakpoint set --name your_rust_function_name
-   (lldb) breakpoint set --file src/lib.rs --line 42
-   (lldb) continue
-   ```
-4. When breakpoint hits:
-   ```lldb
-   (lldb) frame variable     # show local variables
-   (lldb) print var_name     # print specific variable
-   (lldb) step              # step into
-   (lldb) next              # step over
-   ```
+This open-source release is intended for transparency and reference purposes.
 
-**Option B: RustRover/IDE (GUI Debugger)**
 
-For full IDE debugging with visual breakpoints and variable panels:
+## Internal Development
 
-1. Disable Xcode debugger:
-   - Product → Scheme → Edit Scheme (Cmd+<)
-   - Run → Info tab
-   - Uncheck "Debug executable"
-   - *(Only one debugger can attach at a time)*
+If you are a Proton team member with access to private infrastructure, please refer to [DEVELOPMENT.md](./DEVELOPMENT.md) for setup instructions and debugging tools.
 
-2. Launch iOS app from Xcode (Cmd+R)
+## About Proton
 
-3. In RustRover:
-   - Run → Attach to Process (or Cmd+Shift+A)
-   - Search for "ProtonMail"
-   - Click "Attach"
-
-4. Set breakpoints by clicking the left margin in Rust source files
-
-5. Debug with full GUI:
-   - Variables panel
-   - Stack trace navigation
-   - Step into/over/out buttons
-   - Expression evaluation
-
-### How to Access the Rust-Core SQLite Databases in the Simulator
-
-1. Locate the simulator files by navigating to `~/Library/Developer/CoreSimulator/Devices/<simulator device id>`.
-2. If you're unsure about the device id, you can find it in the log or by accessing it through `Xcode > Window > Devices and Simulators`.
-3. Once in the device directory, conduct a recursive search for `session.db` within the `data` directory. This will unveil the `Application Support` folder housing all rust-core databases.
-4. Use your preferred SQLite inspection tool to inspect the SQLite files.
+Proton is a privacy-focused technology company that builds secure and easy-to-use communication tools. Learn more at [proton.me](https://proton.me).
