@@ -6,7 +6,6 @@ APP_IDENTIFIER = "ch.protonmail.protonmail"
 NOTIFICATION_EXTENSION_IDENTIFIER = "ch.protonmail.protonmail.notifications"
 SHARE_EXTENSION_IDENTIFIER = "ch.protonmail.protonmail.Share"
 DEVELOPER_KEYCHAIN_NAME = "PROTONMAIL_IOS_CERTIFICATE_KEYCHAIN"
-DEVELOPER_KEYCHAIN_PASSWORD = "QrniqyS3LWTH3Ji"
 CERTIFICATE_PATH = "fastlane/Certificates.p12"
 XCODEPROJ = "ProtonMail.xcodeproj"
 APP_TARGET = "ProtonMail"
@@ -26,7 +25,7 @@ platform :ios do
   def set_up_keychain
     create_keychain(
         name: DEVELOPER_KEYCHAIN_NAME,
-        password: DEVELOPER_KEYCHAIN_PASSWORD,
+        password: ENV["DEVELOPER_KEYCHAIN_PASSWORD"],
         default_keychain: false,
         add_to_search_list: true,
         unlock: true,
@@ -34,7 +33,7 @@ platform :ios do
     )
     import_certificate(
         keychain_name: DEVELOPER_KEYCHAIN_NAME,
-        keychain_password: DEVELOPER_KEYCHAIN_PASSWORD,
+        keychain_password: ENV["DEVELOPER_KEYCHAIN_PASSWORD"],
         certificate_path: CERTIFICATE_PATH,
         certificate_password: ENV["DISTRIBUTION_CERTIFICATE_PASSWORD"]
     )
