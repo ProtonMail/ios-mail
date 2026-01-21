@@ -31,7 +31,7 @@ struct WhatsNewScreen: View {
         ScrollWithBottomButton {
             VStack(spacing: .zero) {
                 Image(DS.Images.whatsNewCelebration)
-                    .padding(.top, 90)
+                    .padding(.top, 48)
 
                 Text(L10n.WhatsNew.version(version: bundle.bundleShortVersion))
                     .font(.callout.weight(.semibold))
