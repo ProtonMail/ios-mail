@@ -53378,7 +53378,75 @@
       }
     },
     "We actively protect you from tracking. Here you can view the spy pixels we blocked and the tracking links we cleaned in this message. [Learn more](https://proton.me/support/email-tracker-protection)" : {
-      "comment" : "Description text explaining the tracking protection."
+      "comment" : "Description text explaining the tracking protection.",
+      "localizations" : {
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Us protegim activament del seguiment. Aquí podeu visualitzar els píxels espia que hem bloquejat i els enllaços de seguiment que hem netejat en aquest missatge. [Per saber-ne més](https://proton.me/support/email-tracker-protection)"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vi beskytter dig aktivt mod sporing. Her kan du se de spionpixels, vi blokerede, og de sporingslinks, vi rensede i denne besked. [Få mere at vide](https://proton.me/support/email-tracker-protection)"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton schützt dich aktiv vor Tracking. Hier kannst du die von uns gesperrten Zählpixel und die in dieser Nachricht bereinigten Tracking-Links einsehen. [Weitere Informationen](https://proton.me/support/email-tracker-protection)"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Σας προστατεύουμε ενεργά από την παρακολούθηση. Εδώ μπορείτε να δείτε τα pixel παρακολούθησης που αποκλείσαμε και τους συνδέσμους παρακολούθησης που καθαρίσαμε σε αυτό το μήνυμα. [Μάθετε περισσότερα](https://proton.me/support/email-tracker-protection)"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "We actively protect you from tracking. Here you can view the spy pixels we blocked and the tracking links we cleaned in this message. [Learn more](https://proton.me/support/email-tracker-protection)"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Te protegemos activamente contra el rastreo. Aquí puedes ver los píxeles espía que hemos bloqueado y los enlaces de seguimiento que hemos limpiado en este mensaje. [Más información](https://proton.me/support/email-tracker-protection)"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nos protegemos activamente contra el rastreo. Aquí puede ver los pixeles espia que bloqueamos y los vinculos de rastreo que limpiamos en este mensaje. [Mas informacion](https://proton.me/support/email-tracker-protection)"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nous vous protégeons activement contre le suivi. Ici, vous pouvez voir les pixels espions que nous avons bloqués et les liens de suivi que nous avons nettoyés dans ce message. [En savoir plus](https://proton.me/support/email-tracker-protection)"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ti proteggiamo attivamente dal tracciamento. Qui puoi visualizzare i pixel spia che abbiamo bloccato e i link di tracciamento che abbiamo ripulito in questo messaggio. [Scopri di più](https://proton.me/support/email-tracker-protection)"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktívne vás chránime pred sledovaním. Tu si môžete pozrieť sledovacie pixely, ktoré sme zablokovali, a sledovacie odkazy, ktoré sme v tejto správe vyčistili. [Zistiť viac](https://proton.me/support/email-tracker-protection)"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sizi izlemeden aktif olarak koruyoruz. Burada, bu iletide engellediğimiz casus pikselleri ve temizlediğimiz izleme bağlantılarını görüntüleyebilirsiniz. [Ayrıntılı bilgi alın](https://proton.me/support/email-tracker-protection)"
+          }
+        }
+      }
     },
     "We apologize. This might have been a mistake from our side. Please confirm if you want to mark this email as legitimate." : {
       "comment" : "Message shown in the alert explaining the reason for the 'Mark as legitimate' action.",
