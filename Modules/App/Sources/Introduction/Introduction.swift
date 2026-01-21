@@ -130,7 +130,7 @@ struct IntroductionViewModifier: ViewModifier {
     }
 
     private func whatsNewScreenDismissed() {
-        dependencies.userDefaults[.lastWhatsNewVersion] = dependencies.bundle.bundleShortVersion
+        dependencies.userDefaults[.lastWhatsNewVersion] = NewFeatureIntroduction.whatsNewVersion
 
         Task {
             await presentAppropriateIntroductoryView()
@@ -170,7 +170,6 @@ extension IntroductionViewModifier {
     struct Dependencies {
         let notificationAuthorizationStore: NotificationAuthorizationStore
         let userDefaults: UserDefaults
-        let bundle: Bundle
     }
 
     enum IntroductionProgress: Equatable {

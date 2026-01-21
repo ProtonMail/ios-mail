@@ -25,6 +25,19 @@ struct NewFeatureIntroduction: Hashable {
 }
 
 extension NewFeatureIntroduction {
+    /// This value should be bumped whenever there's a new "What's New" bundle to show to users.
+    /// The app compares this value with a previously stored version to determine if the screen should be presented.
+    /// If the values differ, the "What's New" screen will be shown.
+    ///
+    /// After the screen is dismissed, the stored value is updated to match this version,
+    /// preventing the screen from appearing again until this value is changed.
+    static let whatsNewVersion = "7.7.0".notLocalized
+
+    /// Contains an array of features to be displayed when showing the "What's New" screen to users.
+    /// Each feature includes a name, description, and icon that will be presented in the UI.
+    ///
+    /// Update this array when preparing a new "What's New" bundle, and remember to bump `whatsNewVersion`
+    /// to trigger the screen presentation.
     static var whatsNew: [Self] {
         [
             .init(

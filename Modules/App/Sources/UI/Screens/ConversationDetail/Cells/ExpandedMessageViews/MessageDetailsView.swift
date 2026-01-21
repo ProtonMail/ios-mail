@@ -375,7 +375,7 @@ struct MessageDetailsView: View {
         InfoRowWithLearnMore(
             title: trackers.loadedValue?.fullTitle ?? .randomPlaceholder(length: 24),
             iconView: {
-                Image(DS.Icon.icShield2CheckFilled)
+                DS.Icon.icShield2CheckFilled.image
                     .size(.footnote)
             },
             iconColor: DS.Color.Icon.norm,

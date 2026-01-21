@@ -112,8 +112,7 @@ struct HomeScreen: View {
             .introductionViews(
                 dependencies: .init(
                     notificationAuthorizationStore: notificationAuthorizationStore,
-                    userDefaults: appContext.userDefaults,
-                    bundle: .main
+                    userDefaults: appContext.userDefaults
                 )
             )
             .environmentObject(composerCoordinator)
