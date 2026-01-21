@@ -107,7 +107,7 @@ class MessageDetailsViewSnapshotTests {
         MessageDetailsView(
             isHeaderCollapsed: collapsed,
             uiModel: model,
-            trackers: .loaded(MessageDetailsPreviewProvider.testTrackers),
+            trackers: .init(isSettingEnabled: true, info: .loaded(MessageDetailsPreviewProvider.testTrackers)),
             mailbox: .dummy,
             actionButtonsState: actionButtonsState,
             privacyLock: .loaded(.init(icon: .closedLock, color: .green, tooltip: .receiveE2e)),

@@ -26,7 +26,12 @@ final class PrivacyInfoStateStore: StateStore {
         case loadInfo
     }
 
-    @Published var state: Loadable<TrackersUIModel>
+    struct State: Copying {
+        var isSettingEnabled: Bool
+        var info: Loadable<TrackersUIModel>
+    }
+
+    @Published var state: State
     private let messageID: ID
     private let privacyInfoStreamProvider: WatchPrivacyInfoStreamProvider
     private var streamTask: Task<Void, Never>?
@@ -36,7 +41,7 @@ final class PrivacyInfoStateStore: StateStore {
         messageID: ID,
         privacyInfoStreamProvider: WatchPrivacyInfoStreamProvider
     ) {
-        self.state = .loading
+        self.state = .init(isSettingEnabled: true, info: .loading)
         self.messageID = messageID
         self.privacyInfoStreamProvider = privacyInfoStreamProvider
     }
@@ -51,15 +56,13 @@ final class PrivacyInfoStateStore: StateStore {
     // MARK: - Private
 
     private func loadPrivacyInfo() async {
-        guard state.loadedValue == nil else { return }
+        guard state.info.loadedValue == nil else { return }
 
         do {
             privacyStream = try await privacyInfoStreamProvider.stream(for: messageID)
 
-            if let initialInfo = privacyStream?.value as? PrivacyInfo,
-                initialInfo.trackers != nil && initialInfo.utmLinks != nil
-            {
-                state = .loaded(initialInfo.toUIModel())
+            if let initialInfo = privacyStream?.value as? PrivacyInfo {
+                updateState(with: initialInfo)
             }
 
             streamTask = Task { [weak self] in
@@ -67,9 +70,7 @@ final class PrivacyInfoStateStore: StateStore {
                     while !Task.isCancelled {
                         let info = try await self?.privacyStream?.next() as? PrivacyInfo
                         guard let info, let self else { return }
-                        if info.trackers != nil && info.utmLinks != nil {
-                            state = .loaded(info.toUIModel())
-                        }
+                        updateState(with: info)
                     }
                 } catch {
                     AppLogger.log(error: error, category: .conversationDetail)
@@ -78,6 +79,21 @@ final class PrivacyInfoStateStore: StateStore {
             }
         } catch {
             AppLogger.log(error: error, category: .conversationDetail)
+        }
+    }
+
+    private func updateState(with info: PrivacyInfo) {
+        switch info.trackers {
+        case .disabled:
+            state = state.copy(\.isSettingEnabled, to: false)
+        case .pending:
+            state = state.copy(\.info, to: .loading)
+        case .detected:
+            if info.utmLinks != nil {
+                state = state.copy(\.info, to: .loaded(info.toUIModel()))
+            } else {
+                state = state.copy(\.info, to: .loading)
+            }
         }
     }
 

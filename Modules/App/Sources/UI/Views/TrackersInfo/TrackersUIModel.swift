@@ -57,8 +57,16 @@ struct CleanedLink: Hashable {
 
 extension PrivacyInfo {
     func toUIModel() -> TrackersUIModel {
-        .init(
-            blockedTrackers: trackers?.trackers ?? [],
+        let trackers: [TrackerDomain]? =
+            switch trackers {
+            case .detected(let trackerInfo):
+                trackerInfo.trackers
+            case .pending, .disabled:
+                nil
+            }
+
+        return TrackersUIModel(
+            blockedTrackers: trackers ?? [],
             cleanedLinks: utmLinks?.links.map { CleanedLink(original: $0.originalUrl, cleaned: $0.cleanedUrl) } ?? []
         )
     }

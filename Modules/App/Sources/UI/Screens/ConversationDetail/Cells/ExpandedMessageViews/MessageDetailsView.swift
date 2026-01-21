@@ -36,7 +36,7 @@ struct MessageDetailsView: View {
     @State private(set) var isHeaderCollapsed: Bool = true
     @State private var privacyLockTooltip: PrivacyLockTooltipContext? = nil
     let uiModel: MessageDetailsUIModel
-    let trackers: Loadable<TrackersUIModel>
+    let trackers: PrivacyInfoStateStore.State
     let mailbox: Mailbox
     let actionButtonsState: ActionButtonsState
     let privacyLock: Loadable<PrivacyLock>
@@ -165,7 +165,7 @@ struct MessageDetailsView: View {
             locationRow
         }
         .animation(.default, value: privacyLock)
-        .animation(.default, value: trackers.isLoading)
+        .animation(.default, value: trackers.info.isLoading)
         .padding(.top, uiModel.recipientsToExcludingFirst.isEmpty ? DS.Spacing.large : DS.Spacing.compact)
         .transition(.move(edge: .top).combined(with: .opacity))
     }
@@ -372,19 +372,21 @@ struct MessageDetailsView: View {
 
     @ViewBuilder
     private var trackersRow: some View {
-        InfoRowWithLearnMore(
-            title: trackers.loadedValue?.fullTitle ?? .randomPlaceholder(length: 24),
-            iconView: {
-                DS.Icon.icShield2CheckFilled.image
-                    .size(.footnote)
-            },
-            iconColor: DS.Color.Icon.norm,
-            action: { Task { await onEvent(.onTrackersTap) } }
-        )
-        .if(trackers.isLoading) { view in
-            view.redacted(true)
-                .fadingEffect()
-                .transition(.opacity)
+        if trackers.isSettingEnabled {
+            InfoRowWithLearnMore(
+                title: trackers.info.loadedValue?.fullTitle ?? .randomPlaceholder(length: 24),
+                iconView: {
+                    DS.Icon.icShield2CheckFilled.image
+                        .size(.footnote)
+                },
+                iconColor: DS.Color.Icon.norm,
+                action: { Task { await onEvent(.onTrackersTap) } }
+            )
+            .if(trackers.info.isLoading) { view in
+                view.redacted(true)
+                    .fadingEffect()
+                    .transition(.opacity)
+            }
         }
     }
 
@@ -537,7 +539,7 @@ extension Array where Element == MessageDetail.Recipient {
     MessageDetailsView(
         isHeaderCollapsed: false,
         uiModel: model,
-        trackers: .loaded(MessageDetailsPreviewProvider.testTrackers),
+        trackers: .init(isSettingEnabled: true, info: .loaded(MessageDetailsPreviewProvider.testTrackers)),
         mailbox: .dummy,
         actionButtonsState: .enabled,
         privacyLock: .loading,

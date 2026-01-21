@@ -87,7 +87,7 @@ struct ExpandedMessageCell: View {
                     case .onRecipientTap(let recipient):
                         await onEvent(.onRecipientTap(recipient))
                     case .onTrackersTap:
-                        await onEvent(.onTrackersTap(privacyInfoStore.state.loadedValue))
+                        await onEvent(.onTrackersTap(privacyInfoStore.state.info.loadedValue))
                     case .onEditToolbar:
                         await onEvent(.onEditToolbar)
                     }
@@ -211,7 +211,7 @@ extension WatchPrivacyInfoStreamProvider {
 }
 
 private struct DummyPrivacyStream: AsyncWatchingStream {
-    var value: Any { PrivacyInfo(trackers: nil, utmLinks: nil) }
-    func next() async throws -> Any { PrivacyInfo(trackers: nil, utmLinks: nil) }
+    var value: Any { PrivacyInfo(trackers: .pending, utmLinks: nil) }
+    func next() async throws -> Any { PrivacyInfo(trackers: .pending, utmLinks: nil) }
     func stop() {}
 }
