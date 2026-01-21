@@ -31,6 +31,10 @@ extension UserDefaultsKey<[Date]> {
     static let notificationAuthorizationRequestDates = Self(name: "notificationAuthorizationRequestDates")
 }
 
+extension UserDefaultsKey<String> {
+    static let lastWhatsNewVersion = Self(name: "lastWhatsNewVersion")
+}
+
 private extension UpsellType {
     var onboardingUserDefaultsKey: String {
         switch self {

@@ -184,7 +184,7 @@ struct MessageDetailsView: View {
             )
             .transition(.opacity)
         } else if privacyLock.isLoading {
-            InfoRowWithLearnMore.placeholder
+            InfoRowWithLearnMorePlaceholder()
                 .redacted(true)
                 .fadingEffect()
                 .transition(.opacity)
@@ -375,7 +375,7 @@ struct MessageDetailsView: View {
         InfoRowWithLearnMore(
             title: trackers.loadedValue?.fullTitle ?? .randomPlaceholder(length: 24),
             iconView: {
-                Image(symbol: .checkmarkShieldFill)
+                Image(DS.Icon.icShieldCheck)
                     .size(.footnote)
             },
             iconColor: DS.Color.Text.norm,

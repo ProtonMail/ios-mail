@@ -62,6 +62,13 @@ struct IntroductionViewModifier: ViewModifier {
                     OnboardingUpsellScreen(model: upsellScreenModel)
                 }
             )
+            .sheet(
+                isPresented: $state.isWhatsNewScreenPresented,
+                onDismiss: whatsNewScreenDismissed,
+                content: {
+                    WhatsNewScreen()
+                }
+            )
             .onAppear {
                 Task {
                     try? await Task.sleep(for: .milliseconds(500))
@@ -84,6 +91,8 @@ struct IntroductionViewModifier: ViewModifier {
             .notifications
         } else if case .eligible(let upsellType) = upsellEligibility, !dependencies.userDefaults[.hasSeenOnboardingUpsell(ofType: upsellType)] {
             .upsell(upsellType)
+        } else if dependencies.userDefaults[.lastWhatsNewVersion] == nil {
+            .whatsNew
         } else {
             .finished
         }
@@ -94,9 +103,10 @@ struct IntroductionViewModifier: ViewModifier {
 
         state.isOnboardingPresented = introductionProgress == .onboarding
         state.isNotificationPromptPresented = introductionProgress == .notifications
+        state.isWhatsNewScreenPresented = introductionProgress == .whatsNew
 
         switch introductionProgress {
-        case .onboarding, .notifications:
+        case .onboarding, .notifications, .whatsNew:
             // handled above
             break
         case .upsell(let upsellType):
@@ -116,6 +126,14 @@ struct IntroductionViewModifier: ViewModifier {
             }
         case .finished:
             break
+        }
+    }
+
+    private func whatsNewScreenDismissed() {
+        dependencies.userDefaults[.lastWhatsNewVersion] = dependencies.bundle.bundleShortVersion
+
+        Task {
+            await presentAppropriateIntroductoryView()
         }
     }
 
@@ -152,18 +170,21 @@ extension IntroductionViewModifier {
     struct Dependencies {
         let notificationAuthorizationStore: NotificationAuthorizationStore
         let userDefaults: UserDefaults
+        let bundle: Bundle
     }
 
     enum IntroductionProgress: Equatable {
         case onboarding
         case notifications
         case upsell(UpsellType)
+        case whatsNew
         case finished
     }
 
     struct ViewState {
         var isOnboardingPresented = false
         var isNotificationPromptPresented = false
+        var isWhatsNewScreenPresented = false
         var upsellPresented: UpsellScreenModel?
         var onboardingUpsellPresented: OnboardingUpsellScreenModel?
     }

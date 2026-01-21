@@ -21,12 +21,48 @@ import UIKit
 
 public extension Image {
     func size(_ style: Font.TextStyle) -> some View {
-        let uiFont = DynamicImageSize.cappedFont(forTextStyle: style.toUIFontTextStyle())
-        return
-            self
+        self
             .resizable()
             .scaledToFit()
-            .frame(width: uiFont.pointSize, height: uiFont.pointSize)
+            .modifier(DynamicIconModifier(style: style))
+    }
+}
+
+private struct DynamicIconModifier: ViewModifier {
+    let style: Font.TextStyle
+
+    @Environment(\.dynamicTypeSize)
+    private var dynamicTypeSize
+
+    func body(content: Content) -> some View {
+        let pointSize = DynamicIconSize.fontPointSize(
+            for: style,
+            dynamicTypeSize: dynamicTypeSize
+        )
+
+        content
+            .frame(width: pointSize, height: pointSize)
+    }
+}
+
+private enum DynamicIconSize {
+    static func fontPointSize(
+        for style: Font.TextStyle,
+        dynamicTypeSize: DynamicTypeSize
+    ) -> CGFloat {
+        let uiTextStyle = style.toUIFontTextStyle()
+
+        let currentCategory = UIContentSizeCategory(dynamicTypeSize)
+        let cappedCategory = min(currentCategory, DynamicFontSize.largestSupportedSizeCategory)
+
+        let font = UIFont.preferredFont(
+            forTextStyle: uiTextStyle,
+            compatibleWith: UITraitCollection(
+                preferredContentSizeCategory: cappedCategory
+            )
+        )
+
+        return font.pointSize
     }
 }
 
@@ -49,13 +85,22 @@ private extension Font.TextStyle {
     }
 }
 
-private enum DynamicImageSize {
-    static func cappedFont(forTextStyle style: UIFont.TextStyle) -> UIFont {
-        let currentCategory = UIApplication.shared.preferredContentSizeCategory
-        let cappedCategory = min(currentCategory, DynamicFontSize.largestSupportedSizeCategory)
-        return UIFont.preferredFont(
-            forTextStyle: style,
-            compatibleWith: UITraitCollection(preferredContentSizeCategory: cappedCategory)
-        )
+private extension UIContentSizeCategory {
+    init(_ size: DynamicTypeSize) {
+        switch size {
+        case .xSmall: self = .extraSmall
+        case .small: self = .small
+        case .medium: self = .medium
+        case .large: self = .large
+        case .xLarge: self = .extraLarge
+        case .xxLarge: self = .extraExtraLarge
+        case .xxxLarge: self = .extraExtraExtraLarge
+        case .accessibility1: self = .accessibilityMedium
+        case .accessibility2: self = .accessibilityLarge
+        case .accessibility3: self = .accessibilityExtraLarge
+        case .accessibility4: self = .accessibilityExtraExtraLarge
+        case .accessibility5: self = .accessibilityExtraExtraExtraLarge
+        @unknown default: self = .large
+        }
     }
 }

@@ -49,11 +49,14 @@ struct InfoRowWithLearnMore<IconView: View>: View {
     }
 }
 
-extension InfoRowWithLearnMore where IconView == Image {
-    static var placeholder: some View {
-        Self.init(
+struct InfoRowWithLearnMorePlaceholder: View {
+    var body: some View {
+        InfoRowWithLearnMore(
             title: .randomPlaceholder(length: 24),
-            iconView: { Image(symbol: .lock) },
+            iconView: {
+                Image(DS.Icon.icLock)
+                    .size(.footnote)
+            },
             iconColor: .black,
             action: {}
         )

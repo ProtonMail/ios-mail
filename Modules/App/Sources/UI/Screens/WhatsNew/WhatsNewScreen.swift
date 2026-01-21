@@ -46,9 +46,9 @@ struct WhatsNewScreen: View {
                 VStack(alignment: .leading, spacing: .zero) {
                     ForEach(NewFeatureIntroduction.whatsNew, id: \.self) { feature in
                         HStack(alignment: .top, spacing: DS.Spacing.medium) {
-                            feature.icon.image
-                                .resizable()
+                            Image(feature.icon)
                                 .size(.subheadline)
+                                .foregroundStyle(DS.Color.Icon.norm)
                                 .padding(DS.Spacing.standard)
                                 .background(DS.Color.Background.deep)
                                 .clipShape(RoundedRectangle(cornerRadius: DS.Spacing.mediumLight))
