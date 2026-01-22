@@ -172,6 +172,24 @@ public extension PrivacyLockTooltip {
                 description: L10n.PrivacyLockTooltip.Description.youHaveDigitallySigned,
                 additionalDescription: nil
             )
+        case .sendE2eExternal:
+            .init(
+                title: L10n.PrivacyLockTooltip.Title.endToEndEncrypted,
+                description: L10n.PrivacyLockTooltip.Description.thisEmailIsEndToEndEncrypted,
+                additionalDescription: nil
+            )
+        case .sendE2eEo:
+            .init(
+                title: L10n.PrivacyLockTooltip.Title.endToEndEncrypted,
+                description: L10n.PrivacyLockTooltip.Description.thisEmailIsEndToEndEncrypted,
+                additionalDescription: nil
+            )
+        case .receiveE2eExternal:
+            .init(
+                title: L10n.PrivacyLockTooltip.Title.endToEndEncrypted,
+                description: L10n.PrivacyLockTooltip.Description.thisEmailIsEndToEndEncrypted,
+                additionalDescription: nil
+            )
         }
     }
 }
