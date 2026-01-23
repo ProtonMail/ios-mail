@@ -385,6 +385,7 @@ extension MailboxModel {
         case .list(let listUpdate):
             await handleConversationsList(update: listUpdate)
         case .status(let statusUpdate):
+            AppLogger.log(message: "Conversation LoadingBar \(statusUpdate)", category: .mailbox)
             switch statusUpdate {
             case .fetchNewStart:
                 loadingBarPresenter.show()
@@ -430,6 +431,7 @@ extension MailboxModel {
         case .list(let listUpdate):
             await handleMessagesList(update: listUpdate)
         case .status(let statusUpdate):
+            AppLogger.log(message: "Message LoadingBar \(statusUpdate)", category: .mailbox)
             switch statusUpdate {
             case .fetchNewStart:
                 loadingBarPresenter.show()
