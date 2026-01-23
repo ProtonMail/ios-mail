@@ -13031,6 +13031,9 @@
         }
       }
     },
+    "Copy" : {
+      "comment" : "`Copy` action title."
+    },
     "Copy address" : {
       "comment" : "Action title for copying email address to clipboard in the address action sheet.",
       "localizations" : {

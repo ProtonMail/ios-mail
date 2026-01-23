@@ -307,6 +307,7 @@ enum L10n {
         )
         static let next = LocalizedStringResource("Next", comment: "`Next` action title.")
         static let save = LocalizedStringResource("Save", comment: "`Save` action title.")
+        static let copy = LocalizedStringResource("Copy", comment: "`Copy` action title.")
     }
 
     enum Draft {

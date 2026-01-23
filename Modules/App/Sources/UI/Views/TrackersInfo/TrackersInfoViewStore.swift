@@ -25,6 +25,7 @@ final class TrackersInfoViewStore: StateStore {
         case onSectionTap(section: Section)
         case onBlockedTrackerTap(domain: String, url: String)
         case onBlockedTrackerAlertDismiss
+        case onLinkCopy(url: String)
         case onLinkTap(url: String)
         case onGotItTap
     }
@@ -57,11 +58,13 @@ final class TrackersInfoViewStore: StateStore {
 
     private let openUrl: OpenURLAction
     private let dismiss: DismissAction
+    private let pasteboard: UIPasteboard
 
-    init(state: State, openUrl: OpenURLAction, dismiss: DismissAction) {
+    init(state: State, openUrl: OpenURLAction, dismiss: DismissAction, pasteboard: UIPasteboard = .general) {
         self.state = state
         self.openUrl = openUrl
         self.dismiss = dismiss
+        self.pasteboard = pasteboard
     }
 
     func handle(action: Action) {
@@ -81,6 +84,9 @@ final class TrackersInfoViewStore: StateStore {
 
         case .onBlockedTrackerAlertDismiss:
             state.presentedBlockedTracker = ("", "")
+
+        case .onLinkCopy(let url):
+            pasteboard.string = url
 
         case .onLinkTap(let url):
             guard let url = URL(string: url) else { return }

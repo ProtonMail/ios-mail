@@ -114,9 +114,15 @@ private extension TrackersInfoView {
             if state.isTrackersSectionExpanded {
                 VStack(alignment: .leading, spacing: 0) {
                     ForEach(Array(state.trackers.blockedTrackers.enumerated()), id: \.element.name) { index, domain in
-                        trackerCell(domain: domain) { url in
-                            store.handle(action: .onBlockedTrackerTap(domain: domain.name, url: url))
-                        }
+                        trackerCell(
+                            domain: domain,
+                            onUrlTap: { url in
+                                store.handle(action: .onBlockedTrackerTap(domain: domain.name, url: url))
+                            },
+                            onLinkCopy: { url in
+                                store.handle(action: .onLinkCopy(url: url))
+                            }
+                        )
                     }
                 }
                 .background {
@@ -143,7 +149,11 @@ private extension TrackersInfoView {
         .clipped()
     }
 
-    func trackerCell(domain: TrackerDomain, onUrlTap: @escaping (String) -> Void) -> some View {
+    func trackerCell(
+        domain: TrackerDomain,
+        onUrlTap: @escaping (String) -> Void,
+        onLinkCopy: @escaping (String) -> Void
+    ) -> some View {
         VStack(alignment: .leading, spacing: DS.Spacing.standard) {
             HStack {
                 Text(domain.name)
@@ -164,6 +174,9 @@ private extension TrackersInfoView {
                         .lineLimit(2)
                         .font(.footnote)
                         .foregroundStyle(DS.Color.Text.weak)
+                }
+                .copyContextMenu {
+                    onLinkCopy(url)
                 }
             }
         }
@@ -187,9 +200,11 @@ private extension TrackersInfoView {
             if state.isLinksSectionExpanded {
                 VStack(alignment: .leading, spacing: 0) {
                     ForEach(Array(state.trackers.cleanedLinks.enumerated()), id: \.element.original) { index, link in
-                        linkCell(link: link) { url in
-                            store.handle(action: .onLinkTap(url: url))
-                        }
+                        linkCell(
+                            link: link,
+                            onUrlTap: { url in store.handle(action: .onLinkTap(url: url)) },
+                            onLinkCopy: { url in store.handle(action: .onLinkCopy(url: url)) }
+                        )
                     }
                 }
                 .background {
@@ -202,19 +217,39 @@ private extension TrackersInfoView {
         .clipped()
     }
 
-    func linkCell(link: CleanedLink, onUrlTap: @escaping ((String) -> Void)) -> some View {
+    func linkCell(
+        link: CleanedLink,
+        onUrlTap: @escaping (String) -> Void,
+        onLinkCopy: @escaping (String) -> Void
+    ) -> some View {
         VStack(alignment: .leading, spacing: DS.Spacing.standard) {
-            linkCellRow(title: L10n.TrackingInfo.original, showArrow: false, url: link.original) {
-                onUrlTap(link.original)
-            }
+            linkCellRow(
+                title: L10n.TrackingInfo.original,
+                showArrow: false,
+                url: link.original,
+                onUrlTap: {
+                    onUrlTap(link.original)
+                },
+                onLinkCopy: {
+                    onLinkCopy(link.original)
+                }
+            )
 
             Divider()
                 .background(DS.Color.Border.norm)
                 .padding(.leading, DS.Spacing.large)
 
-            linkCellRow(title: L10n.TrackingInfo.cleaned, showArrow: true, url: link.cleaned) {
-                onUrlTap(link.cleaned)
-            }
+            linkCellRow(
+                title: L10n.TrackingInfo.cleaned,
+                showArrow: true,
+                url: link.cleaned,
+                onUrlTap: {
+                    onUrlTap(link.cleaned)
+                },
+                onLinkCopy: {
+                    onLinkCopy(link.cleaned)
+                }
+            )
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.vertical, DS.Spacing.medium)
@@ -224,7 +259,13 @@ private extension TrackersInfoView {
         }
     }
 
-    func linkCellRow(title: LocalizedStringResource, showArrow: Bool, url: String, onUrlTap: @escaping (() -> Void)) -> some View {
+    func linkCellRow(
+        title: LocalizedStringResource,
+        showArrow: Bool,
+        url: String,
+        onUrlTap: @escaping () -> Void,
+        onLinkCopy: @escaping () -> Void
+    ) -> some View {
         HStack {
             VStack(alignment: .leading) {
                 HStack(spacing: 0) {
@@ -245,6 +286,9 @@ private extension TrackersInfoView {
                     .font(.body)
                     .foregroundStyle(DS.Color.Text.norm)
                     .lineLimit(1)
+                    .copyContextMenu {
+                        onLinkCopy()
+                    }
             }
 
             Spacer()
@@ -259,6 +303,29 @@ private extension TrackersInfoView {
             }
         }
         .padding(.horizontal, DS.Spacing.large)
+    }
+}
+
+private extension View {
+    func copyContextMenu(copyAction: @escaping () -> Void) -> some View {
+        modifier(CopyContextMenu(copyAction: copyAction))
+    }
+}
+
+private struct CopyContextMenu: ViewModifier {
+    let copyAction: () -> Void
+
+    init(copyAction: @escaping () -> Void) {
+        self.copyAction = copyAction
+    }
+
+    func body(content: Content) -> some View {
+        content
+            .contextMenu {
+                Button(action: copyAction) {
+                    Text(L10n.Common.copy)
+                }
+            }
     }
 }
 
