@@ -151,7 +151,7 @@ enum L10n {
 
         enum Description {
             static let emailsExchangedBetweenProtonUsers = LocalizedStringResource(
-                "Emails exchanged between Proton users are automatically end-to-end encrypted.",
+                "Emails exchanged between Proton users are always end-to-end encrypted.",
                 comment: "Additional description explaining that emails between Proton users are automatically end-to-end encrypted."
             )
             static let recipientIsVerifiedContact = LocalizedStringResource(
