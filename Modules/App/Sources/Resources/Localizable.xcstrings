@@ -17128,7 +17128,123 @@
       }
     },
     "Discreet icon" : {
-      "comment" : "Feature name in WhatsNew screen."
+      "comment" : "Feature name in WhatsNew screen.",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Непрыкметны значок"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Icona discreta"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diskrétní ikona"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diskret ikon"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unauffälliges Symbol"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Διακριτικό εικονίδιο"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Discreet icon"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Icono discreto"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ícono discreto"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Icône discrète"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Icona riservata"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diskret ikon"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Onopvallend icoon"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ícone discreto"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pictogramă discretă"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nenápadná ikona"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diskret ikon"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Göze çarpmayan simge"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "隐藏图标"
+          }
+        }
+      }
     },
     "Display" : {
       "comment" : "Action to display embedded images.",
@@ -20908,7 +21024,123 @@
       }
     },
     "Encryption locks" : {
-      "comment" : "Feature name in WhatsNew screen."
+      "comment" : "Feature name in WhatsNew screen.",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Шыфраванне заблакіравана"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bloquejos de xifratge"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Šifrovací zámky"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Krypteringslåse"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verschlüsselungsschlösser"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Κλειδαριές κρυπτογράφησης"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Encryption locks"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Candados de cifrado"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Candados de cifrado"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cadenas de chiffrement"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lucchetti di crittografia"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Krypteringslåser"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Versleutelingssloten"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bloqueios de criptografia"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lacăte de criptare"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Šifrovacie zámky"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Krypteringslås"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Şifreleme kilitleri"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "加密锁定"
+          }
+        }
+      }
     },
     "Enjoy encrypted messages, less spam, protection from phishing, and blocked trackers. Welcome to privacy." : {
       "comment" : "Subtitle of the first onboarding page explaining Proton Mail's benefits.",
@@ -23972,7 +24204,117 @@
       }
     },
     "Inspect suspicious messages to confirm their authenticity and uncover any hidden tracking elements." : {
-      "comment" : "Feature description for View headers and HTML in WhatsNew screen."
+      "comment" : "Feature description for View headers and HTML in WhatsNew screen.",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Праверце падазроныя паведамленні, каб пацвердзіць іх сапраўднасць і выявіць любыя схаваныя элементы сачэння."
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Examineu els missatges sospitosos per confirmar-ne l'autenticitat i descobrir qualsevol element de rastreig ocult."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prozkoumejte podezřelé zprávy, abyste potvrdili jejich pravost a odhalili případné skryté sledovací prvky."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Undersøg mistænkelige beskeder for at bekræfte deres ægthed og afsløre eventuelle skjulte sporingskomponenter."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Überprüfe verdächtige Nachrichten, um deren Echtheit zu bestätigen und verborgene Tracking-Elemente aufzudecken."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ελέγξτε τα ύποπτα μηνύματα για να επιβεβαιώσετε την αυθεντικότητά τους και να εντοπίσετε τυχόν κρυφά στοιχεία παρακολούθησης."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inspect suspicious messages to confirm their authenticity and uncover any hidden tracking elements."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inspecciona mensajes sospechosos para confirmar su autenticidad y descubrir posibles elementos de rastreo ocultos."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inspeccione mensajes sospechosos para confirmar su autenticidad y descubrir cualquier elemento de rastreo oculto."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inspectez les messages suspects pour confirmer leur authenticité et découvrir les éléments de suivis cachés."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ispeziona i messaggi sospetti per confermarne l'autenticità e scoprire eventuali elementi di tracciamento nascosti."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inspiser mistenkelige meldinger for å bekrefte deres ekthet og avdekke eventuelle skjulte sporingselementer."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Controleer verdachte berichten om hun authenticiteit te bevestigen en eventuele verborgen traceerelementen bloot te leggen."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inspecione mensagens suspeitas para confirmar a autenticidade delas e descobrir quaisquer elementos de rastreamento ocultos."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Inspectați mesaje suspecte pentru a confirma autenticitatea acestora și a descoperi eventualele elemente de urmărire ascunse."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Skontrolujte podozrivé správy, aby ste overili ich pravosť a odhalili skryté sledovacie prvky."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Şüpheli iletileri inceleyerek gerçekliklerini doğrulayın ve gizli izleme ögelerini ortaya çıkarın."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "检查可疑消息以确认其真实性并发现任何隐藏的跟踪元素。"
+          }
+        }
+      }
     },
     "Issue loading your content. Please try refreshing or sign in again." : {
       "comment" : "Loading items in your mailbox returns an error.",
@@ -24697,7 +25039,117 @@
       }
     },
     "Keep the default Proton Mail icon or disguise it with a generic one for greater privacy." : {
-      "comment" : "Feature description for Discreet icon in WhatsNew screen."
+      "comment" : "Feature description for Discreet icon in WhatsNew screen.",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Пакіньце прадвызначаны значок Proton Mail або замаскіруйце яго пад які-небудзь шаблонны для большай прыватнасці."
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mantingueu la icona per defecte de Proton Mail o dissimuleu-la amb una de genèrica per a una major privacitat."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ponechte výchozí ikonu aplikace Proton Mail nebo ji zamaskujte obecnější ikonou pro větší soukromí."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Behold standardikonet for Proton Mail, eller maskér det med et generisk ikon for øget privatliv."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Behalte das Standard-Symbol von Proton Mail bei oder ersetze es durch ein neutrales Symbol, um deine Privatsphäre besser zu schützen."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Διατηρήστε το προεπιλεγμένο εικονίδιο του Proton Mail ή αντικαταστήστε το με ένα γενικό εικονίδιο για μεγαλύτερη ιδιωτικότητα."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Keep the default Proton Mail icon or disguise it with a generic one for greater privacy."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mantén el icono predeterminado de Proton Mail o camúflalo con uno genérico para mayor privacidad."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mantenga el ícono predeterminado de Proton Mail o disfrácelo con uno genérico para mayor privacidad."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Conservez l'icône Proton Mail par défaut ou remplacez-la par une icône générique pour plus de confidentialité."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mantieni l'icona predefinita di Proton Mail o sostituiscila con una generica per una maggiore privacy."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Behold standardikonet for Proton Mail, eller skjul det med et generisk ikon for økt personvern."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Houd het standaard Proton Mail-pictogram of verberg het met een algemeen pictogram voor meer privacy."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mantenha o ícone padrão do Proton Mail ou disfarce-o com um genérico para maior privacidade."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Păstrați pictograma implicită a Proton Mail sau deghizați-o cu una generică pentru o confidențialitate sporită."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ponechajte si predvolenú ikonu Proton Mail alebo ju zamaskujte všeobecnou pre väčšie súkromie."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Varsayılan Proton Mail simgesini kullanın ya da daha fazla gizlilik için göze çarpmayan bir simgeyle gizleyin."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "保留默认的Proton Mail图标，或将其伪装成一个通用的图标以增强隐私性。"
+          }
+        }
+      }
     },
     "Keep the default Proton Mail icon, or disguise it with a more discreet one for extra privacy. Notifications will always show the Proton Mail name and icon. [Learn more…](https://proton.me/support/disguise-app-icon)" : {
       "comment" : "Description text explaining the app icon feature and privacy implications.",
@@ -39382,7 +39834,117 @@
       }
     },
     "See who tried to monitor you with hidden pixels and tracking links, and how many attempts were blocked." : {
-      "comment" : "Feature description for Tracking protection in WhatsNew screen."
+      "comment" : "Feature description for Tracking protection in WhatsNew screen.",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Паглядзіце, хто спрабаваў сачыць за вамі з дапамогай схаваных пікселяў і спасылак для адсочвання, і колькі спроб было заблакіравана."
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vegeu qui us ha intentat monitoritzar amb píxels amagats i enllaços de seguiment, i quants intents s'han bloquejat."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Podívejte se, kdo se vás pokusil sledovat pomocí skrytých pixelů a sledovacích odkazů a kolik pokusů bylo zablokováno."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se, hvem der forsøgte at overvåge dig med skjulte pixels og sporingslinks, og hvor mange forsøg der blev blokeret."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Erfahre, wer versucht, dich mit versteckten Pixeln und Tracking-Links zu überwachen, und wie viele Versuche abgewehrt wurden."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Δείτε ποιος προσπάθησε να σας παρακολουθήσει με κρυφά pixel και συνδέσμους παρακολούθησης και πόσες προσπάθειες αποκρούστηκαν."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "See who tried to monitor you with hidden pixels and tracking links, and how many attempts were blocked."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mira quién ha intentado rastrearte mediante píxeles ocultos y enlaces de seguimiento, y cuántos intentos se han bloqueado."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Consulte quién ha intentado monitorizarle con píxeles ocultos y enlaces de seguimiento y cuántos intentos se han bloqueado."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Découvrez qui a tenté de vous surveiller avec des pixels invisibles et des liens de suivi, ainsi que le nombre de tentatives qui ont été bloquées."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Scopri chi ha cercato di monitorarti con pixel nascosti e link di tracciamento, e quanti tentativi sono stati bloccati."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se hvem som prøvde å overvåke deg med skjulte piksler og sporingskoblinger, og hvor mange forsøk som ble blokkert."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bekijk wie u heeft geprobeerd te monitoren met verborgen pixels en trackingkoppelingen, en hoeveel pogingen er zijn geblokkeerd."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Veja quem tentou te monitorar com pixels ocultos e links de rastreamento, e quantas tentativas foram bloqueadas."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vedeți cine a încercat să vă monitorizeze cu pixeli ascunși și legături web de urmărire și câte încercări au fost blocate."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zistite, kto sa vás pokúsil sledovať pomocou skrytých pixelov a sledovacích odkazov a koľko pokusov bolo zablokovaných."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gizli pikseller ve izleme bağlantıları ile sizi izlemeye çalışanları ve kaç girişimin engellendiğini görün."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "查看谁试图使用隐藏像素和跟踪链接监控您，以及阻止了多少次尝试。"
+          }
+        }
+      }
     },
     "Seems like you are all caught up for now" : {
       "comment" : "Mailbox empty state message.",
@@ -49970,7 +50532,123 @@
       }
     },
     "Tracking protection" : {
-      "comment" : "Feature name in WhatsNew screen."
+      "comment" : "Feature name in WhatsNew screen.",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Абарона ад праграм сачэння"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Protecció contra el seguiment"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ochrana před sledováním"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Beskyttelse mod sporing"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tracking-Schutz"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Προστασία από ιχνηλάτες"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tracking protection"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Protección contra rastreo"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Protección contra rastreadores"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Protection contre le suivi"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Protezione dal tracciamento"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sporingsbeskyttelse"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Trackerbescherming"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proteção contra rastreadores"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Protecție împotriva urmăririi"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ochrana pred sledovaním"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Spårningsskydd"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "İzleme koruması"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "跟踪防护"
+          }
+        }
+      }
     },
     "Trash" : {
       "comment" : "Menu title of all deleted emails in the sidebar.",
@@ -52605,10 +53283,242 @@
       }
     },
     "Use the lock icons to identify and verify the type of encryption protecting your messages." : {
-      "comment" : "Feature description for Encryption locks in WhatsNew screen."
+      "comment" : "Feature description for Encryption locks in WhatsNew screen.",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Выкарыстоўвайце значкі блакіроўкі для вызначэння і спраўджання тыпу шыфравання, які абараняе вашы паведамленні."
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Utilitzeu les icones de cadenat per identificar i verificar el tipus de xifratge que protegeix els vostres missatges."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pomocí ikon zámku můžete identifikovat a ověřit typ šifrování, které chrání vaše zprávy."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Brug låseikonerne til at identificere og bekræfte den type kryptering, der beskytter dine beskeder."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verwende die Schlosssymbole, um die Art der Verschlüsselung zu identifizieren und zu überprüfen, mit der deine Nachrichten geschützt sind."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Χρησιμοποιήστε τα εικονίδια κλειδώματος για να προσδιορίσετε και να επαληθεύσετε τον τύπο κρυπτογράφησης που προστατεύει τα μηνύματά σας."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Use the lock icons to identify and verify the type of encryption protecting your messages."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Usa los iconos de candado para identificar y verificar el tipo de cifrado que protege tus mensajes."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Use los íconos de candado para identificar y verificar el tipo de cifrado que protege sus mensajes."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Utilisez les icônes de cadenas pour identifier et vérifier le type de chiffrement protégeant vos messages."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Usa le icone del lucchetto per identificare e verificare il tipo di crittografia che protegge i tuoi messaggi."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bruk låsikonene til å identifisere og verifisere krypteringstypen som beskytter meldingene dine."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gebruik de slotpictogrammen om het type versleuteling te identificeren en te verifiëren dat uw berichten beschermt."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Use os ícones de cadeado para identificar e verificar o tipo de criptografia que protege suas mensagens."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Utilizați pictogramele de tip lacăt pentru a identifica și verifica tipul de criptare care vă protejează mesajele."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pomocou ikon zámku môžete identifikovať a overiť typ šifrovania, ktoré chráni vaše správy."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Använd låsikoner för att identifiera och verifiera typen av kryptering som skyddar dina meddelanden."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "İletilerinizi koruyan şifreleme türünü tanımlamak ve doğrulamak için kilit simgelerini kullanın."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "使用锁图标来识别和验证保护您邮件的加密类型。"
+          }
+        }
+      }
     },
     "Version %@" : {
-      "comment" : "Version label in WhatsNew screen. Parameter is the version number."
+      "comment" : "Version label in WhatsNew screen. Parameter is the version number.",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Версія %@"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Versió %@"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verze %@"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Version %@"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Version %@"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Έκδοση %@"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Version %@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Versión %@"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Versión %@"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Version %@"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Versione %@"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Versjon %@"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Versie %@"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Versão %@"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Versiunea %@"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verzia %@"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Version %@"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ sürümü"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "版本 %@"
+          }
+        }
+      }
     },
     "View headers" : {
       "comment" : "Action title for viewing given message's headers in the action sheet.",
@@ -52802,7 +53712,117 @@
       }
     },
     "View headers and HTML" : {
-      "comment" : "Feature name in WhatsNew screen."
+      "comment" : "Feature name in WhatsNew screen.",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Паглядзець загалоўкі і HTML"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Visualitza les capçaleres i l'HTML"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zobrazit hlavičky a HTML"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vis overskrifter og HTML"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopfzeilen und HTML anzeigen"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Προβολή κεφαλίδων και HTML"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "View headers and HTML"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ver encabezados y HTML"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ver encabezados y HTML"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Voir les en-têtes et le HTML"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Visualizza intestazioni e HTML"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vis overskrifter og HTML"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bekijk headers en HTML"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ver cabeçalhos e HTML"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vizualizați antetele și codul HTML"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zobraziť hlavičky a HTML"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Visa rubriker och HTML"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Üst bilgileri ve HTML'yi görüntüle"
+          }
+        }
+      }
     },
     "View HTML" : {
       "comment" : "Action title for viewing given message's HTML in the action sheet.",
@@ -53380,10 +54400,22 @@
     "We actively protect you from tracking. Here you can view the spy pixels we blocked and the tracking links we cleaned in this message. [Learn more](https://proton.me/support/email-tracker-protection)" : {
       "comment" : "Description text explaining the tracking protection.",
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Наша сістэма актыўна абараняе вас ад праграм сачэння. Тут вы можаце праглядзець шпіёнскія пікселі, якія мы заблакіравалі, а таксама спасылкі для адсочвання, якія былі ачышчаны ў гэтым паведамленні. [Даведацца больш](https://proton.me/support/email-tracker-protection)"
+          }
+        },
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Us protegim activament del seguiment. Aquí podeu visualitzar els píxels espia que hem bloquejat i els enllaços de seguiment que hem netejat en aquest missatge. [Per saber-ne més](https://proton.me/support/email-tracker-protection)"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktivně vás chráníme před sledováním. Zde si můžete prohlédnout sledovací pixely, které jsme zablokovali, a sledovací odkazy, které jsme v této zprávě vyčistili. [Více informací](https://proton.me/support/email-tracker-protection)"
           }
         },
         "da" : {
@@ -53432,6 +54464,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ti proteggiamo attivamente dal tracciamento. Qui puoi visualizzare i pixel spia che abbiamo bloccato e i link di tracciamento che abbiamo ripulito in questo messaggio. [Scopri di più](https://proton.me/support/email-tracker-protection)"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vi beskytter deg aktivt mot sporing. Her kan du se spionpikslene vi blokkerte og sporingskoblingene vi renset i denne meldingen. [Lær mer](https://proton.me/support/email-tracker-protection)"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vă protejăm în mod activ împotriva urmăririi. Aici puteți vizualiza pixelii spion pe care i-am blocat și legăturile web de urmărire pe care le-am curățat în acest mesaj. [Detalii](https://proton.me/support/email-tracker-protection)"
           }
         },
         "sk" : {
@@ -54171,7 +55215,123 @@
       }
     },
     "What's new" : {
-      "comment" : "Title displayed in WhatsNew screen."
+      "comment" : "Title displayed in WhatsNew screen.",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Што новага"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Novetats"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Co je nového"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hvad er nyt"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Neuigkeiten"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Τι νέο υπάρχει"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What's new"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Novedades"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Novedades"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nouveautés"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cosa c'è di nuovo"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hva er nytt"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wat is er nieuw"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Novidades"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Noutăți"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Čo je nové"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vad som är nytt"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yenilikler"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "更新内容"
+          }
+        }
+      }
     },
     "You are about to launch the web browser and navigate to" : {
       "comment" : "Prompts the user to confirm before a link is opened - the sentence is cut on purpose, and the link follows.",

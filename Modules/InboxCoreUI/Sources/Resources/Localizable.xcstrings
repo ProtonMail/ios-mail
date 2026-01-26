@@ -52,6 +52,36 @@
             }
           }
         },
+        "cs" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld zbývající pokusy před odhlášením."
+                }
+              },
+              "many" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld zbývajících pokusů před odhlášením."
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld zbývající pokus před odhlášením."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld zbývajících pokusů před odhlášením."
+                }
+              }
+            }
+          }
+        },
         "da" : {
           "variations" : {
             "plural" : {
@@ -196,6 +226,24 @@
             }
           }
         },
+        "nb" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld forsøk gjenstår før utlogging."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld forsøk gjenstår før utlogging."
+                }
+              }
+            }
+          }
+        },
         "pt-BR" : {
           "variations" : {
             "plural" : {
@@ -209,6 +257,30 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld tentativas restantes antes de encerrar a sessão."
+                }
+              }
+            }
+          }
+        },
+        "ro" : {
+          "variations" : {
+            "plural" : {
+              "few" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Încercări rămase înainte de deconectare: %lld"
+                }
+              },
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Încercări rămase înainte de deconectare: %lld"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Încercări rămase înainte de deconectare: %lld"
                 }
               }
             }
@@ -481,6 +553,12 @@
             "value" : "Barra de progrés del cicle (%@)"
           }
         },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ukazatel průběhu (%@)"
+          }
+        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -511,6 +589,12 @@
             "value" : "Progreso del ciclo (%@)"
           }
         },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Progreso del ciclo (%@)"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -521,6 +605,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Barra di avanzamento del ciclismo (%@)"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Syklisk fremdriftslinje(%@)"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bară de progres ciclică (%@)"
           }
         },
         "sk" : {
@@ -550,6 +646,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Els correus electrònics intercanviats entre usuaris de Proton sempre estan xifrats d’extrem a extrem."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-maily mezi uživateli Proton jsou vždy koncově šifrované."
           }
         },
         "da" : {
@@ -600,16 +702,34 @@
             "value" : "Le email scambiate tra utenti Proton sono sempre crittografate end-to-end."
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-poster som utveksles mellom Proton-brukere er alltid ende-til-ende-kryptert."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Os e-mails trocados entre usuários do Proton são sempre criptografados de ponta a ponta."
           }
         },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mesajele transmise între utilizatorii Proton sunt întotdeauna criptate bilateral."
+          }
+        },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Emaily medzi používateľmi Proton sú vždy end-to-end šifrované."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-post som utbyts mellan Proton-användare är alltid end-to-end-krypterat."
           }
         },
         "tr" : {
@@ -1011,6 +1131,12 @@
             "value" : "Xifrat d'extrem a extrem des d'un remitent verificat"
           }
         },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Koncově šifrováno od ověřeného odesílatele"
+          }
+        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1059,10 +1185,22 @@
             "value" : "Crittografato end-to-end da mittente verificato"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ende-til-ende-kryptert fra verifisert avsender"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Criptografada de ponta a ponta do remetente verificado"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Criptat bilateral de la expeditor verificat"
           }
         },
         "sk" : {
@@ -1291,6 +1429,12 @@
             "value" : "Xifrat d'extrem a extrem per a destinataris verificats"
           }
         },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Koncově šifrováno pro ověřené příjemce"
+          }
+        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1339,10 +1483,22 @@
             "value" : "Crittografato end-to-end ai destinatari verificati"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ende-til-ende-kryptert til verifiserte mottakere"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Criptografado de ponta a ponta para destinatários verificados"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Criptat bilateral către destinatari verificați"
           }
         },
         "sk" : {
@@ -1378,6 +1534,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Xifrat d'extrem a extrem amb verificació fallida"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Koncově šifrováno s neúspěšným ověřením"
           }
         },
         "da" : {
@@ -1428,10 +1590,22 @@
             "value" : "Crittografato end-to-end con verifica fallita"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ende-til-ende-kryptert med mislykket verifisering"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Criptografado de ponta a ponta com verificação falhada"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Criptat bilateral cu verificare eșuată"
           }
         },
         "sk" : {
@@ -1660,6 +1834,12 @@
             "value" : "No obstant, un remitent o destinatari que no utilitzi Proton Mail pot tenir una còpia no xifrada emmagatzemada al seu servidor de correu electrònic."
           }
         },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Odesílatel nebo příjemce, který nepoužívá Proton Mail, však může mít na svém e-mailovém serveru uloženou nešifrovanou kopii."
+          }
+        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1708,10 +1888,22 @@
             "value" : "Tuttavia, un mittente o un destinatario che non utilizza Proton Mail potrebbe avere una copia non crittografata archiviata sul proprio server di posta."
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Imidlertid kan en avsender eller mottaker som ikke bruker Proton Mail ha en ukryptert kopi lagret på e-posttjeneren sin."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "No entanto, um remetente ou destinatário que não usa o Proton Mail pode ter uma cópia não criptografada armazenada em seu servidor de e-mail."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Totuși, un expeditor sau destinatar care nu utilizează Proton Mail ar putea avea o copie necriptată stocată pe serverul său de e-mail."
           }
         },
         "sk" : {
@@ -1928,6 +2120,12 @@
             "value" : "Xifrat d'extrem a extrem amb PGP"
           }
         },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Koncově šifrováno pomocí PGP"
+          }
+        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1976,10 +2174,22 @@
             "value" : "PGP crittografato end-to-end"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "PGP ende-til-ende-kryptert"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "PGP criptografado de ponta a ponta"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Criptat bilateral cu PGP"
           }
         },
         "sk" : {
@@ -2015,6 +2225,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Xifrat d'extrem a extrem amb PGP per a un destinatari verificat"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Koncově šifrováno pomocí PGP pro ověřeného příjemce"
           }
         },
         "da" : {
@@ -2065,10 +2281,22 @@
             "value" : "PGP crittografato end-to-end al destinatario verificato"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "PGP ende-til-ende-kryptert til verifisert mottaker"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "PGP criptografado de ponta a ponta para destinatário verificado"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Criptat bilateral cu PGP spre destinatar verificat"
           }
         },
         "sk" : {
@@ -2104,6 +2332,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Correu electrònic signat amb PGP"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-mail podepsaný pomocí PGP"
           }
         },
         "da" : {
@@ -2154,10 +2388,22 @@
             "value" : "email firmato PGP"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "PGP-signert e-post"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "E-mail assinado com PGP"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-mail semnat cu PGP"
           }
         },
         "sk" : {
@@ -2193,6 +2439,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Correu electrònic signat amb PGP amb verificació fallida"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-mail podepsaný pomocí PGP s neúspěšným ověřením"
           }
         },
         "da" : {
@@ -2243,10 +2495,22 @@
             "value" : "email firmata PGP con verifica fallita"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "PGP-signert e-post med mislykket verifisering"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "E-mail com PGP assinado e verificação falhada"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-mail semnat cu PGP cu verificare eșuată"
           }
         },
         "sk" : {
@@ -3973,6 +4237,12 @@
             "value" : "La [verificació del remitent ha fallat](https://proton.me/support/sender-verification-failed) perquè no s'havia signat. Confirmeu l'autenticitat del correu electrònic amb el vostre contacte."
           }
         },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "[Ověření odesílatele selhalo](https://proton.me/support/sender-verification-failed), protože zpráva nebyla podepsána. Potvrďte prosím pravost e-mailu u svého kontaktu."
+          }
+        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4021,16 +4291,34 @@
             "value" : "La verifica [del mittente non è riuscita](https://proton.me/support/sender-verification-failed) perché non è stata firmata. Conferma l'autenticità dell'email con il tuo contatto."
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "[Avsenderverifiseringen mislyktes](https://proton.me/support/sender-verification-failed) fordi den ikke var signert. Bekreft ektheten til e-posten med kontakten din."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "O [remetente não pôde ser verificado](https://proton.me/support/sender-verification-failed) pois não foi assinado. Por favor, confirme a autenticidade do e-mail com seu contato."
           }
         },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "[Verificarea expeditorului](https://proton.me/support/sender-verification-failed) a eșuat, deoarece nu a fost semnat. Confirmați autenticitatea mesajului cu autorul acestuia."
+          }
+        },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "[Overenie odosielateľa](https://proton.me/support/sender-verification-failed) zlyhalo, pretože nebolo podpísané. Overte pravosť emailu u svojho kontaktu, prosím."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "[Avsändarverifieringen misslyckades](https://proton.me/support/sender-verification-failed) eftersom den inte var signerad. Bekräfta autenticiteten av e-posten med din kontakt."
           }
         },
         "tr" : {
@@ -4054,6 +4342,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "La [verificació del remitent ha fallat](https://proton.me/support/sender-verification-failed). Confirmeu l'autenticitat del correu electrònic amb el vostre contacte."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "[Ověření odesílatele selhalo](https://proton.me/support/sender-verification-failed). Potvrďte prosím pravost e-mailu u svého kontaktu."
           }
         },
         "da" : {
@@ -4104,16 +4398,34 @@
             "value" : "La verifica [del mittente non è riuscita](https://proton.me/support/sender-verification-failed). Conferma l'autenticità dell'email con il tuo contatto."
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "[Avsenderverifiseringen mislyktes](https://proton.me/support/sender-verification-failed). Bekreft ektheten til e-posten med kontakten din."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "A [verificação do remetente falhou](https://proton.me/support/sender-verification-failed). Por favor, confirme a autenticidade do e-mail com seu contato."
           }
         },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "[Verificarea expeditorului](https://proton.me/support/sender-verification-failed) a eșuat. Confirmați autenticitatea mesajului cu autorul mesajului."
+          }
+        },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "[Overenie odosielateľa](https://proton.me/support/sender-verification-failed) zlyhalo. Overte pravosť emailu u svojho kontaktu, prosím."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "[Avsändarverifieringen misslyckades](https://proton.me/support/sender-verification-failed). Bekräfta autenticiteten av e-posten med din kontakt."
           }
         },
         "tr" : {
@@ -4127,6 +4439,12 @@
     "The email is stored on Proton servers with [zero-access encryption](https://proton.me/blog/zero-access-encryption). Neither Proton nor anyone else can read it." : {
       "comment" : "Description explaining the email is stored with zero-access encryption.",
       "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ліст захоўваецца на серверах Proton з дапамогай [шыфравання нулявога доступу](https://proton.me/blog/zero-access-encryption). Ні Proton, ні хто-небудзь іншы не можа яго прачытаць."
+          }
+        },
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4187,6 +4505,12 @@
             "value" : "L'email è archiviata sui server Proton con [crittografia zero-access](https://proton.me/blog/zero-access-encryption). Né Proton né nessun altro possono leggerla."
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-posten lagres på Proton-tjenere med [nulltilgangskryptering](https://proton.me/blog/zero-access-encryption). Verken Proton eller noen andre kan lese den."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4228,6 +4552,12 @@
             "value" : "El destinatari és un [contacte verificat](https://proton.me/support/address-verification) i heu confiat en les seves claus d'encriptació."
           }
         },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Příjemce je [ověřeným kontaktem](https://proton.me/support/address-verification), jehož šifrovacím klíčům důvěřujete."
+          }
+        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4261,7 +4591,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "El destinatario es un [contacto verificado](https://proton.me/support/address-verification) cuyas claves de cifrado usted ha validado."
+            "value" : "El destinatario es un [contacto verificado](https://proton.me/support/address-verification) cuyas claves de cifrado ha validado usted."
           }
         },
         "fr" : {
@@ -4276,10 +4606,22 @@
             "value" : "Il destinatario è un [contatto verificato](https://proton.me/support/address-verification) le cui chiavi crittografiche hai aggiunto alla lista dei contatti attendibili."
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mottakeren er en [verifisert kontakt](https://proton.me/support/address-verification) hvis krypteringsnøkler du har klarert."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "O destinatário é um [contato verificado](https://proton.me/support/address-verification) cujas chaves de criptografia você confiou."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Destinatarul este un [contact verificat](https://proton.me/support/address-verification) ale cărui chei de criptare le-ați aprobat."
           }
         },
         "sk" : {
@@ -4317,6 +4659,12 @@
             "value" : "Els destinataris són [contactes verificats](https://proton.me/support/address-verification) i heu confiat en les seves claus d'encriptació."
           }
         },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Příjemci jsou [ověřenými kontakty](https://proton.me/support/address-verification), jejichž šifrovacím klíčům důvěřujete."
+          }
+        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4350,7 +4698,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Los destinatarios son [contactos verificados](https://proton.me/support/address-verification) cuyas claves de cifrado usted ha validado."
+            "value" : "Los destinatarios son [contactos verificados](https://proton.me/support/address-verification) cuyas claves de cifrado ha validado usted."
           }
         },
         "fr" : {
@@ -4365,10 +4713,22 @@
             "value" : "I destinatari sono [contatti verificati](https://proton.me/support/address-verification) le cui chiavi di crittografia hai aggiunto alla lista dei contatti attendibili."
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mottakerne er [verifiserte kontakter](https://proton.me/support/address-verification) hvis krypteringsnøkler du har klarert."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Os destinatários são [contatos verificados](https://proton.me/support/address-verification) cujas chaves de criptografia você confiou."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Destinatarii sunt [contacte verificate](https://proton.me/support/address-verification) ale căror chei de criptare le-ați aprobat."
           }
         },
         "sk" : {
@@ -4406,6 +4766,12 @@
             "value" : "El remitent és un [contacte verificat](https://proton.me/support/address-verification) i heu confiat en les seves claus d'encriptació."
           }
         },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Odesílatel je [ověřeným kontaktem](https://proton.me/support/address-verification), jehož šifrovacím klíčům důvěřujete."
+          }
+        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4439,7 +4805,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "El remitente es un [contacto verificado](https://proton.me/support/address-verification) cuyas claves de cifrado usted ha validado."
+            "value" : "El remitente es un [contacto verificado](https://proton.me/support/address-verification) cuyas claves de cifrado ha validado usted."
           }
         },
         "fr" : {
@@ -4454,10 +4820,22 @@
             "value" : "Il mittente è un [contatto verificato](https://proton.me/support/address-verification) le cui chiavi crittografiche hai aggiunto alla lista dei contatti attendibili."
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avsenderen er en [verifisert kontakt](https://proton.me/support/address-verification) hvis krypteringsnøkler du har klarert."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "O remetente é um [contato verificado](https://proton.me/support/address-verification) cujas chaves de criptografia você confiou."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Expeditorul este un [contact verificat](https://proton.me/support/address-verification) ale cărui chei de criptare le-ați aprobat."
           }
         },
         "sk" : {
@@ -4493,6 +4871,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Aquest correu electrònic està [xifrat d’extrem a extrem](https://proton.me/blog/what-is-end-to-end-encryption) al dispositiu del remitent i només el pot desencriptar el destinatari. Proton no pot veure el contingut del correu en cap moment."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tento e-mail je [koncově šifrován](https://proton.me/blog/what-is-end-to-end-encryption) na zařízení odesílatele a může být dešifrován pouze příjemcem. Proton nemůže obsah e-mailu nikdy vidět."
           }
         },
         "da" : {
@@ -4543,10 +4927,22 @@
             "value" : "Questa email è [crittografata end-to-end](https://proton.me/blog/what-is-end-to-end-encryption) sul dispositivo del mittente e può essere decrittata solo dal destinatario. Proton non può vedere il contenuto dell'email in nessun momento."
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Denne e-posten er [ende-til-ende-kryptert](https://proton.me/blog/what-is-end-to-end-encryption) på avsenderens enhet og kan kun dekrypteres av mottakeren. Proton kan ikke se innholdet i e-posten til enhver tid."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Este e-mail é [criptografado de ponta a ponta](https://proton.me/blog/what-is-end-to-end-encryption) no dispositivo do remetente e só pode ser descriptografado pelo destinatário. O Proton não pode ver o conteúdo do e-mail a qualquer momento."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Acest mesaj este [criptat bilateral](https://proton.me/blog/what-is-end-to-end-encryption) pe dispozitivul expeditorului și poate fi decriptat doar de către destinatar. Proton nu poate vedea conținutul acestuia în niciun moment."
           }
         },
         "sk" : {
@@ -4576,6 +4972,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Aquest correu electrònic s'emmagatzema als servidors de Proton amb [xifratge de zero accés](https://proton.me/blog/zero-access-encryption). Ni Proton ni ningú més no el pot llegir."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tento e-mail je uložen na serverech Proton s [šifrováním s nulovým přístupem](https://proton.me/blog/zero-access-encryption). Nemůže jej číst ani Proton, ani nikdo jiný."
           }
         },
         "da" : {
@@ -4626,10 +5028,22 @@
             "value" : "Questa email è archiviata sui server Proton con [crittografia zero-access](https://proton.me/blog/zero-access-encryption). Né Proton né nessun altro possono leggerla."
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Denne e-posten er lagret på Proton-tjenere med [nulltilgangskryptering](https://proton.me/blog/zero-access-encryption). Verken Proton eller noen andre kan lese den."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Este e-mail é armazenado nos servidores da Proton com [criptografia de acesso zero](https://proton.me/blog/zero-access-encryption). Nem a Proton nem ninguém mais pode lê-lo."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Acest mesaj este stocat pe serverele Proton cu [criptare cu acces zero](https://proton.me/blog/zero-access-encryption). Nici Proton, nici altcineva nu îl poate citi."
           }
         },
         "sk" : {
@@ -4659,6 +5073,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Aquest destinatari ha desactivat el xifratge d’extrem a extrem al seu compte."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tento příjemce ve svém účtu deaktivoval koncové šifrování."
           }
         },
         "da" : {
@@ -4709,10 +5129,22 @@
             "value" : "Questo destinatario ha disattivato la crittografia end-to-end sul proprio account."
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Denne mottakeren har deaktivert ende-til-ende-kryptering på kontoen sin."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Este destinatário desativou a criptografia de ponta a ponta em sua conta."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Acest destinatar și-a dezactivat criptarea bilaterală în contul său."
           }
         },
         "sk" : {
@@ -5120,6 +5552,12 @@
             "value" : "Heu [signat digitalment](https://proton.me/support/proton-mail-digital-signatures) aquest correu electrònic, el que demostra al destinatari que el vostre correu electrònic és autèntic i no ha estat manipulat."
           }
         },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tento e-mail jste [digitálně podepsali](https://proton.me/support/proton-mail-digital-signatures), čímž příjemci prokážete, že váš e-mail je pravý a nebyl bez dovolení pozměněn."
+          }
+        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5168,10 +5606,22 @@
             "value" : "Hai [firmato digitalmente](https://proton.me/support/proton-mail-digital-signatures) questa email, dimostrando al destinatario che la tua email è autentica e non è stata manomessa."
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Du har [digitalt signert](https://proton.me/support/proton-mail-digital-signatures) denne e-posten, noe som beviser for mottakeren at e-posten din er ekte og ikke har blitt tuklet med."
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Você [assinou digitalmente](https://proton.me/support/proton-mail-digital-signatures) este e-mail, provando ao destinatário que seu e-mail é genuíno e não foi adulterado."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ați [semnat digital](https://proton.me/support/proton-mail-digital-signatures) acest mesaj, dovedind destinatarului că este autentic și nu a fost modificat."
           }
         },
         "sk" : {
@@ -5388,6 +5838,12 @@
             "value" : "Xifrat d'accés zero"
           }
         },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Šifrováno s nulovým přístupem"
+          }
+        },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5436,10 +5892,22 @@
             "value" : "Crittografato ad accesso zero"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nulltilgangskryptert"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Criptografado de acesso zero"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Criptat cu acces zero"
           }
         },
         "sk" : {
@@ -5475,6 +5943,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Xifrat d'accés zero amb destinatari verificat"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "S ověřeným příjemcem a šifrováním s nulovým přístupem"
           }
         },
         "da" : {
@@ -5525,10 +5999,22 @@
             "value" : "Zero-access crittografato con destinatario verificato"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nulltilgangskryptert med verifisert mottaker"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Criptografado de acesso zero e destinatário verificado"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Criptat cu acces zero cu destinatar verificat"
           }
         },
         "sk" : {
@@ -5564,6 +6050,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Xifrat d'accés zero amb destinataris verificats"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "S ověřenými příjemci a šifrováním s nulovým přístupem"
           }
         },
         "da" : {
@@ -5614,10 +6106,22 @@
             "value" : "Zero-access crittografato con destinatari verificati"
           }
         },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nulltilgangskryptert med verifiserte mottakere"
+          }
+        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Criptografado de acesso zero e destinatários verificados"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Criptat cu acces zero cu destinatari verificați"
           }
         },
         "sk" : {
