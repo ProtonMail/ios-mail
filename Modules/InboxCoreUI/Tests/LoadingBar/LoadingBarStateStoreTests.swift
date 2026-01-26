@@ -26,13 +26,25 @@ class LoadingBarStateStoreTests {
     private let configuration = LoadingBarConfiguration()
     private lazy var sut = LoadingBarStateStore(configuration: configuration)
 
+    init() {
+        sut.handle(action: .barVisibilityChanged(isVisible: true))
+    }
+
     // MARK: - Basic tests
 
     @Test
-    func startLoading_SetsIsLoadingToTrue() {
+    func startLoading_AfterVisibilityChangesToOn_StartsLoading() {
         let t0 = Date(timeIntervalSince1970: 1000)
 
         withCurrentDate(t0) {
+            sut.handle(action: .barVisibilityChanged(isVisible: false))
+            sut.handle(action: .startLoading)
+        }
+
+        #expect(sut.isLoading == false)
+
+        withCurrentDate(t0) {
+            sut.handle(action: .barVisibilityChanged(isVisible: true))
             sut.handle(action: .startLoading)
         }
 

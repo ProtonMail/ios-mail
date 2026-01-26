@@ -7,7 +7,7 @@ final class LoadingBarStateStore: ObservableObject {
         case startLoading
         case stopLoading
         case cycleCompleted
-        case setVisibility(Bool)
+        case barVisibilityChanged(isVisible: Bool)
     }
 
     @Published private(set) var isLoading = false
@@ -25,7 +25,7 @@ final class LoadingBarStateStore: ObservableObject {
 
     func handle(action: Action) {
         switch action {
-        case .setVisibility(let isVisible):
+        case .barVisibilityChanged(let isVisible):
             self.isVisible = isVisible
         case .startLoading:
             guard !isLoading && isVisible else { return }
