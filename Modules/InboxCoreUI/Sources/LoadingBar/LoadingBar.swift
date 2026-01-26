@@ -43,6 +43,16 @@ public struct LoadingBar<Content: View>: View {
                 }
             }
         }
+        .onAppear {
+            stateStore.handle(action: .setVisibility(true))
+            if isLoading {
+                stateStore.handle(action: .startLoading)
+            }
+        }
+        .onDisappear {
+            stateStore.handle(action: .setVisibility(false))
+            stateStore.handle(action: .stopLoading)
+        }
         .onChange(of: isLoading, initial: true) { _, newValue in
             let action: LoadingBarStateStore.Action = newValue ? .startLoading : .stopLoading
             stateStore.handle(action: action)
