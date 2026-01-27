@@ -24,6 +24,7 @@ final class AttachmentViewLoader: ObservableObject {
     @Published private(set) var state: State
     private let mailbox: MailboxProtocol
     private let queue: DispatchQueue = DispatchQueue(label: "\(Bundle.defaultIdentifier).AttachmentViewLoader")
+    private var temporaryFileURL: URL?
 
     init(state: State = .loading, mailbox: MailboxProtocol) {
         self.state = state
@@ -33,12 +34,40 @@ final class AttachmentViewLoader: ObservableObject {
     func load(attachmentId: ID) async {
         switch await mailbox.getAttachment(localAttachmentId: attachmentId) {
         case .ok(let result):
-            let url = URL(fileURLWithPath: result.dataPath)
+            let sourceURL = URL(fileURLWithPath: result.dataPath)
 
-            updateState(.attachmentReady(url))
+            do {
+                let tempURL = try copyToTemporaryDirectory(from: sourceURL)
+                updateState(.attachmentReady(tempURL))
+            } catch {
+                AppLogger.log(error: error)
+                updateState(.error(.other(.unexpected(.fileSystem))))
+            }
         case .error(let error):
             updateState(.error(error))
         }
+    }
+
+    /// Copies a file to the temporary directory for QLPreviewController compatibility.
+    ///
+    /// QLPreviewController has issues accessing files in app group sandbox folders.
+    private func copyToTemporaryDirectory(from sourceURL: URL) throws -> URL {
+        let tempDirectory = FileManager.default.temporaryDirectory
+        let fileName = sourceURL.lastPathComponent
+        let tempURL = tempDirectory.appendingPathComponent(fileName)
+
+        if FileManager.default.fileExists(atPath: tempURL.path) {
+            try FileManager.default.removeItem(at: tempURL)
+        }
+        try FileManager.default.copyItem(at: sourceURL, to: tempURL)
+        temporaryFileURL = tempURL
+        return tempURL
+    }
+
+    func cleanupTemporaryFile() {
+        guard let url = temporaryFileURL else { return }
+        try? FileManager.default.removeItem(at: url)
+        temporaryFileURL = nil
     }
 
     private func updateState(_ newState: State) {

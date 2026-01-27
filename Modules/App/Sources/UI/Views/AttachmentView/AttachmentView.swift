@@ -36,6 +36,9 @@ struct AttachmentView: View {
                 progressView
             case .attachmentReady(let url):
                 AttachmentViewController(url: url)
+                    .onDisappear {
+                        loader.cleanupTemporaryFile()
+                    }
             case .error(let error):
                 errorView(error: error)
             }
