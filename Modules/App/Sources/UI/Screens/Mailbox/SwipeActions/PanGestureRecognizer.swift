@@ -28,7 +28,15 @@ struct PanGestureRecognizer: UIGestureRecognizerRepresentable {
     }
 
     func handleUIGestureRecognizerAction(_ gestureRecognizer: UIPanGestureRecognizer, context: Context) {
-        let translation = gestureRecognizer.translation(in: gestureRecognizer.view!)
+        guard let view = gestureRecognizer.view else {
+            // Still handle cleanup even if view is nil to avoid UI side effects
+            if gestureRecognizer.state == .ended || gestureRecognizer.state == .cancelled {
+                onEnded()
+            }
+            return
+        }
+
+        let translation = gestureRecognizer.translation(in: view)
 
         switch gestureRecognizer.state {
         case .began, .changed:
