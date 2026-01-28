@@ -267,6 +267,8 @@ private extension DraftSendErrorReason {
             L10n.DraftSendError.expirationTimeTooSoon
         case .messageTooLarge:
             L10n.DraftSendError.messageTooLarge
+        case .badRequest(let apiErrorMessage):
+            apiErrorMessage.stringResource
         }
     }
 }

@@ -26,6 +26,7 @@ import proton_app_uniffi
 
 struct MessageBodyView: View {
     @Environment(\.messagePrinter) var messagePrinter: MessagePrinter
+    @Environment(\.openURL) private var urlOpener
     @EnvironmentObject var toastStateStore: ToastStateStore
     @EnvironmentObject var refreshBannersListener: RefreshMessageBannersNotifier
     let messageID: ID
@@ -69,7 +70,8 @@ struct MessageBodyView: View {
                 wrapper: .productionInstance(),
                 toastStateStore: toastStateStore,
                 backOnlineActionExecutor: BackOnlineActionExecutor(mailUserSession: { AppContext.shared.userSession }),
-                messageEncryptionInfoStore: messageEncryptionInfoStore
+                messageEncryptionInfoStore: messageEncryptionInfoStore,
+                urlOpener: urlOpener
             )
         ) { state, store in
             VStack(spacing: .zero) {
@@ -86,6 +88,8 @@ struct MessageBodyView: View {
                                 editScheduledMessage()
                             case .displayEmbeddedImagesTapped:
                                 store.handle(action: .displayEmbeddedImages)
+                            case .domainAuthFailLearnMoreTapped:
+                                store.handle(action: .domainAuthFailLearnMore)
                             case .downloadRemoteContentTapped:
                                 store.handle(action: .downloadRemoteContent)
                             case .loadImageWithoutProxyTapped:
