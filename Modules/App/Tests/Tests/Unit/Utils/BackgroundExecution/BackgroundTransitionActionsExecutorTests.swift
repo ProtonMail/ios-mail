@@ -53,23 +53,30 @@ class BackgroundTransitionActionsExecutorTests: BaseTestCase {
         super.tearDown()
     }
 
-    func test_WhenUserEntersBackgroundAndEntersForeground_ItEndsBackgroundTask() {
-        backgroundTaskExecutorSpy.backgroundExecutionFinishedWithSuccess = false
-        backgroundTaskExecutorSpy.executionCompletedWithResult = .init(status: .abortedInForeground, hasUnsentMessages: false, hasPendingActions: false)
-
+    func test_WhenUserEntersBackgroundAndEntersForeground_ItEndsBackgroundTask() async {
         sut.didEnterBackground()
         XCTAssertEqual(backgroundTransitionTaskSchedulerSpy.invokedBeginBackgroundTask.count, 1)
 
         sut.willEnterForeground()
         XCTAssertEqual(backgroundTaskExecutorSpy.backgroundExecutionHandleStub.abortCalls, [true])
-        XCTAssertEqual(backgroundTransitionTaskSchedulerSpy.invokedEndBackgroundTask.count, 1)
         XCTAssertEqual(notificationSchedulerSpy.invokedAdd.count, 0)
+
+        await backgroundTaskExecutorSpy.capturedCallback?
+            .onExecutionCompleted(
+                result: .init(
+                    status: .abortedInForeground, hasUnsentMessages: false, hasPendingActions: false
+                ))
+        XCTAssertEqual(backgroundTransitionTaskSchedulerSpy.invokedEndBackgroundTask.count, 1)
     }
 
-    func test_WhenUserEntersBackground_ItExecutesBackgroundActionsWithSuccess() throws {
+    func test_WhenUserEntersBackground_ItExecutesBackgroundActionsWithSuccess() async {
         actionQueueStatusProviderSpy.draftSendResultUnseenResultStub = .ok([.success])
-        backgroundTaskExecutorSpy.executionCompletedWithResult = .init(status: .abortedInForeground, hasUnsentMessages: false, hasPendingActions: false)
         sut.didEnterBackground()
+
+        await backgroundTaskExecutorSpy.capturedCallback?
+            .onExecutionCompleted(
+                result: .init(status: .abortedInForeground, hasUnsentMessages: false, hasPendingActions: false)
+            )
 
         XCTAssertEqual(backgroundTransitionTaskSchedulerSpy.invokedBeginBackgroundTask.count, 1)
         XCTAssertEqual(backgroundTaskExecutorSpy.startBackgroundExecutionInvokeCount, 1)
@@ -80,10 +87,14 @@ class BackgroundTransitionActionsExecutorTests: BaseTestCase {
         )
     }
 
-    func test_WhenUserEntersBackgroundAndTimeIsUpAndMessagesAreUnsent_ItDisplaysNotification() {
-        backgroundTaskExecutorSpy.executionCompletedWithResult = .init(status: .abortedInBackground, hasUnsentMessages: true, hasPendingActions: false)
-
+    func test_WhenUserEntersBackgroundAndTimeIsUpAndMessagesAreUnsent_ItDisplaysNotification() async {
         sut.didEnterBackground()
+
+        await backgroundTaskExecutorSpy.capturedCallback?
+            .onExecutionCompleted(
+                result:
+                    .init(status: .abortedInBackground, hasUnsentMessages: true, hasPendingActions: false)
+            )
 
         XCTAssertEqual(backgroundTransitionTaskSchedulerSpy.invokedBeginBackgroundTask.count, 1)
         XCTAssertEqual(backgroundTaskExecutorSpy.startBackgroundExecutionInvokeCount, 1)
@@ -93,16 +104,19 @@ class BackgroundTransitionActionsExecutorTests: BaseTestCase {
     }
 
     @MainActor
-    func test_WhenUserEntersBackgroundTaskExpiresThereAreNoMessagesToSend_ItFinishesWithSuccess() {
-        backgroundTaskExecutorSpy.backgroundExecutionFinishedWithSuccess = false
-        backgroundTaskExecutorSpy.executionCompletedWithResult = .init(status: .abortedInBackground, hasUnsentMessages: false, hasPendingActions: false)
-
+    func test_WhenUserEntersBackgroundTaskExpiresThereAreNoMessagesToSend_ItFinishesWithSuccess() async {
         sut.didEnterBackground()
         backgroundTransitionTaskSchedulerSpy.invokedBeginBackgroundTask.first?.handler?()
 
         XCTAssertEqual(backgroundTransitionTaskSchedulerSpy.invokedBeginBackgroundTask.count, 1)
         XCTAssertEqual(backgroundTaskExecutorSpy.startBackgroundExecutionInvokeCount, 1)
         XCTAssertEqual(notificationSchedulerSpy.invokedAdd.count, 0)
+
+        await backgroundTaskExecutorSpy.capturedCallback?
+            .onExecutionCompleted(
+                result:
+                    .init(status: .abortedInBackground, hasUnsentMessages: false, hasPendingActions: false)
+            )
         XCTAssertEqual(backgroundTransitionTaskSchedulerSpy.invokedEndBackgroundTask.count, 1)
     }
 
