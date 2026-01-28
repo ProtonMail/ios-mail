@@ -105,6 +105,32 @@ class BackgroundTransitionActionsExecutorTests: BaseTestCase {
         XCTAssertEqual(notificationSchedulerSpy.invokedAdd.count, 0)
         XCTAssertEqual(backgroundTransitionTaskSchedulerSpy.invokedEndBackgroundTask.count, 1)
     }
+
+    func test_WhenBackgroundTaskIdentifierIsInvalid_ItDoesNotStartBackgroundExecution() {
+        backgroundTransitionTaskSchedulerSpy.stubbedBackgroundTaskIdentifier = .invalid
+
+        sut.didEnterBackground()
+
+        XCTAssertEqual(backgroundTransitionTaskSchedulerSpy.invokedBeginBackgroundTask.count, 1)
+        XCTAssertEqual(backgroundTaskExecutorSpy.startBackgroundExecutionInvokeCount, 0)
+        XCTAssertEqual(backgroundTransitionTaskSchedulerSpy.invokedEndBackgroundTask.count, 0)
+    }
+
+    func test_WhenThereIsNoUserSession_ItDoesNotStartBackgroundTask() {
+        actionQueueStatusProviderSpy = nil
+
+        sut.didEnterBackground()
+
+        XCTAssertEqual(backgroundTransitionTaskSchedulerSpy.invokedBeginBackgroundTask.count, 0)
+        XCTAssertEqual(backgroundTaskExecutorSpy.startBackgroundExecutionInvokeCount, 0)
+    }
+
+    func test_WhenWillEnterForegroundButBackgroundTaskIdentifierIsInvalid_ItDoesNotAbort() {
+        sut.willEnterForeground()
+
+        XCTAssertEqual(backgroundTaskExecutorSpy.backgroundExecutionHandleStub.abortCalls, [])
+        XCTAssertEqual(backgroundTransitionTaskSchedulerSpy.invokedEndBackgroundTask.count, 0)
+    }
 }
 
 private extension DraftSendResult {
