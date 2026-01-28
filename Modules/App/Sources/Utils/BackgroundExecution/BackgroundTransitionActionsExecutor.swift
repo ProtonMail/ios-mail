@@ -86,6 +86,12 @@ class BackgroundTransitionActionsExecutor: ApplicationServiceDidEnterBackground,
             }
         )
 
+        Self.log("Background task identifier: \(String(describing: backgroundTaskIdentifier))")
+
+        guard backgroundTaskIdentifier != .invalid else {
+            return
+        }
+
         Self.log("Background task started")
 
         Task {
