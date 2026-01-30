@@ -23,7 +23,7 @@ import proton_app_uniffi
 
 @Observable
 @MainActor
-final class RSVPStateStore: StateStore_v2 {
+final class RSVPStateStore: ObservationStateStore {
     enum State: Equatable {
         case loading
         case loadFailed
@@ -39,7 +39,6 @@ final class RSVPStateStore: StateStore_v2 {
     private var internalState: InternalState {
         didSet { state = internalState.state }
     }
-    var state: State
 
     enum Action {
         case onLoad
@@ -67,6 +66,10 @@ final class RSVPStateStore: StateStore_v2 {
         self.state = internalState.state
     }
 
+    // MARK: - ObservationStateStore
+
+    var state: State
+
     func handle(action: Action) async {
         switch action {
         case .onLoad, .retry:
@@ -85,6 +88,8 @@ final class RSVPStateStore: StateStore_v2 {
             await openNewDraft(withEmail: email)
         }
     }
+
+    // MARK: - Private
 
     private func loadEventDetails() async {
         updateState(with: .loading)

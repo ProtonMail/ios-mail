@@ -44,7 +44,7 @@ extension StateStore {
 }
 
 @MainActor
-public protocol StateStore_v2 {
+public protocol ObservationStateStore {
     associatedtype State
     associatedtype Action
 
@@ -53,7 +53,7 @@ public protocol StateStore_v2 {
     func handle(action: Action) async
 }
 
-extension StateStore_v2 {
+extension ObservationStateStore {
     public func handle(action: Action) {
         Task {
             await handle(action: action)
