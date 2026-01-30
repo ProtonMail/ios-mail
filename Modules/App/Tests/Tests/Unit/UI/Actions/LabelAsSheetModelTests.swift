@@ -308,10 +308,10 @@ final class LabelAsSheetModelTests {
 
 private extension LabelAsAction {
     func copy(isSelected: IsSelected) -> Self {
-        .init(labelId: labelId, name: name, color: color, isSelected: isSelected)
+        .init(labelId: labelId, name: name, color: color, order: order, isSelected: isSelected)
     }
 
     static func testData(id: ID, isSelected: IsSelected) -> Self {
-        .init(labelId: id, name: .notUsed, color: .init(value: .notUsed), isSelected: isSelected)
+        .init(labelId: id, name: .notUsed, color: .init(value: .notUsed), order: 0, isSelected: isSelected)
     }
 }

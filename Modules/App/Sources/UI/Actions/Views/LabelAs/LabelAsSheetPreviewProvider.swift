@@ -40,18 +40,21 @@ enum LabelAsSheetPreviewProvider {
                 labelId: .init(value: 1),
                 name: "Private",
                 color: .init(value: "#F67900"),
+                order: 0,
                 isSelected: .partial
             ),
             .init(
                 labelId: .init(value: 2),
                 name: "Personal",
                 color: .init(value: "#E93671"),
+                order: 1,
                 isSelected: .selected
             ),
             .init(
                 labelId: .init(value: 3),
                 name: "Summer trip",
                 color: .init(value: "#9E329A"),
+                order: 2,
                 isSelected: .unselected
             ),
         ]
