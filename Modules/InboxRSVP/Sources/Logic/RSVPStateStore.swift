@@ -21,7 +21,9 @@ import ProtonUIFoundations
 import SwiftUI
 import proton_app_uniffi
 
-final class RSVPStateStore: StateStore {
+@Observable
+@MainActor
+final class RSVPStateStore: StateStore_v2 {
     enum State: Equatable {
         case loading
         case loadFailed
@@ -37,7 +39,7 @@ final class RSVPStateStore: StateStore {
     private var internalState: InternalState {
         didSet { state = internalState.state }
     }
-    @Published var state: State
+    var state: State
 
     enum Action {
         case onLoad
@@ -60,7 +62,8 @@ final class RSVPStateStore: StateStore {
         self.toastStateStore = toastStateStore
         self.clipboard = .init(toastStateStore: toastStateStore, pasteboard: pasteboard)
         self.draftPresenter = draftPresenter
-        self.internalState = .loading
+        let internalState: InternalState = .loading
+        self.internalState = internalState
         self.state = internalState.state
     }
 

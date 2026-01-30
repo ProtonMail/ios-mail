@@ -17,48 +17,52 @@
 
 import InboxCore
 import InboxCoreUI
+import Observation
 import ProtonUIFoundations
 import SwiftUI
 import proton_app_uniffi
 
 public struct RSVPView: View {
-    @Environment(\.openURL) var openURL
-    @Environment(\.pasteboard) var pasteboard
-    @EnvironmentObject var toastStateStore: ToastStateStore
+    @State var store: RSVPStateStore
     private let serviceProvider: RsvpEventServiceProvider
     private let draftPresenter: RecipientDraftPresenter
 
-    public init(serviceProvider: RsvpEventServiceProvider, draftPresenter: RecipientDraftPresenter) {
+    public init(
+        serviceProvider: RsvpEventServiceProvider,
+        draftPresenter: RecipientDraftPresenter,
+        openURL: OpenURLAction,
+        pasteboard: UIPasteboard,
+        toastStateStore: ToastStateStore
+    ) {
         self.serviceProvider = serviceProvider
         self.draftPresenter = draftPresenter
+        self.store = RSVPStateStore(
+            serviceProvider: serviceProvider,
+            openURL: openURL,
+            toastStateStore: toastStateStore,
+            pasteboard: pasteboard,
+            draftPresenter: draftPresenter
+        )
     }
 
     public var body: some View {
-        StoreView(
-            store: RSVPStateStore(
-                serviceProvider: serviceProvider,
-                openURL: openURL,
-                toastStateStore: toastStateStore,
-                pasteboard: pasteboard,
-                draftPresenter: draftPresenter
-            )
-        ) { state, store in
-            Group {
-                switch state {
-                case .loading:
-                    RSVPSkeletonView()
-                case .loadFailed:
-                    RSVPErrorRetryView { store.handle(action: .retry) }
-                case .loaded(let event), .answering(let event):
-                    RSVPEventView(
-                        event: event,
-                        isAnswering: state.isAnswering,
-                        action: { action in handle(action: action, with: store) }
-                    )
+        Group {
+            switch store.state {
+            case .loading:
+                RSVPSkeletonView()
+            case .loadFailed:
+                RSVPErrorRetryView {
+                    store.handle(action: .retry)
                 }
+            case .loaded(let event), .answering(let event):
+                RSVPEventView(
+                    event: event,
+                    isAnswering: store.state.isAnswering,
+                    action: { action in handle(action: action, with: store) }
+                )
             }
-            .onLoad { store.handle(action: .onLoad) }
         }
+        .onLoad { store.handle(action: .onLoad) }
     }
 
     // MARK: - Private

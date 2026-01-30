@@ -42,3 +42,21 @@ extension StateStore {
         }
     }
 }
+
+@MainActor
+public protocol StateStore_v2 {
+    associatedtype State
+    associatedtype Action
+
+    var state: State { get set }
+
+    func handle(action: Action) async
+}
+
+extension StateStore_v2 {
+    public func handle(action: Action) {
+        Task {
+            await handle(action: action)
+        }
+    }
+}
