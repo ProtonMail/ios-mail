@@ -19,7 +19,7 @@ import InboxCore
 import UIKit
 import proton_app_uniffi
 
-actor BackgroundTransitionActionsExecutor: ApplicationServiceDidEnterBackground, ApplicationServiceWillEnterForeground {
+actor BackgroundTransitionActionsExecutor: ApplicationServiceDidEnterBackground, ApplicationServiceWillEnterForeground, ApplicationServiceTerminate {
     typealias ActionQueueStatusProvider = @Sendable () -> ConnectionStatusProvider?
     typealias BackgroundTaskExecutorProvider = @Sendable () -> BackgroundTaskExecutor
 
@@ -69,6 +69,14 @@ actor BackgroundTransitionActionsExecutor: ApplicationServiceDidEnterBackground,
     nonisolated func didEnterBackground() {
         Task {
             await handleDidEnterBackground()
+        }
+    }
+
+    // MARK: - ApplicationServiceTerminate
+
+    nonisolated func terminateService() {
+        Task {
+            await abortBackgroundTask(afterEnteredForeground: false)
         }
     }
 
