@@ -76,7 +76,7 @@ actor BackgroundTransitionActionsExecutor: ApplicationServiceDidEnterBackground,
 
     nonisolated func terminateService() {
         Task {
-            await abortBackgroundTask(afterEnteredForeground: false)
+            await abortBackgroundTask(afterEnteredForeground: false)  // FIXME: - It cannot be false
         }
     }
 

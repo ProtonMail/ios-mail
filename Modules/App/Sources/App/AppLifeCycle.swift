@@ -138,7 +138,9 @@ extension AppLifeCycle {
                 backgroundTransitionActionsExecutor,
                 startAutoLockCountdownService,
             ],
-            terminateServices: []
+            terminateServices: [
+                backgroundTransitionActionsExecutor
+            ]
         )
     }
 }
