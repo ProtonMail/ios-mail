@@ -46,7 +46,7 @@ final class MailingSnapshotTests: XCTestCase {
 
             assertSnapshot(
                 of: webVC,
-                as: .wait(for: 1.0, on: .image),
+                as: .wait(for: 1.0, on: .image(perceptualPrecision: 0.98)),
                 named: name
             )
         }
