@@ -26,6 +26,12 @@ let package = Package(
             resources: [
                 .process("Resources")
             ]
-        )
+        ),
+        .testTarget(
+            name: "InboxCoreTests",
+            dependencies: [
+                .target(name: "InboxCore")
+            ]
+        ),
     ]
 )
