@@ -34,8 +34,6 @@ class AdAttributionService {
 
         let newFlags: ConversionValue =
             switch event {
-            case .appInstall:
-                [.appInstalled]
             case .loggedIn:
                 [.signedIn]
             case .firstActionPerformed:

@@ -13,6 +13,11 @@ import Testing
 
 @Suite(.serialized)
 struct AdAttributionServiceTests {
+    struct ConversionTestCase {
+        let events: [ConversionEvent]
+        let expectedFinalValue: ConversionTrackerSpy.CapturedConversionValue
+    }
+
     var sut: AdAttributionService
     var conversionTrackerSpy: ConversionTrackerSpy
     var userDefaults: UserDefaults
@@ -26,74 +31,33 @@ struct AdAttributionServiceTests {
         )
     }
 
-    @Test
-    func userOpenedApp_NoSignIn_NoAction_ItCorrectlyUpdatesConvertionValue() async throws {
-        await sut.handle(event: .appInstall)
+    @Test(
+        arguments: [
+            ConversionTestCase(
+                events: [.loggedIn],
+                expectedFinalValue: .init(fineConversionValue: 1, coarseConversionValue: .low, lockPostback: false)
+            ),
+            ConversionTestCase(
+                events: [.loggedIn, .firstActionPerformed],
+                expectedFinalValue: .init(fineConversionValue: 3, coarseConversionValue: .medium, lockPostback: false)
+            ),
+            ConversionTestCase(
+                events: [.loggedIn, .firstActionPerformed, .subscribed(plan: .unlimited, duration: .year)],
+                expectedFinalValue: .init(fineConversionValue: 47, coarseConversionValue: .high, lockPostback: true)
+            ),
+            ConversionTestCase(
+                events: [.loggedIn, .subscribed(plan: .unlimited, duration: .year)],
+                expectedFinalValue: .init(fineConversionValue: 45, coarseConversionValue: .high, lockPostback: true)
+            )
+        ]
+    )
+    func conversionEventsProduceCorrectValues(testCase: ConversionTestCase) async throws {
+        for event in testCase.events {
+            await sut.handle(event: event)
+        }
 
-        #expect(conversionTrackerSpy.capturedConversionValue.count == 1)
         let capturedConversionValue = try #require(conversionTrackerSpy.capturedConversionValue.last)
-
-        #expect(
-            capturedConversionValue
-                == .init(
-                    fineConversionValue: 0,
-                    coarseConversionValue: .low,
-                    lockPostback: false
-                ))
-    }
-
-    @Test
-    func userSignedIn_NoFirstActionYet_ItCorrectlyUpdatesConvertionValue() async throws {
-        await sut.handle(event: .appInstall)
-        await sut.handle(event: .loggedIn)
-
-        #expect(conversionTrackerSpy.capturedConversionValue.count == 2)
-        let capturedConversionValue = try #require(conversionTrackerSpy.capturedConversionValue.last)
-
-        #expect(
-            capturedConversionValue
-                == .init(
-                    fineConversionValue: 1,
-                    coarseConversionValue: .low,
-                    lockPostback: false
-                ))
-    }
-
-    @Test
-    func userSignIn_PerformedFirstAction_SubscribedToUnlimitedYearlyPlan_ItCorrectlyUpdatesConvertionValue() async throws {
-        await sut.handle(event: .appInstall)
-        await sut.handle(event: .loggedIn)
-        await sut.handle(event: .firstActionPerformed)
-        await sut.handle(event: .subscribed(plan: .unlimited, duration: .year))
-
-        #expect(conversionTrackerSpy.capturedConversionValue.count == 4)
-        let capturedConversionValue = try #require(conversionTrackerSpy.capturedConversionValue.last)
-
-        #expect(
-            capturedConversionValue
-                == .init(
-                    fineConversionValue: 47,
-                    coarseConversionValue: .high,
-                    lockPostback: true
-                ))
-    }
-
-    @Test
-    func userSignIn_SubscribedToUnlimitedYearlyPlan_ItCorrectlyUpdatesConvertionValue() async throws {
-        await sut.handle(event: .appInstall)
-        await sut.handle(event: .loggedIn)
-        await sut.handle(event: .subscribed(plan: .unlimited, duration: .year))
-
-        #expect(conversionTrackerSpy.capturedConversionValue.count == 3)
-        let capturedConversionValue = try #require(conversionTrackerSpy.capturedConversionValue.last)
-
-        #expect(
-            capturedConversionValue
-                == .init(
-                    fineConversionValue: 45,
-                    coarseConversionValue: .high,
-                    lockPostback: true
-                ))
+        #expect(capturedConversionValue == testCase.expectedFinalValue)
     }
 }
 
