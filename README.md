@@ -39,7 +39,9 @@ This open-source release is intended for transparency and reference purposes.
 
 ## Internal Development
 
-If you are a Proton team member with access to private infrastructure, please refer to [DEVELOPMENT.md](./DEVELOPMENT.md) for setup instructions and debugging tools.
+If you are a Proton team member with access to internal infrastructure, please refer to [DEVELOPMENT.md](./DEVELOPMENT.md) for setup instructions and debugging tools.
+
+*Note: This file references private Proton infrastructure and is not included in the public repository.*
 
 ## About Proton
 

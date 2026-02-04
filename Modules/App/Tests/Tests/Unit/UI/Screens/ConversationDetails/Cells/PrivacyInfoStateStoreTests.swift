@@ -159,24 +159,24 @@ final class PrivacyInfoStateStoreTests {
         try await expectToEventually(self.sut.state.info.loadedValue?.totalTrackersCount == 4, timeout: 0.1)
     }
 
-//    @Test
-//    func testLoadInfo_whenStreamProducesDisabledUpdate_setsSettingDisabled() async throws {
-//        let disabledInfo = PrivacyInfo(trackers: .disabled, utmLinks: .dummy)
-//        let mockStream = MockPrivacyStream(
-//            initialValue: .dummy,
-//            subsequentValues: [disabledInfo]
-//        )
-//        sut = makeSUT(stream: mockStream)
-//        defer { sut = nil }
-//
-//        #expect(sut.state.isSettingEnabled)
-//        await sut.handle(action: .loadInfo)
-//        await Task.yield()
-//
-//        mockStream.triggerNext()
-//
-//        try await expectToEventually(!self.sut.state.isSettingEnabled, timeout: 0.1)
-//    }
+    //    @Test
+    //    func testLoadInfo_whenStreamProducesDisabledUpdate_setsSettingDisabled() async throws {
+    //        let disabledInfo = PrivacyInfo(trackers: .disabled, utmLinks: .dummy)
+    //        let mockStream = MockPrivacyStream(
+    //            initialValue: .dummy,
+    //            subsequentValues: [disabledInfo]
+    //        )
+    //        sut = makeSUT(stream: mockStream)
+    //        defer { sut = nil }
+    //
+    //        #expect(sut.state.isSettingEnabled)
+    //        await sut.handle(action: .loadInfo)
+    //        await Task.yield()
+    //
+    //        mockStream.triggerNext()
+    //
+    //        try await expectToEventually(!self.sut.state.isSettingEnabled, timeout: 0.1)
+    //    }
 
     @Test
     func testLoadInfo_whenStreamProducesPendingUpdate_setsStateToLoading() async throws {
