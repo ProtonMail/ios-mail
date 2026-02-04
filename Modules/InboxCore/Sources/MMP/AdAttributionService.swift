@@ -17,19 +17,19 @@
 
 import Foundation
 
-class AdAttributionService {
+public class AdAttributionService {
     private let conversionTracker: ConversionTracker
     private let userDefaults: UserDefaults
 
-    init(
+    public init(
         conversionTracker: ConversionTracker = makeConversionTracker(),
-        userDefaults: UserDefaults = .appGroup
+        userDefaults: UserDefaults
     ) {
         self.conversionTracker = conversionTracker
         self.userDefaults = userDefaults
     }
 
-    func handle(event: ConversionEvent) async {
+    public func handle(event: ConversionEvent) async {
         let currentConversionValue = loadConversionValue()
 
         let newFlags: ConversionValue =

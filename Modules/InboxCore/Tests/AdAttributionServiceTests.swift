@@ -48,7 +48,7 @@ struct AdAttributionServiceTests {
             ConversionTestCase(
                 events: [.loggedIn, .subscribed(plan: .unlimited, duration: .year)],
                 expectedFinalValue: .init(fineConversionValue: 45, coarseConversionValue: .high, lockPostback: true)
-            )
+            ),
         ]
     )
     func conversionEventsProduceCorrectValues(testCase: ConversionTestCase) async throws {

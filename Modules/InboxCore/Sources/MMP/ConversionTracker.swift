@@ -17,7 +17,7 @@
 
 import AdAttributionKit
 
-protocol ConversionTracker {
+public protocol ConversionTracker {
     func updateConversionValue(
         _ fineConversionValue: Int,
         coarseConversionValue: CoarseValue,
@@ -48,7 +48,7 @@ struct NoTracking: ConversionTracker {
     ) async throws {}
 }
 
-func makeConversionTracker() -> ConversionTracker {
+public func makeConversionTracker() -> ConversionTracker {
     if #available(iOS 17.4, *) {
         AdAttributionKitTracker()
     } else {
