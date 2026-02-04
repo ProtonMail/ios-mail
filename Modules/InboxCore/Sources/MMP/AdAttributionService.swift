@@ -59,7 +59,7 @@ class AdAttributionService {
                 lockPostback: shouldLockPostback(for: conversionValue)
             )
         } catch {
-            // FIXME: - Add logging
+            AppLogger.log(error: error)
         }
     }
 
