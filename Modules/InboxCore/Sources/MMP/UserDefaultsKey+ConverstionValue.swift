@@ -15,19 +15,6 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-enum ConversionEvent {
-    case appInstall
-    case loggedIn
-    case firstActionPerformed
-    case subscribed(plan: SubscriptionPlan, duration: SubscriptionDuration)
-}
-
-enum SubscriptionPlan {
-    case plus
-    case unlimited
-}
-
-enum SubscriptionDuration {
-    case month
-    case year
+extension UserDefaultsKey where Value == UInt8 {
+    static let conversionValue = Self(name: "adAttributionConversionValue")
 }
