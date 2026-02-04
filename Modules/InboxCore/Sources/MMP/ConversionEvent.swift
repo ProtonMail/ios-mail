@@ -16,7 +16,6 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 enum ConversionEvent {
-    case appInstall
     case loggedIn
     case firstActionPerformed
     case subscribed(plan: SubscriptionPlan, duration: SubscriptionDuration)

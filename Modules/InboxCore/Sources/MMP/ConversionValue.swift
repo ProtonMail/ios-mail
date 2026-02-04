@@ -23,7 +23,6 @@ struct ConversionValue: OptionSet, Equatable {
     }
 
     // Bit 0: Sign-in / account created
-    static let appInstalled: ConversionValue = []
     static let signedIn = ConversionValue(rawValue: 1 << 0)
 
     // Bit 1: First emails sent/received
