@@ -6,17 +6,24 @@
 //
 
 import AdAttributionKit
+import Foundation
 import Testing
 
 @testable import InboxCore
 
+@Suite(.serialized)
 struct AdAttributionServiceTests {
     var sut: AdAttributionService
     var conversionTrackerSpy: ConversionTrackerSpy
+    var userDefaults: UserDefaults
 
     init() {
+        userDefaults = UserDefaults(suiteName: UUID().uuidString)!
         conversionTrackerSpy = .init()
-        self.sut = AdAttributionService(conversionTracker: conversionTrackerSpy)
+        self.sut = AdAttributionService(
+            conversionTracker: conversionTrackerSpy,
+            userDefaults: userDefaults
+        )
     }
 
     @Test
@@ -24,7 +31,7 @@ struct AdAttributionServiceTests {
         await sut.handle(event: .appInstall)
 
         #expect(conversionTrackerSpy.capturedConversionValue.count == 1)
-        let capturedConversionValue = try #require(conversionTrackerSpy.capturedConversionValue.first)
+        let capturedConversionValue = try #require(conversionTrackerSpy.capturedConversionValue.last)
 
         #expect(
             capturedConversionValue
@@ -37,10 +44,11 @@ struct AdAttributionServiceTests {
 
     @Test
     func userSignedIn_NoFirstActionYet_ItCorrectlyUpdatesConvertionValue() async throws {
+        await sut.handle(event: .appInstall)
         await sut.handle(event: .loggedIn)
 
-        #expect(conversionTrackerSpy.capturedConversionValue.count == 1)
-        let capturedConversionValue = try #require(conversionTrackerSpy.capturedConversionValue.first)
+        #expect(conversionTrackerSpy.capturedConversionValue.count == 2)
+        let capturedConversionValue = try #require(conversionTrackerSpy.capturedConversionValue.last)
 
         #expect(
             capturedConversionValue
@@ -52,16 +60,37 @@ struct AdAttributionServiceTests {
     }
 
     @Test
-    func userSignIn_PerformedFirstAction_BoughtUnlimitedPlanFor12Months_ItCorrectlyUpdatesConvertionValue() async throws {
+    func userSignIn_PerformedFirstAction_SubscribedToUnlimitedYearlyPlan_ItCorrectlyUpdatesConvertionValue() async throws {
+        await sut.handle(event: .appInstall)
+        await sut.handle(event: .loggedIn)
+        await sut.handle(event: .firstActionPerformed)
         await sut.handle(event: .subscribed(plan: .unlimited, duration: .year))
 
-        #expect(conversionTrackerSpy.capturedConversionValue.count == 1)
-        let capturedConversionValue = try #require(conversionTrackerSpy.capturedConversionValue.first)
+        #expect(conversionTrackerSpy.capturedConversionValue.count == 4)
+        let capturedConversionValue = try #require(conversionTrackerSpy.capturedConversionValue.last)
 
         #expect(
             capturedConversionValue
                 == .init(
                     fineConversionValue: 47,
+                    coarseConversionValue: .high,
+                    lockPostback: true
+                ))
+    }
+
+    @Test
+    func userSignIn_SubscribedToUnlimitedYearlyPlan_ItCorrectlyUpdatesConvertionValue() async throws {
+        await sut.handle(event: .appInstall)
+        await sut.handle(event: .loggedIn)
+        await sut.handle(event: .subscribed(plan: .unlimited, duration: .year))
+
+        #expect(conversionTrackerSpy.capturedConversionValue.count == 3)
+        let capturedConversionValue = try #require(conversionTrackerSpy.capturedConversionValue.last)
+
+        #expect(
+            capturedConversionValue
+                == .init(
+                    fineConversionValue: 45,
                     coarseConversionValue: .high,
                     lockPostback: true
                 ))
