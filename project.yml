@@ -216,6 +216,18 @@ targets:
         BGTaskSchedulerPermittedIdentifiers:
           - ch.protonmail.protonmail.execute_pending_actions
         UIBackgroundModes: [processing]
+        SKAdNetworkItems:
+          - SKAdNetworkIdentifier: eqhxz8m8av.skadnetwork
+          - SKAdNetworkIdentifier: cstr6suwn9.skadnetwork
+          - SKAdNetworkIdentifier: klf5c3l5u5.skadnetwork
+          - SKAdNetworkIdentifier: v9wttpbfk9.skadnetwork
+          - SKAdNetworkIdentifier: n38lu8286q.skadnetwork
+          - SKAdNetworkIdentifier: mj797d8u6f.skadnetwork
+          - SKAdNetworkIdentifier: 22mmun2rn5.skadnetwork
+          - SKAdNetworkIdentifier: 238da6jt44.skadnetwork
+          - SKAdNetworkIdentifier: 2tdux39lx8.skadnetwork
+          - SKAdNetworkIdentifier: n66cz3y3bx.skadnetwork
+          - SKAdNetworkIdentifier: 9yg77x724h.skadnetwork
     dependencies:
       - package: InboxComposer
       - package: InboxContacts
