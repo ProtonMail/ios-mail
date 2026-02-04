@@ -17,7 +17,7 @@
 
 import AdAttributionKit
 
-enum CoarseValue: Equatable {
+public enum CoarseValue: Equatable {
     case low
     case medium
     case high
