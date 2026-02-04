@@ -118,6 +118,6 @@ private final class SessionForkingSpy: SessionForking {
 
     func fork(platform: String, product: String) async -> MailUserSessionForkResult {
         forkCalls += 1
-        return .ok("FORK_SELECTOR")
+        return .ok(Fork(selector: "FORK_SELECTOR", id: .empty))
     }
 }

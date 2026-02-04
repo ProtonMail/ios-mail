@@ -26,6 +26,6 @@ extension MailUserSession: SessionForking {}
 
 struct DummySessionForking: SessionForking {
     func fork(platform: String, product: String) async -> MailUserSessionForkResult {
-        .ok(.empty)
+        .ok(.init(selector: .empty, id: .empty))
     }
 }

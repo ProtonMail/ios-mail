@@ -885,7 +885,7 @@ public extension MailUserSessionConnectionStatusResult {
     }
 }
 public extension MailUserSessionForkResult {
-    func get() throws(UserSessionError) -> String {
+    func get() throws(UserSessionError) -> Fork {
         switch self {
         case .ok(let value):
             value
