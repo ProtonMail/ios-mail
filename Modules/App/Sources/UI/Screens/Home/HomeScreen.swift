@@ -17,6 +17,7 @@
 
 import AccountLogin
 import Combine
+import InboxAttribution
 import InboxCore
 import InboxCoreUI
 import InboxIAP
@@ -52,6 +53,7 @@ struct HomeScreen: View {
     @State private var messageQuickLook = MessageQuickLook()
     @State private var modalState: ModalState?
     @State private var isNotificationPromptPresented = false
+    @State private var userAttributionService: UserAttributionService
     @StateObject private var eventLoopErrorCoordinator: EventLoopErrorCoordinator
     @StateObject private var upsellCoordinator: UpsellCoordinator
     @StateObject private var userAnalyticsConfigurator: UserAnalyticsConfigurator
@@ -97,6 +99,10 @@ struct HomeScreen: View {
         )
         notificationAuthorizationStore = .init(userDefaults: appContext.userDefaults)
         _userAnalyticsConfigurator = .init(wrappedValue: .init(mailUserSession: userSession, analytics: analytics))
+        userAttributionService = .init(
+            userSettingsProvider: { try await userSession.userSettings().get() },
+            userDefaults: appContext.userDefaults
+        )
     }
 
     // MARK: - View
@@ -165,6 +171,7 @@ struct HomeScreen: View {
         .composer(screen: .home, coordinator: composerCoordinator)
         .onReceive(composerCoordinator.messageSent) {
             requestNotificationAuthorizationIfApplicable()
+            notifyEmailSent()
         }
         .sheet(item: $modalState) { state in
             modalFactory.makeModal(for: state, draftPresenter: composerCoordinator.draftPresenter)
@@ -185,10 +192,12 @@ struct HomeScreen: View {
                     }
                 }
                 await upsellCoordinator.prewarm()
+                await userAttributionService.handle(event: .loggedIn)
             }
         }
         .environmentObject(upsellCoordinator)
         .environment(\.upsellEligibility, upsellEligibilityPublisher.state)
+        .environment(userAttributionService)
     }
 
     private func requestNotificationAuthorizationIfApplicable() {
@@ -196,6 +205,12 @@ struct HomeScreen: View {
             isNotificationPromptPresented = await notificationAuthorizationStore.shouldRequestAuthorization(
                 trigger: .messageSent
             )
+        }
+    }
+
+    private func notifyEmailSent() {
+        Task {
+            await userAttributionService.handle(event: .firstActionPerformed)
         }
     }
 

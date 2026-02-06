@@ -19,12 +19,13 @@ import Foundation
 import InboxCore
 import proton_app_uniffi
 
-public class UserAttributionService {
-    private let userSettingsProvider: () async throws -> UserSettings
+@Observable
+public final class UserAttributionService: Sendable {
+    private let userSettingsProvider: @Sendable () async throws -> UserSettings
     private let adAttributionService: AdAttributionService
 
     public init(
-        userSettingsProvider: @escaping () async throws -> UserSettings,
+        userSettingsProvider: @Sendable @escaping () async throws -> UserSettings,
         userDefaults: UserDefaults,
         conversionTracker: ConversionTracker = ConversionTrackerFactory.make()
     ) {
