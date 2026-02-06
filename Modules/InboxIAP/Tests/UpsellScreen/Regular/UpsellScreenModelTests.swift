@@ -94,7 +94,8 @@ final class UpsellScreenModelTests {
             purchaseActionPerformer: .init(
                 eventLoopPolling: DummyEventLoopPolling(),
                 planPurchasing: planPurchasing,
-                telemetryReporting: DummyTelemetryReporting()
+                telemetryReporting: DummyTelemetryReporting(),
+                userAttributionService: .dummy
             ),
             webCheckout: .init(sessionForking: sessionForking, upsellConfiguration: .dummy)
         )

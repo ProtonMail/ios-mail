@@ -64,7 +64,13 @@ struct EmptyFolderBannerViewSnapshotTests {
             wrapper: .previewInstance()
         )
         .environmentObject(ToastStateStore(initialState: .initial))
-        .environmentObject(UpsellCoordinator(mailUserSession: .dummy, configuration: .mail))
+        .environmentObject(
+            UpsellCoordinator(
+                mailUserSession: .dummy,
+                userAttributionService: .dummy,
+                configuration: .mail
+            )
+        )
         .padding([.leading, .trailing], DS.Spacing.medium)
     }
 }

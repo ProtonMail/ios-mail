@@ -1,3 +1,4 @@
+//
 // Copyright (c) 2025 Proton Technologies AG
 //
 // This file is part of Proton Mail.
@@ -15,25 +16,16 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import InboxIAP
+import InboxAttribution
 
-extension UpsellConfiguration {
-    static let mail: Self = .init(
-        regularPlan: SubscriptionPlan.plus,
-        onboardingPlans: [SubscriptionPlan.unlimited, SubscriptionPlan.plus],
-        apiEnvId: .current,
-        isTelemetryEnabled: !isDebugOrQABuild
-    )
-
-    private static var isDebugOrQABuild: Bool {
-        #if QA || DEBUG
-            true
-        #else
-            false
-        #endif
-    }
-
-    var humanReadableUpsoldPlanName: String {
-        "Mail Plus"
+enum StoreKitProductIDMapper {
+    static func map(storeKitProductID: String) -> SubscriptionPlanMetadata {
+        let splitStoreKitProductID = storeKitProductID.split(separator: "_").map(String.init)
+        let isMailPlusPlan = splitStoreKitProductID.contains(SubscriptionPlan.plus)
+        let isAnnualPlan = splitStoreKitProductID.contains("12")
+        return .init(
+            plan: isMailPlusPlan ? .plus : .unlimited,
+            duration: isAnnualPlan ? .year : .month
+        )
     }
 }

@@ -39,8 +39,8 @@ public actor AdAttributionService {
                 [.signedIn]
             case .firstActionPerformed:
                 [.firstActionPerformed]
-            case .subscribed(let plan, let duration):
-                subscribedFlags(for: plan, duration: duration)
+            case .subscribed(let metadata):
+                subscribedFlags(for: metadata.plan, duration: metadata.duration)
             }
 
         let mergedValue = currentConversionValue.union(newFlags)

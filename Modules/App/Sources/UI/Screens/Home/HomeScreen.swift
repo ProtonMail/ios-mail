@@ -89,7 +89,18 @@ struct HomeScreen: View {
         self._eventLoopErrorCoordinator = .init(
             wrappedValue: EventLoopErrorCoordinator(userSession: userSession, toastStateStore: toastStateStore)
         )
-        let newUpsellCoordinator = UpsellCoordinator(mailUserSession: userSession, configuration: .mail)
+
+        let userAttributionService = UserAttributionService(
+            userSettingsProvider: { try await userSession.userSettings().get() },
+            userDefaults: appContext.userDefaults
+        )
+        self.userAttributionService = userAttributionService
+
+        let newUpsellCoordinator = UpsellCoordinator(
+            mailUserSession: userSession,
+            userAttributionService: userAttributionService,
+            configuration: .mail
+        )
         _upsellCoordinator = .init(wrappedValue: newUpsellCoordinator)
 
         self.modalFactory = HomeScreenModalFactory(
@@ -99,10 +110,6 @@ struct HomeScreen: View {
         )
         notificationAuthorizationStore = .init(userDefaults: appContext.userDefaults)
         _userAnalyticsConfigurator = .init(wrappedValue: .init(mailUserSession: userSession, analytics: analytics))
-        userAttributionService = .init(
-            userSettingsProvider: { try await userSession.userSettings().get() },
-            userDefaults: appContext.userDefaults
-        )
     }
 
     // MARK: - View

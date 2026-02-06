@@ -16,6 +16,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import Foundation
+import InboxAttribution
 import InboxCoreUI
 import ProtonUIFoundations
 import Testing
@@ -32,7 +34,12 @@ final class OnboardingUpsellScreenModelTests {
         purchaseActionPerformer: .init(
             eventLoopPolling: DummyEventLoopPolling(),
             planPurchasing: planPurchasing,
-            telemetryReporting: DummyTelemetryReporting()
+            telemetryReporting: DummyTelemetryReporting(),
+            userAttributionService: .init(
+                userSettingsProvider: { .mock() },
+                userDefaults: UserDefaults(),
+                conversionTracker: ConversionTrackerSpy()
+            )
         )
     )
 
@@ -63,5 +70,28 @@ final class OnboardingUpsellScreenModelTests {
         await sut.onGetPlanTapped(storeKitProductID: "foo", toastStateStore: toastStateStore) {}
 
         #expect(planPurchasing.purchaseInvocations.count == 1)
+    }
+}
+
+class ConversionTrackerSpy: ConversionTracker {
+    private(set) var capturedConversionValue: [CapturedConversionValue] = []
+
+    struct CapturedConversionValue: Equatable {
+        let fineConversionValue: Int
+        let coarseConversionValue: CoarseValue
+        let lockPostback: Bool
+    }
+
+    func updateConversionValue(
+        _ fineConversionValue: Int,
+        coarseConversionValue: CoarseValue,
+        lockPostback: Bool
+    ) async throws {
+        capturedConversionValue.append(
+            .init(
+                fineConversionValue: fineConversionValue,
+                coarseConversionValue: coarseConversionValue,
+                lockPostback: lockPostback
+            ))
     }
 }
