@@ -10,6 +10,7 @@ let package = Package(
         .library(name: "TestableShareExtension", targets: ["TestableShareExtension"])
     ],
     dependencies: [
+        .package(path: "../InboxAttribution"),
         .package(path: "../InboxComposer"),
         .package(path: "../InboxKeychain"),
         .package(path: "../InboxSnapshotTesting"),
@@ -20,6 +21,7 @@ let package = Package(
         .target(
             name: "TestableShareExtension",
             dependencies: [
+                "InboxAttribution",
                 "InboxComposer",
                 "InboxKeychain",
                 .product(name: "ProtonUIFoundations", package: "ProtonUIFoundations"),

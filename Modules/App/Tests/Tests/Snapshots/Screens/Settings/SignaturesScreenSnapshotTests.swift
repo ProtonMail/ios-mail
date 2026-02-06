@@ -38,7 +38,12 @@ struct SignaturesScreenSnapshotTests {
         }
         .environmentObject(Router<SettingsRoute>())
         .environmentObject(ToastStateStore(initialState: .initial))
-        .environmentObject(UpsellCoordinator(mailUserSession: .dummy, configuration: .mail))
+        .environmentObject(
+            UpsellCoordinator(
+                mailUserSession: .dummy,
+                userAttributionService: .dummy,
+                configuration: .mail
+            ))
 
         assertSnapshotsOnIPhoneX(of: sut, named: "\(mobileSignatureStatus)")
     }

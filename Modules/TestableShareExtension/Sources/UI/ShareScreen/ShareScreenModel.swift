@@ -97,7 +97,14 @@ public final class ShareScreenModel: ObservableObject {
                 userSession: userSession
             )
 
-            let upsellCoordinator = UpsellCoordinator(mailUserSession: userSession, configuration: upsellConfiguration)
+            let upsellCoordinator = UpsellCoordinator(
+                mailUserSession: userSession,
+                userAttributionService: .init(
+                    userSettingsProvider: { try await userSession.userSettings().get() },
+                    userDefaults: .standard
+                ),
+                configuration: upsellConfiguration
+            )
 
             state = .composing(draft, dependencies, upsellCoordinator)
         } catch {

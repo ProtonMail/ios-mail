@@ -16,6 +16,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import Foundation
 import PaymentsNG
 import Testing
 import proton_app_uniffi
@@ -37,6 +38,11 @@ final class UpsellCoordinatorTests {
             planPurchasing: DummyPlanPurchasing(),
             sessionForking: DummySessionForking(),
             telemetryReporting: telemetryReporting,
+            userAttributionService: .init(
+                userSettingsProvider: { .mock() },
+                userDefaults: UserDefaults(),
+                conversionTracker: ConversionTrackerSpy()
+            ),
             configuration: .dummy
         )
 

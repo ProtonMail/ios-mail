@@ -18,7 +18,17 @@
 public enum ConversionEvent {
     case loggedIn
     case firstActionPerformed
-    case subscribed(plan: SubscriptionPlan, duration: SubscriptionDuration)
+    case subscribed(metadata: SubscriptionPlanMetadata)
+}
+
+public struct SubscriptionPlanMetadata {
+    public let plan: SubscriptionPlan
+    public let duration: SubscriptionDuration
+
+    public init(plan: SubscriptionPlan, duration: SubscriptionDuration) {
+        self.plan = plan
+        self.duration = duration
+    }
 }
 
 public enum SubscriptionPlan {

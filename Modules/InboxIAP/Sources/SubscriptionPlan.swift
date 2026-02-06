@@ -1,4 +1,4 @@
-// Copyright (c) 2025 Proton Technologies AG
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -15,25 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import InboxIAP
-
-extension UpsellConfiguration {
-    static let mail: Self = .init(
-        regularPlan: SubscriptionPlan.plus,
-        onboardingPlans: [SubscriptionPlan.unlimited, SubscriptionPlan.plus],
-        apiEnvId: .current,
-        isTelemetryEnabled: !isDebugOrQABuild
-    )
-
-    private static var isDebugOrQABuild: Bool {
-        #if QA || DEBUG
-            true
-        #else
-            false
-        #endif
-    }
-
-    var humanReadableUpsoldPlanName: String {
-        "Mail Plus"
-    }
+public enum SubscriptionPlan {
+    public static let plus = "mail2022"
+    public static let unlimited = "bundle2022"
 }

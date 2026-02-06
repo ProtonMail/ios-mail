@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import InboxAttribution
 import InboxCoreUI
 import InboxIAP
 import InboxSnapshotTesting
@@ -115,7 +116,30 @@ extension UpsellCoordinator {
     static var dummy: UpsellCoordinator {
         UpsellCoordinator(
             mailUserSession: .dummy,
+            userAttributionService: .init(
+                userSettingsProvider: { .mock() },
+                userDefaults: UserDefaults(),
+                conversionTracker: ConversionTrackerDummy()
+            ),
             configuration: .mail
+        )
+    }
+}
+
+class ConversionTrackerDummy: ConversionTracker {
+    func updateConversionValue(
+        _ fineConversionValue: Int,
+        coarseConversionValue: CoarseValue,
+        lockPostback: Bool
+    ) async throws {}
+}
+
+extension UserAttributionService {
+    static var dummy: UserAttributionService {
+        UserAttributionService(
+            userSettingsProvider: { .mock() },
+            userDefaults: UserDefaults(),
+            conversionTracker: ConversionTrackerDummy()
         )
     }
 }

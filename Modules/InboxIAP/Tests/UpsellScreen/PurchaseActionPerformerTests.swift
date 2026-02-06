@@ -17,6 +17,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import InboxCoreUI
+import InboxTesting
 import PaymentsNG
 import ProtonUIFoundations
 import SwiftUI
@@ -29,6 +30,7 @@ final class PurchaseActionPerformerTests {
     private let eventLoopPolling = EventLoopPollingSpy()
     private let planPurchasing = PlanPurchasingSpy()
     private let telemetryReporting = TelemetryReportingSpy()
+    private let conversionTrackerSpy = ConversionTrackerSpy()
     private let toastStateStore = ToastStateStore(initialState: .initial)
     private let isBusy = Binding.constant(false)
     private let storeKitProductID = "iosmail_mail2022_12_usd_auto_renewing"
@@ -36,18 +38,28 @@ final class PurchaseActionPerformerTests {
     private lazy var sut = PurchaseActionPerformer(
         eventLoopPolling: eventLoopPolling,
         planPurchasing: planPurchasing,
-        telemetryReporting: telemetryReporting
+        telemetryReporting: telemetryReporting,
+        userAttributionService: .init(
+            userSettingsProvider: { .settings(crashReports: false, telemetry: true) },
+            userDefaults: UserDefaults(),
+            conversionTracker: conversionTrackerSpy
+        )
     )
 
     // MARK: Error toasts and screen dismissal
 
     @Test
     func whenTransactionIsSuccessful_dismissesTheScreen() async {
-        await confirmation(expectedCount: 1) { dismissCalled in
-            await sut.purchase(storeKitProductID: storeKitProductID, isBusy: isBusy, toastStateStore: toastStateStore) {
-                dismissCalled()
-            }
-        }
+        await sut.purchase(storeKitProductID: storeKitProductID, isBusy: isBusy, toastStateStore: toastStateStore) {}
+
+        #expect(
+            conversionTrackerSpy.capturedConversionValue == [
+                .init(
+                    fineConversionValue: 36,
+                    coarseConversionValue: .high,
+                    lockPostback: true
+                )
+            ])
     }
 
     @Test

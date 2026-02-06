@@ -38,6 +38,8 @@ public final class UserAttributionService: Sendable {
         await adAttributionService.handle(event: event)
     }
 
+    // MARK: - Private
+
     private func isTelemetryEnabled() async -> Bool {
         do {
             return try await userSettingsProvider().telemetry
