@@ -35,11 +35,11 @@ packages:
   InboxIAP:
     path: Modules/InboxIAP
     group: Modules
+  InboxAttribution:
+    path: Modules/InboxAttribution
+    group: Modules
   InboxKeychain:
     path: Modules/InboxKeychain
-    group: Modules
-  InboxMMP:
-    path: Modules/InboxMMP
     group: Modules
   InboxRSVP:
     path: Modules/InboxRSVP
@@ -239,7 +239,7 @@ targets:
       - package: InboxDesignSystem
       - package: InboxIAP
       - package: InboxKeychain
-      - package: InboxMMP
+      - package: InboxAttribution
       - package: InboxRSVP
       - target: NotificationService
       - package: PaymentsUI

@@ -20,7 +20,7 @@ import Testing
 import proton_app_uniffi
 import InboxTesting
 
-@testable import InboxMMP
+@testable import InboxAttribution
 
 class UserAttributionServiceTests {
     var conversionTrackerSpy: ConversionTrackerSpy!

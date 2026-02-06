@@ -4,10 +4,10 @@
 import PackageDescription
 
 let package = Package(
-    name: "InboxMMP",
+    name: "InboxAttribution",
     platforms: [.iOS(.v17)],
     products: [
-        .library(name: "InboxMMP", targets: ["InboxMMP"])
+        .library(name: "InboxAttribution", targets: ["InboxAttribution"])
     ],
     dependencies: [
         .package(path: "../InboxCore"),
@@ -16,16 +16,16 @@ let package = Package(
     ],
     targets: [
         .target(
-            name: "InboxMMP",
+            name: "InboxAttribution",
             dependencies: [
                 "InboxCore",
                 "proton_app_uniffi",
             ]
         ),
         .testTarget(
-            name: "InboxMMPTests",
+            name: "InboxAttributionTests",
             dependencies: [
-                .target(name: "InboxMMP"),
+                .target(name: "InboxAttribution"),
                 .product(name: "InboxTesting", package: "InboxTesting"),
             ]
         ),
