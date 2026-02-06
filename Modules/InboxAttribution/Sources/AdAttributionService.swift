@@ -18,7 +18,7 @@
 import Foundation
 import InboxCore
 
-public class AdAttributionService {
+public actor AdAttributionService {
     private let conversionTracker: ConversionTracker
     private let userDefaults: UserDefaults
 

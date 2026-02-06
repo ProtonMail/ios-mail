@@ -16,9 +16,9 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import InboxTesting
 import Testing
 import proton_app_uniffi
-import InboxTesting
 
 @testable import InboxAttribution
 
