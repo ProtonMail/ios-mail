@@ -19,7 +19,7 @@ import AdAttributionKit
 import Foundation
 import Testing
 
-@testable import InboxMMP
+@testable import InboxAttribution
 
 @Suite(.serialized)
 struct AdAttributionServiceTests {

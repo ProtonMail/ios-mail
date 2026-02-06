@@ -16,7 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
-@testable import InboxMMP
+@testable import InboxAttribution
 
 class ConversionTrackerSpy: ConversionTracker {
     private(set) var capturedConversionValue: [CapturedConversionValue] = []
