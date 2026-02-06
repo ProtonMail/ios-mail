@@ -4,27 +4,29 @@
 import PackageDescription
 
 let package = Package(
-    name: "InboxCore",
-    defaultLocalization: "en",
+    name: "InboxMMP",
     platforms: [.iOS(.v17)],
     products: [
-        .library(name: "InboxCore", targets: ["InboxCore"])
+        .library(name: "InboxMMP", targets: ["InboxMMP"])
     ],
     dependencies: [
+        .package(path: "../InboxCore"),
+        .package(path: "../InboxTesting"),
         .package(path: "../../ProtonPackages/proton_app_uniffi"),
-        .package(path: "../TryCatch"),
-        .package(url: "https://github.com/getsentry/sentry-cocoa", from: "8.8.0"),
     ],
     targets: [
         .target(
-            name: "InboxCore",
+            name: "InboxMMP",
             dependencies: [
+                "InboxCore",
                 "proton_app_uniffi",
-                "TryCatch",
-                .product(name: "Sentry", package: "sentry-cocoa"),
-            ],
-            resources: [
-                .process("Resources")
+            ]
+        ),
+        .testTarget(
+            name: "InboxMMPTests",
+            dependencies: [
+                .target(name: "InboxMMP"),
+                .product(name: "InboxTesting", package: "InboxTesting"),
             ]
         ),
     ]

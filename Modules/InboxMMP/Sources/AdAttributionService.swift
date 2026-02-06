@@ -16,13 +16,14 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import InboxCore
 
 public class AdAttributionService {
     private let conversionTracker: ConversionTracker
     private let userDefaults: UserDefaults
 
     public init(
-        conversionTracker: ConversionTracker = makeConversionTracker(),
+        conversionTracker: ConversionTracker,
         userDefaults: UserDefaults
     ) {
         self.conversionTracker = conversionTracker
