@@ -71,32 +71,3 @@ class UserAnalyticsConfiguratorTests {
         #expect(sentryStartInvokeCount == 3)
     }
 }
-
-private extension UserSettings {
-    static func settings(crashReports: Bool, telemetry: Bool) -> UserSettings {
-        .init(
-            crashReports: crashReports,
-            dateFormat: .ddMmYyyy,
-            density: .comfortable,
-            deviceRecovery: false,
-            earlyAccess: false,
-            email: .init(notify: 0, reset: 0, status: 0, value: .notUsed),
-            flags: .init(welcomed: false, edmOptOut: false),
-            hideSidePanel: false,
-            highSecurity: .init(eligible: false, value: false),
-            invoiceText: .notUsed,
-            locale: .notUsed,
-            logAuth: .advanced,
-            news: 0,
-            password: .init(mode: 0, expirationTime: nil),
-            phone: .init(notify: 0, reset: 0, status: 0, value: .notUsed),
-            referral: nil,
-            sessionAccountRecovery: false,
-            telemetry: telemetry,
-            timeFormat: .default,
-            twoFactorAuth: .init(allowed: .fido2, enabled: .fido2, expirationTime: nil, registeredKeys: []),
-            weekStart: .default,
-            welcome: false
-        )
-    }
-}

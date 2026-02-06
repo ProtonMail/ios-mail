@@ -1,15 +1,25 @@
+// Copyright (c) 2026 Proton Technologies AG
 //
-//  AdAttributionServiceTests.swift
-//  InboxCore
+// This file is part of Proton Mail.
 //
-//  Created by Maciej Gomółka on 03/02/2026.
+// Proton Mail is free software: you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
 //
+// Proton Mail is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+// GNU General Public License for more details.
+//
+// You should have received a copy of the GNU General Public License
+// along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import AdAttributionKit
 import Foundation
 import Testing
 
-@testable import InboxCore
+@testable import InboxMMP
 
 @Suite(.serialized)
 struct AdAttributionServiceTests {
@@ -58,30 +68,5 @@ struct AdAttributionServiceTests {
 
         let capturedConversionValue = try #require(conversionTrackerSpy.capturedConversionValue.last)
         #expect(capturedConversionValue == testCase.expectedFinalValue)
-    }
-}
-
-class ConversionTrackerSpy: ConversionTracker {
-    private(set) var capturedConversionValue: [CapturedConversionValue] = []
-
-    struct CapturedConversionValue: Equatable {
-        let fineConversionValue: Int
-        let coarseConversionValue: CoarseValue
-        let lockPostback: Bool
-    }
-
-    // MARK: - ConversionTracker
-
-    func updateConversionValue(
-        _ fineConversionValue: Int,
-        coarseConversionValue: CoarseValue,
-        lockPostback: Bool
-    ) async throws {
-        capturedConversionValue.append(
-            .init(
-                fineConversionValue: fineConversionValue,
-                coarseConversionValue: coarseConversionValue,
-                lockPostback: lockPostback
-            ))
     }
 }

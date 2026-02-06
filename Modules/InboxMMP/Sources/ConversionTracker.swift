@@ -25,6 +25,16 @@ public protocol ConversionTracker {
     ) async throws
 }
 
+public enum ConversionTrackerFactory {
+    public static func make() -> ConversionTracker {
+        if #available(iOS 17.4, *) {
+            AdAttributionKitTracker()
+        } else {
+            NoTracking()
+        }
+    }
+}
+
 @available(iOS 17.4, *)
 struct AdAttributionKitTracker: ConversionTracker {
     func updateConversionValue(
@@ -46,12 +56,4 @@ struct NoTracking: ConversionTracker {
         coarseConversionValue: CoarseValue,
         lockPostback: Bool
     ) async throws {}
-}
-
-public func makeConversionTracker() -> ConversionTracker {
-    if #available(iOS 17.4, *) {
-        AdAttributionKitTracker()
-    } else {
-        NoTracking()
-    }
 }
