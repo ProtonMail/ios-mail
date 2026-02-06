@@ -28,7 +28,7 @@ final class HtmlBodyWebViewInterface: NSObject, HtmlBodyWebViewInterfaceProtocol
         case onCursorPositionChange(position: CGPoint)
         case onInlineImageRemoved(cid: String)
         case onInlineImageTapped(cid: String, imageRect: CGRect)
-        case onImagePasted(image: Data)
+        case onImagesPasted(images: [Data])
         case onTextPasted(text: String, mimeType: MessageMimeType)
     }
 
@@ -205,9 +205,9 @@ final class HtmlBodyWebViewInterface: NSObject, HtmlBodyWebViewInterfaceProtocol
             {
                 onEvent?(.onInlineImageTapped(cid: cid, imageRect: .init(x: x, y: y, width: width, height: height)))
             }
-        case .imagePasted:
-            guard let data = readImageData(from: userInfo) else { return }
-            onEvent?(.onImagePasted(image: data))
+        case .imagesPasted:
+            guard let imagesData = readImagesData(from: userInfo) else { return }
+            onEvent?(.onImagesPasted(images: imagesData))
         case .textPasted:
             guard let (text, mimeType) = readText(from: userInfo) else { return }
             onEvent?(.onTextPasted(text: text, mimeType: mimeType))
@@ -224,15 +224,17 @@ final class HtmlBodyWebViewInterface: NSObject, HtmlBodyWebViewInterfaceProtocol
         return CGPoint(x: x, y: y)
     }
 
-    private func readImageData(from dict: [String: Any]) -> Data? {
-        guard
-            let imageBase64 = dict[HtmlBodyDocument.EventAttributeKey.imageData] as? String,
-            let data = Data(base64Encoded: imageBase64)
-        else {
-            AppLogger.log(message: "no image data retrieved", category: .composer, isError: true)
+    private func readImagesData(from dict: [String: Any]) -> [Data]? {
+        guard let imagesBase64 = dict[HtmlBodyDocument.EventAttributeKey.images] as? [String] else {
+            AppLogger.log(message: "no images array retrieved", category: .composer, isError: true)
             return nil
         }
-        return data
+        let imagesData = imagesBase64.compactMap { Data(base64Encoded: $0) }
+        if imagesData.count != imagesBase64.count {
+            let errorMessage = "some images failed to decode: \(imagesData.count)/\(imagesBase64.count)"
+            AppLogger.log(message: errorMessage, category: .composer, isError: true)
+        }
+        return imagesData.isEmpty ? nil : imagesData
     }
 
     private func readText(from dict: [String: Any]) -> (String, MessageMimeType)? {

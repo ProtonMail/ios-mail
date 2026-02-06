@@ -108,7 +108,7 @@ final class ComposerController: UIViewController {
         bodyEditor.onEvent = { [weak self] event in
             guard let self else { return }
             switch event {
-            case .onStartEditing, .onBodyChange, .onImagePasted, .onInlineImageRemoved, .onInlineImageRemovalRequested,
+            case .onStartEditing, .onBodyChange, .onImagesPasted, .onInlineImageRemoved, .onInlineImageRemovalRequested,
                 .onInlineImageDispositionChangeRequested, .onReloadAfterMemoryPressure:
                 guard let bodyEvent = event.toBodyEvent else { return }
                 self.onEvent(.bodyEvent(bodyEvent))
@@ -194,7 +194,7 @@ final class ComposerController: UIViewController {
 enum BodyEvent {
     case onStartEditing
     case onBodyChange(body: String)
-    case onImagePasted(image: UIImage)
+    case onImagesPasted(images: [UIImage])
     case onInlineImageRemoved(cid: String)
     case onInlineImageRemovalRequested(cid: String)
     case onInlineImageDispositionChangeRequested(cid: String)
@@ -208,8 +208,8 @@ private extension BodyEditorEvent {
             .onStartEditing
         case .onBodyChange(let body):
             .onBodyChange(body: body)
-        case .onImagePasted(let image):
-            .onImagePasted(image: image)
+        case .onImagesPasted(let images):
+            .onImagesPasted(images: images)
         case .onInlineImageRemoved(let cid):
             .onInlineImageRemoved(cid: cid)
         case .onInlineImageRemovalRequested(let cid):
