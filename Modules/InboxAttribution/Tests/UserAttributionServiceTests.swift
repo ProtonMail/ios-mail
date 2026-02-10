@@ -38,7 +38,7 @@ class UserAttributionServiceTests {
     func telemetryEnabled_EventIsForwardedToAdAttributionService() async {
         let sut = makeSut(telemetryEnabled: true)
 
-        await sut.handle(event: .loggedIn)
+        await sut.handle(event: .signedIn)
 
         #expect(conversionTrackerSpy.capturedConversionValue.count == 1)
     }
@@ -47,7 +47,7 @@ class UserAttributionServiceTests {
     func telemetryDisabled_EventIsNotForwarded() async throws {
         let sut = makeSut(telemetryEnabled: false)
 
-        await sut.handle(event: .loggedIn)
+        await sut.handle(event: .signedIn)
 
         #expect(conversionTrackerSpy.capturedConversionValue.isEmpty)
     }

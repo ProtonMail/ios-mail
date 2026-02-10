@@ -44,19 +44,19 @@ struct AdAttributionServiceTests {
     @Test(
         arguments: [
             ConversionTestCase(
-                events: [.loggedIn],
+                events: [.signedIn],
                 expectedFinalValue: .init(fineConversionValue: 1, coarseConversionValue: .low, lockPostback: false)
             ),
             ConversionTestCase(
-                events: [.loggedIn, .firstActionPerformed],
+                events: [.signedIn, .firstActionPerformed],
                 expectedFinalValue: .init(fineConversionValue: 3, coarseConversionValue: .medium, lockPostback: false)
             ),
             ConversionTestCase(
-                events: [.loggedIn, .firstActionPerformed, .subscribed(plan: .unlimited, duration: .year)],
+                events: [.signedIn, .firstActionPerformed, .subscribed(plan: .unlimited, duration: .year)],
                 expectedFinalValue: .init(fineConversionValue: 47, coarseConversionValue: .high, lockPostback: true)
             ),
             ConversionTestCase(
-                events: [.loggedIn, .subscribed(plan: .unlimited, duration: .year)],
+                events: [.signedIn, .subscribed(plan: .unlimited, duration: .year)],
                 expectedFinalValue: .init(fineConversionValue: 45, coarseConversionValue: .high, lockPostback: true)
             ),
         ]
