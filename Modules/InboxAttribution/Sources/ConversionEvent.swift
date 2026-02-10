@@ -16,7 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 public enum ConversionEvent {
-    case loggedIn
+    case signedIn
     case firstActionPerformed
     case subscribed(metadata: SubscriptionPlanMetadata)
 }

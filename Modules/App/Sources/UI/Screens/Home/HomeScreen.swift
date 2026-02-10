@@ -199,7 +199,7 @@ struct HomeScreen: View {
                     }
                 }
                 await upsellCoordinator.prewarm()
-                await userAttributionService.handle(event: .loggedIn)
+                await userAttributionService.handle(event: .signedIn)
             }
         }
         .environmentObject(upsellCoordinator)
