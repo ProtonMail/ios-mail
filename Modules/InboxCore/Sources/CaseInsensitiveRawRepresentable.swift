@@ -1,4 +1,4 @@
-// Copyright (c) 2025 Proton Technologies AG
+// Copyright (c) 2026 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -15,11 +15,15 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
+public protocol CaseInsensitiveRawRepresentable: RawRepresentable, CaseIterable where RawValue == String {}
 
-public extension Bundle {
-    enum URLScheme: String, Sendable, CaseInsensitiveRawRepresentable {
-        case mailto
-        case protonmail
+public extension CaseInsensitiveRawRepresentable {
+    init?(caseInsensitive rawValue: String) {
+        guard
+            let match = Self.allCases.first(where: {
+                $0.rawValue.caseInsensitiveCompare(rawValue) == .orderedSame
+            })
+        else { return nil }
+        self = match
     }
 }

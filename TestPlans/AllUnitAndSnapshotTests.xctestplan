@@ -36,6 +36,13 @@
     },
     {
       "target" : {
+        "containerPath" : "container:Modules\/InboxCore",
+        "identifier" : "InboxCoreTests",
+        "name" : "InboxCoreTests"
+      }
+    },
+    {
+      "target" : {
         "containerPath" : "container:Modules\/TestableShareExtension",
         "identifier" : "ShareExtensionTests",
         "name" : "ShareExtensionTests"
