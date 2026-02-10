@@ -39,8 +39,8 @@ public struct UpsellConfiguration: Sendable {
 
 extension UpsellConfiguration {
     static let dummy = UpsellConfiguration(
-        regularPlan: SubscriptionPlan.plus,
-        onboardingPlans: [SubscriptionPlan.unlimited, SubscriptionPlan.plus],
+        regularPlan: SubscriptionPlanVariant.plus,
+        onboardingPlans: [SubscriptionPlanVariant.unlimited, SubscriptionPlanVariant.plus],
         apiEnvId: .custom("https://example.com"),
         isTelemetryEnabled: true
     )

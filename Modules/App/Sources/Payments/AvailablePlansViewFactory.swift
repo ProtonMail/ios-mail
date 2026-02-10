@@ -15,18 +15,73 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import InboxAttribution
+import InboxIAP
+import PaymentsNG
 import PaymentsUI
+import SwiftUI
 import proton_app_uniffi
 
 @MainActor
 enum AvailablePlansViewFactory {
-    static func make(mailUserSession: MailUserSession, presentationMode: PresentationMode) -> AvailablePlansView {
-        AvailablePlansView(
-            viewModel: .init(
+    static func make(mailUserSession: MailUserSession, presentationMode: PaymentsUI.PresentationMode) -> SubscriptionsScreen {
+        SubscriptionsScreen(mailUserSession: mailUserSession, presentationMode: presentationMode)
+    }
+}
+
+struct SubscriptionsScreen: View {
+    @StateObject var viewModel: AvailablePlansViewModel
+    @EnvironmentObject var userAttributionService: UserAttributionService
+    let paymentsManager: ProtonPlansManager
+
+    init(mailUserSession: MailUserSession, presentationMode: PaymentsUI.PresentationMode) {
+        _viewModel = .init(
+            wrappedValue: .init(
                 appVersion: AppDetails.mail.backendFacingVersion,
                 presentationMode: presentationMode,
                 rustSession: mailUserSession
-            )
-        )
+            ))
+        self.paymentsManager = .init(rustSession: mailUserSession)
+    }
+
+    var body: some View {
+        AvailablePlansView(viewModel: viewModel)
+            .onReceive(viewModel.transactionProgress) { transactionProgress in
+                guard transactionProgress == .transactionCompleted else { return }
+                Task {
+                    if let planMetadata = try await paymentsManager.getCurrentPlan().metadata {
+                        await userAttributionService.handle(event: .subscribed(metadata: planMetadata))
+                    }
+                }
+            }
+    }
+}
+
+private extension CurrentSubscriptionResponse {
+    var metadata: SubscriptionPlanMetadata? {
+        guard let plan, let duration else { return nil }
+        return .init(plan: plan, duration: duration)
+    }
+
+    private var plan: SubscriptionPlan? {
+        switch name {
+        case SubscriptionPlanVariant.plus:
+            .plus
+        case SubscriptionPlanVariant.unlimited:
+            .unlimited
+        default:
+            nil
+        }
+    }
+
+    private var duration: SubscriptionDuration? {
+        switch cycle {
+        case 1:
+            .month
+        case 12:
+            .year
+        default:
+            nil
+        }
     }
 }

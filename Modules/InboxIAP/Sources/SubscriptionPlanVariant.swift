@@ -15,7 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-public enum SubscriptionPlan {
+public enum SubscriptionPlanVariant {
     public static let plus = "mail2022"
     public static let unlimited = "bundle2022"
 }
