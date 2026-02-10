@@ -21,7 +21,7 @@ import InboxAttribution
 enum StoreKitProductIDMapper {
     static func map(storeKitProductID: String) -> SubscriptionPlanMetadata {
         let splitStoreKitProductID = storeKitProductID.split(separator: "_").map(String.init)
-        let isMailPlusPlan = splitStoreKitProductID.contains(SubscriptionPlan.plus)
+        let isMailPlusPlan = splitStoreKitProductID.contains(SubscriptionPlanVariant.plus)
         let isAnnualPlan = splitStoreKitProductID.contains("12")
         return .init(
             plan: isMailPlusPlan ? .plus : .unlimited,

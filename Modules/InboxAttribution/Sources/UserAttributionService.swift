@@ -19,8 +19,7 @@ import Foundation
 import InboxCore
 import proton_app_uniffi
 
-@Observable
-public final class UserAttributionService: Sendable {
+public final class UserAttributionService: ObservableObject, Sendable {
     private let userSettingsProvider: @Sendable () async throws -> UserSettings
     private let adAttributionService: AdAttributionService
 

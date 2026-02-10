@@ -20,7 +20,6 @@ import Foundation
 import InboxAttribution
 
 extension UserAttributionService {
-
     static var dummy: UserAttributionService {
         UserAttributionService(
             userSettingsProvider: { .mock() },
@@ -28,5 +27,4 @@ extension UserAttributionService {
             conversionTracker: ConversionTrackerSpy()
         )
     }
-
 }

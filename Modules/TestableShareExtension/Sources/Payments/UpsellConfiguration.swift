@@ -22,8 +22,8 @@ import proton_app_uniffi
 extension UpsellConfiguration {
     static func mail(apiEnvId: ApiEnvId) -> Self {
         .init(
-            regularPlan: SubscriptionPlan.plus,
-            onboardingPlans: [SubscriptionPlan.unlimited, SubscriptionPlan.plus],
+            regularPlan: SubscriptionPlanVariant.plus,
+            onboardingPlans: [SubscriptionPlanVariant.unlimited, SubscriptionPlanVariant.plus],
             apiEnvId: apiEnvId,
             isTelemetryEnabled: !isDebugOrQABuild
         )

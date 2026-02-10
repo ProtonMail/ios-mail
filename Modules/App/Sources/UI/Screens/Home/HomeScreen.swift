@@ -53,7 +53,7 @@ struct HomeScreen: View {
     @State private var messageQuickLook = MessageQuickLook()
     @State private var modalState: ModalState?
     @State private var isNotificationPromptPresented = false
-    @State private var userAttributionService: UserAttributionService
+    @StateObject private var userAttributionService: UserAttributionService
     @StateObject private var eventLoopErrorCoordinator: EventLoopErrorCoordinator
     @StateObject private var upsellCoordinator: UpsellCoordinator
     @StateObject private var userAnalyticsConfigurator: UserAnalyticsConfigurator
@@ -94,7 +94,7 @@ struct HomeScreen: View {
             userSettingsProvider: { try await userSession.userSettings().get() },
             userDefaults: appContext.userDefaults
         )
-        self.userAttributionService = userAttributionService
+        self._userAttributionService = .init(wrappedValue: userAttributionService)
 
         let newUpsellCoordinator = UpsellCoordinator(
             mailUserSession: userSession,
@@ -203,8 +203,8 @@ struct HomeScreen: View {
             }
         }
         .environmentObject(upsellCoordinator)
+        .environmentObject(userAttributionService)
         .environment(\.upsellEligibility, upsellEligibilityPublisher.state)
-        .environment(userAttributionService)
     }
 
     private func requestNotificationAuthorizationIfApplicable() {
