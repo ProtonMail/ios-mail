@@ -22,13 +22,6 @@ import PaymentsUI
 import SwiftUI
 import proton_app_uniffi
 
-@MainActor
-enum AvailablePlansViewFactory {
-    static func make(mailUserSession: MailUserSession, presentationMode: PaymentsUI.PresentationMode) -> SubscriptionsScreen {
-        SubscriptionsScreen(mailUserSession: mailUserSession, presentationMode: presentationMode)
-    }
-}
-
 struct SubscriptionsScreen: View {
     @StateObject var viewModel: AvailablePlansViewModel
     @EnvironmentObject var userAttributionService: UserAttributionService

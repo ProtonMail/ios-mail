@@ -83,7 +83,7 @@ struct SettingsViewFactory {
         case .signatures:
             SignaturesScreen(userSession: mailUserSession)
         case .subscription:
-            AvailablePlansViewFactory.make(mailUserSession: mailUserSession, presentationMode: .push)
+            SubscriptionsScreen(mailUserSession: mailUserSession, presentationMode: .push)
         case .customizeToolbars:
             CustomizeToolbarsScreen(customizeToolbarService: mailUserSession, viewModeProvider: mailUserSession)
         }
