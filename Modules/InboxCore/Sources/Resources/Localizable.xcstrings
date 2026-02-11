@@ -135,6 +135,12 @@
             "state" : "translated",
             "value" : "+%lld daha"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "+%lld 更多"
+          }
         }
       }
     },
@@ -1031,6 +1037,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ panoya kopyalandı"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已将 %@ 复制到剪贴板"
           }
         }
       }

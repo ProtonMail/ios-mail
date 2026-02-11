@@ -40,13 +40,13 @@
               "one" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Us queda %lld intent abans no es tanqui la sessió."
+                  "value" : "%lld intent restant abans de tancar la sessió."
                 }
               },
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "Us queden %lld intents abans no es tanqui la sessió."
+                  "value" : "%lld intents restants abans de tancar la sessió."
                 }
               }
             }
@@ -399,6 +399,18 @@
               }
             }
           }
+        },
+        "zh-Hans" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld 次尝试后即将登出"
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -696,6 +708,12 @@
             "state" : "translated",
             "value" : "Döngü ilerleme çubuğu (%@)"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "循环进度条 (%@)"
+          }
         }
       }
     },
@@ -711,7 +729,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Els correus electrònics intercanviats entre usuaris de Proton es xifren automàticament d'extrem a extrem."
+            "value" : "Els correus electrònics intercanviats entre usuaris del Proton es xifren automàticament d’extrem a extrem."
           }
         },
         "cs" : {
@@ -796,6 +814,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Emaily medzi používateľmi Proton sú automaticky end-to-end šifrované."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-post som utbyts mellan Proton-användare är automatiskt end-to-end-krypterat."
           }
         },
         "tr" : {
@@ -1316,6 +1340,12 @@
             "state" : "translated",
             "value" : "Doğrulanmış göndericiden uçtan uca şifrelenmiş"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "来自已验证发件人的端到端加密邮件"
+          }
         }
       }
     },
@@ -1632,6 +1662,12 @@
             "state" : "translated",
             "value" : "Doğrulanmış alıcılara uçtan uca şifrelenmiş"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "发送至已验证收件人的端到端加密邮件"
+          }
         }
       }
     },
@@ -1756,6 +1792,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Doğrulanamamış uçtan uca şifrelenmiş"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "端到端加密但验证失败"
           }
         }
       }
@@ -1963,7 +2005,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "No obstant, un remitent o destinatari que no utilitzi Proton Mail pot tenir una còpia no xifrada emmagatzemada al seu servidor de correu electrònic."
+            "value" : "No obstant això, un remitent o destinatari que no utilitzi el Proton Mail pot tenir una còpia no xifrada emmagatzemada al seu servidor de correu electrònic."
           }
         },
         "cs" : {
@@ -2066,6 +2108,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ancak, Proton Mail kullanmayan bir gönderici veya alıcı, e-posta sunucusunda şifrelenmemiş bir kopyasını saklıyor olabilir."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "但是，未使用 Proton Mail 的发件人或收件人可能在其邮件服务器上存有未加密的副本。"
           }
         }
       }
@@ -2377,6 +2425,12 @@
             "state" : "translated",
             "value" : "PGP ile uçtan uca şifrelenmiş"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "PGP 端到端加密"
+          }
         }
       }
     },
@@ -2502,6 +2556,12 @@
             "state" : "translated",
             "value" : "Doğrulanmış alıcıya PGP ile uçtan uca şifrelenmiş"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "发送至已验证收件人的 PGP 端到端加密邮件"
+          }
         }
       }
     },
@@ -2626,6 +2686,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "PGP ile imzalanmış e-posta"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "PGP 签名邮件"
           }
         }
       }
@@ -4566,6 +4632,12 @@
             "state" : "translated",
             "value" : "[Gönderici doğrulanamadı](https://proton.me/support/sender-verification-failed) çünkü imzalanmamış. Lütfen e-postanın değiştirilmediğini ilgili kişiyle doğrulayın."
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "[发件人验证失败](https://proton.me/support/sender-verification-failed)，因为邮件未签名。请与您的联系人确认邮件的真实性。"
+          }
         }
       }
     },
@@ -4685,6 +4757,12 @@
             "state" : "translated",
             "value" : "[Gönderici doğrulanamadı](https://proton.me/support/sender-verification-failed). Lütfen e-postanın değiştirilmediğini ilgili kişiyle doğrulayın."
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "[发件人验证失败](https://proton.me/support/sender-verification-failed)。请与您的联系人确认邮件的真实性。"
+          }
         }
       }
     },
@@ -4797,6 +4875,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "E-posta Proton sunucularında [sıfır erişim şifrelemesi](https://proton.me/blog/zero-access-encryption) ile tutuluyor. Ne Proton ne de başka kimse bu e-postayı okuyamaz."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "该电子邮件以 [零访问加密](https://proton.me/blog/zero-access-encryption) 方式存储在 Proton 服务器上。Proton 或任何其他方均无法读取其内容。"
           }
         }
       }
@@ -4917,6 +5001,12 @@
             "state" : "translated",
             "value" : "Alıcı şifreleme anahtarlarına güvendiğiniz [bir doğrulanmış kişidir](https://proton.me/support/address-verification)."
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "该收件人是 [已验证联系人](https://proton.me/support/address-verification)，您已信任其加密密钥。"
+          }
         }
       }
     },
@@ -5035,6 +5125,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Alıcılar şifreleme anahtarlarına güvendiğiniz [doğrulanmış kişilerdir](https://proton.me/support/address-verification)."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "这些收件人是 [已验证联系人](https://proton.me/support/address-verification)，您已信任其加密密钥。"
           }
         }
       }
@@ -5155,6 +5251,12 @@
             "state" : "translated",
             "value" : "Gönderici şifreleme anahtarlarına güvendiğiniz [bir doğrulanmış kişidir](https://proton.me/support/address-verification)."
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "该发件人是 [已验证联系人](https://proton.me/support/address-verification)，您已信任其加密密钥。"
+          }
         }
       }
     },
@@ -5267,6 +5369,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bu e-posta göndericinin aygıtında [uçtan uca şifrelenmiştir](https://proton.me/blog/what-is-end-to-end-encryption) ve şifresi yalnızca alıcı tarafından çözülebilir. Proton e-postanın içeriğini hiçbir zaman göremez."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "此电子邮件在发件人设备上进行了 [端到端加密](https://proton.me/blog/what-is-end-to-end-encryption)，并且只能由收件人解密。Proton 在任何时候都无法查看邮件内容。"
           }
         }
       }
@@ -5381,6 +5489,12 @@
             "state" : "translated",
             "value" : "Bu e-posta Proton sunucularında [sıfır erişim şifrelemesi](https://proton.me/blog/zero-access-encryption) ile tutuluyor. Ne Proton ne de başka hiç kimse bu e-postayı okuyamaz."
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "此电子邮件以 [零访问加密](https://proton.me/blog/zero-access-encryption) 方式存储在 Proton 服务器上。Proton 或任何其他方均无法读取其内容。"
+          }
         }
       }
     },
@@ -5396,7 +5510,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aquest destinatari ha desactivat el xifratge d’extrem a extrem al seu compte."
+            "value" : "Aquest destinatari ha desactivat el xifratge d'extrem a extrem en el seu compte."
           }
         },
         "cs" : {
@@ -5499,6 +5613,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bu alıcı hesabında uçtan uca şifrelemeyi kapatmış."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "此收件人已在其账户上禁用端到端加密"
           }
         }
       }
@@ -5983,6 +6103,12 @@
             "state" : "translated",
             "value" : "Bu e-postayı [dijital olarak imzaladınız](https://proton.me/support/proton-mail-digital-signatures). Böylece alıcıya e-postanızın gerçek olduğunu ve üzerinde oynama yapılmadığını kanıtladınız."
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "您已对此电子邮件进行 [数字签名](https://proton.me/support/proton-mail-digital-signatures)，向收件人证明您的邮件真实且未被篡改。"
+          }
         }
       }
     },
@@ -6287,6 +6413,12 @@
             "state" : "translated",
             "value" : "Sıfır erişim şifrelemeli"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "零访问加密"
+          }
         }
       }
     },
@@ -6406,6 +6538,12 @@
             "state" : "translated",
             "value" : "Doğrulanmış alıcı ile sıfır erişim şifrelemeli"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "向已验证收件人零访问加密"
+          }
         }
       }
     },
@@ -6524,6 +6662,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Doğrulanmış alıcılarla sıfır erişim şifrelemeli"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "向已验证收件人们零访问加密"
           }
         }
       }

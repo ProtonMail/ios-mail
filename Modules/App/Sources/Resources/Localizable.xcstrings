@@ -452,6 +452,12 @@
             "value" : "%1$@ sur %2$@"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ dari %2$@"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -752,6 +758,18 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld pièces jointes"
+                }
+              }
+            }
+          }
+        },
+        "id" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld lampiran"
                 }
               }
             }
@@ -1727,6 +1745,18 @@
             }
           }
         },
+        "id" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld pesan"
+                }
+              }
+            }
+          }
+        },
         "it" : {
           "variations" : {
             "plural" : {
@@ -2056,6 +2086,12 @@
             "value" : "%lld Sélectionnés"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld Terpilih"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2356,6 +2392,18 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld traqueurs bloqués"
+                }
+              }
+            }
+          }
+        },
+        "id" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld pelacak diblokir"
                 }
               }
             }
@@ -4160,6 +4208,18 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "Après %u minutes"
+                }
+              }
+            }
+          }
+        },
+        "id" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Setelah %u menit"
                 }
               }
             }
@@ -6147,6 +6207,12 @@
             "value" : "Icône de l'application"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ikon aplikasi"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7836,6 +7902,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Voulez-vous vraiment supprimer définitivement tous les messages dans le dossier %@ ? Cette action est irréversible."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apakah Anda yakin ingin menghapus permanen semua pesan di folder %@? Tindakan ini tidak dapat diurungkan."
           }
         },
         "it" : {
@@ -11249,7 +11321,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "已净化"
+            "value" : ""
           }
         }
       }
@@ -12836,6 +12908,28 @@
                     "stringUnit" : {
                       "state" : "translated",
                       "value" : "Yazışmalar arşivlendi."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%#@arg1@"
+          },
+          "substitutions" : {
+            "arg1" : {
+              "argNum" : 1,
+              "formatSpecifier" : "lld",
+              "variations" : {
+                "plural" : {
+                  "other" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "会话已归档。"
                     }
                   }
                 }
@@ -20958,7 +21052,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "来自 %@ 的电子邮件将不再被投递，并且将被永久删除。您可以在设置中管理被屏蔽的电子邮件地址。"
+            "value" : "来自 %@ 的电子邮件将不再被投递，并且将被永久删除。您可以在设置中管理被屏蔽的邮箱地址。"
           }
         }
       }
@@ -22717,7 +22811,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tout à la portée de main"
+            "value" : "Tout à portée de main"
           }
         },
         "hu" : {
@@ -24668,7 +24762,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Examineu els missatges sospitosos per confirmar-ne l'autenticitat i descobrir qualsevol element de rastreig ocult."
+            "value" : "Inspeccioneu els missatges sospitosos per confirmar-ne l'autenticitat i descobrir elements de seguiment ocults."
           }
         },
         "cs" : {
@@ -25313,7 +25407,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "邮箱同步出现问题。请注销并再次登入。"
+            "value" : "邮箱同步出现问题，请登出后重新登录。"
           }
         }
       }
@@ -30059,6 +30153,28 @@
               }
             }
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%#@arg1@"
+          },
+          "substitutions" : {
+            "arg1" : {
+              "argNum" : 1,
+              "formatSpecifier" : "lld",
+              "variations" : {
+                "plural" : {
+                  "other" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "邮件已归档。"
+                    }
+                  }
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -31842,6 +31958,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ içine taşındı."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已移动到 %@"
           }
         }
       }
@@ -40509,6 +40631,12 @@
             "value" : "Zistite, kto sa vás pokúsil sledovať pomocou skrytých pixelov a sledovacích odkazov a koľko pokusov bolo zablokovaných."
           }
         },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se vem som försökte övervaka dig med dolda pixlar och spårningslänkar, och hur många försök som blockerades."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -48644,6 +48772,12 @@
             "state" : "translated",
             "value" : "Bu ileti %@ sonra otomatik olarak silinecek"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "此消息将在 %@ 后自动删除"
+          }
         }
       }
     },
@@ -49162,6 +49296,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bu iletinin süresi %@ sonra dolacak"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "此消息将在 %@ 后过期"
           }
         }
       }
@@ -51125,6 +51265,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "İzleyici koruması:"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "跟踪器保护："
           }
         }
       }
@@ -53904,7 +54050,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Utilitzeu les icones de cadenat per identificar i verificar el tipus de xifratge que protegeix els vostres missatges."
+            "value" : "Utilitzeu les icones de cadenat per identificar i verificar el tipus de xifratge que protegeix els missatges."
           }
         },
         "cs" : {
@@ -54466,6 +54612,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Üst bilgilere ve HTML koduna bakın"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "查看邮件头和 HTML"
           }
         }
       }
@@ -55159,6 +55311,12 @@
             "state" : "translated",
             "value" : "Sizi izlemeden etkin olarak koruyoruz. Burada, bu iletide engellediğimiz casus pikselleri ve temizlediğimiz izleme bağlantılarını görüntüleyebilirsiniz. [Ayrıntılı bilgi alın](https://proton.me/support/email-tracker-protection)"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "我们主动保护您免受跟踪，您可以在此处查看我们在此邮件中拦截的间谍像素和清理的跟踪链接。[了解详情](https://proton.me/support/email-tracker-protection)"
+          }
         }
       }
     },
@@ -55783,7 +55941,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bienvenue sur Proton Mail, où le respect de la vie privée est la base"
+            "value" : "Bienvenue sur Proton Mail, où le respect de la vie privée est par défaut"
           }
         },
         "hu" : {

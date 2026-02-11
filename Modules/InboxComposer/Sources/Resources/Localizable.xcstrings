@@ -141,6 +141,12 @@
             "state" : "translated",
             "value" : "%@ ileti göndermek için kullanılamaz"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ 无法用于发送消息"
+          }
         }
       }
     },
@@ -283,6 +289,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ kullanımdan kaldırılmış. İleti gönderemez"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ 已被禁用，无法发送消息"
           }
         }
       }
@@ -427,6 +439,12 @@
             "state" : "translated",
             "value" : "%lld üye"
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld 位成员"
+          }
         }
       }
     },
@@ -569,6 +587,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ kullanmak için ücretli bir tarifeye abone olmalısınız"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "需要使用付费计划才能使用 %@"
           }
         }
       }
@@ -13148,7 +13172,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "附件上传失败。请重试。"
+            "value" : "上传附件失败，请重试。"
           }
         }
       }
@@ -13632,6 +13656,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Yinelenen alıcılar kaldırıldı: %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已移除重复的收件人：%@"
           }
         }
       }
@@ -15847,6 +15877,12 @@
             "state" : "translated",
             "value" : "Bazı alıcılarda (%@) varsayılan olarak geçerlilik süresi desteklenmiyor. Proton Mail kullanmayan alıcılarda geçerlilik süresini kullanabilmek için bir parola ekleyin."
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "部分收件人 (%@) 默认不支持过期功能，请添加密码以为非 Proton Mail 收件人启用过期功能。"
+          }
         }
       }
     },
@@ -17846,6 +17882,12 @@
             "state" : "translated",
             "value" : "Bir e-postadaki ek dosyaların toplamı, satır arasındaki görseller ile beraber en fazla 25 MB olabilir. Bu nedenle %lld dosya eklenemedi. Bu dosyaları farklı e-postalara ekleyerek gönderin ya da Proton Drive üzerinden paylaşın."
           }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "每封邮件的附件（包括内嵌图片）限制为 25 MB，有 %lld 个附件无法添加，请通过单独的邮件发送或使用 Proton Drive 分享。"
+          }
         }
       }
     },
@@ -18328,6 +18370,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bu ileti %@ zamanında gönderilecek"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "此消息将于 %@ 发送"
           }
         }
       }
