@@ -48,7 +48,7 @@ struct HomeScreenModalFactory {
             )
         }
         self.makeReportProblemScreen = { ReportProblemScreen(reportProblemService: mailUserSession) }
-        self.makeSubscriptionsScreen = { AvailablePlansViewFactory.make(mailUserSession: mailUserSession, presentationMode: .modal) }
+        self.makeSubscriptionsScreen = { SubscriptionsScreen(mailUserSession: mailUserSession, presentationMode: .modal) }
     }
 
     @ViewBuilder
