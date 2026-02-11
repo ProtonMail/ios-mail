@@ -82,6 +82,12 @@
             "value" : "%@ はメッセージの送信に使用できません"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@을(를) 메시지 보내기에 사용할 수 없습니다."
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -217,6 +223,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ は無効になっています。メッセージを送信できません。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@이(가) 비활성화되어있습니다. 메시지 보내기에 사용할 수 없습니다."
           }
         },
         "nb" : {
@@ -356,6 +368,12 @@
             "value" : "%lld 人のメンバー"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld명 구성원"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -491,6 +509,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@を使用するには有料プランが必要です"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ 사용에 유료 플랜 구독이 필요합니다"
           }
         },
         "nb" : {
@@ -6198,6 +6222,12 @@
             "value" : "Información de cifrado"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Salaustiedot"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6210,10 +6240,22 @@
             "value" : "Info crittografia"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "암호화 정보"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Krypteringsinfo"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Encryptie info"
           }
         },
         "pt-BR" : {
@@ -6243,7 +6285,13 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Şifreleme Bilgileri"
+            "value" : "Şifreleme bilgileri"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "加密信息"
           }
         }
       }
@@ -13377,6 +13425,12 @@
             "value" : "重複していた宛先を削除しました: %@"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "제거된 중복된 수신자: %@"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -13416,7 +13470,7 @@
         "sl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Odstranjen podvojen prejemnik: %@"
+            "value" : "Odstranjen podvojeni prejemnik: %@"
           }
         },
         "sv" : {
@@ -13429,6 +13483,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Yinelenen alıcı kaldırıldı: %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已删除重复收件人：%@"
           }
         }
       }
@@ -13512,6 +13572,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "重複した受信者を削除しました: %@"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "중복된 수신인을 삭제했습니다: %@"
           }
         },
         "nb" : {
@@ -15722,6 +15788,12 @@
             "value" : "一部の受信者 (%@) は、デフォルトでは有効期限をサポートしていません。Proton Mail以外の受信者の有効期限を有効にするには、パスワードを追加してください。"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "일부 수신자(%@)가 기본적 만료 기능을 지원하지 않습니다. Proton Mail을 사용하지 않는 수신자를 위해 만료 기능을 활성화하려면 비밀번호를 추가해야 합니다."
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -17721,6 +17793,12 @@
             "value" : "%lld個の添付ファイルを追加できませんでした。メール1通あたりの添付ファイルには、インライン画像を含め25 MBの制限があります。それらを複数のメールに分けて送信するか、Proton Drive経由で共有してください。"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "인라인 이미지를 포함한 이메일당 첨부 파일 용량은 25MB로 제한되며, %lld개의 첨부 파일을 추가할 수 없습니다. 별도의 이메일로 보내거나 Proton Drive를 통해 공유해 주세요."
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -18190,6 +18268,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "このメッセージは %@ に送信されます"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이 메시지는 %@에 전송됩니다"
           }
         },
         "nb" : {

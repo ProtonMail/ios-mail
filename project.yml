@@ -29,6 +29,9 @@ packages:
   InboxDesignSystem:
     path: Modules/InboxDesignSystem
     group: Modules
+  InboxWebView:
+    path: Modules/InboxWebView
+    group: Modules
   InboxIAP:
     path: Modules/InboxIAP
     group: Modules

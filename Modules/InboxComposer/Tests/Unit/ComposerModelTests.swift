@@ -662,26 +662,77 @@ final class ComposerModelTests: BaseTestCase {
         XCTAssertTrue(sut.attachmentAlertState.isAlertPresented)
     }
 
-    func testAddAttachments_whenAddingUIImage_inComposerModeHtml_itShouldAddAttachmentAsInlineImage() async throws {
+    func testAddAttachments_whenAddingSingleUIImage_inComposerModeHtml_itShouldAddAttachmentAsInlineImage() async throws {
         let draft = mockDraft!
         draft.mockMimeType = .textHtml
         let sut = makeSut(draft: draft, draftOrigin: .new, contactProvider: .mockInstance)
 
-        await sut.addAttachments(image: .init())
+        await sut.addAttachments(images: [.init()])
 
         XCTAssertEqual(Set(mockDraft.attachmentPathsFor(dispositon: .inline)).count, 1)
         XCTAssertEqual(Set(mockDraft.attachmentPathsFor(dispositon: .attachment)).count, 0)
     }
 
-    func testAddAttachments_whenAddingUIImage_inComposerModePlainText_itShouldAddAttachmentAsRegular() async throws {
+    func testAddAttachments_whenAddingSingleUIImage_inComposerModePlainText_itShouldAddAttachmentAsRegular() async throws {
         let draft = mockDraft!
         draft.mockMimeType = .textPlain
         let sut = makeSut(draft: draft, draftOrigin: .new, contactProvider: .mockInstance)
 
-        await sut.addAttachments(image: .init())
+        await sut.addAttachments(images: [.init()])
 
         XCTAssertEqual(Set(mockDraft.attachmentPathsFor(dispositon: .inline)).count, 0)
         XCTAssertEqual(Set(mockDraft.attachmentPathsFor(dispositon: .attachment)).count, 1)
+    }
+
+    func testAddAttachments_whenAddingMultipleUIImages_inComposerModeHtml_itShouldAddAllAsInlineImagesInBatch() async throws {
+        let draft = mockDraft!
+        draft.mockMimeType = .textHtml
+        let sut = makeSut(draft: draft, draftOrigin: .new, contactProvider: .mockInstance)
+
+        await sut.addAttachments(images: [.init(), .init(), .init()])
+
+        XCTAssertEqual(Set(mockDraft.attachmentPathsFor(dispositon: .inline)).count, 3)
+        XCTAssertEqual(Set(mockDraft.attachmentPathsFor(dispositon: .attachment)).count, 0)
+        if case .insertInlineImages(let cids) = sut.bodyAction {
+            XCTAssertEqual(cids.count, 3, "bodyAction should contain 3 CIDs")
+        } else {
+            XCTFail("bodyAction should be .insertInlineImages, got \(String(describing: sut.bodyAction))")
+        }
+    }
+
+    func testAddAttachments_whenAddingMultipleUIImages_inComposerModePlainText_itShouldAddAllAsRegularAttachments() async throws {
+        let draft = mockDraft!
+        draft.mockMimeType = .textPlain
+        let sut = makeSut(draft: draft, draftOrigin: .new, contactProvider: .mockInstance)
+
+        await sut.addAttachments(images: [.init(), .init(), .init()])
+
+        XCTAssertEqual(Set(mockDraft.attachmentPathsFor(dispositon: .inline)).count, 0)
+        XCTAssertEqual(Set(mockDraft.attachmentPathsFor(dispositon: .attachment)).count, 3)
+    }
+
+    func testAddAttachments_whenAddingMultipleUIImages_itShouldSetBodyActionWithBatchOfCIDs() async throws {
+        let draft = mockDraft!
+        draft.mockMimeType = .textHtml
+        let sut = makeSut(draft: draft, draftOrigin: .new, contactProvider: .mockInstance)
+
+        await sut.addAttachments(images: [.init(), .init(), .init()])
+
+        if case .insertInlineImages(let cids) = sut.bodyAction {
+            XCTAssertEqual(cids.count, 3, "All 3 images should be handled in a single bodyAction")
+        } else {
+            XCTFail("bodyAction should be .insertInlineImages with all CIDs")
+        }
+    }
+
+    func testAddAttachments_whenAddingEmptyArrayOfImages_itShouldNotSetBodyAction() async throws {
+        let draft = mockDraft!
+        draft.mockMimeType = .textHtml
+        let sut = makeSut(draft: draft, draftOrigin: .new, contactProvider: .mockInstance)
+
+        await sut.addAttachments(images: [])
+
+        XCTAssertNil(sut.bodyAction)
     }
 
     // MARK: transformInlineAttachmentToRegular(cid:)

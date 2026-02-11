@@ -39,7 +39,7 @@ extension HtmlBodyDocument {
         static let cursorPosition = "cursorPosition"
         static let cursorPositionX = "x"
         static let cursorPositionY = "y"
-        static let imageData = "imageData"
+        static let images = "images"
         static let mimeType = "mimeType"
         static let text = "text"
     }
@@ -51,7 +51,7 @@ extension HtmlBodyDocument {
         case cursorPositionChanged
         case inlineImageRemoved
         case inlineImageTapped
-        case imagePasted
+        case imagesPasted
         case textPasted
     }
 
@@ -212,12 +212,10 @@ extension HtmlBodyDocument {
             const cd = (event.clipboardData || event.originalEvent?.clipboardData);
             const items = Array.from(cd?.items || []);
 
-            // Handle image files (can be multiple)
-            items.forEach(item => {
-                if (item.kind === 'file') {
-                    handleFilePaste(item);
-                }
-            });
+            const fileItems = items.filter(item => item.kind === 'file');
+            if (fileItems.length > 0) {
+                handleFilePasteBatch(fileItems);
+            }
 
             // Prefer HTML text over plain text, post only once
             const htmlItem = items.find(item => item.kind === 'string' && item.type === 'text/html');
@@ -235,18 +233,38 @@ extension HtmlBodyDocument {
             }, 20);
         });
 
-        function handleFilePaste(item) {
-            const file = item.getAsFile();
-            if (!file.type.startsWith("image/")) { return; }
-            const reader = new FileReader();
-            reader.onload = function(event) {
+        function handleFilePasteBatch(items) {
+            // Filter to only handle image files
+            const imageFiles = items
+                .map(item => item.getAsFile())
+                .filter(file => file && file.type.startsWith("image/"));
 
-                const base64data = event.target.result.split(',')[1];
-                window.webkit.messageHandlers.\(JSEvent.imagePasted).postMessage({
-                    "\(EventAttributeKey.imageData)": base64data
+            if (imageFiles.length === 0) {
+                return;
+            }
+
+            // Read all images concurrently
+            const readPromises = imageFiles.map((file, index) => {
+                return new Promise((resolve, reject) => {
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        const base64data = event.target.result.split(',')[1];
+                        resolve({ index: index, data: base64data });
+                    };
+                    reader.onerror = reject;
+                    reader.readAsDataURL(file);
                 });
-            };
-            reader.readAsDataURL(file);
+            });
+
+            Promise.all(readPromises).then(results => {
+                // Sort by index to ensure order matches the initial clipboard order
+                const sortedResults = results.sort((a, b) => a.index - b.index);
+                const imagesData = sortedResults.map(result => result.data);
+
+                window.webkit.messageHandlers.\(JSEvent.imagesPasted).postMessage({
+                    "images": imagesData
+                });
+            });
         }
 
         function handleTextPaste(item) {

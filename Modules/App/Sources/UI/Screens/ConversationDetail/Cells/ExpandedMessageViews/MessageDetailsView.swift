@@ -489,7 +489,6 @@ enum MessageDetail {
     struct Sender: Hashable {
         let name: String
         let address: String
-        let encryptionInfo: String
     }
 
     struct Recipient: Identifiable, Hashable {
@@ -578,8 +577,7 @@ enum MessageDetailsPreviewProvider {
     static func testData(
         sender: MessageDetail.Sender = .init(
             name: "Camila Hall",
-            address: "camila.hall@protonmail.ch",
-            encryptionInfo: "End to end encrypted and signed"
+            address: "camila.hall@protonmail.ch"
         ),
         location: ExclusiveLocation?,
         labels: [LabelUIModel],

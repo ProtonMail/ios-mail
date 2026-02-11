@@ -21,7 +21,9 @@ import ProtonUIFoundations
 import SwiftUI
 import proton_app_uniffi
 
-final class RSVPStateStore: StateStore {
+@Observable
+@MainActor
+final class RSVPStateStore: ObservationStateStore {
     enum State: Equatable {
         case loading
         case loadFailed
@@ -37,7 +39,6 @@ final class RSVPStateStore: StateStore {
     private var internalState: InternalState {
         didSet { state = internalState.state }
     }
-    @Published var state: State
 
     enum Action {
         case onLoad
@@ -60,9 +61,14 @@ final class RSVPStateStore: StateStore {
         self.toastStateStore = toastStateStore
         self.clipboard = .init(toastStateStore: toastStateStore, pasteboard: pasteboard)
         self.draftPresenter = draftPresenter
-        self.internalState = .loading
+        let internalState: InternalState = .loading
+        self.internalState = internalState
         self.state = internalState.state
     }
+
+    // MARK: - ObservationStateStore
+
+    var state: State
 
     func handle(action: Action) async {
         switch action {
@@ -82,6 +88,8 @@ final class RSVPStateStore: StateStore {
             await openNewDraft(withEmail: email)
         }
     }
+
+    // MARK: - Private
 
     private func loadEventDetails() async {
         updateState(with: .loading)

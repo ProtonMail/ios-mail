@@ -56,8 +56,7 @@ class MessageDetailsViewSnapshotTests {
         let model = MessageDetailsPreviewProvider.testData(
             sender: .init(
                 name: "Camila Isabella Hall-Rodriguez",
-                address: "camila.isabella.hall.rodriguez.longmail@protonmail.ch",
-                encryptionInfo: "End to end encrypted and signed"
+                address: "camila.isabella.hall.rodriguez.longmail@protonmail.ch"
             ),
             location: .custom(name: "Online shopping", id: .random(), color: .init(value: "#F67900")),
             labels: [

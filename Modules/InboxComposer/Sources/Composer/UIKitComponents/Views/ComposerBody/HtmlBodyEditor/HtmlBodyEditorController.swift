@@ -107,12 +107,17 @@ final class HtmlBodyEditorController: UIViewController, BodyEditor {
                 onEvent?(.onInlineImageRemoved(cid: cid))
             case .onInlineImageTapped(let cid, let imageRect):
                 showInlineImageMenu(cid: cid, imageRect: imageRect)
-            case .onImagePasted(let imageData):
-                guard let image = UIImage(data: imageData) else {
-                    AppLogger.log(message: "pasted data is not an image", category: .composer, isError: true)
+            case .onImagesPasted(let imagesData):
+                let images = imagesData.compactMap { UIImage(data: $0) }
+                if images.count != imagesData.count {
+                    let errorMessage = "Failed to convert some images: \(images.count)/\(imagesData.count)"
+                    AppLogger.log(message: errorMessage, category: .composer, isError: true)
+                }
+                guard !images.isEmpty else {
+                    AppLogger.log(message: "No valid images in batch", category: .composer, isError: true)
                     return
                 }
-                onEvent?(.onImagePasted(image: image))
+                onEvent?(.onImagesPasted(images: images))
             case .onTextPasted(let text, let mimeType):
                 let sanitizedText = sanitizePastedContent(content: text, mimeType: mimeType)
                 let escapedSanitizedText = HtmlSanitizer.applyStringLiteralEscapingRules(html: sanitizedText)
