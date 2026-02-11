@@ -63,12 +63,18 @@ final class PurchaseActionPerformer {
             AppLogger.log(message: "Purchase successful", category: .payments)
 
             async let telemetry: () = telemetryReporting.upgradeSuccess(storeKitProductID: storeKitProductID)
-            async let attribution: () = userAttributionService.handle(
-                event: .subscribed(
-                    metadata: StoreKitProductIDMapper.map(storeKitProductID: storeKitProductID)
-                ))
             async let eventLoop: () = eventLoopPolling.forceEventLoopPollAndWait().logError()
-            _ = await (telemetry, attribution, eventLoop)
+
+            if let metadata = StoreKitProductIDMapper.map(storeKitProductID: storeKitProductID) {
+                async let attribution: () = userAttributionService.handle(event: .subscribed(metadata: metadata))
+                _ = await (telemetry, attribution, eventLoop)
+            } else {
+                AppLogger.log(
+                    message: "Unable to map product ID '\(storeKitProductID)' for attribution",
+                    category: .adAttribution
+                )
+                _ = await (telemetry, eventLoop)
+            }
 
             dismiss()
         } catch ProtonPlansManagerError.transactionCancelledByUser {
