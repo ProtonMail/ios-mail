@@ -60,7 +60,7 @@ public actor AdAttributionService {
                 lockPostback: shouldLockPostback(for: conversionValue)
             )
         } catch {
-            AppLogger.log(error: error)
+            AppLogger.log(error: error, category: .adAttribution)
         }
     }
 
