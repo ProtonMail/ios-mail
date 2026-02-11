@@ -68,6 +68,7 @@ class MessageBannersViewSnapshotTests {
                 .standard(.snoozed(timestamp: 1_740_238_200)),
                 .standard(.remoteContent),
                 .standard(.unsubscribeNewsletter(alreadyUnsubscribed: true)),
+                .standard(.domainAuthFail),
             ],
             timer: Timer.self,
             scheduleSendDateFormatter: ScheduleSendDateFormatter(),

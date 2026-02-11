@@ -66,7 +66,7 @@ final class WebCheckout {
         let checkoutApp = "account-lite"
         let checkoutAppVersion = "5.0.304.0"
 
-        let selector = try await sessionForking.fork(platform: checkoutPlatform, product: checkoutApp).get()
+        let selector = try await sessionForking.fork(platform: checkoutPlatform, product: checkoutApp).get().selector
 
         let queryItems: [URLQueryItem] = [
             .init(name: "action", value: "subscribe-account"),

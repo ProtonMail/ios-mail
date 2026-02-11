@@ -27,6 +27,7 @@ final class MessageBodyStateStore: StateStore {
         case onLoad
         case addEventBanner(EventDrivenMessageBanner)
         case displayEmbeddedImages
+        case domainAuthFailLearnMore
         case downloadRemoteContent
         case reloadFailedProxyImages
         case markAsLegitimate
@@ -71,6 +72,7 @@ final class MessageBodyStateStore: StateStore {
     private let toastStateStore: ToastStateStore
     private let backOnlineActionExecutor: BackOnlineActionExecuting
     private let messageEncryptionInfoStore: MessageEncryptionInfoStore
+    private let urlOpener: URLOpenerProtocol
 
     init(
         messageID: ID,
@@ -78,7 +80,8 @@ final class MessageBodyStateStore: StateStore {
         wrapper: RustMessageBodyWrapper,
         toastStateStore: ToastStateStore,
         backOnlineActionExecutor: BackOnlineActionExecuting,
-        messageEncryptionInfoStore: MessageEncryptionInfoStore
+        messageEncryptionInfoStore: MessageEncryptionInfoStore,
+        urlOpener: URLOpenerProtocol
     ) {
         self.messageID = messageID
         self.provider = .init(mailbox: mailbox, wrapper: wrapper)
@@ -87,6 +90,7 @@ final class MessageBodyStateStore: StateStore {
         self.toastStateStore = toastStateStore
         self.backOnlineActionExecutor = backOnlineActionExecutor
         self.messageEncryptionInfoStore = messageEncryptionInfoStore
+        self.urlOpener = urlOpener
     }
 
     func handle(action: Action) async {
@@ -108,6 +112,12 @@ final class MessageBodyStateStore: StateStore {
 
                 await loadMessageBody(with: updatedOptions)
             }
+        case .domainAuthFailLearnMore:
+            guard let url = URL(string: "https://proton.me/support/email-has-failed-its-domains-authentication-requirements-warning")
+            else {
+                return
+            }
+            urlOpener(url)
         case .downloadRemoteContent:
             if case .loaded(let body, _) = state.body {
                 let updatedOptions = body.html.options

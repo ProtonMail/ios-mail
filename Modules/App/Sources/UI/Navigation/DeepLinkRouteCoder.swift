@@ -59,7 +59,7 @@ enum DeepLinkRouteCoder {
         guard
             let components = URLComponents(url: deepLink, resolvingAgainstBaseURL: true),
             let rawScheme = components.scheme,
-            let supportedScheme = Bundle.URLScheme(rawValue: rawScheme)
+            let supportedScheme = Bundle.URLScheme(caseInsensitive: rawScheme)
         else {
             return nil
         }

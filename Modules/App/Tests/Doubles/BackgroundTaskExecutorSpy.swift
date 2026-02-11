@@ -20,21 +20,17 @@ import proton_app_uniffi
 @testable import ProtonMail
 
 class BackgroundTaskExecutorSpy: BackgroundTaskExecutor {
-    var backgroundExecutionFinishedWithSuccess = true
     var executionCompletedWithResult: BackgroundExecutionResult?
     var backgroundExecutionHandleStub = BackgroundExecutionHandleStub()
     private(set) var startBackgroundExecutionInvokeCount = 0
+    private(set) var capturedCallback: BackgroundExecutionCallback?
 
     // MARK: - BackgroundTaskExecutor
 
     func startBackgroundExecution(callback: BackgroundExecutionCallback) -> MailSessionStartBackgroundExecutionResult {
         startBackgroundExecutionInvokeCount += 1
 
-        if let executionCompletedWithResult {
-            Task {
-                await callback.onExecutionCompleted(result: executionCompletedWithResult)
-            }
-        }
+        capturedCallback = callback
 
         return .ok(backgroundExecutionHandleStub)
     }

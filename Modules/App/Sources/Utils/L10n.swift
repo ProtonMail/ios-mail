@@ -630,8 +630,8 @@ enum L10n {
             comment: "Action to restore a snoozed email immediately."
         )
         static let spamTitle = LocalizedStringResource(
-            "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded.",
-            comment: "Banner warning the user that the email failed authentication checks and may be spoofed."
+            "This message was flagged as Spam, either by our system or by you.",
+            comment: "Banner notifying the message is spam."
         )
         static let unsubscribeNewsletterAction = LocalizedStringResource(
             "Unsubscribe",
@@ -644,6 +644,10 @@ enum L10n {
         static let unsubscribedNewsletterTitle = LocalizedStringResource(
             "You are unsubscribed from this mailing list.",
             comment: "Banner indicating that the user is already unsubscribed from a mailing list."
+        )
+        static let domainAuthFailContentTitle = LocalizedStringResource(
+            "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!",
+            comment: "Banner notifying there is a problem with the domain authentication for a specific email."
         )
     }
 

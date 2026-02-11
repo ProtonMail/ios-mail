@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import InboxTesting
 import ProtonUIFoundations
 import Testing
 import proton_app_uniffi
@@ -26,13 +27,15 @@ import proton_app_uniffi
 @Suite(.serialized) @MainActor
 final class MessageBodyStateStoreTests {
     private let messageEncryptionInfoStore = MessageEncryptionInfoStore()
+    private var urlOpener: EnvironmentURLOpenerSpy! = .init()
     private lazy var sut = MessageBodyStateStore(
         messageID: stubbedMessageID,
         mailbox: .dummy,
         wrapper: wrapperSpy.testingInstance,
         toastStateStore: toastStateStore,
         backOnlineActionExecutor: backOnlineActionExecutorSpy,
-        messageEncryptionInfoStore: messageEncryptionInfoStore
+        messageEncryptionInfoStore: messageEncryptionInfoStore,
+        urlOpener: urlOpener
     )
     private let stubbedMessageID = ID(value: 42)
     private let toastStateStore = ToastStateStore(initialState: .initial)

@@ -19,7 +19,7 @@ import InboxCore
 import UIKit
 import proton_app_uniffi
 
-class BackgroundTransitionActionsExecutor: ApplicationServiceDidEnterBackground, ApplicationServiceWillEnterForeground, @unchecked Sendable {
+actor BackgroundTransitionActionsExecutor: ApplicationServiceDidEnterBackground, ApplicationServiceWillEnterForeground {
     typealias ActionQueueStatusProvider = @Sendable () -> ConnectionStatusProvider?
     typealias BackgroundTaskExecutorProvider = @Sendable () -> BackgroundTaskExecutor
 
@@ -29,18 +29,19 @@ class BackgroundTransitionActionsExecutor: ApplicationServiceDidEnterBackground,
     private let notificationScheduller: NotificationScheduler
     private let actionQueueStatusProvider: ActionQueueStatusProvider
 
+    // Note: This callback is automatically executed when abort() is called on the background execution handle.
     private lazy var callback = BackgroundExecutionCallbackWrapper { [weak self] result in
         Task {
             Self.log("All actions executed, with result: \(result.status)")
             if result.status.shouldCheckSendingStatus && result.hasUnsentMessages {
                 await self?.displayUnsentMessagesNotificationIfOnline()
             }
-            self?.endBackgroundTask()
+            await self?.endBackgroundTask()
         }
     }
 
     private var backgroundExecutionHandle: BackgroundExecutionHandle?
-    private var backgroundTaskIdentifier: UIBackgroundTaskIdentifier?
+    private var backgroundTaskIdentifier: UIBackgroundTaskIdentifier = .invalid
     private var hasAccessToInternetOnStart: Bool?
 
     init(
@@ -57,21 +58,31 @@ class BackgroundTransitionActionsExecutor: ApplicationServiceDidEnterBackground,
 
     // MARK: - ApplicationServiceWillEnterForeground
 
-    func willEnterForeground() {
-        guard backgroundTaskIdentifier != nil, backgroundExecutionHandle != nil else {
-            Self.log("Missing backgroundTaskIdentifier? - \(backgroundTaskIdentifier == nil)")
-            Self.log("Handle present: \(self.backgroundExecutionHandle != nil)?")
-            return
-        }
+    nonisolated func willEnterForeground() {
         Task {
-            Self.log("Abort called")
-            await abortBackgroundTask(afterEnteredForeground: true)
+            await handleWillEnterForeground()
         }
     }
 
     // MARK: - ApplicationServiceDidEnterBackground
 
-    func didEnterBackground() {
+    nonisolated func didEnterBackground() {
+        Task {
+            await handleDidEnterBackground()
+        }
+    }
+
+    // MARK: - Private
+
+    private func handleWillEnterForeground() async {
+        guard backgroundTaskIdentifier != .invalid else {
+            Self.log("backgroundTaskIdentifier is invalid - no ongoing task")
+            return
+        }
+        await abortBackgroundTask(afterEnteredForeground: true)
+    }
+
+    private func handleDidEnterBackground() async {
         guard actionQueueStatusProvider() != nil else {
             Self.log("No active session")
             return
@@ -86,31 +97,33 @@ class BackgroundTransitionActionsExecutor: ApplicationServiceDidEnterBackground,
             }
         )
 
+        guard backgroundTaskIdentifier != .invalid else {
+            Self.log("Background task cannot be started")
+            return
+        }
+
         Self.log("Background task started")
 
-        Task {
-            hasAccessToInternetOnStart = await isConnected()
+        hasAccessToInternetOnStart = await isConnected()
 
-            Self.log("Internet connection on start: \(hasAccessToInternetOnStart == true ? "Online" : "Offline")")
+        Self.log("Internet connection on start: \(hasAccessToInternetOnStart == true ? "Online" : "Offline")")
 
-            do {
-                backgroundExecutionHandle = try backgroundTaskExecutorProvider()
-                    .startBackgroundExecution(
-                        callback: callback
-                    )
-                    .get()
-                Self.log("Handle is returned, background actions in progress")
-                Self.log("Handle present: \(self.backgroundExecutionHandle != nil)?")
-            } catch {
-                Self.log("[Broken] Background execution failed to start: \(error.localizedDescription)")
-                endBackgroundTask()
-            }
+        do {
+            backgroundExecutionHandle = try backgroundTaskExecutorProvider()
+                .startBackgroundExecution(
+                    callback: callback
+                )
+                .get()
+            Self.log("Handle is returned, background actions in progress")
+            Self.log("Handle present: \(self.backgroundExecutionHandle != nil)?")
+        } catch {
+            Self.log("[Broken] Background execution failed to start: \(error.localizedDescription)")
+            endBackgroundTask()
         }
     }
 
-    // MARK: - Private
-
     private func abortBackgroundTask(afterEnteredForeground: Bool) async {
+        // Note: The `callback` is automatically executed when abort() is called.
         await backgroundExecutionHandle?.abort(inForeground: afterEnteredForeground)
         Self.log("Abort called, handle present: \(backgroundExecutionHandle != nil)")
     }
@@ -118,8 +131,8 @@ class BackgroundTransitionActionsExecutor: ApplicationServiceDidEnterBackground,
     private func displayUnsentMessagesNotificationIfOnline() async {
         Self.log("Handle present: \(backgroundExecutionHandle != nil)?")
 
-        guard backgroundTaskIdentifier != nil else {
-            Self.log("Missing backgroundTaskIdentifier? - \(backgroundTaskIdentifier == nil)")
+        guard backgroundTaskIdentifier != .invalid else {
+            Self.log("Invalid backgroundTaskIdentifier")
             return
         }
 
@@ -134,12 +147,13 @@ class BackgroundTransitionActionsExecutor: ApplicationServiceDidEnterBackground,
     }
 
     private func endBackgroundTask() {
-        guard let backgroundTaskIdentifier else {
-            Self.log("Ending background task - missing backgroundTaskIdentifier")
+        guard backgroundTaskIdentifier != .invalid else {
+            Self.log("backgroundTaskIdentifier is invalid")
             return
         }
         Self.log("Ending background task")
         backgroundTransitionTaskScheduler.endBackgroundTask(backgroundTaskIdentifier)
+        backgroundTaskIdentifier = .invalid
     }
 
     private func scheduleLocalNotification() async {

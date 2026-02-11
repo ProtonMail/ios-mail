@@ -47934,8 +47934,8 @@
         }
       }
     },
-    "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded." : {
-      "comment" : "Banner warning the user that the email failed authentication checks and may be spoofed.",
+    "This email has failed its domain's authentication requirements. It may be spoofed or improperly forwarded!" : {
+      "comment" : "Banner notifying there is a problem with the domain authentication for a specific email.",
       "localizations" : {
         "be" : {
           "stringUnit" : {
@@ -48500,6 +48500,9 @@
           }
         }
       }
+    },
+    "This message was flagged as Spam, either by our system or by you." : {
+      "comment" : "Banner notifying the message is spam."
     },
     "This message will auto-delete in %@" : {
       "comment" : "Banner indicating when a message will automatically be deleted.",

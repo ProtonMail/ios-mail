@@ -30,6 +30,7 @@ struct MessageBannersView: View {
         case editScheduledMessageTapped
         case displayEmbeddedImagesTapped
         case downloadRemoteContentTapped
+        case domainAuthFailLearnMoreTapped
         case loadImageWithoutProxyTapped
         case markAsLegitimateTapped
         case unblockSenderTapped
@@ -211,6 +212,18 @@ struct MessageBannersView: View {
             )
         case .unableToDecrypt:
             return nil
+
+        case .domainAuthFail:
+            let button = Banner.Button(title: CommonL10n.learnMore) {
+                action(.domainAuthFailLearnMoreTapped)
+            }
+
+            return oneLine(
+                icon: DS.Icon.icExclamationCircle,
+                message: L10n.MessageBanner.domainAuthFailContentTitle,
+                size: .large(.one(button)),
+                style: .error
+            )
         }
     }
 

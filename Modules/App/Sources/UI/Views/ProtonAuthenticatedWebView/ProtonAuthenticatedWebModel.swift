@@ -51,9 +51,9 @@ final class ProtonAuthenticatedWebModel: NSObject, ObservableObject {
         Task {
             updateState(.forkingSession)
             switch await userSession.fork(platform: appDetails.platform, product: appDetails.product) {
-            case .ok(let selectorToken):
+            case .ok(let fork):
                 let theme = colorScheme == .light ? "0" : "1"
-                let url = webPageUrl(domain: domain, appVersion: appVersion, theme: theme, selector: selectorToken)
+                let url = webPageUrl(domain: domain, appVersion: appVersion, theme: theme, selector: fork.selector)
                 updateState(.urlReady(url: url))
             case .error(let error):
                 AppLogger.log(error: error)

@@ -67,8 +67,6 @@ class RecurringBackgroundTaskSchedulerTests: BaseTestCase {
 
     func test_WhenTaskIsRegisteredAndExecuted_WhenActionsFinishWithSuccess_ItCompletesWithSuccess() async throws {
         sut.register()
-        backgroundTaskExecutorSpy.backgroundExecutionFinishedWithSuccess = true
-        backgroundTaskExecutorSpy.executionCompletedWithResult = .init(status: .executed, hasUnsentMessages: false, hasPendingActions: false)
 
         let taskRegistration = try XCTUnwrap(invokedRegister.first)
         XCTAssertEqual(invokedRegister.count, 1)
@@ -83,23 +81,27 @@ class RecurringBackgroundTaskSchedulerTests: BaseTestCase {
         XCTAssertTrue(submittedProcessingTaskRequest.requiresNetworkConnectivity)
 
         let backgroundTask = BackgroundTaskSpy()
-        try execute(task: backgroundTask)
+        try await execute(
+            task: backgroundTask,
+            result: .init(status: .executed, hasUnsentMessages: false, hasPendingActions: false)
+        )
 
         XCTAssertEqual(backgroundTaskExecutorSpy.startBackgroundExecutionInvokeCount, 1)
-
         XCTAssertEqual(backgroundTaskSchedulerSpy.invokedSubmit.count, 2)
+
         XCTAssertTrue(backgroundTask.didCompleteWithSuccess)
     }
 
     func test_WhenTaskIsRegisteredAndExecuted_WhenAbortIsCalled_ItCompletesWithSuccess() async throws {
         sut.register()
-        backgroundTaskExecutorSpy.backgroundExecutionFinishedWithSuccess = false
-        backgroundTaskExecutorSpy.executionCompletedWithResult = .init(status: .abortedInBackground, hasUnsentMessages: false, hasPendingActions: false)
 
         await submitTask()
 
         let backgroundTask = BackgroundTaskSpy()
-        try execute(task: backgroundTask)
+        try await execute(
+            task: backgroundTask,
+            result: .init(status: .abortedInBackground, hasUnsentMessages: false, hasPendingActions: false)
+        )
         backgroundTask.expirationHandler?()
 
         XCTAssertEqual(backgroundTaskExecutorSpy.backgroundExecutionHandleStub.abortCalls, [false])
@@ -110,13 +112,14 @@ class RecurringBackgroundTaskSchedulerTests: BaseTestCase {
     func test_WhenTaskFinishesImmidiatelyWithSkippedNoActiveContextsResult_ItWaitsForSessionToConfigure() async throws {
         sessionStateSubject.value = .noSession
         sut.register()
-        backgroundTaskExecutorSpy.backgroundExecutionFinishedWithSuccess = false
-        backgroundTaskExecutorSpy.executionCompletedWithResult = .init(status: .skippedNoActiveContexts, hasUnsentMessages: false, hasPendingActions: false)
 
         await submitTask()
 
         let backgroundTask = BackgroundTaskSpy()
-        try execute(task: backgroundTask)
+        try await execute(
+            task: backgroundTask,
+            result: .init(status: .skippedNoActiveContexts, hasUnsentMessages: false, hasPendingActions: false)
+        )
 
         XCTAssertEqual(invokedTimerFactoryWithInterval, [0.5])
         XCTAssertFalse(backgroundTask.didCompleteWithSuccess)
@@ -133,13 +136,14 @@ class RecurringBackgroundTaskSchedulerTests: BaseTestCase {
     func test_WhenTaskFinishesWithSkippedNoActiveContextsResult_WhenTaskExpiredWhenWaiting_ItFinishesTask() async throws {
         sut.register()
         sessionStateSubject.value = .noSession
-        backgroundTaskExecutorSpy.backgroundExecutionFinishedWithSuccess = false
-        backgroundTaskExecutorSpy.executionCompletedWithResult = .init(status: .skippedNoActiveContexts, hasUnsentMessages: false, hasPendingActions: false)
 
         await submitTask()
 
         let backgroundTask = BackgroundTaskSpy()
-        try execute(task: backgroundTask)
+        try await execute(
+            task: backgroundTask,
+            result: .init(status: .skippedNoActiveContexts, hasUnsentMessages: false, hasPendingActions: false)
+        )
 
         XCTAssertEqual(invokedTimerFactoryWithInterval, [0.5])
         XCTAssertFalse(backgroundTask.didCompleteWithSuccess)
@@ -152,12 +156,13 @@ class RecurringBackgroundTaskSchedulerTests: BaseTestCase {
     func test_WhenUserSessionIsMissing_ItDoesNotScheduleNextTask() async throws {
         sessionStateSubject.value = .noSession
         sut.register()
-        backgroundTaskExecutorSpy.backgroundExecutionFinishedWithSuccess = true
-        backgroundTaskExecutorSpy.executionCompletedWithResult = .init(status: .skippedNoActiveContexts, hasUnsentMessages: false, hasPendingActions: false)
 
         await submitTask()
 
-        try execute(task: BackgroundTaskSpy())
+        try await execute(
+            task: BackgroundTaskSpy(),
+            result: .init(status: .skippedNoActiveContexts, hasUnsentMessages: false, hasPendingActions: false)
+        )
 
         XCTAssertEqual(backgroundTaskSchedulerSpy.invokedSubmit.count, 1)
     }
@@ -185,10 +190,11 @@ class RecurringBackgroundTaskSchedulerTests: BaseTestCase {
         backgroundTaskSchedulerSpy.pendingTaskRequestsStub = [backgroundTaskSchedulerSpy.invokedSubmit.last].compactMap { $0 }
     }
 
-    private func execute(task: BackgroundTask) throws {
+    private func execute(task: BackgroundTask, result: BackgroundExecutionResult) async throws {
         let taskRegistration = try XCTUnwrap(invokedRegister.first)
         backgroundTaskSchedulerSpy.pendingTaskRequestsStub = []
         taskRegistration.handler(task)
+        await backgroundTaskExecutorSpy.capturedCallback?.onExecutionCompleted(result: result)
         timerSubject.send()
     }
 }
