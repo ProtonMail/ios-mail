@@ -22,42 +22,49 @@ import Testing
 
 struct StoreKitProductIDMapperTests {
     @Test
-    func mapsPlusMonthlyPlan() {
+    func mapsPlusMonthlyPlan() throws {
         let productID = "iosmail_mail2022_1_usd_auto_renewing"
 
-        let result = StoreKitProductIDMapper.map(storeKitProductID: productID)
+        let result = try #require(StoreKitProductIDMapper.map(storeKitProductID: productID))
 
         #expect(result.plan == .plus)
         #expect(result.duration == .month)
     }
 
     @Test
-    func mapsPlusYearlyPlan() {
+    func mapsPlusYearlyPlan() throws {
         let productID = "iosmail_mail2022_12_usd_auto_renewing"
 
-        let result = StoreKitProductIDMapper.map(storeKitProductID: productID)
+        let result = try #require(StoreKitProductIDMapper.map(storeKitProductID: productID))
 
         #expect(result.plan == .plus)
         #expect(result.duration == .year)
     }
 
     @Test
-    func mapsUnlimitedMonthlyPlan() {
+    func mapsUnlimitedMonthlyPlan() throws {
         let productID = "iosmail_bundle2022_1_usd_auto_renewing"
 
-        let result = StoreKitProductIDMapper.map(storeKitProductID: productID)
+        let result = try #require(StoreKitProductIDMapper.map(storeKitProductID: productID))
 
         #expect(result.plan == .unlimited)
         #expect(result.duration == .month)
     }
 
     @Test
-    func mapsUnlimitedYearlyPlan() {
+    func mapsUnlimitedYearlyPlan() throws {
         let productID = "iosmail_bundle2022_12_usd_auto_renewing"
 
-        let result = StoreKitProductIDMapper.map(storeKitProductID: productID)
+        let result = try #require(StoreKitProductIDMapper.map(storeKitProductID: productID))
 
         #expect(result.plan == .unlimited)
         #expect(result.duration == .year)
+    }
+
+    @Test
+    func doesNOTmapUnknownID() {
+        let productID = "unknown"
+
+        #expect(StoreKitProductIDMapper.map(storeKitProductID: productID) == nil)
     }
 }

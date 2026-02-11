@@ -19,3 +19,10 @@ public enum SubscriptionPlanVariant {
     public static let plus = "mail2022"
     public static let unlimited = "bundle2022"
 }
+
+public enum FullSubscriptionProductID {
+    public static let unlimitedYear = "iosmail_\(SubscriptionPlanVariant.unlimited)_12_usd_auto_renewing"
+    public static let unlimitedMonth = "iosmail_\(SubscriptionPlanVariant.unlimited)_1_usd_auto_renewing"
+    public static let plusYear = "iosmail_\(SubscriptionPlanVariant.plus)_12_usd_auto_renewing"
+    public static let plusMonth = "iosmail_\(SubscriptionPlanVariant.plus)_1_usd_auto_renewing"
+}

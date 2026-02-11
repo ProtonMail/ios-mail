@@ -19,13 +19,18 @@
 import InboxAttribution
 
 enum StoreKitProductIDMapper {
-    static func map(storeKitProductID: String) -> SubscriptionPlanMetadata {
-        let splitStoreKitProductID = storeKitProductID.split(separator: "_").map(String.init)
-        let isMailPlusPlan = splitStoreKitProductID.contains(SubscriptionPlanVariant.plus)
-        let isAnnualPlan = splitStoreKitProductID.contains("12")
-        return .init(
-            plan: isMailPlusPlan ? .plus : .unlimited,
-            duration: isAnnualPlan ? .year : .month
-        )
+    static func map(storeKitProductID: String) -> SubscriptionPlanMetadata? {
+        switch storeKitProductID {
+        case FullSubscriptionProductID.unlimitedYear:
+            .init(plan: .unlimited, duration: .year)
+        case FullSubscriptionProductID.unlimitedMonth:
+            .init(plan: .unlimited, duration: .month)
+        case FullSubscriptionProductID.plusYear:
+            .init(plan: .plus, duration: .year)
+        case FullSubscriptionProductID.plusMonth:
+            .init(plan: .plus, duration: .month)
+        default:
+            nil
+        }
     }
 }
