@@ -20,7 +20,6 @@ import XCTest
 @testable import InboxCore
 
 final class CaseInsensitiveRawRepresentableTests: XCTestCase {
-
     private enum TestStatus: String, CaseInsensitiveRawRepresentable {
         case active = "Active"
         case inactive = "Inactive"

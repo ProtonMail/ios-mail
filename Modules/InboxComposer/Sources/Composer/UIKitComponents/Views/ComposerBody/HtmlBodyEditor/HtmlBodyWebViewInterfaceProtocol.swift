@@ -29,5 +29,4 @@ protocol HtmlBodyWebViewInterfaceProtocol: AnyObject {
     func insertText(_ text: String) async
     func insertImages(_ contentIds: [String]) async
     func removeImage(containing cid: String) async
-    func logHtmlHealthCheck(tag: String) async
 }

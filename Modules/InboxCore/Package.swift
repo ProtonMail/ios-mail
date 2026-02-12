@@ -30,7 +30,7 @@ let package = Package(
         .testTarget(
             name: "InboxCoreTests",
             dependencies: [
-                .target(name: "InboxCore"),
+                .target(name: "InboxCore")
             ]
         ),
     ]
