@@ -12,6 +12,7 @@ let package = Package(
     ],
     dependencies: [
         .package(path: "../InboxAttribution"),
+        .package(path: "../InboxCore"),
         .package(path: "../InboxCoreUI"),
         .package(path: "../InboxSnapshotTesting"),
         .package(path: "../InboxTesting"),
@@ -23,6 +24,7 @@ let package = Package(
             name: "InboxIAP",
             dependencies: [
                 "InboxAttribution",
+                "InboxCore",
                 "InboxCoreUI",
                 "PaymentsNG",
                 "proton_app_uniffi",

@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import InboxAttribution
+import InboxCore
 import InboxIAP
 import PaymentsNG
 import PaymentsUI
@@ -42,8 +43,15 @@ struct SubscriptionsScreen: View {
             .onReceive(viewModel.transactionProgress) { transactionProgress in
                 guard transactionProgress == .transactionCompleted else { return }
                 Task {
-                    if let planMetadata = try await paymentsManager.getCurrentPlan().metadata {
+                    let currentPlan = try await paymentsManager.getCurrentPlan()
+
+                    if let planMetadata = currentPlan.metadata {
                         await userAttributionService.handle(event: .subscribed(metadata: planMetadata))
+                    } else {
+                        AppLogger.log(
+                            message: "Failed to map API subscription: planName=\(currentPlan.name ?? "nil"), cycle=\(currentPlan.cycle?.description ?? "nil")",
+                            category: .adAttribution
+                        )
                     }
                 }
             }
