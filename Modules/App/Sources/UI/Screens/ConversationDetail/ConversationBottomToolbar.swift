@@ -126,8 +126,7 @@ struct ConversationToolbarModifier: ViewModifier {
         selected: @escaping (Action) async -> Void,
         moreActionsMenu: @escaping () -> MoreActionsMenu
     ) -> some View {
-        Spacer()
-        ForEach(actions, id: \.self) { action in
+        AdaptiveToolbarItemsLayout(items: actions) { action in
             if action.isMoreAction {
                 moreActionsMenu()
             } else {
@@ -136,7 +135,6 @@ struct ConversationToolbarModifier: ViewModifier {
                         .foregroundStyle(DS.Color.Icon.weak)
                 }
             }
-            Spacer()
         }
     }
 }
