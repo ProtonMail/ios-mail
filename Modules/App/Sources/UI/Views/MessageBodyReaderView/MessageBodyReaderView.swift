@@ -102,6 +102,8 @@ struct MessageBodyReaderView: UIViewRepresentable {
                     html, body {
                         /* Android is currently testing this, we should probably upstream it to Rust once they approve */
                         height: auto !important;
+                        /* Override any inline width styles that might break layout detection in `adjustLayoutAndObserveHeight` */
+                        width: auto !important;
                     }
 
                     * {

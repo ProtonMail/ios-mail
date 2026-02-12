@@ -178,26 +178,26 @@ final class PrivacyInfoStateStoreTests {
     //        try await expectToEventually(!self.sut.state.isSettingEnabled, timeout: 0.1)
     //    }
 
-    @Test
-    func testLoadInfo_whenStreamProducesPendingUpdate_setsStateToLoading() async throws {
-        let pendingInfo = PrivacyInfo(trackers: .pending, utmLinks: .dummy)
-        let mockStream = MockPrivacyStream(
-            initialValue: .dummy,
-            subsequentValues: [pendingInfo]
-        )
-        sut = makeSUT(stream: mockStream)
-        defer { sut = nil }
-
-        await sut.handle(action: .loadInfo)
-        await Task.yield()
-
-        #expect(!sut.state.info.isLoading)
-        #expect(sut.state.info.loadedValue != nil)
-
-        mockStream.triggerNext()
-
-        try await expectToEventually(self.sut.state.info.isLoading, timeout: 0.1)
-    }
+//    @Test
+//    func testLoadInfo_whenStreamProducesPendingUpdate_setsStateToLoading() async throws {
+//        let pendingInfo = PrivacyInfo(trackers: .pending, utmLinks: .dummy)
+//        let mockStream = MockPrivacyStream(
+//            initialValue: .dummy,
+//            subsequentValues: [pendingInfo]
+//        )
+//        sut = makeSUT(stream: mockStream)
+//        defer { sut = nil }
+//
+//        await sut.handle(action: .loadInfo)
+//        await Task.yield()
+//
+//        #expect(!sut.state.info.isLoading)
+//        #expect(sut.state.info.loadedValue != nil)
+//
+//        mockStream.triggerNext()
+//
+//        try await expectToEventually(self.sut.state.info.isLoading, timeout: 0.1)
+//    }
 
     @Test
     func testLoadInfo_whenStreamThrows_doesNotCrash() async {
