@@ -171,10 +171,8 @@ private struct ListActionBarViewModifier: ViewModifier {
 
     private func toolbarContent(state: State, store: Store) -> some ToolbarContent {
         ToolbarItemGroup(placement: .bottomBar) {
-            Spacer()
-            ForEach(state.bottomBarActions, id: \.self) { action in
+            AdaptiveToolbarItemsLayout(items: state.bottomBarActions) { action in
                 toolbarItem(for: action, state: state, store: store)
-                Spacer()
             }
         }
     }
