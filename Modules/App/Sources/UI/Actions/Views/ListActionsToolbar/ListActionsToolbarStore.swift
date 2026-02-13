@@ -154,10 +154,12 @@ final class ListActionsToolbarStore: StateStore {
     }
 
     private func fetchAvailableBottomBarActions(for ids: [ID], itemType: MailboxItemType) async {
-        guard !ids.isEmpty else { return }
-
-        let actions = await actionsProvider.actions(forItemsWith: ids, itemType: itemType)
-        updateActions(actions: actions)
+        if ids.isEmpty {
+            updateActions(actions: .init(hiddenListActions: [], visibleListActions: []))
+        } else {
+            let actions = await actionsProvider.actions(forItemsWith: ids, itemType: itemType)
+            updateActions(actions: actions)
+        }
     }
 
     private func updateActions(actions: AllListActions) {
