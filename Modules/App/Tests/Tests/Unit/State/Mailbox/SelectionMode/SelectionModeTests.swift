@@ -40,8 +40,8 @@ final class SelectionModeTests {
     @Test
     func testHasSelectedItems_whenThereAreItems_itReturnsTrue() {
         let items: [MailboxSelectedItem] = [
-            .init(id: 1),
-            .init(id: 2),
+            .init(id: 1, isRead: false, isStarred: false),
+            .init(id: 2, isRead: false, isStarred: false),
         ]
         items.forEach { sut.selectionModifier.addMailboxItem($0) }
 
@@ -60,7 +60,7 @@ final class SelectionModeTests {
     func testAddMailboxItem_itAddsTheItem() {
         #expect(sut.selectionState.hasItems == false)
 
-        let item = MailboxSelectedItem(id: 1)
+        let item = MailboxSelectedItem(id: 1, isRead: false, isStarred: false)
         sut.selectionModifier.addMailboxItem(item)
 
         #expect(sut.selectionState.hasItems == true)
@@ -69,7 +69,7 @@ final class SelectionModeTests {
 
     @Test
     func testRemoveMailboxItem_itRemovesTheItem() {
-        let item = MailboxSelectedItem(id: 1)
+        let item = MailboxSelectedItem(id: 1, isRead: false, isStarred: false)
         sut.selectionModifier.addMailboxItem(item)
 
         #expect(sut.selectionState.hasItems == true)
@@ -83,8 +83,8 @@ final class SelectionModeTests {
     @Test
     func testRefreshSelectedItemsStatus_whenStatusDoesChange_itKeepsTheSameItemSelectionWithNewStatus() {
         let items: [MailboxSelectedItem] = [
-            .init(id: 1),
-            .init(id: 2),
+            .init(id: 1, isRead: false, isStarred: false),
+            .init(id: 2, isRead: false, isStarred: false),
         ]
         items.forEach { sut.selectionModifier.addMailboxItem($0) }
         #expect(sut.selectionState.hasItems == true)
@@ -103,31 +103,34 @@ final class SelectionModeTests {
     @Test
     func testRefreshSelectedItemsStatus_whenStatusDoesNotChange_itKeepsTheSameItemSelection() {
         let items: [MailboxSelectedItem] = [
-            .init(id: 1),
-            .init(id: 2),
+            .init(id: 1, isRead: false, isStarred: false),
+            .init(id: 2, isRead: false, isStarred: false),
         ]
         items.forEach { sut.selectionModifier.addMailboxItem($0) }
         #expect(sut.selectionState.hasItems == true)
         #expect(sut.selectionState.selectedItems == Set(items))
 
+        let updatedItem1 = MailboxSelectedItem(id: 1, isRead: true, isStarred: false)
+        let updatedItem2 = MailboxSelectedItem(id: 2, isRead: false, isStarred: true)
+
         sut.selectionModifier.refreshSelectedItemsStatus(newMailboxItems: [
-            makeMailboxItemCellUIModel(id: 1, isRead: true, isStarred: true),
-            makeMailboxItemCellUIModel(id: 2, isRead: true, isStarred: true),
+            makeMailboxItemCellUIModel(id: updatedItem1.id.value, isRead: updatedItem1.isRead, isStarred: updatedItem1.isStarred),
+            makeMailboxItemCellUIModel(id: updatedItem2.id.value, isRead: updatedItem2.isRead, isStarred: updatedItem2.isStarred),
         ])
 
         #expect(sut.selectionState.hasItems == true)
-        #expect(sut.selectionState.selectedItems == Set(items))
+        #expect(sut.selectionState.selectedItems == Set([updatedItem1, updatedItem2]))
     }
 
     @Test
     func testRefreshSelectedItemsStatus_whenLessItemsAreReturned_itRemovesTheNotReturnedItemsFromSelection() {
-        let item1 = MailboxSelectedItem.init(id: 1)
-        let item2 = MailboxSelectedItem.init(id: 2)
+        let item1 = MailboxSelectedItem.init(id: 1, isRead: false, isStarred: false)
+        let item2 = MailboxSelectedItem.init(id: 2, isRead: false, isStarred: false)
         [item1, item2].forEach { sut.selectionModifier.addMailboxItem($0) }
         #expect(sut.selectionState.hasItems == true)
         #expect(sut.selectionState.selectedItems == [item1, item2])
 
-        sut.selectionModifier.refreshSelectedItemsStatus(newMailboxItems: [makeMailboxItemCellUIModel(id: 1, isRead: true, isStarred: true)])
+        sut.selectionModifier.refreshSelectedItemsStatus(newMailboxItems: [makeMailboxItemCellUIModel(id: 1, isRead: false, isStarred: false)])
         #expect(sut.selectionState.hasItems == true)
         #expect(sut.selectionState.selectedItems == [item1])
 
@@ -146,8 +149,8 @@ final class SelectionModeTests {
     @Test
     func testExitSelectionMode_itRemovesAllSelectedItems() {
         let items: [MailboxSelectedItem] = [
-            .init(id: 1),
-            .init(id: 2),
+            .init(id: 1, isRead: false, isStarred: false),
+            .init(id: 2, isRead: false, isStarred: false),
         ]
         items.forEach { sut.selectionModifier.addMailboxItem($0) }
         #expect(sut.selectionState.hasItems == true)
@@ -161,7 +164,7 @@ final class SelectionModeTests {
 
     @Test
     func testWhenSelectionLimitIsReached_cannotSelectMoreItemsUntilRoomIsGiven() {
-        let items: [MailboxSelectedItem] = (0...101).map { .init(id: .init(value: $0)) }
+        let items: [MailboxSelectedItem] = (0...101).map { .init(id: .init(value: $0), isRead: false, isStarred: false) }
 
         for item in items {
             sut.selectionModifier.addMailboxItem(item)
@@ -177,7 +180,7 @@ final class SelectionModeTests {
 
     @Test
     func testAddMailboxItem_reportsSuccess() {
-        let items: [MailboxSelectedItem] = (0...101).map { .init(id: .init(value: $0)) }
+        let items: [MailboxSelectedItem] = (0...101).map { .init(id: .init(value: $0), isRead: false, isStarred: false) }
 
         let results: [Bool] = items.map(sut.selectionModifier.addMailboxItem)
 
@@ -190,8 +193,8 @@ final class SelectionModeTests {
     @Test
     func testInSelectAllMode_whenDeselectingAllAtOnce_HasItemsRemainsTrue() {
         let items: [MailboxSelectedItem] = [
-            .init(id: 1),
-            .init(id: 2),
+            .init(id: 1, isRead: false, isStarred: false),
+            .init(id: 2, isRead: false, isStarred: false),
         ]
 
         sut.selectionModifier.enterSelectAllMode(selecting: items)
@@ -204,8 +207,8 @@ final class SelectionModeTests {
     @Test
     func testInSelectAllMode_whenRemovingSingleItem_selectAllModeIsEnded() {
         let items: [MailboxSelectedItem] = [
-            .init(id: 1),
-            .init(id: 2),
+            .init(id: 1, isRead: false, isStarred: false),
+            .init(id: 2, isRead: false, isStarred: false),
         ]
 
         sut.selectionModifier.enterSelectAllMode(selecting: items)
@@ -217,8 +220,8 @@ final class SelectionModeTests {
     @Test
     func testInSelectAllMode_whenExitingSelectAllMode_selectionIsPreserved() {
         let items: [MailboxSelectedItem] = [
-            .init(id: 1),
-            .init(id: 2),
+            .init(id: 1, isRead: false, isStarred: false),
+            .init(id: 2, isRead: false, isStarred: false),
         ]
 
         sut.selectionModifier.enterSelectAllMode(selecting: items)
@@ -231,8 +234,8 @@ final class SelectionModeTests {
     @Test
     func testInSelectAllMode_whenExitingSelectionMode_everythingIsCleared() {
         let items: [MailboxSelectedItem] = [
-            .init(id: 1),
-            .init(id: 2),
+            .init(id: 1, isRead: false, isStarred: false),
+            .init(id: 2, isRead: false, isStarred: false),
         ]
 
         sut.selectionModifier.enterSelectAllMode(selecting: items)
@@ -244,7 +247,7 @@ final class SelectionModeTests {
 
     @Test
     func testEnteringSelectAllModeRespectsSelectionLimit() {
-        let items: [MailboxSelectedItem] = (0...101).map { .init(id: .init(value: $0)) }
+        let items: [MailboxSelectedItem] = (0...101).map { .init(id: .init(value: $0), isRead: false, isStarred: false) }
 
         sut.selectionModifier.enterSelectAllMode(selecting: items)
 

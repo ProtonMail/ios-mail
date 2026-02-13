@@ -17,6 +17,18 @@
 
 import Foundation
 
+/// Represents a selected item in the mailbox.
+///
+/// **Important:** `isRead` and `isStarred` are included to enable reactive toolbar updates.
+/// They are not accessed directly, but they affect `Hashable` equality, which allows
+/// `.onChange(of: selectedItems)` to detect when item states change and trigger toolbar refresh.
+///  This allow to react to changes made offline but also to react to changes made remotely.
 struct MailboxSelectedItem: Hashable {
     let id: ID
+
+    /// Whether the item is read. Included in equality to trigger toolbar updates when changed.
+    let isRead: Bool
+
+    /// Whether the item is starred. Included in equality to trigger toolbar updates when changed.
+    let isStarred: Bool
 }

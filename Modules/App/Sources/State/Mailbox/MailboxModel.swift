@@ -844,6 +844,6 @@ extension MailboxModel {
 
 extension MailboxItemCellUIModel {
     func toSelectedItem() -> MailboxSelectedItem {
-        .init(id: id)
+        .init(id: id, isRead: isRead, isStarred: isStarred)
     }
 }
