@@ -71,6 +71,17 @@ class ListActionsToolbarStoreTests {
                     isSnoozeSheetPresented: false,
                     isEditToolbarSheetPresented: false
                 ))
+
+        await sut.handle(action: .listItemsSelectionUpdated(ids: [], itemType: viewMode.itemType))
+
+        #expect(
+            sut.state
+                == .init(
+                    bottomBarActions: [],
+                    moreSheetOnlyActions: [],
+                    isSnoozeSheetPresented: false,
+                    isEditToolbarSheetPresented: false
+                ))
     }
 
     @Test
