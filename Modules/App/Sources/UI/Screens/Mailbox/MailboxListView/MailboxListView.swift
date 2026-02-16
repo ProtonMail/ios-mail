@@ -94,8 +94,14 @@ extension MailboxListView {
             },
             emptyFolderBanner: $model.emptyFolderBanner,
             mailUserSession: mailUserSession,
-            mailbox: model.mailbox
+            mailbox: model.mailbox,
+            liquidComposeButton: {
+                LiquidComposeButton(isExpanded: isListAtTop) {
+                    model.createDraft()
+                }
+            }
         )
+        .animation(.default, value: isListAtTop)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .onChange(of: model.selectedMailbox) { _, _ in
             self.isListAtTop = true

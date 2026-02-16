@@ -121,16 +121,18 @@ extension MailboxScreen {
                     model: mailboxModel,
                     mailUserSession: userSession
                 )
-                composeButtonView
-                    .accessibilitySortPriority(1)
-                    .animation(
-                        animateComposeButtonSafeAreaChanges ? .default : .none, value: geometry.safeAreaInsets.bottom
-                    )
-                    .onLoad {
-                        Task {
-                            await skipAnimationWhenViewRenders()
+                if #unavailable(iOS 26) {
+                    composeButtonView
+                        .accessibilitySortPriority(1)
+                        .animation(
+                            animateComposeButtonSafeAreaChanges ? .default : .none, value: geometry.safeAreaInsets.bottom
+                        )
+                        .onLoad {
+                            Task {
+                                await skipAnimationWhenViewRenders()
+                            }
                         }
-                    }
+                }
             }
         }
         .background(DS.Color.Background.norm)  // sets also the color for the navigation bar

@@ -30,12 +30,13 @@ extension View {
     /// `ListActionsToolbarStore` `@StateObject` recreated on each mailbox change
     /// to ensure the correct `labelId` is used under the hood—without forcing
     /// unnecessary re-renders of the surrounding view hierarchy.
-    func listActionsToolbar(
+    func listActionsToolbar<ComposeButton: ToolbarContent>(
         initialState: ListActionsToolbarState,
         availableActions: AvailableListToolbarActions,
         itemTypeForActionBar: MailboxItemType,
         mailUserSession: MailUserSession,
-        selectedItems: Binding<Set<MailboxSelectedItem>>
+        selectedItems: Binding<Set<MailboxSelectedItem>>,
+        liquidComposeButton: (() -> ComposeButton)?
     ) -> some View {
         background(
             Color.clear
@@ -45,13 +46,14 @@ extension View {
                         availableActions: availableActions,
                         itemTypeForActionBar: itemTypeForActionBar,
                         mailUserSession: mailUserSession,
-                        selectedItems: selectedItems
+                        selectedItems: selectedItems,
+                        liquidComposeButton: liquidComposeButton
                     )
                 ))
     }
 }
 
-private struct ListActionBarViewModifier: ViewModifier {
+private struct ListActionBarViewModifier<ComposeButton: ToolbarContent>: ViewModifier {
     typealias State = ListActionsToolbarState
     typealias Store = ListActionsToolbarStore
 
@@ -67,6 +69,7 @@ private struct ListActionBarViewModifier: ViewModifier {
     private let mailUserSession: MailUserSession
     private let starActionPerformerActions: StarActionPerformerActions
     private let readActionPerformerActions: ReadActionPerformerActions
+    private let liquidComposeButton: ComposeButton?
 
     init(
         initialState: ListActionsToolbarState,
@@ -77,7 +80,8 @@ private struct ListActionBarViewModifier: ViewModifier {
         moveToActions: MoveToActions = .productionInstance,
         itemTypeForActionBar: MailboxItemType,
         mailUserSession: MailUserSession,
-        selectedItems: Binding<Set<MailboxSelectedItem>>
+        selectedItems: Binding<Set<MailboxSelectedItem>>,
+        liquidComposeButton: (() -> ComposeButton)?
     ) {
         self._selectedItems = selectedItems
         self.initialState = initialState
@@ -88,6 +92,7 @@ private struct ListActionBarViewModifier: ViewModifier {
         self.mailUserSession = mailUserSession
         self.starActionPerformerActions = starActionPerformerActions
         self.readActionPerformerActions = readActionPerformerActions
+        self.liquidComposeButton = liquidComposeButton?()
     }
 
     func body(content: Content) -> some View {
@@ -108,6 +113,7 @@ private struct ListActionBarViewModifier: ViewModifier {
                 .toolbar {
                     toolbarContent(state: state, store: store)
                 }
+                .animation(.default, value: state.bottomBarActions)
                 .bottomToolbarStyle()
                 .onChange(of: selectedItems) { oldValue, newValue in
                     if oldValue != newValue {
@@ -169,11 +175,18 @@ private struct ListActionBarViewModifier: ViewModifier {
         selectedItems.map(\.id)
     }
 
+    @ToolbarContentBuilder
     private func toolbarContent(state: State, store: Store) -> some ToolbarContent {
         ToolbarItemGroup(placement: .bottomBar) {
             AdaptiveToolbarItemsLayout(items: state.bottomBarActions) { action in
                 toolbarItem(for: action, state: state, store: store)
             }
+        }
+
+        if #available(iOS 26.0, *), state.bottomBarActions.isEmpty, let liquidComposeButton {
+            ToolbarSpacer(.flexible, placement: .bottomBar)
+
+            liquidComposeButton
         }
     }
 
