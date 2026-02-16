@@ -150,14 +150,15 @@ struct SearchScreen: View {
     }
 
     private var resultsList: some View {
-        MailboxItemsListView(
+        MailboxItemsListView<NoResultsView, LiquidComposeButton>(
             config: listConfiguration,
             emptyView: {
                 NoResultsView(variant: .search)
             },
             emptyFolderBanner: .constant(nil),
             mailUserSession: userSession,
-            mailbox: model.mailbox
+            mailbox: model.mailbox,
+            liquidComposeButton: nil
         )
         .navigationBarTitleDisplayMode(.inline)
     }

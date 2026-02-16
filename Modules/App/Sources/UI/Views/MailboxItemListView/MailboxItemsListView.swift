@@ -22,7 +22,7 @@ import ProtonUIFoundations
 import SwiftUI
 import proton_app_uniffi
 
-struct MailboxItemsListView<EmptyView: View>: View {
+struct MailboxItemsListView<EmptyView: View, ComposeButton: ToolbarContent>: View {
     let config: MailboxItemsListViewConfiguration
     @ViewBuilder let emptyView: EmptyView
     @ObservedObject private(set) var selectionState: SelectionModeState
@@ -30,6 +30,7 @@ struct MailboxItemsListView<EmptyView: View>: View {
     @Binding var emptyFolderBanner: EmptyFolderBanner?
     @State var isScrollingDisabled = false
     let mailbox: Mailbox?
+    private let liquidComposeButton: (() -> ComposeButton)?
 
     // pull to refresh
     @State private var listPullOffset: CurrentValueSubject<CGFloat, Never> = .init(0.0)
@@ -42,7 +43,8 @@ struct MailboxItemsListView<EmptyView: View>: View {
         @ViewBuilder emptyView: () -> EmptyView,
         emptyFolderBanner: Binding<EmptyFolderBanner?>,
         mailUserSession: MailUserSession,
-        mailbox: Mailbox?
+        mailbox: Mailbox?,
+        liquidComposeButton: (() -> ComposeButton)?
     ) {
         self.config = config
         self.emptyView = emptyView()
@@ -50,6 +52,7 @@ struct MailboxItemsListView<EmptyView: View>: View {
         self.mailUserSession = mailUserSession
         _emptyFolderBanner = emptyFolderBanner
         self.mailbox = mailbox
+        self.liquidComposeButton = liquidComposeButton
     }
 
     var body: some View {
@@ -61,9 +64,16 @@ struct MailboxItemsListView<EmptyView: View>: View {
                     availableActions: .productionInstance,
                     itemTypeForActionBar: config.itemTypeForActionBar,
                     mailUserSession: mailUserSession,
-                    selectedItems: config.selectionState.selectedItemIDsReadOnlyBinding
+                    selectedItems: config.selectionState.selectedItemIDsReadOnlyBinding,
+                    liquidComposeButton: liquidComposeButton
                 )
-                .toolbar(selectionState.hasItems ? .visible : .hidden, for: .bottomBar)
+                .liquidGlassAdapter(
+                    ios26: { $0 },
+                    belowIOS26: { view in
+                        view
+                            .toolbar(selectionState.hasItems ? .visible : .hidden, for: .bottomBar)
+                    }
+                )
                 .animation(.default, value: selectionState.hasItems)
                 .environmentObject(mailbox)
         } else {
@@ -226,12 +236,13 @@ private extension SelectionModeState {
         }
 
         var body: some View {
-            MailboxItemsListView(
+            MailboxItemsListView<Text, LiquidComposeButton>(
                 config: makeConfiguration(),
                 emptyView: { Text("MAILBOX IS EMPTY".notLocalized) },
                 emptyFolderBanner: .constant(nil),
                 mailUserSession: .dummy,
-                mailbox: .dummy
+                mailbox: .dummy,
+                liquidComposeButton: nil
             )
             .task {
                 model.dataSource.fetchInitialPage()

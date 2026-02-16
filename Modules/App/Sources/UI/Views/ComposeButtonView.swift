@@ -18,6 +18,112 @@
 import InboxDesignSystem
 import SwiftUI
 
+// MARK: - Liquid Glass Adapter
+
+extension View {
+    /// Adapts view modifications based on iOS version for Liquid Glass support.
+    ///
+    /// Provides a clean API to apply different view modifications depending on whether
+    /// the device is running iOS 26.0 or later (with Liquid Glass support) or an earlier version.
+    ///
+    /// - Parameters:
+    ///   - ios26: A ViewBuilder closure that modifies the view for iOS 26.0 and later
+    ///   - belowIOS26: A ViewBuilder closure that modifies the view for iOS versions below 26.0
+    /// - Returns: A view with the appropriate modifications applied
+    ///
+    /// Example usage:
+    /// ```swift
+    /// // Apply modifications for both versions
+    /// someView
+    ///     .liquidGlassAdapter(
+    ///         ios26: { view in
+    ///             view.toolbar {
+    ///                 ToolbarItem(placement: .bottomBar) {
+    ///                     Button("Action") { }
+    ///                 }
+    ///             }
+    ///         },
+    ///         belowIOS26: { view in
+    ///             view.overlay(alignment: .bottom) {
+    ///                 Button("Action") { }
+    ///             }
+    ///         }
+    ///     )
+    ///
+    /// // Apply modifications only for iOS 26+ (pass identity closure for belowIOS26)
+    /// someView
+    ///     .liquidGlassAdapter(
+    ///         ios26: { $0.someModifier() },
+    ///         belowIOS26: { $0 }
+    ///     )
+    ///
+    /// // Apply modifications only for below iOS 26 (pass identity closure for ios26)
+    /// someView
+    ///     .liquidGlassAdapter(
+    ///         ios26: { $0 },
+    ///         belowIOS26: { $0.someModifier() }
+    ///     )
+    /// ```
+    func liquidGlassAdapter<iOS26Content: View, BelowIOS26Content: View>(
+        @ViewBuilder ios26: @escaping (Self) -> iOS26Content,
+        @ViewBuilder belowIOS26: @escaping (Self) -> BelowIOS26Content
+    ) -> some View {
+        LiquidGlassAdapterView(
+            content: self,
+            ios26Modification: ios26,
+            belowIOS26Modification: belowIOS26
+        )
+    }
+}
+
+private struct LiquidGlassAdapterView<Content: View, iOS26Content: View, BelowIOS26Content: View>: View {
+    let content: Content
+    let ios26Modification: (Content) -> iOS26Content
+    let belowIOS26Modification: (Content) -> BelowIOS26Content
+
+    var body: some View {
+        if #available(iOS 26.0, *) {
+            ios26Modification(content)
+        } else {
+            belowIOS26Modification(content)
+        }
+    }
+}
+
+struct LiquidComposeButton: ToolbarContent {
+    let isExpanded: Bool
+    let action: () -> Void
+
+    var body: some ToolbarContent {
+        if isExpanded {
+            ToolbarItem(placement: .bottomBar) {
+                Button(
+                    action: action,
+                    label: {
+                        HStack(spacing: DS.Spacing.standard) {
+                            Image(DS.Icon.icPenSquare)
+                                .foregroundStyle(DS.Color.Icon.norm)
+                            Text(L10n.Mailbox.compose)
+                                .fontWeight(.semibold)
+                                .foregroundStyle(DS.Color.Icon.norm)
+                        }
+                    }
+                )
+            }
+        } else {
+            ToolbarItem(placement: .bottomBar) {
+                Button(
+                    action: action,
+                    label: {
+                        Image(DS.Icon.icPenSquare)
+                            .foregroundStyle(DS.Color.Icon.norm)
+                    }
+                )
+            }
+        }
+    }
+}
+
 struct ComposeButtonView: View {
     private let animation: Animation = .easeInOut(duration: 0.2)
 
