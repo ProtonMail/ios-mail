@@ -205,5 +205,5 @@ struct ReportProblemScreen: View {
 }
 
 #Preview {
-    ReportProblemScreen(reportProblemService: MailUserSession(noPointer: .init()))
+    ReportProblemScreen(reportProblemService: MailUserSession(noHandle: .init()))
 }

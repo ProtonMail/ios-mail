@@ -235,11 +235,12 @@ class BackgroundExecutionHandleStub: BackgroundExecutionHandle, @unchecked Senda
     private(set) var abortCalls: [Bool] = []
 
     init() {
-        super.init(noPointer: .init())
+        super.init(noHandle: .init())
     }
 
-    required init(unsafeFromRawPointer pointer: UnsafeMutableRawPointer) {
-        fatalError("init(unsafeFromRawPointer:) has not been implemented")
+    @available(*, unavailable)
+    required init(unsafeFromHandle handle: UInt64) {
+        fatalError("init(unsafeFromHandle:) has not been implemented")
     }
 
     // MARK: - BackgroundExecutionHandle

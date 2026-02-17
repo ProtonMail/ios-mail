@@ -67,6 +67,6 @@ final class SidebarSpy: SidebarProtocol, @unchecked Sendable {
         let mappedIndex: CallbackIndex = lastIndex == -1 ? .folder : .init(rawValue: lastIndex + 1)!
         spiedWatchers[mappedIndex] = callback
 
-        return .ok(WatchHandleDummy(noPointer: .init()))
+        return .ok(WatchHandleDummy(noHandle: .init()))
     }
 }

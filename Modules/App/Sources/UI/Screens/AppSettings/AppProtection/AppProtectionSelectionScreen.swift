@@ -126,8 +126,8 @@ struct AppProtectionSelectionScreen: View {
                     .init(type: .faceID, isSelected: true),
                 ]
             ),
-            appSettingsRepository: MailSession(noPointer: .init()),
-            appProtectionConfigurator: MailSession(noPointer: .init())
+            appSettingsRepository: MailSession(noHandle: .init()),
+            appProtectionConfigurator: MailSession(noHandle: .init())
         )
     }
 }

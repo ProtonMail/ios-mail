@@ -160,7 +160,7 @@ extension DraftPresenter {
         undoScheduleSendProvider: UndoScheduleSendProvider = .mockInstance
     ) -> DraftPresenter {
         .init(
-            userSession: .init(noPointer: .init()),
+            userSession: .init(noHandle: .init()),
             draftProvider: .dummy,
             undoSendProvider: undoSendProvider,
             undoScheduleSendProvider: undoScheduleSendProvider

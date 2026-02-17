@@ -566,11 +566,12 @@ private final class DecryptedMessageSpy: DecryptedMessage, @unchecked Sendable {
 
     init(stubbedOptions: TransformOpts) {
         self.stubbedOptions = stubbedOptions
-        super.init(noPointer: .init())
+        super.init(noHandle: .init())
     }
 
-    required init(unsafeFromRawPointer pointer: UnsafeMutableRawPointer) {
-        fatalError("init(unsafeFromRawPointer:) has not been implemented")
+    @available(*, unavailable)
+    required init(unsafeFromHandle handle: UInt64) {
+        fatalError("init(unsafeFromHandle:) has not been implemented")
     }
 
     private(set) var bodyWithOptionsCalls: [TransformOpts] = []

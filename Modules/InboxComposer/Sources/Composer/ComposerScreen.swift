@@ -127,7 +127,7 @@ struct ComposerLoadingView: View {
     ComposerScreen(
         draft: .emptyMock,
         draftOrigin: .new,
-        dependencies: .init(contactProvider: .mockInstance, userSession: .init(noPointer: .init())),
+        dependencies: .init(contactProvider: .mockInstance, userSession: .init(noHandle: .init())),
         onDismiss: { _ in }
     )
     .environmentObject(toastStateStore)

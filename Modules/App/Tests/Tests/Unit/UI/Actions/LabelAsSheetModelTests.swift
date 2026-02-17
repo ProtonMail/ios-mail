@@ -31,7 +31,7 @@ final class LabelAsSheetModelTests {
     private var invokedAvailableActionsWithConversationIDs: [ID] = []
     private var invokedDismissCount = 0
     private var stubbedLabelAsActions: [LabelAsAction] = []
-    private var stubbedLabelAsOutput: LabelAsOutput = .init(inputLabelIsEmpty: false, undo: UndoSpy(noPointer: .init()))
+    private var stubbedLabelAsOutput: LabelAsOutput = .init(inputLabelIsEmpty: false, undo: UndoSpy(noHandle: .init()))
 
     private var toastStateStore = ToastStateStore(initialState: .initial)
     private var invokedLabelMessage: [LabelAsExecutedWithData] = []
@@ -175,7 +175,7 @@ final class LabelAsSheetModelTests {
     private func sut(ids: [ID], type: MailboxItemType) -> LabelAsSheetModel {
         LabelAsSheetModel(
             input: .init(sheetType: .labelAs, ids: ids, mailboxItem: type.mailboxItem),
-            mailbox: .init(noPointer: .init()),
+            mailbox: .init(noHandle: .init()),
             availableLabelAsActions: .init(
                 message: { _, ids in
                     self.invokedAvailableActionsWithMessagesIDs = ids
@@ -220,7 +220,7 @@ final class LabelAsSheetModelTests {
         itemType: MailboxItemType,
         spyToVerify: () -> [LabelAsExecutedWithData]
     ) async throws {
-        let undoSpy = UndoSpy(noPointer: .init())
+        let undoSpy = UndoSpy(noHandle: .init())
         let selectedLabelID: ID = .init(value: 2)
         let partiallySelectedLabelID: ID = .init(value: 4)
         stubbedLabelAsActions = [
@@ -257,7 +257,7 @@ final class LabelAsSheetModelTests {
         spyToVerify: () -> [LabelAsExecutedWithData],
         expectToastMessage: LocalizedStringResource
     ) async throws {
-        let undoSpy = UndoSpy(noPointer: .init())
+        let undoSpy = UndoSpy(noHandle: .init())
         let selectedLabelID: ID = .init(value: 2)
         let partiallySelectedLabelID: ID = .init(value: 4)
         stubbedLabelAsActions = [

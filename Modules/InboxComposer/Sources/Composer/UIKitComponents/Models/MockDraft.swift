@@ -307,6 +307,6 @@ final class MockAttachmentList: AttachmentListProtocol, @unchecked Sendable {
     }
 
     func watcherStream() async -> AttachmentListWatcherStreamResult {
-        .ok(DraftAttachmentListUpdateStream.init(noPointer: .init()))
+        .ok(DraftAttachmentListUpdateStream.init(noHandle: .init()))
     }
 }

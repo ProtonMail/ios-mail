@@ -48,6 +48,6 @@ extension LabelAsActions {
 
 extension Undo {
     static var dummy: Undo {
-        Undo(noPointer: .init())
+        Undo(noHandle: .init())
     }
 }

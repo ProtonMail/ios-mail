@@ -19,6 +19,6 @@ import proton_app_uniffi
 
 extension Mailbox {
     static var dummy: Mailbox {
-        .init(noPointer: .init())
+        .init(noHandle: .init())
     }
 }

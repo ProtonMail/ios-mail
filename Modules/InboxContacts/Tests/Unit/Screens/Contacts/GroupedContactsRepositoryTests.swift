@@ -23,7 +23,7 @@ import proton_app_uniffi
 
 final class GroupedContactsRepositoryTests {
     private lazy var sut: GroupedContactsRepository = .init(
-        mailUserSession: MailUserSession(noPointer: .init()),
+        mailUserSession: MailUserSession(noHandle: .init()),
         contactsProvider: .init(allContacts: { _ in .ok(self.stubbedContacts) })
     )
     private var stubbedContacts: [GroupedContacts] = []

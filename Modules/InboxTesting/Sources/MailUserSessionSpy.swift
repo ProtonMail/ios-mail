@@ -30,12 +30,12 @@ public final class MailUserSessionSpy: MailUserSession, @unchecked Sendable {
     public init(id: String) {
         self.id = id
 
-        super.init(noPointer: .init())
+        super.init(noHandle: .init())
     }
 
     @available(*, unavailable)
-    required init(unsafeFromRawPointer pointer: UnsafeMutableRawPointer) {
-        fatalError("init(unsafeFromRawPointer:) has not been implemented")
+    required init(unsafeFromHandle handle: UInt64) {
+        fatalError("init(unsafeFromHandle:) has not been implemented")
     }
 
     public override func accountDetails() async -> MailUserSessionAccountDetailsResult {
@@ -87,6 +87,6 @@ public final class MailUserSessionSpy: MailUserSession, @unchecked Sendable {
     public override func watchUserSettings(callback: any AsyncLiveQueryCallback) -> MailUserSessionWatchUserSettingsResult {
         watchUserSettingsCallback.append(callback)
 
-        return .ok(.init(noPointer: .init()))
+        return .ok(.init(noHandle: .init()))
     }
 }

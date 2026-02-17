@@ -27,12 +27,12 @@ public final class StoredSessionStub: StoredSession, @unchecked Sendable {
         userIdValue = userId
         stateValue = state
 
-        super.init(noPointer: .init())
+        super.init(noHandle: .init())
     }
 
     @available(*, unavailable)
-    required init(unsafeFromRawPointer pointer: UnsafeMutableRawPointer) {
-        fatalError("init(unsafeFromRawPointer:) has not been implemented")
+    required init(unsafeFromHandle handle: UInt64) {
+        fatalError("init(unsafeFromHandle:) has not been implemented")
     }
 
     public override func sessionId() -> String {
