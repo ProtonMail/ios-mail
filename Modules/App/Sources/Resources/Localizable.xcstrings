@@ -10981,7 +10981,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "修改第二个密码"
+            "value" : "修改二级密码"
           }
         },
         "zh-Hant" : {
@@ -25854,7 +25854,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "保留预设的 Proton Mail 图标，或使用更隐蔽的图标来增强隐私保护。通知始终会显示 Proton Mail 名称和图标。[了解更多…](https://proton.me/support/disguise-app-icon)"
+            "value" : "保留预设的 Proton Mail 图标，或使用更隐蔽的图标来增强隐私保护。通知始终会显示 Proton Mail 名称和图标。[了解详情…](https://proton.me/support/disguise-app-icon)"
           }
         }
       }
@@ -48068,19 +48068,19 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Гэты ліст не прайшоў праверку на адпаведнасць нашым патрабаванням аўтэнтыфікацыі дамена. Ён можа быць падроблены або перасланы неналежным чынам."
+            "value" : "Гэты ліст не прайшоў праверку на адпаведнасць патрабаванням аўтэнтыфікацыі дамена. Ён можа быць падроблены або неналежным чынам перанакіраваны."
           }
         },
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aquest correu no ha superat els requisits d'autentificació del domini. Pot ser que estigui falsejat o reenviat indegudament."
+            "value" : "Aquest correu electrònic no ha complert els requisits d'autenticació del seu domini. Pot ser que hagi estat suplantat o que s'hagi reenviat incorrectament."
           }
         },
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "U tohoto e-mailu nebyly splněny požadavky na ověření domény odesílatele. E-mail může být podvržený a nebo nesprávně přeposlaný."
+            "value" : "U tohoto e-mailu nebyly splněny požadavky na ověření domény. E-mail může být podvržený nebo nesprávně přeposlaný."
           }
         },
         "da" : {
@@ -48092,7 +48092,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Diese E-Mail hat die Domain-Authentifizierungsanforderungen nicht bestanden. Sie könnte gefälscht oder unsachgemäß weitergeleitet worden sein."
+            "value" : "Diese E-Mail hat die Authentifizierungsanforderungen der Domain nicht erfüllt. Sie könnte gefälscht oder falsch weitergeleitet worden sein."
           }
         },
         "el" : {
@@ -48110,7 +48110,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Este correo electrónico no ha superado los requisitos de autenticación del dominio. Puede estar falsificado o reenviado incorrectamente."
+            "value" : "Este correo electrónico no ha superado los requisitos de autenticación de su dominio. Es posible que esté falsificado o se haya reenviado incorrectamente."
           }
         },
         "es-419" : {
@@ -48122,49 +48122,13 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Viesti ei täyttänyt sen verkkotunnuksen todennusvaatimuksia. Se voi olla väärennetty tai virheellisesti välitetty."
+            "value" : "Sähköposti ei täyttänyt sen verkkotunnuksen todennusvaatimuksia. Se voi olla väärennetty tai virheellisesti välitetty."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Cette adresse e-mail ne répond pas aux exigences d'authentification de son domaine. Elle a peut-être été falsifiée ou transférée de manière incorrecte."
-          }
-        },
-        "hu" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Az e-mail nem felelt meg a domain név ellenőrzési követelményeinek. Lehet becsapós üzenet vagy hibásan lett továbbítva."
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Email ini telah gagal memenuhi syarat autentikasi domainnya. Email ini mungkin telah dipalsukan atau tidak diteruskan dengan benar."
-          }
-        },
-        "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Quest'email non ha superato i requisiti d'autenticazione del suo dominio. Potrebbe esser falsificata o inoltrata impropriamente."
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "メールのドメイン認証に失敗しました。このメールは不適切に転送されたものか、なりすましの恐れがあります。"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ეს ელფოსტა მისი დომენის ავთენტიკაციის მოთხოვნებს ვერ აკმაყოფილებს. ის შეიძლება ყალბია, ან არასწორადაა გადაგზავნილი."
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "이 이메일은 도메인의 인증 요구에 실패했습니다. 스푸핑되거나 잘못 전달되었을 수 있습니다."
+            "value" : "Cet e-mail ne répond pas aux exigences d'authentification du domaine. Il peut s'agir d'une usurpation d'identité ou d'un transfert incorrect."
           }
         },
         "nb" : {
@@ -48176,37 +48140,13 @@
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Dit e-mailadres gebruikt foutieve domeininstellingen. Het kan een nepbericht zijn, of het is op de verkeerde manier doorgestuurd."
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Wiadomość nie spełnia wymogów weryfikacyjnych domeny nadawcy. Może być sfałszowana lub nieprawidłowo przesłana."
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Este endereço de e-mail não cumpre os requisitos de autenticação do seu domínio. Pode estar falsificado ou ter sido encaminhado incorretamente."
+            "value" : "Deze e-mail voldoet niet aan de verificatievereisten van het domein. Het kan gespoofd of onjuist doorgestuurd zijn."
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Este e-mail não cumpriu com os requisitos de autenticação de domínio. Pode ser falsificado ou encaminhado indevidamente."
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Acest e-mail nu respectă cerințele de autentificare ale domeniul său. Ar putea fi falsificat sau redirecționat eronat."
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Это письмо не соответствует требованиям подтверждения подлинности домена. Оно может быть поддельным, либо было переслано ненадлежащим образом."
+            "value" : "Este e-mail não atendeu aos requisitos de autenticação de seu domínio. Pode ser falsificado ou encaminhado indevidamente."
           }
         },
         "sk" : {
@@ -48215,40 +48155,28 @@
             "value" : "Tento email nesplnil požiadavky na overenie svojej domény. Môže byť sfalšovaný alebo nesprávne preposlaný."
           }
         },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sporočilo ne izpolnjuje zahtev svoje domene za preverjanje pristnosti. Morda se predstavlja z lažnim naslovom ali pa je nepravilno posredovano."
-          }
-        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Det här e-postmeddelandet uppfyller inte domänens autentiseringskrav. Det kan vara förfalskat eller felaktigt vidarebefordrat."
+            "value" : "Detta e-postmeddelande har misslyckats med att uppfylla domänens autentiseringskrav. Det kan vara förfalskat eller felaktigt vidarebefordrat."
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bu e-posta, etki alanının kimlik doğrulama gereksinimlerini karşılayamadı. E-posta, sahte ya da hatalı iletilmiş olabilir."
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Цей лист не пройшов вимоги перевірки свого домену. Він міг бути підроблений або неправильно пересланий."
+            "value" : "Bu e-posta, etki alanının kimlik doğrulama gereksinimlerini karşılayamadı. Sahte ya da hatalı iletilmiş olabilir."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "不能确定此邮件是否来自该域名，这可能是欺诈邮件，也可能是投递过程出现了问题。"
+            "value" : "此邮件未通过其域名的身份验证要求，可能是伪造邮件或转发设置不当所致"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "此電郵未能通過其網域的認證需求。可能是因為遭人假冒或不當轉寄。"
+            "value" : "此電郵未能通過其網域的驗證要求。這可能是偽造或不當轉寄。"
           }
         }
       }
@@ -48630,7 +48558,123 @@
       }
     },
     "This message was flagged as Spam, either by our system or by you." : {
-      "comment" : "Banner notifying the message is spam."
+      "comment" : "Banner notifying the message is spam.",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вы самі або наша сістэма пазначылі гэта паведамленне як спам."
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aquest missatge ha estat marcat com a correu brossa, sigui pel nostre sistema o per vós."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tato zpráva byla naším systémem nebo vámi označena jako spam."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Denne besked blev markeret som spam, enten af vores system eller af dig."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diese Nachricht wurde als Spam markiert, entweder von unserem System oder von dir."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Αυτό το μήνυμα σημειώθηκε ως Ενοχλητικό, είτε από το σύστημά μας είτε από εσάς."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This message was flagged as Spam, either by our system or by you."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Este mensaje fue marcado como spam, ya sea por nuestro sistema o por ti."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Este mensaje fue marcado como spam, ya sea por nuestro sistema o por usted."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Viesti merkittiin roskapostiksi, joko järjestelmämme tai sinun toimestasi."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ce message a été signalé comme indésirable/spam, soit par notre système, soit par vous."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Denne meldingen ble flagget som søppelpost, enten av systemet vårt eller av deg."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dit bericht is gemarkeerd als Spam, door ons systeem of door u."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esta mensagem foi sinalizada como spam pelo nosso sistema ou por você."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Táto správa bola označená ako spam, buď naším systémom alebo vami."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Detta meddelande flaggades som skräppost, antingen av vårt system eller av dig."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bu ileti, sistemimiz veya sizin tarafınızdan istenmeyen olarak işaretlenmiş."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "此邮件被我们的系统或您标记为垃圾邮件。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "此訊息被我們的系統或您標記為垃圾郵件。"
+          }
+        }
+      }
     },
     "This message will auto-delete in %@" : {
       "comment" : "Banner indicating when a message will automatically be deleted.",
