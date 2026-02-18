@@ -1,6 +1,9 @@
 {
   "sourceLanguage" : "en",
   "strings" : {
+    "" : {
+
+    },
     "(Draft)" : {
       "comment" : "Draft suffix displayed in covnersation view.",
       "localizations" : {
@@ -22029,6 +22032,9 @@
         }
       }
     },
+    "Exit" : {
+
+    },
     "Expected results" : {
       "comment" : "Title of expected results text field.",
       "localizations" : {
@@ -29322,6 +29328,9 @@
           }
         }
       }
+    },
+    "Menu" : {
+
     },
     "Message" : {
       "comment" : "Action title for creating new message in the address action sheet.",

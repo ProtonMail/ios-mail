@@ -22,13 +22,12 @@ struct SelectionTitleView: View {
     let title: LocalizedStringResource
 
     var body: some View {
-        VStack(alignment: .leading) {
-            Text(title)
-                .font(.headline)
-                .fontWeight(.semibold)
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .padding(.leading, DS.Spacing.medium)
+        //        VStack(alignment: .leading) {
+        Text(title)
+            .font(.headline)
+            .fontWeight(.semibold)
+            //        }
+            .frame(maxWidth: .infinity, alignment: .leading)
     }
 }
 
