@@ -24,7 +24,7 @@ struct SelectionTitleView: View {
     var body: some View {
         VStack(alignment: .leading) {
             Text(title)
-                .font(.title2)
+                .font(.headline)
                 .fontWeight(.semibold)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
