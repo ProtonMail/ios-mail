@@ -36,8 +36,22 @@ struct MailboxListView: View {
 
     var body: some View {
         VStack(spacing: .zero) {
-            filterBar()
+            if #unavailable(iOS 26) {
+                filterBar()
+            }
+
             mailboxListView()
+                .modify { view in
+                    if #available(iOS 26, *) {
+                        view
+                            .safeAreaBar(edge: .top) {
+                                LiquidGlassFilterBar(
+                                    state: $model.state.filterBar,
+                                    onSelectAllTapped: model.onSelectAllTapped
+                                )
+                            }
+                    }
+                }
         }
         .onChange(of: model.state.filterBar.isUnreadButtonSelected, { model.onUnreadFilterChange() })
         .onChange(of: model.state.filterBar.spamTrashToggleState) { model.onIncludeSpamTrashFilterChange() }
@@ -117,10 +131,7 @@ extension MailboxListView {
     @ViewBuilder
     private func filterBar() -> some View {
         FilterBarView(state: $model.state.filterBar, onSelectAllTapped: model.onSelectAllTapped)
-            .background(
-                DS.Color.Background.norm
-                    .shadow(DS.Shadows.raisedBottom, isVisible: !isListAtTop)
-            )
+            .background(DS.Color.Background.norm.shadow(DS.Shadows.raisedBottom, isVisible: !isListAtTop))
             .zIndex(1)
     }
 }

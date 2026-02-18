@@ -116,7 +116,7 @@ enum UnreadCounterState: Equatable {
 }
 
 enum SelectAllState: Equatable {
-    struct ButtonStyle {
+    struct ButtonStyle: Equatable {
         let icon: SFSymbol
         let iconColor: Color
         let text: LocalizedStringResource

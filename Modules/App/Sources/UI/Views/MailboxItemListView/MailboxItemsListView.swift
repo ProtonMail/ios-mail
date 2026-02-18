@@ -67,13 +67,11 @@ struct MailboxItemsListView<EmptyView: View, ComposeButton: ToolbarContent>: Vie
                     selectedItems: config.selectionState.selectedItemIDsReadOnlyBinding,
                     liquidComposeButton: liquidComposeButton
                 )
-                .liquidGlassAdapter(
-                    ios26: { $0 },
-                    belowIOS26: { view in
-                        view
-                            .toolbar(selectionState.hasItems ? .visible : .hidden, for: .bottomBar)
+                .modify { view in
+                    if #unavailable(iOS 26) {
+                        view.toolbar(selectionState.hasItems ? .visible : .hidden, for: .bottomBar)
                     }
-                )
+                }
                 .animation(.default, value: selectionState.hasItems)
                 .environmentObject(mailbox)
         } else {
