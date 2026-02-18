@@ -63,7 +63,7 @@ final class ListScrollObservationModel: ObservableObject {
     @MainActor
     func listOffsetUpdate(verticalAdjustedContentInset: CGFloat, oldOffsetY: CGFloat, newOffsetY: CGFloat) {
         guard newOffsetY != oldOffsetY else { return }
-        isAtTop = (newOffsetY - verticalAdjustedContentInset) <= sensitivityThreshold
+        isAtTop = (newOffsetY + verticalAdjustedContentInset) <= sensitivityThreshold
     }
 }
 
