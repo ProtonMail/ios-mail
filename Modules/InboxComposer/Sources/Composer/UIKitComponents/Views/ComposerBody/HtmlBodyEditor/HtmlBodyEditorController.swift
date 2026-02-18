@@ -173,7 +173,6 @@ final class HtmlBodyEditorController: UIViewController, BodyEditor {
 extension HtmlBodyEditorController: WKNavigationDelegate {
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         Task { await initialFocusState.bodyWasLoaded() }
-        Task { await htmlInterface.logHtmlHealthCheck(tag: "webView.didFinish") }
     }
 
     func webViewWebContentProcessDidTerminate(_ webView: WKWebView) {

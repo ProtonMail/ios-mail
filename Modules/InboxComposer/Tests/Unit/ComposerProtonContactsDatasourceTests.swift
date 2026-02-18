@@ -141,7 +141,7 @@ private extension Array where Element == ContactSuggestion {
 
 private extension MailUserSession {
     static func empty() -> MailUserSession {
-        MailUserSession(noPointer: .init())
+        MailUserSession(noHandle: .init())
     }
 }
 
@@ -150,11 +150,12 @@ private class ContactSuggestionsStub: ContactSuggestions, @unchecked Sendable {
 
     init(all: [ContactSuggestion]) {
         _all = all
-        super.init(noPointer: .init())
+        super.init(noHandle: .init())
     }
 
-    required init(unsafeFromRawPointer pointer: UnsafeMutableRawPointer) {
-        fatalError("init(unsafeFromRawPointer:) has not been implemented")
+    @available(*, unavailable)
+    required init(unsafeFromHandle handle: UInt64) {
+        fatalError("init(unsafeFromHandle:) has not been implemented")
     }
 
     override func all() -> [ContactSuggestion] {

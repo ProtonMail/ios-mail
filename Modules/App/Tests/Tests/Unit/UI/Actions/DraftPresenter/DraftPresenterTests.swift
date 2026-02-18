@@ -86,7 +86,7 @@ final class DraftPresenterTests: BaseTestCase, @unchecked Sendable {
 
     @MainActor
     func testOpenDraftWithContact_ItCreatesEmptyDraftAddRecipientAndOpensDraft() async throws {
-        let draftSpy = DraftSpy(noPointer: .init())
+        let draftSpy = DraftSpy(noHandle: .init())
         sut = makeSUT(stubbedNewDraftResult: .ok(draftSpy))
 
         var capturedDraftToPresent: [DraftToPresent] = []
@@ -123,7 +123,7 @@ final class DraftPresenterTests: BaseTestCase, @unchecked Sendable {
 
     @MainActor
     func testOpenDraftWithContactGroup_ItCreatesEmptyDraftAddGroupAndOpensDraft() async throws {
-        let draftSpy = DraftSpy(noPointer: .init())
+        let draftSpy = DraftSpy(noHandle: .init())
         sut = makeSUT(stubbedNewDraftResult: .ok(draftSpy))
 
         var capturedDraftToPresent: [DraftToPresent] = []
@@ -292,13 +292,13 @@ extension DraftPresenterTests {
 }
 
 private extension Draft {
-    static var dummyDraft: Draft { .init(noPointer: .init()) }
+    static var dummyDraft: Draft { .init(noHandle: .init()) }
 }
 
 private class DraftSpy: Draft, @unchecked Sendable {
-    let toRecipientsCalls: ComposerRecipientListSpy = .init(noPointer: .init())
-    let ccRecipientsCalls: ComposerRecipientListSpy = .init(noPointer: .init())
-    let bccRecipientsCalls: ComposerRecipientListSpy = .init(noPointer: .init())
+    let toRecipientsCalls: ComposerRecipientListSpy = .init(noHandle: .init())
+    let ccRecipientsCalls: ComposerRecipientListSpy = .init(noHandle: .init())
+    let bccRecipientsCalls: ComposerRecipientListSpy = .init(noHandle: .init())
     private(set) var setSubjectCalls: [String] = []
     private(set) var setBodyCalls: [String] = []
 

@@ -58,6 +58,15 @@ public final class MailSessionSpy: MailSessionProtocol {
 
     // MARK: - MailSessionProtocol
 
+    public func recordMeasurementPrelogin(
+        eventType: MeasurementEventType,
+        asid: String,
+        appPackageName: String,
+        fields: [String: MeasurementValue?]
+    ) async -> MailSessionRecordMeasurementPreloginResult {
+        fatalError()
+    }
+
     public func isFeatureEnabled(featureId: String) async -> Bool? {
         false
     }
@@ -307,7 +316,7 @@ public final class MailSessionSpy: MailSessionProtocol {
 
     public func watchSessionsAsync(callback: any AsyncLiveQueryCallback) async -> MailSessionWatchSessionsAsyncResult {
         watchSessionsAsyncCallback = callback
-        return .ok(.init(sessions: storedSessions, handle: WatchHandleDummy(noPointer: .init())))
+        return .ok(.init(sessions: storedSessions, handle: WatchHandleDummy(noHandle: .init())))
     }
 
     public func isFeatureEnabled(featureId: String) async -> MailSessionIsFeatureEnabledResult {

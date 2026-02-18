@@ -35,7 +35,7 @@ final class SceneDelegateTests: BaseTestCase {
         sut = .init()
         mailSessionSpy = .init()
         sut.appProtectionStore = .init(mailSession: { self.mailSessionSpy })
-        sut.mailSessionFactory = { .init(noPointer: .init()) }
+        sut.mailSessionFactory = { .init(noHandle: .init()) }
         sut.checkAutoLockSetting = { completion in completion(self.shouldAutoLockStub) }
         sut.transitionAnimation = { _, _, _, animation, completion in
             animation?()
