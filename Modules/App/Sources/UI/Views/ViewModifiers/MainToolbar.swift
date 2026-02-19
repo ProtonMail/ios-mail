@@ -81,6 +81,7 @@ struct MainToolbar<AvatarView: View>: ViewModifier {
             Text(title)
                 .font(.headline)
                 .fontWeight(.semibold)
+                .frame(maxWidth: .infinity, alignment: .leading)
         }
 
         if !selectionMode.hasItems {
