@@ -24,7 +24,7 @@ import proton_app_uniffi
 struct LiquidGlassFilterBar: View {
     @Binding var state: FilterBarState
     let onSelectAllTapped: () -> Void
-    @Namespace var namespace
+    @Namespace private var namespace
 
     var body: some View {
         ScrollView(.horizontal) {
@@ -55,7 +55,7 @@ struct LiquidGlassFilterBar: View {
     }
 
     private func selectAllButton() -> some View {
-        Button(action: { onSelectAllTapped() }) {
+        Button(action: onSelectAllTapped) {
             HStack {
                 Image(symbol: state.selectAll.button.icon)
                 Text(state.selectAll.button.text)
@@ -69,12 +69,37 @@ struct LiquidGlassFilterBar: View {
     }
 
     private func spamTrashToggle(isSelected: Bool) -> some View {
-        Button(action: {
-            state.spamTrashToggleState = state.spamTrashToggleState.toggled()
-        }) {
-            HStack(spacing: DS.Spacing.small) {
-                Text(L10n.Mailbox.includeTrashSpamToggleTitle)
+        filterToggleButton(
+            isSelected: isSelected,
+            action: {
+                state.spamTrashToggleState = state.spamTrashToggleState.toggled()
+            }
+        ) {
+            Text(L10n.Mailbox.includeTrashSpamToggleTitle)
+        }
+    }
 
+    private func unreadButton() -> some View {
+        filterToggleButton(
+            isSelected: state.isUnreadButtonSelected,
+            action: {
+                state.isUnreadButtonSelected.toggle()
+            }
+        ) {
+            Text(L10n.Mailbox.unread)
+            Text(state.unreadCount.string)
+                .fontWeight(.semibold)
+        }
+    }
+
+    private func filterToggleButton(
+        isSelected: Bool,
+        action: @escaping () -> Void,
+        @ViewBuilder label: () -> some View
+    ) -> some View {
+        Button(action: action) {
+            HStack(spacing: DS.Spacing.small) {
+                label()
                 if isSelected {
                     Image(symbol: .xmark)
                 }
@@ -85,27 +110,5 @@ struct LiquidGlassFilterBar: View {
         }
         .tint(isSelected ? DS.Color.Brand.plus30 : DS.Color.Text.norm)
         .glassEffect(.regular.interactive().tint(isSelected ? DS.Color.InteractionBrandWeak.norm : nil))
-    }
-
-    private func unreadButton() -> some View {
-        Button(action: {
-            state.isUnreadButtonSelected.toggle()
-        }) {
-            HStack(spacing: DS.Spacing.small) {
-                Text(L10n.Mailbox.unread)
-
-                Text(state.unreadCount.string)
-                    .fontWeight(.semibold)
-
-                if state.isUnreadButtonSelected {
-                    Image(symbol: .xmark)
-                }
-            }
-            .font(.footnote)
-            .padding(.vertical, DS.Spacing.standard)
-            .padding(.horizontal, DS.Spacing.medium)
-        }
-        .tint(state.isUnreadButtonSelected ? DS.Color.Brand.plus30 : DS.Color.Text.norm)
-        .glassEffect(.regular.interactive().tint(state.isUnreadButtonSelected ? DS.Color.InteractionBrandWeak.norm : nil))
     }
 }
