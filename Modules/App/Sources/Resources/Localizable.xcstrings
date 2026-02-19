@@ -9315,6 +9315,9 @@
         }
       }
     },
+    "Cancel" : {
+      "comment" : "Accessibility label for the button that exits selection mode in the main toolbar."
+    },
     "Cannot cancel schedule send. Message was already sent." : {
       "comment" : "Error in the context of undoing a scheduled message: the message has already been sent.",
       "localizations" : {
@@ -29322,6 +29325,9 @@
           }
         }
       }
+    },
+    "Menu" : {
+      "comment" : "Accessibility label for the sidebar menu button in the main toolbar."
     },
     "Message" : {
       "comment" : "Action title for creating new message in the address action sheet.",
@@ -53291,6 +53297,9 @@
           }
         }
       }
+    },
+    "Upgrade" : {
+      "comment" : "Accessibility label for the upgrade button in the main toolbar."
     },
     "Upgrade to %@" : {
       "comment" : "Title of the upsell button in the sidebar",

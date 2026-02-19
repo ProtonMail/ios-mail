@@ -482,6 +482,21 @@ enum L10n {
         )
     }
 
+    enum MainToolbar {
+        static let menu = LocalizedStringResource(
+            "Menu",
+            comment: "Accessibility label for the sidebar menu button in the main toolbar."
+        )
+        static let cancelSelection = LocalizedStringResource(
+            "Cancel",
+            comment: "Accessibility label for the button that exits selection mode in the main toolbar."
+        )
+        static let upgrade = LocalizedStringResource(
+            "Upgrade",
+            comment: "Accessibility label for the upgrade button in the main toolbar."
+        )
+    }
+
     enum Onboarding {
         enum FirstPage {
             static let title = LocalizedStringResource(

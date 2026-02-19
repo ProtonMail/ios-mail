@@ -51,77 +51,110 @@ struct MainToolbar<AvatarView: View>: ViewModifier {
 
     func body(content: Content) -> some View {
         content
+            .toolbarRole(selectionMode.hasItems ? .navigationStack : .browser)
             .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    HStack(spacing: .zero) {
-                        Button(
-                            action: {
-                                switch state {
-                                case .noSelection:
-                                    onEvent(.onOpenMenu)
-                                case .selection:
-                                    onEvent(.onExitSelectionMode)
-                                }
-                            },
-                            label: {
-                                HStack {
-                                    Spacer()
-                                    state.image
-                                        .square(size: 40)
-                                        .id(state.rawValue)
-                                        .transition(.scale.animation(.easeOut(duration: Animation.selectionModeStartDuration)))
-                                }
-                                .padding(10)
-                            }
-                        )
-                        .square(size: 40)
-                        .accessibilityIdentifier(MainToolbarIdentifiers.navigationButton(forState: state))
-                    }
-                }
-                ToolbarItem(placement: .principal) {
-                    SelectionTitleView(title: title)
-                        .accessibilityIdentifier(MainToolbarIdentifiers.titleText)
-                }
-                ToolbarItemGroup(placement: .topBarTrailing) {
-                    if !selectionMode.hasItems {
-                        HStack(spacing: DS.Spacing.standard) {
-                            if case .eligible(let upsellType) = upsellEligibility {
-                                toolbarButton(icon: upsellType.icon) {
-                                    do {
-                                        let upsellScreenModel = try await upsellCoordinator.presentUpsellScreen(entryPoint: .mailboxTopBar, upsellType: upsellType)
-                                        onEvent(.onUpsell(upsellScreenModel))
-                                    } catch {
-                                        toastStateStore.present(toast: .error(message: error.localizedDescription))
-                                    }
-                                }
-                            }
-
-                            toolbarButton(icon: .init(symbol: .magnifier)) {
-                                onEvent(.onSearch)
-                            }
-                            avatarView()
-                        }
-                    }
+                if #available(iOS 26, *) {
+                    ios26ToolbarContent
+                } else {
+                    legacyToolbarContent
                 }
             }
-            .toolbarBackground(DS.Color.Background.norm, for: .navigationBar)
-            .tint(DS.Color.Text.norm)
+            .modify { view in
+                if #available(iOS 26, *) {
+                    view
+                        .animation(.default, value: title)
+                        .animation(.default, value: state)
+                } else {
+                    view
+                        .toolbarBackground(DS.Color.Background.norm, for: .navigationBar)
+                        .tint(DS.Color.Text.norm)
+                }
+            }
     }
 
-    private func toolbarButton(icon: Image, action: @escaping () async -> Void) -> some View {
-        Button(
-            action: {
-                Task {
-                    await action()
-                }
-            },
-            label: {
-                icon
-                    .square(size: 24)
-                    .padding(10)
+    @ToolbarContentBuilder
+    @available(iOS 26, *)
+    private var ios26ToolbarContent: some ToolbarContent {
+        leadingToolbarItem
+
+        ToolbarItem(placement: .title) {
+            Text(title)
+                .font(.headline)
+                .fontWeight(.semibold)
+        }
+
+        if !selectionMode.hasItems {
+            ToolbarItem(placement: .topBarTrailing) {
+                searchButton
             }
-        )
-        .square(size: 40)
+            ToolbarSpacer(.fixed, placement: .topBarTrailing)
+            if case .eligible(let upsellType) = upsellEligibility {
+                ToolbarItem(placement: .topBarTrailing) {
+                    upsellButton(for: upsellType)
+                }
+            }
+            ToolbarItem(placement: .topBarTrailing) {
+                avatarView()
+                    .frame(width: 26, height: 26)
+                    .clipShape(.circle)
+            }
+        }
+    }
+
+    @ToolbarContentBuilder
+    private var legacyToolbarContent: some ToolbarContent {
+        leadingToolbarItem
+
+        ToolbarItem(placement: .principal) {
+            SelectionTitleView(title: title)
+        }
+
+        if !selectionMode.hasItems {
+            ToolbarItemGroup(placement: .topBarTrailing) {
+                if !selectionMode.hasItems {
+                    HStack(spacing: DS.Spacing.standard) {
+                        if case .eligible(let upsellType) = upsellEligibility {
+                            upsellButton(for: upsellType)
+                        }
+                        searchButton
+                        avatarView()
+                    }
+                }
+            }
+        }
+    }
+
+    @ToolbarContentBuilder
+    private var leadingToolbarItem: some ToolbarContent {
+        ToolbarItem(placement: .topBarLeading) {
+            Button(state.name, icon: state.image) {
+                switch state {
+                case .noSelection:
+                    onEvent(.onOpenMenu)
+                case .selection:
+                    onEvent(.onExitSelectionMode)
+                }
+            }
+        }
+    }
+
+    private var searchButton: some View {
+        Button(L10n.Search.searchPlaceholder, icon: .magnifier) {
+            onEvent(.onSearch)
+        }
+    }
+
+    private func upsellButton(for upsellType: UpsellType) -> some View {
+        Button(L10n.MainToolbar.upgrade, image: upsellType.icon) {
+            Task {
+                do {
+                    let upsellScreenModel = try await upsellCoordinator.presentUpsellScreen(entryPoint: .mailboxTopBar, upsellType: upsellType)
+                    onEvent(.onUpsell(upsellScreenModel))
+                } catch {
+                    toastStateStore.present(toast: .error(message: error.localizedDescription))
+                }
+            }
+        }
     }
 }
 
@@ -144,12 +177,21 @@ enum MainToolbarState: Int {
     case noSelection
     case selection
 
-    var image: Image {
+    var image: ButtonIcon {
         switch self {
         case .noSelection:
-            Image(DS.Icon.icHamburguer)
+            .asset(DS.Icon.icMenu)
         case .selection:
-            Image(symbol: .xmark)
+            .sfSymbol(.xmark)
+        }
+    }
+
+    var name: LocalizedStringResource {
+        switch self {
+        case .noSelection:
+            L10n.MainToolbar.menu
+        case .selection:
+            L10n.MainToolbar.cancelSelection
         }
     }
 }
@@ -162,27 +204,14 @@ enum MainToolbarEvent {
 }
 
 private extension UpsellType {
-    var icon: Image {
+    var icon: ImageResource {
         switch self {
         case .standard:
-            DS.Icon.icBrandProtonMailUpsellBlackAndWhite.image.renderingMode(.template)
+            DS.Icon.icBrandProtonMailUpsellBlackAndWhite
         case .blackFriday(.wave1):
-            DS.Icon.upsellBlackFridayHeaderButtonWave1.image
+            DS.Icon.upsellBlackFridayHeaderButtonWave1
         case .blackFriday(.wave2):
-            DS.Icon.upsellBlackFridayHeaderButtonWave2.image
-        }
-    }
-}
-
-private struct MainToolbarIdentifiers {
-    static let titleText = "main.toolbar.titleText"
-
-    static func navigationButton(forState state: MainToolbarState) -> String {
-        switch state {
-        case .noSelection:
-            "main.toolbar.hamburgerButton"
-        case .selection:
-            "main.toolbar.backButton"
+            DS.Icon.upsellBlackFridayHeaderButtonWave2
         }
     }
 }
