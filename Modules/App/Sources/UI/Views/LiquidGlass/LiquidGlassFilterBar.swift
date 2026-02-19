@@ -24,7 +24,6 @@ import proton_app_uniffi
 struct LiquidGlassFilterBar: View {
     @Binding var state: FilterBarState
     let onSelectAllTapped: () -> Void
-    @Namespace private var namespace
 
     var body: some View {
         ScrollView(.horizontal) {
@@ -33,15 +32,12 @@ struct LiquidGlassFilterBar: View {
                     switch state.visibilityMode {
                     case .regular:
                         unreadButton()
-                            .glassEffectID("unread", in: namespace)
 
                         if case .visible(let isSelected) = state.spamTrashToggleState {
                             spamTrashToggle(isSelected: isSelected)
-                                .glassEffectID("spam", in: namespace)
                         }
                     case .selectionMode:
                         selectAllButton()
-                            .glassEffectID("selection", in: namespace)
                     }
                 }
                 .padding(.horizontal, DS.Spacing.large)
