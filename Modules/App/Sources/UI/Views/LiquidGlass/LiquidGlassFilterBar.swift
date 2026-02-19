@@ -62,9 +62,10 @@ struct LiquidGlassFilterBar: View {
             }
             .font(.footnote)
         }
+        .tint(DS.Color.Icon.norm)
         .padding(.vertical, DS.Spacing.standard)
         .padding(.horizontal, DS.Spacing.medium)
-        .glassEffect(.clear.interactive())
+        .glassEffect(.regular.interactive())
     }
 
     private func spamTrashToggle(isSelected: Bool) -> some View {
@@ -82,7 +83,8 @@ struct LiquidGlassFilterBar: View {
             .padding(.vertical, DS.Spacing.standard)
             .padding(.horizontal, DS.Spacing.medium)
         }
-        .glassEffect(.clear.interactive().tint(isSelected ? DS.Color.InteractionBrandWeak.norm : nil))
+        .tint(isSelected ? DS.Color.Brand.plus30 : DS.Color.Text.norm)
+        .glassEffect(.regular.interactive().tint(isSelected ? DS.Color.InteractionBrandWeak.norm : nil))
     }
 
     private func unreadButton() -> some View {
@@ -103,6 +105,7 @@ struct LiquidGlassFilterBar: View {
             .padding(.vertical, DS.Spacing.standard)
             .padding(.horizontal, DS.Spacing.medium)
         }
-        .glassEffect(.clear.interactive().tint(state.isUnreadButtonSelected ? DS.Color.InteractionBrandWeak.norm : nil))
+        .tint(state.isUnreadButtonSelected ? DS.Color.Brand.plus30 : DS.Color.Text.norm)
+        .glassEffect(.regular.interactive().tint(state.isUnreadButtonSelected ? DS.Color.InteractionBrandWeak.norm : nil))
     }
 }
