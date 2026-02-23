@@ -33,8 +33,9 @@ struct SearchScreen: View {
     @EnvironmentObject private var toastStateStore: ToastStateStore
     @State private(set) var resultsState: SearchScreenState = .initial
     @State private(set) var isListAtTop: Bool = true
+    @State private var searchedText: String = .empty
     @StateObject private var model: SearchModel
-    @FocusState var isTextFieldFocused: Bool
+    @FocusState private var searchFocsued: Bool
     private let userSession: MailUserSession
 
     init(
@@ -61,7 +62,9 @@ struct SearchScreen: View {
                     EmptyView()
                 case .search:
                     VStack(spacing: .zero) {
-                        filtersBar()
+                        if #unavailable(iOS 26) {
+                            filtersBar()
+                        }
 
                         resultsList
                             .fullScreenCover(item: $model.state.attachmentPresented) { config in
@@ -71,25 +74,23 @@ struct SearchScreen: View {
                             .navigationDestination(for: MailboxItemCellUIModel.self) { uiModel in
                                 mailboxItemDestination(uiModel: uiModel)
                             }
+                            .modify { view in
+                                if #available(iOS 26, *) {
+                                    view
+                                        .safeAreaBar(edge: .top) {
+                                            liquidGlassFiltersBar()
+                                        }
+                                }
+                            }
                     }
                 }
             }
-            .toolbar {
-                ToolbarItem(placement: .principal) {
-                    SearchToolbarView(selectedState: model.selectionMode.selectionState, isFocused: $isTextFieldFocused) { event in
-                        switch event {
-                        case .onSubmitSearch(let query):
-                            resultsState = .search
-                            model.searchText(query)
-                        case .onCancel:
-                            dismiss.callAsFunction()
-                        case .onExitSelection:
-                            model.selectionMode.selectionModifier.exitSelectionMode()
-                        }
-                    }
-                    // The fix for the issue with shrinking search bar in toolbar
-                    // https://protonag.atlassian.net/browse/ET-1646
-                    .frame(width: 0.95 * mainWindowSize.width, height: 46)
+            .modifier(SearchDismissModifier(dismiss: dismiss))
+            .modify { view in
+                if #available(iOS 26, *) {
+                    liquidGlassSearchBar(view: view)
+                } else {
+                    nonLiqudGlassSearchBar(view: view)
                 }
             }
             .labelAsSheet(
@@ -104,7 +105,7 @@ struct SearchScreen: View {
                 navigation: { _ in model.state.moveToSheetPresented = nil }
             )
             .onLoad {
-                isTextFieldFocused = true
+                searchFocsued = true
 
                 Task {
                     await model.prepareSwipeActions()
@@ -194,6 +195,65 @@ struct SearchScreen: View {
                     .shadow(DS.Shadows.raisedBottom, isVisible: !isListAtTop)
             )
             .zIndex(1)
+        }
+    }
+
+    private func nonLiqudGlassSearchBar<ParentView: View>(view: ParentView) -> some View {
+        view
+            .toolbar {
+                ToolbarItem(placement: .principal) {
+                    SearchToolbarView(selectedState: model.selectionMode.selectionState, isFocused: $searchFocsued) { event in
+                        switch event {
+                        case .onSubmitSearch(let query):
+                            resultsState = .search
+                            model.searchText(query)
+                        case .onCancel:
+                            dismiss.callAsFunction()
+                        case .onExitSelection:
+                            model.selectionMode.selectionModifier.exitSelectionMode()
+                        }
+                    }
+                    // The fix for the issue with shrinking search bar in toolbar
+                    // https://protonag.atlassian.net/browse/ET-1646
+                    .frame(width: 0.95 * mainWindowSize.width, height: 46)
+                }
+            }
+    }
+
+    @available(iOS 26, *)
+    private func liquidGlassSearchBar<ParentView: View>(view: ParentView) -> some View {
+        view
+            .searchable(text: $searchedText, placement: .toolbar, prompt: Text(L10n.Search.searchPlaceholder))
+            .onSubmit(of: .search) {
+                resultsState = .search
+                model.searchText(searchedText)
+            }
+            .searchFocused($searchFocsued)
+    }
+
+    @ViewBuilder
+    @available(iOS 26, *)
+    private func liquidGlassFiltersBar() -> some View {
+        LiquidGlassFilterBar(
+            content: .search(model.state.spamTrashToggleState)
+        ) { event in
+            switch event {
+            case .spamTrashToggleTapped:
+                model.includeTrashSpamTapped()
+            case .unreadButtonTapped, .selectAllTapped:
+                break
+            }
+        }
+    }
+}
+
+private struct SearchDismissModifier: ViewModifier {
+    @Environment(\.isSearching) private var isSearching
+    let dismiss: DismissAction
+
+    func body(content: Content) -> some View {
+        content.onChange(of: isSearching) { _, newValue in
+            if !newValue { dismiss() }
         }
     }
 }

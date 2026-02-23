@@ -20,38 +20,67 @@ import ProtonUIFoundations
 import SwiftUI
 import proton_app_uniffi
 
+struct MailboxFilterBarState: Equatable {
+    enum Mode: Equatable {
+        case regular
+        case selection
+    }
+
+    var mode: Mode
+    var isUnreadSelected: Bool
+    var unreadCount: UnreadCounterState
+    var spamTrashToggleState: SpamTrashToggleState
+    var selectAll: SelectAllState
+}
+
+enum LiquidGlassFilterBarEvent {
+    case unreadButtonTapped
+    case spamTrashToggleTapped
+    case selectAllTapped
+}
+
 @available(iOS 26, *)
 struct LiquidGlassFilterBar: View {
-    @Binding var state: FilterBarState
-    let onSelectAllTapped: () -> Void
+    enum Variant: Equatable {
+        case mailbox(MailboxFilterBarState)
+        case search(SpamTrashToggleState)
+    }
+
+    let content: Variant
+    let onEvent: (LiquidGlassFilterBarEvent) -> Void
 
     var body: some View {
         ScrollView(.horizontal) {
             GlassEffectContainer {
                 HStack {
-                    switch state.visibilityMode {
-                    case .regular:
-                        unreadButton()
+                    switch content {
+                    case .mailbox(let state):
+                        switch state.mode {
+                        case .regular:
+                            unreadButton(state: state)
 
-                        if case .visible(let isSelected) = state.spamTrashToggleState {
+                            if case .visible(let isSelected) = state.spamTrashToggleState {
+                                spamTrashToggle(isSelected: isSelected)
+                            }
+                        case .selection:
+                            selectAllButton(state: state)
+                        }
+                    case .search(let state):
+                        if case .visible(let isSelected) = state {
                             spamTrashToggle(isSelected: isSelected)
                         }
-                    case .selectionMode:
-                        selectAllButton()
                     }
                 }
                 .padding(.horizontal, DS.Spacing.large)
                 .padding(.vertical, DS.Spacing.standard)
             }
-            .animation(.default, value: state.visibilityMode)
-            .animation(.default, value: state.spamTrashToggleState.isSelected)
-            .animation(.default, value: state.isUnreadButtonSelected)
+            .animation(.default, value: content)
         }
         .scrollClipDisabled()
     }
 
-    private func selectAllButton() -> some View {
-        Button(action: onSelectAllTapped) {
+    private func selectAllButton(state: MailboxFilterBarState) -> some View {
+        Button(action: { onEvent(.selectAllTapped) }) {
             HStack {
                 Image(symbol: state.selectAll.button.icon)
                 Text(state.selectAll.button.text)
@@ -67,20 +96,16 @@ struct LiquidGlassFilterBar: View {
     private func spamTrashToggle(isSelected: Bool) -> some View {
         filterToggleButton(
             isSelected: isSelected,
-            action: {
-                state.spamTrashToggleState = state.spamTrashToggleState.toggled()
-            }
+            action: { onEvent(.spamTrashToggleTapped) }
         ) {
             Text(L10n.Mailbox.includeTrashSpamToggleTitle)
         }
     }
 
-    private func unreadButton() -> some View {
+    private func unreadButton(state: MailboxFilterBarState) -> some View {
         filterToggleButton(
-            isSelected: state.isUnreadButtonSelected,
-            action: {
-                state.isUnreadButtonSelected.toggle()
-            }
+            isSelected: state.isUnreadSelected,
+            action: { onEvent(.unreadButtonTapped) }
         ) {
             Text(L10n.Mailbox.unread)
             Text(state.unreadCount.string)

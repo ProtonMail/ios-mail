@@ -46,14 +46,30 @@ struct MailboxListView: View {
                         view
                             .safeAreaBar(edge: .top) {
                                 LiquidGlassFilterBar(
-                                    state: $model.state.filterBar,
-                                    onSelectAllTapped: model.onSelectAllTapped
-                                )
+                                    content: .mailbox(
+                                        MailboxFilterBarState(
+                                            mode: model.state.filterBar.visibilityMode == .selectionMode ? .selection : .regular,
+                                            isUnreadSelected: model.state.filterBar.isUnreadButtonSelected,
+                                            unreadCount: model.state.filterBar.unreadCount,
+                                            spamTrashToggleState: model.state.filterBar.spamTrashToggleState,
+                                            selectAll: model.state.filterBar.selectAll
+                                        )
+                                    )
+                                ) { event in
+                                    switch event {
+                                    case .unreadButtonTapped:
+                                        model.state.filterBar.isUnreadButtonSelected.toggle()
+                                    case .spamTrashToggleTapped:
+                                        model.state.filterBar.spamTrashToggleState = model.state.filterBar.spamTrashToggleState.toggled()
+                                    case .selectAllTapped:
+                                        model.onSelectAllTapped()
+                                    }
+                                }
                             }
                     }
                 }
         }
-        .onChange(of: model.state.filterBar.isUnreadButtonSelected, { model.onUnreadFilterChange() })
+        .onChange(of: model.state.filterBar.isUnreadButtonSelected) { model.onUnreadFilterChange() }
         .onChange(of: model.state.filterBar.spamTrashToggleState) { model.onIncludeSpamTrashFilterChange() }
     }
 }
