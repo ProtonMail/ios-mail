@@ -44,6 +44,10 @@ struct AdAttributionServiceTests {
     @Test(
         arguments: [
             ConversionTestCase(
+                events: [.appRun],
+                expectedFinalValue: .init(fineConversionValue: 0, coarseConversionValue: .low, lockPostback: false)
+            ),
+            ConversionTestCase(
                 events: [.signedIn],
                 expectedFinalValue: .init(fineConversionValue: 1, coarseConversionValue: .low, lockPostback: false)
             ),

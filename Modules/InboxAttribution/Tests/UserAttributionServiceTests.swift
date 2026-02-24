@@ -25,18 +25,18 @@ import proton_app_uniffi
 class UserAttributionServiceTests {
     var conversionTrackerSpy: ConversionTrackerSpy!
 
-    func makeSut(telemetryEnabled: Bool) -> UserAttributionService {
+    func makeSut(isFeatureEnabled: Bool) -> UserAttributionService {
         conversionTrackerSpy = ConversionTrackerSpy()
         return UserAttributionService(
-            userSettingsProvider: { .settings(crashReports: false, telemetry: telemetryEnabled) },
+            isFeatureEnabled: { isFeatureEnabled },
             userDefaults: UserDefaults(suiteName: UUID().uuidString)!,
             conversionTracker: conversionTrackerSpy
         )
     }
 
     @Test
-    func telemetryEnabled_EventIsForwardedToAdAttributionService() async {
-        let sut = makeSut(telemetryEnabled: true)
+    func featureFlagIsEnabled_EventIsForwardedToAdAttributionService() async {
+        let sut = makeSut(isFeatureEnabled: true)
 
         await sut.handle(event: .signedIn)
 
@@ -44,8 +44,8 @@ class UserAttributionServiceTests {
     }
 
     @Test
-    func telemetryDisabled_EventIsNotForwarded() async throws {
-        let sut = makeSut(telemetryEnabled: false)
+    func featureFlagIsDisabled_EventIsNotForwarded() async throws {
+        let sut = makeSut(isFeatureEnabled: false)
 
         await sut.handle(event: .signedIn)
 

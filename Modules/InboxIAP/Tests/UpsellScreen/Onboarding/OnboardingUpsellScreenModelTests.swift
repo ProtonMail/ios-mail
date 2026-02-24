@@ -36,7 +36,7 @@ final class OnboardingUpsellScreenModelTests {
             planPurchasing: planPurchasing,
             telemetryReporting: DummyTelemetryReporting(),
             userAttributionService: .init(
-                userSettingsProvider: { .mock() },
+                isFeatureEnabled: { true },
                 userDefaults: UserDefaults(),
                 conversionTracker: ConversionTrackerSpy()
             )

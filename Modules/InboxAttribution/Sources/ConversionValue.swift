@@ -18,6 +18,9 @@
 struct ConversionValue: OptionSet, Equatable {
     let rawValue: UInt8
 
+    // Bit none: App run
+    static let appRun: ConversionValue = []
+
     // Bit 0: Sign-in / account created
     static let signedIn = ConversionValue(rawValue: 1 << 0)
 

@@ -100,7 +100,9 @@ public final class ShareScreenModel: ObservableObject {
             let upsellCoordinator = UpsellCoordinator(
                 mailUserSession: userSession,
                 userAttributionService: .init(
-                    userSettingsProvider: { try await userSession.userSettings().get() },
+                    isFeatureEnabled: {
+                        try await userSession.isFeatureEnabled(featureId: FeatureFlag.mmp).get()
+                    },
                     userDefaults: .standard
                 ),
                 configuration: upsellConfiguration

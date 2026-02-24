@@ -330,7 +330,7 @@ private extension SettingsPreference {
                 upsellCoordinator: .init(
                     mailUserSession: .dummy,
                     userAttributionService: .init(
-                        userSettingsProvider: { .mock() },
+                        isFeatureEnabled: { false },
                         userDefaults: UserDefaults()
                     ),
                     configuration: .mail

@@ -35,6 +35,8 @@ public actor AdAttributionService {
 
         let newFlags: ConversionValue =
             switch event {
+            case .appRun:
+                [.appRun]
             case .signedIn:
                 [.signedIn]
             case .firstActionPerformed:

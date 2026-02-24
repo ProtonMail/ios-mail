@@ -105,6 +105,6 @@ extension PurchaseActionPerformer {
         eventLoopPolling: DummyEventLoopPolling(),
         planPurchasing: DummyPlanPurchasing(),
         telemetryReporting: DummyTelemetryReporting(),
-        userAttributionService: .init(userSettingsProvider: { .mock() }, userDefaults: UserDefaults())
+        userAttributionService: .init(isFeatureEnabled: { false }, userDefaults: UserDefaults())
     )
 }

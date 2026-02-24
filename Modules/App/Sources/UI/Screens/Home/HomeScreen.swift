@@ -46,6 +46,7 @@ struct HomeScreen: View {
 
     @EnvironmentObject private var appUIStateStore: AppUIStateStore
     @EnvironmentObject private var toastStateStore: ToastStateStore
+    @EnvironmentObject private var userAttributionService: UserAttributionService
     @Environment(\.mainWindowSize) var mainWindowSize
     @StateObject private var appRoute: AppRouteState
     @StateObject private var composerCoordinator: ComposerCoordinator
@@ -53,7 +54,6 @@ struct HomeScreen: View {
     @State private var messageQuickLook = MessageQuickLook()
     @State private var modalState: ModalState?
     @State private var isNotificationPromptPresented = false
-    @StateObject private var userAttributionService: UserAttributionService
     @StateObject private var eventLoopErrorCoordinator: EventLoopErrorCoordinator
     @StateObject private var upsellCoordinator: UpsellCoordinator
     @StateObject private var userAnalyticsConfigurator: UserAnalyticsConfigurator
@@ -69,7 +69,8 @@ struct HomeScreen: View {
         appContext: AppContext,
         userSession: MailUserSession,
         toastStateStore: ToastStateStore,
-        analytics: Analytics
+        analytics: Analytics,
+        userAttributionService: UserAttributionService
     ) {
         _appRoute = .init(wrappedValue: .initialState)
         _composerCoordinator = .init(wrappedValue: .init(userSession: userSession, toastStateStore: toastStateStore))
@@ -89,12 +90,6 @@ struct HomeScreen: View {
         self._eventLoopErrorCoordinator = .init(
             wrappedValue: EventLoopErrorCoordinator(userSession: userSession, toastStateStore: toastStateStore)
         )
-
-        let userAttributionService = UserAttributionService(
-            userSettingsProvider: { try await userSession.userSettings().get() },
-            userDefaults: appContext.userDefaults
-        )
-        self._userAttributionService = .init(wrappedValue: userAttributionService)
 
         let newUpsellCoordinator = UpsellCoordinator(
             mailUserSession: userSession,

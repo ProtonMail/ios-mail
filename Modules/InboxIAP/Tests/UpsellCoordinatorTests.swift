@@ -39,7 +39,7 @@ final class UpsellCoordinatorTests {
             sessionForking: DummySessionForking(),
             telemetryReporting: telemetryReporting,
             userAttributionService: .init(
-                userSettingsProvider: { .mock() },
+                isFeatureEnabled: { true },
                 userDefaults: UserDefaults(),
                 conversionTracker: ConversionTrackerSpy()
             ),

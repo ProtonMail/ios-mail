@@ -40,7 +40,7 @@ final class PurchaseActionPerformerTests {
         planPurchasing: planPurchasing,
         telemetryReporting: telemetryReporting,
         userAttributionService: .init(
-            userSettingsProvider: { .settings(crashReports: false, telemetry: true) },
+            isFeatureEnabled: { true },
             userDefaults: UserDefaults(),
             conversionTracker: conversionTrackerSpy
         )

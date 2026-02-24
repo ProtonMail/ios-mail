@@ -20,31 +20,26 @@ import InboxCore
 import proton_app_uniffi
 
 public final class UserAttributionService: ObservableObject, Sendable {
-    private let userSettingsProvider: @Sendable () async throws -> UserSettings
+    private let isFeatureEnabled: @Sendable () async throws -> Bool?
     private let adAttributionService: AdAttributionService
 
     public init(
-        userSettingsProvider: @Sendable @escaping () async throws -> UserSettings,
+        isFeatureEnabled: @Sendable @escaping () async throws -> Bool?,
         userDefaults: UserDefaults,
         conversionTracker: ConversionTracker = ConversionTrackerFactory.make()
     ) {
-        self.userSettingsProvider = userSettingsProvider
+        self.isFeatureEnabled = isFeatureEnabled
         self.adAttributionService = .init(conversionTracker: conversionTracker, userDefaults: userDefaults)
     }
 
     public func handle(event: ConversionEvent) async {
-        guard await isTelemetryEnabled() else { return }
-        await adAttributionService.handle(event: event)
-    }
-
-    // MARK: - Private
-
-    private func isTelemetryEnabled() async -> Bool {
         do {
-            return try await userSettingsProvider().telemetry
+            guard try await isFeatureEnabled() == true else {
+                return
+            }
+            await adAttributionService.handle(event: event)
         } catch {
-            AppLogger.log(error: error)
-            return false
+            AppLogger.log(error: error, category: .adAttribution)
         }
     }
 }

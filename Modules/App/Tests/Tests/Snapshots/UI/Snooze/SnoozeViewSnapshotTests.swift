@@ -117,7 +117,7 @@ extension UpsellCoordinator {
         UpsellCoordinator(
             mailUserSession: .dummy,
             userAttributionService: .init(
-                userSettingsProvider: { .mock() },
+                isFeatureEnabled: { true },
                 userDefaults: UserDefaults(),
                 conversionTracker: ConversionTrackerDummy()
             ),
@@ -137,7 +137,7 @@ class ConversionTrackerDummy: ConversionTracker {
 extension UserAttributionService {
     static var dummy: UserAttributionService {
         UserAttributionService(
-            userSettingsProvider: { .mock() },
+            isFeatureEnabled: { true },
             userDefaults: UserDefaults(),
             conversionTracker: ConversionTrackerDummy()
         )

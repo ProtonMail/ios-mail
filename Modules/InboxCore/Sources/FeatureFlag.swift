@@ -1,4 +1,3 @@
-//
 // Copyright (c) 2026 Proton Technologies AG
 //
 // This file is part of Proton Mail.
@@ -16,15 +15,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import Foundation
-import InboxAttribution
+import proton_app_uniffi
 
-extension UserAttributionService {
-    static var dummy: UserAttributionService {
-        UserAttributionService(
-            isFeatureEnabled: { true },
-            userDefaults: UserDefaults(),
-            conversionTracker: ConversionTrackerSpy()
-        )
-    }
+public enum FeatureFlag {
+    public static let mmp = "MailiOSMMP"
 }

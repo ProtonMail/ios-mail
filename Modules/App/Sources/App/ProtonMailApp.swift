@@ -17,6 +17,7 @@
 
 import AccountManager
 import Combine
+import InboxAttribution
 import InboxCore
 import InboxCoreUI
 import InboxDesignSystem
@@ -33,6 +34,7 @@ struct ProtonMailApp: App {
     private let legacyMigrationStateStore: LegacyMigrationStateStore
     private let refreshToolbarNotifier = RefreshToolbarNotifier()
     private let toastStateStore = ToastStateStore(initialState: .initial)
+    private let userAttributionService: UserAttributionService
     @StateObject var appAppearanceStore = AppAppearanceStore.shared
 
     var body: some Scene {
@@ -46,11 +48,13 @@ struct ProtonMailApp: App {
                     .environmentObject(toastStateStore)
                     .environmentObject(appAppearanceStore)
                     .environmentObject(analytics)
+                    .environmentObject(userAttributionService)
             }
             .task {
                 async let analytics: Void = configureAnalyticsIfNeeded(analytics: analytics)
                 async let updateColorScheme: Void = appAppearanceStore.updateColorScheme()
-                _ = await (analytics, updateColorScheme)
+                async let appRunEvent: Void = sendAttributionEvent()
+                _ = await (analytics, updateColorScheme, appRunEvent)
             }
             .preferredColorScheme(appAppearanceStore.colorScheme)
         }
@@ -58,6 +62,12 @@ struct ProtonMailApp: App {
 
     init() {
         legacyMigrationStateStore = .init(toastStateStore: toastStateStore)
+        userAttributionService = .init(
+            isFeatureEnabled: {
+                try await AppContext.shared.mailSession.isFeatureEnabled(featureId: FeatureFlag.mmp).get()
+            },
+            userDefaults: AppContext.shared.userDefaults
+        )
         DynamicFontSize.capSupportedSizeCategories()
     }
 
@@ -66,6 +76,11 @@ struct ProtonMailApp: App {
             await analytics.enable(configuration: .default)
         }
     }
+
+    func sendAttributionEvent() async {
+        try? await Task.sleep(for: .seconds(3))
+        await userAttributionService.handle(event: .appRun)
+    }
 }
 
 private struct RootView: View {
@@ -73,6 +88,7 @@ private struct RootView: View {
     @EnvironmentObject private var legacyMigrationStateStore: LegacyMigrationStateStore
     @EnvironmentObject private var toastStateStore: ToastStateStore
     @EnvironmentObject private var analytics: Analytics
+    @EnvironmentObject private var userAttributionService: UserAttributionService
 
     // The route determines the screen that will be rendered
     @ObservedObject private var appContext: AppContext
@@ -125,7 +141,8 @@ private struct RootView: View {
                         appContext: appContext,
                         userSession: activeUserSession,
                         toastStateStore: toastStateStore,
-                        analytics: analytics
+                        analytics: analytics,
+                        userAttributionService: userAttributionService
                     )
                     .id(activeUserSession.userId())  // Forces the child view to be recreated when the user account changes
 
