@@ -47,16 +47,11 @@ struct ConversationsPageViewController: View {
         .navigationBarBackButtonHidden()
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
-                Button(
-                    action: {
-                        presentationMode.wrappedValue.dismiss()
-                    },
-                    label: {
-                        Image(symbol: .chevronLeft)
-                            .foregroundStyle(DS.Color.Icon.norm)
-                    }
-                )
-                .square(size: 40)
+                // FIXME: - Re-use in other places
+                Button(L10n.Common.back, icon: .chevronLeft) {
+                    presentationMode.wrappedValue.dismiss()
+                }
+                .tint(DS.Color.Icon.norm)
             }
         }
         .background {

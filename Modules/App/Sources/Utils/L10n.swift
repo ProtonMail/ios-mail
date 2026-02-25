@@ -301,6 +301,7 @@ enum L10n {
     }
 
     enum Common {
+        static let back = LocalizedStringResource("Back", comment: "Navigation back button title.")
         static let markAsLegitimate = LocalizedStringResource(
             "Mark as legitimate",
             comment: "Used when the user marks an email as legitimate, including confirming legitimacy, overriding phishing detection, or overriding spam detection."

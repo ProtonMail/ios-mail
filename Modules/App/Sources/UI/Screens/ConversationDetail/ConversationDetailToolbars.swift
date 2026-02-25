@@ -41,7 +41,6 @@ private struct ConversationDetailToolbars: ViewModifier {
                 titleState: conversationTitleState,
                 trailingButton: {
                     navigationTrailingButton
-                        .square(size: 40)
                 }
             )
             .smoothScreenTransition()
@@ -126,13 +125,11 @@ private struct ConversationDetailToolbars: ViewModifier {
     private var navigationTrailingButton: some View {
         if !model.areActionsHidden {
             Button(
-                action: {
-                    model.toggleStarState()
-                },
-                label: {
-                    Image(symbol: model.isStarred ? .starFilled : .star)
-                        .foregroundStyle(model.isStarred ? DS.Color.Star.selected : DS.Color.Star.default)
-                })
+                model.isStarred ? L10n.Action.unstar : L10n.Action.star,
+                icon: model.isStarred ? .starFilled : .star,
+                action: model.toggleStarState
+            )
+            .tint(model.isStarred ? DS.Color.Star.selected : DS.Color.Star.default)
         } else {
             Color.clear
         }
