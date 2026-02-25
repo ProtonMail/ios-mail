@@ -35,7 +35,7 @@ struct ListHeaderView<HeaderContent: View>: View {
                     Color.clear
                         .onChange(of: geometry.frame(in: .global)) { oldValue, newValue in
                             withAnimation {
-                                isHeaderVisible = newValue.maxY <= parentGeometry.safeAreaInsets.top
+                                isHeaderVisible = newValue.maxY <= parentGeometry.frame(in: .global).minY
                             }
                         }
                 }
