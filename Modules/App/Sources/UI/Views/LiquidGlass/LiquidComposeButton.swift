@@ -40,13 +40,7 @@ struct LiquidComposeButton: ToolbarContent {
             }
         } else {
             ToolbarItem(placement: .bottomBar) {
-                Button(
-                    action: action,
-                    label: {
-                        Image(DS.Icon.icPenSquare)
-                            .foregroundStyle(DS.Color.Icon.norm)
-                    }
-                )
+                Button(L10n.Mailbox.compose, image: DS.Icon.icPenSquare, action: action)
             }
         }
     }
