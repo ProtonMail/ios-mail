@@ -38,7 +38,7 @@ private struct ConversationDetailToolbars: ViewModifier {
         content
             .navigationBarTitleDisplayMode(.inline)
             .conversationTopToolbar(
-                title: topToolbarTitle,
+                titleState: conversationTitleState,
                 trailingButton: {
                     navigationTrailingButton
                         .square(size: 40)
@@ -81,6 +81,22 @@ private struct ConversationDetailToolbars: ViewModifier {
             .toolbar(model.isBottomBarHidden ? .hidden : .visible, for: .bottomBar)
             .bottomToolbarStyle()
             .animation(.default, value: model.isBottomBarHidden)
+    }
+
+    private var conversationTitleState: ConversationTopTitle? {
+        guard model.state.messagesCount > 0 else {
+            return nil
+        }
+        if !model.isHeaderVisible {
+            return .init(
+                title: nil,
+                subtitle: L10n.Conversation.messages(count: model.state.messagesCount).string
+            )
+        } else {
+            return model.isSingleMessageMode
+                ? nil
+                : .init(title: model.seed.subject, subtitle: L10n.Conversation.messages(count: model.state.messagesCount).string)
+        }
     }
 
     private var topToolbarTitle: AttributedString {

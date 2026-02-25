@@ -15,26 +15,36 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import InboxDesignSystem
 import SwiftUI
 
-struct ConversationToolbar<TrailingButton: View>: ViewModifier {
-    private let title: AttributedString
-    private let trailingButton: () -> TrailingButton?
+struct ConversationTopTitle: Equatable {
+    let title: String?
+    let subtitle: String
+}
 
-    init(title: AttributedString, trailingButton: @escaping () -> TrailingButton?) {
-        self.title = title
-        self.trailingButton = trailingButton
-    }
+struct ConversationToolbar<TrailingButton: View>: ViewModifier {
+    let titleState: ConversationTopTitle?
+    let trailingButton: () -> TrailingButton?
 
     func body(content: Content) -> some View {
         content
+            .toolbarRole(.browser)
             .toolbar {
-                ToolbarItem(placement: .principal) {
-                    Text(title)
-                        .frame(maxWidth: .infinity)
-                        .lineLimit(1)
-                        .transition(.opacity)
-                        .textSelection(.enabled)
+                if let titleState {
+                    ToolbarItem(placement: .title) {
+                        VStack(alignment: .leading) {
+                            if let title = titleState.title {
+                                Text(title)
+                                    .font(.headline)
+                                    .fontWeight(.semibold)
+                            }
+                            Text(titleState.subtitle)
+                                .font(.caption)
+                                .foregroundStyle(DS.Color.Text.hint)
+                        }
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    }
                 }
 
                 ToolbarItem(placement: .navigationBarTrailing) {
@@ -46,9 +56,9 @@ struct ConversationToolbar<TrailingButton: View>: ViewModifier {
 
 extension View {
     func conversationTopToolbar(
-        title: AttributedString,
+        titleState: ConversationTopTitle?,
         trailingButton: @escaping () -> some View
     ) -> some View {
-        modifier(ConversationToolbar(title: title, trailingButton: trailingButton))
+        modifier(ConversationToolbar(titleState: titleState, trailingButton: trailingButton))
     }
 }
