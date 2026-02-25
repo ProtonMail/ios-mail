@@ -41,6 +41,7 @@ struct ConversationsPageViewController: View {
         PageViewController(
             cursor: mailboxCursor,
             isSwipeToAdjacentEnabled: isSwipeToAdjacentEnabled,
+            scrollClipDisabled: true,
             startingPage: startingPage,
             pageFactory: pageFactory
         )

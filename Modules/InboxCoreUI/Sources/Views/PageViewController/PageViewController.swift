@@ -24,17 +24,20 @@ public struct PageViewController<Page: View>: UIViewControllerRepresentable {
 
     let cursor: MailboxCursorProtocol?
     let isSwipeToAdjacentEnabled: Bool
+    let scrollClipDisabled: Bool
     let startingPage: () -> Page
     let pageFactory: (CursorEntry) -> Page
 
     public init(
         cursor: MailboxCursorProtocol?,
         isSwipeToAdjacentEnabled: Bool,
+        scrollClipDisabled: Bool = false,
         startingPage: @escaping () -> Page,
         pageFactory: @escaping (CursorEntry) -> Page
     ) {
         self.cursor = cursor
         self.isSwipeToAdjacentEnabled = isSwipeToAdjacentEnabled
+        self.scrollClipDisabled = scrollClipDisabled
         self.startingPage = startingPage
         self.pageFactory = pageFactory
     }
@@ -54,6 +57,13 @@ public struct PageViewController<Page: View>: UIViewControllerRepresentable {
         let page = startingPage()
         let hostingController = UIHostingController(rootView: page)
         pageViewController.setViewControllers([hostingController], direction: .forward, animated: false)
+
+        if scrollClipDisabled {
+            pageViewController.view.clipsToBounds = false
+            pageViewController.view.subviews
+                .compactMap { $0 as? UIScrollView }
+                .forEach { $0.clipsToBounds = false }
+        }
 
         if let notifier = context.environment.goToNextPageNotifier {
             context.coordinator.subscribe(to: notifier, pageViewController: pageViewController)

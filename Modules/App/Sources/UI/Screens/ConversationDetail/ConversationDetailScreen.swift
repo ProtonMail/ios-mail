@@ -132,6 +132,7 @@ struct ConversationDetailScreen: View {
                 .accessibilityElement(children: .contain)
                 .accessibilityIdentifier(ConversationDetailScreenIdentifiers.rootItem)
             }
+            .scrollClipDisabled()
             .opacity(animateViewIn ? 1.0 : 0.0)
             .background(DS.Color.Background.norm)
             .task {
