@@ -88,19 +88,13 @@ private struct ConversationDetailToolbars: ViewModifier {
     }
 
     private var conversationTitleState: ConversationTopTitle? {
-        guard model.state.messagesCount > 0 else {
+        guard model.state.messagesCount > 0, model.isHeaderVisible, !model.isSingleMessageMode else {
             return nil
         }
-        if !model.isHeaderVisible {
-            return .init(
-                title: nil,
-                subtitle: L10n.Conversation.messages(count: model.state.messagesCount).string
-            )
-        } else {
-            return model.isSingleMessageMode
-                ? nil
-                : .init(title: model.seed.subject, subtitle: L10n.Conversation.messages(count: model.state.messagesCount).string)
-        }
+        return .init(
+            title: model.seed.subject,
+            subtitle: L10n.Conversation.messages(count: model.state.messagesCount).string
+        )
     }
 
     private var topToolbarTitle: AttributedString {
@@ -158,7 +152,8 @@ private extension View {
     }
 }
 
-private extension ConversationDetailModel.State {
+// FIXME: - Move
+extension ConversationDetailModel.State {
     var messagesCount: Int {
         switch self {
         case .initial, .fetchingMessages, .noConnection:
@@ -166,5 +161,9 @@ private extension ConversationDetailModel.State {
         case .messagesReady(let messageListState):
             messageListState.messages.count
         }
+    }
+
+    var messageCountText: String? {
+        messagesCount > 0 ? L10n.Conversation.messages(count: messagesCount).string : nil
     }
 }

@@ -18,8 +18,8 @@
 import InboxDesignSystem
 import SwiftUI
 
-struct ConversationTopTitle: Equatable {
-    let title: String?
+struct ConversationTopTitle: Hashable {
+    let title: String
     let subtitle: String
 }
 
@@ -27,23 +27,35 @@ struct ConversationToolbar<TrailingButton: View>: ViewModifier {
     let titleState: ConversationTopTitle?
     let trailingButton: () -> TrailingButton?
 
+    var toolbarItemPlacement: ToolbarItemPlacement {
+        if #available(iOS 26, *) {
+            return .subtitle
+        } else {
+            return .title
+        }
+    }
+
     func body(content: Content) -> some View {
         content
             .toolbarRole(.browser)
             .toolbar {
-                if let titleState {
-                    ToolbarItem(placement: .title) {
-                        VStack(alignment: .leading) {
-                            if let title = titleState.title {
-                                Text(title)
-                                    .font(.headline)
-                                    .fontWeight(.semibold)
-                            }
+                ToolbarItem(placement: toolbarItemPlacement) {
+                    VStack(alignment: .leading) {
+                        if let titleState {
+                            Text(titleState.title)
+                                .font(.headline)
+                                .fontWeight(.semibold)
                             Text(titleState.subtitle)
                                 .font(.caption)
                                 .foregroundStyle(DS.Color.Text.hint)
                         }
-                        .frame(maxWidth: .infinity, alignment: .leading)
+                    }
+                    .modify { view in
+                        // Without this the animation of header is broken on iOS 17,18
+                        if #unavailable(iOS 26) {
+                            view
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                        }
                     }
                 }
 

@@ -109,9 +109,19 @@ struct ConversationDetailScreen: View {
             ScrollView {
                 VStack {
                     ListHeaderView(isHeaderVisible: $model.isHeaderVisible, parentGeometry: proxy) {
-                        subjectView
-                            .padding(.top, DS.Spacing.medium)
-                            .padding(.horizontal, DS.Spacing.large)
+                        VStack(alignment: .leading, spacing: DS.Spacing.compact) {
+                            subjectView
+
+                            if let messageCountText = model.state.messageCountText {
+                                Text(messageCountText)
+                                    .foregroundStyle(DS.Color.Text.weak)
+                                    .font(.footnote)
+                                    .fontWeight(.medium)
+                            }
+                        }
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .padding(.top, DS.Spacing.medium)
+                        .padding(.horizontal, DS.Spacing.large)
                     }
                     if let hiddenMessageBanner {
                         BannerView(model: hiddenMessageBanner)
@@ -176,7 +186,6 @@ struct ConversationDetailScreen: View {
             .foregroundStyle(DS.Color.Text.norm)
             .multilineTextAlignment(.leading)
             .textSelection(.enabled)
-            .frame(maxWidth: .infinity, alignment: .leading)
             .accessibilityIdentifier(ConversationDetailScreenIdentifiers.subjectText)
     }
 }
