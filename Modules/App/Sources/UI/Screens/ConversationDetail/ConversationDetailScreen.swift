@@ -171,7 +171,7 @@ struct ConversationDetailScreen: View {
 
     private var subjectView: some View {
         Text(model.seed.subject)
-            .font(.title2)
+            .font(.headline)
             .fontWeight(.semibold)
             .foregroundStyle(DS.Color.Text.norm)
             .multilineTextAlignment(.leading)
