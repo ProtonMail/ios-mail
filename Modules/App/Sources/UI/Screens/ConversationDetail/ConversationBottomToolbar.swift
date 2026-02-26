@@ -101,7 +101,7 @@ struct ConversationToolbarModifier: ViewModifier {
                 editToolbarTapped: { editToolbarTapped(.message) }
             ) {
                 InternalAction.more.displayData.image
-                    .foregroundStyle(DS.Color.Icon.weak)
+                    .foregroundStyle(DS.Color.Icon.norm)
             }
         }
     }
@@ -115,7 +115,7 @@ struct ConversationToolbarModifier: ViewModifier {
                 editToolbarTapped: { editToolbarTapped(.conversation) }
             ) {
                 InternalAction.more.displayData.image
-                    .foregroundStyle(DS.Color.Icon.weak)
+                    .foregroundStyle(DS.Color.Icon.norm)
             }
         }
     }
@@ -132,7 +132,7 @@ struct ConversationToolbarModifier: ViewModifier {
             } else {
                 Button(action: { Task { await selected(action) } }) {
                     action.displayData.image
-                        .foregroundStyle(DS.Color.Icon.weak)
+                        .foregroundStyle(DS.Color.Icon.norm)
                 }
             }
         }

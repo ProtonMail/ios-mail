@@ -128,7 +128,7 @@ private struct ConversationDetailToolbars: ViewModifier {
                 icon: model.isStarred ? .starFilled : .star,
                 action: model.toggleStarState
             )
-            .tint(model.isStarred ? DS.Color.Star.selected : DS.Color.Star.default)
+            .tint(model.isStarred ? DS.Color.Star.selected : DS.Color.Icon.norm)
         } else {
             Color.clear
         }

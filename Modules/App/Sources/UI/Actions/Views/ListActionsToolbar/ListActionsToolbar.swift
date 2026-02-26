@@ -217,7 +217,7 @@ private struct ListActionBarViewModifier<ComposeButton: ToolbarContent>: ViewMod
                 },
                 label: {
                     action.displayData.image
-                        .foregroundStyle(DS.Color.Icon.weak)
+                        .foregroundStyle(DS.Color.Icon.norm)
                 })
         } else {
             Button(action: {
@@ -229,7 +229,7 @@ private struct ListActionBarViewModifier<ComposeButton: ToolbarContent>: ViewMod
                 )
             }) {
                 action.displayData.image
-                    .foregroundStyle(DS.Color.Icon.weak)
+                    .foregroundStyle(DS.Color.Icon.norm)
             }
         }
     }
