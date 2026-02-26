@@ -114,14 +114,11 @@ struct ConversationDetailListView: View {
                     cell(for: cellUIModel, index: index)
                         .padding(.bottom, messages.count - 1 == index ? 0 : DS.Spacing.extraLarge)
                         .background(DS.Color.Background.norm)
-                        .clipShape(UnevenRoundedRectangle(topLeadingRadius: DS.Radius.extraLarge, topTrailingRadius: DS.Radius.extraLarge))
+                        .clipShape(RoundedRectangle(cornerRadius: DS.Radius.extraLarge))
                         .shadow(DS.Shadows.raisedTop, isVisible: true)
                         .overlay(
-                            GeometryReader { geometry in
-                                UnevenRoundedRectangle(topLeadingRadius: DS.Radius.extraLarge, topTrailingRadius: DS.Radius.extraLarge)
-                                    .stroke(DS.Color.Border.norm, lineWidth: 1)
-                                    .padding(.horizontal, geometry.cardNeedsVerticalBorders ? DS.Spacing.tiny : -DS.Spacing.tiny)
-                            }
+                            RoundedRectangle(cornerRadius: DS.Radius.extraLarge)
+                                .stroke(DS.Color.Border.norm, lineWidth: 1)
                         )
                         .padding(.bottom, messages.count - 1 == index ? 0 : -DS.Spacing.extraLarge)
                 }

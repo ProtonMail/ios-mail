@@ -134,7 +134,7 @@ struct ConversationDetailScreen: View {
             }
             .scrollClipDisabled()
             .opacity(animateViewIn ? 1.0 : 0.0)
-            .background(DS.Color.Background.norm)
+            .background(DS.Color.Background.secondary)
             .task {
                 withAnimation(.easeIn) {
                     animateViewIn = true

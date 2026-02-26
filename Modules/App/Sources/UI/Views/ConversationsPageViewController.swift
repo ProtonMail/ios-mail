@@ -37,14 +37,29 @@ struct ConversationsPageViewController: View {
     @State private var isSwipeToAdjacentEnabled: Bool = false
     @State private var mailboxCursor: MailboxCursorProtocol?
 
+    private var scrollClipDisabled: Bool {
+        if #available(iOS 26, *) {
+            true
+        } else {
+            false
+        }
+    }
+
     var body: some View {
         PageViewController(
             cursor: mailboxCursor,
             isSwipeToAdjacentEnabled: isSwipeToAdjacentEnabled,
-            scrollClipDisabled: true,
+            scrollClipDisabled: scrollClipDisabled,
             startingPage: startingPage,
             pageFactory: pageFactory
         )
+        .background(DS.Color.Background.secondary)
+        .modify { view in
+            if #available(iOS 26, *) {
+                view
+                    .ignoresSafeArea(.container, edges: .vertical)
+            }
+        }
         .navigationBarBackButtonHidden()
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {

@@ -43,7 +43,12 @@ private struct ConversationDetailToolbars: ViewModifier {
                     navigationTrailingButton
                 }
             )
-            .smoothScreenTransition()
+            .modify { view in
+                if #unavailable(iOS 26) {
+                    view
+                        .smoothScreenTransition()
+                }
+            }
             .conversationBottomToolbar(
                 actions: model.conversationToolbarActions,
                 mailbox: { model.mailbox.unsafelyUnwrapped },
