@@ -63,7 +63,6 @@ struct ConversationDetailListView: View {
                 ConversationDetailsSkeletonView()
             case .messagesReady(let messageListState):
                 messageList(messages: messageListState.messages)
-                    .padding(.top, DS.Spacing.compact)
             case .noConnection:
                 NoConnectionView()
             }

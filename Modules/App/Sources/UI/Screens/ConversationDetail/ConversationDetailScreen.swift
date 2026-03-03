@@ -107,7 +107,7 @@ struct ConversationDetailScreen: View {
     private var conversationView: some View {
         GeometryReader { proxy in
             ScrollView {
-                VStack {
+                VStack(spacing: DS.Spacing.extraLarge) {
                     ListHeaderView(isHeaderVisible: $model.isHeaderVisible, parentGeometry: proxy) {
                         VStack(alignment: .leading, spacing: DS.Spacing.compact) {
                             subjectView
