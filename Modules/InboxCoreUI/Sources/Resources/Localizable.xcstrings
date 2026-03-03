@@ -691,6 +691,12 @@
             "value" : "Voortgangsbalk (%@)"
           }
         },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Barra de progresso de ciclismo (%@)"
+          }
+        },
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
@@ -802,6 +808,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "E-mails uitgewisseld tussen Proton-gebruikers zijn automatisch end-to-end versleuteld."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Os e-mails trocados entre os usuários do Proton são automaticamente criptografados de ponta a ponta."
           }
         },
         "ro" : {
