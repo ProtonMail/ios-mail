@@ -49,7 +49,7 @@ struct ConversationToolbar<TrailingButton: View>: ViewModifier {
                             if let subtitle = titleState.subtitle {
                                 Text(subtitle)
                                     .font(.caption)
-                                    .foregroundStyle(DS.Color.Text.hint)
+                                    .foregroundStyle(DS.Color.Text.weak)
                                     .lineLimit(1)
                             }
                         }
