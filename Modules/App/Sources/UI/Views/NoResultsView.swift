@@ -19,35 +19,37 @@ import InboxDesignSystem
 import SwiftUI
 
 struct NoResultsView: View {
-    @Environment(\.mainWindowSize) private var mainWindowSize: CGSize
     let variant: Variant
 
     var body: some View {
-        VStack(spacing: DS.Spacing.extraLarge) {
-            Spacer()
-
-            Image(variant.image)
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(height: 128)
-
+        GeometryReader { geometry in
             VStack(spacing: DS.Spacing.mediumLight) {
-                Text(variant.title)
-                    .font(.title2)
-                    .fontWeight(.semibold)
-                    .foregroundStyle(DS.Color.Text.norm)
-
-                Text(variant.body)
-                    .font(.subheadline)
-                    .foregroundStyle(DS.Color.Text.weak)
-                    .multilineTextAlignment(.center)
-
                 Spacer()
+
+                Image(variant.image)
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                    .frame(height: 120)
+
+                VStack(spacing: DS.Spacing.mediumLight) {
+                    Text(variant.title)
+                        .font(.headline)
+                        .fontWeight(.semibold)
+                        .foregroundStyle(DS.Color.Text.norm)
+
+                    Text(variant.body)
+                        .font(.headline)
+                        .fontWeight(.semibold)
+                        .foregroundStyle(DS.Color.Text.hint)
+                        .multilineTextAlignment(.center)
+
+                    Spacer()
+                }
+                .padding(.horizontal, DS.Spacing.jumbo)
+                .frame(maxWidth: .infinity, maxHeight: geometry.size.height / 2, alignment: .center)
             }
-            .padding(.horizontal, DS.Spacing.jumbo)
-            .frame(maxHeight: mainWindowSize.height / 2)
         }
-        .ignoresSafeArea(.keyboard)
+        .ignoresSafeArea(.all)
     }
 }
 
