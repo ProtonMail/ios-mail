@@ -20,7 +20,7 @@ import SwiftUI
 
 struct ConversationTopTitle: Hashable {
     let title: String
-    let subtitle: String
+    let subtitle: String?
 }
 
 struct ConversationToolbar<TrailingButton: View>: ViewModifier {
@@ -45,9 +45,13 @@ struct ConversationToolbar<TrailingButton: View>: ViewModifier {
                             Text(titleState.title)
                                 .font(.headline)
                                 .fontWeight(.semibold)
-                            Text(titleState.subtitle)
-                                .font(.caption)
-                                .foregroundStyle(DS.Color.Text.hint)
+                                .lineLimit(1)
+                            if let subtitle = titleState.subtitle {
+                                Text(subtitle)
+                                    .font(.caption)
+                                    .foregroundStyle(DS.Color.Text.hint)
+                                    .lineLimit(1)
+                            }
                         }
                     }
                     .modify { view in

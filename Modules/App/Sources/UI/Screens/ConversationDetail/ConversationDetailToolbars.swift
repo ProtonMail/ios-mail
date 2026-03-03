@@ -88,12 +88,12 @@ private struct ConversationDetailToolbars: ViewModifier {
     }
 
     private var conversationTitleState: ConversationTopTitle? {
-        guard model.state.messagesCount > 0, model.isHeaderVisible, !model.isSingleMessageMode else {
+        guard model.state.messagesCount > 0, model.isHeaderVisible else {
             return nil
         }
         return .init(
             title: model.seed.subject,
-            subtitle: L10n.Conversation.messages(count: model.state.messagesCount).string
+            subtitle: model.state.messageCountText
         )
     }
 
@@ -164,6 +164,6 @@ extension ConversationDetailModel.State {
     }
 
     var messageCountText: String? {
-        messagesCount > 0 ? L10n.Conversation.messages(count: messagesCount).string : nil
+        messagesCount > 1 ? L10n.Conversation.messages(count: messagesCount).string : nil
     }
 }
