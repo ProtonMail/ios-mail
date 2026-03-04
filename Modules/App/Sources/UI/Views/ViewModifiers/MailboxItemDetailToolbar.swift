@@ -40,8 +40,8 @@ struct ConversationToolbar<TrailingButton: View>: ViewModifier {
             .toolbarRole(.browser)
             .toolbar {
                 ToolbarItem(placement: toolbarItemPlacement) {
-                    VStack(alignment: .leading) {
-                        if let titleState {
+                    if let titleState {
+                        VStack(alignment: .leading) {
                             Text(titleState.title)
                                 .font(.headline)
                                 .fontWeight(.semibold)
@@ -53,12 +53,12 @@ struct ConversationToolbar<TrailingButton: View>: ViewModifier {
                                     .lineLimit(1)
                             }
                         }
-                    }
-                    .modify { view in
-                        // Without this the animation of header is broken on iOS 17,18
-                        if #unavailable(iOS 26) {
-                            view
-                                .frame(maxWidth: .infinity, alignment: .leading)
+                        .modify { view in
+                            // Without this the animation of header is broken on iOS 17,18
+                            if #unavailable(iOS 26) {
+                                view
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                            }
                         }
                     }
                 }
