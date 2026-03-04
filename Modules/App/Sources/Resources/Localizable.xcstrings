@@ -25609,7 +25609,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mantingueu la icona per defecte de Proton Mail o dissimuleu-la amb una de genèrica per a una major privacitat."
+            "value" : "Mantingueu la icona per defecte del Proton Mail o amagueu-la amb una de genèrica per a una major privacitat."
           }
         },
         "cs" : {
@@ -48074,7 +48074,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aquest correu electrònic no ha complert els requisits d'autenticació del seu domini. Pot ser que hagi estat suplantat o que s'hagi reenviat incorrectament."
+            "value" : "Aquest correu electrònic no ha complert els requisits d'autenticació del domini. Pot ser fals o reenviat de manera incorrecta."
           }
         },
         "cs" : {
