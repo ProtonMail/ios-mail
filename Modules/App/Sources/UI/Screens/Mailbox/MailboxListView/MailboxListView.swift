@@ -23,6 +23,7 @@ import proton_app_uniffi
 
 struct MailboxListView: View {
     @EnvironmentObject var toastStateStore: ToastStateStore
+    @Environment(\.mainBundle) private var mainBundle
     @ObservedObject private var model: MailboxModel
     private let mailUserSession: MailUserSession
 
@@ -36,13 +37,13 @@ struct MailboxListView: View {
 
     var body: some View {
         VStack(spacing: .zero) {
-            if #unavailable(iOS 26) {
+            if !mainBundle.isLiquidGlassEnabled {
                 filterBar()
             }
 
             mailboxListView()
                 .modify { view in
-                    if #available(iOS 26, *) {
+                    if #available(iOS 26, *), mainBundle.isLiquidGlassEnabled {
                         view
                             .safeAreaBar(edge: .top) {
                                 LiquidGlassFilterBar(

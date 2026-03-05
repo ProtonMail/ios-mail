@@ -15,30 +15,12 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import SwiftUI
+import Foundation
 
-struct AdaptiveToolbarItemsLayout<Content: View, Item: Hashable>: View {
-    @Environment(\.mainBundle) private var mainBundle
-
-    private let items: [Item]
-    private let itemView: (Item) -> Content
-
-    init(items: [Item], @ViewBuilder itemView: @escaping (Item) -> Content) {
-        self.items = items
-        self.itemView = itemView
-    }
-
-    var body: some View {
-        if mainBundle.isLiquidGlassEnabled {
-            ForEach(items, id: \.self) { item in
-                itemView(item)
-            }
-        } else {
-            Spacer()
-            ForEach(items, id: \.self) { item in
-                itemView(item)
-                Spacer()
-            }
-        }
+extension Bundle {
+    var isLiquidGlassEnabled: Bool {
+        guard #available(iOS 26, *) else { return false }
+        let compatibilityRequired = object(forInfoDictionaryKey: "UIDesignRequiresCompatibility") as? Bool
+        return compatibilityRequired != true
     }
 }

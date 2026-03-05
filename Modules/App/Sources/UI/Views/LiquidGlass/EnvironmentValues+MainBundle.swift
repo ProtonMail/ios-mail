@@ -17,28 +17,6 @@
 
 import SwiftUI
 
-struct AdaptiveToolbarItemsLayout<Content: View, Item: Hashable>: View {
-    @Environment(\.mainBundle) private var mainBundle
-
-    private let items: [Item]
-    private let itemView: (Item) -> Content
-
-    init(items: [Item], @ViewBuilder itemView: @escaping (Item) -> Content) {
-        self.items = items
-        self.itemView = itemView
-    }
-
-    var body: some View {
-        if mainBundle.isLiquidGlassEnabled {
-            ForEach(items, id: \.self) { item in
-                itemView(item)
-            }
-        } else {
-            Spacer()
-            ForEach(items, id: \.self) { item in
-                itemView(item)
-                Spacer()
-            }
-        }
-    }
+extension EnvironmentValues {
+    @Entry var mainBundle: Bundle = .main
 }

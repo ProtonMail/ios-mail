@@ -24,11 +24,13 @@ struct ConversationTopTitle: Hashable {
 }
 
 struct ConversationToolbar<TrailingButton: View>: ViewModifier {
+    @Environment(\.mainBundle) private var mainBundle
+
     let titleState: ConversationTopTitle?
     let trailingButton: () -> TrailingButton?
 
     var toolbarItemPlacement: ToolbarItemPlacement {
-        if #available(iOS 26, *) {
+        if #available(iOS 26, *), mainBundle.isLiquidGlassEnabled {
             return .subtitle
         } else {
             return .title
@@ -55,7 +57,7 @@ struct ConversationToolbar<TrailingButton: View>: ViewModifier {
                         }
                         .modify { view in
                             // Without this the animation of header is broken on iOS 17,18
-                            if #unavailable(iOS 26) {
+                            if !mainBundle.isLiquidGlassEnabled {
                                 view
                                     .frame(maxWidth: .infinity, alignment: .leading)
                             }

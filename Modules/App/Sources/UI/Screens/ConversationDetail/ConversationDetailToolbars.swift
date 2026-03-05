@@ -32,6 +32,7 @@ private struct ConversationDetailToolbars: ViewModifier {
     @EnvironmentObject var refreshToolbarNotifier: RefreshToolbarNotifier
     @EnvironmentObject private var toastStateStore: ToastStateStore
     @Environment(\.proceedAfterMove) var proceedAfterMove
+    @Environment(\.mainBundle) private var mainBundle
     @ObservedObject var model: ConversationDetailModel
 
     func body(content: Content) -> some View {
@@ -44,7 +45,7 @@ private struct ConversationDetailToolbars: ViewModifier {
                 }
             )
             .modify { view in
-                if #unavailable(iOS 26) {
+                if !mainBundle.isLiquidGlassEnabled {
                     view
                         .smoothScreenTransition()
                 }

@@ -19,6 +19,8 @@ import InboxDesignSystem
 import SwiftUI
 
 struct LiquidComposeButton: ToolbarContent {
+    @Environment(\.mainBundle) private var mainBundle
+
     let isExpanded: Bool
     let action: () -> Void
     @Namespace private var buttonTransition
@@ -42,7 +44,7 @@ struct LiquidComposeButton: ToolbarContent {
                     }
                 )
                 .modify { view in
-                    if #available(iOS 26, *) {
+                    if #available(iOS 26, *), mainBundle.isLiquidGlassEnabled {
                         view
                             .matchedTransitionSource(id: buttonTransitionIdentifier, in: buttonTransition)
                     }
@@ -52,7 +54,7 @@ struct LiquidComposeButton: ToolbarContent {
             ToolbarItem(placement: .bottomBar) {
                 Button(L10n.Mailbox.compose, image: DS.Icon.icPenSquare, action: action)
                     .modify { view in
-                        if #available(iOS 26, *) {
+                        if #available(iOS 26, *), mainBundle.isLiquidGlassEnabled {
                             view
                                 .matchedTransitionSource(id: buttonTransitionIdentifier, in: buttonTransition)
                         }

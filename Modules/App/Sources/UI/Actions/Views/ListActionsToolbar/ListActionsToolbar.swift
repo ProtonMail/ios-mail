@@ -58,6 +58,7 @@ private struct ListActionBarViewModifier<ComposeButton: ToolbarContent>: ViewMod
     typealias Store = ListActionsToolbarStore
 
     @Binding var selectedItems: Set<MailboxSelectedItem>
+    @Environment(\.mainBundle) private var mainBundle
     @EnvironmentObject var mailbox: Mailbox
     @EnvironmentObject var toastStateStore: ToastStateStore
     @EnvironmentObject var refreshToolbarNotifier: RefreshToolbarNotifier
@@ -183,7 +184,7 @@ private struct ListActionBarViewModifier<ComposeButton: ToolbarContent>: ViewMod
             }
         }
 
-        if #available(iOS 26.0, *), state.bottomBarActions.isEmpty, let liquidComposeButton {
+        if #available(iOS 26.0, *), mainBundle.isLiquidGlassEnabled, state.bottomBarActions.isEmpty, let liquidComposeButton {
             ToolbarSpacer(.flexible, placement: .bottomBar)
 
             liquidComposeButton

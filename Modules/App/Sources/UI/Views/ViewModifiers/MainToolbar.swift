@@ -27,6 +27,7 @@ struct MainToolbar<AvatarView: View>: ViewModifier {
     @EnvironmentObject private var toastStateStore: ToastStateStore
     @EnvironmentObject private var upsellCoordinator: UpsellCoordinator
     @Environment(\.upsellEligibility) private var upsellEligibility
+    @Environment(\.mainBundle) private var mainBundle
     @ObservedObject private var selectionMode: SelectionModeState
     let onEvent: (MainToolbarEvent) -> Void
     let avatarView: () -> AvatarView
@@ -52,14 +53,14 @@ struct MainToolbar<AvatarView: View>: ViewModifier {
     func body(content: Content) -> some View {
         content
             .toolbar {
-                if #available(iOS 26, *) {
+                if #available(iOS 26, *), mainBundle.isLiquidGlassEnabled {
                     ios26ToolbarContent
                 } else {
                     legacyToolbarContent
                 }
             }
             .modify { view in
-                if #available(iOS 26, *) {
+                if #available(iOS 26, *), mainBundle.isLiquidGlassEnabled {
                     view
                         .animation(.default, value: title)
                         .animation(.default, value: state)
