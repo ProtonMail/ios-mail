@@ -223,7 +223,11 @@ struct SearchScreen: View {
     @available(iOS 26, *)
     private func liquidGlassSearchBar<ParentView: View>(view: ParentView) -> some View {
         view
-            .searchable(text: $searchedText, placement: .toolbar, prompt: Text(L10n.Search.searchPlaceholder))
+            .searchable(
+                text: $searchedText,
+                placement: .navigationBarDrawer,
+                prompt: Text(L10n.Search.searchPlaceholder)
+            )
             .onSubmit(of: .search) {
                 resultsState = .search
                 model.searchText(searchedText)
