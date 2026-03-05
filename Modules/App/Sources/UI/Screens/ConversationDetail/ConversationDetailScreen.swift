@@ -111,13 +111,6 @@ struct ConversationDetailScreen: View {
                     ListHeaderView(isHeaderVisible: $model.isHeaderVisible, parentGeometry: proxy) {
                         VStack(alignment: .leading, spacing: DS.Spacing.compact) {
                             subjectView
-
-                            if let messageCountText = model.state.messageCountText {
-                                Text(messageCountText)
-                                    .foregroundStyle(DS.Color.Text.weak)
-                                    .font(.footnote)
-                                    .fontWeight(.medium)
-                            }
                         }
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(.top, DS.Spacing.medium)

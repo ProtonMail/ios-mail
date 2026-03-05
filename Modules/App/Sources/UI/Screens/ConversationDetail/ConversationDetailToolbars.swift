@@ -152,8 +152,7 @@ private extension View {
     }
 }
 
-// FIXME: - Move
-extension ConversationDetailModel.State {
+private extension ConversationDetailModel.State {
     var messagesCount: Int {
         switch self {
         case .initial, .fetchingMessages, .noConnection:
