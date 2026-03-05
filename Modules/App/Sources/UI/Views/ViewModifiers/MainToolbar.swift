@@ -51,7 +51,6 @@ struct MainToolbar<AvatarView: View>: ViewModifier {
 
     func body(content: Content) -> some View {
         content
-            .toolbarRole(selectionMode.hasItems ? .navigationStack : .browser)
             .toolbar {
                 if #available(iOS 26, *) {
                     ios26ToolbarContent
@@ -64,6 +63,7 @@ struct MainToolbar<AvatarView: View>: ViewModifier {
                     view
                         .animation(.default, value: title)
                         .animation(.default, value: state)
+                        .toolbarRole(selectionMode.hasItems ? .navigationStack : .browser)
                 } else {
                     view
                         .toolbarBackground(DS.Color.Background.norm, for: .navigationBar)
@@ -81,7 +81,7 @@ struct MainToolbar<AvatarView: View>: ViewModifier {
             Text(title)
                 .font(.headline)
                 .fontWeight(.semibold)
-                .frame(maxWidth: .infinity, alignment: .leading)
+                .frame(maxWidth: .infinity, alignment: selectionMode.hasItems ? .center : .leading)
         }
 
         if !selectionMode.hasItems {
