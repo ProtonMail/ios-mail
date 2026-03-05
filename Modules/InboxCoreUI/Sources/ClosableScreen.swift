@@ -15,7 +15,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import InboxCore
 import InboxDesignSystem
+import ProtonUIFoundations
 import SwiftUI
 
 public struct ClosableScreen<ContentView: View>: View {
@@ -31,16 +33,18 @@ public struct ClosableScreen<ContentView: View>: View {
             content()
                 .toolbar {
                     ToolbarItem(placement: .topBarTrailing) {
-                        Button(action: { dismiss.callAsFunction() }) {
-                            HStack {
-                                Image(symbol: .xmark)
-                                    .foregroundStyle(DS.Color.Text.weak)
-                                    .square(size: 20)
-                            }
+                        Button(CommonL10n.close, icon: .xmark) {
+                            dismiss.callAsFunction()
                         }
-                        .padding(DS.Spacing.mediumLight)
                     }
                 }
         }
+    }
+}
+
+// FIXME: - Remove duplicate, move potentailly to ProtonUIFoundations
+extension Button where Label == SwiftUI.Label<Text, Image> {
+    init(_ title: LocalizedStringResource, icon: SFSymbol, action: @escaping () -> Void) {
+        self.init(title, systemImage: icon.rawValue, action: action)
     }
 }
