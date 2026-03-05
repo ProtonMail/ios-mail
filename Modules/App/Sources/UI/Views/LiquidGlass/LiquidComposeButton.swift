@@ -21,6 +21,8 @@ import SwiftUI
 struct LiquidComposeButton: ToolbarContent {
     let isExpanded: Bool
     let action: () -> Void
+    @Namespace private var buttonTransition
+    private let buttonTransitionIdentifier = "buttonTransition"
 
     var body: some ToolbarContent {
         if isExpanded {
@@ -32,15 +34,29 @@ struct LiquidComposeButton: ToolbarContent {
                             Image(DS.Icon.icPenSquare)
                                 .foregroundStyle(DS.Color.Icon.norm)
                             Text(L10n.Mailbox.compose)
-                                .fontWeight(.semibold)
+                                .font(.body)
+                                .fontWeight(.medium)
                                 .foregroundStyle(DS.Color.Icon.norm)
                         }
+                        .padding(.horizontal, DS.Spacing.compact)
                     }
                 )
+                .modify { view in
+                    if #available(iOS 26, *) {
+                        view
+                            .matchedTransitionSource(id: buttonTransitionIdentifier, in: buttonTransition)
+                    }
+                }
             }
         } else {
             ToolbarItem(placement: .bottomBar) {
                 Button(L10n.Mailbox.compose, image: DS.Icon.icPenSquare, action: action)
+                    .modify { view in
+                        if #available(iOS 26, *) {
+                            view
+                                .matchedTransitionSource(id: buttonTransitionIdentifier, in: buttonTransition)
+                        }
+                    }
             }
         }
     }
