@@ -129,7 +129,7 @@ struct MainToolbar<AvatarView: View>: ViewModifier {
     @ToolbarContentBuilder
     private var leadingToolbarItem: some ToolbarContent {
         ToolbarItem(placement: .topBarLeading) {
-            Button(state.name, icon: state.image) {
+            Button(state.name, image: state.image) {
                 switch state {
                 case .noSelection:
                     onEvent(.onOpenMenu)
@@ -141,7 +141,7 @@ struct MainToolbar<AvatarView: View>: ViewModifier {
     }
 
     private var searchButton: some View {
-        Button(L10n.Search.searchPlaceholder, icon: .magnifier) {
+        Button(L10n.Search.searchPlaceholder, image: .magnifier) {
             onEvent(.onSearch)
         }
     }

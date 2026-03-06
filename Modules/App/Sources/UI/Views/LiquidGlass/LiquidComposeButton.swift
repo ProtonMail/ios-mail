@@ -24,7 +24,6 @@ struct LiquidComposeButton: ToolbarContent {
     let isExpanded: Bool
     let action: () -> Void
     @Namespace private var buttonTransition
-    private let buttonTransitionIdentifier = "buttonTransition"
 
     var body: some ToolbarContent {
         if isExpanded {
@@ -46,7 +45,7 @@ struct LiquidComposeButton: ToolbarContent {
                 .modify { view in
                     if #available(iOS 26, *), mainBundle.isLiquidGlassEnabled {
                         view
-                            .matchedTransitionSource(id: buttonTransitionIdentifier, in: buttonTransition)
+                            .matchedTransitionSource(id: buttonTransition, in: buttonTransition)
                     }
                 }
             }
@@ -56,7 +55,7 @@ struct LiquidComposeButton: ToolbarContent {
                     .modify { view in
                         if #available(iOS 26, *), mainBundle.isLiquidGlassEnabled {
                             view
-                                .matchedTransitionSource(id: buttonTransitionIdentifier, in: buttonTransition)
+                                .matchedTransitionSource(id: buttonTransition, in: buttonTransition)
                         }
                     }
             }

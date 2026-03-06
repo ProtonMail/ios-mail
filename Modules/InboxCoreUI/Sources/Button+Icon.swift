@@ -18,22 +18,22 @@
 import ProtonUIFoundations
 import SwiftUI
 
-enum ButtonIcon {
+public enum ButtonIcon {
     case asset(ImageResource)
     case sfSymbol(SFSymbol)
 }
 
 extension Button where Label == SwiftUI.Label<Text, Image> {
-    init(_ title: LocalizedStringResource, icon: SFSymbol, action: @escaping () -> Void) {
-        self.init(title, systemImage: icon.rawValue, action: action)
+    public init(_ title: LocalizedStringResource, image: SFSymbol, action: @escaping () -> Void) {
+        self.init(title, systemImage: image.rawValue, action: action)
     }
 
-    init(_ title: LocalizedStringResource, icon: ButtonIcon, action: @escaping () -> Void) {
-        switch icon {
+    public init(_ title: LocalizedStringResource, image: ButtonIcon, action: @escaping () -> Void) {
+        switch image {
         case .asset(let imageResource):
             self.init(title, image: imageResource, action: action)
         case .sfSymbol(let symbol):
-            self.init(title, icon: symbol, action: action)
+            self.init(title, image: symbol, action: action)
         }
     }
 }

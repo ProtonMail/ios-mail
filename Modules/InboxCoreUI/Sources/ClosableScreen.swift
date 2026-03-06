@@ -33,18 +33,11 @@ public struct ClosableScreen<ContentView: View>: View {
             content()
                 .toolbar {
                     ToolbarItem(placement: .topBarTrailing) {
-                        Button(CommonL10n.close, icon: .xmark) {
+                        Button(CommonL10n.close, image: .xmark) {
                             dismiss.callAsFunction()
                         }
                     }
                 }
         }
-    }
-}
-
-// FIXME: - Remove duplicate, move potentailly to ProtonUIFoundations
-extension Button where Label == SwiftUI.Label<Text, Image> {
-    init(_ title: LocalizedStringResource, icon: SFSymbol, action: @escaping () -> Void) {
-        self.init(title, systemImage: icon.rawValue, action: action)
     }
 }
