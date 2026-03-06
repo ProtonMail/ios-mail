@@ -67,6 +67,9 @@ struct MailboxListView: View {
                                     }
                                 }
                             }
+                            // Workaround: changing the id forces SwiftUI to recreate the view,
+                            // which fixes the disappearing shadow under the safe are bar when switching mailboxes.
+                            .id(model.mailbox?.labelId())
                     }
                 }
         }
