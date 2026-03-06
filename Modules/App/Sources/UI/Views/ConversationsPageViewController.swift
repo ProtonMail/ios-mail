@@ -59,13 +59,7 @@ struct ConversationsPageViewController: View {
         }
         .navigationBarBackButtonHidden()
         .toolbar {
-            ToolbarItem(placement: .topBarLeading) {
-                // FIXME: - Re-use in other places
-                Button(L10n.Common.back, image: .chevronLeft) {
-                    presentationMode.wrappedValue.dismiss()
-                }
-                .tint(DS.Color.Icon.norm)
-            }
+            ToolbarItemFactory.back { presentationMode.wrappedValue.dismiss() }
         }
         .background {
             if let activeModel {

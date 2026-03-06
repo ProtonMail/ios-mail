@@ -15,6 +15,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import InboxCore
 import ProtonUIFoundations
 import SwiftUI
 
@@ -24,6 +25,14 @@ public enum ButtonIcon {
 }
 
 extension Button where Label == SwiftUI.Label<Text, Image> {
+    public static func back(action: @escaping () -> Void) -> Self {
+        Self(CommonL10n.back, image: SFSymbol.chevronLeft, action: action)
+    }
+
+    public static func close(action: @escaping () -> Void) -> Self {
+        Self(CommonL10n.close, image: SFSymbol.xmark, action: action)
+    }
+
     public init(_ title: LocalizedStringResource, image: SFSymbol, action: @escaping () -> Void) {
         self.init(title, systemImage: image.rawValue, action: action)
     }

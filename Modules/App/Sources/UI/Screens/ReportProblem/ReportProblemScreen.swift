@@ -17,7 +17,6 @@
 
 import InboxCoreUI
 import InboxDesignSystem
-import ProtonUIFoundations
 import SwiftUI
 import proton_app_uniffi
 
@@ -74,7 +73,10 @@ struct ReportProblemScreen: View {
                     .navigationTitle(L10n.ReportProblem.mainTitle.string)
                     .toolbar {
                         toolbarLeadingItem(state: state, store: store)
-                        toolbarTrailingItem(state: state, store: store)
+                        ToolbarItem(placement: .topBarTrailing) {
+                            Button.close { store.handle(action: .closeButtonTapped) }
+                                .disabled(state.isLoading)
+                        }
                     }
                     .onChange(of: state.scrollTo) { _, newValue in
                         withAnimation(.easeInOut(duration: 0.2)) {
@@ -156,17 +158,6 @@ struct ReportProblemScreen: View {
                         .foregroundStyle(DS.Color.Text.accent)
                 }
             }
-        }
-    }
-
-    private func toolbarTrailingItem(state: ReportProblemState, store: ReportProblemStateStore) -> some ToolbarContent {
-        ToolbarItem(placement: .topBarLeading) {
-            Button(action: { store.handle(action: .closeButtonTapped) }) {
-                Image(symbol: .xmark)
-                    .foregroundStyle(DS.Color.Text.weak)
-                    .square(size: 20)
-            }
-            .disabled(state.isLoading)
         }
     }
 

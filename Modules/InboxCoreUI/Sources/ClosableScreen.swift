@@ -17,7 +17,6 @@
 
 import InboxCore
 import InboxDesignSystem
-import ProtonUIFoundations
 import SwiftUI
 
 public struct ClosableScreen<ContentView: View>: View {
@@ -32,11 +31,7 @@ public struct ClosableScreen<ContentView: View>: View {
         NavigationStack {
             content()
                 .toolbar {
-                    ToolbarItem(placement: .topBarTrailing) {
-                        Button(CommonL10n.close, image: .xmark) {
-                            dismiss.callAsFunction()
-                        }
-                    }
+                    ToolbarItemFactory.close { dismiss.callAsFunction() }
                 }
         }
     }

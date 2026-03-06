@@ -19,6 +19,7 @@
 import Foundation
 
 public enum CommonL10n {
+    public static let back = LocalizedStringResource("Back", bundle: .module)
     public static let cancel = LocalizedStringResource("Cancel", bundle: .module)
     public static let close = LocalizedStringResource("Close", bundle: .module)
     public static let confirm = LocalizedStringResource("Confirm", bundle: .module)

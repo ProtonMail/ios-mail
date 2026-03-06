@@ -20,7 +20,15 @@ import SwiftUI
 
 public enum ToolbarItemFactory {
     public static func back(action: @escaping () -> Void) -> some ToolbarContent {
-        leading(Image(symbol: .chevronLeft), action: action)
+        ToolbarItem(placement: .topBarLeading) {
+            Button.back(action: action)
+        }
+    }
+
+    public static func close(action: @escaping () -> Void) -> some ToolbarContent {
+        ToolbarItem(placement: .topBarTrailing) {
+            Button.close(action: action)
+        }
     }
 
     public static func leading(_ image: Image, action: @escaping () -> Void) -> some ToolbarContent {
