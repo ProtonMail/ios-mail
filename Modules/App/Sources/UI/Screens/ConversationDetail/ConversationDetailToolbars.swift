@@ -126,7 +126,7 @@ private struct ConversationDetailToolbars: ViewModifier {
         if !model.areActionsHidden {
             Button(
                 model.isStarred ? L10n.Action.unstar : L10n.Action.star,
-                icon: model.isStarred ? .starFilled : .star,
+                image: model.isStarred ? .starFilled : .star,
                 action: model.toggleStarState
             )
             .tint(model.isStarred ? DS.Color.Star.selected : DS.Color.Icon.norm)

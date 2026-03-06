@@ -113,14 +113,12 @@ struct MainToolbar<AvatarView: View>: ViewModifier {
 
         if !selectionMode.hasItems {
             ToolbarItemGroup(placement: .topBarTrailing) {
-                if !selectionMode.hasItems {
-                    HStack(spacing: DS.Spacing.standard) {
-                        if case .eligible(let upsellType) = upsellEligibility {
-                            upsellButton(for: upsellType)
-                        }
-                        searchButton
-                        avatarView()
+                HStack(spacing: DS.Spacing.standard) {
+                    if case .eligible(let upsellType) = upsellEligibility {
+                        upsellButton(for: upsellType)
                     }
+                    searchButton
+                    avatarView()
                 }
             }
         }

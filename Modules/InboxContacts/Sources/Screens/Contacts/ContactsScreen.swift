@@ -74,7 +74,11 @@ public struct ContactsScreen: View {
                     }
             }
             .toolbar {
-                ToolbarItemFactory.close { dismiss() }
+                ToolbarItem(placement: .topBarLeading) {
+                    Button.close {
+                        dismiss()
+                    }
+                }
                 ToolbarItemFactory.trailing(Image(symbol: .plus)) {
                     handle(action: .createTapped)
                 }

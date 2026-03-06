@@ -73,7 +73,7 @@ struct ReportProblemScreen: View {
                     .navigationTitle(L10n.ReportProblem.mainTitle.string)
                     .toolbar {
                         toolbarLeadingItem(state: state, store: store)
-                        ToolbarItem(placement: .topBarTrailing) {
+                        ToolbarItem(placement: .topBarLeading) {
                             Button.close { store.handle(action: .closeButtonTapped) }
                                 .disabled(state.isLoading)
                         }
