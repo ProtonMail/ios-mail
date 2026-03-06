@@ -4790,7 +4790,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "El correu electrònic s'emmagatzema als servidors de Proton amb [xifratge de zero accés](https://proton.me/blog/zero-access-encryption). Ni Proton ni ningú més no el pot llegir."
+            "value" : "El correu electrònic s'emmagatzema als servidors de Proton amb [xifratge d'accés zero](https://proton.me/blog/zero-access-encryption). Ni Proton ni ningú més poden llegir-lo."
           }
         },
         "cs" : {
@@ -5403,7 +5403,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aquest correu electrònic s'emmagatzema als servidors de Proton amb [xifratge de zero accés](https://proton.me/blog/zero-access-encryption). Ni Proton ni ningú més no el pot llegir."
+            "value" : "Aquest correu electrònic s'emmagatzema als servidors de Proton amb [xifratge d'accés zero](https://proton.me/blog/zero-access-encryption). Ni Proton ni ningú més poden llegir-lo."
           }
         },
         "cs" : {
