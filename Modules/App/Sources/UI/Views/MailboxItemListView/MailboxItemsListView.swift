@@ -23,8 +23,6 @@ import SwiftUI
 import proton_app_uniffi
 
 struct MailboxItemsListView<EmptyView: View, ComposeButton: ToolbarContent>: View {
-    @Environment(\.mainBundle) private var mainBundle
-
     let config: MailboxItemsListViewConfiguration
     @ViewBuilder let emptyView: EmptyView
     @ObservedObject private(set) var selectionState: SelectionModeState
@@ -70,7 +68,7 @@ struct MailboxItemsListView<EmptyView: View, ComposeButton: ToolbarContent>: Vie
                     liquidComposeButton: liquidComposeButton
                 )
                 .modify { view in
-                    if !mainBundle.isLiquidGlassEnabled {
+                    if #unavailable(iOS 26) {
                         view.toolbar(selectionState.hasItems ? .visible : .hidden, for: .bottomBar)
                     }
                 }

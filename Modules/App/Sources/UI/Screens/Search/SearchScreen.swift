@@ -29,7 +29,6 @@ enum SearchScreenState {
 struct SearchScreen: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.mainWindowSize) private var mainWindowSize
-    @Environment(\.mainBundle) private var mainBundle
     @EnvironmentObject private var composerCoordinator: ComposerCoordinator
     @EnvironmentObject private var toastStateStore: ToastStateStore
     @State private(set) var resultsState: SearchScreenState = .initial
@@ -63,7 +62,7 @@ struct SearchScreen: View {
                     EmptyView()
                 case .search:
                     VStack(spacing: .zero) {
-                        if !mainBundle.isLiquidGlassEnabled {
+                        if #unavailable(iOS 26) {
                             filtersBar()
                         }
 
@@ -76,7 +75,7 @@ struct SearchScreen: View {
                                 mailboxItemDestination(uiModel: uiModel)
                             }
                             .modify { view in
-                                if #available(iOS 26, *), mainBundle.isLiquidGlassEnabled {
+                                if #available(iOS 26, *) {
                                     view
                                         .safeAreaBar(edge: .top) {
                                             liquidGlassFiltersBar()
@@ -88,7 +87,7 @@ struct SearchScreen: View {
             }
             .modifier(SearchDismissModifier(dismiss: dismiss))
             .modify { view in
-                if #available(iOS 26, *), mainBundle.isLiquidGlassEnabled {
+                if #available(iOS 26, *) {
                     liquidGlassSearchBar(view: view)
                 } else {
                     nonLiqudGlassSearchBar(view: view)

@@ -28,7 +28,6 @@ struct MailboxScreen: View {
     @EnvironmentObject private var appUIStateStore: AppUIStateStore
     @EnvironmentObject private var toastStateStore: ToastStateStore
     @Environment(\.requestReview) private var requestReview
-    @Environment(\.mainBundle) private var mainBundle
     @StateObject private var mailboxModel: MailboxModel
     @State private var isComposeButtonExpanded: Bool = true
     @State private var isAccountManagerPresented = false
@@ -122,7 +121,7 @@ extension MailboxScreen {
                     model: mailboxModel,
                     mailUserSession: userSession
                 )
-                if !mainBundle.isLiquidGlassEnabled {
+                if #unavailable(iOS 26) {
                     composeButtonView
                         .accessibilitySortPriority(1)
                         .animation(

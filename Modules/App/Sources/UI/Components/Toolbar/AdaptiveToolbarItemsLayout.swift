@@ -18,8 +18,6 @@
 import SwiftUI
 
 struct AdaptiveToolbarItemsLayout<Content: View, Item: Hashable>: View {
-    @Environment(\.mainBundle) private var mainBundle
-
     private let items: [Item]
     private let itemView: (Item) -> Content
 
@@ -29,7 +27,7 @@ struct AdaptiveToolbarItemsLayout<Content: View, Item: Hashable>: View {
     }
 
     var body: some View {
-        if mainBundle.isLiquidGlassEnabled {
+        if #available(iOS 26, *) {
             ForEach(items, id: \.self) { item in
                 itemView(item)
             }

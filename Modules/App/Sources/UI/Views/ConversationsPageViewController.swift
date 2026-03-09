@@ -24,7 +24,6 @@ import proton_app_uniffi
 struct ConversationsPageViewController: View {
     @Environment(\.presentationMode) var presentationMode
     @Environment(MessageQuickLook.self) private var messageQuickLook
-    @Environment(\.mainBundle) private var mainBundle
 
     let startingItem: ConversationDetailSeed
     let makeMailboxCursor: (ID) async -> MailboxCursorProtocol?
@@ -39,7 +38,11 @@ struct ConversationsPageViewController: View {
     @State private var mailboxCursor: MailboxCursorProtocol?
 
     private var scrollClipDisabled: Bool {
-        mainBundle.isLiquidGlassEnabled
+        if #available(iOS 26, *) {
+            true
+        } else {
+            false
+        }
     }
 
     var body: some View {
@@ -52,7 +55,7 @@ struct ConversationsPageViewController: View {
         )
         .background(DS.Color.Background.secondary)
         .modify { view in
-            if #available(iOS 26, *), mainBundle.isLiquidGlassEnabled {
+            if #available(iOS 26, *) {
                 view
                     .ignoresSafeArea(.container, edges: .vertical)
             }
