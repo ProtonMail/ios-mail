@@ -144,6 +144,9 @@
         }
       }
     },
+    "Back" : {
+
+    },
     "Cancel" : {
       "localizations" : {
         "be" : {

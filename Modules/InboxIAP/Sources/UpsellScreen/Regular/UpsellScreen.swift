@@ -117,6 +117,7 @@ public struct UpsellScreen: View {
                     .foregroundStyle(.white, Color(hex: "3B2D53"))
                     .square(size: 44)
             }
+            .padding(.trailing, DS.Spacing.standard)
         }
         .frame(height: headerHeight)
     }

@@ -8557,9 +8557,6 @@
         }
       }
     },
-    "Back" : {
-      "comment" : "Navigation back button title."
-    },
     "Bcc: " : {
       "comment" : "`BCC` in the messsage details.",
       "localizations" : {
