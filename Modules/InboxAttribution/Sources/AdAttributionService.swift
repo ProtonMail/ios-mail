@@ -53,14 +53,13 @@ public actor AdAttributionService {
     // MARK: - Private
 
     private func updateConversionValue(with conversionValue: ConversionValue) async {
-        save(conversionValue: conversionValue)
-
         do {
             try await conversionTracker.updateConversionValue(
                 Int(conversionValue.rawValue),
                 coarseConversionValue: coarseValue(for: conversionValue),
                 lockPostback: shouldLockPostback(for: conversionValue)
             )
+            save(conversionValue: conversionValue)
         } catch {
             AppLogger.log(error: error, category: .adAttribution)
         }
