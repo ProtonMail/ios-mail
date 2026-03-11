@@ -40,6 +40,6 @@ struct SignaturesScreenSnapshotTests {
         .environmentObject(ToastStateStore(initialState: .initial))
         .environmentObject(UpsellCoordinator(mailUserSession: .dummy, configuration: .mail))
 
-        assertSnapshotsOnIPhoneX(of: sut, named: "\(mobileSignatureStatus)")
+        assertSnapshotsOnIPhoneX(of: sut, named: "\(mobileSignatureStatus)", drawHierarchyInKeyWindow: true)
     }
 }

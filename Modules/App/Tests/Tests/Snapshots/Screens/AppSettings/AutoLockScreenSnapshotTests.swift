@@ -33,6 +33,6 @@ struct AutoLockScreenSnapshotTests {
             )
             .environmentObject(Router<SettingsRoute>())
         }
-        assertSnapshotsOnIPhoneX(of: sut)
+        assertSnapshotsOnIPhoneX(of: sut, drawHierarchyInKeyWindow: true)
     }
 }

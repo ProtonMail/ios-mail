@@ -29,6 +29,6 @@ class LabelAsActionSheetSnapshotTests: BaseTestCase {
             shouldArchive: false,
             createFolderLabelPresented: false
         )
-        assertSnapshotsOnIPhoneX(of: LabelAsSheet(model: model))
+        assertSnapshotsOnIPhoneX(of: LabelAsSheet(model: model), drawHierarchyInKeyWindow: true)
     }
 }

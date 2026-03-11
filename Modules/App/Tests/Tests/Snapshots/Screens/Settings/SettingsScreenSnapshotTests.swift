@@ -42,7 +42,7 @@ class SettingsScreenSnapshotTests: BaseTestCase {
             upsellCoordinator: .dummy
         )
 
-        assertSnapshotsOnIPhoneX(of: sut.environmentObject(store), precision: 0.98)
+        assertSnapshotsOnIPhoneX(of: sut.environmentObject(store), drawHierarchyInKeyWindow: true, precision: 0.98)
     }
 }
 

@@ -42,7 +42,7 @@ struct PINScreenSnapshotTests {
             )
             .environmentObject(Router<PINRoute>())
         }
-        assertSnapshotsOnIPhoneX(of: sut, named: type.testName)
+        assertSnapshotsOnIPhoneX(of: sut, named: type.testName, drawHierarchyInKeyWindow: true)
     }
 }
 
