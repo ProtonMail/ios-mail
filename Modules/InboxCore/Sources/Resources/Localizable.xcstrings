@@ -82,6 +82,12 @@
             "value" : "+%lld 以上"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "그 외 %lld개"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -983,6 +989,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@をクリップボードにコピーしました"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@이(가) 클립보드에 복사됨."
           }
         },
         "nb" : {
