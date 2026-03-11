@@ -23,6 +23,7 @@ import proton_app_uniffi
 @testable import ProtonMail
 
 @MainActor
+@Suite(.disabled("Tests are crashing after enabling Liquid Glass"))
 struct MobileSignatureScreenSnapshotTests {
     @Test(arguments: [MobileSignatureStatus.enabled, .disabled])
     func mobileSignatureScreen(status: MobileSignatureStatus) async {

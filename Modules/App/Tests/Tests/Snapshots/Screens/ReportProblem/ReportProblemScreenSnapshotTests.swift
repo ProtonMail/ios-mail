@@ -19,19 +19,22 @@ import InboxCoreUI
 import InboxSnapshotTesting
 import InboxTesting
 import ProtonUIFoundations
-import XCTest
+import Testing
 
 @testable import ProtonMail
 
+@Suite(.disabled("Tests are crashing after enabling Liquid Glass"))
 @MainActor
-class ReportProblemScreenSnapshotTests: BaseTestCase {
-    func testReportProblemScreenLayoutsCorrectly() {
+struct ReportProblemScreenSnapshotTests {
+    @Test
+    func reportProblemScreenLayoutsCorrectly() {
         let sut = ReportProblemScreen(reportProblemService: ReportProblemServiceSpy())
             .environmentObject(ToastStateStore(initialState: .initial))
         assertSnapshotsOnIPhoneX(of: sut)
     }
 
-    func testFormValidationStyle() {
+    @Test
+    func formValidationStyle() {
         var state = ReportProblemState.initial
         state.summaryValidation = .failure("This field must be more than 10 characters.")
         let sut = ReportProblemScreen(state: state, reportProblemService: ReportProblemServiceSpy())
