@@ -39,8 +39,13 @@ public struct TestableNotificationService {
     public func transform(originalContent: UNNotificationContent) async -> UNNotificationContent {
         guard let mutableContent = (originalContent.mutableCopy() as? UNMutableNotificationContent) else {
             AppLogger.log(message: "Notification content cannot be mutated", category: .notifications, isError: true)
+            NotificationExtensionLogger.log(message: "Notification content cannot be mutated", category: .notifications, isError: true)
             return originalContent
         }
+
+        let uid = mutableContent.userInfo["UID"] ?? "unknown"
+        let action = mutableContent.userInfo["action"] ?? "unknown"
+        NotificationExtensionLogger.log(message: "Received notification - UID: \(uid), action: \(action)", category: .notifications)
 
         // this is a temporary "marker" body to see if the extension has been launched by the OS, which is known to not be the case sometimes
         mutableContent.body = "You received a new message!"
@@ -60,6 +65,7 @@ public struct TestableNotificationService {
             let sessionId = userInfo["UID"] as? String
         else {
             AppLogger.log(message: "Missing required fields in the payload", category: .notifications, isError: true)
+            NotificationExtensionLogger.log(message: "Missing required fields in the payload", category: .notifications, isError: true)
             return nil
         }
 
@@ -83,6 +89,7 @@ public struct TestableNotificationService {
             }
         case .error(let error):
             AppLogger.log(error: error, category: .notifications)
+            NotificationExtensionLogger.log(message: "\(error)", category: .notifications, isError: true)
         }
     }
 

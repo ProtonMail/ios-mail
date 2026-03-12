@@ -236,8 +236,17 @@ struct HomeScreen: View {
 
     private func presentShareFileController() {
         do {
-            let sourceLogFile = try LogFileProvider.file(mailSession: appContext.mailSession)
-            var filesToShare: [URL] = [sourceLogFile]
+            let mainLog = try LogFileProvider.file(mailSession: appContext.mailSession)
+            let extensionLog = FileManager.default.sharedCacheDirectory.appending(path: "extension.log")
+
+            let primaryLog: URL
+            if FileManager.default.fileExists(atPath: extensionLog.path) {
+                primaryLog = try ExtensionLogMerger.mergedLog(main: mainLog, extension: extensionLog)
+            } else {
+                primaryLog = mainLog
+            }
+
+            var filesToShare: [URL] = [primaryLog]
 
             if let transactionLog = TransactionsObserver.shared.generateTransactionLog() {
                 filesToShare.append(transactionLog)

@@ -35,5 +35,6 @@ class NotificationService: UNNotificationServiceExtension {
 
     override func serviceExtensionTimeWillExpire() {
         AppLogger.log(message: "Service extension time will expire", category: .notifications)
+        NotificationExtensionLogger.log(message: "Service extension time will expire", category: .notifications)
     }
 }
