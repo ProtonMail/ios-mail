@@ -25,6 +25,8 @@ import SwiftUI
 import proton_app_uniffi
 
 struct MessageBodyView: View {
+    @Environment(\.openURL) var openURL
+    @Environment(\.pasteboard) var pasteboard
     @Environment(\.messagePrinter) var messagePrinter: MessagePrinter
     @Environment(\.openURL) private var urlOpener
     @EnvironmentObject var toastStateStore: ToastStateStore
@@ -76,7 +78,13 @@ struct MessageBodyView: View {
         ) { state, store in
             VStack(spacing: .zero) {
                 if case .loaded(let body, _) = state.body, let rsvpServiceProvider = body.rsvpServiceProvider {
-                    RSVPView(serviceProvider: rsvpServiceProvider, draftPresenter: draftPresenter)
+                    RSVPView(
+                        serviceProvider: rsvpServiceProvider,
+                        draftPresenter: draftPresenter,
+                        openURL: openURL,
+                        pasteboard: pasteboard,
+                        toastStateStore: toastStateStore
+                    )
                 }
                 if !state.allBanners.isEmpty {
                     MessageBannersView(

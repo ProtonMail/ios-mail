@@ -82,6 +82,12 @@
             "value" : "+%lld 以上"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "그 외 %lld개"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -134,6 +140,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "+%lld daha"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "+%lld 更多"
           }
         }
       }
@@ -979,6 +991,12 @@
             "value" : "%@をクリップボードにコピーしました"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@이(가) 클립보드에 복사됨."
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1031,6 +1049,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ panoya kopyalandı"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已将 %@ 复制到剪贴板"
           }
         }
       }

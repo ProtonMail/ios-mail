@@ -75,7 +75,7 @@ final class ContactPickerController: UIViewController {
             label.centerYAnchor.constraint(equalTo: textField.centerYAnchor),
 
             textField.centerYAnchor.constraint(equalTo: label.centerYAnchor),
-            textField.leadingAnchor.constraint(equalTo: label.trailingAnchor, constant: DS.Spacing.mediumLight),
+            textField.leadingAnchor.constraint(equalTo: label.trailingAnchor, constant: DS.Spacing.standard),
             textField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -DS.Spacing.standard),
             textField.heightAnchor.constraint(equalToConstant: 20),
 

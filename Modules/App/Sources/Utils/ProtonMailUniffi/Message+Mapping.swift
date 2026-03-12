@@ -75,8 +75,7 @@ extension Message {
                 sender: .init(
                     name: sender.uiRepresentation,
                     address: sender.address,
-                    encryptionInfo: "End to end encrypted and signed"
-                ),  // TODO: !!
+                ),
                 isSenderProtonOfficial: sender.isProton,
                 recipientsTo: toList.map(\.toRecipient),
                 recipientsCc: ccList.map(\.toRecipient),

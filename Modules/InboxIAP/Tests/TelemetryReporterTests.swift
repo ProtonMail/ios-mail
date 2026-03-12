@@ -44,7 +44,7 @@ final class TelemetryReporterTests {
     }
 
     init() {
-        sut = .init(mailUserSession: .init(noPointer: .init()), telemetryActions: telemetryActions)
+        sut = .init(mailUserSession: .init(noHandle: .init()), telemetryActions: telemetryActions)
         sut.prepare(entryPoint: entryPoint)
     }
 

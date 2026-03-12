@@ -27,7 +27,7 @@ import XCTest
 @MainActor
 class SettingsScreenSnapshotTests: BaseTestCase {
     func testSettingsScreenLayoutsCorrectOnIphoneX() {
-        let store = AppAppearanceStore(mailSession: { MailSession(noPointer: .init()) })
+        let store = AppAppearanceStore(mailSession: { MailSession(noHandle: .init()) })
         let mailUserSession = MailUserSessionSpy(id: "")
         mailUserSession.stubbedAccountDetails = .testData
         mailUserSession.stubbedUser = .testData

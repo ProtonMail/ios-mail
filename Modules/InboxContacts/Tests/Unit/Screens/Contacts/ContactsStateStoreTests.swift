@@ -627,7 +627,7 @@ final class ContactsStateStoreTests {
                 },
                 contactsWatcher: .init(watch: { [unowned self] _, callback in
                     watchContactsCallback = callback
-                    return WatchContactListResult.ok(.init(contactList: [], handle: .init(noPointer: .init())))
+                    return WatchContactListResult.ok(.init(contactList: [], handle: .init(noHandle: .init())))
                 })
             ),
             makeContactsLiveQuery: { [unowned self] in

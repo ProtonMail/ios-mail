@@ -137,7 +137,7 @@ public struct ContactsScreen: View {
 #Preview {
     ContactsScreen(
         apiConfig: .debugPreview,
-        mailUserSession: .init(noPointer: .init()),
+        mailUserSession: .init(noHandle: .init()),
         contactsProvider: .previewInstance(),
         contactsWatcher: .previewInstance(),
         draftPresenter: ContactsDraftPresenterDummy()

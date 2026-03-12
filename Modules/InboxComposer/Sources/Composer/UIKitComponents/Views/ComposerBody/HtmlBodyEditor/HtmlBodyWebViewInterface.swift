@@ -28,7 +28,7 @@ final class HtmlBodyWebViewInterface: NSObject, HtmlBodyWebViewInterfaceProtocol
         case onCursorPositionChange(position: CGPoint)
         case onInlineImageRemoved(cid: String)
         case onInlineImageTapped(cid: String, imageRect: CGRect)
-        case onImagePasted(image: Data)
+        case onImagesPasted(images: [Data])
         case onTextPasted(text: String, mimeType: MessageMimeType)
     }
 
@@ -73,7 +73,6 @@ final class HtmlBodyWebViewInterface: NSObject, HtmlBodyWebViewInterfaceProtocol
             await websiteDataStore.removeData(ofTypes: cachedImageTypes, modifiedSince: .distantPast)
         }
         webView.loadHTMLString(html, baseURL: nil)
-        Task { await logHtmlHealthCheck(tag: "loadMessageBody") }
     }
 
     func setFocus() async {
@@ -91,7 +90,6 @@ final class HtmlBodyWebViewInterface: NSObject, HtmlBodyWebViewInterfaceProtocol
                 if let error { AppLogger.log(error: error, category: .composer) }
                 guard let html = (result as? String)?.withoutWhitespace else {
                     AppLogger.log(message: "readMessageBody returned nil", category: .composer, isError: true)
-                    Task { [weak self] in await self?.logHtmlHealthCheck(tag: "readMessageBody") }
                     return continuation.resume(returning: nil)
                 }
                 continuation.resume(returning: html)
@@ -135,47 +133,6 @@ final class HtmlBodyWebViewInterface: NSObject, HtmlBodyWebViewInterfaceProtocol
         }
     }
 
-    /// Checks the correctness of the HTML and JS status.
-    func logHtmlHealthCheck(tag: String) async {
-        let prefix = "[body health check: \(tag)]"
-        AppLogger.log(message: "\(prefix) start...", category: .composer)
-        let healthCheck =
-            """
-            (() => ({
-              documentState: document.readyState,
-              isHtmlEditorInstantiated: !!window.html_editor,
-              isTextboxEditorAccessible: !!document.getElementById('editor'),
-              isGetHtmlContentAccessible: typeof window.html_editor.getHtmlContent === 'function'
-            }))()
-            """
-        await withCheckedContinuation { continuation in
-            let isContentLoaded = !webView.isLoading && webView.estimatedProgress == 1.0
-            webView.evaluateJavaScript(healthCheck) { result, error in
-                if let error {
-                    let message =
-                        isContentLoaded
-                        ? "JS error: \(error.localizedDescription)"
-                        : "JS failed to evaluate content not loaded"
-                    AppLogger.log(message: "\(prefix) \(message)", category: .composer, isError: isContentLoaded)
-                    return continuation.resume()
-                }
-                if let dict = result as? [String: Any] {
-                    let sortedDict = dict.keys
-                        .sorted()
-                        .compactMap { key in
-                            guard let value = dict[key] else { return "\"\(key)\": nil" }
-                            return "\"\(key)\": \(value)"
-                        }
-                        .joined(separator: ", ")
-                    AppLogger.log(message: "\(prefix) \(sortedDict)", category: .composer)
-                } else {
-                    AppLogger.log(message: "\(prefix) unexpected result: \(String(describing: result))", category: .composer, isError: true)
-                }
-                continuation.resume()
-            }
-        }
-    }
-
     func handleScriptMessage(_ message: WKScriptMessage) {
         let userInfo = message.body as! [String: Any]
         let jsEvent = HtmlBodyDocument.JSEvent(rawValue: message.name)!
@@ -205,9 +162,9 @@ final class HtmlBodyWebViewInterface: NSObject, HtmlBodyWebViewInterfaceProtocol
             {
                 onEvent?(.onInlineImageTapped(cid: cid, imageRect: .init(x: x, y: y, width: width, height: height)))
             }
-        case .imagePasted:
-            guard let data = readImageData(from: userInfo) else { return }
-            onEvent?(.onImagePasted(image: data))
+        case .imagesPasted:
+            guard let imagesData = readImagesData(from: userInfo) else { return }
+            onEvent?(.onImagesPasted(images: imagesData))
         case .textPasted:
             guard let (text, mimeType) = readText(from: userInfo) else { return }
             onEvent?(.onTextPasted(text: text, mimeType: mimeType))
@@ -224,15 +181,17 @@ final class HtmlBodyWebViewInterface: NSObject, HtmlBodyWebViewInterfaceProtocol
         return CGPoint(x: x, y: y)
     }
 
-    private func readImageData(from dict: [String: Any]) -> Data? {
-        guard
-            let imageBase64 = dict[HtmlBodyDocument.EventAttributeKey.imageData] as? String,
-            let data = Data(base64Encoded: imageBase64)
-        else {
-            AppLogger.log(message: "no image data retrieved", category: .composer, isError: true)
+    private func readImagesData(from dict: [String: Any]) -> [Data]? {
+        guard let imagesBase64 = dict[HtmlBodyDocument.EventAttributeKey.images] as? [String] else {
+            AppLogger.log(message: "no images array retrieved", category: .composer, isError: true)
             return nil
         }
-        return data
+        let imagesData = imagesBase64.compactMap { Data(base64Encoded: $0) }
+        if imagesData.count != imagesBase64.count {
+            let errorMessage = "some images failed to decode: \(imagesData.count)/\(imagesBase64.count)"
+            AppLogger.log(message: errorMessage, category: .composer, isError: true)
+        }
+        return imagesData.isEmpty ? nil : imagesData
     }
 
     private func readText(from dict: [String: Any]) -> (String, MessageMimeType)? {

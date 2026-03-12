@@ -21,7 +21,7 @@ enum BodyEditorEvent {
     case onStartEditing
     case onBodyChange(body: String)
     case onCursorPositionChange(position: CGPoint)
-    case onImagePasted(image: UIImage)
+    case onImagesPasted(images: [UIImage])
     case onInlineImageRemoved(cid: String)
     case onInlineImageRemovalRequested(cid: String)
     case onInlineImageDispositionChangeRequested(cid: String)

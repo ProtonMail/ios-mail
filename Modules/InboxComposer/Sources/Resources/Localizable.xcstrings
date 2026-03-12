@@ -82,6 +82,12 @@
             "value" : "%@ はメッセージの送信に使用できません"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@을(를) 메시지 보내기에 사용할 수 없습니다."
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -134,6 +140,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ ileti göndermek için kullanılamaz"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ 无法用于发送消息"
           }
         }
       }
@@ -219,6 +231,12 @@
             "value" : "%@ は無効になっています。メッセージを送信できません。"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@이(가) 비활성화되어있습니다. 메시지 보내기에 사용할 수 없습니다."
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -271,6 +289,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ kullanımdan kaldırılmış. İleti gönderemez"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ 已被禁用，无法发送消息"
           }
         }
       }
@@ -356,6 +380,12 @@
             "value" : "%lld 人のメンバー"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld명 구성원"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -408,6 +438,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%lld üye"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld 位成员"
           }
         }
       }
@@ -493,6 +529,12 @@
             "value" : "%@を使用するには有料プランが必要です"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ 사용에 유료 플랜 구독이 필요합니다"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -545,6 +587,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ kullanmak için ücretli bir tarifeye abone olmalısınız"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "需要使用付费计划才能使用 %@"
           }
         }
       }
@@ -6198,6 +6246,12 @@
             "value" : "Información de cifrado"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Salaustiedot"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6210,10 +6264,22 @@
             "value" : "Info crittografia"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "암호화 정보"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Krypteringsinfo"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Encryptie info"
           }
         },
         "pt-BR" : {
@@ -6234,6 +6300,12 @@
             "value" : "Informácie o šifrovaní"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Informacije o šifriranju"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6243,7 +6315,13 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Şifreleme Bilgileri"
+            "value" : "Şifreleme bilgileri"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "加密信息"
           }
         }
       }
@@ -13100,7 +13178,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "附件上传失败。请重试。"
+            "value" : "上传附件失败，请重试。"
           }
         }
       }
@@ -13377,6 +13455,12 @@
             "value" : "重複していた宛先を削除しました: %@"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "제거된 중복된 수신자: %@"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -13416,7 +13500,7 @@
         "sl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Odstranjen podvojen prejemnik: %@"
+            "value" : "Odstranjen podvojeni prejemnik: %@"
           }
         },
         "sv" : {
@@ -13429,6 +13513,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Yinelenen alıcı kaldırıldı: %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已删除重复收件人：%@"
           }
         }
       }
@@ -13514,6 +13604,12 @@
             "value" : "重複した受信者を削除しました: %@"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "중복된 수신인을 삭제했습니다: %@"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -13566,6 +13662,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Yinelenen alıcılar kaldırıldı: %@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已移除重复的收件人：%@"
           }
         }
       }
@@ -15722,6 +15824,12 @@
             "value" : "一部の受信者 (%@) は、デフォルトでは有効期限をサポートしていません。Proton Mail以外の受信者の有効期限を有効にするには、パスワードを追加してください。"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "일부 수신자(%@)가 기본적 만료 기능을 지원하지 않습니다. Proton Mail을 사용하지 않는 수신자를 위해 만료 기능을 활성화하려면 비밀번호를 추가해야 합니다."
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -15774,6 +15882,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bazı alıcılarda (%@) varsayılan olarak geçerlilik süresi desteklenmiyor. Proton Mail kullanmayan alıcılarda geçerlilik süresini kullanabilmek için bir parola ekleyin."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "部分收件人 (%@) 默认不支持过期功能，请添加密码以为非 Proton Mail 收件人启用过期功能。"
           }
         }
       }
@@ -17721,6 +17835,12 @@
             "value" : "%lld個の添付ファイルを追加できませんでした。メール1通あたりの添付ファイルには、インライン画像を含め25 MBの制限があります。それらを複数のメールに分けて送信するか、Proton Drive経由で共有してください。"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "인라인 이미지를 포함한 이메일당 첨부 파일 용량은 25MB로 제한되며, %lld개의 첨부 파일을 추가할 수 없습니다. 별도의 이메일로 보내거나 Proton Drive를 통해 공유해 주세요."
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -17767,6 +17887,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bir e-postadaki ek dosyaların toplamı, satır arasındaki görseller ile beraber en fazla 25 MB olabilir. Bu nedenle %lld dosya eklenemedi. Bu dosyaları farklı e-postalara ekleyerek gönderin ya da Proton Drive üzerinden paylaşın."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "每封邮件的附件（包括内嵌图片）限制为 25 MB，有 %lld 个附件无法添加，请通过单独的邮件发送或使用 Proton Drive 分享。"
           }
         }
       }
@@ -18192,6 +18318,12 @@
             "value" : "このメッセージは %@ に送信されます"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이 메시지는 %@에 전송됩니다"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -18244,6 +18376,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bu ileti %@ zamanında gönderilecek"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "此消息将于 %@ 发送"
           }
         }
       }

@@ -452,6 +452,12 @@
             "value" : "%1$@ sur %2$@"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ dari %2$@"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -462,6 +468,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%1$@/%2$@"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%2$@ 중 %1$@"
           }
         },
         "nb" : {
@@ -516,6 +528,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%1$@ / %2$@"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已用 %1$@ / 总计 %2$@"
           }
         }
       }
@@ -745,6 +763,18 @@
             }
           }
         },
+        "id" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld lampiran"
+                }
+              }
+            }
+          }
+        },
         "it" : {
           "variations" : {
             "plural" : {
@@ -770,6 +800,18 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld 個の添付ファイル"
+                }
+              }
+            }
+          }
+        },
+        "ko" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "첨부파일 %lld개"
                 }
               }
             }
@@ -974,6 +1016,18 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld ek dosya"
+                }
+              }
+            }
+          }
+        },
+        "zh-Hans" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld 个附件"
                 }
               }
             }
@@ -1236,6 +1290,18 @@
             }
           }
         },
+        "ko" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld개 링크 정리됨"
+                }
+              }
+            }
+          }
+        },
         "nb" : {
           "variations" : {
             "plural" : {
@@ -1435,6 +1501,18 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld bağlantı temizlendi"
+                }
+              }
+            }
+          }
+        },
+        "zh-Hans" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "已净化 %lld 个链接"
                 }
               }
             }
@@ -1667,6 +1745,18 @@
             }
           }
         },
+        "id" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld pesan"
+                }
+              }
+            }
+          }
+        },
         "it" : {
           "variations" : {
             "plural" : {
@@ -1692,6 +1782,18 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld 件のメッセージ"
+                }
+              }
+            }
+          }
+        },
+        "ko" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld개 메시지"
                 }
               }
             }
@@ -1900,6 +2002,18 @@
               }
             }
           }
+        },
+        "zh-Hans" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld 封邮件"
+                }
+              }
+            }
+          }
         }
       }
     },
@@ -1972,6 +2086,12 @@
             "value" : "%lld Sélectionnés"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld Terpilih"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1982,6 +2102,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%lld 件選択済み"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld개 선택됨"
           }
         },
         "nb" : {
@@ -2036,6 +2162,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%lld seçilmiş"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已选择 %lld 项"
           }
         }
       }
@@ -2265,6 +2397,18 @@
             }
           }
         },
+        "id" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld pelacak diblokir"
+                }
+              }
+            }
+          }
+        },
         "it" : {
           "variations" : {
             "plural" : {
@@ -2290,6 +2434,18 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld 件のトラッカーをブロックしました"
+                }
+              }
+            }
+          }
+        },
+        "ko" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld개 트래커 차단됨"
                 }
               }
             }
@@ -2494,6 +2650,18 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld izleyici engellendi"
+                }
+              }
+            }
+          }
+        },
+        "zh-Hans" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "已屏蔽 %lld 个跟踪器"
                 }
               }
             }
@@ -4045,6 +4213,18 @@
             }
           }
         },
+        "id" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "Setelah %u menit"
+                }
+              }
+            }
+          }
+        },
         "it" : {
           "variations" : {
             "plural" : {
@@ -4070,6 +4250,18 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%u分後"
+                }
+              }
+            }
+          }
+        },
+        "ko" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%u분 후"
                 }
               }
             }
@@ -4274,6 +4466,18 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%u dakika sonra"
+                }
+              }
+            }
+          }
+        },
+        "zh-Hans" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%u 分钟后"
                 }
               }
             }
@@ -4759,7 +4963,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "모든 메세지를 전송했습니다."
+            "value" : "모든 메시지가 전송 완료되었습니다."
           }
         },
         "nb" : {
@@ -6001,6 +6205,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Icône de l'application"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ikon aplikasi"
           }
         },
         "it" : {
@@ -7694,6 +7904,12 @@
             "value" : "Voulez-vous vraiment supprimer définitivement tous les messages dans le dossier %@ ? Cette action est irréversible."
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apakah Anda yakin ingin menghapus permanen semua pesan di folder %@? Tindakan ini tidak dapat diurungkan."
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7704,6 +7920,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@フォルダー内のすべてのメッセージを完全に削除してよろしいですか？この操作は取り消しできません。"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "\"%@\" 폴더의 모든 메시지를 영구적으로 삭제하시겠어요? 이 작업은 실행 취소할 수 없어요."
           }
         },
         "nb" : {
@@ -7758,6 +7980,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ klasöründeki tüm iletileri kalıcı olarak silmek istediğinize emin misiniz? Bu işlem geri alınamaz."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "您确定要永久删除 %@ 文件夹中的所有消息吗？此操作不能撤消。"
           }
         }
       }
@@ -10753,7 +10981,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "修改第二个密码"
+            "value" : "修改二级密码"
           }
         },
         "zh-Hant" : {
@@ -11030,6 +11258,12 @@
             "value" : "クリア済み"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "정리됨"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -11082,6 +11316,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Temizlendi"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : ""
           }
         }
       }
@@ -12399,6 +12639,28 @@
             }
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%#@arg1@"
+          },
+          "substitutions" : {
+            "arg1" : {
+              "argNum" : 1,
+              "formatSpecifier" : "lld",
+              "variations" : {
+                "plural" : {
+                  "other" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "대화가 보관함으로 이동했습니다."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12597,6 +12859,46 @@
             }
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%#@arg1@"
+          },
+          "substitutions" : {
+            "arg1" : {
+              "argNum" : 1,
+              "formatSpecifier" : "lld",
+              "variations" : {
+                "plural" : {
+                  "few" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "Pogovori so premaknjeni v arhiv."
+                    }
+                  },
+                  "one" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "Pogovor je premaknjen v arhiv."
+                    }
+                  },
+                  "other" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "Pogovorov je premaknjenih v arhiv."
+                    }
+                  },
+                  "two" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "Pogovora sta premaknjena v arhiv."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12646,6 +12948,28 @@
                     "stringUnit" : {
                       "state" : "translated",
                       "value" : "Yazışmalar arşivlendi."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%#@arg1@"
+          },
+          "substitutions" : {
+            "arg1" : {
+              "argNum" : 1,
+              "formatSpecifier" : "lld",
+              "variations" : {
+                "plural" : {
+                  "other" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "会话已归档。"
                     }
                   }
                 }
@@ -13032,7 +13356,195 @@
       }
     },
     "Copy" : {
-      "comment" : "`Copy` action title."
+      "comment" : "`Copy` action title.",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Скапіяваць"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copia"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopírovat"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopiér"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopieren"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Αντιγραφή"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copy"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copiar"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copiar"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopioi"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copier"
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Másolás"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Salin"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copia"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "コピー"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "კოპირება"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "복사"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopier"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopiëren"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopiuj"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copiar"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copiar"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Copiere"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Копировать"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopírovať"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopiraj"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopiera"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kopyala"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Копіювати"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "复制"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "複製"
+          }
+        }
+      }
     },
     "Copy address" : {
       "comment" : "Action title for copying email address to clipboard in the address action sheet.",
@@ -17187,6 +17699,12 @@
             "value" : "Ícono discreto"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Huomaamaton kuvake"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -17197,6 +17715,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Icona riservata"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "숨겨진 아이콘"
           }
         },
         "nb" : {
@@ -17227,6 +17751,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nenápadná ikona"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diskretna ikona"
           }
         },
         "sv" : {
@@ -20505,6 +21035,12 @@
             "value" : "%@ からのメールは今後配信されず、完全に削除されます。設定でブロックされたメールアドレスを管理できます。"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@(에)서 보낸 이메일은 더 이상 전송되지 않으며 영구적으로 삭제됩니다. 설정에서 차단된 이메일 주소를 관리할 수 있습니다."
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -20557,6 +21093,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ adresinden gelen e-postalar artık teslim edilmeyecek ve kalıcı olarak silinecek. Engellenen e-posta adreslerini ayarlar bölümünden yönetebilirsiniz."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "来自 %@ 的电子邮件将不再被投递，并且将被永久删除。您可以在设置中管理被屏蔽的邮箱地址。"
           }
         }
       }
@@ -20642,6 +21184,12 @@
             "value" : "%@ フォルダを空にする"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ 폴더 비우기"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -20694,6 +21242,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ klasörünü boşalt"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "清空 %@ 文件夹"
           }
         }
       }
@@ -20779,6 +21333,12 @@
             "value" : "%@を今すぐ空にする"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "지금 %@ 비우기"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -20831,6 +21391,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ klasörünü boşalt"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "立即清空 %@"
           }
         }
       }
@@ -21083,6 +21649,12 @@
             "value" : "Candados de cifrado"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Salauslukot"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -21093,6 +21665,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Lucchetti di crittografia"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "암호화 잠금"
           }
         },
         "nb" : {
@@ -21123,6 +21701,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Šifrovacie zámky"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ključavnice šifriranja"
           }
         },
         "sv" : {
@@ -21763,6 +22347,12 @@
             "value" : "有効期限%@"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@에 만료됨"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -21815,6 +22405,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ sonra geçerlilik süresi dolacak"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "在 %@ 过期"
           }
         }
       }
@@ -22267,7 +22863,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tout à la portée de main"
+            "value" : "Tout à portée de main"
           }
         },
         "hu" : {
@@ -24218,7 +24814,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Examineu els missatges sospitosos per confirmar-ne l'autenticitat i descobrir qualsevol element de rastreig ocult."
+            "value" : "Inspeccioneu els missatges sospitosos per confirmar-ne l'autenticitat i descobrir elements de seguiment ocults."
           }
         },
         "cs" : {
@@ -24263,6 +24859,12 @@
             "value" : "Inspeccione mensajes sospechosos para confirmar su autenticidad y descubrir cualquier elemento de rastreo oculto."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tarkista epäilyttävät viestit niiden aitouden varmistamiseksi ja piilotettujen seurantaelementtien paljastamiseksi."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -24273,6 +24875,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ispeziona i messaggi sospetti per confermarne l'autenticità e scoprire eventuali elementi di tracciamento nascosti."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "숨겨진 추적 요소를 찾아내고 해당 메시지의 진위 여부를 확인하기 위해 의심스러운 메시지를 검사하세요."
           }
         },
         "nb" : {
@@ -24303,6 +24911,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Skontrolujte podozrivé správy, aby ste overili ich pravosť a odhalili skryté sledovacie prvky."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Preglejte sumljiva sporočila, da se prepričate o njihovi verodostojnosti in odkrijete morebitne skrite elemente za sledenje."
           }
         },
         "tr" : {
@@ -24851,7 +25465,7 @@
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "邮箱同步出现问题。请注销并再次登入。"
+            "value" : "邮箱同步出现问题，请登出后重新登录。"
           }
         }
       }
@@ -25053,7 +25667,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mantingueu la icona per defecte de Proton Mail o dissimuleu-la amb una de genèrica per a una major privacitat."
+            "value" : "Mantingueu la icona per defecte del Proton Mail o amagueu-la amb una de genèrica per a una major privacitat."
           }
         },
         "cs" : {
@@ -25098,6 +25712,12 @@
             "value" : "Mantenga el ícono predeterminado de Proton Mail o disfrácelo con uno genérico para mayor privacidad."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Säilytä Proton Mailin oletuskuvake tai peitä se yleisellä kuvakkeella yksityisyyden suojaamiseksi."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -25108,6 +25728,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mantieni l'icona predefinita di Proton Mail o sostituiscila con una generica per una maggiore privacy."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "기본 Proton Mail 아이콘을 유지하거나 개인 정보 보호를 위해 일반 아이콘으로 위장하세요."
           }
         },
         "nb" : {
@@ -25138,6 +25764,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ponechajte si predvolenú ikonu Proton Mail alebo ju zamaskujte všeobecnou pre väčšie súkromie."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Obdržite privzeto ikono aplikacije Proton Mail ali jo za večjo zasebnost prikrijte z generično ikono."
           }
         },
         "tr" : {
@@ -25235,6 +25867,12 @@
             "value" : "デフォルトのProton Mailアイコンを使用するか、プライバシー強化のために、より控えめなアイコンに変更することができます。通知には、常にProton Mailの名称とアイコンが表示されます。[より詳しく…](https://proton.me/support/disguise-app-icon)"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "기본 Proton Mail 아이콘을 유지하거나, 추가적인 개인정보 보호를 위해 다른 숨겨진 아이콘으로 변경할 수 있습니다. 알림에는 항상 Proton Mail 이름과 아이콘이 표시됩니다. [더 알아보기…](https://proton.me/support/disguise-app-icon)"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -25275,6 +25913,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Varsayılan Proton Mail simgesini kullanmayı sürdürün ya da daha fazla gizlilik sağlamak için onu göze çarpmayan bir simgeyle değiştirin. Bildirimlerde her zaman Proton Mail adı ve simgesi görüntülenir. [Ayrıntılı bilgi alın...](https://proton.me/support/disguise-app-icon)"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "保留预设的 Proton Mail 图标，或使用更隐蔽的图标来增强隐私保护。通知始终会显示 Proton Mail 名称和图标。[了解详情…](https://proton.me/support/disguise-app-icon)"
           }
         }
       }
@@ -27366,6 +28010,18 @@
             }
           }
         },
+        "ko" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld개 첨부파일"
+                }
+              }
+            }
+          }
+        },
         "nb" : {
           "variations" : {
             "plural" : {
@@ -27565,6 +28221,18 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld ek dosya"
+                }
+              }
+            }
+          }
+        },
+        "zh-Hans" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld 个附件"
                 }
               }
             }
@@ -29274,6 +29942,28 @@
             }
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%#@arg1@"
+          },
+          "substitutions" : {
+            "arg1" : {
+              "argNum" : 1,
+              "formatSpecifier" : "lld",
+              "variations" : {
+                "plural" : {
+                  "other" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "메시지가 보관함으로 이동했습니다."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -29472,6 +30162,46 @@
             }
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%#@arg1@"
+          },
+          "substitutions" : {
+            "arg1" : {
+              "argNum" : 1,
+              "formatSpecifier" : "lld",
+              "variations" : {
+                "plural" : {
+                  "few" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "Sporočila so premaknjena v arhiv."
+                    }
+                  },
+                  "one" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "Sporočilo je premaknjeno v arhiv."
+                    }
+                  },
+                  "other" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "Sporočil je premaknjenih v arhiv."
+                    }
+                  },
+                  "two" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "Sporočili sta premaknjeni v arhiv."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -29521,6 +30251,28 @@
                     "stringUnit" : {
                       "state" : "translated",
                       "value" : "İletiler arşivlendi."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%#@arg1@"
+          },
+          "substitutions" : {
+            "arg1" : {
+              "argNum" : 1,
+              "formatSpecifier" : "lld",
+              "variations" : {
+                "plural" : {
+                  "other" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "邮件已归档。"
                     }
                   }
                 }
@@ -31252,6 +32004,12 @@
             "value" : "%@に移動しました。"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@(으)로 이동되었어요."
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -31304,6 +32062,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ içine taşındı."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "已移动到 %@"
           }
         }
       }
@@ -32684,6 +33448,12 @@
             "value" : "トラッカーは検出されませんでした"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "감지된 트래커 없음"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -32736,6 +33506,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Herhangi bir izleyici bulunamadı"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "未检测到追踪器"
           }
         }
       }
@@ -33224,7 +34000,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "보낼 편지일이 비어있습니다."
+            "value" : "보낼 편지함이 비어있습니다"
           }
         },
         "nb" : {
@@ -34337,6 +35113,12 @@
             "value" : "オリジナル"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "기본"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -34389,6 +35171,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Özgün"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "原始"
           }
         }
       }
@@ -34686,7 +35474,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "보낸편지함"
+            "value" : "보낼 편지함"
           }
         },
         "nb" : {
@@ -39893,6 +40681,12 @@
             "value" : "Consulte quién ha intentado monitorizarle con píxeles ocultos y enlaces de seguimiento y cuántos intentos se han bloqueado."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Katso, kuka yritti seurata sinua piilotettujen pikselien ja seurantalinkkien avulla, ja kuinka monta yritystä estettiin."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -39903,6 +40697,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Scopri chi ha cercato di monitorarti con pixel nascosti e link di tracciamento, e quanti tentativi sono stati bloccati."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "숨겨진 픽셀 및 추적 링크로 누가 회원님을 감시하려고 했는지, 그리고 몇 건의 시도가 차단되었는지 확인하세요."
           }
         },
         "nb" : {
@@ -39933,6 +40733,18 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zistite, kto sa vás pokúsil sledovať pomocou skrytých pixelov a sledovacích odkazov a koľko pokusov bolo zablokovaných."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oglejte si, kdo vas je poskušal nadzorovati s skritimi slikovnimi pikami in sledilnimi povezavami ter koliko poskusov takšnega sledenja je bilo preprečenih."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se vem som försökte övervaka dig med dolda pixlar och spårningslänkar, och hur många försök som blockerades."
           }
         },
         "tr" : {
@@ -41735,6 +42547,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Toon berichten in de Prullenbak in dit gesprek."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pokaż usunięte wiadomości w tym wątku."
           }
         },
         "pt-BR" : {
@@ -47366,19 +48184,19 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Гэты ліст не прайшоў праверку на адпаведнасць нашым патрабаванням аўтэнтыфікацыі дамена. Ён можа быць падроблены або перасланы неналежным чынам."
+            "value" : "Гэты ліст не прайшоў праверку на адпаведнасць патрабаванням аўтэнтыфікацыі дамена. Ён можа быць падроблены або неналежным чынам перанакіраваны."
           }
         },
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aquest correu no ha superat els requisits d'autentificació del domini. Pot ser que estigui falsejat o reenviat indegudament."
+            "value" : "Aquest correu electrònic no ha complert els requisits d'autenticació del domini. Pot ser fals o reenviat de manera incorrecta."
           }
         },
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "U tohoto e-mailu nebyly splněny požadavky na ověření domény odesílatele. E-mail může být podvržený a nebo nesprávně přeposlaný."
+            "value" : "U tohoto e-mailu nebyly splněny požadavky na ověření domény. E-mail může být podvržený nebo nesprávně přeposlaný."
           }
         },
         "da" : {
@@ -47390,7 +48208,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Diese E-Mail hat die Domain-Authentifizierungsanforderungen nicht bestanden. Sie könnte gefälscht oder unsachgemäß weitergeleitet worden sein."
+            "value" : "Diese E-Mail hat die Authentifizierungsanforderungen der Domain nicht erfüllt. Sie könnte gefälscht oder falsch weitergeleitet worden sein."
           }
         },
         "el" : {
@@ -47408,7 +48226,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Este correo electrónico no ha superado los requisitos de autenticación del dominio. Puede estar falsificado o reenviado incorrectamente."
+            "value" : "Este correo electrónico no ha superado los requisitos de autenticación de su dominio. Es posible que esté falsificado o se haya reenviado incorrectamente."
           }
         },
         "es-419" : {
@@ -47420,43 +48238,19 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Viesti ei täyttänyt sen verkkotunnuksen todennusvaatimuksia. Se voi olla väärennetty tai virheellisesti välitetty."
+            "value" : "Sähköposti ei täyttänyt sen verkkotunnuksen todennusvaatimuksia. Se voi olla väärennetty tai virheellisesti välitetty."
           }
         },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Cette adresse e-mail ne répond pas aux exigences d'authentification de son domaine. Elle a peut-être été falsifiée ou transférée de manière incorrecte."
-          }
-        },
-        "hu" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Az e-mail nem felelt meg a domain név ellenőrzési követelményeinek. Lehet becsapós üzenet vagy hibásan lett továbbítva."
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Email ini telah gagal memenuhi syarat autentikasi domainnya. Email ini mungkin telah dipalsukan atau tidak diteruskan dengan benar."
+            "value" : "Cet e-mail ne répond pas aux exigences d'authentification du domaine. Il peut s'agir d'une usurpation d'identité ou d'un transfert incorrect."
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Quest'email non ha superato i requisiti d'autenticazione del suo dominio. Potrebbe esser falsificata o inoltrata impropriamente."
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "メールのドメイン認証に失敗しました。このメールは不適切に転送されたものか、なりすましの恐れがあります。"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ეს ელფოსტა მისი დომენის ავთენტიკაციის მოთხოვნებს ვერ აკმაყოფილებს. ის შეიძლება ყალბია, ან არასწორადაა გადაგზავნილი."
+            "value" : "Quest'email non ha superato i requisiti d'autenticazione del dominio. Potrebbe esser falsificata o inoltrata impropriamente."
           }
         },
         "ko" : {
@@ -47474,37 +48268,13 @@
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Dit e-mailadres gebruikt foutieve domeininstellingen. Het kan een nepbericht zijn, of het is op de verkeerde manier doorgestuurd."
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Wiadomość nie spełnia wymogów weryfikacyjnych domeny nadawcy. Może być sfałszowana lub nieprawidłowo przesłana."
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Este endereço de e-mail não cumpre os requisitos de autenticação do seu domínio. Pode estar falsificado ou ter sido encaminhado incorretamente."
+            "value" : "Deze e-mail voldoet niet aan de verificatievereisten van het domein. Het kan gespoofd of onjuist doorgestuurd zijn."
           }
         },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Este e-mail não cumpriu com os requisitos de autenticação de domínio. Pode ser falsificado ou encaminhado indevidamente."
-          }
-        },
-        "ro" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Acest e-mail nu respectă cerințele de autentificare ale domeniul său. Ar putea fi falsificat sau redirecționat eronat."
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Это письмо не соответствует требованиям подтверждения подлинности домена. Оно может быть поддельным, либо было переслано ненадлежащим образом."
+            "value" : "Este e-mail não atendeu aos requisitos de autenticação de seu domínio. Pode ser falsificado ou encaminhado indevidamente."
           }
         },
         "sk" : {
@@ -47522,31 +48292,25 @@
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Det här e-postmeddelandet uppfyller inte domänens autentiseringskrav. Det kan vara förfalskat eller felaktigt vidarebefordrat."
+            "value" : "Detta e-postmeddelande har misslyckats med att uppfylla domänens autentiseringskrav. Det kan vara förfalskat eller felaktigt vidarebefordrat."
           }
         },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bu e-posta, etki alanının kimlik doğrulama gereksinimlerini karşılayamadı. E-posta, sahte ya da hatalı iletilmiş olabilir."
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Цей лист не пройшов вимоги перевірки свого домену. Він міг бути підроблений або неправильно пересланий."
+            "value" : "Bu e-posta, etki alanının kimlik doğrulama gereksinimlerini karşılayamadı. Sahte ya da hatalı iletilmiş olabilir."
           }
         },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "不能确定此邮件是否来自该域名，这可能是欺诈邮件，也可能是投递过程出现了问题。"
+            "value" : "此邮件未通过其域名的身份验证要求，可能是伪造邮件或转发设置不当所致"
           }
         },
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "此電郵未能通過其網域的認證需求。可能是因為遭人假冒或不當轉寄。"
+            "value" : "此電郵未能通過其網域的驗證要求。這可能是偽造或不當轉寄。"
           }
         }
       }
@@ -47928,7 +48692,141 @@
       }
     },
     "This message was flagged as Spam, either by our system or by you." : {
-      "comment" : "Banner notifying the message is spam."
+      "comment" : "Banner notifying the message is spam.",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Вы самі або наша сістэма пазначылі гэта паведамленне як спам."
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aquest missatge ha estat marcat com a correu brossa, sigui pel nostre sistema o per vós."
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tato zpráva byla naším systémem nebo vámi označena jako spam."
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Denne besked blev markeret som spam, enten af vores system eller af dig."
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diese Nachricht wurde als Spam markiert, entweder von unserem System oder von dir."
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Αυτό το μήνυμα σημειώθηκε ως Ενοχλητικό, είτε από το σύστημά μας είτε από εσάς."
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "This message was flagged as Spam, either by our system or by you."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Este mensaje fue marcado como spam, ya sea por nuestro sistema o por ti."
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Este mensaje fue marcado como spam, ya sea por nuestro sistema o por usted."
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Viesti merkittiin roskapostiksi, joko järjestelmämme tai sinun toimestasi."
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ce message a été signalé comme indésirable/spam, soit par notre système, soit par vous."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Questo messaggio è stato classificato come spam da te o Proton"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이 메시지는 시스템 또는 사용자에 의해 스팸으로 분류되었습니다."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Denne meldingen ble flagget som søppelpost, enten av systemet vårt eller av deg."
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dit bericht is gemarkeerd als Spam, door ons systeem of door u."
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Esta mensagem foi sinalizada como spam pelo nosso sistema ou por você."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Táto správa bola označená ako spam, buď naším systémom alebo vami."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "To sporočilo je bilo označeno kot neželena pošta, bodisi s strani našega sistema ali s strani vas."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Detta meddelande flaggades som skräppost, antingen av vårt system eller av dig."
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Bu ileti, sistemimiz veya sizin tarafınızdan istenmeyen olarak işaretlenmiş."
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "此邮件被我们的系统或您标记为垃圾邮件。"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "此訊息被我們的系統或您標記為垃圾郵件。"
+          }
+        }
+      }
     },
     "This message will auto-delete in %@" : {
       "comment" : "Banner indicating when a message will automatically be deleted.",
@@ -48011,6 +48909,12 @@
             "value" : "このメールは %@後に自動削除されます"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이 메시지는 %@에 자동으로 삭제됩니다."
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -48063,6 +48967,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bu ileti %@ sonra otomatik olarak silinecek"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "此消息将在 %@ 后自动删除"
           }
         }
       }
@@ -48524,6 +49434,12 @@
             "value" : "このメッセージは %@後に失効します"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "메시지가 %@에 만료됨"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -48576,6 +49492,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Bu iletinin süresi %@ sonra dolacak"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "此消息将在 %@ 后过期"
           }
         }
       }
@@ -50460,7 +51382,7 @@
         "fi" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Seurannan suojaus:"
+            "value" : "Seurantasuojaus:"
           }
         },
         "fr" : {
@@ -50479,6 +51401,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "トラッカー防止数:"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "트래커 보호:"
           }
         },
         "nb" : {
@@ -50533,6 +51461,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "İzleyici koruması:"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "跟踪器保护："
           }
         }
       }
@@ -50594,6 +51528,12 @@
             "value" : "Protección contra rastreadores"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Seurantasuojaus"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -50604,6 +51544,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Protezione dal tracciamento"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "트래킹 보호"
           }
         },
         "nb" : {
@@ -50634,6 +51580,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ochrana pred sledovaním"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zaščita pred sledenjem"
           }
         },
         "sv" : {
@@ -53300,7 +54252,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Utilitzeu les icones de cadenat per identificar i verificar el tipus de xifratge que protegeix els vostres missatges."
+            "value" : "Utilitzeu les icones de cadenat per identificar i verificar el tipus de xifratge que protegeix els missatges."
           }
         },
         "cs" : {
@@ -53345,6 +54297,12 @@
             "value" : "Use los íconos de candado para identificar y verificar el tipo de cifrado que protege sus mensajes."
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Käytä lukkokuvakkeita tunnistaaksesi ja tarkistaaksesi viestejäsi suojaavan salauksen tyypin."
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -53355,6 +54313,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Usa le icone del lucchetto per identificare e verificare il tipo di crittografia che protegge i tuoi messaggi."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "메시지를 보호하는 암호화 유형을 식별하고 확인하기 위해 잠금 아이콘을 사용하세요."
           }
         },
         "nb" : {
@@ -53385,6 +54349,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pomocou ikon zámku môžete identifikovať a overiť typ šifrovania, ktoré chráni vaše správy."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "S pomočjo ikon ključavnice prepoznajte in preverite vrsto šifriranja, s katero so zaščitena vaša sporočila."
           }
         },
         "sv" : {
@@ -53464,6 +54434,12 @@
             "value" : "Versión %@"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Versio %@"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -53474,6 +54450,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Versione %@"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "버전 %@"
           }
         },
         "nb" : {
@@ -53504,6 +54486,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Verzia %@"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Različica %@"
           }
         },
         "sv" : {
@@ -53774,6 +54762,12 @@
             "value" : "Ver encabezados y HTML"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Näytä otsikot ja HTML"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -53784,6 +54778,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Visualizza intestazioni e HTML"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "HTML 및 헤더 보기"
           }
         },
         "nb" : {
@@ -53816,6 +54816,12 @@
             "value" : "Zobraziť hlavičky a HTML"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prikaži glave in HTML"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -53825,7 +54831,13 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Üst bilgileri ve HTML'yi görüntüle"
+            "value" : "Üst bilgilere ve HTML koduna bakın"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "查看邮件头和 HTML"
           }
         }
       }
@@ -54460,6 +55472,12 @@
             "value" : "Nos protegemos activamente contra el rastreo. Aquí puede ver los pixeles espia que bloqueamos y los vinculos de rastreo que limpiamos en este mensaje. [Mas informacion](https://proton.me/support/email-tracker-protection)"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Suojaamme sinua aktiivisesti seurannalta. Täällä voit tarkastella tässä viestissä estettyjä vakoilupikseleitä ja puhdistettuja seurantalinkkejä. [Lue lisää](https://proton.me/support/email-tracker-protection)"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -54472,10 +55490,28 @@
             "value" : "Ti proteggiamo attivamente dal tracciamento. Qui puoi visualizzare i pixel spia che abbiamo bloccato e i link di tracciamento che abbiamo ripulito in questo messaggio. [Scopri di più](https://proton.me/support/email-tracker-protection)"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton은 스팸 추적으로부터 사용자를 적극적으로 보호하고 있습니다. 여기서 이 메시지에서 차단된 스파이 픽셀과 정리된 추적 링크를 확인할 수 있습니다. [더 알아보기](https://proton.me/support/email-tracker-protection)"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vi beskytter deg aktivt mot sporing. Her kan du se spionpikslene vi blokkerte og sporingskoblingene vi renset i denne meldingen. [Lær mer](https://proton.me/support/email-tracker-protection)"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wij beschermen u actief tegen tracking. Hier kunt u de tracking pixel die we hebben geblokkeerd en de tracking links die we hebben opgeschoond in dit bericht bekijken. [Meer informatie](https://proton.me/support/email-tracking-protection)"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Protegemos você ativamente contra rastreamento. Aqui, você pode ver os pixels espiões que bloqueamos e os links de rastreamento que limpamos nesta mensagem. [Saiba mais](https://proton.me/support/email-tracker-protection)"
           }
         },
         "ro" : {
@@ -54490,10 +55526,22 @@
             "value" : "Aktívne vás chránime pred sledovaním. Tu si môžete pozrieť sledovacie pixely, ktoré sme zablokovali, a sledovacie odkazy, ktoré sme v tejto správe vyčistili. [Zistiť viac](https://proton.me/support/email-tracker-protection)"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktivno vas ščitimo pred sledenjem. Tukaj si lahko ogledate vohunske slikovne pike, ki smo jih blokirali, in povezave za sledenje, ki smo jih očistili v tem sporočilu. [Več o tem](https://proton.me/support/email-tracker-protection)"
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sizi izlemeden aktif olarak koruyoruz. Burada, bu iletide engellediğimiz casus pikselleri ve temizlediğimiz izleme bağlantılarını görüntüleyebilirsiniz. [Ayrıntılı bilgi alın](https://proton.me/support/email-tracker-protection)"
+            "value" : "Sizi izlemeden etkin olarak koruyoruz. Burada, bu iletide engellediğimiz casus pikselleri ve temizlediğimiz izleme bağlantılarını görüntüleyebilirsiniz. [Ayrıntılı bilgi alın](https://proton.me/support/email-tracker-protection)"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "我们主动保护您免受跟踪，您可以在此处查看我们在此邮件中拦截的间谍像素和清理的跟踪链接。[了解详情](https://proton.me/support/email-tracker-protection)"
           }
         }
       }
@@ -55119,7 +56167,7 @@
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bienvenue sur Proton Mail, où le respect de la vie privée est la base"
+            "value" : "Bienvenue sur Proton Mail, où le respect de la vie privée est par défaut"
           }
         },
         "hu" : {
@@ -55277,6 +56325,12 @@
             "value" : "Novedades"
           }
         },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mitä uutta"
+          }
+        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -55287,6 +56341,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cosa c'è di nuovo"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "새로운 소식"
           }
         },
         "nb" : {
@@ -55317,6 +56377,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Čo je nové"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kaj je novega"
           }
         },
         "sv" : {

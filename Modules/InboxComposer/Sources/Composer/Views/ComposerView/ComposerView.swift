@@ -147,8 +147,8 @@ struct ComposerView: View {
                         model.endEditingRecipients()
                     case .onBodyChange(let body):
                         model.updateBody(value: body)
-                    case .onImagePasted(let image):
-                        Task { await model.addAttachments(image: image) }
+                    case .onImagesPasted(let images):
+                        Task { await model.addAttachments(images: images) }
                     case .onInlineImageRemoved(let cid), .onInlineImageRemovalRequested(let cid):
                         Task { await model.removeAttachment(cid: cid) }
                     case .onInlineImageDispositionChangeRequested(let cid):
@@ -183,7 +183,12 @@ struct ComposerView: View {
             )
             .alert(model: model.alertBinding)
             .photosPicker(isPresented: $attachmentPickerState.isPhotosPickerPresented, selection: $selectedPhotosItems, preferredItemEncoding: .current)
-            .camera(isPresented: $attachmentPickerState.isCameraPresented, onPhotoTaken: model.addAttachments(image:))
+            .camera(
+                isPresented: $attachmentPickerState.isCameraPresented,
+                onPhotoTaken: { image in
+                    Task { await model.addAttachments(images: [image]) }
+                }
+            )
             .fileImporter(isPresented: $attachmentPickerState.isFileImporterPresented, onCompletion: model.addAttachments(filePickerResult:))
             .onChange(of: selectedPhotosItems) {
                 Task {

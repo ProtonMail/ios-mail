@@ -333,7 +333,7 @@ final class MessageAddressActionViewStateStoreTests {
             senderUnblocker: .init(
                 mailbox: .dummy,
                 wrapper: .init(
-                    messageBody: { _, _ in .ok(.init(noPointer: .init())) },
+                    messageBody: { _, _ in .ok(.init(noHandle: .init())) },
                     markMessageHam: { _, _ in .ok },
                     unblockSender: { _, emailAddress in
                         await self.unblockSpy.result(for: emailAddress)

@@ -248,7 +248,7 @@ class ListActionsToolbarStoreTests {
     func action_WhenMoveToInboxIsTappedUndoIsAvailbleAndTapped_ItTriggersUndoAndDismissesToast() async throws {
         let ids: [ID] = [.init(value: 7), .init(value: 77)]
         let systemFolder = MovableSystemFolderAction.testInbox
-        let undoSpy = UndoSpy(noPointer: .init())
+        let undoSpy = UndoSpy(noHandle: .init())
         let viewMode = ViewMode.messages
         moveToActionsSpy.stubbedMoveMessagesToOkResult = undoSpy
         sut = makeSUT(viewMode: viewMode)

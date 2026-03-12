@@ -364,18 +364,37 @@ final class ComposerModel: ObservableObject {
         }
     }
 
-    func addAttachments(image: UIImage) async {
+    func addAttachments(images: [UIImage]) async {
         do {
             switch draft.composerMode {
             case .html:
-                let cid = try await cameraImageHandler.addInlineImage(to: draft, image: image)
-                bodyAction = .insertInlineImages(cids: [cid])
+                var cids: [String] = []
+                var errors: [DraftAttachmentUploadError] = []
+
+                for image in images {
+                    do {
+                        let cid = try await cameraImageHandler.addInlineImage(to: draft, image: image)
+                        cids.append(cid)
+                    } catch {
+                        errors.append(error)
+                    }
+                }
+                if !cids.isEmpty {
+                    bodyAction = .insertInlineImages(cids: cids)
+                }
+                if !errors.isEmpty {
+                    attachmentAlertState.enqueueAlertsForFailedAttachmentAdditions(errors: errors)
+                }
 
             case .plainText:
-                try await cameraImageHandler.addRegularAttachment(to: draft, image: image)
+                for image in images {
+                    do {
+                        try await cameraImageHandler.addRegularAttachment(to: draft, image: image)
+                    } catch {
+                        attachmentAlertState.enqueueAlertsForFailedAttachmentAdditions(errors: [error])
+                    }
+                }
             }
-        } catch {
-            attachmentAlertState.enqueueAlertsForFailedAttachmentAdditions(errors: [error])
         }
     }
 

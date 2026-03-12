@@ -86,7 +86,7 @@ extension PlainTextBodyEditorController: UITextViewDelegate {
 
 extension PlainTextBodyEditorController: ImagePasteDelegate {
     func didDetectImagePaste(image: UIImage) {
-        onEvent?(.onImagePasted(image: image))
+        onEvent?(.onImagesPasted(images: [image]))
     }
 }
 

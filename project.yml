@@ -29,6 +29,9 @@ packages:
   InboxDesignSystem:
     path: Modules/InboxDesignSystem
     group: Modules
+  InboxWebView:
+    path: Modules/InboxWebView
+    group: Modules
   InboxIAP:
     path: Modules/InboxIAP
     group: Modules
@@ -89,7 +92,7 @@ settings:
     CODE_SIGN_STYLE: Manual
     CURRENT_PROJECT_VERSION: 1
     DEVELOPMENT_TEAM: 2SB5Z68H26
-    MARKETING_VERSION: 7.8.0
+    MARKETING_VERSION: 7.9.0
     SWIFT_STRICT_CONCURRENCY: complete
   configs:
     Debug:
