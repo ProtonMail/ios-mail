@@ -90,7 +90,7 @@ struct SearchScreen: View {
                 if #available(iOS 26, *) {
                     liquidGlassSearchBar(view: view)
                 } else {
-                    nonLiqudGlassSearchBar(view: view)
+                    nonLiquidGlassSearchBar(view: view)
                 }
             }
             .labelAsSheet(
@@ -198,7 +198,7 @@ struct SearchScreen: View {
         }
     }
 
-    private func nonLiqudGlassSearchBar<ParentView: View>(view: ParentView) -> some View {
+    private func nonLiquidGlassSearchBar<ParentView: View>(view: ParentView) -> some View {
         view
             .toolbar {
                 ToolbarItem(placement: .principal) {
