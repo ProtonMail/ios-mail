@@ -97,29 +97,6 @@ private struct ConversationDetailToolbars: ViewModifier {
         )
     }
 
-    private var topToolbarTitle: AttributedString {
-        guard model.state.messagesCount > 0 else { return .init(.empty) }
-        if model.isHeaderVisible {
-            return attributedTopTitle
-        } else {
-            return model.isSingleMessageMode ? .init(.empty) : attributedNumberOfMessages
-        }
-    }
-
-    private var attributedTopTitle: AttributedString {
-        var text = AttributedString(model.seed.subject)
-        text.font = .system(.body, weight: .semibold)
-        text.foregroundColor = DS.Color.Text.norm
-        return text
-    }
-
-    private var attributedNumberOfMessages: AttributedString {
-        var text = AttributedString(localized: L10n.Conversation.messages(count: model.state.messagesCount))
-        text.font = .caption
-        text.foregroundColor = DS.Color.Text.hint
-        return text
-    }
-
     @ViewBuilder
     private var navigationTrailingButton: some View {
         if !model.areActionsHidden {

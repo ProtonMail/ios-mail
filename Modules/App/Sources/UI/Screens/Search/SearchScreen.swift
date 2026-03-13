@@ -35,7 +35,7 @@ struct SearchScreen: View {
     @State private(set) var isListAtTop: Bool = true
     @State private var searchedText: String = .empty
     @StateObject private var model: SearchModel
-    @FocusState private var searchFocsued: Bool
+    @FocusState private var searchFocused: Bool
     private let userSession: MailUserSession
 
     init(
@@ -105,7 +105,7 @@ struct SearchScreen: View {
                 navigation: { _ in model.state.moveToSheetPresented = nil }
             )
             .onLoad {
-                searchFocsued = true
+                searchFocused = true
 
                 Task {
                     await model.prepareSwipeActions()
@@ -202,7 +202,7 @@ struct SearchScreen: View {
         view
             .toolbar {
                 ToolbarItem(placement: .principal) {
-                    SearchToolbarView(selectedState: model.selectionMode.selectionState, isFocused: $searchFocsued) { event in
+                    SearchToolbarView(selectedState: model.selectionMode.selectionState, isFocused: $searchFocused) { event in
                         switch event {
                         case .onSubmitSearch(let query):
                             resultsState = .search
@@ -232,7 +232,7 @@ struct SearchScreen: View {
                 resultsState = .search
                 model.searchText(searchedText)
             }
-            .searchFocused($searchFocsued)
+            .searchFocused($searchFocused)
     }
 
     @ViewBuilder
