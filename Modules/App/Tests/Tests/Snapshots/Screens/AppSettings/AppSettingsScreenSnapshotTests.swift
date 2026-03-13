@@ -79,6 +79,7 @@ struct AppSettingsScreenSnapshotTests {
             assertCustomHeightSnapshot(
                 matching: UIHostingController(rootView: sut).view,
                 styles: [userInterfaceStyle],
+                drawHierarchyInKeyWindow: true,
                 preferredHeight: 1000,
                 named: testCase.name
             )

@@ -25,7 +25,7 @@ import proton_app_uniffi
 @testable import InboxIAP
 
 @MainActor
-@Suite(.serialized, .disabled("Tests are failing on CI only after enabling Liquid Glass"))
+@Suite(.disabled("Tests are failing on CI only, needs more investigation."))
 struct UpsellScreenSnapshotTests {
     struct TestCase {
         let label: String
@@ -63,8 +63,7 @@ struct UpsellScreenSnapshotTests {
 
         let strategy: Snapshotting<UIViewController, UIImage> = .image(
             on: testCase.config,
-            drawHierarchyInKeyWindow: true,
-            precision: 0.90
+            drawHierarchyInKeyWindow: true
         )
 
         assertSnapshot(of: viewController, as: strategy, named: testCase.label)
