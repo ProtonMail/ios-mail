@@ -23,7 +23,6 @@ import Testing
 
 @testable import ProtonMail
 
-@Suite(.disabled("Tests are crashing after enabling Liquid Glass"))
 @MainActor
 struct ReportProblemScreenSnapshotTests {
     @Test
