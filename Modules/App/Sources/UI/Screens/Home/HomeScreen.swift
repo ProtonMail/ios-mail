@@ -17,6 +17,7 @@
 
 import AccountLogin
 import Combine
+import InboxAttribution
 import InboxCore
 import InboxCoreUI
 import InboxIAP
@@ -45,6 +46,7 @@ struct HomeScreen: View {
 
     @EnvironmentObject private var appUIStateStore: AppUIStateStore
     @EnvironmentObject private var toastStateStore: ToastStateStore
+    @EnvironmentObject private var userAttributionService: UserAttributionService
     @Environment(\.mainWindowSize) var mainWindowSize
     @StateObject private var appRoute: AppRouteState
     @StateObject private var composerCoordinator: ComposerCoordinator
@@ -67,7 +69,8 @@ struct HomeScreen: View {
         appContext: AppContext,
         userSession: MailUserSession,
         toastStateStore: ToastStateStore,
-        analytics: Analytics
+        analytics: Analytics,
+        userAttributionService: UserAttributionService
     ) {
         _appRoute = .init(wrappedValue: .initialState)
         _composerCoordinator = .init(wrappedValue: .init(userSession: userSession, toastStateStore: toastStateStore))
@@ -87,7 +90,12 @@ struct HomeScreen: View {
         self._eventLoopErrorCoordinator = .init(
             wrappedValue: EventLoopErrorCoordinator(userSession: userSession, toastStateStore: toastStateStore)
         )
-        let newUpsellCoordinator = UpsellCoordinator(mailUserSession: userSession, configuration: .mail)
+
+        let newUpsellCoordinator = UpsellCoordinator(
+            mailUserSession: userSession,
+            userAttributionService: userAttributionService,
+            configuration: .mail
+        )
         _upsellCoordinator = .init(wrappedValue: newUpsellCoordinator)
 
         self.modalFactory = HomeScreenModalFactory(
@@ -165,6 +173,7 @@ struct HomeScreen: View {
         .composer(screen: .home, coordinator: composerCoordinator)
         .onReceive(composerCoordinator.messageSent) {
             requestNotificationAuthorizationIfApplicable()
+            notifyEmailSent()
         }
         .sheet(item: $modalState) { state in
             modalFactory.makeModal(for: state, draftPresenter: composerCoordinator.draftPresenter)
@@ -185,9 +194,11 @@ struct HomeScreen: View {
                     }
                 }
                 await upsellCoordinator.prewarm()
+                await userAttributionService.handle(event: .signedIn)
             }
         }
         .environmentObject(upsellCoordinator)
+        .environmentObject(userAttributionService)
         .environment(\.upsellEligibility, upsellEligibilityPublisher.state)
     }
 
@@ -196,6 +207,12 @@ struct HomeScreen: View {
             isNotificationPromptPresented = await notificationAuthorizationStore.shouldRequestAuthorization(
                 trigger: .messageSent
             )
+        }
+    }
+
+    private func notifyEmailSent() {
+        Task {
+            await userAttributionService.handle(event: .firstActionPerformed)
         }
     }
 

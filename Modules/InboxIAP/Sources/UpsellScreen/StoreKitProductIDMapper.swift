@@ -16,24 +16,21 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import InboxIAP
-import proton_app_uniffi
+import InboxAttribution
 
-extension UpsellConfiguration {
-    static func mail(apiEnvId: ApiEnvId) -> Self {
-        .init(
-            regularPlan: SubscriptionPlanVariant.plus,
-            onboardingPlans: [SubscriptionPlanVariant.unlimited, SubscriptionPlanVariant.plus],
-            apiEnvId: apiEnvId,
-            isTelemetryEnabled: !isDebugOrQABuild
-        )
-    }
-
-    private static var isDebugOrQABuild: Bool {
-        #if QA || DEBUG
-            true
-        #else
-            false
-        #endif
+enum StoreKitProductIDMapper {
+    static func map(storeKitProductID: String) -> SubscriptionPlanMetadata? {
+        switch storeKitProductID {
+        case FullSubscriptionProductID.unlimitedYear:
+            .init(plan: .unlimited, duration: .year)
+        case FullSubscriptionProductID.unlimitedMonth:
+            .init(plan: .unlimited, duration: .month)
+        case FullSubscriptionProductID.plusYear:
+            .init(plan: .plus, duration: .year)
+        case FullSubscriptionProductID.plusMonth:
+            .init(plan: .plus, duration: .month)
+        default:
+            nil
+        }
     }
 }

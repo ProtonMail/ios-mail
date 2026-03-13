@@ -19,8 +19,8 @@ import InboxIAP
 
 extension UpsellConfiguration {
     static let mail: Self = .init(
-        regularPlan: "mail2022",
-        onboardingPlans: ["bundle2022", "mail2022"],
+        regularPlan: SubscriptionPlanVariant.plus,
+        onboardingPlans: [SubscriptionPlanVariant.unlimited, SubscriptionPlanVariant.plus],
         apiEnvId: .current,
         isTelemetryEnabled: !isDebugOrQABuild
     )

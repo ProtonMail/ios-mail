@@ -28,7 +28,7 @@ struct HomeScreenModalFactory {
     private let makeContactsScreen: (ContactsDraftPresenter) -> ContactsScreen
     private let makeSettingsScreen: () -> SettingsScreen
     private let makeReportProblemScreen: () -> ReportProblemScreen
-    private let makeSubscriptionsScreen: () -> AvailablePlansView
+    private let makeSubscriptionsScreen: () -> SubscriptionsScreen
 
     init(mailUserSession: MailUserSession, accountAuthCoordinator: AccountAuthCoordinator, upsellCoordinator: UpsellCoordinator) {
         self.makeContactsScreen = { draftPresenter in
@@ -48,7 +48,7 @@ struct HomeScreenModalFactory {
             )
         }
         self.makeReportProblemScreen = { ReportProblemScreen(reportProblemService: mailUserSession) }
-        self.makeSubscriptionsScreen = { AvailablePlansViewFactory.make(mailUserSession: mailUserSession, presentationMode: .modal) }
+        self.makeSubscriptionsScreen = { SubscriptionsScreen(mailUserSession: mailUserSession, presentationMode: .modal) }
     }
 
     @ViewBuilder

@@ -1,5 +1,5 @@
 //
-// Copyright (c) 2025 Proton Technologies AG
+// Copyright (c) 2026 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -16,24 +16,15 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import InboxIAP
-import proton_app_uniffi
+import Foundation
+import InboxAttribution
 
-extension UpsellConfiguration {
-    static func mail(apiEnvId: ApiEnvId) -> Self {
-        .init(
-            regularPlan: SubscriptionPlanVariant.plus,
-            onboardingPlans: [SubscriptionPlanVariant.unlimited, SubscriptionPlanVariant.plus],
-            apiEnvId: apiEnvId,
-            isTelemetryEnabled: !isDebugOrQABuild
+extension UserAttributionService {
+    static var dummy: UserAttributionService {
+        UserAttributionService(
+            isFeatureEnabled: { true },
+            userDefaults: UserDefaults(),
+            conversionTracker: ConversionTrackerSpy()
         )
-    }
-
-    private static var isDebugOrQABuild: Bool {
-        #if QA || DEBUG
-            true
-        #else
-            false
-        #endif
     }
 }

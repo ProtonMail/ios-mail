@@ -327,7 +327,14 @@ private extension SettingsPreference {
             SettingsScreen(
                 mailUserSession: MailUserSession(noHandle: .init()),
                 accountAuthCoordinator: .mock(),
-                upsellCoordinator: .init(mailUserSession: .dummy, configuration: .mail)
+                upsellCoordinator: .init(
+                    mailUserSession: .dummy,
+                    userAttributionService: .init(
+                        isFeatureEnabled: { false },
+                        userDefaults: UserDefaults()
+                    ),
+                    configuration: .mail
+                )
             )
         }
     }

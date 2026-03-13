@@ -798,6 +798,12 @@
             "value" : "Le email scambiate tra utenti Proton sono sempre crittografate end-to-end automaticamente."
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton 사용자 간에 주고받는 이메일은 자동 종단간 암호화됩니다."
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4603,6 +4609,12 @@
             "value" : "La verifica [del mittente non è riuscita](https://proton.me/support/sender-verification-failed) perché non è stata firmata. Conferma l'autenticità dell'email con il tuo contatto."
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "[발신자 검증 실패](https://proton.me/support/sender-verification-failed) 때문에 서명되지 않아 발신자 확인에 실패했습니다. 연락처를 통해 이메일의 진위 여부를 확인해 주세요."
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4726,6 +4738,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "La verifica [del mittente non è riuscita](https://proton.me/support/sender-verification-failed). Conferma l'autenticità dell'email con il tuo contatto."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "[발신자 확인 실패](https://proton.me/support/sender-verification-failed)했습니다. 연락처를 통해 이메일의 진위 여부를 확인해 주세요."
           }
         },
         "nb" : {
@@ -4853,6 +4871,12 @@
             "value" : "L'email è archiviata sui server Proton con [crittografia zero-access](https://proton.me/blog/zero-access-encryption). Né Proton né nessun altro possono leggerla."
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이메일은 [제로 액세스 암호화](https://proton.me/blog/zero-access-encryption) 방식으로 Proton 서버에 저장됩니다. Proton이나 다른 누구도 이 이메일을 읽을 수 없습니다."
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4970,6 +4994,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Il destinatario è un [contatto verificato](https://proton.me/support/address-verification) le cui chiavi crittografiche hai aggiunto alla lista dei contatti attendibili."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "수신인은 암호화 키를 신뢰한 [검증된 연락처](https://proton.me/support/address-verification)입니다."
           }
         },
         "nb" : {
@@ -5097,6 +5127,12 @@
             "value" : "I destinatari sono [contatti verificati](https://proton.me/support/address-verification) le cui chiavi di crittografia hai aggiunto alla lista dei contatti attendibili."
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "수신인은 암호화 키를 신뢰한 [검증된 연락처](https://proton.me/support/address-verification)입니다."
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5220,6 +5256,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Il mittente è un [contatto verificato](https://proton.me/support/address-verification) le cui chiavi crittografiche hai aggiunto alla lista dei contatti attendibili."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "보낸 사람은 암호화 키를 신뢰한 [검증된 연락처](https://proton.me/support/address-verification)입니다."
           }
         },
         "nb" : {
@@ -5347,6 +5389,12 @@
             "value" : "Questa email è [crittografata end-to-end](https://proton.me/blog/what-is-end-to-end-encryption) sul dispositivo del mittente e può essere decrittata solo dal destinatario. Proton non può vedere il contenuto dell'email in nessun momento."
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이 이메일은 발신자의 기기에서 [종단간 암호화](https://proton.me/blog/what-is-end-to-end-encryption)되었으며 수신자만 복호화할 수 있습니다. Proton은 이메일 내용을 언제든지 볼 수 없습니다."
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5466,6 +5514,12 @@
             "value" : "Questa email è archiviata sui server Proton con [crittografia zero-access](https://proton.me/blog/zero-access-encryption). Né Proton né nessun altro possono leggerla."
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이 이메일은 [제로 액세스 암호화](https://proton.me/blog/zero-access-encryption) 방식으로 Proton 서버에 저장됩니다. Proton이나 다른 누구도 이 이메일을 읽을 수 없습니다."
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5583,6 +5637,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Questo destinatario ha disattivato la crittografia end-to-end sul proprio account."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이 수신자는 자신의 계정에서 종단 간 암호화를 비활성화했습니다."
           }
         },
         "nb" : {
@@ -6080,6 +6140,12 @@
             "value" : "Hai [firmato digitalmente](https://proton.me/support/proton-mail-digital-signatures) questa email, dimostrando al destinatario che la tua email è autentica e non è stata manomessa."
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "사용자가 이 이메일에 [디지털 서명](https://proton.me/support/proton-mail-digital-signatures)을 하셨으므로, 수신자는 이 이메일이 실제이며 변조되지 않았음을 증명할 수 있습니다."
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6384,6 +6450,12 @@
             "value" : "Crittografato ad accesso zero"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "제로 엑세스 암호화됨"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6509,6 +6581,12 @@
             "value" : "Zero-access crittografato con destinatario verificato"
           }
         },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "검증된 수신자에게 제로 액세스 암호화됨"
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6632,6 +6710,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zero-access crittografato con destinatari verificati"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "검증된 수신자에게 제로 액세스 암호화됨"
           }
         },
         "nb" : {

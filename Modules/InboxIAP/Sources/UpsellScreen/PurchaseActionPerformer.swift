@@ -16,6 +16,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import InboxAttribution
 import InboxCore
 import PaymentsNG
 import ProtonUIFoundations
@@ -27,11 +28,18 @@ final class PurchaseActionPerformer {
     private let eventLoopPolling: EventLoopPolling
     private let planPurchasing: PlanPurchasing
     private let telemetryReporting: TelemetryReporting
+    private let userAttributionService: UserAttributionService
 
-    init(eventLoopPolling: EventLoopPolling, planPurchasing: PlanPurchasing, telemetryReporting: TelemetryReporting) {
+    init(
+        eventLoopPolling: EventLoopPolling,
+        planPurchasing: PlanPurchasing,
+        telemetryReporting: TelemetryReporting,
+        userAttributionService: UserAttributionService
+    ) {
         self.eventLoopPolling = eventLoopPolling
         self.planPurchasing = planPurchasing
         self.telemetryReporting = telemetryReporting
+        self.userAttributionService = userAttributionService
     }
 
     func purchase(
@@ -53,9 +61,20 @@ final class PurchaseActionPerformer {
             try await planPurchasing.purchase(storeKitProductId: storeKitProductID)
 
             AppLogger.log(message: "Purchase successful", category: .payments)
-            await telemetryReporting.upgradeSuccess(storeKitProductID: storeKitProductID)
 
-            await eventLoopPolling.forceEventLoopPollAndWait().logError()
+            async let telemetry: () = telemetryReporting.upgradeSuccess(storeKitProductID: storeKitProductID)
+            async let eventLoop: () = eventLoopPolling.forceEventLoopPollAndWait().logError()
+
+            if let metadata = StoreKitProductIDMapper.map(storeKitProductID: storeKitProductID) {
+                async let attribution: () = userAttributionService.handle(event: .subscribed(metadata: metadata))
+                _ = await (telemetry, attribution, eventLoop)
+            } else {
+                AppLogger.log(
+                    message: "Unable to map product ID '\(storeKitProductID)' for attribution",
+                    category: .adAttribution
+                )
+                _ = await (telemetry, eventLoop)
+            }
 
             dismiss()
         } catch ProtonPlansManagerError.transactionCancelledByUser {
@@ -85,6 +104,7 @@ extension PurchaseActionPerformer {
     static let dummy = PurchaseActionPerformer(
         eventLoopPolling: DummyEventLoopPolling(),
         planPurchasing: DummyPlanPurchasing(),
-        telemetryReporting: DummyTelemetryReporting()
+        telemetryReporting: DummyTelemetryReporting(),
+        userAttributionService: .init(isFeatureEnabled: { false }, userDefaults: UserDefaults())
     )
 }

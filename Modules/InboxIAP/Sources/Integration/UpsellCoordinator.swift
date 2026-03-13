@@ -17,6 +17,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Foundation
+import InboxAttribution
 import InboxCore
 import PaymentsNG
 import proton_app_uniffi
@@ -31,7 +32,11 @@ public final class UpsellCoordinator: ObservableObject {
 
     private var cachedAvailablePlans: [ComposedPlan]?
 
-    public convenience init(mailUserSession: MailUserSession, configuration: UpsellConfiguration) {
+    public convenience init(
+        mailUserSession: MailUserSession,
+        userAttributionService: UserAttributionService,
+        configuration: UpsellConfiguration
+    ) {
         let plansComposer = PlansComposerRust(rustSession: mailUserSession)
         let plansManager = ProtonPlansManager(plansComposer: plansComposer, rustSession: mailUserSession)
         let planPurchasing: PlanPurchasing = configuration.apiEnvId.arePaymentsEnabled ? plansManager : DummyPlanPurchasing()
@@ -45,6 +50,7 @@ public final class UpsellCoordinator: ObservableObject {
             planPurchasing: planPurchasing,
             sessionForking: mailUserSession,
             telemetryReporting: telemetryReporting,
+            userAttributionService: userAttributionService,
             configuration: configuration
         )
     }
@@ -56,6 +62,7 @@ public final class UpsellCoordinator: ObservableObject {
         planPurchasing: PlanPurchasing,
         sessionForking: SessionForking,
         telemetryReporting: TelemetryReporting,
+        userAttributionService: UserAttributionService,
         configuration: UpsellConfiguration
     ) {
         self.onlineExecutor = onlineExecutor
@@ -66,7 +73,8 @@ public final class UpsellCoordinator: ObservableObject {
         let purchaseActionPerformer = PurchaseActionPerformer(
             eventLoopPolling: eventLoopPolling,
             planPurchasing: planPurchasing,
-            telemetryReporting: telemetryReporting
+            telemetryReporting: telemetryReporting,
+            userAttributionService: userAttributionService
         )
 
         let webCheckout = WebCheckout(sessionForking: sessionForking, upsellConfiguration: configuration)

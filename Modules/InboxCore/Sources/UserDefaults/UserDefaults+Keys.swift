@@ -57,4 +57,14 @@ extension UserDefaults {
             set(newValue, forKey: key.name)
         }
     }
+
+    public subscript(key: UserDefaultsKey<UInt8>) -> UInt8 {
+        get {
+            let value = integer(forKey: key.name)
+            return UInt8(clamping: value)
+        }
+        set {
+            set(Int(newValue), forKey: key.name)
+        }
+    }
 }

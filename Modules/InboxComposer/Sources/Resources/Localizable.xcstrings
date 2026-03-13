@@ -6300,6 +6300,12 @@
             "value" : "Informácie o šifrovaní"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Informacije o šifriranju"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",

@@ -11,8 +11,11 @@ let package = Package(
         .library(name: "InboxIAP", targets: ["InboxIAP"])
     ],
     dependencies: [
+        .package(path: "../InboxAttribution"),
+        .package(path: "../InboxCore"),
         .package(path: "../InboxCoreUI"),
         .package(path: "../InboxSnapshotTesting"),
+        .package(path: "../InboxTesting"),
         .package(path: "../../ProtonPackages/proton_app_uniffi"),
         .package(path: "../../ProtonPackages/et-protoncore/platform/apple/Payments/PaymentsNG"),
     ],
@@ -20,6 +23,8 @@ let package = Package(
         .target(
             name: "InboxIAP",
             dependencies: [
+                "InboxAttribution",
+                "InboxCore",
                 "InboxCoreUI",
                 "PaymentsNG",
                 "proton_app_uniffi",
@@ -32,6 +37,7 @@ let package = Package(
             name: "InboxIAPTests",
             dependencies: [
                 .target(name: "InboxIAP"),
+                .product(name: "InboxTesting", package: "InboxTesting"),
                 .product(name: "InboxSnapshotTesting", package: "InboxSnapshotTesting"),
             ]
         ),

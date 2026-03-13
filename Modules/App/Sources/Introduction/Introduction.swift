@@ -91,7 +91,7 @@ struct IntroductionViewModifier: ViewModifier {
             .notifications
         } else if case .eligible(let upsellType) = upsellEligibility, !dependencies.userDefaults[.hasSeenOnboardingUpsell(ofType: upsellType)] {
             .upsell(upsellType)
-        } else if dependencies.userDefaults[.lastWhatsNewVersion] == nil {
+        } else if NewFeatureIntroduction.isWhatsNewScreenEnabled && dependencies.userDefaults[.lastWhatsNewVersion] == nil {
             .whatsNew
         } else {
             .finished

@@ -1,4 +1,4 @@
-// Copyright (c) 2025 Proton Technologies AG
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -15,18 +15,14 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import PaymentsUI
-import proton_app_uniffi
+public enum SubscriptionPlanVariant {
+    public static let plus = "mail2022"
+    public static let unlimited = "bundle2022"
+}
 
-@MainActor
-enum AvailablePlansViewFactory {
-    static func make(mailUserSession: MailUserSession, presentationMode: PresentationMode) -> AvailablePlansView {
-        AvailablePlansView(
-            viewModel: .init(
-                appVersion: AppDetails.mail.backendFacingVersion,
-                presentationMode: presentationMode,
-                rustSession: mailUserSession
-            )
-        )
-    }
+public enum FullSubscriptionProductID {
+    public static let unlimitedYear = "iosmail_\(SubscriptionPlanVariant.unlimited)_12_usd_auto_renewing"
+    public static let unlimitedMonth = "iosmail_\(SubscriptionPlanVariant.unlimited)_1_usd_auto_renewing"
+    public static let plusYear = "iosmail_\(SubscriptionPlanVariant.plus)_12_usd_auto_renewing"
+    public static let plusMonth = "iosmail_\(SubscriptionPlanVariant.plus)_1_usd_auto_renewing"
 }

@@ -32,6 +32,7 @@ extension NewFeatureIntroduction {
     /// After the screen is dismissed, the stored value is updated to match this version,
     /// preventing the screen from appearing again until this value is changed.
     static let whatsNewVersion = "7.7.0".notLocalized
+    static let isWhatsNewScreenEnabled = false
 
     /// Contains an array of features to be displayed when showing the "What's New" screen to users.
     /// Each feature includes a name, description, and icon that will be presented in the UI.

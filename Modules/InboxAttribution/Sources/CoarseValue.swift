@@ -1,5 +1,4 @@
-//
-// Copyright (c) 2025 Proton Technologies AG
+// Copyright (c) 2026 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -16,24 +15,24 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import InboxIAP
-import proton_app_uniffi
+import AdAttributionKit
 
-extension UpsellConfiguration {
-    static func mail(apiEnvId: ApiEnvId) -> Self {
-        .init(
-            regularPlan: SubscriptionPlanVariant.plus,
-            onboardingPlans: [SubscriptionPlanVariant.unlimited, SubscriptionPlanVariant.plus],
-            apiEnvId: apiEnvId,
-            isTelemetryEnabled: !isDebugOrQABuild
-        )
-    }
+public enum CoarseValue: Equatable {
+    case low
+    case medium
+    case high
+}
 
-    private static var isDebugOrQABuild: Bool {
-        #if QA || DEBUG
-            true
-        #else
-            false
-        #endif
+@available(iOS 17.4, *)
+extension CoarseValue {
+    var adAttributionKitValue: CoarseConversionValue {
+        switch self {
+        case .low:
+            .low
+        case .medium:
+            .medium
+        case .high:
+            .high
+        }
     }
 }

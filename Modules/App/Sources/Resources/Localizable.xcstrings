@@ -4963,7 +4963,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "모든 메세지를 전송했습니다."
+            "value" : "모든 메시지가 전송 완료되었습니다."
           }
         },
         "nb" : {
@@ -12862,6 +12862,46 @@
             }
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%#@arg1@"
+          },
+          "substitutions" : {
+            "arg1" : {
+              "argNum" : 1,
+              "formatSpecifier" : "lld",
+              "variations" : {
+                "plural" : {
+                  "few" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "Pogovori so premaknjeni v arhiv."
+                    }
+                  },
+                  "one" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "Pogovor je premaknjen v arhiv."
+                    }
+                  },
+                  "other" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "Pogovorov je premaknjenih v arhiv."
+                    }
+                  },
+                  "two" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "Pogovora sta premaknjena v arhiv."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -17716,6 +17756,12 @@
             "value" : "Nenápadná ikona"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Diskretna ikona"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -21660,6 +21706,12 @@
             "value" : "Šifrovacie zámky"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ključavnice šifriranja"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -24864,6 +24916,12 @@
             "value" : "Skontrolujte podozrivé správy, aby ste overili ich pravosť a odhalili skryté sledovacie prvky."
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Preglejte sumljiva sporočila, da se prepričate o njihovi verodostojnosti in odkrijete morebitne skrite elemente za sledenje."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -25709,6 +25767,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ponechajte si predvolenú ikonu Proton Mail alebo ju zamaskujte všeobecnou pre väčšie súkromie."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Obdržite privzeto ikono aplikacije Proton Mail ali jo za večjo zasebnost prikrijte z generično ikono."
           }
         },
         "tr" : {
@@ -30104,6 +30168,46 @@
             }
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%#@arg1@"
+          },
+          "substitutions" : {
+            "arg1" : {
+              "argNum" : 1,
+              "formatSpecifier" : "lld",
+              "variations" : {
+                "plural" : {
+                  "few" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "Sporočila so premaknjena v arhiv."
+                    }
+                  },
+                  "one" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "Sporočilo je premaknjeno v arhiv."
+                    }
+                  },
+                  "other" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "Sporočil je premaknjenih v arhiv."
+                    }
+                  },
+                  "two" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "Sporočili sta premaknjeni v arhiv."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -33902,7 +34006,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "보낼 편지일이 비어있습니다."
+            "value" : "보낼 편지함이 비어있습니다"
           }
         },
         "nb" : {
@@ -35376,7 +35480,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "보낸편지함"
+            "value" : "보낼 편지함"
           }
         },
         "nb" : {
@@ -40637,6 +40741,12 @@
             "value" : "Zistite, kto sa vás pokúsil sledovať pomocou skrytých pixelov a sledovacích odkazov a koľko pokusov bolo zablokovaných."
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oglejte si, kdo vas je poskušal nadzorovati s skritimi slikovnimi pikami in sledilnimi povezavami ter koliko poskusov takšnega sledenja je bilo preprečenih."
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -42443,6 +42553,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Toon berichten in de Prullenbak in dit gesprek."
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pokaż usunięte wiadomości w tym wątku."
           }
         },
         "pt-BR" : {
@@ -48137,6 +48253,18 @@
             "value" : "Cet e-mail ne répond pas aux exigences d'authentification du domaine. Il peut s'agir d'une usurpation d'identité ou d'un transfert incorrect."
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Quest'email non ha superato i requisiti d'autenticazione del dominio. Potrebbe esser falsificata o inoltrata impropriamente."
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이 이메일은 도메인의 인증 요구에 실패했습니다. 스푸핑되거나 잘못 전달되었을 수 있습니다."
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -48159,6 +48287,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tento email nesplnil požiadavky na overenie svojej domény. Môže byť sfalšovaný alebo nesprávne preposlaný."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sporočilo ne izpolnjuje zahtev svoje domene za preverjanje pristnosti. Morda se predstavlja z lažnim naslovom ali pa je nepravilno posredovano."
           }
         },
         "sv" : {
@@ -48632,6 +48766,18 @@
             "value" : "Ce message a été signalé comme indésirable/spam, soit par notre système, soit par vous."
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Questo messaggio è stato classificato come spam da te o Proton"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "이 메시지는 시스템 또는 사용자에 의해 스팸으로 분류되었습니다."
+          }
+        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
@@ -48654,6 +48800,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Táto správa bola označená ako spam, buď naším systémom alebo vami."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "To sporočilo je bilo označeno kot neželena pošta, bodisi s strani našega sistema ali s strani vas."
           }
         },
         "sv" : {
@@ -51436,6 +51588,12 @@
             "value" : "Ochrana pred sledovaním"
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zaščita pred sledenjem"
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -54202,6 +54360,12 @@
             "value" : "Pomocou ikon zámku môžete identifikovať a overiť typ šifrovania, ktoré chráni vaše správy."
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "S pomočjo ikon ključavnice prepoznajte in preverite vrsto šifriranja, s katero so zaščitena vaša sporočila."
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -54331,6 +54495,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Verzia %@"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Različica %@"
           }
         },
         "sv" : {
@@ -54653,6 +54823,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Zobraziť hlavičky a HTML"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prikaži glave in HTML"
           }
         },
         "sv" : {
@@ -55357,6 +55533,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Aktívne vás chránime pred sledovaním. Tu si môžete pozrieť sledovacie pixely, ktoré sme zablokovali, a sledovacie odkazy, ktoré sme v tejto správe vyčistili. [Zistiť viac](https://proton.me/support/email-tracker-protection)"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aktivno vas ščitimo pred sledenjem. Tukaj si lahko ogledate vohunske slikovne pike, ki smo jih blokirali, in povezave za sledenje, ki smo jih očistili v tem sporočilu. [Več o tem](https://proton.me/support/email-tracker-protection)"
           }
         },
         "tr" : {
@@ -56204,6 +56386,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Čo je nové"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kaj je novega"
           }
         },
         "sv" : {
