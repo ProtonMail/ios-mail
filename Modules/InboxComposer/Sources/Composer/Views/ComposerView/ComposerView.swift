@@ -171,6 +171,7 @@ struct ComposerView: View {
                 .toolbar {
                     toolbarContent
                 }
+                .ignoresSafeArea(.container, edges: .vertical)
                 .alert(
                     Text(model.attachmentAlertState.presentedError?.title ?? LocalizedStringResource(stringLiteral: .empty)),
                     isPresented: $model.attachmentAlertState.isAlertPresented,

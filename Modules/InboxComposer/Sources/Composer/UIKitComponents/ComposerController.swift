@@ -78,6 +78,14 @@ final class ComposerController: UIViewController {
         onEvent(.viewDidDisappear)
     }
 
+    override func viewSafeAreaInsetsDidChange() {
+        super.viewSafeAreaInsetsDidChange()
+        let safeAreaInsets = view.safeAreaInsets
+        let insets = UIEdgeInsets(top: safeAreaInsets.top, left: .zero, bottom: safeAreaInsets.bottom, right: .zero)
+        scrollView.contentInset = insets
+        scrollView.verticalScrollIndicatorInsets = insets
+    }
+
     private func setUpUI() {
         view.backgroundColor = DS.Color.Background.norm.toDynamicUIColor
 
@@ -229,6 +237,7 @@ private extension ComposerController {
         static var scrollView: UIScrollView {
             let view = UIScrollView()
             view.translatesAutoresizingMaskIntoConstraints = false
+            view.contentInsetAdjustmentBehavior = .never
             view.clipsToBounds = false
             return view
         }
