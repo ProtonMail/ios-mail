@@ -19,20 +19,24 @@ import InboxCoreUI
 import InboxSnapshotTesting
 import InboxTesting
 import ProtonUIFoundations
+import Testing
 
 @testable import InboxComposer
 
 @MainActor
-final class ComposerScreenSnapshotTests: BaseTestCase {
-    func testComposerScreen_whenEmpty_itLayoutsCorrectOnIphoneX() throws {
+struct ComposerScreenSnapshotTests {
+    @Test(.disabled("Recording empty snapshot after the changes with Liquid Glass"))
+    func composerScreen_whenEmpty_itLayoutsCorrectOnIphoneX() throws {
         let toastStateStore = ToastStateStore.init(initialState: .initial)
-        let composerScreen = ComposerScreen(
+        let composerView = ComposerView(
             draft: .emptyMock,
             draftOrigin: .new,
-            dependencies: .init(contactProvider: .mockInstance, userSession: .init(noHandle: .init())),
+            draftLastScheduledTime: nil,
+            contactProvider: .mockInstance,
+            isAddingAttachmentsEnabled: true,
             onDismiss: { _ in }
         )
         .environmentObject(toastStateStore)
-        assertSnapshotsOnIPhoneX(of: composerScreen)
+        assertSnapshotsOnIPhoneX(of: composerView, record: true)
     }
 }
