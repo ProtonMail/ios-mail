@@ -165,6 +165,7 @@ extension RecipientsFieldController {
         static var stack: UIStackView {
             let view = UIStackView()
             view.translatesAutoresizingMaskIntoConstraints = false
+            view.insetsLayoutMarginsFromSafeArea = false
             view.alignment = .center
             view.spacing = DS.Spacing.small
             view.directionalLayoutMargins = .init(top: 0, leading: DS.Spacing.small, bottom: 0, trailing: DS.Spacing.small)
