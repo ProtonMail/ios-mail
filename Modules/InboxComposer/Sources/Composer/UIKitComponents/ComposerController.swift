@@ -229,6 +229,7 @@ private extension ComposerController {
         static var scrollView: UIScrollView {
             let view = UIScrollView()
             view.translatesAutoresizingMaskIntoConstraints = false
+            view.clipsToBounds = false
             return view
         }
 

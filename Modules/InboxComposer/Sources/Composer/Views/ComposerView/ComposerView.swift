@@ -71,149 +71,185 @@ struct ComposerView: View {
             setCustomExpirationDate: { timestamp in await model.setExpirationTime(.custom(timestamp)) }
         )
 
-        VStack(spacing: 0) {
-            ComposerTopBar(
-                isSendEnabled: model.state.isSendAvailable,
-                scheduleSendAction: { modalState = model.scheduleSendState(lastScheduledTime: draftLastScheduledTime) },
-                sendAction: { await model.sendMessage(dismissAction: dismiss) },
-                dismissAction: { await model.dismissComposerManually(dismissAction: dismiss) }
-            )
-
-            ComposerControllerRepresentable(
-                state: model.state,
-                bodyAction: $model.bodyAction,
-                imageProxy: model.imageProxy,
-                invalidAddressAlertStore: model.invalidAddressAlertStore
-            ) { event in
-                switch event {
-                case .viewDidDisappear:
-                    Task { await model.viewDidDisappear() }
-
-                case .recipientFieldEvent(let recipientFieldEvent, let group):
-                    switch recipientFieldEvent {
-                    case .onFieldTap:
-                        model.startEditingRecipients(for: group)
-                    case .onInputChange(let text):
-                        model.matchContact(group: group, text: text)
-                    case .onRecipientCopy(let index):
-                        model.copyRecipient(group: group, index: index)
-                    case .onRecipientRemove(let index):
-                        model.removeRecipient(group: group, index: index)
-                    case .onRecipientShowPrivacyInfo(let privacyLock):
-                        model.showPrivacyInfo(privacyLock: privacyLock)
-                    case .onReturnKeyPressed:
-                        model.addRecipientFromInput()
-                    case .onDeleteKeyPressedInsideEmptyInputField:
-                        model.selectLastRecipient(group: group)
-                    case .onDeleteKeyPressedOutsideInputField:
-                        model.removeRecipientsThatAreSelected(group: group)
-                    }
-
-                case .contactPickerEvent(let event, let group):
+        NavigationStack {
+            VStack(spacing: .zero) {
+                ComposerControllerRepresentable(
+                    state: model.state,
+                    bodyAction: $model.bodyAction,
+                    imageProxy: model.imageProxy,
+                    invalidAddressAlertStore: model.invalidAddressAlertStore
+                ) { event in
                     switch event {
-                    case .onInputChange(let text):
-                        model.matchContact(group: group, text: text)
-                    case .onContactSelected(let contact):
-                        model.addContact(group: group, contact: contact)
-                    case .onReturnKeyPressedForValidAddress:
-                        model.addRecipientFromInput()
-                    }
+                    case .viewDidDisappear:
+                        Task { await model.viewDidDisappear() }
 
-                case .fromFieldEvent(let event):
-                    switch event {
-                    case .onFieldTap:
-                        modalState = .senderPicker
-                    }
+                    case .recipientFieldEvent(let recipientFieldEvent, let group):
+                        switch recipientFieldEvent {
+                        case .onFieldTap:
+                            model.startEditingRecipients(for: group)
+                        case .onInputChange(let text):
+                            model.matchContact(group: group, text: text)
+                        case .onRecipientCopy(let index):
+                            model.copyRecipient(group: group, index: index)
+                        case .onRecipientRemove(let index):
+                            model.removeRecipient(group: group, index: index)
+                        case .onRecipientShowPrivacyInfo(let privacyLock):
+                            model.showPrivacyInfo(privacyLock: privacyLock)
+                        case .onReturnKeyPressed:
+                            model.addRecipientFromInput()
+                        case .onDeleteKeyPressedInsideEmptyInputField:
+                            model.selectLastRecipient(group: group)
+                        case .onDeleteKeyPressedOutsideInputField:
+                            model.removeRecipientsThatAreSelected(group: group)
+                        }
 
-                case .subjectFieldEvent(let event):
-                    switch event {
-                    case .onStartEditing:
-                        model.endEditingRecipients()
-                    case .onSubjectChange(let subject):
-                        model.updateSubject(value: subject)
-                    }
+                    case .contactPickerEvent(let event, let group):
+                        switch event {
+                        case .onInputChange(let text):
+                            model.matchContact(group: group, text: text)
+                        case .onContactSelected(let contact):
+                            model.addContact(group: group, contact: contact)
+                        case .onReturnKeyPressedForValidAddress:
+                            model.addRecipientFromInput()
+                        }
 
-                case .attachmentEvent(let event):
-                    switch event {
-                    case .onTap:
-                        toastStateStore.present(toast: .comingSoon)
-                    case .onRemove(let uiModel):
-                        Task { await model.removeAttachment(attachment: uiModel.attachment) }
-                    }
+                    case .fromFieldEvent(let event):
+                        switch event {
+                        case .onFieldTap:
+                            modalState = .senderPicker
+                        }
 
-                case .bodyEvent(let event):
-                    switch event {
-                    case .onStartEditing:
-                        model.endEditingRecipients()
-                    case .onBodyChange(let body):
-                        model.updateBody(value: body)
-                    case .onImagesPasted(let images):
-                        Task { await model.addAttachments(images: images) }
-                    case .onInlineImageRemoved(let cid), .onInlineImageRemovalRequested(let cid):
-                        Task { await model.removeAttachment(cid: cid) }
-                    case .onInlineImageDispositionChangeRequested(let cid):
-                        Task { await model.transformInlineAttachmentToRegular(cid: cid) }
-                    case .onReloadAfterMemoryPressure:
-                        Task { await model.reloadBodyAfterMemoryPressure() }
-                    }
+                    case .subjectFieldEvent(let event):
+                        switch event {
+                        case .onStartEditing:
+                            model.endEditingRecipients()
+                        case .onSubjectChange(let subject):
+                            model.updateSubject(value: subject)
+                        }
 
-                case .actionBarEvent(let event):
-                    switch event {
-                    case .onPickAttachmentSource:
-                        modalState = .attachmentPicker
-                    case .onPasswordProtection:
-                        modalState = model.passwordProtectionState()
-                    case .onRemovePasswordProtection:
-                        Task { @MainActor in await model.removePasswordProtection() }
-                    case .onExpirationTime(let time):
-                        Task { @MainActor in await model.setExpirationTime(time) }
-                    case .onCustomExpirationTime:
-                        modalState = .customExpirationDatePicker(selectedDate: model.state.expirationTime.customDate)
-                    case .onDiscardDraft:
-                        Task { @MainActor in await model.discardDraft(dismissAction: dismiss) }
+                    case .attachmentEvent(let event):
+                        switch event {
+                        case .onTap:
+                            toastStateStore.present(toast: .comingSoon)
+                        case .onRemove(let uiModel):
+                            Task { await model.removeAttachment(attachment: uiModel.attachment) }
+                        }
+
+                    case .bodyEvent(let event):
+                        switch event {
+                        case .onStartEditing:
+                            model.endEditingRecipients()
+                        case .onBodyChange(let body):
+                            model.updateBody(value: body)
+                        case .onImagesPasted(let images):
+                            Task { await model.addAttachments(images: images) }
+                        case .onInlineImageRemoved(let cid), .onInlineImageRemovalRequested(let cid):
+                            Task { await model.removeAttachment(cid: cid) }
+                        case .onInlineImageDispositionChangeRequested(let cid):
+                            Task { await model.transformInlineAttachmentToRegular(cid: cid) }
+                        case .onReloadAfterMemoryPressure:
+                            Task { await model.reloadBodyAfterMemoryPressure() }
+                        }
+
+                    case .actionBarEvent(let event):
+                        switch event {
+                        case .onPickAttachmentSource:
+                            modalState = .attachmentPicker
+                        case .onPasswordProtection:
+                            modalState = model.passwordProtectionState()
+                        case .onRemovePasswordProtection:
+                            Task { @MainActor in await model.removePasswordProtection() }
+                        case .onExpirationTime(let time):
+                            Task { @MainActor in await model.setExpirationTime(time) }
+                        case .onCustomExpirationTime:
+                            modalState = .customExpirationDatePicker(selectedDate: model.state.expirationTime.customDate)
+                        case .onDiscardDraft:
+                            Task { @MainActor in await model.discardDraft(dismissAction: dismiss) }
+                        }
                     }
                 }
-            }
-            .alert(
-                Text(model.attachmentAlertState.presentedError?.title ?? LocalizedStringResource(stringLiteral: .empty)),
-                isPresented: $model.attachmentAlertState.isAlertPresented,
-                presenting: model.attachmentAlertState.presentedError,
-                actions: { actionsForAttachmentAlert(error: $0) },
-                message: { Text($0.message) }
-            )
-            .alert(model: model.alertBinding)
-            .photosPicker(isPresented: $attachmentPickerState.isPhotosPickerPresented, selection: $selectedPhotosItems, preferredItemEncoding: .current)
-            .camera(
-                isPresented: $attachmentPickerState.isCameraPresented,
-                onPhotoTaken: { image in
-                    Task { await model.addAttachments(images: [image]) }
+                .toolbar {
+                    toolbarContent
                 }
-            )
-            .fileImporter(isPresented: $attachmentPickerState.isFileImporterPresented, onCompletion: model.addAttachments(filePickerResult:))
-            .onChange(of: selectedPhotosItems) {
-                Task {
-                    let photos = $selectedPhotosItems.wrappedValue
-                    $selectedPhotosItems.wrappedValue = []
-                    await model.addAttachments(selectedPhotosItems: photos)
+                .alert(
+                    Text(model.attachmentAlertState.presentedError?.title ?? LocalizedStringResource(stringLiteral: .empty)),
+                    isPresented: $model.attachmentAlertState.isAlertPresented,
+                    presenting: model.attachmentAlertState.presentedError,
+                    actions: { actionsForAttachmentAlert(error: $0) },
+                    message: { Text($0.message) }
+                )
+                .alert(model: model.alertBinding)
+                .photosPicker(isPresented: $attachmentPickerState.isPhotosPickerPresented, selection: $selectedPhotosItems, preferredItemEncoding: .current)
+                .camera(
+                    isPresented: $attachmentPickerState.isCameraPresented,
+                    onPhotoTaken: { image in
+                        Task { await model.addAttachments(images: [image]) }
+                    }
+                )
+                .fileImporter(isPresented: $attachmentPickerState.isFileImporterPresented, onCompletion: model.addAttachments(filePickerResult:))
+                .onChange(of: selectedPhotosItems) {
+                    Task {
+                        let photos = $selectedPhotosItems.wrappedValue
+                        $selectedPhotosItems.wrappedValue = []
+                        await model.addAttachments(selectedPhotosItems: photos)
+                    }
                 }
-            }
-            .sheet(item: $modalState, additionallyObserving: $model.modalAction, content: modalFactory)
-            .sheet(item: $model.privacyLockTooltip) { context in
-                LockTooltipView(lock: context.privacyLock)
-                    .adaptiveSheetDetents()
-            }
-            .onChange(of: model.toast) { _, newValue in
-                guard let newValue else { return }
-                toastStateStore.present(toast: newValue)
-                model.toast = nil
-            }
-            .onLoad {
-                Task { await model.onLoad() }
-            }
+                .sheet(item: $modalState, additionallyObserving: $model.modalAction, content: modalFactory)
+                .sheet(item: $model.privacyLockTooltip) { context in
+                    LockTooltipView(lock: context.privacyLock)
+                        .adaptiveSheetDetents()
+                }
+                .onChange(of: model.toast) { _, newValue in
+                    guard let newValue else { return }
+                    toastStateStore.present(toast: newValue)
+                    model.toast = nil
+                }
+                .onLoad {
+                    Task { await model.onLoad() }
+                }
 
-            Spacer()
+                Spacer()
+            }
+            .background(DS.Color.Background.norm)
         }
-        .background(DS.Color.Background.norm)
+    }
+
+    @ToolbarContentBuilder
+    private var toolbarContent: some ToolbarContent {
+        ToolbarItem(placement: .topBarLeading) {
+            Button.close {
+                Task {
+                    await model.dismissComposerManually(dismissAction: dismiss)
+                }
+            }
+        }
+        ToolbarItem(placement: .topBarTrailing) {
+            ScheduleSendButton {
+                modalState = model.scheduleSendState(lastScheduledTime: draftLastScheduledTime)
+            }
+            .disabled(!model.state.isSendAvailable)
+        }
+        if #available(iOS 26, *) {
+            ToolbarSpacer(.fixed, placement: .topBarTrailing)
+
+            ToolbarItem(placement: .confirmationAction) {
+                LiquidGlassSendButton {
+                    Task {
+                        await model.sendMessage(dismissAction: dismiss)
+                    }
+                }
+                .disabled(!model.state.isSendAvailable)
+            }
+        } else {
+            ToolbarItem(placement: .topBarTrailing) {
+                SendButton {
+                    Task {
+                        await model.sendMessage(dismissAction: dismiss)
+                    }
+                }
+                .disabled(!model.state.isSendAvailable)
+            }
+        }
     }
 
     @ViewBuilder

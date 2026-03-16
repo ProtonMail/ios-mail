@@ -18,6 +18,16 @@
 import InboxDesignSystem
 import SwiftUI
 
+@available(iOS 26, *)
+struct LiquidGlassSendButton: View {
+    let onTap: () -> Void
+
+    var body: some View {
+        Button(L10n.Composer.send, action: onTap)
+            .buttonStyle(.glassProminent).tint(DS.Color.InteractionBrand.norm)
+    }
+}
+
 struct SendButton: View {
     @Environment(\.isEnabled) var isEnabled
     let onTap: () -> Void

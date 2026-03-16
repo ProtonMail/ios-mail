@@ -19,7 +19,7 @@ import SwiftUI
 
 extension View {
     @ViewBuilder
-    func modify(@ViewBuilder _ transform: (Self) -> (some View)?) -> some View {
+    public func modify(@ViewBuilder _ transform: (Self) -> (some View)?) -> some View {
         if let view = transform(self) {
             view
         } else {
