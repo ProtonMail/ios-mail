@@ -129,10 +129,14 @@ final class ComposerController: UIViewController {
 
     private func setupConstraints() {
         let closeKeyboardSeparation = 6.0
-        contactPicker.view.anchorTo(view: view)
         composerStack.anchorTo(view: scrollView)
 
         NSLayoutConstraint.activate([
+            contactPicker.view.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            contactPicker.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            contactPicker.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            contactPicker.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+
             composerStack.widthAnchor.constraint(equalTo: scrollView.widthAnchor),
 
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
