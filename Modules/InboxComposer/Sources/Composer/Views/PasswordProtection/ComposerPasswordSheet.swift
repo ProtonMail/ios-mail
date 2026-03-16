@@ -100,6 +100,7 @@ struct ComposerPasswordSheet: View {
                 }
             }
             .navigationTitle(L10n.PasswordProtection.title)
+            .navigationBarTitleDisplayMode(.inline)
         }
     }
 
