@@ -38,8 +38,7 @@ extension PMSystemLabel {
             notify: false,
             displayOrder: displayOrder,
             sticky: false,
-            total: 0,
-            unread: 0
+            count: 0
         )
     }
 }

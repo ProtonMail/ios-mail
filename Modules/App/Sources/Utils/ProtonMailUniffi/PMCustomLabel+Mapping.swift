@@ -39,7 +39,7 @@ extension PMSystemLabel {
         return .init(
             folderID: id,
             type: systemFolder,
-            unreadCount: UnreadCountFormatter.stringIfGreaterThan0(count: unread),
+            unreadCount: UnreadCountFormatter.stringIfGreaterThan0(count: count),
             isSelected: false
         )
     }
