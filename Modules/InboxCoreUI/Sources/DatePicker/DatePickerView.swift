@@ -108,6 +108,7 @@ public struct DatePickerView: View {
                 }
             }
             .navigationTitle(configuration.title)
+            .navigationBarTitleDisplayMode(.inline)
         }
     }
 }
