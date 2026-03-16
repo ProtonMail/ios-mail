@@ -49,34 +49,7 @@ struct ComposerPasswordSheet: View {
     }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: DS.Spacing.large) {
-            HStack {
-                Button(CommonL10n.cancel.string, action: { dismiss() })
-                    .foregroundStyle(DS.Color.Text.accent)
-                    .font(.body)
-                    .fontWeight(.regular)
-
-                Spacer()
-                Text(L10n.PasswordProtection.title)
-                    .lineLimit(1)
-                    .foregroundStyle(DS.Color.Text.norm)
-                    .font(.body)
-                    .fontWeight(.semibold)
-
-                Spacer()
-                Button(CommonL10n.save.string) {
-                    guard validate() else { return }
-                    Task {
-                        await onSave(state.password, state.hint)
-                        dismiss()
-                    }
-                }
-                .foregroundStyle(DS.Color.InteractionBrand.norm)
-                .font(.body)
-                .fontWeight(.semibold)
-            }
-            .padding(DS.Spacing.large)
-
+        NavigationStack {
             ScrollView {
                 VStack(spacing: DS.Spacing.extraLarge) {
                     descriptionView()
@@ -105,10 +78,28 @@ struct ComposerPasswordSheet: View {
                 }
                 .padding(.horizontal, DS.Spacing.extraLarge)
             }
-        }
-        .background(DS.Color.Background.secondary)
-        .onAppear {
-            isPasswordFocused = state.password.isEmpty && state.hint.isEmpty
+            .background(DS.Color.Background.secondary)
+            .onAppear {
+                isPasswordFocused = state.password.isEmpty && state.hint.isEmpty
+            }
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    Button(CommonL10n.save.string) {
+                        guard validate() else { return }
+                        Task {
+                            await onSave(state.password, state.hint)
+                            dismiss()
+                        }
+                    }
+                    .foregroundStyle(DS.Color.InteractionBrand.norm)
+                    .fontWeight(.semibold)
+                }
+                ToolbarItem(placement: .topBarLeading) {
+                    Button(CommonL10n.cancel.string, action: { dismiss() })
+                        .foregroundStyle(DS.Color.Text.accent)
+                }
+            }
+            .navigationTitle(L10n.PasswordProtection.title)
         }
     }
 
