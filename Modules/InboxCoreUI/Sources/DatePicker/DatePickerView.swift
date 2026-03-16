@@ -107,6 +107,7 @@ public struct DatePickerView: View {
                     .fontWeight(.semibold)
                 }
             }
+            .navigationTitle(configuration.title)
         }
     }
 }
