@@ -31,7 +31,7 @@ final class TelemetryReporterTests {
         .init(
             upsellEntryPoint: entryPoint,
             planBeforeUpgrade: "free",
-            modalVariant: .comparison
+            modalVariant: .comparisonPlus
         )
     }
 

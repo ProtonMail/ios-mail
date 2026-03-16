@@ -64,7 +64,7 @@ final class TelemetryReporter: TelemetryReporting {
     }
 
     private func generalDimensions() -> GeneralDimensions {
-        .init(upsellEntryPoint: entryPoint!, planBeforeUpgrade: "free", modalVariant: .comparison)
+        .init(upsellEntryPoint: entryPoint!, planBeforeUpgrade: "free", modalVariant: .comparisonPlus)
     }
 
     private func planSpecificDimensions(storeKitProductID: String) -> PlanSpecificDimensions {
