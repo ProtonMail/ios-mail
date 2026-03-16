@@ -177,9 +177,11 @@ private struct ListActionBarViewModifier<ComposeButton: ToolbarContent>: ViewMod
 
     @ToolbarContentBuilder
     private func toolbarContent(state: State, store: Store) -> some ToolbarContent {
-        ToolbarItemGroup(placement: .bottomBar) {
-            AdaptiveToolbarItemsLayout(items: state.bottomBarActions) { action in
-                toolbarItem(for: action, state: state, store: store)
+        if state.bottomBarActions.isEmpty == false {
+            ToolbarItemGroup(placement: .bottomBar) {
+                AdaptiveToolbarItemsLayout(items: state.bottomBarActions) { action in
+                    toolbarItem(for: action, state: state, store: store)
+                }
             }
         }
 
