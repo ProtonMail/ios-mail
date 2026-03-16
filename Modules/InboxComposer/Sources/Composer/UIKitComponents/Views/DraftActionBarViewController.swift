@@ -43,7 +43,7 @@ final class DraftActionBarViewController: UIViewController {
     private let discardButton = SubviewFactory.discardButton
     private let spacer = UIView()
     private let topBorder = SubviewFactory.topBorder
-    private let buttonSize = 40.0
+    private let buttonSize = 36.0
     private let messageExpirationLearnMoreUrl = URL(string: "https://proton.me/support/expiration")!
     var onEvent: ((Event) -> Void)?
 
@@ -60,19 +60,23 @@ final class DraftActionBarViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setUpUI()
-        setUpConstraints()
+        if #available(iOS 26, *) {
+            setUpUILiquidGlass()
+        } else {
+            setUpUI()
+            setUpConstraints()
+        }
     }
 
     private func setUpUI() {
         if state.isAddingAttachmentsEnabled {
             stack.addArrangedSubview(attachmentButton)
         }
-
         stack.addArrangedSubview(passwordButton)
         stack.addArrangedSubview(expirationButton)
         stack.addArrangedSubview(spacer)
         stack.addArrangedSubview(discardButton)
+
         attachmentButton.addTarget(self, action: #selector(onAttachmentTap), for: .touchUpInside)
         passwordButton.addTarget(self, action: #selector(onPasswordProtectionTap), for: .touchUpInside)
         passwordButton.menu = UIMenu(children: getPasswordMenu())
@@ -105,7 +109,8 @@ final class DraftActionBarViewController: UIViewController {
             topBorder.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             topBorder.topAnchor.constraint(equalTo: view.topAnchor),
         ])
-        [attachmentButton, passwordButton, discardButton]
+
+        [attachmentButton, passwordButton, expirationButton, discardButton]
             .forEach { button in
                 NSLayoutConstraint.activate([
                     button.widthAnchor.constraint(equalToConstant: buttonSize),
@@ -113,6 +118,56 @@ final class DraftActionBarViewController: UIViewController {
                 ])
             }
     }
+
+    @available(iOS 26, *)
+    private func setUpUILiquidGlass() {
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = .clear
+
+        let glassStack = SubviewFactory.glassStack
+
+        if state.isAddingAttachmentsEnabled {
+            glassStack.addArrangedSubview(attachmentButton)
+        }
+        glassStack.addArrangedSubview(passwordButton)
+        glassStack.addArrangedSubview(expirationButton)
+        glassStack.addArrangedSubview(discardButton)
+
+        let glassContainer = UIVisualEffectView(effect: UIGlassEffect())
+        glassContainer.cornerConfiguration = .capsule()
+        glassContainer.translatesAutoresizingMaskIntoConstraints = false
+
+        glassContainer.contentView.addSubview(glassStack)
+        view.addSubview(glassContainer)
+
+        attachmentButton.addTarget(self, action: #selector(onAttachmentTap), for: .touchUpInside)
+        passwordButton.addTarget(self, action: #selector(onPasswordProtectionTap), for: .touchUpInside)
+        passwordButton.menu = UIMenu(children: getPasswordMenu())
+        discardButton.addTarget(self, action: #selector(onDiscardDraftTap), for: .touchUpInside)
+
+        glassStack.translatesAutoresizingMaskIntoConstraints = false
+        [attachmentButton, passwordButton, expirationButton, discardButton]
+            .forEach { button in
+                NSLayoutConstraint.activate([
+                    button.widthAnchor.constraint(equalToConstant: buttonSize),
+                    button.heightAnchor.constraint(equalTo: button.widthAnchor),
+                ])
+            }
+        NSLayoutConstraint.activate([
+            glassStack.topAnchor.constraint(equalTo: glassContainer.contentView.topAnchor, constant: DS.Spacing.standard),
+            glassStack.leadingAnchor.constraint(equalTo: glassContainer.contentView.leadingAnchor, constant: DS.Spacing.standard),
+            glassStack.trailingAnchor.constraint(equalTo: glassContainer.contentView.trailingAnchor, constant: -DS.Spacing.standard),
+            glassStack.bottomAnchor.constraint(equalTo: glassContainer.contentView.bottomAnchor, constant: -DS.Spacing.standard),
+
+            glassContainer.topAnchor.constraint(equalTo: view.topAnchor),
+            glassContainer.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -DS.Spacing.large),
+            glassContainer.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -DS.Spacing.standard),
+        ])
+
+        applyState()
+    }
+
+    // MARK: - State
 
     private func applyState() {
         passwordButton.buttonState = state.isPasswordProtected ? .checked : .unchecked
@@ -209,6 +264,15 @@ extension DraftActionBarViewController {
             view.distribution = .fill
             view.alignment = .fill
             view.spacing = DS.Spacing.standard
+            return view
+        }
+
+        @available(iOS 26, *)
+        static var glassStack: UIStackView {
+            let view = UIStackView()
+            view.distribution = .fill
+            view.alignment = .center
+            view.spacing = DS.Spacing.medium
             return view
         }
 
