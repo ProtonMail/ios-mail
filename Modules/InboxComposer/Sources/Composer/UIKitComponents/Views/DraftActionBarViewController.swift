@@ -124,6 +124,9 @@ final class DraftActionBarViewController: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .clear
 
+        attachmentButton.tintColor = DS.Color.Icon.norm.toDynamicUIColor
+        discardButton.tintColor = DS.Color.Icon.norm.toDynamicUIColor
+
         let glassStack = SubviewFactory.glassStack
 
         if state.isAddingAttachmentsEnabled {

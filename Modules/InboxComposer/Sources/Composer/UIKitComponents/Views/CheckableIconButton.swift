@@ -122,7 +122,11 @@ final class CheckableIconButton: UIButton {
         } else {
             switch buttonState {
             case .unchecked:
-                backgroundIcon.tintColor = DS.Color.Icon.hint.toDynamicUIColor
+                if #available(iOS 26, *) {
+                    backgroundIcon.tintColor = DS.Color.Icon.norm.toDynamicUIColor
+                } else {
+                    backgroundIcon.tintColor = DS.Color.Icon.hint.toDynamicUIColor
+                }
             case .checked:
                 backgroundIcon.tintColor = DS.Color.Icon.norm.toDynamicUIColor
                 checkmarkIcon.tintColor = DS.Color.Icon.norm.toDynamicUIColor
