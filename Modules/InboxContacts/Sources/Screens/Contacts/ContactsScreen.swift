@@ -75,7 +75,7 @@ public struct ContactsScreen: View {
             }
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
-                    Button.close {
+                    ButtonFactory.close {
                         dismiss()
                     }
                 }

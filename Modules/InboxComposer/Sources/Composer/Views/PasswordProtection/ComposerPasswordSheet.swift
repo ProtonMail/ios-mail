@@ -84,19 +84,18 @@ struct ComposerPasswordSheet: View {
             }
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button(CommonL10n.save.string) {
+                    ButtonFactory.save {
                         guard validate() else { return }
                         Task {
                             await onSave(state.password, state.hint)
                             dismiss()
                         }
                     }
-                    .foregroundStyle(DS.Color.InteractionBrand.norm)
-                    .fontWeight(.semibold)
                 }
                 ToolbarItem(placement: .topBarLeading) {
-                    Button(CommonL10n.cancel.string, action: { dismiss() })
-                        .foregroundStyle(DS.Color.Text.accent)
+                    ButtonFactory.cancel {
+                        dismiss()
+                    }
                 }
             }
             .navigationTitle(L10n.PasswordProtection.title)

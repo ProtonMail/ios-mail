@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import InboxCore
+import InboxDesignSystem
 import ProtonUIFoundations
 import SwiftUI
 
@@ -24,15 +25,47 @@ public enum ButtonIcon {
     case sfSymbol(SFSymbol)
 }
 
+public enum ButtonFactory {
+    public static func back(action: @escaping () -> Void) -> some View {
+        Button(CommonL10n.back, image: SFSymbol.chevronLeft, action: action)
+    }
+
+    @ViewBuilder
+    public static func close(action: @escaping () -> Void) -> some View {
+        if #available(iOS 26, *) {
+            Button(role: .close, action: action)
+        } else {
+            Button(CommonL10n.close, image: SFSymbol.xmark, action: action)
+                .foregroundStyle(DS.Color.Text.accent)
+        }
+    }
+
+    @ViewBuilder
+    public static func cancel(action: @escaping () -> Void) -> some View {
+        if #available(iOS 26, *) {
+            Button(role: .cancel, action: action)
+        } else {
+            Button(CommonL10n.cancel, image: SFSymbol.xmark, action: action)
+                .foregroundStyle(DS.Color.Text.accent)
+        }
+    }
+
+    @ViewBuilder
+    public static func save(action: @escaping () -> Void) -> some View {
+        if #available(iOS 26, *) {
+            Button(role: .confirm, action: action)
+                .tint(DS.Color.InteractionBrand.norm)
+        } else {
+            Button(action: action) {
+                Text(CommonL10n.save)
+                    .fontWeight(.semibold)
+                    .foregroundStyle(DS.Color.InteractionBrand.pressed)
+            }
+        }
+    }
+}
+
 extension Button where Label == SwiftUI.Label<Text, Image> {
-    public static func back(action: @escaping () -> Void) -> Self {
-        Self(CommonL10n.back, image: SFSymbol.chevronLeft, action: action)
-    }
-
-    public static func close(action: @escaping () -> Void) -> Self {
-        Self(CommonL10n.close, image: SFSymbol.xmark, action: action)
-    }
-
     public init(_ title: LocalizedStringResource, image: SFSymbol, action: @escaping () -> Void) {
         self.init(title, systemImage: image.rawValue, action: action)
     }

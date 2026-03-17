@@ -21,13 +21,13 @@ import SwiftUI
 public enum ToolbarItemFactory {
     public static func back(action: @escaping () -> Void) -> some ToolbarContent {
         ToolbarItem(placement: .topBarLeading) {
-            Button.back(action: action)
+            ButtonFactory.back(action: action)
         }
     }
 
     public static func close(action: @escaping () -> Void) -> some ToolbarContent {
         ToolbarItem(placement: .topBarTrailing) {
-            Button.close(action: action)
+            ButtonFactory.close(action: action)
         }
     }
 

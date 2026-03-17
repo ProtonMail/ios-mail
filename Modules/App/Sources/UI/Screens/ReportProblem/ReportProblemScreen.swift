@@ -75,7 +75,7 @@ struct ReportProblemScreen: View {
                     .toolbar {
                         toolbarLeadingItem(state: state, store: store)
                         ToolbarItem(placement: .topBarLeading) {
-                            Button.close { store.handle(action: .closeButtonTapped) }
+                            ButtonFactory.close { store.handle(action: .closeButtonTapped) }
                                 .disabled(state.isLoading)
                         }
                     }

@@ -60,21 +60,14 @@ struct EditToolbarScreen: View {
                 .id(store.state.toolbarActions.current.unselected)
                 .toolbar {
                     ToolbarItem(placement: .topBarTrailing) {
-                        Button(action: {
+                        ButtonFactory.save {
                             store.handle(action: .saveTapped)
-                        }) {
-                            Text(CommonL10n.save)
-                                .fontWeight(.semibold)
-                                .foregroundStyle(DS.Color.Text.accent)
                         }
                     }
 
                     ToolbarItem(placement: .topBarLeading) {
-                        Button(action: {
+                        ButtonFactory.cancel {
                             store.handle(action: .cancelTapped)
-                        }) {
-                            Text(CommonL10n.cancel)
-                                .foregroundStyle(DS.Color.Text.accent)
                         }
                     }
                 }

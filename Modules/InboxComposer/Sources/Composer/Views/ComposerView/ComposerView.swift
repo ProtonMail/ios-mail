@@ -218,7 +218,7 @@ struct ComposerView: View {
     @ToolbarContentBuilder
     private var toolbarContent: some ToolbarContent {
         ToolbarItem(placement: .topBarLeading) {
-            Button.close {
+            ButtonFactory.close {
                 Task {
                     await model.dismissComposerManually(dismissAction: dismiss)
                 }

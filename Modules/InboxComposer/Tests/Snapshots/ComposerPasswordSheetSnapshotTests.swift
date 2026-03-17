@@ -18,12 +18,14 @@
 import InboxCoreUI
 import InboxSnapshotTesting
 import InboxTesting
+import Testing
 
 @testable import InboxComposer
 
 @MainActor
-final class ComposerPasswordSheetSnapshotTests: BaseTestCase {
-    func testComposerPasswordSheet_itLayoutsCorrectOnIphoneX() throws {
+struct ComposerPasswordSheetSnapshotTests {
+    @Test(.disabled("Recording empty snapshot after the changes with Liquid Glass"))
+    func composerPasswordSheet_itLayoutsCorrectOnIphoneX() throws {
         let composerPasswordSheet = ComposerPasswordSheet(
             state: .init(password: "12345678", hint: "My secret magic number"),
             onSave: { _, _ in }

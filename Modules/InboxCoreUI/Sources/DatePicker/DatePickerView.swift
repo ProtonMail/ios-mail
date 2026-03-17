@@ -96,15 +96,20 @@ public struct DatePickerView: View {
             .background(DS.Color.Background.secondary)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
-                    Button(CommonL10n.cancel.string, action: onCancel)
-                        .foregroundStyle(DS.Color.Text.accent)
+                    ButtonFactory.cancel(action: onCancel)
                 }
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button(configuration.selectTitle.string) {
-                        onSelect(selectedDate)
+                    if #available(iOS 26, *) {
+                        ButtonFactory.save {
+                            onSelect(selectedDate)
+                        }
+                    } else {
+                        Button(configuration.selectTitle.string) {
+                            onSelect(selectedDate)
+                        }
+                        .foregroundStyle(DS.Color.InteractionBrand.norm)
+                        .fontWeight(.semibold)
                     }
-                    .foregroundStyle(DS.Color.InteractionBrand.norm)
-                    .fontWeight(.semibold)
                 }
             }
             .navigationTitle(configuration.title)

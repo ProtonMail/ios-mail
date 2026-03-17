@@ -76,9 +76,8 @@ struct PINScreen: View {
     private func leadingButton(store: PINStateStore) -> some ToolbarContent {
         if router.stack.isEmpty {
             ToolbarItem(placement: .topBarLeading) {
-                Button(action: { store.handle(action: .leadingButtonTapped) }) {
-                    Text(CommonL10n.cancel)
-                        .foregroundStyle(DS.Color.Text.accent)
+                ButtonFactory.cancel {
+                    store.handle(action: .leadingButtonTapped)
                 }
             }
         } else {
