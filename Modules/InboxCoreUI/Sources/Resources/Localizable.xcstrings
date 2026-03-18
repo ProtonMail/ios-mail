@@ -244,6 +244,24 @@
             }
           }
         },
+        "ka" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "გასვლამდე დარჩენილია %lld ცდა."
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "გასვლამდე დარჩენილია %lld ცდა."
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -507,6 +525,12 @@
             "value" : "続けるにはあなたであることを確認してください。"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "გასაგრძელებლად დაადასტურეთ, რომ ეს თქვენ ბრძანდებით."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -673,6 +697,12 @@
             "value" : "Barra di avanzamento del ciclismo (%@)"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ციკლურობის მიმდინარეობის ზოლი (%@)"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -798,10 +828,16 @@
             "value" : "Le email scambiate tra utenti Proton sono sempre crittografate end-to-end automaticamente."
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Proton-ის მომხმარებლებს შორის გაგზავნილი ელფოსტა ავტომატურად იშიფრება გამჭოლად."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Proton 사용자 간에 주고받는 이메일은 자동 종단간 암호화됩니다."
+            "value" : "Proton 사용자 간에 주고받는 이메일은 자동으로 종단간 암호화됩니다."
           }
         },
         "nb" : {
@@ -832,6 +868,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Emaily medzi používateľmi Proton sú automaticky end-to-end šifrované."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-poštna sporočila, izmenjana med uporabniki Protona, so samodejno šifrirana od konca do konca."
           }
         },
         "sv" : {
@@ -951,6 +993,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "アクセスを有効化"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "წვდომის ჩართვა"
           }
         },
         "ko" : {
@@ -1311,6 +1359,12 @@
             "value" : "Crittografato end-to-end da mittente verificato"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "გამჭოლად დაშიფრული შემოწმებული გამომგზავნისგან"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1345,6 +1399,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "End-to-end šifrované od overeného odosielateľa"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Šifrirano od konca do konca od preverjenega pošiljatelja"
           }
         },
         "sv" : {
@@ -1633,6 +1693,12 @@
             "value" : "Crittografato end-to-end ai destinatari verificati"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "გამჭოლად დაშიფრული გადამოწმებულ მიმღებებამდე"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1667,6 +1733,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "End-to-end šifrované overenými príjemcami"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Šifrirano od konca do konca za preverjene prejemnike"
           }
         },
         "sv" : {
@@ -1764,6 +1836,12 @@
             "value" : "Crittografato end-to-end con verifica fallita"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "გამჭოლად დაშიფრული ჩავარდნილი გადამოწმებით"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1798,6 +1876,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "End-to-end šifrované s neúspešným overením"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Šifrirano od konca do konca, preverjanje ni uspelo"
           }
         },
         "sv" : {
@@ -2086,6 +2170,12 @@
             "value" : "Tuttavia, un mittente o un destinatario che non utilizza Proton Mail potrebbe avere una copia non crittografata archiviata sul proprio server di posta."
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "თუმცა, გამგზავნი, ან მიმღები, რომელიც Proton Mail-ს არ იყენებს, შეიძლება, ფოსტის არადაშიფრული ვერსია მათ ფოსტის სერვერზე ჰქონდეთ შენახული."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2120,6 +2210,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Avšak odosielateľ alebo príjemca, ktorý nepoužíva Proton Mail, môže mať na svojom emailovom serveri uloženú nezašifrovanú kópiu."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vendar pa ima lahko pošiljatelj ali prejemnik, ki ne uporablja storitve Proton Mail, na svojem poštnem strežniku shranjeno nešifrirano kopijo."
           }
         },
         "tr" : {
@@ -2396,6 +2492,12 @@
             "value" : "PGP crittografato end-to-end"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "PGP-ით გამჭოლად დაშიფრული"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2430,6 +2532,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "PGP end-to-end šifrované"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Šifrirano od konca do konca s PGP"
           }
         },
         "sv" : {
@@ -2527,6 +2635,12 @@
             "value" : "PGP crittografato end-to-end al destinatario verificato"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "PGP-ით გამჭოლად დაშიფრული გადამოწმებულ მიმღებამდე"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2561,6 +2675,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "PGP end-to-end šifrované overenému príjemcovi"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Šifrirano od konca do konca s PGP za preverjenega prejemnika"
           }
         },
         "sv" : {
@@ -2658,6 +2778,12 @@
             "value" : "email firmato PGP"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "PGP-ით ხელმოწერილი ელფოსტა"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2692,6 +2818,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Email podpísaný PGP"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-pošta, podpisana s PGP"
           }
         },
         "sv" : {
@@ -2789,6 +2921,12 @@
             "value" : "email firmata PGP con verifica fallita"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "PGP-ით ხელმოწერილი ელფოსტა ჩავარდნილი გადამოწმებით"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2823,6 +2961,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Email podpísaný pomocou PGP s neúspešným overením"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-pošta, podpisana s PGP, preverjanje ni uspelo"
           }
         },
         "sv" : {
@@ -3129,6 +3273,12 @@
             "value" : "PINと生体認証があなたのデバイスで無効になっています。設定で有効にするか、サインインしてください。"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "თქვენს მოწყობილობაზე PIN-კოდი და ბიომეტრია გამორთულია. აპლიკაციაში შესასვლელად, ან განბლოკვისთვის ჩართეთ ისინი მორგების დიალოგში."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3314,6 +3464,12 @@
             "value" : "PINとFace IDはあなたのデバイスで無効になっています。設定で有効にするか、サインインしてください。"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "თქვენს მოწყობილობაზე PIN-კოდი და Face ID გამორთულია. აპლიკაციაში შესასვლელად, ან განბლოკვისთვის ჩართეთ ისინი მორგების დიალოგში."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3497,6 +3653,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "PINとTouch IDはあなたのデバイスで無効になっています。設定で有効にするか、サインインしてください。"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "თქვენს მოწყობილობაზე PIN-კოდი და Touch ID გამორთულია. აპლიკაციაში შესასვლელად, ან განბლოკვისთვის ჩართეთ ისინი მორგების დიალოგში."
           }
         },
         "ko" : {
@@ -3873,6 +4035,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "画面をロック解除するには認証が必要です。"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ეკრანის განბლოკვისთვის დაადასტურეთ თქვენი ვინაობა."
           }
         },
         "ko" : {
@@ -4442,6 +4610,12 @@
             "value" : "すべてのアカウントからサインアウト"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "გასვლა ყველა ანგარიშიდან"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4546,7 +4720,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "La [verificació del remitent ha fallat](https://proton.me/support/sender-verification-failed) perquè no s'havia signat. Confirmeu l'autenticitat del correu electrònic amb el vostre contacte."
+            "value" : "La [verificació del remitent ha fallat](https://proton.me/support/sender-verification-failed) perquè no s'ha signat. Confirmeu l'autenticitat del correu electrònic amb el contacte."
           }
         },
         "cs" : {
@@ -4609,6 +4783,12 @@
             "value" : "La verifica [del mittente non è riuscita](https://proton.me/support/sender-verification-failed) perché non è stata firmata. Conferma l'autenticità dell'email con il tuo contatto."
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "[გამგზავნის გადამოწმება ჩავარდა](https://proton.me/support/sender-verification-failed), რადგან ის არ იყო ხელმოწერილი. გთხოვთ, დაადასტუროთ ელფოსტის სინამდვილე თქვენს კონტაქტთან."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4645,6 +4825,12 @@
             "value" : "[Overenie odosielateľa](https://proton.me/support/sender-verification-failed) zlyhalo, pretože nebolo podpísané. Overte pravosť emailu u svojho kontaktu, prosím."
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "[Preverjanje pošiljatelja](https://proton.me/support/sender-verification-failed) je spodletelo, ker ni bilo podpisano. Prosimo, potrdite pristnost e-pošte pri svojemu stiku."
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4677,7 +4863,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "La [verificació del remitent ha fallat](https://proton.me/support/sender-verification-failed). Confirmeu l'autenticitat del correu electrònic amb el vostre contacte."
+            "value" : "La [verificació del remitent ha fallat](https://proton.me/support/sender-verification-failed). Confirmeu l'autenticitat del correu electrònic amb el contacte."
           }
         },
         "cs" : {
@@ -4740,6 +4926,12 @@
             "value" : "La verifica [del mittente non è riuscita](https://proton.me/support/sender-verification-failed). Conferma l'autenticità dell'email con il tuo contatto."
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "[გამგზავნის გადამოწმება ჩავარდა](https://proton.me/support/sender-verification-failed). დაადასტურეთ ელფოსტის სინამდვილე თქვენს კონტაქტთან."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4774,6 +4966,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "[Overenie odosielateľa](https://proton.me/support/sender-verification-failed) zlyhalo. Overte pravosť emailu u svojho kontaktu, prosím."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "[Preverjanje pošiljatelja](https://proton.me/support/sender-verification-failed) ni uspelo. Prosimo, potrdite pristnost e-pošte pri svojemu stiku."
           }
         },
         "sv" : {
@@ -4871,6 +5069,12 @@
             "value" : "L'email è archiviata sui server Proton con [crittografia zero-access](https://proton.me/blog/zero-access-encryption). Né Proton né nessun altro possono leggerla."
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ელფოსტა ინახება Proton-ის სერვერებზე [ნულოვანი წვდომით დაშიფვრით](https://proton.me/blog/zero-access-encryption). ვერც Proton და ვერც სხვა ვერავინ შეძლებს მის წაკითხვას."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4933,7 +5137,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "El destinatari és un [contacte verificat](https://proton.me/support/address-verification) i heu confiat en les seves claus d'encriptació."
+            "value" : "El destinatari és un [contacte verificat](https://proton.me/support/address-verification) les claus de xifratge del qual heu confiat."
           }
         },
         "cs" : {
@@ -4996,6 +5200,12 @@
             "value" : "Il destinatario è un [contatto verificato](https://proton.me/support/address-verification) le cui chiavi crittografiche hai aggiunto alla lista dei contatti attendibili."
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "მიმღებიარის [გადამოწმებული კონტაქტი](https://proton.me/support/address-verification), რომლის დაშიფვრის გასაღებებსაც ენდობით."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5032,6 +5242,12 @@
             "value" : "Príjemca je [overený kontakt](https://proton.me/support/address-verification), ktorého šifrovacie kľúče ste si overili."
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prejemnik je [preverjen stik](https://proton.me/support/address-verification), kateremu ste zaupali šifrirne ključe."
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5064,7 +5280,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Els destinataris són [contactes verificats](https://proton.me/support/address-verification) i heu confiat en les seves claus d'encriptació."
+            "value" : "Els destinataris són [contactes verificats](https://proton.me/support/address-verification) les claus de xifratge dels quals heu confiat."
           }
         },
         "cs" : {
@@ -5127,6 +5343,12 @@
             "value" : "I destinatari sono [contatti verificati](https://proton.me/support/address-verification) le cui chiavi di crittografia hai aggiunto alla lista dei contatti attendibili."
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "მიმღებები არიან [დადასტურებული კონტაქტები](https://proton.me/support/address-verification), რომელთა დაშიფვრის გასაღებებსაც ენდობით."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5163,6 +5385,12 @@
             "value" : "Príjemcovia sú [overené kontakty](https://proton.me/support/address-verification), ktorých šifrovacie kľúče ste si overili."
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prejemniki so [preverjeni stiki](https://proton.me/support/address-verification), katerim ste zaupali šifrirne ključe."
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5195,7 +5423,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "El remitent és un [contacte verificat](https://proton.me/support/address-verification) i heu confiat en les seves claus d'encriptació."
+            "value" : "El remitent és un [contacte verificat](https://proton.me/support/address-verification) les claus de xifratge del qual heu confiat."
           }
         },
         "cs" : {
@@ -5258,6 +5486,12 @@
             "value" : "Il mittente è un [contatto verificato](https://proton.me/support/address-verification) le cui chiavi crittografiche hai aggiunto alla lista dei contatti attendibili."
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "გამგზავნი არის [გადამოწმებული კონტაქტი](https://proton.me/support/address-verification), რომლის დაშიფვრის გასაღებებსაც ენდობით."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5294,6 +5528,12 @@
             "value" : "Odosielateľ je [overený kontakt](https://proton.me/support/address-verification), ktorého šifrovacie kľúče ste si overili."
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pošiljatelj je [preverjen stik](https://proton.me/support/address-verification), kateremu ste zaupali šifrirne ključe."
+          }
+        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5326,7 +5566,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aquest correu electrònic està [xifrat d’extrem a extrem](https://proton.me/blog/what-is-end-to-end-encryption) al dispositiu del remitent i només el pot desencriptar el destinatari. Proton no pot veure el contingut del correu en cap moment."
+            "value" : "Aquest correu electrònic està [xifrat d’extrem a extrem](https://proton.me/blog/what-is-end-to-end-encryption) al dispositiu del remitent i només el pot desxifrar el destinatari. Proton no pot veure el contingut del correu en cap moment."
           }
         },
         "cs" : {
@@ -5389,6 +5629,12 @@
             "value" : "Questa email è [crittografata end-to-end](https://proton.me/blog/what-is-end-to-end-encryption) sul dispositivo del mittente e può essere decrittata solo dal destinatario. Proton non può vedere il contenuto dell'email in nessun momento."
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ეს ელფოსტა [გამჭოლადაა დაშიფრული ](https://proton.me/blog/what-is-end-to-end-encryption) გამგზავნის მოწყობილობაზე და მისი გაშიფვრა, მხოლოდ, მიმღებს შეუძლია. Proton-ს არ შეუძლია ელფოსტის შინაარსის ნახვა."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5423,6 +5669,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tento email je [end-to-end šifrovaný](https://proton.me/blog/what-is-end-to-end-encryption) na odosielateľovom zariadení a môže ho dešifrovať iba príjemca. Proton nikdy nevidí obsah emailu."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ta e-pošta je na napravi pošiljatelja [šifrirana od konca do konca](https://proton.me/blog/what-is-end-to-end-encryption) in jo lahko dešifrira le prejemnik. Proton v nobenem trenutku ne more videti vsebine e-pošte."
           }
         },
         "tr" : {
@@ -5514,6 +5766,12 @@
             "value" : "Questa email è archiviata sui server Proton con [crittografia zero-access](https://proton.me/blog/zero-access-encryption). Né Proton né nessun altro possono leggerla."
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ეს ელფოსტა ინახება Proton-ის სერვერებზე [ნულოვანი წვდომით დაშიფვრით](https://proton.me/blog/zero-access-encryption). ვერც Proton და ვერც სხვა ვერავინ შეძლებს მის წაკითხვას."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5548,6 +5806,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Email je uložený na Proton serveroch so šifrovaním s nulovým prístupom (zero-access encryption)[https://proton.me/blog/zero-access-encryption]. Ani Proton, ani nikto iný si ho nemôže prečítať."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ta e-pošta je na strežnikih Proton shranjena z [šifriranjem brez dostopa](https://proton.me/blog/zero-access-encryption). Niti Proton niti kdorkoli drug je ne more prebrati."
           }
         },
         "tr" : {
@@ -5639,6 +5903,12 @@
             "value" : "Questo destinatario ha disattivato la crittografia end-to-end sul proprio account."
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ამ მიმღებმა თავის ანგარიშზე გამჭოლი დაშიფვრა გამორთო."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5673,6 +5943,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tento príjemca si na svojom účte deaktivoval end-to-end šifrovanie."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ta prejemnik je v svojem računu onemogočil šifriranje od konca do konca."
           }
         },
         "sv" : {
@@ -5973,6 +6249,12 @@
             "value" : "Proton Mailをアンロック"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "განბლოკეთ Proton Mail"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6140,6 +6422,12 @@
             "value" : "Hai [firmato digitalmente](https://proton.me/support/proton-mail-digital-signatures) questa email, dimostrando al destinatario che la tua email è autentica e non è stata manomessa."
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "თქვენ [ციფრულად მოაწერეთ ხელი](https://proton.me/support/proton-mail-digital-signatures) ამ ელფოსტას, რითიც მიმღებს უმტკიცებთ, რომ თქვენი ელფოსტა ნამდვილია და არ შეცვლილა."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6174,6 +6462,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Tento email ste [digitálne podpísali](https://proton.me/support/proton-mail-digital-signatures), čím ste príjemcovi dokázali, že váš email je autentický a nebol s ním nijak manipulované."
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "To e-pošto ste [digitalno podpisali](https://proton.me/support/proton-mail-digital-signatures) in tako prejemniku dokazali, da je vaša e-pošta pristna in da ni bila spremenjena brez dovoljenja."
           }
         },
         "tr" : {
@@ -6281,6 +6575,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "このデバイス上のすべてのアカウントからサインアウトされます。続行しますか？"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "აპირებთ, ამ მოწყობილობაზე ყველა ანგარიშიდან გახვიდეთ. გააგრძლებთ?"
           }
         },
         "ko" : {
@@ -6450,6 +6750,12 @@
             "value" : "Crittografato ad accesso zero"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ნულოვანი წვდომით დაშიფრული"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6484,6 +6790,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Šifrované bez prístupu"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Šifrirano brez dostopa"
           }
         },
         "sv" : {
@@ -6581,6 +6893,12 @@
             "value" : "Zero-access crittografato con destinatario verificato"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ნულოვანი წვდომით დაშიფრული გადამოწმებული მიმღებით"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6615,6 +6933,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Šifrované s nulovým prístupom s overeným príjemcom"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Šifrirano brez dostopa za preverjenega prejemnika"
           }
         },
         "sv" : {
@@ -6712,6 +7036,12 @@
             "value" : "Zero-access crittografato con destinatari verificati"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ნულოვანი წვდომით დაშიფრული გადამოწმებული მიმღებებით"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6746,6 +7076,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Šifrované s nulovým prístupom s overenými príjemcami"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Šifrirano brez dostopa za preverjene prejemnike"
           }
         },
         "sv" : {

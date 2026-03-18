@@ -1603,6 +1603,12 @@
             "value" : "サブスクリプションの選択"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "აირჩიეთ გამოწერა"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -1965,6 +1971,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "無料プランで続行"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "გაგრძელება სატარიფო გეგმით Free"
           }
         },
         "ko" : {
@@ -2890,6 +2902,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "割引は標準月額料金に基づいています。キャンセルされるまで%1$@ /%2$@にて自動更新されます。"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ფასდაკლებები ეფუძნება ყოველთვიურ სტანდარტულ ფასებს. ავტომატურად განახლდება %1$@ /%2$@-ზე, გაუქმებამდე."
           }
         },
         "ko" : {
@@ -4376,6 +4394,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "月額%@のみ"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "მხოლოდ %@ /თვეში"
           }
         },
         "ko" : {

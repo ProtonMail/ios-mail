@@ -286,6 +286,24 @@
             }
           }
         },
+        "ka" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld კონტაქტი"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld კონტაქტი"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -1889,6 +1907,12 @@
             "value" : "ウェブで利用可能"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ხელმისაწვდომია ვებზე"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2438,6 +2462,12 @@
             "value" : "携帯電話"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "უჯრედი"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2814,6 +2844,12 @@
             "value" : "ウェブで続行"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "გაგრძელება ვებზე"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2979,6 +3015,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "アプリでの連絡先またはグループの作成は、まだ準備ができていません。現在は、ウェブアプリで作成すると、お客様のデバイスに同期されます。"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "აპში კონტაქტების ან ჯგუფების შექმნა ჯერ მზად არაა. ამჟამად, შეგიძლიათ შექმნათ ისინი ვებ აპლიკაციაში და ისინი სინქრონიზდება თქვენს მოწყობილობასთან."
           }
         },
         "ko" : {
@@ -3530,6 +3572,12 @@
             "value" : "アプリでの連絡先またはグループの編集は、現在準備中です。現在は、ウェブアプリで編集することで、変更をお客様のデバイスに同期できます。"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "კონტაქტების ან ჯგუფების ჩასწორება აპლიკაციაში ჯერ არ არის მზად. ამჟამად, შეგიძლიათ დაარედაქტიროთ ისინი ვებ აპლიკაციაში და ცვლილებები თქვენს მოწყობილობაზე სინქრონიზდება."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4077,6 +4125,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "女性"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "მდედრობითი"
           }
         },
         "ko" : {
@@ -5020,6 +5074,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "男性"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "მამრობითი"
           }
         },
         "ko" : {
@@ -6154,6 +6214,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "該当なし"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "არ გამოიყენება"
           }
         },
         "ko" : {
@@ -8060,6 +8126,12 @@
             "value" : "テキストメッセージ専用電話"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ტექსტური ტელეფონი"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9580,6 +9652,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "音声"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ხმოვანი ზარი"
           }
         },
         "ko" : {

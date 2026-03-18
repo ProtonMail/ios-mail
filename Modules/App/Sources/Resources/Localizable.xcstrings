@@ -470,6 +470,12 @@
             "value" : "%1$@/%2$@"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%1$@ %2$@-დან"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -800,6 +806,24 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld 個の添付ファイル"
+                }
+              }
+            }
+          }
+        },
+        "ka" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld მიმაგრებული ფაილი"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld მიმაგრებული ფაილი"
                 }
               }
             }
@@ -1290,6 +1314,24 @@
             }
           }
         },
+        "ka" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld ბმული გასუფთავდა"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld ბმული გასუფთავდა"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -1386,7 +1428,7 @@
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld ссылки очищено"
+                  "value" : "%lld ссылки очищены"
                 }
               },
               "many" : {
@@ -1404,7 +1446,7 @@
               "other" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld очищенных ссылок"
+                  "value" : "%lld ссылок очищено"
                 }
               }
             }
@@ -1787,6 +1829,24 @@
             }
           }
         },
+        "ka" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld შეტყობინება"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld შეტყობინება"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -2102,6 +2162,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%lld 件選択済み"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "მონიშნულია %lld"
           }
         },
         "ko" : {
@@ -2439,6 +2505,24 @@
             }
           }
         },
+        "ka" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "დაბლოკილია %lld ტრეკერი"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "დაბლოკილია %lld ტრეკერი"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -2535,7 +2619,7 @@
               "few" : {
                 "stringUnit" : {
                   "state" : "translated",
-                  "value" : "%lld трекера заблокировано"
+                  "value" : "%lld трекера заблокированы"
                 }
               },
               "many" : {
@@ -2760,6 +2844,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "1. 容量の大きいファイルが添付されているメールを見つける(動画など)\n2. メールを開く\n3. メールが読み込まれるのを待つ"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "1. იპოვეთ ელფოსტა დიდი მიმაგრებული ფაილით (მაგ: ვიდეო)\n2. გახსენით ელფოსტა\n3. დაელოდეთ ელფოსტის ჩატვირთვას"
           }
         },
         "ko" : {
@@ -3138,6 +3228,12 @@
             "value" : "メールに返信しますか？重要なメッセージですか？到着したらすぐに通知します。"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ელფოსტის პასუხი? მნიშვნელოვანი შეტყობინება? მიიღეთ შეტყობინება იმ მომენტში, როდესაც ისინი შემოვა."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3512,6 +3608,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "実際の結果"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "მიმდინარე შედეგები"
           }
         },
         "ko" : {
@@ -4255,6 +4357,24 @@
             }
           }
         },
+        "ka" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%u წუთის შემდეგ"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%u წუთის შემდეგ"
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "variations" : {
             "plural" : {
@@ -4576,6 +4696,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "アプリからサインアウトすると、PINを含むすべてのアプリロック設定がリセットされます"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "აპლიკაციიდან გასვლისას მოხდება ყველა აპლიკაციის დაბლოკვის პარამეტრის, PIN-კოდის ჩათვლით, ჩამოყრა"
           }
         },
         "ko" : {
@@ -5718,6 +5844,12 @@
             "value" : "このデバイスから送信する際に、お客様のメール署名に追加して表示される署名。"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "დამატებითი ხელმოწერა, რომელიც გამოჩნდება თქვენი ელფოსტის ხელმოწერასთან ერთად, როცა ფოსტას ამ მოწყობილობიდან აგზავნით."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5877,6 +6009,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "入力した情報はすべて失われます。"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ინფორმაცია, რომელიც შეიყვანეთ, დაიკარგება."
           }
         },
         "ko" : {
@@ -6064,6 +6202,12 @@
             "value" : "アプリのカスタマイズ"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "აპის მორგება"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6225,6 +6369,12 @@
             "value" : "デフォルトのアプリアイコン"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "აპის ხატულა"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6378,6 +6528,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "アプリアイコン"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "აპის ხატულა"
           }
         },
         "ko" : {
@@ -7120,6 +7276,12 @@
             "value" : "このウィンドウを閉じてもよろしいですか？"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "მართლა გნებავთ ამ ფანჯრის დახურვა?"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -7847,7 +8009,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Segur que voleu suprimir permanentment tots els missatges de la carpeta %@? Aquesta acció no es podrà desfer."
+            "value" : "Segur que voleu suprimir permanentment tots els missatges de la carpeta %@? Aquesta acció no es pot desfer."
           }
         },
         "cs" : {
@@ -7920,6 +8082,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@フォルダー内のすべてのメッセージを完全に削除してよろしいですか？この操作は取り消しできません。"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "დარწმუნებული ბრძანდებით, რომ გნებავთ, სამუდამოდ წაშალოთ ყველა შეტყობინება საქაღალდეში %@? ეს ქმედება შეუქცევადია."
           }
         },
         "ko" : {
@@ -8081,6 +8249,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "自動削除はオフになっています。ごみ箱と迷惑メール内のメッセージは、手動で削除するまで残ります。"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ავტოწაშლა გამორთულია. შეტყობინებები ნაგვის ყუთში და სპამში დარჩება მანამ, სანამ მათ ხელით არ წაშლით."
           }
         },
         "ko" : {
@@ -9316,7 +9490,195 @@
       }
     },
     "Cancel" : {
-      "comment" : "Accessibility label for the button that exits selection mode in the main toolbar."
+      "comment" : "Accessibility label for the button that exits selection mode in the main toolbar.",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Скасаваць"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancel·la"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zrušit"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Annullér"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abbrechen"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ακύρωση"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancel"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancelar"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancelar"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Peru"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Annuler"
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Törlés"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Batal"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Annulla"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "キャンセル"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "გაუქმება"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "취소"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avbryt"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Annuleren"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anuluj"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancelar"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancelar"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anulare"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Отменить"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Zrušiť"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prekliči"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Avbryt"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "İptal"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Скасувати"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "取消"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "取消"
+          }
+        }
+      }
     },
     "Cannot cancel schedule send. Message was already sent." : {
       "comment" : "Error in the context of undoing a scheduled message: the message has already been sent.",
@@ -10712,6 +11074,12 @@
             "value" : "PINを変更する"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "PIN-კოდის შეცვლა"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -11259,6 +11627,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "クリア済み"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "გასუფთავებულია"
           }
         },
         "ko" : {
@@ -11995,6 +12369,12 @@
             "value" : "PINを確認"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "დაადასტურეთ PIN-კოდი"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12635,6 +13015,34 @@
                     "stringUnit" : {
                       "state" : "translated",
                       "value" : "Conversazioni spostate nell'archivio."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%#@arg1@"
+          },
+          "substitutions" : {
+            "arg1" : {
+              "argNum" : 1,
+              "formatSpecifier" : "lld",
+              "variations" : {
+                "plural" : {
+                  "one" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "საუბარი გადატანილია არქივში."
+                    }
+                  },
+                  "other" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "საუბრები გადატანილია არქივში."
                     }
                   }
                 }
@@ -14579,6 +14987,12 @@
             "value" : "差出人のブロックを解除できませんでした"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "გამგზავნის განბლოკვა ვერ მოხერხდა"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -15311,6 +15725,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "現在のPIN"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "მიმდინარე PIN-კოდი"
           }
         },
         "ko" : {
@@ -17440,6 +17860,12 @@
             "value" : "目立ちにくい"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ფარული"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -17583,6 +18009,12 @@
             "value" : "目立たないアプリアイコン"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "დისკრეტული აპლიკაციის ხატულა"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -17718,6 +18150,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Icona riservata"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "დისკრეტული ხატულა"
           }
         },
         "ko" : {
@@ -18257,6 +18695,12 @@
             "value" : "ロックしない"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "არ დაბლოკო"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -18631,6 +19075,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "返信をお見逃しなく"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "არ გამოტოვოთ პასუხი"
           }
         },
         "ko" : {
@@ -20143,6 +20593,12 @@
             "value" : "メッセージを編集"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "შეტყობინების ჩასწორება"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -20889,6 +21345,12 @@
             "value" : "メール署名"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ელფოსტის ხელმოწერა"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -21036,6 +21498,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ からのメールは今後配信されず、完全に削除されます。設定でブロックされたメールアドレスを管理できます。"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ელფოსტები %@-დან აღარ იქნება მიწოდებული და სამუდამოდ წაიშლება. დაბლოკილი ელფოსტის მისამართების მართვა პარამეტრებში შეგიძლიათ."
           }
         },
         "ko" : {
@@ -21187,6 +21655,12 @@
             "value" : "%@ フォルダを空にする"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ საქაღალდის დაცარიელება"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -21334,6 +21808,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@を今すぐ空にする"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@-ის დაცარიელება ახლავე"
           }
         },
         "ko" : {
@@ -21607,7 +22087,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Bloquejos de xifratge"
+            "value" : "Cadenats de xifratge"
           }
         },
         "cs" : {
@@ -21668,6 +22148,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Lucchetti di crittografia"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "დაშიფვრის ჩაკეტვა"
           }
         },
         "ko" : {
@@ -21823,6 +22309,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "メッセージの暗号化、スパムメールの削減、フィッシング詐欺からの保護、トラッカーのブロックなど、プライバシーを守ります。"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ისიამოვნეთ დაშიფრული შეტყობინებებით, ნაკლები სპამით, დაცვით ფიშინგისგან და დაბლოკილი ტრეკერებით. კეთილი იყოს თქვენი მობრძანება კონფიდენციალობაში."
           }
         },
         "ko" : {
@@ -21990,6 +22482,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "エラーログは、お客様の問題の真相を解明するのに役立ちます。エラーログが含まれていない場合は、十分な調査ができない可能性があります。"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "შეცდომების ჟურნალი გვეხმარება თქვენი პრობლემის ფსკერში ჩავიხედოთ. თუ მათ არ გამოგვიგზავნით, დახმარებას ადვილად ვერ შევძლებთ."
           }
         },
         "ko" : {
@@ -22177,6 +22675,12 @@
             "value" : "期待される結果"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "მოსალოდნელი შედეგები"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -22348,6 +22852,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "有効期限%@"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ვადა იწურება %@"
           }
         },
         "ko" : {
@@ -22891,6 +23401,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "すべてがそこに"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ფოკუსი თქვენს ხელთაა"
           }
         },
         "ko" : {
@@ -23627,6 +24143,12 @@
             "value" : "はじめましょう"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "დაიწყეთ"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -23983,6 +24505,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Proton への接続がブロックされている場合、アプリは別のネットワークパス経由で Proton に接続を試みます。この設定は、ファイアウォールや接続の問題を回避するのに役立ちます。信頼性向上のため、この設定を有効にしておくことをおすすめします。"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "თუ Proton-ის საიტები დაბლოკილია, ეს აპს საშუალებას აძლევს, სცადოს სხვა ქსელური გზების გამოყენება მათ მისაღწევად. ამას შეუძლია, ქსელური ეკრანების, ან კავშირის პრობლემების გვერდის ავლაში დაგეხმაროთ. უკეთესი საიმედოობისთვის გირჩევთ, რომ ის ჩართული გქონდეთ."
           }
         },
         "ko" : {
@@ -24552,6 +25080,12 @@
             "value" : "ごみ箱/迷惑メールを含める"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ნაგავი/სპამის ჩათვლა"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -24878,6 +25412,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ispeziona i messaggi sospetti per confermarne l'autenticità e scoprire eventuali elementi di tracciamento nascosti."
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "შეამოწმეთ საეჭვო შეტყობინებები, რომ დაადასტუროთ მათი ნაბდვლობა და აჰხადოთ ფარდა ნებისმიერ დამალული ტრეკინგის ელემენტები."
           }
         },
         "ko" : {
@@ -25399,6 +25939,12 @@
             "value" : "お客様のメールの同期に問題が発生しました。解決するには、サインアウトして再度サインインしてください。"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "თვენი ელფოსტის სინქრონიზაციის პრობლემა. მისი გადაჭრისთვის გადით სისტემიდან და თავიდან შემოდით."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -25733,6 +26279,12 @@
             "value" : "Mantieni l'icona predefinita di Proton Mail o sostituiscila con una generica per una maggiore privacy."
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "შეინახეთ Proton Mail-ის ნაგულისხმევი ხატულა, ან, მეტი კონფიდენციალობისთვის, შეცვალეთ ზოგადზე."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -25868,6 +26420,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "デフォルトのProton Mailアイコンを使用するか、プライバシー強化のために、より控えめなアイコンに変更することができます。通知には、常にProton Mailの名称とアイコンが表示されます。[より詳しく…](https://proton.me/support/disguise-app-icon)"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "შეინარჩუნეთ ნაგულისხმევი Proton Mail-ის ხატულა, ან შენიღბეთ ის უფრო ფრთხილით დამატებითი კონფიდენციალობისთვის.შეტყობინებები ყოველთვის აჩვენებს Proton Mail-ის სახელს და ხატულას [გაიგეთ მეტი…](https://proton.me/support/disguise-app-icon)"
           }
         },
         "ko" : {
@@ -26962,6 +27520,12 @@
             "value" : "画像を読み込む"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "გამოსახულებების ჩატვირთვა"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -27121,6 +27685,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "メールボックスを読み込んでいます…"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "თქვენი საფოსტო ყუთის ჩატვირთვა..."
           }
         },
         "ko" : {
@@ -27308,6 +27878,12 @@
             "value" : "メール体験"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ელფოსტის გამოცდილება"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -27493,6 +28069,12 @@
             "value" : "メールリストの購読を解除しました"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "დაგზავნის სიის გამოწერა გაუქმდა"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -27664,6 +28246,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "メールボックスの設定"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "საფოსტო ყუთის მორგება"
           }
         },
         "ko" : {
@@ -28008,6 +28596,24 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld 個の添付ファイル"
+                }
+              }
+            }
+          }
+        },
+        "ka" : {
+          "variations" : {
+            "plural" : {
+              "one" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld მიმაგრებული ფაილი"
+                }
+              },
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld მიმაგრებული ფაილი"
                 }
               }
             }
@@ -29391,7 +29997,195 @@
       }
     },
     "Menu" : {
-      "comment" : "Accessibility label for the sidebar menu button in the main toolbar."
+      "comment" : "Accessibility label for the sidebar menu button in the main toolbar.",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Меню"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Menú"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nabídka"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Menu"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Menü"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Μενού"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Menu"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Menú"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Menú"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Valikko"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Menu"
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Menü"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Menu"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Menu"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "メニュー"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "მენიუ"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "메뉴"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meny"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Menu"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Menu"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Menu"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Menu"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meniu"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Меню"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Menu"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meni"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Meny"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Menü"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Меню"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "菜单"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "選單"
+          }
+        }
+      }
     },
     "Message" : {
       "comment" : "Action title for creating new message in the address action sheet.",
@@ -29948,6 +30742,34 @@
             }
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%#@arg1@"
+          },
+          "substitutions" : {
+            "arg1" : {
+              "argNum" : 1,
+              "formatSpecifier" : "lld",
+              "variations" : {
+                "plural" : {
+                  "one" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "შეტყობინება გადატანილია არქივში."
+                    }
+                  },
+                  "other" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "წერილები გადატანილია არქივში."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -30375,6 +31197,12 @@
             "value" : "メッセージツールバー"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "შეტყობინების ხელსაწყოთა პანელი"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -30540,6 +31368,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "ごみ箱と迷惑メールのメッセージは、 30 日後に自動的に削除されます。"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ნაგვის ყუთიდან და სპამიდან შეტყობინებები ავტომატურად წაიშლება 30 დღეში."
           }
         },
         "ko" : {
@@ -30727,6 +31561,12 @@
             "value" : "4文字から21文字以内"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "მინიმუმ 4 და მაქსიმუმ 21 სიმბოლო"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -30912,6 +31752,12 @@
             "value" : "モバイル署名"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "მობილური ხელმოწერა"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -31089,6 +31935,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "詳細設定を表示"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "მეტი პარამეტრი"
           }
         },
         "ko" : {
@@ -32010,6 +32862,12 @@
             "value" : "%@に移動しました。"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "გადატანილია %@-ში."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -32360,6 +33218,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "新しいPIN"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ახალი PIN-კოდი"
           }
         },
         "ko" : {
@@ -32923,6 +33787,12 @@
             "value" : "送信権限を持つアドレスがありません"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "გაგზავნის უფლების მქონე მისამართის გარეშე"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -33452,6 +34322,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "トラッカーは検出されませんでした"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ტრეკერები აღმოჩენილი არაა"
           }
         },
         "ko" : {
@@ -34379,6 +35255,12 @@
             "value" : "通知は、別のアプリを使用中でも、受信トレイを確認するのに役立ちます。"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "შეტყობინებები დაგეხმარებათ, რომ არ გამოგრჩეთ შემოსულები, მაშინაც კი, როცა სხვა აპლიკაციაში ბრძანდებით."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -34946,6 +35828,12 @@
             "value" : "メールを開くと、内容と添付ファイルが表示されるはずです。"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ელფოსტის გახსნისას უნდა გამოჩნდეს შეტყობინების შემცველობა და მასზე მიმაგრებული ფაილები.."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -35117,6 +36005,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "オリジナル"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ორიგინალი"
           }
         },
         "ko" : {
@@ -35660,6 +36554,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "時間と日付を選択"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "აირჩიეთ დრო და თარიღი"
           }
         },
         "ko" : {
@@ -37166,6 +38066,12 @@
             "value" : "報告を送信しました"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "პრობლემის ანგარიში გაიგზავნა"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -37349,6 +38255,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "受信トレイ内の次または前のメッセージにすばやく移動します。"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "საფოსტო ყუთში შემდეგ, ან წინა შეტყობინებაზე სწრაფი გადასვლა."
           }
         },
         "ko" : {
@@ -37536,6 +38448,12 @@
             "value" : "どこにいてもメールの閲覧、作成、管理が可能です。オンラインに戻ると、すぐに変更が自動的に同期されます。"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "წაიკითხეთ, დაწერეთ და მართეთ ელფოსტა, სადაც არ უნდა ბრძანდებოდეთ. ყველაფერის სინქრონიზაცია ავტომატურად მოხდება, როცა ინტერნეტს დაუკავშირდებით."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -37701,6 +38619,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "PIN コードの確認"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "გაიმეორეთ PIN-კოდი"
           }
         },
         "ko" : {
@@ -39977,6 +40901,12 @@
             "value" : "Face ID で保護する"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "დაცვა Face ID-ით"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -40162,6 +41092,12 @@
             "value" : "PINで保護する"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "PIN-კოდით დაცვა"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -40345,6 +41281,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Touch ID で保護する"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "დაცვა Touch ID-ით"
           }
         },
         "ko" : {
@@ -40642,7 +41584,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vegeu qui us ha intentat monitoritzar amb píxels amagats i enllaços de seguiment, i quants intents s'han bloquejat."
+            "value" : "Vegeu qui us ha intentat monitorar amb píxels amagats i enllaços de seguiment, i quants intents s'han blocat."
           }
         },
         "cs" : {
@@ -40703,6 +41645,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Scopri chi ha cercato di monitorarti con pixel nascosti e link di tracciamento, e quanti tentativi sono stati bloccati."
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ნახეთ, ვინ ცდილობდა თქვენს მონიტორინგს დამალული პიქსელებითა და ტრეკინგის ბმულებით და რამდენი მცდელობა დაიბლოკა."
           }
         },
         "ko" : {
@@ -42000,6 +42948,12 @@
             "value" : "PINを設定"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "PIN-კოდის დაყენება"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -42376,6 +43330,12 @@
             "value" : "この会話内の削除済みではないメッセージを表示"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ნაგვის ყუთში არგადატანილი შეტყობინებების ჩვენება ამ მიმოწერაში."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -42535,6 +43495,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "この会話のごみ箱にあるメッセージを表示。"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ნაგვის ყუთში გადატანილი შეტყობინებების ჩვენება ამ მიმოწერაში."
           }
         },
         "ko" : {
@@ -43083,6 +44049,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "署名"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ხელმოწერები"
           }
         },
         "ko" : {
@@ -44768,6 +45740,12 @@
             "value" : "トラッカー防止によって一部の画像は読み込めませんでした。"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ტრეკინგისგან დაცვით ზოგიერთი გამოსახულების ჩატვირთვა შეუძლებელია."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -45309,6 +46287,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "整理に時間をかけず、行動する時間を増やしましょう。受信トレイは、より操作しやすいように設計されており、重要なものにすばやくアクセスできます。"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "დახარჯეთ ნაკლები დრო დალაგებაში და დაუთმეთ მეტი დრო თქვენს საქქმეს. თქენი საფოსტო ყუთი შექმნილია, იყოს უფრო იოლი სამართავად, რომ რაც უფრო მნიშვნელოვანია საგანი, მით უფრო იოლად მიაგნოთ მას."
           }
         },
         "ko" : {
@@ -45860,6 +46844,12 @@
             "value" : "オフラインでも接続"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "იყავით დაკავშირებული, ხაზგარეშეც"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -46025,6 +47015,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "再現する手順"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "გამეორებისთვის საჭირო ნაბიჯები"
           }
         },
         "ko" : {
@@ -46594,6 +47590,12 @@
             "value" : "概要（必須）"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "შეჯამება (აუცილებელია)"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -46777,6 +47779,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "スワイプして次のメール"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "გაუსვით შემდეგ ელფოსტამდე"
           }
         },
         "ko" : {
@@ -47155,6 +48163,12 @@
             "value" : "メールアプリが数秒間読み込んだ後クラッシュします。"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ფოსტის აპლიკაცია ავარიულად ასრულებს მუშაობას ჩატვირთვიდან რამდენიმე წამში."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -47338,6 +48352,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "大きな添付ファイルがあるメールを開くとアプリがクラッシュします。"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ფოსტის აპლიკაცია ავარიულად სრულდება დიდი მიმაგრებული ფაილების მონე ფოსტების გახსნისას."
           }
         },
         "ko" : {
@@ -48092,6 +49112,12 @@
             "value" : "レポートの送信時にエラーが発生しました。再度お試しください。"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "შეცდომა ანგარიშის გაგზავნისას. კიდევ სცადეთ."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -48259,6 +49285,12 @@
             "value" : "Quest'email non ha superato i requisiti d'autenticazione del dominio. Potrebbe esser falsificata o inoltrata impropriamente."
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ეს ელფოსტა მისი დომენის ავთენტიკაციის მოთხოვნებს ვერ აკმაყოფილებს. ის შეიძლება ყალბია, ან არასწორადაა გადაგზავნილი."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -48281,6 +49313,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Este e-mail não atendeu aos requisitos de autenticação de seu domínio. Pode ser falsificado ou encaminhado indevidamente."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Acest e-mail nu respectă cerințele de autentificare ale domeniului său. Poate fi falsificat sau redirecționat incorect."
           }
         },
         "sk" : {
@@ -48412,6 +49450,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "このフィールドは 10 文字以上なければなりません"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ეს ველი 10-ზე მეტ სიმბოლოს უნდა შეიცავდეს"
           }
         },
         "ko" : {
@@ -48772,6 +49816,12 @@
             "value" : "Questo messaggio è stato classificato come spam da te o Proton"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ეს შეტყობინება მონიშნულია როგორც სპამი, ან ჩვენი სისტემის, ან თქვენ მიერ."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -48794,6 +49844,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Esta mensagem foi sinalizada como spam pelo nosso sistema ou por você."
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Acest mesaj a fost semnalat ca nedorit, fie de către sistemul nostru, fie de către dumneavoastră."
           }
         },
         "sk" : {
@@ -48913,6 +49969,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "このメールは %@後に自動削除されます"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ეს შეტყობინება თვითგანადგურდება %@-ზში"
           }
         },
         "ko" : {
@@ -49267,6 +50329,12 @@
             "value" : "メッセージの送信時刻"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ეს შეტყობინება გაიგზავნება"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -49440,6 +50508,12 @@
             "value" : "このメッセージは %@後に失効します"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "შეტყობინებას ვადაა %@"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -49473,7 +50547,7 @@
         "ru" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Срок этого сообщения истекает через %@"
+            "value" : "Срок действия этого сообщения истечёт через %@"
           }
         },
         "sk" : {
@@ -49593,6 +50667,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "このツールバーは、リストビューで複数のメッセージが選択されたときに表示されます。"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ეს პანელი გამოჩნდება, როდესაც სიის ხედში ერთზე მეტი შეტყობინებაა მონიშნული."
           }
         },
         "ko" : {
@@ -49754,6 +50834,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "このツールバーは、メッセージ閲覧時に表示されたままになります。"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ეს ხელსაწყოთა ზოლი ხილული რჩება, როც შეტყობინება ღიაა."
           }
         },
         "ko" : {
@@ -50488,6 +51574,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "宛先: ..."
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ვის: ..."
           }
         },
         "ko" : {
@@ -51409,6 +52501,12 @@
             "value" : "トラッカー防止数:"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ტრეკერებისგან დაცვა:"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -51550,6 +52648,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Protezione dal tracciamento"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ტრეკერებისგან დაცვა"
           }
         },
         "ko" : {
@@ -52278,6 +53382,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "このアドレスのブロックを解除"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ამ მისამართის განბლოკვა"
           }
         },
         "ko" : {
@@ -53501,7 +54611,195 @@
       }
     },
     "Upgrade" : {
-      "comment" : "Accessibility label for the upgrade button in the main toolbar."
+      "comment" : "Accessibility label for the upgrade button in the main toolbar.",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Палепшыць"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Millora"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Navýšit"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Opgradér"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Upgrade durchführen"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Αναβάθμιση"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Upgrade"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Actualizar"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mejorar"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Päivitä tilaus"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Changer d'abonnement"
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nagyobb csomagra váltás"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tingkatkan"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aggiorna"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "アップグレード"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ტარიფის აწევა"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "업그레이드"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oppgrader"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Upgraden"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ulepsz"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Melhorar o seu plano"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fazer upgrade"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Modificare"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Повысить"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Upgradovať"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nadgradi"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Uppgradera"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Yükselt"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Покращити"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "升级账户"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "升級"
+          }
+        }
+      }
     },
     "Upgrade to %@" : {
       "comment" : "Title of the upsell button in the sidebar",
@@ -53972,6 +55270,12 @@
             "value" : "自動削除するにはアップグレード"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ავტოწაშლისთვის ასწიეთ სატარიფო გეგმა"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -54157,6 +55461,12 @@
             "value" : "ごみ箱または迷惑メールに移動してから 30 日以上経過したメールを自動的に削除するには、アップグレードしてください。"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ნაგვის ყუთში მყოფი შეტყობინებების და სპამის 30 დღეზე მეტში ავტომატური წაშლისთვის აწიეთ სატარიფო გეგმა."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -54324,6 +55634,12 @@
             "value" : "Usa le icone del lucchetto per identificare e verificare il tipo di crittografia che protegge i tuoi messaggi."
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "გამოიყენეთ ჩაკეტვის ხატულები, რომ ამოიცნოთ და გადაამოწმოთ დაშიფვრის ტიპი, რომელიც თქვენს შეტყობინებებს იცავს."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -54459,6 +55775,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Versione %@"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ვერსია %@"
           }
         },
         "ko" : {
@@ -54787,6 +56109,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Visualizza intestazioni e HTML"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "თავსართებისა და HTML-ის ნახვა"
           }
         },
         "ko" : {
@@ -55499,6 +56827,12 @@
             "value" : "Ti proteggiamo attivamente dal tracciamento. Qui puoi visualizzare i pixel spia che abbiamo bloccato e i link di tracciamento che abbiamo ripulito in questo messaggio. [Scopri di più](https://proton.me/support/email-tracker-protection)"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ჩვენ აქტიურად გიცავთ თვალთვალისგან. აქ შეგიძლიათ იხილოთ ჯაშუშური პიქსელები, რომლებიც ჩვენ დაბლოკეთ და თვალთვალის ბმულები, რომლებიც ჩვენ გავასუფთავეთ ამ შეტყობინებაში. [გაიგეთ მეტი](https://proton.me/support/email-tracker-protection)"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -55646,6 +56980,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "大変申し訳ございません。これが間違いだったならば、このメールを正当なメールとしてよろしいかご確認ください。"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ბოდიშს გიხდით. შესაძლოა, ეს ჩვენი მხრიდან შეცდომა იყო. დაადასტურეთ, რომ გსურთ ამ ელფოსტის მონიშვნა ლეგიტიმურად."
           }
         },
         "ko" : {
@@ -55833,6 +57173,12 @@
             "value" : "メールボックスの準備中に問題が発生しました。詳細な調査のため、ログをサポートチームと共有してください。"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "საფოსტო ყუთის მომზადებისას აღმოჩენილია პრობლემა. დამატებითი გამოძიებისთვის, გაუზიარეთ ჟურნალები ჩვენი მხარდაჭერის გუნდს."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -56016,6 +57362,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "まもなく完了します。お待ちいただきありがとうございます！"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "თითქმის მზად ვართ. მადლობა მოთმინებისთვის!"
           }
         },
         "ko" : {
@@ -56203,6 +57555,12 @@
             "value" : "プライバシーが標準のProton Mailへようこそ。"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "მოგესალმებათ Proton Mail. სადაც კონფიდენციალობა ნაგულისხმევია"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -56350,6 +57708,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cosa c'è di nuovo"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "სიახლეები"
           }
         },
         "ko" : {
@@ -56698,6 +58062,12 @@
             "value" : "現在オフラインです。インターネットに接続してもう一度お試しください。"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "თქვენ ამჟამად ინტერნეტის გარეშე მუშაობთ. სცადეთ თავიდან, როცა ჩაგერთვებათ."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -56881,6 +58251,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "このメーリングリストの登録は解除されました。"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ამ დაგზავნის სიის თქვენი გამოწერა გაუქმდა."
           }
         },
         "ko" : {
@@ -57432,6 +58808,12 @@
             "value" : "スケジュールされたメッセージを編集するには、オンラインである必要があります。"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "დაგეგმილი შეტყობინებების ჩასაწორებლად ინტერნეტკავშირია საჭირო"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -57806,6 +59188,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "お客様が送信するすべてのメールに自動的に追加される、メールの署名です。"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "თქვენი ელფოსტის ხელმოწერა, რომელიც ავტომატურად ემატება ყველა თქვენს მიერ გაგზავნილ ელფოსტას."
           }
         },
         "ko" : {

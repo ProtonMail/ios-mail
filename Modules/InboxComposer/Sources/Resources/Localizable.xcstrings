@@ -82,6 +82,12 @@
             "value" : "%@ はメッセージの送信に使用できません"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ არ შეიძლება გამოყენებულ იქნას შეტყობინებების გასაგზავნად"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -231,10 +237,16 @@
             "value" : "%@ は無効になっています。メッセージを送信できません。"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ გამორთულია. მას შეტყობინებების გაგზავნა არ შეუძლია"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@이(가) 비활성화되어있습니다. 메시지 보내기에 사용할 수 없습니다."
+            "value" : "%@이(가) 비활성화되어 있습니다. 메시지 보내기에 사용할 수 없습니다."
           }
         },
         "nb" : {
@@ -378,6 +390,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%lld 人のメンバー"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld წევრი"
           }
         },
         "ko" : {
@@ -527,6 +545,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@を使用するには有料プランが必要です"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@-ის გამოსაყენებლად საჭიროა ფასიანი სატარიფო გეგმა"
           }
         },
         "ko" : {
@@ -688,6 +712,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "カメラへのアクセスが無効になりました。設定に行き、カメラの権限を有効にしてください。"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "კამერასთან წვდომა გამორთულია. ნებართვის ჩასართავად, გადადით მორგების დიალოგში და ჩართეთ კამერის ნებართვა."
           }
         },
         "ko" : {
@@ -1816,6 +1846,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "アドレスは利用できません"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "მისამართი ხელმისაწვდომი არაა"
           }
         },
         "ko" : {
@@ -3495,6 +3531,12 @@
             "value" : "添付ファイルが大きすぎます"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "მიმაგრებული ფაილი ძალიან დიდია"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -3865,6 +3907,12 @@
             "value" : "カメラ"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "კამერა"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4042,6 +4090,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Proton Mailの容量がいっぱいのため、添付ファイルをアップロードできません。スペースを空けるか、プランをアップグレードしてください。"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "მიმაგრებული ფაილის ატვირთვა შეუძლებელია, რადგან თქვენი Proton Mail-ის საცავი სავსეა. გაათავისუფლეთ ადგილი, ან ასწიეთ სატარიფო გეგმა."
           }
         },
         "ko" : {
@@ -4967,6 +5021,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "メッセージを破棄しますか？"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "მოვაცილო ეს შეტყობინება?"
           }
         },
         "ko" : {
@@ -6262,6 +6322,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Info crittografia"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "დაშიფვრის ინფორმაცია"
           }
         },
         "ko" : {
@@ -8293,6 +8359,12 @@
             "value" : "宛先が無効です"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "არასწორი მიმღები"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -9407,6 +9479,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "メッセージが大きすぎて送信できません。添付ファイルのサイズを小さくしてください。"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "შეტყობინება გასაგზავნად ძალიან დიდია. შეამცირეთ მიმაგრებული ფაილების ზომა."
           }
         },
         "ko" : {
@@ -11080,6 +11158,12 @@
             "value" : "受信者はいずれもデフォルトでは有効期限をサポートしていません。Proton Mail以外の宛先の有効期限を有効にするには、パスワードを追加してください。"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "არცერთი მიმღები ნაგულისხმევად არ უჭერს მხარს ვადის გასვლას. დაამატეთ პაროლი, რომ ჩართოთ ვადის გასვლა Proton Mail-ის მიმღებების გარდა სხვა მიმღებებისთვის."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -11802,6 +11886,12 @@
             "value" : "時間と日付を選択"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "აირჩიეთ დრო და თარიღი"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12367,6 +12457,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "以前の設定"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ადრე დაყენებული"
           }
         },
         "ko" : {
@@ -13109,6 +13205,12 @@
             "value" : "添付ファイルのアップロード中に問題が発生しました。もう一度お試しください。"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "მიმაგრებული ფაილის ატვირთვის პრობლემა. კიდევ სცადეთ."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -13455,6 +13557,12 @@
             "value" : "重複していた宛先を削除しました: %@"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "წაშლილია %@ გამეორებული მიმღები"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -13602,6 +13710,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "重複した受信者を削除しました: %@"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "წაიშალა გამეორებული მიმღები: %@"
           }
         },
         "ko" : {
@@ -14899,6 +15013,12 @@
             "value" : "添付ファイルとして送信"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "გაგზავნა მიმაგრებული ფაილის სახით"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -15755,7 +15875,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Alguns destinataris (%@) no admeten la caducitat per defecte. Afegiu una contrasenya per habilitar la caducitat per als destinataris que no utilitzin Proton Mail."
+            "value" : "Alguns destinataris (%@) no admeten la caducitat per defecte. Afegiu una contrasenya per habilitar la caducitat per als destinataris que no utilitzin el Proton Mail."
           }
         },
         "cs" : {
@@ -15824,10 +15944,16 @@
             "value" : "一部の受信者 (%@) は、デフォルトでは有効期限をサポートしていません。Proton Mail以外の受信者の有効期限を有効にするには、パスワードを追加してください。"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ზოგიერთ მიმღებს (%@) ნაგულისხმევად არ აქვს ვადის გასვლის მხარდაჭერა. დაამატეთ პაროლი, რომ ჩართოთ ვადის გასვლა Proton Mail-ის მომხმარებლების გარდა სხვა მიმღებებისთვის."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "일부 수신자(%@)가 기본적 만료 기능을 지원하지 않습니다. Proton Mail을 사용하지 않는 수신자를 위해 만료 기능을 활성화하려면 비밀번호를 추가해야 합니다."
+            "value" : "일부 수신자(%@)가 기본적으로 만료 기능을 지원하지 않습니다. Proton Mail을 사용하지 않는 수신자를 위해 만료 기능을 활성화하려면 비밀번호를 추가해야 합니다."
           }
         },
         "nb" : {
@@ -16940,6 +17066,12 @@
             "value" : "添付ファイルを追加できませんでした。もう一度やり直してください。"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "მიმაგრებული ფაილის დამატება შეუძლებელია. კიდევ სცადეთ"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -17125,6 +17257,12 @@
             "value" : "添付ファイルの処理を更新できませんでした、もう一度お試しください"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "მიმაგრებული ფაილის პარამეტრების განახლება შეუძლებელია. კიდევ სცადეთ"
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -17284,6 +17422,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "下書きが見つかりませんでした"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "მონახაზი აღმოჩენილი არაა"
           }
         },
         "ko" : {
@@ -17469,6 +17613,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "メッセージは下書きではありません"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "შეტყობინება მონახაზი არაა"
           }
         },
         "ko" : {
@@ -17766,7 +17916,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hi ha un límit de 25 MB per als fitxers adjunts de cada correu electrònic, incloent-hi les imatges en línia, i no s'han pogut afegir %lld fitxers adjunts. Envieu-los en correus electrònics separats o compartiu-los mitjançant Proton Drive."
+            "value" : "Hi ha un límit de 25 MB per als adjunts de cada correu electrònic, incloent-hi les imatges en línia, i no s'han pogut afegir %lld adjunts. Envieu-los en correus electrònics separats o compartiu-los mitjançant el Proton Drive."
           }
         },
         "cs" : {
@@ -17833,6 +17983,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "%lld個の添付ファイルを追加できませんでした。メール1通あたりの添付ファイルには、インライン画像を含め25 MBの制限があります。それらを複数のメールに分けて送信するか、Proton Drive経由で共有してください。"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "თითოეულ ელფოსტას, შეიძლეება, 25მბ მიმაგრებული ფაილები ჰქონდეს, ჩასმული გამოსახულებების ჩათვლით და, ამიტომ %lld მიმაგრებული ფაილის დამატება შეუძლებელია.. გააგზავნეთ ისინი ცალ-ცალკე ელფოსტით, ან გააზიარეთ Proton Drive-ით."
           }
         },
         "ko" : {
@@ -17982,6 +18138,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "メール1通あたりの添付ファイル（インライン画像を含む）は25MBまでです。別々のメールで送信するか、Proton Driveで共有してください。"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "თითოეულ ელფოსტას, შეიძლეება, 25მბ მიმაგრებული ფაილები ჰქონდეს (ჩასმული გამოსახულებების ჩათვლით). გააგზავნეთ ისინი ცალ-ცალკე ელფოსტით, ან გააზიარეთ Proton Drive-ით."
           }
         },
         "ko" : {
@@ -18316,6 +18478,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "このメッセージは %@ に送信されます"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "ეს შეტყობინება გაიგზავნება: %@"
           }
         },
         "ko" : {
@@ -18859,6 +19027,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "添付ファイルが多すぎます"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "მეტისმეტად ბევრი მიმაგრებული ფაილი"
           }
         },
         "ko" : {
@@ -19410,6 +19584,12 @@
             "value" : "添付ファイル（インライン画像を含む）の上限に達したため、 1つ以上の添付ファイルを追加できませんでした。 複数のメールに分割するか、Proton Driveで共有してください。"
           }
         },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "მიაღწიეთ მიმაგრებული ფაილების ზღვარს, ჩასმული გამოსახულებების ჩათვლით. 1 ან მეტი დანართი ვერ დაემატა. გააგზავნეთ ისინი ცალკეულ ელფოსტებში ან გააზიარეთ Proton Drive-ის საშუალებით."
+          }
+        },
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
@@ -19939,6 +20119,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "下書きは保存されません"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "თქვენი მონახაზი არ შეინახება"
           }
         },
         "ko" : {
