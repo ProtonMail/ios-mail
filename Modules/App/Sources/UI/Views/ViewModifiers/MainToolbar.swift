@@ -61,9 +61,7 @@ struct MainToolbar<AvatarView: View>: ViewModifier {
             .modify { view in
                 if #available(iOS 26, *) {
                     view
-                        .animation(.default, value: title)
-                        .animation(.default, value: state)
-                        .toolbarRole(selectionMode.hasItems ? .navigationStack : .browser)
+                        .toolbarRole(.browser)
                 } else {
                     view
                         .toolbarBackground(DS.Color.Background.norm, for: .navigationBar)
