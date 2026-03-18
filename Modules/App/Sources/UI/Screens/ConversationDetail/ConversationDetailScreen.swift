@@ -107,13 +107,13 @@ struct ConversationDetailScreen: View {
     private var conversationView: some View {
         GeometryReader { proxy in
             ScrollView {
-                VStack(spacing: DS.Spacing.extraLarge) {
+                VStack(spacing: DS.Spacing.mediumLight) {
                     ListHeaderView(isHeaderVisible: $model.isHeaderVisible, parentGeometry: proxy) {
                         VStack(alignment: .leading, spacing: DS.Spacing.compact) {
                             subjectView
                         }
                         .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.top, DS.Spacing.medium)
+                        .padding(.top, DS.Spacing.mediumLight)
                         .padding(.horizontal, DS.Spacing.large)
                     }
                     if let hiddenMessageBanner {

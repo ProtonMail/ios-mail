@@ -28,6 +28,7 @@ public enum ButtonIcon {
 public enum ButtonFactory {
     public static func back(action: @escaping () -> Void) -> some View {
         Button(CommonL10n.back, image: SFSymbol.chevronLeft, action: action)
+            .tint(DS.Color.Icon.norm)
     }
 
     @ViewBuilder
@@ -36,7 +37,7 @@ public enum ButtonFactory {
             Button(role: .close, action: action)
         } else {
             Button(CommonL10n.close, image: SFSymbol.xmark, action: action)
-                .foregroundStyle(DS.Color.Text.accent)
+                .tint(DS.Color.Icon.norm)
         }
     }
 
@@ -46,7 +47,7 @@ public enum ButtonFactory {
             Button(role: .cancel, action: action)
         } else {
             Button(CommonL10n.cancel, image: SFSymbol.xmark, action: action)
-                .foregroundStyle(DS.Color.Text.accent)
+                .tint(DS.Color.Icon.norm)
         }
     }
 

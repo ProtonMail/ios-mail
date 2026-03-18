@@ -51,7 +51,8 @@ struct MessageDetailsView: View {
         }
         .background(DS.Color.Background.norm)
         .clipped()
-        .padding([.horizontal, .bottom], DS.Spacing.large)
+        .padding(.horizontal, DS.Spacing.large)
+        .padding(.bottom, DS.Spacing.standard)
     }
 
     // MARK: - Private

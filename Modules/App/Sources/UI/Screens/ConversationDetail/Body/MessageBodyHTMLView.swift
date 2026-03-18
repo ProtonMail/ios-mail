@@ -81,7 +81,8 @@ struct MessageBodyHTMLView: View {
                 }
             }
             .frame(height: max(bodyContentHeight, 1))  // WKWebView needs a non-zero height to render properly, before we calculate the final size
-            .padding(.vertical, DS.Spacing.large)
+            .padding(.top, DS.Spacing.standard)
+            .padding(.bottom, DS.Spacing.large)
             .opacity(bodyContentHeight > 0 ? 1 : 0)
             .accessibilityIdentifier(MessageBodyViewIdentifiers.messageBody)
         }
