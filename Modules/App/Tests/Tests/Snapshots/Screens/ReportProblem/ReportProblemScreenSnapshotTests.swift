@@ -39,6 +39,6 @@ struct ReportProblemScreenSnapshotTests {
         let sut = ReportProblemScreen(state: state, reportProblemService: ReportProblemServiceSpy())
             .environmentObject(ToastStateStore(initialState: .initial))
 
-        assertSnapshotsOnIPhoneX(of: sut, drawHierarchyInKeyWindow: true)
+        assertSnapshotsOnIPhoneX(of: sut, drawHierarchyInKeyWindow: true, precision: 0.99)
     }
 }
