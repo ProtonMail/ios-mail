@@ -33,9 +33,6 @@ struct ProtonAuthenticatedWebView: View {
             .task {
                 model.generateSubscriptionUrl(colorScheme: colorScheme)
             }
-            .onChange(of: colorScheme) { _, newValue in
-                model.generateSubscriptionUrl(colorScheme: newValue)
-            }
             .onDisappear {
                 model.pollEvents()
             }
