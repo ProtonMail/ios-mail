@@ -15,9 +15,11 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import InboxCore
 import InboxDesignSystem
 import SwiftUI
 import WebKit
+import proton_app_uniffi
 
 struct WebView: UIViewRepresentable {
     let url: URL
@@ -39,9 +41,10 @@ struct WebView: UIViewRepresentable {
         let cookie = HTTPCookie(properties: [
             .name: "Session-Id",
             .value: sessionID,
-            .domain: ".proton.me",
+            .domain: ".\(ApiConfig.current.envId.domain)",
             .path: "/",
-            .secure: "TRUE"
+            .secure: "TRUE",
+            .init(rawValue: "HttpOnly"): "TRUE",
         ])
 
         if let cookie {
