@@ -54,7 +54,7 @@ final class ProtonAuthenticatedWebModel: NSObject, ObservableObject {
             case .ok(let fork):
                 let theme = colorScheme == .light ? "0" : "1"
                 let url = webPageUrl(domain: domain, appVersion: appVersion, theme: theme, selector: fork.selector)
-                updateState(.urlReady(url: url))
+                updateState(.urlReady(url: url, sessionID: fork.id))
             case .error(let error):
                 AppLogger.log(error: error)
                 updateState(.error(error))
@@ -91,7 +91,7 @@ final class ProtonAuthenticatedWebModel: NSObject, ObservableObject {
 extension ProtonAuthenticatedWebModel {
     enum State {
         case forkingSession
-        case urlReady(url: URL)
+        case urlReady(url: URL, sessionID: String)
         case error(Error)
     }
 }

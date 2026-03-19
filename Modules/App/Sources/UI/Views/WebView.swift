@@ -21,18 +21,37 @@ import WebKit
 
 struct WebView: UIViewRepresentable {
     let url: URL
+    let sessionID: String
     let configureUserContentController: (WKUserContentController) -> Void
 
     func makeUIView(context: Context) -> WKWebView {
         let backgroundColor = UIColor(DS.Color.Background.norm)
-        let webView = WKWebView()
+        let configuration = WKWebViewConfiguration()
+        configuration.websiteDataStore = .nonPersistent()
+
+        let webView = WKWebView(frame: .zero, configuration: configuration)
         webView.isOpaque = false
         webView.backgroundColor = backgroundColor
         webView.scrollView.backgroundColor = backgroundColor
         webView.scrollView.contentInsetAdjustmentBehavior = .never
         configureUserContentController(webView.configuration.userContentController)
 
-        webView.load(URLRequest(url: url))
+        let cookie = HTTPCookie(properties: [
+            .name: "Session-Id",
+            .value: sessionID,
+            .domain: ".proton.me",
+            .path: "/",
+            .secure: "TRUE"
+        ])
+
+        if let cookie {
+            configuration.websiteDataStore.httpCookieStore.setCookie(cookie) {
+                webView.load(URLRequest(url: url))
+            }
+        } else {
+            webView.load(URLRequest(url: url))
+        }
+
         return webView
     }
 

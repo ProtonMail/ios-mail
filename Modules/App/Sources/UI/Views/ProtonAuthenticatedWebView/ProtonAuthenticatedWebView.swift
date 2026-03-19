@@ -49,9 +49,9 @@ extension ProtonAuthenticatedWebView {
         switch model.state {
         case .forkingSession:
             ProgressView()
-        case .urlReady(let url):
+        case .urlReady(let url, let sessionID):
             VStack(alignment: .leading, spacing: 11) {
-                WebView(url: url, configureUserContentController: model.setupUpsellScreenCapability)
+                WebView(url: url, sessionID: sessionID, configureUserContentController: model.setupUpsellScreenCapability)
                     .accessibilityIdentifier(ProtonAuthenticatedWebViewIdentifiers.webView)
             }
             .accessibilityElement(children: .contain)
