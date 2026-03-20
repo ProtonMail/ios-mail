@@ -26,6 +26,6 @@ protocol UpsellScreenPresenter {
 
 extension UpsellCoordinator: UpsellScreenPresenter {
     func presentUpsellScreen(entryPoint: UpsellEntryPoint) async throws -> UpsellScreenModel {
-        try await presentUpsellScreen(entryPoint: entryPoint, upsellType: .standard)
+        try await presentUpsellScreen(entryPoint: entryPoint, upsellType: .mailPlus)
     }
 }

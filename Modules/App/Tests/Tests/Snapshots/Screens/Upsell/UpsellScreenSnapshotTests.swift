@@ -25,7 +25,6 @@ import proton_app_uniffi
 @testable import InboxIAP
 
 @MainActor
-@Suite(.disabled("Tests are failing on CI only, needs more investigation."))
 struct UpsellScreenSnapshotTests {
     struct TestCase {
         let label: String
@@ -41,7 +40,7 @@ struct UpsellScreenSnapshotTests {
             ("13 Pro Max", ViewImageConfig.iPhone13ProMax(_:)),
         ]
 
-        let upsellTypes: [UpsellType] = [.standard, .blackFriday(.wave1), .blackFriday(.wave2)]
+        let upsellTypes: [UpsellType] = [.mailPlus, .unlimited]
 
         return orientations.flatMap { orientation in
             devices.flatMap { device in
@@ -73,12 +72,10 @@ struct UpsellScreenSnapshotTests {
 private extension UpsellType {
     var label: String {
         switch self {
-        case .standard:
-            "standard"
-        case .blackFriday(.wave1):
-            "BF_1"
-        case .blackFriday(.wave2):
-            "BF_2"
+        case .mailPlus:
+            "mailPlus"
+        case .unlimited:
+            "unlimited"
         }
     }
 }

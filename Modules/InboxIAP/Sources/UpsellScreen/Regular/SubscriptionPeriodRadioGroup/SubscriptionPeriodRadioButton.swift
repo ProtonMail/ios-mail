@@ -156,10 +156,6 @@ struct SubscriptionPeriodRadioButton: View {
 
     VStack {
         SubscriptionPeriodRadioGroup(planInstances: DisplayablePlanInstance.previews, selectedInstanceID: $selectedInstanceID)
-
-        ForEach(DisplayablePlanInstance.blackFridayPreviews, id: \.storeKitProductId) { planInstance in
-            SubscriptionPeriodRadioButton(planInstance: planInstance, isSelected: false) {}
-        }
     }
     .background(DS.Color.Brand.norm)
 }

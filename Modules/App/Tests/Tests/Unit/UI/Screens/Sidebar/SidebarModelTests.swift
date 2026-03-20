@@ -23,7 +23,7 @@ import proton_app_uniffi
 
 @MainActor
 final class SidebarModelTests {
-    private lazy var sut = SidebarModel(state: .initial, sidebar: sidebarSpy, upsellEligibilityPublisher: .init(constant: .eligible(.standard)))
+    private lazy var sut = SidebarModel(state: .initial, sidebar: sidebarSpy, upsellEligibilityPublisher: .init(constant: .eligible(.mailPlus)))
     private let sidebarSpy = SidebarSpy()
 
     func test_WhenAppear_ItSelectsFirstSystemFolder() throws {

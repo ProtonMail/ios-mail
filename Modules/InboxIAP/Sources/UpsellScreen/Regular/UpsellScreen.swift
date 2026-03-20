@@ -260,26 +260,18 @@ public struct UpsellScreen: View {
     }
 }
 
-#Preview("regular") {
+#Preview("mail plus") {
     Color.clear
         .sheet(isPresented: .constant(true)) {
-            UpsellScreen(model: .preview(entryPoint: .mailboxTopBar, upsellType: .standard))
+            UpsellScreen(model: .preview(entryPoint: .mailboxTopBar, upsellType: .mailPlus))
         }
         .environmentObject(ToastStateStore(initialState: .initial))
 }
 
-#Preview("black friday wave 1") {
+#Preview("unlimited") {
     Color.clear
         .sheet(isPresented: .constant(true)) {
-            UpsellScreen(model: .preview(entryPoint: .mailboxTopBar, upsellType: .blackFriday(.wave1)))
-        }
-        .environmentObject(ToastStateStore(initialState: .initial))
-}
-
-#Preview("black friday wave 2") {
-    Color.clear
-        .sheet(isPresented: .constant(true)) {
-            UpsellScreen(model: .preview(entryPoint: .mailboxTopBar, upsellType: .blackFriday(.wave2)))
+            UpsellScreen(model: .preview(entryPoint: .mailboxTopBar, upsellType: .unlimited))
         }
         .environmentObject(ToastStateStore(initialState: .initial))
 }

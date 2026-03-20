@@ -36,7 +36,6 @@ final class UpsellCoordinatorTests {
             onlineExecutor: onlineExecutor,
             plansComposer: plansComposer,
             planPurchasing: DummyPlanPurchasing(),
-            sessionForking: DummySessionForking(),
             telemetryReporting: telemetryReporting,
             userAttributionService: .init(
                 isFeatureEnabled: { true },

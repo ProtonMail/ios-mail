@@ -22,11 +22,9 @@ import proton_app_uniffi
 
 final class UpsellScreenFactory {
     private let purchaseActionPerformer: PurchaseActionPerformer
-    private let webCheckout: WebCheckout
 
-    init(purchaseActionPerformer: PurchaseActionPerformer, webCheckout: WebCheckout) {
+    init(purchaseActionPerformer: PurchaseActionPerformer) {
         self.purchaseActionPerformer = purchaseActionPerformer
-        self.webCheckout = webCheckout
     }
 
     @MainActor
@@ -41,7 +39,7 @@ final class UpsellScreenFactory {
             basedOn: availablePlans
         )
 
-        let displayablePlanInstances = try displayableInstances(
+        let displayablePlanInstances = displayableInstances(
             basedOn: plansSortedByPriceAscending,
             mostExpensiveInstance: mostExpensiveInstance,
             upsellType: upsellType
@@ -52,8 +50,7 @@ final class UpsellScreenFactory {
             planInstances: displayablePlanInstances,
             entryPoint: entryPoint,
             upsellType: upsellType,
-            purchaseActionPerformer: purchaseActionPerformer,
-            webCheckout: webCheckout
+            purchaseActionPerformer: purchaseActionPerformer
         )
     }
 
@@ -61,9 +58,9 @@ final class UpsellScreenFactory {
         basedOn availablePlans: [ComposedPlan],
         mostExpensiveInstance: ComposedPlan,
         upsellType: UpsellType
-    ) throws -> [DisplayablePlanInstance] {
+    ) -> [DisplayablePlanInstance] {
         switch upsellType {
-        case .standard:
+        case .mailPlus, .unlimited:
             availablePlans.map { composedPlan in
                 .init(
                     storeKitProductId: composedPlan.storeKitProductID ?? "<missing vendor>",
@@ -72,67 +69,7 @@ final class UpsellScreenFactory {
                     discount: composedPlan.discount(comparedTo: mostExpensiveInstance)
                 )
             }
-        case .blackFriday(let wave):
-            [
-                try promotionalPlanInstance(basedOn: availablePlans, wave: wave)
-            ]
         }
-    }
-
-    private func promotionalPlanInstance(
-        basedOn availablePlans: [ComposedPlan],
-        wave: BlackFridayWave
-    ) throws -> DisplayablePlanInstance {
-        guard
-            let (monthlyInstance, monthlyPrice) = findInstanceAndUSDPrice(forCycle: 1, among: availablePlans),
-            let (yearlyInstance, yearlyPrice) = findInstanceAndUSDPrice(forCycle: 12, among: availablePlans)
-        else {
-            throw UpsellScreenFactoryError.planNotFound
-        }
-
-        let priceFormatStyle = yearlyInstance.product.priceFormatStyle
-        let discountedMonthlyPrice = monthlyPrice / wave.discountFactor
-
-        switch wave {
-        case .wave1:
-            return .init(
-                storeKitProductId: yearlyInstance.storeKitProductID ?? "<missing vendor>",
-                cycleInMonths: yearlyInstance.instance.cycle,
-                pricing: .discountedYearlyPlan(
-                    discountedMonthlyPrice: formatPrice(discountedMonthlyPrice, using: priceFormatStyle),
-                    discountedYearlyPrice: formatPrice(discountedMonthlyPrice * 12, using: priceFormatStyle),
-                    renewalPrice: formatPrice(yearlyPrice, using: priceFormatStyle)
-                ),
-                discount: wave.discount
-            )
-        case .wave2:
-            let specialPriceFormat = priceFormatStyle.precision(.fractionLength(0))
-
-            return .init(
-                storeKitProductId: monthlyInstance.storeKitProductID ?? "<missing vendor>",
-                cycleInMonths: monthlyInstance.instance.cycle,
-                pricing: .discountedMonthlyPlan(
-                    discountedPrice: formatPrice(discountedMonthlyPrice, using: specialPriceFormat),
-                    renewalPrice: formatPrice(monthlyPrice, using: priceFormatStyle)
-                ),
-                discount: wave.discount
-            )
-        }
-    }
-
-    private func findInstanceAndUSDPrice(forCycle cycle: Int, among availablePlans: [ComposedPlan]) -> (ComposedPlan, Int)? {
-        guard
-            let instance = availablePlans.first(where: { $0.instance.cycle == cycle }),
-            let price = instance.instance.price.first(where: { $0.currency == "USD" })
-        else {
-            return nil
-        }
-
-        return (instance, price.current)
-    }
-
-    private func formatPrice(_ price: Int, using formatStyle: Decimal.FormatStyle.Currency) -> String {
-        formatStyle.format(Decimal(price) / 100)
     }
 
     @MainActor
@@ -227,20 +164,5 @@ private extension Entitlement {
         default:
             nil
         }
-    }
-}
-
-private extension BlackFridayWave {
-    var discountFactor: Int {
-        switch self {
-        case .wave1:
-            2
-        case .wave2:
-            5
-        }
-    }
-
-    var discount: Int {
-        .init((1 - 1 / Double(discountFactor)) * 100)
     }
 }

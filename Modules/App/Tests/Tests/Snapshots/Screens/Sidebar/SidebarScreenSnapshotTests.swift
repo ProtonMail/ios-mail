@@ -28,7 +28,7 @@ final class SidebarScreenSnapshotTests {
     private let bundleStub = BundleStub(infoDictionary: .infoDictionaryWithAppVersion)
 
     private let state = SidebarState(
-        upsell: .upsell(.standard),
+        upsell: .upsell(.mailPlus),
         system: [],
         labels: [],
         folders: [],
@@ -48,7 +48,7 @@ final class SidebarScreenSnapshotTests {
         let sidebarScreen = SidebarScreen(
             state: state,
             userSession: .dummy,
-            upsellEligibilityPublisher: .init(constant: .eligible(.standard)),
+            upsellEligibilityPublisher: .init(constant: .eligible(.mailPlus)),
             appVersionProvider: .init(bundle: bundleStub, sdkVersionProvider: .init(sdkVersion: "0.61.0")),
             sidebarFactory: { _ in SidebarSpy() }
         ) { _ in }
@@ -66,7 +66,7 @@ final class SidebarScreenSnapshotTests {
         let sidebarScreen = SidebarScreen(
             state: state,
             userSession: .dummy,
-            upsellEligibilityPublisher: .init(constant: .eligible(.standard)),
+            upsellEligibilityPublisher: .init(constant: .eligible(.mailPlus)),
             appVersionProvider: .init(bundle: bundleStub, sdkVersionProvider: .init(sdkVersion: "0.61.0")),
             sidebarFactory: { _ in SidebarSpy() }
         ) { _ in }

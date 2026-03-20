@@ -17,7 +17,6 @@
 
 import Foundation
 import InboxCore
-import StoreKit
 import proton_app_uniffi
 
 @MainActor
@@ -51,20 +50,9 @@ final class UpsellEligibilityPublisher: ObservableObject {
 
     private func updateState(userSession: MailUserSession) async {
         do {
-            let upsellEligibility = try await userSession.upsellEligibility().get()
-            state = await upsellEligibility.limitingBlackFridayToUSA()
+            state = try await userSession.upsellEligibility().get()
         } catch {
             AppLogger.log(error: error, category: .payments)
-        }
-    }
-}
-
-private extension UpsellEligibility {
-    func limitingBlackFridayToUSA() async -> Self {
-        if case .eligible(.blackFriday) = self, await Storefront.current?.countryCode != "USA" {
-            .eligible(.standard)
-        } else {
-            self
         }
     }
 }

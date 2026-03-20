@@ -28,7 +28,6 @@ import proton_app_uniffi
 @MainActor
 final class UpsellScreenModelTests {
     private let planPurchasing = PlanPurchasingSpy()
-    private let sessionForking = SessionForkingSpy()
     private let toastStateStore = ToastStateStore(initialState: .initial)
 
     @Test(
@@ -56,36 +55,9 @@ final class UpsellScreenModelTests {
         await sut.onPurchaseTapped(toastStateStore: toastStateStore, openURL: { _ in }, dismiss: {})
 
         #expect(planPurchasing.purchaseInvocations.count == 1)
-        #expect(sessionForking.forkCalls == 0)
     }
 
-    @Test
-    func givenThereIsPromo_whenPurchaseButtonIsTapped_thenInitiatesWebCheckoutAndDismisses() async {
-        let sut = makeSUT(upsellType: .blackFriday(.wave2))
-        let expectedWebCheckoutURL = URL(
-            string: """
-                https://account.example.com/lite?action=subscribe-account&app-version=web-account-lite@5.0.304.0&coupon=BF25PROMO1M&currency=USD&cycle=1&disableCycleSelector=1&disablePlanSelection=1&fullscreen=auto&hideClose=true&plan=mail2022&redirect=protonmail://&start=checkout#selector=FORK_SELECTOR
-                """
-        )
-
-        await confirmation(expectedCount: 1) { openURLCalled in
-            await confirmation(expectedCount: 1) { dismissCalled in
-                await sut.onPurchaseTapped(
-                    toastStateStore: toastStateStore,
-                    openURL: { webCheckoutURL in
-                        #expect(webCheckoutURL == expectedWebCheckoutURL)
-                        openURLCalled()
-                    },
-                    dismiss: { dismissCalled() }
-                )
-            }
-        }
-
-        #expect(planPurchasing.purchaseInvocations == [])
-        #expect(sessionForking.forkCalls == 1)
-    }
-
-    private func makeSUT(upsellType: UpsellType = .standard) -> UpsellScreenModel {
+    private func makeSUT(upsellType: UpsellType = .mailPlus) -> UpsellScreenModel {
         .init(
             planName: "foo",
             planInstances: DisplayablePlanInstance.previews,
@@ -96,8 +68,7 @@ final class UpsellScreenModelTests {
                 planPurchasing: planPurchasing,
                 telemetryReporting: DummyTelemetryReporting(),
                 userAttributionService: .dummy
-            ),
-            webCheckout: .init(sessionForking: sessionForking, upsellConfiguration: .dummy)
+            )
         )
     }
 }

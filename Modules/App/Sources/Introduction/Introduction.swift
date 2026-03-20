@@ -112,13 +112,8 @@ struct IntroductionViewModifier: ViewModifier {
         case .upsell(let upsellType):
             do {
                 switch upsellType {
-                case .standard:
+                case .mailPlus, .unlimited:
                     state.onboardingUpsellPresented = try await upsellCoordinator.presentOnboardingUpsellScreen()
-                case .blackFriday:
-                    state.upsellPresented = try await upsellCoordinator.presentUpsellScreen(
-                        entryPoint: .postOnboarding,
-                        upsellType: upsellType
-                    )
                 }
             } catch {
                 AppLogger.log(error: error, category: .payments)
@@ -157,8 +152,7 @@ struct IntroductionViewModifier: ViewModifier {
             dependencies.userDefaults[.hasSeenOnboardingUpsell(ofType: upsellType)] = true
         }
 
-        // ensure that the standard onboarding upsell will never be shown even if a promo upsell has been shown in its place
-        dependencies.userDefaults[.hasSeenOnboardingUpsell(ofType: .standard)] = true
+        dependencies.userDefaults[.hasSeenOnboardingUpsell(ofType: .mailPlus)] = true
 
         Task {
             await presentAppropriateIntroductoryView()

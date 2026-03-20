@@ -48,7 +48,6 @@ public final class UpsellCoordinator: ObservableObject {
             onlineExecutor: mailUserSession,
             plansComposer: plansComposer,
             planPurchasing: planPurchasing,
-            sessionForking: mailUserSession,
             telemetryReporting: telemetryReporting,
             userAttributionService: userAttributionService,
             configuration: configuration
@@ -60,7 +59,6 @@ public final class UpsellCoordinator: ObservableObject {
         onlineExecutor: OnlineExecutor,
         plansComposer: PlansComposerProviding,
         planPurchasing: PlanPurchasing,
-        sessionForking: SessionForking,
         telemetryReporting: TelemetryReporting,
         userAttributionService: UserAttributionService,
         configuration: UpsellConfiguration
@@ -77,8 +75,7 @@ public final class UpsellCoordinator: ObservableObject {
             userAttributionService: userAttributionService
         )
 
-        let webCheckout = WebCheckout(sessionForking: sessionForking, upsellConfiguration: configuration)
-        upsellScreenFactory = .init(purchaseActionPerformer: purchaseActionPerformer, webCheckout: webCheckout)
+        upsellScreenFactory = .init(purchaseActionPerformer: purchaseActionPerformer)
     }
 
     public func prewarm() async {
@@ -94,7 +91,7 @@ public final class UpsellCoordinator: ObservableObject {
         }
     }
 
-    public func presentUpsellScreen(entryPoint: UpsellEntryPoint, upsellType: UpsellType = .standard) async throws -> UpsellScreenModel {
+    public func presentUpsellScreen(entryPoint: UpsellEntryPoint, upsellType: UpsellType = .mailPlus) async throws -> UpsellScreenModel {
         let availablePlans = try await fetchAvailablePlans()
 
         let model = try upsellScreenFactory.upsellScreenModel(
@@ -104,10 +101,8 @@ public final class UpsellCoordinator: ObservableObject {
             upsellType: upsellType
         )
 
-        if !model.isPromo {
-            telemetryReporting.prepare(entryPoint: entryPoint)
-            await telemetryReporting.upsellButtonTapped()
-        }
+        telemetryReporting.prepare(entryPoint: entryPoint)
+        await telemetryReporting.upsellButtonTapped()
 
         return model
     }

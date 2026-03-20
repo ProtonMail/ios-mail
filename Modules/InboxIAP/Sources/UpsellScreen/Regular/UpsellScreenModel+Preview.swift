@@ -23,12 +23,8 @@ extension UpsellScreenModel {
         let planInstances: [DisplayablePlanInstance]
 
         switch upsellType {
-        case .standard:
+        case .mailPlus, .unlimited:
             planInstances = DisplayablePlanInstance.previews
-        case .blackFriday(.wave1):
-            planInstances = [DisplayablePlanInstance.blackFridayPreviews[0]]
-        case .blackFriday(.wave2):
-            planInstances = [DisplayablePlanInstance.blackFridayPreviews[1]]
         }
 
         return .init(
@@ -36,8 +32,7 @@ extension UpsellScreenModel {
             planInstances: planInstances,
             entryPoint: entryPoint,
             upsellType: upsellType,
-            purchaseActionPerformer: .dummy,
-            webCheckout: .dummy
+            purchaseActionPerformer: .dummy
         )
     }
 }

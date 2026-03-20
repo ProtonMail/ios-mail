@@ -37,16 +37,11 @@ public final class UpsellScreenModel: Identifiable {
     private let entryPoint: UpsellEntryPoint
     private let upsellType: UpsellType
     private let purchaseActionPerformer: PurchaseActionPerformer
-    private let webCheckout: WebCheckout
 
     var logo: ImageResource {
         switch upsellType {
-        case .standard:
+        case .mailPlus, .unlimited:
             entryPoint.logo
-        case .blackFriday(.wave1):
-            DS.Images.Upsell.BlackFriday.logo50
-        case .blackFriday(.wave2):
-            DS.Images.Upsell.BlackFriday.logo80
         }
     }
 
@@ -87,10 +82,8 @@ public final class UpsellScreenModel: Identifiable {
 
     var isPromo: Bool {
         switch upsellType {
-        case .standard:
+        case .mailPlus, .unlimited:
             false
-        case .blackFriday:
-            true
         }
     }
 
@@ -99,15 +92,13 @@ public final class UpsellScreenModel: Identifiable {
         planInstances: [DisplayablePlanInstance],
         entryPoint: UpsellEntryPoint,
         upsellType: UpsellType,
-        purchaseActionPerformer: PurchaseActionPerformer,
-        webCheckout: WebCheckout
+        purchaseActionPerformer: PurchaseActionPerformer
     ) {
         self.planName = planName
         self.planInstances = planInstances
         self.entryPoint = entryPoint
         self.upsellType = upsellType
         self.purchaseActionPerformer = purchaseActionPerformer
-        self.webCheckout = webCheckout
         selectedInstanceId = planInstances[0].storeKitProductId
     }
 
@@ -125,19 +116,11 @@ public final class UpsellScreenModel: Identifiable {
         let isBusyBinding = Binding(get: { self.isBusy }, set: { self.isBusy = $0 })
 
         switch upsellType {
-        case .standard:
+        case .mailPlus, .unlimited:
             await purchaseActionPerformer.purchase(
                 storeKitProductID: selectedInstanceId,
                 isBusy: isBusyBinding,
                 toastStateStore: toastStateStore,
-                dismiss: dismiss
-            )
-        case .blackFriday(let wave):
-            await webCheckout.initiate(
-                for: wave,
-                isBusy: isBusyBinding,
-                toastStateStore: toastStateStore,
-                openURL: openURL,
                 dismiss: dismiss
             )
         }

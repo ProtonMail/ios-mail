@@ -31,23 +31,4 @@ extension DisplayablePlanInstance {
             discount: nil
         ),
     ]
-
-    static let blackFridayPreviews: [DisplayablePlanInstance] = [
-        .init(
-            storeKitProductId: "iosmail_mail2022_12_usd_auto_renewing",
-            cycleInMonths: 12,
-            pricing: .discountedYearlyPlan(
-                discountedMonthlyPrice: "$2.49",
-                discountedYearlyPrice: "$29.88",
-                renewalPrice: "$47.88"
-            ),
-            discount: 50
-        ),
-        .init(
-            storeKitProductId: "iosmail_mail2022_1_usd_auto_renewing",
-            cycleInMonths: 1,
-            pricing: .discountedMonthlyPlan(discountedPrice: "$1", renewalPrice: "$4.99"),
-            discount: 80
-        ),
-    ]
 }

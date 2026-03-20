@@ -38,12 +38,8 @@ extension UserDefaultsKey<String> {
 private extension UpsellType {
     var onboardingUserDefaultsKey: String {
         switch self {
-        case .standard:
+        case .mailPlus, .unlimited:
             "hasSeenOnboardingUpsell"
-        case .blackFriday(.wave1):
-            "hasSeenOnboardingUpsell_BF2025_1"
-        case .blackFriday(.wave2):
-            "hasSeenOnboardingUpsell_BF2025_2"
         }
     }
 }

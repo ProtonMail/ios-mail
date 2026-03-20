@@ -466,30 +466,22 @@ private extension SidebarOtherItem {
 private extension UpsellType {
     var icon: ImageResource {
         switch self {
-        case .standard:
+        case .mailPlus, .unlimited:
             DS.Icon.icDiamond
-        case .blackFriday(.wave1):
-            DS.Icon.upsellBlackFridaySidebarItemWave1
-        case .blackFriday(.wave2):
-            DS.Icon.upsellBlackFridaySidebarItemWave2
         }
     }
 
     func title(planName: String) -> String {
         switch self {
-        case .standard:
+        case .mailPlus, .unlimited:
             L10n.Sidebar.upgrade(to: planName).string
-        case .blackFriday:
-            "Black Friday Sale".notLocalized
         }
     }
 
     var tint: Color? {
         switch self {
-        case .standard:
+        case .mailPlus, .unlimited:
             nil
-        case .blackFriday:
-            DS.Color.Promo.blackFriday
         }
     }
 }

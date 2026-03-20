@@ -29,7 +29,7 @@ class UpsellScreenPresenterSpy: UpsellScreenPresenter {
         if let stubbedError {
             throw stubbedError
         } else {
-            return .preview(entryPoint: entryPoint, upsellType: .standard)
+            return .preview(entryPoint: entryPoint, upsellType: .mailPlus)
         }
     }
 }

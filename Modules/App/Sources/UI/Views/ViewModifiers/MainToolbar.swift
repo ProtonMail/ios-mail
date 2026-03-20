@@ -203,12 +203,8 @@ enum MainToolbarEvent {
 private extension UpsellType {
     var icon: ImageResource {
         switch self {
-        case .standard:
+        case .mailPlus, .unlimited:
             DS.Icon.icBrandProtonMailUpsellBlackAndWhite
-        case .blackFriday(.wave1):
-            DS.Icon.upsellBlackFridayHeaderButtonWave1
-        case .blackFriday(.wave2):
-            DS.Icon.upsellBlackFridayHeaderButtonWave2
         }
     }
 }
