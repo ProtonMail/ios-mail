@@ -241,8 +241,6 @@ struct SidebarScreen: View {
 
     @ViewBuilder
     private func upsellSidebarItem(item: SidebarItem, upsellType: UpsellType) -> some View {
-        let planName = UpsellConfiguration.mail.humanReadableUpsoldPlanName
-
         SidebarItemButton(
             item: item,
             isTappable: isButtonTappable,
@@ -250,7 +248,7 @@ struct SidebarScreen: View {
             content: {
                 HStack(spacing: .zero) {
                     sidebarItemImage(icon: upsellType.icon.image, isSelected: false, renderingMode: .original)
-                    itemNameLabel(name: upsellType.title(planName: planName), isSelected: false, foregroundColor: upsellType.tint)
+                    itemNameLabel(name: upsellType.title, isSelected: false)
                     Spacer()
                 }
             }
@@ -379,11 +377,11 @@ struct SidebarScreen: View {
             .accessibilityIdentifier(SidebarScreenIdentifiers.badgeIcon)
     }
 
-    private func itemNameLabel(name: String, isSelected: Bool, foregroundColor: Color? = nil) -> some View {
+    private func itemNameLabel(name: String, isSelected: Bool) -> some View {
         Text(name)
             .font(.subheadline)
             .fontWeight(isSelected ? .bold : .regular)
-            .foregroundStyle(foregroundColor ?? (isSelected ? DS.Color.Sidebar.textSelected : DS.Color.Sidebar.textNorm))
+            .foregroundStyle(isSelected ? DS.Color.Sidebar.textSelected : DS.Color.Sidebar.textNorm)
             .lineLimit(1)
             .accessibilityIdentifier(SidebarScreenIdentifiers.textItem)
     }
@@ -464,24 +462,25 @@ private extension SidebarOtherItem {
 }
 
 private extension UpsellType {
+    var planName: String {
+        switch self {
+        case .mailPlus:
+            "Mail Plus"
+        case .unlimited:
+            "Unlimited"
+        }
+    }
+
     var icon: ImageResource {
         switch self {
-        case .mailPlus, .unlimited:
+        case .mailPlus:
             DS.Icon.icDiamond
+        case .unlimited:
+            DS.Icon.icInfinity
         }
     }
 
-    func title(planName: String) -> String {
-        switch self {
-        case .mailPlus, .unlimited:
-            L10n.Sidebar.upgrade(to: planName).string
-        }
-    }
-
-    var tint: Color? {
-        switch self {
-        case .mailPlus, .unlimited:
-            nil
-        }
+    var title: String {
+        L10n.Sidebar.upgrade(to: planName).string
     }
 }

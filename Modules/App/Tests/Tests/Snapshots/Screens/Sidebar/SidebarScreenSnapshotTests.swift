@@ -37,9 +37,10 @@ final class SidebarScreenSnapshotTests {
         createFolder: .createFolder
     )
 
-    @Test(arguments: [UIUserInterfaceStyle.light, .dark])
-    func testSidebarWithDataLayoutsCorrectOnIphoneX(style: UIUserInterfaceStyle) {
+    @Test(arguments: [UIUserInterfaceStyle.light, .dark], [UpsellType.mailPlus, .unlimited])
+    func testSidebarWithDataLayoutsCorrectOnIphoneX(style: UIUserInterfaceStyle, upsellType: UpsellType) {
         var state = self.state
+        state.upsell = .upsell(upsellType)
 
         state.folders = [SidebarCustomFolder.topSecretFolder].map(\.sidebarFolder)
         state.system = [PMSystemLabel.inbox, .sent, .outbox].compactMap(\.sidebarSystemFolder)
@@ -48,13 +49,13 @@ final class SidebarScreenSnapshotTests {
         let sidebarScreen = SidebarScreen(
             state: state,
             userSession: .dummy,
-            upsellEligibilityPublisher: .init(constant: .eligible(.mailPlus)),
+            upsellEligibilityPublisher: .init(constant: .eligible(upsellType)),
             appVersionProvider: .init(bundle: bundleStub, sdkVersionProvider: .init(sdkVersion: "0.61.0")),
             sidebarFactory: { _ in SidebarSpy() }
         ) { _ in }
         .environmentObject(AppUIStateStore(sidebarState: .init(zIndex: .zero, visibleWidth: 320)))
 
-        assertSnapshotsOnIPhoneX(of: sidebarScreen, styles: [style])
+        assertSnapshotsOnIPhoneX(of: sidebarScreen, named: "\(upsellType)", styles: [style])
     }
 
     @Test(arguments: [UIUserInterfaceStyle.light, .dark])
