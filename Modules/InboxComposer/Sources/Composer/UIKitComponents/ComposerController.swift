@@ -262,6 +262,7 @@ private extension ComposerState {
     func toDraftActionBarState() -> DraftActionBarViewController.State {
         DraftActionBarViewController.State(
             isAddingAttachmentsEnabled: isAddingAttachmentsEnabled,
+            isEnabled: !isSending,
             isPasswordProtected: isPasswordProtected,
             expirationTime: expirationTime
         )
