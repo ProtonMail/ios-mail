@@ -171,6 +171,8 @@ struct ComposerView: View {
                 .toolbar {
                     toolbarContent
                 }
+                .disabled(model.state.isSending)
+                .animation(.default, value: model.state.isSending)
                 .ignoresSafeArea(.container, edges: .vertical)
                 .alert(
                     Text(model.attachmentAlertState.presentedError?.title ?? LocalizedStringResource(stringLiteral: .empty)),
@@ -224,33 +226,53 @@ struct ComposerView: View {
                 }
             }
         }
+
         ToolbarItem(placement: .topBarTrailing) {
             ScheduleSendButton {
                 modalState = model.scheduleSendState(lastScheduledTime: draftLastScheduledTime)
             }
             .disabled(!model.state.isSendAvailable)
         }
+
         if #available(iOS 26, *) {
             ToolbarSpacer(.fixed, placement: .topBarTrailing)
+        }
 
-            ToolbarItem(placement: .confirmationAction) {
-                LiquidGlassSendButton {
-                    Task {
-                        await model.sendMessage(dismissAction: dismiss)
-                    }
-                }
-                .disabled(!model.state.isSendAvailable)
-            }
-        } else {
-            ToolbarItem(placement: .topBarTrailing) {
-                SendButton {
-                    Task {
-                        await model.sendMessage(dismissAction: dismiss)
-                    }
-                }
-                .disabled(!model.state.isSendAvailable)
+        ToolbarItem(placement: .topBarTrailing) {
+            if model.state.isSending {
+                sendingLoadingIndicator
+            } else {
+                sendButton
+                    .disabled(!model.state.isSendAvailable)
             }
         }
+    }
+
+    @ViewBuilder
+    private var sendButton: some View {
+        let action: () -> Void = {
+            Task {
+                await model.sendMessage(dismissAction: dismiss)
+            }
+        }
+        if #available(iOS 26, *) {
+            LiquidGlassSendButton(onTap: action)
+        } else {
+            SendButton(onTap: action)
+        }
+    }
+
+    private var sendingLoadingIndicator: some View {
+        HStack {
+            Text(L10n.Composer.sending)
+                .font(.subheadline)
+                .fontWeight(.semibold)
+                .foregroundStyle(DS.Color.Text.norm)
+            ProgressView()
+                .progressViewStyle(.circular)
+                .tint(DS.Color.InteractionBrand.norm)
+        }
+        .padding(.horizontal, DS.Spacing.standard)
     }
 
     @ViewBuilder

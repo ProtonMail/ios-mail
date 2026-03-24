@@ -333,21 +333,35 @@ final class ComposerModel: ObservableObject {
     }
 
     func sendMessage(at date: Date? = nil, dismissAction: Dismissable) async {
+        guard !state.isSending else { return }
+        state = state.copy(\.isSending, to: true)
+        if await validateAndSend(at: date) {
+            messageHasBeenSentOrScheduled = true
+            dismissComposer(
+                dismissAction: dismissAction,
+                reason: await dismissReasonAfterSend(isScheduled: date != nil)
+            )
+        } else {
+            state = state.copy(\.isSending, to: false)
+        }
+    }
+
+    private func validateAndSend(at date: Date?) async -> Bool {
         addRecipientFromInput()
-        guard !invalidAddressAlertStore.isAlertShown else { return }
-        guard !messageHasBeenSentOrScheduled else { return }
+        guard !invalidAddressAlertStore.isAlertShown else { return false }
+        guard !messageHasBeenSentOrScheduled else { return false }
         await updateBodyDebounceTask?.executeImmediately()
-        guard await proceedAfterMessageExpirationValidation() else { return }
+        guard await proceedAfterMessageExpirationValidation() else { return false }
 
         switch await performSendOrSchedule(date: date) {
         case .ok:
-            messageHasBeenSentOrScheduled = true
-            dismissComposer(dismissAction: dismissAction, reason: await dismissReasonAfterSend(isScheduled: date != nil))
+            return true
         case .error(let draftError):
             AppLogger.log(error: draftError, category: .composer)
             if draftError.shouldBeDisplayed {
                 showToast(.error(message: draftError.localizedDescription))
             }
+            return false
         }
     }
 
@@ -546,6 +560,7 @@ extension ComposerModel {
             attachments: attachments,
             initialContent: draft.composerContent(),
             isInitialFocusInBody: false,
+            isSending: state.isSending,
             isAddingAttachmentsEnabled: state.isAddingAttachmentsEnabled,
             isPasswordProtected: draftIsPasswordProtected(draft: draft),
             expirationTime: draftExpirationTime(draft: draft)

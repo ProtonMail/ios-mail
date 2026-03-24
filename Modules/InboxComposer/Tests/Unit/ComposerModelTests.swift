@@ -867,6 +867,7 @@ final class ComposerModelTests: BaseTestCase {
         XCTAssertEqual(dismissReasonObserver, [.messageSent(messageId: MockDraft.defaultMessageId)])
         XCTAssertEqual(dismissSpy.callsCount, 1)
         XCTAssertEqual(sut.toast, nil)
+        XCTAssertTrue(sut.state.isSending)
     }
 
     func testSendMessage_whenFails_itShowsToastError() async throws {
@@ -881,6 +882,7 @@ final class ComposerModelTests: BaseTestCase {
         XCTAssertEqual(dismissReasonObserver, [])
         XCTAssertEqual(dismissSpy.callsCount, 0)
         XCTAssertEqual(sut.toast, Toast.error(message: sendError.localizedDescription))
+        XCTAssertFalse(sut.state.isSending)
     }
 
     func testSendMessage_atSpecificTime_whenSuccess_itDismissesWithTheCorrectDismissReason() async throws {
@@ -895,6 +897,7 @@ final class ComposerModelTests: BaseTestCase {
         XCTAssertEqual(dismissReasonObserver, [.messageScheduled(messageId: MockDraft.defaultMessageId)])
         XCTAssertEqual(dismissSpy.callsCount, 1)
         XCTAssertEqual(sut.toast, nil)
+        XCTAssertTrue(sut.state.isSending)
     }
 
     func testSendMessage_atSpecificTime_whenFails_itShowsToastError() async throws {
@@ -911,6 +914,7 @@ final class ComposerModelTests: BaseTestCase {
         XCTAssertEqual(dismissReasonObserver, [])
         XCTAssertEqual(dismissSpy.callsCount, 0)
         XCTAssertEqual(sut.toast, Toast.error(message: sendError.localizedDescription))
+        XCTAssertFalse(sut.state.isSending)
     }
 
     func testSendMessage_whenThereIsHangingRecipientInput_itShouldAddTheInputAsRecipient() async {
@@ -944,6 +948,7 @@ final class ComposerModelTests: BaseTestCase {
 
         XCTAssertNotNil(sut.state.alert)
         XCTAssertEqual(mockDraft.sendWasCalled, false)
+        XCTAssertFalse(sut.state.isSending)
     }
 
     func testSendMessage_whenRecipientsDoNotSupportExpiration_andUserChoosesToProceed_itShouldSend() async {
@@ -971,6 +976,7 @@ final class ComposerModelTests: BaseTestCase {
         await sut.sendMessage(dismissAction: dismissSpy)
 
         XCTAssertFalse(mockDraft.sendWasCalled)
+        XCTAssertFalse(sut.state.isSending)
     }
 
     func testSendMessage_whenRecipientsDoNotSupportExpiration_andUserChoosesAddPassword_itShouldSetPasswordModal() async {
