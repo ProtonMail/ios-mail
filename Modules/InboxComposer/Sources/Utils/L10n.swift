@@ -90,6 +90,12 @@ enum L10n {
             )
         }
 
+        static let sending = LocalizedStringResource(
+            "Sending",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Composer toolbar label shown while the message is being sent."
+        )
+
         static let sendingMessage = LocalizedStringResource(
             "Sending message...",
             bundle: .atURL(Bundle.module.bundleURL),

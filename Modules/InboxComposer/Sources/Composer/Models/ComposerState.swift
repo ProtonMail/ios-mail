@@ -44,6 +44,7 @@ struct ComposerState: Equatable, Copying {
             || !ccRecipients.recipients.isEmpty
             || !bccRecipients.recipients.isEmpty
     }
+    var isSending: Bool
     var isAddingAttachmentsEnabled: Bool
     var isPasswordProtected: Bool
     var expirationTime: DraftExpirationTime
@@ -78,6 +79,7 @@ extension ComposerState {
             initialContent: .empty,
             isInitialFocusInBody: false,
             editingRecipientsGroup: nil,
+            isSending: false,
             isAddingAttachmentsEnabled: isAddingAttachmentsEnabled,
             isPasswordProtected: false,
             expirationTime: .never

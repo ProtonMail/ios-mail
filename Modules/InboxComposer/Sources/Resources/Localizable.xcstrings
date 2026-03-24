@@ -15111,6 +15111,9 @@
         }
       }
     },
+    "Sending" : {
+      "comment" : "Composer toolbar label shown while the message is being sent."
+    },
     "Sending message..." : {
       "comment" : "Composer toast message when send is tapped.",
       "localizations" : {
