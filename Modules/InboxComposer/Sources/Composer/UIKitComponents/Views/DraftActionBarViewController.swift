@@ -23,6 +23,7 @@ import proton_app_uniffi
 final class DraftActionBarViewController: UIViewController {
     struct State {
         let isAddingAttachmentsEnabled: Bool
+        var isEnabled: Bool
         var isPasswordProtected: Bool
         var expirationTime: DraftExpirationTime
     }
@@ -173,6 +174,8 @@ final class DraftActionBarViewController: UIViewController {
     // MARK: - State
 
     private func applyState() {
+        [attachmentButton, passwordButton, expirationButton, discardButton]
+            .forEach { button in button.isEnabled = state.isEnabled }
         passwordButton.buttonState = state.isPasswordProtected ? .checked : .unchecked
         passwordButton.showsMenuAsPrimaryAction = state.isPasswordProtected
 

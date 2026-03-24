@@ -54,6 +54,10 @@ final class CheckableIconButton: UIButton {
         didSet { updateHighlightAppearance() }
     }
 
+    override var isEnabled: Bool {
+        didSet { updateEnabledAppearance() }
+    }
+
     func setState(_ newState: State) {
         buttonState = newState
     }
@@ -98,10 +102,24 @@ final class CheckableIconButton: UIButton {
         ])
     }
 
+    private var uncheckedIconColor: UIColor {
+        if #available(iOS 26, *) {
+            DS.Color.Icon.norm.toDynamicUIColor
+        } else {
+            DS.Color.Icon.hint.toDynamicUIColor
+        }
+    }
+
+    private func updateEnabledAppearance() {
+        let alpha: CGFloat = isEnabled ? 1 : 0.5
+        backgroundIcon.alpha = alpha
+        checkmarkIcon.alpha = alpha
+    }
+
     private func updateAppearance() {
         switch buttonState {
         case .unchecked:
-            backgroundIcon.tintColor = DS.Color.Icon.hint.toDynamicUIColor
+            backgroundIcon.tintColor = uncheckedIconColor
             checkmarkIcon.isHidden = true
             checkmarkBackground.isHidden = true
         case .checked:
@@ -111,7 +129,6 @@ final class CheckableIconButton: UIButton {
             checkmarkIcon.isHidden = false
             checkmarkBackground.isHidden = false
         }
-        isUserInteractionEnabled = true
         updateHighlightAppearance()
     }
 
@@ -122,11 +139,7 @@ final class CheckableIconButton: UIButton {
         } else {
             switch buttonState {
             case .unchecked:
-                if #available(iOS 26, *) {
-                    backgroundIcon.tintColor = DS.Color.Icon.norm.toDynamicUIColor
-                } else {
-                    backgroundIcon.tintColor = DS.Color.Icon.hint.toDynamicUIColor
-                }
+                backgroundIcon.tintColor = uncheckedIconColor
             case .checked:
                 backgroundIcon.tintColor = DS.Color.Icon.norm.toDynamicUIColor
                 checkmarkIcon.tintColor = DS.Color.Icon.norm.toDynamicUIColor
