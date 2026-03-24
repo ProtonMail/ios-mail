@@ -28,6 +28,7 @@ struct ScheduleSendButton: View {
 
     var body: some View {
         Button(L10n.ScheduleSend.title, image: DS.Icon.icClockPaperPlane, action: onTap)
+            .labelsHidden()
             .foregroundStyle(iconColor)
             .buttonStyle(.plain)
     }
