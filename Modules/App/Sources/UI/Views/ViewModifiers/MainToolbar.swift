@@ -90,6 +90,8 @@ struct MainToolbar<AvatarView: View>: ViewModifier {
             if case .eligible(let upsellType) = upsellEligibility {
                 ToolbarItem(placement: .topBarTrailing) {
                     upsellButton(for: upsellType)
+                        .frame(width: 26, height: 26)
+                        .clipShape(.circle)
                 }
             }
             ToolbarItem(placement: .topBarTrailing) {
@@ -111,10 +113,10 @@ struct MainToolbar<AvatarView: View>: ViewModifier {
         if !selectionMode.hasItems {
             ToolbarItemGroup(placement: .topBarTrailing) {
                 HStack(spacing: DS.Spacing.standard) {
+                    searchButton
                     if case .eligible(let upsellType) = upsellEligibility {
                         upsellButton(for: upsellType)
                     }
-                    searchButton
                     avatarView()
                 }
             }
@@ -141,15 +143,35 @@ struct MainToolbar<AvatarView: View>: ViewModifier {
         }
     }
 
+    @ViewBuilder
     private func upsellButton(for upsellType: UpsellType) -> some View {
-        Button(L10n.MainToolbar.upgrade, image: upsellType.icon) {
-            Task {
-                do {
-                    let upsellScreenModel = try await upsellCoordinator.presentUpsellScreen(entryPoint: .mailboxTopBar, upsellType: upsellType)
-                    onEvent(.onUpsell(upsellScreenModel))
-                } catch {
-                    toastStateStore.present(toast: .error(message: error.localizedDescription))
-                }
+        switch upsellType {
+        case .mailPlus:
+            Button(L10n.MainToolbar.upgrade, image: upsellType.icon) {
+                performUpsellAction(upsellType: upsellType)
+            }
+        case .unlimited:
+            Button {
+                performUpsellAction(upsellType: upsellType)
+            } label: {
+                Image(upsellType.icon)
+                    .renderingMode(.original)
+                    .resizable()
+                    .scaledToFit()
+                    .frame(width: 32, height: 32)
+                    .clipShape(RoundedRectangle(cornerRadius: Theme.radius.large))
+            }
+            .accessibilityLabel(L10n.MainToolbar.upgrade)
+        }
+    }
+
+    private func performUpsellAction(upsellType: UpsellType) {
+        Task {
+            do {
+                let upsellScreenModel = try await upsellCoordinator.presentUpsellScreen(entryPoint: .mailboxTopBar, upsellType: upsellType)
+                onEvent(.onUpsell(upsellScreenModel))
+            } catch {
+                toastStateStore.present(toast: .error(message: error.localizedDescription))
             }
         }
     }
@@ -203,8 +225,10 @@ enum MainToolbarEvent {
 private extension UpsellType {
     var icon: ImageResource {
         switch self {
-        case .mailPlus, .unlimited:
+        case .mailPlus:
             DS.Icon.icBrandProtonMailUpsellBlackAndWhite
+        case .unlimited:
+            DS.Icon.icBrandProtonUnlimitedUpsellHeader
         }
     }
 }
