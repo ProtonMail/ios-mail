@@ -1284,6 +1284,18 @@
             }
           }
         },
+        "id" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld tautan dibersihkan"
+                }
+              }
+            }
+          }
+        },
         "it" : {
           "variations" : {
             "plural" : {
@@ -11617,6 +11629,12 @@
             "value" : "Nettoyé"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dibersihkan"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -12987,6 +13005,28 @@
                     "stringUnit" : {
                       "state" : "translated",
                       "value" : "Les conversations ont été déplacées dans les Archives."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%#@arg1@"
+          },
+          "substitutions" : {
+            "arg1" : {
+              "argNum" : 1,
+              "formatSpecifier" : "lld",
+              "variations" : {
+                "plural" : {
+                  "other" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "Percakapan dipindahkan ke Arsip."
                     }
                   }
                 }
@@ -17848,6 +17888,12 @@
             "value" : "Discret"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Rahasia"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -17997,6 +18043,12 @@
             "value" : "Icône d'application discrète"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ikon aplikasi rahasia"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -18144,6 +18196,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Icône discrète"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ikon rahasia"
           }
         },
         "it" : {
@@ -21488,6 +21546,12 @@
             "value" : "Les messages de %@ ne seront plus distribués et seront définitivement supprimés. Vous pouvez gérer les adresses e-mail bloquées dans les paramètres."
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Email baru dari %@ tidak akan diterima dan akan dihapus secara permanen. Kelola daftar alamat email yang diblokir dalam pengaturan."
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -21643,6 +21707,12 @@
             "value" : "Vider le dossier %@"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kosongkan Folder %@"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -21796,6 +21866,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vider %@ maintenant"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kosongkan %@ sekarang"
           }
         },
         "it" : {
@@ -22142,6 +22218,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Cadenas de chiffrement"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kunci enkripsi"
           }
         },
         "it" : {
@@ -22840,6 +22922,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Expire dans %@"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kedaluwarsa dalam %@"
           }
         },
         "it" : {
@@ -25408,6 +25496,12 @@
             "value" : "Inspectez les messages suspects pour confirmer leur authenticité et découvrir les éléments de suivis cachés."
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Periksa pesan mencurigakan untuk mengonfirmasi keasliannya dan mengungkap elemen pelacakan tersembunyi."
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -26273,6 +26367,12 @@
             "value" : "Conservez l'icône Proton Mail par défaut ou remplacez-la par une icône générique pour plus de confidentialité."
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pertahankan ikon Proton Mail bawaan atau samarkan dengan ikon generik untuk privasi yang lebih baik."
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -26408,6 +26508,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Conservez l'icône Proton Mail par défaut, ou remplacez-la par une icône plus discrète pour plus de confidentialité. Les notifications afficheront toujours le nom et l'icône de Proton Mail. [En savoir plus…](https://proton.me/support/disguise-app-icon)"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pertahankan ikon Proton Mail bawaan, atau samarkan dengan ikon rahasia untuk privasi tambahan. Notifikasi akan selalu menampilkan nama dan ikon Proton Mail. [Pelajari lebih lanjut…](https://proton.me/support/disguise-app-icon)"
           }
         },
         "it" : {
@@ -27508,6 +27614,12 @@
             "value" : "Képek betöltése"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Muat gambar"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -28566,6 +28678,18 @@
                 "stringUnit" : {
                   "state" : "translated",
                   "value" : "%lld pièces jointes"
+                }
+              }
+            }
+          }
+        },
+        "id" : {
+          "variations" : {
+            "plural" : {
+              "other" : {
+                "stringUnit" : {
+                  "state" : "translated",
+                  "value" : "%lld lampiran"
                 }
               }
             }
@@ -30714,6 +30838,28 @@
             }
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%#@arg1@"
+          },
+          "substitutions" : {
+            "arg1" : {
+              "argNum" : 1,
+              "formatSpecifier" : "lld",
+              "variations" : {
+                "plural" : {
+                  "other" : {
+                    "stringUnit" : {
+                      "state" : "translated",
+                      "value" : "Pesan dipindahkan ke Arsip."
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -32850,6 +32996,12 @@
             "value" : "Déplacé vers %@."
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dipindahkan ke %@."
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -33775,6 +33927,12 @@
             "value" : "Nincs email cím, küldési jogosultságokkal"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tidak ada alamat dengan izin untuk mengirim"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -34310,6 +34468,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Aucun traqueur détecté"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Tidak ada pelacak yang terdeteksi"
           }
         },
         "it" : {
@@ -35993,6 +36157,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Original"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Asli"
           }
         },
         "it" : {
@@ -55771,6 +55941,12 @@
             "value" : "Version %@"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Versi %@"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -56821,6 +56997,12 @@
             "value" : "Nous vous protégeons activement contre le suivi. Ici, vous pouvez voir les pixels espions que nous avons bloqués et les liens de suivi que nous avons nettoyés dans ce message. [En savoir plus](https://proton.me/support/email-tracker-protection)"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kami melindungi Anda secara aktif dari pelacakan. Di sini Anda dapat melihat piksel pelacakan yang kami blokir dan tautan pelacakan yang kami blokir dalam pesan ini. [Pelajari lebih lanjut](https://proton.me/support/email-tracker-protection)"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -57702,6 +57884,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Nouveautés"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Apa yang baru"
           }
         },
         "it" : {

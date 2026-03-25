@@ -70,6 +70,12 @@
             "value" : "+%lld de plus"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "+%lld lainnya"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",

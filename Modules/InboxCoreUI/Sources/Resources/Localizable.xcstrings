@@ -2164,6 +2164,12 @@
             "value" : "Cependant, un expéditeur ou un destinataire n'utilisant pas Proton Mail peut avoir une copie non chiffrée stockée sur son serveur de messagerie."
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Namun, pengirim atau penerima yang tidak menggunakan Proton Mail mungkin memiliki salinan tidak terenkripsi yang tersimpan di server email mereka."
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2770,6 +2776,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Message signé avec PGP"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Email yang ditandatangani PGP"
           }
         },
         "it" : {
@@ -4777,6 +4789,12 @@
             "value" : "La [vérification de l'expéditeur n'a pas abouti] (https://proton.me/support/sender-verification-failed) car le message n'était pas signé. Veuillez confirmer l'authenticité du message auprès de votre contact."
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "[Verifikasi pengirim gagal](https://proton.me/support/sender-verification-failed) karena tidak ditandatangani. Silakan konfirmasi keaslian email dengan kontak Anda."
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4918,6 +4936,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "La [vérification de l'expéditeur n'a pas abouti] (https://proton.me/support/sender-verification-failed). Veuillez confirmer l'authenticité du message auprès de votre contact."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "[Verifikasi pengirim gagal](https://proton.me/support/sender-verification-failed). Silakan konfirmasi keaslian email dengan kontak Anda."
           }
         },
         "it" : {
@@ -5063,6 +5087,12 @@
             "value" : "Le message est stocké sur les serveurs Proton avec un [chiffrement à zéro accès](https://proton.me/blog/zero-access-encryption). Ni Proton ni aucune autre personne ne peut le lire."
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Email disimpan di server Proton dengan [enkripsi akses nol](https://proton.me/blog/zero-access-encryption). Tidak ada siapa pun, termasuk Proton, yang dapat membacanya."
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5192,6 +5222,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Le destinataire est un [contact vérifié](https://proton.me/support/address-verification) dont vous approuvez les clés de chiffrement."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Penerima merupakan [kontak tepercaya](https://proton.me/support/address-verification) yang kunci enkripsinya Anda percayai."
           }
         },
         "it" : {
@@ -5337,6 +5373,12 @@
             "value" : "Les destinataires sont des [contacts vérifiés](https://proton.me/support/address-verification) dont vous avez approuvé les clés de chiffrement."
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Penerima merupakan [kontak tepercaya](https://proton.me/support/address-verification) yang kunci enkripsinya Anda percayai."
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5478,6 +5520,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "L'expéditeur est un [contact vérifié](https://proton.me/support/address-verification) dont vous approuvez les clés de chiffrement."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pengirim merupakan [kontak tepercaya](https://proton.me/support/address-verification) yang kunci enkripsinya Anda percayai."
           }
         },
         "it" : {
@@ -5623,6 +5671,12 @@
             "value" : "Ce message est [chiffré de bout en bout](https://proton.me/blog/what-is-end-to-end-encryption) sur l'appareil de l'expéditeur et ne peut être déchiffré que par le destinataire. Proton ne peut à aucun moment voir le contenu du message."
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Email ini [dienkripsi end-to-end](https://proton.me/blog/what-is-end-to-end-encryption) pada perangkat pengirim dan hanya dapat didekripsikan oleh penerima. Proton tidak dapat melihat isi email kapan saja."
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5758,6 +5812,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ce message est stocké sur les serveurs Proton avec un [chiffrement à zéro accès](https://proton.me/blog/zero-access-encryption). Ni Proton ni aucune autre personne ne peut le lire."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Email ini disimpan di server Proton dengan [enkripsi akses nol](https://proton.me/blog/zero-access-encryption). Tidak ada siapa pun, termasuk Proton, yang dapat membacanya."
           }
         },
         "it" : {
@@ -6414,6 +6474,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vous avez [signé numériquement](https://proton.me/support/proton-mail-digital-signatures) cet e-mail, prouvant ainsi au destinataire que votre message est authentique et n'a pas été falsifié."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anda telah [menandatangani](https://proton.me/support/proton-mail-digital-signatures) email ini secara digital, membuktikan pada penerima bahwa email Anda asli dan tidak dimanipulasi."
           }
         },
         "it" : {

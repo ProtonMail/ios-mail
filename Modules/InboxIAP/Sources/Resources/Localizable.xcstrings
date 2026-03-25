@@ -4384,6 +4384,12 @@
             "value" : "csak %@ /hó"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "hanya %@ /bulan"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",

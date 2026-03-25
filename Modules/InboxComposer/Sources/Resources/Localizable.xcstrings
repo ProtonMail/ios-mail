@@ -380,6 +380,12 @@
             "value" : "%lld membres"
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld anggota"
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6316,6 +6322,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Informations sur le chiffrement"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Info enkripsi"
           }
         },
         "it" : {
@@ -15932,6 +15944,12 @@
             "value" : "Certains destinataires (%@) ne prennent pas en charge la date d'expiration par défaut. Ajoutez un mot de passe pour activer les dates d'expiration pour les destinataires qui n'utilisent pas Proton Mail."
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sebagian penerima (%@) tidak mendukung kedaluwarsa pesan secara bawaan. Tambahkan kata sandi untuk mengaktifkan kedaluwarsa pesan bagi pengguna non-Proton Mail."
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -17973,6 +17991,12 @@
             "value" : "Il y a une limite de 25 Mo pour les pièces jointes par e-mail, images comprises, et %lld pièces jointes n'ont pas pu être ajoutées. Envoyez-les dans des e-mails séparés ou partagez-les avec Proton Drive."
           }
         },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lampiran terbatas hingga 25 MB per email, termasuk gambar dalam pesan, dan %lld lampiran tidak dapat ditambahkan. Kirim lampiran ini pada email yang terpisah atau bagikan lampiran Anda via Proton Drive."
+          }
+        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
@@ -18126,6 +18150,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Az e-mailek mellékletei, beleértve a beágyazott képeket is, 25 MB-osak lehetnek. Küldje el őket külön e-mailekben, vagy ossza meg őket a Proton Drive segítségével."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lampiran terbatas hingga 25 MB per email, termasuk gambar dalam pesan. Kirim lampiran ini pada email yang terpisah atau bagikan lampiran Anda via Proton Drive."
           }
         },
         "it" : {
@@ -19570,6 +19600,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Elérte a mellékletek, beleértve a beágyazott képeket is, maximális számát, ezért 1 vagy több melléklet nem kerülhetett hozzáadásra. Küldje el őket külön e-mailekben, vagy ossza meg őket a Proton Drive segítségével."
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Anda telah mencapai batas jumlah lampiran Anda, termasuk gambar dalam pesan, satu atau lebih lampiran yang ada tidak dapat ditambahkan. Kirim lampiran ini pada email yang terpisah atau bagikan melalui Proton Drive."
           }
         },
         "it" : {
