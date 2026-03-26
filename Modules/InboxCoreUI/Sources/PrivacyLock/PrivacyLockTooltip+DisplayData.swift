@@ -116,7 +116,7 @@ public extension PrivacyLockTooltip {
             .init(
                 title: L10n.PrivacyLockTooltip.Title.endToEndEncrypted,
                 description: L10n.PrivacyLockTooltip.Description.thisEmailIsEndToEndEncrypted,
-                additionalDescription: L10n.PrivacyLockTooltip.Description.emailsExchangedBetweenProtonUsers
+                additionalDescription: nil
             )
         case .sentRecipientE2eVerifiedRecipient:
             .init(
