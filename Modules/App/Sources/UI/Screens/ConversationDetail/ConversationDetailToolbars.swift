@@ -106,8 +106,6 @@ private struct ConversationDetailToolbars: ViewModifier {
                 action: model.toggleStarState
             )
             .tint(model.isStarred ? DS.Color.Star.selected : DS.Color.Icon.norm)
-        } else {
-            Color.clear
         }
     }
 }

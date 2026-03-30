@@ -64,8 +64,10 @@ struct ConversationToolbar<TrailingButton: View>: ViewModifier {
                     }
                 }
 
-                ToolbarItem(placement: .navigationBarTrailing) {
-                    trailingButton()
+                if let trailingButton = trailingButton() {
+                    ToolbarItem(placement: .navigationBarTrailing) {
+                        trailingButton
+                    }
                 }
             }
     }
