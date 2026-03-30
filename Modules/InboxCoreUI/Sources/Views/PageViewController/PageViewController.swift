@@ -16,6 +16,7 @@
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
 import Combine
+import InboxDesignSystem
 import SwiftUI
 import proton_app_uniffi
 
@@ -53,6 +54,7 @@ public struct PageViewController<Page: View>: UIViewControllerRepresentable {
             )
         }
         pageViewController.delegate = context.coordinator
+        pageViewController.view.backgroundColor = DS.Color.Background.secondary.toDynamicUIColor
 
         let page = startingPage()
         let hostingController = UIHostingController(rootView: page)

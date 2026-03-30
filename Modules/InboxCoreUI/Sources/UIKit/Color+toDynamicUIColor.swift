@@ -1,4 +1,4 @@
-// Copyright (c) 2024 Proton Technologies AG
+// Copyright (c) 2026 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
@@ -19,7 +19,7 @@ import SwiftUI
 
 extension Color {
     /// Use in UIKit components inside `UIViewControllerRepresentable` to ensure dynamic colours updates
-    var toDynamicUIColor: UIColor {
+    public var toDynamicUIColor: UIColor {
         UIColor { traits in
             /**
              Referencing `userInterfaceStyle` is the only hack I found to fix all dynamic colours problems in UIKit. Without

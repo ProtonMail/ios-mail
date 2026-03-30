@@ -53,7 +53,6 @@ struct ConversationsPageViewController: View {
             startingPage: startingPage,
             pageFactory: pageFactory
         )
-        .background(DS.Color.Background.secondary)
         .modify { view in
             if #available(iOS 26, *) {
                 view

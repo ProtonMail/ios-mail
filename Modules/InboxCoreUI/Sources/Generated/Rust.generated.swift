@@ -464,6 +464,16 @@ public extension LoginFlowSubmitTotpResult {
         }
     }
 }
+public extension LoginFlowTfaMethodsResult {
+    func get() throws(LoginError) -> TfaMethods {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension LoginFlowUserIdResult {
     func get() throws(LoginError) -> String {
         switch self {
