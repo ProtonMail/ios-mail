@@ -888,6 +888,12 @@
             "value" : "Proton kullanıcıları arasında gönderilen e-postalar otomatik olarak uçtan uca şifrelenir."
           }
         },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Електронні листи, якими обмінюються користувачі Proton, автоматично шифруються від початку до кінця."
+          }
+        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
@@ -5141,6 +5147,12 @@
             "value" : "Email je uložený na Proton serveroch so šifrovaním s nulovým prístupom (zero-access encryption)[https://proton.me/blog/zero-access-encryption]. Ani Proton, ani nikto iný si ho nemôže prečítať."
           }
         },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sporočilo je na strežnikih Proton shranjeno z [šifriranjem brez dostopa](https://proton.me/blog/zero-access-encryption). Niti Proton niti nihče drug ga ne more prebrati."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -6419,7 +6431,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Heu [signat digitalment](https://proton.me/support/proton-mail-digital-signatures) aquest correu electrònic, el que demostra al destinatari que el vostre correu electrònic és autèntic i no ha estat manipulat."
+            "value" : "Heu [signat digitalment](https://proton.me/support/proton-mail-digital-signatures) aquest correu electrònic, demostrant al destinatari que el correu electrònic és autèntic i no s'ha manipulat."
           }
         },
         "cs" : {

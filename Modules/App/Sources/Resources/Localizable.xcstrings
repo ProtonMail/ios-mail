@@ -10940,7 +10940,7 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Schimbare parolă"
+            "value" : "Modificare parolă"
           }
         },
         "ru" : {
@@ -21489,7 +21489,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Els correus electrònics de %@ ja no s'entregaran i se suprimiran permanentment. Podeu gestionar les adreces de correu bloquejades a les preferències."
+            "value" : "Els correus electrònics de %@ ja no s'entregaran i se suprimiran permanentment. Podeu gestionar les adreces de correu electrònic bloquejades a les preferències."
           }
         },
         "cs" : {
@@ -46378,7 +46378,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Dediqueu menys temps a ordenar i més a fer coses. La vostra safata d'entrada està dissenyada perquè sigui més fàcil de navegar, de manera que pugueu arribar al que és important més ràpidament."
+            "value" : "Passeu menys temps ordenant i més temps fent coses. La safata d'entrada està dissenyada per a ser més fàcil de navegar, de manera que pugueu arribar al que és important més ràpid."
           }
         },
         "cs" : {
@@ -56940,7 +56940,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Us protegim activament del seguiment. Aquí podeu visualitzar els píxels espia que hem bloquejat i els enllaços de seguiment que hem netejat en aquest missatge. [Per saber-ne més](https://proton.me/support/email-tracker-protection)"
+            "value" : "Us protegim activament del rastreig. Aquí podeu veure els píxels espia que hem bloquejat i els enllaços de rastreig que hem netejat en aquest missatge. [Més informació](https://proton.me/support/email-tracker-protection)"
           }
         },
         "cs" : {
