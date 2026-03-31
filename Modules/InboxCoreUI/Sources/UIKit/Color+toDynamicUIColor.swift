@@ -1,4 +1,4 @@
-// Copyright (c) 2026 Proton Technologies AG
+// Copyright (c) 2024 Proton Technologies AG
 //
 // This file is part of Proton Mail.
 //
