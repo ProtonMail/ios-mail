@@ -15192,6 +15192,12 @@
             "value" : "Envoi en cours..."
           }
         },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Invio in corso"
+          }
+        },
         "ka" : {
           "stringUnit" : {
             "state" : "translated",
