@@ -45,13 +45,16 @@ final class SidebarScreenSnapshotTests {
         state.system = [PMSystemLabel.inbox, .sent, .outbox].compactMap(\.sidebarSystemFolder)
         state.labels = [SidebarCustomLabel.importantLabel, .topSecretLabel].map(\.sidebarLabel)
 
-        let sidebarScreen = SidebarScreen(
+        let screenModel = SidebarModel(
             state: state,
-            userSession: .dummy,
-            upsellEligibilityPublisher: .init(constant: .eligible(.mailPlus)),
+            sidebar: SidebarSpy(),
+            upsellEligibilityPublisher: .init(constant: .eligible(.mailPlus))
+        )
+        let sidebarScreen = SidebarScreen(
+            screenModel: screenModel,
             appVersionProvider: .init(bundle: bundleStub, sdkVersionProvider: .init(sdkVersion: "0.61.0")),
-            sidebarFactory: { _ in SidebarSpy() }
-        ) { _ in }
+            selectedItem: { _ in }
+        )
         .environmentObject(AppUIStateStore(sidebarState: .init(zIndex: .zero, visibleWidth: 320)))
 
         assertSnapshotsOnIPhoneX(of: sidebarScreen, styles: [style])
@@ -63,13 +66,16 @@ final class SidebarScreenSnapshotTests {
 
         state.system = [PMSystemLabel.inbox, .sent].compactMap(\.sidebarSystemFolder)
 
-        let sidebarScreen = SidebarScreen(
+        let screenModel = SidebarModel(
             state: state,
-            userSession: .dummy,
-            upsellEligibilityPublisher: .init(constant: .eligible(.mailPlus)),
+            sidebar: SidebarSpy(),
+            upsellEligibilityPublisher: .init(constant: .eligible(.mailPlus))
+        )
+        let sidebarScreen = SidebarScreen(
+            screenModel: screenModel,
             appVersionProvider: .init(bundle: bundleStub, sdkVersionProvider: .init(sdkVersion: "0.61.0")),
-            sidebarFactory: { _ in SidebarSpy() }
-        ) { _ in }
+            selectedItem: { _ in }
+        )
         .environmentObject(AppUIStateStore(sidebarState: .init(zIndex: .zero, visibleWidth: 320)))
 
         assertSnapshotsOnIPhoneX(of: sidebarScreen, styles: [style])

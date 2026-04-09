@@ -51,6 +51,7 @@ struct HomeScreen: View {
     @StateObject private var appRoute: AppRouteState
     @StateObject private var composerCoordinator: ComposerCoordinator
     @StateObject private var upsellEligibilityPublisher: UpsellEligibilityPublisher
+    @StateObject private var sidebarModel: SidebarModel
     @State private var messageQuickLook = MessageQuickLook()
     @State private var modalState: ModalState?
     @State private var isNotificationPromptPresented = false
@@ -61,7 +62,6 @@ struct HomeScreen: View {
 
     private let userSession: MailUserSession
     private let mailSettingsLiveQuery: MailSettingLiveQuerying
-    private let makeSidebarScreen: (@escaping (SidebarItem) -> Void) -> SidebarScreen
     private let modalFactory: HomeScreenModalFactory
     private let notificationAuthorizationStore: NotificationAuthorizationStore
 
@@ -76,17 +76,15 @@ struct HomeScreen: View {
         _composerCoordinator = .init(wrappedValue: .init(userSession: userSession, toastStateStore: toastStateStore))
         let upsellEligibilityPublisher = UpsellEligibilityPublisher(userSession: userSession)
         _upsellEligibilityPublisher = .init(wrappedValue: upsellEligibilityPublisher)
+        _sidebarModel = .init(
+            wrappedValue: SidebarModel(
+                state: .initial,
+                sidebar: Sidebar(session: userSession),
+                upsellEligibilityPublisher: upsellEligibilityPublisher
+            ))
         self.appContext = appContext
         self.userSession = userSession
         self.mailSettingsLiveQuery = MailSettingsLiveQuery(userSession: userSession)
-        self.makeSidebarScreen = { selectedItem in
-            SidebarScreen(
-                state: .initial,
-                userSession: userSession,
-                upsellEligibilityPublisher: upsellEligibilityPublisher,
-                selectedItem: selectedItem
-            )
-        }
         self._eventLoopErrorCoordinator = .init(
             wrappedValue: EventLoopErrorCoordinator(userSession: userSession, toastStateStore: toastStateStore)
         )
@@ -126,7 +124,7 @@ struct HomeScreen: View {
             .environmentObject(composerCoordinator)
             .environment(messageQuickLook)
 
-            makeSidebarScreen { selectedItem in
+            SidebarScreen(screenModel: sidebarModel) { selectedItem in
                 switch selectedItem {
                 case .upsell(let upsellType):
                     presentUpsellScreen(ofType: upsellType)

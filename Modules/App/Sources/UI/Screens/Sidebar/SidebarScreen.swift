@@ -27,7 +27,7 @@ struct SidebarScreen: View {
     }
 
     @EnvironmentObject private var appUIStateStore: AppUIStateStore
-    @StateObject private var screenModel: SidebarModel
+    @ObservedObject private var screenModel: SidebarModel
     @State private var headerHeight: CGFloat = .zero
     @GestureState private var gestureState: GestureStateData = .init()
     @State private var lastCommittedAxis: AxisLock = .none
@@ -49,20 +49,11 @@ struct SidebarScreen: View {
     private let appVersionProvider: AppVersionProvider
 
     init(
-        state: SidebarState,
-        userSession: MailUserSession,
-        upsellEligibilityPublisher: UpsellEligibilityPublisher,
+        screenModel: SidebarModel,
         appVersionProvider: AppVersionProvider = .init(),
-        sidebarFactory: @escaping (MailUserSession) -> SidebarProtocol = Sidebar.init,
         selectedItem: @escaping (SidebarItem) -> Void
     ) {
-        let screenModel = SidebarModel(
-            state: state,
-            sidebar: sidebarFactory(userSession),
-            upsellEligibilityPublisher: upsellEligibilityPublisher
-        )
-
-        _screenModel = .init(wrappedValue: screenModel)
+        self.screenModel = screenModel
         self.selectedItem = selectedItem
         self.appVersionProvider = appVersionProvider
     }
