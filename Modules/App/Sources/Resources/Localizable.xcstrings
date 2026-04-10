@@ -25556,6 +25556,12 @@
             "value" : "Preglejte sumljiva sporočila, da se prepričate o njihovi verodostojnosti in odkrijete morebitne skrite elemente za sledenje."
           }
         },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Granska misstänkta meddelanden för att bekräfta deras äkthet och avslöja eventuella dolda spårningselement."
+          }
+        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
@@ -26425,6 +26431,12 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Obdržite privzeto ikono aplikacije Proton Mail ali jo za večjo zasebnost prikrijte z generično ikono."
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Behåll standardikonen för Proton Mail eller dölj den med en generisk ikon för ökad integritet."
           }
         },
         "tr" : {
