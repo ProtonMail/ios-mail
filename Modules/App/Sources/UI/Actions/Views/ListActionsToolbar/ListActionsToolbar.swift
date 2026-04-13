@@ -23,81 +23,61 @@ import proton_app_uniffi
 
 extension View {
     /// Attaches the list actions toolbar to this view.
-    ///
-    /// The modifier is applied via `background(Color.clear)` **on purpose** to
-    /// constrain view invalidation when the active `Mailbox` (and its
-    /// `labelId`) changes. The action bar must be re-rendered and its
-    /// `ListActionsToolbarStore` `@StateObject` recreated on each mailbox change
-    /// to ensure the correct `labelId` is used under the hood—without forcing
-    /// unnecessary re-renders of the surrounding view hierarchy.
     func listActionsToolbar<ComposeButton: ToolbarContent>(
         initialState: ListActionsToolbarState,
+        selectedIds: [ID],
         availableActions: AvailableListToolbarActions,
-        itemTypeForActionBar: MailboxItemType,
         mailUserSession: MailUserSession,
-        selectedItems: Binding<Set<MailboxSelectedItem>>,
+        mailbox: Mailbox,
+        toastStateStore: ToastStateStore,
+        refreshToolbarNotifier: RefreshToolbarNotifier,
         liquidComposeButton: (() -> ComposeButton)?
     ) -> some View {
-        background(
-            Color.clear
-                .modifier(
-                    ListActionBarViewModifier(
-                        initialState: initialState,
-                        availableActions: availableActions,
-                        itemTypeForActionBar: itemTypeForActionBar,
-                        mailUserSession: mailUserSession,
-                        selectedItems: selectedItems,
-                        liquidComposeButton: liquidComposeButton
-                    )
-                ))
+        modifier(
+            ListActionBarViewModifier(
+                initialState: initialState,
+                selectedIds: selectedIds,
+                availableActions: availableActions,
+                mailUserSession: mailUserSession,
+                mailbox: mailbox,
+                toastStateStore: toastStateStore,
+                refreshToolbarNotifier: refreshToolbarNotifier,
+                liquidComposeButton: liquidComposeButton
+            )
+        )
     }
 }
 
 private struct ListActionBarViewModifier<ComposeButton: ToolbarContent>: ViewModifier {
-    typealias State = ListActionsToolbarState
-    typealias Store = ListActionsToolbarStore
+    @StateObject private var store: ListActionsToolbarStore
 
-    @Binding var selectedItems: Set<MailboxSelectedItem>
-    @EnvironmentObject var mailbox: Mailbox
-    @EnvironmentObject var toastStateStore: ToastStateStore
-    @EnvironmentObject var refreshToolbarNotifier: RefreshToolbarNotifier
-    private let initialState: ListActionsToolbarState
-    private let itemTypeForActionBar: MailboxItemType
-    private let availableActions: AvailableListToolbarActions
-    private let deleteActions: DeleteActions
-    private let moveToActions: MoveToActions
-    private let mailUserSession: MailUserSession
-    private let starActionPerformerActions: StarActionPerformerActions
-    private let readActionPerformerActions: ReadActionPerformerActions
-    private let liquidComposeButton: ComposeButton?
+    let selectedIds: [ID]
+    let mailbox: Mailbox
+    let refreshToolbarNotifier: RefreshToolbarNotifier
+    let mailUserSession: MailUserSession
+    let liquidComposeButton: ComposeButton?
 
     init(
         initialState: ListActionsToolbarState,
+        selectedIds: [ID],
         availableActions: AvailableListToolbarActions,
         starActionPerformerActions: StarActionPerformerActions = .productionInstance,
         readActionPerformerActions: ReadActionPerformerActions = .productionInstance,
         deleteActions: DeleteActions = .productionInstance,
         moveToActions: MoveToActions = .productionInstance,
-        itemTypeForActionBar: MailboxItemType,
         mailUserSession: MailUserSession,
-        selectedItems: Binding<Set<MailboxSelectedItem>>,
+        mailbox: Mailbox,
+        toastStateStore: ToastStateStore,
+        refreshToolbarNotifier: RefreshToolbarNotifier,
         liquidComposeButton: (() -> ComposeButton)?
     ) {
-        self._selectedItems = selectedItems
-        self.initialState = initialState
-        self.itemTypeForActionBar = itemTypeForActionBar
-        self.availableActions = availableActions
-        self.deleteActions = deleteActions
-        self.moveToActions = moveToActions
+        self.selectedIds = selectedIds
+        self.mailbox = mailbox
+        self.refreshToolbarNotifier = refreshToolbarNotifier
         self.mailUserSession = mailUserSession
-        self.starActionPerformerActions = starActionPerformerActions
-        self.readActionPerformerActions = readActionPerformerActions
         self.liquidComposeButton = liquidComposeButton?()
-    }
-
-    func body(content: Content) -> some View {
-        StoreView(
-            store: ListActionsToolbarStore(
+        self._store = StateObject(
+            wrappedValue: ListActionsToolbarStore(
                 state: initialState,
                 availableActions: availableActions,
                 starActionPerformerActions: starActionPerformerActions,
@@ -107,76 +87,61 @@ private struct ListActionBarViewModifier<ComposeButton: ToolbarContent>: ViewMod
                 mailUserSession: mailUserSession,
                 mailbox: mailbox,
                 toastStateStore: toastStateStore
+            ))
+    }
+
+    func body(content: Content) -> some View {
+        content
+            .toolbar {
+                toolbarContent(state: store.state, store: store)
+            }
+            .animation(.default, value: store.state.bottomBarActions)
+            .bottomToolbarStyle()
+            .onChange(of: selectedIds) { _, newValue in
+                store.handle(action: .listItemsSelectionUpdated(ids: newValue))
+            }
+            .onLoad {
+                store.handle(action: .listItemsSelectionUpdated(ids: selectedIds))
+            }
+            .labelAsSheet(
+                mailbox: { mailbox },
+                mailUserSession: mailUserSession,
+                input: store.binding(\.labelAsSheetPresented)
             )
-        ) { state, store in
-            content
-                .toolbar {
-                    toolbarContent(state: state, store: store)
+            .moveToSheet(
+                mailbox: { mailbox },
+                mailUserSession: mailUserSession,
+                input: store.binding(\.moveToSheetPresented),
+                navigation: { _ in
+                    store.handle(action: .dismissMoveToSheet)
                 }
-                .animation(.default, value: state.bottomBarActions)
-                .bottomToolbarStyle()
-                .onChange(of: selectedItems) { oldValue, newValue in
-                    if oldValue != newValue {
-                        store.handle(
-                            action: .listItemsSelectionUpdated(
-                                ids: selectedItemsIDs,
-                                itemType: itemTypeForActionBar
-                            ))
-                    }
+            )
+            .sheet(isPresented: store.binding(\.isEditToolbarSheetPresented)) {
+                EditToolbarScreen(state: .initial(toolbarType: .list), customizeToolbarService: mailUserSession)
+            }
+            .sheet(isPresented: store.binding(\.isSnoozeSheetPresented)) {
+                SnoozeView(
+                    state: .initial(
+                        screen: .main,
+                        labelId: mailbox.labelId(),
+                        conversationIDs: store.state.selectedIds
+                    ))
+            }
+            .onReceive(refreshToolbarNotifier.refreshToolbar) { toolbarType in
+                if toolbarType == .list {
+                    store.handle(action: .listItemsSelectionUpdated(ids: store.state.selectedIds))
                 }
-                .onLoad {
-                    store.handle(
-                        action: .listItemsSelectionUpdated(
-                            ids: selectedItemsIDs,
-                            itemType: itemTypeForActionBar
-                        ))
-                }
-                .labelAsSheet(
-                    mailbox: { mailbox },
-                    mailUserSession: mailUserSession,
-                    input: store.binding(\.labelAsSheetPresented)
-                )
-                .moveToSheet(
-                    mailbox: { mailbox },
-                    mailUserSession: mailUserSession,
-                    input: store.binding(\.moveToSheetPresented),
-                    navigation: { _ in
-                        store.handle(action: .dismissMoveToSheet)
-                    }
-                )
-                .sheet(isPresented: store.binding(\.isEditToolbarSheetPresented)) {
-                    EditToolbarScreen(state: .initial(toolbarType: .list), customizeToolbarService: mailUserSession)
-                }
-                .sheet(isPresented: store.binding(\.isSnoozeSheetPresented)) {
-                    SnoozeView(
-                        state: .initial(
-                            screen: .main,
-                            labelId: mailbox.labelId(),
-                            conversationIDs: selectedItemsIDs
-                        ))
-                }
-                .onReceive(refreshToolbarNotifier.refreshToolbar) { toolbarType in
-                    if toolbarType == .list {
-                        store.handle(
-                            action: .listItemsSelectionUpdated(
-                                ids: selectedItemsIDs,
-                                itemType: itemTypeForActionBar
-                            ))
-                    }
-                }
-                .alert(model: store.binding(\.deleteConfirmationAlert))
-        }
-        .id(MailboxIdentifiaction(viewMode: mailbox.viewMode(), id: mailbox.labelId()))  // FIXME: - Fix spam / trash filter
+            }
+            .alert(model: store.binding(\.deleteConfirmationAlert))
+            .onChange(of: MailboxIdentifiaction(viewMode: mailbox.viewMode(), id: mailbox.labelId())) { _, _ in
+                store.handle(action: .mailboxChanged(mailbox))
+            }
     }
 
     // MARK: - Private
 
-    private var selectedItemsIDs: [ID] {
-        selectedItems.map(\.id)
-    }
-
     @ToolbarContentBuilder
-    private func toolbarContent(state: State, store: Store) -> some ToolbarContent {
+    private func toolbarContent(state: ListActionsToolbarState, store: ListActionsToolbarStore) -> some ToolbarContent {
         if state.bottomBarActions.isEmpty == false {
             ToolbarItemGroup(placement: .bottomBar) {
                 AdaptiveToolbarItemsLayout(items: state.bottomBarActions) { action in
@@ -195,8 +160,8 @@ private struct ListActionBarViewModifier<ComposeButton: ToolbarContent>: ViewMod
     @ViewBuilder
     private func toolbarItem(
         for action: ListActions,
-        state: State,
-        store: Store
+        state: ListActionsToolbarState,
+        store: ListActionsToolbarStore
     ) -> some View {
         if action == .more {
             Menu(
@@ -207,12 +172,7 @@ private struct ListActionBarViewModifier<ComposeButton: ToolbarContent>: ViewMod
                     Section {
                         ForEach(state.moreSheetOnlyActions.reversed(), id: \.self) { action in
                             ActionMenuButton(displayData: action.displayData) {
-                                store.handle(
-                                    action: .actionSelected(
-                                        action,
-                                        ids: selectedItemsIDs,
-                                        itemType: itemTypeForActionBar
-                                    ))
+                                store.handle(action: .actionSelected(action, ids: store.state.selectedIds))
                             }
                         }
                     }
@@ -223,12 +183,7 @@ private struct ListActionBarViewModifier<ComposeButton: ToolbarContent>: ViewMod
                 })
         } else {
             Button(action: {
-                store.handle(
-                    action: .actionSelected(
-                        action,
-                        ids: selectedItemsIDs,
-                        itemType: itemTypeForActionBar)
-                )
+                store.handle(action: .actionSelected(action, ids: store.state.selectedIds))
             }) {
                 action.displayData.image
                     .foregroundStyle(DS.Color.Icon.norm)

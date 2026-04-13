@@ -24,13 +24,14 @@ import proton_app_uniffi
 final class ListActionsToolbarStore: StateStore {
     @Published var state: ListActionsToolbarState
 
-    private let actionsProvider: ListActionsToolbarActionsProvider
+    private var mailboxActionPerformers: MailboxActionPerformers
     private let starActionPerformer: StarActionPerformer
-    private let readActionPerformer: ReadActionPerformer
-    private let deleteActionsPerformer: DeleteActionPerformer
-    private let moveToActionPerformer: MoveToActionPerformer
     private let toastStateStore: ToastStateStore
     private let mailUserSession: MailUserSession
+    private let availableActions: AvailableListToolbarActions
+    private let readActionPerformerActions: ReadActionPerformerActions
+    private let deleteActions: DeleteActions
+    private let moveToActions: MoveToActions
 
     init(
         state: ListActionsToolbarState,
@@ -44,38 +45,41 @@ final class ListActionsToolbarStore: StateStore {
         toastStateStore: ToastStateStore
     ) {
         self.state = state
-        self.actionsProvider = .init(
+        self.availableActions = availableActions
+        self.readActionPerformerActions = readActionPerformerActions
+        self.deleteActions = deleteActions
+        self.moveToActions = moveToActions
+        self.mailboxActionPerformers = MailboxActionPerformers(
+            mailbox: mailbox,
             availableActions: availableActions,
-            mailbox: mailbox
+            readActionPerformerActions: readActionPerformerActions,
+            deleteActions: deleteActions,
+            moveToActions: moveToActions
         )
         self.starActionPerformer = .init(
             mailUserSession: mailUserSession,
             starActionPerformerActions: starActionPerformerActions
         )
-        self.readActionPerformer = .init(
-            mailbox: mailbox,
-            readActionPerformerActions: readActionPerformerActions
-        )
-        self.deleteActionsPerformer = .init(mailbox: mailbox, deleteActions: deleteActions)
-        self.moveToActionPerformer = .init(mailbox: mailbox, moveToActions: moveToActions)
         self.mailUserSession = mailUserSession
         self.toastStateStore = toastStateStore
     }
 
     func handle(action: ListActionsToolbarAction) async {
         switch action {
-        case .listItemsSelectionUpdated(let ids, let itemType):
-            await fetchAvailableBottomBarActions(for: ids, itemType: itemType)
-        case .actionSelected(let action, let ids, let itemType):
-            await handle(action: action, ids: ids, itemType: itemType)
+        case .listItemsSelectionUpdated(let ids):
+            state = state.copy(\.selectedIds, to: ids)
+            await fetchAvailableBottomBarActions(for: ids)
+        case .mailboxChanged(let newMailbox):
+            configureActionPerformers(with: newMailbox)
+            await fetchAvailableBottomBarActions(for: state.selectedIds)
+        case .actionSelected(let action, let ids):
+            await handle(action: action, ids: ids)
         case .dismissLabelAsSheet:
             state = state.copy(\.labelAsSheetPresented, to: nil)
         case .dismissMoveToSheet:
             state = state.copy(\.moveToSheetPresented, to: nil)
-        case .moreSheetAction(let action, let ids, let itemType):
-            await handle(action: action, ids: ids, itemType: itemType)
-        case .alertActionTapped(let action, let ids, let itemType):
-            await handle(action: action, ids: ids, itemType: itemType)
+        case .alertActionTapped(let action, let ids):
+            await handle(action: action, ids: ids)
         case .editToolbarTapped:
             state = state.copy(\.isEditToolbarSheetPresented, to: true)
         }
@@ -83,34 +87,48 @@ final class ListActionsToolbarStore: StateStore {
 
     // MARK: - Private
 
-    private func handle(action: ListActions, ids: [ID], itemType: MailboxItemType) async {
+    private func configureActionPerformers(with mailbox: Mailbox) {
+        mailboxActionPerformers = MailboxActionPerformers(
+            mailbox: mailbox,
+            availableActions: availableActions,
+            readActionPerformerActions: readActionPerformerActions,
+            deleteActions: deleteActions,
+            moveToActions: moveToActions
+        )
+    }
+
+    private func handle(action: ListActions, ids: [ID]) async {
         switch action {
         case .labelAs:
             state =
                 state
-                .copy(\.labelAsSheetPresented, to: .init(sheetType: .labelAs, ids: ids, mailboxItem: itemType.mailboxItem))
+                .copy(\.labelAsSheetPresented, to: .init(sheetType: .labelAs, ids: ids, mailboxItem: state.itemType.mailboxItem))
         case .moveTo:
             state =
                 state
-                .copy(\.moveToSheetPresented, to: .init(sheetType: .moveTo, ids: ids, mailboxItem: itemType.mailboxItem))
+                .copy(\.moveToSheetPresented, to: .init(sheetType: .moveTo, ids: ids, mailboxItem: state.itemType.mailboxItem))
         case .star:
-            await starActionPerformer.star(itemsWithIDs: ids, itemType: itemType)
+            await starActionPerformer.star(itemsWithIDs: ids, itemType: state.itemType)
+            await fetchAvailableBottomBarActions(for: ids)
         case .unstar:
-            await starActionPerformer.unstar(itemsWithIDs: ids, itemType: itemType)
+            await starActionPerformer.unstar(itemsWithIDs: ids, itemType: state.itemType)
+            await fetchAvailableBottomBarActions(for: ids)
         case .markRead:
-            await readActionPerformer.markAsRead(itemsWithIDs: ids, itemType: itemType)
+            await mailboxActionPerformers.readActionPerformer.markAsRead(itemsWithIDs: ids, itemType: state.itemType)
+            await fetchAvailableBottomBarActions(for: ids)
         case .markUnread:
-            await readActionPerformer.markAsUnread(itemsWithIDs: ids, itemType: itemType)
+            await mailboxActionPerformers.readActionPerformer.markAsUnread(itemsWithIDs: ids, itemType: state.itemType)
+            await fetchAvailableBottomBarActions(for: ids)
         case .permanentDelete:
             let alert: AlertModel = .deleteConfirmation(
                 itemsCount: ids.count,
                 action: { [weak self] action in
-                    self?.handle(action: .alertActionTapped(action, ids: ids, itemType: itemType))
+                    self?.handle(action: .alertActionTapped(action, ids: ids))
                 }
             )
             state = state.copy(\.deleteConfirmationAlert, to: alert)
         case .moveToSystemFolder(let model), .notSpam(let model):
-            await performMoveToAction(destination: model, ids: ids, itemType: itemType)
+            await performMoveToAction(destination: model, ids: ids)
         case .snooze:
             state = state.copy(\.isSnoozeSheetPresented, to: true)
         case .more:
@@ -118,20 +136,16 @@ final class ListActionsToolbarStore: StateStore {
         }
     }
 
-    private func performMoveToAction(
-        destination: MovableSystemFolderAction,
-        ids: [ID],
-        itemType: MailboxItemType
-    ) async {
+    private func performMoveToAction(destination: MovableSystemFolderAction, ids: [ID]) async {
         do {
-            let undo = try await moveToActionPerformer.moveTo(
+            let undo = try await mailboxActionPerformers.moveToActionPerformer.moveTo(
                 destinationID: destination.localId,
                 itemsIDs: ids,
-                itemType: itemType
+                itemType: state.itemType
             )
             let toastID = UUID()
-            let undoAction = undo.undoAction(userSession: mailUserSession) {
-                self.dismissToast(withID: toastID)
+            let undoAction = undo.undoAction(userSession: mailUserSession) { [weak self] in
+                self?.toastStateStore.dismiss(withID: toastID)
             }
 
             handleMoveActionSuccess(to: destination, toastID: toastID, undoAction: undoAction)
@@ -140,24 +154,22 @@ final class ListActionsToolbarStore: StateStore {
         }
     }
 
-    private func handle(action: DeleteConfirmationAlertAction, ids: [ID], itemType: MailboxItemType) async {
-        state =
-            state
-            .copy(\.deleteConfirmationAlert, to: nil)
+    private func handle(action: DeleteConfirmationAlertAction, ids: [ID]) async {
+        state = state.copy(\.deleteConfirmationAlert, to: nil)
         switch action {
         case .delete:
-            await deleteActionsPerformer.delete(itemsWithIDs: ids, itemType: itemType)
+            await mailboxActionPerformers.deleteActionsPerformer.delete(itemsWithIDs: ids, itemType: state.itemType)
             itemDeleted()
         case .cancel:
             break
         }
     }
 
-    private func fetchAvailableBottomBarActions(for ids: [ID], itemType: MailboxItemType) async {
+    private func fetchAvailableBottomBarActions(for ids: [ID]) async {
         if ids.isEmpty {
             updateActions(actions: .init(hiddenListActions: [], visibleListActions: []))
         } else {
-            let actions = await actionsProvider.actions(forItemsWith: ids, itemType: itemType)
+            let actions = await mailboxActionPerformers.actionsProvider.actions(forItemsWith: ids, itemType: state.itemType)
             updateActions(actions: actions)
         }
     }
@@ -186,11 +198,24 @@ final class ListActionsToolbarStore: StateStore {
     private func handleMoveActionFailure(error: Error) {
         toastStateStore.present(toast: .error(message: error.localizedDescription))
     }
+}
 
-    private func dismissToast(withID toastID: UUID) {
-        Dispatcher.dispatchOnMain(
-            .init(block: { [weak self] in
-                self?.toastStateStore.dismiss(withID: toastID)
-            }))
+private struct MailboxActionPerformers {
+    let actionsProvider: ListActionsToolbarActionsProvider
+    let readActionPerformer: ReadActionPerformer
+    let deleteActionsPerformer: DeleteActionPerformer
+    let moveToActionPerformer: MoveToActionPerformer
+
+    init(
+        mailbox: Mailbox,
+        availableActions: AvailableListToolbarActions,
+        readActionPerformerActions: ReadActionPerformerActions,
+        deleteActions: DeleteActions,
+        moveToActions: MoveToActions
+    ) {
+        actionsProvider = .init(availableActions: availableActions, mailbox: mailbox)
+        readActionPerformer = .init(mailbox: mailbox, readActionPerformerActions: readActionPerformerActions)
+        deleteActionsPerformer = .init(mailbox: mailbox, deleteActions: deleteActions)
+        moveToActionPerformer = .init(mailbox: mailbox, moveToActions: moveToActions)
     }
 }

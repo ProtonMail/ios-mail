@@ -29,7 +29,7 @@ class ListActionsToolbarStoreTests {
     var invokedAvailableMessageActionsWithIDs: [[ID]]!
     var stubbedAvailableMessageActions: AllListActions!
     var invokedAvailableConversationActionsWithIDs: [[ID]]!
-    var stubbedAvailableConversationActions: AllListActions!
+    var stubbedAvailableConversationActions: AllListActions = .init(hiddenListActions: [], visibleListActions: [])
     var starActionPerformerActionsSpy: StarActionPerformerActionsSpy!
     var readActionPerformerActionsSpy: ReadActionPerformerActionsSpy!
     var deleteActionsSpy: DeleteActionsSpy!
@@ -58,7 +58,7 @@ class ListActionsToolbarStoreTests {
 
         let ids: [ID] = [.init(value: 11)]
 
-        await sut.handle(action: .listItemsSelectionUpdated(ids: ids, itemType: viewMode.itemType))
+        await sut.handle(action: .listItemsSelectionUpdated(ids: ids))
 
         #expect(invokedAvailableMessageActionsWithIDs.count == 1)
         #expect(invokedAvailableConversationActionsWithIDs.count == 0)
@@ -66,17 +66,21 @@ class ListActionsToolbarStoreTests {
         #expect(
             sut.state
                 == .init(
+                    selectedIds: ids,
+                    itemType: viewMode.itemType,
                     bottomBarActions: [.notSpam(.testInbox)],
                     moreSheetOnlyActions: [.labelAs, .markRead],
                     isSnoozeSheetPresented: false,
                     isEditToolbarSheetPresented: false
                 ))
 
-        await sut.handle(action: .listItemsSelectionUpdated(ids: [], itemType: viewMode.itemType))
+        await sut.handle(action: .listItemsSelectionUpdated(ids: []))
 
         #expect(
             sut.state
                 == .init(
+                    selectedIds: [],
+                    itemType: viewMode.itemType,
                     bottomBarActions: [],
                     moreSheetOnlyActions: [],
                     isSnoozeSheetPresented: false,
@@ -94,7 +98,7 @@ class ListActionsToolbarStoreTests {
         )
         let ids: [ID] = [.init(value: 22)]
 
-        await sut.handle(action: .listItemsSelectionUpdated(ids: ids, itemType: viewMode.itemType))
+        await sut.handle(action: .listItemsSelectionUpdated(ids: ids))
 
         #expect(invokedAvailableMessageActionsWithIDs.count == 0)
         #expect(invokedAvailableConversationActionsWithIDs.count == 1)
@@ -102,6 +106,8 @@ class ListActionsToolbarStoreTests {
         #expect(
             sut.state
                 == .init(
+                    selectedIds: ids,
+                    itemType: viewMode.itemType,
                     bottomBarActions: [.more],
                     moreSheetOnlyActions: [.notSpam(.testInbox), .permanentDelete],
                     isSnoozeSheetPresented: false,
@@ -123,7 +129,7 @@ class ListActionsToolbarStoreTests {
         let viewMode = ViewMode.messages
         sut = makeSUT(viewMode: viewMode)
 
-        await sut.handle(action: .listItemsSelectionUpdated(ids: [], itemType: viewMode.itemType))
+        await sut.handle(action: .listItemsSelectionUpdated(ids: []))
 
         #expect(invokedAvailableMessageActionsWithIDs.count == 0)
     }
@@ -135,7 +141,7 @@ class ListActionsToolbarStoreTests {
 
         #expect(sut.state.moveToSheetPresented == nil)
 
-        await sut.handle(action: .actionSelected(.moveTo, ids: [.init(value: 7)], itemType: viewMode.itemType))
+        await sut.handle(action: .actionSelected(.moveTo, ids: [.init(value: 7)]))
 
         #expect(
             sut.state.moveToSheetPresented == .init(sheetType: .moveTo, ids: [.init(value: 7)], mailboxItem: .message(isLastMessageInCurrentLocation: false))
@@ -154,7 +160,7 @@ class ListActionsToolbarStoreTests {
 
         #expect(sut.state.labelAsSheetPresented == nil)
 
-        await sut.handle(action: .actionSelected(.labelAs, ids: ids, itemType: .conversation))
+        await sut.handle(action: .actionSelected(.labelAs, ids: ids))
 
         #expect(sut.state.labelAsSheetPresented == .init(sheetType: .labelAs, ids: ids, mailboxItem: viewMode.itemType.mailboxItem))
 
@@ -169,7 +175,7 @@ class ListActionsToolbarStoreTests {
         sut = makeSUT(viewMode: viewMode)
         let ids: [ID] = [.init(value: 7)]
 
-        await sut.handle(action: .moreSheetAction(.labelAs, ids: ids, itemType: viewMode.itemType))
+        await sut.handle(action: .actionSelected(.labelAs, ids: ids))
 
         #expect(
             sut.state.labelAsSheetPresented == .init(sheetType: .labelAs, ids: ids, mailboxItem: .message(isLastMessageInCurrentLocation: false))
@@ -182,7 +188,7 @@ class ListActionsToolbarStoreTests {
         sut = makeSUT(viewMode: viewMode)
         let ids: [ID] = [.init(value: 7), .init(value: 77)]
 
-        await sut.handle(action: .actionSelected(.star, ids: ids, itemType: viewMode.itemType))
+        await sut.handle(action: .actionSelected(.star, ids: ids))
 
         #expect(starActionPerformerActionsSpy.invokedStarMessage == ids)
     }
@@ -193,9 +199,9 @@ class ListActionsToolbarStoreTests {
         sut = makeSUT(viewMode: viewMode)
         let ids: [ID] = [.init(value: 7), .init(value: 77)]
 
-        await sut.handle(action: .actionSelected(.more, ids: ids, itemType: viewMode.itemType))
+        await sut.handle(action: .actionSelected(.more, ids: ids))
 
-        await sut.handle(action: .moreSheetAction(.unstar, ids: ids, itemType: viewMode.itemType))
+        await sut.handle(action: .actionSelected(.unstar, ids: ids))
         #expect(starActionPerformerActionsSpy.invokedUnstarMessage == ids)
     }
 
@@ -205,7 +211,7 @@ class ListActionsToolbarStoreTests {
         sut = makeSUT(viewMode: viewMode)
         let ids: [ID] = [.init(value: 7), .init(value: 77)]
 
-        await sut.handle(action: .actionSelected(.markRead, ids: ids, itemType: viewMode.itemType))
+        await sut.handle(action: .actionSelected(.markRead, ids: ids))
 
         #expect(readActionPerformerActionsSpy.markMessageAsReadInvoked == ids)
     }
@@ -216,7 +222,7 @@ class ListActionsToolbarStoreTests {
         sut = makeSUT(viewMode: viewMode)
         let ids: [ID] = [.init(value: 7), .init(value: 77)]
 
-        await sut.handle(action: .actionSelected(.markUnread, ids: ids, itemType: viewMode.itemType))
+        await sut.handle(action: .actionSelected(.markUnread, ids: ids))
 
         #expect(readActionPerformerActionsSpy.markConversationAsUnreadInvoked == ids)
     }
@@ -227,11 +233,11 @@ class ListActionsToolbarStoreTests {
         let viewMode = ViewMode.messages
         sut = makeSUT(viewMode: viewMode)
 
-        await sut.handle(action: .actionSelected(.permanentDelete, ids: ids, itemType: viewMode.itemType))
+        await sut.handle(action: .actionSelected(.permanentDelete, ids: ids))
 
         #expect(sut.state.deleteConfirmationAlert == .deleteConfirmation(itemsCount: ids.count, action: { _ in }))
 
-        await sut.handle(action: .alertActionTapped(.delete, ids: ids, itemType: viewMode.itemType))
+        await sut.handle(action: .alertActionTapped(.delete, ids: ids))
 
         #expect(sut.state.deleteConfirmationAlert == nil)
         #expect(deleteActionsSpy.deletedMessagesWithIDs == ids)
@@ -245,7 +251,7 @@ class ListActionsToolbarStoreTests {
         let viewMode = ViewMode.messages
         sut = makeSUT(viewMode: viewMode)
 
-        await sut.handle(action: .actionSelected(.moveToSystemFolder(systemFolder), ids: ids, itemType: viewMode.itemType))
+        await sut.handle(action: .actionSelected(.moveToSystemFolder(systemFolder), ids: ids))
 
         #expect(
             toastStateStore.state.toasts == [.moveTo(id: UUID(), destinationName: systemFolder.name.displayData.title.string, undoAction: .none)]
@@ -264,7 +270,7 @@ class ListActionsToolbarStoreTests {
         moveToActionsSpy.stubbedMoveMessagesToOkResult = undoSpy
         sut = makeSUT(viewMode: viewMode)
 
-        await sut.handle(action: .actionSelected(.moveToSystemFolder(systemFolder), ids: ids, itemType: viewMode.itemType))
+        await sut.handle(action: .actionSelected(.moveToSystemFolder(systemFolder), ids: ids))
 
         #expect(
             toastStateStore.state.toasts == [.moveTo(id: UUID(), destinationName: systemFolder.name.displayData.title.string, undoAction: {})]
@@ -286,7 +292,7 @@ class ListActionsToolbarStoreTests {
         let viewMode = ViewMode.conversations
         let sut = makeSUT(viewMode: viewMode)
 
-        await sut.handle(action: .actionSelected(.snooze, ids: [.init(value: 7)], itemType: viewMode.itemType))
+        await sut.handle(action: .actionSelected(.snooze, ids: [.init(value: 7)]))
 
         #expect(sut.state.isSnoozeSheetPresented == true)
     }
@@ -295,7 +301,7 @@ class ListActionsToolbarStoreTests {
 
     private func makeSUT(viewMode: ViewMode) -> ListActionsToolbarStore {
         ListActionsToolbarStore(
-            state: .initial,
+            state: .initial(itemType: viewMode.itemType),
             availableActions: .init(
                 message: { _, ids in
                     self.invokedAvailableMessageActionsWithIDs.append(ids)

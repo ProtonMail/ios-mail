@@ -20,6 +20,8 @@ import InboxCoreUI
 import proton_app_uniffi
 
 struct ListActionsToolbarState: Copying, Equatable {
+    var selectedIds: [ID]
+    var itemType: MailboxItemType
     var bottomBarActions: [ListActions]
     var moreSheetOnlyActions: [ListActions]
     var labelAsSheetPresented: ActionSheetInput?
@@ -30,8 +32,10 @@ struct ListActionsToolbarState: Copying, Equatable {
 }
 
 extension ListActionsToolbarState {
-    static var initial: Self {
+    static func initial(itemType: MailboxItemType) -> Self {
         .init(
+            selectedIds: [],
+            itemType: itemType,
             bottomBarActions: [],
             moreSheetOnlyActions: [],
             labelAsSheetPresented: nil,

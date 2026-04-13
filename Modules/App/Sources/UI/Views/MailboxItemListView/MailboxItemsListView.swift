@@ -31,6 +31,8 @@ struct MailboxItemsListView<EmptyView: View, ComposeButton: ToolbarContent>: Vie
     @State var isScrollingDisabled = false
     let mailbox: Mailbox?
     private let liquidComposeButton: (() -> ComposeButton)?
+    @EnvironmentObject private var toastStateStore: ToastStateStore
+    @EnvironmentObject private var refreshToolbarNotifier: RefreshToolbarNotifier
 
     // pull to refresh
     @State private var listPullOffset: CurrentValueSubject<CGFloat, Never> = .init(0.0)
@@ -60,11 +62,13 @@ struct MailboxItemsListView<EmptyView: View, ComposeButton: ToolbarContent>: Vie
             listView
                 .animation(.none, value: selectionState.hasItems)
                 .listActionsToolbar(
-                    initialState: .initial,
+                    initialState: .initial(itemType: config.itemTypeForActionBar),
+                    selectedIds: selectionState.selectedItems.map(\.id),
                     availableActions: .productionInstance,
-                    itemTypeForActionBar: config.itemTypeForActionBar,
                     mailUserSession: mailUserSession,
-                    selectedItems: config.selectionState.selectedItemIDsReadOnlyBinding,
+                    mailbox: mailbox,
+                    toastStateStore: toastStateStore,
+                    refreshToolbarNotifier: refreshToolbarNotifier,
                     liquidComposeButton: liquidComposeButton
                 )
                 .modify { view in
@@ -194,12 +198,6 @@ struct MailboxItemsListView<EmptyView: View, ComposeButton: ToolbarContent>: Vie
 
 private struct MailboxListViewIdentifiers {
     static let listCell = "mailbox.list.cell"
-}
-
-private extension SelectionModeState {
-    var selectedItemIDsReadOnlyBinding: Binding<Set<MailboxSelectedItem>> {
-        .readonly(get: { [weak self] in self?.selectedItems ?? [] })
-    }
 }
 
 #Preview {
