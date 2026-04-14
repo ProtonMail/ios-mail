@@ -21,8 +21,8 @@ public struct StoreView<Store: StateStore, Content: View>: View {
     @StateObject public var store: Store
     private let content: (Store.State, Store) -> Content
 
-    public init(store: Store, @ViewBuilder content: @escaping (Store.State, Store) -> Content) {
-        self._store = .init(wrappedValue: store)
+    public init(store: @escaping @autoclosure () -> Store, @ViewBuilder content: @escaping (Store.State, Store) -> Content) {
+        self._store = .init(wrappedValue: store())
         self.content = content
     }
 

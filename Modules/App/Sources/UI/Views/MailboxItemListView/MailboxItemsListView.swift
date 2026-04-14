@@ -31,8 +31,6 @@ struct MailboxItemsListView<EmptyView: View, ComposeButton: ToolbarContent>: Vie
     @State var isScrollingDisabled = false
     let mailbox: Mailbox?
     private let liquidComposeButton: (() -> ComposeButton)?
-    @EnvironmentObject private var toastStateStore: ToastStateStore
-    @EnvironmentObject private var refreshToolbarNotifier: RefreshToolbarNotifier
 
     // pull to refresh
     @State private var listPullOffset: CurrentValueSubject<CGFloat, Never> = .init(0.0)
@@ -67,8 +65,6 @@ struct MailboxItemsListView<EmptyView: View, ComposeButton: ToolbarContent>: Vie
                     availableActions: .productionInstance,
                     mailUserSession: mailUserSession,
                     mailbox: mailbox,
-                    toastStateStore: toastStateStore,
-                    refreshToolbarNotifier: refreshToolbarNotifier,
                     liquidComposeButton: liquidComposeButton
                 )
                 .modify { view in
