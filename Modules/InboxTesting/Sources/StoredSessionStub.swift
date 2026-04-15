@@ -27,7 +27,7 @@ public final class StoredSessionStub: StoredSession, @unchecked Sendable {
         userIdValue = userId
         stateValue = state
 
-        super.init(noHandle: .init())
+        super.init(noPointer: .init())
     }
 
     @available(*, unavailable)

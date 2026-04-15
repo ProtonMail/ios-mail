@@ -324,7 +324,7 @@ private extension SettingsPreference {
     #Preview {
         NavigationStack {
             SettingsScreen(
-                mailUserSession: MailUserSession(noHandle: .init()),
+                mailUserSession: MailUserSession(noPointer: .init()),
                 accountAuthCoordinator: .mock(),
                 upsellCoordinator: .init(
                     mailUserSession: .dummy,

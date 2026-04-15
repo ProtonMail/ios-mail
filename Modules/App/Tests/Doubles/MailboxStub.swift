@@ -26,7 +26,7 @@ final class MailboxStub: Mailbox, @unchecked Sendable {
 
     init(viewMode: ViewMode) {
         self._viewMode = viewMode
-        super.init(noHandle: .init())
+        super.init(noPointer: .init())
     }
 
     @available(*, unavailable)

@@ -33,7 +33,7 @@ final class DeviceTokenRegistrarTests {
         var lastCreatedHandle: RegisterDeviceTaskHandleSpy?
 
         mailSession.stubbedRegisterDeviceTaskHandleFactory = {
-            let newHandle = RegisterDeviceTaskHandleSpy(noHandle: .init())
+            let newHandle = RegisterDeviceTaskHandleSpy(noPointer: .init())
             lastCreatedHandle = newHandle
             return newHandle
         }

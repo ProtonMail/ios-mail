@@ -139,7 +139,7 @@ public struct ContactsScreen: View {
 #Preview {
     ContactsScreen(
         apiConfig: .debugPreview,
-        mailUserSession: .init(noHandle: .init()),
+        mailUserSession: .init(noPointer: .init()),
         contactsProvider: .previewInstance(),
         contactsWatcher: .previewInstance(),
         draftPresenter: ContactsDraftPresenterDummy()

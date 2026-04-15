@@ -19,7 +19,7 @@ import proton_app_uniffi
 
 final class PasswordFlowStub: PasswordFlow, @unchecked Sendable {
     init() {
-        super.init(noHandle: .init())
+        super.init(noPointer: .init())
     }
 
     @available(*, unavailable)

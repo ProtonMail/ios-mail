@@ -566,7 +566,7 @@ private final class DecryptedMessageSpy: DecryptedMessage, @unchecked Sendable {
 
     init(stubbedOptions: TransformOpts) {
         self.stubbedOptions = stubbedOptions
-        super.init(noHandle: .init())
+        super.init(noPointer: .init())
     }
 
     @available(*, unavailable)

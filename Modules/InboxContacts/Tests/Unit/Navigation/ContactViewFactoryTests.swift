@@ -26,7 +26,7 @@ import proton_app_uniffi
 final class ContactViewFactoryTests {
     let sut = ContactViewFactory(
         apiConfig: .testData,
-        mailUserSession: .init(noHandle: .init()),
+        mailUserSession: .init(noPointer: .init()),
         draftPresenter: ContactsDraftPresenterDummy()
     )
 

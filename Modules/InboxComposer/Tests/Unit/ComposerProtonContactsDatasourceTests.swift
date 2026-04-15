@@ -141,7 +141,7 @@ private extension Array where Element == ContactSuggestion {
 
 private extension MailUserSession {
     static func empty() -> MailUserSession {
-        MailUserSession(noHandle: .init())
+        MailUserSession(noPointer: .init())
     }
 }
 
@@ -150,7 +150,7 @@ private class ContactSuggestionsStub: ContactSuggestions, @unchecked Sendable {
 
     init(all: [ContactSuggestion]) {
         _all = all
-        super.init(noHandle: .init())
+        super.init(noPointer: .init())
     }
 
     @available(*, unavailable)

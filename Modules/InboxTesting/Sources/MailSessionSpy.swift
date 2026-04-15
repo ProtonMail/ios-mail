@@ -316,7 +316,7 @@ public final class MailSessionSpy: MailSessionProtocol {
 
     public func watchSessionsAsync(callback: any AsyncLiveQueryCallback) async -> MailSessionWatchSessionsAsyncResult {
         watchSessionsAsyncCallback = callback
-        return .ok(.init(sessions: storedSessions, handle: WatchHandleDummy(noHandle: .init())))
+        return .ok(.init(sessions: storedSessions, handle: WatchHandleDummy(noPointer: .init())))
     }
 
     public func isFeatureEnabled(featureId: String) async -> MailSessionIsFeatureEnabledResult {

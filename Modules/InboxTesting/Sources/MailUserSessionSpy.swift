@@ -30,7 +30,7 @@ public final class MailUserSessionSpy: MailUserSession, @unchecked Sendable {
     public init(id: String) {
         self.id = id
 
-        super.init(noHandle: .init())
+        super.init(noPointer: .init())
     }
 
     @available(*, unavailable)
@@ -87,6 +87,6 @@ public final class MailUserSessionSpy: MailUserSession, @unchecked Sendable {
     public override func watchUserSettings(callback: any AsyncLiveQueryCallback) -> MailUserSessionWatchUserSettingsResult {
         watchUserSettingsCallback.append(callback)
 
-        return .ok(.init(noHandle: .init()))
+        return .ok(.init(noPointer: .init()))
     }
 }

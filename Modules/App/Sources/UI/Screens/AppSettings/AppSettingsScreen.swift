@@ -199,7 +199,7 @@ struct AppSettingsScreen: View {
     NavigationStack {
         AppSettingsScreen(
             state: .initial(isDiscreetAppIconEnabled: false),
-            customSettings: CustomSettings(noHandle: .init())
+            customSettings: CustomSettings(noPointer: .init())
         )
     }
 }

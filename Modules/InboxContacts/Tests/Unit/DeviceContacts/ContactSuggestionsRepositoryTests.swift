@@ -39,7 +39,7 @@ final class ContactSuggestionsRepositoryTests {
                 let result = ContactSuggestionsStub(all: self.stubbedAllContacts)
                 return .ok(result)
             }),
-            mailUserSession: MailUserSession(noHandle: .init())
+            mailUserSession: MailUserSession(noPointer: .init())
         )
     }
 
@@ -349,7 +349,7 @@ private class ContactSuggestionsStub: ContactSuggestions, @unchecked Sendable {
 
     init(all: [ContactSuggestion]) {
         _all = all
-        super.init(noHandle: .init())
+        super.init(noPointer: .init())
     }
 
     @available(*, unavailable)

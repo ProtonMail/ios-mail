@@ -108,7 +108,7 @@ final class MoveToSheetStateStoreTests {
 
     @Test
     func action_WhenInboxIsTappedUndoIsAvailableAndTapped_ItTriggersUndoAndDismissesToast() async throws {
-        let undoSpy = UndoSpy(noHandle: .init())
+        let undoSpy = UndoSpy(noPointer: .init())
         moveToActionsSpy.stubbedMoveMessagesToOkResult = undoSpy
 
         let sut = sut(
@@ -155,7 +155,7 @@ final class MoveToSheetStateStoreTests {
         .init(
             state: .initial,
             input: input,
-            mailbox: .init(noHandle: .init()),
+            mailbox: .init(noPointer: .init()),
             availableMoveToActions: .init(
                 message: { _, ids in
                     self.invokedAvailableActionsWithMessagesIDs = ids

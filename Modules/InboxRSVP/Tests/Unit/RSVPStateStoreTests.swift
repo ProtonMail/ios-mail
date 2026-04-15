@@ -30,9 +30,9 @@ import proton_app_uniffi
 @MainActor
 final class RSVPStateStoreTests {
     private let pasteboard = UIPasteboard.testInstance
-    private let serviceSpy = RsvpEventServiceSpy(noHandle: .init())
+    private let serviceSpy = RsvpEventServiceSpy(noPointer: .init())
     private let openURLSpy = EnvironmentURLOpenerSpy()
-    private var serviceProviderSpy = RsvpEventServiceProviderSpy(noHandle: .init())
+    private var serviceProviderSpy = RsvpEventServiceProviderSpy(noPointer: .init())
     private let toastStateStore = ToastStateStore(initialState: .initial)
     private let draftPresenterSpy = RecipientDraftPresenterSpy()
     private(set) lazy var sut = RSVPStateStore(

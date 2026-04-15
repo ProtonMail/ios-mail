@@ -235,7 +235,7 @@ class BackgroundExecutionHandleStub: BackgroundExecutionHandle, @unchecked Senda
     private(set) var abortCalls: [Bool] = []
 
     init() {
-        super.init(noHandle: .init())
+        super.init(noPointer: .init())
     }
 
     @available(*, unavailable)
