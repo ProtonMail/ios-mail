@@ -41,6 +41,7 @@ public extension DS.Images {
         public static let logoMobileSignature = ImageResource.upsellLogoMobileSignature
         public static let logoScheduleSend = ImageResource.upsellLogoScheduleSend
         public static let logoSnooze = ImageResource.upsellLogoSnooze
+        public static let logoUnlimited = ImageResource.upsellLogoUnlimited
 
         public enum BlackFriday {
             public static let background = ImageResource.upsellBlackFridayBackground

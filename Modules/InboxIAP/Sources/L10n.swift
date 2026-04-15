@@ -114,6 +114,12 @@ enum L10n {
             return .init("\(measurement.formatted()) storage", bundle: .module, comment: "Amount of storage space available in a given plan, for example: 1 GB storage")
         }
 
+        static let hideMyEmailAliases = LocalizedStringResource("Hide My Email aliases", bundle: .module, comment: "Description of a feature of a paid subscription")
+        static let foldersAndLabels = LocalizedStringResource("Folders and labels", bundle: .module, comment: "Description of a feature of a paid subscription")
+        static let premiumVpnPasswordManagerCloudStorage = LocalizedStringResource(
+            "Premium VPN, password manager and cloud storage", bundle: .module, comment: "Description of a feature of a paid subscription")
+        static let darkWebMonitoring = LocalizedStringResource("Dark Web Monitoring", bundle: .module, comment: "Description of a feature of a paid subscription")
+
         static func numberOfEmailAddresses(_ amount: UInt) -> LocalizedStringResource {
             .init("\(amount) email addresses", bundle: .module, comment: "Number of email addresses available in a given plan")
         }
