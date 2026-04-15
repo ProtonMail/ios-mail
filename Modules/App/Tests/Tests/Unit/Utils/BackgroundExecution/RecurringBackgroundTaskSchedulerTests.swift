@@ -239,8 +239,8 @@ class BackgroundExecutionHandleStub: BackgroundExecutionHandle, @unchecked Senda
     }
 
     @available(*, unavailable)
-    required init(unsafeFromHandle handle: UInt64) {
-        fatalError("init(unsafeFromHandle:) has not been implemented")
+    required init(unsafeFromRawPointer pointer: UnsafeMutableRawPointer) {
+        fatalError("init(unsafeFromRawPointer:) has not been implemented")
     }
 
     // MARK: - BackgroundExecutionHandle

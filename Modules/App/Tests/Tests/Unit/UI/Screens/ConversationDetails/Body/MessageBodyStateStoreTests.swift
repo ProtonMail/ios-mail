@@ -570,8 +570,8 @@ private final class DecryptedMessageSpy: DecryptedMessage, @unchecked Sendable {
     }
 
     @available(*, unavailable)
-    required init(unsafeFromHandle handle: UInt64) {
-        fatalError("init(unsafeFromHandle:) has not been implemented")
+    required init(unsafeFromRawPointer pointer: UnsafeMutableRawPointer) {
+        fatalError("init(unsafeFromRawPointer:) has not been implemented")
     }
 
     private(set) var bodyWithOptionsCalls: [TransformOpts] = []
