@@ -40,9 +40,15 @@ public final class UpsellScreenModel: Identifiable {
 
     var logo: ImageResource {
         switch upsellType {
-        case .mailPlus, .unlimited:
+        case .mailPlus:
             entryPoint.logo
+        case .unlimited:
+            upsellType.logo
         }
+    }
+
+    var comparisonConfiguration: PlanComparisonGrid.Configuration {
+        upsellType.comparisonConfiguration
     }
 
     var logoHeight: CGFloat? {

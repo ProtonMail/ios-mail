@@ -95,7 +95,7 @@ public final class UpsellCoordinator: ObservableObject {
         let availablePlans = try await fetchAvailablePlans()
 
         let model = try upsellScreenFactory.upsellScreenModel(
-            showingPlan: configuration.regularPlan,
+            showingPlan: upsellType.planVariant,
             basedOn: availablePlans,
             entryPoint: entryPoint,
             upsellType: upsellType

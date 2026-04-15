@@ -20,22 +20,24 @@ import InboxDesignSystem
 import SwiftUI
 
 struct PlanComparisonGrid: View {
-    private let items: [ComparisonItem] = [
-        .init(title: \.storage, type: .string(free: gigabytesString(1), plus: gigabytesString(15))),
-        .init(title: \.emailAddresses, type: .integer(free: 1, plus: 10)),
-        .init(title: \.customEmailDomain, type: .boolean),
-        .init(title: \.accessToDesktopApp, type: .boolean),
-        .init(title: \.unlimitedFoldersAndLabels, type: .boolean),
-        .init(title: \.priorityCustomerSupport, type: .boolean),
-    ]
+    struct Configuration {
+        enum ColumnHeader {
+            case text(LocalizedStringResource)
+            case icon(Image)
+        }
 
+        let planColumnHeader: ColumnHeader
+        let headerStroke: (any ShapeStyle)?
+        let items: [ComparisonItem]
+    }
+
+    private let configuration: Configuration
     private let highlightBorderWidth: CGFloat = 2
-    private let highlightStroke: any ShapeStyle
 
     @State private var highlightedColumnWidth: CGFloat = 0
 
-    init(highlightStroke: (any ShapeStyle)? = nil) {
-        self.highlightStroke = highlightStroke ?? LinearGradient.highlight
+    init(configuration: Configuration) {
+        self.configuration = configuration
     }
 
     var body: some View {
@@ -45,13 +47,15 @@ struct PlanComparisonGrid: View {
 
                 Text(L10n.PlanName.free)
 
-                Text(L10n.PlanName.plus)
+                planColumnHeaderView
                     .padding(.vertical, DS.Spacing.compact)
                     .padding(.horizontal, DS.Spacing.standard)
                     .overlay {
-                        RoundedRectangle(cornerRadius: DS.Radius.medium)
-                            .stroke(AnyShapeStyle(highlightStroke), lineWidth: highlightBorderWidth)
-                            .padding(highlightBorderWidth / 2)
+                        if let headerStroke = configuration.headerStroke {
+                            RoundedRectangle(cornerRadius: DS.Radius.medium)
+                                .stroke(AnyShapeStyle(headerStroke), lineWidth: highlightBorderWidth)
+                                .padding(highlightBorderWidth / 2)
+                        }
                     }
                     .padding(.horizontal, DS.Spacing.small)
                     .coordinatedMinWidth(using: _highlightedColumnWidth)
@@ -59,10 +63,10 @@ struct PlanComparisonGrid: View {
             .font(.callout)
             .fontWeight(.semibold)
 
-            ForEach(items.indices, id: \.self) { itemIndex in
-                gridRow(for: items[itemIndex])
+            ForEach(configuration.items.indices, id: \.self) { itemIndex in
+                gridRow(for: configuration.items[itemIndex])
 
-                if itemIndex != items.indices.last {
+                if itemIndex != configuration.items.indices.last {
                     Divider()
                         .overlay(.white.opacity(0.12))
                 }
@@ -82,6 +86,19 @@ struct PlanComparisonGrid: View {
         }
     }
 
+    @ViewBuilder
+    private var planColumnHeaderView: some View {
+        switch configuration.planColumnHeader {
+        case .text(let resource):
+            Text(resource)
+        case .icon(let image):
+            image
+                .resizable()
+                .scaledToFit()
+                .frame(height: 32)
+        }
+    }
+
     private func gridRow(for item: ComparisonItem) -> some View {
         GridRow {
             Text(L10n.Perk.self[keyPath: item.title])
@@ -97,24 +114,23 @@ struct PlanComparisonGrid: View {
                         .symbolRenderingMode(.palette)
                         .foregroundStyle(.white, .black.opacity(0.2))
                         .coordinatedMinWidth(using: _highlightedColumnWidth)
-                case .integer(let valueForFreePlan, let valueForPlus):
-                    Text("\(valueForFreePlan)")
-
-                    Text("\(valueForPlus)")
-                        .coordinatedMinWidth(using: _highlightedColumnWidth)
-                case .string(let valueForFreePlan, let valueForPlus):
+                case .string(let valueForFreePlan, let valueForPlan):
                     Text(valueForFreePlan)
 
-                    Text(valueForPlus)
+                    Text(valueForPlan)
+                        .padding(.horizontal, DS.Spacing.small)
+                        .coordinatedMinWidth(using: _highlightedColumnWidth)
+                case .stringAndIcon(let valueForFreePlan, let iconForPlan):
+                    Text(valueForFreePlan)
+
+                    iconForPlan
+                        .font(.system(size: 20))
+                        .padding(.horizontal, DS.Spacing.small)
                         .coordinatedMinWidth(using: _highlightedColumnWidth)
                 }
             }
             .fontWeight(.semibold)
         }
-    }
-
-    private static func gigabytesString(_ value: Double) -> String {
-        Measurement<UnitInformationStorage>(value: value, unit: .gigabytes).formatted()
     }
 }
 
@@ -128,7 +144,16 @@ private extension View {
 
 #Preview {
     ScrollView {
-        PlanComparisonGrid()
+        PlanComparisonGrid(
+            configuration: .init(
+                planColumnHeader: .text(L10n.PlanName.plus),
+                headerStroke: LinearGradient.highlight,
+                items: [
+                    .init(title: \.storage, type: .string(free: "1 GB", plan: "15 GB")),
+                    .init(title: \.customEmailDomain, type: .boolean),
+                ]
+            )
+        )
     }
     .background(LinearGradient.screenBackground)
     .preferredColorScheme(.dark)

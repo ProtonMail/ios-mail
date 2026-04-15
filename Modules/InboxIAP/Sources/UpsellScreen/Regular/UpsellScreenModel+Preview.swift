@@ -27,8 +27,16 @@ extension UpsellScreenModel {
             planInstances = DisplayablePlanInstance.previews
         }
 
+        let planName: String
+        switch upsellType {
+        case .mailPlus:
+            planName = "Mail Plus"
+        case .unlimited:
+            planName = "Proton Unlimited"
+        }
+
         return .init(
-            planName: "Mail Plus",
+            planName: planName,
             planInstances: planInstances,
             entryPoint: entryPoint,
             upsellType: upsellType,

@@ -16,8 +16,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import SwiftUI
+
 enum ComparisonItemType {
     case boolean
-    case string(free: String, plus: String)
-    case integer(free: Int, plus: Int)
+    case string(free: String, plan: String)
+    case stringAndIcon(free: String, plan: Image)
 }
