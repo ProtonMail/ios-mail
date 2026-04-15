@@ -2626,6 +2626,9 @@
         }
       }
     },
+    "Dark Web Monitoring" : {
+      "comment" : "Description of a feature of a paid subscription"
+    },
     "Deletes spam and trash after 30 days. Get this and more with %@." : {
       "comment" : "Subtitle of the upsell page",
       "localizations" : {
@@ -3168,6 +3171,9 @@
           }
         }
       }
+    },
+    "Folders and labels" : {
+      "comment" : "Description of a feature of a paid subscription"
     },
     "Free" : {
       "comment" : "Name of the free plan",
@@ -3741,6 +3747,9 @@
           }
         }
       }
+    },
+    "Hide My Email aliases" : {
+      "comment" : "Description of a feature of a paid subscription"
     },
     "Make your mobile signature your own. Enjoy this and more with %@." : {
       "comment" : "Subtitle of the upsell page",
@@ -5036,6 +5045,9 @@
           }
         }
       }
+    },
+    "Premium VPN, password manager and cloud storage" : {
+      "comment" : "Description of a feature of a paid subscription"
     },
     "Priority customer support" : {
       "comment" : "Description of a feature of a paid subscription",

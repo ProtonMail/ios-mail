@@ -100,6 +100,8 @@ public extension DS.Icon {
     static let icCode = ImageResource.icCode
     static let icDiamond = ImageResource.icDiamond
     static let icInfinity = ImageResource.icInfinity
+    static let icInfinityUpsellHeader = ImageResource.icInfinityUpsellHeader
+    static let icInfinityUpsellRow = ImageResource.icInfinityUpsellRow
     static let icEnvelopeDot = ImageResource.icEnvelopeDot
     static let icEnvelopeOpen = ImageResource.icEnvelopeOpen
     static let icFileLines = ImageResource.icFileLines

@@ -57,6 +57,30 @@ final class UpsellScreenModelTests {
         #expect(planPurchasing.purchaseInvocations.count == 1)
     }
 
+    @Test
+    func mailPlusLogoComesFromEntryPoint() {
+        let sut = makeSUT(upsellType: .mailPlus)
+        #expect(sut.logo == UpsellEntryPoint.mailboxTopBar.logo)
+    }
+
+    @Test
+    func unlimitedLogoComesFromUpsellType() {
+        let sut = makeSUT(upsellType: .unlimited)
+        #expect(sut.logo == UpsellType.unlimited.logo)
+    }
+
+    @Test
+    func mailPlusComparisonConfigurationHasSixItems() {
+        let sut = makeSUT(upsellType: .mailPlus)
+        #expect(sut.comparisonConfiguration.items.count == 6)
+    }
+
+    @Test
+    func unlimitedComparisonConfigurationHasEightItems() {
+        let sut = makeSUT(upsellType: .unlimited)
+        #expect(sut.comparisonConfiguration.items.count == 8)
+    }
+
     private func makeSUT(upsellType: UpsellType = .mailPlus) -> UpsellScreenModel {
         .init(
             planName: "foo",

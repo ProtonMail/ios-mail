@@ -33,7 +33,7 @@ final class UpsellScreenFactoryTests {
     @Test
     func upsellScreenModelGeneration() throws {
         let upsellScreenModel = try sut.upsellScreenModel(
-            showingPlan: configuration.regularPlan,
+            showingPlan: SubscriptionPlanVariant.plus,
             basedOn: availablePlans,
             entryPoint: entryPoint,
             upsellType: .mailPlus
@@ -41,6 +41,18 @@ final class UpsellScreenFactoryTests {
 
         #expect(upsellScreenModel.planName == "Mail Plus")
         #expect(upsellScreenModel.planInstances == DisplayablePlanInstance.previews)
+    }
+
+    @Test
+    func unlimitedUpsellScreenModelGeneration() throws {
+        let upsellScreenModel = try sut.upsellScreenModel(
+            showingPlan: SubscriptionPlanVariant.unlimited,
+            basedOn: availablePlans,
+            entryPoint: entryPoint,
+            upsellType: .unlimited
+        )
+
+        #expect(upsellScreenModel.planName == "Proton Unlimited")
     }
 
     @Test

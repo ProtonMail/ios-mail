@@ -69,4 +69,16 @@ final class UpsellCoordinatorTests {
         _ = try await self.sut.presentUpsellScreen(entryPoint: .mailboxTopBar)
         #expect(telemetryReporting.upsellButtonTappedCalls == 1)
     }
+
+    @Test
+    func unlimitedUpsellTypeFetchesUnlimitedPlan() async throws {
+        let model = try await sut.presentUpsellScreen(entryPoint: .mailboxTopBar, upsellType: .unlimited)
+        #expect(model.planName == "Proton Unlimited")
+    }
+
+    @Test
+    func mailPlusUpsellTypeFetchesMailPlusPlan() async throws {
+        let model = try await sut.presentUpsellScreen(entryPoint: .mailboxTopBar, upsellType: .mailPlus)
+        #expect(model.planName == "Mail Plus")
+    }
 }
