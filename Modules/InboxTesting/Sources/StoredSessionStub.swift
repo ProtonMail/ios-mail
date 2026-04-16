@@ -34,7 +34,7 @@ public final class StoredSessionStub: StoredSession, @unchecked Sendable {
     required init(unsafeFromRawPointer pointer: UnsafeMutableRawPointer) {
         fatalError("init(unsafeFromRawPointer:) has not been implemented")
     }
-    
+
     public override func sessionId() -> String {
         id
     }
