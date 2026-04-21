@@ -19,44 +19,11 @@ import InboxDesignSystem
 import SwiftUI
 
 struct LiquidComposeButton: ToolbarContent {
-    let isExpanded: Bool
     let action: () -> Void
-    @Namespace private var buttonTransition
 
     var body: some ToolbarContent {
-        if isExpanded {
-            ToolbarItem(placement: .bottomBar) {
-                Button(
-                    action: action,
-                    label: {
-                        HStack(spacing: DS.Spacing.standard) {
-                            Image(DS.Icon.icPenSquare)
-                                .foregroundStyle(DS.Color.Icon.norm)
-                            Text(L10n.Mailbox.compose)
-                                .font(.body)
-                                .fontWeight(.medium)
-                                .foregroundStyle(DS.Color.Icon.norm)
-                        }
-                        .padding(.horizontal, DS.Spacing.compact)
-                    }
-                )
-                .modify { view in
-                    if #available(iOS 26, *) {
-                        view
-                            .matchedTransitionSource(id: buttonTransition, in: buttonTransition)
-                    }
-                }
-            }
-        } else {
-            ToolbarItem(placement: .bottomBar) {
-                Button(L10n.Mailbox.compose, image: DS.Icon.icPenSquare, action: action)
-                    .modify { view in
-                        if #available(iOS 26, *) {
-                            view
-                                .matchedTransitionSource(id: buttonTransition, in: buttonTransition)
-                        }
-                    }
-            }
+        ToolbarItem(placement: .bottomBar) {
+            Button(L10n.Mailbox.compose, image: DS.Icon.icPenSquare, action: action)
         }
     }
 }

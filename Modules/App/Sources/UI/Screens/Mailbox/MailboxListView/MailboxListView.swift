@@ -42,10 +42,9 @@ struct MailboxListView: View {
     @ObservedObject private var model: MailboxModel
     private let mailUserSession: MailUserSession
 
-    @Binding private var isListAtTop: Bool
+    @State private var isListAtTop: Bool = true
 
-    init(isListAtTop: Binding<Bool>, model: MailboxModel, mailUserSession: MailUserSession) {
-        self._isListAtTop = isListAtTop
+    init(model: MailboxModel, mailUserSession: MailUserSession) {
         self.model = model
         self.mailUserSession = mailUserSession
     }
@@ -137,7 +136,7 @@ extension MailboxListView {
             mailUserSession: mailUserSession,
             mailbox: model.mailbox,
             liquidComposeButton: {
-                LiquidComposeButton(isExpanded: isListAtTop) {
+                LiquidComposeButton {
                     model.createDraft()
                 }
             }
@@ -169,7 +168,6 @@ extension MailboxListView {
     let route: AppRouteState = .init(route: .mailbox(selectedMailbox: .inbox))
 
     return MailboxListView(
-        isListAtTop: .constant(true),
         model: .init(
             mailSettingsLiveQuery: MailSettingsLiveQueryPreviewDummy(),
             userSession: .dummy,

@@ -86,7 +86,7 @@ extension View {
                     expand = $0
                 }
 
-                ComposeButtonView(text: "Compose", isExpanded: $expand) {}
+                ComposeButtonView {}
                     .padding(.trailing, 16)
             }
         }

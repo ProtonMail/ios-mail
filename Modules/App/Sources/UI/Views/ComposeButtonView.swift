@@ -19,55 +19,29 @@ import InboxDesignSystem
 import SwiftUI
 
 struct ComposeButtonView: View {
-    private let animation: Animation = .easeInOut(duration: 0.2)
-
-    let text: LocalizedStringResource
-    @Binding private(set) var isExpanded: Bool
     let onTap: () -> Void
 
     var body: some View {
-        Button(
-            action: onTap,
-            label: {
-                HStack(spacing: DS.Spacing.standard) {
-                    Image(DS.Icon.icPenSquare)
-                        .foregroundStyle(DS.Color.Icon.norm)
-                        .accessibilityIdentifier(ComposeButtonIdentifiers.icon)
-                    if isExpanded {
-                        Text(text)
-                            .font(.subheadline)
-                            .fontWeight(.semibold)
-                            .foregroundStyle(DS.Color.Icon.norm)
-                            .padding(.trailing, DS.Spacing.small)
-                            .transition(.move(edge: .trailing).combined(with: .opacity))
-                            .accessibilityIdentifier(ComposeButtonIdentifiers.text)
-                    }
-                }
-                .accessibilityElement(children: .contain)
-                .animation(animation, value: isExpanded)
-            }
-        )
-        .buttonStyle(ComposeButtonStyle(isExpanded: isExpanded, animation: animation))
-        .accessibilityIdentifier(ComposeButtonIdentifiers.rootElement)
+        Button(L10n.Mailbox.compose, image: DS.Icon.icPenSquare) {
+            onTap()
+        }
+        .buttonStyle(ComposeButtonStyle())
     }
 }
 
 private struct ComposeButtonStyle: ButtonStyle {
-    var isExpanded: Bool
-    var animation: Animation
-
     func makeBody(configuration: Self.Configuration) -> some View {
         configuration
             .label
             .padding(.all, DS.Spacing.moderatelyLarge)
             .background(configuration.isPressed ? DS.Color.InteractionFab.pressed : DS.Color.InteractionFab.norm)
+            .foregroundStyle(DS.Color.Icon.norm)
             .overlay(
                 Capsule(style: .continuous)
                     .stroke(DS.Color.Border.light, lineWidth: 1)
             )
             .clipShape(Capsule(style: .continuous))
             .shadow(DS.Shadows.liftedFull, isVisible: true)
-            .animation(animation, value: isExpanded)
     }
 }
 
@@ -75,16 +49,10 @@ private struct ComposeButtonStyle: ButtonStyle {
     struct Container: View {
         @State var expand: Bool = true
         var body: some View {
-            ComposeButtonView(text: "Compose", isExpanded: $expand) {
+            ComposeButtonView {
                 expand.toggle()
             }
         }
     }
     return Container()
-}
-
-private struct ComposeButtonIdentifiers {
-    static let rootElement = "compose.button"
-    static let icon = "compose.button.icon"
-    static let text = "compose.button.text"
 }

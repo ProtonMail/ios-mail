@@ -29,7 +29,6 @@ struct MailboxScreen: View {
     @EnvironmentObject private var toastStateStore: ToastStateStore
     @Environment(\.requestReview) private var requestReview
     @StateObject private var mailboxModel: MailboxModel
-    @State private var isComposeButtonExpanded: Bool = true
     @State private var isAccountManagerPresented = false
     @State private var animateComposeButtonSafeAreaChanges = false
     private let userSession: MailUserSession
@@ -117,7 +116,6 @@ extension MailboxScreen {
         GeometryReader { geometry in
             ZStack(alignment: .bottomTrailing) {
                 MailboxListView(
-                    isListAtTop: $isComposeButtonExpanded,
                     model: mailboxModel,
                     mailUserSession: userSession
                 )
@@ -168,7 +166,7 @@ extension MailboxScreen {
     }
 
     private var composeButtonView: some View {
-        ComposeButtonView(text: L10n.Mailbox.compose, isExpanded: $isComposeButtonExpanded) {
+        ComposeButtonView {
             mailboxModel.createDraft()
         }
         .padding(.trailing, DS.Spacing.large)
