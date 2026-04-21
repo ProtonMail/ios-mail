@@ -63,7 +63,7 @@ struct SearchScreen: View {
                 case .search:
                     VStack(spacing: .zero) {
                         if #unavailable(iOS 26) {
-                            filtersBar()
+                            mailboxTopBarView()
                         }
 
                         resultsList
@@ -78,7 +78,7 @@ struct SearchScreen: View {
                                 if #available(iOS 26, *) {
                                     view
                                         .safeAreaBar(edge: .top) {
-                                            liquidGlassFiltersBar()
+                                            mailboxTopBarView()
                                         }
                                 }
                             }
@@ -176,28 +176,6 @@ struct SearchScreen: View {
         )
     }
 
-    @ViewBuilder
-    private func filtersBar() -> some View {
-        if case .visible(let isOn) = model.state.spamTrashToggleState {
-            HStack {
-                SelectableCapsuleButton(
-                    isSelected: isOn,
-                    action: { model.includeTrashSpamTapped() },
-                    label: { Text(L10n.Mailbox.includeTrashSpamToggleTitle) }
-                )
-                Spacer()
-            }
-            .padding(.leading, DS.Spacing.large)
-            .padding(.vertical, DS.Spacing.mediumLight)
-            .background(DS.Color.Background.norm)
-            .background(
-                DS.Color.Background.norm
-                    .shadow(DS.Shadows.raisedBottom, isVisible: !isListAtTop)
-            )
-            .zIndex(1)
-        }
-    }
-
     private func nonLiquidGlassSearchBar<ParentView: View>(view: ParentView) -> some View {
         view
             .toolbar {
@@ -236,15 +214,12 @@ struct SearchScreen: View {
     }
 
     @ViewBuilder
-    @available(iOS 26, *)
-    private func liquidGlassFiltersBar() -> some View {
-        LiquidGlassFilterBar(
-            content: .search(model.state.spamTrashToggleState)
-        ) { event in
+    private func mailboxTopBarView() -> some View {
+        MailboxTopBarView(state: .includeSpamTrash(isSelected: model.state.spamTrashToggleState.isSelected)) { event in
             switch event {
             case .spamTrashToggleTapped:
                 model.includeTrashSpamTapped()
-            case .unreadButtonTapped, .selectAllTapped:
+            case .selectAllTapped:
                 break
             }
         }

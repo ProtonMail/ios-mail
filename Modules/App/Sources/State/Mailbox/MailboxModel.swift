@@ -67,7 +67,7 @@ final class MailboxModel: ObservableObject {
     }
 
     var unreadFilter: ReadFilter {
-        state.filterBar.isUnreadButtonSelected ? .unread : .all
+        state.topBar.isUnreadButtonSelected ? .unread : .all
     }
 
     var isOutbox: Bool {
@@ -240,8 +240,8 @@ extension MailboxModel {
     }
 
     private func onSelectedItemsChange() {
-        state.filterBar.visibilityMode = selectionMode.selectionState.hasItems ? .selectionMode : .regular
-        state.filterBar.selectAll = selectAllState
+        state.topBar.visibilityMode = selectionMode.selectionState.hasItems ? .selectionMode : .regular
+        state.topBar.selectAll = selectAllState
         updateMailboxTitle()
         updateSelectionStateInDataSource()
     }
@@ -285,7 +285,8 @@ extension MailboxModel {
         guard let userSession = dependencies.appContext.sessionState.userSession else { return }
         do {
             updateMailboxTitle()
-            state.filterBar.unreadCount = .unknown
+            // FIXME: - Implement new unread count
+            //            state.topBar.unreadCount = .unknown
             unreadCountLiveQuery = nil
 
             // These disconnects will prevent unrequested scroller callbacks
@@ -296,7 +297,7 @@ extension MailboxModel {
             conversationScroller?.terminate()
 
             paginatedDataSource.resetToInitialState()
-            state.filterBar = .init()
+            state.topBar = .init()
 
             let mailbox =
                 selectedMailbox.isInbox
@@ -328,9 +329,7 @@ extension MailboxModel {
 
             unreadCountLiveQuery = UnreadItemsCountLiveQuery(mailbox: mailbox) { [weak self] unreadCount in
                 AppLogger.log(message: "unread count callback: \(unreadCount)", category: .mailbox)
-                await MainActor.run {
-                    self?.state.filterBar.unreadCount = .known(unreadCount: unreadCount)
-                }
+                // FIXME: - Implement new unread count
             }
             await unreadCountLiveQuery?.setUpLiveQuery()
             try await setUpSpamTrashToggleVisibility()
@@ -351,11 +350,11 @@ extension MailboxModel {
 
         let spamTrashToggleState: SpamTrashToggleState
         if supportsIncludeFilter {
-            spamTrashToggleState = .visible(isSelected: state.filterBar.spamTrashToggleState.isSelected)
+            spamTrashToggleState = .visible(isSelected: state.topBar.spamTrashToggleState.isSelected)
         } else {
             spamTrashToggleState = .hidden
         }
-        state.filterBar.spamTrashToggleState = spamTrashToggleState
+        state.topBar.spamTrashToggleState = spamTrashToggleState
     }
 
     private func conversationScrollerHasMore() async -> Bool {
@@ -487,7 +486,7 @@ extension MailboxModel {
         guard
             let systemFolder = selectedMailbox.systemFolder,
             [SystemLabel.allMail, .almostAllMail].contains(systemFolder),
-            case let systemLabel = state.filterBar.spamTrashToggleState.systemLabel,
+            case let systemLabel = state.topBar.spamTrashToggleState.systemLabel,
             let userSession = dependencies.appContext.sessionState.userSession,
             let labelId = try? await resolveSystemLabelId(ctx: userSession, label: systemLabel).get()
         else {
@@ -594,7 +593,7 @@ extension MailboxModel {
     }
 
     func onIncludeSpamTrashFilterChange() {
-        let includeSpamTrash = state.filterBar.spamTrashToggleState.includeSpamTrash
+        let includeSpamTrash = state.topBar.spamTrashToggleState.includeSpamTrash
         if viewMode == .conversations {
             _ = conversationScroller?.changeInclude(include: includeSpamTrash)
         } else {
@@ -822,7 +821,7 @@ extension MailboxModel {
 extension MailboxModel {
     struct State {
         var mailboxTitle: LocalizedStringResource = "".notLocalized.stringResource
-        var filterBar: FilterBarState = .init()
+        var topBar: TopBarState = .init()
 
         // Navigation properties
         var attachmentPresented: AttachmentViewConfig?
