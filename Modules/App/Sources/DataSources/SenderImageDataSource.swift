@@ -61,7 +61,7 @@ final class SenderImageAPIDataSource: Sendable, SenderImageDataSource {
                 address: params.address,
                 bimiSelector: params.bimiSelector,
                 displaySenderImage: params.displaySenderImage,
-                size: 128,
+                size: .s128,
                 mode: colorScheme == .dark ? "dark" : "light",
                 format: "png"
             )
