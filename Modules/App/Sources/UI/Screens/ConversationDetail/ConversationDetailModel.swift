@@ -594,12 +594,11 @@ extension ConversationDetailModel {
     }
 
     private func fetchMessage(with remoteId: RemoteId) async throws -> Message {
-        let localId = try await resolveMessageId(session: userSession, remoteId: remoteId).get()
-
-        if let message = try await message(session: userSession, id: localId).get() {
+        do {
+            let message = try await resolveMessageFromPushNotification(session: userSession, remoteId: remoteId).get()
             return message
-        } else {
-            throw ConversationModelError.noMessageFound(messageID: localId)
+        } catch ActionError.reason(.unknownMessage) {
+            throw ConversationModelError.noMessageFound(messageID: remoteId)
         }
     }
 
@@ -955,7 +954,7 @@ enum MessageCellUIModelType: Equatable {
 }
 
 enum ConversationModelError: Error {
-    case noMessageFound(messageID: ID)
+    case noMessageFound(messageID: RemoteId)
 }
 
 private extension MailboxActionSheetsState {
