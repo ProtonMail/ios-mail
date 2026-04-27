@@ -56,16 +56,7 @@ struct MailboxListView: View {
             }
 
             mailboxListView()
-                .modify { view in
-                    if #available(iOS 26, *) {
-                        view
-                            .safeAreaBar(edge: .top) {
-                                if let viewModel = model.state.topBar.topBarState {
-                                    MailboxTopBarView(state: viewModel, onEvent: handleTopBarEvent)
-                                }
-                            }
-                    }
-                }
+                .mailboxTopSafeAreaBar(state: model.state.topBar.topBarState, onEvent: handleTopBarEvent)
         }
         .onChange(of: model.state.topBar.isUnreadButtonSelected) { model.onUnreadFilterChange() }
         .onChange(of: model.state.topBar.spamTrashToggleState) { model.onIncludeSpamTrashFilterChange() }
