@@ -47,15 +47,12 @@ struct MailboxTopSafeAreaBarModifier: ViewModifier {
 }
 
 extension View {
+    @available(iOS 26, *)
     @ViewBuilder
     func mailboxTopSafeAreaBar(
         state: MailboxTopBarState?,
         onEvent: @escaping (MailboxTopBarEvent) -> Void
     ) -> some View {
-        if #available(iOS 26, *) {
-            modifier(MailboxTopSafeAreaBarModifier(topBarState: state, onEvent: onEvent))
-        } else {
-            self
-        }
+        modifier(MailboxTopSafeAreaBarModifier(topBarState: state, onEvent: onEvent))
     }
 }
