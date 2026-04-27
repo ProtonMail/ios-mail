@@ -54,6 +54,26 @@ public extension ChallengeLoaderPutResult {
         }
     }
 }
+public extension ConversationScrollerCategoryViewResult {
+    func get() throws(MailScrollerError) -> CategoryView {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension ConversationScrollerChangeCategoryViewResult {
+    func get() throws(MailScrollerError) {
+        switch self {
+        case .ok:
+            break
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension ConversationScrollerChangeFilterResult {
     func get() throws(MailScrollerError) {
         switch self {
@@ -1179,6 +1199,26 @@ public extension MailboxWatchUnreadCountResult {
         switch self {
         case .ok(let value):
             value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension MessageScrollerCategoryViewResult {
+    func get() throws(MailScrollerError) -> CategoryView {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension MessageScrollerChangeCategoryViewResult {
+    func get() throws(MailScrollerError) {
+        switch self {
+        case .ok:
+            break
         case .error(let error):
             throw error
         }

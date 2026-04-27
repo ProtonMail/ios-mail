@@ -185,8 +185,8 @@ private extension SystemLabel {
     func emptyScreenVariant(isUnreadFilterOn: Bool) -> NoResultsView.Variant {
         switch self {
         case .inbox, .allDrafts, .allSent, .sent, .trash, .spam, .allMail, .archive, .drafts, .starred, .scheduled,
-            .almostAllMail, .snoozed, .categorySocial, .categoryPromotions, .catergoryUpdates, .categoryForums,
-            .categoryDefault, .blocked, .pinned:
+            .almostAllMail, .snoozed, .categorySocial, .categoryPromotions, .categoryUpdates, .categoryForums,
+            .categoryDefault, .blocked, .pinned, .categoryNewsletter, .categoryTransactions:
             .mailbox(isUnreadFilterOn: isUnreadFilterOn)
         case .outbox:
             .outbox
