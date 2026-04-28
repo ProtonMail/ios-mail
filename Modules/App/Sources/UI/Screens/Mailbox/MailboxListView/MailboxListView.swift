@@ -21,7 +21,7 @@ import ProtonUIFoundations
 import SwiftUI
 import proton_app_uniffi
 
-extension TopBarState {
+extension MailboxBarsState {
     var topBarState: MailboxTopBarState? {
         switch visibilityMode {
         case .regular:
@@ -59,18 +59,18 @@ struct MailboxListView: View {
                 .modify { view in
                     if #available(iOS 26, *) {
                         view
-                            .mailboxTopSafeAreaBar(state: model.state.topBar.topBarState, onEvent: handleTopBarEvent)
+                            .mailboxTopSafeAreaBar(state: model.state.barsState.topBarState, onEvent: handleTopBarEvent)
                     }
                 }
         }
-        .onChange(of: model.state.topBar.isUnreadButtonSelected) { model.onUnreadFilterChange() }
-        .onChange(of: model.state.topBar.spamTrashToggleState) { model.onIncludeSpamTrashFilterChange() }
+        .onChange(of: model.state.barsState.unreadButtonState.isSelected) { model.onUnreadFilterChange() }
+        .onChange(of: model.state.barsState.spamTrashToggleState) { model.onIncludeSpamTrashFilterChange() }
     }
 
     private func handleTopBarEvent(_ event: MailboxTopBarEvent) {
         switch event {
         case .spamTrashToggleTapped:
-            model.state.topBar.spamTrashToggleState = model.state.topBar.spamTrashToggleState.toggled()
+            model.state.barsState.spamTrashToggleState = model.state.barsState.spamTrashToggleState.toggled()
         case .selectAllTapped:
             model.onSelectAllTapped()
         }
@@ -122,7 +122,7 @@ extension MailboxListView {
             emptyView: {
                 NoResultsView(
                     variant: model.selectedMailbox.emptyScreenVariant(
-                        isUnreadFilterOn: model.state.topBar.isUnreadButtonSelected
+                        isUnreadFilterOn: model.state.barsState.unreadButtonState.isSelected
                     ))
             },
             emptyFolderBanner: $model.emptyFolderBanner,
@@ -139,7 +139,7 @@ extension MailboxListView {
         .onChange(of: model.selectedMailbox) { _, _ in
             self.isListAtTop = true
         }
-        .onChange(of: model.state.topBar.isUnreadButtonSelected) { _, _ in
+        .onChange(of: model.state.barsState.unreadButtonState.isSelected) { _, _ in
             self.isListAtTop = true
         }
         .onLoad {
@@ -149,7 +149,7 @@ extension MailboxListView {
 
     @ViewBuilder
     private func topBar() -> some View {
-        if let viewModel = model.state.topBar.topBarState {
+        if let viewModel = model.state.barsState.topBarState {
             MailboxTopBarView(state: viewModel, onEvent: handleTopBarEvent)
                 .background(DS.Color.Background.norm.shadow(DS.Shadows.raisedBottom, isVisible: !isListAtTop))
                 .zIndex(1)

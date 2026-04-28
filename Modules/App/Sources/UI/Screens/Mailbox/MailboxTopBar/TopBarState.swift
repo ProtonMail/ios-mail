@@ -20,9 +20,9 @@ import ProtonUIFoundations
 import SwiftUI
 import proton_app_uniffi
 
-struct TopBarState: Equatable {
+struct MailboxBarsState: Equatable {
     var visibilityMode: TopBarVisibilityMode = .regular
-    var isUnreadButtonSelected: Bool = false
+    var unreadButtonState: UnreadButtonState = .init(isSelected: false, counterState: .unknown)
     var selectAll: SelectAllState = .canSelectMoreItems
     var spamTrashToggleState: SpamTrashToggleState = .hidden
 }

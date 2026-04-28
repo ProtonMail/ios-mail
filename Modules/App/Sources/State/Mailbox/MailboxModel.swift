@@ -67,7 +67,7 @@ final class MailboxModel: ObservableObject {
     }
 
     var unreadFilter: ReadFilter {
-        state.topBar.isUnreadButtonSelected ? .unread : .all
+        state.barsState.unreadButtonState.isSelected ? .unread : .all
     }
 
     var isOutbox: Bool {
@@ -240,8 +240,8 @@ extension MailboxModel {
     }
 
     private func onSelectedItemsChange() {
-        state.topBar.visibilityMode = selectionMode.selectionState.hasItems ? .selectionMode : .regular
-        state.topBar.selectAll = selectAllState
+        state.barsState.visibilityMode = selectionMode.selectionState.hasItems ? .selectionMode : .regular
+        state.barsState.selectAll = selectAllState
         updateMailboxTitle()
         updateSelectionStateInDataSource()
     }
@@ -285,8 +285,6 @@ extension MailboxModel {
         guard let userSession = dependencies.appContext.sessionState.userSession else { return }
         do {
             updateMailboxTitle()
-            // FIXME: - Implement new unread count
-            //            state.topBar.unreadCount = .unknown
             unreadCountLiveQuery = nil
 
             // These disconnects will prevent unrequested scroller callbacks
@@ -297,7 +295,7 @@ extension MailboxModel {
             conversationScroller?.terminate()
 
             paginatedDataSource.resetToInitialState()
-            state.topBar = .init()
+            state.barsState = .init()
 
             let mailbox =
                 selectedMailbox.isInbox
@@ -329,7 +327,9 @@ extension MailboxModel {
 
             unreadCountLiveQuery = UnreadItemsCountLiveQuery(mailbox: mailbox) { [weak self] unreadCount in
                 AppLogger.log(message: "unread count callback: \(unreadCount)", category: .mailbox)
-                // FIXME: - Implement new unread count
+                await MainActor.run {
+                    self?.state.barsState.unreadButtonState.counterState = .known(unreadCount: unreadCount)
+                }
             }
             await unreadCountLiveQuery?.setUpLiveQuery()
             try await setUpSpamTrashToggleVisibility()
@@ -350,11 +350,11 @@ extension MailboxModel {
 
         let spamTrashToggleState: SpamTrashToggleState
         if supportsIncludeFilter {
-            spamTrashToggleState = .visible(isSelected: state.topBar.spamTrashToggleState.isSelected)
+            spamTrashToggleState = .visible(isSelected: state.barsState.spamTrashToggleState.isSelected)
         } else {
             spamTrashToggleState = .hidden
         }
-        state.topBar.spamTrashToggleState = spamTrashToggleState
+        state.barsState.spamTrashToggleState = spamTrashToggleState
     }
 
     private func conversationScrollerHasMore() async -> Bool {
@@ -486,7 +486,7 @@ extension MailboxModel {
         guard
             let systemFolder = selectedMailbox.systemFolder,
             [SystemLabel.allMail, .almostAllMail].contains(systemFolder),
-            case let systemLabel = state.topBar.spamTrashToggleState.systemLabel,
+            case let systemLabel = state.barsState.spamTrashToggleState.systemLabel,
             let userSession = dependencies.appContext.sessionState.userSession,
             let labelId = try? await resolveSystemLabelId(ctx: userSession, label: systemLabel).get()
         else {
@@ -593,7 +593,7 @@ extension MailboxModel {
     }
 
     func onIncludeSpamTrashFilterChange() {
-        let includeSpamTrash = state.topBar.spamTrashToggleState.includeSpamTrash
+        let includeSpamTrash = state.barsState.spamTrashToggleState.includeSpamTrash
         if viewMode == .conversations {
             _ = conversationScroller?.changeInclude(include: includeSpamTrash)
         } else {
@@ -821,7 +821,7 @@ extension MailboxModel {
 extension MailboxModel {
     struct State {
         var mailboxTitle: LocalizedStringResource = "".notLocalized.stringResource
-        var topBar: TopBarState = .init()
+        var barsState: MailboxBarsState = .init()
 
         // Navigation properties
         var attachmentPresented: AttachmentViewConfig?
@@ -848,5 +848,24 @@ extension MailboxModel {
 extension MailboxItemCellUIModel {
     func toSelectedItem() -> MailboxSelectedItem {
         .init(id: id, isRead: isRead, isStarred: isStarred)
+    }
+}
+
+struct UnreadButtonState: Equatable {
+    var isSelected: Bool
+    var counterState: UnreadCounterState
+}
+
+enum UnreadCounterState: Equatable {
+    case known(unreadCount: UInt64)
+    case unknown
+
+    var string: String {
+        switch self {
+        case .known(let unreadCount):
+            UnreadCountFormatter.string(count: unreadCount, maxCount: 99)
+        case .unknown:
+            "-".notLocalized
+        }
     }
 }
