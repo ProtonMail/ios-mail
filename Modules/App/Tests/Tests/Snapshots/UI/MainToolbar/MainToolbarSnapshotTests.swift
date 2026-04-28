@@ -29,22 +29,21 @@ import proton_app_uniffi
 
 @MainActor
 final class MainToolbarSnapshotTests {
-    @Test(arguments: [UIUserInterfaceStyle.light, .dark], [UpsellType.mailPlus, .unlimited])
-    func mainToolbarWithUpsell(style: UIUserInterfaceStyle, upsellType: UpsellType) {
+    @Test(arguments: [UpsellType.mailPlus, .unlimited])
+    func mainToolbarWithUpsell(upsellType: UpsellType) {
         let view = makeToolbarView(upsellEligibility: .eligible(upsellType))
         assertSnapshotsOnIPhoneX(
             of: view,
             named: "upsellType.\(upsellType)",
-            styles: [style],
             drawHierarchyInKeyWindow: true,
             precision: 0.99
         )
     }
 
-    @Test(arguments: [UIUserInterfaceStyle.light, .dark])
-    func mainToolbarWithoutUpsell(style: UIUserInterfaceStyle) {
+    @Test
+    func mainToolbarWithoutUpsell() {
         let view = makeToolbarView(upsellEligibility: .notEligible)
-        assertSnapshotsOnIPhoneX(of: view, styles: [style], drawHierarchyInKeyWindow: true)
+        assertSnapshotsOnIPhoneX(of: view, drawHierarchyInKeyWindow: true)
     }
 
     private func makeToolbarView(upsellEligibility: UpsellEligibility) -> some View {
