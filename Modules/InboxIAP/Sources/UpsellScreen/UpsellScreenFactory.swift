@@ -65,10 +65,22 @@ final class UpsellScreenFactory {
                 .init(
                     storeKitProductId: composedPlan.storeKitProductID ?? "<missing vendor>",
                     cycleInMonths: composedPlan.instance.cycle,
-                    pricing: .regular(monthlyPrice: composedPlan.pricePerMonthLabel),
+                    pricing: pricing(for: composedPlan),
                     discount: composedPlan.discount(comparedTo: mostExpensiveInstance)
                 )
             }
+        }
+    }
+
+    private func pricing(for composedPlan: ComposedPlan) -> DisplayablePlanInstance.Pricing {
+        if composedPlan.instance.cycle > 1 {
+            .discountedYearlyPlan(
+                discountedMonthlyPrice: composedPlan.pricePerMonthLabel,
+                discountedYearlyPrice: composedPlan.product.displayPrice,
+                renewalPrice: composedPlan.product.displayPrice
+            )
+        } else {
+            .regular(monthlyPrice: composedPlan.pricePerMonthLabel)
         }
     }
 

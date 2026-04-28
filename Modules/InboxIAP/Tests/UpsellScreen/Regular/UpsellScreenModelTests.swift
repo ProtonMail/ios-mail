@@ -81,6 +81,43 @@ final class UpsellScreenModelTests {
         #expect(sut.comparisonConfiguration.items.count == 8)
     }
 
+    @Test
+    func autoRenewalNoticeShowsYearlyTotalWhenYearlyPlanSelected() throws {
+        let sut = makeSUT()
+        let yearlyInstance = try #require(DisplayablePlanInstance.previews.first { $0.cycleInMonths == 12 })
+
+        sut.selectedInstanceId = yearlyInstance.storeKitProductId
+
+        #expect(String(localized: sut.autoRenewalNotice) == "Auto-renews at $47.88/year unless canceled")
+    }
+
+    @Test
+    func autoRenewalNoticeShowsMonthlyPriceWhenMonthlyPlanSelected() throws {
+        let sut = makeSUT()
+        let monthlyInstance = try #require(DisplayablePlanInstance.previews.first { $0.cycleInMonths == 1 })
+
+        sut.selectedInstanceId = monthlyInstance.storeKitProductId
+
+        #expect(String(localized: sut.autoRenewalNotice) == "Auto-renews at $4.99/month unless canceled")
+    }
+
+    @Test
+    func autoRenewalNoticeUpdatesWhenSelectionChanges() throws {
+        let sut = makeSUT()
+        let yearlyId = try #require(DisplayablePlanInstance.previews.first { $0.cycleInMonths == 12 }).storeKitProductId
+        let monthlyId = try #require(DisplayablePlanInstance.previews.first { $0.cycleInMonths == 1 }).storeKitProductId
+
+        sut.selectedInstanceId = yearlyId
+        let yearlyNotice = String(localized: sut.autoRenewalNotice)
+
+        sut.selectedInstanceId = monthlyId
+        let monthlyNotice = String(localized: sut.autoRenewalNotice)
+
+        #expect(yearlyNotice.contains("/year"))
+        #expect(monthlyNotice.contains("/month"))
+        #expect(yearlyNotice != monthlyNotice)
+    }
+
     private func makeSUT(upsellType: UpsellType = .mailPlus) -> UpsellScreenModel {
         .init(
             planName: "foo",

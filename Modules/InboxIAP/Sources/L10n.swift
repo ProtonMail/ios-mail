@@ -136,6 +136,22 @@ enum L10n {
             comment: "Notice at the bottom of the upsell page"
         )
     }
+
+    static func autoRenewalNoticeYearly(price: String) -> LocalizedStringResource {
+        .init(
+            "Auto-renews at \(price)/year unless canceled",
+            bundle: .module,
+            comment: "Disclaimer shown at the bottom of the upsell page when the 12-month plan is selected"
+        )
+    }
+
+    static func autoRenewalNoticeMonthly(price: String) -> LocalizedStringResource {
+        .init(
+            "Auto-renews at \(price)/month unless canceled",
+            bundle: .module,
+            comment: "Disclaimer shown at the bottom of the upsell page when the 1-month plan is selected"
+        )
+    }
 }
 
 private extension LocalizedStringResource.BundleDescription {
