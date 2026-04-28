@@ -27,7 +27,7 @@ struct MailboxTopSafeAreaBarModifier: ViewModifier {
 
     func body(content: Content) -> some View {
         content
-            .padding(.top, topAreaInset + barHeight)
+            .contentMargins(.top, topAreaInset + barHeight, for: .scrollContent)
             .ignoresSafeArea(.container, edges: .top)
             .safeAreaBar(edge: .top) {
                 if let viewModel = topBarState {
