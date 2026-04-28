@@ -79,9 +79,9 @@ public final class UpsellScreenModel: Identifiable {
         let selectedPlan = planInstances.first { $0.storeKitProductId == selectedInstanceId } ?? planInstances[0]
         switch selectedPlan.pricing {
         case .regular(let monthlyPrice):
-            return L10n.autoRenewalNoticeMonthly(price: monthlyPrice)
+            return L10n.autoRenewalNotice(price: monthlyPrice, period: .month)
         case .discountedYearlyPlan(_, _, let renewalPrice):
-            return L10n.autoRenewalNoticeYearly(price: renewalPrice)
+            return L10n.autoRenewalNotice(price: renewalPrice, period: .year)
         case .discountedMonthlyPlan(_, let renewalPrice):
             return L10n.discountRenewalNotice(renewalPrice: renewalPrice, period: .month)
         }

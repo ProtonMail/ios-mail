@@ -137,19 +137,12 @@ enum L10n {
         )
     }
 
-    static func autoRenewalNoticeYearly(price: String) -> LocalizedStringResource {
-        .init(
-            "Auto-renews at \(price)/year unless canceled",
+    static func autoRenewalNotice(price: String, period: Product.SubscriptionPeriod.Unit) -> LocalizedStringResource {
+        let periodSuffix = "/\(period.localizedDescription.lowercased())"
+        return .init(
+            "Auto-renews at \(price)\(periodSuffix) unless canceled",
             bundle: .module,
-            comment: "Disclaimer shown at the bottom of the upsell page when the 12-month plan is selected"
-        )
-    }
-
-    static func autoRenewalNoticeMonthly(price: String) -> LocalizedStringResource {
-        .init(
-            "Auto-renews at \(price)/month unless canceled",
-            bundle: .module,
-            comment: "Disclaimer shown at the bottom of the upsell page when the 1-month plan is selected"
+            comment: "Disclaimer shown at the bottom of the upsell page; first placeholder is the localized price, second is the period suffix (/year or /month)"
         )
     }
 }
