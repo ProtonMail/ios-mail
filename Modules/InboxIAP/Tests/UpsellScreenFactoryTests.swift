@@ -44,6 +44,38 @@ final class UpsellScreenFactoryTests {
     }
 
     @Test
+    func yearlyMailPlusInstanceCarriesYearlyTotalAndMonthlyEquivalent() throws {
+        let upsellScreenModel = try sut.upsellScreenModel(
+            showingPlan: SubscriptionPlanVariant.plus,
+            basedOn: availablePlans,
+            entryPoint: entryPoint,
+            upsellType: .mailPlus
+        )
+
+        let yearlyInstance = try #require(upsellScreenModel.planInstances.first { $0.cycleInMonths == 12 })
+
+        #expect(yearlyInstance.pricing == .discountedYearlyPlan(
+            discountedMonthlyPrice: "$3.99",
+            discountedYearlyPrice: "$47.88",
+            renewalPrice: "$47.88"
+        ))
+    }
+
+    @Test
+    func monthlyMailPlusInstanceUsesRegularPricing() throws {
+        let upsellScreenModel = try sut.upsellScreenModel(
+            showingPlan: SubscriptionPlanVariant.plus,
+            basedOn: availablePlans,
+            entryPoint: entryPoint,
+            upsellType: .mailPlus
+        )
+
+        let monthlyInstance = try #require(upsellScreenModel.planInstances.first { $0.cycleInMonths == 1 })
+
+        #expect(monthlyInstance.pricing == .regular(monthlyPrice: "$4.99"))
+    }
+
+    @Test
     func unlimitedUpsellScreenModelGeneration() throws {
         let upsellScreenModel = try sut.upsellScreenModel(
             showingPlan: SubscriptionPlanVariant.unlimited,
@@ -53,6 +85,24 @@ final class UpsellScreenFactoryTests {
         )
 
         #expect(upsellScreenModel.planName == "Proton Unlimited")
+    }
+
+    @Test
+    func yearlyUnlimitedInstanceCarriesYearlyTotalAndMonthlyEquivalent() throws {
+        let upsellScreenModel = try sut.upsellScreenModel(
+            showingPlan: SubscriptionPlanVariant.unlimited,
+            basedOn: availablePlans,
+            entryPoint: entryPoint,
+            upsellType: .unlimited
+        )
+
+        let yearlyInstance = try #require(upsellScreenModel.planInstances.first { $0.cycleInMonths == 12 })
+
+        #expect(yearlyInstance.pricing == .discountedYearlyPlan(
+            discountedMonthlyPrice: "$9.99",
+            discountedYearlyPrice: "$119.88",
+            renewalPrice: "$119.88"
+        ))
     }
 
     @Test
