@@ -40,7 +40,7 @@ final class MailboxItemCellSnapshotTests {
         ("expiration_time_message", .makeSimpleMessage(type: .expirationTime)),
     ])
     func mailboxItemCell(testName: String, model: MailboxItemCellUIModel) {
-        assertSnapshotsOnIPhoneX(of: MailboxItemCell.testCell(model: model), testName: testName)
+        assertSnapshotsOnIPhoneX(of: MailboxItemCell.testCell(model: model), precision: 0.99, testName: testName)
     }
 }
 

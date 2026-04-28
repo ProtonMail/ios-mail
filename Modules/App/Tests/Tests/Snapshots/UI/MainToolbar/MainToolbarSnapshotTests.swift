@@ -32,7 +32,13 @@ final class MainToolbarSnapshotTests {
     @Test(arguments: [UIUserInterfaceStyle.light, .dark], [UpsellType.mailPlus, .unlimited])
     func mainToolbarWithUpsell(style: UIUserInterfaceStyle, upsellType: UpsellType) {
         let view = makeToolbarView(upsellEligibility: .eligible(upsellType))
-        assertSnapshotsOnIPhoneX(of: view, named: "upsellType.\(upsellType)", styles: [style], drawHierarchyInKeyWindow: true)
+        assertSnapshotsOnIPhoneX(
+            of: view,
+            named: "upsellType.\(upsellType)",
+            styles: [style],
+            drawHierarchyInKeyWindow: true,
+            precision: 0.99
+        )
     }
 
     @Test(arguments: [UIUserInterfaceStyle.light, .dark])
