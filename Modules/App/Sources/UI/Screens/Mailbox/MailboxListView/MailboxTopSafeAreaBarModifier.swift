@@ -15,7 +15,9 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
+import InboxCoreUI
 import SwiftUI
+import SwiftUIIntrospect
 
 @available(iOS 26, *)
 struct MailboxTopSafeAreaBarModifier: ViewModifier {
@@ -27,7 +29,10 @@ struct MailboxTopSafeAreaBarModifier: ViewModifier {
 
     func body(content: Content) -> some View {
         content
-            .contentMargins(.top, topAreaInset + barHeight, for: .scrollContent)
+            .introspect(.list, on: SupportedIntrospectionPlatforms.list) { collectionView in
+                collectionView.contentInset = .init(top: topAreaInset + barHeight, left: 0, bottom: 0, right: 0)
+                collectionView.scrollIndicatorInsets = .init(top: topAreaInset + barHeight, left: 0, bottom: 0, right: 0)
+            }
             .ignoresSafeArea(.container, edges: .top)
             .safeAreaBar(edge: .top) {
                 if let viewModel = topBarState {
