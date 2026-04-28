@@ -31,7 +31,8 @@ final class TelemetryReporterTests {
         .init(
             upsellEntryPoint: entryPoint,
             planBeforeUpgrade: "free",
-            modalVariant: .comparisonPlus
+            modalVariant: .comparisonPlus,
+            upsellFeatureFlags: upsellFeatureFlagsForIos()
         )
     }
 
