@@ -4852,7 +4852,7 @@
         "sl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "[Preverjanje pošiljatelja](https://proton.me/support/sender-verification-failed) je spodletelo, ker ni bilo podpisano. Prosimo, potrdite pristnost e-pošte pri svojemu stiku."
+            "value" : "[Preverjanje pošiljatelja](https://proton.me/support/sender-verification-failed) je spodletelo, ker ni bilo podpisano. Potrdite pristnost e-pošte pri svojemu stiku."
           }
         },
         "sv" : {
@@ -5001,7 +5001,7 @@
         "sl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "[Preverjanje pošiljatelja](https://proton.me/support/sender-verification-failed) ni uspelo. Prosimo, potrdite pristnost e-pošte pri svojemu stiku."
+            "value" : "[Preverjanje pošiljatelja](https://proton.me/support/sender-verification-failed) ni uspelo. Potrdite pristnost e-pošte pri svojemu stiku."
           }
         },
         "sv" : {
@@ -5150,7 +5150,7 @@
         "sl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sporočilo je na strežnikih Proton shranjeno z [šifriranjem brez dostopa](https://proton.me/blog/zero-access-encryption). Niti Proton niti nihče drug ga ne more prebrati."
+            "value" : "Sporočilo je na strežnikih Proton shranjeno s [šifriranjem brez dostopa](https://proton.me/blog/zero-access-encryption). Niti Proton niti nihče drug ga ne more prebrati."
           }
         },
         "tr" : {
@@ -5293,7 +5293,7 @@
         "sl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Prejemnik je [preverjen stik](https://proton.me/support/address-verification), kateremu ste zaupali šifrirne ključe."
+            "value" : "Prejemnik je [preverjen stik](https://proton.me/support/address-verification), njegove šifrirne ključe ste potrdili kot zaupanja vredne."
           }
         },
         "sv" : {
@@ -5442,7 +5442,7 @@
         "sl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Prejemniki so [preverjeni stiki](https://proton.me/support/address-verification), katerim ste zaupali šifrirne ključe."
+            "value" : "Prejemniki so [preverjeni stiki](https://proton.me/support/address-verification), njihove šifrirne ključe ste potrdili kot zaupanja vredne."
           }
         },
         "sv" : {
@@ -5591,7 +5591,7 @@
         "sl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pošiljatelj je [preverjen stik](https://proton.me/support/address-verification), kateremu ste zaupali šifrirne ključe."
+            "value" : "Pošiljatelj je [preverjen stik](https://proton.me/support/address-verification), njegove šifrirne ključe ste potrdili kot zaupanja vredne."
           }
         },
         "sv" : {
@@ -5883,7 +5883,7 @@
         "sl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ta e-pošta je na strežnikih Proton shranjena z [šifriranjem brez dostopa](https://proton.me/blog/zero-access-encryption). Niti Proton niti kdorkoli drug je ne more prebrati."
+            "value" : "Ta e-pošta je na strežnikih Proton shranjena s [šifriranjem brez dostopa](https://proton.me/blog/zero-access-encryption). Niti Proton niti kdorkoli drug je ne more prebrati."
           }
         },
         "tr" : {
@@ -7016,7 +7016,7 @@
         "sl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Šifrirano brez dostopa za preverjenega prejemnika"
+            "value" : "Šifrirano brez dostopa s preverjenim prejemnikom"
           }
         },
         "sv" : {
@@ -7159,7 +7159,7 @@
         "sl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Šifrirano brez dostopa za preverjene prejemnike"
+            "value" : "Šifrirano brez dostopa s preverjenimi prejemniki"
           }
         },
         "sv" : {

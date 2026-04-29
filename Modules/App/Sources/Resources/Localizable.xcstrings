@@ -57066,7 +57066,7 @@
         "sl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aktivno vas ščitimo pred sledenjem. Tukaj si lahko ogledate vohunske slikovne pike, ki smo jih blokirali, in povezave za sledenje, ki smo jih očistili v tem sporočilu. [Več o tem](https://proton.me/support/email-tracker-protection)"
+            "value" : "Aktivno vas ščitimo pred sledenjem. Tukaj si lahko ogledate vohunske slikovne pike, ki smo jih blokirali, in sledilne povezave, ki smo jih očistili v tem sporočilu. [Več o tem](https://proton.me/support/email-tracker-protection)"
           }
         },
         "tr" : {
