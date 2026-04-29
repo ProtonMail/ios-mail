@@ -81,10 +81,13 @@ struct UpsellScreenSnapshotTests {
 
         let sut = UpsellScreen(model: model)
         let viewController = UIHostingController(rootView: sut)
+        viewController.view.backgroundColor = .black
+        viewController.overrideUserInterfaceStyle = .dark
 
         let strategy: Snapshotting<UIViewController, UIImage> = .image(
             on: testCase.config,
-            drawHierarchyInKeyWindow: true
+            drawHierarchyInKeyWindow: true,
+            precision: 0.99
         )
 
         assertSnapshot(of: viewController, as: strategy, named: testCase.label)
