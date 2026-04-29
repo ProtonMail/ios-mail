@@ -27,7 +27,7 @@ struct PlanComparisonGrid: View {
         }
 
         let planColumnHeader: ColumnHeader
-        let headerStroke: (any ShapeStyle)?
+        let headerStroke: LinearGradient?
         let items: [ComparisonItem]
     }
 

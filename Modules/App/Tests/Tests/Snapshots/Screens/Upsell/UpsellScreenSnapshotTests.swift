@@ -86,8 +86,7 @@ struct UpsellScreenSnapshotTests {
 
         let strategy: Snapshotting<UIViewController, UIImage> = .image(
             on: testCase.config,
-            drawHierarchyInKeyWindow: true,
-            precision: 0.99
+            drawHierarchyInKeyWindow: true
         )
 
         assertSnapshot(of: viewController, as: strategy, named: testCase.label)

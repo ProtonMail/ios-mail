@@ -88,7 +88,7 @@ final class UpsellScreenModelTests {
 
         sut.selectedInstanceId = yearlyInstance.storeKitProductId
 
-        #expect(String(localized: sut.autoRenewalNotice) == "Auto-renews at $47.88/year unless canceled")
+        #expect(sut.autoRenewalNotice.string == "Auto-renews at $47.88/year unless canceled")
     }
 
     @Test
@@ -98,7 +98,7 @@ final class UpsellScreenModelTests {
 
         sut.selectedInstanceId = monthlyInstance.storeKitProductId
 
-        #expect(String(localized: sut.autoRenewalNotice) == "Auto-renews at $4.99/month unless canceled")
+        #expect(sut.autoRenewalNotice.string == "Auto-renews at $4.99/month unless canceled")
     }
 
     @Test
@@ -108,10 +108,10 @@ final class UpsellScreenModelTests {
         let monthlyId = try #require(DisplayablePlanInstance.previews.first { $0.cycleInMonths == 1 }).storeKitProductId
 
         sut.selectedInstanceId = yearlyId
-        let yearlyNotice = String(localized: sut.autoRenewalNotice)
+        let yearlyNotice = sut.autoRenewalNotice.string
 
         sut.selectedInstanceId = monthlyId
-        let monthlyNotice = String(localized: sut.autoRenewalNotice)
+        let monthlyNotice = sut.autoRenewalNotice.string
 
         #expect(yearlyNotice.contains("/year"))
         #expect(monthlyNotice.contains("/month"))
