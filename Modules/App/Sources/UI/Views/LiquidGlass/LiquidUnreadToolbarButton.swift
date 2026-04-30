@@ -19,7 +19,7 @@ import InboxDesignSystem
 import SwiftUI
 
 struct LiquidUnreadToolbarButton: ToolbarContent {
-    let unreadButtonState: UnreadButtonState
+    let state: UnreadButtonState
     let action: () -> Void
 
     var body: some ToolbarContent {
@@ -30,10 +30,10 @@ struct LiquidUnreadToolbarButton: ToolbarContent {
                         Text(L10n.Mailbox.unread)
                             .font(.body)
                             .fontWeight(.medium)
-                        Text(unreadButtonState.counterState.string)
+                        Text(state.counterState.string)
                             .fontWeight(.semibold)
                     }
-                    if unreadButtonState.isSelected {
+                    if state.isSelected {
                         Image(symbol: .xmark)
                             .fontWeight(.heavy)
                             .font(.caption)
@@ -41,7 +41,7 @@ struct LiquidUnreadToolbarButton: ToolbarContent {
                 }
             }
             .modify { view in
-                if #available(iOS 26, *), unreadButtonState.isSelected {
+                if #available(iOS 26, *), state.isSelected {
                     view
                         .buttonStyle(.glassProminent)
                         .tint(DS.Color.InteractionBrand.norm)
@@ -59,8 +59,8 @@ struct LiquidUnreadToolbarButton: ToolbarContent {
     NavigationStack {
         Color.clear
             .toolbar {
-                LiquidUnreadButton(
-                    unreadButtonState: .init(
+                LiquidUnreadToolbarButton(
+                    state: .init(
                         isSelected: isSelected,
                         counterState: .known(unreadCount: 100)
                     ),

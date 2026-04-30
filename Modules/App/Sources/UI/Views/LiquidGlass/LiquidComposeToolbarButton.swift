@@ -18,7 +18,7 @@
 import InboxDesignSystem
 import SwiftUI
 
-struct LiquidComposeButton: ToolbarContent {
+struct LiquidComposeToolbarButton: ToolbarContent {
     let action: () -> Void
 
     var body: some ToolbarContent {

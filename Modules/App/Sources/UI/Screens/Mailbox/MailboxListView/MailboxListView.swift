@@ -129,13 +129,13 @@ extension MailboxListView {
             mailUserSession: mailUserSession,
             mailbox: model.mailbox,
             liquidComposeButton: {
-                LiquidComposeButton {
+                LiquidComposeToolbarButton {
                     model.createDraft()
                 }
             },
             liquidUnreadButton: {
-                LiquidUnreadButton(
-                    unreadButtonState: model.state.barsState.unreadButtonState,
+                LiquidUnreadToolbarButton(
+                    state: model.state.barsState.unreadButtonState,
                     action: { model.onUnreadFilterChange() }
                 )
             }
