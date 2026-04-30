@@ -25,23 +25,8 @@ struct ComposeButtonView: View {
         Button(L10n.Mailbox.compose, image: DS.Icon.icPenSquare) {
             onTap()
         }
-        .buttonStyle(ComposeButtonStyle())
-    }
-}
-
-private struct ComposeButtonStyle: ButtonStyle {
-    func makeBody(configuration: Self.Configuration) -> some View {
-        configuration
-            .label
-            .padding(.all, DS.Spacing.moderatelyLarge)
-            .background(configuration.isPressed ? DS.Color.InteractionFab.pressed : DS.Color.InteractionFab.norm)
-            .foregroundStyle(DS.Color.Icon.norm)
-            .overlay(
-                Capsule(style: .continuous)
-                    .stroke(DS.Color.Border.light, lineWidth: 1)
-            )
-            .clipShape(Capsule(style: .continuous))
-            .shadow(DS.Shadows.liftedFull, isVisible: true)
+        .labelStyle(.iconOnly)
+        .buttonStyle(BorderedButtonStyle(isSelected: false))
     }
 }
 

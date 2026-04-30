@@ -114,13 +114,13 @@ extension MailboxScreen {
 
     private var mailboxScreen: some View {
         GeometryReader { geometry in
-            ZStack(alignment: .bottomTrailing) {
+            ZStack(alignment: .bottom) {
                 MailboxListView(
                     model: mailboxModel,
                     mailUserSession: userSession
                 )
                 if #unavailable(iOS 26) {
-                    composeButtonView
+                    regularBottomBar
                         .accessibilitySortPriority(1)
                         .animation(
                             animateComposeButtonSafeAreaChanges ? .default : .none, value: geometry.safeAreaInsets.bottom
@@ -165,11 +165,18 @@ extension MailboxScreen {
         }
     }
 
-    private var composeButtonView: some View {
-        ComposeButtonView {
-            mailboxModel.createDraft()
+    private var regularBottomBar: some View {
+        HStack {
+            RegularUnreadButton(
+                state: mailboxModel.state.barsState.unreadButtonState,
+                action: { mailboxModel.onUnreadFilterChange() }
+            )
+            Spacer()
+            ComposeButtonView {
+                mailboxModel.createDraft()
+            }
         }
-        .padding(.trailing, DS.Spacing.large)
+        .padding(.horizontal, DS.Spacing.large)
         .padding(.bottom, DS.Spacing.large + toastStateStore.state.maxToastHeight)
         .opacity(mailboxModel.selectionMode.selectionState.hasItems ? 0 : 1)
         .animation(.selectModeAnimation, value: mailboxModel.selectionMode.selectionState.hasItems)
