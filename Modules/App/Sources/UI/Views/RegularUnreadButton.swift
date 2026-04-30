@@ -57,12 +57,12 @@ struct BorderedButtonStyle: ButtonStyle {
             .padding(.all, DS.Spacing.moderatelyLarge)
             .foregroundStyle(isSelected ? DS.Color.Text.inverted : DS.Color.Text.norm)
             .background(isSelected ? DS.Color.InteractionBrand.pressed : DS.Color.InteractionFab.norm)
-            .opacity(configuration.isPressed ? 0.7 : 1.0)
             .overlay(
-                Capsule(style: .continuous)
+                Capsule()
+                    .fill(Color.black.opacity(configuration.isPressed ? 0.1 : 0))
                     .stroke(DS.Color.Border.light, lineWidth: 1)
             )
-            .clipShape(Capsule(style: .continuous))
+            .clipShape(.capsule)
             .shadow(DS.Shadows.liftedFull, isVisible: true)
     }
 }
