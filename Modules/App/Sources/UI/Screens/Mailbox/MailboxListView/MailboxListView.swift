@@ -135,7 +135,7 @@ extension MailboxListView {
             },
             liquidUnreadButton: {
                 LiquidUnreadButton(
-                    isSelected: model.state.barsState.unreadButtonState.isSelected,
+                    unreadButtonState: model.state.barsState.unreadButtonState,
                     action: { model.onUnreadFilterChange() }
                 )
             }

@@ -19,35 +19,35 @@ import InboxDesignSystem
 import SwiftUI
 
 struct LiquidUnreadButton: ToolbarContent {
-    let isSelected: Bool
+    let unreadButtonState: UnreadButtonState
     let action: () -> Void
 
     var body: some ToolbarContent {
-        if isSelected {
-            ToolbarItem(placement: .bottomBar) {
-                Button(action: action) {
-                    HStack(spacing: DS.Spacing.standard) {
+        ToolbarItem(placement: .bottomBar) {
+            Button(action: action) {
+                HStack(spacing: DS.Spacing.compact) {
+                    HStack(spacing: DS.Spacing.small) {
                         Text(L10n.Mailbox.unread)
                             .font(.body)
-                        Image(symbol: .xmark)
-                            .font(.callout)
+                            .fontWeight(.medium)
+                        Text(unreadButtonState.counterState.string)
+                            .fontWeight(.semibold)
                     }
-                }
-                .fontWeight(.medium)
-                .modify { view in
-                    if #available(iOS 26, *) {
-                        view.buttonStyle(.glassProminent)
-                            .tint(DS.Color.InteractionBrand.norm)
-                    } else {
-                        view
+                    if unreadButtonState.isSelected {
+                        Image(symbol: .xmark)
+                            .fontWeight(.heavy)
+                            .font(.caption)
                     }
                 }
             }
-        } else {
-            ToolbarItem(placement: .bottomBar) {
-                Button(L10n.Mailbox.unread, action: action)
-                    .font(.body)
-                    .fontWeight(.medium)
+            .modify { view in
+                if #available(iOS 26, *), unreadButtonState.isSelected {
+                    view
+                        .buttonStyle(.glassProminent)
+                        .tint(DS.Color.InteractionBrand.norm)
+                } else {
+                    view
+                }
             }
         }
     }
@@ -60,7 +60,10 @@ struct LiquidUnreadButton: ToolbarContent {
         Color.clear
             .toolbar {
                 LiquidUnreadButton(
-                    isSelected: isSelected,
+                    unreadButtonState: .init(
+                        isSelected: isSelected,
+                        counterState: .known(unreadCount: 100)
+                    ),
                     action: { isSelected.toggle() }
                 )
             }
