@@ -22,7 +22,7 @@ import ProtonUIFoundations
 import SwiftUI
 import proton_app_uniffi
 
-struct MailboxItemsListView<EmptyView: View, ComposeButton: ToolbarContent>: View {
+struct MailboxItemsListView<EmptyView: View, ComposeButton: ToolbarContent, UnreadButton: ToolbarContent>: View {
     let config: MailboxItemsListViewConfiguration
     @ViewBuilder let emptyView: EmptyView
     @ObservedObject private(set) var selectionState: SelectionModeState
@@ -31,6 +31,7 @@ struct MailboxItemsListView<EmptyView: View, ComposeButton: ToolbarContent>: Vie
     @State var isScrollingDisabled = false
     let mailbox: Mailbox?
     private let liquidComposeButton: (() -> ComposeButton)?
+    private let liquidUnreadButton: (() -> UnreadButton)?
 
     // pull to refresh
     @State private var listPullOffset: CurrentValueSubject<CGFloat, Never> = .init(0.0)
@@ -44,7 +45,8 @@ struct MailboxItemsListView<EmptyView: View, ComposeButton: ToolbarContent>: Vie
         emptyFolderBanner: Binding<EmptyFolderBanner?>,
         mailUserSession: MailUserSession,
         mailbox: Mailbox?,
-        liquidComposeButton: (() -> ComposeButton)?
+        liquidComposeButton: (() -> ComposeButton)?,
+        liquidUnreadButton: (() -> UnreadButton)?
     ) {
         self.config = config
         self.emptyView = emptyView()
@@ -53,6 +55,7 @@ struct MailboxItemsListView<EmptyView: View, ComposeButton: ToolbarContent>: Vie
         _emptyFolderBanner = emptyFolderBanner
         self.mailbox = mailbox
         self.liquidComposeButton = liquidComposeButton
+        self.liquidUnreadButton = liquidUnreadButton
     }
 
     var body: some View {
@@ -65,7 +68,8 @@ struct MailboxItemsListView<EmptyView: View, ComposeButton: ToolbarContent>: Vie
                     availableActions: .productionInstance,
                     mailUserSession: mailUserSession,
                     mailbox: mailbox,
-                    liquidComposeButton: liquidComposeButton
+                    liquidComposeButton: liquidComposeButton,
+                    liquidUnreadButton: liquidUnreadButton
                 )
                 .modify { view in
                     if #unavailable(iOS 26) {
@@ -228,13 +232,14 @@ private struct MailboxListViewIdentifiers {
         }
 
         var body: some View {
-            MailboxItemsListView<Text, LiquidComposeButton>(
+            MailboxItemsListView<Text, LiquidComposeButton, LiquidUnreadButton>(
                 config: makeConfiguration(),
                 emptyView: { Text("MAILBOX IS EMPTY".notLocalized) },
                 emptyFolderBanner: .constant(nil),
                 mailUserSession: .dummy,
                 mailbox: .dummy,
-                liquidComposeButton: nil
+                liquidComposeButton: nil,
+                liquidUnreadButton: nil
             )
             .task {
                 model.dataSource.fetchInitialPage()

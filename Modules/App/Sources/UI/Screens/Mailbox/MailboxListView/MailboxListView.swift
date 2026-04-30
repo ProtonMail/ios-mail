@@ -132,8 +132,15 @@ extension MailboxListView {
                 LiquidComposeButton {
                     model.createDraft()
                 }
+            },
+            liquidUnreadButton: {
+                LiquidUnreadButton(
+                    isSelected: model.state.barsState.unreadButtonState.isSelected,
+                    action: { model.onUnreadFilterChange() }
+                )
             }
         )
+        .animation(.default, value: model.state.barsState.unreadButtonState.isSelected)
         .animation(.default, value: isListAtTop)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .onChange(of: model.selectedMailbox) { _, _ in

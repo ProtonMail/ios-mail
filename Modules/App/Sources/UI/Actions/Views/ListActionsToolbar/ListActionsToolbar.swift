@@ -23,13 +23,14 @@ import proton_app_uniffi
 
 extension View {
     /// Attaches the list actions toolbar to this view.
-    func listActionsToolbar<ComposeButton: ToolbarContent>(
+    func listActionsToolbar<ComposeButton: ToolbarContent, UnreadButton: ToolbarContent>(
         initialState: ListActionsToolbarState,
         selectedIds: [ID],
         availableActions: AvailableListToolbarActions,
         mailUserSession: MailUserSession,
         mailbox: Mailbox,
-        liquidComposeButton: (() -> ComposeButton)?
+        liquidComposeButton: (() -> ComposeButton)?,
+        liquidUnreadButton: (() -> UnreadButton)?
     ) -> some View {
         modifier(
             ListActionBarViewModifier(
@@ -38,13 +39,14 @@ extension View {
                 availableActions: availableActions,
                 mailUserSession: mailUserSession,
                 mailbox: mailbox,
-                liquidComposeButton: liquidComposeButton
+                liquidComposeButton: liquidComposeButton,
+                liquidUnreadButton: liquidUnreadButton
             )
         )
     }
 }
 
-private struct ListActionBarViewModifier<ComposeButton: ToolbarContent>: ViewModifier {
+private struct ListActionBarViewModifier<ComposeButton: ToolbarContent, UnreadButton: ToolbarContent>: ViewModifier {
     @EnvironmentObject private var toastStateStore: ToastStateStore
     @EnvironmentObject private var refreshToolbarNotifier: RefreshToolbarNotifier
 
@@ -58,6 +60,7 @@ private struct ListActionBarViewModifier<ComposeButton: ToolbarContent>: ViewMod
     let mailUserSession: MailUserSession
     let mailbox: Mailbox
     let liquidComposeButton: ComposeButton?
+    let liquidUnreadButton: UnreadButton?
 
     init(
         initialState: ListActionsToolbarState,
@@ -69,7 +72,8 @@ private struct ListActionBarViewModifier<ComposeButton: ToolbarContent>: ViewMod
         moveToActions: MoveToActions = .productionInstance,
         mailUserSession: MailUserSession,
         mailbox: Mailbox,
-        liquidComposeButton: (() -> ComposeButton)?
+        liquidComposeButton: (() -> ComposeButton)?,
+        liquidUnreadButton: (() -> UnreadButton)?
     ) {
         self.initialState = initialState
         self.selectedIds = selectedIds
@@ -81,6 +85,7 @@ private struct ListActionBarViewModifier<ComposeButton: ToolbarContent>: ViewMod
         self.mailUserSession = mailUserSession
         self.mailbox = mailbox
         self.liquidComposeButton = liquidComposeButton?()
+        self.liquidUnreadButton = liquidUnreadButton?()
     }
 
     func body(content: Content) -> some View {
@@ -144,12 +149,17 @@ private struct ListActionBarViewModifier<ComposeButton: ToolbarContent>: ViewMod
                 }
         }
         .animation(.default, value: liquidComposeButton != nil)
+        .animation(.default, value: liquidUnreadButton != nil)
     }
 
     // MARK: - Private
 
     @ToolbarContentBuilder
     private func toolbarContent(state: ListActionsToolbarState, store: ListActionsToolbarStore) -> some ToolbarContent {
+        if #available(iOS 26.0, *), state.bottomBarActions.isEmpty, let liquidUnreadButton {
+            liquidUnreadButton
+        }
+
         if state.bottomBarActions.isEmpty == false {
             ToolbarItemGroup(placement: .bottomBar) {
                 AdaptiveToolbarItemsLayout(items: state.bottomBarActions) { action in

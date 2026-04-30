@@ -584,7 +584,10 @@ extension MailboxModel {
 
 extension MailboxModel {
     func onUnreadFilterChange() {
+        state.barsState.unreadButtonState.isSelected.toggle()
+
         AppLogger.log(message: "unread filter has changed to \(unreadFilter)", category: .mailbox)
+
         if viewMode == .conversations {
             _ = conversationScroller?.changeFilter(unread: unreadFilter)
         } else {

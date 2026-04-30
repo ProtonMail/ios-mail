@@ -18,7 +18,6 @@
 import InboxDesignSystem
 import SwiftUI
 
-@available(iOS 26, *)
 struct LiquidUnreadButton: ToolbarContent {
     let isSelected: Bool
     let action: () -> Void
@@ -35,8 +34,14 @@ struct LiquidUnreadButton: ToolbarContent {
                     }
                 }
                 .fontWeight(.medium)
-                .buttonStyle(.glassProminent)
-                .tint(DS.Color.InteractionBrand.norm)
+                .modify { view in
+                    if #available(iOS 26, *) {
+                        view.buttonStyle(.glassProminent)
+                            .tint(DS.Color.InteractionBrand.norm)
+                    } else {
+                        view
+                    }
+                }
             }
         } else {
             ToolbarItem(placement: .bottomBar) {
@@ -54,12 +59,10 @@ struct LiquidUnreadButton: ToolbarContent {
     NavigationStack {
         Color.clear
             .toolbar {
-                if #available(iOS 26, *) {
-                    LiquidUnreadButton(
-                        isSelected: isSelected,
-                        action: { isSelected.toggle() }
-                    )
-                }
+                LiquidUnreadButton(
+                    isSelected: isSelected,
+                    action: { isSelected.toggle() }
+                )
             }
             .animation(.default, value: isSelected)
     }
