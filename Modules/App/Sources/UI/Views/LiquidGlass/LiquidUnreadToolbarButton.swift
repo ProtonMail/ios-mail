@@ -18,7 +18,7 @@
 import InboxDesignSystem
 import SwiftUI
 
-struct LiquidUnreadButton: ToolbarContent {
+struct LiquidUnreadToolbarButton: ToolbarContent {
     let unreadButtonState: UnreadButtonState
     let action: () -> Void
 
