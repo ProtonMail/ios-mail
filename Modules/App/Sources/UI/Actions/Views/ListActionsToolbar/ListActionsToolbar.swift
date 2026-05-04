@@ -144,7 +144,7 @@ private struct ListActionBarViewModifier<ComposeButton: ToolbarContent, UnreadBu
                     }
                 }
                 .alert(model: store.binding(\.deleteConfirmationAlert))
-                .onChange(of: MailboxIdentifiaction(viewMode: mailbox.viewMode(), id: mailbox.labelId())) { _, _ in
+                .onChange(of: MailboxIdentification(viewMode: mailbox.viewMode(), id: mailbox.labelId())) { _, _ in
                     store.handle(action: .mailboxChanged(mailbox))
                 }
         }
@@ -210,7 +210,7 @@ private struct ListActionBarViewModifier<ComposeButton: ToolbarContent, UnreadBu
     }
 }
 
-private struct MailboxIdentifiaction: Hashable {
+private struct MailboxIdentification: Hashable {
     let viewMode: ViewMode
     let id: ID
 }

@@ -44,26 +44,7 @@ struct RegularUnreadButton: View {
                 }
             }
         }
-        .buttonStyle(BorderedButtonStyle(isSelected: state.isSelected))
-    }
-}
-
-struct BorderedButtonStyle: ButtonStyle {
-    let isSelected: Bool
-
-    func makeBody(configuration: Configuration) -> some View {
-        configuration
-            .label
-            .padding(.all, DS.Spacing.moderatelyLarge)
-            .foregroundStyle(isSelected ? DS.Color.Text.inverted : DS.Color.Text.norm)
-            .background(isSelected ? DS.Color.InteractionBrand.pressed : DS.Color.InteractionFab.norm)
-            .overlay(
-                Capsule()
-                    .fill(Color.black.opacity(configuration.isPressed ? 0.1 : 0))
-                    .stroke(DS.Color.Border.light, lineWidth: 1)
-            )
-            .clipShape(.capsule)
-            .shadow(DS.Shadows.liftedFull, isVisible: true)
+        .buttonStyle(MailboxFloatingButtonStyle(isSelected: state.isSelected))
     }
 }
 

@@ -26,7 +26,7 @@ struct ComposeButtonView: View {
             onTap()
         }
         .labelStyle(.iconOnly)
-        .buttonStyle(BorderedButtonStyle(isSelected: false))
+        .buttonStyle(MailboxFloatingButtonStyle(isSelected: false))
     }
 }
 

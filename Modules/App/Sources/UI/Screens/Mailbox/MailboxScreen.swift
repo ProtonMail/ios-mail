@@ -120,7 +120,7 @@ extension MailboxScreen {
                     mailUserSession: userSession
                 )
                 if #unavailable(iOS 26) {
-                    regularBottomBar
+                    legacyBottomBar
                         .accessibilitySortPriority(1)
                         .animation(
                             animateComposeButtonSafeAreaChanges ? .default : .none, value: geometry.safeAreaInsets.bottom
@@ -165,7 +165,7 @@ extension MailboxScreen {
         }
     }
 
-    private var regularBottomBar: some View {
+    private var legacyBottomBar: some View {
         HStack {
             RegularUnreadButton(
                 state: mailboxModel.state.barsState.unreadButtonState,
