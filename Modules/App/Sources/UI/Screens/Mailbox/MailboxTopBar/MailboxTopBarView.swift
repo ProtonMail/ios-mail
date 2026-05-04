@@ -30,20 +30,20 @@ struct MailboxTopBarView: View {
     }
 }
 
-//#Preview {
-//    struct Preview: View {
-//        @State var stateSelectAllAvailable: MailboxTopBarState = .selectionMode(.canSelectMoreItems)
-//        @State var stateSelectAllAllSelected: MailboxTopBarState = .selectionMode(.noMoreItemsToSelect)
-//        @State var stateSelectAllDisabled: MailboxTopBarState = .selectionMode(.selectionLimitReached)
-//        var body: some View {
-//            VStack {
-//                MailboxTopBarView(state: stateSelectAllAvailable) { _ in }
-//                MailboxTopBarView(state: stateSelectAllAllSelected) { _ in }
-//                MailboxTopBarView(state: stateSelectAllDisabled) { _ in }
-//            }
-//            .border(.red)
-//        }
-//    }
-//
-//    return Preview()
-//}
+#Preview {
+    struct Preview: View {
+        @State var stateSelectAllAvailable: MailboxTopBarState = .selectionMode(.canSelectMoreItems)
+        @State var stateSelectAllAllSelected: MailboxTopBarState = .selectionMode(.noMoreItemsToSelect)
+        @State var stateSelectAllDisabled: MailboxTopBarState = .selectionMode(.selectionLimitReached)
+        var body: some View {
+            VStack {
+                MailboxTopBarView(state: stateSelectAllAvailable) { _ in }
+                MailboxTopBarView(state: stateSelectAllAllSelected) { _ in }
+                MailboxTopBarView(state: stateSelectAllDisabled) { _ in }
+            }
+            .border(.red)
+        }
+    }
+
+    return Preview()
+}
