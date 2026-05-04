@@ -40,9 +40,11 @@ struct MailboxTopSafeAreaBarModifier: ViewModifier {
                         .onGeometryChange(for: CGFloat.self, of: \.size.height) { newValue in
                             barHeight = newValue
                         }
-                        .onDisappear {
-                            barHeight = 0
-                        }
+                }
+            }
+            .onChange(of: topBarState) { _, newValue in
+                if newValue == nil {
+                    barHeight = 0
                 }
             }
             .onGeometryChange(for: CGFloat.self, of: \.safeAreaInsets.top) { newValue in
