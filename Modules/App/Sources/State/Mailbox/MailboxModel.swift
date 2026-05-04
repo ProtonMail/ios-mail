@@ -584,8 +584,6 @@ extension MailboxModel {
 
 extension MailboxModel {
     func onUnreadFilterChange() {
-        state.barsState.unreadButtonState.isSelected.toggle()
-
         AppLogger.log(message: "unread filter has changed to \(unreadFilter)", category: .mailbox)
 
         if viewMode == .conversations {
@@ -851,24 +849,5 @@ extension MailboxModel {
 extension MailboxItemCellUIModel {
     func toSelectedItem() -> MailboxSelectedItem {
         .init(id: id, isRead: isRead, isStarred: isStarred)
-    }
-}
-
-struct UnreadButtonState: Equatable {
-    var isSelected: Bool
-    var counterState: UnreadCounterState
-}
-
-enum UnreadCounterState: Equatable {
-    case known(unreadCount: UInt64)
-    case unknown
-
-    var string: String {
-        switch self {
-        case .known(let unreadCount):
-            UnreadCountFormatter.string(count: unreadCount, maxCount: 99)
-        case .unknown:
-            "-".notLocalized
-        }
     }
 }
