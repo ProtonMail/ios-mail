@@ -54,11 +54,13 @@ final class UpsellScreenFactoryTests {
 
         let yearlyInstance = try #require(upsellScreenModel.planInstances.first { $0.cycleInMonths == 12 })
 
-        #expect(yearlyInstance.pricing == .discountedYearlyPlan(
-            discountedMonthlyPrice: "$3.99",
-            discountedYearlyPrice: "$47.88",
-            renewalPrice: "$47.88"
-        ))
+        #expect(
+            yearlyInstance.pricing
+                == .discountedYearlyPlan(
+                    discountedMonthlyPrice: "$3.99",
+                    discountedYearlyPrice: "$47.88",
+                    renewalPrice: "$47.88"
+                ))
     }
 
     @Test
@@ -98,11 +100,13 @@ final class UpsellScreenFactoryTests {
 
         let yearlyInstance = try #require(upsellScreenModel.planInstances.first { $0.cycleInMonths == 12 })
 
-        #expect(yearlyInstance.pricing == .discountedYearlyPlan(
-            discountedMonthlyPrice: "$9.99",
-            discountedYearlyPrice: "$119.88",
-            renewalPrice: "$119.88"
-        ))
+        #expect(
+            yearlyInstance.pricing
+                == .discountedYearlyPlan(
+                    discountedMonthlyPrice: "$9.99",
+                    discountedYearlyPrice: "$119.88",
+                    renewalPrice: "$119.88"
+                ))
     }
 
     @Test
