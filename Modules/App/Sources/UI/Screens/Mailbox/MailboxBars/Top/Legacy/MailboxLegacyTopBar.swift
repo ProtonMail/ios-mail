@@ -19,22 +19,21 @@ import InboxDesignSystem
 import ProtonUIFoundations
 import SwiftUI
 
-struct LegacyTopBar: View {
+struct MailboxLegacyTopBar: View {
     @ScaledMetric var scale: CGFloat = 1
 
     let state: MailboxTopBarState
-    let onEvent: (MailboxTopBarEvent) -> Void
+    let action: (MailboxTopBarAction) -> Void
 
     var body: some View {
-        Group {
+        HStack {
             switch state {
             case .selectionMode(let selectAllState):
                 selectAllButton(state: selectAllState)
             case .includeSpamTrash(let isSelected):
-                HStack {
-                    spamTrashToggle(isSelected: isSelected)
-                }
+                spamTrashToggle(isSelected: isSelected)
             }
+            Spacer()
         }
         .padding(.horizontal, DS.Spacing.large)
         .padding(.vertical, DS.Spacing.standard)
@@ -44,7 +43,7 @@ struct LegacyTopBar: View {
 
     private func spamTrashToggle(isSelected: Bool) -> some View {
         SelectableCapsuleButton(isSelected: isSelected) {
-            onEvent(.spamTrashToggleTapped)
+            action(.spamTrashToggleTapped)
         } label: {
             Text(L10n.Mailbox.includeTrashSpamToggleTitle)
         }
@@ -52,7 +51,7 @@ struct LegacyTopBar: View {
 
     private func selectAllButton(state: SelectAllState) -> some View {
         Button {
-            onEvent(.selectAllTapped)
+            action(.selectAllTapped)
         } label: {
             HStack(spacing: DS.Spacing.compact) {
                 Image(symbol: state.button.icon)

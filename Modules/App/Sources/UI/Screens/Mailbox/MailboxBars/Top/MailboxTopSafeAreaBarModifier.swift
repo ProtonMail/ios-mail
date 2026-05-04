@@ -22,7 +22,7 @@ import SwiftUIIntrospect
 @available(iOS 26, *)
 struct MailboxTopSafeAreaBarModifier: ViewModifier {
     let topBarState: MailboxTopBarState?
-    let onEvent: (MailboxTopBarEvent) -> Void
+    let action: (MailboxTopBarAction) -> Void
 
     @State private var topAreaInset: CGFloat = 0
     @State private var barHeight: CGFloat = 0
@@ -35,8 +35,8 @@ struct MailboxTopSafeAreaBarModifier: ViewModifier {
             }
             .ignoresSafeArea(.container, edges: .top)
             .safeAreaBar(edge: .top) {
-                if let viewModel = topBarState {
-                    MailboxTopBarView(state: viewModel, onEvent: onEvent)
+                if let state = topBarState {
+                    MailboxTopBarView(state: state, action: action)
                         .onGeometryChange(for: CGFloat.self, of: \.size.height) { newValue in
                             barHeight = newValue
                         }
@@ -58,8 +58,8 @@ extension View {
     @ViewBuilder
     func mailboxTopSafeAreaBar(
         state: MailboxTopBarState?,
-        onEvent: @escaping (MailboxTopBarEvent) -> Void
+        action: @escaping (MailboxTopBarAction) -> Void
     ) -> some View {
-        modifier(MailboxTopSafeAreaBarModifier(topBarState: state, onEvent: onEvent))
+        modifier(MailboxTopSafeAreaBarModifier(topBarState: state, action: action))
     }
 }

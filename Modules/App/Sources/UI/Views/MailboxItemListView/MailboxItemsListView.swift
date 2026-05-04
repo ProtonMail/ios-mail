@@ -232,7 +232,7 @@ private struct MailboxListViewIdentifiers {
         }
 
         var body: some View {
-            MailboxItemsListView<Text, LiquidComposeToolbarButton, LiquidUnreadToolbarButton>(
+            MailboxItemsListView<Text, MailboxLiquidComposeToolbarButton, MailboxLiquidUnreadToolbarButton>(
                 config: makeConfiguration(),
                 emptyView: { Text("MAILBOX IS EMPTY".notLocalized) },
                 emptyFolderBanner: .constant(nil),

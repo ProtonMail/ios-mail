@@ -59,7 +59,7 @@ struct MailboxListView: View {
                 .modify { view in
                     if #available(iOS 26, *) {
                         view
-                            .mailboxTopSafeAreaBar(state: model.state.barsState.topBarState, onEvent: handleTopBarEvent)
+                            .mailboxTopSafeAreaBar(state: model.state.barsState.topBarState, action: handleTopBarAction)
                     }
                 }
         }
@@ -67,8 +67,8 @@ struct MailboxListView: View {
         .onChange(of: model.state.barsState.spamTrashToggleState) { model.onIncludeSpamTrashFilterChange() }
     }
 
-    private func handleTopBarEvent(_ event: MailboxTopBarEvent) {
-        switch event {
+    private func handleTopBarAction(_ action: MailboxTopBarAction) {
+        switch action {
         case .spamTrashToggleTapped:
             model.state.barsState.spamTrashToggleState = model.state.barsState.spamTrashToggleState.toggled()
         case .selectAllTapped:
@@ -129,14 +129,14 @@ extension MailboxListView {
             mailUserSession: mailUserSession,
             mailbox: model.mailbox,
             liquidComposeButton: {
-                LiquidComposeToolbarButton {
+                MailboxLiquidComposeToolbarButton {
                     model.createDraft()
                 }
             },
             liquidUnreadButton: {
-                LiquidUnreadToolbarButton(
+                MailboxLiquidUnreadToolbarButton(
                     state: model.state.barsState.unreadButtonState,
-                    action: { model.onUnreadFilterChange() }
+                    action: { model.state.barsState.unreadButtonState.isSelected.toggle() }
                 )
             }
         )
@@ -156,8 +156,8 @@ extension MailboxListView {
 
     @ViewBuilder
     private func topBar() -> some View {
-        if let viewModel = model.state.barsState.topBarState {
-            MailboxTopBarView(state: viewModel, onEvent: handleTopBarEvent)
+        if let state = model.state.barsState.topBarState {
+            MailboxTopBarView(state: state, action: handleTopBarAction)
                 .background(DS.Color.Background.norm.shadow(DS.Shadows.raisedBottom, isVisible: !isListAtTop))
                 .zIndex(1)
         }

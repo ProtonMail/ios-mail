@@ -134,7 +134,7 @@ extension MailboxScreen {
             }
         }
         .background(DS.Color.Background.norm)  // sets also the color for the navigation bar
-        .toolbarBackground(mailboxModel.selectionMode.selectionState.hasItems ? .hidden : .visible, for: .navigationBar)
+        .toolbarBackground(mailboxModel.state.barsState.shouldHideShadow ? .hidden : .visible, for: .navigationBar)
         .navigationBarTitleDisplayMode(.inline)
         .withAccountManagerSwitcher(
             isPresented: $isAccountManagerPresented,
@@ -166,14 +166,12 @@ extension MailboxScreen {
     }
 
     private var legacyBottomBar: some View {
-        HStack {
-            RegularUnreadButton(
-                state: mailboxModel.state.barsState.unreadButtonState,
-                action: { mailboxModel.onUnreadFilterChange() }
-            )
-            Spacer()
-            ComposeButtonView {
+        MailboxLegacyBottomBarView(state: mailboxModel.state.barsState.unreadButtonState) { action in
+            switch action {
+            case .composeButtonTapped:
                 mailboxModel.createDraft()
+            case .unreadButtonTapped:
+                mailboxModel.state.barsState.unreadButtonState.isSelected.toggle()
             }
         }
         .padding(.horizontal, DS.Spacing.large)
@@ -229,5 +227,11 @@ class MailSettingsLiveQueryPreviewDummy: MailSettingLiveQuerying {
 
     func settingHasChanged<Property: Equatable>(keyPath: KeyPath<MailSettings, Property>, dropFirst: Bool) -> AnyPublisher<Property, Never> {
         Empty().eraseToAnyPublisher()
+    }
+}
+
+private extension MailboxBarsState {
+    var shouldHideShadow: Bool {
+        topBarState != nil
     }
 }

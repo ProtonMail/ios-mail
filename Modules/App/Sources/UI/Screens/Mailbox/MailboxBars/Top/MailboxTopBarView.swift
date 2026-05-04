@@ -19,13 +19,13 @@ import SwiftUI
 
 struct MailboxTopBarView: View {
     let state: MailboxTopBarState
-    let onEvent: (MailboxTopBarEvent) -> Void
+    let action: (MailboxTopBarAction) -> Void
 
     var body: some View {
         if #available(iOS 26, *) {
-            LiquidGlassTopBar(state: state, onEvent: onEvent)
+            MailboxLiquidGlassTopBar(state: state, action: action)
         } else {
-            LegacyTopBar(state: state, onEvent: onEvent)
+            MailboxLegacyTopBar(state: state, action: action)
         }
     }
 }

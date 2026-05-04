@@ -15,15 +15,27 @@
 // You should have received a copy of the GNU General Public License
 // along with Proton Mail. If not, see https://www.gnu.org/licenses/.
 
-import InboxDesignSystem
 import SwiftUI
 
-struct LiquidComposeToolbarButton: ToolbarContent {
-    let action: () -> Void
+struct MailboxLegacyBottomBarView: View {
+    private let state: UnreadButtonState
+    private let action: (MailboxBottomBarAction) -> Void
 
-    var body: some ToolbarContent {
-        ToolbarItem(placement: .bottomBar) {
-            Button(L10n.Mailbox.compose, image: DS.Icon.icPenSquare, action: action)
+    init(state: UnreadButtonState, action: @escaping (MailboxBottomBarAction) -> Void) {
+        self.state = state
+        self.action = action
+    }
+
+    var body: some View {
+        HStack {
+            RegularUnreadButton(
+                state: state,
+                action: { action(.unreadButtonTapped) }
+            )
+            Spacer()
+            ComposeButtonView {
+                action(.composeButtonTapped)
+            }
         }
     }
 }

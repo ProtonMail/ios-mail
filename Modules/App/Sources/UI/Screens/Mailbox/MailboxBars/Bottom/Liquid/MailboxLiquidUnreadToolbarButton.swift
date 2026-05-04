@@ -18,7 +18,7 @@
 import InboxDesignSystem
 import SwiftUI
 
-struct LiquidUnreadToolbarButton: ToolbarContent {
+struct MailboxLiquidUnreadToolbarButton: ToolbarContent {
     let state: UnreadButtonState
     let action: () -> Void
 
@@ -59,7 +59,7 @@ struct LiquidUnreadToolbarButton: ToolbarContent {
     NavigationStack {
         Color.clear
             .toolbar {
-                LiquidUnreadToolbarButton(
+                MailboxLiquidUnreadToolbarButton(
                     state: .init(
                         isSelected: isSelected,
                         counterState: .known(unreadCount: 100)

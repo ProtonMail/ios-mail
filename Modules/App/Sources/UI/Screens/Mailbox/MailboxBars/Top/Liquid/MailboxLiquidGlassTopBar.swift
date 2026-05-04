@@ -21,9 +21,9 @@ import SwiftUI
 import proton_app_uniffi
 
 @available(iOS 26, *)
-struct LiquidGlassTopBar: View {
+struct MailboxLiquidGlassTopBar: View {
     let state: MailboxTopBarState
-    let onEvent: (MailboxTopBarEvent) -> Void
+    let action: (MailboxTopBarAction) -> Void
 
     var body: some View {
         GlassEffectContainer {
@@ -43,7 +43,7 @@ struct LiquidGlassTopBar: View {
     }
 
     private func selectAllButton(state: SelectAllState) -> some View {
-        Button(action: { onEvent(.selectAllTapped) }) {
+        Button(action: { action(.selectAllTapped) }) {
             HStack {
                 Image(symbol: state.button.icon)
                 Text(state.button.text)
@@ -59,7 +59,7 @@ struct LiquidGlassTopBar: View {
     private func spamTrashToggle(isSelected: Bool) -> some View {
         filterToggleButton(
             isSelected: isSelected,
-            action: { onEvent(.spamTrashToggleTapped) }
+            action: { action(.spamTrashToggleTapped) }
         ) {
             Text(L10n.Mailbox.includeTrashSpamToggleTitle)
         }

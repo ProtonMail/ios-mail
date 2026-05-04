@@ -151,7 +151,7 @@ struct SearchScreen: View {
     }
 
     private var resultsList: some View {
-        MailboxItemsListView<NoResultsView, LiquidComposeToolbarButton, LiquidUnreadToolbarButton>(
+        MailboxItemsListView<NoResultsView, MailboxLiquidComposeToolbarButton, MailboxLiquidUnreadToolbarButton>(
             config: listConfiguration,
             emptyView: {
                 NoResultsView(variant: .search)
