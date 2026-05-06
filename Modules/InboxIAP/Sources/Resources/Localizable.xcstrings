@@ -58,52 +58,16 @@
             "value" : "%@ de almacenamiento"
           }
         },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ tallennustilaa"
-          }
-        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ d'espace de stockage"
           }
         },
-        "hu" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ tárhely"
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ruang penyimpanan %@"
-          }
-        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ di archiviazione"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ ストレージ"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ საცავი"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ 저장공간"
+            "value" : "%@ di spazio di archiviazione"
           }
         },
         "nb" : {
@@ -115,19 +79,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ opslagruimte"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ przestrzeni dyskowej"
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ de armazenamento"
+            "value" : "%@ Opslag"
           }
         },
         "pt-BR" : {
@@ -142,22 +94,10 @@
             "value" : "%@ spațiu de stocare"
           }
         },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ хранилища"
-          }
-        },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ úložisko"
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ shrambe"
           }
         },
         "sv" : {
@@ -172,22 +112,10 @@
             "value" : "%@ depolama alanı"
           }
         },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ сховища"
-          }
-        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%@ 存储空间"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%@ 雲端儲存"
           }
         }
       }
@@ -248,49 +176,13 @@
             "value" : "%lld"
           }
         },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld"
-          }
-        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld"
-          }
-        },
-        "hu" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld"
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld"
+            "value" : "%lld "
           }
         },
         "it" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld"
-          }
-        },
-        "ko" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%lld"
@@ -305,19 +197,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld"
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld"
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld"
+            "value" : "%lld "
           }
         },
         "pt-BR" : {
@@ -332,19 +212,7 @@
             "value" : "%lld"
           }
         },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld"
-          }
-        },
         "sk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld"
-          }
-        },
-        "sl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%lld"
@@ -357,12 +225,6 @@
           }
         },
         "tr" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld"
-          }
-        },
-        "uk" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%lld"
@@ -382,7 +244,7 @@
         "be" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Адрасоў электроннай пошты: %llu"
+            "value" : "%llu адрасы(оў) электроннай пошты"
           }
         },
         "ca" : {
@@ -433,52 +295,16 @@
             "value" : "%llu direcciones de correo"
           }
         },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%llu sähköpostiosoitetta"
-          }
-        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%llu adresses e-mail"
           }
         },
-        "hu" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%llu e-mail cím"
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%llu alamat email"
-          }
-        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%llu indirizzi email"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%llu 個のメールアドレス"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%llu ელფოსტის მისამართი"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "이메일 주소 %llu개"
           }
         },
         "nb" : {
@@ -493,18 +319,6 @@
             "value" : "%llu e-mailadressen"
           }
         },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Liczba adresów e-mail: %llu"
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%llu endereços de e-mail"
-          }
-        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -514,25 +328,13 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Adrese de e-mail: %llu"
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%llu адр. эл. почты"
+            "value" : "%llu adrese de e-mail"
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%llu emailových adries"
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%llu e-poštnih naslovov"
           }
         },
         "sv" : {
@@ -547,22 +349,10 @@
             "value" : "%llu e-posta adresi"
           }
         },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%llu адрес електронної пошти"
-          }
-        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "%llu 个邮箱地址"
-          }
-        },
-        "zh-Hant" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%llu 個電子郵件地址"
           }
         }
       }
@@ -759,7 +549,117 @@
       }
     },
     "Auto-renews at %@%@ unless canceled" : {
-      "comment" : "Disclaimer shown at the bottom of the upsell page; first placeholder is the localized price, second is the period suffix (/year or /month)"
+      "comment" : "Disclaimer shown at the bottom of the upsell page; first placeholder is the localized price, second is the period suffix (/year or /month)",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Аўтападаўжэнне за %@%@ пакуль не будзе скасавана"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Es renova automàticament a %@%@ tret que es cancel·li"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Automaticky se obnoví %@%@, pokud nebude zrušena"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fornyes automatisk til %@%@, medmindre det annulleres"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Verlängert sich automatisch für %@%@, sofern nicht gekündigt"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ανανεώνεται αυτόματα σε %@%@ εκτός εάν ακυρωθεί"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Auto-renews at %@%@ unless canceled"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se renueva automáticamente por %@%@ a menos que se cancele"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Renovación automática por %@%@ a menos que se cancele"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Renouvellement automatique à %@%@ sauf annulation."
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Si rinnova automaticamente a %@%@ eccetto annullamento"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Fornyes automatisk til %@%@ med mindre oppsigelse"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Wordt automatisch verlengt op %@%@ tenzij geannuleerd"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Renovação automática em %@%@, a menos que você cancele o plano"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se reînnoiește automat cu %@ %@ dacă nu e anulată."
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Automatická obnova za %@%@ až do zrušenia"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "İptal edilmedikçe %@%@ zamanında otomatik olarak yenilenir"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "除非手动取消，否则将在 %@%@ 时自动续订"
+          }
+        }
+      }
     },
     "Auto-renews at the same price and terms unless canceled" : {
       "comment" : "Notice at the bottom",
@@ -2080,7 +1980,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Creeu tot el que necessiteu per a mantenir-vos organitzat. Obteniu això i més amb %@."
+            "value" : "Creeu tot el que necessiteu per mantenir-vos organitzat. Obtingueu això i molt més amb %@."
           }
         },
         "cs" : {
@@ -2092,13 +1992,13 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Opret alt, du skal bruge for at forblive organiseret. Få dette og mere med %@."
+            "value" : "Opret alt du skal bruge for at forblive organiseret. Få dette og mere med %@."
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Erstelle alles, was du brauchst, um organisiert zu bleiben. Hol dir das und noch mehr mit %@."
+            "value" : "Erstell alles, was du benötigst, um den Überblick zu behalten. Hol dir das und noch viel mehr bei %@."
           }
         },
         "el" : {
@@ -2122,13 +2022,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Cree todo lo que necesite para mantenerse organizado. Obtenga esto y más con %@."
-          }
-        },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Luo kaikki tarvitsemasi pysyäksesi järjestyksessä. Hanki tämä ja paljon muuta %@."
+            "value" : "Cree todo lo que necesite para organizarse. Obtenga esto y más con %@."
           }
         },
         "fr" : {
@@ -2137,40 +2031,10 @@
             "value" : "Créez tout ce dont vous avez besoin pour rester organisé. Profitez de cet avantage et de bien d'autres avec %@."
           }
         },
-        "hu" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Hozzon létre mindent, amire a rendszerezettséghez szüksége van. Szerezze meg ezt és még többet a(z) %@ csomaggal."
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ciptakan segala hal yang Anda butuhkan untuk tetap teratur. Dapatkan fitur ini dan berbagai fitur lainnya dengan %@."
-          }
-        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Crea tutto ciò di cui hai bisogno per rimanere organizzato. Ottieni questo e altro con %@."
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "整理整頓に必要なものをすべて作成しましょう。%@なら、この機能やその他の機能もご利用いただけます。"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "შექმენით ყველაფერი, რაც ორგანიზებულობისთვის გჭირდებათ. მიიღეთ ეს და მეტი %@-თან ერთად."
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "체계적인 정리를 위해 필요한 모든 것을 만드세요. %@로 이 모든 기능과 그 이상을 누리세요."
           }
         },
         "nb" : {
@@ -2185,18 +2049,6 @@
             "value" : "Maak alles wat u nodig heeft om georganiseerd te blijven. Krijg dit en meer met %@."
           }
         },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Twórz wszystko, czego potrzebujesz, aby zachować porządek. Zyskaj to i więcej dzięki %@."
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Crie tudo o que precisa para se manter organizado. Obtenha isto e muito mais com %@."
-          }
-        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2209,28 +2061,10 @@
             "value" : "Creați tot ce vă trebuie pentru a vă păstra organizarea. Obțineți acest lucru și mai multe cu %@."
           }
         },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Создавайте всё необходимое для поддержания порядка. Получите это и многое другое с %@."
-          }
-        },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vytvorte si všetko, čo potrebujete, aby ste mali vo veciach poriadok. Získajte toto a ešte viac s %@."
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ustvarite vse, kar potrebujete, da ostanete organizirani. To in še več dobite z %@."
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Skapa allt du behöver för att hålla ordning. Skaffa detta och mer med %@."
+            "value" : "Vytvorte všetko, čo potrebujete, aby ste mali všetko pod kontrolou. Získajte toto a ešte viac s %@."
           }
         },
         "tr" : {
@@ -2239,16 +2073,10 @@
             "value" : "Düzen için gerek duyduklarınızı oluşturun. %@ ile bunu ve daha fazlasını edinin."
           }
         },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Створюйте все необхідне для організації. Отримайте це та багато іншого з %@."
-          }
-        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "创建您保持井井有条所需的一切。通过 %@ 获得此功能及更多。"
+            "value" : "创建所需的一切，让生活井井有条。订阅 %@ 即可获得此功能及更多权益。"
           }
         }
       }
@@ -2456,7 +2284,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Personalitzeu quan s'enviarà un correu electrònic. Gaudiu d'això i més amb %@."
+            "value" : "Personalitzeu quan s'enviarà un correu electrònic. Gaudiu d'això i molt més amb %@."
           }
         },
         "cs" : {
@@ -2468,13 +2296,13 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tilpas, hvornår en e-mail skal sendes. Nyd dette og meget mere med %@."
+            "value" : "Tilpas hvornår en e-mail skal sendes. Nyd dette og meget mere med %@."
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Anpassen, wann eine E-Mail gesendet wird. Genieße dies und noch mehr mit %@."
+            "value" : "Festlegen, wann eine E-Mail versendet werden soll. Das und vieles mehr bietet dir %@."
           }
         },
         "el" : {
@@ -2501,28 +2329,10 @@
             "value" : "Personalice cuándo se enviará un correo electrónico. Disfrute de esto y más con %@."
           }
         },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mukauta, milloin sähköposti lähetetään. Nauti tästä ja muusta %@:lla."
-          }
-        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Personnalisez l'heure d'envoi d'un message. Profitez de cet avantage et de bien d'autres avec %@."
-          }
-        },
-        "hu" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Személyre szabhatja az e-mailek küldésének időpontját. Élvezze ezt és még többet a(z) %@ csomaggal."
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sesuaikan kapan email Anda akan dikirim. Nikmati fitur ini dan berbagai fitur lainnya dengan %@."
           }
         },
         "it" : {
@@ -2531,46 +2341,16 @@
             "value" : "Personalizza quando inviare un'email. Goditi questo e altro con %@."
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "メールを送信するタイミングをカスタマイズできます。%@なら、この機能やその他の機能もご利用いただけます。"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "მიუთითეთ, როდის გაიგზავნოს ელფოსტა. ისარგებლეთ ამით და მეტით %@-თან ერთად."
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "이메일을 보낼 시간을 맞춤 설정하세요. %@로 이 모든 기능과 그 이상을 누리세요."
-          }
-        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tilpass når en e-post skal sendes. Nyt dette og mer med %@."
+            "value" : "Tilpass når en e-post skal sendes. Kos deg over dette og mer med %@."
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pas aan wanneer een e-mail wordt verzonden. Geniet van dit en meer met %@."
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Dostosuj, kiedy wiadomość e-mail ma być wysłana. Ciesz się tą funkcją i nie tylko dzięki %@."
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Personalize quando um e-mail será enviado. Desfrute disto e muito mais com %@."
           }
         },
         "pt-BR" : {
@@ -2585,28 +2365,10 @@
             "value" : "Personalizați când va fi trimis un e-mail. Bucurați-vă de acest lucru și multe altele cu %@."
           }
         },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Настройте время отправки писем. Получите это и многое другое с %@."
-          }
-        },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Prispôsobte si, kedy sa má email odoslať. Užite si túto a ďalšie funkcie s %@."
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Prilagodite, kdaj bo e-poštno sporočilo poslano. Uživajte v tem in še več z %@."
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Anpassa när ett e-postmeddelande ska skickas. Njut av detta och mer med %@."
+            "value" : "Prispôsobte si, kedy bude email odoslaný. To a oveľa viac si môžete užiť s aplikáciou %@."
           }
         },
         "tr" : {
@@ -2615,22 +2377,132 @@
             "value" : "Bir e-postanın ne zaman gönderileceğini belirtin. %@ ile bu ve diğer özelliklerin tadını çıkarın."
           }
         },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Налаштуйте час надсилання е-пошти. Насолоджуйтеся цією та іншими можливостями з %@."
-          }
-        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "自定义电子邮件的发送时间。使用%@，轻松享受此功能及更多便利。"
+            "value" : "自定义邮件的发送时间。订阅 %@ 即可享受此功能及更多权益。"
           }
         }
       }
     },
     "Dark Web Monitoring" : {
-      "comment" : "Description of a feature of a paid subscription"
+      "comment" : "Description of a feature of a paid subscription",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dark Web Monitoring"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Monitoratge del web fosc"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sledování Dark webu"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Monitorering af det mørke net"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dark Web-Überwachung"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dark Web Monitoring"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dark Web Monitoring"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Monitoreo de la Dark Web"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Monitoreo de la Dark Web"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Surveillance du dark web"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Monitoraggio del Dark Web"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Overvåking av det mørke nettet"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dark Web Monitoring"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Monitoramento da Dark Web"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Monitorizare pe internetul ascuns"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Monitorovanie Dark Webu"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Övervakning av mörka webben"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Karanlık ağ izleme"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "暗网监测"
+          }
+        }
+      }
     },
     "Deletes spam and trash after 30 days. Get this and more with %@." : {
       "comment" : "Subtitle of the upsell page",
@@ -2644,7 +2516,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Suprimeix el correu brossa i la paperera després de 30 dies. Obteniu això i més amb %@."
+            "value" : "Suprimeix el correu brossa i les escombraries després de 30 dies. Obtingueu això i molt més amb %@."
           }
         },
         "cs" : {
@@ -2656,13 +2528,13 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Sletter spam og Papirkurv efter 30 dage. Få dette og mere med %@."
+            "value" : "Sletter spam og elementer i papirkurven efter 30 dage. Få dette og mere med %@."
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Löscht Spam und leert Papierkorb nach 30 Tagen. Mit %@ profitierst du von diesem und weiteren Vorteilen."
+            "value" : "Löscht Spam und leert den Papierkorb nach 30 Tagen. Das und noch viel mehr bietet dir %@."
           }
         },
         "el" : {
@@ -2689,52 +2561,16 @@
             "value" : "Elimine el spam y la papelera después de 30 días. Obtenga esto y más con %@."
           }
         },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Poistaa roskapostin ja Roskakorin 30 päivän kuluttua. Saat tämän ja paljon muuta %@ -tilauksella."
-          }
-        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Supprime les spams et le contenu de la corbeille après 30 jours. Profitez de cet avantage et de bien d'autres avec %@."
-          }
-        },
-        "hu" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "30 nap után törli a levélszemetet és a lomtár tartalmát. Szerezze meg ezt és még többet a(z) %@ csomaggal."
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Membersihkan spam dan sampah setelah 30 hari. Dapatkan fitur ini dan berbagai fitur lainnya dengan %@."
+            "value" : "Supprime les indésirables/spam et le contenu de la corbeille après 30 jours. Profitez de cet avantage et de bien d'autres avec %@."
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Elimina lo spam e il cestino dopo 30 giorni. Ottieni questo e altro con %@."
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "30日後にスパムとごみ箱のメールを削除します。%@なら、この機能やその他の機能もご利用いただけます。"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "შლის სპამსა და ნაგავს 30 დღის შემდეგ. მიიღეთ ეს და მეტი %@-თან ერთად."
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "30일 후 스팸과 휴지통을 삭제합니다. %@로 이 모든 기능과 그 이상을 누리세요."
           }
         },
         "nb" : {
@@ -2749,18 +2585,6 @@
             "value" : "Verwijdert spam en prullenbak na 30 dagen. Krijg dit en meer met %@."
           }
         },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Usuwa spam i wiadomości z kosza po 30 dniach. Zyskaj to i więcej dzięki %@."
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Elimina spam e Lixo após 30 dias. Obtenha isto e muito mais com %@."
-          }
-        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -2770,31 +2594,13 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Șterge mesajele spam și pe cele din „Gunoi” după 30 de zile. Obțineți acest lucru și multe altele cu %@."
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Удаляет спам и содержимое Корзины через 30 дней. Получите это и многое другое с %@."
+            "value" : "Ștergeți mesajele nedoritele și din gunoi după 30 de zile. Obțineți aceasta și mai multe cu %@."
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Vymaže spam a obsah Koša po 30 dňoch. Získajte toto a ešte viac s %@."
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Po 30 dneh izbriše neželeno pošto in smeti. To in še več dobite z %@."
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tar bort skräppost och meddelanden i papperskorgen efter 30 dagar. Få detta och mer med %@."
+            "value" : "Po 30 dňoch maže spam a kôš. To a ešte viac získate s aplikáciou %@."
           }
         },
         "tr" : {
@@ -2803,16 +2609,10 @@
             "value" : "İstenmeyen ve çöp kutularındaki ögeleri 30 gün sonra siler. %@ ile bu ve diğer özelliklere erişin."
           }
         },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Видаляє спам і сміття через 30 днів. Отримайте це та багато іншого з %@."
-          }
-        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "30 天后删除滥发邮件和废件箱。%@ 提供此功能及更多功能。"
+            "value" : "30 天后自动删除垃圾邮件和回收站的邮件。订阅 %@ 即可获得此功能及更多权益。"
           }
         }
       }
@@ -2841,7 +2641,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Rabatter er baseret på standard månedspriser. Fornyes automatisk til %1$@ /%2$@, indtil det annulleres."
+            "value" : "Rabatter er baseret på standard månedspriser. Fornyes automatisk til %1$@ /%2$@ indtil det annulleres."
           }
         },
         "de" : {
@@ -2874,52 +2674,16 @@
             "value" : "Los descuentos se basan en el precio mensual estándar. Se renueva automáticamente por %1$@ /%2$@ hasta que se cancele."
           }
         },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Alennukset perustuvat kuukausittaisiin standardihintoihin. Uudistuu %1$@ /%2$@ kunnes perutaan."
-          }
-        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Les réductions sont établies à partir de la tarification mensuelle standard. Il se renouvelle automatiquement à %1$@ / %2$@ jusqu'à annulation."
           }
         },
-        "hu" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "A kedvezmények a normál havi árakon alapulnak. A szolgáltatás %1$@ /%2$@ áron automatikusan megújul, amíg le nem mondják."
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Diskon didasarkan pada harga bulanan standar. Diperbarui secara otomatis pada harga %1$@/%2$@ hingga dibatalkan."
-          }
-        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Gli sconti si basano sui prezzi mensili standard. Si rinnova automaticamente a %1$@ /%2$@ fino all'annullamento."
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "割引は標準月額料金に基づいています。キャンセルされるまで%1$@ /%2$@にて自動更新されます。"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ფასდაკლებები ეფუძნება ყოველთვიურ სტანდარტულ ფასებს. ავტომატურად განახლდება %1$@ /%2$@-ზე, გაუქმებამდე."
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "할인은 표준 월별 요금을 기준으로 합니다. 취소될 때까지 %1$@ /%2$@ 에 자동 갱신됩니다."
           }
         },
         "nb" : {
@@ -2931,7 +2695,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Kortingen zijn gebaseerd op de standaard maandelijkse tarieven. Wordt automatisch verlengd voor %1$@ /%2$@ totdat u annuleert."
+            "value" : "Kortingen zijn gebaseerd op de standaard maandelijkse tarieven. Wordt automatisch verlengd op %1$@ /%2$@ tenzij geannuleerd."
           }
         },
         "pt-BR" : {
@@ -2952,34 +2716,16 @@
             "value" : "Zľavy sú založené na štandardných mesačných cenách. Automaticky sa obnoví za %1$@/%2$@, kým nebude zrušené."
           }
         },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Popusti temeljijo na standardni mesečni ceni. Naročnina se samodejno podaljša po ceni %1$@ /%2$@ do preklica."
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Rabatter är baserade på ordinarie månadspriser. Förnyas automatiskt för %1$@ /%2$@ tills det avbryts."
-          }
-        },
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "İndirimler standart aylık ücretlere göre belirlenir. İptal edilene kadar %1$@ / %2$@ ile otomatik olarak yenilenir."
           }
         },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Знижки базуються на стандартних місячних тарифах. Автоматично поновлюється за %1$@ / %2$@ до скасування."
-          }
-        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "优惠基于标准月度定价。自动续订，费用为 %1$@ /%2$@，直至取消。"
+            "value" : "折扣基于标准月费价格。除非手动取消，否则将以 %1$@ / %2$@ 自动续订。"
           }
         }
       }
@@ -3176,7 +2922,195 @@
       }
     },
     "Folders and labels" : {
-      "comment" : "Description of a feature of a paid subscription"
+      "comment" : "Description of a feature of a paid subscription",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Папкі і меткі"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Carpetes i etiquetes"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Složky a štítky"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mapper og etiketter"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ordner und Kategorien"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Φάκελοι και ετικέτες"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folders and labels"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Carpetas y etiquetas"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Carpetas y etiquetas"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Kansiot ja tunnisteet"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Dossiers et labels"
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mappák és címkék"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Folder dan label"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cartelle ed etichette"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "フォルダやラベル"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "საქაღალდეები და ჭდეები"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "폴더 및 라벨"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mapper og etiketter"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mappen en labels"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Foldery i etykiety"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pastas e etiquetas"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pastas e marcadores"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Foldere și etichete"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Папки и ярлыки"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Priečinky a štítky"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mape in oznake"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mappar och etiketter"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Klasörler ve etiketler"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Теки та мітки"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "文件夹和标签"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "資料夾和標籤"
+          }
+        }
+      }
     },
     "Free" : {
       "comment" : "Name of the free plan",
@@ -3381,7 +3315,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Obtén %@"
+            "value" : "Obtingueu %@"
           }
         },
         "cs" : {
@@ -3399,7 +3333,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ kaufen"
+            "value" : "%@ holen"
           }
         },
         "el" : {
@@ -3423,7 +3357,7 @@
         "es-419" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Obtener %@"
+            "value" : "Obtenga %@"
           }
         },
         "fi" : {
@@ -3459,7 +3393,7 @@
         "ja" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@を入手"
+            "value" : "%@ を入手"
           }
         },
         "ka" : {
@@ -3471,7 +3405,7 @@
         "ko" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ 받기"
+            "value" : "%@ 가져오기"
           }
         },
         "nb" : {
@@ -3483,7 +3417,7 @@
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Krijg %@"
+            "value" : "Kies %@"
           }
         },
         "pl" : {
@@ -3519,7 +3453,7 @@
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Získajte %@"
+            "value" : "Získať %@"
           }
         },
         "sl" : {
@@ -3537,7 +3471,7 @@
         "tr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%@ edinin"
+            "value" : "%@ alın"
           }
         },
         "uk" : {
@@ -3555,7 +3489,7 @@
         "zh-Hant" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "取得 %@"
+            "value" : "選用 %@"
           }
         }
       }
@@ -3752,7 +3686,195 @@
       }
     },
     "Hide My Email aliases" : {
-      "comment" : "Description of a feature of a paid subscription"
+      "comment" : "Description of a feature of a paid subscription",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Схаваць мае псеўданімы электроннай пошты"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Oculta els àlies del meu correu electrònic"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aliasy Hide-my-email"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hide My Email-aliasser"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hide-my-email-Aliasse"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hide My Email ψευδώνυμα"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hide My Email aliases"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alias de hide-my-email"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alias de hide-my-email"
+          }
+        },
+        "fi" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hide-my-email-aliakset"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alias « hide-my-email »"
+          }
+        },
+        "hu" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "E-mail álnevek elrejtése"
+          }
+        },
+        "id" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alias Hide My Email"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Alias Hide My Email"
+          }
+        },
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "メール非表示エイリアス"
+          }
+        },
+        "ka" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hide-my-email-ის ფსევდონიმები"
+          }
+        },
+        "ko" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "나의 이메일 숨기기 별칭"
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hide-my-email-aliaser"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hide-my-email-aliassen"
+          }
+        },
+        "pl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aliasy hide-my-email"
+          }
+        },
+        "pt" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aliases de hide-my-email"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aliases do hide-my-email"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aliasuri hide-my-email"
+          }
+        },
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Псевдонимы Hide-my-email"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hide-my-email aliasy"
+          }
+        },
+        "sl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Vzdevki Hide My Email"
+          }
+        },
+        "sv" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hide-my-email-alias"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hide My Email takma adları"
+          }
+        },
+        "uk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Псевдоніми Hide-my-email"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hide-my-email 邮箱别名"
+          }
+        },
+        "zh-Hant" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hide-my-email 別名"
+          }
+        }
+      }
     },
     "Make your mobile signature your own. Enjoy this and more with %@." : {
       "comment" : "Subtitle of the upsell page",
@@ -3766,7 +3888,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Personalitzeu la signatura mòbil. Gaudiu d'això i més amb %@."
+            "value" : "Personalitzeu la vostra signatura mòbil. Gaudiu d'això i molt més amb %@."
           }
         },
         "cs" : {
@@ -3784,7 +3906,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Gestalte deine mobile Signatur ganz nach deinen Wünschen. Genieße dies und noch mehr mit %@."
+            "value" : "Gestalte deine mobile Signatur ganz nach deinen Vorstellungen. Das und vieles mehr bietet dir %@."
           }
         },
         "el" : {
@@ -3811,28 +3933,10 @@
             "value" : "Personalice su firma móvil. Disfrute de esto y más con %@."
           }
         },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Mukauta mobiiliallekirjoituksesi. Nauti tästä ja muusta %@ -palvelun avulla."
-          }
-        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Personnalisez votre signature mobile. Profitez de cet avantage et de bien d'autres avec %@."
-          }
-        },
-        "hu" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tegye egyedivé a mobilaláírását. Élvezze ezt és még többet a(z) %@ csomaggal."
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Buat tanda tangan seluler khas Anda sendiri. Nikmati fitur ini dan berbagai fitur lainnya dengan %@."
           }
         },
         "it" : {
@@ -3841,46 +3945,16 @@
             "value" : "Personalizza la tua firma mobile. Goditi questo e altro con %@."
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "モバイル署名を自由にカスタマイズ。%@なら、この機能やその他の機能もご利用いただけます。"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "მობილურის ხელმოწერა თქვენს სურვილზე მოირგეთ. ისარგებლეთ ამით და მეტით %@-თან ერთად."
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "모바일 서명을 나만의 것으로 만드세요. %@로 이 모든 기능과 그 이상을 누리세요."
-          }
-        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tilpass mobilsignaturen din. Nyt dette og mer med %@."
+            "value" : "Tilpass mobilsignaturen din. Kos deg over dette og mer med %@."
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Personaliseer uw mobiele handtekening. Geniet van dit en meer met %@."
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Spersonalizuj swój podpis mobilny. Ciesz się tą funkcją i nie tylko dzięki %@."
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Personalize a sua assinatura móvel. Desfrute disto e muito mais com %@."
           }
         },
         "pt-BR" : {
@@ -3892,31 +3966,13 @@
         "ro" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Personalizați-vă propria semnătură mobilă. Bucurați-vă de acest lucru și multe altele cu %@."
-          }
-        },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Персонализируйте свою мобильную подпись. Получите это и многое другое с %@."
+            "value" : "Personalizați-vă semnătura pentru mobile. Bucurați-vă de acest lucru și de mai multe cu %@."
           }
         },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Prispôsobte si svoj mobilný podpis. Užite si túto a ďalšie funkcie s %@."
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Prilagodite svoj mobilni podpis. Uživajte v tem in še več z %@."
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Gör din mobilsignatur till din egen. Njut av detta och mer med %@."
+            "value" : "Vytvorte si vlastný mobilný podpis. Vychutnajte si toto a ešte viac s %@."
           }
         },
         "tr" : {
@@ -3925,16 +3981,10 @@
             "value" : "Mobil imzanızı kişiselleştirin. %@ ile bu ve diğer özelliklerin tadını çıkarın."
           }
         },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Персоналізуйте свій мобільний підпис. Насолоджуйтеся цією та іншими можливостями з %@."
-          }
-        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "让您的移动签名独具个性。使用 %@，轻松享受此功能及更多便利。"
+            "value" : "打造个性化的手机签名。订阅 %@ 即可享受此功能及更多权益。"
           }
         }
       }
@@ -4333,7 +4383,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "només %@/mes"
+            "value" : "només %@ /mes"
           }
         },
         "cs" : {
@@ -4378,52 +4428,16 @@
             "value" : "solo %@ /mes"
           }
         },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "vain %@ /kuukausi"
-          }
-        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "seulement %@ /mois"
           }
         },
-        "hu" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "csak %@ /hó"
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "hanya %@ /bulan"
-          }
-        },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Solo %@ /mese"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "月額%@のみ"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "მხოლოდ %@ /თვეში"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "단돈 월 %@"
           }
         },
         "nb" : {
@@ -4456,12 +4470,6 @@
             "value" : "len %@ / mesiac"
           }
         },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "samo %@ /mesec"
-          }
-        },
         "sv" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4472,12 +4480,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "yalnızca %@ / ay"
-          }
-        },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "лише %@ / місяць"
           }
         },
         "zh-Hans" : {
@@ -4506,19 +4508,19 @@
         "cs" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Plaťte ročně a ušetřete %@."
+            "value" : "Plaťte ročně a ušetřete %@"
           }
         },
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Betal årligt, og spar %@"
+            "value" : "Betal årligt og spar %@"
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Zahle jährlich und spare %@"
+            "value" : "Spare bei jährlicher Zahlungsweise %@"
           }
         },
         "el" : {
@@ -4545,52 +4547,16 @@
             "value" : "Pague anualmente y ahorre %@"
           }
         },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Maksa vuosittain ja säästä %@"
-          }
-        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Payez annuellement et économisez %@."
-          }
-        },
-        "hu" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Fizessen évente, és takarítson meg %@"
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Bayar tahunan dan hemat %@"
+            "value" : "Payez annuellement et économisez %@"
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Paga annualmente e risparmia %@"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "年払いで%@お得"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "გადაიხადეთ ყოველწლიურად და დაზოგეთ %@"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "연간 결제로 %@를 절약하세요"
+            "value" : "Paga annualmente e risparmia il %@"
           }
         },
         "nb" : {
@@ -4605,18 +4571,6 @@
             "value" : "Betaal jaarlijks en bespaar %@"
           }
         },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Płać rocznie i oszczędzaj %@"
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pague anualmente e poupe %@"
-          }
-        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
@@ -4629,22 +4583,10 @@
             "value" : "Plătiți anual și economisiți %@"
           }
         },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Платите ежегодно и экономьте %@"
-          }
-        },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Plaťte ročne a ušetrite %@"
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Plačajte letno in prihranite %@"
           }
         },
         "sv" : {
@@ -4659,16 +4601,10 @@
             "value" : "Yıllık ödeyin ve %@ indirim alın"
           }
         },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Сплачуйте щорічно та заощаджуйте %@"
-          }
-        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "按年付费，可节省 %@"
+            "value" : "按年付款，节省 %@"
           }
         }
       }
@@ -5050,7 +4986,117 @@
       }
     },
     "Premium VPN, password manager and cloud storage" : {
-      "comment" : "Description of a feature of a paid subscription"
+      "comment" : "Description of a feature of a paid subscription",
+      "localizations" : {
+        "be" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Прэміяльны VPN, менеджар пароляў і воблачнае сховішча"
+          }
+        },
+        "ca" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "VPN prèmium, gestor de contrasenyes i emmagatzematge al núvol"
+          }
+        },
+        "cs" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prémiová VPN, správce hesel a cloudové úložiště"
+          }
+        },
+        "da" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Premium VPN, adgangskodeadministrator, og lagerplads i skyen"
+          }
+        },
+        "de" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Premium-VPN, Passwort-Manager und Cloud-Speicher"
+          }
+        },
+        "el" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Premium VPN, διαχείριση κωδικών πρόσβασης και αποθήκευση στο cloud"
+          }
+        },
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Premium VPN, password manager and cloud storage"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "VPN prémium, gestor de contraseñas y almacenamiento en la nube"
+          }
+        },
+        "es-419" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "VPN premium, gestor de contraseñas y almacenamiento en la nube"
+          }
+        },
+        "fr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "VPN premium, gestionnaire de mots de passe et espace de stockage en ligne"
+          }
+        },
+        "it" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "VPN premium, gestore di password e archiviazione cloud."
+          }
+        },
+        "nb" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Premium VPN, passordbehandler og skylagring"
+          }
+        },
+        "nl" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Premium VPN, wachtwoord manager en cloud opslag"
+          }
+        },
+        "pt-BR" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "VPN premium,gerenciador de senhas e armazenamento em nuvem"
+          }
+        },
+        "ro" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "VPN premium, manager de parole și stocare în cloud"
+          }
+        },
+        "sk" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prémiová VPN, správca hesiel a cloudové úložisko"
+          }
+        },
+        "tr" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ücretli VPN, parola yöneticisi ve bulut depolama alanı"
+          }
+        },
+        "zh-Hans" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "高级 VPN、密码管理器和云存储"
+          }
+        }
+      }
     },
     "Priority customer support" : {
       "comment" : "Description of a feature of a paid subscription",
@@ -5446,7 +5492,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Envieu correus electrònics de grup amb facilitat. Gaudiu d'això i més amb %@."
+            "value" : "Envieu correus electrònics de grup amb facilitat. Gaudiu d'això i molt més amb %@."
           }
         },
         "cs" : {
@@ -5458,7 +5504,7 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Send gruppe-e-mails med lethed. Nyd dette og mere med %@."
+            "value" : "Send nemt gruppe-e-mails. Nyd dette og mere med %@."
           }
         },
         "de" : {
@@ -5491,28 +5537,10 @@
             "value" : "Envíe correos electrónicos con facilidad. Disfrute esto y más con %@."
           }
         },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Lähetä ryhmäsähköpostiviestejä vaivattomasti. Nauti tästä ja muusta %@."
-          }
-        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Envoyez facilement des messages groupés. Profitez de cet avantage et de bien d'autres avec %@."
-          }
-        },
-        "hu" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Küldjön csoportos e-maileket egyszerűen. Élvezze ezt és még többet a(z) %@ csomaggal."
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Kirim email grup dengan mudah. Nikmati fitur ini dan berbagai fitur lainnya dengan %@."
           }
         },
         "it" : {
@@ -5521,46 +5549,16 @@
             "value" : "Invia email di gruppo con facilità. Goditi questo e altro con %@."
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "グループメールを簡単に送信。%@なら、この機能やその他の機能もご利用いただけます。"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "მარტივად გაგზავნეთ ჯგუფური ელწერილები. ისარგებლეთ ამით და მეტით %@-თან ერთად."
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "그룹 이메일을 손쉽게 보내세요. %@로 이 모든 기능과 그 이상을 누리세요."
-          }
-        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Send gruppe-e-poster enkelt. Nyt dette og mer med %@."
+            "value" : "Send gruppe-e-poster enkelt. Kos deg over dette og mer med %@."
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Verzend eenvoudig groeps-e-mails. Geniet van dit en meer met %@."
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Wysyłaj z łatwością grupowe wiadomości e-mail. Ciesz się tą funkcją i nie tylko dzięki %@."
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Envie e-mails de grupo com facilidade. Desfrute disto e muito mais com %@."
           }
         },
         "pt-BR" : {
@@ -5575,28 +5573,10 @@
             "value" : "Trimiteți mesaje la grup cu ușurință. Bucurați-vă de acest lucru și multe altele cu %@."
           }
         },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Отправляйте групповые письма с лёгкостью. Получите это и многое другое с %@."
-          }
-        },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Odosielajte skupinové emaily s ľahkosťou. Užite si túto a ďalšie funkcie s %@."
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Preprosto pošiljajte skupinska e-poštna sporočila. Uživajte v tem in še več z %@."
-          }
-        },
-        "sv" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Skicka enkelt e-post till grupper. Få detta och mer med %@."
+            "value" : "Posielajte skupinové emails s ľahkosťou. Vychutnajte si toto a ešte viac s %@."
           }
         },
         "tr" : {
@@ -5605,16 +5585,10 @@
             "value" : "Grup e-postalarını kolayca gönderin. %@ ile bu ve diğer özelliklerin tadını çıkarın."
           }
         },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Легко надсилайте групові е-листи. Насолоджуйтеся цією та іншими можливостями з %@."
-          }
-        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "轻松发送群组电子邮件。使用%@，轻松享受此功能及更多便利。"
+            "value" : "轻松发送群组邮件。订阅 %@ 即可享受此功能及更多权益。"
           }
         }
       }
@@ -6013,7 +5987,7 @@
         "ca" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ajorneu-lo i entregueu-lo més tard. Gaudiu d'això i més amb %@."
+            "value" : "Ajorneu-ho i entregueu-ho més tard. Gaudiu d'això i molt més amb %@."
           }
         },
         "cs" : {
@@ -6025,13 +5999,13 @@
         "da" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Udsæt den - og få den leveret senere. Nyd dette og mere med %@."
+            "value" : "Udsæt den – og få den leveret senere. Nyd dette og mere med %@."
           }
         },
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nachricht zurückstellen – und sie dir verzögert zustellen lassen. Mit %@ profitierst du von diesem und weiteren Vorteilen."
+            "value" : "Nachrichten zurückstellen und sich später zusenden lassen.  Das und vieles mehr bietet dir %@."
           }
         },
         "el" : {
@@ -6058,28 +6032,10 @@
             "value" : "Páuselo y recíbalo más tarde. Disfrute de esto y más con %@."
           }
         },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Torkuta se – ja toimita se myöhemmin. Nauti tästä ja muusta %@-palvelulla."
-          }
-        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Mettez-le en attente pour le recevoir plus tard. Profitez de cet avantage et de bien d'autres avec %@."
-          }
-        },
-        "hu" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Halassza el – és kézbesíttesse később.  Élvezze ezt és még többet a(z) %@ csomaggal."
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tunda email yang masuk — dan atur agar email ini diterima di lain waktu. Nikmati fitur ini dan berbagai fitur lainnya dengan %@."
           }
         },
         "it" : {
@@ -6088,46 +6044,16 @@
             "value" : "Posticipala e falla recapitare più tardi.  Goditi questo e altro con %@."
           }
         },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "スヌーズして後で受信。%@なら、この機能やその他の機能もご利用いただけます。"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "გადადეთ — და მოგვიანებით მიიღეთ. ისარგებლეთ ამით და მეტით %@-თან ერთად."
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "방해금지 처리하고 — 나중에 다시 받으세요.  %@로 이 모든 기능과 그 이상을 누리세요."
-          }
-        },
         "nb" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Slumre den — og få den levert senere. Nyt dette og mer med %@."
+            "value" : "Slumre den — og få den levert senere. Kos deg over dette og mer med %@."
           }
         },
         "nl" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Snooze het — en laat het later bezorgen.  Geniet van dit en meer met %@."
-          }
-        },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Odłóż wiadomość – zostanie dostarczona później. Ciesz się tą funkcją i nie tylko dzięki %@."
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Adie-o — e receba-o mais tarde. Desfrute disto e muito mais com %@."
           }
         },
         "pt-BR" : {
@@ -6142,22 +6068,10 @@
             "value" : "Amânați-l — și primiți-l mai târziu.  Bucurați-vă de acest lucru și multe altele cu %@."
           }
         },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Отложите письмо — и оно будет доставлено позже. Получите это и многое другое с %@."
-          }
-        },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Odložte to — a nechajte si to doručiť neskôr.  Užite si túto a ďalšie funkcie s %@."
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Prestavite ga v dremež — in naj bo dostavljeno pozneje.  Uživajte v tem in še več z %@."
+            "value" : "Odložte si to – a nechajte si to doručiť neskôr.  Toto a ešte oveľa viac si môžete vychutnať s %@."
           }
         },
         "sv" : {
@@ -6172,16 +6086,10 @@
             "value" : "Erteleyin ve daha sonra teslim edilsin. %@ ile bu ve diğer özelliklerin tadını çıkarın."
           }
         },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Відкладіть його — і воно буде доставлено пізніше. Насолоджуйтеся цією та іншими можливостями з %@."
-          }
-        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "延后寄送，稍后再送达。%@ 让您尽享更多便利。"
+            "value" : "延后寄送，稍后再送达。订阅 %@ 即可享受此功能及更多权益。"
           }
         }
       }
@@ -6974,7 +6882,7 @@
         "de" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Umsteigen auf %@"
+            "value" : "Upgrade auf %@"
           }
         },
         "el" : {
@@ -7374,7 +7282,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Anual (%lld%% de descuento)"
+            "value" : "Anual (%lld %% de descuento)"
           }
         },
         "es-419" : {
@@ -7383,52 +7291,16 @@
             "value" : "Anual (%lld%% de descuento)"
           }
         },
-        "fi" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Vuosittain (%lld%% alennus)"
-          }
-        },
         "fr" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Annuel (%lld %% de réduction)"
-          }
-        },
-        "hu" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Éves (%lld%% kedvezmény)"
-          }
-        },
-        "id" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tahunan (DISKON %lld%%)"
+            "value" : "Annuel (%lld%% de réduction)"
           }
         },
         "it" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Annuale (%lld%% DI SCONTO)"
-          }
-        },
-        "ja" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "年間 (%lld%%オフ)"
-          }
-        },
-        "ka" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "ყოველწლიური (%lld%% ფასდაკლებით)"
-          }
-        },
-        "ko" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "연간 (%lld%% 할인)"
+            "value" : "Annuale (%lld%% di sconto)"
           }
         },
         "nb" : {
@@ -7443,22 +7315,10 @@
             "value" : "Jaarlijks (%lld%% KORTING)"
           }
         },
-        "pl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Rocznie (%lld%% TANIEJ)"
-          }
-        },
-        "pt" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Anual (%lld%% de desconto)"
-          }
-        },
         "pt-BR" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Anualmente (%lld%% DE DESCONTO)"
+            "value" : "Anualmente(%lld%% DE DESCONTO)"
           }
         },
         "ro" : {
@@ -7467,22 +7327,10 @@
             "value" : "Anual (%lld%% REDUCERE)"
           }
         },
-        "ru" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ежегодно (скидка %lld%%)"
-          }
-        },
         "sk" : {
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ročne (zľava %lld%%)"
-          }
-        },
-        "sl" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Letno (%lld %% popusta)"
           }
         },
         "sv" : {
@@ -7497,16 +7345,10 @@
             "value" : "Yıllık (%lld%% İNDİRİM)"
           }
         },
-        "uk" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Щорічний (знижка %lld%%)"
-          }
-        },
         "zh-Hans" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "年度（%lld%% 折扣）"
+            "value" : "按年 (节省 %lld%%)"
           }
         }
       }
