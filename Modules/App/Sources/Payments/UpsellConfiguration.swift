@@ -32,8 +32,4 @@ extension UpsellConfiguration {
             false
         #endif
     }
-
-    var humanReadableUpsoldPlanName: String {
-        "Mail Plus"
-    }
 }

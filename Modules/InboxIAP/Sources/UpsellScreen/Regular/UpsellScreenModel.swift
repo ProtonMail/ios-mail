@@ -40,9 +40,15 @@ public final class UpsellScreenModel: Identifiable {
 
     var logo: ImageResource {
         switch upsellType {
-        case .mailPlus, .unlimited:
+        case .mailPlus:
             entryPoint.logo
+        case .unlimited:
+            upsellType.logo
         }
+    }
+
+    var comparisonConfiguration: PlanComparisonGrid.Configuration {
+        upsellType.comparisonConfiguration
     }
 
     var logoHeight: CGFloat? {
@@ -70,13 +76,14 @@ public final class UpsellScreenModel: Identifiable {
     }
 
     var autoRenewalNotice: LocalizedStringResource {
-        switch planInstances[0].pricing {
-        case .regular:
-            L10n.autoRenewalNotice
+        let selectedPlan = planInstances.first { $0.storeKitProductId == selectedInstanceId } ?? planInstances[0]
+        switch selectedPlan.pricing {
+        case .regular(let monthlyPrice):
+            return L10n.autoRenewalNotice(price: monthlyPrice, period: .month)
         case .discountedYearlyPlan(_, _, let renewalPrice):
-            L10n.discountRenewalNotice(renewalPrice: renewalPrice, period: .year)
+            return L10n.autoRenewalNotice(price: renewalPrice, period: .year)
         case .discountedMonthlyPlan(_, let renewalPrice):
-            L10n.discountRenewalNotice(renewalPrice: renewalPrice, period: .month)
+            return L10n.discountRenewalNotice(renewalPrice: renewalPrice, period: .month)
         }
     }
 

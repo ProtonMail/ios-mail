@@ -231,6 +231,8 @@ final class SearchModel: ObservableObject {
             AppLogger.log(error: error, category: .mailbox)
             let isLastPage = await !searchScrollerHasMore()
             paginatedDataSource.handle(update: .init(isLastPage: isLastPage, value: .error(error), completion: nil))
+        case .categoryViewChanged:
+            break
         }
     }
 

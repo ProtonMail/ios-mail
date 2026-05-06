@@ -397,6 +397,8 @@ extension MailboxModel {
             showScrollerErrorIfNotNetwork(error: error)
             let isLastPage = await !conversationScrollerHasMore()
             paginatedDataSource.handle(update: .init(isLastPage: isLastPage, value: .error(error), completion: nil))
+        case .categoryViewChanged:
+            break
         }
     }
 
@@ -443,6 +445,8 @@ extension MailboxModel {
             showScrollerErrorIfNotNetwork(error: error)
             let isLastPage = await !messageScrollerHasMore()
             paginatedDataSource.handle(update: .init(isLastPage: isLastPage, value: .error(error), completion: nil))
+        case .categoryViewChanged:
+            break
         }
     }
 

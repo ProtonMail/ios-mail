@@ -54,6 +54,26 @@ public extension ChallengeLoaderPutResult {
         }
     }
 }
+public extension ConversationScrollerCategoryViewResult {
+    func get() throws(MailScrollerError) -> CategoryView {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension ConversationScrollerChangeCategoryViewResult {
+    func get() throws(MailScrollerError) {
+        switch self {
+        case .ok:
+            break
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension ConversationScrollerChangeFilterResult {
     func get() throws(MailScrollerError) {
         switch self {
@@ -1184,6 +1204,26 @@ public extension MailboxWatchUnreadCountResult {
         }
     }
 }
+public extension MessageScrollerCategoryViewResult {
+    func get() throws(MailScrollerError) -> CategoryView {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
+public extension MessageScrollerChangeCategoryViewResult {
+    func get() throws(MailScrollerError) {
+        switch self {
+        case .ok:
+            break
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension MessageScrollerChangeFilterResult {
     func get() throws(MailScrollerError) {
         switch self {
@@ -1344,96 +1384,6 @@ public extension NewMailboxResult {
         }
     }
 }
-public extension PasswordFlowChangeMboxPassResult {
-    func get() throws(PasswordError) -> SimplePasswordState {
-        switch self {
-        case .ok(let value):
-            value
-        case .error(let error):
-            throw error
-        }
-    }
-}
-public extension PasswordFlowChangePassResult {
-    func get() throws(PasswordError) -> SimplePasswordState {
-        switch self {
-        case .ok(let value):
-            value
-        case .error(let error):
-            throw error
-        }
-    }
-}
-public extension PasswordFlowFidoDetailsResult {
-    func get() throws(PasswordError) -> Fido2ResponseFfi? {
-        switch self {
-        case .ok(let value):
-            value
-        case .error(let error):
-            throw error
-        }
-    }
-}
-public extension PasswordFlowHasFidoResult {
-    func get() throws(PasswordError) -> Bool {
-        switch self {
-        case .ok(let value):
-            value
-        case .error(let error):
-            throw error
-        }
-    }
-}
-public extension PasswordFlowHasMbpResult {
-    func get() throws(PasswordError) -> Bool {
-        switch self {
-        case .ok(let value):
-            value
-        case .error(let error):
-            throw error
-        }
-    }
-}
-public extension PasswordFlowHasTotpResult {
-    func get() throws(PasswordError) -> Bool {
-        switch self {
-        case .ok(let value):
-            value
-        case .error(let error):
-            throw error
-        }
-    }
-}
-public extension PasswordFlowStepBackResult {
-    func get() throws(PasswordError) -> SimplePasswordState {
-        switch self {
-        case .ok(let value):
-            value
-        case .error(let error):
-            throw error
-        }
-    }
-}
-public extension PasswordFlowSubmitFidoResult {
-    func get() throws(PasswordError) -> SimplePasswordState {
-        switch self {
-        case .ok(let value):
-            value
-        case .error(let error):
-            throw error
-        }
-    }
-}
-public extension PasswordFlowSubmitTotpResult {
-    func get() throws(PasswordError) -> SimplePasswordState {
-        switch self {
-        case .ok(let value):
-            value
-        case .error(let error):
-            throw error
-        }
-    }
-}
 public extension ResolveSystemLabelByIdResult {
     func get() throws(ProtonError) -> SystemLabel? {
         switch self {
@@ -1556,116 +1506,6 @@ public extension SearchScrollerSupportsIncludeFilterResult {
 }
 public extension SearchScrollerTotalResult {
     func get() throws(MailScrollerError) -> UInt64 {
-        switch self {
-        case .ok(let value):
-            value
-        case .error(let error):
-            throw error
-        }
-    }
-}
-public extension SignupFlowAvailableCountriesResult {
-    func get() throws(SignupError) -> Countries {
-        switch self {
-        case .ok(let value):
-            value
-        case .error(let error):
-            throw error
-        }
-    }
-}
-public extension SignupFlowAvailableDomainsResult {
-    func get() throws(SignupError) -> [String] {
-        switch self {
-        case .ok(let value):
-            value
-        case .error(let error):
-            throw error
-        }
-    }
-}
-public extension SignupFlowCompleteResult {
-    func get() throws(SignupError) -> UserAddrId {
-        switch self {
-        case .ok(let value):
-            value
-        case .error(let error):
-            throw error
-        }
-    }
-}
-public extension SignupFlowCreateResult {
-    func get() throws(SignupError) -> SimpleSignupState {
-        switch self {
-        case .ok(let value):
-            value
-        case .error(let error):
-            throw error
-        }
-    }
-}
-public extension SignupFlowSkipRecoveryResult {
-    func get() throws(SignupError) -> SimpleSignupState {
-        switch self {
-        case .ok(let value):
-            value
-        case .error(let error):
-            throw error
-        }
-    }
-}
-public extension SignupFlowStepBackResult {
-    func get() throws(SignupError) -> SimpleSignupState {
-        switch self {
-        case .ok(let value):
-            value
-        case .error(let error):
-            throw error
-        }
-    }
-}
-public extension SignupFlowSubmitExternalUsernameResult {
-    func get() throws(SignupError) -> SimpleSignupState {
-        switch self {
-        case .ok(let value):
-            value
-        case .error(let error):
-            throw error
-        }
-    }
-}
-public extension SignupFlowSubmitInternalUsernameResult {
-    func get() throws(SignupError) -> SimpleSignupState {
-        switch self {
-        case .ok(let value):
-            value
-        case .error(let error):
-            throw error
-        }
-    }
-}
-public extension SignupFlowSubmitPasswordResult {
-    func get() throws(SignupError) -> SimpleSignupState {
-        switch self {
-        case .ok(let value):
-            value
-        case .error(let error):
-            throw error
-        }
-    }
-}
-public extension SignupFlowSubmitRecoveryEmailResult {
-    func get() throws(SignupError) -> SimpleSignupState {
-        switch self {
-        case .ok(let value):
-            value
-        case .error(let error):
-            throw error
-        }
-    }
-}
-public extension SignupFlowSubmitRecoveryPhoneResult {
-    func get() throws(SignupError) -> SimpleSignupState {
         switch self {
         case .ok(let value):
             value

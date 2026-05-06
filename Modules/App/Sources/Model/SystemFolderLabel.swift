@@ -46,7 +46,7 @@ extension SystemLabel {
             L10n.Mailbox.SystemFolder.scheduled
         case .snoozed:
             L10n.Mailbox.SystemFolder.snoozed
-        case .categorySocial, .categoryPromotions, .catergoryUpdates, .categoryForums, .categoryDefault, .blocked, .pinned:
+        case .categorySocial, .categoryPromotions, .categoryUpdates, .categoryForums, .categoryDefault, .blocked, .pinned, .categoryNewsletter, .categoryTransactions:
             fatalError("Not implemented")
         }
     }
@@ -75,7 +75,7 @@ extension SystemLabel {
             DS.Icon.icClockPaperPlane.image
         case .snoozed:
             DS.Icon.icClock.image
-        case .categorySocial, .categoryPromotions, .catergoryUpdates, .categoryForums, .categoryDefault, .blocked, .pinned:
+        case .categorySocial, .categoryPromotions, .categoryUpdates, .categoryForums, .categoryDefault, .blocked, .pinned, .categoryNewsletter, .categoryTransactions:
             fatalError("Not implemented")
         }
     }

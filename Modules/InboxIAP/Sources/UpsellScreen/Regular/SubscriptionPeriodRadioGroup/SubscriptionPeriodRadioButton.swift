@@ -104,7 +104,7 @@ struct SubscriptionPeriodRadioButton: View {
             VStack(alignment: .trailing, spacing: .zero) {
                 pricePerPeriod(formattedPrice: discountedYearlyPrice, unit: .year, isEmphasized: true)
 
-                pricingText(L10n.onlyXPerMonth(discountedMonthlyPrice).string, isEmphasized: false)
+                pricePerPeriod(formattedPrice: discountedMonthlyPrice, unit: .month, isEmphasized: false)
             }
         case .discountedMonthlyPlan(let discountedPrice, let renewalPrice):
             VStack(alignment: .trailing, spacing: .zero) {

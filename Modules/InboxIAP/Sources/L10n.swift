@@ -114,6 +114,12 @@ enum L10n {
             return .init("\(measurement.formatted()) storage", bundle: .module, comment: "Amount of storage space available in a given plan, for example: 1 GB storage")
         }
 
+        static let hideMyEmailAliases = LocalizedStringResource("Hide My Email aliases", bundle: .module, comment: "Description of a feature of a paid subscription")
+        static let foldersAndLabels = LocalizedStringResource("Folders and labels", bundle: .module, comment: "Description of a feature of a paid subscription")
+        static let premiumVpnPasswordManagerCloudStorage = LocalizedStringResource(
+            "Premium VPN, password manager and cloud storage", bundle: .module, comment: "Description of a feature of a paid subscription")
+        static let darkWebMonitoring = LocalizedStringResource("Dark Web Monitoring", bundle: .module, comment: "Description of a feature of a paid subscription")
+
         static func numberOfEmailAddresses(_ amount: UInt) -> LocalizedStringResource {
             .init("\(amount) email addresses", bundle: .module, comment: "Number of email addresses available in a given plan")
         }
@@ -128,6 +134,15 @@ enum L10n {
             "Discounts are based on standard monthly pricing. Auto-renews at \(renewalPrice) /\(period.localizedDescription.lowercased()) until canceled.",
             bundle: .module,
             comment: "Notice at the bottom of the upsell page"
+        )
+    }
+
+    static func autoRenewalNotice(price: String, period: Product.SubscriptionPeriod.Unit) -> LocalizedStringResource {
+        let periodSuffix = "/\(period.localizedDescription.lowercased())"
+        return .init(
+            "Auto-renews at \(price)\(periodSuffix) unless canceled",
+            bundle: .module,
+            comment: "Disclaimer shown at the bottom of the upsell page; first placeholder is the localized price, second is the period suffix (/year or /month)"
         )
     }
 }

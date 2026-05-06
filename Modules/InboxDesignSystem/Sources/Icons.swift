@@ -87,6 +87,7 @@ public extension DS.Icon {
 public extension DS.Icon {
     static let icBrandProtonMailUpsell = ImageResource.icBrandProtonMailUpsell
     static let icBrandProtonMailUpsellBlackAndWhite = ImageResource.icBrandProtonMailUpsellBw
+    static let icBrandProtonUnlimitedUpsellHeader = ImageResource.icBrandProtonUnlimitedUpsellHeader
     static let upsellBlackFridayHeaderButtonWave1 = ImageResource.upsellBlackFridayHeaderButtonWave1
     static let upsellBlackFridayHeaderButtonWave2 = ImageResource.upsellBlackFridayHeaderButtonWave2
     static let upsellBlackFridaySidebarItemWave1 = ImageResource.upsellBlackFridaySidebarItemWave1
@@ -98,6 +99,9 @@ public extension DS.Icon {
 public extension DS.Icon {
     static let icCode = ImageResource.icCode
     static let icDiamond = ImageResource.icDiamond
+    static let icInfinity = ImageResource.icInfinity
+    static let icInfinityUpsellHeader = ImageResource.icInfinityUpsellHeader
+    static let icInfinityUpsellRow = ImageResource.icInfinityUpsellRow
     static let icEnvelopeDot = ImageResource.icEnvelopeDot
     static let icEnvelopeOpen = ImageResource.icEnvelopeOpen
     static let icFileLines = ImageResource.icFileLines

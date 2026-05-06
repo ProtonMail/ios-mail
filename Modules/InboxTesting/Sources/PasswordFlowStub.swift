@@ -19,12 +19,12 @@ import proton_app_uniffi
 
 final class PasswordFlowStub: PasswordFlow, @unchecked Sendable {
     init() {
-        super.init(noHandle: .init())
+        super.init(noPointer: .init())
     }
 
     @available(*, unavailable)
-    required init(unsafeFromHandle handle: UInt64) {
-        fatalError("init(unsafeFromHandle:) has not been implemented")
+    required init(unsafeFromRawPointer pointer: UnsafeMutableRawPointer) {
+        fatalError("init(unsafeFromRawPointer:) has not been implemented")
     }
 
     override func hasMbp() -> PasswordFlowHasMbpResult {

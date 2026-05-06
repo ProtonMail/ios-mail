@@ -148,7 +148,7 @@ public struct UpsellScreen: View {
                     Spacer.exactly(DS.Spacing.huge)
                 }
 
-                PlanComparisonGrid(highlightStroke: model.highlightStroke)
+                PlanComparisonGrid(configuration: model.comparisonConfiguration)
             }
             .padding(.top, headerHeight)
             .padding(.bottom, DS.Spacing.extraLarge)

@@ -394,6 +394,16 @@ public extension PasswordFlowSubmitTotpResult {
         }
     }
 }
+public extension ResolveMessageFromPushNotificationResult {
+    func get() throws(ActionError) -> Message {
+        switch self {
+        case .ok(let value):
+            value
+        case .error(let error):
+            throw error
+        }
+    }
+}
 public extension ResolveMessageIdResult {
     func get() throws(ActionError) -> Id {
         switch self {

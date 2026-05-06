@@ -25,12 +25,24 @@ import proton_app_uniffi
 @testable import InboxIAP
 
 @MainActor
-@Suite(.disabled("Tests are failing on CI only, needs more investigation."))
 struct UpsellScreenSnapshotTests {
+    enum SelectedCycle: String {
+        case yearly
+        case monthly
+
+        var lengthInMonths: Int {
+            switch self {
+            case .yearly: 12
+            case .monthly: 1
+            }
+        }
+    }
+
     struct TestCase {
         let label: String
         let config: ViewImageConfig
         let upsellType: UpsellType
+        let selectedCycle: SelectedCycle
     }
 
     nonisolated private static let testCases: [TestCase] = {
@@ -42,15 +54,19 @@ struct UpsellScreenSnapshotTests {
         ]
 
         let upsellTypes: [UpsellType] = [.mailPlus, .unlimited]
+        let selectedCycles: [SelectedCycle] = [.yearly, .monthly]
 
         return orientations.flatMap { orientation in
             devices.flatMap { device in
-                upsellTypes.map { upsellType in
-                    .init(
-                        label: "\(device.label)_\(orientation)_\(upsellType.label)",
-                        config: device.configFactory(orientation),
-                        upsellType: upsellType
-                    )
+                upsellTypes.flatMap { upsellType in
+                    selectedCycles.map { selectedCycle in
+                        .init(
+                            label: "\(device.label)_\(orientation)_\(upsellType.label)_\(selectedCycle.rawValue)",
+                            config: device.configFactory(orientation),
+                            upsellType: upsellType,
+                            selectedCycle: selectedCycle
+                        )
+                    }
                 }
             }
         }
@@ -58,12 +74,20 @@ struct UpsellScreenSnapshotTests {
 
     @Test(arguments: testCases)
     func upsellScreen(testCase: TestCase) {
-        let sut = UpsellScreen(model: .preview(entryPoint: .mailboxTopBar, upsellType: testCase.upsellType))
+        let model = UpsellScreenModel.preview(entryPoint: .mailboxTopBar, upsellType: testCase.upsellType)
+        if let instance = model.planInstances.first(where: { $0.cycleInMonths == testCase.selectedCycle.lengthInMonths }) {
+            model.selectedInstanceId = instance.storeKitProductId
+        }
+
+        let sut = UpsellScreen(model: model)
         let viewController = UIHostingController(rootView: sut)
+        viewController.view.backgroundColor = .black
+        viewController.overrideUserInterfaceStyle = .dark
 
         let strategy: Snapshotting<UIViewController, UIImage> = .image(
             on: testCase.config,
-            drawHierarchyInKeyWindow: true
+            drawHierarchyInKeyWindow: true,
+            precision: 0.99
         )
 
         assertSnapshot(of: viewController, as: strategy, named: testCase.label)

@@ -21,7 +21,11 @@ extension DisplayablePlanInstance {
         .init(
             storeKitProductId: "iosmail_mail2022_12_usd_auto_renewing",
             cycleInMonths: 12,
-            pricing: .regular(monthlyPrice: "$3.99"),
+            pricing: .discountedYearlyPlan(
+                discountedMonthlyPrice: "$3.99",
+                discountedYearlyPrice: "$47.88",
+                renewalPrice: "$47.88"
+            ),
             discount: 20,
         ),
         .init(

@@ -22,7 +22,7 @@ enum LabelAsSheetPreviewProvider {
     static func testData() -> LabelAsSheetModel {
         .init(
             input: .init(sheetType: .labelAs, ids: [], mailboxItem: .message(isLastMessageInCurrentLocation: false)),
-            mailbox: .init(noHandle: .init()),
+            mailbox: .init(noPointer: .init()),
             availableLabelAsActions: .init(
                 message: { _, _ in .ok(testLabels()) },
                 conversation: { _, _ in .ok([]) }

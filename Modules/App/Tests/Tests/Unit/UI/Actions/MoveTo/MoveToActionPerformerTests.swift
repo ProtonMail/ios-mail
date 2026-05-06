@@ -29,7 +29,7 @@ final class MoveToActionPerformerTests: BaseTestCase {
         super.setUp()
 
         sut = .init(
-            mailbox: .init(noHandle: .init()),
+            mailbox: .init(noPointer: .init()),
             moveToActions: .init(
                 moveMessagesTo: { [unowned self] _, _, _ in stubbedResult },
                 moveConversationsTo: { [unowned self] _, _, _ in stubbedResult }
