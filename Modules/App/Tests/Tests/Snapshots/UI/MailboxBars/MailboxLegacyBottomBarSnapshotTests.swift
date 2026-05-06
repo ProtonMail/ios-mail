@@ -42,7 +42,7 @@ struct MailboxLegacyBottomBarSnapshotTests {
             name: "unread_deselected_unknown_count"
         ),
     ])
-    func allStates(_ testCase: TestCase) {
+    func snapshotLegacyBottomBar(_ testCase: TestCase) {
         assertSelfSizingSnapshot(
             of: MailboxLegacyBottomBarView(state: testCase.state, action: { _ in }),
             named: testCase.name

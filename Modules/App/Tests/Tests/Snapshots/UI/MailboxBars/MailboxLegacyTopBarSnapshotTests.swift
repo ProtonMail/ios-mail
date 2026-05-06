@@ -34,7 +34,7 @@ struct MailboxLegacyTopBarSnapshotTests {
         TestCase(state: .includeSpamTrash(isSelected: false), name: "spam_trash_deselected"),
         TestCase(state: .includeSpamTrash(isSelected: true), name: "spam_trash_selected"),
     ])
-    func allStates(_ testCase: TestCase) {
+    func snapshotLegacyTopBar(_ testCase: TestCase) {
         assertSelfSizingSnapshot(
             of: MailboxLegacyTopBar(state: testCase.state, action: { _ in }),
             named: testCase.name

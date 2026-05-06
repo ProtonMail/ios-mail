@@ -35,7 +35,7 @@ struct MailboxLiquidGlassTopBarSnapshotTests {
         TestCase(state: .includeSpamTrash(isSelected: true), name: "spam_trash_selected"),
     ])
     @available(iOS 26, *)
-    func allStates(_ testCase: TestCase) {
+    func snapshotLiquidGlassTop(_ testCase: TestCase) {
         assertSelfSizingSnapshot(
             of: MailboxLiquidGlassTopBar(state: testCase.state, action: { _ in }),
             drawHierarchyInKeyWindow: true,
