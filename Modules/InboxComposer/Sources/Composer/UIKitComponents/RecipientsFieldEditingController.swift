@@ -216,7 +216,7 @@ extension RecipientsFieldEditingController: UICollectionViewDataSource {
             case .onTextChanged(let text):
                 onEvent?(.onInputChange(text: text))
             case .onDeleteKeyPressedOnEmptyTextField:
-                if !cellUIModels.filter(\.isRecipient).isEmpty { removeFocusFromCursor() }
+                if cellUIModels.contains(where: \.isRecipient) { removeFocusFromCursor() }
                 onEvent?(.onDeleteKeyPressedInsideEmptyInputField)
             case .onReturnKeyPressed:
                 onEvent?(.onReturnKeyPressed)

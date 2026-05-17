@@ -36,11 +36,11 @@ struct TrackersUIModel: Identifiable, Hashable {
     }
 
     var areTrackersPresented: Bool {
-        blockedTrackers.count > 0 || (blockedTrackers.isEmpty && cleanedLinks.isEmpty)
+        !blockedTrackers.isEmpty || (blockedTrackers.isEmpty && cleanedLinks.isEmpty)
     }
 
     var areLinksPresented: Bool {
-        cleanedLinks.count > 0
+        !cleanedLinks.isEmpty
     }
 
     static var empty: TrackersUIModel {

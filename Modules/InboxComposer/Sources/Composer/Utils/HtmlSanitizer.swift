@@ -18,11 +18,13 @@
 import Foundation
 
 struct HtmlSanitizer {
+    private static let encoder = JSONEncoder()
+
     /// Escapes characters that can trigger WebKit JS SyntaxError
     static func applyStringLiteralEscapingRules(html: String) -> String {
         // We use JSONEncoder as a trick to ensure all problematic
         // characters (quotes, backslashes, control chars) are properly escaped.
-        let jsonEncodedText = try! JSONEncoder().encode(html)
+        let jsonEncodedText = try! encoder.encode(html)
         let sanitized = String(data: jsonEncodedText, encoding: .utf8)!
         return sanitized
     }

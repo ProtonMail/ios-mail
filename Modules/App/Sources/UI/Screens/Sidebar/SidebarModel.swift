@@ -218,7 +218,7 @@ final class SidebarModel: Sendable, ObservableObject {
     }
 
     private func selectFirstSystemItemIfNeeded() {
-        if state.items.filter(\.isSelected).isEmpty, let first = state.system.first {
+        if !state.items.contains(where: \.isSelected), let first = state.system.first {
             select(item: .system(first))
         }
     }
