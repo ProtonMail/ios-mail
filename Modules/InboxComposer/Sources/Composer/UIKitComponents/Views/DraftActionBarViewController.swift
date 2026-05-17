@@ -302,13 +302,17 @@ extension DraftActionBarViewController {
     }
 }
 
+private let customExpirationDateFormatter: DateFormatter = {
+    let formatter = DateFormatter()
+    formatter.dateStyle = .medium
+    formatter.timeStyle = .short
+    return formatter
+}()
+
 private extension DraftExpirationTime {
     var customDateString: String? {
         if let customDate {
-            let formatter = DateFormatter()
-            formatter.dateStyle = .medium
-            formatter.timeStyle = .short
-            return formatter.string(from: customDate)
+            return customExpirationDateFormatter.string(from: customDate)
         }
         return nil
     }

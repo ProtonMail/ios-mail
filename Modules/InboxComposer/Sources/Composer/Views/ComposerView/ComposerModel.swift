@@ -621,9 +621,8 @@ extension ComposerModel {
     private func updateStateAttachmentUIModels() async {
         do {
             let draftAttachments = try await draft.attachmentList().attachments().get()
-            let dispositions = draftAttachments.map(\.attachment.disposition)
-            let inlineCount = dispositions.filter { $0 == .inline }.count
-            let attachmentCount = dispositions.filter { $0 == .attachment }.count
+            let inlineCount = draftAttachments.count(where: { $0.attachment.disposition == .inline })
+            let attachmentCount = draftAttachments.count(where: { $0.attachment.disposition == .attachment })
             AppLogger.log(message: "Attachments update: inline: \(inlineCount), attachment: \(attachmentCount)", category: .composer)
             state.attachments = draftAttachments.toDraftAttachmentUIModels()
             attachmentAlertState.enqueueAlertsForFailedAttachmentUploads(attachments: draftAttachments)

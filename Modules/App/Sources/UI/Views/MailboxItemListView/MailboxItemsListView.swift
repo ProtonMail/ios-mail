@@ -175,10 +175,11 @@ struct MailboxItemsListView<EmptyView: View, ComposeButton: ToolbarContent, Unre
     private func voiceOverValue(for item: MailboxItemCellUIModel) -> String {
         let unread = item.isRead ? "" : L10n.Mailbox.VoiceOver.unread.string
         let expiration = item.expirationDate?.toExpirationDateUIModel?.text.string ?? ""
+        let previewables = item.attachments.previewables
         let attachments =
-            item.attachments.previewables.count > 0
-            ? L10n.Mailbox.VoiceOver.attachments(count: item.attachments.previewables.count).string
-            : ""
+            previewables.isEmpty
+            ? ""
+            : L10n.Mailbox.VoiceOver.attachments(count: previewables.count).string
         let value: String = """
             \(unread)
             \(item.emails).

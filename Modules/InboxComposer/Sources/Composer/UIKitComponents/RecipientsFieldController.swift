@@ -140,7 +140,7 @@ final class RecipientsFieldController: UIViewController {
             updateStateInExpandedAndEditingViews(state)
         case .editing:
             updateStateInExpandedAndEditingViews(state)
-            if state.recipients.filter(\.isSelected).isEmpty {
+            if !state.recipients.contains(where: \.isSelected) {
                 editingController.setFocus()
             }
         case .contactPicker:
