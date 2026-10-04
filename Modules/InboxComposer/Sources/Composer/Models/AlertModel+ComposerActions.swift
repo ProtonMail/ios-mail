@@ -21,6 +21,16 @@ import InboxCoreUI
 import SwiftUI
 
 extension AlertModel {
+    static func closeComposer(action: @escaping @MainActor (CloseComposerAlertAction) async -> Void) -> Self {
+        .init(
+            title: L10n.Composer.closeConfirmationTitle,
+            message: L10n.Composer.closeConfirmationMessage,
+            actions: CloseComposerAlertAction.allCases.map { actionType in
+                .init(details: actionType, action: { await action(actionType) })
+            }
+        )
+    }
+
     static func discardDraft(action: @escaping @MainActor (DiscardDraftAlertAction) async -> Void) -> Self {
         let actions: [AlertAction] = DiscardDraftAlertAction.allCases.map { actionType in
             .init(details: actionType, action: { await action(actionType) })

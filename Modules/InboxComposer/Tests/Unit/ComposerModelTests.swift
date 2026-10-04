@@ -92,6 +92,54 @@ final class ComposerModelTests: BaseTestCase {
         try super.tearDownWithError()
     }
 
+    func testCloseComposer_requiresChoiceBeforeDismissing() async throws {
+        let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: testContactProvider)
+        let dismiss = DismissSpy()
+
+        await sut.dismissComposerManually(dismissAction: dismiss)
+
+        let alert = try XCTUnwrap(sut.state.alert)
+        XCTAssertEqual(alert.actions.count, 3)
+        XCTAssertEqual(dismiss.callsCount, 0)
+        XCTAssertTrue(dismissReasonObserver.isEmpty)
+
+        let keepEditing = try XCTUnwrap(alert.actions.first { $0.buttonRole == .cancel })
+        await keepEditing.action()
+        XCTAssertNil(sut.state.alert)
+        XCTAssertEqual(dismiss.callsCount, 0)
+        XCTAssertTrue(dismissReasonObserver.isEmpty)
+    }
+
+    func testCloseComposer_saveClosesWithSavedDraftReason() async throws {
+        let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: testContactProvider)
+        let dismiss = DismissSpy()
+        await sut.dismissComposerManually(dismissAction: dismiss)
+        let save = try XCTUnwrap(sut.state.alert?.actions.first { $0.title == L10n.Composer.saveAsDraft })
+
+        await save.action()
+        await sut.viewDidDisappear()
+
+        XCTAssertEqual(dismiss.callsCount, 1)
+        XCTAssertEqual(dismissReasonObserver.count, 1)
+        guard case .dismissedManually = dismissReasonObserver.first else {
+            return XCTFail("Expected a saved draft dismissal")
+        }
+    }
+
+    func testCloseComposer_deleteDoesNotReportDraftSavedOnDisappearance() async throws {
+        let sut = makeSut(draft: mockDraft, draftOrigin: .new, contactProvider: testContactProvider)
+        let dismiss = DismissSpy()
+        await sut.dismissComposerManually(dismissAction: dismiss)
+        let delete = try XCTUnwrap(sut.state.alert?.actions.first { $0.buttonRole == .destructive })
+
+        await delete.action()
+        await sut.viewDidDisappear()
+
+        XCTAssertEqual(dismiss.callsCount, 1)
+        XCTAssertEqual(dismissReasonObserver, [.draftDiscarded])
+        XCTAssertNil(sut.state.alert)
+    }
+
     // MARK: init
 
     func testInit_whenNoStateIsPassed_itShouldReturnAnEmptyState() {
