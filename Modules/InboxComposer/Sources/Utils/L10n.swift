@@ -22,6 +22,36 @@ import Foundation
 /// IMPORTANT: Remember about setting bundle for each key: `bundle: .atURL(Bundle.module.bundleURL)`.
 enum L10n {
     enum Composer {
+        static let closeConfirmationTitle = LocalizedStringResource(
+            "Save this draft?",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Title shown when closing the composer"
+        )
+
+        static let closeConfirmationMessage = LocalizedStringResource(
+            "Save your draft or delete it before closing.",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Message shown when closing the composer"
+        )
+
+        static let saveAsDraft = LocalizedStringResource(
+            "Save as Draft",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Save draft and close composer"
+        )
+
+        static let deleteDraft = LocalizedStringResource(
+            "Delete Draft",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Delete draft and close composer"
+        )
+
+        static let keepEditing = LocalizedStringResource(
+            "Keep Editing",
+            bundle: .atURL(Bundle.module.bundleURL),
+            comment: "Cancel closing the composer"
+        )
+
         static let draftLoadedOffline = LocalizedStringResource(
             "You're currently offline. This draft may not be up-to-date.",
             bundle: .atURL(Bundle.module.bundleURL),

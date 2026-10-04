@@ -53,3 +53,20 @@ enum ExpiringMessageUnsupportedAlertAction: AlertActionInfo, CaseIterable {
         }
     }
 }
+
+enum CloseComposerAlertAction: AlertActionInfo, CaseIterable {
+    case save
+    case delete
+    case keepEditing
+
+    var info: (title: LocalizedStringResource, buttonRole: ButtonRole?) {
+        switch self {
+        case .save:
+            (L10n.Composer.saveAsDraft, nil)
+        case .delete:
+            (L10n.Composer.deleteDraft, .destructive)
+        case .keepEditing:
+            (L10n.Composer.keepEditing, .cancel)
+        }
+    }
+}

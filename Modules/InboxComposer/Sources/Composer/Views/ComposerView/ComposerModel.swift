@@ -148,6 +148,7 @@ final class ComposerModel: ObservableObject {
     }
 
     func viewDidDisappear() async {
+        guard !composerWillDismiss else { return }
         AppLogger.log(message: "composer did disappear", category: .composer)
         await updateBodyDebounceTask?.executeImmediately()
         if !messageHasBeenSentOrScheduled {
@@ -497,9 +498,27 @@ final class ComposerModel: ObservableObject {
     }
 
     func dismissComposerManually(dismissAction: Dismissable) async {
-        await updateBodyDebounceTask?.executeImmediately()
-        let messageId = await draftMessageId()
-        dismissComposer(dismissAction: dismissAction, reason: .dismissedManually(savedDraftId: messageId))
+        state.alert = .closeComposer(action: { @MainActor [weak self] action in
+            guard let self else { return }
+            defer { state.alert = nil }
+            switch action {
+            case .save:
+                await updateBodyDebounceTask?.executeImmediately()
+                let messageId = await draftMessageId()
+                dismissComposer(dismissAction: dismissAction, reason: .dismissedManually(savedDraftId: messageId))
+            case .delete:
+                // Complete pending saves before deleting, so they cannot recreate the draft.
+                await updateBodyDebounceTask?.executeImmediately()
+                switch await draft.discard() {
+                case .ok:
+                    dismissComposer(dismissAction: dismissAction, reason: .draftDiscarded)
+                case .error(let error):
+                    showToast(.error(message: error.localizedDescription))
+                }
+            case .keepEditing:
+                break
+            }
+        })
     }
 }
 
